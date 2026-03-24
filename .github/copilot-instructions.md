@@ -3,27 +3,29 @@
 ## Project Overview
 Galette is a membership management web application for non-profit organizations, released under GPLv3. It provides features for managing members, contributions, transactions, mailings, and more. The project is primarily written in PHP with Twig templates and includes JavaScript/CSS frontend assets.
 
-**Repository:** https://github.com/galette/galette/  
-**Documentation:** https://doc.galette.eu/  
-**Current Stable Version:** 1.2.1  
+**Repository:** https://github.com/galette/galette/
+**Documentation:** https://doc.galette.eu/
+**Documentation Repo:** https://github.com/galette/galettedoc (reStructuredText, Sphinx, ReadTheDocs)
 **Main Branch:** `develop` (development), `master` (stable releases)
 
+See also `AGENTS.md` for project instructions.
+
 ## Technology Stack
-- **Backend:** PHP 8.1+ (Slim Framework)
-- **Frontend:** JavaScript, Gulp for asset compilation
+- **Backend:** PHP (see `galette/includes/sys_config/versions.inc.php` for `GALETTE_PHP_MIN`) with Slim Framework
+- **Frontend:** JavaScript, Gulp for asset compilation, Semantic UI
 - **Templating:** Twig
-- **Database:** MySQL/MariaDB or PostgreSQL (required for tests)
-- **Dependency Management:** 
-  - PHP: Composer
+- **Database:** MySQL/MariaDB or PostgreSQL (see `GALETTE_MYSQL_MIN`, `GALETTE_PGSQL_MIN` in versions.inc.php)
+- **Dependency Management:**
+  - PHP: Composer (note: `vendor/` is at `galette/vendor/`, not project root)
   - JavaScript: npm
-- **Testing:** PHPUnit
+- **Testing:** PHPUnit with pcov for coverage
 - **Code Quality:** PHPStan, PHP-CS-Fixer, PHPCS, Rector
 
 ## Repository Structure
 
 ### Root Directory Files
 - `composer.json` - PHP dependencies
-- `package.json` - Node.js dependencies  
+- `package.json` - Node.js dependencies
 - `gulpfile.js` - Build tasks for frontend assets
 - `.php-cs-fixer.dist.php` - PHP-CS-Fixer configuration
 - `.phpcs.xml` - PHP CodeSniffer configuration
@@ -45,7 +47,7 @@ Galette is a membership management web application for non-profit organizations,
   - `galette/data/` - Data storage (writable)
   - `galette/lang/` - Translations
 - **`tests/`** - PHPUnit test suite
-- **`ui/`** - Frontend source files (semantic UI customization)
+- **`ui/`** - Frontend source files (Semantic UI customization)
 - **`bin/`** - Executable scripts
   - `bin/install_deps` - Install all dependencies (Composer + npm) - **USE THIS**
   - `bin/console` - Galette console tool (includes `galette:install` command for database setup)
@@ -56,13 +58,13 @@ Galette is a membership management web application for non-profit organizations,
 ## Build & Development Setup
 
 ### Prerequisites
-- **PHP:** 8.1 or higher
-- **PHP Extensions Required:** 
+- **PHP:** see `GALETTE_PHP_MIN` in `galette/includes/sys_config/versions.inc.php`
+- **PHP Extensions Required:**
   - curl, date, dom, fileinfo, gd, gettext, intl, json, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML, ssl, tidy, xml
-  - **pcov** (for code coverage - optional, not required for basic testing)
+  - **pcov** (for code coverage - optional): `pecl install pcov`
 - **Node.js:** Latest LTS recommended (for npm/gulp)
 - **Composer:** 2.x
-- **Database:** MySQL 5.7+/MariaDB 10.3+ or PostgreSQL 11+
+- **Database:** MySQL/MariaDB or PostgreSQL (see versions.inc.php)
 
 ### Initial Setup Commands
 
@@ -77,14 +79,7 @@ bin/install_deps
 # - npm install
 ```
 
-**Alternative - Manual Installation:**
-```bash
-# 1. Install PHP dependencies
-composer install --no-interaction
-
-# 2. Install JavaScript dependencies
-npm install
-```
+**Note:** If you encounter permission errors, do NOT use `sudo`. Instead, check directory permissions for `vendor/` and `node_modules/` directories.
 
 **After dependencies are installed, build frontend assets:**
 ```bash
@@ -95,11 +90,16 @@ npm run build
 npm run dev
 ```
 
-**Note:** If you encounter permission errors, DO NOT use `sudo`. Instead, check directory permissions for `vendor/` and `node_modules/` directories.
-
 ## Build Commands
 
 ### Composer (PHP Dependencies)
+
+**Important:** When updating dependencies or adding new ones, use the correct PHP version.
+`php --version` will give you the information. Also check for the presence of the `php82` command.
+Currently, `laminas-db` limits composer usage to PHP 8.2.
+
+Composer files are at the root of the project, but the `vendor/` directory is located at `galette/vendor/`.
+
 ```bash
 # Install dependencies (production)
 composer install --no-dev --optimize-autoloader
@@ -180,6 +180,7 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette
 - Always use `--test-suffix=.php` flag when running tests
 - Tests use the configured database - ensure it's accessible and properly initialized
 - Database must be installed via `bin/console galette:install` before running tests
+- Database user needs full privileges: CREATE, DROP, INSERT, UPDATE, DELETE, SELECT
 - **Code Coverage:** Galette uses **pcov** (not Xdebug) for coverage. Install with: `pecl install pcov`
   - Coverage is filtered to `galette/lib` directory only
   - Use `--coverage-html tests/coverage` for local HTML reports
@@ -188,7 +189,6 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette
 **Known Issues:**
 - Tests require a properly configured and initialized database - they will fail without it
 - If tests fail with "Class not found" errors, run `composer dump-autoload`
-- Some tests may timeout if database is slow - increase timeout in phpunit.xml if needed
 - Make sure the database user has sufficient privileges (CREATE, DROP, INSERT, UPDATE, DELETE, SELECT)
 - For code coverage, **pcov** is required (not Xdebug). Install with `pecl install pcov` if needed
 - Coverage output directory (`tests/coverage` or location of `tests/clover.xml`) should be writable
@@ -207,10 +207,13 @@ vendor/bin/php-cs-fixer fix
 vendor/bin/php-cs-fixer fix galette/lib/
 ```
 
-**Configuration:** `.php-cs-fixer.dist.php`  
+**Configuration:** `.php-cs-fixer.dist.php` (PSR-12 based)
 **Important:** ALWAYS run PHP-CS-Fixer before committing PHP code changes.
 
 ### PHPCS (PHP CodeSniffer)
+
+Some changes done by Rector/PHP-CS-Fixer can cause PHPCS issues. Run `phpcbf` as last step.
+
 ```bash
 # Check code standards
 vendor/bin/phpcs
@@ -218,7 +221,7 @@ vendor/bin/phpcs
 # Check specific directory
 vendor/bin/phpcs galette/lib/
 
-# Auto-fix where possible
+# Auto-fix where possible (run as last step)
 vendor/bin/phpcbf
 ```
 
@@ -236,8 +239,7 @@ vendor/bin/phpstan analyse --level=max
 vendor/bin/phpstan analyse --generate-baseline
 ```
 
-**Configuration:** `phpstan.neon`  
-**Current Level:** Check `phpstan.neon` for configured level  
+**Configuration:** `phpstan.neon`
 **Note:** PHPStan errors should be fixed, not ignored, unless adding to baseline for legacy code
 
 ### Rector (Automated Refactoring)
@@ -252,7 +254,7 @@ vendor/bin/rector process
 vendor/bin/rector process galette/lib/
 ```
 
-**Configuration:** `rector.php`  
+**Configuration:** `rector.php`
 **Warning:** Always review Rector changes before committing. Run tests after applying Rector rules.
 
 ## GitHub Actions CI/CD
@@ -264,7 +266,7 @@ vendor/bin/rector process galette/lib/
 
 ### CI Pipeline Overview
 The CI runs on every push and pull request. It performs:
-1. **PHP Compatibility Check** (multiple PHP versions: 8.1, 8.2, 8.3)
+1. **PHP Compatibility Check** (multiple PHP versions: 8.2 → 8.5)
 2. **Install Dependencies** - Via `bin/install_deps`
 3. **Database Setup** - Using `bin/console galette:install` with test database
 4. **NPM Build** - Build frontend assets
@@ -278,7 +280,6 @@ The CI runs on every push and pull request. It performs:
 ```bash
 # 1. Install dependencies
 bin/install_deps
-# OR manually: composer install && npm install
 
 # 2. Set up test database
 bin/console galette:install [options]
@@ -304,12 +305,12 @@ vendor/bin/phpcs
 
 ### Adding a New Feature
 1. Create feature branch from `develop`: `git checkout -b feature/my-feature develop`
-2. Install dependencies: `bin/install_deps` (or `composer install && npm install`)
+2. Install dependencies: `bin/install_deps`
 3. Set up test database: `bin/console galette:install [options]` (if not already done)
 4. Make code changes in appropriate directory (`galette/lib/`, `galette/templates/`, etc.)
 5. If modifying frontend: Update files in `ui/` and run `npm run build`
 6. Add/update tests in `tests/`
-7. Run quality checks: PHPStan, PHP-CS-Fixer, PHPCS
+7. Run quality checks: PHPStan, PHP-CS-Fixer, PHPCS (`phpcbf` last)
 8. Run tests: `DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/`
 9. Commit with meaningful message following project conventions
 
@@ -324,9 +325,17 @@ vendor/bin/phpcs
 ### Modifying Database Schema
 1. Create new migration file in `patches/`
 2. Follow existing naming convention: `YYYY-MM-DD_description.sql`
-3. Test migration on clean database
+3. Test migration on clean database and on existing database with data
 4. Update relevant model classes
 5. Add tests for new schema changes
+6. Test on both MySQL and PostgreSQL if possible
+
+### Modifying Frontend
+1. Edit files in `ui/` directory (NOT in `galette/webroot/`)
+2. Build: `npm run build`
+3. Test in browser
+4. For development, use watch mode: `npm run dev`
+5. Built files appear in `galette/webroot/themes/default/ui/`
 
 ## File Permissions & Directories
 
@@ -339,31 +348,27 @@ vendor/bin/phpcs
 ## Common Issues & Solutions
 
 ### Composer Install Fails
-**Issue:** `composer install` fails with memory limit error  
-**Solution:** Increase PHP memory limit: `php -d memory_limit=512M $(which composer) install`
+**Issue:** `composer install` fails with memory limit error
+**Solution:** `php -d memory_limit=512M $(which composer) install`
 
 ### NPM Build Fails
-**Issue:** `npm run build` fails with "Cannot find module"  
+**Issue:** `npm run build` fails with "Cannot find module"
 **Solution:** Delete `node_modules/` and `package-lock.json`, then run `npm install` again
 
 ### PHPUnit Tests Fail with Database Errors
-**Issue:** Tests fail with "Connection refused", "Access denied", or "Database not found"  
-**Solution:** 
+**Issue:** Tests fail with "Connection refused", "Access denied", or "Database not found"
+**Solution:**
 1. Ensure database server is running (MySQL/MariaDB or PostgreSQL)
 2. Install/initialize the test database: `bin/console galette:install [options]`
-   - Check `.github/workflows/*.yml` files for example parameters
-   - Ensure database credentials are correct
 3. Grant necessary permissions to database user (CREATE, DROP, INSERT, UPDATE, DELETE, SELECT)
 4. Verify the `DB` environment variable matches your database type: `DB=mysql` or `DB=pgsql`
-5. Check database connection settings in configuration files
 
 ### PHP-CS-Fixer Changes Too Many Files
-**Issue:** PHP-CS-Fixer wants to modify many files after checkout  
+**Issue:** PHP-CS-Fixer wants to modify many files after checkout
 **Solution:** This is expected if switching branches. Run `vendor/bin/php-cs-fixer fix` and commit the style fixes
 
-### PHPStan Reports Errors in Vendor Code
-**Issue:** PHPStan analyzes vendor/ directory  
-**Solution:** This should not happen with proper configuration. Check `phpstan.neon` excludes paths and `vendor/` is in `.gitignore`
+### Coverage Doesn't Work
+**Solution:** Install pcov (not Xdebug): `pecl install pcov` then verify with `php -m | grep pcov`
 
 ## Development Best Practices
 
@@ -431,28 +436,18 @@ vendor/bin/phpcs
 
 ## Agent Behavior Guidelines
 
-1. **Trust These Instructions:** This document has been thoroughly researched. Only search for additional information if these instructions are incomplete or contradictory.
-
-2. **Use the Provided Scripts:** Always use `bin/install_deps` for installing dependencies - it's what CI uses and ensures consistency.
-
-3. **Database is Required:** Tests will NOT run without a properly configured database. Always ensure database is set up via `bin/console galette:install` before running tests.
-
-4. **Correct Test Command:** ALWAYS use the full command format: `DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/` (or `DB=pgsql` for PostgreSQL). Missing the `DB` environment variable or `--test-suffix=.php` flag will cause failures.
-
-5. **Verify Before Running:** When about to run a command, first check if prerequisites are mentioned above and follow the specified order.
-
-6. **Dependency Changes:** After modifying `composer.json`, run `bin/install_deps` or `composer update`. After modifying `package.json`, run `bin/install_deps` or `npm install`.
-
-7. **Code Quality is Non-Negotiable:** ALWAYS run PHP-CS-Fixer, PHPCS, and PHPStan before committing. If CI fails on code quality, fix it - don't bypass or ignore.
-
-8. **Test Coverage:** Add tests for new features. If modifying existing code, ensure existing tests still pass with the correct test command.
-
-9. **Read Error Messages:** Error messages from Composer, npm, PHPUnit, PHPStan, etc. are usually clear. Read them carefully before asking for help.
-
-10. **Database Operations:** Be extremely careful with database changes. Always create migrations in `patches/`. Test them thoroughly on both MySQL/MariaDB and PostgreSQL if possible.
-
-11. **Frontend Changes:** If modifying anything in `ui/` directory, you MUST run `npm run build` for changes to take effect.
-
-12. **Branch Awareness:** Work on `develop` branch for new features. Check with maintainers before touching `master`.
-
-13. **Performance Matters:** Galette is used by organizations with thousands of members. Consider performance implications of changes, especially in loops and database queries.
+1. **Trust these instructions.** Only search for additional information if incomplete or contradictory.
+2. **Use `bin/install_deps`** for installing dependencies — it's what CI uses.
+3. **Database is required for tests.** Set it up with `bin/console galette:install` before testing.
+4. **Correct test command:** Always include `DB=mysql` (or `pgsql`) and `--test-suffix=.php`.
+5. **Code quality is mandatory.** Run PHP-CS-Fixer, PHPCS (`phpcbf` as last step), and PHPStan before every commit.
+6. **Build frontend when needed.** If you modify `ui/`, run `npm run build`.
+7. **Check CI workflows for examples.** Look at `.github/workflows/ci-linux.yml` for reference commands.
+8. **Use correct PHP version for Composer.** Check `php --version` or use `php82` if available.
+9. **Read error messages carefully.** They usually explain what's wrong.
+10. **Consider performance.** Galette handles thousands of members; optimize accordingly.
+11. **Create migrations for schema changes.** Never modify database structure without a migration file in `galette/install/scripts/`.
+12. **Work on `develop` branch** unless told otherwise.
+13. **Performance Matters:** consider performance implications of changes, especially in loops and database queries.
+14. **Test Coverage:** Add tests for new features. If modifying existing code, ensure existing tests still pass with the correct test command.
+15. **Verify Before Running:** When about to run a command, first check if prerequisites are mentioned above and follow the specified order.

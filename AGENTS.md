@@ -50,6 +50,7 @@ galette/
 ├── tests/                # PHPUnit test suite
 ├── ui/                   # Frontend source files
 ├── patches/              # Database migrations
+├── stubs/                # IDE helper stubs
 ├── composer.json         # PHP dependencies
 ├── package.json          # JavaScript dependencies
 ├── phpunit.xml           # Test configuration
@@ -58,9 +59,13 @@ galette/
 └── .phpcs.xml            # CodeSniffer config
 ```
 
+## Versions
+
+Minor PHP, MySQL, Postgres versions are defined in `galette/includes/sys_config/versions.inc.php` (see `GALETTE_PHP_MIN`, `GALETTE_MYSQL_MIN`, `GALETTE_PGSQL_MIN`).
+
 ## Technology Stack
 
-- **Backend:** PHP 8.1+ with Slim Framework
+- **Backend:** PHP with Slim Framework
 - **Frontend:** JavaScript, Gulp build system, Semantic UI
 - **Templates:** Twig
 - **Databases:** MySQL/MariaDB or PostgreSQL (required)
@@ -69,6 +74,14 @@ galette/
 
 ## Setup & Build Process
 
+### Prerequisites
+
+- **PHP:** (see versions)
+- **PHP Extensions:** curl, date, dom, fileinfo, gd, gettext, intl, json, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML, ssl, tidy, xml
+- **pcov** (for coverage — not Xdebug): `pecl install pcov`
+- **Node.js** (LTS), **Composer** 2.x
+- **Database:** MySQL/MariaDB or PostgreSQL (see versions)
+
 ### First-Time Setup
 
 1. **Install dependencies:**
@@ -76,6 +89,7 @@ galette/
    bin/install_deps
    ```
    This script handles both `composer install` and `npm install`.
+   **Note:** If you encounter permission errors, do NOT use `sudo`. Check directory permissions for `vendor/` and `node_modules/`.
 
 2. **Set up database (required for tests):**
    ```bash
@@ -166,6 +180,8 @@ vendor/bin/php-cs-fixer fix galette/lib/
 
 ### PHPCS (Code Standards)
 
+There are some changes done with rector/php-cs-fixer that cause PHPCS issues. Run `phpcbf` as last step.
+
 ```bash
 # Check code standards
 vendor/bin/phpcs
@@ -211,13 +227,20 @@ vendor/bin/rector process galette/lib/
 **Config:** `rector.php`  
 **Warning:** Review changes before committing. Run tests after applying.
 
+## Composer run
+
+If possible, especially when updating dependencies or adding new ones, composer commands must be run with the correct version. `php --version` will give you the information. You can also check for the presence of the `php82` command.
+Currently, `laminas-db` composer library limit composer usage to PHP 8.2.  
+
+composer files are as usual at the root of the project, but vendor directory is located at galette/vendor.
+
 ## CI/CD Pipeline
 
 ### What CI Checks
 
 The `.github/workflows/ci-linux.yml` workflow runs on every push/PR:
 
-1. Tests on multiple PHP versions (8.1, 8.2, 8.3)
+1. Tests on multiple PHP versions (8.2 => 8.5)
 2. Tests on both MySQL and PostgreSQL
 3. Code style check (PHP-CS-Fixer)
 4. Code standards check (PHPCS)
@@ -383,6 +406,7 @@ php -m | grep pcov
   - Developers: https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
 - **Official Website:** https://galette.eu
 - **Documentation:** https://doc.galette.eu/
+- **Documentation Repo:** https://github.com/galette/galettedoc (reStructuredText, built with Sphinx, hosted on ReadTheDocs)
 
 ## Instructions for AI Agents
 
@@ -412,3 +436,5 @@ php -m | grep pcov
 11. **Create migrations for schema changes.** Never modify database structure without a migration file in `patches/`.
 
 12. **Work on develop branch.** Unless told otherwise, branch from and merge to `develop`.
+
+13. **Prefer LSP over Grep for code navigation.** Warn the user if you do not have access. Use LSP operations (`goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `incomingCalls`, `outgoingCalls`) for symbol navigation. Fall back to Grep only for non-symbol searches (string literals, comments, regex patterns) or when LSP is unavailable.
