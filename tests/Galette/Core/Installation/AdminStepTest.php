@@ -36,31 +36,49 @@ class AdminStepTest extends TestCase
 {
     private AdminStep $step;
 
+    /**
+     * Initialize AdminStep with a fresh Install instance
+     */
     protected function setUp(): void
     {
         $this->step = new AdminStep(new Install());
     }
 
+    /**
+     * Admin step must be included when installing from scratch
+     */
     public function testApplicableForInstall(): void
     {
         $this->assertTrue($this->step->isApplicable(Install::INSTALL));
     }
 
+    /**
+     * Admin step must be skipped during upgrades (accounts already exist)
+     */
     public function testNotApplicableForUpdate(): void
     {
         $this->assertFalse($this->step->isApplicable(Install::UPDATE));
     }
 
+    /**
+     * Admin step requires the user to fill in credentials
+     */
     public function testRequiresUserInput(): void
     {
         $this->assertTrue($this->step->requiresUserInput());
     }
 
+    /**
+     * Admin credentials form must always be shown, never silently skipped
+     */
     public function testCannotSkipDisplay(): void
     {
         $this->assertFalse($this->step->canSkipDisplay());
     }
 
+    /**
+     * Execute must return a successful result that requires display
+     */
     public function testExecuteRequiresDisplay(): void
     {
         $result = $this->step->execute();

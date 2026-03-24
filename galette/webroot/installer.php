@@ -62,7 +62,7 @@ $session = &$_SESSION['galette'][$session_name];
 $gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp(); // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 /** @var \DI\Container $container */
-$container = $app->getContainer(); // Make container available globally for classes like Texts
+$container = $app->getContainer(); // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- available to included files
 
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {
@@ -342,7 +342,7 @@ if ($stepResult !== null && !$stepResult->requiresDisplay()) {
             echo $install->isInstall()
                 ? _T("Database has been installed :)")
                 : _T("Database has been upgraded :)");
-        ?>
+            ?>
         </div>
         
         <!-- Modal will show detailed report -->

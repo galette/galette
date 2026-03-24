@@ -37,6 +37,11 @@ class AdminStep extends AbstractStep
     public const STEP_NAME = 'admin';
     public const STEP_ORDER = 70;
 
+    /**
+     * Display administrator creation form; credentials are saved on form submission.
+     *
+     * @param array<string, mixed> $data Execution context data
+     */
     public function execute(array $data = []): StepResult
     {
         // This step requires display (form with admin credentials)
@@ -47,31 +52,51 @@ class AdminStep extends AbstractStep
         );
     }
 
+    /**
+     * Only applicable for fresh installation; upgrades keep existing admin accounts
+     *
+     * @param string $mode Installation mode ('i' for install, 'u' for update)
+     */
     public function isApplicable(string $mode): bool
     {
         return $mode === Install::INSTALL;
     }
 
+    /**
+     * User must provide administrator login and password
+     */
     public function requiresUserInput(): bool
     {
         return true;
     }
 
+    /**
+     * Admin credentials form must always be displayed
+     */
     public function canSkipDisplay(): bool
     {
         return false;
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("Admin parameters");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

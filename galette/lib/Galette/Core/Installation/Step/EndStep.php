@@ -39,6 +39,11 @@ class EndStep extends AbstractStep
     public const STEP_NAME = 'end';
     public const STEP_ORDER = 100;
 
+    /**
+     * Trigger final display; config file writing and object initialization are handled in the view.
+     *
+     * @param array<string, mixed> $data Execution context data
+     */
     public function execute(array $data = []): StepResult
     {
         // This step performs initialization AND displays the result
@@ -50,21 +55,33 @@ class EndStep extends AbstractStep
         );
     }
 
+    /**
+     * Final result page must always be displayed
+     */
     public function canSkipDisplay(): bool
     {
         return false;
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("End!");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

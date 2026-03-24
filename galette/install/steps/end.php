@@ -47,7 +47,7 @@ if ($init_ok) {
 }
 ?>
 
-<?php if ($init_ok): ?>
+<?php if ($init_ok) : ?>
     <p class="ui green message">
         <i class="big green check circle icon" aria-hidden="true"></i>
     <?php
@@ -61,7 +61,7 @@ if ($init_ok) {
     </p>
 
     <ul class="leaders">
-    <?php foreach ($install->getInitializationReport() as $r): ?>
+    <?php foreach ($install->getInitializationReport() as $r) : ?>
         <li>
             <span><?php echo $r['message']; ?></span>
             <span><?php echo $install->getValidationImage($r['res']); ?></span>
@@ -79,11 +79,11 @@ if ($init_ok) {
         </div>
     </form>
 
-<?php else: ?>
+<?php else : ?>
     <p class="ui red message"><?php echo _T("An error occurred :("); ?></p>
 
     <ul class="leaders">
-    <?php foreach ($install->getInitializationReport() as $r): ?>
+    <?php foreach ($install->getInitializationReport() as $r) : ?>
         <li>
             <span><?php echo $r['message']; ?></span>
             <span><?php echo $install->getValidationImage($r['res']); ?></span>

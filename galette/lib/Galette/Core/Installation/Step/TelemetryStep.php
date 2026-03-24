@@ -36,6 +36,11 @@ class TelemetryStep extends AbstractStep
     public const STEP_NAME = 'telemetry';
     public const STEP_ORDER = 80;
 
+    /**
+     * Display telemetry opt-in form; user choice is saved on form submission.
+     *
+     * @param array<string, mixed> $data Execution context data
+     */
     public function execute(array $data = []): StepResult
     {
         // This step requires display (form with telemetry opt-in checkbox)
@@ -46,26 +51,41 @@ class TelemetryStep extends AbstractStep
         );
     }
 
+    /**
+     * User must explicitly opt in or out of telemetry reporting
+     */
     public function requiresUserInput(): bool
     {
         return true;
     }
 
+    /**
+     * Telemetry consent form must always be displayed
+     */
     public function canSkipDisplay(): bool
     {
         return false;
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("Telemetry");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

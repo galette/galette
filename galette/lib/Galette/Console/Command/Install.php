@@ -314,5 +314,4 @@ class Install extends AbstractCommand
         $io->success('Galette installation is complete!');
         return Command::SUCCESS;
     }
-
 }

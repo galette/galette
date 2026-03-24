@@ -141,16 +141,25 @@ class CheckStep extends AbstractStep
         return StepResult::error($messages, $report, ['checks_passed' => false]);
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("Checks");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

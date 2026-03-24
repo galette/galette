@@ -39,6 +39,15 @@ class DatabaseInstallStep extends AbstractStep
     public const STEP_NAME = 'database_install';
     public const STEP_ORDER = 60;
 
+    /**
+     * Execute SQL scripts for installation or upgrade.
+     *
+     * Accepted data keys:
+     * - zdb (Db): existing database connection instance
+     * - scripts_path (string): custom path to SQL scripts (for plugins)
+     *
+     * @param array<string, mixed> $data Execution context data
+     */
     public function execute(array $data = []): StepResult
     {
         // Get database instance
@@ -91,16 +100,25 @@ class DatabaseInstallStep extends AbstractStep
         );
     }
 
+    /**
+     * Script execution report is shown in a modal; no dedicated page needed
+     */
     public function canSkipDisplay(): bool
     {
         return true; // Can skip, but report shown in modal
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title (differs between install and upgrade)
+     */
     public function getStepTitle(): string
     {
         if ($this->install->isInstall()) {
@@ -109,6 +127,9 @@ class DatabaseInstallStep extends AbstractStep
         return _T("Database upgrade");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

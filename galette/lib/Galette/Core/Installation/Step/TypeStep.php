@@ -53,26 +53,41 @@ class TypeStep extends AbstractStep
         );
     }
 
+    /**
+     * User must explicitly select between installation and upgrade mode
+     */
     public function requiresUserInput(): bool
     {
         return true;
     }
 
+    /**
+     * Type selection form must always be displayed
+     */
     public function canSkipDisplay(): bool
     {
         return false; // Must always show the form
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("Installation mode");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

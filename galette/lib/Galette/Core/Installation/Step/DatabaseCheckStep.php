@@ -39,17 +39,23 @@ class DatabaseCheckStep extends AbstractStep
     public const STEP_NAME = 'database_check';
     public const STEP_ORDER = 40;
 
+    /**
+     * Test database connectivity and verify required permissions (CREATE, INSERT, SELECT, UPDATE, DELETE, DROP, and ALTER for upgrades).
+     * Auto-advances on success; displays error page if connection or permissions fail.
+     *
+     * @param array<string, mixed> $data Execution context data
+     */
     public function execute(array $data = []): StepResult
     {
         // Test database connection first
         try {
-            $db_connected = $this->install->testDbConnexion();
+            $this->install->testDbConnexion();
         } catch (\Throwable $e) {
             return StepResult::error(
                 [
                     _T("Unable to connect to the database"),
                     $e->getMessage(),
-                    _T("Database can't be reached. Please go back to enter the connection parameters again.")
+                    _T("Database can't be reached. Please go back to enter the connection parameters again."),
                 ],
                 ['connection_error' => $e->getMessage()]
             );
@@ -135,16 +141,25 @@ class DatabaseCheckStep extends AbstractStep
         return true;
     }
 
+    /**
+     * Get step identifier
+     */
     public function getStepName(): string
     {
         return self::STEP_NAME;
     }
 
+    /**
+     * Get localized step title
+     */
     public function getStepTitle(): string
     {
         return _T("Database access and permissions");
     }
 
+    /**
+     * Get step execution order
+     */
     public function getOrder(): int
     {
         return self::STEP_ORDER;

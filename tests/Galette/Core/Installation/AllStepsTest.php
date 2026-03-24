@@ -46,6 +46,9 @@ class AllStepsTest extends TestCase
 {
     private Install $install;
 
+    /**
+     * Initialize a fresh Install instance shared by all tests in this class
+     */
     protected function setUp(): void
     {
         $this->install = new Install();
