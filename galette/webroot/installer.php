@@ -338,11 +338,7 @@ if ($stepResult !== null && !$stepResult->requiresDisplay()) {
         ?>
         <div class="ui success message">
             <i class="database icon"></i>
-            <?php
-            echo $install->isInstall()
-                ? _T("Database has been installed :)")
-                : _T("Database has been upgraded :)");
-            ?>
+            <?php echo $install->isInstall() ? _T("Database has been installed :)") : _T("Database has been upgraded :)"); ?>
         </div>
         
         <!-- Modal will show detailed report -->

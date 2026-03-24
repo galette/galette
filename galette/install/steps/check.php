@@ -163,14 +163,12 @@ if (!$perms_ok) {
     ?>
     <article id="files_perms" class="ui orange message">
         <p class="ui small header"><?php echo _T("Files permissions are not OK!"); ?></p>
-        <p>
-            <?php
-            if ($install->isInstall()) {
-                echo _T("To work as expected, Galette needs write permission on files listed above.");
-            } elseif ($install->isUpgrade()) {
-                echo _T("In order to be updated, Galette needs write permission on files listed above.");
-            }
-            ?>
+        <p><?php
+        if ($install->isInstall()) {
+            echo _T("To work as expected, Galette needs write permission on files listed above.");
+        } elseif ($install->isUpgrade()) {
+            echo _T("In order to be updated, Galette needs write permission on files listed above.");
+        } ?>
         </p>
         <p>
             <?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />

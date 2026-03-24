@@ -87,8 +87,7 @@ if (!$db_installed) {
             showRetry: false,
             i18n: $i18n,
             hiddenInputs: ['install_dbwrite_ok' => '1']
-        );
-        ?>
+        ); ?>
     </noscript>
     <?php
 }
