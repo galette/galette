@@ -203,8 +203,7 @@ if (isset($_POST['stepback_btn'])) {
             Analog::log($e->getMessage(), Analog::ERROR);
         }
     }
-    $install->atGaletteInitStep();
-} elseif (isset($_POST['install_prefs_ok'])) {
+    // Skip GaletteInitStep - initialization is now done in EndStep
     $install->atEndStep();
 }
 

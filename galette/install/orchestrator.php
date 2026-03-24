@@ -135,6 +135,7 @@ function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hi
 function shouldUseNewSystem(\Galette\Core\Install $install): bool
 {
     // All steps have been refactored to use the new system
+    // Note: GaletteInitStep has been merged into EndStep
     return $install->isCheckStep()
         || $install->isTypeStep()
         || $install->isDbStep()
@@ -144,7 +145,6 @@ function shouldUseNewSystem(\Galette\Core\Install $install): bool
         || $install->isDbUpgradeStep()
         || $install->isAdminStep()
         || $install->isTelemetryStep()
-        || $install->isGaletteInitStep()
         || $install->isEndStep();
 }
 
@@ -174,9 +174,8 @@ function getStepClassName(\Galette\Core\Install $install): ?string
         return \Galette\Core\Installation\Step\AdminStep::class;
     } elseif ($install->isTelemetryStep()) {
         return \Galette\Core\Installation\Step\TelemetryStep::class;
-    } elseif ($install->isGaletteInitStep()) {
-        return \Galette\Core\Installation\Step\InitializationStep::class;
     } elseif ($install->isEndStep()) {
+        // EndStep now includes initialization (formerly GaletteInitStep)
         return \Galette\Core\Installation\Step\EndStep::class;
     }
 
@@ -207,9 +206,8 @@ function getNextStepAction(\Galette\Core\Install $install): string
         return 'install_adminlogin';
     } elseif ($install->isTelemetryStep()) {
         return 'install_telemetry_ok';
-    } elseif ($install->isGaletteInitStep()) {
-        return 'install_prefs_ok';
     }
+    // EndStep is the last step - no next action needed
 
     return 'next_step';
 }

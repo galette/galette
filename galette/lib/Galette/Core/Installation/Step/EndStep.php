@@ -29,6 +29,9 @@ use Galette\Core\Installation\StepResult;
 /**
  * Installation end step
  *
+ * This step performs initialization (config file + objects) and displays
+ * the final result. It merges the former GaletteInitStep functionality.
+ *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class EndStep extends AbstractStep
@@ -38,13 +41,11 @@ class EndStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // This step always displays the success message and home button
-        $message = $this->install->isInstall()
-            ? _T("Galette has been successfully installed!")
-            : _T("Galette has been successfully updated!");
-
+        // This step performs initialization AND displays the result
+        // The actual initialization (writeConfFile, initObjects) is done in the view
+        // to maintain compatibility with the existing error handling and retry mechanism
         return StepResult::success(
-            [$message],
+            [],
             requiresDisplay: true
         );
     }
