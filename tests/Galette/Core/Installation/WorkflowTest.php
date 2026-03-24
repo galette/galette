@@ -27,7 +27,6 @@ use Galette\Core\Install;
 use Galette\Core\Installation\Workflow;
 use Galette\Core\Installation\Step\CheckStep;
 use Galette\Core\Installation\StepInterface;
-use Galette\Core\Installation\StepResult;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -118,16 +117,16 @@ class WorkflowTest extends TestCase
         // Cannot advance past the last step - there's no next step
         $canAdvance = $this->workflow->advance();
         $this->assertFalse($canAdvance);
-        
+
         // But we're now at the end (no next step, but we've started)
         // Actually, we need to be PAST the last step to be complete
         // With only 1 step, currentStepIndex=0, hasNext=false but we haven't advanced yet
         // So isComplete requires: !hasNext AND currentStepIndex > 0
-        
+
         // Add another step so we can advance
         $step2 = new CheckStep($this->install);
         $this->workflow->addStep($step2);
-        
+
         // Now we can advance
         $this->workflow->advance();
         $this->assertTrue($this->workflow->isComplete());
@@ -149,5 +148,3 @@ class WorkflowTest extends TestCase
         $this->assertFalse($result);
     }
 }
-
-

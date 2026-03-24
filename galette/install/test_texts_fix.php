@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 /**
  * Test script to validate Texts.php fix for container null issue
- * 
+ *
  * This script tests that Texts can be instantiated during installation
  * when the container is not available.
- * 
+ *
  * Usage:
  *   php galette/install/test_texts_fix.php
  */
@@ -51,25 +51,25 @@ try {
     // Simulate installer environment
     global $container;
     $container = null; // Explicitly set to null
-    
+
     // Create a mock Preferences (we need a DB connection)
     // For this test, we'll just test the instantiation logic
     echo "  - GALETTE_INSTALLER defined: " . (defined('GALETTE_INSTALLER') ? 'YES' : 'NO') . "\n";
     echo "  - GALETTE_INSTALLER value: " . (GALETTE_INSTALLER ? 'true' : 'false') . "\n";
     echo "  - \$container value: " . ($container === null ? 'NULL' : 'SET') . "\n";
-    
+
     // We can't actually instantiate Texts without a real DB,
     // but we can check the constructor logic with reflection
     $reflection = new ReflectionClass(Texts::class);
     $constructor = $reflection->getConstructor();
-    
+
     echo "  ✓ Texts class exists\n";
     echo "  ✓ Constructor exists\n";
-    
+
     // Check constructor parameters
     $params = $constructor->getParameters();
     echo "  ✓ Constructor has " . count($params) . " parameters\n";
-    
+
     if (count($params) >= 1) {
         echo "  ✓ Parameter 1: " . $params[0]->getName() . " (type: " . $params[0]->getType() . ")\n";
     }
@@ -77,26 +77,26 @@ try {
         $hasDefault = $params[1]->isDefaultValueAvailable();
         echo "  ✓ Parameter 2: " . $params[1]->getName() . " (optional: " . ($hasDefault ? 'YES' : 'NO') . ")\n";
     }
-    
+
     // Read the constructor code to verify our fix is present
     $filename = $reflection->getFileName();
     $startLine = $constructor->getStartLine();
     $endLine = $constructor->getEndLine();
-    
+
     $fileContent = file_get_contents($filename);
     $lines = explode("\n", $fileContent);
     $constructorCode = implode("\n", array_slice($lines, $startLine - 1, $endLine - $startLine + 1));
-    
+
     // Check for our fix patterns
     $hasInstallerCheck = strpos($constructorCode, 'GALETTE_INSTALLER') !== false;
     $hasContainerNullCheck = strpos($constructorCode, '$container !== null') !== false;
     $hasIsInstallerVar = strpos($constructorCode, '$isInstaller') !== false;
-    
+
     echo "\n  Code analysis:\n";
     echo "  - Contains GALETTE_INSTALLER check: " . ($hasInstallerCheck ? '✓ YES' : '✗ NO') . "\n";
     echo "  - Contains \$container !== null check: " . ($hasContainerNullCheck ? '✓ YES' : '✗ NO') . "\n";
     echo "  - Contains \$isInstaller variable: " . ($hasIsInstallerVar ? '✓ YES' : '✗ NO') . "\n";
-    
+
     if ($hasInstallerCheck && $hasContainerNullCheck && $hasIsInstallerVar) {
         echo "\n  ✅ FIX IS PRESENT in Texts::__construct()\n";
         echo "     The constructor now properly checks for installer mode\n";
@@ -113,9 +113,8 @@ try {
             echo "     Missing: \$isInstaller variable\n";
         }
     }
-    
+
     echo "\n  ✅ TEST 1 PASSED\n";
-    
 } catch (\Throwable $e) {
     echo "  ✗ TEST 1 FAILED: " . get_class($e) . ": " . $e->getMessage() . "\n";
     echo "     in " . $e->getFile() . " line " . $e->getLine() . "\n";
@@ -130,28 +129,27 @@ try {
     $isInstaller = defined('GALETTE_INSTALLER') && GALETTE_INSTALLER === true;
     $container = null;
     $routeparser = null;
-    
+
     echo "  - isInstaller: " . ($isInstaller ? 'true' : 'false') . "\n";
     echo "  - container: " . ($container === null ? 'null' : 'set') . "\n";
     echo "  - routeparser: " . ($routeparser === null ? 'null' : 'set') . "\n";
-    
+
     // Simulate the logic from our fix
     $shouldSkipContainer = $routeparser === null && !$isInstaller && $container !== null;
-    
+
     if (!$shouldSkipContainer) {
         echo "  ✓ Container access will be SKIPPED (as expected)\n";
         echo "     Logic: routeparser=null && !installer && container!=null\n";
-        echo "     Result: " . ($routeparser === null ? 'true' : 'false') . 
-             " && " . (!$isInstaller ? 'true' : 'false') . 
-             " && " . ($container !== null ? 'true' : 'false') . 
-             " = false\n";
+        echo "     Result: " . ($routeparser === null ? 'true' : 'false')
+             . " && " . (!$isInstaller ? 'true' : 'false')
+             . " && " . ($container !== null ? 'true' : 'false')
+             . " = false\n";
     } else {
         echo "  ✗ Container access would be ATTEMPTED (unexpected)\n";
         exit(1);
     }
-    
+
     echo "  ✅ TEST 2 PASSED\n";
-    
 } catch (\Throwable $e) {
     echo "  ✗ TEST 2 FAILED: " . get_class($e) . ": " . $e->getMessage() . "\n";
     exit(1);
@@ -173,4 +171,3 @@ echo "    the 'Galette initialization' step completes\n";
 echo "    without the 'Call to member function get() on null' error.\n\n";
 
 exit(0);
-

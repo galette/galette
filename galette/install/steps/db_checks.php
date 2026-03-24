@@ -65,7 +65,7 @@ if ($db_connected === true) {
 
         $error = false;
         $required_operations = ['create', 'insert', 'update', 'select', 'delete', 'drop'];
-        
+
         if ($install->isUpgrade()) {
             $required_operations[] = 'alter';
         }
@@ -114,7 +114,7 @@ if ($supported_db === false) {
     $success_messages = !isset($install_plugin)
         ? [_T("Connection to database successful"), _T("Permissions to database are OK.")]
         : [_T("Permissions to database are OK.")];
-    
+
     renderMessageBox('success', $success_messages);
 }
 
@@ -140,15 +140,15 @@ if ($conndb_ok && $supported_db === true) {
         <h2><?php echo _T("Permissions on the base"); ?></h2>
         <?php
     }
-    
+
     if (!$permsdb_ok) {
         $error_msg = $install->isInstall()
             ? _T("GALETTE hasn't got enough permissions on the database to continue the installation.")
             : _T("GALETTE hasn't got enough permissions on the database to continue the update.");
-        
+
         renderMessageBox('error', $error_msg);
     }
-    
+
     renderValidationList($result, $install);
 }
 
@@ -178,4 +178,3 @@ if (!isset($install_plugin)) {
         hiddenInputs: ($conndb_ok && $permsdb_ok && $supported_db) ? ['install_dbperms_ok' => '1'] : []
     );
 }
-

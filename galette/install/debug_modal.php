@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Debug script for DatabaseInstallStep modal issue
- * 
+ *
  * Add this at the top of installer.php to enable detailed debugging
  */
 
@@ -67,4 +69,3 @@ function inject_modal_debug_js(): void
     </script>
     <?php
 }
-

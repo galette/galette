@@ -112,6 +112,3 @@ echo "\nPour tester visuellement, accédez à :\n";
 echo "http://votre-domaine/galette/webroot/installer.php\n";
 
 exit(0);
-
-
-

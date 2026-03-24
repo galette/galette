@@ -170,7 +170,7 @@ if (!$perms_ok) {
             } elseif ($install->isUpgrade()) {
                 echo _T("In order to be updated, Galette needs write permission on files listed above.");
             }
-    ?>
+            ?>
         </p>
         <p>
             <?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />

@@ -92,7 +92,7 @@ function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hi
 
     <form id="auto-advance-form" method="post" action="installer.php" style="display: none;">
         <input type="hidden" name="<?php echo htmlspecialchars($nextStepAction); ?>" value="1" />
-        <?php foreach ($hiddenData as $key => $value): ?>
+        <?php foreach ($hiddenData as $key => $value) : ?>
             <input type="hidden" name="<?php echo htmlspecialchars($key); ?>" value="<?php echo htmlspecialchars((string)$value); ?>" />
         <?php endforeach; ?>
     </form>
@@ -112,7 +112,7 @@ function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hi
         </div>
         <form method="post" action="installer.php">
             <input type="hidden" name="<?php echo htmlspecialchars($nextStepAction); ?>" value="1" />
-            <?php foreach ($hiddenData as $key => $value): ?>
+            <?php foreach ($hiddenData as $key => $value) : ?>
                 <input type="hidden" name="<?php echo htmlspecialchars($key); ?>" value="<?php echo htmlspecialchars((string)$value); ?>" />
             <?php endforeach; ?>
             <button type="submit" class="ui primary button">

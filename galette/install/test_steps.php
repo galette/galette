@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 /**
  * Test script to validate Step classes instantiation
- * 
+ *
  * This script checks that all Step classes can be properly instantiated
  * and that their execute() methods are callable.
- * 
+ *
  * Usage:
  *   php galette/install/test_steps.php
  */
@@ -59,7 +59,7 @@ $allPassed = true;
 
 foreach ($stepClasses as $name => $className) {
     echo "Testing $name ($className)...\n";
-    
+
     try {
         // Test 1: Class exists
         if (!class_exists($className)) {
@@ -68,7 +68,7 @@ foreach ($stepClasses as $name => $className) {
             continue;
         }
         echo "  ✓ Class exists\n";
-        
+
         // Test 2: Can instantiate with Install parameter
         try {
             $step = new $className($install);
@@ -83,7 +83,7 @@ foreach ($stepClasses as $name => $className) {
             $allPassed = false;
             continue;
         }
-        
+
         // Test 3: execute() method exists
         if (!method_exists($step, 'execute')) {
             echo "  ✗ FAIL: execute() method not found\n";
@@ -91,7 +91,7 @@ foreach ($stepClasses as $name => $className) {
             continue;
         }
         echo "  ✓ execute() method exists\n";
-        
+
         // Test 4: execute() is callable
         if (!is_callable([$step, 'execute'])) {
             echo "  ✗ FAIL: execute() is not callable\n";
@@ -99,33 +99,33 @@ foreach ($stepClasses as $name => $className) {
             continue;
         }
         echo "  ✓ execute() is callable\n";
-        
+
         // Test 5: Check method signature
         $reflection = new ReflectionMethod($step, 'execute');
         $params = $reflection->getParameters();
-        
+
         if (count($params) !== 1) {
             echo "  ✗ FAIL: execute() should have exactly 1 parameter, found " . count($params) . "\n";
             $allPassed = false;
             continue;
         }
-        
+
         $param = $params[0];
         if ($param->getName() !== 'data') {
             echo "  ⚠ WARNING: Parameter name is '" . $param->getName() . "', expected 'data'\n";
         }
-        
+
         if (!$param->isDefaultValueAvailable() || $param->getDefaultValue() !== []) {
             echo "  ⚠ WARNING: Parameter 'data' should have default value []\n";
         }
-        
+
         echo "  ✓ execute() signature is correct\n";
-        
+
         // Test 6: Try calling execute() with empty array
         try {
             $result = $step->execute([]);
             echo "  ✓ execute([]) can be called\n";
-            
+
             // Test 7: Returns StepResult
             if (!($result instanceof \Galette\Core\Installation\StepResult)) {
                 echo "  ✗ FAIL: execute() does not return StepResult, got " . get_class($result) . "\n";
@@ -133,20 +133,18 @@ foreach ($stepClasses as $name => $className) {
                 continue;
             }
             echo "  ✓ Returns StepResult instance\n";
-            
         } catch (\Throwable $e) {
             echo "  ⚠ WARNING: execute([]) threw exception: " . get_class($e) . ": " . $e->getMessage() . "\n";
             echo "           → This may be normal if the step requires specific data or environment\n";
         }
-        
+
         echo "  ✅ ALL TESTS PASSED for $name\n";
-        
     } catch (\Throwable $e) {
         echo "  ✗ UNEXPECTED ERROR: " . get_class($e) . ": " . $e->getMessage() . "\n";
         echo "     in " . $e->getFile() . " line " . $e->getLine() . "\n";
         $allPassed = false;
     }
-    
+
     echo "\n";
 }
 
@@ -160,6 +158,3 @@ if ($allPassed) {
     echo "========================================\n";
     exit(1);
 }
-
-
-

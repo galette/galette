@@ -45,13 +45,13 @@ if (!$db_installed) {
     $msg = $install->isInstall()
         ? _T("Database has not been installed!")
         : _T("Database has not been upgraded!");
-    
+
     renderMessageBox('error', $msg);
-    
+
     // Show detailed report
     echo '<h3>' . _T("Installation report") . '</h3>';
     renderValidationList($report, $install);
-    
+
     // Navigation
     renderFormNavigation(
         canAdvance: false,
@@ -64,10 +64,10 @@ if (!$db_installed) {
     $msg = $install->isInstall()
         ? _T("Database has been installed :)")
         : _T("Database has been upgraded :)");
-    
+
     // Render the modal with the report
     renderDbReportModal($report, $install, $i18n, true);
-    
+
     // Hidden form to auto-submit after modal closes
     ?>
     <form action="installer.php" method="POST" id="install-continue-form">
@@ -92,4 +92,3 @@ if (!$db_installed) {
     </noscript>
     <?php
 }
-

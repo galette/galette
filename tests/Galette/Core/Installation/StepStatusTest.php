@@ -99,4 +99,3 @@ class StepStatusTest extends TestCase
         $this->assertEquals('info circle', StepStatus::INFO->getIconName());
     }
 }
-

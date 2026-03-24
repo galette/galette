@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Debug DatabaseInstallStep modal issue
  * Add at the beginning of installer.php after bootstrap
@@ -9,7 +11,8 @@
 $debug_log = GALETTE_ROOT . 'data/logs/modal_debug.log';
 
 // Helper to log
-function modal_debug_log($message) {
+function modal_debug_log($message): void
+{
     global $debug_log;
     $timestamp = date('Y-m-d H:i:s');
     file_put_contents($debug_log, "[{$timestamp}] {$message}\n", FILE_APPEND);
@@ -29,16 +32,16 @@ modal_debug_log("Should use new system: " . (shouldUseNewSystem($install) ? 'YES
 if (shouldUseNewSystem($install)) {
     $stepClassName = getStepClassName($install);
     modal_debug_log("Step class name: " . ($stepClassName ?? 'NULL'));
-    
+
     if ($stepClassName !== null && isset($stepResult)) {
         modal_debug_log("StepResult exists: YES");
         modal_debug_log("StepResult requiresDisplay: " . ($stepResult->requiresDisplay() ? 'true' : 'false'));
-        
+
         if (!$stepResult->requiresDisplay()) {
             $stepData = $stepResult->getData();
             modal_debug_log("StepData keys: " . implode(', ', array_keys($stepData)));
             modal_debug_log("Has show_report_modal flag: " . (isset($stepData['show_report_modal']) ? 'YES' : 'NO'));
-            
+
             if (isset($stepData['show_report_modal'])) {
                 modal_debug_log("show_report_modal value: " . ($stepData['show_report_modal'] ? 'true' : 'false'));
             }
@@ -68,4 +71,3 @@ if ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
     </script>
     <?php
 }
-

@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 /**
  * Comprehensive test script for all Installation Steps
- * 
+ *
  * Tests:
  * - All Step classes instantiation
  * - execute() method availability
@@ -31,7 +31,7 @@ declare(strict_types=1);
  * - requiresDisplay logic
  * - Ordering
  * - Metadata (name, title)
- * 
+ *
  * Usage:
  *   php galette/install/test_all_steps.php
  */
@@ -90,7 +90,7 @@ test_section("COMPREHENSIVE STEP TESTS");
 foreach ($stepClasses as $className) {
     $shortName = substr($className, strrpos($className, '\\') + 1);
     echo "\nTesting {$shortName} ({$className})...\n";
-    
+
     // Test 1: Class exists
     $total_tests++;
     if (class_exists($className)) {
@@ -101,7 +101,7 @@ foreach ($stepClasses as $className) {
         $failed_tests++;
         continue; // Skip remaining tests for this class
     }
-    
+
     // Test 2: Can instantiate with Install parameter
     $total_tests++;
     try {
@@ -117,7 +117,7 @@ foreach ($stepClasses as $className) {
         $failed_tests++;
         continue;
     }
-    
+
     // Test 3: execute() method exists
     $total_tests++;
     if (method_exists($step, 'execute')) {
@@ -128,7 +128,7 @@ foreach ($stepClasses as $className) {
         $failed_tests++;
         continue;
     }
-    
+
     // Test 4: execute() is callable
     $total_tests++;
     if (is_callable([$step, 'execute'])) {
@@ -138,7 +138,7 @@ foreach ($stepClasses as $className) {
         test_log("execute() is NOT callable", false);
         $failed_tests++;
     }
-    
+
     // Test 5: execute() signature is correct (accepts array)
     $total_tests++;
     try {
@@ -155,7 +155,7 @@ foreach ($stepClasses as $className) {
         test_log("Signature check error: " . $e->getMessage(), false);
         $failed_tests++;
     }
-    
+
     // Test 6: execute() returns StepResult
     $total_tests++;
     try {
@@ -172,14 +172,14 @@ foreach ($stepClasses as $className) {
         test_log("  → This may be normal if the step requires specific data or environment");
         // Don't count as failure - it's expected for some steps
     }
-    
+
     // Test 7: Metadata methods
     $total_tests++;
     try {
         $name = $step->getStepName();
         $title = $step->getStepTitle();
         $order = $step->getOrder();
-        
+
         if (is_string($name) && !empty($name) && is_string($title) && !empty($title) && is_int($order)) {
             test_log("Metadata correct (name={$name}, order={$order})");
             $passed_tests++;
@@ -191,7 +191,7 @@ foreach ($stepClasses as $className) {
         test_log("Metadata error: " . $e->getMessage(), false);
         $failed_tests++;
     }
-    
+
     // Test 8: canSkipDisplay() method
     $total_tests++;
     if (method_exists($step, 'canSkipDisplay')) {
@@ -207,7 +207,7 @@ foreach ($stepClasses as $className) {
         test_log("canSkipDisplay() method not found", false);
         $failed_tests++;
     }
-    
+
     // Test 9: Order value is reasonable
     $total_tests++;
     try {
@@ -223,7 +223,7 @@ foreach ($stepClasses as $className) {
         test_log("Order check error: " . $e->getMessage(), false);
         $failed_tests++;
     }
-    
+
     echo "  " . str_repeat('-', 56) . "\n";
     echo "  Tests for {$shortName}: " . ($failed_tests === 0 ? "✅ ALL PASSED" : "⚠ Some failed") . "\n";
 }
@@ -251,4 +251,3 @@ if ($failed_tests === 0) {
     echo str_repeat('=', 60) . "\n";
     exit(1);
 }
-

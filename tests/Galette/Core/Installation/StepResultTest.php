@@ -126,4 +126,3 @@ class StepResultTest extends TestCase
         $this->assertTrue($result->getStatus()->isSuccess());
     }
 }
-
