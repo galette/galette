@@ -281,12 +281,6 @@ function renderStepProgress(\Galette\Core\Install $install, \Galette\Core\I18n $
         'method' => 'isTelemetryStep'
     ];
     $steps[] = [
-        'constant' => \Galette\Core\Install::STEP_GALETTE_INIT,
-        'title' => _T("Galette initialization"),
-        'icon' => 'cogs',
-        'method' => 'isGaletteInitStep'
-    ];
-    $steps[] = [
         'constant' => \Galette\Core\Install::STEP_END,
         'title' => _T("End!"),
         'icon' => 'flag checkered',

@@ -392,12 +392,6 @@ if (!$install->isUpgrade()) {
                                         <div class="title"><?php echo _T("Telemetry"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php echo $install->isGaletteInitStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT) ? ' disabled' : '') ?>">
-                                    <i class="cogs icon<?php echo $install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Galette initialization"); ?></div>
-                                    </div>
-                                </div>
                                 <div class="step<?php echo $install->isEndStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_END) ? ' disabled' : ''); ?>">
                                     <i class="flag checkered icon<?php echo $install->isStepPassed(GaletteInstall::STEP_END) ? ' green' : ''; ?>"></i>
                                     <div class="content">
@@ -485,8 +479,6 @@ if ($stepResult !== null && !$stepResult->requiresDisplay()) {
     include_once __DIR__ . '/../install/steps/admin.php';
 } elseif ($install->isTelemetryStep()) {
     include_once __DIR__ . '/../install/steps/telemetry.php';
-} elseif ($install->isGaletteInitStep()) {
-    include_once __DIR__ . '/../install/steps/galette.php';
 } elseif ($install->isEndStep()) {
     include_once __DIR__ . '/../install/steps/end.php';
 }

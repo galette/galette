@@ -54,8 +54,7 @@ class Install
     public const STEP_DB_INSTALL = 6;
     public const STEP_ADMIN = 7;
     public const STEP_TELEMETRY = 8;
-    public const STEP_GALETTE_INIT = 9;
-    public const STEP_END = 10;
+    public const STEP_END = 9;
 
     public const INSTALL = 'i';
     public const UPDATE = 'u';
@@ -145,10 +144,6 @@ class Install
             case self::STEP_TELEMETRY:
                 $step_title = _T("Telemetry");
                 $step_documentation = 'installation/galette.html#telemetry';
-                break;
-            case self::STEP_GALETTE_INIT:
-                $step_title = _T("Galette initialization");
-                $step_documentation = 'installation/galette.html#initialize';
                 break;
             case self::STEP_END:
                 $step_title = _T("End!");
@@ -818,21 +813,6 @@ class Install
         return $this->step === self::STEP_TELEMETRY;
     }
 
-    /**
-     * Set step to Galette initialization
-     */
-    public function atGaletteInitStep(): void
-    {
-        $this->step = self::STEP_GALETTE_INIT;
-    }
-
-    /**
-     * Are we at Galette initialization step?
-     */
-    public function isGaletteInitStep(): bool
-    {
-        return $this->step === self::STEP_GALETTE_INIT;
-    }
 
     /**
      * Load existing config
