@@ -40,7 +40,7 @@ class SubscriptionVoter implements VoterInterface
     ];
 
     /**
-     * @inheritDoc
+     * Proceed vote
      */
     public function vote(Login $login, string $permission, mixed $subject = null): int
     {

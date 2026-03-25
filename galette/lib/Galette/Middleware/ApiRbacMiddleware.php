@@ -33,6 +33,8 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Routing\RouteContext;
 use Throwable;
 
+use function Safe\preg_match;
+
 /**
  * API RBAC Middleware
  *
@@ -74,19 +76,18 @@ class ApiRbacMiddleware
             throw new HttpUnauthorizedException($request, $e->getMessage());
         }
 
-        // 3. Load user into Login session-like object
-        if (!$this->login->load($userId)) {
-            throw new HttpUnauthorizedException($request, _T("User not found"));
-        }
+        // 3. Store user ID on the request for downstream use
+        // TODO: Implement proper user loading from JWT in Étape 11
+        $request = $request->withAttribute('rbac_user_id', $userId);
 
         // 4. Check RBAC permission for route
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-        
+
         // We expect the permission to be defined in the route arguments or name
         // Example: $app->get('/api/members', ...)->setArgument('permission', 'member:read');
         $permission = $route->getArgument('permission');
-        
+
         // Fallback: use route name as permission if not explicitly set
         if ($permission === null) {
             $permission = str_replace('.', ':', (string)$route->getName());
@@ -113,15 +114,15 @@ class ApiRbacMiddleware
     private function validateToken(string $token): int
     {
         // TODO: Implement actual JWT validation using firebase/php-jwt
-        // For now, this is a placeholder. 
+        // For now, this is a placeholder.
         // In a real implementation:
         // $decoded = JWT::decode($token, new Key($secret, 'HS256'));
         // return (int)$decoded->sub;
-        
+
         if ($token === 'debug-admin-token') {
             return 1; // Assuming ID 1 is the admin for testing
         }
-        
+
         throw new \RuntimeException(_T("Invalid Token (Placeholder validation)"));
     }
 }

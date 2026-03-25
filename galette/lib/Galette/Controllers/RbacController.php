@@ -25,6 +25,7 @@ namespace Galette\Controllers;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Laminas\Db\Sql\Insert;
 
 /**
@@ -37,28 +38,28 @@ class RbacController extends AbstractController
     /**
      * Display RBAC matrix
      */
-    public function index(Response $response): Response
+    public function index(Response $response): ResponseInterface
     {
         $prefix = defined('PREFIX_DB') ? PREFIX_DB : 'galette_';
-        
+
         // 1. Fetch all permissions
         $perms = $this->zdb->db->query(
             "SELECT * FROM {$prefix}permissions ORDER BY nom_perm",
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         )->toArray();
-        
+
         // 2. Fetch all roles
         $roles = $this->zdb->db->query(
             "SELECT * FROM {$prefix}roles ORDER BY nom_role",
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         )->toArray();
-        
+
         // 3. Fetch role_permissions mappings
         $mapping = $this->zdb->db->query(
             "SELECT id_role, id_perm FROM {$prefix}role_permissions",
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         )->toArray();
-        
+
         $role_perms = [];
         foreach ($mapping as $m) {
             $role_perms[(int)$m['id_role']][] = (int)$m['id_perm'];
@@ -68,7 +69,7 @@ class RbacController extends AbstractController
         foreach ($perms as $p) {
             $domain = 'other';
             if (str_contains($p['nom_perm'], ':')) {
-                [$domain, $action] = explode(':', $p['nom_perm'], 2);
+                $domain = explode(':', $p['nom_perm'], 2)[0];
             }
             $grouped_perms[$domain][] = $p;
         }

@@ -46,14 +46,14 @@ class GroupVoter implements VoterInterface
     }
 
     /**
-     * @inheritDoc
+     *
      */
     public function vote(Login $login, string $permission, mixed $subject = null): int
     {
         // Only applies to member and group domains
         if (
-            !str_starts_with($permission, 'member:') &&
-            !str_starts_with($permission, 'group:')
+            !str_starts_with($permission, 'member:')
+            && !str_starts_with($permission, 'group:')
         ) {
             return self::ACCESS_ABSTAIN;
         }
@@ -82,7 +82,7 @@ class GroupVoter implements VoterInterface
 
             // If the subject is a group, check if it is managed
             if ($subject instanceof \Galette\Entity\Group) {
-                if (in_array($subject->id, $managedGroups)) {
+                if (in_array($subject->getId(), $managedGroups)) {
                     return self::ACCESS_GRANTED;
                 }
             }

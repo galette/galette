@@ -42,8 +42,6 @@ interface VoterInterface
      * @param Login  $login      Login instance
      * @param string $permission Permission name
      * @param mixed  $subject    Subject to check
-     *
-     * @return int
      */
     public function vote(Login $login, string $permission, mixed $subject = null): int;
 }

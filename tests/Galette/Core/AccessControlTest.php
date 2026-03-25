@@ -28,6 +28,8 @@ use Galette\Core\Voters\SubscriptionVoter;
 use Galette\Core\Voters\GroupVoter;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\file_get_contents;
+
 /**
  * AccessControl tests class
  *
@@ -39,7 +41,7 @@ class AccessControlTest extends GaletteTestCase
     private AccessControl $accessControl;
 
     /**
-     * @inheritDoc
+     * Set up tests
      */
     public function setUp(): void
     {
@@ -49,17 +51,18 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
-     * @inheritDoc
+     * tearDown tests
      */
     public function tearDown(): void
     {
+        //FIXME: should be useless
         $this->cleanMembers();
         $this->zdb->db->query("DELETE FROM galette_groups", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query("DELETE FROM galette_adherent_roles", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query("DELETE FROM galette_role_permissions", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query("DELETE FROM galette_roles", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query("DELETE FROM galette_permissions", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        
+
         try {
             parent::tearDown();
         } catch (\Throwable $e) {
@@ -75,8 +78,9 @@ class AccessControlTest extends GaletteTestCase
      */
     private function setupRbacTables(): void
     {
+        //FIXME/ not a good idea to put that in a test. Must be part of installed database
         $sqlPath = GALETTE_ROOT . '../patches/2026-03-22_rbac_migration.sql';
-        
+
         $sql = file_get_contents($sqlPath);
         $statements = explode(';', $sql);
         foreach ($statements as $statement) {
@@ -132,21 +136,21 @@ class AccessControlTest extends GaletteTestCase
         // 1. Create a role and a permission
         $this->zdb->db->query("INSERT INTO galette_roles (nom_role) VALUES ('TestRole')", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $roleId = (int)$this->zdb->db->getDriver()->getLastGeneratedValue();
-        
+
         $this->zdb->db->query("INSERT INTO galette_permissions (nom_perm, description_perm) VALUES ('test:perm', 'Test')", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $permId = (int)$this->zdb->db->getDriver()->getLastGeneratedValue();
-        
+
         $this->zdb->db->query("INSERT INTO galette_role_permissions (id_role, id_perm) VALUES ($roleId, $permId)", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        
+
         // 2. Assign role to user
         $this->logSuperAdmin();
         $adh = $this->getMemberOne();
         $adh->check(['activite_adh' => true], [], []);
         $adh->store();
-        
+
         $this->zdb->db->query("INSERT INTO galette_adherent_roles (id_adh, id_role) VALUES ({$adh->id}, $roleId)", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->login->logOut();
-        
+
         // 3. Login as user and check
         $this->assertTrue($this->login->login($adh->login, 'J^B-()f'));
         $this->assertTrue($this->accessControl->can('test:perm', null, $this->login));
@@ -158,7 +162,7 @@ class AccessControlTest extends GaletteTestCase
     public function testSubscriptionVoter(): void
     {
         $this->accessControl->addVoter(new SubscriptionVoter());
-        
+
         $this->logSuperAdmin();
         $adh = $this->getMemberOne();
         $adh->check(['activite_adh' => true], [], []);
@@ -166,7 +170,7 @@ class AccessControlTest extends GaletteTestCase
         // Force not up to date
         $this->zdb->db->query("UPDATE galette_adherents SET date_echeance = '2000-01-01' WHERE id_adh = {$adh->id}", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->login->logOut();
-        
+
         $this->assertTrue($this->login->login($adh->login, 'J^B-()f'));
         // 'member:read' is restricted in SubscriptionVoter
         $this->assertFalse($this->accessControl->can('member:read', null, $this->login));
@@ -178,27 +182,27 @@ class AccessControlTest extends GaletteTestCase
     public function testGroupVoter(): void
     {
         $this->accessControl->addVoter(new GroupVoter($this->accessControl));
-        
+
         $this->logSuperAdmin();
         // 1. Create a group
         $now = date('Y-m-d H:i:s');
         $this->zdb->db->query("INSERT INTO galette_groups (group_name, creation_date) VALUES ('TestGroup', '$now')", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $groupId = (int)$this->zdb->db->getDriver()->getLastGeneratedValue();
-        
+
         // 2. Create a manager and a member with unique emails to avoid validation errors
         $adh1 = $this->dataAdherentOne();
         $adh1['login_adh'] = 'manager.' . $this->seed . '.' . uniqid();
         $adh1['email_adh'] = 'manager.' . $this->seed . '.' . uniqid() . '@example.com';
         $manager = $this->createMember($adh1);
-        
+
         $adh2 = $this->dataAdherentTwo();
         $adh2['login_adh'] = 'member.' . $this->seed . '.' . uniqid();
         $adh2['email_adh'] = 'member.' . $this->seed . '.' . uniqid() . '@example.com';
         $member = $this->createMember($adh2);
-        
+
         // 3. Make member part of group
         $this->zdb->db->query("INSERT INTO galette_groups_members (id_group, id_adh) VALUES ($groupId, {$member->id})", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        
+
         // 4. Make manager... manager of group
         $this->zdb->db->query("INSERT INTO galette_groups_managers (id_group, id_adh) VALUES ($groupId, {$manager->id})", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
 
@@ -208,7 +212,7 @@ class AccessControlTest extends GaletteTestCase
         $this->zdb->db->query("INSERT INTO galette_adherent_roles (id_adh, id_role) VALUES ({$manager->id}, $roleId)", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
 
         $this->login->logOut();
-        
+
         // 6. Login as manager and check access to member
         $this->assertTrue($this->login->login($manager->login, 'J^B-()f'));
         $this->assertTrue($this->accessControl->can('member:read', $member, $this->login));

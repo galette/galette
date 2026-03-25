@@ -556,8 +556,8 @@ class AuthController extends AbstractController
 
         if ($this->login->isLogged()) {
             $userId = (int)$this->login->id;
-            $scopes = ($this->login->isSuperAdmin()) 
-                ? ['*:*'] 
+            $scopes = ($this->login->isSuperAdmin())
+                ? ['*:*']
                 : $this->accessControl->getUserPermissions($userId);
 
             return $this->withJson($response, [

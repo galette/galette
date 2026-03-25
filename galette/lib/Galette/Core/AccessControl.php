@@ -86,7 +86,7 @@ class AccessControl
 
         // Support for wildcards (domain:*)
         if (str_contains($permission, ':')) {
-            [$domain, $action] = explode(':', $permission, 2);
+            $domain = explode(':', $permission, 2)[0];
             if ($this->hasPermissionInRoles($user->id, $domain . ':*')) {
                 return true;
             }
@@ -117,10 +117,10 @@ class AccessControl
         try {
             $select = $this->zdb->select('adherent_roles', 'ar');
             $select->join(
-                    ['rp' => PREFIX_DB . 'role_permissions'],
-                    'ar.id_role = rp.id_role',
-                    []
-                )
+                ['rp' => PREFIX_DB . 'role_permissions'],
+                'ar.id_role = rp.id_role',
+                []
+            )
                 ->join(
                     ['p' => PREFIX_DB . 'permissions'],
                     'rp.id_perm = p.id_perm',
@@ -190,7 +190,7 @@ class AccessControl
     {
         try {
             $prefix = PREFIX_DB;
-            $select = $this->zdb->select(['ar' => $prefix . 'adherent_roles']);
+            $select = $this->zdb->select('adherent_roles', 'ar');
             $select->join(
                 ['rp' => $prefix . 'role_permissions'],
                 'ar.id_role = rp.id_role',
