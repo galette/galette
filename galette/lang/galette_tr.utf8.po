@@ -15,13 +15,14 @@
 # BlokEvren <kukesen17@gmail.com>, 2025.
 # 19atlas <o.ustuncelik@gmail.com>, 2026.
 # Kehribar <103407696+dpentx@users.noreply.github.com>, 2026.
+# cqmaa <omeracamoglu@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2026-02-06 16:01+0000\n"
-"Last-Translator: Kehribar <103407696+dpentx@users.noreply.github.com>\n"
+"PO-Revision-Date: 2026-03-27 08:12+0000\n"
+"Last-Translator: cqmaa <omeracamoglu@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "#%id no'lu ödeme yüklenemedi!"
@@ -394,10 +395,8 @@ msgstr "Status türü eklenemedi :("
 msgid "Status #%id has not been updated"
 msgstr "Status #%id güncellenemedi"
 
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
-msgstr "%type türü başarıyla eklendi!"
+msgstr "Durum başarıyla eklendi!"
 
 #, fuzzy
 #| msgid "%type #%id has been successfully updated!"
@@ -430,10 +429,8 @@ msgstr ""
 msgid "List of transactions"
 msgstr ""
 
-#, fuzzy
-#| msgid "Edit contribution type"
 msgid "- Unknown contribution type!"
-msgstr "Katılım türünü güncelle"
+msgstr "Bilinmeyen Katkı türü!"
 
 msgid "No contribution was selected, please check at least one."
 msgstr "Hiçbir katkı seçilmedi, lütfen en az birini seçiniz."
@@ -449,17 +446,17 @@ msgstr "Katılım başarıyla kaydedildi"
 
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr "%1$s %2$s kaldır"
+msgstr "%1$s %2$s 'ı kaldır"
 
 msgid "contributions"
-msgstr "katılımlar"
+msgstr "Katkılar"
 
 msgid "transactions"
 msgstr "işlemler"
 
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr "%1$s #%2$s kaldır"
+msgstr "%1$s #%2$s 'ı kaldır"
 
 msgid "contribution"
 msgstr "katılım"
