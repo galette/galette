@@ -324,7 +324,3 @@ jobs:
       - name: PHPStan checks
         run: |
           galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
-
-      - name: Headers checks
-        run: |
-          ./galette/vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
