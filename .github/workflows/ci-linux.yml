@@ -196,7 +196,7 @@ jobs:
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         env:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
