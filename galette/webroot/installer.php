@@ -171,7 +171,7 @@ if (isset($_POST['stepback_btn'])) {
         if (empty($_POST['install_dbhost'])) {
             $error_detected[] = _T("No host");
         }
-        if (empty($_POST['install_dbport'])) {
+        if (!$install->isUpgrade() && empty($_POST['install_dbport'])) {
             $error_detected[] = _T("No port");
         }
         if (empty($_POST['install_dbuser'])) {
@@ -191,13 +191,13 @@ if (isset($_POST['stepback_btn'])) {
         if (count($error_detected) == 0) {
             $install->setDsn(
                 $_POST['install_dbhost'],
-                $_POST['install_dbport'],
+                $install->isUpgrade() ? $install->getDbPort() : $_POST['install_dbport'],
                 $_POST['install_dbname'],
                 $_POST['install_dbuser'],
                 $_POST['install_dbpass']
             );
             $install->setTablesPrefix(
-                $_POST['install_dbprefix']
+                $install->isUpgrade() ? $install->getTablesPrefix() : $_POST['install_dbprefix']
             );
         }
     }

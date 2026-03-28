@@ -88,22 +88,31 @@ if ($install->configurationFileExists() && $install->isUpgrade()) {
             <div id="install_dbconfig">
 <?php
 }
+if (!$install->isUpgrade()) {
 ?>
-        <div class="inline required field">
-            <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
-            <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen"<?php echo $install->isUpgrade() ? ' disabled="disabled"' : ''; ?>>
-                <option value="mysql"<?php echo $install->getDbType() === GaletteDb::MYSQL ? ' selected="selected"' : ''; ?>>Mysql</option>
-                <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
-            </select>
-        </div>
+
+            <div class="inline required field">
+                <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
+                <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
+                    <option value="mysql"<?php echo $install->getDbType() === GaletteDb::MYSQL ? ' selected="selected"' : ''; ?>>Mysql</option>
+                    <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
+                </select>
+            </div>
+<?php
+}
+?>
             <div class="inline required field">
                 <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo htmlspecialchars($_POST['install_dbhost'] ?? $install->getDbHost() ?? $install->isUpgrade() ? '' : 'localhost', ENT_QUOTES, 'UTF-8'); ?>" placeholder="localhost" required/>
+                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo htmlspecialchars((($_POST['install_dbhost'] ?? '') || !$install->isUpgrade()) ? $install->getDbHost() : 'localhost', ENT_QUOTES, 'UTF-8'); ?>" placeholder="localhost" required/>
             </div>
+<?php if (!$install->isUpgrade()) { ?>
             <div class="inline required field">
                 <label for="install_dbport"><?php echo _T("Port:"); ?></label>
                 <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (int)($_POST['install_dbport'] ?? $install->getDbPort() ?? $install->isUpgrade() ? '' : $default_dbport); ?>" placeholder="<?php echo $default_dbport; ?>" required/>
             </div>
+<?php
+}
+?>
             <div class="inline required field">
                 <label for="install_dbuser"><?php echo _T("User:"); ?></label>
                 <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo htmlspecialchars($_POST['install_dbuser'] ?? $install->getDbUser() ?? '', ENT_QUOTES, 'UTF-8'); ?>" required/>
@@ -116,10 +125,14 @@ if ($install->configurationFileExists() && $install->isUpgrade()) {
                 <label for="install_dbname"><?php echo _T("Database:"); ?></label>
                 <input type="text" name="install_dbname" id="install_dbname" value="<?php echo htmlspecialchars($_POST['install_dbname'] ?? $install->getDbName() ?? '', ENT_QUOTES, 'UTF-8'); ?>" required/>
             </div>
+<?php if (!$install->isUpgrade()) { ?>
             <div class="inline required field">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required<?php echo $install->isUpgrade() ? ' disabled="disabled"' : ''; ?>/>
+                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
             </div>
+<?php
+}
+?>
         </div>
         </div>
         <div class="ui section divider"></div>

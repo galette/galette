@@ -857,9 +857,13 @@ class Install
                 $this->setDbType($existing['db_type'], $error_detected);
             }
 
-            if ($existing['prefix'] !== null) {
+            if ($existing['db_port'] !== null) {
+                $this->db_port = $existing['db_port'];
+            }
+
+            if ($existing['db_prefix'] !== null) {
                 $this->setTablesPrefix(
-                    $existing['prefix']
+                    $existing['db_prefix']
                 );
             }
 
@@ -895,11 +899,9 @@ class Install
         if ($this->configurationFileExists()) {
             $existing = $this->loadExistingConfigFile([], true);
             return $existing['db_host'] == $values['install_dbhost']
-                && $existing['db_port'] == $values['install_dbport']
                 && $existing['db_name'] == $values['install_dbname']
                 && $existing['db_user'] == $values['install_dbuser']
-                && $existing['db_pass'] == $values['install_dbpass']
-                && $existing['db_prefix'] == $values['install_dbprefix'];
+                && $existing['db_pass'] == $values['install_dbpass'];
         } else {
             $error_detected[] = _T("Configuration file not found!");
         }
@@ -924,7 +926,7 @@ class Install
             'db_user'   => null,
             'db_pass'   => null,
             'db_name'   => null,
-            'prefix'    => null
+            'db_prefix' => null
         ];
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
@@ -999,7 +1001,7 @@ class Install
                         $matches
                     );
                     if (isset($matches[1])) {
-                        $existing['prefix'] = $matches[1];
+                        $existing['db_prefix'] = $matches[1];
                     }
                 }
 
@@ -1048,8 +1050,8 @@ class Install
             && $existing['pwd_db'] == $this->db_pass
             && isset($existing['db_name'])
             && $existing['db_name'] == $this->db_name
-            && isset($existing['prefix'])
-            && $existing['prefix'] == $this->db_prefix
+            && isset($existing['db_prefix'])
+            && $existing['db_prefix'] == $this->db_prefix
         ) {
             Analog::log(
                 'Config file is already up-to-date, nothing to do.',
