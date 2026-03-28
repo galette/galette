@@ -59,3 +59,8 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/Core/Access
 - [x] API Middleware & JWT groundwork
 - [x] Admin Matrix UI (grouped)
 - [ ] Refactoring existing core logic to use `AccessControl::can()`
+
+## Review comments
+
+- Chaque role devrait pouvoir hériter d'un autre rôle. Un Adhérent et un Adhérent à jour. Un Admin, un Trésorier ou un Secrétaire sont des Adhérents.
+- Le rôle superadmin est hardcodé. Pourquoi pas, mais il est certaines choses qui ne doivent pas être accessibles (par exemple afficher sa propre fiche adhérent qui n'existe pas)

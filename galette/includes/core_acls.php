@@ -26,6 +26,7 @@ declare(strict_types=1);
 $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',
+    '/rbac(.+)?/i'                      => 'superadmin',
     'unimpersonate'                     => 'member',
     '/(.+)?admin(.+)?/i'                => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'admin',

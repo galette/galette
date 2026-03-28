@@ -23,10 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Db\Sql\Insert;
+use Throwable;
 
 /**
  * RBAC administration controller
@@ -40,25 +42,26 @@ class RbacController extends AbstractController
      */
     public function index(Response $response): ResponseInterface
     {
-        $prefix = defined('PREFIX_DB') ? PREFIX_DB : 'galette_';
-
         // 1. Fetch all permissions
-        $perms = $this->zdb->db->query(
-            "SELECT * FROM {$prefix}permissions ORDER BY nom_perm",
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        )->toArray();
+        $select = $this->zdb->select(
+            'permissions'
+        );
+        $select->order('nom_perm');
+        $perms = $this->zdb->execute($select)->toArray();
 
         // 2. Fetch all roles
-        $roles = $this->zdb->db->query(
-            "SELECT * FROM {$prefix}roles ORDER BY nom_role",
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        )->toArray();
+        $select = $this->zdb->select(
+            'roles'
+        );
+        $select->order('id_role');
+        $roles = $this->zdb->execute($select)->toArray();
 
         // 3. Fetch role_permissions mappings
-        $mapping = $this->zdb->db->query(
-            "SELECT id_role, id_perm FROM {$prefix}role_permissions",
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        )->toArray();
+        $select = $this->zdb->select(
+            'role_permissions'
+        );
+        $select->columns(['id_role', 'id_perm']);
+        $mapping = $this->zdb->execute($select)->toArray();
 
         $role_perms = [];
         foreach ($mapping as $m) {
@@ -94,19 +97,17 @@ class RbacController extends AbstractController
         $post = $request->getParsedBody();
         $matrix = $post['matrix'] ?? [];
 
-        $prefix = defined('PREFIX_DB') ? PREFIX_DB : 'galette_';
-
         $this->zdb->beginTransaction();
         try {
-            $this->zdb->db->query(
-                "DELETE FROM {$prefix}role_permissions",
-                \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-            );
+            // TODO: check for rights validity. For example, a Group manager cannot have group:assign if he do not have member:list. Either make it implicit (not a good idea IMHO), or just add and validate dependencies between rights (usine à gaz powered :/)
+            $delete = $this->zdb->delete('role_permissions');
+            $this->zdb->execute($delete);
 
             foreach ($matrix as $roleId => $perms) {
                 foreach ($perms as $permId => $val) {
                     if ($val === '1') {
-                        $insert = new Insert($prefix . 'role_permissions');
+                        // TODO: use prepared statement
+                        $insert = $this->zdb->insert('role_permissions');
                         $insert->values([
                             'id_role' => (int)$roleId,
                             'id_perm' => (int)$permId
@@ -117,9 +118,9 @@ class RbacController extends AbstractController
             }
             $this->zdb->commit();
             $success = [_T('Permissions updated successfully.')];
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->zdb->rollback();
-            \Analog\Analog::log('Failed to save RBAC matrix: ' . $e->getMessage(), \Analog\Analog::ERROR);
+            Analog::log('Failed to save RBAC matrix: ' . $e->getMessage(), Analog::ERROR);
             $error = [_T('Failed to update permissions.')];
         }
 

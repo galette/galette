@@ -1,9 +1,17 @@
+DROP TABLE IF EXISTS galette_role_permissions;
+DROP TABLE IF EXISTS galette_adherent_roles;
+DROP TABLE IF EXISTS galette_permissions;
+DROP TABLE IF EXISTS galette_roles;
+
 -- RBAC Migration for Galette
 -- Author: Antigravity AI
 -- Date: 2026-03-22
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- Permissions table
-CREATE TABLE IF NOT EXISTS galette_permissions (
+DROP TABLE IF EXISTS galette_permissions;
+CREATE TABLE galette_permissions (
     id_perm int unsigned NOT NULL auto_increment,
     nom_perm varchar(255) NOT NULL,
     description_perm longtext,
@@ -12,7 +20,8 @@ CREATE TABLE IF NOT EXISTS galette_permissions (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Roles table
-CREATE TABLE IF NOT EXISTS galette_roles (
+DROP TABLE IF EXISTS galette_roles;
+CREATE TABLE galette_roles (
     id_role int unsigned NOT NULL auto_increment,
     nom_role varchar(255) NOT NULL,
     PRIMARY KEY (id_role),
@@ -20,7 +29,8 @@ CREATE TABLE IF NOT EXISTS galette_roles (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Role-Permissions mapping
-CREATE TABLE IF NOT EXISTS galette_role_permissions (
+DROP TABLE IF EXISTS galette_role_permissions;
+CREATE TABLE galette_role_permissions (
     id_role int unsigned NOT NULL,
     id_perm int unsigned NOT NULL,
     PRIMARY KEY (id_role, id_perm),
@@ -29,7 +39,8 @@ CREATE TABLE IF NOT EXISTS galette_role_permissions (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- User-Roles mapping (with optional context/group)
-CREATE TABLE IF NOT EXISTS galette_adherent_roles (
+DROP TABLE IF EXISTS galette_adherent_roles;
+CREATE TABLE galette_adherent_roles (
     id_adh_role int unsigned NOT NULL auto_increment,
     id_adh int unsigned NOT NULL,
     id_role int unsigned NOT NULL,
@@ -42,6 +53,7 @@ CREATE TABLE IF NOT EXISTS galette_adherent_roles (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Initial data
+-- TODO: move to PHP.
 INSERT IGNORE INTO galette_permissions (nom_perm, description_perm) VALUES 
 ('member:list', 'Lister les adhérents'),
 ('member:add', 'Ajouter un adhérent'),
@@ -49,6 +61,7 @@ INSERT IGNORE INTO galette_permissions (nom_perm, description_perm) VALUES
 ('member:edit', 'Modifier un adhérent'),
 ('member:delete', 'Supprimer un adhérent'),
 ('member:export', 'Exporter les adhérents'),
+('member:me', 'Adhérent himself'),
 ('group:list', 'Lister les groupes'),
 ('group:manage', 'Gérer les groupes (nom, hiérarchie)'),
 ('group:assign', 'Affecter des membres aux groupes'),
@@ -61,18 +74,40 @@ INSERT IGNORE INTO galette_permissions (nom_perm, description_perm) VALUES
 ('config:write', 'Modifier la configuration'),
 ('system:update', 'Mettre à jour Galette'),
 ('system:logs', 'Voir les journaux système'),
-('system:backup', 'Gérer les sauvegardes');
+('system:backup', 'Gérer les sauvegardes'),
+('mailings:manage', 'Gérer les mailings'),
+('mailings:send', 'Envoyer des mailings'),
+('impersonate:adh', 'Se faire passer pour un adhérent'),
+('login', 'Connexion au système');
 
-INSERT IGNORE INTO galette_roles (nom_role) VALUES 
-('Administrateur'), 
+-- TODO: move to PHP
+INSERT IGNORE INTO galette_roles (nom_role) VALUES
+('Superadmin'),
+('Administrateur'),
+('Staff member'),
+-- have to be all existing status?
 ('Secrétaire'), 
 ('Trésorier'),
-('Responsable de groupe');
+('Responsable de groupe'),
+('Adhérent'),
+('Invité'),
+('Adhérent à jour'), -- notion spécifique à Galette
+('Adherent actif');
+
+-- Assign all to Super-Administrateur
+INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
+SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p
+WHERE r.nom_role = ' Superadmin';
 
 -- Assign all to Administrateur
 INSERT IGNORE INTO galette_role_permissions (id_role, id_perm) 
 SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p 
 WHERE r.nom_role = 'Administrateur';
+
+-- Assign to Staff member
+INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
+SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p
+WHERE r.nom_role = 'Staff member' AND (p.nom_perm LIKE 'member:%' OR p.nom_perm LIKE 'group:%' OR p.nom_perm LIKE 'contribution:list' OR p.nom_perm LIKE 'contribution:read');
 
 -- Assign member:* to Secrétaire
 INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
@@ -83,3 +118,5 @@ WHERE r.nom_role = 'Secrétaire' AND p.nom_perm LIKE 'member:%';
 INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
 SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p
 WHERE r.nom_role = 'Trésorier' AND p.nom_perm LIKE 'contribution:%';
+
+SET FOREIGN_KEY_CHECKS = 1;

@@ -47,58 +47,6 @@ class AccessControlTest extends GaletteTestCase
     {
         parent::setUp();
         $this->accessControl = new AccessControl($this->zdb);
-        $this->setupRbacTables();
-    }
-
-    /**
-     * tearDown tests
-     */
-    public function tearDown(): void
-    {
-        //FIXME: should be useless
-        $this->cleanMembers();
-        $this->zdb->db->query("DELETE FROM galette_groups", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        $this->zdb->db->query("DELETE FROM galette_adherent_roles", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        $this->zdb->db->query("DELETE FROM galette_role_permissions", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        $this->zdb->db->query("DELETE FROM galette_roles", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        $this->zdb->db->query("DELETE FROM galette_permissions", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-
-        try {
-            parent::tearDown();
-        } catch (\Throwable $e) {
-            // Ignore transaction issues caused by implicit DDL commits in MySQL
-            if (!str_contains($e->getMessage(), 'no active transaction')) {
-                throw $e;
-            }
-        }
-    }
-
-    /**
-     * Setup RBAC tables for testing
-     */
-    private function setupRbacTables(): void
-    {
-        //FIXME/ not a good idea to put that in a test. Must be part of installed database
-        $sqlPath = GALETTE_ROOT . '../patches/2026-03-22_rbac_migration.sql';
-
-        $sql = file_get_contents($sqlPath);
-        $statements = explode(';', $sql);
-        foreach ($statements as $statement) {
-            $statement = trim($statement);
-            if (!empty($statement)) {
-                try {
-                    $this->zdb->db->query($statement, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-                } catch (\Throwable $e) {
-                    if (!str_contains($e->getMessage(), 'already exists')) {
-                        throw $e;
-                    }
-                }
-            }
-        }
-
-        if (!$this->zdb->inTransaction()) {
-            $this->zdb->beginTransaction();
-        }
     }
 
     /**
