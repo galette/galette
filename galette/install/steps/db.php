@@ -85,6 +85,7 @@ if ($install->configurationFileExists() && $install->isUpgrade()) {
                     <?php echo _T("Enter connection data for the existing database."); ?>
                 </p>
             </div>
+            <div id="install_dbconfig">
 <?php
 }
 ?>
@@ -95,7 +96,6 @@ if ($install->configurationFileExists() && $install->isUpgrade()) {
                 <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
             </select>
         </div>
-            <div id="install_dbconfig">
             <div class="inline required field">
                 <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
                 <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo htmlspecialchars($_POST['install_dbhost'] ?? $install->getDbHost() ?? $install->isUpgrade() ? '' : 'localhost', ENT_QUOTES, 'UTF-8'); ?>" placeholder="localhost" required/>
