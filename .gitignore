@@ -105,3 +105,6 @@ dist/
 
 #local CS configuration files
 .php-cs-fixer.php
+
+playwright-report/
+test-results/

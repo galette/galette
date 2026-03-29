@@ -152,6 +152,26 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php \
   tests/Galette/
 ```
 
+### E2E Testing (Playwright)
+
+E2E tests use Playwright and require a running PHP built-in server.
+
+```bash
+# 1. Initialize test data
+php tests/init_test_data.php
+
+# 2. Set up test database (once)
+GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
+
+# 3. Start the server (in a separate terminal or background)
+DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+
+# 4. Run tests
+npm run test:chromium
+```
+
+**CRITICAL:** Always use the `tests/router_e2e.php` router with `php -S` to ensure the correct test environment is loaded (session path, data path, etc.).
+
 ### Test Requirements
 
 - Database must be installed via `bin/console galette:install`

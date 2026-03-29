@@ -28,76 +28,8 @@ declare(strict_types=1);
  */
 
 
-if (!isset($basepath)) {
-    if (file_exists('../galette/index.php')) {
-        $basepath = '../galette/';
-    } elseif (file_exists('galette/index.php')) {
-        $basepath = 'galette/';
-    } else {
-        die('Unable to define GALETTE_BASE_PATH :\'(');
-    }
-}
-
-$db = 'mysql';
-$dbenv = (string)getenv('DB');
-if (
-    $dbenv === 'pgsql'
-    || str_starts_with($dbenv, 'postgres')
-) {
-    $db = 'pgsql';
-}
-
-$testenv = getenv('TESTENV');
-$fail_env = $testenv === 'FAIL';
-if ($fail_env !== false) {
-    $db .= '_fail';
-}
-
-define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
-define('GALETTE_BASE_PATH', $basepath);
-define('GALETTE_TESTS', true);
-define('GALETTE_TESTS_PATH', __DIR__);
-define('GALETTE_MODE', 'PROD');
-if (!defined('GALETTE_PLUGINS_PATH')) {
-    define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
-}
-define('GALETTE_TPL_SUBDIR', 'templates/default/');
-define('GALETTE_THEME', 'themes/default/');
-define('GALETTE_DATA_PATH', GALETTE_TESTS_PATH . '/tests-data/');
-define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/');
-if (is_dir(GALETTE_DATA_PATH)) {
-    $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator(
-            GALETTE_DATA_PATH,
-            RecursiveDirectoryIterator::SKIP_DOTS
-        ),
-        RecursiveIteratorIterator::CHILD_FIRST
-    );
-
-    foreach ($files as $fileinfo) {
-        $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-        $todo($fileinfo->getRealPath());
-    }
-    rmdir(GALETTE_DATA_PATH);
-}
-
-mkdir(GALETTE_DATA_PATH);
-$directories = [
-    'logs',
-    'templates_c',
-    'cache',
-    'exports',
-    'imports',
-    'photos',
-    'attachments',
-    'files',
-    'tempimages',
-    'plugins',
-    'documents'
-];
-foreach ($directories as $directory) {
-    mkdir(GALETTE_DATA_PATH . $directory);
-}
+require_once __DIR__ . '/test_env.inc.php';
+require_once __DIR__ . '/init_test_data.php';
 
 //TODO: maybe is there a better way to do
 $logfile = 'galette_tests'; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used in galette.inc.php
@@ -135,6 +67,7 @@ $emitter = $container->get(\League\Event\EventDispatcher::class);
 /** @var \Galette\Core\I18n $i18n */
 $i18n->changeLanguage('en_US');
 
+/** @var string $testenv - declared in test_env.inc.php */
 if (
     $testenv !== 'UPDATE'
     && $testenv !== 'FAIL'
