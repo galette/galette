@@ -13,7 +13,15 @@
     "first-build": "npm run fomantic-install && npx gulp",
     "build": "npx gulp",
     "rebuild": "npm run install-deps && npx gulp",
-    "watch": "npx gulp watch"
+    "watch": "npx gulp watch",
+    "test": "playwright test --project \"chromium\"",
+    "test:full": "playwright test",
+    "test:chromium": "playwright test --project \"chromium\"",
+    "test:firefox": "playwright test --project \"firefox\"",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:clean": "rm -rf tests/tests-data/*",
+    "report": "playwright show-report"
   },
   "repository": {
     "type": "git",
@@ -22,6 +30,7 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "browser-sync": "^3.0.4",
     "clean-css": "^5.3.3",
     "css-loader": "^7.1.4",

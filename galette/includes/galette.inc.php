@@ -189,10 +189,12 @@ if (!$installer && !defined('GALETTE_TESTS')) {
         /**
          * Set the path to the current theme templates
          */
-        define(
-            '_CURRENT_THEME_PATH',
-            GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
-        );
+        if (!defined('_CURRENT_THEME_PATH')) {
+            define(
+                '_CURRENT_THEME_PATH',
+                GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
+            );
+        }
 
         if (!defined('GALETTE_THEME')) {
             define(

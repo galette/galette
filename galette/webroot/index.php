@@ -26,7 +26,9 @@ if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 }
 
-define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
+if (!defined('GALETTE_ROOT')) {
+    define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
+}
 
 // check PHP version
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';

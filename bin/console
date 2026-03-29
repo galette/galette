@@ -33,6 +33,9 @@ if (!isset($basepath)) {
 }
 
 define('GALETTE_ENV', 'CLI');
+if (getenv('GALETTE_TESTS')) {
+    require_once __DIR__ . '/../tests/test_env.inc.php';
+}
 define('GALETTE_ROOT', realpath(__DIR__ . '/../galette/') . '/');
 
 //specific logfile for console

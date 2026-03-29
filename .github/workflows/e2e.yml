@@ -1,0 +1,148 @@
+name: Galette E2E Tests
+
+on:
+  push:
+  pull_request:
+  # Enable manual run
+  workflow_dispatch:
+  # Run once a month
+  schedule:
+    - cron: '0 0 1 * *'
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    name: "E2E Playwright — ${{ github.event_name == 'schedule' && 'all browsers' || 'chromium' }} (postgres:17)"
+    env:
+      DB: pgsql
+      GALETTE_TESTS: 1
+
+    services:
+      # Label used to access the service container
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_USER: galette_tests
+          POSTGRES_PASSWORD: g@l3tte
+          POSTGRES_DB: galette_tests
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer, pecl
+          coverage: none
+          extensions: apcu, pdo_pgsql
+          ini-values: apc.enable_cli=1
+
+      - name: Show versions
+        run: |
+          php --version
+          composer --version
+          echo "node $(node --version)"
+          echo "npm $(npm --version)"
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: "${{ runner.os }}-composer-8.5-${{ hashFiles('**/composer.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-composer-8.5-
+            ${{ runner.os }}-composer-
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Semantic hash (assets)
+        id: semantic-hash
+        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Cache Galette built assets
+        uses: actions/cache@v5
+        with:
+          path: galette/webroot/themes/
+          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
+
+      - name: Install dependencies (Composer + npm assets)
+        run: bin/install_deps
+
+      - name: Initialize test data
+        run: php tests/init_test_data.php
+
+      - name: Initialize Galette database (PostgreSQL)
+        run: |
+          bin/console galette:install -v \
+            --dbtype=pgsql \
+            --dbhost=localhost \
+            --dbname=galette_tests \
+            --dbuser=galette_tests \
+            --dbpass=g@l3tte \
+            --admin=${{ secrets.E2E_ADMIN_USER || 'admin' }} \
+            --password=${{ secrets.E2E_ADMIN_PASS || 'admin' }} \
+            --no-interaction
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
+      - name: Start PHP built-in server
+        run: |
+          php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php &
+          # Wait for service being up
+          timeout 15 bash -c 'until curl -sf http://127.0.0.1:8080/login > /dev/null; do sleep 1; done'
+          echo "PHP server started"
+
+
+      - name: Install Playwright browsers
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            npx playwright install --with-deps chromium firefox
+          else
+            npx playwright install --with-deps chromium
+          fi
+
+      - name: Run E2E tests
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            npm run test:full
+          else
+            npm run test:chromium
+          fi
+        env:
+          E2E_BASE_URL: http://127.0.0.1:8080
+          E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}
+          E2E_ADMIN_PASS: ${{ secrets.E2E_ADMIN_PASS || 'admin' }}
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
