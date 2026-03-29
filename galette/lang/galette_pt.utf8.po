@@ -5,13 +5,14 @@
 # Manuela Silva <mmsrs@sky.com>, 2024.
 # Gustavo Lorenzato dos Santos <gustavolorenzatodossantos@gmail.com>, 2024.
 # Nelson JESUS <jesus.nels@gmail.com>, 2025.
+# Edson Wolf <edsonwolf@vivaldi.net>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2025-09-15 15:52+0000\n"
-"Last-Translator: Nelson JESUS <jesus.nels@gmail.com>\n"
+"PO-Revision-Date: 2026-03-30 15:09+0000\n"
+"Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -19,12 +20,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "Não foi possível carregar a contribuição #%id!"
+msgstr "Não foi possível carregar a transação #%id!"
 
 msgid "Transaction"
 msgstr "Transação"
@@ -54,7 +53,7 @@ msgid "Unable to detach contribution from transaction"
 msgstr "Não é possível separar a contribuição da transação"
 
 msgid "Payment types"
-msgstr ""
+msgstr "Tipos de pagamento"
 
 msgid "Edit payment type"
 msgstr "Editar tipo de pagamento"
@@ -89,7 +88,7 @@ msgid "Add scheduled payment"
 msgstr "Adicionar pagamento agendado"
 
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Lista de pagamentos programados"
 
 msgid "- Unknown payment type!"
 msgstr "- Tipo de pagamento desconhecido!"
@@ -123,19 +122,17 @@ msgstr "O nome do grupo está faltando!"
 msgid "Groups"
 msgstr "Grupos"
 
-#, fuzzy, php-format
-#| msgid "Next page (%1$s)"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "Próxima página (%1$s)"
+msgstr "Novo grupo pai: %1$s"
 
 msgid "Parent removed"
-msgstr ""
+msgstr "Responsável removido"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "O tipo de pagamento '%1$s' foi modificado com sucesso."
+msgstr "O grupo pai dos seguintes grupos foi atualizado com sucesso: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -177,7 +174,7 @@ msgid "Mailing has been successfully saved."
 msgstr "A correspondência foi guardada com sucesso."
 
 msgid "Mailings"
-msgstr "Mailings"
+msgstr "Correspondências"
 
 #, php-format
 msgid "Remove mailing #%1$s"
@@ -260,15 +257,13 @@ msgid "Members"
 msgstr "Membros"
 
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "Galeria"
 
 msgid "Staff"
-msgstr ""
+msgstr "Equipe"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Staff gallery"
-msgstr "Gallery"
+msgstr "Galeria da equipe"
 
 msgid "List of members"
 msgstr "Lista dos membros"
@@ -287,12 +282,10 @@ msgid "Mass changes has not been confirmed!"
 msgstr "Mudanças em massa não foram confirmadas!"
 
 msgid "Add to group"
-msgstr ""
+msgstr "Adicionar ao grupo"
 
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Remover grupo %1$s"
+msgstr "Remover do grupo"
 
 #, php-format
 msgid "Review mass change %1$s members"
@@ -317,7 +310,7 @@ msgid "Something went wrong during mass edition!"
 msgstr "Algo deu errado durante a edição em massa!"
 
 msgid "Login required"
-msgstr ""
+msgstr "É necessário fazer login"
 
 msgid "Invalid captcha"
 msgstr "Captcha inválido"
@@ -410,20 +403,20 @@ msgstr "Taxa de adesão"
 msgid "Donation"
 msgstr "Doação"
 
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
-msgstr "Nenhuma contribuição foi selecionada, marque pelo menos uma."
+msgstr ""
+"Não há nenhum tipo de contribuição relacionado disponível. Por favor, crie "
+"um novo."
 
 #, php-format
 msgid "Mass add contribution on %1$s members"
 msgstr "Adicionar contribuição em massa em %1$s membros"
 
 msgid "List of contributions"
-msgstr ""
+msgstr "Lista de contribuições"
 
 msgid "List of transactions"
-msgstr ""
+msgstr "Lista de transações"
 
 msgid "- Unknown contribution type!"
 msgstr "- Tipo de contribuição desconhecido!"
@@ -559,7 +552,7 @@ msgid "Charts"
 msgstr "Gráficos"
 
 msgid "Core fields"
-msgstr ""
+msgstr "Campos principais"
 
 msgid "Fields configuration has been successfully stored"
 msgstr "A configuração dos campos foi guardada com sucesso"
@@ -568,7 +561,7 @@ msgid "An error occurred while storing fields configuration :("
 msgstr "Ocorreu um erro quando guardava a configuração dos campos :("
 
 msgid "Core lists"
-msgstr ""
+msgstr "Listas principais"
 
 msgid "List configuration has been successfully stored"
 msgstr "A configuração da lista foi guardada com sucesso"
@@ -777,15 +770,11 @@ msgstr "Logins e senhas foram preenchidos com sucesso (%i processados)."
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "Ocorreu um erro ao preencher logins e senhas vazios :("
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "A conta do membro foi modificada."
+msgstr "O recurso de datas dinâmicas foi corrigido."
 
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "Ocorreu um erro ao editar o campo dinâmico :("
+msgstr "Ocorreu um erro ao corrigir datas dinâmicas :("
 
 msgid "Logs"
 msgstr "Registos"
@@ -810,10 +799,8 @@ msgstr "O plugin %1$s foi habilitado"
 msgid "Plugin %1$s has been disabled"
 msgstr "O plugin %1$s foi desabilitado"
 
-#, fuzzy
-#| msgid "transaction"
 msgid "Labels translation"
-msgstr "transação"
+msgstr "Tradução de rótulos"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr "Ocorreu um erro ao salvar o rótulo `%label` para o idioma `%lang`"
@@ -822,7 +809,7 @@ msgid "Labels has been successfully translated!"
 msgstr "Os rótulos foram traduzidos com sucesso!"
 
 msgid "Exports"
-msgstr ""
+msgstr "Exportações"
 
 msgid "Table %table is empty, and has not been exported."
 msgstr "A tabela %table está vazia e não foi exportada."
@@ -840,7 +827,7 @@ msgid "An error occurred running parameted export '%export'."
 msgstr "Ocorreu um erro ao executar a exportação parametrizada '%export'."
 
 msgid "Imports"
-msgstr ""
+msgstr "Importações"
 
 msgid "An error occurred importing the file :("
 msgstr "Ocorreu um erro ao importar o arquivo :("
@@ -880,7 +867,7 @@ msgid "Import model has not been stored :("
 msgstr "O modelo de importação não foi armazenado :("
 
 msgid "Emails content"
-msgstr ""
+msgstr "Conteúdo dos e-mails"
 
 #, php-format
 msgid "Email: '%1$s' has not been modified!"
@@ -909,7 +896,7 @@ msgid "Previous version selection"
 msgstr "Seleção da versão anterior"
 
 msgid "Database upgrade"
-msgstr ""
+msgstr "Atualização do banco de dados"
 
 msgid "Tables Creation"
 msgstr "Criação de tabelas"
@@ -1069,265 +1056,272 @@ msgid "Perform advanced search into members list"
 msgstr "Realizar pesquisa avançada na lista de membros"
 
 msgid "Add a member"
-msgstr ""
+msgstr "Adicionar um membro"
 
 msgid "Add new member in database"
-msgstr ""
+msgstr "Adicionar novo membro ao banco de dados"
 
 msgid "Empty adhesion form"
-msgstr ""
+msgstr "Formulário de adesão vazio"
 
 msgid "Download empty adhesion form"
-msgstr ""
+msgstr "Baixe o formulário de adesão vazio"
 
 msgid "Contributions"
-msgstr ""
+msgstr "Contribuições"
 
 msgid "View and filter contributions"
-msgstr ""
+msgstr "Veja e filtre as contribuições"
 
 msgid "View and filter scheduled payments"
-msgstr ""
+msgstr "Veja e filtre os pagamentos agendados"
 
 msgid "View and filter transactions"
-msgstr ""
+msgstr "Visualizar e filtrar transações"
 
 msgid "Add a membership fee"
-msgstr ""
+msgstr "Adicionar uma taxa de adesão"
 
 msgid "Add new membership fee in database"
-msgstr ""
+msgstr "Adicionar nova taxa de adesão ao banco de dados"
 
 msgid "Add a donation"
-msgstr ""
+msgstr "Adicione uma doação"
 
 msgid "Add new donation in database"
-msgstr ""
+msgstr "Adicionar nova doação ao banco de dados"
 
 msgid "Add a transaction"
-msgstr ""
+msgstr "Adicionar uma transação"
 
 msgid "Add new transaction in database"
-msgstr ""
+msgstr "Adicionar nova transação no banco de dados"
 
 msgid "Send reminders to late members"
-msgstr ""
+msgstr "Enviar lembretes aos membros atrasados"
 
 msgid "Management"
-msgstr ""
+msgstr "Gerenciamento"
 
 msgid "View and manage groups"
-msgstr ""
+msgstr "Visualizar e gerenciar grupos"
 
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Adicione documentos para compartilhar, relacionados à sua associação "
+"(status, regimento interno, etc.)"
 
 msgid "Manage mailings that has been sent"
-msgstr ""
+msgstr "Gerenciar os e-mails enviados"
 
 msgid "Various charts"
-msgstr ""
+msgstr "Vários gráficos"
 
 msgid "Export some data in various formats"
-msgstr ""
+msgstr "Exportar alguns dados em vários formatos"
 
 msgid "Import members from CSV files"
-msgstr ""
+msgstr "Importar membros de arquivos em CSV"
 
 msgid "View application's logs"
-msgstr ""
+msgstr "Visualizar os registros do aplicativo"
 
 msgid "Configuration"
-msgstr ""
+msgstr "Configuração"
 
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
+"Defina as preferências dos aplicativos (endereço, site, configuração dos "
+"cartões de membro, etc.)"
 
 msgid "Information about available plugins"
-msgstr ""
+msgstr "Informações sobre os plugins disponíveis"
 
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Personalize os campos e a ordem das listas"
 
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
+"Personalize a ordem dos campos, defina quais são obrigatórios e para quem "
+"eles serão visíveis"
 
 msgid "Manage additional fields for various forms"
-msgstr ""
+msgstr "Gerenciar campos adicionais para diversos formulários"
 
 msgid "Manage contributions types"
-msgstr ""
+msgstr "Gerenciar tipos de contribuição"
 
 msgid "Manage payment types"
-msgstr ""
+msgstr "Gerenciar tipos de pagamento"
 
 msgid "Manage titles"
-msgstr ""
+msgstr "Gerenciar títulos"
 
 msgid "Manage PDF models"
-msgstr ""
+msgstr "Gerenciar modelos PDF"
 
 msgid "Manage emails texts and subjects"
-msgstr ""
+msgstr "Gerenciar e-mails, textos e assuntos"
 
-#, fuzzy
-#| msgid "Translate labels"
 msgid "Manage translatable labels"
-msgstr "Traduzir rótulos"
+msgstr "Gerenciar rótulos traduzíveis"
 
 msgid "Various administrative tools"
-msgstr ""
+msgstr "Diversas ferramentas administrativas"
 
 msgid "Directories"
-msgstr ""
+msgstr "Diretórios"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Gallery"
+msgstr "Galerias"
 
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Veja os documentos relacionados à sua associação"
 
 msgid "Public pages"
-msgstr ""
+msgstr "Páginas públicas"
 
 msgid "Transactions"
-msgstr ""
+msgstr "Transações"
 
 msgid "%membername: edit information"
-msgstr ""
+msgstr "%membername: Editar informações"
 
 msgid "%membername: contributions"
-msgstr ""
+msgstr "%membername: Contribuições"
 
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: Remover do banco de dados"
 
 msgid "Log in as %membername"
-msgstr ""
+msgstr "Faça login como %membername"
 
 msgid "Mass change"
-msgstr ""
+msgstr "Mudança em massa"
 
 msgid "Mass add contributions"
-msgstr ""
+msgstr "Adição em massa de contribuições"
 
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 msgid "Mail"
-msgstr ""
+msgstr "Correspondência"
 
 msgid "Generate labels"
-msgstr ""
+msgstr "Gerar rótulos"
 
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "Gerar Cartões de Membro"
 
 msgid "Export as CSV"
-msgstr ""
+msgstr "Exportar como CSV"
 
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Administrador de Galette"
+msgstr "Notícias da Galette"
 
 msgid "Association news"
-msgstr ""
+msgstr "Notícias da associação"
 
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
+msgstr "- Você deve indicar o nome do remetente nos e-mails!"
 
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
+"- Você deve indicar um endereço de e-mail que Galette deve usar para enviar "
+"e-mails!"
 
 msgid "- You must indicate the SMTP server you want to use!"
-msgstr ""
+msgstr "- Você deve indicar o servidor SMTP que deseja usar!"
 
 msgid "- You must provide a login for SMTP authentication."
-msgstr ""
+msgstr "- Você precisa fornecer um login para autenticação SMTP."
 
 msgid "- You must provide a password for SMTP authentication."
-msgstr ""
+msgstr "- Você precisa fornecer uma senha para autenticação SMTP."
 
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
-msgstr ""
+msgstr "- Você deve indicar uma prorrogação ou o início da sua adesão."
 
 msgid ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
+"- A extensão da adesão padrão e o início da adesão são mutuamente exclusivos."
 
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr ""
+msgstr "- A oferta de meses só é válida para o início da adesão."
 
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
-msgstr ""
+msgstr "- O campo obrigatório %1$s está vazio."
 
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Senhas incorretas"
 
 msgid "You have to select a staff member to retrieve its address"
-msgstr ""
+msgstr "Você precisa selecionar um membro da equipe para obter o endereço"
 
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr ""
+"Você precisa selecionar um membro da equipe para obter o número de telefone "
+"dele"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Endereço de e-mail inválido: %s"
 
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- O nome de usuário deve ter pelo menos 4 caracteres!"
 
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Este nome de usuário já está sendo usado por outro membro!"
 
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- Os números e as medidas devem ser inteiros!"
 
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- A altura do cartão deve ser um número inteiro entre 40 e 55!"
 
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- A largura do cartão deve ser um número inteiro entre 70 e 95!"
 
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Número inválido de meses de extensão da adesão."
 
 msgid "- Invalid format of beginning of membership."
-msgstr ""
+msgstr "- Formato inválido para o início da associação."
 
 msgid "- Invalid date for beginning of membership."
-msgstr ""
+msgstr "- Data de início da adesão inválida."
 
 msgid "- Invalid number of offered months."
-msgstr ""
+msgstr "- Número inválido de meses oferecidos."
 
 msgid "- Invalid year for cards."
-msgstr ""
+msgstr "- Ano inválido para cartões."
 
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- URL do site inválida."
 
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
-msgstr ""
+msgstr "%1$s Associação %2$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
+"Por favor, defina a constante \"GALETTE_URI\" com o caminho para sua "
+"instância."
 
 msgid "Y-m-d H:i:s"
 msgstr ""
@@ -1623,10 +1617,9 @@ msgid "File is empty!"
 msgstr ""
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred adding member to its groups."
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
-msgstr "Ocorreu um erro ao adicionar membro aos seus grupos."
+msgstr "Ocorreu um erro ao armazenar o membro na linha %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
 msgstr ""
@@ -1776,10 +1769,8 @@ msgstr ""
 msgid "Your organisation phone number"
 msgstr ""
 
-#, fuzzy
-#| msgid "Invalid email adress!"
 msgid "Your organisation email address"
-msgstr "Endereço de ''e-mail'' inválido!"
+msgstr "Endereço de e-mail da sua organização!"
 
 msgid "Your organisation website"
 msgstr ""
@@ -2237,7 +2228,7 @@ msgid "ICQ"
 msgstr ""
 
 msgid "Website"
-msgstr ""
+msgstr "Site"
 
 msgid "Blog"
 msgstr ""
@@ -2280,7 +2271,7 @@ msgid "Credit card"
 msgstr ""
 
 msgid "Check"
-msgstr ""
+msgstr "Verificar"
 
 msgid "Transfer"
 msgstr ""
@@ -2382,12 +2373,13 @@ msgid "Email sent to admin for user %1$s (%2$s)"
 msgstr ""
 
 #. TRANS: first parameter is member name, second his email address
-#, fuzzy, php-format
-#| msgid "A problem happened while sending password for account '%s'"
+#, php-format
 msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
-msgstr "Ocorreu um problema ao enviar a senha para a conta '%s'"
+msgstr ""
+"Ocorreu um problema ao enviar a notificação ao administrador referente à "
+"contribuição do usuário %1$s (%2$s)."
 
 msgid "Post contribution script failed"
 msgstr ""
@@ -2508,7 +2500,7 @@ msgid "Database installation"
 msgstr ""
 
 msgid "Documentation"
-msgstr ""
+msgstr "Documentação"
 
 msgid "Realization:"
 msgstr ""
@@ -4545,7 +4537,7 @@ msgid "Creation date"
 msgstr ""
 
 msgid "Add a document"
-msgstr ""
+msgstr "Adicionar um documento"
 
 msgid "Lost your password?"
 msgstr ""
@@ -4682,7 +4674,7 @@ msgid "Not dispatched amount"
 msgstr ""
 
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Pagamentos programados"
 
 msgid "Create a new scheduled payment"
 msgstr ""
@@ -5563,10 +5555,8 @@ msgstr ""
 msgid "Show payments by"
 msgstr ""
 
-#, fuzzy
-#| msgid "Add scheduled payment"
 msgid "Paid scheduled payments:"
-msgstr "Adicionar pagamento agendado"
+msgstr "Pagamentos programados efetuados:"
 
 msgid "Not paid"
 msgstr ""
@@ -5592,20 +5582,17 @@ msgstr[1] ""
 msgid "Found total scheduled %f"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "Taxa de adesão"
+msgstr "Editar taxa de adesão %1$s"
 
-#, fuzzy, php-format
-#| msgid "Edit contribution type"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Editar tipo de contribuição"
+msgstr "Editar doação %1$s"
 
-#, fuzzy, php-format
-#| msgid "My scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "Meus pagamentos agendados"
+msgstr "Mostrar apenas os pagamentos agendados de '%1$s'"
 
 msgid "Not paid and due"
 msgstr ""
@@ -5975,10 +5962,8 @@ msgstr ""
 msgid "Select a group to add selected members to"
 msgstr ""
 
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Está prestes a remover %count membro(s)."
+msgstr "Selecione um grupo do qual deseja remover os membros selecionados."
 
 msgid "Load previous members..."
 msgstr ""
