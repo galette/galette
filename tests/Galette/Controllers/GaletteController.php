@@ -110,7 +110,7 @@ class GaletteController extends GaletteRoutingTestCase
     public function testDashboard(): void
     {
         $request = $this->createRequest('dashboard');
-        $request = $request->withCookieParams(['show_galette_dashboard' => 'true']);
+        $request = $request->withCookieParams(['show_galette_dashboard' => '1']);
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
