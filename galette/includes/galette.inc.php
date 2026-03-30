@@ -107,7 +107,7 @@ if (!defined('GALETTE_ADAPTATIVE_CARDS')) {
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
-        'true',
+        '1',
         [
             'expires'   => time() + 31536000, //valid for a year
             'path'      => '/'
