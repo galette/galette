@@ -51,9 +51,13 @@ if ($argc > 1) {
     }
 }
 
-if ($installer || !file_exists($basepath . 'config/config.inc.php')) {
+// In test mode, GALETTE_CONFIG_PATH is already set to the test config directory,
+// so skip the production config file check to allow all commands to be registered.
+if (!getenv('GALETTE_TESTS') && ($installer || !file_exists($basepath . 'config/config.inc.php'))) {
     define('GALETTE_INSTALLER', true);
     $installer = true; //consider we're installing
+} elseif ($installer) {
+    define('GALETTE_INSTALLER', true);
 }
 require_once $basepath . 'includes/galette.inc.php';
 

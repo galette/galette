@@ -111,6 +111,9 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
+      - name: Seed E2E fixtures
+        run: bin/console galette:seed-fixtures -v
+
       - name: Start PHP built-in server
         run: |
           php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php &
