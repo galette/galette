@@ -6,13 +6,14 @@
 # Gustavo Lorenzato dos Santos <gustavolorenzatodossantos@gmail.com>, 2024.
 # Nelson JESUS <jesus.nels@gmail.com>, 2025.
 # Edson Wolf <edsonwolf@vivaldi.net>, 2026.
+# ramon0504 <ramon-sousa@hotmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2026-03-30 15:09+0000\n"
-"Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
+"PO-Revision-Date: 2026-04-01 04:09+0000\n"
+"Last-Translator: ramon0504 <ramon-sousa@hotmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -3849,7 +3850,7 @@ msgid "Membership extension"
 msgstr "Taxa de adesão"
 
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 msgid "Author"
 msgstr ""
