@@ -1,17 +1,28 @@
 # Environnement de développement Galette
 
-Ce guide explique comment mettre en place un environnement de développement local isolé pour contribuer à Galette. Il utilise **`gwt`** (Galette Worktree Tool), un script qui automatise la création d'environnements basés sur les [git worktrees](https://git-scm.com/docs/git-worktree).
+Ce guide explique comment mettre en place un environnement de développement local isolé pour contribuer à Galette. Le système repose sur deux outils complémentaires :
+
+- **[branchlet](https://github.com/raghavpillai/branchlet)** — gestion interactive des git worktrees (création, liste, suppression)
+- **`gwt`** (Galette Worktree Tool) — configuration automatique de l'environnement Galette (DB, dépendances, Apache/Docker)
 
 Deux modes sont disponibles :
 
 | Mode | Prérequis | Idéal pour |
 |------|-----------|------------|
-| **Docker** (recommandé) | Git, Docker ≥ 24, Docker Compose v2 | Contributeurs externes |
+| **Docker** (recommandé) | Git, Node.js, Docker ≥ 24, Docker Compose v2 | Contributeurs externes |
 | **Natif** | httpd, PHP-FPM (remi), PostgreSQL/MySQL | Mainteneurs |
 
 ---
 
-## Installation de `gwt`
+## Installation
+
+### branchlet
+
+```bash
+npm install -g branchlet
+```
+
+### gwt
 
 ```bash
 # Depuis le dépôt cloné
@@ -35,23 +46,19 @@ gwt selftest
 ### Prérequis
 
 - [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/) (pour branchlet)
 - [Docker ≥ 24](https://docs.docker.com/get-docker/)
 - Docker Compose v2 (`docker compose version`)
 
-### Configuration initiale (une seule fois)
+### Configuration du chemin des worktrees (une seule fois)
 
-Créer le fichier `~/.gwt.conf` pour personnaliser les chemins :
+Par défaut, branchlet crée les worktrees dans `../<repo>-worktrees/core/<branche>/` par rapport au dépôt cloné. Pour personnaliser :
 
 ```bash
-# ~/.gwt.conf
-GWT_PROJECTS_BASE=~/galette-worktrees   # où stocker les worktrees
-GWT_REPOS=(
-    "core:~/galette/galette.git"         # chemin vers votre clone bare, ou :
-    "core:~/galette"                     # chemin vers votre clone normal
-)
+branchlet settings
+# → worktreePathTemplate → saisir le chemin souhaité
+# Exemple : /home/utilisateur/dev/galette-worktrees/core/$BRANCH_NAME
 ```
-
-> **Note :** Si vous travaillez sur un clone normal (non-bare), `gwt` utilisera ce clone comme dépôt de référence.
 
 ### Workflow typique
 
@@ -62,24 +69,32 @@ GWT_REPOS=(
 gwt add develop --docker
 
 # Branche de feature
-gwt add feature/mon-correctif --docker
-
-# Choisir la version PHP
-gwt add feature/mon-correctif --docker --php 85
+# Interface interactive (recommandé)
+branchlet create
+# → sélectionner ou saisir la branche
+# → branchlet crée le worktree git et lance bin/gwt-setup
+# → gwt-setup demande : version PHP et mode Docker
 ```
 
-La commande effectue automatiquement :
-- Création du worktree git
+`bin/gwt-setup` effectue automatiquement :
 - Génération de la configuration (`config.inc.php`, `behavior.inc.php`)
 - Installation des dépendances PHP et JS
 - Démarrage des conteneurs (PHP-FPM, Apache, PostgreSQL)
 - Installation du schéma de base de données
 
-#### 2. Accéder à l'application
+Vous pouvez aussi appeler `gwt add` directement sans passer par branchlet :
 
 ```bash
-# Afficher la liste des worktrees et leurs URLs
+gwt add feature/mon-correctif --docker
+gwt add feature/mon-correctif --docker --php 85
+```
+
+#### 2. Lister les worktrees actifs
+
+```bash
 gwt ls
+# ou via branchlet :
+branchlet list
 ```
 
 ```

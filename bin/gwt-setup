@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# gwt-setup — Galette post-worktree setup hook for branchlet
+#
+# Called automatically by branchlet after `git worktree add`.
+# Runs interactively to configure the new worktree (DB, deps, Apache/Docker).
+#
+# Environment variables provided by branchlet:
+#   $BRANCH_NAME    — branch name (e.g. feature/acls)
+#   $WORKTREE_PATH  — absolute path to the new worktree
+#
+# Can also be run manually from within a worktree:
+#   cd /path/to/worktree && bin/gwt-setup
+
+set -euo pipefail
+
+# ── Detect branch ─────────────────────────────────────────────────────────────
+BRANCH="${BRANCH_NAME:-}"
+if [[ -z "$BRANCH" ]]; then
+    BRANCH=$(git branch --show-current 2>/dev/null) \
+        || { echo "ERROR: Cannot detect current branch" >&2; exit 1; }
+fi
+[[ -z "$BRANCH" ]] && { echo "ERROR: Detached HEAD — cannot determine branch name" >&2; exit 1; }
+
+# ── Check gwt is available ────────────────────────────────────────────────────
+if ! command -v gwt &>/dev/null; then
+    echo "ERROR: gwt not found in PATH." >&2
+    echo "  Install: cp bin/gwt ~/bin/gwt && chmod +x ~/bin/gwt" >&2
+    exit 1
+fi
+
+# ── Interactive prompts ───────────────────────────────────────────────────────
+echo
+echo "  Galette worktree setup for: ${BRANCH}"
+echo
+
+# PHP version
+echo -n "  PHP version [82/83/84/85] (default: 84): "
+read -r PHP_VER </dev/tty
+PHP_VER="${PHP_VER:-84}"
+if [[ ! "$PHP_VER" =~ ^(82|83|84|85)$ ]]; then
+    echo "  Invalid PHP version '${PHP_VER}', using 84"
+    PHP_VER=84
+fi
+
+# Docker mode
+echo -n "  Use Docker? [y/N]: "
+read -r DOCKER_ANSWER </dev/tty
+DOCKER_ANSWER="${DOCKER_ANSWER:-N}"
+
+# DB type (only if native mode)
+DB_OPT=""
+if [[ ! "${DOCKER_ANSWER,,}" =~ ^y ]]; then
+    echo -n "  DB type [pgsql/mysql] (default: pgsql): "
+    read -r DB_TYPE </dev/tty
+    DB_TYPE="${DB_TYPE:-pgsql}"
+    if [[ "$DB_TYPE" =~ ^(pgsql|mysql)$ ]]; then
+        DB_OPT="--db-type ${DB_TYPE}"
+    fi
+fi
+
+echo
+
+# ── Build gwt add command ─────────────────────────────────────────────────────
+GWT_ARGS=("$BRANCH" "--no-worktree" "--php" "$PHP_VER" $DB_OPT)
+[[ "${DOCKER_ANSWER,,}" =~ ^y ]] && GWT_ARGS+=("--docker")
+
+exec gwt add "${GWT_ARGS[@]}"

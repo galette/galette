@@ -481,50 +481,62 @@ gwt_galette_install_docker() {
 
 cmd_add() {
     local branch="" type="core" php_ver="$GWT_DEFAULT_PHP" db_type="$GWT_DB_TYPE"
-    local docker=0 port="" no_deps=0 no_apache=0 no_db=0
+    local docker=0 port="" no_deps=0 no_apache=0 no_db=0 no_worktree=0
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --type)      type="$2";       shift 2 ;;
-            --php)       php_ver="$2";    shift 2 ;;
-            --db-type)   db_type="$2";    shift 2 ;;
-            --docker)    docker=1;        shift ;;
-            --port)      port="$2";       shift 2 ;;
-            --no-deps)   no_deps=1;       shift ;;
-            --no-apache) no_apache=1;     shift ;;
-            --no-db)     no_db=1;         shift ;;
-            -*)          gwt_die "Unknown option: $1" ;;
-            *)           branch="$1";     shift ;;
+            --type)         type="$2";       shift 2 ;;
+            --php)          php_ver="$2";    shift 2 ;;
+            --db-type)      db_type="$2";    shift 2 ;;
+            --docker)       docker=1;        shift ;;
+            --port)         port="$2";       shift 2 ;;
+            --no-deps)      no_deps=1;       shift ;;
+            --no-apache)    no_apache=1;     shift ;;
+            --no-db)        no_db=1;         shift ;;
+            --no-worktree)  no_worktree=1;   shift ;;
+            -*)             gwt_die "Unknown option: $1" ;;
+            *)              branch="$1";     shift ;;
         esac
     done
 
     [[ -z "$branch" ]] && gwt_die "Usage: gwt add <branch> [options]"
 
-    local slug db_name wt_path repo
+    local slug db_name wt_path
     slug=$(gwt_slug "$branch")
     db_name=$(gwt_db_name "$branch")
-    wt_path=$(gwt_worktree_path "$type" "$branch")
-    repo=$(gwt_repo_for_type "$type")
+
+    # --no-worktree : branchlet already created the worktree, we're running inside it
+    if [[ "$no_worktree" == "1" ]]; then
+        wt_path="$PWD"
+    else
+        wt_path=$(gwt_worktree_path "$type" "$branch")
+    fi
 
     echo
     gwt_step "Adding worktree for branch '${branch}' (type: ${type})"
     echo
 
     # ── Step 1: Git worktree ────────────────────────────────────────────────
-    gwt_step "Git worktree"
-    if [[ -f "${wt_path}/.git" || -d "${wt_path}/.git" ]]; then
-        gwt_info "Worktree already exists at ${wt_path}"
+    if [[ "$no_worktree" == "1" ]]; then
+        gwt_info "Git worktree skipped (managed by branchlet)"
     else
-        # Check branch exists
-        if ! git -C "$repo" show-ref --verify --quiet "refs/heads/${branch}" 2>/dev/null; then
-            read -r -p "  Branch '${branch}' does not exist. Create from HEAD? [y/N] " ans
-            [[ "$ans" =~ ^[Yy] ]] || gwt_die "Aborting"
-            git -C "$repo" branch "$branch"
-            gwt_info "Created branch '${branch}'"
+        local repo
+        repo=$(gwt_repo_for_type "$type")
+        gwt_step "Git worktree"
+        if [[ -f "${wt_path}/.git" || -d "${wt_path}/.git" ]]; then
+            gwt_info "Worktree already exists at ${wt_path}"
+        else
+            # Check branch exists
+            if ! git -C "$repo" show-ref --verify --quiet "refs/heads/${branch}" 2>/dev/null; then
+                read -r -p "  Branch '${branch}' does not exist. Create from HEAD? [y/N] " ans
+                [[ "$ans" =~ ^[Yy] ]] || gwt_die "Aborting"
+                git -C "$repo" branch "$branch"
+                gwt_info "Created branch '${branch}'"
+            fi
+            git -C "$repo" worktree add "$wt_path" "$branch"
+            gwt_info "Worktree created at ${wt_path}"
         fi
-        git -C "$repo" worktree add "$wt_path" "$branch"
-        gwt_info "Worktree created at ${wt_path}"
     fi
 
     # Only do the rest for core type (doc/website have no DB/config/deps)
@@ -1049,6 +1061,7 @@ ADD OPTIONS
   --no-deps                 Skip composer/npm
   --no-apache               Skip Apache snippet generation
   --no-db                   Skip DB creation and Galette install
+  --no-worktree             Skip git worktree add (used by branchlet integration)
 
 RM OPTIONS
   --keep-db                 Do not drop the database
