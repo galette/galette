@@ -2,6 +2,11 @@ name: Galette E2E Tests
 
 on:
   push:
+    branches:
+      - master
+      - develop
+    tags:
+      - '*'
   pull_request:
   # Enable manual run
   workflow_dispatch:
