@@ -3,9 +3,9 @@
 ## Quick Reference
 
 **Project:** Galette - Membership management web application for non-profit organizations  
-**License:** GPL-3.0  
-**Main Branch:** `develop` (development), `master` (stable releases)  
-**Language:** PHP 8.1+ with Twig templates, JavaScript/CSS frontend  
+**License:** GPL-3.0
+**Main Branch:** `develop` (development), `master` (stable releases)
+**Language:** PHP 8.2+ with Twig templates, JavaScript/CSS frontend
 **Documentation:** https://doc.galette.eu/
 
 ## Essential Commands
@@ -53,7 +53,7 @@ galette/
 ├── stubs/                # IDE helper stubs
 ├── composer.json         # PHP dependencies
 ├── package.json          # JavaScript dependencies
-├── phpunit.xml           # Test configuration
+├── phpunit.xml.dist      # Test configuration
 ├── phpstan.neon          # Static analysis config
 ├── .php-cs-fixer.dist.php # Code style config
 └── .phpcs.xml            # CodeSniffer config
@@ -166,9 +166,22 @@ GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
 # 3. Start the server (in a separate terminal or background)
 DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
 
-# 4. Run tests
-npm run test:chromium
+# 4. Run tests (choose your browser)
+npm run test:chromium    # Test with Chromium only
+npm run test:firefox     # Test with Firefox only
+npm run test:full        # Test with all configured browsers
+npm run test:headed      # Run tests in headed mode (see browser)
+npm run test:debug       # Run tests in debug mode (step through)
+
+# 5. View test results
+npm run report           # Open HTML test report
 ```
+
+**Test Structure:**
+- Test specs: `tests/e2e/specs/*.spec.ts`
+- Test fixtures: `tests/e2e/fixtures/`
+- Configuration: `playwright.config.ts`
+- Reports: `playwright-report/index.html`
 
 **CRITICAL:** Always use the `tests/router_e2e.php` router with `php -S` to ensure the correct test environment is loaded (session path, data path, etc.).
 
@@ -247,6 +260,24 @@ vendor/bin/rector process galette/lib/
 **Config:** `rector.php`  
 **Warning:** Review changes before committing. Run tests after applying.
 
+### Twig CS (Template Linting)
+
+```bash
+# Check Twig templates for errors
+vendor/bin/twigcs galette/templates/default --severity error --display blocking
+```
+
+**Note:** This runs in CI. Fix Twig syntax errors before committing template changes.
+
+### Docheader (License Header Check)
+
+```bash
+# Check license headers in PHP files
+vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+```
+
+**Note:** Ensures all PHP files have correct license headers.
+
 ## Composer run
 
 If possible, especially when updating dependencies or adding new ones, composer commands must be run with the correct version. `php --version` will give you the information. You can also check for the presence of the `php82` command.
@@ -266,6 +297,10 @@ The `.github/workflows/ci-linux.yml` workflow runs on every push/PR:
 4. Code standards check (PHPCS)
 5. Static analysis (PHPStan)
 6. Frontend build verification
+7. Twig template linting (TwigCS)
+8. Rector refactoring check
+9. License header check (docheader)
+10. Dependency analysis
 
 ### Replicate CI Locally
 
@@ -311,7 +346,7 @@ vendor/bin/phpstan analyse
 1. Edit files in `ui/` directory (NOT in `galette/webroot/`)
 2. Build: `npm run build`
 3. Test in browser
-4. For development, use watch mode: `npm run dev`
+4. For development, use watch mode: `npm run watch`
 5. Built files appear in `galette/webroot/themes/default/ui/`
 
 ### Database Changes
@@ -418,12 +453,28 @@ php -m | grep pcov
 - Managed via Weblate: https://hosted.weblate.org/projects/galette/
 - After updating translatable strings: `bin/update_strings.sh`
 
+## Key Configuration Files
+
+### PHP Configuration
+- **galette/config/behavior.inc.php** - Application behavior customization
+- **galette/config/config.inc.php** - Main application configuration (generated during install)
+
+### Frontend Configuration
+- **gulpfile.js** - Build task definitions
+- **semantic.json** - Semantic UI theme configuration
+- **ui/semantic/src/theme.config** - Theme selection
+
+### Quality Tools Configuration
+- **.php-cs-fixer.dist.php** - Code style rules (PSR-12 based)
+- **.phpcs.xml** - CodeSniffer rules
+- **phpstan.neon** - Static analysis level and rules
+- **rector.php** - Automated refactoring rules
+- **phpunit.xml.dist** - Test suite configuration
+- **playwright.config.ts** - E2E test configuration
+
 ## Additional Resources
 
 - **Bug Tracker:** https://bugs.galette.eu/projects/galette
-- **Mailing Lists:**
-  - Users: https://lists.mailman3.com/postorius/lists/galette-users.mailman3.com/
-  - Developers: https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
 - **Official Website:** https://galette.eu
 - **Documentation:** https://doc.galette.eu/
 - **Documentation Repo:** https://github.com/galette/galettedoc (reStructuredText, built with Sphinx, hosted on ReadTheDocs)
