@@ -491,3 +491,23 @@ $app->get(
     '/document/get/{id:\d+}',
     [Crud\DocumentsController::class, 'getDocument']
 )->setName('getDocumentFile');
+
+$app->get(
+    '/api-clients',
+    [Crud\ApiClientsController::class, 'list']
+)->setName('apiClients')->add($authenticate);
+
+$app->post(
+    '/api-clients/add',
+    [Crud\ApiClientsController::class, 'doAdd']
+)->setName('doAddApiClient')->add($authenticate);
+
+$app->get(
+    '/api-clients/remove/{id}',
+    [Crud\ApiClientsController::class, 'confirmDelete']
+)->setName('removeApiClient')->add($authenticate);
+
+$app->post(
+    '/api-clients/remove/{id}',
+    [Crud\ApiClientsController::class, 'delete']
+)->setName('doRemoveApiClient')->add($authenticate);

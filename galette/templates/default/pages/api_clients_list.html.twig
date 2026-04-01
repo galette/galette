@@ -1,0 +1,142 @@
+{#
+/**
+ * Copyright © 2003-2026 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    {# ── Secret banner — shown once immediately after creation ── #}
+    {% set api_secret = flash.getMessage('api_secret') ?? [] %}
+    {% if api_secret|length > 0 %}
+        <div class="ui warning icon message">
+            <i class="key icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Client secret — copy it now, it will not be shown again") }}</div>
+                <code>{{ api_secret[0]|escape }}</code>
+            </div>
+        </div>
+    {% endif %}
+
+    <form action="{{ url_for('doAddApiClient') }}" method="post" class="tabbed ui form">
+        <div class="ui basic fitted segment loader_selector">
+            <table class="listing ui celled striped table">
+                <thead>
+                    <tr>
+                        <th>{{ _T("Client ID") }}</th>
+                        <th>{{ _T("Name") }}</th>
+                        <th>{{ _T("Secret") }}</th>
+                        <th class="collapsing">{{ _T("Trusted") }}</th>
+                        <th>{{ _T("Created") }}</th>
+                        <th class="collapsing">{{ _T("Actions") }}</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td data-col-label="{{ _T("Client ID") }}">
+                            <div class="required field">
+                                <label for="client_id" class="visually-hidden">{{ _T("Client ID") }}</label>
+                                <input type="text" name="client_id" id="client_id" required="required"
+                                       placeholder="{{ _T("e.g. my_app") }}" />
+                            </div>
+                        </td>
+                        <td data-col-label="{{ _T("Name") }}">
+                            <div class="required field">
+                                <label for="client_name" class="visually-hidden">{{ _T("Name") }}</label>
+                                <input type="text" name="client_name" id="client_name" required="required"
+                                       placeholder="{{ _T("Human-readable name") }}" />
+                            </div>
+                        </td>
+                        <td data-col-label="{{ _T("Secret") }}">
+                            <div class="field">
+                                <label for="client_secret" class="visually-hidden">{{ _T("Secret") }}</label>
+                                <input type="text" name="client_secret" id="client_secret"
+                                       placeholder="{{ _T("Leave empty to auto-generate") }}" />
+                            </div>
+                        </td>
+                        <td class="center collapsing" data-col-label="{{ _T("Trusted") }}">
+                            <div class="field">
+                                <label class="visually-hidden" for="is_trusted">{{ _T("Trusted") }}</label>
+                                <input type="checkbox" name="is_trusted" id="is_trusted" value="1" />
+                            </div>
+                        </td>
+                        <td></td>
+                        <td class="center actions_row collapsing">
+                            <button type="submit" name="valid" class="ui labeled icon button">
+                                <i class="plus green icon" aria-hidden="true"></i>
+                                {{ _T("Add") }}
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for entry in entries %}
+                        <tr>
+                            <td data-col-label="{{ _T("Client ID") }}">
+                                <code>{{ entry.clientId|escape }}</code>
+                            </td>
+                            <td data-col-label="{{ _T("Name") }}">
+                                {{ entry.clientName|escape }}
+                            </td>
+                            <td data-col-label="{{ _T("Secret") }}">
+                                <em>{{ _T("hidden") }}</em>
+                            </td>
+                            <td class="center collapsing" data-col-label="{{ _T("Trusted") }}">
+                                {% if entry.isTrusted %}
+                                    <i class="ui check green icon tooltip" aria-hidden="true"></i>
+                                    <span class="ui special popup">{{ _T("Trusted") }}</span>
+                                {% else %}
+                                    <i class="ui times red icon tooltip" aria-hidden="true"></i>
+                                    <span class="ui special popup">{{ _T("Not trusted") }}</span>
+                                {% endif %}
+                            </td>
+                            <td data-col-label="{{ _T("Created") }}">
+                                {{ entry.createdAt|date(_T("Y-m-d H:i")) }}
+                            </td>
+                            <td class="center actions_row collapsing">
+                                <a
+                                    href="{{ url_for('removeApiClient', {'id': entry.clientId}) }}"
+                                    class="delete"
+                                >
+                                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                                    <span class="ui special popup">{{ _T("Delete '%s'")|replace({'%s': entry.clientId}) }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="center">{{ _T("No API clients registered.") }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}

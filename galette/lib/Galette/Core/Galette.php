@@ -495,6 +495,14 @@ class Galette
                         ]
                     ];
 
+                    $menus['configuration']['items'][] = [
+                        'label' => _T("API clients"),
+                        'title' => _T("Manage OAuth2 API clients"),
+                        'route' => [
+                            'name' => 'apiClients'
+                        ]
+                    ];
+
                     if ($login->isSuperAdmin()) {
                         $menus['configuration']['items'][] = [
                             'label' => _T("Administration tools"),

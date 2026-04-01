@@ -83,6 +83,7 @@ $core_acls = [
     'add_group'                         => 'staff', //adding group is for staff only
     // /Groups rules
 
+    '/(.+)?[Aa]pi[Cc]lient(.+)?/i'      => 'admin',
     '/(.+)?text(.+)?/i'                 => 'staff',
     '/(.+)?status(.+)?/i'               => 'staff',
     '/(.+)?contributions?Types?(.+)?/i' => 'staff',
