@@ -1,16 +1,16 @@
-# Environnement de développement Galette
+# Galette Development Environment
 
-Ce guide explique comment mettre en place un environnement de développement local isolé pour contribuer à Galette. Le système repose sur deux outils complémentaires :
+This guide explains how to set up an isolated local development environment to contribute to Galette. The system relies on two complementary tools:
 
-- **[branchlet](https://github.com/raghavpillai/branchlet)** — gestion interactive des git worktrees (création, liste, suppression)
-- **`gwt`** (Galette Worktree Tool) — configuration automatique de l'environnement Galette (DB, dépendances, Apache/Docker)
+- **[branchlet](https://github.com/raghavpillai/branchlet)** — interactive git worktree management (create, list, delete)
+- **`gwt`** (Galette Worktree Tool) — automatic Galette environment configuration (DB, dependencies, Apache/Docker)
 
-Deux modes sont disponibles :
+Two modes are available:
 
-| Mode | Prérequis | Idéal pour |
-|------|-----------|------------|
-| **Docker** (recommandé) | Git, Node.js, Docker ≥ 24, Docker Compose v2 | Contributeurs externes |
-| **Natif** | httpd, PHP-FPM (remi), PostgreSQL/MySQL | Mainteneurs |
+| Mode | Prerequisites | Ideal for |
+|------|---------------|-----------|
+| **Docker** (recommended) | Git, Node.js, Docker ≥ 24, Docker Compose v2 | External contributors |
+| **Native** | httpd, PHP-FPM (remi), PostgreSQL/MySQL | Maintainers |
 
 ---
 
@@ -25,15 +25,15 @@ npm install -g branchlet
 ### gwt
 
 ```bash
-# Depuis le dépôt cloné
+# From the cloned repository
 cp bin/gwt ~/bin/gwt
 chmod +x ~/bin/gwt
 
-# Vérifier que ~/bin est dans votre PATH
+# Verify that ~/bin is in your PATH
 echo $PATH | grep -q "$HOME/bin" || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 ```
 
-Vérifier l'installation :
+Verify the installation:
 
 ```bash
 gwt selftest
@@ -41,59 +41,59 @@ gwt selftest
 
 ---
 
-## Mode Docker (contributeurs)
+## Docker Mode (Contributors)
 
-### Prérequis
+### Prerequisites
 
 - [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/) (pour branchlet)
+- [Node.js](https://nodejs.org/) (for branchlet)
 - [Docker ≥ 24](https://docs.docker.com/get-docker/)
 - Docker Compose v2 (`docker compose version`)
 
-### Configuration du chemin des worktrees (une seule fois)
+### Configure worktree path (one-time)
 
-Par défaut, branchlet crée les worktrees dans `../<repo>-worktrees/core/<branche>/` par rapport au dépôt cloné. Pour personnaliser :
+By default, branchlet creates worktrees in `../<repo>-worktrees/core/<branch>/` relative to the cloned repository. To customize:
 
 ```bash
 branchlet settings
-# → worktreePathTemplate → saisir le chemin souhaité
-# Exemple : /home/utilisateur/dev/galette-worktrees/core/$BRANCH_NAME
+# → worktreePathTemplate → enter desired path
+# Example: /home/user/dev/galette-worktrees/core/$BRANCH_NAME
 ```
 
-### Workflow typique
+### Typical workflow
 
-#### 1. Préparer un environnement pour une branche
+#### 1. Set up an environment for a branch
 
 ```bash
-# Branche develop (base du développement)
+# develop branch (development base)
 gwt add develop --docker
 
-# Branche de feature
-# Interface interactive (recommandé)
+# Feature branch
+# Interactive interface (recommended)
 branchlet create
-# → sélectionner ou saisir la branche
-# → branchlet crée le worktree git et lance bin/gwt-setup
-# → gwt-setup demande : version PHP et mode Docker
+# → select or enter the branch
+# → branchlet creates the git worktree and launches bin/gwt-setup
+# → gwt-setup asks: PHP version and Docker mode
 ```
 
-`bin/gwt-setup` effectue automatiquement :
-- Génération de la configuration (`config.inc.php`, `behavior.inc.php`)
-- Installation des dépendances PHP et JS
-- Démarrage des conteneurs (PHP-FPM, Apache, PostgreSQL)
-- Installation du schéma de base de données
+`bin/gwt-setup` automatically performs:
+- Configuration generation (`config.inc.php`, `behavior.inc.php`)
+- Installation of PHP and JS dependencies
+- Container startup (PHP-FPM, Apache, PostgreSQL)
+- Database schema installation
 
-Vous pouvez aussi appeler `gwt add` directement sans passer par branchlet :
+You can also call `gwt add` directly without using branchlet:
 
 ```bash
-gwt add feature/mon-correctif --docker
-gwt add feature/mon-correctif --docker --php 85
+gwt add feature/my-fix --docker
+gwt add feature/my-fix --docker --php 85
 ```
 
-#### 2. Lister les worktrees actifs
+#### 2. List active worktrees
 
 ```bash
 gwt ls
-# ou via branchlet :
+# or via branchlet:
 branchlet list
 ```
 
@@ -101,80 +101,80 @@ branchlet list
 TYPE     BRANCH                         PHP    MODE     URL
 ────     ──────────────────────────────  ────   ──────   ───────────────────────────────
 core     develop                        84     docker   http://localhost:8080/
-core     feature/mon-correctif          85     docker   http://localhost:8081/
+core     feature/my-fix                 85     docker   http://localhost:8081/
 ```
 
-#### 3. Développer
+#### 3. Develop
 
-Les fichiers sources sont montés directement dans les conteneurs — toute modification est immédiatement visible sans rebuild.
+Source files are mounted directly in the containers — any changes are immediately visible without rebuild.
 
 ```bash
-# Voir les logs en temps réel
-gwt docker feature/mon-correctif logs
+# View logs in real-time
+gwt docker feature/my-fix logs
 
-# Exécuter une commande dans le conteneur
-gwt docker feature/mon-correctif exec -- bin/console galette:install
+# Execute a command in the container
+gwt docker feature/my-fix exec -- bin/console galette:install
 
-# Ouvrir un shell PHP
-gwt docker feature/mon-correctif exec -- bash
+# Open a PHP shell
+gwt docker feature/my-fix exec -- bash
 ```
 
-#### 4. Mettre à jour depuis develop
+#### 4. Update from develop
 
 ```bash
-gwt sync feature/mon-correctif
+gwt sync feature/my-fix
 ```
 
-Cela effectue `git pull --ff-only` et met à jour automatiquement les dépendances si `composer.lock` ou `package-lock.json` ont changé.
+This performs `git pull --ff-only` and automatically updates dependencies if `composer.lock` or `package-lock.json` have changed.
 
-#### 5. Réinitialiser la base de données
+#### 5. Reset the database
 
 ```bash
-gwt db feature/mon-correctif reset
+gwt db feature/my-fix reset
 ```
 
-#### 6. Nettoyer en fin de feature
+#### 6. Clean up after feature completion
 
 ```bash
-gwt rm feature/mon-correctif
+gwt rm feature/my-fix
 ```
 
-Supprime le worktree, les conteneurs Docker et les données de la DB.
+Removes the worktree, Docker containers, and database data.
 
 ---
 
-## Utiliser des plugins
+## Using Plugins
 
-Les plugins se chargent depuis `galette/plugins/` dans le worktree. Pour en activer un :
+Plugins are loaded from `galette/plugins/` in the worktree. To enable one:
 
 ```bash
-# Exemple : activer le plugin Paypal dans le worktree feature/mon-correctif
-WT=/chemin/vers/worktrees/core/feature/mon-correctif
-ln -s /chemin/vers/galette-paypal "${WT}/galette/plugins/Paypal"
+# Example: enable the Paypal plugin in the feature/my-fix worktree
+WT=/path/to/worktrees/core/feature/my-fix
+ln -s /path/to/galette-paypal "${WT}/galette/plugins/Paypal"
 ```
 
-Puis recharger les conteneurs :
+Then reload the containers:
 
 ```bash
-gwt docker feature/mon-correctif down
-gwt docker feature/mon-correctif up
+gwt docker feature/my-fix down
+gwt docker feature/my-fix up
 ```
 
 ---
 
-## Mode natif (mainteneurs)
+## Native Mode (Maintainers)
 
-### Prérequis supplémentaires
+### Additional Prerequisites
 
-- `httpd` avec `mod_proxy_fcgi` et `mod_rewrite`
-- PHP-FPM via les paquets remi (`php84-php-fpm`, etc.)
-- PostgreSQL ou MySQL en local
-- Droits sudo pour recharger Apache (voir ci-dessous)
+- `httpd` with `mod_proxy_fcgi` and `mod_rewrite`
+- PHP-FPM from remi packages (`php84-php-fpm`, etc.)
+- PostgreSQL or MySQL locally
+- sudo access to reload Apache (see below)
 
-### Configuration `~/.gwt.conf`
+### Configure `~/.gwt.conf`
 
 ```bash
-# ~/.gwt.conf  (mode 600 — contient le mot de passe DB)
+# ~/.gwt.conf  (mode 600 — contains DB password)
 GWT_PROJECTS_BASE=/var/www/projects/galette
 GWT_REPOS=(
     "core:/var/www/html/private/galette.git"
@@ -186,7 +186,7 @@ GWT_VHOST_NAME=galette.localhost
 GWT_DEFAULT_PHP=84
 GWT_DB_TYPE=pgsql
 GWT_DB_USER=galette
-GWT_DB_PASS=motdepasse
+GWT_DB_PASS=yourpassword
 GWT_DB_HOST=localhost
 GWT_DEVELOP_WORKTREE=/var/www/projects/galette/core/develop
 ```
@@ -195,21 +195,21 @@ GWT_DEVELOP_WORKTREE=/var/www/projects/galette/core/develop
 chmod 600 ~/.gwt.conf
 ```
 
-### Configuration Apache (une seule fois)
+### Configure Apache (one-time)
 
-Ajouter dans votre vhost avant `</VirtualHost>` :
+Add to your vhost before `</VirtualHost>`:
 
 ```apache
 IncludeOptional /etc/httpd/conf.d/galette-worktrees.d/*.conf
 ```
 
-Créer le répertoire :
+Create the directory:
 
 ```bash
 sudo mkdir -p /etc/httpd/conf.d/galette-worktrees.d
 ```
 
-Optionnel — accès sudo sans mot de passe pour la gestion des snippets Apache :
+Optional — passwordless sudo access for Apache snippet management:
 
 ```
 # /etc/sudoers.d/gwt
@@ -219,103 +219,103 @@ trasher ALL=(root) NOPASSWD: /usr/bin/systemctl reload httpd
 trasher ALL=(root) NOPASSWD: /usr/bin/mkdir -p /etc/httpd/conf.d/galette-worktrees.d
 ```
 
-### Workflow natif
+### Native workflow
 
 ```bash
-# Créer un worktree avec PHP 8.4
-gwt add feature/mon-correctif --php 84
+# Create a worktree with PHP 8.4
+gwt add feature/my-fix --php 84
 
-# URL : http://galette.localhost/feature-mon-correctif/
+# URL: http://galette.localhost/feature-my-fix/
 
-# Ajouter uniquement le snippet Apache pour un worktree existant
-gwt apache feature/mon-correctif add --php 84
+# Add only the Apache snippet for an existing worktree
+gwt apache feature/my-fix add --php 84
 
-# Supprimer
-gwt rm feature/mon-correctif
+# Remove
+gwt rm feature/my-fix
 ```
 
 ---
 
-## Référence des commandes
+## Command Reference
 
 ```
-gwt add <branch>        Créer un environnement complet
-gwt rm  <branch>        Supprimer un environnement
-gwt ls                  Lister les worktrees actifs
-gwt sync <branch>       Mettre à jour (git pull + deps)
-gwt db <branch> reset   Réinitialiser la base de données
+gwt add <branch>        Create a complete environment
+gwt rm  <branch>        Remove an environment
+gwt ls                  List active worktrees
+gwt sync <branch>       Update (git pull + deps)
+gwt db <branch> reset   Reset the database
 gwt docker <branch> up|down|logs|exec
 gwt apache <branch> add|rm
-gwt selftest            Vérifier la configuration
-gwt help                Aide complète
+gwt selftest            Check configuration
+gwt help                Full help
 ```
 
-Pour l'aide complète : `gwt help`
+For complete help: `gwt help`
 
 ---
 
-## Dépannage
+## Troubleshooting
 
-### Les conteneurs ne démarrent pas
+### Containers won't start
 
 ```bash
-gwt docker feature/mon-correctif logs
-# ou
-docker compose -f /chemin/worktree/docker-compose.yml logs
+gwt docker feature/my-fix logs
+# or
+docker compose -f /path/to/worktree/docker-compose.yml logs
 ```
 
-### La base de données n'est pas initialisée
+### Database not initialized
 
 ```bash
-gwt db feature/mon-correctif reset
+gwt db feature/my-fix reset
 ```
 
-### Galette affiche la page d'installation
+### Galette shows installation page
 
-Le fichier `galette/config/config.inc.php` est peut-être absent ou incorrect. Vérifier :
+The `galette/config/config.inc.php` file may be missing or incorrect. Check:
 
 ```bash
-cat /chemin/worktree/galette/config/config.inc.php
+cat /path/to/worktree/galette/config/config.inc.php
 ```
 
-### Port déjà utilisé
+### Port already in use
 
-Spécifier un port manuellement :
+Specify a port manually:
 
 ```bash
-gwt add feature/mon-correctif --docker --port 8099
+gwt add feature/my-fix --docker --port 8099
 ```
 
-### Vendor ou node_modules en erreur (symlink cassé)
+### Vendor or node_modules error (broken symlink)
 
 ```bash
-rm /chemin/worktree/galette/vendor
-rm /chemin/worktree/node_modules
-gwt add feature/mon-correctif --no-db --no-apache
+rm /path/to/worktree/galette/vendor
+rm /path/to/worktree/node_modules
+gwt add feature/my-fix --no-db --no-apache
 ```
 
 ---
 
-## Structure des sources
+## Source Structure
 
 ```
-galette/                    Application principale
-├── config/                 Configuration (non versionné sauf .dist)
-├── data/                   Données runtime (logs, uploads, cache)
-├── includes/               Routes et fichiers système
-├── lib/Galette/            Code source PHP (PSR-4)
-├── templates/              Templates Twig
-└── webroot/                DocumentRoot Apache
-    ├── index.php           Point d'entrée
-    └── themes/             Assets compilés (généré par npm)
+galette/                    Main application
+├── config/                 Configuration (not versioned except .dist)
+├── data/                   Runtime data (logs, uploads, cache)
+├── includes/               Routes and system files
+├── lib/Galette/            PHP source code (PSR-4)
+├── templates/              Twig templates
+└── webroot/                Apache DocumentRoot
+    ├── index.php           Entry point
+    └── themes/             Compiled assets (generated by npm)
 
-ui/                         Sources frontend
+ui/                         Frontend sources
 ├── js/                     JavaScript source
-└── semantic/               Thème Fomantic UI
+└── semantic/               Fomantic UI theme
 
-tests/                      Tests PHPUnit
-docker/                     Fichiers Docker pour le développement
-docs/contributing/          Cette documentation
+tests/                      PHPUnit tests
+docker/                     Docker files for development
+docs/contributing/          This documentation
 ```
 
-Voir [AGENTS.md](../../AGENTS.md) pour les instructions détaillées sur le développement, les tests et les standards de code.
+See [AGENTS.md](../../AGENTS.md) for detailed instructions on development, testing, and code standards.
