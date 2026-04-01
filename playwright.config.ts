@@ -9,7 +9,14 @@ export default defineConfig({
   timeout: 30_000,
 
   // Report: generated HTML in playwright-report/
-  reporter: [['html', { open: 'never' }], ['list']],
+  reporter: [
+    ['html', { open: 'never' }],
+    ['list'],
+        [
+        "playwright-ctrf-json-reporter",
+        { outputDir: "end2end-report", outputFile: "ci-nighly-test.json" },
+    ]
+  ],
 
   use: {
     // Priority: --base-url (CLI) > E2E_BASE_URL (env) > default value
@@ -38,6 +45,11 @@ export default defineConfig({
       testMatch: 'tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
+    {
+      name: 'webkit',
+      testMatch: 'tests/e2e/specs/**/*.spec.ts',
+      use: { ...devices['Desktop Safari'] },
+    },
     // ── Plugin tests (discovered via testMatch glob) ──
     {
       name: 'plugins-chromium',
@@ -56,6 +68,15 @@ export default defineConfig({
         'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
       ],
       use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'plugins-webkit',
+      // Also match plugin specs in tests/plugins when present.
+      testMatch: [
+        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      ],
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 });

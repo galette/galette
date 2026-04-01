@@ -154,6 +154,8 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php \
 
 ### E2E Testing (Playwright)
 
+**📚 Detailed E2E documentation:** [`tests/e2e/README.md`](tests/e2e/README.md)
+
 E2E tests use Playwright and require a running PHP built-in server.
 
 ```bash
@@ -163,7 +165,10 @@ php tests/init_test_data.php
 # 2. Set up test database (once)
 GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
 
-# 3. Start the server (in a separate terminal or background)
+# 3. Seed fixture data (for *.fixture.spec.ts tests)
+GALETTE_TESTS=1 DB=mysql bin/console galette:seed-fixtures
+
+# 4. Start the server (in a separate terminal or background)
 DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
 
 # 4. Run Galette tests (choose your browser)
@@ -185,11 +190,16 @@ npm run report           # Open HTML test report
 ```
 
 **Test Structure:**
-- Test specs: `tests/e2e/specs/*.spec.ts`
+- **Test specs:** `tests/e2e/specs/*.spec.ts` (isolated tests) and `*.fixture.spec.ts` (tests using seeded fixtures)
 - Plugin test specs: `galette/plugins/*/tests/e2e/specs/*.spec.ts`
-- Test fixtures: `tests/e2e/fixtures/`
-- Configuration: `playwright.config.ts`
-- Reports: `playwright-report/index.html`
+- **Page Objects:** `tests/e2e/pages/` (reusable page interactions)
+- **Configuration:** `playwright.config.ts`
+- **Reports:** `playwright-report/index.html`
+
+**Test Organization:**
+- `*.spec.ts` - Tests that create their own data (CRUD operations)
+- `*.fixture.spec.ts` - Tests using pre-seeded fixture data (100+ members from Star Wars, Harry Potter, etc.)
+- See `tests/e2e/TEST_CREDENTIALS.md` for fixture user credentials
 
 **Plugin E2E tests:** Plugins can place their Playwright specs under
 `galette/plugins/<name>/tests/e2e/specs/`. They are automatically discovered

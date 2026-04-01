@@ -19,12 +19,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e:
+  playwright-tests:
     runs-on: ubuntu-latest
-    name: "E2E Playwright — ${{ github.event_name == 'schedule' && 'all browsers' || 'chromium' }} (postgres:17)"
+    name: Playwright — ${{ matrix.browser }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || '' }}
     env:
       DB: pgsql
       GALETTE_TESTS: 1
+      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags'))) }}
+
+    strategy:
+        fail-fast: false
+        matrix:
+          include:
+          #always tests higher stable php version with lower db version
+          #enable coverage on higher stable php version with higher PostgreSQL version
+          #cache must be disabled on one always enabled build (not coverage one, this already takes much time than others)
+          #higher stable php version
+            - { browser: "chromium", always: true }
+            - { browser: "firefox", always: false }
+            - { browser: "webkit", always: false }
 
     services:
       # Label used to access the service container
@@ -44,11 +57,13 @@ jobs:
 
     steps:
       - name: Checkout
+        if: env.skip != 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: PHP
+        if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.5"
@@ -58,6 +73,7 @@ jobs:
           ini-values: apc.enable_cli=1
 
       - name: Build Galette
+        if: env.skip != 'true'
         uses: galette/.github/actions/build-galette@main
         with:
           php-version: "8.5"
@@ -65,9 +81,11 @@ jobs:
           skip-checkout: true
 
       - name: Initialize test data
+        if: env.skip != 'true'
         run: php tests/init_test_data.php
 
       - name: Initialize Galette database (PostgreSQL)
+        if: env.skip != 'true'
         run: |
           bin/console galette:install -v \
             --dbtype=pgsql \
@@ -83,9 +101,11 @@ jobs:
           POSTGRES_PORT: 5432
 
       - name: Seed E2E fixtures
+        if: env.skip != 'true'
         run: bin/console galette:seed-fixtures -v
 
       - name: Start PHP built-in server
+        if: env.skip != 'true'
         run: |
           php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php &
           # Wait for service being up
@@ -94,20 +114,14 @@ jobs:
 
 
       - name: Install Playwright browsers
+        if: env.skip != 'true'
         run: |
-          if [ "${{ github.event_name }}" == "schedule" ]; then
-            npx playwright install --with-deps chromium firefox
-          else
-            npx playwright install --with-deps chromium
-          fi
+          npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run E2E tests
+        if: env.skip != 'true'
         run: |
-          if [ "${{ github.event_name }}" == "schedule" ]; then
-            npm run test:full
-          else
-            npm run test:chromium
-          fi
+          npx playwright test --project ${{ matrix.browser }}
         env:
           E2E_BASE_URL: http://127.0.0.1:8080
           E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}
@@ -115,7 +129,7 @@ jobs:
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
-        if: failure()
+        if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
@@ -129,6 +143,15 @@ jobs:
           path: |
             tests/tests-data/
             galette/data/logs/
-            galette/data/photos/
           retention-days: 7
           if-no-files-found: ignore
+
+      - name: Publish test summary results...
+        run: npx github-actions-ctrf end2end-report/ci-nighly-test.json
+        if: ${{ always() && env.skip != 'true' }}
+      - name: Upload HTML test report...
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: CI-Nightly-Test-Report
+          path: end2end-report

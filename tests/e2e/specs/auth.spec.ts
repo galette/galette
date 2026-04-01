@@ -26,68 +26,54 @@
  * @since     Available since 0.7dev - 2007-10-06
  */
 
+/**
+ * Authentication Tests
+ */
+
 import { test as base, expect } from '@playwright/test';
 import { test } from '../fixtures/auth.fixture';
 
-/**
- * Suite: Authentication
- */
-test.describe('Login page', () => {
+test.describe('Authentication', () => {
 
-  base.describe('Display', () => {
-    base.test('Login page display', async ({ page }) => {
-      await page.goto('/login');
+  base('Auth - Login page displays', async ({ page }) => {
+    await page.goto('/login');
 
-      await expect(page).toHaveURL(/\/login/);
-      await expect(page).toHaveTitle(/Galette/i);
-      await expect(page.locator('form.ui.form')).toBeVisible();
-      await expect(page.locator('input#login')).toBeVisible();
-      await expect(page.locator('input#password')).toBeVisible();
-      await expect(page.locator('input[type="submit"]')).toBeVisible();
-    });
-
-    base.test('Shows an error message if credentials are invalid', async ({ page }) => {
-      await page.goto('/login');
-
-      await page.locator('input#login').fill('non_existing_user');
-      await page.locator('input#password').fill('wrong_password');
-      await page.locator('input[type="submit"]').click();
-
-      await expect(page).toHaveURL(/\/login/);
-      // Wait for the error toast to appear. It can take some time in CI.
-      await expect(page.locator('.ui.toast.error')).toBeVisible({ timeout: 10000 });
-    });
+    await expect(page).toHaveURL(/\/login/);
+    await expect(page).toHaveTitle(/Galette/i);
+    await expect(page.locator('form.ui.form')).toBeVisible();
+    await expect(page.locator('input#login')).toBeVisible();
+    await expect(page.locator('input#password')).toBeVisible();
+    await expect(page.locator('input[type="submit"]')).toBeVisible();
   });
 
-  test.describe('Login/Logout', () => {
+  base('Auth - Shows error with invalid credentials', async ({ page }) => {
+    await page.goto('/login');
 
-    test('Redirects to dashboard when logged-in', async ({ loggedInPage: page }) => {
-      // Fixture already proceeds login
-      await expect(page).toHaveURL('/dashboard');
+    await page.locator('input#login').fill('non_existing_user');
+    await page.locator('input#password').fill('wrong_password');
+    await page.locator('input[type="submit"]').click();
 
-      // User password is 'admin', so the warning toast should be displayed.
-      // Increase timeout for slow CI environments.
-      await expect(page.locator('.ui.toast.warning')).toBeVisible({ timeout: 10000 });
+    await expect(page).toHaveURL(/\/login/);
+    await expect(page.locator('.ui.toast.error')).toBeVisible({ timeout: 10000 });
+  });
 
-      // Dashboard shows "Activities" section
-      await expect(page.locator('#main-activities')).toBeVisible();
-    });
+  test('Auth - Redirects to dashboard when logged in', async ({ loggedInPage: page }) => {
+    await expect(page).toHaveURL('/dashboard');
+    await expect(page.locator('.ui.toast.warning')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#main-activities')).toBeVisible();
+  });
 
-    test('Logout and redirect to login page', async ({ loggedInPage: page }) => {
-      //hide toast
-      await expect(page.locator('.ui.toast.warning')).toBeVisible();
-      await page.locator('.ui.toast.warning i[role="button"]').click();
-      await expect(page.locator('.ui.toast.warning')).toBeHidden();
+  test('Auth - Logout and redirect to login page', async ({ loggedInPage: page }) => {
+    await expect(page.locator('.ui.toast.warning')).toBeVisible();
+    await page.locator('.ui.toast.warning i[role="button"]').click();
+    await expect(page.locator('.ui.toast.warning')).toBeHidden();
 
-      // /!\ There are 2 logout links in the page, one is visible, the other is not (mobile menu).
-      const logoutLink = page.locator('[href*="/logout"]')
-      await logoutLink.last().click();
+    const logoutLink = page.locator('[href*="/logout"]');
+    await logoutLink.last().click();
 
-      // After logout, return to login page
-      await expect(page).toHaveURL('/login');
-      await expect(page.locator('input#login')).toBeVisible();
-    });
-
+    await expect(page).toHaveURL('/login');
+    await expect(page.locator('input#login')).toBeVisible();
   });
 
 });
+

@@ -872,6 +872,17 @@ class SeedFixtures extends AbstractCommand
                 'bool_admin_adh' => true,
             ]),
             array_merge($common, [
+                'nom_adh' => 'Skywalker', 'prenom_adh' => 'Anakin',
+                'login_adh' => 'anakin.skywalker', 'email_adh' => 'anakin.skywalker@jedi-temple.org',
+                'sexe_adh' => Adherent::MAN, 'titre_adh' => 1,
+                'id_statut' => 4, 'date_crea_adh' => '2023-03-01',
+                'ddn_adh' => '1955-03-20', 'lieu_naissance' => 'Mos Espa',
+                'ville_adh' => 'Mos Eisley', 'pays_adh' => 'Tatooine', 'cp_adh' => '00001',
+                'adresse_adh' => 'Temple Jedi, niveau 5',
+                'pseudo_adh' => 'skywalker', 'prof_adh' => 'Chevalier Jedi',
+                'tel_adh' => '0142424243',
+            ]),
+            array_merge($common, [
                 'nom_adh' => 'Solo', 'prenom_adh' => 'Han',
                 'login_adh' => 'han.solo', 'email_adh' => 'han.solo@faucon-millenium.net',
                 'sexe_adh' => Adherent::MAN, 'titre_adh' => 1,
@@ -1443,6 +1454,11 @@ class SeedFixtures extends AbstractCommand
                 'members' => ['arya.stark', 'maestro', 'neo.anderson', 'obiwan.kenobi'],
             ],
             [
+                'name' => 'Skywalker Family',
+                'managers' => ['anakin.skywalker'],
+                'members' => ['luke.skywalker', 'leia.organa', 'ben.skywalker'],
+            ],
+            [
                 'name' => 'Équipage du Planet Express',
                 'managers' => ['turanga.leela'],
                 'members' => ['philip.fry', 'bender.rodriguez'],
@@ -1994,6 +2010,13 @@ class SeedFixtures extends AbstractCommand
                 'Niveau de la Force (midichlorians)' => '13000',
                 'Phrase culte' => 'Vous êtes notre seul espoir.',
                 'Date d\'entrée au conseil galactique' => '2023-06-10',
+                'Membre du Conseil Jedi' => 1,
+            ],
+            'anakin.skywalker' => [
+                'Univers fictif d\'origine' => 0,
+                'Niveau de la Force (midichlorians)' => '27000',
+                'Phrase culte' => 'Je ramènerai la paix, la liberté, la justice et la sécurité dans mon nouvel Empire.',
+                'Date d\'entrée au conseil galactique' => '2023-03-01',
                 'Membre du Conseil Jedi' => 1,
             ],
             'han.solo' => [

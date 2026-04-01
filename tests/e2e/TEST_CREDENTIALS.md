@@ -10,6 +10,7 @@ during installation, not by the fixtures seeder.
 | Treasurer       | morpheus             | G@l3tte-E2E!   |
 | Secretary       | turanga.leela        | G@l3tte-E2E!   |
 | Standard member | luke.skywalker       | G@l3tte-E2E!   |
+| Group manager   | anakin.skywalker     | G@l3tte-E2E!   |
 | All others      | *(see login column)* | G@l3tte-E2E!   |
 
 ## Seeding / Cleaning
@@ -27,6 +28,7 @@ bin/console galette:seed-fixtures --clean
 - **Leia Organa** — admin flag, president status
 - **Morpheus** — treasurer status
 - **Turanga Leela** — secretary status
+- **Anakin Skywalker** — group manager of "Skywalker Family"
 - **Obi-Wan Kenobi** — founder status
 - **Bender Rodriguez** — veteran status, donation only (no fee)
 - Children (attached to parents): Ben Skywalker, Jacen Solo, Rickon Stark,

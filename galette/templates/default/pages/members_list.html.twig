@@ -116,8 +116,8 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label for="filter_str">{{ _T('among:') }}</label>
-                    <select name="membership_filter" class="ui search dropdown">
+                    <label for="membership_filter">{{ _T('among:') }}</label>
+                    <select name="membership_filter" id="membership_filter"  class="ui search dropdown">
                         {% for key, value in membership_filter_options %}
                             <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -125,7 +125,7 @@
                 </div>
                 <div class="flexend field">
                     <label for="filter_account" class="visually-hidden">{{ _T('among:') }}</label>
-                    <select name="filter_account" class="ui search dropdown">
+                    <select name="filter_account" id="filter_account" class="ui search dropdown">
                         {% for key, value in filter_accounts_options %}
                             <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}

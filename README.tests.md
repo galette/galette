@@ -53,31 +53,42 @@ DB=pgsql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
 
 ## Running E2E Tests (Playwright)
 
-See https://playwright.dev/docs/running-tests
+**📚 For detailed E2E testing documentation, see [`tests/e2e/README.md`](tests/e2e/README.md)**
+
 E2E tests require a running PHP built-in server configured for the test environment.
 
-1. **Start the PHP server**:
-   In a separate terminal (or in background), run:
-   ```bash
-   DB=pgsql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
-   ```
-   *Note: Use `DB=mysql` if you initialized a MySQL test database.*
+### Quick Start
 
-2. **Run Playwright tests**:
+1. **Seed fixture data** (for `*.fixture.spec.ts` tests):
+   ```bash
+   GALETTE_TESTS=1 DB=mysql bin/console galette:seed-fixtures
+   ```
+
+2. **Start the PHP server** (in a separate terminal):
+   ```bash
+   DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+   ```
+   *Note: Use `DB=pgsql` if you initialized a PostgreSQL test database.*
+
+3. **Run Playwright tests**:
    ```bash
    # Install browsers (first time only)
    npx playwright install --with-deps
 
    # Run tests on Chromium only
-   npx playwright test --project=chromium
+   npm run test:chromium
+   
    # Run tests on Firefox only
-   npx playwright test --project=firefox
+   npm run test:firefox
+   
    # Run tests on all browsers
    npm run test:full
 
    # Run with UI mode (recommended for debugging)
    npx playwright test --ui
    ```
+
+For more information on test structure, fixtures, page objects, and writing new tests, see the [E2E Testing Documentation](tests/e2e/README.md).
 
 ## Cleanup
 

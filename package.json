@@ -43,6 +43,7 @@
     "css-loader": "^7.1.4",
     "del": "^6.1.1",
     "file-loader": "^6.2.0",
+    "github-actions-ctrf": "^0.0.58",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-cli": "^3.1.0",
@@ -51,6 +52,7 @@
     "gulp-replace": "^1.1.4",
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
+    "playwright-ctrf-json-reporter": "^0.0.29",
     "typescript": "^6.0.2",
     "uglify-js": "^3.19.3"
   },

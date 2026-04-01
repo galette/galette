@@ -25,32 +25,19 @@
  * @link      https://galette.eu
  */
 
-import AxeBuilder from '@axe-core/playwright';
-import type { Page } from '@playwright/test';
-
 /**
- * Builds a pre-configured AxeBuilder instance for WCAG 2.0 A/AA audits.
+ * E2E Test Helpers Index
  *
- * To suppress a known false positive, call .disableRules(['rule-id']) on the
- * returned builder and document the reason in a comment at the call site.
+ * Export all helpers for easy importing:
+ *
+ * import { NavigationHelper, ModalHelper, FlashMessageHelper } from '../helpers';
  */
-export function axeBuilder(page: Page): AxeBuilder {
-  //FIXME: real A11y issues must be fixed in order to activate all tags.
-  return new AxeBuilder({ page }).withTags(['wcag21a'/*, 'wcag21aa', 'RGAAv4'*/]);
-}
 
-/**
- * Formats axe violations into a readable one-line-per-violation summary,
- * used as the assertion failure message so the developer can triage quickly
- * without parsing raw JSON.
- */
-export function formatViolations(
-  violations: Array<{ id: string; description: string; nodes: unknown[] }>
-): string {
-  if (violations.length === 0) {
-    return 'No violations';
-  }
-  return violations
-    .map(v => `[${v.id}] ${v.description} — ${v.nodes.length} node(s)`)
-    .join('\n');
-}
+export { DropdownHelper } from './dropdown';
+export { NavigationHelper } from './navigation';
+export { ModalHelper } from './modal';
+export { FlashMessageHelper } from './flash';
+export { TableHelper } from './table';
+export { DateHelper } from './date';
+export { FormHelper } from './form';
+
