@@ -70,13 +70,18 @@ class Texts
     {
         global $zdb, $login, $container;
         $this->preferences = $preferences;
-        if ($routeparser === null) {
+        if ($routeparser === null && $container !== null) {
             $routeparser = $container->get(RouteParser::class);
         }
-        if ($login === null) {
+        if ($login === null && $container !== null) {
             $login = $container->get(Login::class);
         }
-        $this->routeparser = $routeparser;
+        if ($login === null) {
+            $login = new Login($zdb, new I18n());
+        }
+        if ($routeparser !== null) {
+            $this->routeparser = $routeparser;
+        }
         $this
             ->setDb($zdb)
             ->setLogin($login);
@@ -173,6 +178,9 @@ class Texts
      */
     public function setChangePasswordURI(Password $password): self
     {
+        if (isset($this->routeparser)) {
+            return $this;
+        }
         $this->setReplacements([
             'change_pass_uri'   => $this->preferences->getURL()
                 . $this->routeparser->urlFor(
