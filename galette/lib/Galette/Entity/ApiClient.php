@@ -23,16 +23,16 @@ declare(strict_types=1);
 
 namespace Galette\Entity;
 
+use Analog\Analog;
 use ArrayObject;
 use Galette\Core\Db;
 use Galette\Entity\Attributes\Column;
 use Galette\Entity\Attributes\SkipIdCheck;
 use Safe\DateTime;
 use Throwable;
-use Analog\Analog;
 
 /**
- * API client
+ * API client entity (OAuth2 client credentials)
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -44,235 +44,158 @@ class ApiClient extends AbstractEntity
 
     #[Column(self::PK)]
     private string $client_id;
-    #[Column('client_secret')]
-    private string $client_secret;
+
+    #[Column('client_secret_hash')]
+    private string $client_secret_hash;
+
     #[Column('client_name')]
     private string $client_name;
+
     #[Column('redirect_uri')]
-    private string $redirect_uri;
+    private ?string $redirect_uri = null;
+
     #[Column('is_trusted')]
     private bool $is_trusted = false;
+
     #[Column('created_at')]
     private DateTime $created_at;
 
     /**
      * Main constructor
      *
-     * @param int|ArrayObject<string, int|string>|null $args Arguments
+     * @param string|ArrayObject<string, int|string>|null $args Client ID to load, a ResultSet row, or null
      */
-    public function __construct(int|ArrayObject|null $args = null)
+    public function __construct(string|ArrayObject|null $args = null)
     {
-        if (is_int($args)) {
-            $this->load($args);
+        if (is_string($args)) {
+            $this->loadByClientId($args);
         } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         }
     }
 
     /**
-     * Load an API Client from its identifier
-     *
-     * @param int $id Identifier
+     * Load an API client by its string client_id
      */
-    /*private function load(int $id): void
+    private function loadByClientId(string $clientId): void
     {
-        global $zdb;
         try {
-            $select = $zdb->select(self::TABLE);
-            $select->limit(1)->where([self::PK => $id]);
-
-            $results = $zdb->execute($select);
-            $res = $results->current();
-
-            $this->loadFromRS($res);
+            $select = $this->zdb->select(self::TABLE);
+            $select->limit(1)->where([self::PK => $clientId]);
+            $results = $this->zdb->execute($select);
+            if ($results->count() === 0) {
+                Analog::log('API client `' . $clientId . '` not found.', Analog::WARNING);
+                return;
+            }
+            $this->loadFromRS($results->current());
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading API client #' . $id . "Message:\n"
-                . $e->getMessage(),
+                'Error loading API client `' . $clientId . '`: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
         }
-    }*/
+    }
 
     /**
-     * Load API client from a db ResultSet
+     * Load API client from a DB ResultSet row
      *
-     * @param ArrayObject<string, int|string> $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet row
      */
-    /*private function loadFromRS(ArrayObject $rs): void
+    public function loadFromRS(ArrayObject $rs): static
     {
-        $this->client_id = $rs->{self::PK};
-        $this->client_secret = $rs->{self::PK};
-        $this->client_name = $rs->{self::PK};
-        $this->redirect_uri = $rs->{self::PK};
-        $this->is_trusted = $rs->{self::PK};
-        $this->created_at = new DateTime($rs->{self::PK});
-    }*/
+        $this->client_id = (string)$rs->{self::PK};
+        $this->client_secret_hash = (string)$rs->client_secret_hash;
+        $this->client_name = (string)$rs->client_name;
+        $this->redirect_uri = isset($rs->redirect_uri) ? (string)$rs->redirect_uri : null;
+        $this->is_trusted = (bool)$rs->is_trusted;
+        $this->created_at = new DateTime((string)$rs->created_at);
+        return $this;
+    }
 
     /**
-     * Store title in database
-     *
-     * @param Db $zdb Database instance
+     * Save (insert or update) API client in database.
+     * Hashes the secret if provided via setClientSecret() before calling this.
      */
-    public function store(Db $zdb): bool
+    public function save(): bool
     {
-        return false;
-        /*$data = [
-            'short_label'   => strip_tags($this->short),
-            'long_label'    => strip_tags((string)$this->long)
-        ];
         try {
-            if (isset($this->id) && $this->id > 0) {
-                $update = $zdb->update(self::TABLE);
-                $update->set($data)->where([self::PK => $this->id]);
-                $zdb->execute($update);
+            $data = [
+                'client_id'         => $this->client_id,
+                'client_secret_hash' => $this->client_secret_hash,
+                'client_name'       => $this->client_name,
+                'redirect_uri'      => $this->redirect_uri,
+                'is_trusted'        => $this->is_trusted ? 1 : 0,
+                'created_at'        => $this->created_at->format('Y-m-d H:i:s'),
+            ];
+
+            $select = $this->zdb->select(self::TABLE);
+            $select->limit(1)->where([self::PK => $this->client_id]);
+            $exists = $this->zdb->execute($select)->count() > 0;
+
+            if ($exists) {
+                $update = $this->zdb->update(self::TABLE);
+                $update->set($data)->where([self::PK => $this->client_id]);
+                $this->zdb->execute($update);
             } else {
-                $insert = $zdb->insert(self::TABLE);
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
-                $add = $zdb->execute($insert);
-                if (!$add->count() > 0) {
-                    Analog::log('Not stored!', Analog::ERROR);
+                $result = $this->zdb->execute($insert);
+                if (!$result->count() > 0) {
+                    Analog::log('API client not inserted.', Analog::ERROR);
                     return false;
                 }
-
-                $this->id = $zdb->getLastGeneratedValue($this);
             }
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing title: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                'Error storing API client `' . $this->client_id . '`: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
-        }*/
+        }
     }
 
     /**
-     * Remove current title
-     *
-     * @param Db $zdb Database instance
+     * Remove API client from database
      */
-    public function remove(Db $zdb): bool
+    public function remove(): bool
     {
-        return false;
-        /*$id = (int)$this->id;
-        if ($id === self::MR || $id === self::MRS) {
-            throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
-        }
-
         try {
-            $delete = $zdb->delete(self::TABLE);
-            $delete->where([self::PK => $id]);
-            $zdb->execute($delete);
-            Analog::log(
-                'Title #' . $id . ' (' . $this->short
-                . ') deleted successfully.',
-                Analog::INFO
-            );
+            $delete = $this->zdb->delete(self::TABLE);
+            $delete->where([self::PK => $this->client_id]);
+            $this->zdb->execute($delete);
             return true;
-        } catch (\RuntimeException $re) {
-            throw $re;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to delete title ' . $id . ' | ' . $e->getMessage(),
+                'Error removing API client `' . $this->client_id . '`: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
-        }*/
+        }
     }
 
     /**
-     * Getter
-     *
-     * @param string $name Property name
+     * Verify a plain-text secret against the stored hash
      */
-    /*public function __get(string $name): mixed
+    public function verifySecret(string $secret): bool
     {
-        global $lang;
-
-        switch ($name) {
-            case 'id':
-                return $this->$name;
-            case 'short':
-            case 'long':
-                if (
-                    $name === 'long'
-                    && ($this->long == null || trim($this->long) === '')
-                ) {
-                    $name = 'short';
-                }
-                return $this->$name;
-            case 'tshort':
-            case 'tlong':
-                $rname = null;
-                if ($name === 'tshort') {
-                    $rname = 'short';
-                } elseif ($this->long !== null && trim($this->long) !== '') {
-                    $rname = 'long';
-                } else {
-                    //switch back to short version if long does not exists
-                    $rname = 'short';
-                }
-                if (isset($lang) && isset($lang[$this->$rname])) {
-                    return _T($this->$rname);
-                } else {
-                    return $this->$rname;
-                }
+        if (!isset($this->client_secret_hash)) {
+            return false;
         }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                static::class,
-                $name
-            )
-        );
-    }*/
-
-    /**
-     * Isset
-     * Required for twig to access properties via __get
-     *
-     * @param string $name Property name
-     */
-    public function __isset(string $name): bool
-    {
-        return isset($this->$name);
+        return password_verify($secret, $this->client_secret_hash);
     }
 
     /**
-     * Setter
-     *
-     * @param string $name  Property name
-     * @param mixed  $value Property value
+     * Check whether the entity was loaded successfully
      */
-    /*public function __set(string $name, mixed $value): void
+    public function isLoaded(): bool
     {
-        switch ($name) {
-            case 'short':
-            case 'long':
-                if (trim((string)$value) === '') {
-                    Analog::log(
-                        'Trying to set empty value for title' . $name,
-                        Analog::WARNING
-                    );
-                } else {
-                    $this->$name = $value;
-                }
-                break;
-            default:
-                Analog::log(
-                    'Unable to set property ' . $name,
-                    Analog::WARNING
-                );
-                break;
-        }
-    }*/
+        return isset($this->client_id);
+    }
 
     /**
-     * Get ApiClient
+     * Get client ID
      */
     public function getClientId(): string
     {
@@ -280,34 +203,29 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * @param string $client_id
-     * @return ApiClient
+     * Set client ID
+     *
+     * @param string $client_id Client identifier
      */
-    public function setClientId(string $client_id): ApiClient
+    public function setClientId(string $client_id): static
     {
         $this->client_id = $client_id;
         return $this;
     }
 
     /**
-     * Get client_secret
+     * Set client secret — will be hashed with bcrypt
+     *
+     * @param string $secret Plain-text secret
      */
-    public function getClientSecret(): string
+    public function setClientSecret(string $secret): static
     {
-        return $this->client_secret;
-    }
-
-    /**
-     * Set client_secret
-     */
-    public function setClientSecret(string $client_secret): static
-    {
-        $this->client_secret = $client_secret;
+        $this->client_secret_hash = password_hash($secret, PASSWORD_BCRYPT);
         return $this;
     }
 
     /**
-     * Get client_name
+     * Get client name
      */
     public function getClientName(): string
     {
@@ -315,7 +233,9 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * Set client_name
+     * Set client name
+     *
+     * @param string $client_name Client display name
      */
     public function setClientName(string $client_name): static
     {
@@ -324,24 +244,26 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * Get redirect_uri
+     * Get redirect URI
      */
-    public function getRedirectUri(): string
+    public function getRedirectUri(): ?string
     {
         return $this->redirect_uri;
     }
 
     /**
-     * Set redirect_uri
+     * Set redirect URI
+     *
+     * @param string|null $redirect_uri OAuth2 redirect URI
      */
-    public function setRedirectUri(string $redirect_uri): static
+    public function setRedirectUri(?string $redirect_uri): static
     {
         $this->redirect_uri = $redirect_uri;
         return $this;
     }
 
     /**
-     * Get is_trusted
+     * Whether the client is trusted (admin-level access)
      */
     public function isTrusted(): bool
     {
@@ -349,7 +271,9 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * Set is_trusted
+     * Set trusted flag
+     *
+     * @param bool $is_trusted True if this client should have admin-level access
      */
     public function setTrusted(bool $is_trusted): static
     {
@@ -358,7 +282,7 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * Get created_at
+     * Get creation date
      */
     public function getCreatedAt(): DateTime
     {
@@ -366,11 +290,21 @@ class ApiClient extends AbstractEntity
     }
 
     /**
-     * Set created_at
+     * Set creation date
+     *
+     * @param DateTime $created_at Creation timestamp
      */
     public function setCreatedAt(DateTime $created_at): static
     {
         $this->created_at = $created_at;
         return $this;
+    }
+
+    /**
+     * Isset — required for Twig property access via __get
+     */
+    public function __isset(string $name): bool
+    {
+        return isset($this->$name);
     }
 }

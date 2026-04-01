@@ -292,6 +292,45 @@ class Login extends Authentication
     }
 
     /**
+     * Load user data by ID, for API authentication via JWT.
+     * Does not check password; the caller is responsible for prior authentication.
+     *
+     * @param int $id Member ID
+     */
+    public function loadById(int $id): bool
+    {
+        try {
+            $select = $this->select();
+            $select->where([Adherent::PK => $id]);
+
+            $results = $this->zdb->execute($select);
+            if ($results->count() === 0) {
+                Analog::log(
+                    'API: no entry found for id `' . $id . '`',
+                    Analog::WARNING
+                );
+                return false;
+            }
+            $row = $results->current();
+            if (!$row->activite_adh) {
+                Analog::log(
+                    'API: member `' . $id . '` is inactive',
+                    Analog::WARNING
+                );
+                return false;
+            }
+            $this->logUser($row);
+            return true;
+        } catch (Throwable $e) {
+            Analog::log(
+                'API: error loading user `' . $id . '`: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Does this login already exist?
      *
      * @param string $user the username

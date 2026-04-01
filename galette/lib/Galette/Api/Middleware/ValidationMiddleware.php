@@ -23,9 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Api\Middleware;
 
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
-use Slim\Psr7\Response;
+use Slim\Psr7\Response as SlimResponse;
+
+use function Safe\json_encode;
 
 /**
  * Galette API validation middleware
@@ -34,31 +37,37 @@ use Slim\Psr7\Response;
  */
 class ValidationMiddleware
 {
-    private array $rules;
-
-    public function __construct(array $rules)
+    /**
+     * Constructor
+     *
+     * @param array<string, string> $rules Validation rules map (field => rule)
+     */
+    public function __construct(private readonly array $rules)
     {
-        // Exemple de règles : ['nom' => 'required', 'email' => 'email']
-        $this->rules = $rules;
     }
 
+    /**
+     * Validate request body fields against the declared rules.
+     *
+     * @param Request $request Request
+     * @param Handler $handler Next handler
+     */
     public function __invoke(Request $request, Handler $handler): Response
     {
-        $data = $request->getParsedBody();
+        $data = (array)($request->getParsedBody() ?? []);
         $errors = [];
 
         foreach ($this->rules as $field => $rule) {
-            if ($rule === 'required' && (empty($data[$field]))) {
-                $errors[$field] = "Le champ '$field' est obligatoire.";
+            if ($rule === 'required' && empty($data[$field])) {
+                $errors[$field] = "Field '$field' is required.";
             }
-            // Ajoutez ici d'autres vérifications (format email, longueur, etc.)
         }
 
         if (!empty($errors)) {
-            $response = new Response();
-            $response->getBody()->write(json_encode([
-                'status' => 'error',
-                'errors' => $errors
+            $response = new SlimResponse();
+            $response->getBody()->write((string)json_encode([
+                'error'  => 'Validation failed',
+                'errors' => $errors,
             ]));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }

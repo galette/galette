@@ -32,13 +32,16 @@ use Galette\Tests\BaseGaletteTestCase;
  */
 class ScopeMiddleware extends BaseGaletteTestCase
 {
-    public function testInvokeReturns403WhenScopeIsMissing()
+    /**
+     * Test that __invoke returns 403 when the required scope is missing
+     */
+    public function testInvokeReturns403WhenScopeIsMissing(): void
     {
         $middleware = new \Galette\Api\Middleware\ScopeMiddleware('admin:all');
         $request = (new \Slim\Psr7\Factory\ServerRequestFactory())->createServerRequest('GET', '/api/admin');
 
         // On simule un utilisateur qui n'a que le scope 'profile:read'
-        $request = $request->withAttribute('user_scopes', ['profile:read']);
+        $request = $request->withAttribute('api_scopes', ['profile:read']);
 
         $handler = $this->createMock(\Psr\Http\Server\RequestHandlerInterface::class);
         $handler->expects($this->never())->method('handle');

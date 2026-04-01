@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Copyright © 2003-2026 The Galette Team
  *
@@ -25,9 +24,11 @@ declare(strict_types=1);
 namespace Galette\Api;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
 use Slim\Exception\HttpException;
 use Slim\Psr7\Response;
+use Throwable;
+
+use function Safe\json_encode;
 
 /**
  * Galette API response formatter
@@ -36,35 +37,44 @@ use Slim\Psr7\Response;
  */
 class ApiResponseFormatter
 {
+    /**
+     * Format any exception as a JSON error response.
+     *
+     * @param ServerRequestInterface $request             Request
+     * @param Throwable              $exception           Exception
+     * @param bool                   $displayErrorDetails Show error details
+     * @param bool                   $logErrors           Log errors
+     * @param bool                   $logErrorDetails     Log error details
+     */
     public function __invoke(
         ServerRequestInterface $request,
         Throwable $exception,
         bool $displayErrorDetails,
         bool $logErrors,
         bool $logErrorDetails
-    ) {
+    ): Response {
         $statusCode = 500;
-        $message = "Une erreur interne est survenue.";
+        $message = 'An internal error occurred.';
 
-        // Si c'est une exception propre à Slim (ex: 404 Not Found)
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getCode();
             $message = $exception->getMessage();
         }
 
-        // En mode développement, on peut être plus bavard
         if ($displayErrorDetails) {
             $message = $exception->getMessage();
         }
 
         $payload = [
-            'status' => 'error',
-            'code' => $statusCode,
-            'message' => $message
+            'status'  => 'error',
+            'code'    => $statusCode,
+            'message' => $message,
         ];
 
         $response = new Response();
-        $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        $response->getBody()->write(
+            (string)json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+        );
 
         return $response
             ->withStatus($statusCode)

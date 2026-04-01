@@ -21,37 +21,44 @@
 
 declare(strict_types=1);
 
-namespace Galette\Api\Actions;
+namespace Galette\Api\Actions\Member;
 
+use Galette\Api\Controllers\AbstractApiController;
+use Galette\Api\Dto\MemberDto;
+use Galette\Entity\Adherent;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * Galette API create member
+ * GET /api/v1/members/{id}
+ *
+ * Get a single member. Staff/admin can access any member;
+ * a regular member can only access their own profile.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class MemberActionCreate
+class GetMemberAction extends AbstractApiController
 {
-    private $memberService;
-
-    public function __construct($memberService)
-    {
-        // On injecte ici les services existants de Galette
-        $this->memberService = $memberService;
-    }
-
+    /**
+     * Handle GET /api/v1/members/{id}
+     *
+     * @param array<string, string> $args Route arguments
+     */
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        $id = $args['id'];
-        $member = $this->memberService->get($id);
+        $login = $this->getLogin($request);
+        $id = (int)$args['id'];
 
-        /*if (!$member) {
-            $response->getBody()->write(json_encode(['error' => 'Membre non trouvé']));
-            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
-        }*/
+        $isOwnProfile = $login->isLogged() && $login->id === $id;
+        if (!$isOwnProfile && !$this->checkPermission($request, 'staff')) {
+            return $this->forbidden($response);
+        }
 
-        $response->getBody()->write(json_encode($member));
-        return $response->withHeader('Content-Type', 'application/json');
+        $member = new Adherent($this->zdb, $id);
+        if ($member->id === null) {
+            return $this->notFound($response, 'Member not found');
+        }
+
+        return $this->json($response, MemberDto::fromAdherent($member)->toArray());
     }
 }

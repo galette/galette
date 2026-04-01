@@ -23,9 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Api\Middleware;
 
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
-use Slim\Psr7\Response;
+use Slim\Psr7\Response as SlimResponse;
+
+use function Safe\json_encode;
 
 /**
  * Galette API scope middleware
@@ -34,16 +37,33 @@ use Slim\Psr7\Response;
  */
 class ScopeMiddleware
 {
-    private string $requiredScope;
-    public function __construct($scope) { $this->requiredScope = $scope; }
+    /**
+     * Constructor
+     *
+     * @param string $requiredScope Required OAuth2 scope
+     */
+    public function __construct(private readonly string $requiredScope)
+    {
+    }
 
-    public function __invoke($request, $handler) {
-        $scopes = $request->getAttribute('user_scopes', []);
+    /**
+     * Check that the token scopes include the required scope.
+     *
+     * @param Request $request Request
+     * @param Handler $handler Next handler
+     */
+    public function __invoke(Request $request, Handler $handler): Response
+    {
+        $scopes = $request->getAttribute('api_scopes', []);
         if (!in_array($this->requiredScope, $scopes)) {
-            $response = new \Slim\Psr7\Response();
-            $response->getBody()->write(json_encode(['error' => 'Scope insuffisant: ' . $this->requiredScope]));
+            $response = new SlimResponse();
+            $response->getBody()->write((string)json_encode([
+                'error'   => 'Forbidden',
+                'message' => 'Scope insuffisant: ' . $this->requiredScope,
+            ]));
             return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
         }
+
         return $handler->handle($request);
     }
 }

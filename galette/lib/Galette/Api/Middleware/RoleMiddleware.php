@@ -28,28 +28,39 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use Slim\Psr7\Response as SlimResponse;
 
+use function Safe\json_encode;
+
 /**
  * Galette API role middleware
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class RoleMiddleware
 {
-    private string $requiredRole;
-
-    public function __construct(string $requiredRole)
+    /**
+     * Constructor
+     *
+     * @param string $requiredRole Required role ('admin', 'staff', etc.)
+     */
+    public function __construct(private readonly string $requiredRole)
     {
-        $this->requiredRole = $requiredRole;
     }
 
+    /**
+     * Check that the user's role satisfies the required role.
+     *
+     * @param Request $request Request
+     * @param Handler $handler Next handler
+     */
     public function __invoke(Request $request, Handler $handler): Response
     {
-        // On récupère les infos décodées par le JwtMiddleware précédent
         $userRole = $request->getAttribute('user_role');
 
         if ($userRole !== $this->requiredRole && $userRole !== 'admin') {
             $response = new SlimResponse();
-            $response->getBody()->write(json_encode([
-                'status' => 'error',
-                'message' => 'Accès refusé : privilèges insuffisants.'
+            $response->getBody()->write((string)json_encode([
+                'error'   => 'Forbidden',
+                'message' => 'Insufficient privileges.',
             ]));
             return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
         }
