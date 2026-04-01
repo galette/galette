@@ -25,19 +25,19 @@ namespace Galette\Api\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Entity\ApiToken;
 use Throwable;
 
 /**
  * Galette API token repository
  *
- * Manages refresh tokens for the API using Laminas DB.
+ * Handles bulk operations on ApiToken entities (revoke by user, revoke by client).
+ * Single-token lifecycle (create, revoke one) is delegated to ApiToken.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class ApiTokenRepository
 {
-    private const TABLE = 'api_tokens';
-
     /**
      * Constructor
      *
@@ -52,7 +52,7 @@ class ApiTokenRepository
      *
      * @param int|null    $idAdh    Member ID (null for client-only tokens)
      * @param string|null $clientId OAuth2 client ID (null for user-only tokens)
-     * @param string      $token    Raw token (will be hashed)
+     * @param string      $token    Raw token (will be hashed with SHA-256)
      * @param string[]    $scopes   Granted scopes
      * @param int         $ttl      Time-to-live in seconds (default: 30 days)
      */
@@ -63,19 +63,17 @@ class ApiTokenRepository
         array $scopes,
         int $ttl = 2592000
     ): bool {
+        $apiToken = new ApiToken();
+        $apiToken
+            ->setIdAdh($idAdh)
+            ->setClientId($clientId)
+            ->setTokenHash(hash('sha256', $token))
+            ->setAllowedScope($scopes !== [] ? implode(' ', $scopes) : null)
+            ->setCreatedAt(date('Y-m-d H:i:s'))
+            ->setExpiresAt(date('Y-m-d H:i:s', time() + $ttl));
+
         try {
-            $insert = $this->zdb->insert(self::TABLE);
-            $insert->values([
-                'id_adh'        => $idAdh,
-                'client_id'     => $clientId,
-                'token_hash'    => hash('sha256', $token),
-                'allowed_scope' => implode(' ', $scopes),
-                'created_at'    => date('Y-m-d H:i:s'),
-                'expires_at'    => date('Y-m-d H:i:s', time() + $ttl),
-                'is_revoked'    => false,
-            ]);
-            $result = $this->zdb->execute($insert);
-            return $result->count() > 0;
+            return $apiToken->save();
         } catch (Throwable $e) {
             Analog::log(
                 'API: error storing refresh token: ' . $e->getMessage(),
@@ -98,30 +96,18 @@ class ApiTokenRepository
         $hash = hash('sha256', $token);
 
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->where([
-                'token_hash' => $hash,
-                'is_revoked' => false,
-            ]);
-            if ($clientId !== null) {
-                $select->where(['client_id' => $clientId]);
-            }
-            $select->where->greaterThan('expires_at', date('Y-m-d H:i:s'));
+            $apiToken = ApiToken::findValid($this->zdb, $hash, $clientId);
 
-            $results = $this->zdb->execute($select);
-            if ($results->count() === 0) {
+            if ($apiToken === null) {
                 return null;
             }
 
-            $row = $results->current();
-
-            // Rotate: revoke the used token immediately
-            $this->revokeByHash($hash);
+            $apiToken->revoke();
 
             return [
-                'id_adh'        => $row->id_adh !== null ? (int)$row->id_adh : null,
-                'client_id'     => $row->client_id !== null ? (string)$row->client_id : null,
-                'allowed_scope' => (string)$row->allowed_scope,
+                'id_adh'        => $apiToken->getIdAdh(),
+                'client_id'     => $apiToken->getClientId(),
+                'allowed_scope' => $apiToken->getAllowedScope() ?? '',
             ];
         } catch (Throwable $e) {
             Analog::log(
@@ -134,11 +120,15 @@ class ApiTokenRepository
 
     /**
      * Revoke all refresh tokens for a given member.
+     *
+     * Bulk operation — not expressible as a single-entity lifecycle call.
+     *
+     * @param int $idAdh Member ID
      */
     public function revokeAllForUser(int $idAdh): void
     {
         try {
-            $update = $this->zdb->update(self::TABLE);
+            $update = $this->zdb->update(ApiToken::TABLE);
             $update->set(['is_revoked' => true])->where(['id_adh' => $idAdh]);
             $this->zdb->execute($update);
         } catch (Throwable $e) {
@@ -151,12 +141,24 @@ class ApiTokenRepository
     }
 
     /**
-     * Revoke a token by its SHA-256 hash.
+     * Revoke all refresh tokens for a given OAuth2 client.
+     *
+     * Bulk operation — not expressible as a single-entity lifecycle call.
+     *
+     * @param string $clientId OAuth2 client ID
      */
-    private function revokeByHash(string $hash): void
+    public function revokeAllForClient(string $clientId): void
     {
-        $update = $this->zdb->update(self::TABLE);
-        $update->set(['is_revoked' => true])->where(['token_hash' => $hash]);
-        $this->zdb->execute($update);
+        try {
+            $update = $this->zdb->update(ApiToken::TABLE);
+            $update->set(['is_revoked' => true])->where(['client_id' => $clientId]);
+            $this->zdb->execute($update);
+        } catch (Throwable $e) {
+            Analog::log(
+                'API: error revoking tokens for client ' . $clientId . ': ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
     }
 }
