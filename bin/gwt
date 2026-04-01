@@ -1,0 +1,1096 @@
+#!/usr/bin/env bash
+# gwt — Galette Worktree Tool
+# Manages isolated git worktree environments for Galette development.
+# Supports native mode (httpd + PHP-FPM) and Docker mode.
+#
+# Usage: gwt <command> [options]
+#   gwt add   <branch> [--type core|doc|website] [--php 82|83|84|85]
+#                      [--db-type pgsql|mysql] [--docker] [--port <n>]
+#                      [--no-deps] [--no-apache] [--no-db]
+#   gwt rm    <branch> [--type core] [--keep-db] [--no-apache]
+#   gwt ls    [--type core|all]
+#   gwt sync  <branch> [--type core]
+#   gwt db    <branch> reset
+#   gwt apache <branch> add|rm
+#   gwt docker <branch> up|down|logs|exec [-- <cmd>...]
+#   gwt selftest
+#   gwt help
+#
+# Sudoers fragment for passwordless Apache management (optional):
+#   trasher ALL=(root) NOPASSWD: /usr/bin/tee /etc/httpd/conf.d/galette-worktrees.d/*
+#   trasher ALL=(root) NOPASSWD: /usr/bin/rm /etc/httpd/conf.d/galette-worktrees.d/*
+#   trasher ALL=(root) NOPASSWD: /usr/bin/systemctl reload httpd
+#   trasher ALL=(root) NOPASSWD: /usr/bin/mkdir -p /etc/httpd/conf.d/galette-worktrees.d
+
+set -euo pipefail
+
+# ── Default configuration ────────────────────────────────────────────────────
+GWT_PROJECTS_BASE=/var/www/projects/galette
+GWT_REPOS=(
+    "core:/var/www/html/private/galette.git"
+    "doc:/var/www/html/private/galette-doc.git"
+    "website:/var/www/html/private/galette-website.git"
+)
+GWT_HTTPD_CONF_D=/etc/httpd/conf.d/galette-worktrees.d
+GWT_VHOST_NAME=galette.localhost
+GWT_DEFAULT_PHP=84
+GWT_DB_TYPE=pgsql
+GWT_DB_USER=galette
+GWT_DB_PASS=""
+GWT_DB_HOST=localhost
+GWT_DEVELOP_WORKTREE=/var/www/projects/galette/core/develop
+GWT_DEFAULT_PORT_START=8080
+
+# Load user config (credentials, overrides)
+[[ -f ~/.gwt.conf ]] && source ~/.gwt.conf
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Output helpers ────────────────────────────────────────────────────────────
+RED='\e[31m'; GREEN='\e[32m'; YELLOW='\e[33m'; CYAN='\e[36m'; BOLD='\e[1m'; RESET='\e[0m'
+
+gwt_info()  { echo -e "  ${CYAN}${*}${RESET}"; }
+gwt_step()  { echo -e "${GREEN}→${RESET} ${BOLD}${*}${RESET}"; }
+gwt_warn()  { echo -e "${YELLOW}WARN:${RESET} ${*}" >&2; }
+gwt_die()   { echo -e "${RED}ERROR:${RESET} ${*}" >&2; exit 1; }
+gwt_ok()    { echo -e "${GREEN}✓${RESET} ${BOLD}${*}${RESET}"; }
+
+# ── Name derivation ───────────────────────────────────────────────────────────
+
+# feature/acls → feature-acls  (URL slug and Apache conf name)
+gwt_slug() {
+    echo "${1//\//-}" | tr '.' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]'
+}
+
+# feature/acls → galette_feature_acls  (DB name)
+gwt_db_name() {
+    local name
+    name=$(echo "${1//\//_}" | tr '.' '_' | tr '-' '_' | tr '[:upper:]' '[:lower:]')
+    echo "galette_${name}"
+}
+
+# core, feature/acls → core-feature-acls.conf
+gwt_conf_name() {
+    local type="$1" branch="$2"
+    echo "${type}-$(gwt_slug "$branch").conf"
+}
+
+# core, feature/acls → /var/www/projects/galette/core/feature/acls
+gwt_worktree_path() {
+    local type="$1" branch="$2"
+    echo "${GWT_PROJECTS_BASE}/${type}/${branch}"
+}
+
+# core → /var/www/html/private/galette.git
+gwt_repo_for_type() {
+    local type="$1"
+    local entry
+    for entry in "${GWT_REPOS[@]}"; do
+        if [[ "${entry%%:*}" == "$type" ]]; then
+            echo "${entry#*:}"
+            return 0
+        fi
+    done
+    gwt_die "No repository configured for type '$type'. Check GWT_REPOS in ~/.gwt.conf"
+}
+
+# 84 → /var/opt/remi/php84/run/php-fpm/www.sock
+gwt_php_socket() {
+    local ver="$1"
+    local sock="/var/opt/remi/php${ver}/run/php-fpm/www.sock"
+    [[ -S "$sock" ]] || gwt_warn "PHP-FPM socket not found: $sock"
+    echo "$sock"
+}
+
+# ── Privilege helpers ─────────────────────────────────────────────────────────
+
+gwt_sudo_write() {
+    local file="$1"
+    local content="$2"
+    if sudo -n tee "$file" > /dev/null 2>&1 <<< "$content"; then
+        return 0
+    fi
+    gwt_warn "sudo failed for $file — write it manually:"
+    echo "--- BEGIN ---"
+    echo "$content"
+    echo "--- END ---"
+    echo "  sudo tee $file << 'EOF'"
+    echo "$content"
+    echo "EOF"
+    return 1
+}
+
+gwt_sudo_rm() {
+    local file="$1"
+    if [[ ! -f "$file" ]]; then return 0; fi
+    if sudo -n rm "$file" 2>/dev/null; then return 0; fi
+    gwt_warn "sudo failed — remove manually: sudo rm $file"
+    return 1
+}
+
+gwt_sudo_mkdir() {
+    local dir="$1"
+    [[ -d "$dir" ]] && return 0
+    if sudo -n mkdir -p "$dir" 2>/dev/null; then return 0; fi
+    gwt_warn "Cannot create $dir — run: sudo mkdir -p $dir"
+    return 1
+}
+
+gwt_reload_httpd() {
+    if sudo -n systemctl reload httpd 2>/dev/null; then
+        gwt_info "Apache reloaded"
+    else
+        gwt_warn "Could not reload Apache — run: sudo systemctl reload httpd"
+    fi
+}
+
+# ── Symlink / lock comparison ─────────────────────────────────────────────────
+
+# Returns 0 if lockfiles match (→ can symlink), 1 otherwise
+gwt_compare_lockfile() {
+    local file="$1" wt_path="$2" ref_path="$3"
+    local wt_file="${wt_path}/${file}"
+    local ref_file="${ref_path}/${file}"
+    [[ -f "$wt_file" && -f "$ref_file" ]] || return 1
+    [[ "$(md5sum "$wt_file" | cut -d' ' -f1)" == "$(md5sum "$ref_file" | cut -d' ' -f1)" ]]
+}
+
+# Ensure a directory target is either a real dir or a valid symlink
+# If it's a broken symlink, remove it; returns path type: "dir", "symlink", "none"
+gwt_check_dir_target() {
+    local path="$1"
+    if [[ -L "$path" ]]; then
+        if [[ -d "$path" ]]; then
+            echo "symlink"; return
+        else
+            rm "$path"  # broken symlink
+            echo "none"; return
+        fi
+    fi
+    [[ -d "$path" ]] && echo "dir" || echo "none"
+}
+
+# ── DB helpers ────────────────────────────────────────────────────────────────
+
+gwt_db_exists() {
+    local name="$1"
+    if [[ "$GWT_DB_TYPE" == "pgsql" ]]; then
+        psql -lqt 2>/dev/null | cut -d'|' -f1 | grep -qw "$name"
+    else
+        mysql -h"$GWT_DB_HOST" -u"$GWT_DB_USER" ${GWT_DB_PASS:+-p"$GWT_DB_PASS"} \
+            -e "SHOW DATABASES LIKE '$name'" 2>/dev/null | grep -q "$name"
+    fi
+}
+
+gwt_db_create() {
+    local name="$1"
+    gwt_step "Creating database '${name}' (${GWT_DB_TYPE})"
+    if [[ "$GWT_DB_TYPE" == "pgsql" ]]; then
+        createdb "$name" 2>/dev/null || \
+            psql -h "$GWT_DB_HOST" -U "$GWT_DB_USER" \
+                 -c "CREATE DATABASE \"${name}\";" 2>/dev/null || \
+            gwt_die "Failed to create PostgreSQL database '${name}'"
+    else
+        mysql -h"$GWT_DB_HOST" -u"$GWT_DB_USER" ${GWT_DB_PASS:+-p"$GWT_DB_PASS"} \
+            -e "CREATE DATABASE \`${name}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" || \
+            gwt_die "Failed to create MySQL database '${name}'"
+    fi
+}
+
+gwt_db_drop() {
+    local name="$1"
+    gwt_step "Dropping database '${name}'"
+    if [[ "$GWT_DB_TYPE" == "pgsql" ]]; then
+        dropdb "$name" 2>/dev/null || \
+            psql -h "$GWT_DB_HOST" -U "$GWT_DB_USER" \
+                 -c "DROP DATABASE IF EXISTS \"${name}\";" 2>/dev/null || \
+            gwt_warn "Could not drop database '${name}' — drop it manually"
+    else
+        mysql -h"$GWT_DB_HOST" -u"$GWT_DB_USER" ${GWT_DB_PASS:+-p"$GWT_DB_PASS"} \
+            -e "DROP DATABASE IF EXISTS \`${name}\`;" || \
+            gwt_warn "Could not drop database '${name}' — drop it manually"
+    fi
+}
+
+# ── Docker port management ────────────────────────────────────────────────────
+
+gwt_next_port() {
+    local used
+    used=$(grep -rh '# GWT_PORT=' "${GWT_PROJECTS_BASE}"/core/*/docker-compose.yml 2>/dev/null \
+           | grep -o '[0-9]*' | sort -n | tail -1)
+    echo $(( ${used:-$((GWT_DEFAULT_PORT_START - 1))} + 1 ))
+}
+
+gwt_compose_file() {
+    local wt_path="$1"
+    echo "${wt_path}/docker-compose.yml"
+}
+
+# ── Apache snippet ────────────────────────────────────────────────────────────
+
+gwt_apache_snippet() {
+    local slug="$1" branch="$2" wt_path="$3" php_ver="$4"
+    local webroot="${wt_path}/galette/webroot"
+    local socket
+    socket=$(gwt_php_socket "$php_ver")
+    local date
+    date=$(date +%Y-%m-%d)
+
+    cat <<APACHE
+# gwt-managed: core/${branch} | php${php_ver} | ${date}
+Alias /${slug} ${webroot}
+
+<Directory ${webroot}>
+    Options FollowSymLinks
+    Require all granted
+
+    RewriteEngine On
+    RewriteBase /${slug}/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+
+    <FilesMatch "\\.php\$">
+        SetHandler "proxy:unix:${socket}|fcgi://${GWT_VHOST_NAME}"
+    </FilesMatch>
+</Directory>
+APACHE
+}
+
+# ── docker-compose.yml generation ────────────────────────────────────────────
+
+gwt_compose_content() {
+    local slug="$1" branch="$2" wt_path="$3" php_ver="$4" db_type="$5" port="$6"
+    local db_name
+    db_name=$(gwt_db_name "$branch")
+    local date
+    date=$(date +%Y-%m-%d)
+
+    local db_service=""
+    if [[ "$db_type" == "pgsql" ]]; then
+        db_service="  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${db_name}
+      POSTGRES_USER: galette
+      POSTGRES_PASSWORD: \${GWT_DB_PASS:-galette}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [\"CMD-SHELL\", \"pg_isready -U galette\"]
+      interval: 5s
+      retries: 10"
+    else
+        db_service="  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${db_name}
+      MYSQL_USER: galette
+      MYSQL_PASSWORD: \${GWT_DB_PASS:-galette}
+      MYSQL_ROOT_PASSWORD: \${GWT_DB_ROOT_PASS:-rootpassword}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: [\"CMD\", \"mysqladmin\", \"ping\", \"-h\", \"localhost\"]
+      interval: 5s
+      retries: 10"
+    fi
+
+    cat <<COMPOSE
+# gwt-managed: core/${branch} | php${php_ver} | ${date}
+# GWT_PORT=${port}
+
+name: galette-${slug}
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        PHP_VERSION: "${php_ver:0:1}.${php_ver:1}"
+    volumes:
+      - .:/var/www/galette:z
+    environment:
+      GALETTE_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    image: httpd:2.4
+    ports:
+      - "${port}:80"
+    volumes:
+      - ./galette/webroot:/var/www/galette/galette/webroot:ro,z
+      - ./docker/apache/galette.conf:/usr/local/apache2/conf/extra/galette.conf:ro
+    depends_on:
+      - php
+
+${db_service}
+
+volumes:
+  db_data:
+COMPOSE
+}
+
+# ── Config file generation ────────────────────────────────────────────────────
+
+gwt_generate_config() {
+    local wt_path="$1" db_name="$2" db_type="$3" docker_mode="$4"
+    local config_file="${wt_path}/galette/config/config.inc.php"
+    local dist_file="${config_file}.dist"
+
+    [[ -f "$config_file" ]] && { gwt_info "config.inc.php already exists, skipping"; return 0; }
+    [[ -f "$dist_file" ]] || gwt_die "Template not found: $dist_file"
+
+    local db_host="$GWT_DB_HOST"
+    local db_port="5432"
+    local db_user="$GWT_DB_USER"
+    local db_pass="${GWT_DB_PASS:-galette}"
+    [[ "$db_type" == "mysql" ]] && db_port="3306"
+    [[ "$docker_mode" == "1" ]] && db_host="db"
+
+    sed \
+        -e "s|define(\"TYPE_DB\", \"pgsql\")|define(\"TYPE_DB\", \"${db_type}\")|" \
+        -e "s|define(\"HOST_DB\", \"localhost\")|define(\"HOST_DB\", \"${db_host}\")|" \
+        -e "s|define(\"PORT_DB\", \"5432\")|define(\"PORT_DB\", \"${db_port}\")|" \
+        -e "s|define(\"USER_DB\", \"galette\")|define(\"USER_DB\", \"${db_user}\")|" \
+        -e "s|define(\"PWD_DB\", \"demo\")|define(\"PWD_DB\", \"${db_pass}\")|" \
+        -e "s|define(\"NAME_DB\", \"galette\")|define(\"NAME_DB\", \"${db_name}\")|" \
+        "$dist_file" > "$config_file"
+    gwt_info "Generated galette/config/config.inc.php"
+}
+
+gwt_generate_behavior() {
+    local wt_path="$1" branch="$2" docker_mode="$3" port="${4:-}"
+    local behavior_file="${wt_path}/galette/config/behavior.inc.php"
+    local dist_file="${behavior_file}.dist"
+
+    [[ -f "$behavior_file" ]] && { gwt_info "behavior.inc.php already exists, skipping"; return 0; }
+    [[ -f "$dist_file" ]] || gwt_die "Template not found: $dist_file"
+
+    local uri
+    if [[ "$docker_mode" == "1" ]]; then
+        uri="http://localhost:${port}/"
+    else
+        uri="http://${GWT_VHOST_NAME}/$(gwt_slug "$branch")/"
+    fi
+
+    sed \
+        -e "s|//define('GALETTE_MODE', 'DEV')|define('GALETTE_MODE', 'DEV')|" \
+        -e "s|//define('GALETTE_URI', true)|define('GALETTE_URI', '${uri}')|" \
+        "$dist_file" > "$behavior_file"
+    gwt_info "Generated galette/config/behavior.inc.php (URI: ${uri})"
+}
+
+# ── Dependency management ─────────────────────────────────────────────────────
+
+gwt_setup_vendor() {
+    local wt_path="$1"
+    local vendor_dir="${wt_path}/galette/vendor"
+    local state
+    state=$(gwt_check_dir_target "$vendor_dir")
+
+    if [[ "$state" != "none" ]]; then
+        gwt_info "galette/vendor/ already present (${state}), skipping"
+        return 0
+    fi
+
+    local dev_vendor="${GWT_DEVELOP_WORKTREE}/galette/vendor"
+    if [[ -d "$GWT_DEVELOP_WORKTREE" ]] && \
+       gwt_compare_lockfile "composer.lock" "$wt_path" "$GWT_DEVELOP_WORKTREE" && \
+       [[ -d "$dev_vendor" ]]; then
+        ln -s "$dev_vendor" "$vendor_dir"
+        gwt_info "Symlinked galette/vendor/ from develop worktree"
+    else
+        gwt_step "Running composer install..."
+        composer install \
+            --prefer-dist \
+            --no-progress \
+            --optimize-autoloader \
+            --ignore-platform-reqs \
+            --working-dir="$wt_path"
+    fi
+}
+
+gwt_setup_node_modules() {
+    local wt_path="$1"
+    local nm_dir="${wt_path}/node_modules"
+    local state
+    state=$(gwt_check_dir_target "$nm_dir")
+
+    if [[ "$state" != "none" ]]; then
+        gwt_info "node_modules/ already present (${state}), skipping"
+        return 0
+    fi
+
+    local dev_nm="${GWT_DEVELOP_WORKTREE}/node_modules"
+    if [[ -d "$GWT_DEVELOP_WORKTREE" ]] && \
+       gwt_compare_lockfile "package-lock.json" "$wt_path" "$GWT_DEVELOP_WORKTREE" && \
+       [[ -d "$dev_nm" ]]; then
+        ln -s "$dev_nm" "$nm_dir"
+        gwt_info "Symlinked node_modules/ from develop worktree"
+    else
+        gwt_step "Running npm ci..."
+        (cd "$wt_path" && npm ci --prefer-offline --no-audit)
+    fi
+}
+
+gwt_setup_assets() {
+    local wt_path="$1"
+    if [[ ! -d "${wt_path}/galette/webroot/themes" ]]; then
+        gwt_step "Building frontend assets (npm run first-build)..."
+        (cd "$wt_path" && npm run first-build)
+    else
+        gwt_info "Assets already built (themes/ exists)"
+    fi
+}
+
+# ── Galette install ───────────────────────────────────────────────────────────
+
+gwt_galette_install_native() {
+    local wt_path="$1"
+    local marker="${wt_path}/.gwt-installed"
+    [[ -f "$marker" ]] && { gwt_info "Galette already installed (.gwt-installed marker)"; return 0; }
+
+    gwt_step "Running Galette installer..."
+    (cd "$wt_path" && GALETTE_TESTS=1 bin/console galette:install --no-interaction) \
+        || gwt_die "Galette install failed. Fix the error and re-run: gwt add ${2}"
+    touch "$marker"
+    gwt_info "Installation marker created"
+}
+
+gwt_galette_install_docker() {
+    local wt_path="$1" branch="$2"
+    local marker="${wt_path}/.gwt-installed"
+    [[ -f "$marker" ]] && { gwt_info "Galette already installed (.gwt-installed marker)"; return 0; }
+
+    gwt_step "Running Galette installer (docker)..."
+    local compose_file
+    compose_file=$(gwt_compose_file "$wt_path")
+    (cd "$wt_path" && docker compose -f "$compose_file" exec php \
+        bash -c "GALETTE_TESTS=1 bin/console galette:install --no-interaction") \
+        || gwt_die "Galette Docker install failed. Fix the error and re-run: gwt add --docker $branch"
+    touch "$marker"
+}
+
+# ════════════════════════════════════════════════════════════════════════════════
+# COMMANDS
+# ════════════════════════════════════════════════════════════════════════════════
+
+# ── gwt add ───────────────────────────────────────────────────────────────────
+
+cmd_add() {
+    local branch="" type="core" php_ver="$GWT_DEFAULT_PHP" db_type="$GWT_DB_TYPE"
+    local docker=0 port="" no_deps=0 no_apache=0 no_db=0
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --type)      type="$2";       shift 2 ;;
+            --php)       php_ver="$2";    shift 2 ;;
+            --db-type)   db_type="$2";    shift 2 ;;
+            --docker)    docker=1;        shift ;;
+            --port)      port="$2";       shift 2 ;;
+            --no-deps)   no_deps=1;       shift ;;
+            --no-apache) no_apache=1;     shift ;;
+            --no-db)     no_db=1;         shift ;;
+            -*)          gwt_die "Unknown option: $1" ;;
+            *)           branch="$1";     shift ;;
+        esac
+    done
+
+    [[ -z "$branch" ]] && gwt_die "Usage: gwt add <branch> [options]"
+
+    local slug db_name wt_path repo
+    slug=$(gwt_slug "$branch")
+    db_name=$(gwt_db_name "$branch")
+    wt_path=$(gwt_worktree_path "$type" "$branch")
+    repo=$(gwt_repo_for_type "$type")
+
+    echo
+    gwt_step "Adding worktree for branch '${branch}' (type: ${type})"
+    echo
+
+    # ── Step 1: Git worktree ────────────────────────────────────────────────
+    gwt_step "Git worktree"
+    if [[ -f "${wt_path}/.git" || -d "${wt_path}/.git" ]]; then
+        gwt_info "Worktree already exists at ${wt_path}"
+    else
+        # Check branch exists
+        if ! git -C "$repo" show-ref --verify --quiet "refs/heads/${branch}" 2>/dev/null; then
+            read -r -p "  Branch '${branch}' does not exist. Create from HEAD? [y/N] " ans
+            [[ "$ans" =~ ^[Yy] ]] || gwt_die "Aborting"
+            git -C "$repo" branch "$branch"
+            gwt_info "Created branch '${branch}'"
+        fi
+        git -C "$repo" worktree add "$wt_path" "$branch"
+        gwt_info "Worktree created at ${wt_path}"
+    fi
+
+    # Only do the rest for core type (doc/website have no DB/config/deps)
+    if [[ "$type" == "core" ]]; then
+
+        # ── Step 2: Generate config.inc.php ──────────────────────────────────
+        gwt_step "Generating galette/config/config.inc.php"
+        gwt_generate_config "$wt_path" "$db_name" "$db_type" "$docker"
+
+        # ── Step 3: Generate behavior.inc.php ────────────────────────────────
+        gwt_step "Generating galette/config/behavior.inc.php"
+        if [[ "$docker" == "1" ]]; then
+            [[ -z "$port" ]] && port=$(gwt_next_port)
+            gwt_generate_behavior "$wt_path" "$branch" "1" "$port"
+        else
+            gwt_generate_behavior "$wt_path" "$branch" "0"
+        fi
+
+        if [[ "$no_deps" == "0" ]]; then
+            # ── Step 4: PHP vendor ────────────────────────────────────────────
+            gwt_step "PHP dependencies (vendor)"
+            gwt_setup_vendor "$wt_path"
+
+            # ── Step 5: Node modules ──────────────────────────────────────────
+            gwt_step "JS dependencies (node_modules)"
+            gwt_setup_node_modules "$wt_path"
+
+            # ── Step 6: Build assets ──────────────────────────────────────────
+            gwt_step "Frontend assets"
+            gwt_setup_assets "$wt_path"
+        fi
+
+        if [[ "$docker" == "1" ]]; then
+            # ── Docker: generate compose file ─────────────────────────────────
+            [[ -z "$port" ]] && port=$(gwt_next_port)
+            local compose_file
+            compose_file=$(gwt_compose_file "$wt_path")
+
+            if [[ -f "$compose_file" ]]; then
+                gwt_info "docker-compose.yml already exists"
+            else
+                gwt_step "Generating docker-compose.yml (port ${port})"
+                gwt_compose_content "$slug" "$branch" "$wt_path" "$php_ver" "$db_type" "$port" \
+                    > "$compose_file"
+                gwt_info "docker-compose.yml generated"
+            fi
+
+            if [[ "$no_db" == "0" ]]; then
+                # ── Docker: start containers ───────────────────────────────────
+                gwt_step "Starting Docker containers..."
+                (cd "$wt_path" && docker compose up -d --build)
+
+                # ── Docker: Galette install ────────────────────────────────────
+                gwt_step "Galette install (docker)"
+                gwt_galette_install_docker "$wt_path" "$branch"
+            fi
+
+        else
+            # ── Native: DB + install ──────────────────────────────────────────
+            if [[ "$no_db" == "0" ]]; then
+                gwt_step "Database"
+                if gwt_db_exists "$db_name"; then
+                    gwt_info "Database '${db_name}' already exists"
+                else
+                    gwt_db_create "$db_name"
+                fi
+
+                gwt_step "Galette install (native)"
+                gwt_galette_install_native "$wt_path" "$branch"
+            fi
+
+            # ── Native: Apache snippet ────────────────────────────────────────
+            if [[ "$no_apache" == "0" ]]; then
+                gwt_step "Apache snippet"
+                cmd_apache_add "$branch" "$php_ver" "$type"
+            fi
+        fi
+    fi
+
+    echo
+    gwt_ok "Worktree ready!"
+    echo
+    if [[ "$docker" == "1" ]]; then
+        gwt_info "URL:    http://localhost:${port}/"
+        gwt_info "Logs:   gwt docker ${branch} logs"
+        gwt_info "Stop:   gwt docker ${branch} down"
+    else
+        gwt_info "URL:    http://${GWT_VHOST_NAME}/${slug}/"
+        gwt_info "Path:   ${wt_path}"
+    fi
+    echo
+}
+
+# ── gwt rm ────────────────────────────────────────────────────────────────────
+
+cmd_rm() {
+    local branch="" type="core" keep_db=0 no_apache=0
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --type)      type="$2";   shift 2 ;;
+            --keep-db)   keep_db=1;   shift ;;
+            --no-apache) no_apache=1; shift ;;
+            -*)          gwt_die "Unknown option: $1" ;;
+            *)           branch="$1"; shift ;;
+        esac
+    done
+
+    [[ -z "$branch" ]] && gwt_die "Usage: gwt rm <branch> [options]"
+
+    local slug db_name wt_path repo conf_file
+    slug=$(gwt_slug "$branch")
+    db_name=$(gwt_db_name "$branch")
+    wt_path=$(gwt_worktree_path "$type" "$branch")
+    repo=$(gwt_repo_for_type "$type")
+    conf_file="${GWT_HTTPD_CONF_D}/$(gwt_conf_name "$type" "$branch")"
+    local compose_file
+    compose_file=$(gwt_compose_file "$wt_path")
+
+    echo
+    gwt_step "Removing worktree for '${branch}'"
+    echo
+
+    # Detect mode (docker or native)
+    local is_docker=0
+    [[ -f "$compose_file" ]] && is_docker=1
+
+    # Stop Docker containers if present
+    if [[ "$is_docker" == "1" ]]; then
+        gwt_step "Stopping Docker containers..."
+        (cd "$wt_path" && docker compose down -v 2>/dev/null) || \
+            gwt_warn "Could not stop containers (maybe already stopped)"
+    fi
+
+    # Remove Apache snippet (native)
+    if [[ "$no_apache" == "0" && -f "$conf_file" ]]; then
+        gwt_step "Removing Apache snippet"
+        gwt_sudo_rm "$conf_file"
+        gwt_reload_httpd
+    fi
+
+    # Drop DB (native only)
+    if [[ "$type" == "core" && "$keep_db" == "0" && "$is_docker" == "0" ]]; then
+        if gwt_db_exists "$db_name"; then
+            gwt_db_drop "$db_name"
+        else
+            gwt_info "Database '${db_name}' not found, skipping"
+        fi
+    fi
+
+    # Remove .gwt-installed marker before worktree removal
+    rm -f "${wt_path}/.gwt-installed" 2>/dev/null || true
+
+    # Remove git worktree
+    gwt_step "Removing git worktree..."
+    if git -C "$repo" worktree remove "$wt_path" 2>/dev/null; then
+        gwt_info "Worktree removed"
+    else
+        gwt_warn "git worktree remove failed (unclean?). Trying --force..."
+        git -C "$repo" worktree remove --force "$wt_path" || \
+            gwt_die "Could not remove worktree at ${wt_path}"
+    fi
+
+    git -C "$repo" worktree prune
+    echo
+    gwt_ok "Worktree '${branch}' removed"
+    echo
+}
+
+# ── gwt ls ────────────────────────────────────────────────────────────────────
+
+cmd_ls() {
+    local type="core"
+    [[ "${1:-}" == "--type" ]] && { type="$2"; shift 2; } || true
+
+    local repos_to_list=()
+    if [[ "$type" == "all" ]]; then
+        for entry in "${GWT_REPOS[@]}"; do
+            repos_to_list+=("${entry%%:*}")
+        done
+    else
+        repos_to_list=("$type")
+    fi
+
+    printf "%-8s %-30s %-6s %-8s %s\n" "TYPE" "BRANCH" "PHP" "MODE" "URL"
+    printf "%-8s %-30s %-6s %-8s %s\n" "────" "──────────────────────────────" "────" "──────" "───────────────────────────────"
+
+    for t in "${repos_to_list[@]}"; do
+        local repo
+        repo=$(gwt_repo_for_type "$t") || continue
+
+        while IFS= read -r line; do
+            [[ "$line" =~ ^worktree\ (.+)$ ]] || continue
+            local wt_path="${BASH_REMATCH[1]}"
+
+            # Skip the primary worktree (bare/main repo)
+            [[ "$wt_path" == "$repo" ]] && continue
+            [[ "$wt_path" == "${repo%.git}" ]] && continue
+
+            # Read branch from next lines
+            local branch="" head=""
+            while IFS= read -r detail; do
+                [[ -z "$detail" ]] && break
+                [[ "$detail" =~ ^branch\ refs/heads/(.+)$ ]] && branch="${BASH_REMATCH[1]}"
+                [[ "$detail" =~ ^HEAD\ (.+)$ ]] && head="${BASH_REMATCH[1]}"
+            done
+
+            [[ -z "$branch" ]] && branch="(detached ${head:0:7})"
+
+            # Detect mode and URL
+            local compose_file="${wt_path}/docker-compose.yml"
+            local mode="native" url php_ver="?"
+
+            if [[ -f "$compose_file" ]]; then
+                mode="docker"
+                local docker_port
+                docker_port=$(grep -o '# GWT_PORT=[0-9]*' "$compose_file" 2>/dev/null | grep -o '[0-9]*' || echo "?")
+                url="http://localhost:${docker_port}/"
+                php_ver=$(grep -o 'PHP_VERSION.*"[0-9.]*"' "$compose_file" 2>/dev/null | grep -o '[0-9.]*' | head -1 | tr -d '.' || echo "?")
+            else
+                local conf_file="${GWT_HTTPD_CONF_D}/$(gwt_conf_name "$t" "$branch")"
+                local slug
+                slug=$(gwt_slug "$branch")
+                url="http://${GWT_VHOST_NAME}/${slug}/"
+                php_ver=$(grep -o 'php[0-9]*' "$conf_file" 2>/dev/null | head -1 | grep -o '[0-9]*' || echo "?")
+            fi
+
+            printf "%-8s %-30s %-6s %-8s %s\n" "$t" "$branch" "$php_ver" "$mode" "$url"
+        done < <(git -C "$repo" worktree list --porcelain 2>/dev/null)
+    done
+}
+
+# ── gwt sync ─────────────────────────────────────────────────────────────────
+
+cmd_sync() {
+    local branch="" type="core"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --type) type="$2"; shift 2 ;;
+            *)      branch="$1"; shift ;;
+        esac
+    done
+
+    [[ -z "$branch" ]] && gwt_die "Usage: gwt sync <branch>"
+
+    local wt_path
+    wt_path=$(gwt_worktree_path "$type" "$branch")
+    [[ -d "$wt_path" ]] || gwt_die "Worktree not found: $wt_path"
+
+    gwt_step "Syncing '${branch}'..."
+
+    # Capture lock checksums before pull
+    local lock_before pkg_before
+    lock_before=$(md5sum "${wt_path}/composer.lock" 2>/dev/null | cut -d' ' -f1 || echo "")
+    pkg_before=$(md5sum "${wt_path}/package-lock.json" 2>/dev/null | cut -d' ' -f1 || echo "")
+
+    git -C "$wt_path" pull --ff-only
+
+    local lock_after pkg_after
+    lock_after=$(md5sum "${wt_path}/composer.lock" 2>/dev/null | cut -d' ' -f1 || echo "")
+    pkg_after=$(md5sum "${wt_path}/package-lock.json" 2>/dev/null | cut -d' ' -f1 || echo "")
+
+    local js_changed=0
+
+    if [[ "$lock_before" != "$lock_after" ]]; then
+        gwt_step "composer.lock changed, updating vendor"
+        local vendor_dir="${wt_path}/galette/vendor"
+        if [[ -L "$vendor_dir" ]]; then
+            gwt_warn "vendor/ is a symlink to develop — cannot update in-place."
+            gwt_warn "Run: rm ${vendor_dir} && composer install --working-dir=${wt_path}"
+        else
+            composer install \
+                --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs \
+                --working-dir="$wt_path"
+        fi
+    fi
+
+    if [[ "$pkg_before" != "$pkg_after" ]]; then
+        gwt_step "package-lock.json changed, updating node_modules"
+        local nm_dir="${wt_path}/node_modules"
+        if [[ -L "$nm_dir" ]]; then
+            gwt_warn "node_modules/ is a symlink to develop — cannot update in-place."
+            gwt_warn "Run: rm ${nm_dir} && (cd ${wt_path} && npm ci)"
+        else
+            (cd "$wt_path" && npm ci --prefer-offline --no-audit)
+            js_changed=1
+        fi
+    fi
+
+    if [[ "$js_changed" == "1" ]]; then
+        gwt_step "Rebuilding frontend assets..."
+        (cd "$wt_path" && npm run build)
+    fi
+
+    gwt_ok "Sync complete"
+}
+
+# ── gwt db ────────────────────────────────────────────────────────────────────
+
+cmd_db() {
+    local branch="${1:-}" action="${2:-}"
+    [[ -z "$branch" || -z "$action" ]] && gwt_die "Usage: gwt db <branch> reset"
+    [[ "$action" != "reset" ]] && gwt_die "Unknown db action: $action (only 'reset' is supported)"
+
+    local db_name wt_path
+    db_name=$(gwt_db_name "$branch")
+    wt_path=$(gwt_worktree_path "core" "$branch")
+
+    [[ -d "$wt_path" ]] || gwt_die "Worktree not found: $wt_path"
+
+    gwt_step "Resetting database for '${branch}'"
+
+    gwt_db_drop "$db_name"
+    gwt_db_create "$db_name"
+
+    rm -f "${wt_path}/.gwt-installed"
+
+    local compose_file
+    compose_file=$(gwt_compose_file "$wt_path")
+    if [[ -f "$compose_file" ]]; then
+        gwt_galette_install_docker "$wt_path" "$branch"
+    else
+        gwt_galette_install_native "$wt_path" "$branch"
+    fi
+
+    gwt_ok "Database reset complete"
+}
+
+# ── gwt apache ────────────────────────────────────────────────────────────────
+
+cmd_apache() {
+    local branch="${1:-}" action="${2:-}" php_ver="$GWT_DEFAULT_PHP" type="core"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --php)  php_ver="$2"; shift 2 ;;
+            --type) type="$2";   shift 2 ;;
+            add|rm) action="$1"; shift ;;
+            *)      branch="$1"; shift ;;
+        esac
+    done
+
+    [[ -z "$branch" || -z "$action" ]] && gwt_die "Usage: gwt apache <branch> add|rm [--php <ver>]"
+
+    case "$action" in
+        add) cmd_apache_add "$branch" "$php_ver" "$type" ;;
+        rm)  cmd_apache_rm "$branch" "$type" ;;
+        *)   gwt_die "Unknown apache action: $action" ;;
+    esac
+}
+
+cmd_apache_add() {
+    local branch="$1" php_ver="$2" type="${3:-core}"
+    local slug conf_name conf_file wt_path snippet
+
+    slug=$(gwt_slug "$branch")
+    conf_name=$(gwt_conf_name "$type" "$branch")
+    conf_file="${GWT_HTTPD_CONF_D}/${conf_name}"
+    wt_path=$(gwt_worktree_path "$type" "$branch")
+
+    if [[ -f "$conf_file" ]]; then
+        gwt_info "Apache snippet already exists: ${conf_file}"
+        return 0
+    fi
+
+    gwt_sudo_mkdir "$GWT_HTTPD_CONF_D"
+
+    snippet=$(gwt_apache_snippet "$slug" "$branch" "$wt_path" "$php_ver")
+    gwt_sudo_write "$conf_file" "$snippet"
+    gwt_info "Apache snippet: ${conf_file}"
+    gwt_reload_httpd
+}
+
+cmd_apache_rm() {
+    local branch="$1" type="${2:-core}"
+    local conf_file
+    conf_file="${GWT_HTTPD_CONF_D}/$(gwt_conf_name "$type" "$branch")"
+
+    if [[ ! -f "$conf_file" ]]; then
+        gwt_info "No Apache snippet at ${conf_file}"
+        return 0
+    fi
+
+    gwt_sudo_rm "$conf_file"
+    gwt_info "Removed: ${conf_file}"
+    gwt_reload_httpd
+}
+
+# ── gwt docker ───────────────────────────────────────────────────────────────
+
+cmd_docker() {
+    local branch="${1:-}" action="${2:-}"
+    [[ -z "$branch" || -z "$action" ]] && \
+        gwt_die "Usage: gwt docker <branch> up|down|logs|exec [-- <cmd>...]"
+
+    local wt_path
+    wt_path=$(gwt_worktree_path "core" "$branch")
+    local compose_file
+    compose_file=$(gwt_compose_file "$wt_path")
+
+    [[ -f "$compose_file" ]] || \
+        gwt_die "No docker-compose.yml found for '${branch}'. Was it created with --docker?"
+
+    shift 2
+    case "$action" in
+        up)   (cd "$wt_path" && docker compose up -d --build "$@") ;;
+        down) (cd "$wt_path" && docker compose down "$@") ;;
+        logs) (cd "$wt_path" && docker compose logs -f "$@") ;;
+        exec)
+            # gwt docker <branch> exec -- bin/console ...
+            [[ "${1:-}" == "--" ]] && shift
+            (cd "$wt_path" && docker compose exec php "$@")
+            ;;
+        *)    gwt_die "Unknown docker action: $action" ;;
+    esac
+}
+
+# ── gwt selftest ──────────────────────────────────────────────────────────────
+
+cmd_selftest() {
+    local ok=1
+    echo
+    gwt_step "gwt selftest"
+    echo
+
+    # Check repos
+    for entry in "${GWT_REPOS[@]}"; do
+        local t="${entry%%:*}" p="${entry#*:}"
+        if [[ -d "$p" ]]; then
+            gwt_info "[$t] repo found: $p"
+        else
+            gwt_warn "[$t] repo NOT found: $p"
+            ok=0
+        fi
+    done
+
+    # Check httpd conf dir
+    if [[ -d "$GWT_HTTPD_CONF_D" ]]; then
+        gwt_info "Apache conf dir found: $GWT_HTTPD_CONF_D"
+    else
+        gwt_warn "Apache conf dir missing: $GWT_HTTPD_CONF_D"
+        gwt_warn "  Create it: sudo mkdir -p $GWT_HTTPD_CONF_D"
+        gwt_warn "  Then add to your vhost: IncludeOptional ${GWT_HTTPD_CONF_D}/*.conf"
+        ok=0
+    fi
+
+    # Check PHP sockets
+    for ver in 82 83 84 85; do
+        local sock="/var/opt/remi/php${ver}/run/php-fpm/www.sock"
+        if [[ -S "$sock" ]]; then
+            gwt_info "PHP ${ver:0:1}.${ver:1} FPM socket: OK"
+        else
+            gwt_info "PHP ${ver:0:1}.${ver:1} FPM socket: not present (install php${ver}-php-fpm if needed)"
+        fi
+    done
+
+    # Check tools
+    for tool in git composer npm docker; do
+        if command -v "$tool" &>/dev/null; then
+            gwt_info "$tool: $(command -v "$tool")"
+        else
+            gwt_warn "$tool: NOT found in PATH"
+            [[ "$tool" != "docker" ]] && ok=0
+        fi
+    done
+
+    # Check DB tools
+    if [[ "$GWT_DB_TYPE" == "pgsql" ]]; then
+        command -v createdb &>/dev/null && gwt_info "createdb: OK" || \
+            { gwt_warn "createdb not found (install postgresql)"; ok=0; }
+        command -v psql &>/dev/null && gwt_info "psql: OK" || \
+            { gwt_warn "psql not found"; ok=0; }
+    else
+        command -v mysql &>/dev/null && gwt_info "mysql: OK" || \
+            { gwt_warn "mysql not found"; ok=0; }
+    fi
+
+    # Check sudo for Apache
+    if sudo -n systemctl status httpd &>/dev/null; then
+        gwt_info "sudo httpd: OK (passwordless)"
+    else
+        gwt_warn "sudo httpd: requires password — Apache operations will need manual confirmation"
+    fi
+
+    echo
+    if [[ "$ok" == "1" ]]; then
+        gwt_ok "All checks passed"
+    else
+        gwt_warn "Some checks failed — review warnings above"
+    fi
+    echo
+}
+
+# ── gwt help ─────────────────────────────────────────────────────────────────
+
+cmd_help() {
+    cat <<'HELP'
+
+gwt — Galette Worktree Tool
+
+USAGE
+  gwt <command> [options]
+
+COMMANDS
+  add <branch>        Create a new worktree with full isolated environment
+  rm  <branch>        Remove a worktree and its resources
+  ls                  List active worktrees and their URLs
+  sync <branch>       Pull latest changes and update dependencies
+  db <branch> reset   Drop and recreate the database
+  apache <branch> add|rm   Manage Apache snippet (native mode)
+  docker <branch> up|down|logs|exec   Manage Docker containers
+  selftest            Check that all required tools are available
+  help                Show this message
+
+ADD OPTIONS
+  --type core|doc|website   Worktree type (default: core)
+  --php 82|83|84|85         PHP version for FPM socket (default: 84)
+  --db-type pgsql|mysql     Database engine (default: pgsql)
+  --docker                  Use Docker instead of native PHP-FPM
+  --port <n>                Docker web port (default: auto-assigned from 8080)
+  --no-deps                 Skip composer/npm
+  --no-apache               Skip Apache snippet generation
+  --no-db                   Skip DB creation and Galette install
+
+RM OPTIONS
+  --keep-db                 Do not drop the database
+  --no-apache               Do not remove the Apache snippet
+
+EXAMPLES
+  gwt add feature/acls --php 84
+  gwt add feature/api --docker --php 85 --db-type mysql
+  gwt add release/1.3.0 --no-deps
+  gwt sync feature/acls
+  gwt db feature/acls reset
+  gwt docker feature/api logs
+  gwt rm feature/acls --keep-db
+  gwt ls
+
+CONFIGURATION
+  Create ~/.gwt.conf to override defaults:
+    GWT_DB_PASS=secret
+    GWT_DB_USER=galette
+    GWT_DEFAULT_PHP=85
+    GWT_VHOST_NAME=galette.localhost
+
+HELP
+}
+
+# ── Dispatcher ────────────────────────────────────────────────────────────────
+
+main() {
+    local cmd="${1:-help}"
+    shift || true
+    case "$cmd" in
+        add)      cmd_add "$@" ;;
+        rm)       cmd_rm "$@" ;;
+        ls)       cmd_ls "$@" ;;
+        sync)     cmd_sync "$@" ;;
+        db)       cmd_db "$@" ;;
+        apache)   cmd_apache "$@" ;;
+        docker)   cmd_docker "$@" ;;
+        selftest) cmd_selftest ;;
+        help|-h|--help) cmd_help ;;
+        *) gwt_die "Unknown command: '${cmd}'. Run: gwt help" ;;
+    esac
+}
+
+main "$@"
