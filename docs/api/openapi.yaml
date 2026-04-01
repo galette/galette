@@ -1,0 +1,914 @@
+openapi: 3.1.0
+info:
+  title: Galette REST API
+  description: |
+    REST API stateless pour Galette, basée sur Slim 4 et JWT (HS256).
+
+    ## Authentification
+
+    Deux flux sont disponibles :
+
+    ### Flux utilisateur (login/password)
+    1. `POST /auth/login` avec `login` + `password`
+    2. Réponse : `access_token` (Bearer, 15 min) + `refresh_token` (30 jours)
+    3. Rafraîchissement via `POST /auth/refresh`
+
+    ### Flux client OAuth2 (machine-to-machine)
+    1. `POST /auth/token` avec `grant_type=client_credentials` + `client_id` + `client_secret`
+    2. Réponse : `access_token` uniquement (pas de refresh token pour ce flux)
+
+    ## Utilisation du token
+    Toutes les routes protégées requièrent l'en-tête :
+    ```
+    Authorization: Bearer <access_token>
+    ```
+
+    ## Niveaux d'accès
+    | Niveau | Description |
+    |--------|-------------|
+    | `staff` | Personnel : liste membres, contributions, groupes |
+    | `admin` | Administrateur : création, modification, suppression |
+    | `superadmin` | Super-administrateur : accès complet |
+
+    Les membres normaux peuvent uniquement lire leur propre profil (`GET /members/{id}`).
+
+  version: 1.0.0
+  contact:
+    name: Galette Team
+    url: https://galette.eu
+  license:
+    name: GPL-3.0-or-later
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+
+servers:
+  - url: /api/v1
+    description: API v1
+
+tags:
+  - name: auth
+    description: Authentification et gestion des tokens
+  - name: members
+    description: Gestion des adhérents
+  - name: contributions
+    description: Gestion des cotisations
+  - name: groups
+    description: Gestion des groupes
+
+# ---------------------------------------------------------------------------
+# Security scheme
+# ---------------------------------------------------------------------------
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  # -------------------------------------------------------------------------
+  # Reusable schemas
+  # -------------------------------------------------------------------------
+  schemas:
+
+    # --- Auth responses -----------------------------------------------------
+    TokenResponse:
+      type: object
+      required: [access_token, token_type, expires_in]
+      properties:
+        access_token:
+          type: string
+          description: JWT signé HS256
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+        token_type:
+          type: string
+          enum: [Bearer]
+        expires_in:
+          type: integer
+          description: Durée de validité en secondes (900 = 15 min)
+          example: 900
+        refresh_token:
+          type: string
+          description: Jeton de rafraîchissement opaque (absent pour le flux client_credentials)
+          example: a3f1b2c4d5e6...
+
+    # --- Member -------------------------------------------------------------
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          example: 42
+        login:
+          type: string
+          nullable: true
+          example: jean.dupont
+        name:
+          type: string
+          nullable: true
+          example: Dupont
+        surname:
+          type: string
+          nullable: true
+          example: Jean
+        company:
+          type: string
+          nullable: true
+          example: Acme Corp
+        email:
+          type: string
+          format: email
+          nullable: true
+          example: jean.dupont@example.org
+        phone:
+          type: string
+          nullable: true
+          example: +33 1 23 45 67 89
+        gsm:
+          type: string
+          nullable: true
+          example: +33 6 12 34 56 78
+        address:
+          type: string
+          nullable: true
+          example: 12 rue de la Paix
+        zipcode:
+          type: string
+          nullable: true
+          example: "75001"
+        town:
+          type: string
+          nullable: true
+          example: Paris
+        country:
+          type: string
+          nullable: true
+          example: France
+        active:
+          type: boolean
+          example: true
+        admin:
+          type: boolean
+          example: false
+        staff:
+          type: boolean
+          example: false
+        due_free:
+          type: boolean
+          description: Membre dispensé de cotisation
+          example: false
+        due_date:
+          type: string
+          nullable: true
+          description: Date d'échéance de cotisation (format local Galette)
+          example: 31/12/2026
+        creation_date:
+          type: string
+          nullable: true
+          description: Date d'adhésion (format local Galette)
+          example: 01/01/2025
+        number:
+          type: string
+          nullable: true
+          description: Numéro d'adhérent
+          example: "00042"
+
+    MemberInput:
+      type: object
+      description: Champs acceptés par `Adherent::check()` — seuls les champs envoyés sont modifiés
+      properties:
+        nom_adh:
+          type: string
+          example: Dupont
+        prenom_adh:
+          type: string
+          example: Jean
+        login_adh:
+          type: string
+          example: jean.dupont
+        mdp_adh:
+          type: string
+          format: password
+          example: S3cr3t!
+        mdp_adh2:
+          type: string
+          format: password
+          description: Confirmation du mot de passe
+          example: S3cr3t!
+        email_adh:
+          type: string
+          format: email
+          example: jean.dupont@example.org
+        tel_adh:
+          type: string
+          example: +33 1 23 45 67 89
+        gsm_adh:
+          type: string
+          example: +33 6 12 34 56 78
+        adresse_adh:
+          type: string
+          example: 12 rue de la Paix
+        cp_adh:
+          type: string
+          example: "75001"
+        ville_adh:
+          type: string
+          example: Paris
+        pays_adh:
+          type: string
+          example: France
+        societe_adh:
+          type: string
+          example: Acme Corp
+        bool_actif_adh:
+          type: boolean
+          example: true
+        bool_admin_adh:
+          type: boolean
+          example: false
+
+    # --- Contribution -------------------------------------------------------
+    Contribution:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          example: 7
+        id_adh:
+          type: integer
+          nullable: true
+          description: ID de l'adhérent
+          example: 42
+        id_type:
+          description: Type de cotisation (ID ou objet)
+          example: 1
+        amount:
+          type: number
+          format: float
+          nullable: true
+          example: 25.00
+        date:
+          type: string
+          nullable: true
+          description: Date de la cotisation (format local Galette)
+          example: 01/04/2026
+        begin_date:
+          type: string
+          nullable: true
+          description: Début de la période couverte
+          example: 01/01/2026
+        end_date:
+          type: string
+          nullable: true
+          description: Fin de la période couverte
+          example: 31/12/2026
+        payment:
+          description: Mode de paiement (ID ou libellé)
+          example: 1
+        info:
+          type: string
+          nullable: true
+          example: Cotisation annuelle 2026
+
+    ContributionInput:
+      type: object
+      description: Champs acceptés par `Contribution::check()`
+      properties:
+        id_adh:
+          type: integer
+          example: 42
+        id_type_cotis:
+          type: integer
+          example: 1
+        montant_cotis:
+          type: number
+          format: float
+          example: 25.00
+        date_enreg:
+          type: string
+          example: 01/04/2026
+        date_debut_cotis:
+          type: string
+          example: 01/01/2026
+        date_fin_cotis:
+          type: string
+          example: 31/12/2026
+        type_paiement_cotis:
+          type: integer
+          example: 1
+        info_cotis:
+          type: string
+          example: Cotisation annuelle 2026
+
+    # --- Group --------------------------------------------------------------
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          example: 3
+        name:
+          type: string
+          nullable: true
+          example: Bureau
+        parent_id:
+          type: integer
+          nullable: true
+          description: ID du groupe parent (null si racine)
+          example: null
+        member_count:
+          type: integer
+          example: 5
+
+    GroupWithMembers:
+      allOf:
+        - $ref: '#/components/schemas/Group'
+        - type: object
+          properties:
+            members:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 42
+                  name:
+                    type: string
+                    example: Dupont
+                  surname:
+                    type: string
+                    example: Jean
+                  login:
+                    type: string
+                    example: jean.dupont
+                  email:
+                    type: string
+                    format: email
+                    example: jean.dupont@example.org
+
+    # --- Pagination wrapper -------------------------------------------------
+    Pagination:
+      type: object
+      required: [page, per_page, total]
+      properties:
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 137
+
+    # --- Errors -------------------------------------------------------------
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: Member not found
+
+    ValidationErrors:
+      type: object
+      required: [errors]
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          example:
+            - Le champ login est obligatoire
+            - Le mot de passe est trop court
+
+  # -------------------------------------------------------------------------
+  # Reusable parameters
+  # -------------------------------------------------------------------------
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Numéro de page (commence à 1)
+
+    PerPageParam:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Nombre de résultats par page (max 100)
+
+  # -------------------------------------------------------------------------
+  # Reusable responses
+  # -------------------------------------------------------------------------
+  responses:
+    Unauthorized:
+      description: Token absent, expiré ou invalide
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Invalid or expired token
+
+    Forbidden:
+      description: Authentifié mais droits insuffisants
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Forbidden
+
+    NotFound:
+      description: Ressource introuvable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    UnprocessableEntity:
+      description: Données invalides — liste des erreurs de validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrors'
+
+    InternalError:
+      description: Erreur interne
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+# =============================================================================
+# Paths
+# =============================================================================
+paths:
+
+  # ---------------------------------------------------------------------------
+  # Auth
+  # ---------------------------------------------------------------------------
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Connexion utilisateur
+      description: |
+        Authentifie un utilisateur Galette avec son login et mot de passe.
+        Retourne un access token JWT (15 min) et un refresh token (30 jours).
+      operationId: authLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login:
+                  type: string
+                  example: jean.dupont
+                password:
+                  type: string
+                  format: password
+                  example: S3cr3t!
+      responses:
+        "200":
+          description: Authentification réussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "400":
+          description: Champ login ou password manquant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Identifiants invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/token:
+    post:
+      tags: [auth]
+      summary: Token client (OAuth2 client_credentials)
+      description: |
+        Flux machine-to-machine. Retourne un access token JWT (15 min).
+        Aucun refresh token n'est émis pour ce flux.
+      operationId: authToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [grant_type, client_id, client_secret]
+              properties:
+                grant_type:
+                  type: string
+                  enum: [client_credentials]
+                  example: client_credentials
+                client_id:
+                  type: string
+                  example: galette_flarum
+                client_secret:
+                  type: string
+                  format: password
+                  example: supersecret
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [grant_type, client_id, client_secret]
+              properties:
+                grant_type:
+                  type: string
+                  enum: [client_credentials]
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+      responses:
+        "200":
+          description: Token émis
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/TokenResponse'
+                  - type: object
+                    description: Pas de refresh_token pour ce flux
+        "400":
+          description: grant_type non supporté ou paramètres manquants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Identifiants client invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/refresh:
+    post:
+      tags: [auth]
+      summary: Rotation de refresh token
+      description: |
+        Consomme un refresh token (rotation : l'ancien est révoqué immédiatement)
+        et retourne une nouvelle paire access + refresh token.
+
+        Fonctionne pour les tokens utilisateur et les tokens client.
+      operationId: authRefresh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token:
+                  type: string
+                  example: a3f1b2c4d5e6...
+                client_id:
+                  type: string
+                  nullable: true
+                  description: Requis uniquement pour les tokens client
+                  example: galette_flarum
+      responses:
+        "200":
+          description: Nouveau couple de tokens émis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "400":
+          description: refresh_token manquant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Token invalide, expiré ou déjà consommé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ---------------------------------------------------------------------------
+  # Members
+  # ---------------------------------------------------------------------------
+  /members:
+    get:
+      tags: [members]
+      summary: Liste des adhérents
+      description: Retourne la liste paginée des adhérents. Requiert le niveau **staff**.
+      operationId: listMembers
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        "200":
+          description: Liste paginée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Member'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags: [members]
+      summary: Créer un adhérent
+      description: Crée un nouvel adhérent. Requiert le niveau **admin**.
+      operationId: createMember
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberInput'
+      responses:
+        "201":
+          description: Adhérent créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "422":
+          $ref: '#/components/responses/UnprocessableEntity'
+        "500":
+          $ref: '#/components/responses/InternalError'
+
+  /members/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de l'adhérent
+
+    get:
+      tags: [members]
+      summary: Obtenir un adhérent
+      description: |
+        Retourne le profil d'un adhérent.
+
+        - **Staff / admin / superadmin** : accès à n'importe quel profil.
+        - **Membre normal** : accès à son propre profil uniquement.
+      operationId: getMember
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Profil de l'adhérent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [members]
+      summary: Mettre à jour un adhérent
+      description: Met à jour un adhérent existant. Requiert le niveau **admin**.
+      operationId: updateMember
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberInput'
+      responses:
+        "200":
+          description: Adhérent mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "422":
+          $ref: '#/components/responses/UnprocessableEntity'
+        "500":
+          $ref: '#/components/responses/InternalError'
+
+    delete:
+      tags: [members]
+      summary: Supprimer un adhérent
+      description: Supprime un adhérent. Requiert le niveau **admin**.
+      operationId: deleteMember
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Adhérent supprimé (pas de corps)
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+
+  # ---------------------------------------------------------------------------
+  # Contributions
+  # ---------------------------------------------------------------------------
+  /contributions:
+    get:
+      tags: [contributions]
+      summary: Liste des cotisations
+      description: Retourne la liste paginée des cotisations. Requiert le niveau **staff**.
+      operationId: listContributions
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - name: id_adh
+          in: query
+          schema:
+            type: integer
+          description: Filtrer par ID d'adhérent
+          example: 42
+      responses:
+        "200":
+          description: Liste paginée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contribution'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags: [contributions]
+      summary: Créer une cotisation
+      description: Crée une nouvelle cotisation. Requiert le niveau **admin**.
+      operationId: createContribution
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContributionInput'
+      responses:
+        "201":
+          description: Cotisation créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "422":
+          $ref: '#/components/responses/UnprocessableEntity'
+        "500":
+          $ref: '#/components/responses/InternalError'
+
+  /contributions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la cotisation
+
+    get:
+      tags: [contributions]
+      summary: Obtenir une cotisation
+      description: Retourne le détail d'une cotisation. Requiert le niveau **staff**.
+      operationId: getContribution
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Détail de la cotisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
+  # Groups
+  # ---------------------------------------------------------------------------
+  /groups:
+    get:
+      tags: [groups]
+      summary: Liste des groupes
+      description: Retourne la liste de tous les groupes. Requiert le niveau **staff**.
+      operationId: listGroups
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Liste des groupes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+  /groups/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID du groupe
+
+    get:
+      tags: [groups]
+      summary: Obtenir un groupe
+      description: |
+        Retourne le détail d'un groupe avec la liste de ses membres.
+        Requiert le niveau **staff**.
+      operationId: getGroup
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Détail du groupe avec ses membres
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupWithMembers'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
