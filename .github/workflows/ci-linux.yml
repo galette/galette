@@ -384,4 +384,4 @@ jobs:
 
       - name: Headers checks
         run: |
-          ./galette/vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+          ./galette/vendor/bin/docheader check galette/index.php galette/data/index.php galette/lang galette/templates galette/config galette/lib galette/includes galette/install galette/webroot test
