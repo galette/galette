@@ -27,7 +27,6 @@ use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Laminas\Db\Sql\Insert;
 use Throwable;
 
 /**

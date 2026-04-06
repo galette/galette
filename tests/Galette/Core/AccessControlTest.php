@@ -28,8 +28,6 @@ use Galette\Core\Voters\SubscriptionVoter;
 use Galette\Core\Voters\GroupVoter;
 use Galette\Tests\GaletteTestCase;
 
-use function Safe\file_get_contents;
-
 /**
  * AccessControl tests class
  *
