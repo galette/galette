@@ -1,13 +1,15 @@
 # Introduction {#mainpage}
 
-Galette API documentation can be generated using doxygen apigen (https://www.doxygen.nl/).
+Galette is an open source web application for membership and contribution management, specially designed for non-profit organizations.
 
-A file named Doxyfile is provided in the sources to automate the process.
-To generate the documentation, just run from galette doc (current) directory:
+API documentation can be generated using [Doxygen](https://www.doxygen.nl/).
+
+A file named `Doxyfile` is provided in the sources to automate the process.
+To generate the documentation, just run from `galette/doc` (current) directory:
 
 `$ make html`
 
-HTML files will be generated into *apidocs* directory.
+HTML files will be generated into `apidocs` directory.
 
 API documentation is generated every night along with the nightly archive;
 you can see it at: https://apidoc.galette.eu

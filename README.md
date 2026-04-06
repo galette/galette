@@ -1,5 +1,5 @@
 # Galette
-## Gestionnaire d'Adhérents en Ligne Extrêmement Tarabiscoté mais Tellement Efficace
+## Free your association management! / Libérez la gestion de votre association !
 
 [![GitHub license](https://img.shields.io/github/license/galette/galette.svg)](https://github.com/galette/galette/blob/master/galette/docs/COPYING)
 [![Build Status](https://github.com/galette/galette/actions/workflows/ci-linux.yml/badge.svg)](https://github.com/galette/galette/actions/workflows/ci-linux.yml)

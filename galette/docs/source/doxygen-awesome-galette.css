@@ -77,10 +77,10 @@ a:hover, a:focus, a:active,
   max-height: none !important;
   padding-top: 12px;
 }
-#projectalign {
+#projectalign, #projectversion {
   display: none;
 }
-#projectversion {
+#slogan {
   color: var(--side-nav-foreground);
   padding-top: 25px;
   text-align: center;
