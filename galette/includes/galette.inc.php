@@ -100,6 +100,10 @@ if (!defined('GALETTE_DEBUG')) {
     define('GALETTE_DEBUG', false);
 }
 
+if (!defined('GALETTE_FEATURE_FLAGS')) {
+    define('GALETTE_FEATURE_FLAGS', []);
+}
+
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',

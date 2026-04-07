@@ -75,6 +75,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->addExtension($c->get(\Galette\Twig\CsrfExtension::class));
     $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
     $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
@@ -238,6 +239,18 @@ $container->set('members_fields_cats', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     /** @var array<array<string,string|int>> $members_fields_cats */
     return $members_fields_cats;
+});
+
+// -----------------------------------------------------------------------------
+// Feature Flags
+// -----------------------------------------------------------------------------
+
+$container->set(\Galette\Core\FeatureFlagManager::class, DI\autowire());
+
+$container->set(\Galette\Twig\FeatureFlagExtension::class, function (ContainerInterface $c) {
+    return new \Galette\Twig\FeatureFlagExtension(
+        $c->get(\Galette\Core\FeatureFlagManager::class)
+    );
 });
 
 // -----------------------------------------------------------------------------
