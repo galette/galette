@@ -50,6 +50,7 @@ parameters:
         - _CURRENT_THEME_PATH
         - GALETTE_TESTS_PATH
         - GALETTE_TESTS
+        - GALETTE_FEATURE_FLAGS
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:

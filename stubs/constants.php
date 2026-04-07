@@ -56,6 +56,7 @@
         define('GALETTE_INSTALLER', $random_val([false, true]));
         define('GALETTE_LOGGER_CHECKED', $random_val([false, true]));
         define('GALETTE_TESTS', $random_val([false, true]));
+        define('GALETTE_FEATURE_FLAGS', [$random_val(['acls', 'oauth2']), $random_val(['api-v2', 'new-dashboard'])]);
     }
 
     // Other constants
