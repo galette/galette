@@ -33,12 +33,13 @@
 
 html {
     /* define light-mode variable overrides here */
-    --primary-color: #EF9F06;
+    --primary-color: #ffb619;
     --primary-dark-color: #E18400;
     --primary-light-color: #FAB32B;
     --primary-lighter-color: #FFD482;
     --primary-lightest-color: #FFE8BD;
-    --page-foreground-color: #6B6B6B;
+    --page-foreground-color: #606060;
+    --page-secondary-foreground-color: #606060;
     --side-nav-background: #636B70;
     --side-nav-foreground: #fff;
     --header-background: #636B70;
@@ -46,8 +47,24 @@ html {
     --searchbar-background: #fff;
     --font-family: PtSans, Arial, sans-serif;
     --top-height: 200px;
+    --galette-blue: #007baa;
+    --galette-dark-blue: #005677;
+    --galette-dark-grey: #242424;
 }
 
+a:link, a:visited,
+.navpath li.navelem a {
+  color: var(--galette-blue) !important;
+}
+a:hover, a:focus, a:active,
+.navpath li.navelem a:hover,
+.navpath li.navelem b {
+  color: var(--galette-dark-blue) !important;
+}
+.navpath li.navelem a:hover {
+  text-shadow: none;
+  text-decoration: underline;
+}
 #titlearea table {
   width: 100%;
 }
@@ -68,9 +85,52 @@ html {
   padding-top: 25px;
   text-align: center;
 }
-.sm-dox a span.sub-arrow,
-.sm-dox a:hover span.sub-arrow {
-    color: var(--primary-color);
+#MSearchSelectWindow a.SelectItem:hover {
+  color: var(--galette-dark-grey) !important;
+}
+#nav-tree .selected a {
+  color: var(--primary-lightest-color) !important;
+}
+.arrow {
+  font-size: .6em;
+  margin-top: -.8em;
+  margin-right: .5em;
+}
+.paramname {
+  color: var(--galette-blue);
+}
+.icon,
+span.mlabel {
+  color: var(--galette-dark-grey);
+}
+#nav-sync img {
+  opacity: .7;
+}
+.main-menu-btn-icon,
+.main-menu-btn-icon::before,
+.main-menu-btn-icon::after {
+  background-color: var(--header-foreground);
+}
+.sm-dox a,
+.sm-dox a:visited,
+.sm-dox a:focus,
+.sm-dox a:active {
+  color: var(--side-nav-foreground) !important;
+}
+.sm-dox a:hover,
+ul.sm-dox ul a:link,
+ul.sm-dox ul a:visited,
+ul.sm-dox ul a:focus,
+ul.sm-dox ul a:hover {
+  color: var(--galette-dark-grey) !important;
+}
+.sm-dox a span.sub-arrow::before {
+  display: block;
+  content: '+';
+}
+.sm-dox a.highlighted span.sub-arrow::before {
+  display: block;
+  content: '-';
 }
 @media screen and (min-width: 767px) {
   #doc-content {
