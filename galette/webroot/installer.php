@@ -169,7 +169,7 @@ if (isset($_POST['stepback_btn'])) {
     if (
         !isset($_POST['install_passwdverified'])
         && strcmp(
-            $_POST['install_adminpass'],
+            (string)$_POST['install_adminpass'],
             (string)$_POST['install_adminpass_verif']
         )
     ) {

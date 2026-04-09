@@ -33,10 +33,10 @@ use Galette\Entity\Attributes\Column;
  */
 final readonly class ColumnMapping
 {
-    public const SCOPE_NONE = 0;
-    public const SCOPE_ALL = 1;
-    public const SCOPE_INSERT = 2;
-    public const SCOPE_UPDATE = 3;
+    public const int SCOPE_NONE = 0;
+    public const int SCOPE_ALL = 1;
+    public const int SCOPE_INSERT = 2;
+    public const int SCOPE_UPDATE = 3;
 
 
     /**

@@ -81,7 +81,7 @@ class ContributionsList extends GaletteTestCase
             \Analog\Analog::WARNING,
             sprintf(
                 '[Galette\Filters\ContributionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
-                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : \Galette\Enums\SQLOrder::class
+                \Galette\Enums\SQLOrder::class
             )
         );
 

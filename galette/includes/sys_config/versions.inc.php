@@ -28,7 +28,7 @@ declare(strict_types=1);
  * @phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
  */
 
-define('GALETTE_PHP_MIN', '8.2'); //@phpstan-ignore theCodingMachineSafe.function
+define('GALETTE_PHP_MIN', '8.3'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_MYSQL_MIN', '8.0'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_MARIADB_MIN', '10.5'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_PGSQL_MIN', '13'); //@phpstan-ignore theCodingMachineSafe.function

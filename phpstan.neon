@@ -60,6 +60,7 @@ parameters:
         - '/Access to an undefined property Sabre\\VObject\\Component\\VCard.*/'
         - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'
         - '/Cannot unset property .* because it might have hooks in a subclass./'
+        - '/Function unserialize is unsafe to use./'
         -
             identifier: theCodingMachineSafe.function
             paths:

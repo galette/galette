@@ -5,7 +5,7 @@
 **Project:** Galette - Membership management web application for non-profit organizations  
 **License:** GPL-3.0
 **Main Branch:** `develop` (development), `master` (stable releases)
-**Language:** PHP 8.2+ with Twig templates, JavaScript/CSS frontend
+**Language:** PHP 8.3+ with Twig templates, JavaScript/CSS frontend
 **Documentation:** https://doc.galette.eu/
 
 ## Essential Commands
@@ -299,8 +299,7 @@ vendor/bin/docheader check galette/config galette/lib galette/includes galette/i
 
 ## Composer run
 
-If possible, especially when updating dependencies or adding new ones, composer commands must be run with the correct version. `php --version` will give you the information. You can also check for the presence of the `php82` command.
-Currently, `laminas-db` composer library limit composer usage to PHP 8.2.  
+If possible, especially when updating dependencies or adding new ones, composer commands must be run with the correct version. `php --version` will give you the information. You can also check for the presence of the `php82`, `php83`, `php84` etc commands.
 
 composer files are as usual at the root of the project, but vendor directory is located at galette/vendor.
 
@@ -310,7 +309,7 @@ composer files are as usual at the root of the project, but vendor directory is 
 
 The `.github/workflows/ci-linux.yml` workflow runs on every push/PR:
 
-1. Tests on multiple PHP versions (8.2 => 8.5)
+1. Tests on multiple PHP versions (8.3 => 8.5)
 2. Tests on both MySQL and PostgreSQL
 3. Code style check (PHP-CS-Fixer)
 4. Code standards check (PHPCS)

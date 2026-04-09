@@ -663,7 +663,7 @@ class Preferences
         }
 
         // Check passwords. Hash will be done into the Preferences class
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], (string)$values['pref_admin_pass_check']) != 0) {
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp((string)$insert_values['pref_admin_pass'], (string)$values['pref_admin_pass_check']) != 0) {
             $this->errors[] = _T("Passwords mismatch");
         }
 

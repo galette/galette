@@ -183,7 +183,7 @@ trait Dynamics
                         }
                     }
                     //actual field value
-                    if ($value !== null && trim($value) !== '') {
+                    if ($value !== null && trim((string)$value) !== '') {
                         $this->dynamics->setValue($this->getID() ?? null, $field_id, $val_index, $value);
                     } else {
                         $this->dynamics->unsetValue($field_id, $val_index);

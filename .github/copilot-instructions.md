@@ -95,8 +95,7 @@ npm run dev
 ### Composer (PHP Dependencies)
 
 **Important:** When updating dependencies or adding new ones, use the correct PHP version.
-`php --version` will give you the information. Also check for the presence of the `php82` command.
-Currently, `laminas-db` limits composer usage to PHP 8.2.
+`php --version` will give you the information. You can also check for the presence of the `php82`, `php83`, `php84` etc commands.
 
 Composer files are at the root of the project, but the `vendor/` directory is located at `galette/vendor/`.
 
@@ -266,7 +265,7 @@ vendor/bin/rector process galette/lib/
 
 ### CI Pipeline Overview
 The CI runs on every push and pull request. It performs:
-1. **PHP Compatibility Check** (multiple PHP versions: 8.2 → 8.5)
+1. **PHP Compatibility Check** (multiple PHP versions: 8.3 → 8.5)
 2. **Install Dependencies** - Via `bin/install_deps`
 3. **Database Setup** - Using `bin/console galette:install` with test database
 4. **NPM Build** - Build frontend assets

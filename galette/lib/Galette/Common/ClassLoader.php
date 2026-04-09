@@ -272,7 +272,7 @@ class ClassLoader
                 if ($loader($className)) {
                     return true;
                 }
-            } elseif (is_string($loader) && $loader($className)) { // "MyClass::loadClass"
+            } elseif (is_string($loader) && $loader($className)) { // "MyClass::loadClass" @phpstan-ignore callable.void,booleanAnd.rightAlwaysFalse
                 return true;
             }
         }

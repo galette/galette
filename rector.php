@@ -19,14 +19,17 @@ return RectorConfig::configure()
         GALETTE_ROOT . '/webroot',
         __DIR__ . '/tests',
     ])
-    ->withPhpVersion(PhpVersion::PHP_82)
+    ->withSkip([
+        Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector::class,
+    ])
+    ->withPhpVersion(PhpVersion::PHP_83)
     ->withCache(
         cacheDirectory: sys_get_temp_dir() . '/galette-rector',
         cacheClass: FileCacheStorage::class
     )
     ->withParallel(timeoutSeconds: 300)
     // uncomment to reach your current PHP version
-    ->withPhpSets(php82: true)
+    ->withPhpSets(php83: true)
     ->withRules([
         CodeQuality\Assign\CombinedAssignRector::class,
         CodeQuality\BooleanAnd\RemoveUselessIsObjectCheckRector::class,

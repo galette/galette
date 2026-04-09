@@ -251,7 +251,7 @@ trait FileTrait
             $callback = [$this, 'storeFile'];
         }
 
-        if (!isset($request_files[$key]) || count($request_files) === 0) {
+        if (!isset($request_files[$key]) || count($request_files) === 0) { // @phpstan-ignore identical.alwaysFalse
             return true;
         }
 

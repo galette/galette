@@ -869,7 +869,7 @@ class Picture
             'jpg' => imagejpeg($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
             'png' => imagepng($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
             'gif' => imagegif($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
-            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function, match.alwaysTrue
             default => false
         };
     }

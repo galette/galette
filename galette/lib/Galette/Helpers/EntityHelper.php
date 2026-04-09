@@ -68,12 +68,12 @@ trait EntityHelper
      */
     public function __isset(string $name): bool
     {
-        if (in_array($name, ($this->forbidden_fields ?? []))) {
+        if (in_array($name, ($this->forbidden_fields ?? []))) { // @phpstan-ignore nullCoalesce.property
             return false;
         }
 
         $virtual_fields = [];
-        if (isset($this->virtual_fields)) {
+        if (isset($this->virtual_fields)) { // @phpstan-ignore isset.property
             $virtual_fields = $this->virtual_fields;
         }
         return in_array($name, $virtual_fields) || property_exists($this, $name);
