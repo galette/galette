@@ -599,7 +599,7 @@ class Plugins
     {
         $acls = [];
         foreach ($this->modules as $module) {
-            $acls = array_merge($acls, $module['acls']);
+            $acls = array_merge($acls, $module['acls'] ?? []);
         }
         return $acls;
     }
