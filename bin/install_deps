@@ -2,7 +2,13 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../galette"
 composer install --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
 npm ci --prefer-offline --no-audit
-# Check if themes directory and main JS bundle exist
-if [[ ! -f $DIR/webroot/themes/default/ui/semantic.min.js ]] || [[ ! -f $DIR/webroot/assets/js/galette-main.bundle.min.js ]]; then
-    npm run first-build
+
+# Skip assets build if cache was restored (ASSETS_CACHE_RESTORED env var set by CI)
+if [[ "$ASSETS_CACHE_RESTORED" == "true" ]]; then
+    echo "Assets restored from cache, skipping build"
+else
+    # Check if themes directory and main JS bundle exist
+    if [[ ! -f $DIR/webroot/themes/default/ui/semantic.min.js ]] || [[ ! -f $DIR/webroot/assets/js/galette-main.bundle.min.js ]]; then
+        npm run first-build
+    fi
 fi

@@ -90,56 +90,18 @@ jobs:
           extensions: apcu
           ini-values: apc.enable_cli=1
 
-      - name: "Show versions"
+      - name: Show database version
         if: env.skip != 'true'
         run: |
-          php --version
-          composer --version
-          echo "node $(node --version)"
-          echo "npm $(npm --version)"
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
-      - name: "Get Composer cache directory"
+      - name: Build Galette
         if: env.skip != 'true'
-        id: composer-cache
-        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: "Cache Composer dependencies"
-        if: env.skip != 'true'
-        uses: actions/cache@v5
+        uses: galette/.github/actions/build-galette@main
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: "${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}"
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-
-            ${{ runner.os }}-composer-
-
-      - name: "Cache npm dependencies"
-        if: env.skip != 'true'
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - name: Semantic hash
-        id: semantic-hash
-        if: env.skip != 'true'
-        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
-
-      - name: Restore dependencies
-        id: cache-galettedeps
-        if: env.skip != 'true' && matrix.cache == true
-        uses: actions/cache@v5
-        with:
-          path: |
-            galette/webroot/themes/
-          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
-
-      - name: Install dependencies
-        if: env.skip != 'true'
-        run: bin/install_deps
+          php-version: ${{ matrix.php-version }}
+          enable-assets-cache: ${{ matrix.cache }}
+          skip-checkout: true
 
       - name: Init for PostgreSQL (update)
         env:
@@ -257,56 +219,18 @@ jobs:
           extensions: apcu
           ini-values: apc.enable_cli=1
 
-      - name: "Show versions"
+      - name: Show database version
         if: env.skip != 'true'
         run: |
-          php --version
-          composer --version
-          echo "node $(node --version)"
-          echo "npm $(npm --version)"
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
-      - name: "Get Composer cache directory"
+      - name: Build Galette
         if: env.skip != 'true'
-        id: composer-cache
-        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: "Cache Composer dependencies"
-        if: env.skip != 'true'
-        uses: actions/cache@v5
+        uses: galette/.github/actions/build-galette@main
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-versions }}-
-            ${{ runner.os }}-composer-
-
-      - name: "Cache npm dependencies"
-        if: env.skip != 'true'
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - name: Semantic hash
-        id: semantic-hash
-        if: env.skip != 'true'
-        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
-
-      - name: Restore dependencies
-        id: cache-galettedeps
-        if: env.skip != 'true'
-        uses: actions/cache@v5
-        with:
-          path: |
-            galette/webroot/themes/
-          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
-
-      - name: Install dependencies
-        if: env.skip != 'true'
-        run: bin/install_deps
+          php-version: ${{ matrix.php-version }}
+          enable-assets-cache: true
+          skip-checkout: true
 
       - name: Fail database tests
         if: env.skip != 'true'

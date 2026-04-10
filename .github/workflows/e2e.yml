@@ -57,46 +57,12 @@ jobs:
           extensions: apcu, pdo_pgsql
           ini-values: apc.enable_cli=1
 
-      - name: Show versions
-        run: |
-          php --version
-          composer --version
-          echo "node $(node --version)"
-          echo "npm $(npm --version)"
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v5
+      - name: Build Galette
+        uses: galette/.github/actions/build-galette@main
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: "${{ runner.os }}-composer-8.5-${{ hashFiles('**/composer.lock') }}"
-          restore-keys: |
-            ${{ runner.os }}-composer-8.5-
-            ${{ runner.os }}-composer-
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - name: Semantic hash (assets)
-        id: semantic-hash
-        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
-
-      - name: Cache Galette built assets
-        uses: actions/cache@v5
-        with:
-          path: galette/webroot/themes/
-          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
-
-      - name: Install dependencies (Composer + npm assets)
-        run: bin/install_deps
+          php-version: "8.5"
+          enable-assets-cache: true
+          skip-checkout: true
 
       - name: Initialize test data
         run: php tests/init_test_data.php
