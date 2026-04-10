@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  // Default testDir for core Galette tests (used by 'chromium' and 'firefox' projects).
+  // Plugin projects override this with testDir: './galette/plugins' below.
   testDir: './tests/e2e/specs',
 
   // Timeout per test
@@ -25,12 +27,26 @@ export default defineConfig({
   },
 
   projects: [
+    // ── Core Galette tests (testDir inherited from top-level) ──
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    // ── Plugin tests (discovered via testMatch glob) ──
+    {
+      name: 'plugins-chromium',
+      testDir: './galette/plugins',
+      testMatch: '*/tests/e2e/specs/**/*.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'plugins-firefox',
+      testDir: './galette/plugins',
+      testMatch: '*/tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
   ],

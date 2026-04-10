@@ -166,22 +166,41 @@ GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
 # 3. Start the server (in a separate terminal or background)
 DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
 
-# 4. Run tests (choose your browser)
+# 4. Run Galette tests (choose your browser)
 npm run test:chromium    # Test with Chromium only
 npm run test:firefox     # Test with Firefox only
 npm run test:full        # Test with all configured browsers
 npm run test:headed      # Run tests in headed mode (see browser)
 npm run test:debug       # Run tests in debug mode (step through)
 
-# 5. View test results
+# 5. Run all tests (Galette + installed plugins)
+npm run test:all                  # All browsers
+npm run test:all:chromium         # Chromium only
+
+# 6. Run a specific plugin's tests
+npx playwright test galette/plugins/plugin-oauth2/tests/e2e/specs/
+
+# 7. View test results
 npm run report           # Open HTML test report
 ```
 
 **Test Structure:**
 - Test specs: `tests/e2e/specs/*.spec.ts`
+- Plugin test specs: `galette/plugins/*/tests/e2e/specs/*.spec.ts`
 - Test fixtures: `tests/e2e/fixtures/`
 - Configuration: `playwright.config.ts`
 - Reports: `playwright-report/index.html`
+
+**Plugin E2E tests:** Plugins can place their Playwright specs under
+`galette/plugins/<name>/tests/e2e/specs/`. They are automatically discovered
+by the root `playwright.config.ts` via `testDir: './galette/plugins'` and the
+`testMatch` glob `*/tests/e2e/specs/**/*.spec.ts`.
+
+**Shared fixtures for plugins:** The `tsconfig.json` alias `@e2e/*` maps to
+`tests/e2e/*`, so plugin specs can import Galette fixtures with:
+```typescript
+import { test } from '@e2e/fixtures/auth.fixture';
+```
 
 **CRITICAL:** Always use the `tests/router_e2e.php` router with `php -S` to ensure the correct test environment is loaded (session path, data path, etc.).
 

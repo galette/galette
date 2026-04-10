@@ -11,11 +11,16 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "types": ["node"],
-    "lib": ["ES2020", "DOM"]
+    "lib": ["ES2020", "DOM"],
+    "baseUrl": ".",
+    "paths": {
+      "@e2e/*": ["tests/e2e/*"]
+    }
   },
   "include": [
     "playwright.config.ts",
-    "tests/e2e/**/*.ts"
+    "tests/e2e/**/*.ts",
+    "galette/plugins/*/tests/e2e/**/*.ts"
   ],
   "exclude": [
     "node_modules",
