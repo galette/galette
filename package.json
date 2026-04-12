@@ -17,6 +17,8 @@
     "test": "playwright test --project \"chromium\"",
     "test:full": "playwright test --project \"chromium\" --project \"firefox\"",
     "test:all": "playwright test",
+    "test:plugins": "playwright test --project \"plugins-chromium\"",
+    "test:plugins:all": "playwright test --project \"plugins-chromium\" --project \"plugins-firefox\"",
     "test:all:chromium": "playwright test --project \"chromium\" --project \"plugins-chromium\"",
     "test:chromium": "playwright test --project \"chromium\"",
     "test:firefox": "playwright test --project \"firefox\"",
