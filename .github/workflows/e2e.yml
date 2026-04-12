@@ -120,3 +120,15 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+      - name: Upload test data (logs, photos, etc.)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-data
+          path: |
+            tests/tests-data/
+            galette/data/logs/
+            galette/data/photos/
+          retention-days: 7
+          if-no-files-found: ignore

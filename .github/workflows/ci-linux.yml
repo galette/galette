@@ -162,6 +162,18 @@ jobs:
           files: tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
+      - name: Upload test data (logs, photos, etc.)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-data-${{ matrix.php-version }}-${{ matrix.db-image }}
+          path: |
+            tests/tests-data/
+            galette/data/logs/
+            galette/data/photos/
+          retention-days: 7
+          if-no-files-found: ignore
+
   unsupported-dbs:
     runs-on: ubuntu-latest
     name: DB Fail on ${{ matrix.php-versions }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || ''}}
@@ -235,6 +247,18 @@ jobs:
       - name: Fail database tests
         if: env.skip != 'true'
         run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteDbFails/
+
+      - name: Upload test data (logs, photos, etc.)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-data-fail-${{ matrix.php-version }}-${{ matrix.db-image }}
+          path: |
+            tests/tests-data/
+            galette/data/logs/
+            galette/data/photos/
+          retention-days: 7
+          if-no-files-found: ignore
 
   lint:
     runs-on: ubuntu-latest
