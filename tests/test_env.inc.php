@@ -121,8 +121,15 @@ if (php_sapi_name() === 'cli-server') { //@phpstan-ignore theCodingMachineSafe.f
     ini_set('session.save_path', GALETTE_SESSIONS_PATH); //@phpstan-ignore theCodingMachineSafe.function,constant.notFound
 }
 
+// Allow overriding GALETTE_PLUGINS_PATH via environment variable
+// e.g.: GALETTE_PLUGINS_PATH=/path/to/plugins php -S ...
 if (!defined('GALETTE_PLUGINS_PATH')) {
-    define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/'); //@phpstan-ignore theCodingMachineSafe.function
+    $plugins_path_env = getenv('GALETTE_PLUGINS_PATH');
+    if ($plugins_path_env !== false && $plugins_path_env !== '') {
+        define('GALETTE_PLUGINS_PATH', rtrim($plugins_path_env, '/') . '/'); //@phpstan-ignore theCodingMachineSafe.function
+    } else {
+        define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/'); //@phpstan-ignore theCodingMachineSafe.function
+    }
 }
 
 if (!defined('GALETTE_MODE')) {
