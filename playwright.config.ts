@@ -1,9 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  // Default testDir for core Galette tests (used by 'chromium' and 'firefox' projects).
-  // Plugin projects override this with testDir: './galette/plugins' below.
-  testDir: './tests/e2e/specs',
+  // Common root so that --ui mode watches all test files (core + plugins).
+  // Each project uses testMatch to narrow down the files it picks up.
+  testDir: '.',
 
   // Timeout per test
   timeout: 30_000,
@@ -27,26 +27,26 @@ export default defineConfig({
   },
 
   projects: [
-    // ── Core Galette tests (testDir inherited from top-level) ──
+    // ── Core Galette tests ──
     {
       name: 'chromium',
+      testMatch: 'tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'firefox',
+      testMatch: 'tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
     // ── Plugin tests (discovered via testMatch glob) ──
     {
       name: 'plugins-chromium',
-      testDir: './galette/plugins',
-      testMatch: '*/tests/e2e/specs/**/*.spec.ts',
+      testMatch: 'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'plugins-firefox',
-      testDir: './galette/plugins',
-      testMatch: '*/tests/e2e/specs/**/*.spec.ts',
+      testMatch: 'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
   ],
