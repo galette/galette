@@ -41,12 +41,20 @@ export default defineConfig({
     // ── Plugin tests (discovered via testMatch glob) ──
     {
       name: 'plugins-chromium',
-      testMatch: 'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      // Also match plugin specs in tests/plugins when present.
+      testMatch: [
+        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      ],
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'plugins-firefox',
-      testMatch: 'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      // Same fallback pattern list for Firefox plugin tests.
+      testMatch: [
+        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      ],
       use: { ...devices['Desktop Firefox'] },
     },
   ],
