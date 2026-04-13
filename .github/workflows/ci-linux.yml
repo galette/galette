@@ -162,11 +162,18 @@ jobs:
           files: tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
+      - name: Sanitize ref name for artifact upload
+        if: failure()
+        id: sanitize
+        run: |
+          db_image=$(echo -n "${{ github.event.inputs.ref }}" | sed 's/[\\\/'"'"':<>|*?]/-/g')
+          echo "db_image=$db_image" >> $GITHUB_OUTPUT
+
       - name: Upload test data (logs, photos, etc.)
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: test-data-${{ matrix.php-version }}-${{ matrix.db-image }}
+          name: test-data-${{ matrix.php-version }}-${{ steps.sanitize.outputs.db_image }}
           path: |
             tests/tests-data/
             galette/data/logs/
