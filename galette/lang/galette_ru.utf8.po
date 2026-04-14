@@ -21,13 +21,14 @@
 # Artem <artemkozhin80@gmail.com>, 2026.
 # Marat Ismailov <klippygames@gmail.com>, 2026.
 # Sergey Bishop <bsaq32@gmail.com>, 2026.
+# Тырцев Леонид <tleonid2018.pro@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2026-04-04 23:09+0000\n"
-"Last-Translator: Sergey Bishop <bsaq32@gmail.com>\n"
+"PO-Revision-Date: 2026-04-15 06:09+0000\n"
+"Last-Translator: Тырцев Леонид <tleonid2018.pro@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -171,7 +172,6 @@ msgid "Trying to load mailing while email is disabled in preferences."
 msgstr ""
 "Попытка загрузить рассылку, когда электронная почта отключена в настройках."
 
-#, fuzzy
 msgid "No member selected for mailing!"
 msgstr "Не выбран участник для рассылки!"
 
@@ -814,8 +814,6 @@ msgstr "Плагин %1$s был включён"
 msgid "Plugin %1$s has been disabled"
 msgstr "Плагин %1$s был отключён"
 
-#, fuzzy
-#| msgid "transaction"
 msgid "Labels translation"
 msgstr "Перевод меток"
 
@@ -859,7 +857,7 @@ msgstr "Файл не был загружен!"
 msgid "Your file has been successfully uploaded!"
 msgstr "Ваш файл был успешно загружен!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Remove %1$s file %2$s"
 msgstr "Удалить %1$s файл %2$s"
 
