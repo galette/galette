@@ -56,6 +56,8 @@ var paths = {
     logo: './ui/images/galette.webp',
     halloween_logo: './ui/images/galette_halloween.webp',
     xmas_logo: './ui/images/galette_xmas.webp',
+    background:'./ui/images/bg.png',
+    background_rtl:'./ui/images/bg-rtl.png',
     photo:'./ui/images/default.png',
     emojis: './node_modules/twemoji-emojis/vendor/svg/*'
   },
@@ -149,6 +151,14 @@ function theme() {
 
   theme =  gulp.src(paths.src.files)
     .pipe(gulp.dest(paths.semantic.theme))
+    .pipe(browserSync.stream());
+
+  background = gulp.src(paths.src.background, {encoding: false})
+    .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
+    .pipe(browserSync.stream());
+
+  background_rtl = gulp.src(paths.src.background_rtl, {encoding: false})
+    .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
     .pipe(browserSync.stream());
 
   emojis = gulp.src(paths.src.emojis)
