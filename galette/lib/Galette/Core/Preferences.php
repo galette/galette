@@ -29,7 +29,6 @@ use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
-use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -1160,12 +1159,11 @@ class Preferences
             ]
         ];
 
-        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. Code will be simplified once PdfMembersCardsAdaptative will be the only one
         if ($name === 'pref_card_cols') {
-            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
+            return PdfMembersCards::getCols();
         }
         if ($name === 'pref_card_rows') {
-            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getRows() : PdfMembersCards::getRows();
+            return PdfMembersCards::getRows();
         }
 
         if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
@@ -1357,41 +1355,6 @@ class Preferences
         }
 
         return null;
-    }
-
-    /**
-     * Check member cards sizes
-     * Always a A4/portrait
-     *
-     * @return array<string>
-     */
-    public function checkCardsSizes(): array
-    {
-        $warning_detected = [];
-        //check page width
-        $max = PdfMembersCards::PAGE_WIDTH;
-        //margins
-        $size = $this->pref_card_marges_h * 2;
-        //cards
-        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
-        //spacing
-        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page width!');
-        }
-
-        $max = PdfMembersCards::PAGE_HEIGHT;
-        //margins
-        $size = $this->pref_card_marges_v * 2;
-        //cards
-        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
-        //spacing
-        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page height!');
-        }
-
-        return $warning_detected;
     }
 
     /**

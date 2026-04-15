@@ -42,7 +42,6 @@ parameters:
         - GALETTE_LOGGER_CHECKED
         - GALETTE_MODE
         - GALETTE_DEBUG
-        - GALETTE_ADAPTATIVE_CARDS
         - GALETTE_LOG_LVL
         - GALETTE_THEME
         - GALETTE_TIMEOUT

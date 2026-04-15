@@ -61,7 +61,6 @@
     // Other constants
     define('GALETTE_MODE', $random_val([\Galette\Core\Galette::MODE_PROD, \Galette\Core\Galette::MODE_DEV, \Galette\Core\Galette::MODE_MAINT, \Galette\Core\Galette::MODE_DEMO]));
     define('GALETTE_DEBUG', $random_val([false, true]));
-    define('GALETTE_ADAPTATIVE_CARDS', $random_val([false, true]));
     define('GALETTE_LOG_LVL', $random_val([\Analog\Analog::URGENT, \Analog\Analog::ALERT, \Analog\Analog::CRITICAL, \Analog\Analog::ERROR, \Analog\Analog::WARNING, \Analog\Analog::NOTICE, \Analog\Analog::INFO, \Analog\Analog::DEBUG]));
     define('GALETTE_THEME', $random_val(['themes/default/', 'themes/alternative/']));
     define('GALETTE_TIMEOUT', $random_val([0, 5, 10]));

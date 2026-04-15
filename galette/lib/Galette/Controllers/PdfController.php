@@ -38,7 +38,6 @@ use Galette\IO\PdfAttendanceSheet;
 use Galette\IO\PdfContribution;
 use Galette\IO\PdfGroups;
 use Galette\IO\PdfMembersCards;
-use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\IO\PdfMembersLabels;
 use Galette\Repository\Members;
 use Galette\Repository\Groups;
@@ -144,9 +143,6 @@ class PdfController extends AbstractController
         }
 
         $class = PdfMembersCards::class;
-        if (GALETTE_ADAPTATIVE_CARDS === true) {
-            $class = PdfMembersCardsAdaptative::class;
-        }
         $pdf = new $class($this->preferences);
         $pdf->drawCards($members);
 
