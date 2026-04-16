@@ -154,10 +154,3 @@ jobs:
           github-report: true
           summary-report: true
         if: always()
-
-      - name: Upload HTML test report...
-        uses: actions/upload-artifact@v7
-        if: ${{ always() && env.skip != 'true' }}
-        with:
-          name: Galette-Playwright-Report
-          path: playwright-report
