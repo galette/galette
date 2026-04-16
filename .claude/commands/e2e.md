@@ -11,11 +11,11 @@ php tests/init_test_data.php
 
 **Step 2 — Start PHP built-in server** (background):
 ```
-DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
 ```
 CRITICAL: always use `tests/router_e2e.php` — not the default router, not `tests/router.php`.
 Default to `mysql` unless the user specified `pgsql`.
-Start in background, then verify the server is up: `curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/` should return 200 or 302.
+Start in background, then verify the server is up: `curl -s -o /dev/null -w "%{http_code}" http://localhost:8090/` should return 200 or 302.
 
 **Step 3 — Run Playwright:**
 ```

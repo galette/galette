@@ -41,7 +41,7 @@ export default defineConfig({
 
   use: {
     // Priority: --base-url (CLI) > E2E_BASE_URL (env) > default value
-    baseURL: process.env.E2E_BASE_URL ?? 'http://127.0.0.1:8080',
+    baseURL: process.env.E2E_BASE_URL ?? 'http://127.0.0.1:8090',
 
     // Screenshot and trace only on failure
     screenshot: 'only-on-failure',

@@ -66,7 +66,7 @@ E2E tests require a running PHP built-in server configured for the test environm
 
 2. **Start the PHP server** (in a separate terminal):
    ```bash
-   DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+   DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
    ```
    *Note: Use `DB=pgsql` if you initialized a PostgreSQL test database.*
 

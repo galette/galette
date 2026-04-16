@@ -169,7 +169,7 @@ GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
 GALETTE_TESTS=1 DB=mysql bin/console galette:seed-fixtures
 
 # 4. Start the server (in a separate terminal or background)
-DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
 
 # 4. Run Galette tests (choose your browser)
 npm run test:chromium    # Test with Chromium only

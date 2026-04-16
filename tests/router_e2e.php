@@ -25,7 +25,7 @@ declare(strict_types=1);
  * Router script for the built-in PHP server in e2e testing context.
  *
  * Usage:
- *   php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+ *   php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
  *
  * Role:
  *   - Defines the test environment before Galette bootstrap

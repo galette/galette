@@ -107,9 +107,9 @@ jobs:
       - name: Start PHP built-in server
         if: env.skip != 'true'
         run: |
-          php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php &
+          php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php &
           # Wait for service being up
-          timeout 15 bash -c 'until curl -sf http://127.0.0.1:8080/login > /dev/null; do sleep 1; done'
+          timeout 15 bash -c 'until curl -sf http://127.0.0.1:8090/login > /dev/null; do sleep 1; done'
           echo "PHP server started"
 
 
@@ -123,7 +123,7 @@ jobs:
         run: |
           npx playwright test --project ${{ matrix.browser }}
         env:
-          E2E_BASE_URL: http://127.0.0.1:8080
+          E2E_BASE_URL: http://127.0.0.1:8090
           E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}
           E2E_ADMIN_PASS: ${{ secrets.E2E_ADMIN_PASS || 'admin' }}
 

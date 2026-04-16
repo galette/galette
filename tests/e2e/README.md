@@ -468,7 +468,7 @@ const TEST_MEMBER = {
 
 5. **Start PHP server** (in separate terminal):
    ```bash
-   DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+   DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
    ```
 
 ### Run Tests
@@ -667,7 +667,7 @@ test('A11y - My new page', async ({ loggedInPage: page }) => {
 
 Ensure PHP server is running:
 ```bash
-DB=mysql php -S 0.0.0.0:8080 -t galette/webroot tests/router_e2e.php
+DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
 ```
 
 ### Tests fail with "Member not found"
