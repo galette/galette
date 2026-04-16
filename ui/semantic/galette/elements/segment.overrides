@@ -6,7 +6,7 @@
      Private pages title
 ------------------------------*/
 .ui.horizontal.segments.header {
-  color: darken(@textColor, 15);
+  color: @primaryTextColor;
   background: @galetteHeaderBackground;
   margin: 0;
 

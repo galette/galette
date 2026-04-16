@@ -15,7 +15,7 @@
 
 /* Hovered Item */
 @hoverItemBackground: @primaryColor;
-@hoverItemTextColor: darken(@textColor, 15);
+@hoverItemTextColor: @darkGrey;
 
 /* Pressed Item */
 @pressedItemBackground: @primaryColor;
@@ -24,14 +24,14 @@
 
 /* Active Item */
 @activeItemBackground: @lightPrimaryColor;
-@activeItemTextColor: darken(@textColor, 15);
+@activeItemTextColor: @hoverItemTextColor;
 @activeItemFontWeight: @bold;
 @activeIconOpacity: 1;
 @activeItemBoxShadow: none;
 
 /* Active Hovered Item */
 @activeHoverItemBackground: @lightPrimaryColor;
-@activeHoverItemColor: darken(@textColor, 15);
+@activeHoverItemColor: @hoverItemTextColor;
 
 /*--------------
      Types
@@ -49,16 +49,16 @@
 
 /* Inverted Hover */
 @invertedHoverBackground: @primaryColor;
-@invertedHoverColor: darken(@textColor, 15);
+@invertedHoverColor: @hoverItemTextColor;
 
 /* Inverted Active */
 @invertedActiveBackground: @invertedArrowActiveColor;
-@invertedActiveColor: darken(@textColor, 15);
+@invertedActiveColor: @hoverItemTextColor;
 @invertedArrowActiveColor: @lightPrimaryColor;
 
 /* Inverted Active Hover  */
 @invertedActiveHoverBackground: @invertedActiveBackground;
-@invertedActiveHoverColor: darken(@textColor, 15);
+@invertedActiveHoverColor: @hoverItemTextColor;
 @invertedArrowActiveHoverColor: @invertedArrowActiveColor;
 
 /*----------------------------------
