@@ -21,7 +21,7 @@ concurrency:
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
-    name: Playwright — ${{ matrix.browser }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || '' }}
+    name: Playwright — ${{ matrix.project }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || '' }}
     env:
       DB: pgsql
       GALETTE_TESTS: 1
@@ -35,9 +35,10 @@ jobs:
           #enable coverage on higher stable php version with higher PostgreSQL version
           #cache must be disabled on one always enabled build (not coverage one, this already takes much time than others)
           #higher stable php version
-            - { browser: "chromium", always: true }
-            - { browser: "firefox", always: false }
-            - { browser: "webkit", always: false }
+            - { project: "a11y", browser: "chromium", always: true }
+            - { project: "chromium", browser: "chromium", always: true }
+            - { project: "firefox", browser: "firefox", always: false }
+            - { project: "webkit", browser: "webkit", always: false }
 
     services:
       # Label used to access the service container
@@ -121,7 +122,7 @@ jobs:
       - name: Run E2E tests
         if: env.skip != 'true'
         run: |
-          npx playwright test --project ${{ matrix.browser }}
+          npx playwright test --project ${{ matrix.project }}
         env:
           E2E_BASE_URL: http://127.0.0.1:8090
           E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}

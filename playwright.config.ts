@@ -55,20 +55,30 @@ export default defineConfig({
   },
 
   projects: [
+    // ── Core Galette A11y tests ──
+    {
+      name: 'a11y',
+      testMatch: 'tests/e2e/specs/a11y.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // ── Core Galette tests ──
     {
       name: 'chromium',
       testMatch: 'tests/e2e/specs/**/*.spec.ts',
+      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'firefox',
       testMatch: 'tests/e2e/specs/**/*.spec.ts',
+      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
     {
       name: 'webkit',
       testMatch: 'tests/e2e/specs/**/*.spec.ts',
+      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
       use: { ...devices['Desktop Safari'] },
     },
     // ── Plugin tests (discovered via testMatch glob) ──
