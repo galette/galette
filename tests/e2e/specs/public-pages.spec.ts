@@ -37,33 +37,7 @@ test.describe('Public Pages', () => {
 
   // Public Members List
   test.describe('Public Members List', () => {
-
-    /* TODO: Public pages must be enabled from preferences; but I had issues trying to do that.
-    test('Enable public pages', async ({ loggedInPage: page }) => {
-      await page.goto('/preferences');
-
-      await page.getByRole('link', { name: 'Parameters', exact: true }).click();
-
-      await page.getByRole('textbox', { name: 'Default', exact: true }).click();
-      await page.locator('div').filter({ hasText: /^Everyone$/ }).nth(3).click();
-
-      await page.getByRole('textbox', { name: 'Members list', exact: true }).click();
-      await page.locator('div').filter({ hasText: /^Everyone$/ }).nth(3).click();
-
-      await page.getByRole('textbox', { name: 'Staff list' }).click();
-      await page.locator('.menu.transition.visible > div:nth-child(3)').click();
-      await page.locator('div').filter({ hasText: 'Members list Inherit Hidden' }).nth(4).click();
-      await page.getByRole('textbox', { name: 'Members gallery' }).click();
-      await page.locator('div').filter({ hasText: /^Everyone$/ }).nth(5).click();
-      await page.getByRole('textbox', { name: 'Staff gallery' }).click();
-      await page.locator('.menu.transition.visible > div:nth-child(3)').click();
-
-      await page.getByRole('button', { name: 'Save' }).click();
-      await expect(page.locator('.ui.toast.success')).toBeVisible({ timeout: 10000 });
-      await page.getByRole('link', { name: 'Log off' }).click();
-    });
-
-    test('Public - Members list accessible without auth', async ({ page }) => {
+    test('Public - Members list accessible limited to up-to-date members', async ({ loggedInPage: page }) => {
       await page.goto('/public/members/list');
 
       // Should not redirect to login
@@ -76,7 +50,7 @@ test.describe('Public Pages', () => {
       expect(pageContent).toBeTruthy();
     });
 
-    test('Public - Members list has content structure', async ({ page }) => {
+    test('Public - Members list has content structure', async ({ loggedInPage: page }) => {
       await page.goto('/public/members/list');
 
       await page.waitForSelector('body', { timeout: 10000 });
@@ -96,13 +70,12 @@ test.describe('Public Pages', () => {
       const title = page.locator('h1, h2').first();
       await expect(title).toBeVisible({ timeout: 10000 });
     });
-*/
   });
-/*
+
   // Public Members Gallery (Trombinoscope)
   test.describe('Public Members Gallery', () => {
 
-    test('Public - Members gallery accessible without auth', async ({ page }) => {
+    test('Public - Members gallery accessible limited to up-to-date members', async ({ loggedInPage: page }) => {
       await page.goto('/public/members/gallery');
 
       // Should not redirect to login
@@ -111,7 +84,7 @@ test.describe('Public Pages', () => {
       await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
     });
 
-    test('Public - Members gallery has content', async ({ page }) => {
+    test('Public - Members gallery has content', async ({ loggedInPage: page }) => {
       await page.goto('/public/members/gallery');
 
       await page.waitForSelector('body', { timeout: 10000 });
@@ -124,7 +97,7 @@ test.describe('Public Pages', () => {
       expect(hasCards || hasGrid || hasMessage).toBeTruthy();
     });
 
-    test('Public - Gallery title visible', async ({ page }) => {
+    test('Public - Gallery title visible', async ({ loggedInPage: page }) => {
       await page.goto('/public/members/gallery');
 
       const title = page.locator('h1, h2').first();
@@ -136,7 +109,7 @@ test.describe('Public Pages', () => {
   // Public Staff List
   test.describe('Public Staff List', () => {
 
-    test('Public - Staff list accessible without auth', async ({ page }) => {
+    test('Public - Staff list accessible limited to up-to-date members', async ({ loggedInPage: page }) => {
       await page.goto('/public/staff/list');
 
       // Should not redirect to login
@@ -145,7 +118,7 @@ test.describe('Public Pages', () => {
       await page.waitForSelector('h1, h2, .ui.message, table', { timeout: 10000 });
     });
 
-    test('Public - Staff list has structure', async ({ page }) => {
+    test('Public - Staff list has structure', async ({ loggedInPage: page }) => {
       await page.goto('/public/staff/list');
 
       await page.waitForSelector('body', { timeout: 10000 });
@@ -162,7 +135,7 @@ test.describe('Public Pages', () => {
   // Public Staff Gallery
   test.describe('Public Staff Gallery', () => {
 
-    test('Public - Staff gallery accessible without auth', async ({ page }) => {
+    test('Public - Staff gallery accessible limited to up-to-date members', async ({ loggedInPage: page }) => {
       await page.goto('/public/staff/gallery');
 
       // Should not redirect to login
@@ -171,7 +144,7 @@ test.describe('Public Pages', () => {
       await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
     });
 
-    test('Public - Staff gallery has content', async ({ page }) => {
+    test('Public - Staff gallery has content', async ({ loggedInPage: page }) => {
       await page.goto('/public/staff/gallery');
 
       await page.waitForSelector('body', { timeout: 10000 });
@@ -188,7 +161,7 @@ test.describe('Public Pages', () => {
   // Public Documents
   test.describe('Public Documents', () => {
 
-    test('Public - Documents list accessible without auth', async ({ page }) => {
+    test('Public - Documents list accessible limited to up-to-date members', async ({ loggedInPage: page }) => {
       await page.goto('/public/documents');
 
       // Should not redirect to login
@@ -211,31 +184,10 @@ test.describe('Public Pages', () => {
 
   });
 
-  // Deprecated Routes (should redirect)
-  test.describe('Deprecated Routes', () => {
-
-    test('Public - /public/list redirects to /public/members/list', async ({ page }) => {
-      await page.goto('/public/list');
-
-      // Should redirect to the new route
-      await page.waitForURL(/\/public\/members\/list/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/public\/members\/list/);
-    });
-
-    test('Public - /public/trombinoscope redirects to gallery', async ({ page }) => {
-      await page.goto('/public/trombinoscope');
-
-      // Should redirect to the new gallery route
-      await page.waitForURL(/\/public\/members\/gallery/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/public\/members\/gallery/);
-    });
-
-  });
-
   // General Public Pages Tests
   test.describe('Public Pages General', () => {
 
-    test('Public - Pages load without authentication', async ({ page }) => {
+    test('Public - Pages load limited to up-to-date members', async ({ loggedInPage: page }) => {
       const publicPages = [
         '/public/members/list',
         '/public/members/gallery',
@@ -258,7 +210,7 @@ test.describe('Public Pages', () => {
       }
     });
 
-    test('Public - Pages have no login requirement', async ({ page }) => {
+    test('Public - Pages have no login requirement for up-to-date member', async ({ loggedInPage: page }) => {
       // Navigate to public page
       await page.goto('/public/members/list');
 
@@ -269,19 +221,15 @@ test.describe('Public Pages', () => {
       expect(isLoginPage).toBe(false);
     });
 
-  });*/
+    test('Public - Pages have login requirement when not connected', async ({ page }) => {
+      // Navigate to public page
+      await page.goto('/public/members/list');
 
-  /* see Enable public pages
-  test('Disable public pages', async ({ loggedInPage: page }) => {
-    await page.goto('/preferences');
-
-    await page.getByRole('link', { name: 'Parameters', exact: true }).click();
-    await page.getByRole('textbox', { name: 'Default', exact: true }).click();
-    await page.getByText('Up to date members').nth(1).click();
-    await page.getByRole('button', { name: 'Save' }).click();
-    await expect(page.locator('.ui.toast.success')).toBeVisible({ timeout: 10000 });
-    await page.getByRole('link', { name: 'Log off' }).click();
-  });*/
+      // Should show login form
+      const isLoginPage = await page.locator('input[name="login"]').count() > 0;
+      expect(isLoginPage).toBe(true);
+    });
+  });
 });
 
 

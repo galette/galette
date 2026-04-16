@@ -215,8 +215,8 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
-  // Public Pages
-  test('A11y - Public members list', async ({ page }) => {
+  // Public Pages - by default, limited to up-to-date members.
+  test('A11y - Public members list', async ({ loggedInPage: page }) => {
     await page.goto('/public/members/list');
     await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
 
@@ -224,7 +224,7 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
-  test('A11y - Public members gallery', async ({ page }) => {
+  test('A11y - Public members gallery', async ({ loggedInPage: page }) => {
     await page.goto('/public/members/gallery');
     await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
 
