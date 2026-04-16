@@ -33,10 +33,14 @@
   }
 }
 
-.exemple,
 .disabled,
 .disabled a {
   color: @unselectedTextColor;
+}
+
+.exemple {
+  color: lighten(@textColor, 8.5);
+  font-style: italic;
 }
 
 .inactive-account {
@@ -168,13 +172,19 @@ aside.toc,
   display: none;
 }
 
-aside .ui.vertical.menu {
-  width: auto;
-  max-width: 100%;
-}
+aside {
+  .ui.vertical.menu {
+    width: auto;
+    max-width: 100%;
+  }
 
-aside .ui.small.compact.fluid.menu .ui.item {
-  max-width: 14.688rem;
+  .ui.small.compact.fluid.menu .ui.item {
+    max-width: 14.688rem;
+  }
+
+  .ui.toggle.checkbox.mini label {
+    color: darken(@textColor, 5);
+  }
 }
 
 footer,

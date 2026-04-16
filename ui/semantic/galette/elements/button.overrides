@@ -21,7 +21,7 @@ a.ui.button:hover i.icon {
 .ui.primary.buttons .button:focus,
 .ui.primary.button:hover,
 .ui.primary.buttons .button:hover {
-  color: @hoveredTextColor;
+  color: @darkGrey;
 }
 
 /*-----------------------------------------------------------------

@@ -57,14 +57,24 @@
     a.active.item,
     a.item:hover {
       & > .title {
-        color: @hoveredTextColor;
+        color: @hoverItemTextColor;
       }
     }
   }
   .ui.vertical.inverted.pointing.menu {
-    .item:not(.active, :hover) {
+    .item {
       .small.disabled.text {
         color: @midWhite;
+      }
+      &.active {
+        .small.disabled.text {
+          color: @textColor;
+        }
+      }
+      &:hover {
+        .small.disabled.text {
+          color: @hoverItemTextColor;
+        }
       }
     }
   }
@@ -85,7 +95,7 @@
 .ui.menu .dropdown.item:hover,
 .ui.menu .link.item:hover,
 .ui.menu a.item:hover {
-    color: @hoveredTextColor;
+    color: @hoverItemTextColor;
 }
 
 /* -------------------------------------------------------------------

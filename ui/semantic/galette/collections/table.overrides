@@ -25,6 +25,10 @@ table.listing td {
 }
 table.listing tbody tr:hover > td {
     background-color: @activeLineBackgroundColor !important;
+
+    a {
+        color: darken(@linkColor, 5);
+    }
 }
 td.emptylist {
     background-color: @evenLineBackgroundColor;
@@ -107,6 +111,9 @@ td.emptylist {
 #legende .table th.cotis-give,
 .ui.ui.table.listing tbody tr.cotis-give > td {
     background-color: @cotisLateBackgroundColor;
+}
+.ui.ui.table.listing tbody tr:not(.cotis-never) > td a {
+    color: darken(@linkColor, 5);
 }
 @media only screen and (max-width: @largestMobileScreen) {
     .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-ok,
