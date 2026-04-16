@@ -147,12 +147,17 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-      - name: Publish test summary results...
-        run: npx github-actions-ctrf end2end-report/ci-nighly-test.json
-        if: ${{ always() && env.skip != 'true' }}
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './ctrf/*.json'
+          github-report: true
+          summary-report: true
+        if: always()
+
       - name: Upload HTML test report...
         uses: actions/upload-artifact@v7
-        if: always()
+        if: ${{ always() && env.skip != 'true' }}
         with:
-          name: CI-Nightly-Test-Report
-          path: end2end-report
+          name: Galette-Playwright-Report
+          path: playwright-report

@@ -32,7 +32,7 @@ export default defineConfig({
     ['list'],
     [
         "playwright-ctrf-json-reporter",
-        { outputDir: "end2end-report", outputFile: "ci-nighly-test.json" },
+        { outputDir: "ctrf", outputFile: "galette.json" },
     ]
   ] : [
     ['html', { open: 'never' }],
