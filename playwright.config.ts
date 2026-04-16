@@ -1,21 +1,42 @@
 import { defineConfig, devices } from '@playwright/test';
+import { config } from 'dotenv' ;
 
+// Load .env file so it is available everywhere.
+config({path: './tests/e2e/.env.local', quiet: true});
+config({path: './tests/e2e/.env', quiet: true});
+
+/**
+ * Playwright configuration file
+ *
+ * See:
+ * - https://playwright.dev/docs/test-configuration.
+ * - https://playwright.dev/docs/api/class-testconfig
+ */
 export default defineConfig({
-  // Common root so that --ui mode watches all test files (core + plugins).
-  // Each project uses testMatch to narrow down the files it picks up.
-  testDir: '.',
+    // Directory that will be recursively scanned for test files.
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-test-dir
+    // /!\ Playwright will fail with "no tests files" if a directory, like `galette/data/cache` is not readable /!/
+    testDir: '.',
 
-  // Timeout per test
-  timeout: 30_000,
+    // Run tests in files in parallel
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-fully-parallel
+    fullyParallel: true,
+
+    // Fail the build on CI if you accidentally left test.only in the source code.
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-forbid-only
+    forbidOnly: !!process.env.CI,
 
   // Report: generated HTML in playwright-report/
-  reporter: [
+  reporter: process.env.CI ? [
     ['html', { open: 'never' }],
     ['list'],
-        [
+    [
         "playwright-ctrf-json-reporter",
         { outputDir: "end2end-report", outputFile: "ci-nighly-test.json" },
     ]
+  ] : [
+    ['html', { open: 'never' }],
+    ['list']
   ],
 
   use: {
