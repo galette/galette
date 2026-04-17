@@ -52,7 +52,10 @@
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Priority") }}">
-                        <input size="4" type="text" name="priorite_statut" value="99" />
+                        <div class="required field">
+                            <label for="name" class="visually-hidden">{{ _T("Priority") }}</label>
+                            <input size="4" type="text" name="priorite_statut" value="99" />
+                        </div>
                     </td>
                     <td class="center actions_row collapsing">
                         <input type="hidden" name="new" value="1" />
