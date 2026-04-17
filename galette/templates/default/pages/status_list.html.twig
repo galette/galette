@@ -47,14 +47,14 @@
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         <div class="required field">
-                            <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
-                            <input size="40" type="text" name="libelle_statut" required="required"/>
+                            <label for="libelle_statut">{{ _T("Name") }}</label>
+                            <input size="40" type="text" name="libelle_statut" id="libelle_statut" required="required"/>
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Priority") }}">
                         <div class="required field">
-                            <label for="name" class="visually-hidden">{{ _T("Priority") }}</label>
-                            <input size="4" type="text" name="priorite_statut" value="99" />
+                            <label for="priorite_statut">{{ _T("Priority") }}</label>
+                            <input size="4" type="text" name="priorite_statut" id="priorite_statut" value="99" />
                         </div>
                     </td>
                     <td class="center actions_row collapsing">
@@ -74,7 +74,7 @@
                         </td>
                         <td class="left" data-col-label="{{ _T("Name") }}">
                             {% if entry.extra < 30 %}
-                                <span>
+                            <span>
                                 <i class="ui user tie icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T("Staff member") }}</span>
                             </span>
