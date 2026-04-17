@@ -51,7 +51,7 @@
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
     "playwright-ctrf-json-reporter": "^0.0.29",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
