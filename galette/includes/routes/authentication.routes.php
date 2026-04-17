@@ -24,11 +24,13 @@ use Galette\Controllers\OAuthController;
 
 use Galette\Controllers\AuthController;
 use Galette\Entity\Adherent;
+use GaletteOAuth2\Controllers\LoginController;
 
 /**
  * @var \Slim\App<\DI\Container> $app
  * @var \Slim\Routing\RouteParser $routeparser
  * @var \Galette\Middleware\Authenticate $authenticate
+ * @var \Galette\Core\FeatureFlagManager $feature_flags
  */
 
 //login page
@@ -85,7 +87,12 @@ $app->post(
     [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');
 
-$app->post(
-    '/oauth/access_token',
-    OAuthController::class . ':getAccessToken'
-)->setName('OAuthAccesToken');
+if ($feature_flags->isEnabled('oauth2')) {
+    $app->group('/oauth2', function () use ($app) {
+        $app->get('login', [LoginController::class, 'login']);
+        $app->post(
+            '/oauth/access_token',
+            OAuthController::class . ':getAccessToken'
+        )->setName('OAuthAccesToken');
+    });
+}
