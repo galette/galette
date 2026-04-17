@@ -24,6 +24,7 @@ declare(strict_types=1);
 use Galette\Controllers\AuthController;
 use Galette\Entity\Adherent;
 use GaletteOAuth2\Controllers\LoginController;
+use Mezzio\Authentication\OAuth2;
 
 /**
  * @var \Slim\App<\DI\Container> $app
@@ -85,8 +86,15 @@ $app->post(
     '/password-recovery',
     [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');
+
 if ($feature_flags->isEnabled('oauth2')) {
     $app->group('/oauth2', function () use ($app) {
-        $app->get('login', [LoginController::class, 'login']);
+        //$app->get('login', [LoginController::class, 'login']);
+
+        $app->get(
+            '/token',
+            OAuth2\TokenEndpointHandler::class
+        )->setName('oauth2-token');
+
     });
 }
