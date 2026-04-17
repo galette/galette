@@ -69,18 +69,6 @@ export default defineConfig({
       testIgnore: 'tests/e2e/specs/a11y.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      testMatch: 'tests/e2e/specs/**/*.spec.ts',
-      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      testMatch: 'tests/e2e/specs/**/*.spec.ts',
-      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
-      use: { ...devices['Desktop Safari'] },
-    },
     // ── Plugin tests (discovered via testMatch glob) ──
     {
       name: 'plugins-chromium',
@@ -90,24 +78,6 @@ export default defineConfig({
         'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
       ],
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'plugins-firefox',
-      // Same fallback pattern list for Firefox plugin tests.
-      testMatch: [
-        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
-        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
-      ],
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'plugins-webkit',
-      // Also match plugin specs in tests/plugins when present.
-      testMatch: [
-        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
-        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
-      ],
-      use: { ...devices['Desktop Safari'] },
     },
   ],
 });

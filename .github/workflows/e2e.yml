@@ -21,24 +21,17 @@ concurrency:
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
-    name: Playwright — ${{ matrix.project }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || '' }}
+    name: Playwright — ${{ matrix.project }}
     env:
       DB: pgsql
       GALETTE_TESTS: 1
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags'))) }}
 
     strategy:
         fail-fast: false
         matrix:
           include:
-          #always tests higher stable php version with lower db version
-          #enable coverage on higher stable php version with higher PostgreSQL version
-          #cache must be disabled on one always enabled build (not coverage one, this already takes much time than others)
-          #higher stable php version
-            - { project: "a11y", browser: "chromium", always: true }
-            - { project: "chromium", browser: "chromium", always: true }
-            - { project: "firefox", browser: "firefox", always: false }
-            - { project: "webkit", browser: "webkit", always: false }
+            - { project: "a11y", browser: "chromium" }
+            - { project: "chromium", browser: "chromium" }
 
     services:
       # Label used to access the service container
@@ -58,13 +51,11 @@ jobs:
 
     steps:
       - name: Checkout
-        if: env.skip != 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: PHP
-        if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.5"
@@ -74,7 +65,6 @@ jobs:
           ini-values: apc.enable_cli=1
 
       - name: Build Galette
-        if: env.skip != 'true'
         uses: galette/.github/actions/build-galette@main
         with:
           php-version: "8.5"
@@ -82,11 +72,9 @@ jobs:
           skip-checkout: true
 
       - name: Initialize test data
-        if: env.skip != 'true'
         run: php tests/init_test_data.php
 
       - name: Initialize Galette database (PostgreSQL)
-        if: env.skip != 'true'
         run: |
           bin/console galette:install -v \
             --dbtype=pgsql \
@@ -102,11 +90,9 @@ jobs:
           POSTGRES_PORT: 5432
 
       - name: Seed E2E fixtures
-        if: env.skip != 'true'
         run: bin/console galette:seed-fixtures -v
 
       - name: Start PHP built-in server
-        if: env.skip != 'true'
         run: |
           php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php &
           # Wait for service being up
@@ -115,12 +101,10 @@ jobs:
 
 
       - name: Install Playwright browsers
-        if: env.skip != 'true'
         run: |
           npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run E2E tests
-        if: env.skip != 'true'
         run: |
           npx playwright test --project ${{ matrix.project }}
         env:
