@@ -46,8 +46,8 @@
 @internalBorderColor        : lighten(@textColor, 40);
 
 @inputColor                 : @textColor;
-@inputPlaceholderColor      : lighten(@inputColor, 25);
-@inputPlaceholderFocusColor : lighten(@inputColor, 10);
+@inputPlaceholderColor      : lighten(@inputColor, 7);
+@inputPlaceholderFocusColor : lighten(@inputColor, 6);
 
 @toggleLaneBackground       : rgba(0,0,0,.15);
 

@@ -16,6 +16,13 @@
     background-color: @oddLineBackgroundColor;
 }
 
+.ui.basic.striped.table > tbody > tr:nth-child(2n),
+.ui.basic.striped.table > tr:nth-child(2n) {
+    a {
+        color: darken(@linkColor, 5);
+    }
+}
+
 /*----------------------
      Listing tables
 -----------------------*/
