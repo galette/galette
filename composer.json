@@ -77,7 +77,9 @@
         "league/html-to-markdown": "^5.1",
         "php-di/php-di": "^7.1",
         "psr/http-server-handler": "^1.0",
-        "thecodingmachine/safe": "^3.3"
+        "thecodingmachine/safe": "^3.3",
+        "paragonie/sodium_compat_ext_sodium": "^1.0",
+        "mezzio/mezzio-authentication-oauth2": "^3.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",

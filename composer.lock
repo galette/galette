@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8485c2d5c045cab5d73ba328a5ea70be",
+    "content-hash": "9a31e60a304a5e4594fd767e69f27332",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -231,6 +231,73 @@
                 "source": "https://github.com/DASPRiD/Enum/tree/1.0.7"
             },
             "time": "2025-09-16T12:23:56+00:00"
+        },
+        {
+            "name": "defuse/php-encryption",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/defuse/php-encryption.git",
+                "reference": "f53396c2d34225064647a05ca76c1da9d99e5828"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/defuse/php-encryption/zipball/f53396c2d34225064647a05ca76c1da9d99e5828",
+                "reference": "f53396c2d34225064647a05ca76c1da9d99e5828",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "paragonie/random_compat": ">= 2",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5|^6|^7|^8|^9|^10",
+                "yoast/phpunit-polyfills": "^2.0.0"
+            },
+            "bin": [
+                "bin/generate-defuse-key"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Defuse\\Crypto\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Hornby",
+                    "email": "taylor@defuse.ca",
+                    "homepage": "https://defuse.ca/"
+                },
+                {
+                    "name": "Scott Arciszewski",
+                    "email": "info@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "Secure PHP Encryption Library",
+            "keywords": [
+                "aes",
+                "authenticated encryption",
+                "cipher",
+                "crypto",
+                "cryptography",
+                "encrypt",
+                "encryption",
+                "openssl",
+                "security",
+                "symmetric key cryptography"
+            ],
+            "support": {
+                "issues": "https://github.com/defuse/php-encryption/issues",
+                "source": "https://github.com/defuse/php-encryption/tree/v2.4.0"
+            },
+            "time": "2023-06-19T06:10:36+00:00"
         },
         {
             "name": "endroid/qr-code",
@@ -1233,6 +1300,143 @@
             "time": "2026-04-07T13:32:18+00:00"
         },
         {
+            "name": "lcobucci/clock",
+            "version": "3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/clock.git",
+                "reference": "4cdd88f761e9be9095ccbedf3e08d61ae216c643"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/clock/zipball/4cdd88f761e9be9095ccbedf3e08d61ae216c643",
+                "reference": "4cdd88f761e9be9095ccbedf3e08d61ae216c643",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.4.0 || ~8.5.0",
+                "psr/clock": "^1.0"
+            },
+            "provide": {
+                "psr/clock-implementation": "1.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.32",
+                "lcobucci/coding-standard": "^12.0",
+                "phpstan/extension-installer": "^1.3.1",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^13.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\Clock\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Cobucci",
+                    "email": "lcobucci@gmail.com"
+                }
+            ],
+            "description": "Yet another clock abstraction",
+            "support": {
+                "issues": "https://github.com/lcobucci/clock/issues",
+                "source": "https://github.com/lcobucci/clock/tree/3.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lcobucci",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/lcobucci",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2026-04-13T21:30:16+00:00"
+        },
+        {
+            "name": "lcobucci/jwt",
+            "version": "5.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/jwt.git",
+                "reference": "bb3e9f21e4196e8afc41def81ef649c164bca25e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/bb3e9f21e4196e8afc41def81ef649c164bca25e",
+                "reference": "bb3e9f21e4196e8afc41def81ef649c164bca25e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "ext-sodium": "*",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/clock": "^1.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.29",
+                "lcobucci/clock": "^3.2",
+                "lcobucci/coding-standard": "^11.0",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.10.7",
+                "phpstan/phpstan-deprecation-rules": "^1.1.3",
+                "phpstan/phpstan-phpunit": "^1.3.10",
+                "phpstan/phpstan-strict-rules": "^1.5.0",
+                "phpunit/phpunit": "^11.1"
+            },
+            "suggest": {
+                "lcobucci/clock": ">= 3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Cobucci",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "support": {
+                "issues": "https://github.com/lcobucci/jwt/issues",
+                "source": "https://github.com/lcobucci/jwt/tree/5.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lcobucci",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/lcobucci",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2025-10-17T11:30:53+00:00"
+        },
+        {
             "name": "league/event",
             "version": "3.0.3",
             "source": {
@@ -1381,6 +1585,447 @@
             "time": "2023-07-12T21:21:09+00:00"
         },
         {
+            "name": "league/oauth2-server",
+            "version": "9.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-server.git",
+                "reference": "d8e2f39f645a82b207bbac441694d6e6079357cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/d8e2f39f645a82b207bbac441694d6e6079357cb",
+                "reference": "d8e2f39f645a82b207bbac441694d6e6079357cb",
+                "shasum": ""
+            },
+            "require": {
+                "defuse/php-encryption": "^2.4",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "lcobucci/clock": "^2.3 || ^3.0",
+                "lcobucci/jwt": "^5.0",
+                "league/event": "^3.0",
+                "league/uri": "^7.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0  || ~8.5.0",
+                "psr/http-message": "^2.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "replace": {
+                "league/oauth2server": "*",
+                "lncd/oauth2": "*"
+            },
+            "require-dev": {
+                "laminas/laminas-diactoros": "^3.5",
+                "php-parallel-lint/php-parallel-lint": "^1.3.2",
+                "phpstan/extension-installer": "^1.3.1",
+                "phpstan/phpstan": "^1.12|^2.0",
+                "phpstan/phpstan-deprecation-rules": "^1.1.4|^2.0",
+                "phpstan/phpstan-phpunit": "^1.3.15|^2.0",
+                "phpstan/phpstan-strict-rules": "^1.5.2|^2.0",
+                "phpunit/phpunit": "^10.5|^11.5|^12.0",
+                "roave/security-advisories": "dev-master",
+                "slevomat/coding-standard": "^8.14.1",
+                "squizlabs/php_codesniffer": "^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth2\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "hello@alexbilbie.com",
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Andy Millington",
+                    "email": "andrew@noexceptions.io",
+                    "homepage": "https://www.noexceptions.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
+            "homepage": "https://oauth2.thephpleague.com/",
+            "keywords": [
+                "Authentication",
+                "api",
+                "auth",
+                "authorisation",
+                "authorization",
+                "oauth",
+                "oauth 2",
+                "oauth 2.0",
+                "oauth2",
+                "protect",
+                "resource",
+                "secure",
+                "server"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/oauth2-server/issues",
+                "source": "https://github.com/thephpleague/oauth2-server/tree/9.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sephster",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-11-25T22:51:15+00:00"
+        },
+        {
+            "name": "league/uri",
+            "version": "7.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri.git",
+                "reference": "08cf38e3924d4f56238125547b5720496fac8fd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/08cf38e3924d4f56238125547b5720496fac8fd4",
+                "reference": "08cf38e3924d4f56238125547b5720496fac8fd4",
+                "shasum": ""
+            },
+            "require": {
+                "league/uri-interfaces": "^7.8.1",
+                "php": "^8.1",
+                "psr/http-factory": "^1"
+            },
+            "conflict": {
+                "league/uri-schemes": "^1.0"
+            },
+            "suggest": {
+                "ext-bcmath": "to improve IPV4 host parsing",
+                "ext-dom": "to convert the URI into an HTML anchor tag",
+                "ext-fileinfo": "to create Data URI from file contennts",
+                "ext-gmp": "to improve IPV4 host parsing",
+                "ext-intl": "to handle IDN host with the best performance",
+                "ext-uri": "to use the PHP native URI class",
+                "jeremykendall/php-domain-parser": "to further parse the URI host and resolve its Public Suffix and Top Level Domain",
+                "league/uri-components": "to provide additional tools to manipulate URI objects components",
+                "league/uri-polyfill": "to backport the PHP URI extension for older versions of PHP",
+                "php-64bit": "to improve IPV4 host parsing",
+                "rowbot/url": "to handle URLs using the WHATWG URL Living Standard specification",
+                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "URI manipulation library",
+            "homepage": "https://uri.thephpleague.com",
+            "keywords": [
+                "URN",
+                "data-uri",
+                "file-uri",
+                "ftp",
+                "hostname",
+                "http",
+                "https",
+                "middleware",
+                "parse_str",
+                "parse_url",
+                "psr-7",
+                "query-string",
+                "querystring",
+                "rfc2141",
+                "rfc3986",
+                "rfc3987",
+                "rfc6570",
+                "rfc8141",
+                "uri",
+                "uri-template",
+                "url",
+                "ws"
+            ],
+            "support": {
+                "docs": "https://uri.thephpleague.com",
+                "forum": "https://thephpleague.slack.com",
+                "issues": "https://github.com/thephpleague/uri-src/issues",
+                "source": "https://github.com/thephpleague/uri/tree/7.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-03-15T20:22:25+00:00"
+        },
+        {
+            "name": "league/uri-interfaces",
+            "version": "7.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri-interfaces.git",
+                "reference": "85d5c77c5d6d3af6c54db4a78246364908f3c928"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/85d5c77c5d6d3af6c54db4a78246364908f3c928",
+                "reference": "85d5c77c5d6d3af6c54db4a78246364908f3c928",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "php": "^8.1",
+                "psr/http-message": "^1.1 || ^2.0"
+            },
+            "suggest": {
+                "ext-bcmath": "to improve IPV4 host parsing",
+                "ext-gmp": "to improve IPV4 host parsing",
+                "ext-intl": "to handle IDN host with the best performance",
+                "php-64bit": "to improve IPV4 host parsing",
+                "rowbot/url": "to handle URLs using the WHATWG URL Living Standard specification",
+                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "Common tools for parsing and resolving RFC3987/RFC3986 URI",
+            "homepage": "https://uri.thephpleague.com",
+            "keywords": [
+                "data-uri",
+                "file-uri",
+                "ftp",
+                "hostname",
+                "http",
+                "https",
+                "parse_str",
+                "parse_url",
+                "psr-7",
+                "query-string",
+                "querystring",
+                "rfc3986",
+                "rfc3987",
+                "rfc6570",
+                "uri",
+                "url",
+                "ws"
+            ],
+            "support": {
+                "docs": "https://uri.thephpleague.com",
+                "forum": "https://thephpleague.slack.com",
+                "issues": "https://github.com/thephpleague/uri-src/issues",
+                "source": "https://github.com/thephpleague/uri-interfaces/tree/7.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-03-08T20:05:35+00:00"
+        },
+        {
+            "name": "mezzio/mezzio-authentication",
+            "version": "1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mezzio/mezzio-authentication.git",
+                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mezzio/mezzio-authentication/zipball/9eec425ab3386ff09dfb686d55887871ba39cc33",
+                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1.0 || ^2.0",
+                "psr/http-message": "^1.0.1 || ^2.0.0",
+                "psr/http-server-middleware": "^1.0",
+                "webmozart/assert": "^1.11.0 || ^2.0.0"
+            },
+            "conflict": {
+                "container-interop/container-interop": "<1.2.0",
+                "zendframework/zend-expressive-authentication": "*"
+            },
+            "require-dev": {
+                "ext-sqlite3": "*",
+                "laminas/laminas-coding-standard": "~3.1.0",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
+            },
+            "suggest": {
+                "ext-pdo": "*: for use with the PDO-backed UserRepositoryInterface implementation",
+                "mezzio/mezzio-authentication-basic": "Provides an HTTP Basic Authentication AuthenticationInterface implementation",
+                "mezzio/mezzio-authentication-laminasauthentication": "Provides a laminas-authentication AuthenticationInterface implementation",
+                "mezzio/mezzio-authentication-session": "Provides a username/password + session AuthenticationInterface implementation"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Mezzio\\Authentication\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mezzio\\Authentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Authentication middleware for Mezzio and PSR-7 applications",
+            "homepage": "https://mezzio.dev",
+            "keywords": [
+                "Authentication",
+                "http",
+                "laminas",
+                "mezzio",
+                "middleware",
+                "psr-15",
+                "psr-7"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.mezzio.dev/mezzio-authentication/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/mezzio/mezzio-authentication/issues",
+                "rss": "https://github.com/mezzio/mezzio-authentication/releases.atom",
+                "source": "https://github.com/mezzio/mezzio-authentication"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2026-02-27T12:38:47+00:00"
+        },
+        {
+            "name": "mezzio/mezzio-authentication-oauth2",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mezzio/mezzio-authentication-oauth2.git",
+                "reference": "a631d533ec5bb764b1a4e6f8c9f4d83e4a6aacf1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mezzio/mezzio-authentication-oauth2/zipball/a631d533ec5bb764b1a4e6f8c9f4d83e4a6aacf1",
+                "reference": "a631d533ec5bb764b1a4e6f8c9f4d83e4a6aacf1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "league/oauth2-server": "^9.3.0",
+                "mezzio/mezzio-authentication": "^1.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1.0 || ^2.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0.1 || ^2.0",
+                "psr/http-server-middleware": "^1.0",
+                "webmozart/assert": "^1.10"
+            },
+            "conflict": {
+                "container-interop/container-interop": "<1.2.0",
+                "lcobucci/jwt": "<4",
+                "zendframework/zend-expressive-authentication-oauth2": "*"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "^3.1",
+                "laminas/laminas-diactoros": "^3.7.0",
+                "laminas/laminas-servicemanager": "^4.4",
+                "phpunit/phpunit": "^11.5.50",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
+            },
+            "bin": [
+                "bin/generate-oauth2-keys"
+            ],
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Mezzio\\Authentication\\OAuth2\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mezzio\\Authentication\\OAuth2\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "OAuth2 (server) authentication middleware for Mezzio and PSR-7 applications.",
+            "homepage": "https://mezzio.dev",
+            "keywords": [
+                "Authentication",
+                "http",
+                "laminas",
+                "mezzio",
+                "middleware",
+                "oauth2",
+                "psr-7"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.mezzio.dev/mezzio-authentication-oauth2/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/mezzio/mezzio-authentication-oauth2/issues",
+                "rss": "https://github.com/mezzio/mezzio-authentication-oauth2/releases.atom",
+                "source": "https://github.com/mezzio/mezzio-authentication-oauth2"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2026-03-24T10:53:55+00:00"
+        },
+        {
             "name": "nikic/fast-route",
             "version": "v1.3.0",
             "source": {
@@ -1429,6 +2074,191 @@
                 "source": "https://github.com/nikic/FastRoute/tree/master"
             },
             "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v9.99.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "support": {
+                "email": "info@paragonie.com",
+                "issues": "https://github.com/paragonie/random_compat/issues",
+                "source": "https://github.com/paragonie/random_compat"
+            },
+            "time": "2020-10-15T08:29:30+00:00"
+        },
+        {
+            "name": "paragonie/sodium_compat",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/sodium_compat.git",
+                "reference": "4714da6efdc782c06690bc72ce34fae7941c2d9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/4714da6efdc782c06690bc72ce34fae7941c2d9f",
+                "reference": "4714da6efdc782c06690bc72ce34fae7941c2d9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "php-64bit": "*"
+            },
+            "require-dev": {
+                "infection/infection": "^0",
+                "nikic/php-fuzzer": "^0",
+                "phpunit/phpunit": "^7|^8|^9|^10|^11",
+                "vimeo/psalm": "^4|^5|^6"
+            },
+            "suggest": {
+                "ext-sodium": "Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ],
+                "psr-4": {
+                    "ParagonIE\\Sodium\\": "namespaced/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com"
+                },
+                {
+                    "name": "Frank Denis",
+                    "email": "jedisct1@pureftpd.org"
+                }
+            ],
+            "description": "Pure PHP implementation of libsodium; uses the PHP extension if it exists",
+            "keywords": [
+                "Authentication",
+                "BLAKE2b",
+                "ChaCha20",
+                "ChaCha20-Poly1305",
+                "Chapoly",
+                "Curve25519",
+                "Ed25519",
+                "EdDSA",
+                "Edwards-curve Digital Signature Algorithm",
+                "Elliptic Curve Diffie-Hellman",
+                "Poly1305",
+                "Pure-PHP cryptography",
+                "RFC 7748",
+                "RFC 8032",
+                "Salpoly",
+                "Salsa20",
+                "X25519",
+                "XChaCha20-Poly1305",
+                "XSalsa20-Poly1305",
+                "Xchacha20",
+                "Xsalsa20",
+                "aead",
+                "cryptography",
+                "ecdh",
+                "elliptic curve",
+                "elliptic curve cryptography",
+                "encryption",
+                "libsodium",
+                "php",
+                "public-key cryptography",
+                "secret-key cryptography",
+                "side-channel resistant"
+            ],
+            "support": {
+                "issues": "https://github.com/paragonie/sodium_compat/issues",
+                "source": "https://github.com/paragonie/sodium_compat/tree/v2.5.0"
+            },
+            "time": "2025-12-30T16:12:18+00:00"
+        },
+        {
+            "name": "paragonie/sodium_compat_ext_sodium",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/sodium_compat_ext_sodium.git",
+                "reference": "cbded8e0b0aa0c1a5769455169eb378c2159e6c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat_ext_sodium/zipball/cbded8e0b0aa0c1a5769455169eb378c2159e6c8",
+                "reference": "cbded8e0b0aa0c1a5769455169eb378c2159e6c8",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/sodium_compat": "^1|^2"
+            },
+            "provide": {
+                "ext-libsodium": "*",
+                "ext-sodium": "*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/paragonie/sodium_compat_ext_sodium/issues",
+                "source": "https://github.com/paragonie/sodium_compat_ext_sodium/tree/v1.0.0"
+            },
+            "time": "2024-04-21T01:03:48+00:00"
         },
         {
             "name": "php-di/invoker",
@@ -1681,6 +2511,54 @@
                 }
             ],
             "time": "2026-01-09T18:02:33+00:00"
+        },
+        {
+            "name": "psr/clock",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/clock.git",
+                "reference": "e41a24703d4560fd0acb709162f73b8adfc3aa0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/clock/zipball/e41a24703d4560fd0acb709162f73b8adfc3aa0d",
+                "reference": "e41a24703d4560fd0acb709162f73b8adfc3aa0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Clock\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for reading the clock.",
+            "homepage": "https://github.com/php-fig/clock",
+            "keywords": [
+                "clock",
+                "now",
+                "psr",
+                "psr-20",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/clock/issues",
+                "source": "https://github.com/php-fig/clock/tree/1.0.0"
+            },
+            "time": "2022-11-25T14:36:26+00:00"
         },
         {
             "name": "psr/container",
@@ -3006,7 +3884,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.34.0",
+            "version": "v1.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -3065,7 +3943,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.34.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.36.0"
             },
             "funding": [
                 {
@@ -4262,6 +5140,64 @@
                 }
             ],
             "time": "2026-03-17T21:31:11+00:00"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozarts/assert.git",
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/9be6926d8b485f55b9229203f962b51ed377ba68",
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-date": "*",
+                "ext-filter": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "suggest": {
+                "ext-intl": "",
+                "ext-simplexml": "",
+                "ext-spl": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Assert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Assertions to validate method input/output with nice error messages.",
+            "keywords": [
+                "assert",
+                "check",
+                "validate"
+            ],
+            "support": {
+                "issues": "https://github.com/webmozarts/assert/issues",
+                "source": "https://github.com/webmozarts/assert/tree/1.12.1"
+            },
+            "time": "2025-10-29T15:56:20+00:00"
         }
     ],
     "packages-dev": [
@@ -8554,68 +9490,6 @@
                 }
             ],
             "time": "2025-11-17T20:03:58+00:00"
-        },
-        {
-            "name": "webmozart/assert",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozarts/assert.git",
-                "reference": "eb0d790f735ba6cff25c683a85a1da0eadeff9e4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/eb0d790f735ba6cff25c683a85a1da0eadeff9e4",
-                "reference": "eb0d790f735ba6cff25c683a85a1da0eadeff9e4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-date": "*",
-                "ext-filter": "*",
-                "php": "^8.2"
-            },
-            "suggest": {
-                "ext-intl": "",
-                "ext-simplexml": "",
-                "ext-spl": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-feature/2-0": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Assert\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                },
-                {
-                    "name": "Woody Gilk",
-                    "email": "woody.gilk@gmail.com"
-                }
-            ],
-            "description": "Assertions to validate method input/output with nice error messages.",
-            "keywords": [
-                "assert",
-                "check",
-                "validate"
-            ],
-            "support": {
-                "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/2.3.0"
-            },
-            "time": "2026-04-11T10:33:05+00:00"
         }
     ],
     "aliases": [],
