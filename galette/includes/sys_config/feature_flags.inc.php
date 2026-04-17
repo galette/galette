@@ -44,6 +44,27 @@ declare(strict_types=1);
 /** @var array<string, string|array{description: string, requires?: array<string>}> $feature_flags_registry */
 $feature_flags_registry = [
     /**
+     * OAuth2 - OAuth2 Authentication System
+     *
+     * Status: Planning
+     * Added: 2026-04-08
+     * Target: 1.3.0
+     */
+    'oauth2' => 'OAuth2 authentication',
+
+    /**
+     * OIDC - OpenID Connect Authentication System
+     *
+     * Status: Planning
+     * Added: 2026-04-08
+     * Target: 1.3.0
+     */
+    'oidc' => [
+        'description' => 'OIDC authentication',
+        'requires' => ['oauth2'],
+    ],
+
+    /**
      * ACLs - New Access Control Lists Management System
      *
      * Implements a new RBAC (Role-Based Access Control) system to replace

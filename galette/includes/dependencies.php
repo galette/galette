@@ -25,6 +25,7 @@ use Analog\Analog;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Rector\Configuration\Parameter\FeatureFlags;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
@@ -343,6 +344,14 @@ $container->set(
     }
 );
 
+//oauth
+/*$container->set(
+    'oauthserver',
+);
+$container['oauthserver'] = function ($c) {
+    return new Galette\OAuth\Server();
+};*/
+
 /**
  * TODO: to remove in next major
  * @deprecated 1.2.1
@@ -391,7 +400,7 @@ if (
     && $container->get('galette.mode') !== 'NEED_UPDATE'
     && !defined('GALETTE_INSTALLER')
 ) {
-    global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser;
+    global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $feature_flags;
     //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
     $zdb = $container->get(\Galette\Core\Db::class);
     $preferences = $container->get(\Galette\Core\Preferences::class);
@@ -400,6 +409,7 @@ if (
     $l10n = $container->get(\Galette\Core\L10n::class);
     $emitter = $container->get(\League\Event\EventDispatcher::class);
     $routeparser = $container->get(RouteParser::class);
+    $feature_flags = $container->get(FeatureFlags::class);
     //phpcs:enable
 }
 //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
