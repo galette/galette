@@ -141,19 +141,19 @@ class MembersController extends CrudController
             $response,
             'pages/member_form.html.twig',
             [
-                'page_title'        => _T("Subscription"),
-                'parent_tpl'        => 'public_page.html.twig',
-                'member'            => $member,
-                'self_adh'          => true,
-                'autocomplete'      => true,
-                'osocials'          => new Social($this->zdb),
+                'page_title'           => _T("Subscription"),
+                'parent_tpl'           => 'public_page.html.twig',
+                'member'               => $member,
+                'self_adh'             => true,
+                'autocomplete_options' => true,
+                'osocials'             => new Social($this->zdb),
                 // pseudo random int
-                'time'              => time(),
-                'titles_list'       => $titles->getList(),
-                'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens'],
+                'time'                 => time(),
+                'titles_list'          => $titles->getList(),
+                'fieldsets'            => $form_elements['fieldsets'],
+                'hidden_elements'      => $form_elements['hiddens'],
                 //self_adh specific
-                'gaptcha'           => $gaptcha
+                'gaptcha'              => $gaptcha
             ] + $params
         );
         return $response;
@@ -1095,7 +1095,7 @@ class MembersController extends CrudController
             'pages/member_form.html.twig',
             [
                 'parent_tpl'        => 'page.html.twig',
-                'autocomplete'      => true,
+                'autocomplete_options'      => true,
                 'page_title'        => $title,
                 'member'            => $member,
                 'self_adh'          => false,

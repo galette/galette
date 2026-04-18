@@ -185,7 +185,6 @@ class TransactionsController extends ContributionsController
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-        $params['autocomplete'] = true;
 
         if (count($members)) {
             $params['members']['list'] = $members;
