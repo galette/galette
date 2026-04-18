@@ -26,15 +26,20 @@
 /*----------------------
      Listing tables
 -----------------------*/
-table.listing td {
-    line-height:1.5em;
-    padding:.1em .2em;
-}
-table.listing tbody tr:hover > td {
-    background-color: @activeLineBackgroundColor !important;
+table.listing {
+    tbody tr:hover > td {
+        background-color: @activeLineBackgroundColor !important;
 
-    a {
-        color: darken(@linkColor, 5);
+        a {
+            color: darken(@linkColor, 5);
+        }
+    }
+    td {
+        line-height:1.5em;
+        padding:.1em .2em;
+    }
+    tfoot .bottom.aligned button {
+        margin-bottom: 1px;
     }
 }
 td.emptylist {
