@@ -785,7 +785,7 @@
                         </div>
                         <div class="field">
                             <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
-                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"/>
+                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="new-password" maxlength="100" size="30"/>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -1107,12 +1107,12 @@
                 <div id="pref_admin_pass_field" class="inline field">
                     <label for="pref_admin_pass">{{ _T("Password:") }}</label>
                     <div class="ui input">
-                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"/>
+                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="new-password"/>
                     </div>
                 </div>
                 <div class="inline field">
                     <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
-                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
+                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20" autocomplete="new-password"/>
                 </div>
     {% endif %}
         </div>{# /tab segment #}

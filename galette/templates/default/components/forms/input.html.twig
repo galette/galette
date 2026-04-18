@@ -68,10 +68,10 @@
                     {% if required is defined and required == true %} required="required"{% endif %}
                     {% if readonly is defined and readonly == true %} readonly="readonly"{% endif %}
                     {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
-                    {% if title is defined %} title="{{ title }}"{% endif %}
+                    {% if title is defined and title is not empty %} title="{{ title }}"{% endif %}
                     {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
                     {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
-                    {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
+                    {% if autocomplete is defined and autocomplete is not empty %} autocomplete="{{ autocomplete }}"{% endif %}
                     {% if autofocus is defined %} autofocus{% endif %}
                     {% if size is defined %} size="{{ size }}"{% endif %}
                     {% if checked is defined and checked == true %} checked{% endif %}
