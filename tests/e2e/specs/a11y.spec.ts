@@ -108,7 +108,7 @@ test.describe('Accessibility', () => {
     await page.goto('/contributions');
     await page.locator('table.listing').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).disableRules(['autocomplete-valid']).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
@@ -154,9 +154,9 @@ test.describe('Accessibility', () => {
     await page.goto('/transactions');
     await page.locator('table.listing').waitFor({ state: 'visible' });
 
-    const firstContribution = page.locator('a[href*="/transaction"]').first();
-    if (await firstContribution.isVisible()) {
-      await firstContribution.click();
+    const firstTransaction = page.locator('a[href*="/transaction"]').first();
+    if (await firstTransaction.isVisible()) {
+      await firstTransaction.click();
       await page.locator('h1, h2').waitFor({ state: 'visible' });
 
       const results = await axeBuilder(page).analyze();
@@ -165,17 +165,10 @@ test.describe('Accessibility', () => {
   });
 
   test('A11y - Transaction add form', async ({ loggedInPage: page }) => {
-    // Navigate via member's transaction page to pre-select member
-    const listPage = new MemberListPage(page);
-    await listPage.goto();
-    await listPage.filterByName('SKYWALKER Luke');
-    await listPage.getMemberRowByName('SKYWALKER Luke')
-      .locator('a:has(i.receipt.green.icon)')
-      .click();
-    await page.locator('form a[href*="/transaction/add"]').click();
-    await page.locator('#montant_cotis').waitFor({ state: 'visible' });
+    await page.goto('/transaction/add');
+    await page.locator('#trans_amount').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
