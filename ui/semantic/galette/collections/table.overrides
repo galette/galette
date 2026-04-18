@@ -37,6 +37,10 @@ table.listing {
     td {
         line-height:1.5em;
         padding:.1em .2em;
+
+        a:not(.icon-only) {
+            text-decoration: underline
+        }
     }
     tfoot .bottom.aligned button {
         margin-bottom: 1px;
