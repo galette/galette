@@ -327,8 +327,8 @@
                         <td class="right collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                             <span class="ui checkbox">
                                 <input type="checkbox" name="entries_sel[]" id="member_checkbox_{{ member.__get('id') }}" value="{{ member.__get('id') }}"/>
+                                <label for="member_checkbox_{{ member.__get('id') }}">{{ member.id }}</label>
                             </span>
-                            <label for="member_checkbox_{{ member.__get('id') }}">{{ member.id }}</label>
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="username_row" data-scope="row" data-col-label="{{ column.label }}">

@@ -287,14 +287,18 @@
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
             <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
-                {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
-                    <span class="ui checkbox">
+                <span{% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %} class="ui checkbox"{% endif %}>
+                    {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                         <input type="checkbox" name="entries_sel[]" id="entry_sel_{{ contribution.id }}" value="{{ contribution.id }}"/>
-                    </span>
-                {% else %}
-                    <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
-                {% endif %}
-                <label for="entry_sel_{{ contribution.id }}">{{ contribution.id }}</label>
+                        <label for="entry_sel_{{ contribution.id }}">
+                    {% else %}
+                        <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
+                    {% endif %}
+                        {{ contribution.id }}
+                    {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                        </label>
+                    {% endif %}
+                </span>
 
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     {% if contribution.isTransactionPart() %}
