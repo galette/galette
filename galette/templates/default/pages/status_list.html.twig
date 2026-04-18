@@ -90,23 +90,23 @@
                             <a
                                 href="{{ url_for('editStatus', {'id': eid}) }}"
                                 class="action single-edit icon-only"
-                                aria-label="{{ _T("Edit '%s' field")|replace({'%s': entry.name}) }}"
                             >
                                 <i class="ui edit icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Edit '%s' field")|replace({'%s': entry.name}) }}</span>
                             </a>
                             <a
                                 href="{{ url_for('dynamicTranslations', {}, {'text_orig': entry.text_orig}) }}"
                                 class="action single-translate icon-only"
-                                aria-label="{{ _T("Translate '%s'")|replace({'%s': entry.name}) }}"
                             >
                                 <i class="ui language grey icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Translate '%s'")|replace({'%s': entry.name}) }}</span>
                             </a>
                             <a
                                 href="{{ url_for('removeStatus', {'id': eid}) }}"
                                 class="delete icon-only"
-                                aria-label="{{ _T("Delete '%s' field")|replace({'%s': entry.name}) }}"
                             >
                                 <i class="ui trash red icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Delete '%s' field")|replace({'%s': entry.name}) }}</span>
                             </a>
                         </td>
                     </tr>

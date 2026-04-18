@@ -94,7 +94,7 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             inline: false,
             addTouchEvents: false,
-            content: $this.attr('aria-label'),
+            content: $this.find('.visually-hidden').html(),
             });
         })
     ;

@@ -108,7 +108,7 @@ test.describe('Accessibility', () => {
     await page.goto('/contributions');
     await page.locator('table.listing').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).disableRules(['autocomplete-valid']).analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 

@@ -200,18 +200,18 @@
                 {{ transaction.id }}
                 {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions)) and mode != 'ajax' %}
                     {% if transaction.getDispatchedAmount() != 0 %}
-                        <a href="{{ url_for("contributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}">
+                        <a href="{{ url_for("contributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}" class="icon-only">
                             <i class="ui linkify icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("View contributions") }}</span>
+                            <span class="visually-hidden">{{ _T("View contributions") }}</span>
                         </a>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                 {% else %}
                     {% if transaction.getDispatchedAmount() != 0 %}
-                        <a href="{{ url_for("myContributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}">
+                        <a href="{{ url_for("myContributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}" class="icon-only">
                             <i class="ui linkify icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("View contributions") }}</span>
+                            <span class="visually-hidden">{{ _T("View contributions") }}</span>
                         </a>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
@@ -244,18 +244,18 @@
                 <td class="center actions_row collapsing">
                     <a
                         href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
-                        class="action"
+                        class="action icon-only"
                     >
                         <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="visually-hidden">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                     {% if login.isAdmin() or login.isStaff() %}
                     <a
                         href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
-                        class="delete"
+                        class="delete icon-only"
                     >
                         <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="visually-hidden">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                     {% endif %}
                 </td>

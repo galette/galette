@@ -174,9 +174,10 @@
                         {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             <a
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
+                                class="icon-only"
                             >
                                 <i class="icon times tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">
+                                <span class="visually-hidden">
                                     {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                                         {{ _T("Show all your contributions") }}
                                     {% else %}
@@ -304,9 +305,10 @@
                     {% if contribution.isTransactionPart() %}
                         <a
                             href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                            class="icon-only"
                         >
                             <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">
+                            <span class="visually-hidden">
                                 {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
                                 {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
@@ -315,9 +317,9 @@
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        <a href="{{ url_for("scheduledPayments") }}?id_cotis={{ contribution.id }}">
+                        <a href="{{ url_for("scheduledPayments") }}?id_cotis={{ contribution.id }}" class="icon-only">
                             <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">
+                            <span class="visually-hidden">
                                 {{ _T("View scheduled payments") }}
                                 {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
@@ -330,10 +332,11 @@
                         {% if preferences.pref_bool_groupsmanagers_create_transactions %}
                             <a
                                 href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                                class="icon-only"
                             >
                         {% endif %}
                                 <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">
+                                <span class="visually-hidden">
                                     {% if preferences.pref_bool_groupsmanagers_create_transactions %}
                                         {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
                                     {% else %}
@@ -367,9 +370,9 @@
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        <a href="{{ url_for("myScheduledPayments") }}?id_cotis={{ contribution.id }}">
+                        <a href="{{ url_for("myScheduledPayments") }}?id_cotis={{ contribution.id }}" class="icon-only">
                             <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">
+                            <span class="visually-hidden">
                                 {{ _T("View scheduled payments") }}
                                 {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
@@ -415,24 +418,25 @@
                 <td class="actions_row center collapsing">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
+                            class="icon-only"
                     >
                         <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                        <span class="visually-hidden">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
                                 href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
-                                class="action"
+                                class="action icon-only"
                         >
                             <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
+                            <span class="visually-hidden">{{ _T("Edit the contribution") }}</span>
                         </a>
                         <a
                                 href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
-                                class="delete"
+                                class="delete icon-only"
                         >
                             <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
+                            <span class="visually-hidden">{{ _T("Delete the contribution") }}</span>
                         </a>
                     {% endif %}
                 </td>
