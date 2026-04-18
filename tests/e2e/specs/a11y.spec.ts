@@ -209,7 +209,11 @@ test.describe('Accessibility', () => {
     await page.goto('/contributions-types');
     await page.locator('h1, h2').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    const results = await axeBuilder(page)
+      .exclude('*[autocomplete="fomantic-search"]')
+      .exclude('.note-editable') // Summernote related issue
+      .exclude('.note-resizebar') //Summernote issue
+      .analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
