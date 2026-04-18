@@ -4,5 +4,5 @@
 
 .ui.primary.labels .label,
 .ui.ui.ui.primary.label {
-    color: @primaryTextColor;
+    color: @darkGrey;
 }
