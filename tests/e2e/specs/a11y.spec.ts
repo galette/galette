@@ -141,6 +141,44 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  // Transactions
+  test('A11y - Transaction list page', async ({ loggedInPage: page }) => {
+    await page.goto('/transactions');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Transaction details page', async ({ loggedInPage: page }) => {
+    await page.goto('/transactions');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const firstContribution = page.locator('a[href*="/transaction"]').first();
+    if (await firstContribution.isVisible()) {
+      await firstContribution.click();
+      await page.locator('h1, h2').waitFor({ state: 'visible' });
+
+      const results = await axeBuilder(page).analyze();
+      expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    }
+  });
+
+  test('A11y - Transaction add form', async ({ loggedInPage: page }) => {
+    // Navigate via member's transaction page to pre-select member
+    const listPage = new MemberListPage(page);
+    await listPage.goto();
+    await listPage.filterByName('SKYWALKER Luke');
+    await listPage.getMemberRowByName('SKYWALKER Luke')
+      .locator('a:has(i.receipt.green.icon)')
+      .click();
+    await page.locator('form a[href*="/transaction/add"]').click();
+    await page.locator('#montant_cotis').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   // Groups
   test('A11y - Groups list page', async ({ loggedInPage: page }) => {
     await page.goto('/groups');
