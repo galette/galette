@@ -42,13 +42,13 @@
                         <td class="left" data-col-label="{{ _T("Short form") }}">
                             <div class="required field">
                                 <label for="short_label" class="visually-hidden">{{ _T("Short form") }}</label>
-                                <input size="20" type="text" name="short_label" required="required"/>
+                                <input size="20" type="text" name="short_label" id="short_label" required="required"/>
                             </div>
                         </td>
                         <td class="left" data-col-label="{{ _T("Long form") }}">
                             <div class="required field">
                                 <label for="long_label" class="visually-hidden">{{ _T("Long form") }}</label>
-                                <input size="20" type="text" name="long_label" required="required"/>
+                                <input size="20" type="text" name="long_label" id="long_label"  required="required"/>
                             </div>
                         </td>
                         <td class="center actions_row collapsing">
@@ -71,20 +71,20 @@
                         <td class="center actions_row collapsing">
                             <a
                                 href="{{ url_for('editTitle', {'id': title.id}) }}"
-                                class="action single-edit"
+                                class="action single-edit icon-only"
                             >
                                 <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="visually-hidden">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% if title.id == 1 or title.id == 2 %}
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
                                 href="{{ url_for('removeTitle', {'id': title.id}) }}"
-                                class="delete "
+                                class="delete icon-only"
                             >
                                 <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="visually-hidden">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% endif %}
                         </td>

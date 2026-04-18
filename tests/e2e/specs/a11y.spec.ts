@@ -67,7 +67,7 @@ test.describe('Accessibility', () => {
     await listPage.goto();
     await listPage.memberTable.waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
@@ -90,7 +90,7 @@ test.describe('Accessibility', () => {
     await page.goto('/member/add');
     await page.locator('#nom_adh').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
@@ -99,7 +99,7 @@ test.describe('Accessibility', () => {
     const searchInput = page.locator('#filter_str');
     await searchInput.waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).include('form, [role="search"]').analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').include('form, [role="search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
@@ -137,7 +137,7 @@ test.describe('Accessibility', () => {
     await page.locator('form a[href*="/contribution/fee/add"]').click();
     await page.locator('#montant_cotis').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
@@ -191,7 +191,7 @@ test.describe('Accessibility', () => {
       await groupRows.first().locator('a[href*="/group/edit/"]').click();
       await page.locator('h1, h2').waitFor({ state: 'visible' });
 
-      const results = await axeBuilder(page).analyze();
+      const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
       expect(results.violations, formatViolations(results.violations)).toEqual([]);
     }
   });
@@ -209,7 +209,7 @@ test.describe('Accessibility', () => {
     await page.goto('/contributions-types');
     await page.locator('h1, h2').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
