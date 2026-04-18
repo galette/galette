@@ -40,18 +40,18 @@
                 </thead>
                 <tfoot>
                 <tr>
-                    <td class="collapsing" data-scope="row">
+                    <td class="collapsing" data-scope="row" data-col-label="{{ _T("New status") }}">
                         <span class="visually-hidden">
                             {{ _T("New status") }}
                         </span>
                     </td>
-                    <td class="left" data-col-label="{{ _T("Name") }}">
+                    <td class="left">
                         <div class="required field">
                             <label for="libelle_statut">{{ _T("Name") }}</label>
                             <input size="40" type="text" name="libelle_statut" id="libelle_statut" required="required"/>
                         </div>
                     </td>
-                    <td class="left" data-col-label="{{ _T("Priority") }}">
+                    <td class="left">
                         <div class="required field">
                             <label for="priorite_statut">{{ _T("Priority") }}</label>
                             <input size="4" type="text" name="priorite_statut" id="priorite_statut" value="99" />
