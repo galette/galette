@@ -289,12 +289,12 @@
             <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <span class="ui checkbox">
-                        <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
+                        <input type="checkbox" name="entries_sel[]" id="entry_sel_{{ contribution.id }}" value="{{ contribution.id }}"/>
                     </span>
                 {% else %}
                     <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
                 {% endif %}
-                {{ contribution.id }}
+                <label for="entry_sel_{{ contribution.id }}">{{ contribution.id }}</label>
 
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     {% if contribution.isTransactionPart() %}
