@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\BaseGaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -126,6 +127,7 @@ class Db extends BaseGaletteTestCase
     /**
      * Test database grants that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGrantWException(): void
     {
         //test insert failing
@@ -452,6 +454,7 @@ class Db extends BaseGaletteTestCase
     /**
      * Test database version that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDbVersionWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -677,6 +680,7 @@ class Db extends BaseGaletteTestCase
     /**
      * Test supported engine
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSupportedEngine(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -813,6 +817,7 @@ class Db extends BaseGaletteTestCase
     /**
      * Test willMysqlImplicitCommit method
      */
+    #[AllowMockObjectsWithoutExpectations]
     #[DataProvider('implicitCommitProvider')]
     public function testWillMysqlImplicitCommit(string $query, bool $expected): void
     {

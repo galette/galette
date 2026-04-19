@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Saved search tests
@@ -50,6 +51,7 @@ class SavedSearch extends GaletteTestCase
     /**
      * Test saved search
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSave(): void
     {
         global $i18n, $translator; // globals :(

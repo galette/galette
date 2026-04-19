@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Util;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 use function Safe\file_get_contents;
 use function Safe\ini_get;
@@ -39,6 +40,7 @@ class Telemetry extends GaletteTestCase
     /**
      * Test Galette infos
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGrabGaletteInfos(): void
     {
         $expected = [
@@ -201,6 +203,7 @@ class Telemetry extends GaletteTestCase
     /**
      * Test whole Telemetry infos
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetTelemetryInfos(): void
     {
         $this->plugins = $this->getMockBuilder(\Galette\Core\Plugins::class)

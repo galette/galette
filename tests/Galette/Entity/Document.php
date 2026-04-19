@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Status tests
@@ -68,6 +69,7 @@ class Document extends GaletteTestCase
     /**
      * Test getList
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $document = $this->getDocumentInstance();
@@ -263,6 +265,7 @@ class Document extends GaletteTestCase
     /**
      * Test getTypes
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetTypes(): void
     {
         $document = new \Galette\Entity\Document($this->zdb);

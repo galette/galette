@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -1157,6 +1158,7 @@ class Contribution extends GaletteTestCase
     /**
      * Test contribution loading
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoad(): void
     {
         global $login;

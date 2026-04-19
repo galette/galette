@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 use Galette\Tests\GaletteTestCase;
 
@@ -217,6 +218,7 @@ class Transaction extends GaletteTestCase
     /**
      * Test transaction loading
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoad(): void
     {
         global $login;

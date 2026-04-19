@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 
 use function Safe\copy;
@@ -143,6 +144,7 @@ class Members extends GaletteTestCase
     /**
      * Test getList
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $members = new \Galette\Repository\Members();

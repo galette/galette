@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Login tests class
@@ -55,6 +56,7 @@ class Login extends GaletteTestCase
     /**
      * Test not logged-in users Impersonating
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testNotLoggedCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -70,6 +72,7 @@ class Login extends GaletteTestCase
     /**
      * Test staff users Impersonating
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testStaffCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -89,6 +92,7 @@ class Login extends GaletteTestCase
     /**
      * Test admin users Impersonating
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testAdminCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -108,6 +112,7 @@ class Login extends GaletteTestCase
     /**
      * Test Impersonating that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testImpersonateExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -136,6 +141,7 @@ class Login extends GaletteTestCase
     /**
      * Test superadmin users Impersonating
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSuperadminCanImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -172,6 +178,7 @@ class Login extends GaletteTestCase
     /**
      * Test login exists that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoginExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)

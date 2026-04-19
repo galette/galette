@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 
 /**
@@ -81,6 +82,7 @@ class Transactions extends GaletteTestCase
     /**
      * Test getList
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $this->logSuperAdmin();

@@ -5,10 +5,6 @@
     bootstrap="tests/TestsBootstrap.php"
     colors="true"
     processIsolation="false"
-    displayDetailsOnTestsThatTriggerDeprecations="true"
-    displayDetailsOnTestsThatTriggerErrors="true"
-    displayDetailsOnTestsThatTriggerNotices="true"
-    displayDetailsOnTestsThatTriggerWarnings="true"
-    displayDetailsOnPhpunitDeprecations="true"
+    displayDetailsOnAllIssues="true"
 >
 </phpunit>

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 use function Safe\mb_convert_encoding;
 use function Safe\preg_match;
@@ -131,6 +132,7 @@ class Galette extends GaletteTestCase
     /**
      * Test getMenus
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetMenus(): void
     {
         global $preferences, $login, $plugins;
@@ -215,6 +217,7 @@ class Galette extends GaletteTestCase
     /**
      * Test getPublicMenus
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetPublicMenus(): void
     {
         global $preferences;
@@ -258,6 +261,7 @@ class Galette extends GaletteTestCase
     /**
      * Test getDashboards
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDashboards(): void
     {
         global $login;
@@ -333,6 +337,7 @@ class Galette extends GaletteTestCase
     /**
      * Test getListActions
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetListActions(): void
     {
         global $login;
@@ -411,6 +416,7 @@ class Galette extends GaletteTestCase
     /**
      * Test getBatchActions
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetBatchActions(): void
     {
         global $login;
@@ -477,6 +483,7 @@ class Galette extends GaletteTestCase
     /**
      * Test Galette::getNews() method
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetNews(): void
     {
         $entries = \Galette\Core\Galette::getNews();

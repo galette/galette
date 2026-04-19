@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Mailing tests class
@@ -35,6 +36,7 @@ class Mailing extends GaletteTestCase
     /**
      * Test setRecipients
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSetRecipients(): void
     {
         $mailing = new \Galette\Core\Mailing($this->preferences);

@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Tests\Util;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Release tests class
@@ -54,9 +56,9 @@ class Release extends GaletteTestCase
      * @param string $current  Current release
      * @param string $latest   Latest release
      * @param bool   $expected Expected result
-     *
-     * @dataProvider releasesProvider
      */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('releasesProvider')]
     public function testNewRelease(string $current, string $latest, bool $expected): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
@@ -227,9 +229,9 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
      * @param string $latest   Latest release
      * @param bool   $expected Expected result
      * @param string $page     Page content
-     *
-     * @dataProvider releasesPageProvider
      */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('releasesPageProvider')]
     public function testFindLatestRelease(string $current, string $latest, bool $expected, string $page): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)

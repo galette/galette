@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 
 /**
@@ -337,6 +339,7 @@ class Adherent extends GaletteTestCase
     /**
      * Tests check errors
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCheckErrors(): void
     {
         global $login;
@@ -521,6 +524,7 @@ class Adherent extends GaletteTestCase
     /**
      * Test canEdit
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCanEdit(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
@@ -590,6 +594,7 @@ class Adherent extends GaletteTestCase
     /**
      * Test canDelete
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCanDelete(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
@@ -785,6 +790,7 @@ class Adherent extends GaletteTestCase
     /**
      * Test can* methods
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCan(): void
     {
         $this->getMemberOne();
@@ -980,8 +986,6 @@ class Adherent extends GaletteTestCase
     /**
      * Test getNameWithCase
      *
-     * @dataProvider nameCaseProvider
-     *
      * @param string                      $name     Name
      * @param string                      $surname  Surname
      * @param \Galette\Entity\Title|false $title    Title
@@ -989,6 +993,7 @@ class Adherent extends GaletteTestCase
      * @param string|false                $nick     Nick
      * @param string                      $expected Expected result
      */
+    #[DataProvider('nameCaseProvider')]
     public function testsGetNameWithCase(
         string $name,
         string $surname,

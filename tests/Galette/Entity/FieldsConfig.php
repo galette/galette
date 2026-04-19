@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Preferences tests class
@@ -320,6 +321,7 @@ class FieldsConfig extends GaletteTestCase
     /**
      * Test get display elements
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDisplayElements(): void
     {
         $fields_config = $this->fields_config;
@@ -374,6 +376,7 @@ class FieldsConfig extends GaletteTestCase
     /**
      * Test get form elements
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetFormElements(): void
     {
         $fields_config = $this->fields_config;

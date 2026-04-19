@@ -25,6 +25,8 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Preferences tests class
@@ -179,6 +181,7 @@ class Preferences extends GaletteTestCase
     /**
      * Test public pages visibility
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testPublicPagesVisibility(): void
     {
         $this->preferences->load();
@@ -353,12 +356,11 @@ class Preferences extends GaletteTestCase
     /**
      * Test colors
      *
-     * @dataProvider colorsProvider
-     *
      * @param string $prop     Property to be set
      * @param string $color    Color to set
      * @param string $expected Expected color
      */
+    #[DataProvider('colorsProvider')]
     public function testColors(string $prop, string $color, string $expected): void
     {
         $prop = 'pref_card_' . $prop;

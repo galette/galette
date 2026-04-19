@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Galette\Tests\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 use function Safe\copy;
 use function Safe\filesize;
@@ -1825,6 +1826,7 @@ class MembersController extends GaletteRoutingTestCase
     /**
      * Test edit members
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testEditMember(): void
     {
         $member_one = $this->getMemberOne();

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Galette\Tests\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Slim\Psr7\UploadedFile;
 
 use function Safe\copy;
@@ -110,6 +111,7 @@ class DocumentsController extends GaletteRoutingTestCase
     /**
      * Test documents list
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testList(): void
     {
         $this->logSuperAdmin();
@@ -261,6 +263,7 @@ class DocumentsController extends GaletteRoutingTestCase
     /**
      * Test documents edit page
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testEditPage(): void
     {
         //create one document
@@ -366,6 +369,7 @@ class DocumentsController extends GaletteRoutingTestCase
     /**
      * Test remove document page
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testRemovePage(): void
     {
         $this->logSuperAdmin();
@@ -462,6 +466,7 @@ class DocumentsController extends GaletteRoutingTestCase
     /**
      * Test get document file
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetMissingDocument(): void
     {
         $this->logSuperAdmin();

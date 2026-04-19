@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * ListsConfig tests class
@@ -166,6 +167,7 @@ class ListsConfig extends GaletteTestCase
     /**
      * Test get display elements
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDisplayElements(): void
     {
         $lists_config = $this->lists_config;

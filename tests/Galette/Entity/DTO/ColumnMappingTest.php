@@ -92,8 +92,6 @@ class ColumnMappingTest extends GaletteTestCase
 
     /**
      * Test DTO with various value types
-     *
-     * @dataProvider valueTypesProvider
      */
     #[DataProvider('valueTypesProvider')]
     public function testWithVariousValueTypes(mixed $value, string $expectedType): void

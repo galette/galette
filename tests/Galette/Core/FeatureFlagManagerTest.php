@@ -25,6 +25,7 @@ namespace Galette\Core\test\units;
 
 use Galette\Core\FeatureFlagManager;
 use Galette\Tests\BaseGaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Feature Flag Manager tests
@@ -56,6 +57,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     /**
      * Test that feature flags are disabled when debug mode is off
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFeatureFlagsDisabledInProductionMode(): void
     {
         $manager = $this->getManagerMock(false);
@@ -74,6 +76,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     /**
      * Test getting all declared flags
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDeclaredFlags(): void
     {
         $manager = $this->getManagerMock(true);
@@ -91,6 +94,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     /**
      * Test getting all flags with status
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetAllFlagsWithStatus(): void
     {
         $manager = $this->getManagerMock(true);

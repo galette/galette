@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\BaseGaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * CheckModules tests class
@@ -49,6 +50,7 @@ class CheckModules extends BaseGaletteTestCase
     /**
      * Test all extensions missing
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testAllKO(): void
     {
         $checks = $this->getMockBuilder(\Galette\Core\CheckModules::class)

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 
 /**
@@ -181,6 +182,7 @@ class Password extends GaletteTestCase
     /**
      * Generate new password that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGenerateNewPasswordWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -203,6 +205,7 @@ class Password extends GaletteTestCase
     /**
      * Test cleanExpired that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCleanExpiredWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -224,6 +227,7 @@ class Password extends GaletteTestCase
     /**
      * Test hash validity that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testIsHashValidWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -246,6 +250,7 @@ class Password extends GaletteTestCase
     /**
      * Test hash removal that throws an exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testRemoveHashWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)

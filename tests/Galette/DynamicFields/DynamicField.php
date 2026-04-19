@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\DynamicFields;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Dynamic fields test
@@ -133,9 +134,8 @@ class DynamicField extends GaletteTestCase
      *
      * @param int    $perm Permission
      * @param string $name Name
-     *
-     * @dataProvider permsProvider
      */
+    #[DataProvider('permsProvider')]
     public function testGetPermissionName(int $perm, string $name): void
     {
         $field_data = [
@@ -203,9 +203,8 @@ class DynamicField extends GaletteTestCase
      *
      * @param string $form     Form name
      * @param string $expected Expected name
-     *
-     * @dataProvider formNamesProvider
      */
+    #[DataProvider('formNamesProvider')]
     public function testGetFormTitle(string $form, string $expected): void
     {
         $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormTitle($form));

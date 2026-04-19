@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\IO;
 
 use Galette\Tests\BaseGaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\Exceptions\InfoException;
 
 use function Safe\filemtime;
@@ -151,6 +152,7 @@ class News extends BaseGaletteTestCase
     /**
      * Test news loading with allow_url_fopen off
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoadNewsWExeption(): void
     {
         $news = $this->getMockBuilder(\Galette\IO\News::class)

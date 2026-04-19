@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * SysInfos tests class
@@ -35,6 +36,7 @@ class SysInfos extends GaletteTestCase
     /**
      * Test getRawData
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetRawData(): void
     {
         $this->plugins = $this->getMockBuilder(\Galette\Core\Plugins::class)

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * L10n tests class
@@ -221,6 +222,7 @@ class L10n extends GaletteTestCase
     /**
      * Test add dynamic translation with exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testAddWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -245,6 +247,7 @@ class L10n extends GaletteTestCase
     /**
      * Test update dynamic translation with exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -275,6 +278,7 @@ class L10n extends GaletteTestCase
     /**
      * Test delete dynamic translation with exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -299,6 +303,7 @@ class L10n extends GaletteTestCase
     /**
      * Test get dynamic translation with exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -331,6 +336,7 @@ class L10n extends GaletteTestCase
     /**
      * Test get dynamic translations with exception
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
