@@ -562,15 +562,13 @@ class Db extends BaseGaletteTestCase
     public function testTableExists(): void
     {
         $this->assertTrue($this->zdb->tableExists('preferences'));
-        $this->expectLogEntry(
-            \Analog\Analog::WARNING,
-            'Galette\Core\Db::tableExists should not be used because of very poor performances.'
-        );
         $this->assertFalse($this->zdb->tableExists('does_not_exists'));
-        $this->expectLogEntry(
-            \Analog\Analog::WARNING,
-            'Galette\Core\Db::tableExists should not be used because of very poor performances.'
-        );
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1146,
+            'Message' => "regex:/.*does_not_exists.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**
