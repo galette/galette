@@ -76,6 +76,7 @@ class Db
 
     public const int MYSQL_DEFAULT_PORT = 3306;
     public const int PGSQL_DEFAULT_PORT = 5432;
+    private bool $log_execute = true;
 
     /**
      * Main constructor
@@ -513,28 +514,24 @@ class Db
     }
 
     /**
-     * Does a given table exists?
+     * Does a given table exist?
      *
      * @param string $name Table name
-     * @deprecated 1.2.2: performances are terrible.
      */
     public function tableExists(string $name): bool
     {
-        Analog::log(
-            __METHOD__ . ' should not be used because of very poor performances.',
-            Analog::WARNING
-        );
-        $metadata = Factory::createSourceFromAdapter($this->db);
+        $this->log_execute = false;
         try {
-            $metadata->getTable(PREFIX_DB . $name);
+            $this->execute($this->select($name)->limit(1));
             return true;
-        } catch (Throwable) {
-            Analog::log(
-                'Table "' . $name . '" does not exist',
-                Analog::INFO
-            );
-            return false;
+        } catch (\Throwable $e) {
+            if (!$this->isMissingTableException($e)) {
+                throw $e;
+            }
+        } finally {
+            $this->log_execute = true;
         }
+        return false;
     }
 
     /**
@@ -826,14 +823,16 @@ class Db
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch (Throwable $e) {
-            $msg = 'Query error: ';
-            if (isset($query_string)) {
-                $msg .= $query_string;
+            if ($this->log_execute) {
+                $msg = 'Query error: ';
+                if (isset($query_string)) {
+                    $msg .= $query_string;
+                }
+                Analog::log(
+                    $msg . ' ' . $e->__toString(),
+                    Analog::ERROR
+                );
             }
-            Analog::log(
-                $msg . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             if ($this->isDuplicateException($sql, $e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);
             }
