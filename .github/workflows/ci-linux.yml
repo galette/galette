@@ -16,42 +16,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  setup-phpunit-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: gen
+        uses: galette/.github/actions/matrix-generator@main
+        with:
+          all-jobs: ${{ github.event_name != 'pull_request' && github.repository == 'galette/galette' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')) }}
+
+  setup-lint-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: gen
+        uses: galette/.github/actions/matrix-generator@main
+        with:
+          target: lint
+          all-jobs: ${{ github.event_name != 'pull_request' && github.repository == 'galette/galette' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')) }}
+
+  setup-unsupported-dbs-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: gen
+        uses: galette/.github/actions/matrix-generator@main
+        with:
+          target: unsupported-dbs
+          all-jobs: ${{ github.event_name != 'pull_request' && github.repository == 'galette/galette' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')) }}
+
   unit-tests:
     runs-on: ubuntu-latest
+    needs: setup-phpunit-matrix
 
     strategy:
-      matrix:
-        include:
-          #always tests higher stable php version with lower db version
-          #enable coverage on higher stable php version with higher PostgreSQL version
-          #cache must be disabled on one always enabled build (not coverage one, this already takes much time than others)
-          #higher stable php version
-          - { php-version: "8.5", db-image: "postgres:13", coverage: none, cache: true, always: true }
-          - { php-version: "8.5", db-image: "postgres:17", coverage: 'pcov', cache: true, always: true }
-          - { php-version: "8.5", db-image: "mysql:8.0", coverage: none, cache: true, always: true }
-          - { php-version: "8.5", db-image: "mysql:9.1", coverage: none, cache: true, always: false }
-          - { php-version: "8.5", db-image: "mariadb:10.5", coverage: none, cache: false, always: true }
-          - { php-version: "8.5", db-image: "mariadb:11.6", coverage: none, cache: true, always: false }
-          #always one test with lower php version
-          #lower php version
-          - { php-version: "8.3", db-image: "postgres:13", coverage: none, cache: true, always: false }
-          - { php-version: "8.3", db-image: "postgres:17", coverage: none, cache: true, always: true }
-          - { php-version: "8.3", db-image: "mysql:8.0", coverage: none, cache: true, always: false }
-          - { php-version: "8.3", db-image: "mysql:9.1", coverage: none, cache: true, always: false }
-          - { php-version: "8.3", db-image: "mariadb:10.5", coverage: none, cache: true, always: false }
-          - { php-version: "8.3", db-image: "mariadb:11.6", coverage: none, cache: true, always: false }
+      matrix: ${{ fromJSON(needs.setup-phpunit-matrix.outputs.matrix) }}
       fail-fast: false
 
     env:
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags'))) }}
       DB: ${{ matrix.db-image }}
 
     services:
-      # Label used to access the service container
       db:
-        # Docker Hub image
         image: ${{ matrix.db-image }}
-        # Provide env variables for both mysql and pgsql
         env:
           POSTGRES_USER: galette_tests
           POSTGRES_PASSWORD: g@l3tte
@@ -60,28 +73,24 @@ jobs:
           MYSQL_PASSWORD: g@l3tte
           MYSQL_ROOT_PASSWORD: g@l3tte
           MYSQL_DATABASE: galette_tests
-        # Open network ports for both mysql and pgsql
         ports:
           - 3306:3306
           - 5432:5432
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
 
-    name: PHP ${{ matrix.php-version }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || matrix.coverage == 'pcov' && ' (with coverage)' || ''}}
+    name: PHP ${{ matrix.php-version }} ${{ matrix.db-image }}${{ matrix.coverage == 'pcov' && ' (with coverage)' || ''}}
 
     steps:
       - name: Checkout
-        if: env.skip != 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: PHP
-        if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -91,12 +100,10 @@ jobs:
           ini-values: apc.enable_cli=1
 
       - name: Show database version
-        if: env.skip != 'true'
         run: |
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
       - name: Build Galette
-        if: env.skip != 'true'
         uses: galette/.github/actions/build-galette@main
         with:
           php-version: ${{ matrix.php-version }}
@@ -110,18 +117,18 @@ jobs:
         run: |
           bin/console galette:install -v --dbprefix=latest_galette_ --dbtype=pgsql --dbhost=localhost --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
           PGPASSWORD=g@l3tte psql -d galette_tests -a -f tests/pgsql_06.sql -U galette_tests -h localhost
-        if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
+        if: startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB (update)
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
           bin/console galette:install -v --dbprefix=latest_galette_ --dbtype=mysql --dbhost=127.0.0.1 --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
           mysql -e 'use galette_tests; source tests/mysql_06.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-        if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
+        if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Update database tests
         run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteUpdate/
-        if: env.skip != 'true' && matrix.coverage != 'pcov'
+        if: matrix.coverage != 'pcov'
 
       - name: Init for PostgreSQL
         env:
@@ -129,30 +136,29 @@ jobs:
           POSTGRES_PORT: 5432
         run: |
           bin/console galette:install -v --dbtype=pgsql --dbhost=localhost --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
-        if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
+        if: startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
           bin/console galette:install -v --dbtype=mysql --dbhost=127.0.0.1 --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
-        if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
+        if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Unit tests
         run: galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/Galette/
-        if: env.skip != 'true' && matrix.coverage != 'pcov'
+        if: matrix.coverage != 'pcov'
 
       - name: Unit tests (with coverage)
         run: galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
-        if: env.skip != 'true' && matrix.coverage == 'pcov'
+        if: matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
-        # Using the main composer file will fail because of limited php versions (thanks Laminas). Since ocular PHAR file is buggy, setting it in a specific directory sounds a good solution
         run: |
           mkdir scrutinizer
           cd scrutinizer
           composer require scrutinizer/ocular -W --ignore-platform-reqs
           php vendor/bin/ocular code-coverage:upload --format=php-clover ../tests/clover.xml
-        if: env.skip != 'true' && matrix.coverage == 'pcov'
+        if: matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
         uses: codecov/codecov-action@v6
@@ -160,7 +166,7 @@ jobs:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
           files: tests/clover.xml
-        if: env.skip != 'true' && matrix.coverage == 'pcov'
+        if: matrix.coverage == 'pcov'
 
       - name: Sanitize ref name for artifact upload
         if: failure()
@@ -183,26 +189,19 @@ jobs:
 
   unsupported-dbs:
     runs-on: ubuntu-latest
-    name: DB Fail on ${{ matrix.php-versions }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || ''}}
+    needs: setup-unsupported-dbs-matrix
+    name: DB Fail on ${{ matrix.php-version }} ${{ matrix.db-image }}
 
     strategy:
-      matrix:
-        include:
-          - { php-version: "8.5", db-image: "postgres:12", always: true}
-          - { php-version: "8.5", db-image: "mysql:5.7", always: false}
-          - { php-version: "8.5", db-image: "mariadb:10.4", always: false}
+      matrix: ${{ fromJSON(needs.setup-unsupported-dbs-matrix.outputs.matrix) }}
       fail-fast: false
 
     env:
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags'))) }}
       DB: ${{ matrix.db-image }}
 
     services:
-      # Label used to access the service container
       db:
-        # Docker Hub image
         image: ${{ matrix.db-image }}
-        # Provide env variables for both mysql and pgsql
         env:
           POSTGRES_USER: galette_tests
           POSTGRES_PASSWORD: g@l3tte
@@ -211,11 +210,9 @@ jobs:
           MYSQL_PASSWORD: g@l3tte
           MYSQL_ROOT_PASSWORD: g@l3tte
           MYSQL_DATABASE: galette_fail_tests
-        # Open network ports for both mysql and pgsql
         ports:
           - 3306:3306
           - 5432:5432
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
           --health-interval=10s
@@ -224,27 +221,23 @@ jobs:
 
     steps:
       - name: Checkout
-        if: env.skip != 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: PHP
-        if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer, pecl
           extensions: apcu
           ini-values: apc.enable_cli=1
 
       - name: Show database version
-        if: env.skip != 'true'
         run: |
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
       - name: Build Galette
-        if: env.skip != 'true'
         uses: galette/.github/actions/build-galette@main
         with:
           php-version: ${{ matrix.php-version }}
@@ -252,7 +245,6 @@ jobs:
           skip-checkout: true
 
       - name: Fail database tests
-        if: env.skip != 'true'
         run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteDbFails/
 
       - name: Upload test data (logs, photos, etc.)
@@ -269,12 +261,12 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: "Lint on PHP ${{ matrix.php-versions }}"
+    needs: setup-lint-matrix
+    name: "Lint on PHP ${{ matrix.php-version }}"
 
     strategy:
       fail-fast: false
-      matrix:
-        php-versions: [ '8.3', '8.5' ]
+      matrix: ${{ fromJSON(needs.setup-lint-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout
@@ -285,9 +277,9 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer, pecl
-          coverage: ${{ matrix.coverage }}
+          coverage: 'none'
           extensions: apcu
           ini-values: apc.enable_cli=1
 
@@ -304,9 +296,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
+          key: "${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}"
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-versions }}-
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
@@ -314,28 +306,22 @@ jobs:
           composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --ignore-platform-reqs
 
       - name: CS
-        run: |
-          galette/vendor/bin/phpcs
+        run: galette/vendor/bin/phpcs
 
       - name: CS Fixer
-        run: |
-          galette/vendor/bin/php-cs-fixer check --show-progress=dots --verbose --diff
+        run: galette/vendor/bin/php-cs-fixer check --show-progress=dots --verbose --diff
 
       - name: Rector
-        run: |
-          galette/vendor/bin/rector process --dry-run --ansi
+        run: galette/vendor/bin/rector process --dry-run --ansi
 
       - name: Twig CS
-        run: |
-          galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
+        run: galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
 
       - name: Check dependencies
-        run: |
-          galette/vendor/bin/composer-dependency-analyser --composer-json composer.json
+        run: galette/vendor/bin/composer-dependency-analyser --composer-json composer.json
 
       - name: PHPStan checks
-        run: |
-          galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
+        run: galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
 
       - name: Headers checks
         run: |
