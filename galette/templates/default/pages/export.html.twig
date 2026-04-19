@@ -82,10 +82,10 @@
                                     <td class="actions_row collapsing">
                                         <a
                                             href="{{ url_for("removeCsv", {"type": "export", "file": export.name}) }}"
-                                            class="delete "
+                                            class="delete icon-only"
                                         >
-                                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                            <span class="ui special popup">{{ _T('Remove \'%1$s\' from disk')|format(export.name) }}</span>
+                                            <i class="ui trash red icon" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ _T('Remove \'%1$s\' from disk')|format(export.name) }}</span>
                                         </a>
                                     </td>
                                 </tr>

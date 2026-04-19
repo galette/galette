@@ -87,17 +87,17 @@
                 <td class="actions_row center collapsing">
                     <a
                             href="{{ url_for("editDocument", {"id": document.getID()}) }}"
-                            class="action"
+                            class="action icon-only"
                     >
-                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Edit document") }}</span>
+                        <i class="ui edit icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Edit document") }}</span>
                     </a>
                     <a
                             href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
-                            class="delete"
+                            class="delete icon-only"
                     >
-                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Delete document") }}</span>
+                        <i class="ui trash red icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Delete document") }}</span>
                     </a>
                 </td>
             {% endif %}

@@ -189,9 +189,10 @@
                             {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                                 <a
                                     href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
+                                    class="icon-only"
                                 >
-                                    <i class="icon times tooltip" aria-hidden="true"></i>
-                                    <span class="ui special popup">
+                                    <i class="icon times" aria-hidden="true"></i>
+                                    <span class="visually-hidden">
                                     {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                                         {{ _T("Show all your scheduled payments") }}
                                     {% else %}
@@ -266,8 +267,8 @@
                 </span>
                 {{ scheduled.getId() }}
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                    <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
-                        <i class="icons tooltip" aria-hidden="true">
+                    <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}" class="icon-only">
+                        <i class="icons" aria-hidden="true">
                             {% if contribution.isFee() %}
                                 <i class="user icon"></i>
                             {% else %}
@@ -275,7 +276,7 @@
                             {% endif %}
                           <i class="corner linkify icon"></i>
                         </i>
-                        <span class="ui special popup">
+                        <span class="visually-hidden">
                             {% if contribution.isFee() %}
                                 {{ _T("Edit membership fee %1$s")|format(contribution.id) }}
                             {% else %}
@@ -290,9 +291,10 @@
                     {% if (filters.member_filter == "" or filters.member_filter == null) and mode != "ajax" %}
                         <a
                             href="{{ url_for("scheduledPayments", {"option": "member", "value": mid}) }}"
-                            title="{{ _T("Show only '%1$s' scheduled payments")|format(mname) }}"
+                            class="icon-only"
                         >
                             <i class="filter grey small icon" aria-hidden="true"></i>
+                            <span class="visually-hidden">{{ _T("Show only '%1$s' scheduled payments")|format(mname) }}</span>
                         </a>
                     {% endif %}
                      <a
@@ -324,17 +326,17 @@
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
                             href="{{ url_for("editScheduledPayment", {"id": scheduled.getId()}) }}"
-                            class="action"
+                            class="action icon-only"
                         >
-                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit scheduled payment") }}</span>
+                            <i class="ui edit icon" aria-hidden="true"></i>
+                            <span class="visually-hidden">{{ _T("Edit scheduled payment") }}</span>
                         </a>
                         <a
                             href="{{ url_for("removeScheduledPayment", {"id": scheduled.getId()}) }}"
-                            class="delete"
+                            class="delete icon-only"
                         >
-                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete scheduled payment") }}</span>
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                            <span class="visually-hidden">{{ _T("Delete scheduled payment") }}</span>
                         </a>
                     {% endif %}
                 </td>
