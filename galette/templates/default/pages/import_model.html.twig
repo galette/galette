@@ -63,7 +63,7 @@
                 href="{{ url_for('importModel') }}?remove=true"
                 title="{{ _T('Remove model and back to defaults') }}"
             >
-                <i class="trash icon" aria-hiden="true"></i>
+                <i class="trash icon" aria-hidden="true"></i>
                 {{ _T('Remove model') }}
             </a>
             {% endif %}
@@ -75,7 +75,9 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="collapsing"></th>
+                    <th class="collapsing">
+                        <span class="visually-hidden">{{ _T('Selection') }}</span>
+                    </th>
                     <th>{{ _T('Field') }}</th>
                 </tr>
             </thead>

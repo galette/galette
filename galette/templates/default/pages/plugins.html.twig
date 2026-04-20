@@ -29,7 +29,7 @@
                 <th class="listing">{{ _T('Author') }}</th>
                 <th class="listing collapsing">{{ _T('Version') }}</th>
                 <th class="listing collapsing">{{ _T('Release date') }}</th>
-                <th class="listing actions_row collapsing"></th>
+                <th class="listing actions_row collapsing">{{ _T('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -77,7 +77,7 @@
             <tr>
                 <th class="listing">{{ _T('Name') }}</th>
                 <th class="listing" colspan="4">{{ _T('Cause') }}</th>
-                <th class="listing actions_row collapsing"></th>
+                <th class="listing actions_row collapsing">{{ _T('Enable') }}</th>
             </tr>
             </thead>
 {% for name, plugin in plugins_disabled_list %}
