@@ -84,6 +84,13 @@
   margin-bottom: 0;
 }
 
+/*-------------------------------
+      Socials combo fields
+--------------------------------*/
+.ui.form .addsocial .combo-social.fields {
+  align-items: end;
+}
+
 /*--------------------------
       Mass change + label
 ---------------------------*/

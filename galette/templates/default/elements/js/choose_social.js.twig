@@ -50,9 +50,12 @@ $(function(){
         $(this).parents('.addsocial').find ('.combo-social:last')
             .clone() // copy
             .insertAfter('#social .combo-social:last') // where
-            .find('.socials-dropdown').attr('id', 'social_new_type_' + _newindex).dropdown('clear')
+            .find("[id$='_formLabel']").attr('id', 'social_new_type_' + _newindex + '_formLabel').attr('for', 'social_new_type_' + _newindex).addClass('visually-hidden')
+            .parent().find('.socials-dropdown').attr('id', 'social_new_type_' + _newindex).dropdown('clear')
             .find('input:not(.search)').attr('id', 'social_new_type_input_' + _newindex).attr('name', 'social_new_type_' + _newindex)
+            .parent().find('input.search').attr('aria-labelledby', 'social_new_type_' + _newindex + '_formLabel')
             .parent().parent().parent().find('input.value').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex).val('')
+            .parent().find('label.visually-hidden').attr('for', 'social_new_value_' + _newindex)
         ;
 
         _dropdownSocials();
