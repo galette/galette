@@ -231,9 +231,9 @@
                                     <i class="ui venus icon" aria-hidden="true"></i>
                     {% endif %}
                 {% endif %}
-                {% if element.field_id == 'email_adh' %}
+                {% if element.field_id == 'email_adh' and value != '' %}
                                         <a href="mailto:{{ value }}">{{ value }}</a>
-                {% elseif element.field_id == 'tel_adh' or element.field_id == 'gsm_adh' %}
+                {% elseif (element.field_id == 'tel_adh' or element.field_id == 'gsm_adh') and value != '' %}
                                         <a href="tel:{{ value }}">{{ value }}</a>
                 {% elseif element.field_id == 'ddn_adh' %}
                                 {{ value }} {{ member.getAge() }}
