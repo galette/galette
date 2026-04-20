@@ -79,7 +79,9 @@
                             id: 'cotis_extension',
                             value: constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE"),
                             values: cotisextensions,
-                            nolabel: true
+                            nolabel: false,
+                            labelclass: 'visually-hidden',
+                            label: _T("Membership extension")
                         } %}
                     </td>
                     <td class="center actions_row collapsing">
