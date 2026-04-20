@@ -32,7 +32,7 @@
                     <div class="six wide column">
                         <div class="inline field required">
                             <label for="montant_cotis">{{ scheduled.getFieldLabel('amount') }}</label>
-                            <input type="text" name="amount" id="amount" value="{% if scheduled.getId() %}{{ scheduled.getAmount() }}{% else %}{{ scheduled.getMissingAmount() }}{% endif %}" maxlength="10" required="required"/>
+                            <input type="text" name="amount" id="montant_cotis" value="{% if scheduled.getId() %}{{ scheduled.getAmount() }}{% else %}{{ scheduled.getMissingAmount() }}{% endif %}" maxlength="10" required="required"/>
                         </div>
     {# payment type #}
     {% set ptype = scheduled.getPaymentType().id %}
@@ -61,10 +61,10 @@
                                 <div class="ui tiny header">
                                     <a
                                         href="{{ url_for("editContribution", {"type": contribution.isFee() ? constant('Galette\\Entity\\Contribution::TYPE_FEE') : constant('Galette\\Entity\\Contribution::TYPE_DONATION'), "id": contribution.id}) }}"
-                                        class="ui mini icon blue compact button tooltip"
+                                        class="ui mini icon blue compact button icon-only"
                                     >
-                                        <i class="eye icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("View contribution") }}</span>
+                                        <i class="eye icon" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ _T("View contribution") }}</span>
                                     </a>
                                     {{ _T("Related contribution information") }}
                                 </div>

@@ -39,8 +39,13 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td class="collapsing" data-scope="row"></td>
+                        <td class="collapsing" data-scope="row">
+                            <span class="visually-hidden">
+                                {{ _T("Add field") }}
+                            </span>
+                        </td>
                         <td class="left" data-col-label="{{ _T("Available fields") }}" colspan="2">
+                            <label for="remaining_fields_dropdown" class="visually-hidden">{{ _T("Field name") }}</label>
                             <div id="remaining_fields_dropdown" class="ui fluid search clearable selection dropdown">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">{{ _T("Available fields") }}</div>

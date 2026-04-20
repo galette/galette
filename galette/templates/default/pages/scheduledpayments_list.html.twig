@@ -263,9 +263,9 @@
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
             <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                 <span class="ui checkbox">
-                    <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
+                    <input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_{{ scheduled.getId() }}" value="{{ scheduled.getId() }}"/>
+                    <label for="scheduled_checkbox_{{ scheduled.getId() }}">{{ scheduled.getId() }}</label>
                 </span>
-                {{ scheduled.getId() }}
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}" class="icon-only">
                         <i class="icons" aria-hidden="true">
