@@ -36,7 +36,7 @@ import type { Page } from '@playwright/test';
  */
 export function axeBuilder(page: Page): AxeBuilder {
   //FIXME: real A11y issues must be fixed in order to activate all tags.
-  return new AxeBuilder({ page }).withTags(['wcag21a', 'wcag21aa', 'RGAAv4']);
+  return new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'RGAAv4']);
 }
 
 /**
