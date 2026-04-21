@@ -670,10 +670,11 @@
                         var _field = _fields[value];
                         var _type = _field.type;
                         var _html;
+                        var _current_index = $(this).attr('id').replace('free_field_selector_', '');
                         switch(_type) {
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
                                 _html  = _getOperatorSelector(['op_equals']);
-                                _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';
+                                _html += '<input type="radio" name="free_text[]" id="free_text_yes_' + _current_index + '" value="1"/><label for="free_text_yes_' + _current_index + '">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no_' + _current_index + '" value="0"/><label for="free_text_no_' + _current_index + '">{{ _T('No') }}</label>';
                                 break;
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
                                 _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
@@ -687,20 +688,23 @@
                                         _options += '<option value="' + key + '">' + _field.values[key] + '</option>';
                                     }
                                 }
-                                _html += '<select name="free_text[]" class="ui search selection dropdown">' + _options + '</select>';
+                                _html += '<label for="free_text_' + _current_index + '" class="visually-hidden">{{ _T("Choice") }}</label>'
+                                _html += '<select id="free_text_' + _current_index + '" name="free_text[]" class="ui search selection dropdown lastdropdown">' + _options + '</select>';
                                 break;
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::DATE') }}':
                                 _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
                                 _html += '<div class="ui calendar fs-calendar">'
+                                _html += '<label for="free_text_' + _current_index + '" class="visually-hidden">{{ _T("Date") }}</label>'
                                 _html += '<div class="ui input left icon">'
                                 _html += '<i class="calendar icon" aria-hidden="true"></i>'
-                                _html += '<input type="text" name="free_text[]" class="modif_date" placeholder="{{ _T('yyyy-mm-dd format') }}"/>';
+                                _html += '<input id="free_text_' + _current_index + '" type="text" name="free_text[]" class="modif_date" placeholder="{{ _T('yyyy-mm-dd format') }}"/>';
                                 _html += '</div>'
                                 _html += '</div>'
                                 break;
                             default:
                                 _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
-                                _html += '<input type="text" name="free_text[]"/>';
+                                _html += '<label for="free_text_' + _current_index + '" class="visually-hidden">{{ _T("Value") }}</label>'
+                                _html += '<input id="free_text_' + _current_index + '" type="text" name="free_text[]"/>';
                                 break;
 
                         }
@@ -801,7 +805,27 @@
                         .parent().find('input.search').attr('aria-labelledby', 'free_field_selector_' + _newindex_fs + '_formLabel')
                         .parent().parent().find("[for^='free_query_operator_']").attr('for', 'free_query_operator_' + _newindex_fs)
                         .parent().find("[id^='free_query_operator_']").attr('id', 'free_query_operator_' + _newindex_fs)
-                        // TODO : change id, for and aria-labelledby attributes of remaining "value" fields depending on their type (text, select, radio, date, ...)
+                    ;
+                    $('#fs_sortable li:last [id^="free_text_yes_"]')
+                        .attr('id', 'free_text_yes_' + _newindex_fs)
+                        .parent().find("[for^='free_text_yes_']").attr('for', 'free_text_yes_' + _newindex_fs)
+                    ;
+                    $('#fs_sortable li:last [id^="free_text_no_"]')
+                        .attr('id', 'free_text_no_' + _newindex_fs)
+                        .parent().find("[for^='free_text_no_']").attr('for', 'free_text_no_' + _newindex_fs)
+                    ;
+                    $('#fs_sortable li:last .ui.dropdown.lastdropdown')
+                        .parent().find("[id$='_formLabel']").attr('id', 'free_text_' + _newindex_fs + '_formLabel').attr('for', 'free_text_' + _newindex_fs)
+                        .parent().find('select').attr('id', 'free_text_' + _newindex_fs)
+                        .parent().find('input.search').attr('aria-labelledby', 'free_text_' + _newindex_fs + '_formLabel')
+                    ;
+                    $('#fs_sortable li:last .ui.calendar')
+                        .find("[for^='free_text_']").attr('for', 'free_text_' + _newindex_fs)
+                        .parent().find("[id^='free_text_']").attr('id', 'free_text_' + _newindex_fs)
+                    ;
+                    $('#fs_sortable li:last input[type="text"][id^="free_text_"]')
+                        .attr('id', 'free_text_' + _newindex_fs)
+                        .parent().find("[for^='free_text_']").attr('for', 'free_text_' + _newindex_fs)
                     ;
                     $('#fs_sortable li:last .ui.dropdown:not(.origselect)').dropdown('refresh');
                     _fs_dropdown();
