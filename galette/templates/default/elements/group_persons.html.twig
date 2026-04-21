@@ -29,7 +29,9 @@
                                     {{ _T("Nickname") }}
                                 </th>
                                 {% if login.isSuperAdmin() %}
-                                <th>&nbsp;</th>
+                                <th class="collapsing">
+                                    {{ _T("Actions") }}
+                                </th>
                                 {% endif %}
                             </tr>
                         </thead>
@@ -78,7 +80,7 @@
                                 </td>
                                 <td data-col-label="{{ _T("Nickname") }}">{{ person.nickname|escape }}</td>
     {% if login.isSuperAdmin() %}
-                                <td class="actions_row">
+                                <td class="actions_row collapsing">
                                     <a
                                             href="{{ url_for("impersonate", {"id": person.id}) }}"
                                             class="icon-only"
