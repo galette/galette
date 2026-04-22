@@ -239,7 +239,7 @@ class MembersController extends CrudController
             $response,
             'pages/member_show.html.twig',
             [
-                'page_title'        => _T("Member Profile"),
+                'page_title'        => sprintf('%s - %s', $member->sfullname, _T("Profile")),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -1032,12 +1032,9 @@ class MembersController extends CrudController
         }
 
         // template variable declaration
-        $title = _T("Member Profile");
-        if ($member->id != '') {
-            $title .= ' (' . _T("modification") . ')';
-        } else {
-            $title .= ' (' . _T("creation") . ')';
-        }
+        $title = $member->id != ''
+            ? sprintf('%s - %s', $member->sfullname, _T("Edit profile"))
+            : _T("New member");
 
         //Titles
         $titles = new Titles($this->zdb);

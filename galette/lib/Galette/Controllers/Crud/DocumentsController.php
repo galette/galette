@@ -49,7 +49,7 @@ class DocumentsController extends CrudController
             $document = new Document($this->zdb);
         }
         $params = [
-            'page_title'        => _T("Add document"),
+            'page_title'        => _T("New document"),
             'action'            => 'add',
             'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,

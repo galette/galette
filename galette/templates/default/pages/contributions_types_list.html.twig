@@ -147,7 +147,7 @@
             " %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
-                modal_title_twig: _T("Edit contribution type")|e("js"),
+                modal_title_twig: (_T("Contribution type") ~ ' - %1$s')|e("js"),
                 modal_class: "tiny",
                 modal_onapprove: modal_onapprove,
                 modal_action_onshow: modal_action_onshow

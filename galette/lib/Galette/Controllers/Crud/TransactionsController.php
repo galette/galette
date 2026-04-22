@@ -140,11 +140,21 @@ class TransactionsController extends ContributionsController
         }
 
         // template variable declaration
-        $title = _T("Transaction");
-        if ($action === 'edit') {
-            $title .= ' (' . _T("modification") . ')';
+        if ($trans->id) {
+            $member = new Adherent($this->zdb);
+            $member
+                ->disableAllDeps()
+                ->load($trans->member);
+
+            $title = sprintf(
+                "%s %s (%s, %s)",
+                _T("Transaction"),
+                $member->sname,
+                $trans->getDate('date'),
+                $trans->amount
+            );
         } else {
-            $title .= ' (' . _T("creation") . ')';
+            $title = _T("New transaction");
         }
 
         $params = [

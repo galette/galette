@@ -587,7 +587,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         $body = (string)$test_response->getBody();
-        $this->assertStringContainsString('(creation)', $body);
+        $this->assertStringContainsString('New ', $body);
         //member_one is listed
         $this->assertStringContainsString(
             $member_one->getNameWithCase(

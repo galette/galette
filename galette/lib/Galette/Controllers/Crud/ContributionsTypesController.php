@@ -104,7 +104,7 @@ class ContributionsTypesController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ctype = new ContributionsTypes($this->zdb);
-        $params['page_title'] = _T("Edit contribution type");
+        $params['page_title'] = sprintf('%1$s - %2$s', _T('Contribution type'), $ctype->getLabel($id));
 
         $entry = $ctype->get($id);
         $params['entry'] = $entry;

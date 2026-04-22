@@ -50,6 +50,7 @@
                                 <a
                                     href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"
                                     class="action single-edit icon-only"
+                                    data-modal-title="{{ _T('Payment type') }} - {{ ptype.getName() }}"
                                 >
                                     <i class="ui edit icon" aria-hidden="true"></i>
                                     <span class="visually-hidden">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
@@ -92,7 +93,7 @@
 
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-edit",
-                    modal_title_twig: _T("Edit payment type")|e("js"),
+                    modal_title_data_attr: true,
                     modal_class: "mini",
                     modal_onapprove: modal_onapprove
                 } %}

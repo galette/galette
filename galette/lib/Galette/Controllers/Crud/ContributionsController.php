@@ -67,12 +67,24 @@ class ContributionsController extends CrudController
         $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // template variable declaration
-        $title = $type === Contribution::TYPE_FEE ? _T("Membership fee") : _T("Donation");
-
         if ($contrib->id) {
-            $title .= ' (' . _T("modification") . ')';
+            $member = new Adherent($this->zdb);
+            $member
+                ->disableAllDeps()
+                ->load($contrib->member);
+
+            $title = sprintf(
+                "%s %s (%s)",
+                $type === Contribution::TYPE_FEE ? _T("Membership fee") : _T("Donation"),
+                $member->sname,
+                $contrib->raw_date->format(_T('Y-m-d'))
+            );
         } else {
-            $title .= ' (' . _T("creation") . ')';
+            $title = $type === Contribution::TYPE_FEE ? _T("New membership fee") : _T("New donation");
+        }
+
+
+        if (!$contrib->id) {
             $type_amount = $contributions_types[array_key_first($contributions_types)]['amount'];
             if ($contrib->amount === null && $type_amount !== null) {
                 $contrib->amount = $type_amount;

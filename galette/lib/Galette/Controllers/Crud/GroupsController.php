@@ -312,7 +312,7 @@ class GroupsController extends CrudController
             $response,
             'pages/group_form.html.twig',
             [
-                'page_title'            => $group->getName(),
+                'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
                 'parent_groups'         => $parent_groups,
                 'group'                 => $group
             ]
@@ -492,7 +492,7 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Removal confirmation parameters, can be override
+     * Removal confirmation parameters, can be overridden
      *
      * @return array<string,mixed>
      */

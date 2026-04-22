@@ -101,9 +101,9 @@ class PaymentTypeController extends CrudController
             $response,
             'pages/configuration_payment_type_form.html.twig',
             [
-                'page_title'    => _T("Edit payment type"),
-                'ptype'         => $ptype,
-                'mode'         => $mode
+                'page_title' => sprintf('%1$s - %2$s', _T('Payment type'), $ptype->getName()),
+                'ptype' => $ptype,
+                'mode' => $mode
             ]
         );
         return $response;
