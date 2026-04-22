@@ -26,7 +26,7 @@
         <div class="ui segment" id="general">
     {% endif %}
             <div class="field ui items">
-                <label>{{ _T("File:") }}</label>
+                <label for="document_new">{{ _T("File:") }}</label>
     {% if document.getID() is not null %}
                 <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
                     {{ document.getDocumentFilename() }}
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="required field">
-                <label>{{ _T("Document type") }}</label>
+                <label for="document_type_input">{{ _T("Document type") }}</label>
                 <div id="document_type" class="jsonly search-dropdown documents-dropdown ui input">
                     <input id="document_type_input" type="hidden" name="document_type" value="{{ document.getType() }}">
                     <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>

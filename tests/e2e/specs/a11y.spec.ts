@@ -197,6 +197,14 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Reminders', async ({ loggedInPage: page }) => {
+    await page.goto('/reminders');
+    await page.locator('#send_reminders').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   // Groups
   test('A11y - Groups list page', async ({ loggedInPage: page }) => {
     await page.goto('/groups');
@@ -219,6 +227,45 @@ test.describe('Accessibility', () => {
       const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"],#btnmanagers_small,#btnusers_small').analyze();
       expect(results.violations, formatViolations(results.violations)).toEqual([]);
     }
+  });
+
+  // Documents
+  test('A11y - Documents list page', async ({ loggedInPage: page }) => {
+    await page.goto('/documents');
+    await page.locator('h1, h2').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Documents add page', async ({ loggedInPage: page }) => {
+    await page.goto('/document/add');
+    await page.locator('h1, h2').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page)
+      .exclude('*[autocomplete="fomantic-search"]')
+      .exclude('.note-editable') // Summernote related issue
+      .exclude('.note-resizebar') //Summernote issue
+      .analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  // Charts
+  test('A11y - Charts', async ({ loggedInPage: page }) => {
+    await page.goto('/charts');
+    await page.locator('h1').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  // History
+  test('A11y - History', async ({ loggedInPage: page }) => {
+    await page.goto('/history');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
   // Configuration
