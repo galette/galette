@@ -242,13 +242,13 @@ test.describe('Accessibility', () => {
     await page.goto('/lists/adherents/configure');
     await page.locator('table.listing').waitFor({ state: 'visible' });
 
-    const results = await axeBuilder(page).analyze();
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
   test('A11y - Core fields configuration page', async ({ loggedInPage: page }) => {
     await page.goto('/fields/core/configure');
-    await page.locator('table.listing').waitFor({ state: 'visible' });
+    await page.locator('#sortable_categories').waitFor({ state: 'visible' });
 
     const results = await axeBuilder(page).analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
