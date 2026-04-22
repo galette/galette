@@ -45,6 +45,14 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  base('A11y - 404 page', async ({ page }) => {
+    await page.goto('/invalid-url');
+    await page.locator('h1').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   // Dashboard
   test('A11y - Dashboard page', async ({ loggedInPage: page }) => {
     await page.goto('/dashboard');
@@ -94,6 +102,14 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Member advanced search', async ({ loggedInPage: page }) => {
+    await page.goto('/advanced-search');
+    await page.locator('#filter_str').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   test('A11y - Members search form', async ({ loggedInPage: page }) => {
     await page.goto('/members');
     const searchInput = page.locator('#filter_str');
@@ -136,6 +152,15 @@ test.describe('Accessibility', () => {
       .click();
     await page.locator('form a[href*="/contribution/fee/add"]').click();
     await page.locator('#montant_cotis').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  // Scheduled payments
+  test('A11y - Scheduled payments list page', async ({ loggedInPage: page }) => {
+    await page.goto('/scheduled-payments');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
 
     const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
@@ -205,6 +230,38 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Plugins page', async ({ loggedInPage: page }) => {
+    await page.goto('/plugins');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Core list configuration page', async ({ loggedInPage: page }) => {
+    await page.goto('/lists/adherents/configure');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Core fields configuration page', async ({ loggedInPage: page }) => {
+    await page.goto('/fields/core/configure');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Dynamic fields configuration page', async ({ loggedInPage: page }) => {
+    await page.goto('/fields/dynamic/configure');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   test('A11y - Contribution types page', async ({ loggedInPage: page }) => {
     await page.goto('/contributions-types');
     await page.locator('h1, h2').waitFor({ state: 'visible' });
@@ -213,6 +270,16 @@ test.describe('Accessibility', () => {
       .exclude('*[autocomplete="fomantic-search"]')
       .exclude('.note-editable') // Summernote related issue
       .exclude('.note-resizebar') //Summernote issue
+      .analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Payment types page', async ({ loggedInPage: page }) => {
+    await page.goto('/payment-types');
+    await page.locator('h1, h2').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page)
+      .exclude('*[autocomplete="fomantic-search"]')
       .analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
@@ -250,6 +317,22 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Import model configuration page', async ({ loggedInPage: page }) => {
+    await page.goto('/import/model');
+    await page.waitForSelector('a[href*="/import/model/get"]', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Import model change page', async ({ loggedInPage: page }) => {
+    await page.goto('/import/model?tab=change');
+    await page.waitForSelector('#store-model', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   // Public Pages - by default, limited to up-to-date members.
   test('A11y - Public members list', async ({ loggedInPage: page }) => {
     await page.goto('/public/members/list');
@@ -262,6 +345,30 @@ test.describe('Accessibility', () => {
   test('A11y - Public members gallery', async ({ loggedInPage: page }) => {
     await page.goto('/public/members/gallery');
     await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Public staff list', async ({ loggedInPage: page }) => {
+    await page.goto('/public/staff/list');
+    await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Public staff gallery', async ({ loggedInPage: page }) => {
+    await page.goto('/public/staff/gallery');
+    await page.waitForSelector('h1, h2, .ui.message', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Public documents list', async ({ loggedInPage: page }) => {
+    await page.goto('/public/documents');
+    await page.waitForSelector('.ui.message', { timeout: 10000 });
 
     const results = await axeBuilder(page).analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
