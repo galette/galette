@@ -34,6 +34,8 @@ import { test } from '../fixtures/auth.fixture';
 import { axeBuilder, formatViolations } from '../fixtures/a11y.fixture';
 import { MemberListPage } from '../pages/MemberListPage';
 
+let animationTimeout = 500;
+
 test.describe('Accessibility', () => {
 
   // Public Pages
@@ -84,7 +86,7 @@ test.describe('Accessibility', () => {
     const searchInput = page.locator('#filter_str').first();
     await searchInput.fill('luke');
     await page.locator('button[type="submit"]').first().click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(animationTimeout);
 
     const memberLink = page.locator('a:has-text("Skywalker")').first();
     await memberLink.click();
@@ -223,8 +225,9 @@ test.describe('Accessibility', () => {
       // Navigate to first group's edit page
       await groupRows.first().locator('a[href*="/group/edit/"]').click();
       await page.locator('h1, h2').waitFor({ state: 'visible' });
+      await page.waitForTimeout(animationTimeout);
 
-      const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"],#btnmanagers_small,#btnusers_small').analyze();
+      const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
       expect(results.violations, formatViolations(results.violations)).toEqual([]);
     }
   });
@@ -309,6 +312,18 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Dynamic fields add', async ({ loggedInPage: page }) => {
+    await page.goto('/fields/dynamic/configure');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    await page.getByRole('link', { name: 'Add' }).click();
+    await page.getByRole('textbox', { name: 'Field name' }).waitFor({ state: 'visible' });
+    await page.waitForTimeout(animationTimeout);
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   test('A11y - Contribution types page', async ({ loggedInPage: page }) => {
     await page.goto('/contributions-types');
     await page.locator('h1, h2').waitFor({ state: 'visible' });
@@ -341,6 +356,14 @@ test.describe('Accessibility', () => {
 
   test('A11y - Status page', async ({ loggedInPage: page }) => {
     await page.goto('/status');
+    await page.waitForSelector('form, table', { timeout: 10000 });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Dynamic translations page', async ({ loggedInPage: page }) => {
+    await page.goto('/dynamic-translations?text_orig=President');
     await page.waitForSelector('form, table', { timeout: 10000 });
 
     const results = await axeBuilder(page).analyze();
