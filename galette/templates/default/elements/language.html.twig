@@ -35,19 +35,22 @@
     <div class="image header title"{% if ui == 'item'%} data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
-        <span>{{ galette_lang }}</span>
+        <span>{{ i18n.getName() }}</span>
         <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
     </div>
 {% endif %}
     <div class="{{ content_classes }}">
-{% for langue in languages %}
-    {% if langue.getAbbrev() != galette_lang %}
-        <a href="?ui_pref_lang={{ langue.getID() }}"
-           title="{{ _T("Switch locale to '%locale'")|replace({"%locale": langue.getName()}) }}"
-           class="item"
+{% for glang in languages %}
+    {% if glang.getAbbrev() != galette_lang %}
+        {% set html_lang -%}
+            <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getAbbrev() }}">{{ glang.getName() }}</span>
+        {%- endset %}
+        <a href="?ui_pref_lang={{ glang.getID() }}"
+           class="item tooltip"
+           data-html="{{ _T("Switch locale to '%locale'")|replace({"%locale": html_lang})|e }}"
         >
-            {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>
+            {{ html_lang }} ({{ glang.getLongId(true) }})
         </a>
     {% endif %}
 {% endfor %}

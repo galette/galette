@@ -219,11 +219,13 @@ class I18n
     /**
      * Get long identifier
      *
+     * @param bool $noutf if true, remove utf part
+     *
      * @return string current language long identifier
      */
-    public function getLongID(): string
+    public function getLongID(bool $noutf = false): string
     {
-        return $this->longid;
+        return $noutf ? str_replace('.utf8', '', $this->longid) : $this->longid;
     }
 
     /**
@@ -274,14 +276,44 @@ class I18n
                 $real_lang = str_replace('.utf8', '', $lang);
                 $parsed_lang = \Locale::parseLocale($lang);
 
+                $shortname = $parsed_lang['language'] ?? '';
+                $region = '';
+                if (isset($parsed_lang['region'])) {
+                    $region = strtolower($parsed_lang['region']);
+                }
+
+                $longname = \Locale::getDisplayLanguage(
+                    $lang,
+                    $real_lang
+                );
+
+                $longname_region = \Locale::getDisplayRegion(
+                    $lang,
+                    $real_lang
+                );
+
+                $excluded_regions = [
+                    'us',
+                    $parsed_lang['language']
+                ];
+                if (in_array($parsed_lang['language'], ['nb', 'nn'])) {
+                    //norvégien nynorsk (Norvège) (nn-NO)
+                    //norvégien bokmål (Norvège) (nb-NO)
+                    //But not:
+                    //norvégien bokmål (Svalbard et Jan Mayen) (nb-SJ)
+                    //norvégien nynorsk (Norvège) (nn-NO)
+                    $excluded_regions[] = 'no';
+                }
+
+                if (!in_array($region, $excluded_regions) && !empty($longname_region)) {
+                    $longname .= ', ' . $longname_region;
+                }
+
                 $langs[$real_lang] = [
                     'long'      => $lang,
-                    'shortname' => $parsed_lang['language'] ?? '',
+                    'shortname' => $shortname,
                     'longname'  => mb_convert_case(
-                        \Locale::getDisplayLanguage(
-                            $lang,
-                            $real_lang
-                        ),
+                        $longname,
                         MB_CASE_TITLE,
                         'UTF-8'
                     )

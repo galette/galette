@@ -48,10 +48,6 @@
   font-style: italic;
 }
 
-.language span {
-  text-transform: uppercase;
-}
-
 .error-trace pre {
   overflow-x: auto;
 }

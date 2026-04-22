@@ -266,6 +266,8 @@ class L10n
             foreach ($this->i18n->getList() as $l) {
                 $results[] = [
                     'key'  => $l->getLongID(),
+                    'lang' => $l->getAbbrev(),
+                    'rtl' => $l->isRTL(),
                     'name' => ucwords($l->getName()),
                     'text' => $existing_translations[$l->getLongID()] ?? ''
                 ];
