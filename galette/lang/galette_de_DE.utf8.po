@@ -7,7 +7,7 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
@@ -43,10 +43,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-02-09 23:09+0000\n"
-"Last-Translator: Academion <m.holzhausen@tutamail.com>\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -54,7 +54,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Die Transaktion #%id konnte nicht geladen werden!"
@@ -840,10 +840,8 @@ msgstr "Das Plugin %1$s wurde aktiviert"
 msgid "Plugin %1$s has been disabled"
 msgstr "Das Plugin %1$s wurde deaktiviert"
 
-#, fuzzy
-#| msgid "An error occurred."
 msgid "An error occurred"
-msgstr "Ein Fehler ist aufgetreten."
+msgstr "Ein Fehler ist aufgetreten"
 
 #, fuzzy
 #| msgid "Author"
