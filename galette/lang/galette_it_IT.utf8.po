@@ -6,7 +6,7 @@
 # DALBARD <Verturin@live.fr>, 2018. #zanata
 # Miguel Cordas <mc@mcsi.ch>, 2019. #zanata
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023, 2026.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020, 2021.
@@ -30,17 +30,17 @@
 # Fuurio Williams <yellbilly@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-03-17 15:09+0000\n"
-"Last-Translator: Fuurio Williams <yellbilly@gmail.com>\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Impossibile caricare la transazione #%id!"
@@ -821,10 +821,8 @@ msgstr "Il Plugin %1$s è stato attivato"
 msgid "Plugin %1$s has been disabled"
 msgstr "Il Plugin %1$s è stato disattivato"
 
-#, fuzzy
-#| msgid "An error occurred."
 msgid "An error occurred"
-msgstr "Si è verificato un errore."
+msgstr "Si è verificato un errore"
 
 #, fuzzy
 #| msgid "Author"
