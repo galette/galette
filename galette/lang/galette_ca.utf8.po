@@ -1,6 +1,6 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
@@ -14,10 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-01-30 09:01+0000\n"
-"Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -930,9 +930,8 @@ msgstr "El connector %1$s s'ha habilitat"
 msgid "Plugin %1$s has been disabled"
 msgstr "El connector %1$s ha estat desactivat"
 
-#, fuzzy
 msgid "An error occurred"
-msgstr "Hi ha hagut un error."
+msgstr "Hi ha hagut un error"
 
 #, fuzzy
 msgid "OAuth2 error"
