@@ -2,24 +2,24 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2024.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2024, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2024, 2025, 2026.
 # Prasanna Venkadesh <prasmailme@gmail.com>, 2025.
 # தமிழ்நேரம் <tamilneram247@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-03-02 20:00+0000\n"
-"Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
-">\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
+"ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "பரிவர்த்தனை #%idஐ ஏற்ற முடியவில்லை!"
@@ -796,10 +796,8 @@ msgstr "சொருகி %1$s இயக்கப்பட்டது"
 msgid "Plugin %1$s has been disabled"
 msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
 
-#, fuzzy
-#| msgid "An error occurred."
 msgid "An error occurred"
-msgstr "பிழை ஏற்பட்டது."
+msgstr "பிழை ஏற்பட்டது"
 
 #, fuzzy
 #| msgid "Author"
