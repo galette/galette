@@ -25,8 +25,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-15 06:09+0000\n"
 "Last-Translator: Тырцев Леонид <tleonid2018.pro@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -814,6 +814,22 @@ msgstr "Плагин %1$s был включён"
 msgid "Plugin %1$s has been disabled"
 msgstr "Плагин %1$s был отключён"
 
+#, fuzzy
+#| msgid "An error occurred moving field :("
+msgid "An error occurred"
+msgstr "Произошла ошибка при перемещении поля :("
+
+msgid "OAuth2 error"
+msgstr ""
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Перевод меток"
 
@@ -1339,12 +1355,6 @@ msgstr ""
 msgid "Never"
 msgstr "Никогда"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-
 msgid "Main information"
 msgstr ""
 
@@ -1647,6 +1657,9 @@ msgstr ""
 msgid "Cards"
 msgstr "Карты"
 
+msgid "Member"
+msgstr "Участник"
+
 msgid "An error occurred."
 msgstr ""
 
@@ -1712,9 +1725,6 @@ msgstr ""
 
 msgid "invoice"
 msgstr ""
-
-msgid "Member"
-msgstr "Участник"
 
 msgid "Inaccessible"
 msgstr ""
@@ -3846,6 +3856,9 @@ msgstr ""
 msgid "Choose or enter your own..."
 msgstr ""
 
+msgid "Social network"
+msgstr ""
+
 msgid "For the selection:"
 msgstr ""
 
@@ -3889,6 +3902,9 @@ msgid "Inactive plugins"
 msgstr ""
 
 msgid "Cause"
+msgstr ""
+
+msgid "Enable"
 msgstr ""
 
 msgid "A required file is missing"
@@ -4346,6 +4362,11 @@ msgstr ""
 msgid "Remove model"
 msgstr ""
 
+#, fuzzy
+#| msgid "Actions"
+msgid "Selection"
+msgstr "Действия"
+
 msgid "Store new model"
 msgstr ""
 
@@ -4568,6 +4589,11 @@ msgstr ""
 
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "выбор"
 
 msgid "Size"
 msgstr ""
@@ -5802,11 +5828,19 @@ msgstr ""
 msgid "Add new group search criteria"
 msgstr ""
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr ""
 
 msgid "In any of selected groups"
 msgstr ""
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Группы"
 
 msgid "Remove criteria"
 msgstr ""
@@ -5823,11 +5857,21 @@ msgstr ""
 msgid "Select a field"
 msgstr ""
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "разделитель"
+
 msgid "is"
 msgstr ""
 
 msgid "is not"
 msgstr ""
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Значения:"
 
 msgid "before"
 msgstr ""

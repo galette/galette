@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -883,6 +883,24 @@ msgid "Plugin %1$s has been disabled"
 msgstr ""
 
 #, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "وقع هناك خطأ."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "المؤلف"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
+#, fuzzy
 #| msgid "transaction"
 msgid "Labels translation"
 msgstr "معاملة"
@@ -1423,12 +1441,6 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-
 msgid "Main information"
 msgstr "معلومات عامة"
 
@@ -1734,6 +1746,9 @@ msgstr "بطاقات الأعضاء"
 msgid "Cards"
 msgstr "البطاقات"
 
+msgid "Member"
+msgstr "عضو"
+
 msgid "An error occurred."
 msgstr "وقع هناك خطأ."
 
@@ -1799,9 +1814,6 @@ msgstr "وَصْل"
 
 msgid "invoice"
 msgstr "فاتورة"
-
-msgid "Member"
-msgstr "عضو"
 
 msgid "Inaccessible"
 msgstr ""
@@ -4002,6 +4014,11 @@ msgstr "إضافة شبكة إجتماعية جديدة"
 msgid "Choose or enter your own..."
 msgstr ""
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "الشبكات الاجتماعية"
+
 msgid "For the selection:"
 msgstr ""
 
@@ -4052,6 +4069,9 @@ msgstr "الإضافات غير النشطة"
 
 msgid "Cause"
 msgstr "السبب"
+
+msgid "Enable"
+msgstr ""
 
 msgid "A required file is missing"
 msgstr "ملف مطلوب مفقود"
@@ -4530,6 +4550,11 @@ msgstr ""
 msgid "Remove model"
 msgstr ""
 
+#, fuzzy
+#| msgid "Select"
+msgid "Selection"
+msgstr "اختر"
+
 msgid "Store new model"
 msgstr ""
 
@@ -4764,6 +4789,11 @@ msgstr ""
 
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
+
+#, fuzzy
+#| msgid "invoice"
+msgid "Choice"
+msgstr "فاتورة"
 
 msgid "Size"
 msgstr ""
@@ -6045,11 +6075,19 @@ msgstr ""
 msgid "Add new group search criteria"
 msgstr ""
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr ""
 
 msgid "In any of selected groups"
 msgstr ""
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "الفِرَق"
 
 msgid "Remove criteria"
 msgstr ""
@@ -6070,11 +6108,17 @@ msgstr ""
 msgid "Select a field"
 msgstr "اختر المُرسِل"
 
+msgid "Query operator"
+msgstr ""
+
 msgid "is"
 msgstr ""
 
 msgid "is not"
 msgstr "ليس"
+
+msgid "Value"
+msgstr ""
 
 msgid "before"
 msgstr ""

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-02-12 07:48+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -818,6 +818,24 @@ msgstr "Le plugin %1$s a été activé"
 msgid "Plugin %1$s has been disabled"
 msgstr "Le plugin %1$s a été désactivé"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Une erreur est survenue."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Auteur"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Traduction des étiquettes"
 
@@ -1358,14 +1376,6 @@ msgstr "d/m/Y H:i:s"
 msgid "Never"
 msgstr "Jamais"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"La configuration courante des cartes peut excéder la largeur de la page !"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-"La configuration courante des cartes peut excéder la hauteur de la page !"
-
 msgid "Main information"
 msgstr "Informations globales"
 
@@ -1677,6 +1687,9 @@ msgstr "Cartes de Membres"
 msgid "Cards"
 msgstr "Cartes"
 
+msgid "Member"
+msgstr "Adhérent"
+
 msgid "An error occurred."
 msgstr "Une erreur est survenue."
 
@@ -1745,9 +1758,6 @@ msgstr "reçu"
 
 msgid "invoice"
 msgstr "facture"
-
-msgid "Member"
-msgstr "Adhérent"
 
 msgid "Inaccessible"
 msgstr "Inaccessible"
@@ -4023,6 +4033,11 @@ msgstr "Ajouter un nouveau réseau social"
 msgid "Choose or enter your own..."
 msgstr "Choisissez ou entrez votre propre valeur..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Réseaux sociaux"
+
 msgid "For the selection:"
 msgstr "Pour la sélection :"
 
@@ -4066,6 +4081,11 @@ msgstr "Plugins inactifs"
 
 msgid "Cause"
 msgstr "Cause"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Activé"
 
 msgid "A required file is missing"
 msgstr "Un fichier requis est manquant"
@@ -4529,6 +4549,11 @@ msgstr "Supprimer le modèle et revenir aux champs par défaut"
 msgid "Remove model"
 msgstr "Supprimer le modèle"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Suppression"
+
 msgid "Store new model"
 msgstr "Enregistrer le nouveau modèle"
 
@@ -4759,6 +4784,11 @@ msgstr "Fichiers existants"
 
 msgid "The following files seems ready to import on the disk:"
 msgstr "Les fichiers suivants semblent prêts à importer sur le disque :"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "choix"
 
 msgid "Size"
 msgstr "Taille"
@@ -6073,11 +6103,17 @@ msgstr "Expérimental"
 msgid "Add new group search criteria"
 msgstr "Ajouter un critère de recherche de groupe"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "Dans tous les groupes sélectionnés"
 
 msgid "In any of selected groups"
 msgstr "Dans n'importe lequel des groupes sélectionnés"
+
+msgid "Group"
+msgstr "Groupe"
 
 msgid "Remove criteria"
 msgstr "Supprimer le critère"
@@ -6094,11 +6130,21 @@ msgstr "Ajouter un critère de recherche libre"
 msgid "Select a field"
 msgstr "Sélectionnez un champ"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "séparateur"
+
 msgid "is"
 msgstr "est"
 
 msgid "is not"
 msgstr "n’est pas"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Valeurs :"
 
 msgid "before"
 msgstr "avant"
@@ -6346,6 +6392,14 @@ msgstr "Menu des langues"
 msgid "Page content"
 msgstr "Contenu de la page"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "La configuration courante des cartes peut excéder la largeur de la page !"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr ""
+#~ "La configuration courante des cartes peut excéder la hauteur de la page !"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr ""
 #~ "Une erreur est survenue lors du traitement de la table de stockage des "
@@ -6518,9 +6572,6 @@ msgstr "Contenu de la page"
 
 #~ msgid "Disabled"
 #~ msgstr "Désactivé"
-
-#~ msgid "Enabled"
-#~ msgstr "Activé"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Initialisation de Galette"
@@ -7285,9 +7336,6 @@ msgstr "Contenu de la page"
 #~ msgstr ""
 #~ "Ce type de paiement est encore utilisé, vous ne pouvez pas le "
 #~ "supprimer&nbsp;!"
-
-#~ msgid "Group"
-#~ msgstr "Groupe"
 
 #~ msgid "An error occurred trying to remove group :/"
 #~ msgstr "Une erreur est survenue lors de la suppression du groupe :/"

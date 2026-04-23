@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -814,6 +814,24 @@ msgid "Plugin %1$s has been disabled"
 msgstr "L'ajuston %1$s es estat desactivat"
 
 #, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Una error capitèt."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Autor"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
+#, fuzzy
 #| msgid "View transaction"
 msgid "Labels translation"
 msgstr "Veire la transaccion"
@@ -1358,13 +1376,6 @@ msgstr "d/m/Y H:i:s"
 msgid "Never"
 msgstr "Jamai"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"La configuracion correnta dei cartas pòt passar la largor de la pagina !"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr "La configuracion correnta dei cartas pòt passar l’autor de la pagina !"
-
 msgid "Main information"
 msgstr "Informacions generalas"
 
@@ -1670,6 +1681,9 @@ msgstr "Cartas de Membres"
 msgid "Cards"
 msgstr "Cartas"
 
+msgid "Member"
+msgstr "Membre"
+
 msgid "An error occurred."
 msgstr "Una error capitèt."
 
@@ -1737,9 +1751,6 @@ msgstr "recebut"
 
 msgid "invoice"
 msgstr "factura"
-
-msgid "Member"
-msgstr "Membre"
 
 msgid "Inaccessible"
 msgstr "Inaccessible"
@@ -3999,6 +4010,11 @@ msgstr "Ajustar de malhums sociaus"
 msgid "Choose or enter your own..."
 msgstr "Chausissètz ò intratz vòstra valor…"
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Malhums sociaus"
+
 msgid "For the selection:"
 msgstr "Per la seleccion :"
 
@@ -4042,6 +4058,11 @@ msgstr "Ajustons inactius"
 
 msgid "Cause"
 msgstr "Causa"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Activat"
 
 msgid "A required file is missing"
 msgstr "Un fichier reclamat manca"
@@ -4506,6 +4527,11 @@ msgstr "Levar lo modèle e tornar ai valors per defaut"
 msgid "Remove model"
 msgstr "Levar lo modèle"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Supression"
+
 msgid "Store new model"
 msgstr "Enregistrar lo modèle novèu"
 
@@ -4733,6 +4759,11 @@ msgstr "FIchiers corrents"
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
 "Lei fichiers seguents pareisson lèsts per importar dins la basa de donada :"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "chausida"
 
 msgid "Size"
 msgstr "Mesura"
@@ -6020,11 +6051,19 @@ msgstr "Experimentau"
 msgid "Add new group search criteria"
 msgstr "Ajustar un critèri de recèrca de grope"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "De totei lei gropes chausits"
 
 msgid "In any of selected groups"
 msgstr "De que grope chausit que siegue"
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Gropes"
 
 msgid "Remove criteria"
 msgstr ""
@@ -6041,11 +6080,21 @@ msgstr ""
 msgid "Select a field"
 msgstr "Seleccionatz un camp"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "separador"
+
 msgid "is"
 msgstr "es"
 
 msgid "is not"
 msgstr "es pas"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Valors :"
 
 msgid "before"
 msgstr "abans"
@@ -6292,6 +6341,14 @@ msgstr "Lenga :"
 msgid "Page content"
 msgstr ""
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "La configuracion correnta dei cartas pòt passar la largor de la pagina !"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr ""
+#~ "La configuracion correnta dei cartas pòt passar l’autor de la pagina !"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "Una error a capitat per crear la taula de valor dei camps"
 
@@ -6435,9 +6492,6 @@ msgstr ""
 
 #~ msgid "Disabled"
 #~ msgstr "Desactivat"
-
-#~ msgid "Enabled"
-#~ msgstr "Activat"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Inicializacion de Galeta"

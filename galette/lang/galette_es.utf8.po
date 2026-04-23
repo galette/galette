@@ -43,8 +43,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-03-19 10:10+0000\n"
 "Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -847,6 +847,24 @@ msgstr "El complemento %1$s ha sido activado"
 msgid "Plugin %1$s has been disabled"
 msgstr "El complemento %1$s ha sido desactivado"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Se ha producido un error."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Autor"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Traducción de etiquetas"
 
@@ -1382,16 +1400,6 @@ msgstr "Y-m-d H:i:s"
 msgid "Never"
 msgstr "Nunca"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"¡La configuración actual de las tarjetas podría exceder la anchura de la "
-"página!"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-"¡Es posible que la configuración de las tarjetas actuales excedan la altura "
-"de página!"
-
 msgid "Main information"
 msgstr "Informacion principal"
 
@@ -1698,6 +1706,9 @@ msgstr "Tarjetas de los miembros"
 msgid "Cards"
 msgstr "Tarjetas"
 
+msgid "Member"
+msgstr "Miembro"
+
 msgid "An error occurred."
 msgstr "Se ha producido un error."
 
@@ -1769,9 +1780,6 @@ msgstr "recibo"
 
 msgid "invoice"
 msgstr "factura"
-
-msgid "Member"
-msgstr "Miembro"
 
 msgid "Inaccessible"
 msgstr "No accesible"
@@ -2256,7 +2264,8 @@ msgid "Amount cannot be greater than non allocated amount"
 msgstr "El importe no puede ser mayor que el importe no asignado"
 
 msgid "Payment type for contribution must be set to scheduled"
-msgstr "El tipo de pago para la contribución debe ser establecido a planificado"
+msgstr ""
+"El tipo de pago para la contribución debe ser establecido a planificado"
 
 msgid "Payment type is required"
 msgstr "El tipo de pago es obligatorio"
@@ -4035,6 +4044,11 @@ msgstr "Añadir nueva red social"
 msgid "Choose or enter your own..."
 msgstr "Elige o introduce por ti mismo..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Redes sociales"
+
 msgid "For the selection:"
 msgstr "De la selección:"
 
@@ -4078,6 +4092,11 @@ msgstr "Complementos inactivos"
 
 msgid "Cause"
 msgstr "Motivo"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Activado"
 
 msgid "A required file is missing"
 msgstr "Falta un archivo requerido"
@@ -4540,6 +4559,11 @@ msgstr "Quitar modelo y volver a valores predeterminados"
 msgid "Remove model"
 msgstr "Quitar modelo"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Borrado"
+
 msgid "Store new model"
 msgstr "Almacenar modelo nuevo"
 
@@ -4769,6 +4793,11 @@ msgstr "Archivos existentes"
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
 "Los archivos siguientes parecen listos para su importación en el disco:"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "elección"
 
 msgid "Size"
 msgstr "Tamaño"
@@ -6087,11 +6116,17 @@ msgstr "Experimental"
 msgid "Add new group search criteria"
 msgstr "Añadir nuevos criterios de búsqueda de grupos"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "En todos los grupos seleccionados"
 
 msgid "In any of selected groups"
 msgstr "En cualquiera de los grupos seleccionados"
+
+msgid "Group"
+msgstr "Grupo"
 
 msgid "Remove criteria"
 msgstr "Borrar criterio"
@@ -6108,11 +6143,21 @@ msgstr "Añadir nuevo criterio de búsqueda libre"
 msgid "Select a field"
 msgstr "Selecciona un campo"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "separador"
+
 msgid "is"
 msgstr "es"
 
 msgid "is not"
 msgstr "no es"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Valores:"
 
 msgid "before"
 msgstr "antes"
@@ -6359,6 +6404,16 @@ msgstr "Menú de idiomas"
 msgid "Page content"
 msgstr "Contenido de página"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "¡La configuración actual de las tarjetas podría exceder la anchura de la "
+#~ "página!"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr ""
+#~ "¡Es posible que la configuración de las tarjetas actuales excedan la "
+#~ "altura de página!"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "Se ha producido un error al crear el campo en la tabla de valores"
 
@@ -6533,9 +6588,6 @@ msgstr "Contenido de página"
 
 #~ msgid "Disabled"
 #~ msgstr "Desactivado"
-
-#~ msgid "Enabled"
-#~ msgstr "Activado"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Arranque de Galette"
@@ -6821,9 +6873,6 @@ msgstr "Contenido de página"
 
 #~ msgid "Payment type '%name' has been successfully deleted."
 #~ msgstr "Se eliminó el tipo de pago «%name» correctamente."
-
-#~ msgid "Group"
-#~ msgstr "Grupo"
 
 #~ msgid "(Confirmation)"
 #~ msgstr "(Confirmación)"

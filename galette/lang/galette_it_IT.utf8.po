@@ -30,8 +30,8 @@
 # Fuurio Williams <yellbilly@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-03-17 15:09+0000\n"
 "Last-Translator: Fuurio Williams <yellbilly@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -821,6 +821,24 @@ msgstr "Il Plugin %1$s è stato attivato"
 msgid "Plugin %1$s has been disabled"
 msgstr "Il Plugin %1$s è stato disattivato"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Si è verificato un errore."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Autore"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Traduzione etichette"
 
@@ -1359,15 +1377,6 @@ msgstr "d/m/Y H:i:s"
 msgid "Never"
 msgstr "Mai"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"La configurazione attuale delle schede può superare la larghezza della "
-"pagina!"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-"La configurazione attuale delle schede può superare l'altezza della pagina!"
-
 msgid "Main information"
 msgstr "Informazioni principali"
 
@@ -1674,6 +1683,9 @@ msgstr "Tessere socio"
 msgid "Cards"
 msgstr "Tessere"
 
+msgid "Member"
+msgstr "Membro"
+
 msgid "An error occurred."
 msgstr "Si è verificato un errore."
 
@@ -1744,9 +1756,6 @@ msgstr "ricevuta"
 
 msgid "invoice"
 msgstr "fattura"
-
-msgid "Member"
-msgstr "Membro"
 
 msgid "Inaccessible"
 msgstr "Inaccessibile"
@@ -4012,6 +4021,11 @@ msgstr "Aggiungere social network"
 msgid "Choose or enter your own..."
 msgstr "Scegliere o inserire il proprio..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Social network"
+
 msgid "For the selection:"
 msgstr "Per la selezione:"
 
@@ -4055,6 +4069,11 @@ msgstr "Plugin inattivi"
 
 msgid "Cause"
 msgstr "Causa"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Abilitata"
 
 msgid "A required file is missing"
 msgstr "Manca un file richiesto"
@@ -4515,6 +4534,11 @@ msgstr "Rimuovi il modello e torna ai predefiniti"
 msgid "Remove model"
 msgstr "Rimuovi modello"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Eliminazione"
+
 msgid "Store new model"
 msgstr "Memorizza nuovo modello"
 
@@ -4740,6 +4764,11 @@ msgstr "File esistenti"
 
 msgid "The following files seems ready to import on the disk:"
 msgstr "I seguenti file sembrano pronti all'importazione sul disco:"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "scegli"
 
 msgid "Size"
 msgstr "Dimensione"
@@ -6058,11 +6087,19 @@ msgstr "Sperimentale"
 msgid "Add new group search criteria"
 msgstr "Aggiungi nuovi criteri di ricerca di gruppo"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "In tutti i gruppi selezionati"
 
 msgid "In any of selected groups"
 msgstr "In ogni gruppo selezionato"
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Gruppi"
 
 msgid "Remove criteria"
 msgstr "Rimuovi il criterio"
@@ -6079,11 +6116,21 @@ msgstr "Aggiungi nuovo criterio di ricerca libera"
 msgid "Select a field"
 msgstr "Seleziona un campo"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "separatore"
+
 msgid "is"
 msgstr "è"
 
 msgid "is not"
 msgstr "non è"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Valori:"
 
 msgid "before"
 msgstr "prima di"
@@ -6330,6 +6377,16 @@ msgstr "Menu lingua"
 msgid "Page content"
 msgstr "Contenuti della pagina"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "La configurazione attuale delle schede può superare la larghezza della "
+#~ "pagina!"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr ""
+#~ "La configurazione attuale delle schede può superare l'altezza della "
+#~ "pagina!"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr ""
 #~ "Si è verificato un errore durante la creazione della tabella dei valori "
@@ -6502,9 +6559,6 @@ msgstr "Contenuti della pagina"
 
 #~ msgid "Disabled"
 #~ msgstr "Disabilitata"
-
-#~ msgid "Enabled"
-#~ msgstr "Abilitata"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Inizializzazione di Galette"

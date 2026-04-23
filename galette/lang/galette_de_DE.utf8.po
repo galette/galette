@@ -44,7 +44,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-02-09 23:09+0000\n"
 "Last-Translator: Academion <m.holzhausen@tutamail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -840,6 +840,24 @@ msgstr "Das Plugin %1$s wurde aktiviert"
 msgid "Plugin %1$s has been disabled"
 msgstr "Das Plugin %1$s wurde deaktiviert"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Ein Fehler ist aufgetreten."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Autor"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Label Übersetzung"
 
@@ -1376,13 +1394,6 @@ msgstr "d/m/Y H:i:s"
 msgid "Never"
 msgstr "Nie"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"Die aktuelle Konfiguration der Karten kann die Seitenbreite überschreiten!"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr "Aktuelle Kartenkonfiguration überschreitet die Seitenhöhe!"
-
 msgid "Main information"
 msgstr "Hauptinformation"
 
@@ -1689,6 +1700,9 @@ msgstr "Mitgliedskarten"
 msgid "Cards"
 msgstr "Karten"
 
+msgid "Member"
+msgstr "Mitglied"
+
 msgid "An error occurred."
 msgstr "Ein Fehler ist aufgetreten."
 
@@ -1760,9 +1774,6 @@ msgstr "Quittung"
 
 msgid "invoice"
 msgstr "Rechnung"
-
-msgid "Member"
-msgstr "Mitglied"
 
 msgid "Inaccessible"
 msgstr "Unzugänglich"
@@ -4024,6 +4035,11 @@ msgstr "Neues Soziales Netzwerk hinzufügen"
 msgid "Choose or enter your own..."
 msgstr "Wählen Sie oder geben Sie Ihre eigene..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Soziale Netzwerke"
+
 msgid "For the selection:"
 msgstr "Für die Auswahl:"
 
@@ -4067,6 +4083,11 @@ msgstr "Deaktivierte Plugins"
 
 msgid "Cause"
 msgstr "Grund"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Aktiviert"
 
 msgid "A required file is missing"
 msgstr "Eine benötigte Datei fehlt"
@@ -4528,6 +4549,11 @@ msgstr "Modell löschen und Standard wiederherstellen"
 msgid "Remove model"
 msgstr "Modell löschen"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Löschen"
+
 msgid "Store new model"
 msgstr "Neues Modell speichern"
 
@@ -4756,6 +4782,11 @@ msgstr "Vorhandene Dateien"
 
 msgid "The following files seems ready to import on the disk:"
 msgstr "Die folgenden Dateien sind für den Import bereit:"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "Wahl"
 
 msgid "Size"
 msgstr "Größe"
@@ -6072,11 +6103,17 @@ msgstr "Experimentell"
 msgid "Add new group search criteria"
 msgstr "Neue Gruppensuchkriterien hinzufügen"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "In allen ausgewählten Gruppen"
 
 msgid "In any of selected groups"
 msgstr "In einer der ausgewählten Gruppen"
+
+msgid "Group"
+msgstr "Gruppe"
 
 msgid "Remove criteria"
 msgstr "Kriterien entfernen"
@@ -6093,11 +6130,21 @@ msgstr "Neue Suchkriterien hinzufügen"
 msgid "Select a field"
 msgstr "Wählen Sie ein Feld"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "Trennzeichen"
+
 msgid "is"
 msgstr "ist"
 
 msgid "is not"
 msgstr "ist nicht"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Werte:"
 
 msgid "before"
 msgstr "vorher"
@@ -6346,6 +6393,13 @@ msgstr "Sprachmenü"
 msgid "Page content"
 msgstr "Seiteninhalt"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "Die aktuelle Konfiguration der Karten kann die Seitenbreite überschreiten!"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr "Aktuelle Kartenkonfiguration überschreitet die Seitenhöhe!"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "Beim Erstellen der Feldwerttabelle ist ein Fehler aufgetreten"
 
@@ -6519,9 +6573,6 @@ msgstr "Seiteninhalt"
 
 #~ msgid "Disabled"
 #~ msgstr "Deaktiviert"
-
-#~ msgid "Enabled"
-#~ msgstr "Aktiviert"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Galette-Initialisierung"
@@ -7233,9 +7284,6 @@ msgstr "Seiteninhalt"
 #~ msgid "That payment type is still in use, you cannot delete it!"
 #~ msgstr ""
 #~ "Diese Zahlungsart wird noch verwendet, Sie können sie nicht löschen!"
-
-#~ msgid "Group"
-#~ msgstr "Gruppe"
 
 #~ msgid "Group %groupname has been successfully deleted."
 #~ msgstr "Die Gruppe %groupname wurde erfolgreich gelöscht."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-03-02 20:00+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -796,6 +796,24 @@ msgstr "சொருகி %1$s இயக்கப்பட்டது"
 msgid "Plugin %1$s has been disabled"
 msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "பிழை ஏற்பட்டது."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "நூலாசிரியர்"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "லேபிள்கள் மொழிபெயர்ப்பு"
 
@@ -1322,12 +1340,6 @@ msgstr "Y-m-d h: i: s"
 msgid "Never"
 msgstr "ஒருபோதும்"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க அகலத்தை விட அதிகமாக இருக்கலாம்!"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க உயரத்தை விட அதிகமாக இருக்கலாம்!"
-
 msgid "Main information"
 msgstr "முக்கிய செய்தி"
 
@@ -1632,6 +1644,9 @@ msgstr "உறுப்பினரின் அட்டைகள்"
 msgid "Cards"
 msgstr "அட்டைகள்"
 
+msgid "Member"
+msgstr "உறுப்பினர்"
+
 msgid "An error occurred."
 msgstr "பிழை ஏற்பட்டது."
 
@@ -1698,9 +1713,6 @@ msgstr "பற்றுச்சீட்டு"
 
 msgid "invoice"
 msgstr "விலைப்பட்டியல்"
-
-msgid "Member"
-msgstr "உறுப்பினர்"
 
 msgid "Inaccessible"
 msgstr "அணுக முடியாத"
@@ -3902,6 +3914,11 @@ msgstr "புதிய சமூக வலைப்பின்னலைச் 
 msgid "Choose or enter your own..."
 msgstr "உங்கள் சொந்த தேர்வு அல்லது உள்ளிடவும் ..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "சமூக வலைப்பின்னல்கள்"
+
 msgid "For the selection:"
 msgstr "தேர்வுக்கு:"
 
@@ -3945,6 +3962,11 @@ msgstr "செயலற்ற செருகுநிரல்கள்"
 
 msgid "Cause"
 msgstr "காரணம்"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "இயக்கப்பட்டது"
 
 msgid "A required file is missing"
 msgstr "தேவையான கோப்பு இல்லை"
@@ -4399,6 +4421,11 @@ msgstr "மாதிரியை அகற்று இயல்புநில�
 msgid "Remove model"
 msgstr "மாதிரியை அகற்று"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "நீக்குதல்"
+
 msgid "Store new model"
 msgstr "புதிய மாடலை சேமிக்கவும்"
 
@@ -4624,6 +4651,11 @@ msgstr "தற்போதுள்ள கோப்புகள்"
 
 msgid "The following files seems ready to import on the disk:"
 msgstr "பின்வரும் கோப்புகள் வட்டில் இறக்குமதி செய்யத் தயாராக இருப்பதாக தெரிகிறது:"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "தேர்வு"
 
 msgid "Size"
 msgstr "அளவு"
@@ -5915,11 +5947,19 @@ msgstr "சோதனை"
 msgid "Add new group search criteria"
 msgstr "புதிய குழு தேடல் அளவுகோல்களைச் சேர்க்கவும்"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "தேர்ந்தெடுக்கப்பட்ட அனைத்து குழுக்களிலும்"
 
 msgid "In any of selected groups"
 msgstr "தேர்ந்தெடுக்கப்பட்ட எந்த குழுக்களிலும்"
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "குழுக்கள்"
 
 msgid "Remove criteria"
 msgstr "அளவுகோல்களை அகற்று"
@@ -5936,11 +5976,21 @@ msgstr "புதிய இலவச தேடல் அளவுகோல்க
 msgid "Select a field"
 msgstr "ஒரு புலத்தைத் தேர்ந்தெடுக்கவும்"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "பிரிப்பான்"
+
 msgid "is"
 msgstr "என்பது"
 
 msgid "is not"
 msgstr "இல்லை"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "மதிப்புகள்:"
 
 msgid "before"
 msgstr "முன்"
@@ -6182,6 +6232,12 @@ msgstr "மொழி பட்டியல்"
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க அகலத்தை விட அதிகமாக இருக்கலாம்!"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க உயரத்தை விட அதிகமாக இருக்கலாம்!"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "புலம் மதிப்புகள் அட்டவணையை உருவாக்கும் பிழை ஏற்பட்டது"
 
@@ -6392,6 +6448,3 @@ msgstr "பக்க உள்ளடக்கம்"
 
 #~ msgid "Disabled"
 #~ msgstr "முடக்கப்பட்டது"
-
-#~ msgid "Enabled"
-#~ msgstr "இயக்கப்பட்டது"

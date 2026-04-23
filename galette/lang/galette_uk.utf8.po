@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2025-11-12 17:51+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -803,6 +803,24 @@ msgstr "Розширення %1$s увімкнено"
 msgid "Plugin %1$s has been disabled"
 msgstr "Розширення %1$s вимкнено"
 
+#, fuzzy
+#| msgid "An error occurred."
+msgid "An error occurred"
+msgstr "Сталася помилка."
+
+#, fuzzy
+#| msgid "Author"
+msgid "OAuth2 error"
+msgstr "Автор"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Переклад етикеток"
 
@@ -1328,12 +1346,6 @@ msgstr "Y-m-d H:i:s"
 msgid "Never"
 msgstr "Ніколи"
 
-msgid "Current cards configuration may exceed page width!"
-msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
-
-msgid "Current cards configuration may exceed page height!"
-msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
-
 msgid "Main information"
 msgstr "Контактні відомості"
 
@@ -1637,6 +1649,9 @@ msgstr "Картки члена"
 msgid "Cards"
 msgstr "Картки"
 
+msgid "Member"
+msgstr "Члени"
+
 msgid "An error occurred."
 msgstr "Сталася помилка."
 
@@ -1706,9 +1721,6 @@ msgstr "квитанція"
 
 msgid "invoice"
 msgstr "рахунок-фактура"
-
-msgid "Member"
-msgstr "Члени"
 
 msgid "Inaccessible"
 msgstr "Недоступно"
@@ -3947,6 +3959,11 @@ msgstr "Додати нову соцмережу"
 msgid "Choose or enter your own..."
 msgstr "Виберіть або введіть свій..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Соціальні мережі"
+
 msgid "For the selection:"
 msgstr "Для вибору:"
 
@@ -3991,6 +4008,11 @@ msgstr "Бездіяльні розширення"
 
 msgid "Cause"
 msgstr "Причина"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Увімкнено"
 
 msgid "A required file is missing"
 msgstr "Необхідний файл відсутній"
@@ -4451,6 +4473,11 @@ msgstr "Вилучити модель і повернутися до типов�
 msgid "Remove model"
 msgstr "Вилучити модель"
 
+#, fuzzy
+#| msgid "Deletion"
+msgid "Selection"
+msgstr "Видалення"
+
 msgid "Store new model"
 msgstr "Зберегти нову модель"
 
@@ -4678,6 +4705,11 @@ msgstr "Наявні файли"
 
 msgid "The following files seems ready to import on the disk:"
 msgstr "Наступні файли, здається, готові до імпортування на диск:"
+
+#, fuzzy
+#| msgid "choice"
+msgid "Choice"
+msgstr "вибір"
 
 msgid "Size"
 msgstr "Розмір"
@@ -5988,11 +6020,19 @@ msgstr "Експериментальне"
 msgid "Add new group search criteria"
 msgstr "Додати нові умови групового пошуку"
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr "У всіх вибраних групах"
 
 msgid "In any of selected groups"
 msgstr "У будь-якій з вибраних груп"
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Групи"
 
 msgid "Remove criteria"
 msgstr "Вилучити умови"
@@ -6009,11 +6049,21 @@ msgstr "Додати нові вільні умови пошуку"
 msgid "Select a field"
 msgstr "Вибрати поле"
 
+#, fuzzy
+#| msgid "separator"
+msgid "Query operator"
+msgstr "роздільник"
+
 msgid "is"
 msgstr "є"
 
 msgid "is not"
 msgstr "не"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Значення:"
 
 msgid "before"
 msgstr "перед"
@@ -6256,6 +6306,12 @@ msgstr "Мовне меню"
 msgid "Page content"
 msgstr "Вміст сторінки"
 
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
+
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
+
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "Під час створення таблиці значень полів сталася помилка"
 
@@ -6424,9 +6480,6 @@ msgstr "Вміст сторінки"
 
 #~ msgid "Disabled"
 #~ msgstr "Вимкнено"
-
-#~ msgid "Enabled"
-#~ msgstr "Увімкнено"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Ініціалізація Galette"

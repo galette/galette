@@ -19,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-03-27 08:12+0000\n"
 "Last-Translator: cqmaa <omeracamoglu@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -825,6 +825,22 @@ msgid "Plugin %1$s has been disabled"
 msgstr "%1$s eklentisi devre dışı bırakıldı"
 
 #, fuzzy
+#| msgid "An error occurred moving field :("
+msgid "An error occurred"
+msgstr "Alan taşınırken bir hata oluştu :("
+
+msgid "OAuth2 error"
+msgstr ""
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
+#, fuzzy
 #| msgid "transaction"
 msgid "Labels translation"
 msgstr "işlem"
@@ -1357,12 +1373,6 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-
 msgid "Main information"
 msgstr ""
 
@@ -1666,6 +1676,9 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
+msgid "Member"
+msgstr ""
+
 msgid "An error occurred."
 msgstr ""
 
@@ -1730,9 +1743,6 @@ msgid "receipt"
 msgstr ""
 
 msgid "invoice"
-msgstr ""
-
-msgid "Member"
 msgstr ""
 
 msgid "Inaccessible"
@@ -3879,6 +3889,9 @@ msgstr ""
 msgid "Choose or enter your own..."
 msgstr ""
 
+msgid "Social network"
+msgstr ""
+
 msgid "For the selection:"
 msgstr ""
 
@@ -3923,6 +3936,9 @@ msgid "Inactive plugins"
 msgstr ""
 
 msgid "Cause"
+msgstr ""
+
+msgid "Enable"
 msgstr ""
 
 msgid "A required file is missing"
@@ -4385,6 +4401,9 @@ msgstr ""
 msgid "Remove model"
 msgstr ""
 
+msgid "Selection"
+msgstr ""
+
 msgid "Store new model"
 msgstr ""
 
@@ -4605,6 +4624,9 @@ msgid "Existing files"
 msgstr ""
 
 msgid "The following files seems ready to import on the disk:"
+msgstr ""
+
+msgid "Choice"
 msgstr ""
 
 msgid "Size"
@@ -5858,11 +5880,19 @@ msgstr ""
 msgid "Add new group search criteria"
 msgstr ""
 
+msgid "Logical operator"
+msgstr ""
+
 msgid "In all selected groups"
 msgstr ""
 
 msgid "In any of selected groups"
 msgstr ""
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Gruplar"
 
 msgid "Remove criteria"
 msgstr ""
@@ -5881,10 +5911,16 @@ msgstr ""
 msgid "Select a field"
 msgstr ""
 
+msgid "Query operator"
+msgstr ""
+
 msgid "is"
 msgstr ""
 
 msgid "is not"
+msgstr ""
+
+msgid "Value"
 msgstr ""
 
 msgid "before"

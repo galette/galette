@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 14:53+0100\n"
+"POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-01-30 09:01+0000\n"
 "Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -930,6 +930,22 @@ msgstr "El connector %1$s s'ha habilitat"
 msgid "Plugin %1$s has been disabled"
 msgstr "El connector %1$s ha estat desactivat"
 
+#, fuzzy
+msgid "An error occurred"
+msgstr "Hi ha hagut un error."
+
+#, fuzzy
+msgid "OAuth2 error"
+msgstr "Autor"
+
+#, php-format
+msgid "Sign in with %s"
+msgstr ""
+
+#, php-format
+msgid "Sign in %s"
+msgstr ""
+
 msgid "Labels translation"
 msgstr "Traducció d'etiquetes"
 
@@ -1572,16 +1588,6 @@ msgid "Never"
 msgstr "Mai"
 
 #, fuzzy
-msgid "Current cards configuration may exceed page width!"
-msgstr ""
-"La configuració de les targetes actuals pot superar l'amplada de pàgina!"
-
-#, fuzzy
-msgid "Current cards configuration may exceed page height!"
-msgstr ""
-"La configuració de les targetes actuals pot superar l'alçada de la pàgina!"
-
-#, fuzzy
 msgid "Main information"
 msgstr "Informació principal"
 
@@ -1958,6 +1964,9 @@ msgstr "Targetes de membre"
 msgid "Cards"
 msgstr "Targetes"
 
+msgid "Member"
+msgstr "Usuari"
+
 #, fuzzy
 msgid "An error occurred."
 msgstr "Hi ha hagut un error."
@@ -2044,9 +2053,6 @@ msgstr "rebut"
 #, fuzzy
 msgid "invoice"
 msgstr "Factura"
-
-msgid "Member"
-msgstr "Usuari"
 
 msgid "Inaccessible"
 msgstr "Inaccessible"
@@ -4738,6 +4744,11 @@ msgstr "Xarxes socials"
 msgid "Choose or enter your own..."
 msgstr "Trieu una entrada..."
 
+#, fuzzy
+#| msgid "Social networks"
+msgid "Social network"
+msgstr "Xarxes socials"
+
 msgid "For the selection:"
 msgstr "Per a la selecció:"
 
@@ -4788,6 +4799,10 @@ msgstr "Connectors inactius"
 #, fuzzy
 msgid "Cause"
 msgstr "Cau"
+
+#, fuzzy
+msgid "Enable"
+msgstr "Activat"
 
 #, fuzzy
 msgid "A required file is missing"
@@ -5346,6 +5361,10 @@ msgid "Remove model"
 msgstr "Elimina el model"
 
 #, fuzzy
+msgid "Selection"
+msgstr "Supressió"
+
+#, fuzzy
 msgid "Store new model"
 msgstr "Desa un model nou"
 
@@ -5617,6 +5636,10 @@ msgstr "Fitxers existents"
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
 "Sembla que els següents fitxers estan preparats per importar-los al disc:"
+
+#, fuzzy
+msgid "Choice"
+msgstr "tria"
 
 #, fuzzy
 msgid "Size"
@@ -7203,6 +7226,9 @@ msgstr "Experimental"
 msgid "Add new group search criteria"
 msgstr "Afegeix un criteri de cerca de grup nou"
 
+msgid "Logical operator"
+msgstr ""
+
 #, fuzzy
 #| msgid "Selected groups"
 msgid "In all selected groups"
@@ -7212,6 +7238,11 @@ msgstr "Grups seleccionats"
 #| msgid "Selected groups"
 msgid "In any of selected groups"
 msgstr "Grups seleccionats"
+
+#, fuzzy
+#| msgid "Groups"
+msgid "Group"
+msgstr "Grups"
 
 #, fuzzy
 msgid "Remove criteria"
@@ -7234,12 +7265,21 @@ msgid "Select a field"
 msgstr "Seleccioneu un camp"
 
 #, fuzzy
+msgid "Query operator"
+msgstr "separador"
+
+#, fuzzy
 msgid "is"
 msgstr "és"
 
 #, fuzzy
 msgid "is not"
 msgstr "no és"
+
+#, fuzzy
+#| msgid "Values:"
+msgid "Value"
+msgstr "Valors:"
 
 #, fuzzy
 msgid "before"
@@ -7540,6 +7580,16 @@ msgid "Page content"
 msgstr "Contingut de la pàgina"
 
 #, fuzzy
+#~ msgid "Current cards configuration may exceed page width!"
+#~ msgstr ""
+#~ "La configuració de les targetes actuals pot superar l'amplada de pàgina!"
+
+#, fuzzy
+#~ msgid "Current cards configuration may exceed page height!"
+#~ msgstr ""
+#~ "La configuració de les targetes actuals pot superar l'alçada de la pàgina!"
+
+#, fuzzy
 #~ msgid "An error occurred creating field values table"
 #~ msgstr "S'ha produït un error en crear la taula de valors de camp"
 
@@ -7719,10 +7769,6 @@ msgstr "Contingut de la pàgina"
 #, fuzzy
 #~ msgid "Disabled"
 #~ msgstr "Desactivat"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Activat"
 
 #, fuzzy
 #~ msgid "Galette initialisation"
