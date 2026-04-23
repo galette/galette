@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # HelaBasa <R45XvezA@protonmail.ch>, 2021.
 # Theekshana Fernando <rtheekshanafernando@gmail.com>, 2021.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2021, 2023.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2021, 2023, 2026.
 # Yowun Sajeewana Wickramatantri <YowunSajeewana@protonmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2023-10-04 11:27+0000\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
 "si/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #, fuzzy
 #| msgid "Unable to attach contribution to transaction"
@@ -827,10 +827,8 @@ msgstr ""
 msgid "Plugin %1$s has been disabled"
 msgstr ""
 
-#, fuzzy
-#| msgid "An error occurred checking overlapping fees :("
 msgid "An error occurred"
-msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය."
+msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය"
 
 msgid "OAuth2 error"
 msgstr ""
