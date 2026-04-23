@@ -30,6 +30,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
 use RKA\Session;
+use RuntimeException;
+use Safe\Exceptions\PcreException;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
@@ -136,7 +138,7 @@ class Authenticate
                 $go = true;
                 break;
             default:
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     str_replace(
                         '%acl',
                         $acl,
@@ -166,24 +168,25 @@ class Authenticate
      *
      * @param string $name Route name
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
+     * @throws PcreException
      */
     public function getAclFor(string $name): string
     {
         //first, check for exact match
         if (isset($this->acls[$name])) {
             return $this->acls[$name];
-        } else {
-            //handle routes regexps
-            foreach ($this->acls as $regex => $route_acl) {
-                //looks like a regular expression, go
-                if (preg_match('@/(.+)/[imsxADU]?@', $regex) && preg_match($regex, $name)) {
-                    return $route_acl;
-                }
+        }
+
+        //handle routes regexps
+        foreach ($this->acls as $regex => $route_acl) {
+            //looks like a regular expression, go
+            if (preg_match('@/(.+)/[imsxADU]?@', $regex) && preg_match($regex, $name)) {
+                return $route_acl;
             }
         }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             sprintf(
                 _T('Route \'%1$s\' is not registered in ACLs!'),
                 $name,
