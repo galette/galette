@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -825,20 +825,6 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr ""
-
-msgid "An error occurred"
-msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය"
-
-msgid "OAuth2 error"
-msgstr ""
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
 msgstr ""
 
 #, fuzzy
@@ -6086,6 +6072,9 @@ msgstr ""
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "An error occurred"
+#~ msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය"
 
 #, fuzzy
 #~| msgid "Unable to attach contribution to transaction"

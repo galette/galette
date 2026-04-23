@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -802,22 +802,6 @@ msgstr "Розширення %1$s увімкнено"
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr "Розширення %1$s вимкнено"
-
-msgid "An error occurred"
-msgstr "Сталася помилка"
-
-#, fuzzy
-#| msgid "Author"
-msgid "OAuth2 error"
-msgstr "Автор"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
 
 msgid "Labels translation"
 msgstr "Переклад етикеток"
@@ -6303,6 +6287,14 @@ msgstr "Мовне меню"
 
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#~ msgid "An error occurred"
+#~ msgstr "Сталася помилка"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "OAuth2 error"
+#~ msgstr "Автор"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"

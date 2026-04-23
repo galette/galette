@@ -8,12 +8,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
-"ta/>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
+">\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -795,22 +795,6 @@ msgstr "சொருகி %1$s இயக்கப்பட்டது"
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
-
-msgid "An error occurred"
-msgstr "பிழை ஏற்பட்டது"
-
-#, fuzzy
-#| msgid "Author"
-msgid "OAuth2 error"
-msgstr "நூலாசிரியர்"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
 
 msgid "Labels translation"
 msgstr "லேபிள்கள் மொழிபெயர்ப்பு"
@@ -6229,6 +6213,14 @@ msgstr "மொழி பட்டியல்"
 
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "An error occurred"
+#~ msgstr "பிழை ஏற்பட்டது"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "OAuth2 error"
+#~ msgstr "நூலாசிரியர்"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க அகலத்தை விட அதிகமாக இருக்கலாம்!"

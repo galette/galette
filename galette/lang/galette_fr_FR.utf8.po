@@ -15,7 +15,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -817,20 +817,6 @@ msgstr "Le plugin %1$s a été activé"
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr "Le plugin %1$s a été désactivé"
-
-msgid "An error occurred"
-msgstr "Une erreur est survenue"
-
-msgid "OAuth2 error"
-msgstr "Erreur OAuth2"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr "S'identifier avec %s"
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
 
 msgid "Labels translation"
 msgstr "Traduction des étiquettes"
@@ -6387,6 +6373,16 @@ msgstr "Menu des langues"
 
 msgid "Page content"
 msgstr "Contenu de la page"
+
+#~ msgid "An error occurred"
+#~ msgstr "Une erreur est survenue"
+
+#~ msgid "OAuth2 error"
+#~ msgstr "Erreur OAuth2"
+
+#, php-format
+#~ msgid "Sign in with %s"
+#~ msgstr "S'identifier avec %s"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr ""

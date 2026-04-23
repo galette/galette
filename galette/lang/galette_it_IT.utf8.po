@@ -30,7 +30,7 @@
 # Fuurio Williams <yellbilly@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -820,22 +820,6 @@ msgstr "Il Plugin %1$s è stato attivato"
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr "Il Plugin %1$s è stato disattivato"
-
-msgid "An error occurred"
-msgstr "Si è verificato un errore"
-
-#, fuzzy
-#| msgid "Author"
-msgid "OAuth2 error"
-msgstr "Autore"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
 
 msgid "Labels translation"
 msgstr "Traduzione etichette"
@@ -6374,6 +6358,14 @@ msgstr "Menu lingua"
 
 msgid "Page content"
 msgstr "Contenuti della pagina"
+
+#~ msgid "An error occurred"
+#~ msgstr "Si è verificato un errore"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "OAuth2 error"
+#~ msgstr "Autore"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr ""

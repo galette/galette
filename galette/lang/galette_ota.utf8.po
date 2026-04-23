@@ -778,20 +778,6 @@ msgstr ""
 msgid "Plugin %1$s has been disabled"
 msgstr ""
 
-msgid "An error occurred"
-msgstr ""
-
-msgid "OAuth2 error"
-msgstr ""
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
-
 msgid "Labels translation"
 msgstr ""
 

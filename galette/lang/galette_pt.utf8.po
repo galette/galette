@@ -800,22 +800,6 @@ msgstr "O plugin %1$s foi habilitado"
 msgid "Plugin %1$s has been disabled"
 msgstr "O plugin %1$s foi desabilitado"
 
-#, fuzzy
-#| msgid "An error occurred moving field :("
-msgid "An error occurred"
-msgstr "Ocorreu um erro ao mover o campo :("
-
-msgid "OAuth2 error"
-msgstr ""
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
-
 msgid "Labels translation"
 msgstr "Tradução de rótulos"
 
@@ -6071,6 +6055,11 @@ msgstr ""
 
 msgid "Page content"
 msgstr ""
+
+#, fuzzy
+#~| msgid "An error occurred moving field :("
+#~ msgid "An error occurred"
+#~ msgstr "Ocorreu um erro ao mover o campo :("
 
 #~ msgid "Datapase upgrade"
 #~ msgstr "Atualização do banco de dados"

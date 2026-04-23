@@ -15,7 +15,7 @@
 # ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023, 2024, 2025.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -880,22 +880,6 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr ""
-
-msgid "An error occurred"
-msgstr "وقع هناك خطأ"
-
-#, fuzzy
-#| msgid "Author"
-msgid "OAuth2 error"
-msgstr "المؤلف"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
 msgstr ""
 
 #, fuzzy
@@ -6352,6 +6336,14 @@ msgstr "اللغة:"
 
 msgid "Page content"
 msgstr "محتوى الصفحة"
+
+#~ msgid "An error occurred"
+#~ msgstr "وقع هناك خطأ"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "OAuth2 error"
+#~ msgstr "المؤلف"
 
 #~ msgid "News"
 #~ msgstr "المستجدات"

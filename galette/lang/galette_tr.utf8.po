@@ -825,22 +825,6 @@ msgid "Plugin %1$s has been disabled"
 msgstr "%1$s eklentisi devre dışı bırakıldı"
 
 #, fuzzy
-#| msgid "An error occurred moving field :("
-msgid "An error occurred"
-msgstr "Alan taşınırken bir hata oluştu :("
-
-msgid "OAuth2 error"
-msgstr ""
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
-
-#, fuzzy
 #| msgid "transaction"
 msgid "Labels translation"
 msgstr "işlem"
@@ -6151,6 +6135,11 @@ msgstr ""
 
 msgid "Page content"
 msgstr ""
+
+#, fuzzy
+#~| msgid "An error occurred moving field :("
+#~ msgid "An error occurred"
+#~ msgstr "Alan taşınırken bir hata oluştu :("
 
 #~ msgid "No file has been selected for upload!"
 #~ msgstr "Yükleme için hiçbir dosya seçilmedi!"

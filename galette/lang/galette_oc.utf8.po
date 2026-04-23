@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -812,22 +812,6 @@ msgstr "L'ajuston %1$s es estat activat"
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr "L'ajuston %1$s es estat desactivat"
-
-msgid "An error occurred"
-msgstr "Una error capitèt"
-
-#, fuzzy
-#| msgid "Author"
-msgid "OAuth2 error"
-msgstr "Autor"
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
 
 #, fuzzy
 #| msgid "View transaction"
@@ -6338,6 +6322,14 @@ msgstr "Lenga :"
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "An error occurred"
+#~ msgstr "Una error capitèt"
+
+#, fuzzy
+#~| msgid "Author"
+#~ msgid "OAuth2 error"
+#~ msgstr "Autor"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr ""

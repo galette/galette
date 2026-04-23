@@ -814,22 +814,6 @@ msgstr "Плагин %1$s был включён"
 msgid "Plugin %1$s has been disabled"
 msgstr "Плагин %1$s был отключён"
 
-#, fuzzy
-#| msgid "An error occurred moving field :("
-msgid "An error occurred"
-msgstr "Произошла ошибка при перемещении поля :("
-
-msgid "OAuth2 error"
-msgstr ""
-
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#, php-format
-msgid "Sign in %s"
-msgstr ""
-
 msgid "Labels translation"
 msgstr "Перевод меток"
 
@@ -6097,6 +6081,11 @@ msgstr ""
 
 msgid "Page content"
 msgstr ""
+
+#, fuzzy
+#~| msgid "An error occurred moving field :("
+#~ msgid "An error occurred"
+#~ msgstr "Произошла ошибка при перемещении поля :("
 
 #, fuzzy
 #~| msgid "contribution"
