@@ -40,7 +40,9 @@
                             <table class="listing ui celled striped table">
                                 <thead>
                                     <tr>
-                                        <th class="small_head collapsing"></th>
+                                        <th class="small_head collapsing">
+                                            <span class="visually-hidden">{{ _T('Choice') }}</span>
+                                        </th>
                                         <th>{{ _T('Name') }}</th>
                                         <th class="collapsing">{{ _T('Date') }}</th>
                                         <th class="collapsing">{{ _T('Size') }}</th>
@@ -68,10 +70,10 @@
                                         <td class="actions_row collapsing">
                                             <a
                                                 href="{{ url_for("removeCsv", {"type": "import", "file": import.name}) }}"
-                                                class="delete"
+                                                class="delete icon-only"
                                             >
-                                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                                <span class="ui special popup">{{ _T('Remove \'%1$s\' from disk')|format(import.name) }}</span>
+                                                <i class="ui trash red icon" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ _T('Remove \'%1$s\' from disk')|format(import.name) }}</span>
                                             </a>
                                         </td>
                                     </tr>

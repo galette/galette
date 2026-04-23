@@ -68,17 +68,18 @@
             <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("loadSearch", {"id": search.id}) }}"
+                        class="icon-only"
                 >
-                    <i class="ui search icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Load saved search") }}</span>
+                    <i class="ui search icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Load saved search") }}</span>
                 </a>
 
                 <a
                         href="{{ url_for("removeSearch", {"id": search.id}) }}"
-                        class="delete"
+                        class="delete icon-only"
                 >
-                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Remove saved search") }}</span>
+                    <i class="ui trash red icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Remove saved search") }}</span>
                 </a>
             </td>
         </tr>

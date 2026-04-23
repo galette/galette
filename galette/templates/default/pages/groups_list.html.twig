@@ -54,21 +54,21 @@
         </td>
         <td class="center actions_row collapsing">
             {% if login.isGroupManager(group.getId()) and can_export %}
-                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}">
-                    <i class="file pdf green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Export as PDF") }}</span>
+                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="icon-only">
+                    <i class="file pdf green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Export as PDF") }}</span>
                 </a>
             {% endif %}
             {% if login.isGroupManager(group.getId()) %}
-                <a href="{{ url_for("editGroup", {"id": group.getId()}) }}">
-                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
+                <a href="{{ url_for("editGroup", {"id": group.getId()}) }}" class="icon-only">
+                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
                 </a>
             {% endif %}
             {% if login.isAdmin() or login.isStaff() %}
-                <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete">
+                <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete icon-only">
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Delete") }}</span>
+                    <span class="visually-hidden">{{ _T("Delete") }}</span>
                 </a>
             {% endif %}
         </td>

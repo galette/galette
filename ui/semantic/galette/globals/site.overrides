@@ -573,6 +573,7 @@ ul.leaders span + span {
 /*-----------------------------
     Summernote display
 ------------------------------*/
+tfoot .note-editor .note-editable,
 .field .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
     background-color: #fff;
 }

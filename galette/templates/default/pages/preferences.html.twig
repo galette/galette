@@ -1107,12 +1107,12 @@
                 <div id="pref_admin_pass_field" class="inline field">
                     <label for="pref_admin_pass">{{ _T("Password:") }}</label>
                     <div class="ui input">
-                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"/>
+                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="new-password"/>
                     </div>
                 </div>
                 <div class="inline field">
                     <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
-                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
+                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20" autocomplete="new-password"/>
                 </div>
     {% endif %}
         </div>{# /tab segment #}

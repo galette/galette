@@ -60,7 +60,9 @@
         </td>
         <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
         {% if login.isLogged() %}
-            <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+            <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}">
+                {% if member.email != '' %}<a href="mailto:{{ member.email }}">{{ member.email }}</a>{% endif %}
+            </td>
         {% endif %}
         <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
     </tr>

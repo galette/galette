@@ -256,17 +256,17 @@ class ContributionsController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_one->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_one->id),
             $body
         );
         //member child contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $child_contrib->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $child_contrib->id),
             $body
         );
         //second member contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_two->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_two->id),
             $body
         );
         $this->login->logout();
@@ -289,17 +289,17 @@ class ContributionsController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_one->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_one->id),
             $body
         );
         //member child contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $child_contrib->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $child_contrib->id),
             $body
         );
         //second member contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_two->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_two->id),
             $body
         );
 

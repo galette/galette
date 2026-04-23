@@ -82,10 +82,10 @@
                                     <td class="actions_row collapsing">
                                         <a
                                             href="{{ url_for("removeCsv", {"type": "export", "file": export.name}) }}"
-                                            class="delete "
+                                            class="delete icon-only"
                                         >
-                                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                            <span class="ui special popup">{{ _T('Remove \'%1$s\' from disk')|format(export.name) }}</span>
+                                            <i class="ui trash red icon" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ _T('Remove \'%1$s\' from disk')|format(export.name) }}</span>
                                         </a>
                                     </td>
                                 </tr>
@@ -108,7 +108,9 @@
                         <table class="ui celled striped table">
                             <thead>
                                 <tr>
-                                    <th class="small_head collapsing"/>
+                                    <th class="small_head collapsing">
+                                        <span class="visually-hidden">{{ _T('Selection') }}</span>
+                                    </th>
                                     <th>{{ _T('Name') }}</th>
                                     <th>{{ _T('Description') }}</th>
                                 </tr>
@@ -148,7 +150,9 @@
                         <table class="same ui celled striped table">
                             <thead>
                                 <tr>
-                                    <th class="small_head collapsing"/>
+                                    <th class="small_head collapsing">
+                                        <span class="visually-hidden">{{ _T('Selection') }}</span>
+                                    </th>
                                     <th>{{ _T('Table name') }}</th>
                                 </tr>
                             </thead>

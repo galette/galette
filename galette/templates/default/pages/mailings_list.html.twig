@@ -188,23 +188,24 @@
             <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
-                        class="showdetails"
+                        class="showdetails icon-only"
                 >
-                    <i class="ui eye green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
+                    <i class="ui eye green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
                 </a>
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
+                        class="icon-only"
                 >
-                    <i class="ui clone blue icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}</span>
+                    <i class="ui clone blue icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}</span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
-                        class="delete"
+                        class="delete icon-only"
                 >
-                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Delete mailing '%1$s'")|format(log.mailing_subject) }}</span>
+                    <i class="ui trash red icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Delete mailing '%1$s'")|format(log.mailing_subject) }}</span>
                 </a>
             </td>
         </tr>

@@ -130,7 +130,7 @@ class ContributionsController extends CrudController
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
-        $params['autocomplete'] = true;
+        $params['autocomplete_options'] = true;
         $params['mode'] = ($ajax ? 'ajax' : '');
 
         // display page

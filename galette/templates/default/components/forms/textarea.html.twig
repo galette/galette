@@ -32,10 +32,10 @@
         rows="{{ rows ?? 6 }}"
         {% if required is defined and required == true %} required="required"{% endif %}
         {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
-        {% if title is defined %} title="{{ title }}"{% endif %}
+        {% if title is defined and title is not empty %} title="{{ title }}"{% endif %}
         {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
         {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
-        {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
-        {% if size is defined %} size="{{ size }}"{% endif %}
+        {% if autocomplete is defined and autocomplete is not empty %} autocomplete="{{ autocomplete }}"{% endif %}
+        {% if size is defined and size is not empty %} size="{{ size }}"{% endif %}
         >{% if value is not same as(null) %}{{ value }}{% endif %}</textarea><br/>
 {% endblock %}

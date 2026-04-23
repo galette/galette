@@ -134,7 +134,7 @@
                 _compactMenu();
     {% endif %}
 
-    {% if autocomplete %}
+    {% if autocomplete_options is defined %}
                 $('#ville_adh_field, #lieu_naissance_field').search({
                     apiSettings: {
                         url: '{{ url_for('suggestTown', {'term': '{query}'}) }}',

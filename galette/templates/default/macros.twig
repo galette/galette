@@ -131,8 +131,7 @@
 {% macro drawListAction(title, route, icon, extra_class) %}
     <a
             href="{{ url_for(route.name, route.args|default([])) }}"
-            class="{{ extra_class|default('') }} tooltip"
-            title="{{ title }}"
+            class="{{ extra_class|default('') }} icon-only"
     >
         <i class="ui {{ icon }} icon" aria-hidden="true"></i>
         <span class="visually-hidden">{{ title }}</span>

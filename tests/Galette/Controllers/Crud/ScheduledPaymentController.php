@@ -138,13 +138,13 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
 
         //member two scheduled payment is not listed
         $this->assertStringNotContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
         $this->login->logOut();
@@ -157,12 +157,12 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
         //member two scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
 
@@ -177,12 +177,12 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
         //member two scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
 
