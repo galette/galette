@@ -1109,7 +1109,6 @@ msgid "An error occurred fixing dynamic dates :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/HistoryController.php:87
-#: ../lib/Galette/Controllers/OAuth2/LoginController.php:69
 #: ../lib/Galette/Core/Galette.php:392 ../install/steps/check.php:62
 msgid "Logs"
 msgstr ""
@@ -1140,24 +1139,6 @@ msgstr ""
 #: ../lib/Galette/Controllers/PluginsController.php:95
 #, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr ""
-
-#: ../lib/Galette/Controllers/OAuth2/LoginController.php:198
-msgid "An error occurred"
-msgstr ""
-
-#: ../lib/Galette/Controllers/OAuth2/LoginController.php:204
-msgid "OAuth2 error"
-msgstr ""
-
-#: ../lib/Galette/Controllers/OAuth2/LoginController.php:243
-#, php-format
-msgid "Sign in with %s"
-msgstr ""
-
-#: ../lib/Galette/Controllers/OAuth2/LoginController.php:248
-#, php-format
-msgid "Sign in %s"
 msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:63
