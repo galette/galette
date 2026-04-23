@@ -1,13 +1,13 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020, 2024.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023, 2025, 2026.
 # Pèire Bréchet <charrar@free.fr>, 2022, 2024.
 # Pèire Bréchet <oxytanistzero@tutanota.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2025-10-21 08:39+0000\n"
+"PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -813,10 +813,8 @@ msgstr "L'ajuston %1$s es estat activat"
 msgid "Plugin %1$s has been disabled"
 msgstr "L'ajuston %1$s es estat desactivat"
 
-#, fuzzy
-#| msgid "An error occurred."
 msgid "An error occurred"
-msgstr "Una error capitèt."
+msgstr "Una error capitèt"
 
 #, fuzzy
 #| msgid "Author"
