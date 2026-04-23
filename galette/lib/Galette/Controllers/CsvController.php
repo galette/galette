@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use DI\Attribute\Inject;
+use Galette\Controllers\Attributes\Route;
 use Galette\Filters\ContributionsList;
 use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
@@ -87,6 +88,11 @@ class CsvController extends AbstractController
     /**
      * Exports page
      */
+    #[Route(
+        name: 'export',
+        pattern: '/export',
+        methods: ['GET']
+    )]
     public function export(Response $response, CsvOut $csv): Response
     {
         $tables_list = $this->zdb->getTables();
@@ -112,6 +118,11 @@ class CsvController extends AbstractController
     /**
      * Proceed exports
      */
+    #[Route(
+        name: 'doExport',
+        pattern: '/export',
+        methods: ['POST']
+    )]
     public function doExport(Request $request, Response $response, CsvOut $csv): Response
     {
         $post = $request->getParsedBody();
@@ -209,6 +220,11 @@ class CsvController extends AbstractController
     /**
      * Imports page
      */
+    #[Route(
+        name: 'import',
+        pattern: '/import',
+        methods: ['GET']
+    )]
     public function import(Response $response): Response
     {
         $existing = $this->csvin->getExisting();
@@ -231,6 +247,11 @@ class CsvController extends AbstractController
     /**
      * Proceed imports
      */
+    #[Route(
+        name: 'doImport',
+        pattern: '/import',
+        methods: ['POST']
+    )]
     public function doImports(Request $request, Response $response): Response
     {
         $csv = $this->csvin;
@@ -289,6 +310,11 @@ class CsvController extends AbstractController
     /**
      * Get CSV file (imports or exports)
      */
+    #[Route(
+        name: 'uploadImportFile',
+        pattern: '/import/upload',
+        methods: ['POST']
+    )]
     public function uploadImportFile(Request $request, Response $response): Response
     {
         $request_files = $request->getUploadedFiles();
@@ -323,6 +349,11 @@ class CsvController extends AbstractController
      * @param string $file File name
      * @param string $type File type
      */
+    #[Route(
+        name: 'getCsv',
+        pattern: '/{type:export|import}/get/{file}',
+        methods: ['GET']
+    )]
     public function getFile(Response $response, string $file, string $type): Response
     {
         $filename = $file;
@@ -337,6 +368,11 @@ class CsvController extends AbstractController
      * @param string $file File name
      * @param string $type File type
      */
+    #[Route(
+        name: 'removeCsv',
+        pattern: '/{type:export|import}/remove/{file}',
+        methods: ['GET']
+    )]
     public function confirmRemoveFile(
         Request $request,
         Response $response,
@@ -380,6 +416,11 @@ class CsvController extends AbstractController
      * @param string $file File name
      * @param string $type File type
      */
+    #[Route(
+        name: 'doRemoveCsv',
+        pattern: '/{type:export|import}/remove/{file}',
+        methods: ['POST']
+    )]
     public function removeFile(Request $request, Response $response, string $file, string $type): Response
     {
         $post = $request->getParsedBody();
@@ -436,6 +477,11 @@ class CsvController extends AbstractController
     /**
      * Import model page
      */
+    #[Route(
+        name: 'importModel',
+        pattern: '/import/model',
+        methods: ['GET']
+    )]
     public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
     {
         $model->load();
@@ -496,6 +542,11 @@ class CsvController extends AbstractController
     /**
      * Get CSV import model file
      */
+    #[Route(
+        name: 'getImportModel',
+        pattern: '/import/model/get',
+        methods: ['GET']
+    )]
     public function getImportModel(Response $response, ImportModel $model): Response
     {
         $model->load();
@@ -535,6 +586,11 @@ class CsvController extends AbstractController
     /**
      * Store CSV model
      */
+    #[Route(
+        name: 'storeImportModel',
+        pattern: '/import/model/store',
+        methods: ['POST']
+    )]
     public function storeModel(Request $request, Response $response, ImportModel $model): Response
     {
         $model->load();
@@ -561,6 +617,11 @@ class CsvController extends AbstractController
     /**
      * Members CSV exports
      */
+    #[Route(
+        name: 'csv-memberslist',
+        pattern: '/members/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function membersExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -581,6 +642,11 @@ class CsvController extends AbstractController
      *
      * @param string $type One of 'contributions' or 'transactions'
      */
+    #[Route(
+        name: 'csv-contributionslist',
+        pattern: '/{type:contributions|transactions}/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
         $post = $request->getParsedBody();
@@ -606,6 +672,11 @@ class CsvController extends AbstractController
     /**
      * Scheduled payments CSV exports
      */
+    #[Route(
+        name: 'csv-scheduledPaymentslist',
+        pattern: '/scheduled-payments/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();

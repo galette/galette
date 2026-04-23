@@ -45,7 +45,7 @@ class PdfController extends GaletteRoutingTestCase
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $model->title);
 
-        $route_name = 'pdfModels';
+        $route_name = 'storePdfModels';
         $route_arguments = [];
         $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
         $request = $request->withParsedBody(

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
@@ -30,6 +31,11 @@ class DynamicTranslationsController extends AbstractController
      *
      * @param ?string $text_orig Original text
      */
+    #[Route(
+        name: 'dynamicTranslations',
+        pattern: '/dynamic-translations[/{text_orig}]',
+        methods: ['GET']
+    )]
     public function dynamicTranslations(Request $request, Response $response, ?string $text_orig = null): Response
     {
         if ($text_orig == null && isset($_GET['text_orig'])) {
@@ -44,6 +50,11 @@ class DynamicTranslationsController extends AbstractController
      *
      * @param string $text_orig_sum Original text MD5 sum
      */
+    #[Route(
+        name: 'dynamicTranslation',
+        pattern: '/dynamic-translation/{text_orig_sum}',
+        methods: ['GET']
+    )]
     public function dynamicTranslation(Request $request, Response $response, string $text_orig_sum): Response
     {
         $params = [
@@ -95,6 +106,11 @@ class DynamicTranslationsController extends AbstractController
     /**
      * Do dynamic fields translations
      */
+    #[Route(
+        name: 'editDynamicTranslation',
+        pattern: '/dynamic-translations',
+        methods: ['POST']
+    )]
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();

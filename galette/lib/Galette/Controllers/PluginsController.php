@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Core\Plugins;
 use Throwable;
 use Slim\Psr7\Request;
@@ -34,6 +35,11 @@ class PluginsController extends AbstractController
     /**
      * Plugins page
      */
+    #[Route(
+        name: 'plugins',
+        pattern: '/plugins',
+        methods: ['GET']
+    )]
     public function showPlugins(Response $response): Response
     {
         $plugins = $this->plugins;
@@ -58,6 +64,11 @@ class PluginsController extends AbstractController
     /**
      * Plugins activation/deactivation
      */
+    #[Route(
+        name: 'pluginsActivation',
+        pattern: '/plugins/{action:activate|deactivate}/{module_id}',
+        methods: ['GET']
+    )]
     public function togglePlugin(Response $response, string $action, string $module_id): Response
     {
         $error_detected = [];
@@ -109,6 +120,11 @@ class PluginsController extends AbstractController
      *
      * @param string $id Plugin id
      */
+    #[Route(
+        name: 'pluginInitDb',
+        pattern: '/plugins/initialize-database/{id}',
+        methods: ['GET', 'POST']
+    )]
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
         if (Galette::isDemo()) {
@@ -286,6 +302,11 @@ class PluginsController extends AbstractController
      *
      * @param string $route Plugin route identifier
      */
+    #[Route(
+        name: 'pluginInfo',
+        pattern: '/plugins/{route}',
+        methods: ['GET']
+    )]
     public function pluginInfo(Response $response, string $route): Response
     {
         $module = null;
@@ -325,6 +346,12 @@ class PluginsController extends AbstractController
      * @param string $plugin Plugin identifier
      * @param string $path   Path of the resource within the plugin
      */
+    #[Route(
+        name: 'plugin_res',
+        pattern: '/plugins/{plugin}/res/{path:.*}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function resource(Response $response, string $plugin, string $path): Response
     {
         $ext = pathinfo($path)['extension'] ?? '';

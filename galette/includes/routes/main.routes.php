@@ -11,6 +11,12 @@ declare(strict_types=1);
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\ImagesController;
 use Galette\Middleware\Authenticate;
+use Galette\Core\Galette;
+use Slim\Routing\RouteCollectorProxy;
+
+use function Safe\phpinfo;
+use function Safe\ob_start;
+use function Safe\ob_get_clean;
 
 /**
  * @var \Slim\App<\DI\Container> $app
@@ -60,3 +66,28 @@ $app->get(
     '/get-dark-css',
     [GaletteController::class, 'getDarkCss']
 )->setName('getDarkCSS');
+
+if (Galette::isDebugEnabled()) {
+    $app->group('/debug', function (RouteCollectorProxy $app): void {
+        $app->get('/phpinfo/', function ($request, $response) {
+            ob_start();
+            phpinfo();
+            $phpinfo = ob_get_clean();
+
+            $response->getBody()->write($phpinfo);
+            return $response;
+        });
+
+        $app->get('/routes/', function ($request, $response) use ($app) {
+            $routes = $app->getRouteCollector()->getRoutes();
+            foreach ($routes as $route) {
+                echo $route->getIdentifier() . " → ";
+                echo ($route->getName() ?? "(unnamed)") . " → ";
+                echo $route->getPattern();
+                echo "<br><br>";
+            }
+
+            return $response;
+        });
+    });
+}

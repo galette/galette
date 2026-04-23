@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Texts;
@@ -28,6 +29,11 @@ class TextController extends AbstractController
      * @param ?string $lang Language
      * @param ?string $ref  Ref code
      */
+    #[Route(
+        name: 'texts',
+        pattern: '/texts[/{lang}/{ref}]',
+        methods: ['GET']
+    )]
     public function list(
         Response $response,
         Texts $texts,
@@ -66,6 +72,11 @@ class TextController extends AbstractController
     /**
      * Change texts
      */
+    #[Route(
+        name: 'changeText',
+        pattern: '/texts/change',
+        methods: ['POST']
+    )]
     public function change(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -86,6 +97,11 @@ class TextController extends AbstractController
     /**
      * Edit text
      */
+    #[Route(
+        name: 'storeText',
+        pattern: '/texts',
+        methods: ['POST']
+    )]
     public function edit(Request $request, Response $response, Texts $texts): Response
     {
         $post = $request->getParsedBody();

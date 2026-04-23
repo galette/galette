@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Document;
 use Galette\Filters\DocumentsList;
@@ -40,6 +41,11 @@ class DocumentsController extends CrudController
      *
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'addDocument',
+        pattern: '/document/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         if (isset($this->session->document)) {
@@ -73,6 +79,11 @@ class DocumentsController extends CrudController
      *
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doAddDocument',
+        pattern: '/document/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $document = new Document($this->zdb);
@@ -88,6 +99,11 @@ class DocumentsController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'documentsList',
+        pattern: '/documents[/{option:page|order}/{value}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -122,6 +138,12 @@ class DocumentsController extends CrudController
     /**
      * Public list page
      */
+    #[Route(
+        name: 'documentsPublicList',
+        pattern: '/public/documents[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function publicList(Response $response): Response
     {
         $document = new Document($this->zdb);
@@ -145,6 +167,11 @@ class DocumentsController extends CrudController
     /**
      * Filtering
      */
+    #[Route(
+        name: 'documentsFilter',
+        pattern: '/documents/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         //no filtering
@@ -156,6 +183,12 @@ class DocumentsController extends CrudController
      *
      * @param int $id Document ID
      */
+    #[Route(
+        name: 'getDocumentFile',
+        pattern: '/document/get/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function getDocument(
         Response $response,
         int $id
@@ -218,6 +251,11 @@ class DocumentsController extends CrudController
      *
      * @param int $id Document id
      */
+    #[Route(
+        name: 'editDocument',
+        pattern: '/document/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         if (isset($this->session->document)) {
@@ -251,6 +289,11 @@ class DocumentsController extends CrudController
      *
      * @param int $id Document id
      */
+    #[Route(
+        name: 'doEditDocument',
+        pattern: '/document/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         $document = new Document($this->zdb, $id);

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -34,6 +35,11 @@ class StatusController extends CrudController
     /**
      * Add page
      */
+    #[Route(
+        name: 'addStatus',
+        pattern: '/status/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -43,6 +49,11 @@ class StatusController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'doAddStatus',
+        pattern: '/status/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null, 'add');
@@ -57,6 +68,11 @@ class StatusController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'status',
+        pattern: '/status',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -106,6 +122,11 @@ class StatusController extends CrudController
      *
      * @param int $id Status id
      */
+    #[Route(
+        name: 'editStatus',
+        pattern: '/status/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $status = new Status($this->zdb);
@@ -132,6 +153,11 @@ class StatusController extends CrudController
      *
      * @param int $id Status id
      */
+    #[Route(
+        name: 'doEditStatus',
+        pattern: '/status/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);

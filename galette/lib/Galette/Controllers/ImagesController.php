@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Response;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
@@ -48,6 +49,12 @@ class ImagesController extends AbstractController
     /**
      * Logo route
      */
+    #[Route(
+        name: 'logo',
+        pattern: '/logo',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function logo(Response $response): Response
     {
         return $this->sendResponse($response, $this->logo);
@@ -56,6 +63,12 @@ class ImagesController extends AbstractController
     /**
      * Print logo route
      */
+    #[Route(
+        name: 'printLogo',
+        pattern: '/print-logo',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function printLogo(Response $response): Response
     {
         return $this->sendResponse($response, $this->print_logo);
@@ -66,6 +79,12 @@ class ImagesController extends AbstractController
      *
      * @param int $id Member id
      */
+    #[Route(
+        name: 'photo',
+        pattern: '/photo/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function photo(Response $response, int $id, Adherent $adh, Picture $picture): Response
     {
         $adh->disableDep('dues');

@@ -13,6 +13,7 @@ namespace Galette\Controllers\Crud;
 use Galette\Entity\PaymentType;
 use Galette\Entity\ScheduledPayment;
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Filters\ContributionsList;
 use Galette\Filters\TransactionsList;
@@ -146,6 +147,11 @@ class ContributionsController extends CrudController
      *
      * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'addContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -208,6 +214,11 @@ class ContributionsController extends CrudController
      *
      * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'doAddContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
@@ -236,6 +247,11 @@ class ContributionsController extends CrudController
     /**
      * Choose contribution type to mass add contribution
      */
+    #[Route(
+        name: 'massAddContributionsChooseType',
+        pattern: '/contribution/mass-add/choose-type',
+        methods: ['GET']
+    )]
     public function massAddChooseType(Request $request, Response $response): Response
     {
         $filters = $this->session->{$this->getFilterName('members')};
@@ -265,6 +281,11 @@ class ContributionsController extends CrudController
     /**
      * Massive change page
      */
+    #[Route(
+        name: 'massAddContributions',
+        pattern: '/contribution/mass-add',
+        methods: ['POST']
+    )]
     public function massAddContributions(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -312,6 +333,11 @@ class ContributionsController extends CrudController
     /**
      * Do massive contribution add
      */
+    #[Route(
+        name: 'doMassAddContributions',
+        pattern: '/contribution/do-mass-add',
+        methods: ['POST']
+    )]
     public function doMassAddContributions(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -370,6 +396,11 @@ class ContributionsController extends CrudController
      * @param int|string|null $value  Value of the option
      * @param ?string         $type   One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'contributions',
+        pattern: '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -554,6 +585,11 @@ class ContributionsController extends CrudController
      *
      * @param string|null $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'myContributions',
+        pattern: '/{type:transactions|contributions}/mine',
+        methods: ['GET']
+    )]
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
@@ -574,6 +610,11 @@ class ContributionsController extends CrudController
      *
      * @param string|null $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'filterContributions',
+        pattern: '/{type:contributions|transactions}/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response, ?string $type = null): Response
     {
         $ajax = false;
@@ -663,6 +704,11 @@ class ContributionsController extends CrudController
      *
      * @param string $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'batch-contributionslist',
+        pattern: '/{type:contributions|transactions}/batch',
+        methods: ['POST']
+    )]
     public function handleBatch(Request $request, Response $response, string $type): Response
     {
         $filter_name = $this->getFilterName($type);
@@ -706,6 +752,11 @@ class ContributionsController extends CrudController
      * @param ?int        $id   Contribution id
      * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'editContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, ?int $id, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -749,6 +800,11 @@ class ContributionsController extends CrudController
      * @param int         $id   Contribution id
      * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'doEditContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $contrib = new Contribution($this->zdb, $this->login, $id);

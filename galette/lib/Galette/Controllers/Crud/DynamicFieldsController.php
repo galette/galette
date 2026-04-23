@@ -12,6 +12,7 @@ namespace Galette\Controllers\Crud;
 
 use Galette\Core\Galette;
 use Galette\IO\File;
+use Galette\Controllers\Attributes\Route;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
@@ -41,6 +42,11 @@ class DynamicFieldsController extends CrudController
      *
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'addDynamicField',
+        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         $params = [
@@ -71,6 +77,11 @@ class DynamicFieldsController extends CrudController
      *
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doAddDynamicField',
+        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -151,6 +162,11 @@ class DynamicFieldsController extends CrudController
      * @param int|string|null $value     Value of the option
      * @param string          $form_name Form name
      */
+    #[Route(
+        name: 'configureDynamicFields',
+        pattern: '/fields/dynamic/configure[/{form_name:adh|contrib|trans|prefs}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -216,6 +232,11 @@ class DynamicFieldsController extends CrudController
      * @param int    $pos       Dynamic field position
      * @param string $name      File name
      */
+    #[Route(
+        name: 'getDynamicFile',
+        pattern: '/{form_name:adh|contrib|trans|prefs}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
+        methods: ['GET']
+    )]
     public function getDynamicFile(
         Response $response,
         string $form_name,
@@ -325,6 +346,11 @@ class DynamicFieldsController extends CrudController
      * @param int     $id        Dynamic field id
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'editDynamicField',
+        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         if ($this->session->dynamicfieldtype) {
@@ -367,6 +393,11 @@ class DynamicFieldsController extends CrudController
      * @param int     $id        Dynamic field id
      * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doEditDynamicField',
+        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -511,6 +542,12 @@ class DynamicFieldsController extends CrudController
      * @param string $form_name Form name
      * @param string $direction One of DynamicField::MOVE_*
      */
+    #[Route(
+        name: 'moveDynamicField',
+        pattern: '/fields/dynamic/move/{form_name:adh|contrib|trans|prefs}'
+            . '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
+        methods: ['GET']
+    )]
     public function move(
         Response $response,
         int $id,

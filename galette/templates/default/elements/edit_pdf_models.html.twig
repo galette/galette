@@ -3,8 +3,7 @@
  # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
-
-        <form action="{{ url_for('pdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
+        <form action="{{ url_for('storePdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
             <div class="ui basic fitted segment">
 {% if model.id != 1 %}
                     <div class="field">

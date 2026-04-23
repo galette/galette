@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -55,6 +56,11 @@ class PdfController extends AbstractController
      *
      * @param ?int $id_adh Member id
      */
+    #[Route(
+        name: 'pdf-members-cards',
+        pattern: '/members/cards[/{' . Adherent::PK . ':\d+}]',
+        methods: ['GET']
+    )]
     public function membersCards(Response $response, ?int $id_adh = null): Response
     {
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
@@ -139,6 +145,11 @@ class PdfController extends AbstractController
     /**
      * Members PDF label
      */
+    #[Route(
+        name: 'pdf-members-labels',
+        pattern: '/members/labels',
+        methods: ['GET', 'POST']
+    )]
     public function membersLabels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -153,7 +164,7 @@ class PdfController extends AbstractController
             && $get['from'] === 'mailing'
         ) {
             //if we're from mailing, we have to retrieve
-            //its unreachables members for labels
+            //its unreachable members for labels
             $mailing = $this->session->mailing;
             $members = $mailing->unreachables;
         } else {
@@ -197,6 +208,17 @@ class PdfController extends AbstractController
      *
      * @param ?int $id_adh Member id
      */
+    #[Route(
+        name: 'adhesionForm',
+        pattern: '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'emptyAdhesionForm',
+        pattern: '/members/empty-adhesion-form',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function adhesionForm(Response $response, ?int $id_adh = null): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
@@ -218,6 +240,11 @@ class PdfController extends AbstractController
     /**
      * PDF attendance sheet configuration page
      */
+    #[Route(
+        name: 'attendance_sheet_details',
+        pattern: '/attendance-sheet/details',
+        methods: ['GET', 'POST']
+    )]
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -262,6 +289,11 @@ class PdfController extends AbstractController
     /**
      * PDF attendance sheet
      */
+    #[Route(
+        name: 'attendance_sheet',
+        pattern: '/attendance-sheet',
+        methods: ['POST']
+    )]
     public function attendanceSheet(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -319,6 +351,11 @@ class PdfController extends AbstractController
      * Contribution PDF
      * @param int $id Contribution id
      */
+    #[Route(
+        name: 'printContribution',
+        pattern: '/contribution/print/{id:\d+}',
+        methods: ['GET']
+    )]
     public function contribution(Response $response, int $id, Contribution $contribution): Response
     {
         if (!$contribution->load($id)) {
@@ -348,6 +385,11 @@ class PdfController extends AbstractController
      *
      * @param ?int $id Group id
      */
+    #[Route(
+        name: 'pdf_groups',
+        pattern: '/pdf/groups[/{id:\d+}]',
+        methods: ['GET']
+    )]
     public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
         $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
@@ -374,6 +416,11 @@ class PdfController extends AbstractController
      *
      * @param ?int $id Model id
      */
+    #[Route(
+        name: 'pdfModels',
+        pattern: '/models/pdf[/{id:\d+}]',
+        methods: ['GET']
+    )]
     public function models(Request $request, Response $response, PdfModels $ms, ?int $id = null): Response
     {
         $mid = 1;
@@ -425,6 +472,11 @@ class PdfController extends AbstractController
     /**
      * Store PDF models
      */
+    #[Route(
+        name: 'storePdfModels',
+        pattern: '/models/pdf',
+        methods: ['POST']
+    )]
     public function storeModels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -486,6 +538,12 @@ class PdfController extends AbstractController
     /**
      * Get direct document
      */
+    #[Route(
+        name: 'get-directlink',
+        pattern: '/document/download/{hash}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function directlinkDocument(
         Request $request,
         Response $response,

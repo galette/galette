@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -31,6 +32,11 @@ class HistoryController extends AbstractController
      * @param string|null     $option One of 'page' or 'order'
      * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'history',
+        pattern: '/history[/{option:page|order}/{value}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -82,6 +88,11 @@ class HistoryController extends AbstractController
     /**
      * History filtering
      */
+    #[Route(
+        name: 'history_filter',
+        pattern: '/history/filter',
+        methods: ['POST']
+    )]
     public function historyFilter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -127,6 +138,11 @@ class HistoryController extends AbstractController
     /**
      * History flush
      */
+    #[Route(
+        name: 'doFlushHistory',
+        pattern: '/history/flush',
+        methods: ['POST']
+    )]
     public function flushHistory(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -183,6 +199,11 @@ class HistoryController extends AbstractController
     /**
      * History flush confirmation
      */
+    #[Route(
+        name: 'flushHistory',
+        pattern: '/history/flush',
+        methods: ['GET']
+    )]
     public function confirmHistoryFlush(Request $request, Response $response): Response
     {
         $data = [

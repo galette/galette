@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\DynamicFields\Date;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -28,6 +29,11 @@ class AdminToolsController extends AbstractController
     /**
      * Administration tools page
      */
+    #[Route(
+        name: 'adminTools',
+        pattern: '/admin-tools',
+        methods: ['GET']
+    )]
     public function adminTools(Response $response): Response
     {
         $params = [
@@ -47,6 +53,11 @@ class AdminToolsController extends AbstractController
     /**
      * Process Administration tools
      */
+    #[Route(
+        name: 'doAdminTools',
+        pattern: '/admin-tools',
+        methods: ['POST']
+    )]
     public function process(
         Request $request,
         Response $response,

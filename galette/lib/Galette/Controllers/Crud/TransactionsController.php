@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -34,6 +35,11 @@ class TransactionsController extends ContributionsController
      *
      * @param ?string $type Contribution type
      */
+    #[Route(
+        name: 'addTransaction',
+        pattern: '/transaction/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->edit($request, $response, null, 'add');
@@ -44,6 +50,11 @@ class TransactionsController extends ContributionsController
      *
      * @param ?string $type Contribution type
      */
+    #[Route(
+        name: 'doAddTransaction',
+        pattern: '/transaction/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);
@@ -77,6 +88,11 @@ class TransactionsController extends ContributionsController
      * @param ?int    $id     Transaction id
      * @param ?string $action Action
      */
+    #[Route(
+        name: 'editTransaction',
+        pattern: '/transaction/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
@@ -202,6 +218,11 @@ class TransactionsController extends ContributionsController
      * @param int     $id   Transaction id
      * @param ?string $type Transaction type
      */
+    #[Route(
+        name: 'doEditTransaction',
+        pattern: '/transaction/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);
@@ -341,6 +362,11 @@ class TransactionsController extends ContributionsController
      * @param int $id  Transaction id
      * @param int $cid Contribution id
      */
+    #[Route(
+        name: 'attach_contribution',
+        pattern: '/transaction/{id}/attach/{cid}',
+        methods: ['GET']
+    )]
     public function attach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);
@@ -377,11 +403,16 @@ class TransactionsController extends ContributionsController
     }
 
     /**
-     * Attach action
+     * Detach action
      *
      * @param int $id  Transaction id
      * @param int $cid Contribution id
      */
+    #[Route(
+        name: 'detach_contribution',
+        pattern: '/transaction/{id}/detach/{cid}',
+        methods: ['GET']
+    )]
     public function detach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);

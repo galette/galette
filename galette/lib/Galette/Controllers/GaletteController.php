@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use DI\Attribute\Inject;
+use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
@@ -48,6 +49,12 @@ class GaletteController extends AbstractController
     /**
      * Main route
      */
+    #[Route(
+        name: 'slash',
+        pattern: '/',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function slash(Request $request, Response $response): Response
     {
         return $this->galetteRedirect($request, $response);
@@ -56,6 +63,11 @@ class GaletteController extends AbstractController
     /**
      * System information
      */
+    #[Route(
+        name: 'sysinfos',
+        pattern: '/system-information',
+        methods: ['GET']
+    )]
     public function systemInformation(Response $response, SysInfos $sysinfos): Response
     {
         $raw_infos = $sysinfos->getRawData(
@@ -80,6 +92,11 @@ class GaletteController extends AbstractController
     /**
      * Dashboard page
      */
+    #[Route(
+        name: 'dashboard',
+        pattern: '/dashboard',
+        methods: ['GET']
+    )]
     public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
     {
         $news = Galette::getNews();
@@ -114,6 +131,11 @@ class GaletteController extends AbstractController
     /**
      * Preferences page
      */
+    #[Route(
+        name: 'preferences',
+        pattern: '/preferences',
+        methods: ['GET']
+    )]
     public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
     {
         // flagging required fields
@@ -190,6 +212,11 @@ class GaletteController extends AbstractController
     /**
      * Store preferences
      */
+    #[Route(
+        name: 'store-preferences',
+        pattern: '/preferences',
+        methods: ['POST']
+    )]
     public function storePreferences(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -262,6 +289,11 @@ class GaletteController extends AbstractController
     /**
      * Test mail parameters
      */
+    #[Route(
+        name: 'testEmail',
+        pattern: '/test/email',
+        methods: ['GET']
+    )]
     public function testEmail(Request $request, Response $response): Response
     {
         $sent = false;
@@ -326,6 +358,11 @@ class GaletteController extends AbstractController
     /**
      * Charts page
      */
+    #[Route(
+        name: 'charts',
+        pattern: '/charts',
+        methods: ['GET']
+    )]
     public function charts(Response $response): Response
     {
         $charts = new Charts(
@@ -354,6 +391,11 @@ class GaletteController extends AbstractController
     /**
      * Core fields configuration page
      */
+    #[Route(
+        name: 'configureCoreFields',
+        pattern: '/fields/core/configure',
+        methods: ['GET']
+    )]
     public function configureCoreFields(Response $response): Response
     {
         $fc = $this->fields_config;
@@ -380,6 +422,11 @@ class GaletteController extends AbstractController
     /**
      * Process core fields configuration
      */
+    #[Route(
+        name: 'storeCoreFieldsConfig',
+        pattern: '/fields/core/configure',
+        methods: ['POST']
+    )]
     public function storeCoreFieldsConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -430,6 +477,11 @@ class GaletteController extends AbstractController
      *
      * @param string $table Table name
      */
+    #[Route(
+        name: 'configureListFields',
+        pattern: '/lists/{table}/configure',
+        methods: ['GET']
+    )]
     public function configureListFields(Response $response, string $table): Response
     {
         $lc = $this->lists_config;
@@ -456,6 +508,11 @@ class GaletteController extends AbstractController
     /**
      * Process list fields configuration
      */
+    #[Route(
+        name: 'storeListFields',
+        pattern: '/lists/{table}/configure',
+        methods: ['POST']
+    )]
     public function storeListFields(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -487,6 +544,11 @@ class GaletteController extends AbstractController
     /**
      * Reminders page
      */
+    #[Route(
+        name: 'reminders',
+        pattern: '/reminders',
+        methods: ['GET']
+    )]
     public function reminders(Response $response, Texts $texts, Members $members): Response
     {
         $previews = [
@@ -516,6 +578,11 @@ class GaletteController extends AbstractController
     /**
      * Send reminders
      */
+    #[Route(
+        name: 'doReminders',
+        pattern: '/reminders',
+        methods: ['POST']
+    )]
     public function doReminders(Request $request, Response $response): Response
     {
         $error_detected = [];
@@ -609,6 +676,11 @@ class GaletteController extends AbstractController
      * @param string $membership Either 'late' or 'nearly'
      * @param string $mail       Either 'withmail' or 'withoutmail'
      */
+    #[Route(
+        name: 'reminders-filter',
+        pattern: '/members/reminder-filter/{membership:nearly|late}/{mail:withmail|withoutmail}',
+        methods: ['GET']
+    )]
     public function filterReminders(Response $response, string $membership, string $mail): Response
     {
         //always reset filters
@@ -634,6 +706,12 @@ class GaletteController extends AbstractController
     /**
      * Direct document page
      */
+    #[Route(
+        name: 'directlink',
+        pattern: '/document/download/{hash}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function documentLink(Response $response, string $hash): Response
     {
         // display page
@@ -651,6 +729,12 @@ class GaletteController extends AbstractController
     /**
      * Empty route (for default requests on favicon.ico, robots.txt, ...)
      */
+    #[Route(
+        name: 'defaultEmpty',
+        pattern: '/{url:favicon.ico|robots.txt}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function empty(Response $response): Response
     {
         return $response;
@@ -659,6 +743,12 @@ class GaletteController extends AbstractController
     /**
      * Store dark mode CSS in cache directory.
      */
+    #[Route(
+        name: 'writeDarkCSS',
+        pattern: '/write-dark-css',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function writeDarkCss(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -669,6 +759,12 @@ class GaletteController extends AbstractController
     /**
      * Serve cached dark mode CSS.
      */
+    #[Route(
+        name: 'getDarkCSS',
+        pattern: '/get-dark-css',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function getDarkCss(Response $response): Response
     {
         $cssfile = GALETTE_CACHE_DIR . '/dark.css';

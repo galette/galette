@@ -152,7 +152,7 @@ $app->post(
 $app->post(
     '/import/upload',
     [CsvController::class, 'uploadImportFile']
-)->setname('uploadImportFile')->add(Authenticate::class);
+)->setName('uploadImportFile')->add(Authenticate::class);
 
 $app->get(
     '/import/model',
@@ -177,7 +177,7 @@ $app->get(
 $app->post(
     '/models/pdf',
     [PdfController::class, 'storeModels']
-)->setName('pdfModels')->add(Authenticate::class);
+)->setName('storePdfModels')->add(Authenticate::class);
 
 $app->get(
     '/titles',
@@ -187,7 +187,7 @@ $app->get(
 $app->post(
     '/titles',
     [Crud\TitlesController::class, 'doAdd']
-)->setName('titles')->add(Authenticate::class);
+)->setName('storeTitle')->add(Authenticate::class);
 
 $app->get(
     '/titles/remove/{id:\d+}',
@@ -202,12 +202,12 @@ $app->post(
 $app->get(
     '/titles/edit/{id:\d+}',
     [Crud\TitlesController::class, 'edit']
-)->setname('editTitle')->add(Authenticate::class);
+)->setName('editTitle')->add(Authenticate::class);
 
 $app->post(
     '/titles/edit/{id:\d+}',
     [Crud\TitlesController::class, 'doEdit']
-)->setname('editTitle')->add(Authenticate::class);
+)->setName('doEditTitle')->add(Authenticate::class);
 
 $app->get(
     '/texts[/{lang}/{ref}]',
@@ -222,7 +222,7 @@ $app->post(
 $app->post(
     '/texts',
     [TextController::class, 'edit']
-)->setName('texts')->add(Authenticate::class);
+)->setName('storeText')->add(Authenticate::class);
 
 $app->get(
     '/contributions-types',
@@ -388,7 +388,7 @@ $app->get(
 $app->post(
     '/payment-types',
     [Crud\PaymentTypeController::class, 'doAdd']
-)->setName('paymentTypes')->add(Authenticate::class);
+)->setName('storePaymentType')->add(Authenticate::class);
 
 $app->get(
     '/payment-type/remove/{id:\d+}',
@@ -403,12 +403,12 @@ $app->post(
 $app->get(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'edit']
-)->setname('editPaymentType')->add(Authenticate::class);
+)->setName('editPaymentType')->add(Authenticate::class);
 
 $app->post(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'doEdit']
-)->setname('editPaymentType')->add(Authenticate::class);
+)->setName('doEditPaymentType')->add(Authenticate::class);
 
 $app->get(
     '/{form_name:adh|contrib|trans|prefs}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',

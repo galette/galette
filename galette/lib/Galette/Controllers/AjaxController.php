@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Filters\MembersList;
@@ -34,6 +35,12 @@ class AjaxController extends AbstractController
     /**
      * Messages as JSON array
      */
+    #[Route(
+        name: 'ajaxMessages',
+        pattern: '/ajax/messages',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function messages(Response $response): Response
     {
         $messages = [];
@@ -91,6 +98,12 @@ class AjaxController extends AbstractController
      *
      * @param string $term Search term
      */
+    #[Route(
+        name: 'suggestTown',
+        pattern: '/ajax/suggest/towns/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function suggestTowns(Response $response, string $term): Response
     {
         $ret = [];
@@ -136,6 +149,12 @@ class AjaxController extends AbstractController
      *
      * @param string $term Search term
      */
+    #[Route(
+        name: 'suggestCountry',
+        pattern: '/ajax/suggest/countries/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function suggestCountries(Response $response, string $term): Response
     {
         $ret = [];
@@ -172,6 +191,12 @@ class AjaxController extends AbstractController
      *
      * @param string $term Search term
      */
+    #[Route(
+        name: 'suggestRegion',
+        pattern: '/ajax/suggest/regions/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function suggestRegions(Response $response, string $term): Response
     {
         $ret = [];
@@ -206,6 +231,11 @@ class AjaxController extends AbstractController
     /**
      * Telemetry info preview
      */
+    #[Route(
+        name: 'telemetryInfos',
+        pattern: '/ajax/telemetry/infos',
+        methods: ['GET']
+    )]
     public function telemetryInfos(Response $response): Response
     {
         $telemetry = new Telemetry(
@@ -221,6 +251,11 @@ class AjaxController extends AbstractController
     /**
      * Send telemetry info
      */
+    #[Route(
+        name: 'telemetrySend',
+        pattern: '/ajax/telemetry/send',
+        methods: ['POST']
+    )]
     public function telemetrySend(Response $response): Response
     {
         $telemetry = new Telemetry(
@@ -247,6 +282,11 @@ class AjaxController extends AbstractController
     /**
      * Successful telemetry registration
      */
+    #[Route(
+        name: 'setRegistered',
+        pattern: '/ajax/telemetry/registered',
+        methods: ['GET']
+    )]
     public function telemetryRegistered(Response $response): Response
     {
         $this->preferences->updateRegistrationDate();
@@ -256,6 +296,11 @@ class AjaxController extends AbstractController
     /**
      * Contributions dates
      */
+    #[Route(
+        name: 'contributionDates',
+        pattern: '/ajax/contribution/dates',
+        methods: ['POST']
+    )]
     public function contributionDates(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -284,6 +329,11 @@ class AjaxController extends AbstractController
      * @param int|null    $page   Page number
      * @param string|null $search Search string
      */
+    #[Route(
+        name: 'contributionMembers',
+        pattern: '/ajax/contribution/members[/{page:\d+}[/{search}]]',
+        methods: ['POST']
+    )]
     public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
         $post = $request->getParsedBody();
@@ -328,6 +378,12 @@ class AjaxController extends AbstractController
     /**
      * Password strength
      */
+    #[Route(
+        name: 'checkPassword',
+        pattern: '/ajax/password/strength',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function passwordStrength(Request $request, Response $response): Response
     {
         //post params may be passed from security tab test password

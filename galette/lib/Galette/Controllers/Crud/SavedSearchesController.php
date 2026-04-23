@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -43,6 +44,12 @@ class SavedSearchesController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'saveSearch',
+        pattern: '/save-search',
+        methods: ['GET', 'POST'],
+        requiresAuth: false
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getMethod() === 'POST' ? $request->getParsedBody() : $request->getQueryParams();
@@ -111,6 +118,11 @@ class SavedSearchesController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'searches',
+        pattern: '/saved-searches[/{option:page|order}/{value:\d+}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
@@ -259,6 +271,12 @@ class SavedSearchesController extends CrudController
      *
      * @param int $id Saved search id
      */
+    #[Route(
+        name: 'loadSearch',
+        pattern: '/save-search/{id}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function load(Response $response, int $id): Response
     {
         try {

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -28,6 +29,11 @@ class ContributionsTypesController extends CrudController
     /**
      * Add page
      */
+    #[Route(
+        name: 'addContributionType',
+        pattern: '/contributions-types/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -37,6 +43,11 @@ class ContributionsTypesController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'doAddContributionType',
+        pattern: '/contributions-types/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null, 'add');
@@ -51,6 +62,11 @@ class ContributionsTypesController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'contributionsTypes',
+        pattern: '/contributions-types',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -101,6 +117,11 @@ class ContributionsTypesController extends CrudController
      *
      * @param int $id Contribution type id
      */
+    #[Route(
+        name: 'editContributionType',
+        pattern: '/contributions-types/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ctype = new ContributionsTypes($this->zdb);
@@ -126,6 +147,11 @@ class ContributionsTypesController extends CrudController
      *
      * @param int $id Contribution type id
      */
+    #[Route(
+        name: 'doEditContributionType',
+        pattern: '/contributions-types/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);

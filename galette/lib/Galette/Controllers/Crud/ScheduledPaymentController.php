@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -37,6 +38,11 @@ class ScheduledPaymentController extends CrudController
      *
      * @param int $id_cotis Contribution id
      */
+    #[Route(
+        name: 'addScheduledPayment',
+        pattern: '/scheduled-payment/{id_cotis:\d+}/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, int $id_cotis = 0): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -79,6 +85,11 @@ class ScheduledPaymentController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'doAddScheduledPayment',
+        pattern: '/scheduled-payments/{id_cotis:\d+}/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null);
@@ -93,6 +104,11 @@ class ScheduledPaymentController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'scheduledPayments',
+        pattern: '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $get = $request->getQueryParams();
@@ -176,6 +192,11 @@ class ScheduledPaymentController extends CrudController
     /**
      * List page for logged-in member
      */
+    #[Route(
+        name: 'myScheduledPayments',
+        pattern: '/scheduled-payments/mine',
+        methods: ['GET']
+    )]
     public function myList(Request $request, Response $response): Response
     {
         $this->show_mine = true;
@@ -190,8 +211,13 @@ class ScheduledPaymentController extends CrudController
     }
 
     /**
-     * Scheduled payments filtering
+     * Scheduled payments filtering (for logged-in member)
      */
+    #[Route(
+        name: 'filterMyScheduledPayments',
+        pattern: '/scheduled-payments/mine/filter',
+        methods: ['POST']
+    )]
     public function myFilter(Request $request, Response $response): Response
     {
         $this->show_mine = true;
@@ -208,6 +234,11 @@ class ScheduledPaymentController extends CrudController
     /**
      * Scheduled payments filtering
      */
+    #[Route(
+        name: 'filterScheduledPayments',
+        pattern: '/scheduled-payments/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         $ajax = false;
@@ -281,6 +312,11 @@ class ScheduledPaymentController extends CrudController
     /**
      * Batch actions handler
      */
+    #[Route(
+        name: 'batch-scheduledPaymentslist',
+        pattern: '/scheduled-payments/batch',
+        methods: ['POST']
+    )]
     public function handleBatch(Request $request, Response $response): Response
     {
         $filter_name = $this->getFilterName(static::getDefaultFilterName());
@@ -322,6 +358,11 @@ class ScheduledPaymentController extends CrudController
      *
      * @param int $id Scheduled payment id
      */
+    #[Route(
+        name: 'editScheduledPayment',
+        pattern: '/scheduled-payment/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -350,6 +391,11 @@ class ScheduledPaymentController extends CrudController
      *
      * @param int $id Type id
      */
+    #[Route(
+        name: 'doEditScheduledPayment',
+        pattern: '/scheduled-payments/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);

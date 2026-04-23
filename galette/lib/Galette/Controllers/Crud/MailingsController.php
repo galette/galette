@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
@@ -38,6 +39,11 @@ class MailingsController extends CrudController
     /**
      * Add page
      */
+    #[Route(
+        name: 'mailing',
+        pattern: '/mailing',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         $get = $request->getQueryParams();
@@ -167,6 +173,11 @@ class MailingsController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'doMailing',
+        pattern: '/mailing',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -365,6 +376,11 @@ class MailingsController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'mailings',
+        pattern: '/mailings[/{option:page|order|reset}/{value}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName('mailings')})) {
@@ -422,6 +438,11 @@ class MailingsController extends CrudController
     /**
      * Mailings filtering
      */
+    #[Route(
+        name: 'mailings_filter',
+        pattern: '/mailings/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -549,6 +570,11 @@ class MailingsController extends CrudController
      *
      * @param ?int $id Mailing id
      */
+    #[Route(
+        name: 'mailingPreview',
+        pattern: '/mailing/preview[/{id:\d+}]',
+        methods: ['GET', 'POST']
+    )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
@@ -619,6 +645,11 @@ class MailingsController extends CrudController
      * @param int $id  Mailing id
      * @param int $pos Attachment position in list
      */
+    #[Route(
+        name: 'previewAttachment',
+        pattern: '/mailing/preview/{id:\d+}/attachment/{pos:\d+}',
+        methods: ['GET']
+    )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
         $mailing = new Mailing($this->preferences);
@@ -637,6 +668,11 @@ class MailingsController extends CrudController
     /**
      * Set recipients action
      */
+    #[Route(
+        name: 'mailingRecipients',
+        pattern: '/ajax/mailing/set-recipients',
+        methods: ['POST']
+    )]
     public function setRecipients(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();

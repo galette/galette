@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -38,6 +39,11 @@ class PaymentTypeController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'storePaymentType',
+        pattern: '/payment-types',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null);
@@ -52,6 +58,11 @@ class PaymentTypeController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'paymentTypes',
+        pattern: '/payment-types',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $ptypes = new PaymentTypes(
@@ -90,6 +101,11 @@ class PaymentTypeController extends CrudController
      *
      * @param int $id Type id
      */
+    #[Route(
+        name: 'editPaymentType',
+        pattern: '/payment-type/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ptype = new PaymentType($this->zdb, $id);
@@ -114,6 +130,11 @@ class PaymentTypeController extends CrudController
      *
      * @param int $id Type id
      */
+    #[Route(
+        name: 'doEditPaymentType',
+        pattern: '/payment-type/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);

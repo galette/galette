@@ -13,6 +13,7 @@ namespace Galette\Controllers;
 use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Galette\Controllers\Attributes\Route;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
@@ -35,6 +36,12 @@ class AuthController extends AbstractController
      *
      * @param ?string $r Redirect after login
      */
+    #[Route(
+        name: 'login',
+        pattern: '/login[/{r:.+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function login(Request $request, Response $response, ?string $r = null): Response
     {
         //store redirect path if any
@@ -64,6 +71,12 @@ class AuthController extends AbstractController
     /**
      * Do login
      */
+    #[Route(
+        name: 'dologin',
+        pattern: '/login',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function doLogin(
         Request $request,
         Response $response,
@@ -179,6 +192,12 @@ class AuthController extends AbstractController
     /**
      * Log out
      */
+    #[Route(
+        name: 'logout',
+        pattern: '/logout',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function logout(Response $response): Response
     {
         $this->login->logOut();
@@ -194,6 +213,11 @@ class AuthController extends AbstractController
      *
      * @param int $id Member to impersonate
      */
+    #[Route(
+        name: 'impersonate',
+        pattern: '/impersonate/{id:\d+}',
+        methods: ['GET']
+    )]
     public function impersonate(Response $response, int $id): Response
     {
         $success = $this->login->impersonate($id);
@@ -232,6 +256,11 @@ class AuthController extends AbstractController
     /**
      * End impersonate
      */
+    #[Route(
+        name: 'unimpersonate',
+        pattern: '/unimpersonate',
+        methods: ['GET']
+    )]
     public function unimpersonate(Response $response): Response
     {
         $login = new Login($this->zdb, $this->i18n);
@@ -251,6 +280,12 @@ class AuthController extends AbstractController
     /**
      * Lost password page
      */
+    #[Route(
+        name: 'password-lost',
+        pattern: '/password-lost',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function lostPassword(Response $response): Response
     {
         if ($this->preferences->pref_mail_method === GaletteMail::METHOD_DISABLED) {
@@ -270,6 +305,12 @@ class AuthController extends AbstractController
     /**
      * Retrieve password procedure
      */
+    #[Route(
+        name: 'retrieve-pass',
+        pattern: '/retrieve-pass[/{' . Adherent::PK . ':\d+}]',
+        methods: ['GET', 'POST'],
+        requiresAuth: false
+    )]
     public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
     {
         $from_admin = false;
@@ -426,6 +467,12 @@ class AuthController extends AbstractController
     /**
      * Password recovery page
      */
+    #[Route(
+        name: 'password-recovery',
+        pattern: '/password-recovery/{hash}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function recoverPassword(Response $response, string $hash, Password $password): Response
     {
         if (!$password->isHashValid(base64_decode($hash))) {
@@ -456,6 +503,12 @@ class AuthController extends AbstractController
     /**
      * Password recovery
      */
+    #[Route(
+        name: 'do-password-recovery',
+        pattern: '/password-recovery',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function doRecoverPassword(
         Request $request,
         Response $response,

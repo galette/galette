@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -38,6 +39,11 @@ class TitlesController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'storeTitle',
+        pattern: '/titles',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null);
@@ -52,6 +58,11 @@ class TitlesController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'titles',
+        pattern: '/titles',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $titles = new Titles($this->zdb);
@@ -85,6 +96,11 @@ class TitlesController extends CrudController
      *
      * @param int $id Title id
      */
+    #[Route(
+        name: 'editTitle',
+        pattern: '/titles/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $title = new Title($id);
@@ -108,6 +124,11 @@ class TitlesController extends CrudController
      *
      * @param int $id Title id
      */
+    #[Route(
+        name: 'doEditTitle',
+        pattern: '/titles/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);

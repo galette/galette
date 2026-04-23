@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -42,6 +43,11 @@ class GroupsController extends CrudController
     /**
      * Add action
      */
+    #[Route(
+        name: 'doAddGroup',
+        pattern: '/group/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -107,6 +113,11 @@ class GroupsController extends CrudController
      * @param string|null     $option One of 'page' or 'order'
      * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'groups',
+        pattern: '/groups',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -145,6 +156,11 @@ class GroupsController extends CrudController
     /**
      * List reorder
      */
+    #[Route(
+        name: 'reorderGroups',
+        pattern: '/groups/reorder',
+        methods: ['POST']
+    )]
     public function reorderList(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -186,6 +202,11 @@ class GroupsController extends CrudController
     /**
      * Group page
      */
+    #[Route(
+        name: 'ajax_group',
+        pattern: '/ajax/group',
+        methods: ['POST']
+    )]
     public function getGroup(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -213,6 +234,11 @@ class GroupsController extends CrudController
     /**
      * Groups list page for ajax calls
      */
+    #[Route(
+        name: 'ajax_groups',
+        pattern: '/ajax/groups',
+        methods: ['POST']
+    )]
     public function simpleList(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -233,8 +259,13 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Groups list page for ajax calls
+     * Group members ajax loader
      */
+    #[Route(
+        name: 'ajaxGroupMembers',
+        pattern: '/ajax/group/members',
+        methods: ['POST']
+    )]
     public function ajaxMembers(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -282,6 +313,11 @@ class GroupsController extends CrudController
      *
      * @param int $id Record id
      */
+    #[Route(
+        name: 'editGroup',
+        pattern: '/group/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $groups = new Groups($this->zdb, $this->login);
@@ -325,6 +361,11 @@ class GroupsController extends CrudController
      *
      * @param int $id Group id
      */
+    #[Route(
+        name: 'doEditGroup',
+        pattern: '/group/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         $post = $request->getParsedBody();
@@ -392,6 +433,11 @@ class GroupsController extends CrudController
     /**
      * Reorder action
      */
+    #[Route(
+        name: 'ajax_groups_reorder',
+        pattern: '/ajax/groups/reorder',
+        methods: ['POST']
+    )]
     public function reorder(Request $request, Response $response): Response
     {
         if (

@@ -273,4 +273,132 @@ abstract class AbstractController
             ->withStatus(301)
             ->withHeader('Location', $redirect_url);
     }
+
+    /**
+     * Get current route information from request
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRoute(Request $request): ?\Slim\Interfaces\RouteInterface
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        return $routeContext->getRoute();
+    }
+
+    /**
+     * Get current route name
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRouteName(Request $request): ?string
+    {
+        return $this->getRoute($request)?->getName();
+    }
+
+    /**
+     * Get current route arguments
+     *
+     * @param Request $request PSR7 request
+     *
+     * @return array<string, string>
+     */
+    protected function getRouteArguments(Request $request): array
+    {
+        return $this->getRoute($request)?->getArguments() ?? [];
+    }
+
+    /**
+     * Get current route pattern
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRoutePattern(Request $request): ?string
+    {
+        return $this->getRoute($request)?->getPattern();
+    }
+
+    /**
+     * Get current route allowed methods
+     *
+     * @param Request $request PSR7 request
+     *
+     * @return string[]
+     */
+    protected function getRouteMethods(Request $request): array
+    {
+        return $this->getRoute($request)?->getMethods() ?? [];
+    }
+
+    /**
+     * Check if current route has a specific name
+     *
+     * @param Request $request PSR7 request
+     * @param string  $name    Route name to check
+     */
+    protected function isRoute(Request $request, string $name): bool
+    {
+        return $this->getRouteName($request) === $name;
+    }
+
+    /**
+     * Generate URL for current route with different parameters
+     *
+     * @param Request              $request     PSR7 request
+     * @param array<string,string> $data        Route parameters
+     * @param array<string,mixed>  $queryParams Query string parameters
+     */
+    protected function urlForCurrentRoute(Request $request, array $data = [], array $queryParams = []): string
+    {
+        $routeName = $this->getRouteName($request);
+        if (!$routeName) {
+            throw new \RuntimeException('Cannot generate URL: current route has no name');
+        }
+        return $this->routeparser->urlFor($routeName, $data, $queryParams);
+    }
+
+    /**
+     * Get all Route attributes for current method
+     * Useful for debugging or logging
+     *
+     * @return \Galette\Controllers\Attributes\Route[]
+     */
+    protected function getRouteAttributes(): array
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $callerMethod = $backtrace[1]['function'] ?? null;
+
+        if (!$callerMethod) {
+            return [];
+        }
+
+        try {
+            $reflection = new \ReflectionMethod(static::class, $callerMethod);
+            $attributes = $reflection->getAttributes(\Galette\Controllers\Attributes\Route::class);
+
+            return array_map(
+                fn($attr) => $attr->newInstance(),
+                $attributes
+            );
+        } catch (\ReflectionException) {
+            return [];
+        }
+    }
+
+    /**
+     * Get route attribute matching the current request
+     *
+     * @param Request $request Current request
+     */
+    protected function getCurrentRouteAttribute(Request $request): ?\Galette\Controllers\Attributes\Route
+    {
+        $currentRouteName = $this->getRouteName($request);
+
+        foreach ($this->getRouteAttributes() as $routeAttr) {
+            if ($routeAttr->name === $currentRouteName) {
+                return $routeAttr;
+            }
+        }
+
+        return null;
+    }
 }

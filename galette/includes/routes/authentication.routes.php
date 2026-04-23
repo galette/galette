@@ -25,7 +25,7 @@ $app->get(
 //Authentication procedure
 $app->post(
     '/login',
-    [AuthController::class, 'dologin']
+    [AuthController::class, 'doLogin']
 )->setName('dologin');
 
 //logout procedure

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
@@ -72,8 +73,88 @@ abstract class CrudController extends AbstractController
     // CRUD - Delete
 
     /**
-     * Removal confirmation
+     * Removal confirmation — handled by every concrete CRUD subclass via inheritance.
      */
+    #[Route(
+        name: 'removeContribution',
+        pattern: '/{type:contributions|transactions}/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeContributions',
+        pattern: '/{type:contributions|transactions}/batch/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeScheduledPayment',
+        pattern: '/scheduled-payment/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeScheduledPayments',
+        pattern: '/scheduled-payment/batch/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeGroup',
+        pattern: '/group/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMailing',
+        pattern: '/mailings/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeTitle',
+        pattern: '/titles/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeContributionType',
+        pattern: '/contributions-types/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeStatus',
+        pattern: '/status/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeDynamicField',
+        pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removePaymentType',
+        pattern: '/payment-type/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeDocument',
+        pattern: '/document/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMember',
+        pattern: '/member/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMembers',
+        pattern: '/members/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeSearch',
+        pattern: '/search/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeSearches',
+        pattern: '/searches/remove',
+        methods: ['GET']
+    )]
     public function confirmDelete(Request $request, Response $response): Response
     {
         // display page
@@ -194,8 +275,68 @@ abstract class CrudController extends AbstractController
     abstract public function confirmRemoveTitle(array $args): string;
 
     /**
-     * Removal
+     * Removal — handled by every concrete CRUD subclass via inheritance.
      */
+    #[Route(
+        name: 'doRemoveContribution',
+        pattern: '/{type:contributions|transactions}/remove[/{id}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveScheduledPayment',
+        pattern: '/scheduled-payment/remove[/{id}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveGroup',
+        pattern: '/group/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveMailing',
+        pattern: '/mailings/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveTitle',
+        pattern: '/titles/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveContributionType',
+        pattern: '/contributions-types/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveStatus',
+        pattern: '/status/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveDynamicField',
+        pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemovePaymentType',
+        pattern: '/payment-type/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveDocument',
+        pattern: '/document/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveMember',
+        pattern: '/member/remove[/{id:\d+}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveSearch',
+        pattern: '/search/remove[/{id:\d+}]',
+        methods: ['POST']
+    )]
     public function delete(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
