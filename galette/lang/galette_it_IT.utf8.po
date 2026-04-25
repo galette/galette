@@ -28,12 +28,13 @@
 # Roberto Resoli <roberto@resolutions.it>, 2024.
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 # Fuurio Williams <yellbilly@gmail.com>, 2026.
+# Pierfrancesco Passerini <p.passerini@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-04-23 21:31+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-04-26 21:09+0000\n"
+"Last-Translator: Pierfrancesco Passerini <p.passerini@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -4003,8 +4004,6 @@ msgstr "Aggiungere social network"
 msgid "Choose or enter your own..."
 msgstr "Scegliere o inserire il proprio..."
 
-#, fuzzy
-#| msgid "Social networks"
 msgid "Social network"
 msgstr "Social network"
 
@@ -4052,10 +4051,8 @@ msgstr "Plugin inattivi"
 msgid "Cause"
 msgstr "Causa"
 
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Abilitata"
+msgstr "Abilita"
 
 msgid "A required file is missing"
 msgstr "Manca un file richiesto"
@@ -4516,10 +4513,8 @@ msgstr "Rimuovi il modello e torna ai predefiniti"
 msgid "Remove model"
 msgstr "Rimuovi modello"
 
-#, fuzzy
-#| msgid "Deletion"
 msgid "Selection"
-msgstr "Eliminazione"
+msgstr "Selezione"
 
 msgid "Store new model"
 msgstr "Memorizza nuovo modello"
@@ -4747,10 +4742,8 @@ msgstr "File esistenti"
 msgid "The following files seems ready to import on the disk:"
 msgstr "I seguenti file sembrano pronti all'importazione sul disco:"
 
-#, fuzzy
-#| msgid "choice"
 msgid "Choice"
-msgstr "scegli"
+msgstr "Scegli"
 
 msgid "Size"
 msgstr "Dimensione"
@@ -6070,7 +6063,7 @@ msgid "Add new group search criteria"
 msgstr "Aggiungi nuovi criteri di ricerca di gruppo"
 
 msgid "Logical operator"
-msgstr ""
+msgstr "Operatore logico"
 
 msgid "In all selected groups"
 msgstr "In tutti i gruppi selezionati"
@@ -6078,10 +6071,8 @@ msgstr "In tutti i gruppi selezionati"
 msgid "In any of selected groups"
 msgstr "In ogni gruppo selezionato"
 
-#, fuzzy
-#| msgid "Groups"
 msgid "Group"
-msgstr "Gruppi"
+msgstr "Gruppo"
 
 msgid "Remove criteria"
 msgstr "Rimuovi il criterio"
@@ -6101,7 +6092,7 @@ msgstr "Seleziona un campo"
 #, fuzzy
 #| msgid "separator"
 msgid "Query operator"
-msgstr "separatore"
+msgstr "Operatore per query"
 
 msgid "is"
 msgstr "è"
@@ -6109,10 +6100,8 @@ msgstr "è"
 msgid "is not"
 msgstr "non è"
 
-#, fuzzy
-#| msgid "Values:"
 msgid "Value"
-msgstr "Valori:"
+msgstr "Valore"
 
 msgid "before"
 msgstr "prima di"
