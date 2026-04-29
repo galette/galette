@@ -445,6 +445,7 @@ class Galette
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
                                     'name' => 'contributionsTypes',
+                                    'aliases' => ['editContributionType']
                                 ]
                             ],
                             [
