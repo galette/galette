@@ -266,11 +266,6 @@ $app->get(
     [Crud\ContributionsTypesController::class, 'edit']
 )->setName('editContributionType')->add($authenticate);
 
-$app->get(
-    '/contributions-types/add',
-    [Crud\ContributionsTypesController::class, 'add']
-)->setName('addContributionType')->add($authenticate);
-
 $app->post(
     '/contributions-types/edit/{id:\d+}',
     [Crud\ContributionsTypesController::class, 'doEdit']
