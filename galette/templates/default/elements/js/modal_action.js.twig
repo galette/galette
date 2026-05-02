@@ -25,6 +25,7 @@
  *
  * - modal_title: value coming from js code.
  * - modal_title_twig: value coming from twig.
+ * - modal_title_data_attr: value coming from the clicked element's "data-modal-title" attribute.
  * - modal_content: value coming from js code.
  * - modal_content_twig: value coming from twig.
  * - modal_class: class(es) applied on modal.
@@ -50,7 +51,7 @@
 {% endif %}
 {% set loader_selector = loader_selector is defined ? loader_selector : ".loader_selector" %}
 
-{% set modal_title = modal_title_twig is defined ? modal_title_twig : modal_title %}
+{% set modal_title = modal_title_twig is defined ? modal_title_twig : modal_title ?? '' %}
 {% set modal_content = modal_content_twig is defined ? modal_content_twig : "res" %}
 {% set modal_class = modal_class is defined ? modal_class : null %}
 {% set modal_content_class = modal_content_class is defined ? modal_content_class : null %}
@@ -63,6 +64,10 @@
         event.preventDefault();
         var _this = $(this);
         var _url = _this.attr('href');
+        {% if modal_title_data_attr is defined %}
+            var _datamodaltitle = _this.data('modal-title');
+            {% set modal_title = "_datamodaltitle" %}
+        {% endif %}
         $.ajax({
             url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
             method: "{{ method }}",

@@ -107,6 +107,7 @@
                         <a
                             href="{{ url_for('editContributionType', {'id': eid}) }}"
                             class="action single-edit icon-only"
+                            data-modal-title="{{ _T('Contribution type') }} - {{ entry.name }}"
                         >
                             <i class="ui edit icon tooltip" aria-hidden="true"></i>
                             <span class="visually-hidden">{{ _T("Edit '%s' field")|replace({'%s': entry.name}) }}</span>
@@ -147,7 +148,7 @@
             " %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
-                modal_title_twig: (_T("Contribution type") ~ ' - %1$s')|e("js"),
+                modal_title_data_attr: true,
                 modal_class: "tiny",
                 modal_onapprove: modal_onapprove,
                 modal_action_onshow: modal_action_onshow
