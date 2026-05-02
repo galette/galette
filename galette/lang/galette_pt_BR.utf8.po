@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-04-29 16:09+0000\n"
+"PO-Revision-Date: 2026-05-03 11:50+0000\n"
 "Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr ""
@@ -261,7 +261,7 @@ msgid "List of members"
 msgstr ""
 
 msgid "Advanced search"
-msgstr ""
+msgstr "Pesquisa avançada"
 
 msgid "No member was selected, please check at least one name."
 msgstr ""
@@ -468,7 +468,7 @@ msgid "Search has been saved."
 msgstr ""
 
 msgid "Saved searches"
-msgstr ""
+msgstr "Pesquisas salvas"
 
 msgid "Remove saved search"
 msgstr ""
@@ -610,7 +610,7 @@ msgid "Unable to get groups list."
 msgstr ""
 
 msgid "PDF models"
-msgstr ""
+msgstr "Modelos em PDF"
 
 msgid "Missing PDF model type!"
 msgstr ""
@@ -1295,7 +1295,7 @@ msgid "Main information"
 msgstr ""
 
 msgid "Social networks"
-msgstr ""
+msgstr "Redes sociais"
 
 msgid "Dark mode CSS file has been reset."
 msgstr ""
@@ -1533,7 +1533,7 @@ msgid "Member's Labels"
 msgstr ""
 
 msgid "Labels"
-msgstr ""
+msgstr "Etiquetas"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1591,7 +1591,7 @@ msgid "Member's Cards"
 msgstr ""
 
 msgid "Cards"
-msgstr ""
+msgstr "Cartas"
 
 msgid "Member"
 msgstr ""
@@ -4385,7 +4385,7 @@ msgid "Send an email"
 msgstr ""
 
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 msgid "Is a sponsor"
 msgstr ""
@@ -4755,16 +4755,16 @@ msgid "Long form:"
 msgstr ""
 
 msgid "General"
-msgstr ""
+msgstr "Em geral"
 
 msgid "Parameters"
-msgstr ""
+msgstr "Parâmetros"
 
 msgid "Rights"
-msgstr ""
+msgstr "Direitos"
 
 msgid "E-Mail"
-msgstr ""
+msgstr "E-mail"
 
 msgid "Security parameters"
 msgstr ""
