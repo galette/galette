@@ -10,6 +10,10 @@ declare(strict_types=1);
 
 namespace Galette\Console;
 
+use Galette\Core\Galette;
+use Psr\Container\ContainerInterface;
+use Slim\App;
+use Slim\Interfaces\RouteCollectorInterface;
 use Symfony\Component\Console\Application;
 
 /**
@@ -31,14 +35,24 @@ class GaletteApplication extends Application
 
     /**
      * Initialize application
+     *
+     * @param App<ContainerInterface> $app
      */
-    public function init(): void
+    public function init(ContainerInterface $container, App $app, RouteCollectorInterface $routeCollector): void
     {
+        Galette::loadRoutes($app);
+
+        $pluginRoutes = array_column(
+            $container->get(\Galette\Core\Plugins::class)->getModules(),
+            'route'
+        );
+
         $this->addCommands([
             new Command\Checks($this->basepath),
             new Command\Install($this->basepath),
             new Command\FeatureStatus($this->basepath),
-            new Command\HeadersCheck($this->basepath)
+            new Command\HeadersCheck($this->basepath),
+            new Command\CheckRoutes($routeCollector, $this->basepath, $pluginRoutes)
         ]);
         if (!defined('GALETTE_INSTALLER')) {
             //cannot be added until Galette has been properly installed

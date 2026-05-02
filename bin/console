@@ -57,5 +57,9 @@ $app = $gapp->getApp();
 $container = $app->getContainer();
 
 $console = new \Galette\Console\GaletteApplication($basepath);
-$console->init();
+$console->init(
+        $container,
+        $app,
+        $container->get(\Slim\Routing\RouteCollector::class)
+);
 $console->run();

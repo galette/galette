@@ -326,3 +326,7 @@ jobs:
       - name: Headers checks
         run: |
           ./bin/console galette:headers:check
+
+      - name: Check routes
+        run: |
+          ./bin/console galette:check-routes

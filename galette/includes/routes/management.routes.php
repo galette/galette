@@ -19,9 +19,6 @@ use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
 use Galette\Middleware\Authenticate;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-use Slim\Routing\RouteParser;
 
 /**
  * @var \Slim\App<\DI\Container> $app
