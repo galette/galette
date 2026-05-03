@@ -770,6 +770,9 @@ final class HeadersCheck extends AbstractCommand
             'galette\/webroot\/themes(?:\/.*)?',
 
             'tests\/config(?:\/.*)?',
+
+            //outside licenced files
+            'galette\/docs\/source\/doxygen-awesome(-sidebar-only)?\.css',
         ];
 
         return '/^'
