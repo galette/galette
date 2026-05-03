@@ -1,7 +1,5 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Copyright © 2003-2026 The Galette Team
  *

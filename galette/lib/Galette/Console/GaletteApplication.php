@@ -50,7 +50,8 @@ class GaletteApplication extends Application
         $this->addCommands([
             new Command\Checks($this->basepath),
             new Command\Install($this->basepath),
-            new Command\FeatureStatus($this->basepath)
+            new Command\FeatureStatus($this->basepath),
+            new Command\HeadersCheck($this->basepath)
         ]);
         if (!defined('GALETTE_INSTALLER')) {
             //cannot be added until Galette has been properly installed
