@@ -326,3 +326,7 @@ jobs:
       - name: Headers checks
         run: |
           ./galette/vendor/bin/docheader check galette/index.php galette/data/index.php galette/lang galette/templates/index.php galette/config galette/lib galette/includes galette/install galette/webroot tests
+
+      - name: Headers checks
+        run: |
+          ./bin/console galette:headers:check
