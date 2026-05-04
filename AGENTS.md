@@ -298,14 +298,26 @@ vendor/bin/twigcs galette/templates/default --severity error --display blocking
 
 **Note:** This runs in CI. Fix Twig syntax errors before committing template changes.
 
-### Docheader (License Header Check)
+### License Header Check
 
 ```bash
 # Check license headers in PHP files
-vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+./bin/console galette:headers:check
+
+# Fix license headers
+./bin/console galette:headers:check --fix
 ```
 
 **Note:** Ensures all PHP files have correct license headers.
+
+### Composer Dependency Analyser
+
+```bash
+# Check for unused, shadowed or misplaced dependencies
+vendor/bin/composer-dependency-analyser --composer-json composer.json
+```
+
+**Note:** Useful to ensure `composer.json` is accurately reflecting the code usage.
 
 ## Composer run
 
@@ -327,8 +339,8 @@ The `.github/workflows/ci-linux.yml` workflow runs on every push/PR:
 6. Frontend build verification
 7. Twig template linting (TwigCS)
 8. Rector refactoring check
-9. License header check (docheader)
-10. Dependency analysis
+9. License header check (`galette:headers:check`)
+10. Dependency analysis (`composer-dependency-analyser`)
 
 ### Replicate CI Locally
 
@@ -375,7 +387,8 @@ vendor/bin/phpstan analyse
 2. Build: `npm run build`
 3. Test in browser
 4. For development, use watch mode: `npm run watch`
-5. Built files appear in `galette/webroot/themes/default/ui/`
+
+**Build Artifacts:** Built assets are output to `galette/webroot/themes/default/ui/`.
 
 ### Database Changes
 
@@ -479,7 +492,7 @@ php -m | grep pcov
 - Translation files: `galette/lang/`
 - Format: gettext (.po/.mo files)
 - Managed via Weblate: https://hosted.weblate.org/projects/galette/
-- After updating translatable strings: `bin/update_strings.sh`
+- After updating translatable strings: `cd galette/lang && make mo`
 
 ## Key Configuration Files
 
