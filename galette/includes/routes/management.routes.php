@@ -18,461 +18,463 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
+use Galette\Middleware\Authenticate;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+use Slim\Routing\RouteParser;
 
 /**
  * @var \Slim\App<\DI\Container> $app
- * @var \Slim\Routing\RouteParser $routeparser
- * @var \Galette\Middleware\Authenticate $authenticate
  */
 
 //galette's dashboard
 $app->get(
     '/dashboard',
     [GaletteController::class, 'dashboard']
-)->setName('dashboard')->add($authenticate);
+)->setName('dashboard')->add(Authenticate::class);
 
 //preferences page
 $app->get(
     '/preferences',
     [GaletteController::class, 'preferences']
-)->setName('preferences')->add($authenticate);
+)->setName('preferences')->add(Authenticate::class);
 
 //preferences procedure
 $app->post(
     '/preferences',
     [GaletteController::class, 'storePreferences']
-)->setName('store-preferences')->add($authenticate);
+)->setName('store-preferences')->add(Authenticate::class);
 
 $app->get(
     '/test/email',
     [GaletteController::class, 'testEmail']
-)->setName('testEmail')->add($authenticate);
+)->setName('testEmail')->add(Authenticate::class);
 
 //charts
 $app->get(
     '/charts',
     [GaletteController::class, 'charts']
-)->setName('charts')->add($authenticate);
+)->setName('charts')->add(Authenticate::class);
 
 //plugins
 $app->get(
     '/plugins',
     [PluginsController::class, 'showPlugins']
-)->setName('plugins')->add($authenticate);
+)->setName('plugins')->add(Authenticate::class);
 
 //plugins (de)activation
 $app->get(
     '/plugins/{action:activate|deactivate}/{module_id}',
     [PluginsController::class, 'togglePlugin']
-)->setName('pluginsActivation')->add($authenticate);
+)->setName('pluginsActivation')->add(Authenticate::class);
 
 $app->map(
     ['GET', 'POST'],
     '/plugins/initialize-database/{id}',
     [PluginsController::class, 'initPluginDb']
-)->setName('pluginInitDb')->add($authenticate);
+)->setName('pluginInitDb')->add(Authenticate::class);
 
 //galette logs
 $app->get(
     '/logs[/{option:page|order}/{value}]',
-    fn($request, $response, $args) => $response
+    fn(Request $request, Response $response, RouteParser $routeParser, $args) => $response
         ->withStatus(302)
         ->withHeader(
             'Location',
-            $routeparser->urlFor('history', $args)
+            $routeParser->urlFor('history', $args)
         )
 );
 $app->get(
     '/history[/{option:page|order}/{value}]',
     [HistoryController::class, 'list']
-)->setName('history')->add($authenticate);
+)->setName('history')->add(Authenticate::class);
 
 $app->post(
     '/history/filter',
     [HistoryController::class, 'historyFilter']
-)->setName('history_filter')->add($authenticate);
+)->setName('history_filter')->add(Authenticate::class);
 
 $app->get(
     '/logs/flush',
-    fn($request, $response) => $response
+    fn(Request $request, Response $response, RouteParser $routeParser) => $response
         ->withStatus(302)
         ->withHeader(
             'Location',
-            $routeparser->urlFor('flushHistory')
+            $routeParser->urlFor('flushHistory')
         )
 );
 $app->get(
     '/history/flush',
     [HistoryController::class, 'confirmHistoryFlush']
-)->setName('flushHistory')->add($authenticate);
+)->setName('flushHistory')->add(Authenticate::class);
 
 $app->post(
     '/history/flush',
     [HistoryController::class, 'flushHistory']
-)->setName('doFlushHistory')->add($authenticate);
+)->setName('doFlushHistory')->add(Authenticate::class);
 
 //mailings management
 $app->get(
     '/mailings[/{option:page|order|reset}/{value}]',
     [Crud\MailingsController::class, 'list']
-)->setName('mailings')->add($authenticate);
+)->setName('mailings')->add(Authenticate::class);
 
 $app->post(
     '/mailings/filter',
     [Crud\MailingsController::class, 'filter']
-)->setName('mailings_filter')->add($authenticate);
+)->setName('mailings_filter')->add(Authenticate::class);
 
 $app->get(
     '/mailings/remove' . '/{id:\d+}',
     [Crud\MailingsController::class, 'confirmDelete']
-)->setName('removeMailing')->add($authenticate);
+)->setName('removeMailing')->add(Authenticate::class);
 
 $app->post(
     '/mailings/remove/{id:\d+}',
     [Crud\MailingsController::class, 'delete']
-)->setName('doRemoveMailing')->add($authenticate);
+)->setName('doRemoveMailing')->add(Authenticate::class);
 
 //galette exports
 $app->get(
     '/export',
     [CsvController::class, 'export']
-)->setName('export')->add($authenticate);
+)->setName('export')->add(Authenticate::class);
 
 $app->get(
     '/{type:export|import}/remove/{file}',
     [CsvController::class, 'confirmRemoveFile']
-)->setName('removeCsv')->add($authenticate);
+)->setName('removeCsv')->add(Authenticate::class);
 
 $app->post(
     '/{type:export|import}/remove/{file}',
     [CsvController::class, 'removeFile']
-)->setName('doRemoveCsv')->add($authenticate);
+)->setName('doRemoveCsv')->add(Authenticate::class);
 
 $app->post(
     '/export',
     [CsvController::class, 'doExport']
-)->setName('doExport')->add($authenticate);
+)->setName('doExport')->add(Authenticate::class);
 
 $app->get(
     '/{type:export|import}/get/{file}',
     [CsvController::class, 'getFile']
-)->setName('getCsv')->add($authenticate);
+)->setName('getCsv')->add(Authenticate::class);
 
 $app->get(
     '/import',
     [CsvController::class, 'import']
-)->setName('import')->add($authenticate);
+)->setName('import')->add(Authenticate::class);
 
 $app->post(
     '/import',
     [CsvController::class, 'doImports']
-)->setName('doImport')->add($authenticate);
+)->setName('doImport')->add(Authenticate::class);
 
 $app->post(
     '/import/upload',
     [CsvController::class, 'uploadImportFile']
-)->setname('uploadImportFile')->add($authenticate);
+)->setname('uploadImportFile')->add(Authenticate::class);
 
 $app->get(
     '/import/model',
     [CsvController::class, 'importModel']
-)->setName('importModel')->add($authenticate);
+)->setName('importModel')->add(Authenticate::class);
 
 $app->get(
     '/import/model/get',
     [CsvController::class, 'getImportModel']
-)->setName('getImportModel')->add($authenticate);
+)->setName('getImportModel')->add(Authenticate::class);
 
 $app->post(
     '/import/model/store',
     [CsvController::class, 'storeModel']
-)->setName('storeImportModel')->add($authenticate);
+)->setName('storeImportModel')->add(Authenticate::class);
 
 $app->get(
     '/models/pdf[/{id:\d+}]',
     [PdfController::class, 'models']
-)->setName('pdfModels')->add($authenticate);
+)->setName('pdfModels')->add(Authenticate::class);
 
 $app->post(
     '/models/pdf',
     [PdfController::class, 'storeModels']
-)->setName('pdfModels')->add($authenticate);
+)->setName('pdfModels')->add(Authenticate::class);
 
 $app->get(
     '/titles',
     [Crud\TitlesController::class, 'list']
-)->setName('titles')->add($authenticate);
+)->setName('titles')->add(Authenticate::class);
 
 $app->post(
     '/titles',
     [Crud\TitlesController::class, 'doAdd']
-)->setName('titles')->add($authenticate);
+)->setName('titles')->add(Authenticate::class);
 
 $app->get(
     '/titles/remove/{id:\d+}',
     [Crud\TitlesController::class, 'confirmDelete']
-)->setName('removeTitle')->add($authenticate);
+)->setName('removeTitle')->add(Authenticate::class);
 
 $app->post(
     '/titles/remove/{id:\d+}',
     [Crud\TitlesController::class, 'delete']
-)->setName('doRemoveTitle')->add($authenticate);
+)->setName('doRemoveTitle')->add(Authenticate::class);
 
 $app->get(
     '/titles/edit/{id:\d+}',
     [Crud\TitlesController::class, 'edit']
-)->setname('editTitle')->add($authenticate);
+)->setname('editTitle')->add(Authenticate::class);
 
 $app->post(
     '/titles/edit/{id:\d+}',
     [Crud\TitlesController::class, 'doEdit']
-)->setname('editTitle')->add($authenticate);
+)->setname('editTitle')->add(Authenticate::class);
 
 $app->get(
     '/texts[/{lang}/{ref}]',
     [TextController::class, 'list']
-)->setName('texts')->add($authenticate);
+)->setName('texts')->add(Authenticate::class);
 
 $app->post(
     '/texts/change',
     [TextController::class, 'change']
-)->setName('changeText')->add($authenticate);
+)->setName('changeText')->add(Authenticate::class);
 
 $app->post(
     '/texts',
     [TextController::class, 'edit']
-)->setName('texts')->add($authenticate);
+)->setName('texts')->add(Authenticate::class);
 
 $app->get(
     '/contributions-types',
     [Crud\ContributionsTypesController::class, 'list']
-)->setName('contributionsTypes')->add($authenticate);
+)->setName('contributionsTypes')->add(Authenticate::class);
 
 $app->get(
     '/contributions-types/edit/{id:\d+}',
     [Crud\ContributionsTypesController::class, 'edit']
-)->setName('editContributionType')->add($authenticate);
+)->setName('editContributionType')->add(Authenticate::class);
 
 $app->get(
     '/contributions-types/add',
     [Crud\ContributionsTypesController::class, 'add']
-)->setName('addContributionType')->add($authenticate);
+)->setName('addContributionType')->add(Authenticate::class);
 
 $app->post(
     '/contributions-types/edit/{id:\d+}',
     [Crud\ContributionsTypesController::class, 'doEdit']
-)->setName('doEditContributionType')->add($authenticate);
+)->setName('doEditContributionType')->add(Authenticate::class);
 
 $app->post(
     '/contributions-types/add',
     [Crud\ContributionsTypesController::class, 'doAdd']
-)->setName('doAddContributionType')->add($authenticate);
+)->setName('doAddContributionType')->add(Authenticate::class);
 
 $app->get(
     '/contributions-types/remove/{id:\d+}',
     [Crud\ContributionsTypesController::class, 'confirmDelete']
-)->setName('removeContributionType')->add($authenticate);
+)->setName('removeContributionType')->add(Authenticate::class);
 
 $app->post(
     '/contributions-types/remove/{id:\d+}',
     [Crud\ContributionsTypesController::class, 'delete']
-)->setName('doRemoveContributionType')->add($authenticate);
+)->setName('doRemoveContributionType')->add(Authenticate::class);
 
 $app->get(
     '/status',
     [Crud\StatusController::class, 'list']
-)->setName('status')->add($authenticate);
+)->setName('status')->add(Authenticate::class);
 
 $app->get(
     '/status/edit/{id:\d+}',
     [Crud\StatusController::class, 'edit']
-)->setName('editStatus')->add($authenticate);
+)->setName('editStatus')->add(Authenticate::class);
 
 $app->get(
     '/status/add',
     [Crud\StatusController::class, 'add']
-)->setName('addStatus')->add($authenticate);
+)->setName('addStatus')->add(Authenticate::class);
 
 $app->post(
     '/status/edit/{id:\d+}',
     [Crud\StatusController::class, 'doEdit']
-)->setName('doEditStatus')->add($authenticate);
+)->setName('doEditStatus')->add(Authenticate::class);
 
 $app->post(
     '/status/add',
     [Crud\StatusController::class, 'doAdd']
-)->setName('doAddStatus')->add($authenticate);
+)->setName('doAddStatus')->add(Authenticate::class);
 
 $app->get(
     '/status/remove/{id:\d+}',
     [Crud\StatusController::class, 'confirmDelete']
-)->setName('removeStatus')->add($authenticate);
+)->setName('removeStatus')->add(Authenticate::class);
 
 $app->post(
     '/status/remove/{id:\d+}',
     [Crud\StatusController::class, 'delete']
-)->setName('doRemoveStatus')->add($authenticate);
+)->setName('doRemoveStatus')->add(Authenticate::class);
 
 $app->get(
     '/dynamic-translation/{text_orig_sum}',
     [DynamicTranslationsController::class, 'dynamicTranslation']
-)->setName('dynamicTranslation')->add($authenticate);
+)->setName('dynamicTranslation')->add(Authenticate::class);
 
 $app->get(
     '/dynamic-translations[/{text_orig}]',
     [DynamicTranslationsController::class, 'dynamicTranslations']
-)->setName('dynamicTranslations')->add($authenticate);
+)->setName('dynamicTranslations')->add(Authenticate::class);
 
 $app->post(
     '/dynamic-translations',
     [DynamicTranslationsController::class, 'doDynamicTranslations']
-)->setName('editDynamicTranslation')->add($authenticate);
+)->setName('editDynamicTranslation')->add(Authenticate::class);
 
 $app->get(
     '/lists/{table}/configure',
     [GaletteController::class, 'configureListFields']
-)->setName('configureListFields')->add($authenticate);
+)->setName('configureListFields')->add(Authenticate::class);
 
 $app->post(
     '/lists/{table}/configure',
     [GaletteController::class, 'storeListFields']
-)->setName('storeListFields')->add($authenticate);
+)->setName('storeListFields')->add(Authenticate::class);
 
 $app->get(
     '/fields/core/configure',
     [GaletteController::class, 'configureCoreFields']
-)->setName('configureCoreFields')->add($authenticate);
+)->setName('configureCoreFields')->add(Authenticate::class);
 
 $app->post(
     '/fields/core/configure',
     [GaletteController::class, 'storeCoreFieldsConfig']
-)->setName('storeCoreFieldsConfig')->add($authenticate);
+)->setName('storeCoreFieldsConfig')->add(Authenticate::class);
 
 $app->get(
     '/fields/dynamic/configure[/{form_name:adh|contrib|trans|prefs}]',
     [Crud\DynamicFieldsController::class, 'list']
-)->setName('configureDynamicFields')->add($authenticate);
+)->setName('configureDynamicFields')->add(Authenticate::class);
 
 $app->get(
     '/fields/dynamic/move/{form_name:adh|contrib|trans|prefs}'
         . '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'move']
-)->setName('moveDynamicField')->add($authenticate);
+)->setName('moveDynamicField')->add(Authenticate::class);
 
 $app->get(
     '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'confirmDelete']
-)->setName('removeDynamicField')->add($authenticate);
+)->setName('removeDynamicField')->add(Authenticate::class);
 
 $app->post(
     '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'delete']
-)->setName('doRemoveDynamicField')->add($authenticate);
+)->setName('doRemoveDynamicField')->add(Authenticate::class);
 
 $app->get(
     '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
     [Crud\DynamicFieldsController::class, 'add']
-)->setName('addDynamicField')->add($authenticate);
+)->setName('addDynamicField')->add(Authenticate::class);
 
 $app->get(
     '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'edit']
-)->setName('editDynamicField')->add($authenticate);
+)->setName('editDynamicField')->add(Authenticate::class);
 
 $app->post(
     '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
     [Crud\DynamicFieldsController::class, 'doAdd']
-)->setName('doAddDynamicField')->add($authenticate);
+)->setName('doAddDynamicField')->add(Authenticate::class);
 
 $app->post(
     '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'doEdit']
-)->setName('doEditDynamicField')->add($authenticate);
+)->setName('doEditDynamicField')->add(Authenticate::class);
 
 $app->get(
     '/admin-tools',
     [AdminToolsController::class, 'adminTools']
-)->setName('adminTools')->add($authenticate);
+)->setName('adminTools')->add(Authenticate::class);
 
 $app->post(
     '/admin-tools',
     [AdminToolsController::class, 'process']
-)->setName('doAdminTools')->add($authenticate);
+)->setName('doAdminTools')->add(Authenticate::class);
 
 $app->get(
     '/payment-types',
     [Crud\PaymentTypeController::class, 'list']
-)->setName('paymentTypes')->add($authenticate);
+)->setName('paymentTypes')->add(Authenticate::class);
 
 $app->post(
     '/payment-types',
     [Crud\PaymentTypeController::class, 'doAdd']
-)->setName('paymentTypes')->add($authenticate);
+)->setName('paymentTypes')->add(Authenticate::class);
 
 $app->get(
     '/payment-type/remove/{id:\d+}',
     [Crud\PaymentTypeController::class, 'confirmDelete']
-)->setName('removePaymentType')->add($authenticate);
+)->setName('removePaymentType')->add(Authenticate::class);
 
 $app->post(
     '/payment-type/remove/{id:\d+}',
     [Crud\PaymentTypeController::class, 'delete']
-)->setName('doRemovePaymentType')->add($authenticate);
+)->setName('doRemovePaymentType')->add(Authenticate::class);
 
 $app->get(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'edit']
-)->setname('editPaymentType')->add($authenticate);
+)->setname('editPaymentType')->add(Authenticate::class);
 
 $app->post(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'doEdit']
-)->setname('editPaymentType')->add($authenticate);
+)->setname('editPaymentType')->add(Authenticate::class);
 
 $app->get(
     '/{form_name:adh|contrib|trans|prefs}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     [Crud\DynamicFieldsController::class, 'getDynamicFile']
-)->setName('getDynamicFile')->add($authenticate);
+)->setName('getDynamicFile')->add(Authenticate::class);
 
 $app->get(
     '/documents[/{option:page|order}/{value}]',
     [Crud\DocumentsController::class, 'list']
-)->setName('documentsList')->add($authenticate);
+)->setName('documentsList')->add(Authenticate::class);
 
 $app->post(
     '/documents/filter',
     [Crud\DocumentsController::class, 'filter']
-)->setName('documentsFilter')->add($authenticate);
+)->setName('documentsFilter')->add(Authenticate::class);
 
 $app->get(
     '/document/remove/{id:\d+}',
     [Crud\DocumentsController::class, 'confirmDelete']
-)->setName('removeDocument')->add($authenticate);
+)->setName('removeDocument')->add(Authenticate::class);
 
 $app->post(
     '/document/remove/{id:\d+}',
     [Crud\DocumentsController::class, 'delete']
-)->setName('doRemoveDocument')->add($authenticate);
+)->setName('doRemoveDocument')->add(Authenticate::class);
 
 $app->get(
     '/document/add',
     [Crud\DocumentsController::class, 'add']
-)->setName('addDocument')->add($authenticate);
+)->setName('addDocument')->add(Authenticate::class);
 
 $app->get(
     '/document/edit/{id:\d+}',
     [Crud\DocumentsController::class, 'edit']
-)->setName('editDocument')->add($authenticate);
+)->setName('editDocument')->add(Authenticate::class);
 
 $app->post(
     '/document/add',
     [Crud\DocumentsController::class, 'doAdd']
-)->setName('doAddDocument')->add($authenticate);
+)->setName('doAddDocument')->add(Authenticate::class);
 
 $app->post(
     '/document/edit/{id:\d+}',
     [Crud\DocumentsController::class, 'doEdit']
-)->setName('doEditDocument')->add($authenticate);
+)->setName('doEditDocument')->add(Authenticate::class);
 
 $app->get(
     '/document/get/{id:\d+}',

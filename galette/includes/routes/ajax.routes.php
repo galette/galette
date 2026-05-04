@@ -9,15 +9,14 @@
 declare(strict_types=1);
 
 use Galette\Controllers\AjaxController;
+use Galette\Middleware\Authenticate;
 use Slim\Routing\RouteCollectorProxy;
 
 /**
  * @var \Slim\App<\DI\Container> $app
- * @var \Slim\Routing\RouteParser $routeparser
- * @var \Galette\Middleware\Authenticate $authenticate
  */
 
-$app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): void {
+$app->group('/ajax', function (RouteCollectorProxy $app): void {
     $app->get(
         '/messages',
         [AjaxController::class, 'messages']
@@ -41,27 +40,27 @@ $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): vo
     $app->get(
         '/telemetry/infos',
         [AjaxController::class, 'telemetryInfos']
-    )->setName('telemetryInfos')->add($authenticate);
+    )->setName('telemetryInfos')->add(Authenticate::class);
 
     $app->post(
         '/telemetry/send',
         [AjaxController::class, 'telemetrySend']
-    )->setName('telemetrySend')->add($authenticate);
+    )->setName('telemetrySend')->add(Authenticate::class);
 
     $app->get(
         '/telemetry/registered',
         [AjaxController::class, 'telemetryRegistered']
-    )->setName('setRegistered')->add($authenticate);
+    )->setName('setRegistered')->add(Authenticate::class);
 
     $app->post(
         '/contribution/dates',
         [AjaxController::class, 'contributionDates']
-    )->setName('contributionDates')->add($authenticate);
+    )->setName('contributionDates')->add(Authenticate::class);
 
     $app->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
         [AjaxController::class, 'contributionMembers']
-    )->setName('contributionMembers')->add($authenticate);
+    )->setName('contributionMembers')->add(Authenticate::class);
 
     $app->post(
         '/password/strength',

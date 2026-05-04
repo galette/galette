@@ -9,14 +9,16 @@
 declare(strict_types=1);
 
 use Galette\Controllers\Crud;
+use Galette\Middleware\PublicPages;
+use Slim\Psr7\Response;
 use Slim\Routing\RouteCollectorProxy;
+use Slim\Routing\RouteParser;
 
 /**
  * @var \Slim\App<\DI\Container> $app
- * @var \Slim\Routing\RouteParser $routeparser
  */
 
-$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): void {
+$app->group('/public', function (RouteCollectorProxy $app): void {
     //public members list
     $app->get(
         '/members/list[/{option:page|order}/{value:\d+|\w+}]',
@@ -59,7 +61,7 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
 
     $app->get(
         '/{orig:list|members}[/{option:page|order}/{value:\d+|\w+}]',
-        function ($request, $response, ?string $option = null, ?string $value = null) use ($routeparser) {
+        function (Response $response, RouteParser $routeParser, ?string $option = null, ?string $value = null) {
             //list deprecated since 1.2.0
             //members deprecated since 0.9.3
             $args = [];
@@ -69,17 +71,17 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
             }
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $routeparser->urlFor('publicMembersList', $args));
+                ->withHeader('Location', $routeParser->urlFor('publicMembersList', $args));
         }
     );
 
     $app->get(
         '/{orig:trombinoscope|trombi}',
-        fn($request, $response)
+        fn(Response $response, RouteParser $routeParser)
             //trombi deprecated since 1.2.0
             //trombinoscope deprecated since 0.9.3
             => $response
             ->withStatus(301)
-            ->withHeader('Location', $routeparser->urlFor('publicMembersGallery'))
+            ->withHeader('Location', $routeParser->urlFor('publicMembersGallery'))
     );
-})->add(\Galette\Middleware\PublicPages::class);
+})->add(PublicPages::class);

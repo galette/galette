@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Galette\Core\Login;
 use Galette\Core\Plugins;
+use Galette\Middleware\Authenticate;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -17,11 +18,10 @@ use function Safe\file_get_contents;
 
 /**
  * @var \Slim\App<\DI\Container> $app
- * @var \Galette\Middleware\Authenticate $authenticate
  */
 $app->group(
     '/plugins',
-    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
+    function (\Slim\Routing\RouteCollectorProxy $app): void {
         /** @var \DI\Container $container */
         $container = $app->getContainer();
         $modules = $container->get(Plugins::class)->getModules();
@@ -74,7 +74,7 @@ $app->group(
             $app->group(
                 '/' . $module['route'],
                 //@phpstan-ignore closure.unusedUse ($module_id may be used in included _routes.php from plugin.)
-                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $container): void {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $container): void {
                     //Plugin home: give information
                     $app->get(
                         '',
@@ -97,7 +97,7 @@ $app->group(
                             );
                             return $response;
                         }
-                    )->setName($module['route'] . 'Info')->add($authenticate);
+                    )->setName($module['route'] . 'Info')->add(Authenticate::class);
 
                     $f = $module['root'] . '/_routes.php';
                     require $f;

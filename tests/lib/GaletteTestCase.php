@@ -70,8 +70,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $preferences = $this->preferences;
         $translator = $this->container->get(\Galette\Core\Translator::class);
         //phpcs:enable
-        //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
-        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';

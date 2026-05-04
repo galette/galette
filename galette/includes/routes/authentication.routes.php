@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 use Galette\Controllers\AuthController;
 use Galette\Entity\Adherent;
+use Galette\Middleware\Authenticate;
 
 /**
  * @var \Slim\App<\DI\Container> $app
- * @var \Slim\Routing\RouteParser $routeparser
- * @var \Galette\Middleware\Authenticate $authenticate
  */
 
 //login page
@@ -39,12 +38,12 @@ $app->get(
 $app->get(
     '/impersonate/{id:\d+}',
     [AuthController::class, 'impersonate']
-)->setName('impersonate')->add($authenticate);
+)->setName('impersonate')->add(Authenticate::class);
 
 $app->get(
     '/unimpersonate',
     [AuthController::class, 'unimpersonate']
-)->setName('unimpersonate')->add($authenticate);
+)->setName('unimpersonate')->add(Authenticate::class);
 
 //password lost page
 $app->get(

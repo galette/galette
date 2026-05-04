@@ -13,7 +13,6 @@ use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Core\SlimApp;
-use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
 use Galette\Middleware\UpdateAndMaintenance;
@@ -107,13 +106,6 @@ $app->setBasePath((function () {
 $app->add($session);
 
 $app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
-
-/** @var \DI\Container $container */
-/**
- * Authentication middleware
- * FIXME: use DI when needed instead of global variable
- */
-$authenticate = $container->get(Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 
