@@ -745,6 +745,7 @@ final class HeadersCheck extends AbstractCommand
 
             'node_modules(?:\/.*)?', // npm imported libs
             'galette\/vendor(?:\/.*)?', // composer imported libs
+            'vendor(?:\/.*)?', // composer imported libs
             'galette\/plugins(?:\/.*)?', // plugins
             'galette\/data(?:\/.*)?', // data files
             'galette\/tempcache(?:\/.*)?',
