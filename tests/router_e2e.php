@@ -27,6 +27,12 @@ $docRoot = realpath(__DIR__ . '/../galette/webroot'); //@phpstan-ignore theCodin
 // Requested path, without query string
 $uri = urldecode(parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)); //@phpstan-ignore theCodingMachineSafe.function
 
+// Handle test-specific routes (preferences management for E2E tests)
+if (str_starts_with($uri, '/test/preferences')) {
+    require __DIR__ . '/test_preferences_api.php';
+    exit;
+}
+
 // If the file exists in the webroot (static or specific PHP like installer.php)
 if ($uri !== '/' && file_exists($docRoot . $uri)) {
     if (str_ends_with($uri, '.php')) {

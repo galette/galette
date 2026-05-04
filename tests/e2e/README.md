@@ -27,7 +27,8 @@ tests/e2e/
 │   ├── groups.spec.ts        # Group CRUD operations
 │   ├── groups.fixture.spec.ts     # Group tests using fixture data
 │   ├── forms.fixture.spec.ts      # Form validation tests
-│   └── a11y.spec.ts          # Accessibility compliance tests (WCAG 2.1 A/AA + RGAA)
+│   ├── a11y.spec.ts          # Accessibility compliance tests (WCAG 2.1 A/AA + RGAA)
+│   └── a11y-public-anonymous.spec.ts  # Accessibility tests for public pages (anonymous)
 ```
 
 ## Test File Organization
@@ -130,8 +131,9 @@ test.describe('Members', () => {
   - Public members gallery (trombinoscope)
   - Public staff list and gallery
   - Public documents list
-  - Deprecated routes redirections
-  - No authentication requirement validation
+  - Deprecated routes redirections (`/public/list`, `/public/members`, `/public/trombinoscope`, `/public/trombi`)
+  - Visibility by role (PUBLIC, RESTRICTED, PRIVATE, HIDDEN)
+  - **Note**: Uses `PreferencesHelper` to enable/restore public pages configuration for each test
 
 #### Accessibility Tests (`a11y.spec.ts`)
 - WCAG 2.1 A/AA compliance testing using axe-core
@@ -140,6 +142,16 @@ test.describe('Members', () => {
 - Color contrast verification
 - Form label accessibility
 - **Note**: All tests prefixed with "A11y -" for easy filtering
+
+#### Accessibility Tests - Public Pages Anonymous (`a11y-public-anonymous.spec.ts`)
+- **NEW**: WCAG 2.1 A/AA compliance for public pages without authentication
+- Tests all 5 public pages (members list/gallery, staff list/gallery, documents)
+- Tests 2 deprecated routes accessibility after redirect
+- Tests navigation, keyboard, contrast, heading structure, image alt texts
+- Uses `beforeAll` to configure PUBLIC visibility (anonymous access)
+- Uses `afterAll` to restore default configuration
+- Uses `base` test (no authentication required)
+- **Note**: 12 tests that run in anonymous mode with PUBLIC visibility
 
 ## Fixtures
 
@@ -391,6 +403,51 @@ await FormHelper.expectValidationError(page, 'email_adh');
 const hasErrors = await FormHelper.hasErrors(page);
 ```
 
+### PreferencesHelper (`helpers/preferences.ts`)
+
+Manages Galette preferences for E2E tests (enables dynamic configuration without UI interaction):
+
+```typescript
+import { PreferencesHelper, PUBLIC_PAGES_VISIBILITY } from '../helpers/preferences';
+
+// Enable public pages with RESTRICTED visibility (members only)
+await PreferencesHelper.enablePublicPages(page, PUBLIC_PAGES_VISIBILITY.RESTRICTED);
+
+// Disable public pages
+await PreferencesHelper.disablePublicPages(page);
+
+// Set visibility for a specific public page
+await PreferencesHelper.setPublicPageVisibility(
+  page, 
+  'pref_publicpages_visibility_memberslist', 
+  PUBLIC_PAGES_VISIBILITY.PUBLIC
+);
+
+// Restore default configuration (enabled with RESTRICTED)
+await PreferencesHelper.restoreDefaultPublicPages(page);
+
+// Get current configuration
+const config = await PreferencesHelper.getPublicPagesConfig(page);
+console.log(config.enabled); // true/false
+console.log(config.memberslist); // 0=PUBLIC, 1=RESTRICTED, 2=PRIVATE, 3=HIDDEN
+```
+
+**Public Pages Visibility Levels:**
+- `PUBLIC_PAGES_VISIBILITY.PUBLIC` (0) - Accessible to all (no authentication)
+- `PUBLIC_PAGES_VISIBILITY.RESTRICTED` (1) - Accessible to up-to-date members only (default)
+- `PUBLIC_PAGES_VISIBILITY.PRIVATE` (2) - Accessible to admin and staff members only
+- `PUBLIC_PAGES_VISIBILITY.HIDDEN` (3) - Not accessible to anyone
+
+**Available Page Preferences:**
+- `pref_publicpages_visibility_generic` - Default/fallback visibility
+- `pref_publicpages_visibility_memberslist` - Members list page
+- `pref_publicpages_visibility_membersgallery` - Members gallery page
+- `pref_publicpages_visibility_stafflist` - Staff list page
+- `pref_publicpages_visibility_staffgallery` - Staff gallery page
+- `pref_publicpages_visibility_documents` - Documents list page
+
+**Note**: The `PreferencesHelper` uses a test-only API endpoint (`/test/preferences`) that is only available when `GALETTE_TESTS=1` environment variable is set.
+
 ### Importing Helpers
 
 All helpers can be imported from the index:
@@ -401,6 +458,7 @@ import { NavigationHelper, ModalHelper, FlashMessageHelper } from '../helpers';
 
 // Or specific import
 import { DropdownHelper } from '../helpers/dropdown';
+import { PreferencesHelper, PUBLIC_PAGES_VISIBILITY, PUBLIC_PAGE_PREFS } from '../helpers/preferences';
 ```
 
 ## Test Data Management
@@ -646,6 +704,7 @@ E2E tests are run in CI, as well as PHPUnit tests, no further configuration shou
 8. **Clean up created data** - Delete test members after CRUD tests (see `members.spec.ts`)
 9. **Document fixture dependencies** - Add comments if test requires specific fixture data
 10. **Use meaningful assertions** - Include helpful error messages
+11. **Restore preferences after modification** - Use `PreferencesHelper.restoreDefaultPublicPages()` or similar in `afterEach()` hooks
 
 ## Accessibility Testing
 
@@ -696,4 +755,3 @@ GALETTE_TESTS=1 DB=mysql bin/console galette:seed-fixtures
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 - [axe-core Rules](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md)
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-
