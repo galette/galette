@@ -58,7 +58,7 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
     )->setName('documentsPublicList');
 
     $app->get(
-        '/{list|members}[/{option:page|order}/{value:\d+|\w+}]',
+        '/{orig:list|members}[/{option:page|order}/{value:\d+|\w+}]',
         function ($request, $response, ?string $option = null, ?string $value = null) use ($routeparser) {
             //list deprecated since 1.2.0
             //members deprecated since 0.9.3
@@ -74,7 +74,7 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
     );
 
     $app->get(
-        '/{trombinoscope|trombi}',
+        '/{orig:trombinoscope|trombi}',
         fn($request, $response)
             //trombi deprecated since 1.2.0
             //trombinoscope deprecated since 0.9.3
