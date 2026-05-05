@@ -745,11 +745,16 @@ final class HeadersCheck extends AbstractCommand
 
             'node_modules(?:\/.*)?', // npm imported libs
             'galette\/vendor(?:\/.*)?', // composer imported libs
-            'vendor(?:\/.*)?', // composer imported libs
+            '.*\/vendor(?:\/.*)?', // composer imported libs
+            '.*\/coverage(?:\/.*)?', // composer imported libs
+
             'galette\/plugins(?:\/.*)?', // plugins
+            'disabled\.plugins(?:\/.*)?', // plugins
             'galette\/data(?:\/.*)?', // data files
-            'galette\/tempcache(?:\/.*)?',
-            'galette\/config\/config\.inc\.php',
+            'galette\/docs\/build(?:\/.*)?', // data files
+            'tempcache(?:\/.*)?.',
+            'dbs(?:\/.*)?.',
+            '(.*\/)?config\.inc\.php',
             'playwright-report(?:\/.*)?',
 
             'semantic(?:\/.*)?', // Semantic UI assets
