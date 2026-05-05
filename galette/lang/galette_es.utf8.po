@@ -43,10 +43,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-04-23 21:31+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-05-06 17:11+0000\n"
+"Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -54,7 +54,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "¡No se ha podido cargar la transacción nº %id!"
@@ -4026,8 +4026,6 @@ msgstr "Añadir nueva red social"
 msgid "Choose or enter your own..."
 msgstr "Elige o introduce por ti mismo..."
 
-#, fuzzy
-#| msgid "Social networks"
 msgid "Social network"
 msgstr "Redes sociales"
 
@@ -4075,10 +4073,8 @@ msgstr "Complementos inactivos"
 msgid "Cause"
 msgstr "Motivo"
 
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Activado"
+msgstr "Habilitar"
 
 msgid "A required file is missing"
 msgstr "Falta un archivo requerido"
@@ -4541,10 +4537,8 @@ msgstr "Quitar modelo y volver a valores predeterminados"
 msgid "Remove model"
 msgstr "Quitar modelo"
 
-#, fuzzy
-#| msgid "Deletion"
 msgid "Selection"
-msgstr "Borrado"
+msgstr "Selección"
 
 msgid "Store new model"
 msgstr "Almacenar modelo nuevo"
@@ -4776,10 +4770,8 @@ msgid "The following files seems ready to import on the disk:"
 msgstr ""
 "Los archivos siguientes parecen listos para su importación en el disco:"
 
-#, fuzzy
-#| msgid "choice"
 msgid "Choice"
-msgstr "elección"
+msgstr "Elección"
 
 msgid "Size"
 msgstr "Tamaño"
@@ -6099,7 +6091,7 @@ msgid "Add new group search criteria"
 msgstr "Añadir nuevos criterios de búsqueda de grupos"
 
 msgid "Logical operator"
-msgstr ""
+msgstr "Operador lógico"
 
 msgid "In all selected groups"
 msgstr "En todos los grupos seleccionados"
@@ -6125,10 +6117,8 @@ msgstr "Añadir nuevo criterio de búsqueda libre"
 msgid "Select a field"
 msgstr "Selecciona un campo"
 
-#, fuzzy
-#| msgid "separator"
 msgid "Query operator"
-msgstr "separador"
+msgstr "Operador de consulta"
 
 msgid "is"
 msgstr "es"
@@ -6136,10 +6126,8 @@ msgstr "es"
 msgid "is not"
 msgstr "no es"
 
-#, fuzzy
-#| msgid "Values:"
 msgid "Value"
-msgstr "Valores:"
+msgstr "Valor"
 
 msgid "before"
 msgstr "antes"
