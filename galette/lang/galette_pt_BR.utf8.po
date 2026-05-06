@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-05-06 17:11+0000\n"
+"PO-Revision-Date: 2026-05-07 21:11+0000\n"
 "Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
@@ -176,7 +176,7 @@ msgid "Mailing preview"
 msgstr ""
 
 msgid "Contributions types"
-msgstr ""
+msgstr "Tipos de contribuições"
 
 msgid "Edit contribution type"
 msgstr ""
@@ -556,7 +556,7 @@ msgid "An error occurred while storing list configuration :("
 msgstr ""
 
 msgid "Reminders"
-msgstr ""
+msgstr "Lembretes"
 
 msgid "No reminder to send for now."
 msgstr ""
@@ -1043,7 +1043,7 @@ msgid "Download empty adhesion form"
 msgstr ""
 
 msgid "Contributions"
-msgstr ""
+msgstr "Contribuições"
 
 msgid "View and filter contributions"
 msgstr ""
@@ -1067,7 +1067,7 @@ msgid "Add new donation in database"
 msgstr ""
 
 msgid "Add a transaction"
-msgstr ""
+msgstr "Adicionar uma transação"
 
 msgid "Add new transaction in database"
 msgstr ""
@@ -1156,7 +1156,7 @@ msgid "Public pages"
 msgstr ""
 
 msgid "Transactions"
-msgstr ""
+msgstr "Transações"
 
 msgid "%membername: edit information"
 msgstr ""
@@ -4488,7 +4488,7 @@ msgid "Creation date"
 msgstr ""
 
 msgid "Add a document"
-msgstr ""
+msgstr "Adicionar um documento"
 
 msgid "Lost your password?"
 msgstr ""
@@ -4628,7 +4628,7 @@ msgid "Not dispatched amount"
 msgstr ""
 
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Pagamentos programados"
 
 msgid "Create a new scheduled payment"
 msgstr ""
@@ -4728,7 +4728,7 @@ msgid "An error occurred displaying members interface :("
 msgstr ""
 
 msgid "Members selection"
-msgstr ""
+msgstr "Seleção de membros"
 
 msgid "Click on a row to select a member"
 msgstr ""
