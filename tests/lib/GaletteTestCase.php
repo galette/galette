@@ -71,15 +71,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $translator = $this->container->get(\Galette\Core\Translator::class);
         //phpcs:enable
 
-        require GALETTE_ROOT . 'includes/routes/main.routes.php';
-        require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-        require GALETTE_ROOT . 'includes/routes/management.routes.php';
-        require GALETTE_ROOT . 'includes/routes/members.routes.php';
-        require GALETTE_ROOT . 'includes/routes/groups.routes.php';
-        require GALETTE_ROOT . 'includes/routes/contributions.routes.php';
-        require GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
-        require GALETTE_ROOT . 'includes/routes/ajax.routes.php';
-        require GALETTE_ROOT . 'includes/routes/plugins.routes.php';
+        \Galette\Core\Galette::loadRoutes($app, true);
     }
 
     /**

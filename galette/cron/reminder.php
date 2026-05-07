@@ -7,6 +7,7 @@
  */
 
 use Galette\Core\Db;
+use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
@@ -37,12 +38,7 @@ if (isset($needs_update) && $needs_update === true) {
 
 $container = $app->getContainer();
 
-require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
+Galette::loadRoutes(app: $app, cron: true);
 $cron = (PHP_SAPI === 'cli');
 if ($cron) {
     $container->get(Login::class)->logCron(

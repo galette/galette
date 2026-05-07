@@ -18,7 +18,9 @@ use Galette\IO\News;
 use Galette\Util\Release;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Slim\App;
 
+use function Safe\glob;
 use function Safe\exec;
 
 /**
@@ -1303,5 +1305,68 @@ class Galette
         }
 
         return $encoded;
+    }
+
+    /**
+     * Load routes
+     *
+     * @param App<ContainerInterface> $app   App instance
+     * @param bool                    $force Force routes re-loading (for tests)
+     * @param bool                    $cron  Load only cron routes
+     */
+    public static function loadRoutes(App $app, bool $force = false, bool $cron = false): void
+    {
+        /** @var array<string, array<int, string>> $routeFiles */
+        static $routeFiles = [];
+
+        $cron_exclusions = [
+            'ajax.routes.php',
+            'plugins.routes.php'
+        ];
+
+        $mode = $cron ? 'cron' : 'all';
+        if (!isset($routeFiles[$mode]) || $force) {
+            $routesPath = GALETTE_ROOT . 'includes/routes/';
+            $files = array_merge(
+                glob($routesPath . '*.route.php') ?: [],
+                glob($routesPath . '*.routes.php') ?: []
+            );
+            $files = array_values(array_unique($files));
+
+            if ($cron) {
+                $files = array_filter(
+                    $files,
+                    static fn(string $file): bool => !in_array(basename($file), $cron_exclusions, true)
+                );
+            }
+
+            usort(
+                $files,
+                static function (string $left, string $right): int {
+                    $baseLeft = basename($left);
+                    $baseRight = basename($right);
+
+                    if ($baseLeft === $baseRight && $baseLeft === 'main.routes.php') {
+                        return 0;
+                    }
+                    if ($baseLeft === 'main.routes.php') {
+                        return -1;
+                    }
+                    if ($baseRight === 'main.routes.php') {
+                        return 1;
+                    }
+                    return strcmp($left, $right);
+                }
+            );
+            $routeFiles[$mode] = $files;
+        }
+
+        foreach ($routeFiles[$mode] as $routeFile) {
+            if ($force) {
+                require $routeFile;
+            } else {
+                require_once $routeFile;
+            }
+        }
     }
 }

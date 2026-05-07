@@ -105,7 +105,7 @@ $app->setBasePath((function () {
 
 $app->add($session);
 
-$app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
+$app->add(\Slim\Csrf\Guard::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 
@@ -143,14 +143,7 @@ $app->add(Language::class);
 //Telemetry update middleware
 $app->add(Telemetry::class);
 
-require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
+Galette::loadRoutes($app);
 
 // Via this middleware you could access the route and routing results from the resolved route
 $app->add(function (Request $request, RequestHandler $handler) use ($container) {
