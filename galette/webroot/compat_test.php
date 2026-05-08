@@ -37,7 +37,7 @@ $compat_ok = $phpok //@phpstan-ignore booleanAnd.leftAlwaysTrue
     </head>
     <body class="pushable">
         <div class="pusher">
-            <div id="main" class="ui container">
+            <main id="main" class="ui container">
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
                         <img class="icon" width="200" alt="" src="./themes/default/images/galette.webp"/>
@@ -63,7 +63,7 @@ $compat_ok = $phpok //@phpstan-ignore booleanAnd.leftAlwaysTrue
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </body>
 </html>
