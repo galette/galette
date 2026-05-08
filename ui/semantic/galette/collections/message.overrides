@@ -16,3 +16,8 @@ body.nojs .ui.message > .close.icon {
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
+.ui.message a {
+  color: @textColor;
+  text-decoration: underline;
+}
