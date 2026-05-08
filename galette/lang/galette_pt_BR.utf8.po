@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-05-07 21:11+0000\n"
+"PO-Revision-Date: 2026-05-09 07:15+0000\n"
 "Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.5-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr ""
@@ -209,7 +209,7 @@ msgid "Dynamic field has been successfully stored!"
 msgstr ""
 
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Campos dinâmicos"
 
 msgid "You do not have permission for requested URL."
 msgstr ""
@@ -323,7 +323,7 @@ msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
 msgid "Delete failed"
-msgstr ""
+msgstr "Falha ao excluir"
 
 #, php-format
 msgid "Remove member %1$s"
@@ -375,7 +375,7 @@ msgid "Missing required status name!"
 msgstr ""
 
 msgid "Status has not been added :("
-msgstr ""
+msgstr "O status ainda não foi adicionado :("
 
 msgid "Status #%id has not been updated"
 msgstr ""
@@ -767,7 +767,7 @@ msgid "Flush the logs"
 msgstr ""
 
 msgid "Plugins"
-msgstr ""
+msgstr "Plugins"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
@@ -778,7 +778,7 @@ msgid "Plugin %1$s has been disabled"
 msgstr ""
 
 msgid "Labels translation"
-msgstr ""
+msgstr "Tradução de rótulos"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
@@ -857,19 +857,19 @@ msgid "None"
 msgstr ""
 
 msgid "Checks"
-msgstr ""
+msgstr "Checando"
 
 msgid "Installation mode"
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "Banco de dados"
 
 msgid "Database access and permissions"
 msgstr ""
 
 msgid "Previous version selection"
-msgstr ""
+msgstr "Seleção da versão anterior"
 
 msgid "Database upgrade"
 msgstr ""
@@ -878,7 +878,7 @@ msgid "Tables Creation"
 msgstr ""
 
 msgid "Admin parameters"
-msgstr ""
+msgstr "Parâmetros de administração"
 
 msgid "Telemetry"
 msgstr "Telemetria"
@@ -914,7 +914,7 @@ msgid "Unable to create configuration file (%path)"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "Fields config and categories"
 msgstr ""
@@ -1470,7 +1470,7 @@ msgid "Managers:"
 msgstr ""
 
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 msgid "Email"
 msgstr ""
@@ -1594,7 +1594,7 @@ msgid "Cards"
 msgstr "Cartas"
 
 msgid "Member"
-msgstr ""
+msgstr "Membro"
 
 msgid "An error occurred."
 msgstr ""
@@ -1969,10 +1969,10 @@ msgid "Member card updated"
 msgstr ""
 
 msgid "Active"
-msgstr ""
+msgstr "Ativo"
 
 msgid "Inactive"
-msgstr ""
+msgstr "Inativo"
 
 msgid " (%age years old)"
 msgstr ""
@@ -2031,7 +2031,7 @@ msgid "Contributor:"
 msgstr ""
 
 msgid "Contribution type:"
-msgstr ""
+msgstr "Tipo de contribuição:"
 
 msgid "Comments:"
 msgstr ""
@@ -2184,7 +2184,7 @@ msgid "ICQ"
 msgstr ""
 
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 msgid "Blog"
 msgstr ""
@@ -2227,13 +2227,13 @@ msgid "Credit card"
 msgstr ""
 
 msgid "Check"
-msgstr ""
+msgstr "Verificar"
 
 msgid "Transfer"
 msgstr ""
 
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 msgid "Stripe"
 msgstr ""
@@ -2454,7 +2454,7 @@ msgid "Database installation"
 msgstr ""
 
 msgid "Documentation"
-msgstr ""
+msgstr "Documentação"
 
 msgid "Realization:"
 msgstr ""
@@ -2647,7 +2647,7 @@ msgid "Member id:"
 msgstr ""
 
 msgid "Status:"
-msgstr ""
+msgstr "Status:"
 
 msgid "Name:"
 msgstr ""
@@ -3799,7 +3799,7 @@ msgid "Membership extension"
 msgstr ""
 
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 msgid "Author"
 msgstr ""
@@ -3972,10 +3972,10 @@ msgid "Attached contributions"
 msgstr ""
 
 msgid "Begin"
-msgstr ""
+msgstr "Começar"
 
 msgid "End"
-msgstr ""
+msgstr "Fim"
 
 msgid "Duration"
 msgstr ""
@@ -4575,7 +4575,7 @@ msgid "Priority"
 msgstr ""
 
 msgid "New status"
-msgstr ""
+msgstr "Novo status"
 
 msgid "Choose wich reminder(s) you want to send:"
 msgstr ""
@@ -5853,7 +5853,7 @@ msgid "My activities"
 msgstr ""
 
 msgid "Activities"
-msgstr ""
+msgstr "Atividades"
 
 msgid "Show dashboard on login"
 msgstr ""
