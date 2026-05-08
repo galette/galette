@@ -40,7 +40,7 @@ $compat_ok = $phpok //@phpstan-ignore booleanAnd.leftAlwaysTrue
             <div id="main" class="ui container">
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
-                        <img class="icon" width="200" alt="[ Galette ]" src="./themes/default/images/galette.webp"/>
+                        <img class="icon" width="200" alt="" src="./themes/default/images/galette.webp"/>
                     </div>
                     <h1 class="ui block center aligned header">Compatibility tests</h1>
                     <div class="ui segment">

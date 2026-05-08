@@ -34,6 +34,22 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  base('A11y - compatibility checks page', async ({ page }) => {
+    await page.goto('/compat_test.php');
+    await page.locator('h1').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  base('A11y - installer page', async ({ page }) => {
+    await page.goto('/installer.php');
+    await page.locator('h1').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   // Dashboard
   test('A11y - Dashboard page', async ({ loggedInPage: page }) => {
     await page.goto('/dashboard');
@@ -491,5 +507,4 @@ test.describe('Accessibility', () => {
       expect(hasLabel).toBeTruthy();
     }
   });
-
 });
