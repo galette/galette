@@ -20,7 +20,7 @@ test.describe('Mailings', () => {
   test('Mailings - UI loads without errors', async ({ loggedInPage: page }) => {
     await page.goto('/members');
 
-    await page.getByLabel('Main menu').getByText('Management').click();
+    await page.getByLabel('Main menu', { exact: true }).getByText('Management').click();
     await page.getByRole('link', { name: 'Mailings' }).click();
 
     await expect(page).toHaveURL(/\/mailings/);

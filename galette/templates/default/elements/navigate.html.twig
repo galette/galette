@@ -5,7 +5,7 @@
  #}
 
 {% if navigate is defined and navigate|length != 0 %}
-    <nav class="ui mini inverted pagination menu">
+    <nav class="ui mini inverted pagination menu" aria-label="{{ _T('Pagination') }}">
         <a
             {% if navigate.prev is defined %}href="{{ url_for(mpath, {"id": navigate.prev}) }}"{% endif %}
             class="item{% if navigate.prev is not defined %} disabled{% endif %}"

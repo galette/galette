@@ -4,7 +4,7 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-    <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
+    <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar" aria-label="{{ _T('Mobile main menu') }}">
 {% if not login.isLogged() or ext_auth is defined %}
     {% if cur_route != "login" and ext_auth is not defined %}
         {% import "macros.twig" as menus_macros %}
