@@ -62,11 +62,13 @@ var _bindFomanticComponents = function() {
      * The title (or data-html) attribute is appended to body and removed
      * from DOM after being hidden (inline: false).
      */
+    const main = $('main');
     $popup
         .popup({
             variation: 'inverted',
             inline: false,
             addTouchEvents: false,
+            context: main
         })
     ;
     $iconOnly.each(function() {
@@ -76,6 +78,7 @@ var _bindFomanticComponents = function() {
             inline: false,
             addTouchEvents: false,
             content: $this.find('.visually-hidden').html(),
+            context: main
             });
         })
     ;
@@ -84,6 +87,7 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             inline: true,
             addTouchEvents: false,
+            context: main
         })
     ;
     /* Touch events are allowed on info icons popups.
@@ -93,6 +97,7 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             inline: false,
             addTouchEvents: true,
+            context: main
         })
     ;
     /* Position right on the main accordion menu.
@@ -105,6 +110,7 @@ var _bindFomanticComponents = function() {
                 show: 300
             },
             addTouchEvents: false,
+            context: main
         })
     ;
     /* Position bottom on the top fixed menu.
@@ -114,6 +120,7 @@ var _bindFomanticComponents = function() {
             position: 'center bottom',
             variation: 'inverted',
             addTouchEvents: false,
+            context: main
         })
     ;
     /* Position left on the top right language dropdown menu.
@@ -126,6 +133,7 @@ var _bindFomanticComponents = function() {
                 show: 300
             },
             addTouchEvents: false,
+            context: main
         })
     ;
 }
