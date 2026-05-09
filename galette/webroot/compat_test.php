@@ -44,7 +44,7 @@ $compat_ok = $phpok //@phpstan-ignore booleanAnd.leftAlwaysTrue
                     </div>
                     <h1 class="ui block center aligned header">Compatibility tests</h1>
                     <div class="ui segment">
-                        <div id="main" class="text ui container">
+                        <div class="text ui container">
                             <?php echo $compat_ok ? '<p class="ui green center aligned message">Everything is OK :)</p>' : '<p class="ui red center aligned message">Something is wrong :(</p>'; ?>
                             <ul class="leaders">
                                 <li>
