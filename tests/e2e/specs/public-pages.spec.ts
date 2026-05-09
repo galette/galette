@@ -11,9 +11,10 @@
 import { expect } from '@playwright/test';
 import { test } from '../fixtures/auth.fixture';
 import {
+  NavigationHelper,
   PreferencesHelper,
   PUBLIC_PAGES_VISIBILITY,
-} from '../helpers/preferences';
+} from '../helpers';
 
 
 test.describe('Public Pages', () => {
@@ -297,8 +298,7 @@ test.describe('Public Pages', () => {
         await page.goto('/public/members/list');
 
         // Should NOT redirect to login
-        const currentUrl = page.url();
-        expect(currentUrl).not.toContain('/login');
+        await NavigationHelper.expectNoRedirectTo(page, /\/login/);
 
         // Should display content
         const hasContent = await page.locator('h1, h2').count() > 0;
@@ -320,8 +320,8 @@ test.describe('Public Pages', () => {
       const page = await context.newPage();
       try {
         await page.goto('/public/members/list');
-        const anonUrl = page.url();
-        expect(anonUrl).toContain('/login');
+
+        await NavigationHelper.expectRedirectTo(page, /\/login/);
       } finally {
         await context.close();
       }
@@ -412,8 +412,7 @@ test.describe('Public Pages', () => {
       // PublicPages middleware redirects to '/' which then redirects to '/dashboard' for logged-in members
       const memberPage = await loggedInAs('member');
       await memberPage.goto('/public/members/gallery');
-      await memberPage.waitForTimeout(500); //wait for redirect
-      expect(memberPage.url()).toContain('/dashboard');
+      await NavigationHelper.expectRedirectTo(memberPage, /\/dashboard/);
       await memberPage.close();
     });
   });

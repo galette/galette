@@ -48,5 +48,58 @@ export class NavigationHelper {
   static async waitForNavigation(page: Page, timeout: number = 30000): Promise<void> {
     await page.waitForLoadState('networkidle', { timeout });
   }
+
+  /**
+   * Assert that the page has been redirected to a given URL pattern.
+   * Replaces fragile `waitForTimeout` + `page.url()` patterns.
+   *
+   * @param page - Playwright Page object
+   * @param expectedUrl - URL string, substring or RegExp to match
+   * @param timeout - Optional timeout in milliseconds (default: 10000)
+   *
+   * @example
+   * await page.goto('/public/members/list');
+   * await NavigationHelper.expectRedirectTo(page, /\/login/);
+   *
+   * @example
+   * await page.goto('/public/members/list');
+   * await NavigationHelper.expectRedirectTo(page, '/login');
+   */
+  static async expectRedirectTo(
+    page: Page,
+    expectedUrl: string | RegExp,
+    timeout: number = 10000
+  ): Promise<void> {
+    await page.waitForURL(
+      typeof expectedUrl === 'string' ? new RegExp(expectedUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) : expectedUrl,
+      { timeout }
+    );
+    await expect(page).toHaveURL(
+      typeof expectedUrl === 'string' ? new RegExp(expectedUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) : expectedUrl
+    );
+  }
+
+  /**
+   * Assert that the page has NOT been redirected to a given URL pattern.
+   * Waits for the page to settle before checking the URL.
+   *
+   * @param page - Playwright Page object
+   * @param unexpectedUrl - URL string, substring or RegExp that must NOT match
+   * @param timeout - Optional timeout in milliseconds (default: 10000)
+   *
+   * @example
+   * await page.goto('/public/members/list');
+   * await NavigationHelper.expectNoRedirectTo(page, /\/login/);
+   */
+  static async expectNoRedirectTo(
+    page: Page,
+    unexpectedUrl: string | RegExp,
+    timeout: number = 10000
+  ): Promise<void> {
+    await page.waitForLoadState('domcontentloaded', { timeout });
+    await expect(page).not.toHaveURL(
+      typeof unexpectedUrl === 'string' ? new RegExp(unexpectedUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) : unexpectedUrl
+    );
+  }
 }
 
