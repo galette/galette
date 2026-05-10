@@ -22,13 +22,14 @@
 # Marat Ismailov <klippygames@gmail.com>, 2026.
 # Sergey Bishop <bsaq32@gmail.com>, 2026.
 # Тырцев Леонид <tleonid2018.pro@gmail.com>, 2026.
+# Andrei Stepanov <adem4ik@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-04-15 06:09+0000\n"
-"Last-Translator: Тырцев Леонид <tleonid2018.pro@gmail.com>\n"
+"PO-Revision-Date: 2026-05-11 14:11+0000\n"
+"Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -37,7 +38,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 2026.5-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Невозможно загрузить транзакцию #%id!"
@@ -152,9 +153,9 @@ msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
 msgstr "Исходные каталоги были успешно изменены: %1$s"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Group `%1$s` has been successfully saved."
-msgstr "Группа `%1$s` успешно сохранена."
+msgstr "Группа «%1$s» успешно сохранена."
 
 msgid "An error occurred while storing the group."
 msgstr "При сохранении группы произошла ошибка."
@@ -975,11 +976,11 @@ msgstr "Сколько будет %1$s плюс %2$s?"
 msgid "How much is %1$s added to %2$s?"
 msgstr "Что получится если прибавить %1$s к %2$s?"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
-msgstr "У меня %1$s Галет, мой друг дал мне ещё %2$s. Сколько у меня Галет?"
+msgstr "У меня %1$s Галет, друг дал мне ещё %2$s. Сколько у меня Галет?"
 
 #, php-format
 msgid "How much is %1$s minus %2$s?"
@@ -1160,65 +1161,65 @@ msgstr "Настройки полей списка и их порядка"
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
+"Настройка порядка полей, указание обязательных полей и того, для кого они "
+"видны"
 
 msgid "Manage additional fields for various forms"
-msgstr ""
+msgstr "Управление дополнительными полями для различных форм"
 
 msgid "Manage contributions types"
-msgstr ""
+msgstr "Управление типами взносов"
 
 msgid "Manage payment types"
-msgstr ""
+msgstr "Управление типами платежей"
 
 msgid "Manage titles"
-msgstr ""
+msgstr "Управление обращениями"
 
 msgid "Manage PDF models"
-msgstr ""
+msgstr "Управление PDF-шаблонами"
 
 msgid "Manage emails texts and subjects"
-msgstr ""
+msgstr "Управление текстами и темами писем"
 
 msgid "Manage translatable labels"
-msgstr ""
+msgstr "Управление переводимыми метками"
 
 msgid "Various administrative tools"
-msgstr ""
+msgstr "Различные административные инструменты"
 
 msgid "Directories"
-msgstr ""
+msgstr "Каталоги"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Тромбиноскоп"
+msgstr "Галереи"
 
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Просмотр документов, связанных с вашей ассоциацией"
 
 msgid "Public pages"
-msgstr ""
+msgstr "Публичные страницы"
 
 msgid "Transactions"
 msgstr "Транзакции"
 
 msgid "%membername: edit information"
-msgstr ""
+msgstr "%membername: редактирование информации"
 
 msgid "%membername: contributions"
-msgstr ""
+msgstr "%membername: взносы"
 
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: удаление из базы данных"
 
 msgid "Log in as %membername"
-msgstr ""
+msgstr "Войти как %membername"
 
 msgid "Mass change"
-msgstr ""
+msgstr "Массовое изменение"
 
 msgid "Mass add contributions"
-msgstr ""
+msgstr "Массовое добавление взносов"
 
 msgid "Delete"
 msgstr "Удалить"
@@ -1227,103 +1228,102 @@ msgid "Mail"
 msgstr "Почта"
 
 msgid "Generate labels"
-msgstr ""
+msgstr "Создать этикетки"
 
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "Создать карточки участников"
 
 msgid "Export as CSV"
-msgstr ""
+msgstr "Экспорт в CSV"
 
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Galette админ"
+msgstr "Новости Galette"
 
-#, fuzzy
-#| msgid "Actions"
 msgid "Association news"
-msgstr "Действия"
+msgstr "Новости ассоциации"
 
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
+msgstr "- Необходимо указать имя отправителя для писем!"
 
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
+"- Необходимо указать адрес электронной почты, который Galette будет "
+"использовать для отправки писем!"
 
 msgid "- You must indicate the SMTP server you want to use!"
-msgstr ""
+msgstr "- Необходимо указать SMTP-сервер, который вы хотите использовать!"
 
 msgid "- You must provide a login for SMTP authentication."
-msgstr ""
+msgstr "- Необходимо указать логин для аутентификации SMTP."
 
 msgid "- You must provide a password for SMTP authentication."
-msgstr ""
+msgstr "- Необходимо указать пароль для аутентификации SMTP."
 
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
-msgstr ""
+msgstr "- Необходимо указать продление членства или начало членства."
 
 msgid ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
+"- Продление членства по умолчанию и начало членства исключают друг друга."
 
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr ""
+msgstr "- Предложение месяцев совместимо только с началом членства."
 
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
-msgstr ""
+msgstr "- Обязательное поле %1$s пусто."
 
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Пароли не совпадают"
 
 msgid "You have to select a staff member to retrieve its address"
-msgstr ""
+msgstr "Необходимо выбрать сотрудника для получения его адреса"
 
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr ""
+msgstr "Необходимо выбрать сотрудника для получения его номера телефона"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Неверный адрес электронной почты: %s"
 
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- Имя пользователя должно содержать не менее 4 символов!"
 
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Это имя пользователя уже используется другим участником!"
 
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- Числа и размеры должны быть целыми!"
 
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- Высота карточки должна быть целым числом от 40 до 55!"
 
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- Ширина карточки должна быть целым числом от 70 до 95!"
 
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Неверное количество месяцев продления членства."
 
 msgid "- Invalid format of beginning of membership."
-msgstr ""
+msgstr "- Неверный формат начала членства."
 
 msgid "- Invalid date for beginning of membership."
-msgstr ""
+msgstr "- Неверная дата начала членства."
 
 msgid "- Invalid number of offered months."
-msgstr ""
+msgstr "- Неверное количество предлагаемых месяцев."
 
 msgid "- Invalid year for cards."
-msgstr ""
+msgstr "- Неверный год для карточек."
 
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- Неверный URL веб-сайта."
 
 #. TRANS: first parameter is name, second is status
 #, php-format
@@ -1332,106 +1332,108 @@ msgstr "%2$s ассоциации %1$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
+"Пожалуйста, определите константу \"GALETTE_URI\" с путём к вашему экземпляру."
 
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "Y-m-d H:i:s"
 
 msgid "Never"
 msgstr "Никогда"
 
 msgid "Main information"
-msgstr ""
+msgstr "Основная информация"
 
 msgid "Social networks"
-msgstr ""
+msgstr "Социальные сети"
 
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "CSS-файл тёмной темы сброшен."
 
 msgid "Unknown lang (%lang)"
-msgstr ""
+msgstr "Неизвестный язык (%lang)"
 
 #, php-format
 msgid "'%s' module"
-msgstr ""
+msgstr "Модуль «%s»"
 
 msgid "either 'mysql' or 'pgsql' PDO driver"
-msgstr ""
+msgstr "драйвер PDO 'mysql' или 'pgsql'"
 
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
-msgstr ""
+msgstr "Минимальная версия для движка %1$s — %2$s, обнаружено %1$s %3$s!"
 
 msgid "No such module."
-msgstr ""
+msgstr "Нет такого модуля."
 
 msgid "Cannot deactivate plugin."
-msgstr ""
+msgstr "Не удалось деактивировать плагин."
 
 msgid "Cannot activate plugin."
-msgstr ""
+msgstr "Не удалось активировать плагин."
 
 msgid "Module does not exists!"
-msgstr ""
+msgstr "Модуль не существует!"
 
 msgid "File not found!"
-msgstr ""
+msgstr "Файл не найден!"
 
 msgid "An SQL error has occurred."
-msgstr ""
+msgstr "Произошла ошибка SQL."
 
 msgid "Member Picture deleted"
-msgstr ""
+msgstr "Фотография участника удалена"
 
 msgid "Delete members cards, transactions and dues"
-msgstr ""
+msgstr "Удалить карточки участников, транзакции и взносы"
 
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
+"Нельзя удалить участника, у которого ещё есть зависимости (рассылки и т.д.)"
 
 msgid "Searches deleted (%list)"
-msgstr ""
+msgstr "Поиски удалены (%list)"
 
 msgid "Scheduled payments deleted (%list)"
-msgstr ""
+msgstr "Запланированные платежи удалены (%list)"
 
 msgid "Contributions deleted (%list)"
-msgstr ""
+msgstr "Взносы удалены (%list)"
 
 msgid "Password is blacklisted!"
-msgstr ""
+msgstr "Пароль находится в чёрном списке!"
 
 #, php-format
 msgid "Too short (%1$s characters minimum, %2$s found)"
-msgstr ""
+msgstr "Слишком короткий (минимум %1$s символов, обнаружено %2$s)"
 
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "Не используйте личную информацию в качестве пароля!"
 
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Не содержит строчных букв"
 
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Не содержит заглавных букв"
 
 msgid "Does not contains letters"
-msgstr ""
+msgstr "Не содержит букв"
 
 msgid "Does not contains numbers"
-msgstr ""
+msgstr "Не содержит цифр"
 
 msgid "Does not contains special characters"
-msgstr ""
+msgstr "Не содержит специальных символов"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr ""
+msgstr "ГГГГ-ММ-ДД"
 
 msgid "Photo has not been stored!"
-msgstr ""
+msgstr "Фотография не сохранена!"
 
 msgid "Photo has not been copied!"
-msgstr ""
+msgstr "Фотография не скопирована!"
 
 msgid "Yes"
 msgstr "Да"
@@ -1440,52 +1442,52 @@ msgid "No"
 msgstr "Нет"
 
 msgid "Missing required field name!"
-msgstr ""
+msgstr "Отсутствует обязательное имя поля!"
 
 msgid "Missing required field permissions!"
-msgstr ""
+msgstr "Отсутствуют обязательные разрешения для поля!"
 
 msgid "Unknown permission!"
-msgstr ""
+msgstr "Неизвестное разрешение!"
 
 msgid "Missing required form!"
-msgstr ""
+msgstr "Отсутствует обязательная форма!"
 
 msgid "Unknown form!"
-msgstr ""
+msgstr "Неизвестная форма!"
 
 msgid "- Field name already used."
-msgstr ""
+msgstr "- Имя поля уже используется."
 
 msgid "- Width must be a positive integer!"
-msgstr ""
+msgstr "- Ширина должна быть положительным целым числом!"
 
 msgid "- Height must be a positive integer!"
-msgstr ""
+msgstr "- Высота должна быть положительным целым числом!"
 
 msgid "- Size must be a positive integer!"
-msgstr ""
+msgstr "- Размер должен быть положительным целым числом!"
 
 msgid "- Min size must be a positive integer!"
-msgstr ""
+msgstr "- Минимальный размер должен быть положительным целым числом!"
 
 msgid "- Min size must be lower than size!"
-msgstr ""
+msgstr "- Минимальный размер должен быть меньше размера!"
 
 msgid "- Repeat must be an integer!"
-msgstr ""
+msgstr "- Повторение должно быть целым числом!"
 
 msgid "An error occurred storing the field."
-msgstr ""
+msgstr "Произошла ошибка при сохранении поля."
 
 msgid "separator"
 msgstr "разделитель"
 
 msgid "free text"
-msgstr ""
+msgstr "свободный текст"
 
 msgid "single line"
-msgstr ""
+msgstr "одна строка"
 
 msgid "choice"
 msgstr "выбор"
@@ -1500,19 +1502,19 @@ msgid "file"
 msgstr "файл"
 
 msgid "Galette error"
-msgstr ""
+msgstr "Ошибка Galette"
 
 msgid "Page not found"
-msgstr ""
+msgstr "Страница не найдена"
 
 msgid "groups_list"
 msgstr "список_групп"
 
 msgid "Members by groups"
-msgstr ""
+msgstr "Участники по группам"
 
 msgid "Generated by Galette"
-msgstr ""
+msgstr "Создано в Galette"
 
 msgid "Managers:"
 msgstr "Менеджеры:"
@@ -1545,25 +1547,25 @@ msgid "attendance_sheet"
 msgstr "табель посещаемости"
 
 msgid "MMMM, EEEE d y"
-msgstr ""
+msgstr "d MMMM y, EEEE"
 
 msgid "Signature"
 msgstr "Подпись"
 
 msgid "Staff members"
-msgstr ""
+msgstr "Сотрудники"
 
 msgid "Due free"
-msgstr ""
+msgstr "Освобождён от взносов"
 
 msgid "Never contribute"
-msgstr ""
+msgstr "Никогда не вносил"
 
 msgid "Impending due dates"
-msgstr ""
+msgstr "Скоро истекает"
 
 msgid "Up to date"
-msgstr ""
+msgstr "Всё оплачено"
 
 msgid "Late"
 msgstr "Поздно"
@@ -1578,47 +1580,49 @@ msgid "labels_print_filename"
 msgstr "labels_print_имя_файла"
 
 msgid "Member's Labels"
-msgstr ""
+msgstr "Этикетки участников"
 
 msgid "Labels"
 msgstr "Метки"
 
 #, php-format
 msgid "File %1$s cannot be open!"
-msgstr ""
+msgstr "Файл %1$s не удаётся открыть!"
 
 #, php-format
 msgid ""
 "Fields count mismatch... There should be %1$s fields and there are %2$s (row "
 "%3$s)"
 msgstr ""
+"Несоответствие количества полей... Должно быть %1$s полей, а есть %2$s "
+"(строка %3$s)"
 
 #. TRANS: first parameter is a field name, second the row in error
 #, php-format
 msgid "Field %1$s is required, but missing in row %2$s"
-msgstr ""
+msgstr "Поле %1$s обязательно, но отсутствует в строке %2$s"
 
 #, php-format
 msgid "Status %status does not exists!"
-msgstr ""
+msgstr "Статус %status не существует!"
 
 msgid "Title %title does not exists!"
-msgstr ""
+msgstr "Обращение %title не существует!"
 
 msgid "from another member in import"
-msgstr ""
+msgstr "от другого участника при импорте"
 
 msgid "from member %id_adh"
-msgstr ""
+msgstr "от участника %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
-msgstr ""
+msgstr "Адрес электронной почты %address уже используется! (%extra)"
 
 msgid "Lang %lang does not exists!"
-msgstr ""
+msgstr "Язык %lang не существует!"
 
 msgid "File is empty!"
-msgstr ""
+msgstr "Файл пуст!"
 
 #. TRANS: first parameter is row, second member name
 #, php-format
@@ -1626,17 +1630,17 @@ msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "Произошла ошибка при сохранении элемента в строке %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
-msgstr ""
+msgstr "Произошла ошибка при импорте участников"
 
 #, php-format
 msgid "Association %s"
-msgstr ""
+msgstr "Ассоциация %s"
 
 msgid "cards"
 msgstr "карты"
 
 msgid "Member's Cards"
-msgstr ""
+msgstr "Карточки участников"
 
 msgid "Cards"
 msgstr "Карты"
@@ -1645,88 +1649,93 @@ msgid "Member"
 msgstr "Участник"
 
 msgid "An error occurred."
-msgstr ""
+msgstr "Произошла ошибка."
 
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
+"Имя файла недопустимо, оно не должно содержать специальных символов или "
+"пробелов."
 
 #, php-format
 msgid "File extension is not allowed, only %s files are."
-msgstr ""
+msgstr "Расширение файла не разрешено, разрешены только файлы %s."
 
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
-msgstr ""
+msgstr "Файл слишком большой. Максимальный допустимый размер — %d КБ"
 
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
 msgstr ""
+"Изображение слишком маленькое. Минимальный допустимый размер стороны "
+"изображения — %s пикселей"
 
 msgid "Mime-Type not allowed"
-msgstr ""
+msgstr "Mime-тип не разрешён"
 
 msgid "A file with that name already exists!"
-msgstr ""
+msgstr "Файл с таким именем уже существует!"
 
 msgid "File does not comply with requirements."
-msgstr ""
+msgstr "Файл не соответствует требованиям."
 
 msgid "Unable to write file or temporary file"
-msgstr ""
+msgstr "Не удалось записать файл или временный файл"
 
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
-msgstr ""
+msgstr "Загружаемый файл превышает директиву upload_max_filesize в php.ini"
 
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
+"Загружаемый файл превышает директиву MAX_FILE_SIZE, указанную в HTML-форме"
 
 msgid "The uploaded file was only partially uploaded"
-msgstr ""
+msgstr "Файл был загружен только частично"
 
 msgid "No file was uploaded"
-msgstr ""
+msgstr "Файл не был загружен"
 
 msgid "Missing a temporary folder"
-msgstr ""
+msgstr "Отсутствует временная папка"
 
 msgid "Failed to write file to disk"
-msgstr ""
+msgstr "Не удалось записать файл на диск"
 
 msgid "File upload stopped by extension"
-msgstr ""
+msgstr "Загрузка файла остановлена расширением"
 
 msgid "Unknown upload error"
-msgstr ""
+msgstr "Неизвестная ошибка загрузки"
 
 msgid "adherent_form"
-msgstr ""
+msgstr "форма_участника"
 
 msgid "receipt"
-msgstr ""
+msgstr "квитанция"
 
 msgid "invoice"
-msgstr ""
+msgstr "счёт"
 
 msgid "Inaccessible"
-msgstr ""
+msgstr "Недоступно"
 
 msgid "Public"
 msgstr "Публично"
 
 msgid "User, read only"
-msgstr ""
+msgstr "Пользователь, только чтение"
 
 msgid "User, read/write"
-msgstr ""
+msgstr "Пользователь, чтение/запись"
 
 msgid "Group manager"
-msgstr ""
+msgstr "Менеджер группы"
 
 msgid "Staff member"
-msgstr ""
+msgstr "Сотрудник"
 
 msgid "Administrator"
 msgstr "Администратор"
@@ -1734,81 +1743,81 @@ msgstr "Администратор"
 #. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to add dynamic translation for %1$s :("
-msgstr ""
+msgstr "Не удалось добавить динамический перевод для %1$s :("
 
 #. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
-msgstr ""
+msgstr "Не удалось обновить динамический перевод для %1$s :("
 
 #. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to remove old dynamic translation for %1$s :("
-msgstr ""
+msgstr "Не удалось удалить старый динамический перевод для %1$s :("
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr ""
+msgstr "Метка для динамического поля «%s»"
 
 #, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr ""
+msgstr "Поле ввода для динамического поля «%s»"
 
 #, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr ""
+msgstr "Значение для динамического поля «%s»"
 
 msgid "Your organisation name"
-msgstr ""
+msgstr "Название вашей организации"
 
 msgid "Your organisation slogan"
-msgstr ""
+msgstr "Слоган вашей организации"
 
 msgid "Your organisation address"
-msgstr ""
+msgstr "Адрес вашей организации"
 
 msgid "with break lines"
-msgstr ""
+msgstr "с переносами строк"
 
 msgid "Your organisation phone number"
-msgstr ""
+msgstr "Номер телефона вашей организации"
 
 msgid "Your organisation email address"
-msgstr ""
+msgstr "Адрес электронной почты вашей организации"
 
 msgid "Your organisation website"
-msgstr ""
+msgstr "Веб-сайт вашей организации"
 
 msgid "Your organisation logo"
-msgstr ""
+msgstr "Логотип вашей организации"
 
 msgid "Your organisation logo (print specific)"
-msgstr ""
+msgstr "Логотип вашей организации (для печати)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Current date (Y-m-d)"
-msgstr ""
+msgstr "Текущая дата (ГГГГ-ММ-ДД)"
 
 msgid "Galette's login URI"
-msgstr ""
+msgstr "URI входа в Galette"
 
 msgid "Footer text:"
-msgstr ""
+msgstr "Текст подвала:"
 
 msgid "Title"
 msgstr "Название"
 
 msgid "Member's ID"
-msgstr ""
+msgstr "ID участника"
 
 msgid "Member number"
-msgstr ""
+msgstr "Номер участника"
 
 msgid "Last name"
-msgstr ""
+msgstr "Фамилия"
 
 msgid "First name"
-msgstr ""
+msgstr "Имя"
 
 msgid "Nickname"
 msgstr "Никнейм"
@@ -1817,22 +1826,22 @@ msgid "Gender"
 msgstr "Пол"
 
 msgid "Birth date"
-msgstr ""
+msgstr "Дата рождения"
 
 msgid "Birth place"
-msgstr ""
+msgstr "Место рождения"
 
 msgid "Profession"
 msgstr "Профессия"
 
 msgid "Company name"
-msgstr ""
+msgstr "Название компании"
 
 msgid "Address"
 msgstr "Адрес"
 
 msgid "Zipcode"
-msgstr ""
+msgstr "Почтовый индекс"
 
 msgid "Town"
 msgstr "Город"
@@ -1841,34 +1850,34 @@ msgid "Country"
 msgstr "Страна"
 
 msgid "Member's main group"
-msgstr ""
+msgstr "Основная группа участника"
 
 msgid "Member's groups (as list)"
-msgstr ""
+msgstr "Группы участника (в виде списка)"
 
 msgid "Member state of dues"
-msgstr ""
+msgstr "Состояние взносов участника"
 
 msgid "Membership remaining days"
-msgstr ""
+msgstr "Оставшиеся дни членства"
 
 msgid "Membership expired since"
-msgstr ""
+msgstr "Членство истекло с"
 
 msgid "Contribution label"
-msgstr ""
+msgstr "Метка взноса"
 
 msgid "Amount"
 msgstr "Сумма"
 
 msgid "Amount (in letters)"
-msgstr ""
+msgstr "Сумма (прописью)"
 
 msgid "Full date"
-msgstr ""
+msgstr "Полная дата"
 
 msgid "Contribution year"
-msgstr ""
+msgstr "Год взноса"
 
 msgid "Comment"
 msgstr "Комментарий"
@@ -1880,31 +1889,31 @@ msgid "End date"
 msgstr "Дата окончания"
 
 msgid "Contribution id"
-msgstr ""
+msgstr "ID взноса"
 
 msgid "Payment type"
-msgstr ""
+msgstr "Тип платежа"
 
 msgid "Contribution information"
-msgstr ""
+msgstr "Информация о взносе"
 
 msgid "Member information"
-msgstr ""
+msgstr "Информация об участнике"
 
 #. TRANS: parameter is a field name
 #, php-format
 msgid "Missing required field %1$s"
-msgstr ""
+msgstr "Отсутствует обязательное поле %1$s"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
 #. TRANS: %1$s is the date format, %2$s is the field name
 #, php-format
 msgid "- Wrong date format (%1$s) for %2$s!"
-msgstr ""
+msgstr "- Неверный формат даты (%1$s) для %2$s!"
 
 msgid "Is admin"
-msgstr ""
+msgstr "Является администратором"
 
 msgid "Modified"
 msgstr "Изменено"
@@ -1912,109 +1921,111 @@ msgstr "Изменено"
 #. TRANS first param is name, second email, third days interval
 #, php-format
 msgid "%1$s <%2$s> (%3$s days)"
-msgstr ""
+msgstr "%1$s <%2$s> (%3$s дня/дней)"
 
 msgid "Sent reminder email for late membership"
-msgstr ""
+msgstr "Отправлено письмо-напоминание о просроченном членстве"
 
 msgid "Sent reminder email for impending membership"
-msgstr ""
+msgstr "Отправлено письмо-напоминание о скором истечении членства"
 
 msgid "A problem happened while sending late membership email"
-msgstr ""
+msgstr "Возникла проблема при отправке письма о просроченном членстве"
 
 msgid "A problem happened while sending impending membership email"
-msgstr ""
+msgstr "Возникла проблема при отправке письма о скором истечении членства"
 
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
+"Не удалось отправить напоминание о %membership (нет адреса электронной почты)"
+"."
 
 #. TRANS: first parameter is name, second the id, this days interval
 #, php-format
 msgid "%1$s (#%2$s - %3$s days)"
-msgstr ""
+msgstr "%1$s (#%2$s - %3$s дня/дней)"
 
 msgid "Freed of dues"
-msgstr ""
+msgstr "Освобождён от взносов"
 
 #. TRANS: first parameter is number of late days, second is registration date
 #, php-format
 msgid "Never contributed: Registered %1$s days ago (since %2$s)"
-msgstr ""
+msgstr "Никогда не вносил: зарегистрирован %1$s дня/дней назад (с %2$s)"
 
 msgid "Never contributed"
-msgstr ""
+msgstr "Никогда не вносил"
 
 msgid "Last day!"
-msgstr ""
+msgstr "Последний день!"
 
 msgid "Late since today!"
-msgstr ""
+msgstr "Просрочено с сегодняшнего дня!"
 
 #. TRANS: first parameter is number of remaining days, second is end membership date
 #, php-format
 msgid "%1$s days remaining (ending on %2$s)"
-msgstr ""
+msgstr "Осталось %1$s дня/дней (заканчивается %2$s)"
 
 #. TRANS: first parameter is number of late days, second is end membership date
 #, php-format
 msgid "Late of %1$s days (since %2$s)"
-msgstr ""
+msgstr "Просрочено на %1$s дня/дней (с %2$s)"
 
 msgid "No longer member"
-msgstr ""
+msgstr "Больше не участник"
 
 msgid "You have to select a group you own!"
-msgstr ""
+msgstr "Вы должны выбрать группу, которой владеете!"
 
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- Дата рождения должна быть в прошлом!"
 
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
+msgstr "- Участник должен быть моложе 200 лет (сейчас %years)!"
 
 msgid "- Non-valid E-Mail address!"
-msgstr ""
+msgstr "- Неверный адрес электронной почты!"
 
 msgid "- This E-Mail address is already used by another member!"
-msgstr ""
+msgstr "- Этот адрес электронной почты уже используется другим участником!"
 
 msgid "An error has occurred while looking if login already exists."
-msgstr ""
+msgstr "Произошла ошибка при проверке существования логина."
 
 msgid "- The username must be composed of at least %i characters!"
-msgstr ""
+msgstr "- Имя пользователя должно содержать не менее %i символов!"
 
 msgid "- The username cannot contain the @ character"
-msgstr ""
+msgstr "- Имя пользователя не может содержать символ @"
 
 msgid "- This username is already in use, please choose another one!"
-msgstr ""
+msgstr "- Это имя пользователя уже используется, выберите другое!"
 
 msgid "Password misrepeated: "
-msgstr ""
+msgstr "Пароль повторён неверно: "
 
 msgid "Status #%id does not exists in database."
-msgstr ""
+msgstr "Статус #%id не существует в базе данных."
 
 #, php-format
 msgid "Gender %gender does not exists!"
-msgstr ""
+msgstr "Пол %gender не существует!"
 
 msgid "A member cannot be its own parent!"
-msgstr ""
+msgstr "Участник не может быть своим собственным родителем!"
 
 msgid "Self_subscription as a member: "
-msgstr ""
+msgstr "Самостоятельная регистрация в качестве участника: "
 
 msgid "Member card added"
-msgstr ""
+msgstr "Карточка участника добавлена"
 
 msgid "Fail to add new member."
-msgstr ""
+msgstr "Не удалось добавить нового участника."
 
 msgid "Member card updated"
-msgstr ""
+msgstr "Карточка участника обновлена"
 
 msgid "Active"
 msgstr "Активный"
@@ -2023,12 +2034,12 @@ msgid "Inactive"
 msgstr "Неактивен"
 
 msgid " (%age years old)"
-msgstr ""
+msgstr " (%age лет)"
 
 #. TRANS: first parameter is member name, second his id
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
-msgstr ""
+msgstr "Дублировано из %1$s (%2$s)"
 
 msgid "Date:"
 msgstr "Дата:"
@@ -2040,40 +2051,40 @@ msgid "Description:"
 msgstr "Описание:"
 
 msgid "Originator:"
-msgstr ""
+msgstr "Инициатор:"
 
 msgid "Payment type:"
-msgstr ""
+msgstr "Тип платежа:"
 
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Пожалуйста, выберите участника из группы, которой вы управляете."
 
 msgid "- The amount must be an integer!"
-msgstr ""
+msgstr "- Сумма должна быть целым числом!"
 
 msgid "- Transaction description must be 150 characters long maximum."
-msgstr ""
+msgstr "- Описание транзакции должно содержать не более 150 символов."
 
 msgid "- Unknown payment type"
-msgstr ""
+msgstr "- Неизвестный тип платежа"
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
-msgstr ""
+msgstr "- Сумма всех взносов превышает сумму соответствующей транзакции."
 
 msgid "Transaction added"
-msgstr ""
+msgstr "Транзакция добавлена"
 
 msgid "Fail to add new transaction."
-msgstr ""
+msgstr "Не удалось добавить новую транзакцию."
 
 msgid "Transaction updated"
-msgstr ""
+msgstr "Транзакция обновлена"
 
 msgid "Label does not exist"
-msgstr ""
+msgstr "Метка не существует"
 
 msgid "Cannot delete this label: it's still used"
-msgstr ""
+msgstr "Нельзя удалить эту метку: она всё ещё используется"
 
 msgid "Contributor:"
 msgstr "Контрибьютор:"
@@ -2088,130 +2099,125 @@ msgid "Date"
 msgstr "Дата"
 
 msgid "Date of contribution:"
-msgstr ""
+msgstr "Дата взноса:"
 
 msgid "Start date of membership:"
-msgstr ""
+msgstr "Дата начала членства:"
 
 msgid "End date of membership:"
-msgstr ""
+msgstr "Дата окончания членства:"
 
 msgid "Transaction ID"
-msgstr ""
+msgstr "ID транзакции"
 
 msgid "Membership extension:"
-msgstr ""
+msgstr "Продление членства:"
 
 msgid "- The duration must be a positive integer!"
-msgstr ""
+msgstr "- Продолжительность должна быть положительным целым числом!"
 
 msgid "- The end date must be after the start date!"
-msgstr ""
+msgstr "- Дата окончания должна быть позже даты начала!"
 
 msgid "- Membership period overlaps period starting at "
-msgstr ""
+msgstr "- Период членства пересекается с периодом, начинающимся с "
 
 msgid "Contribution added"
-msgstr ""
+msgstr "Взнос добавлен"
 
 msgid "Fail to add new contribution."
-msgstr ""
+msgstr "Не удалось добавить новый взнос."
 
 msgid "Contribution updated"
-msgstr ""
+msgstr "Взнос обновлён"
 
 msgid "Script output"
-msgstr ""
+msgstr "Вывод скрипта"
 
 msgid "Membership"
-msgstr ""
+msgstr "Членство"
 
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
+"Нельзя изменить тип платежа, если есть привязанный запланированный платёж"
 
 msgid "Association status"
-msgstr ""
+msgstr "Статус ассоциации"
 
 msgid "Rules of procedure"
-msgstr ""
+msgstr "Правила процедуры"
 
 msgid "Adhesion form"
-msgstr ""
+msgstr "Форма вступления"
 
 msgid "Meeting minutes"
-msgstr ""
+msgstr "Протоколы собраний"
 
 msgid "Votes results"
-msgstr ""
+msgstr "Результаты голосований"
 
 msgid "You cannot delete Mr. or Mrs. titles!"
-msgstr ""
+msgstr "Вы не можете удалить обращения «Господин» или «Госпожа»!"
 
 msgid "Insert a carriage return"
-msgstr ""
+msgstr "Вставить перевод строки"
 
 msgid "Insert a new blank line"
-msgstr ""
+msgstr "Вставить новую пустую строку"
 
 msgid "Link validity"
-msgstr ""
+msgstr "Срок действия ссылки"
 
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Прямая ссылка для скачивания карточки участника"
 
 msgid "Direct link for invoice/receipt download"
-msgstr ""
+msgstr "Прямая ссылка для скачивания счёта/квитанции"
 
 msgid "Galette's change password URI"
-msgstr ""
+msgstr "URI смены пароля в Galette"
 
 msgid "Mail specific"
-msgstr ""
+msgstr "Специфичные для писем"
 
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution is required"
-msgstr "Взносы"
+msgstr "Требуется взнос"
 
-#, fuzzy
-#| msgid "contributions"
 msgid "Unable to load contribution"
-msgstr "вклады"
+msgstr "Не удалось загрузить взнос"
 
 msgid "Amount must be a positive number"
-msgstr ""
+msgstr "Сумма должна быть положительным числом"
 
 msgid "Amount cannot be greater than non allocated amount"
-msgstr ""
+msgstr "Сумма не может превышать нераспределённую сумму"
 
 msgid "Payment type for contribution must be set to scheduled"
-msgstr ""
+msgstr "Тип платежа для взноса должен быть установлен как «запланированный»"
 
 msgid "Payment type is required"
-msgstr ""
+msgstr "Тип платежа обязателен"
 
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Нельзя запланировать уже запланированный платёж!"
 
 msgid "Scheduled date is required"
-msgstr ""
+msgstr "Дата платежа обязательна"
 
 msgid "Unable to load payment type"
-msgstr ""
+msgstr "Не удалось загрузить тип платежа"
 
 msgid "Scheduled payment ID"
-msgstr ""
+msgstr "ID запланированного платежа"
 
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution ID"
-msgstr "Взносы"
+msgstr "ID взноса"
 
 msgid "Record date:"
-msgstr ""
+msgstr "Дата записи:"
 
 msgid "Scheduled date:"
-msgstr ""
+msgstr "Запланированная дата:"
 
 msgid "Paid"
 msgstr "Оплачивается"
@@ -2244,44 +2250,44 @@ msgid "Blog"
 msgstr "Блог"
 
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #. TRANS: first parameter is a field name, second its maximum length
 #, php-format
 msgid "%1$s should be less than %2$s characters long."
-msgstr ""
+msgstr "%1$s должно содержать менее %2$s символов."
 
 #. TRANS: parameter is a field name
 #, php-format
 msgid "%1$s should not be empty!"
-msgstr ""
+msgstr "%1$s не должно быть пустым!"
 
 msgid "Unknown type %type!"
-msgstr ""
+msgstr "Неизвестный тип %type!"
 
 msgid "Subtitle"
 msgstr "Субтитры"
 
 msgid "header and footer should not be empty!"
-msgstr ""
+msgstr "верхний и нижний колонтитулы не должны быть пустыми!"
 
 msgid "body should not be empty!"
-msgstr ""
+msgstr "тело письма не должно быть пустым!"
 
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "Вы не можете удалять системные типы платежей!"
 
 msgid "Other"
 msgstr "Другие"
 
 msgid "Cash"
-msgstr ""
+msgstr "Наличные"
 
 msgid "Credit card"
-msgstr ""
+msgstr "Банковская карта"
 
 msgid "Check"
-msgstr ""
+msgstr "Чек"
 
 msgid "Transfer"
 msgstr "Перевод"
@@ -2290,97 +2296,106 @@ msgid "Paypal"
 msgstr "Paypal"
 
 msgid "Stripe"
-msgstr ""
+msgstr "Stripe"
 
 msgid "HelloAsso"
-msgstr ""
+msgstr "HelloAsso"
 
 msgid "Payment schedule"
-msgstr ""
+msgstr "График платежей"
 
 msgid "You cannot delete default status!"
-msgstr ""
+msgstr "Вы не можете удалять статус по умолчанию!"
 
 msgid "Form is mandatory!"
-msgstr ""
+msgstr "Форма обязательна!"
 
 #, php-format
 msgid "Unknown form %form!"
-msgstr ""
+msgstr "Неизвестная форма %form!"
 
 msgid "Name cannot be empty!"
-msgstr ""
+msgstr "Имя не может быть пустым!"
 
 msgid "Group has been detached from its parent"
-msgstr ""
+msgstr "Группа была отсоединена от родительской"
 
 msgid "The group name you have requested already exists in the database."
-msgstr ""
+msgstr "Запрошенное вами имя группы уже существует в базе данных."
 
 msgid "Group added"
-msgstr ""
+msgstr "Группа добавлена"
 
 msgid "Fail to add new group."
-msgstr ""
+msgstr "Не удалось добавить новую группу."
 
 msgid "Group updated"
-msgstr ""
+msgstr "Группа обновлена"
 
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr ""
+msgstr "Группа «%1$s» не может быть установлена как родительская!"
 
 msgid "Unknown ACL rule '%acl'!"
-msgstr ""
+msgstr "Неизвестное правило ACL '%acl'!"
 
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
-msgstr ""
+msgstr "Маршрут '%1$s' не зарегистрирован в ACL!"
 
 msgid "Galette is currently under maintenance!"
-msgstr ""
+msgstr "Galette в настоящее время на обслуживании!"
 
 msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
 msgstr ""
+"Запрашиваемый вами экземпляр Galette в настоящее время на обслуживании. "
+"Пожалуйста, зайдите позже."
 
 msgid "Galette needs update!"
-msgstr ""
+msgstr "Galette требует обновления!"
 
 msgid "Your Galette database is not present, or not up to date."
-msgstr ""
+msgstr "Ваша база данных Galette отсутствует или не обновлена."
 
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
+"Пожалуйста, запустите процедуру установки или обновления (проверьте "
+"документацию)"
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Не авторизован"
 
 msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
+"Вы запросили отправку подтверждающего письма участнику, но отправка писем "
+"отключена в настройках."
 
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
+"- Вы не можете отправить подтверждение по электронной почте, если у "
+"участника нет адреса!"
 
 #. TRANS: first parameter is the use name, second his email address
 #, php-format
 msgid "Email sent to user %1$s (%2$s)"
-msgstr ""
+msgstr "Письмо отправлено пользователю %1$s (%2$s)"
 
 #. TRANS: first parameter is the use name, second his email address
 #, php-format
 msgid ""
 "A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
+"Возникла проблема при отправке квитанции о взносе пользователю %1$s (%2$s)"
 
 #. TRANS: first parameter is member name, second his email address
 #, php-format
 msgid "Email sent to admin for user %1$s (%2$s)"
-msgstr ""
+msgstr "Письмо отправлено администратору для пользователя %1$s (%2$s)"
 
 #. TRANS: first parameter is member name, second his email address
 #, php-format
@@ -2388,124 +2403,127 @@ msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
 msgstr ""
+"Возникла проблема при отправке уведомления администратору о взносе "
+"пользователя %1$s (%2$s)"
 
 msgid "Post contribution script failed"
-msgstr ""
+msgstr "Скрипт после добавления взноса не выполнен"
 
 msgid "The configured post contribution script has failed."
-msgstr ""
+msgstr "Настроенный скрипт после добавления взноса не выполнен."
 
 msgid "You can find contribution information and script output below."
-msgstr ""
+msgstr "Ниже вы можете найти информацию о взносе и вывод скрипта."
 
 msgid "Post contribution script has failed."
-msgstr ""
+msgstr "Скрипт после добавления взноса не выполнен."
 
 #, php-format
 msgid "New account email sent to '%s'."
-msgstr ""
+msgstr "Письмо о новой учётной записи отправлено на '%s'."
 
 #, php-format
 msgid "Account modification email sent to '%s'."
-msgstr ""
+msgstr "Письмо об изменении учётной записи отправлено на '%s'."
 
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
-msgstr ""
+msgstr "Возникла проблема при отправке письма об учётной записи на '%s'"
 
 #, php-format
 msgid "New account email sent to admin for '%s'."
-msgstr ""
+msgstr "Письмо о новой учётной записи отправлено администратору для '%s'."
 
 msgid "Account modification email sent to admin."
-msgstr ""
+msgstr "Письмо об изменении учётной записи отправлено администратору."
 
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
+"Возникла проблема при отправке письма администратору для учётной записи '%s'."
 
 msgid "A problem happened while sending account email to admin"
-msgstr ""
+msgstr "Возникла проблема при отправке письма об учётной записи администратору"
 
 msgid "Email,URL,IM"
-msgstr ""
+msgstr "Email, URL, IM"
 
 msgid "Job"
 msgstr "Работа"
 
 msgid "Infos"
-msgstr ""
+msgstr "Инфо"
 
 msgid "Member ID"
-msgstr ""
+msgstr "ID участника"
 
 msgid "All members"
-msgstr ""
+msgstr "Все участники"
 
 msgid "Up to date members"
-msgstr ""
+msgstr "Участники с актуальными взносами"
 
 msgid "Close expiries"
-msgstr ""
+msgstr "Скоро истекает"
 
 msgid "Latecomers"
-msgstr ""
+msgstr "Задержавшие взносы"
 
 msgid "Administrators"
 msgstr "Администраторы"
 
 msgid "Non members"
-msgstr ""
+msgstr "Не участники"
 
 msgid "Y"
-msgstr ""
+msgstr "Г"
 
 msgid "Y-m"
-msgstr ""
+msgstr "ГГГГ-ММ"
 
 msgid "start date filter"
-msgstr ""
+msgstr "фильтр по дате начала"
 
 msgid "end date filter"
-msgstr ""
+msgstr "фильтр по дате окончания"
 
 #. TRANS: %1$s is field name, %2$s is list of known date formats
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
-msgstr ""
+msgstr "Неизвестный формат даты для %1$s.<br/>Известные форматы: %2$s"
 
 msgid "No host"
-msgstr ""
+msgstr "Нет хоста"
 
 msgid "No port"
-msgstr ""
+msgstr "Нет порта"
 
 msgid "No user name"
-msgstr ""
+msgstr "Нет имени пользователя"
 
 msgid "No database name"
-msgstr ""
+msgstr "Нет имени базы данных"
 
 msgid "The username cannot contain the @ character"
-msgstr ""
+msgstr "Имя пользователя не может содержать символ @"
 
 msgid "Galette Installation"
-msgstr ""
+msgstr "Установка Galette"
 
 msgid "Skip to content"
-msgstr ""
+msgstr "Перейти к содержанию"
 
 msgid "Galette installation"
-msgstr ""
+msgstr "Установка Galette"
 
 msgid "Read the manual"
-msgstr ""
+msgstr "Прочитать руководство"
 
 msgid "Version selection"
-msgstr ""
+msgstr "Выбор версии"
 
 msgid "Database installation"
-msgstr ""
+msgstr "Установка базы данных"
 
 msgid "Documentation"
 msgstr "Документация"
@@ -2520,16 +2538,16 @@ msgid "Publisher:"
 msgstr "Издатель:"
 
 msgid "President"
-msgstr ""
+msgstr "Президент"
 
 msgid "Vice-president"
 msgstr "Вице-президент"
 
 msgid "Treasurer"
-msgstr ""
+msgstr "Казначей"
 
 msgid "Vice-treasurer"
-msgstr ""
+msgstr "Заместитель казначея"
 
 msgid "Secretary"
 msgstr "Секретарь"
@@ -2538,148 +2556,152 @@ msgid "Vice-secretary"
 msgstr "Заместитель секретаря"
 
 msgid "Active member"
-msgstr ""
+msgstr "Активный член"
 
 msgid "Benefactor member"
-msgstr ""
+msgstr "Член-благотворитель"
 
 msgid "Founder member"
-msgstr ""
+msgstr "Член-основатель"
 
 msgid "Old-timer"
-msgstr ""
+msgstr "Ветеран"
 
 msgid "Legal entity"
-msgstr ""
+msgstr "Юридическое лицо"
 
 msgid "Non-member"
-msgstr ""
+msgstr "Не участник"
 
 msgid "Reduced annual contribution"
-msgstr ""
+msgstr "Льготный годовой взнос"
 
 msgid "Company fee"
-msgstr ""
+msgstr "Взнос для компании"
 
 msgid "Donation in kind"
-msgstr ""
+msgstr "Пожертвование натурой"
 
 msgid "Donation in money"
-msgstr ""
+msgstr "Денежное пожертвование"
 
 msgid "Partnership"
-msgstr ""
+msgstr "Партнёрство"
 
 msgid "french"
-msgstr ""
+msgstr "французский"
 
 msgid "english"
-msgstr ""
+msgstr "английский"
 
 msgid "spanish"
-msgstr ""
+msgstr "испанский"
 
 msgid "annual fee"
-msgstr ""
+msgstr "годовой взнос"
 
 msgid "annual fee (to be paid)"
-msgstr ""
+msgstr "годовой взнос (к оплате)"
 
 msgid "company fee"
-msgstr ""
+msgstr "взнос для компании"
 
 msgid "donation in kind"
-msgstr ""
+msgstr "пожертвование натурой"
 
 msgid "donation in money"
-msgstr ""
+msgstr "денежное пожертвование"
 
 msgid "partnership"
-msgstr ""
+msgstr "партнёрство"
 
 msgid "reduced annual fee"
-msgstr ""
+msgstr "льготный годовой взнос"
 
 msgid "Identity"
 msgstr "Идентификация"
 
 msgid "Galette-related data"
-msgstr ""
+msgstr "Данные, связанные с Galette"
 
 msgid "Contact information"
-msgstr ""
+msgstr "Контактная информация"
 
 msgid "Mr."
-msgstr ""
+msgstr "Господин"
 
 msgid "Mrs."
-msgstr ""
+msgstr "Госпожа"
 
 msgid "Miss"
-msgstr ""
+msgstr "Мадемуазель"
 
 msgid "Identity:"
-msgstr ""
+msgstr "Личные данные:"
 
 msgid "Galette-related data:"
-msgstr ""
+msgstr "Данные, связанные с Galette:"
 
 msgid "Contact information:"
-msgstr ""
+msgstr "Контактная информация:"
 
 msgid "Society"
 msgstr "Общество"
 
 msgid "Politeness"
-msgstr ""
+msgstr "Обращение"
 
 msgid "Main"
-msgstr ""
+msgstr "Основное"
 
 msgid "** Galette identifier, if applicable"
-msgstr ""
+msgstr "** Идентификатор Galette, если применимо"
 
 msgid "* Only for compagnies"
-msgstr ""
+msgstr "* Только для компаний"
 
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
-msgstr ""
+msgstr "Настоящим я соглашаюсь соблюдать устав и правила ассоциации %s."
 
 msgid "At ................................................"
-msgstr ""
+msgstr "В ................................................"
 
 msgid "On .......... / .......... / .......... "
-msgstr ""
+msgstr ".......... / .......... / .......... "
 
 msgid "Username"
 msgstr "Имя пользователя"
 
 msgid "Email address"
-msgstr ""
+msgstr "Адрес электронной почты"
 
 msgid "City"
 msgstr "Город"
 
 msgid "Zip Code"
-msgstr ""
+msgstr "Почтовый индекс"
 
 msgid ""
 "The minimum contribution for each type of membership are defined on the "
 "website of the association. The amount of donations are free to be decided "
 "by the generous donor."
 msgstr ""
+"Минимальный взнос для каждого типа членства определён на веб-сайте "
+"ассоциации. Сумма пожертвований определяется щедрым жертвователем."
 
 msgid "Required membership:"
-msgstr ""
+msgstr "Требуемое членство:"
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
 "complete your subscription."
 msgstr ""
+"Заполните следующую форму и отправьте её вместе с вашими средствами, чтобы "
+"завершить подписку."
 
 msgid "on"
-msgstr ""
+msgstr "от"
 
 msgid "from"
 msgstr "из"
@@ -2688,17 +2710,17 @@ msgid "to"
 msgstr "к"
 
 msgid "Association"
-msgstr ""
+msgstr "Ассоциация"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "ГГГГ-ММ-ДД"
 
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Ошибка проверки CSRF!"
 
 msgid "Member id:"
-msgstr ""
+msgstr "ID участника:"
 
 msgid "Status:"
 msgstr "Статус:"
@@ -2707,7 +2729,7 @@ msgid "Name:"
 msgstr "Имя:"
 
 msgid "First name:"
-msgstr ""
+msgstr "Имя:"
 
 msgid "Company:"
 msgstr "Компания:"
@@ -2719,7 +2741,7 @@ msgid "Title:"
 msgstr "Название:"
 
 msgid "Birth date:"
-msgstr ""
+msgstr "Дата рождения:"
 
 msgid "Gender:"
 msgstr "Пол:"
@@ -2728,13 +2750,13 @@ msgid "Address:"
 msgstr "Адрес:"
 
 msgid "Zip Code:"
-msgstr ""
+msgstr "Почтовый индекс:"
 
 msgid "City:"
 msgstr "Город:"
 
 msgid "Region:"
-msgstr ""
+msgstr "Регион:"
 
 msgid "Country:"
 msgstr "Страна:"
@@ -2743,16 +2765,16 @@ msgid "Phone:"
 msgstr "Телефон:"
 
 msgid "Mobile phone:"
-msgstr ""
+msgstr "Мобильный телефон:"
 
 msgid "E-Mail:"
 msgstr "Эл. почта:"
 
 msgid "Other information (admin):"
-msgstr ""
+msgstr "Другая информация (админ):"
 
 msgid "Other information:"
-msgstr ""
+msgstr "Другая информация:"
 
 msgid "Profession:"
 msgstr "Профессия:"
@@ -2764,49 +2786,49 @@ msgid "Password:"
 msgstr "Пароль:"
 
 msgid "Creation date:"
-msgstr ""
+msgstr "Дата создания:"
 
 msgid "Modification date:"
-msgstr ""
+msgstr "Дата изменения:"
 
 msgid "Account:"
 msgstr "Аккаунт:"
 
 msgid "Galette Admin:"
-msgstr ""
+msgstr "Администратор Galette:"
 
 msgid "Freed of dues:"
-msgstr ""
+msgstr "Освобождён от взносов:"
 
 msgid "Be visible on public pages:"
-msgstr ""
+msgstr "Быть видимым на публичных страницах:"
 
 msgid "Due date:"
-msgstr ""
+msgstr "Срок уплаты:"
 
 msgid "Language:"
 msgstr "Язык:"
 
 msgid "Birthplace:"
-msgstr ""
+msgstr "Место рождения:"
 
 msgid "Id GNUpg (GPG):"
-msgstr ""
+msgstr "ИД GNUpg (GPG):"
 
 msgid "fingerprint:"
-msgstr ""
+msgstr "отпечаток:"
 
 msgid "Parent:"
-msgstr ""
+msgstr "Родитель:"
 
 msgid "Member number:"
-msgstr ""
+msgstr "Номер участника:"
 
 msgid "State of dues"
-msgstr ""
+msgstr "Состояние взносов"
 
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ваши идентификаторы"
 
 msgid ""
 "Hello,{NEWLINE}You've just been subscribed on the members management system "
@@ -2817,9 +2839,16 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Вы только что были подписаны в системе управления "
+"участниками {ASSO_NAME}.{NEWLINE}Теперь можно в реальном времени следить за "
+"состоянием вашей подписки и обновлять свои предпочтения через веб-интерфейс."
+"{NEWLINE}Пожалуйста, войдите по этому адресу, чтобы установить новый пароль:"
+"{BR}{CHG_PWD_URI}{NEWLINE}Имя пользователя: {LOGIN}{BR}Указанная ссылка "
+"будет действительна до {LINK_VALIDITY}.{NEWLINE}До скорой встречи!{NEWLINE}"
+"(это письмо было отправлено автоматически)"
 
 msgid "New user registration"
-msgstr ""
+msgstr "Регистрация нового пользователя"
 
 msgid ""
 "Hello,{NEWLINE}Someone (probably you) asked to recover your password."
@@ -2828,12 +2857,17 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Кто-то (вероятно, вы) запросил восстановление вашего "
+"пароля.{NEWLINE}Пожалуйста, войдите по этому адресу, чтобы установить новый "
+"пароль:{BR}{CHG_PWD_URI}{NEWLINE}Имя пользователя: {LOGIN}{BR}Указанная "
+"ссылка будет действительна до {LINK_VALIDITY}.{NEWLINE}До скорой встречи!"
+"{NEWLINE}(это письмо было отправлено автоматически)"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Письмо о забытом пароле"
 
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ваш взнос"
 
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
@@ -2842,48 +2876,62 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Ваш взнос успешно учтён ассоциацией {ASSO_NAME}."
+"{NEWLINE}Он действителен до {DEADLINE}.{NEWLINE}Теперь вы можете войти и "
+"просмотреть или изменить свои личные данные, используя свои идентификаторы "
+"Galette, по этому адресу:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}До "
+"скорой встречи!{NEWLINE}(это письмо было отправлено автоматически)"
 
 msgid "Receipt send for new contribution"
-msgstr ""
+msgstr "Отправка квитанции о новом взносе"
 
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Новая регистрация от {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
+"Здравствуйте, уважаемый администратор,{NEWLINE}Был зарегистрирован новый "
+"участник со следующей информацией:{BR}* Имя: {NAME_ADH}{BR}* Логин: {LOGIN}"
+"{BR}* E-mail: {MAIL_ADH}{NEWLINE}С уважением,{BR}Galette"
 
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Регистрация нового пользователя (отправлено администратору)"
 
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Новый взнос для {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been "
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Здравствуйте, уважаемый администратор,{NEWLINE}Зарегистрирован взнос от "
+"{NAME_ADH} (новый срок: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}С уважением,"
+"{BR}Galette"
 
 msgid "New contribution (sent to admin)"
-msgstr ""
+msgstr "Новый взнос (отправлено администратору)"
 
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Новая самостоятельная регистрация от {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has self registered on line "
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Здравствуйте, уважаемый администратор,{NEWLINE}Новый участник самостоятельно "
+"зарегистрировался онлайн со следующей информацией:{BR}* Имя: {NAME_ADH}{BR}* "
+"Логин: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}С уважением,{BR}Galette"
 
 msgid "New self registration (sent to admin)"
-msgstr ""
+msgstr "Новая самостоятельная регистрация (отправлено администратору)"
 
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ваша учётная запись была изменена"
 
 msgid ""
 "Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
@@ -2891,69 +2939,86 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Здравствуйте!{NEWLINE}Ваша учётная запись в {ASSO_NAME} (с логином '{LOGIN}"
+"') была изменена администратором или сотрудником.{NEWLINE}Вы можете войти в "
+"{LOGIN_URI}, чтобы просмотреть изменения и/или изменить их.{NEWLINE}До "
+"скорой встречи!{NEWLINE}(это письмо было отправлено автоматически)"
 
 msgid "Informs user that his account has been modified"
-msgstr ""
+msgstr "Информирует пользователя о том, что его учётная запись была изменена"
 
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Срок вашего членства истекает"
 
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Срок вашего членства в {ASSO_NAME} истекает через "
+"{DAYS_REMAINING} дня/дней.{NEWLINE}До скорой встречи!{NEWLINE}(это письмо "
+"было отправлено автоматически)"
 
 msgid "Impending due date"
-msgstr ""
+msgstr "Скоро истекает"
 
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] Срок вашего членства истёк"
 
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Срок вашего членства в {ASSO_NAME} истёк "
+"{DAYS_EXPIRED} дня/дней назад.{NEWLINE}До скорой встречи!{NEWLINE}(это "
+"письмо было отправлено автоматически)"
 
 msgid "Late due date"
-msgstr ""
+msgstr "Просроченный взнос"
 
 msgid "[{ASSO_NAME}] Your donation"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ваше пожертвование"
 
 msgid ""
 "Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored."
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Здравствуйте,{NEWLINE}Ваше пожертвование в {ASSO_NAME} успешно сохранено."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Спасибо!{NEWLINE}(это письмо было отправлено "
+"автоматически)"
 
 msgid "Receipt send for new donations"
-msgstr ""
+msgstr "Отправка квитанции о новом пожертвовании"
 
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Новое пожертвование для {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Здравствуйте, уважаемый администратор,{NEWLINE}Зарегистрировано "
+"пожертвование от {NAME_ADH}{BR}{CONTRIB_INFO}{NEWLINE}С уважением,{BR}Galette"
 
 msgid "New donation (sent to admin)"
-msgstr ""
+msgstr "Новое пожертвование (отправлено администратору)"
 
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Учётная запись {NAME_ADH} была изменена"
 
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Здравствуйте!{NEWLINE}{NAME_ADH} изменил(а) свою учётную запись.{NEWLINE}До "
+"скорой встречи!{NEWLINE}(это письмо было отправлено автоматически)"
 
 msgid "Informs admin a member edit his information"
-msgstr ""
+msgstr "Информирует администратора о том, что участник изменил свою информацию"
 
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
-msgstr ""
+msgstr "[{ASSO_NAME}] Учётная запись {NAME_ADH} неактивна"
 
 msgid ""
 "Hello!{NEWLINE}A password recovery request has been made on your account on "
@@ -2962,85 +3027,91 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Здравствуйте!{NEWLINE}Был сделан запрос на восстановление пароля для вашей "
+"учётной записи в {ASSO_NAME}, но она в настоящее время неактивна и поэтому "
+"не может быть обработана.{NEWLINE}Пожалуйста, свяжитесь с администратором "
+"или сотрудником, если вы считаете, что это ошибка.{NEWLINE}До скорой встречи!"
+"{NEWLINE}(это письмо было отправлено автоматически)"
 
 msgid "Lost password email (disabled)"
-msgstr ""
+msgstr "Письмо о забытом пароле (отключено)"
 
 msgid "Unable to create main datadir in %path!"
-msgstr ""
+msgstr "Не удалось создать главный каталог данных в %path!"
 
 #, php-format
 msgid "Unable to create datadir in %dir!"
-msgstr ""
+msgstr "Не удалось создать каталог данных в %dir!"
 
 #, php-format
 msgid "File %1$s has not been moved :-/"
-msgstr ""
+msgstr "Файл %1$s не был перемещён :-/"
 
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr ""
+msgstr "Каталог %dir был перемещён!"
 
 #, php-format
 msgid "Directory %dir has not been moved :("
-msgstr ""
+msgstr "Каталог %dir не был перемещён :("
 
 #, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
+"Каталог %dir находится не по своему исходному пути и не будет перемещён."
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Варианты выбора для поля %d были перенесены."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "Не удалось перенести варианты выбора для поля %d: %s"
 
 msgid "Galette has been successfully installed!"
-msgstr ""
+msgstr "Galette успешно установлена!"
 
 msgid "Galette has been successfully updated!"
-msgstr ""
+msgstr "Galette успешно обновлена!"
 
 msgid "Homepage"
-msgstr ""
+msgstr "Главная страница"
 
 msgid "Please chose the parameters of the admin account on Galette"
-msgstr ""
+msgstr "Пожалуйста, выберите параметры учётной записи администратора в Galette"
 
 msgid "Retype password:"
-msgstr ""
+msgstr "Повторите пароль:"
 
 msgid "Next step"
-msgstr ""
+msgstr "Следующий шаг"
 
 msgid "Password mismatch!"
-msgstr ""
+msgstr "Пароли не совпадают!"
 
 msgid "Database has not been installed!"
-msgstr ""
+msgstr "База данных не установлена!"
 
 msgid "Database has not been upgraded!"
-msgstr ""
+msgstr "База данных не обновлена!"
 
 msgid "Database has been installed :)"
-msgstr ""
+msgstr "База данных установлена :)"
 
 msgid "Database has been upgraded :)"
-msgstr ""
+msgstr "База данных обновлена :)"
 
 msgid "Retry"
-msgstr ""
+msgstr "Повторить"
 
 msgid "Back"
 msgstr "Назад"
 
 msgid "It seems you already use latest Galette version!"
-msgstr ""
+msgstr "Похоже, вы уже используете последнюю версию Galette!"
 
 msgid "Are you sure you want to upgrade?"
-msgstr ""
+msgstr "Вы уверены, что хотите обновиться?"
 
 msgid "Home"
 msgstr "Главная"
@@ -3049,29 +3120,33 @@ msgid "Update"
 msgstr "Обновить"
 
 msgid "Select your previous Galette version below, and then click next."
-msgstr ""
+msgstr "Выберите вашу предыдущую версию Galette ниже, затем нажмите «Далее»."
 
 msgid "No update script found!"
-msgstr ""
+msgstr "Скрипт обновления не найден!"
 
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
 msgstr ""
+"Предыдущая версия старше 0.7. <strong>Убедитесь, что вы выбрали правильную "
+"версию</strong>."
 
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
 msgstr ""
+"Ваша предыдущая версия должна быть выбрана и <strong>выделена жирным "
+"шрифтом</strong>."
 
 msgid "Your current Galette version is..."
-msgstr ""
+msgstr "Ваша текущая версия Galette..."
 
 msgid "older than %version"
-msgstr ""
+msgstr "старше %version"
 
 msgid "comprised between"
-msgstr ""
+msgstr "находится между"
 
 msgid "and"
 msgstr "и"
@@ -3080,125 +3155,133 @@ msgid "Cancel"
 msgstr "Отмена"
 
 msgid "CREATE operation not allowed"
-msgstr ""
+msgstr "Операция CREATE не разрешена"
 
 msgid "CREATE operation allowed"
-msgstr ""
+msgstr "Операция CREATE разрешена"
 
 msgid "INSERT operation not allowed"
-msgstr ""
+msgstr "Операция INSERT не разрешена"
 
 msgid "INSERT operation allowed"
-msgstr ""
+msgstr "Операция INSERT разрешена"
 
 msgid "UPDATE operation not allowed"
-msgstr ""
+msgstr "Операция UPDATE не разрешена"
 
 msgid "UPDATE operation allowed"
-msgstr ""
+msgstr "Операция UPDATE разрешена"
 
 msgid "SELECT operation not allowed"
-msgstr ""
+msgstr "Операция SELECT не разрешена"
 
 msgid "SELECT operation allowed"
-msgstr ""
+msgstr "Операция SELECT разрешена"
 
 msgid "DELETE operation not allowed"
-msgstr ""
+msgstr "Операция DELETE не разрешена"
 
 msgid "DELETE operation allowed"
-msgstr ""
+msgstr "Операция DELETE разрешена"
 
 msgid "DROP operation not allowed"
-msgstr ""
+msgstr "Операция DROP не разрешена"
 
 msgid "DROP operation allowed"
-msgstr ""
+msgstr "Операция DROP разрешена"
 
 msgid "ALTER operation not allowed"
-msgstr ""
+msgstr "Операция ALTER не разрешена"
 
 msgid "ALTER operation allowed"
-msgstr ""
+msgstr "Операция ALTER разрешена"
 
 msgid "Check of the database"
-msgstr ""
+msgstr "Проверка базы данных"
 
 msgid "Database exists and connection parameters are OK."
-msgstr ""
+msgstr "База данных существует, параметры подключения в порядке."
 
 msgid "Incompatible database version."
-msgstr ""
+msgstr "Несовместимая версия базы данных."
 
 msgid "Connection to database successfull"
-msgstr ""
+msgstr "Подключение к базе данных успешно"
 
 msgid "Permissions to database are OK."
-msgstr ""
+msgstr "Права доступа к базе данных в порядке."
 
 msgid "Unable to connect to the database"
-msgstr ""
+msgstr "Не удалось подключиться к базе данных"
 
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
+"База данных недоступна. Пожалуйста, вернитесь назад и введите параметры "
+"подключения снова."
 
 msgid "Permissions on the base"
-msgstr ""
+msgstr "Права доступа к базе"
 
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
+"GALETTE не имеет достаточных прав доступа к базе данных для продолжения "
+"установки."
 
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
+"GALETTE не имеет достаточных прав доступа к базе данных для продолжения "
+"обновления."
 
 msgid "Configuration file created!"
-msgstr ""
+msgstr "Файл конфигурации создан!"
 
 msgid "Data initialized."
-msgstr ""
+msgstr "Данные инициализированы."
 
 msgid "An error occurred :("
-msgstr ""
+msgstr "Произошла ошибка :("
 
 msgid "Photos"
-msgstr ""
+msgstr "Фотографии"
 
 msgid "Cache"
 msgstr "Кэш"
 
 msgid "Temporary images"
-msgstr ""
+msgstr "Временные изображения"
 
 msgid "Attachments"
-msgstr ""
+msgstr "Вложения"
 
 msgid "Files"
 msgstr "Файлы"
 
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "Добро пожаловать в установщик Galette!"
 
 msgid "Galette requirements are met :)"
-msgstr ""
+msgstr "Требования Galette выполнены :)"
 
 msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
 msgstr ""
+"Ваши настройки даты PHP неверны. Возможно, вы пропустили настройки часового "
+"пояса, которые обязательны начиная с PHP 5.3?"
 
 msgid "PHP version"
-msgstr ""
+msgstr "Версия PHP"
 
 msgid "Date settings"
-msgstr ""
+msgstr "Настройки даты"
 
 msgid "PHP Modules"
-msgstr ""
+msgstr "Модули PHP"
 
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
@@ -3209,53 +3292,62 @@ msgstr ""
 "документации."
 
 msgid "Files permissions"
-msgstr ""
+msgstr "Права доступа к файлам"
 
 msgid "Files permissions are not OK!"
-msgstr ""
+msgstr "Права доступа к файлам не в порядке!"
 
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
+"Для корректной работы Galette необходимы права на запись для файлов, "
+"перечисленных выше."
 
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
+"Для обновления Galette необходимы права на запись для файлов, перечисленных "
+"выше."
 
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
-msgstr ""
+msgstr "В UNIX/Linux вы можете выдать права с помощью следующих команд"
 
 msgid "apache_user"
-msgstr ""
+msgstr "пользователь_apache"
 
 msgid "file_name"
-msgstr ""
+msgstr "имя_файла"
 
 msgid "directory_name"
-msgstr ""
+msgstr "имя_каталога"
 
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
 msgstr ""
+"В Windows проверьте, что эти каталоги не находятся в режиме «Только чтение» "
+"на панели свойств."
 
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
+"Если это ещё не сделано, создайте базу данных и пользователя для Galette."
 
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr ""
+msgstr "Необходимые права: CREATE, DROP, DELETE, UPDATE, SELECT и INSERT."
 
 msgid "Enter connection data for the existing database."
-msgstr ""
+msgstr "Введите данные подключения для существующей базы данных."
 
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
 msgstr ""
+"Похоже, вы уже устанавливали Galette ранее.<br/>Все существующие данные "
+"будут удалены, если вы продолжите использовать существующую базу данных!"
 
 msgid "Database type:"
-msgstr ""
+msgstr "Тип базы данных:"
 
 msgid "Host:"
 msgstr "Хост:"
@@ -3270,112 +3362,122 @@ msgid "Database:"
 msgstr "База данных:"
 
 msgid "Table prefix:"
-msgstr ""
+msgstr "Префикс таблиц:"
 
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
-msgstr ""
+msgstr "(Укажите ТЕКУЩИЙ префикс ваших таблиц Galette)"
 
 msgid "New installation"
-msgstr ""
+msgstr "Новая установка"
 
 msgid "you're installing Galette for the first time"
-msgstr ""
+msgstr "вы устанавливаете Galette в первый раз"
 
 msgid "you wish to erase an older version of Galette without keeping your data"
-msgstr ""
+msgstr "вы хотите удалить старую версию Galette без сохранения ваших данных"
 
 msgid ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
 msgstr ""
+"у вас уже установлена Galette, и вы хотите обновиться до последней версии"
 
 msgid "Warning: Don't forget to backup your current database."
 msgstr ""
+"Предупреждение: Не забудьте сделать резервную копию вашей текущей базы "
+"данных."
 
 msgid "Send anonymous and imprecise data about your Galette instance"
-msgstr ""
+msgstr "Отправлять анонимные и неточные данные о вашем экземпляре Galette"
 
 msgid "Send telemetry information"
-msgstr ""
+msgstr "Отправлять телеметрию"
 
 msgid "Register your organization as a Galette user"
-msgstr ""
+msgstr "Зарегистрировать вашу организацию как пользователя Galette"
 
 msgid "Register"
-msgstr ""
+msgstr "Зарегистрировать"
 
 msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
+"Данные телеметрии <strong>анонимны</strong>; ничто о вашей организации или "
+"её участниках не будет отправлено."
 
 msgid ""
 "Also note that all data are sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
+"Также обратите внимание, что все данные отправляются через <strong>"
+"защищённое соединение HTTPS</strong>."
 
 msgid "Contribution type"
-msgstr ""
+msgstr "Тип взноса"
 
 msgid "OK"
 msgstr "ОК"
 
 #, php-format
 msgid "you're installing %1$s for the first time"
-msgstr ""
+msgstr "вы устанавливаете %1$s в первый раз"
 
 #, php-format
 msgid "you wish to erase an older version of of %1$s without keeping your data"
-msgstr ""
+msgstr "вы хотите удалить старую версию %1$s без сохранения ваших данных"
 
 #, php-format
 msgid ""
 "you already have installed %1$s, and you want to upgrade to the latest "
 "version"
-msgstr ""
+msgstr "у вас уже установлена %1$s, и вы хотите обновиться до последней версии"
 
 #, php-format
 msgid "You current %1$s version is..."
-msgstr ""
+msgstr "Ваша текущая версия %1$s..."
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
-msgstr ""
+msgstr "(Ошибки операций DROP и RENAME можно игнорировать)"
 
 msgid "The tables are not totally created, it may be a permission problem."
-msgstr ""
+msgstr "Таблицы созданы не полностью, возможно, проблема с правами доступа."
 
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
 msgstr ""
+"Таблицы не были полностью созданы, возможно, проблема с правами доступа."
 
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
+"Возможно, ваша база данных не пригодна для использования, попробуйте "
+"восстановить старую версию."
 
 #, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
-msgstr ""
+msgstr "Плагин '%1$s' успешно установлен!"
 
 #, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
-msgstr ""
+msgstr "Плагин '%1$s' успешно обновлён!"
 
 msgid "Back to plugins management page"
-msgstr ""
+msgstr "Назад к странице управления плагинами"
 
 msgid "Access permissions to database"
-msgstr ""
+msgstr "Права доступа к базе данных"
 
 msgid "Delete all associated data"
-msgstr ""
+msgstr "Удалить все связанные данные"
 
 msgid "Cascade delete"
-msgstr ""
+msgstr "Каскадное удаление"
 
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "Вы уверены, что хотите продолжить?"
 
 msgid "This can't be undone."
-msgstr ""
+msgstr "Это действие невозможно отменить."
 
 msgid "Remove"
 msgstr "Убрать"
@@ -3384,7 +3486,7 @@ msgid "Edit"
 msgstr "Редактировать"
 
 msgid "Headers"
-msgstr ""
+msgstr "Заголовки"
 
 msgid "From:"
 msgstr "От:"
@@ -3396,69 +3498,73 @@ msgid "Subject:"
 msgstr "Объект:"
 
 msgid "Attachments:"
-msgstr ""
+msgstr "Вложения:"
 
 msgid "Mail body"
-msgstr ""
+msgstr "Тело письма"
 
 msgid "Only checked fields will be updated."
-msgstr ""
+msgstr "Будут обновлены только отмеченные поля."
 
 msgid "No changes selected"
-msgstr ""
+msgstr "Не выбрано ни одного изменения"
 
 msgid "You are about to proceed following changes for selected members:"
-msgstr ""
+msgstr "Вы собираетесь выполнить следующие изменения для выбранных участников:"
 
 msgid "Some details about your attendance sheet..."
-msgstr ""
+msgstr "Некоторые сведения о вашем листе посещаемости..."
 
 #, php-format
 msgid "%s attendees"
-msgstr ""
+msgstr "%s участников"
 
 msgid "Sheet type"
-msgstr ""
+msgstr "Тип листа"
 
 msgid "yyyy-mm-dd format"
-msgstr ""
+msgstr "формат гггг-мм-дд"
 
 msgid "With photos?"
-msgstr ""
+msgstr "С фотографиями?"
 
 msgid "Generate"
 msgstr "Генерировать"
 
 msgid "Existing variables"
-msgstr ""
+msgstr "Существующие переменные"
 
 msgid "Close"
 msgstr "Закрыть"
 
 msgid "Show existing variables"
-msgstr ""
+msgstr "Показать существующие переменные"
 
 msgid ""
 "Nothing is automated in the process; it's up to you to send (or resend) data."
 msgstr ""
+"В этом процессе ничего не автоматизировано; отправка (или повторная "
+"отправка) данных зависит от вас."
 
 msgid ""
 "You can review below the raw data that would be send if you press the 'Send' "
 "button."
 msgstr ""
+"Ниже вы можете просмотреть необработанные данные, которые будут отправлены "
+"при нажатии кнопки «Отправить»."
 
 msgid "An error occurred sending telemetry information :("
-msgstr ""
+msgstr "Произошла ошибка при отправке телеметрии :("
 
 msgid "Send"
 msgstr "Отправить"
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Выберите ваш язык"
 
 #, php-format
 msgid "Switch locale to '%locale'"
-msgstr ""
+msgstr "Переключить локаль на '%locale'"
 
 msgid "Add"
 msgstr "Добавить"
@@ -3473,146 +3579,146 @@ msgid "Required"
 msgstr "Требуется"
 
 msgid "Width in forms"
-msgstr ""
+msgstr "Ширина в формах"
 
 msgid "Actions"
 msgstr "Действия"
 
 msgid "Half"
-msgstr ""
+msgstr "Половина"
 
 msgid "Full"
-msgstr ""
+msgstr "Полная"
 
 msgid "Default"
-msgstr ""
+msgstr "По умолчанию"
 
 #, php-format
 msgid "Edit '%s' field"
-msgstr ""
+msgstr "Редактировать поле «%s»"
 
 #, php-format
 msgid "Translate '%s' field"
-msgstr ""
+msgstr "Перевести поле «%s»"
 
 #, php-format
 msgid "Delete '%s' field"
-msgstr ""
+msgstr "Удалить поле «%s»"
 
 #, php-format
 msgid "Move up '%s' field"
-msgstr ""
+msgstr "Переместить поле «%s» вверх"
 
 #, php-format
 msgid "Move down '%s' field"
-msgstr ""
+msgstr "Переместить поле «%s» вниз"
 
 #, php-format
 msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
+msgstr "Для «%formname» ещё не настроено ни одного динамического поля"
 
 msgid "Go to Galette's dashboard"
-msgstr ""
+msgstr "Перейти на панель управления Galette"
 
 msgid "Go back to Galette homepage"
-msgstr ""
+msgstr "Вернуться на главную страницу Galette"
 
 msgid "Menu"
-msgstr ""
+msgstr "Меню"
 
 #, php-format
 msgid "Open '%s' in a new window"
-msgstr ""
+msgstr "Открыть «%s» в новом окне"
 
 msgid "Main menu"
-msgstr ""
+msgstr "Главное меню"
 
 msgid "Compact menu"
-msgstr ""
+msgstr "Компактное меню"
 
 msgid "Subscribe"
 msgstr "Подписаться"
 
 msgid "Disable dark mode"
-msgstr ""
+msgstr "Отключить тёмную тему"
 
 msgid "Enable dark mode"
-msgstr ""
+msgstr "Включить тёмную тему"
 
 msgid "Unimpersonate"
-msgstr ""
+msgstr "Выйти из режима"
 
 msgid "User menu"
-msgstr ""
+msgstr "Меню пользователя"
 
 msgid "Zip - Town"
-msgstr ""
+msgstr "Индекс - Город"
 
 msgid "Company"
 msgstr "Компания"
 
 msgid "no member"
-msgstr ""
+msgstr "нет участников"
 
 msgid "Pages:"
 msgstr "Страницы:"
 
 msgid "Selected members"
-msgstr ""
+msgstr "Выбранные участники"
 
 msgid "No members has been selected yet."
-msgstr ""
+msgstr "Пока не выбрано ни одного участника."
 
 msgid "Validate"
-msgstr ""
+msgstr "Подтвердить"
 
 msgid "Manager(s)"
-msgstr ""
+msgstr "Менеджер(ы)"
 
 msgid "%membercount members"
-msgstr ""
+msgstr "%membercount участников"
 
 msgid "no group"
-msgstr ""
+msgstr "нет групп"
 
 msgid "Selected groups"
-msgstr ""
+msgstr "Выбранные группы"
 
 msgid "No groups has been selected yet."
-msgstr ""
+msgstr "Пока не выбрано ни одной группы."
 
 msgid "S,M,T,W,T,F,S"
-msgstr ""
+msgstr "П,В,С,Ч,П,С,В"
 
 msgid "January"
-msgstr ""
+msgstr "Январь"
 
 msgid "February"
-msgstr ""
+msgstr "Февраль"
 
 msgid "March"
-msgstr ""
+msgstr "Март"
 
 msgid "April"
-msgstr ""
+msgstr "Апрель"
 
 msgid "May"
 msgstr "Май"
 
 msgid "June"
-msgstr ""
+msgstr "Июнь"
 
 msgid "July"
-msgstr ""
+msgstr "Июль"
 
 msgid "August"
-msgstr ""
+msgstr "Август"
 
 msgid "September"
 msgstr "Сентябрь"
 
 msgid "October"
-msgstr ""
+msgstr "Октябрь"
 
 msgid "November"
 msgstr "Ноябрь"
@@ -3624,34 +3730,34 @@ msgid "Jan"
 msgstr "Янв"
 
 msgid "Feb"
-msgstr ""
+msgstr "Фев"
 
 msgid "Mar"
 msgstr "Мар"
 
 msgid "Apr"
-msgstr ""
+msgstr "Апр"
 
 msgid "Jun"
-msgstr ""
+msgstr "Июн"
 
 msgid "Jul"
-msgstr ""
+msgstr "Июл"
 
 msgid "Aug"
-msgstr ""
+msgstr "Авг"
 
 msgid "Sep"
-msgstr ""
+msgstr "Сен"
 
 msgid "Oct"
-msgstr ""
+msgstr "Окт"
 
 msgid "Nov"
 msgstr "Ноя"
 
 msgid "Dec"
-msgstr ""
+msgstr "Дек"
 
 msgid "Today"
 msgstr "Сегодня"
@@ -3666,271 +3772,278 @@ msgid "Save"
 msgstr "Сохранить"
 
 msgid "Password is valid :)"
-msgstr ""
+msgstr "Пароль действителен :)"
 
 msgid "Password is not valid!"
-msgstr ""
+msgstr "Пароль недействителен!"
 
 msgid "An error occured checking password :("
-msgstr ""
+msgstr "Произошла ошибка при проверке пароля :("
 
 msgid "Your telemetry data are more than one year old."
-msgstr ""
+msgstr "Ваши данные телеметрии старше одного года."
 
 msgid "Do you want to send it again?"
-msgstr ""
+msgstr "Хотите отправить их снова?"
 
 msgid "Later"
-msgstr ""
+msgstr "Позже"
 
 msgid "An error occurred retrieving members :("
-msgstr ""
+msgstr "Произошла ошибка при получении участников :("
 
 msgid "An error occurred retrieving dates :("
-msgstr ""
+msgstr "Произошла ошибка при получении дат :("
 
 msgid "Continue"
-msgstr ""
+msgstr "Продолжить"
 
 msgid "Previous"
-msgstr ""
+msgstr "Назад"
 
 msgid "Next"
-msgstr ""
+msgstr "Далее"
 
 msgid "Header"
-msgstr ""
+msgstr "Верхний колонтитул"
 
 msgid "Footer"
-msgstr ""
+msgstr "Нижний колонтитул"
 
 msgid "Body"
-msgstr ""
+msgstr "Тело"
 
 msgid "CSS styles"
-msgstr ""
+msgstr "Стили CSS"
 
 msgid "Select"
-msgstr ""
+msgstr "Выбрать"
 
 msgid "Invoice"
-msgstr ""
+msgstr "Счёт"
 
 msgid "Receipt"
-msgstr ""
+msgstr "Квитанция"
 
 msgid "Additionnal fields:"
-msgstr ""
+msgstr "Дополнительные поля:"
 
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 msgid "Parent group:"
-msgstr ""
+msgstr "Родительская группа:"
 
 msgid "Managers"
-msgstr ""
+msgstr "Менеджеры"
 
 msgid "Manage managers"
-msgstr ""
+msgstr "Управление менеджерами"
 
 msgid "Manage members"
-msgstr ""
+msgstr "Управление участниками"
 
 msgid "Deactivate HTML editor"
-msgstr ""
+msgstr "Отключить HTML-редактор"
 
 msgid "Activate HTML editor"
-msgstr ""
+msgstr "Включить HTML-редактор"
 
 msgid "Records per page:"
-msgstr ""
+msgstr "Записей на странице:"
 
 msgid "Show legend"
-msgstr ""
+msgstr "Показать легенду"
 
 msgid "(Un)Check all"
-msgstr ""
+msgstr "(Снять) отметку со всех"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Инвертировать выбор"
 
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
 msgstr ""
+"Вы вошли как суперадминистратор. Некоторые функции могут быть недоступны, "
+"так как это *не* обычный участник."
 
 msgid "Superadmin"
-msgstr ""
+msgstr "Суперадминистратор"
 
 msgid ""
 "This application runs under DEMO mode, all features may not be available."
 msgstr ""
+"Это приложение работает в ДЕМО-режиме, не все функции могут быть доступны."
 
 msgid "Demonstration"
-msgstr ""
+msgstr "Демонстрация"
 
 msgid "Maintenance"
-msgstr ""
+msgstr "Обслуживание"
 
 msgid "No member attached"
-msgstr ""
+msgstr "Участник не прикреплён"
 
 msgid "No manager attached"
-msgstr ""
+msgstr "Менеджер не прикреплён"
 
 #, php-format
 msgid "Change '%1$s' permissions"
-msgstr ""
+msgstr "Изменить права для '%1$s'"
 
 #, php-format
 msgid "Field '%1$s' cannot be set as required."
-msgstr ""
+msgstr "Поле '%1$s' не может быть обязательным."
 
 #, php-format
 msgid "Mark '%1$s' as (not) required"
-msgstr ""
+msgstr "Отметить '%1$s' как (не)обязательное"
 
 msgid "Change field's width with in forms"
-msgstr ""
+msgstr "Изменить ширину поля в формах"
 
 msgid "Picture"
-msgstr ""
+msgstr "Фотография"
 
 msgid "Download VCard"
-msgstr ""
+msgstr "Скачать VCard"
 
 msgid "Display QR Code"
-msgstr ""
+msgstr "Показать QR-код"
 
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
-msgstr ""
+msgstr "Ваше сообщение отправлено <strong>%s участникам</strong>"
 
 #, php-format
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
-msgstr ""
+msgstr "Вы собираетесь отправить письмо <strong>%s участникам</strong>"
 
 msgid "None of the selected members has an email address."
-msgstr ""
+msgstr "Ни у одного из выбранных участников нет адреса электронной почты."
 
 msgid "No member selected (yet)."
-msgstr ""
+msgstr "(Пока) не выбран ни один участник."
 
 msgid "unreachable members:"
-msgstr ""
+msgstr "недоступные участники:"
 
 msgid "unreachable member:"
-msgstr ""
+msgstr "недоступный участник:"
 
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
+"У некоторых выбранных вами участников нет адреса электронной почты. Однако "
+"вы можете создать конвертные этикетки, чтобы связаться с ними по почте."
 
 msgid "Disable social networks on member form"
-msgstr ""
+msgstr "Отключить социальные сети в форме участника"
 
 msgid "Remove %type"
-msgstr ""
+msgstr "Удалить %type"
 
 msgid "Add new social network"
-msgstr ""
+msgstr "Добавить новую социальную сеть"
 
 msgid "Choose or enter your own..."
-msgstr ""
+msgstr "Выберите или введите свою..."
 
 msgid "Social network"
-msgstr ""
+msgstr "Социальная сеть"
 
 msgid "For the selection:"
-msgstr ""
+msgstr "Для выделенного:"
 
 #, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%1$s месяц"
+msgstr[1] "%1$s месяца"
+msgstr[2] "%1$s месяцев"
 
 msgid "Membership extension"
-msgstr ""
+msgstr "Продление членства"
 
 msgid "Description"
 msgstr "Описание"
 
 msgid "Author"
-msgstr ""
+msgstr "Автор"
 
 msgid "Version"
-msgstr ""
+msgstr "Версия"
 
 msgid "Release date"
-msgstr ""
+msgstr "Дата выпуска"
 
 msgid "Active plugins"
-msgstr ""
+msgstr "Активные плагины"
 
 #, php-format
 msgid "Click here to deactivate plugin '%1$s'"
-msgstr ""
+msgstr "Нажмите здесь, чтобы деактивировать плагин '%1$s'"
 
 #, php-format
 msgid "Initialize '%1$s' database"
-msgstr ""
+msgstr "Инициализировать базу данных '%1$s'"
 
 msgid "No active plugin."
-msgstr ""
+msgstr "Нет активных плагинов."
 
 msgid "Inactive plugins"
-msgstr ""
+msgstr "Неактивные плагины"
 
 msgid "Cause"
-msgstr ""
+msgstr "Причина"
 
 msgid "Enable"
-msgstr ""
+msgstr "Включить"
 
 msgid "A required file is missing"
-msgstr ""
+msgstr "Отсутствует обязательный файл"
 
 msgid "Incompatible with current version"
-msgstr ""
+msgstr "Несовместим с текущей версией"
 
 msgid "Explicitly disabled"
-msgstr ""
+msgstr "Явно отключён"
 
 msgid "Unknown"
-msgstr ""
+msgstr "Неизвестно"
 
 #, php-format
 msgid "Activate plugin '%1$s'"
-msgstr ""
+msgstr "Активировать плагин '%1$s'"
 
 msgid "No inactive plugin."
-msgstr ""
+msgstr "Нет неактивных плагинов."
 
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
+msgstr "Приложение работает в демо-режиме. Эта функция не включена, извините."
 
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
+"Произошла ошибка при отображении интерфейса инициализации базы данных "
+"плагина :("
 
 #, php-format
 msgid "Plugin database initialization: %1$s"
-msgstr ""
+msgstr "Инициализация базы данных плагина: %1$s"
 
 #, php-format
 msgid "Edit field %1$s"
-msgstr ""
+msgstr "Редактировать поле %1$s"
 
 msgid "Permissions:"
 msgstr "Разрешения:"
 
 msgid "Required:"
-msgstr ""
+msgstr "Обязательно:"
 
 msgid "Width:"
 msgstr "Ширина:"
@@ -3939,59 +4052,59 @@ msgid "Height:"
 msgstr "Высота:"
 
 msgid "Min Size:"
-msgstr ""
+msgstr "Мин. размер:"
 
 msgid "Minimum number of characters."
-msgstr ""
+msgstr "Минимальное количество символов."
 
 msgid "Size:"
 msgstr "Размер:"
 
 msgid "Maximum file size, in Ko."
-msgstr ""
+msgstr "Максимальный размер файла, в КБ."
 
 msgid "Maximum number of characters."
-msgstr ""
+msgstr "Максимальное количество символов."
 
 msgid "Repeat:"
 msgstr "Повторить:"
 
 msgid "Number of values or zero if infinite."
-msgstr ""
+msgstr "Количество значений или ноль, если бесконечно."
 
 msgid "Values:"
 msgstr "Значения:"
 
 msgid "Choice list (one entry per line)."
-msgstr ""
+msgstr "Список выбора (по одной записи на строку)."
 
 msgid "Information:"
 msgstr "Информация:"
 
 msgid "Extra information displayed along with dynamic field."
-msgstr ""
+msgstr "Дополнительная информация, отображаемая вместе с динамическим полем."
 
 msgid "Display information above input"
-msgstr ""
+msgstr "Отображать информацию над полем ввода"
 
 msgid "New dynamic field"
-msgstr ""
+msgstr "Новое динамическое поле"
 
 msgid "Field name"
-msgstr ""
+msgstr "Имя поля"
 
 msgid "Visibility"
 msgstr "Видимость"
 
 msgid "No document"
-msgstr ""
+msgstr "Нет документов"
 
 #, php-format
 msgid "%1$s document"
 msgid_plural "%1$s documents"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%1$s документ"
+msgstr[1] "%1$s документа"
+msgstr[2] "%1$s документов"
 
 #, php-format
 msgid "%1$s member"
@@ -4000,40 +4113,36 @@ msgstr[0] "%1$s участник"
 msgstr[1] "%1$s участники"
 msgstr[2] "%1$s участники"
 
-#, fuzzy
-#| msgid "Members"
 msgid "No member"
-msgstr "Пользователи"
+msgstr "Нет участников"
 
 #, php-format
 msgid "\"%1$s\" group managers"
-msgstr ""
+msgstr "Менеджеры группы «%1$s»"
 
 msgid "Is a company"
-msgstr ""
+msgstr "Является компанией"
 
 msgid "Is a man"
-msgstr ""
+msgstr "Мужской пол"
 
 msgid "Is a woman"
-msgstr ""
+msgstr "Женский пол"
 
-#, fuzzy
-#| msgid "Managers:"
 msgid "Manages:"
-msgstr "Менеджеры:"
+msgstr "Управляет:"
 
 msgid "Transaction details"
-msgstr ""
+msgstr "Детали транзакции"
 
 msgid "Dispatch type:"
-msgstr ""
+msgstr "Тип распределения:"
 
 msgid "Select a contribution type to create for dispatch transaction"
-msgstr ""
+msgstr "Выберите тип взноса для создания в рамках распределённой транзакции"
 
 msgid "Attached contributions"
-msgstr ""
+msgstr "Прикреплённые взносы"
 
 msgid "Begin"
 msgstr "Начать"
@@ -4042,123 +4151,128 @@ msgid "End"
 msgstr "Конец"
 
 msgid "Duration"
-msgstr ""
+msgstr "Продолжительность"
 
 msgid "Dispatched amount:"
-msgstr ""
+msgstr "Распределённая сумма:"
 
 msgid "Not dispatched amount:"
-msgstr ""
+msgstr "Нераспределённая сумма:"
 
 msgid "Create a new fee that will be attached to the current transaction"
-msgstr ""
+msgstr "Создать новый взнос, который будет прикреплён к текущей транзакции"
 
 msgid "Create a new donation that will be attached to the current transaction"
 msgstr ""
+"Создать новое пожертвование, которое будет прикреплено к текущей транзакции"
 
 msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
+"Выбрать существующий взнос в базе данных и прикрепить его к текущей "
+"транзакции"
 
 msgid "Detach contribution from this transaction"
-msgstr ""
+msgstr "Открепить взнос от этой транзакции"
 
 msgid "no contribution"
-msgstr ""
+msgstr "нет взносов"
 
 msgid "No member registered!"
-msgstr ""
+msgstr "Нет зарегистрированных участников!"
 
 msgid "Unfortunately, there is no member in your database yet,"
-msgstr ""
+msgstr "К сожалению, в вашей базе данных ещё нет участников,"
 
 msgid "please create a member"
-msgstr ""
+msgstr "пожалуйста, создайте участника"
 
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "Произошла ошибка при отображении взносов :("
 
 msgid "Contributions selection"
-msgstr ""
+msgstr "Выбор взносов"
 
 msgid "Click on a contribution row to attach it to the current transaction"
-msgstr ""
+msgstr "Нажмите на строку взноса, чтобы прикрепить его к текущей транзакции"
 
 #, php-format
 msgid "By %1$s"
-msgstr ""
+msgstr "От %1$s"
 
 msgid "Version:"
-msgstr ""
+msgstr "Версия:"
 
 msgid "Author:"
-msgstr ""
+msgstr "Автор:"
 
 msgid "Path:"
-msgstr ""
+msgstr "Путь:"
 
 msgid "Main route:"
-msgstr ""
+msgstr "Главный маршрут:"
 
 msgid "ACLs"
-msgstr ""
+msgstr "ACL"
 
 msgid "Route"
-msgstr ""
+msgstr "Маршрут"
 
 msgid "ACL"
-msgstr ""
+msgstr "ACL"
 
 msgid "No ACLs!"
-msgstr ""
+msgstr "Нет ACL!"
 
 msgid "Raw information"
-msgstr ""
+msgstr "Сырая информация"
 
 msgid "No contribution selected"
-msgstr ""
+msgstr "Не выбран ни один взнос"
 
 msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
 msgstr ""
+"Пожалуйста, выберите хотя бы один взнос из списка для выполнения этого "
+"действия."
 
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 msgid "Show contributions by"
-msgstr ""
+msgstr "Показать взносы по"
 
 msgid "Record"
-msgstr ""
+msgstr "Запись"
 
 msgid "since"
-msgstr ""
+msgstr "с"
 
 msgid "until"
-msgstr ""
+msgstr "по"
 
 msgid "Apply filters"
-msgstr ""
+msgstr "Применить фильтры"
 
 msgid "Filter"
-msgstr ""
+msgstr "Фильтр"
 
 msgid "Reset all filters to defaults"
-msgstr ""
+msgstr "Сбросить все фильтры к значениям по умолчанию"
 
 msgid "Clear filter"
-msgstr ""
+msgstr "Очистить фильтр"
 
 msgid "Show all your contributions"
 msgstr "Покажи ваши вклады"
 
 msgid "Show all members contributions"
-msgstr ""
+msgstr "Показать все взносы участников"
 
 msgid "See member profile"
-msgstr ""
+msgstr "Посмотреть профиль участника"
 
 #, php-format
 msgid "%1$s contribution"
@@ -4169,125 +4283,127 @@ msgstr[2] "%1$s вкладов"
 
 #, php-format
 msgid "Found contributions total %f"
-msgstr ""
+msgstr "Найдено взносов на общую сумму %f"
 
 msgid "Edit transaction #%id"
-msgstr ""
+msgstr "Редактировать транзакцию #%id"
 
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "Сумма распределена не полностью"
 
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Просмотреть запланированные платежи"
 
-#, fuzzy
-#| msgid "transactions"
 msgid "Is part of a transaction"
-msgstr "транзакции"
+msgstr "Является частью транзакции"
 
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "Имеет запланированные платежи"
 
 #, php-format
 msgid "Show only '%1$s' contributions"
-msgstr ""
+msgstr "Показать только взносы типа «%1$s»"
 
 #, php-format
 msgid "Show '%1$s' card"
-msgstr ""
+msgstr "Показать карточку типа «%1$s»"
 
 msgid "Print an invoice or a receipt (depending on contribution type)"
-msgstr ""
+msgstr "Печать счёта или квитанции (в зависимости от типа взноса)"
 
 msgid "Edit the contribution"
-msgstr ""
+msgstr "Редактировать взнос"
 
 msgid "Delete the contribution"
-msgstr ""
+msgstr "Удалить взнос"
 
 msgid "Legend"
-msgstr ""
+msgstr "Легенда"
 
 msgid "Reading the list"
-msgstr ""
+msgstr "Чтение списка"
 
 msgid "Contribution"
-msgstr ""
+msgstr "Взнос"
 
 msgid "Gift"
-msgstr ""
+msgstr "Подарок"
 
 msgid "Modification"
-msgstr ""
+msgstr "Изменение"
 
 msgid "Deletion"
-msgstr ""
+msgstr "Удаление"
 
 msgid "Statuses and interactions"
-msgstr ""
+msgstr "Статусы и взаимодействия"
 
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Фильтр по соответствующему участнику"
 
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
 "following tools!"
 msgstr ""
+"Убедитесь, что вы сделали резервную копию базы данных перед использованием "
+"любых из следующих инструментов!"
 
 msgid "Select actions(s)"
-msgstr ""
+msgstr "Выберите действие(я)"
 
 msgid "Reset all emails contents to their default values"
-msgstr ""
+msgstr "Сбросить содержимое всех писем к значениям по умолчанию"
 
 msgid "Reset emails contents"
-msgstr ""
+msgstr "Сбросить содержимое писем"
 
 msgid "(all existing values will be removed)"
-msgstr ""
+msgstr "(все существующие значения будут удалены)"
 
 msgid "Reset fields configuration"
-msgstr ""
+msgstr "Сбросить конфигурацию полей"
 
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
+"Это включает позиции полей, порядок, видимость, уровни доступа и "
+"обязательные отметки."
 
 msgid "Reset all PDF models to their default values"
-msgstr ""
+msgstr "Сбросить все PDF-шаблоны к значениям по умолчанию"
 
 msgid "Reinitialize PDF models"
-msgstr ""
+msgstr "Переинициализировать PDF-шаблоны"
 
 msgid "Fill all empty login and passwords"
-msgstr ""
+msgstr "Заполнить все пустые логины и пароли"
 
 msgid "Generate empty logins and passwords"
-msgstr ""
+msgstr "Создать пустые логины и пароли"
 
 msgid "Fix dynamic fields dates format"
-msgstr ""
+msgstr "Исправить формат дат динамических полей"
 
 msgid "Go"
-msgstr ""
+msgstr "Выполнить"
 
 msgid "Short form"
-msgstr ""
+msgstr "Короткая форма"
 
 msgid "Long form"
-msgstr ""
+msgstr "Длинная форма"
 
 msgid "Add title"
-msgstr ""
+msgstr "Добавить обращение"
 
 #, php-format
 msgid "Edit '%s' title"
-msgstr ""
+msgstr "Редактировать обращение «%s»"
 
 #, php-format
 msgid "Delete '%s' title"
-msgstr ""
+msgstr "Удалить обращение «%s»"
 
 #, php-format
 msgid "%1$s entry"
@@ -4297,356 +4413,360 @@ msgstr[1] "%1$s заходов"
 msgstr[2] "%1$s заходов"
 
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 msgid "User"
-msgstr ""
+msgstr "Пользователь"
 
 msgid "Action"
-msgstr ""
+msgstr "Действие"
 
 msgid "Select an user"
-msgstr ""
+msgstr "Выберите пользователя"
 
 msgid "Select an action"
-msgstr ""
+msgstr "Выберите действие"
 
 msgid "Show associated query"
-msgstr ""
+msgstr "Показать связанный запрос"
 
 msgid "logs are empty"
-msgstr ""
+msgstr "журналы пусты"
 
 msgid "Current model"
-msgstr ""
+msgstr "Текущая модель"
 
 msgid "Change model"
-msgstr ""
+msgstr "Изменить модель"
 
 msgid "Default fields"
-msgstr ""
+msgstr "Поля по умолчанию"
 
 #, php-format
 msgid "Model parameted on %1$s"
-msgstr ""
+msgstr "Модель параметризована %1$s"
 
 msgid "Field"
-msgstr ""
+msgstr "Поле"
 
 #, php-format
 msgid "Missing field '%1$s'"
-msgstr ""
+msgstr "Отсутствует поле '%1$s'"
 
 msgid "Generate empty CSV file"
-msgstr ""
+msgstr "Создать пустой CSV-файл"
 
 msgid "Remove model and back to defaults"
-msgstr ""
+msgstr "Удалить модель и вернуться к значениям по умолчанию"
 
 msgid "Remove model"
-msgstr ""
+msgstr "Удалить модель"
 
-#, fuzzy
-#| msgid "Actions"
 msgid "Selection"
-msgstr "Действия"
+msgstr "Выделение"
 
 msgid "Store new model"
-msgstr ""
+msgstr "Сохранить новую модель"
 
 msgid "Go back to import page"
-msgstr ""
+msgstr "Вернуться на страницу импорта"
 
 msgid "No field selected"
-msgstr ""
+msgstr "Не выбрано ни одного поля"
 
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
 "action."
 msgstr ""
+"Пожалуйста, выберите хотя бы одно поле из списка для выполнения этого "
+"действия."
 
 msgid "Choose an entry"
-msgstr ""
+msgstr "Выберите запись"
 
 msgid "Reference:"
-msgstr ""
+msgstr "Ссылка:"
 
 msgid "Email Subject"
-msgstr ""
+msgstr "Тема письма"
 
 msgid "(Max 255 characters)"
-msgstr ""
+msgstr "(Макс. 255 символов)"
 
 msgid "Email Body:"
-msgstr ""
+msgstr "Тело письма:"
 
 msgid "Sorry, the page you are looking for could not be found."
-msgstr ""
+msgstr "Извините, страница, которую вы ищете, не найдена."
 
 msgid "No member selected"
-msgstr ""
+msgstr "Не выбран ни один участник"
 
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
 msgstr ""
+"Пожалуйста, выберите хотя бы одного участника из списка для выполнения этого "
+"действия."
 
 msgid "Search:"
-msgstr ""
+msgstr "Поиск:"
 
 msgid "Enter a value"
-msgstr ""
+msgstr "Введите значение"
 
 msgid "in:"
-msgstr ""
+msgstr "в:"
 
 msgid "among:"
-msgstr ""
+msgstr "среди:"
 
-#, fuzzy
-#| msgid "Groups"
 msgid "All groups"
-msgstr "Группы"
+msgstr "Все группы"
 
 msgid "Members that have an email address:"
-msgstr ""
+msgstr "Участники, имеющие адрес электронной почты:"
 
 msgid "Don't care"
-msgstr ""
+msgstr "Не важно"
 
 msgid "With"
-msgstr ""
+msgstr "С"
 
 msgid "Without"
-msgstr ""
+msgstr "Без"
 
 msgid "Save selected criteria"
-msgstr ""
+msgstr "Сохранить выбранные критерии"
 
 msgid "Advanced search mode"
-msgstr ""
+msgstr "Расширенный режим поиска"
 
 msgid "Save current advanced search criteria"
-msgstr ""
+msgstr "Сохранить текущие критерии расширенного поиска"
 
 msgid "Change search criteria"
-msgstr ""
+msgstr "Изменить критерии поиска"
 
 msgid "Change criteria"
-msgstr ""
+msgstr "Изменить критерии"
 
 msgid "Show/hide query"
-msgstr ""
+msgstr "Показать/скрыть запрос"
 
 msgid "Active account"
-msgstr ""
+msgstr "Активная учётная запись"
 
 msgid "Inactive account"
-msgstr ""
+msgstr "Неактивная учётная запись"
 
 msgid "Membership in order"
-msgstr ""
+msgstr "Членство в силе"
 
 msgid "Membership will expire soon (<30d)"
-msgstr ""
+msgstr "Членство скоро истечёт (<30 дней)"
 
 msgid "Lateness in fee"
-msgstr ""
+msgstr "Просрочка взноса"
 
 msgid "Send an email"
-msgstr ""
+msgstr "Отправить письмо"
 
 msgid "Admin"
-msgstr ""
+msgstr "Админ"
 
 msgid "Is a sponsor"
-msgstr ""
+msgstr "Является спонсором"
 
 msgid "Search title"
-msgstr ""
+msgstr "Название поиска"
 
 msgid "Existing mailing"
-msgstr ""
+msgstr "Существующая рассылка"
 
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
+"Рассылка уже существует. Хотите создать новую или продолжить существующую?"
 
 msgid "New"
 msgstr "Новый"
 
 msgid "Resume"
-msgstr ""
+msgstr "Продолжить"
 
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
+"Произошла ошибка при отображении интерфейса деталей листа посещаемости :("
 
 msgid "Required field!"
-msgstr ""
+msgstr "Обязательное поле!"
 
 msgid "Some warnings has been thrown:"
-msgstr ""
+msgstr "Появились некоторые предупреждения:"
 
 msgid "Please correct above warnings to continue."
-msgstr ""
+msgstr "Пожалуйста, исправьте указанные выше предупреждения, чтобы продолжить."
 
 msgid "Warning"
-msgstr ""
+msgstr "Предупреждение"
 
 msgid "New contribution type"
-msgstr ""
+msgstr "Новый тип взноса"
 
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "Перевести «%s»"
 
 msgid "Translate labels"
-msgstr ""
+msgstr "Перевести метки"
 
 msgid "This feature requires javascript."
-msgstr ""
+msgstr "Эта функция требует JavaScript."
 
 #, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%1$s управляемая группа"
+msgstr[1] "%1$s управляемые группы"
+msgstr[2] "%1$s управляемых групп"
 
 msgid "Export all groups and their members as PDF"
-msgstr ""
+msgstr "Экспорт всех групп и их участников в PDF"
 
 msgid "All groups PDF"
-msgstr ""
+msgstr "PDF всех групп"
 
 msgid "New group"
-msgstr ""
+msgstr "Новая группа"
 
 msgid "Move an item at the top of the list to reset its parent"
-msgstr ""
+msgstr "Переместите элемент в начало списка, чтобы сбросить его родителя"
 
 msgid ""
 "Some of the changes you made (highlighted in red above) are not allowed. "
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"Некоторые из сделанных вами изменений (выделены красным выше) не разрешены. "
+"Сохранение изменений в списке будет возможно только если все они разрешены."
 
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
+msgstr "Элементы в этом списке были изменены. Не забудьте сохранить изменения."
 
 msgid "Add a new group"
-msgstr ""
+msgstr "Добавить новую группу"
 
 msgid "An error occurred checking name uniqueness :("
-msgstr ""
+msgstr "Произошла ошибка при проверке уникальности имени :("
 
 msgid "Please provide a group name"
-msgstr ""
+msgstr "Пожалуйста, укажите название группы"
 
 msgid "Create"
-msgstr ""
+msgstr "Создать"
 
-#, fuzzy
-#| msgid "Exports"
 msgid "Export as PDF"
-msgstr "Экспорт"
+msgstr "Экспорт в PDF"
 
 msgid "Display"
-msgstr ""
+msgstr "Отображение"
 
 msgid "Filename"
-msgstr ""
+msgstr "Имя файла"
 
 msgid "Creation date"
 msgstr "Дата создания"
 
 msgid "Add a document"
-msgstr ""
+msgstr "Добавить документ"
 
 msgid "Lost your password?"
-msgstr ""
+msgstr "Забыли пароль?"
 
 msgid "Existing files"
-msgstr ""
+msgstr "Существующие файлы"
 
 msgid "The following files seems ready to import on the disk:"
-msgstr ""
+msgstr "Следующие файлы, похоже, готовы к импорту на диске:"
 
-#, fuzzy
-#| msgid "choice"
 msgid "Choice"
-msgstr "выбор"
+msgstr "Выбор"
 
 msgid "Size"
-msgstr ""
+msgstr "Размер"
 
 msgid "see"
-msgstr ""
+msgstr "смотреть"
 
 #, php-format
 msgid "Remove '%1$s' from disk"
-msgstr ""
+msgstr "Удалить «%1$s» с диска"
 
 msgid "Run the import process, but do *not* store anything in the database"
-msgstr ""
+msgstr "Запустить процесс импорта, но *не* сохранять ничего в базе данных"
 
 msgid "Dry run"
-msgstr ""
+msgstr "Пробный прогон"
 
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 msgid "No import file actually exists."
-msgstr ""
+msgstr "Файл для импорта в данный момент не существует."
 
 msgid ""
 "Use upload form below to send a new file on server, or copy it directly in "
 "the imports directory."
 msgstr ""
+"Используйте форму загрузки ниже, чтобы отправить новый файл на сервер, или "
+"скопируйте его непосредственно в каталог импорта."
 
 msgid "Upload new file"
-msgstr ""
+msgstr "Загрузить новый файл"
 
 msgid "Choose a file"
-msgstr ""
+msgstr "Выберите файл"
 
 msgid "Upload file"
-msgstr ""
+msgstr "Загрузить файл"
 
 msgid "Configure import model"
-msgstr ""
+msgstr "Настроить модель импорта"
 
 msgid "No file selected"
-msgstr ""
+msgstr "Файл не выбран"
 
 msgid "Please make sure to select one file to import."
-msgstr ""
+msgstr "Пожалуйста, выберите один файл для импорта."
 
 msgid "Please make sure to select one file to upload."
-msgstr ""
+msgstr "Пожалуйста, выберите один файл для загрузки."
 
 msgid "Priority:"
-msgstr ""
+msgstr "Приоритет:"
 
 msgid ""
 "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
+"Примечание: участники с приоритетом статуса ниже %priority являются "
+"сотрудниками."
 
 msgid "Add payment type"
-msgstr ""
+msgstr "Добавить тип платежа"
 
 msgid "Label"
-msgstr ""
+msgstr "Метка"
 
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr ""
+msgstr "Редактировать тип платежа «%s»"
 
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr ""
+msgstr "Удалить тип платежа «%s»"
 
 msgid "Priority"
 msgstr "Приоритет"
@@ -4655,66 +4775,66 @@ msgid "New status"
 msgstr "Новый статус"
 
 msgid "Choose wich reminder(s) you want to send:"
-msgstr ""
+msgstr "Выберите, какое(ие) напоминание(я) вы хотите отправить:"
 
 msgid "preview"
-msgstr ""
+msgstr "предпросмотр"
 
 #, php-format
 msgid "%s members with an email address"
-msgstr ""
+msgstr "%s участников с адресом электронной почты"
 
 #, php-format
 msgid "%s members without email address"
-msgstr ""
+msgstr "%s участников без адреса электронной почты"
 
 msgid "Generate labels for members without email address"
-msgstr ""
+msgstr "Создать этикетки для участников без адреса электронной почты"
 
 msgid "Message:"
-msgstr ""
+msgstr "Сообщение:"
 
 msgid "No reminder selected"
-msgstr ""
+msgstr "Не выбрано ни одного напоминания"
 
 msgid "Please make sure to select at least one reminder."
-msgstr ""
+msgstr "Пожалуйста, выберите хотя бы одно напоминание."
 
 msgid "Select contributor and membership fee type"
-msgstr ""
+msgstr "Выберите участника и тип членского взноса"
 
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "Выберите участника и тип пожертвования"
 
 msgid "Transaction related"
-msgstr ""
+msgstr "Связано с транзакцией"
 
 msgid "Switch to fee"
-msgstr ""
+msgstr "Переключить на взнос"
 
 msgid "Switch to donation"
-msgstr ""
+msgstr "Переключить на пожертвование"
 
 msgid "View transaction"
-msgstr ""
+msgstr "Просмотреть транзакцию"
 
 msgid "Related transaction information"
-msgstr ""
+msgstr "Информация о связанной транзакции"
 
 msgid "Not dispatched amount"
-msgstr ""
+msgstr "Нераспределённая сумма"
 
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Запланированные платежи"
 
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Создать новый запланированный платёж"
 
 msgid "Details of membership fee"
-msgstr ""
+msgstr "Детали членского взноса"
 
 msgid "Details of donation"
-msgstr ""
+msgstr "Детали пожертвования"
 
 msgid ""
 "When selecting the type <strong>scheduled payment</strong>, a contribution "
@@ -4723,400 +4843,428 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"При выборе типа <strong>запланированный платёж</strong> будет добавлен "
+"взнос, и вам будет предложено создать соответствующие запланированные "
+"платежи в дальнейшем. В этом случае сумма взноса в текущей форме должна "
+"равняться общей сумме всех запланированных платежей, которые вы определите "
+"далее."
 
 msgid "months"
-msgstr ""
+msgstr "месяцев"
 
 msgid "Notify member"
-msgstr ""
+msgstr "Уведомить участника"
 
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
+"Участник получит уведомление по электронной почте, если у него есть адрес."
 
 msgid "Contribution amount should not be greater than %max"
-msgstr ""
+msgstr "Сумма взноса не должна превышать %max"
 
 msgid "An error occurred displaying scheduled payments :("
-msgstr ""
+msgstr "Произошла ошибка при отображении запланированных платежей :("
 
 msgid "Mailing information"
-msgstr ""
+msgstr "Информация о рассылке"
 
 msgid "Sender"
-msgstr ""
+msgstr "Отправитель"
 
 msgid "from preferences"
-msgstr ""
+msgstr "из настроек"
 
 msgid "current logged in user"
-msgstr ""
+msgstr "текущий вошедший пользователь"
 
 msgid "other"
-msgstr ""
+msgstr "другой"
 
 msgid "Recipients"
-msgstr ""
+msgstr "Получатели"
 
 msgid "Go back to members list"
-msgstr ""
+msgstr "Вернуться к списку участников"
 
 msgid "Manage selected members"
-msgstr ""
+msgstr "Управление выбранными участниками"
 
 msgid "Existing attachments:"
-msgstr ""
+msgstr "Существующие вложения:"
 
 msgid "Remove attachment"
-msgstr ""
+msgstr "Удалить вложение"
 
 msgid ""
 "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
 "or 'shift' keys are only available on compatible browsers."
 msgstr ""
+"Выберите файлы для добавления в качестве вложений.<br/>Выбор нескольких "
+"файлов с использованием клавиш 'ctrl' или 'shift' доступен только в "
+"совместимых браузерах."
 
 msgid "Add attachment"
-msgstr ""
+msgstr "Добавить вложение"
 
 msgid "Write your mailing"
-msgstr ""
+msgstr "Напишите вашу рассылку"
 
 msgid "Object:"
-msgstr ""
+msgstr "Тема:"
 
 msgid "Interpret HTML"
-msgstr ""
+msgstr "Интерпретировать HTML"
 
 msgid "Preview"
-msgstr ""
+msgstr "Предпросмотр"
 
 msgid "Cancel mailing"
-msgstr ""
+msgstr "Отменить рассылку"
 
 msgid "Preview your mailing"
-msgstr ""
+msgstr "Предпросмотр вашей рассылки"
 
 msgid "Modifiy mailing"
-msgstr ""
+msgstr "Изменить рассылку"
 
 msgid "An error occurred displaying preview :("
-msgstr ""
+msgstr "Произошла ошибка при отображении предпросмотра :("
 
 msgid "An error occurred displaying members interface :("
-msgstr ""
+msgstr "Произошла ошибка при отображении интерфейса участников :("
 
 msgid "Members selection"
-msgstr ""
+msgstr "Выбор участников"
 
 msgid "Click on a row to select a member"
-msgstr ""
+msgstr "Нажмите на строку, чтобы выбрать участника"
 
 msgid "Are you sure you want to remove this attachment?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить это вложение?"
 
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
+"Это немедленно удалит вложение с диска, и действие невозможно будет отменить."
 
 msgid "Scheduled payment"
-msgstr ""
+msgstr "Запланированный платёж"
 
-#, fuzzy
-#| msgid "contribution"
 msgid "View contribution"
-msgstr "вклад"
+msgstr "Просмотреть взнос"
 
 msgid "Related contribution information"
-msgstr ""
+msgstr "Информация о связанном взносе"
 
 msgid "Short form:"
-msgstr ""
+msgstr "Короткая форма:"
 
 msgid "Long form:"
-msgstr ""
+msgstr "Длинная форма:"
 
 msgid "General"
-msgstr ""
+msgstr "Общие"
 
 msgid "Parameters"
-msgstr ""
+msgstr "Параметры"
 
 msgid "Rights"
-msgstr ""
+msgstr "Права"
 
 msgid "E-Mail"
-msgstr ""
+msgstr "Электронная почта"
 
 msgid "Security parameters"
-msgstr ""
+msgstr "Параметры безопасности"
 
 msgid "Name of the association:"
-msgstr ""
+msgstr "Название ассоциации:"
 
 msgid "Association's short description:"
-msgstr ""
+msgstr "Краткое описание ассоциации:"
 
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 msgstr ""
+"Введите здесь краткое описание вашей ассоциации, оно будет отображаться на "
+"главной странице и в заголовках страниц."
 
 msgid "Logo:"
-msgstr ""
+msgstr "Логотип:"
 
 msgid "Current logo"
-msgstr ""
+msgstr "Текущий логотип"
 
 msgid "Choose another file"
-msgstr ""
+msgstr "Выбрать другой файл"
 
 msgid "Delete image"
-msgstr ""
+msgstr "Удалить изображение"
 
 msgid " (continuation)"
-msgstr ""
+msgstr " (продолжение)"
 
 msgid "Postal address:"
-msgstr ""
+msgstr "Почтовый адрес:"
 
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
+"Используйте либо адрес, указанный выше, либо выберите сотрудника, чтобы "
+"получить его адрес."
 
 msgid "from a staff user"
-msgstr ""
+msgstr "от сотрудника"
 
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Сотрудник, чей адрес необходимо получить"
 
 msgid "-- Choose a staff member --"
-msgstr ""
+msgstr "-- Выберите сотрудника --"
 
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
+"Используйте либо номер телефона, указанный ниже, либо выберите сотрудника, "
+"чтобы получить его номер телефона."
 
 msgid "phone from a staff user"
-msgstr ""
+msgstr "телефон от сотрудника"
 
 msgid "mobile phone from a staff user"
-msgstr ""
+msgstr "мобильный телефон от сотрудника"
 
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Сотрудник, чей номер телефона необходимо получить"
 
 msgid "Website:"
-msgstr ""
+msgstr "Веб-сайт:"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 msgstr ""
+"Введите текст (HTML разрешён), который будет отображаться в нижнем "
+"колонтитуле каждой страницы"
 
 msgid "Prevent search engines indexation"
-msgstr ""
+msgstr "Запретить индексацию поисковыми системами"
 
 msgid "Telemetry date:"
-msgstr ""
+msgstr "Дата телеметрии:"
 
 msgid "Last telemetry sent date."
-msgstr ""
+msgstr "Дата последней отправки телеметрии."
 
 msgid "send"
-msgstr ""
+msgstr "отправить"
 
 msgid "Registration date:"
-msgstr ""
+msgstr "Дата регистрации:"
 
 msgid "Date on which you registered your Galette instance."
-msgstr ""
+msgstr "Дата, когда вы зарегистрировали свой экземпляр Galette."
 
 msgid "Update your information"
-msgstr ""
+msgstr "Обновить вашу информацию"
 
 msgid "Not registered"
-msgstr ""
+msgstr "Не зарегистрировано"
 
 msgid "Default language:"
-msgstr ""
+msgstr "Язык по умолчанию:"
 
 msgid "Default payment type:"
-msgstr ""
+msgstr "Тип платежа по умолчанию:"
 
 msgid "Default account filter:"
-msgstr ""
+msgstr "Фильтр учётной записи по умолчанию:"
 
 msgid "Number of columns on the member form"
-msgstr ""
+msgstr "Количество столбцов в форме участника"
 
 msgid "Lines / Page:"
-msgstr ""
+msgstr "Строк / страница:"
 
 msgid "Default membership status:"
-msgstr ""
+msgstr "Статус членства по умолчанию:"
 
 msgid "After member creation:"
-msgstr ""
+msgstr "После создания участника:"
 
 msgid "create a new contribution (default action)"
-msgstr ""
+msgstr "создать новый взнос (действие по умолчанию)"
 
 msgid "create a new transaction"
-msgstr ""
+msgstr "создать новую транзакцию"
 
 msgid "create another new member"
-msgstr ""
+msgstr "создать другого нового участника"
 
 msgid "show member"
-msgstr ""
+msgstr "показать участника"
 
 msgid "go to members list"
-msgstr ""
+msgstr "перейти к списку участников"
 
 msgid "go to main page"
-msgstr ""
+msgstr "перейти на главную страницу"
 
 msgid "Force member picture ratio"
-msgstr ""
+msgstr "Принудительно задать соотношение сторон фотографии участника"
 
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
+"Если отмечено, фотография участника будет изменена и обрезана до соотношения "
+"сторон, выбранного ниже."
 
 msgid "Select a ratio"
-msgstr ""
+msgstr "Выберите соотношение сторон"
 
 msgid "Square (1:1)"
-msgstr ""
+msgstr "Квадрат (1:1)"
 
 msgid "Portrait (3:4)"
-msgstr ""
+msgstr "Портрет (3:4)"
 
 msgid "Landscape (4:3)"
-msgstr ""
+msgstr "Ландшафт (4:3)"
 
 msgid "Default membership extension:"
-msgstr ""
+msgstr "Продление членства по умолчанию:"
 
 msgid "(Months)"
-msgstr ""
+msgstr "(Месяцев)"
 
 msgid "or"
-msgstr ""
+msgstr "или"
 
 msgid "Beginning of membership:"
-msgstr ""
+msgstr "Начало членства:"
 
 msgid "(dd/mm)"
-msgstr ""
+msgstr "(дд/мм)"
 
 msgid "Number of months offered:"
-msgstr ""
+msgstr "Количество предлагаемых месяцев:"
 
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
+"При использовании опции начала членства вы можете предложить последние "
+"месяцы года."
 
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
+"Допустим, вы предлагаете последние 2 месяца, а продление происходит 31 "
+"декабря. Все созданные взносы в текущем году будут действительны до этой "
+"даты, но начиная с октября они будут действительны в течение всего "
+"следующего года."
 
 msgid "Self subscription enabled?"
-msgstr ""
+msgstr "Самостоятельная подписка включена?"
 
 msgid "Display the link to download the empty adhesion form"
-msgstr ""
+msgstr "Отображать ссылку для скачивания пустой формы вступления"
 
 msgid "Public pages enabled?"
-msgstr ""
+msgstr "Публичные страницы включены?"
 
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"Будет применяться ко всем публичным страницам, которые не перечислены здесь, "
+"включая страницы плагинов."
 
 msgid "Hidden"
-msgstr ""
+msgstr "Скрыто"
 
 msgid "Everyone"
-msgstr ""
+msgstr "Для всех"
 
 msgid "Admin and staff only"
-msgstr ""
+msgstr "Только админ и сотрудники"
 
 msgid "Inherit"
-msgstr ""
+msgstr "Наследовать"
 
-#, fuzzy
-#| msgid "Members"
 msgid "Members list"
-msgstr "Пользователи"
+msgstr "Список участников"
 
-#, fuzzy
-#| msgid "Members"
 msgid "Members gallery"
-msgstr "Пользователи"
+msgstr "Галерея участников"
 
 msgid "Staff list"
-msgstr ""
+msgstr "Список сотрудников"
 
 msgid "Include groups managers with staff?"
-msgstr ""
+msgstr "Включать менеджеров групп в список сотрудников?"
 
 msgid "Appearance"
-msgstr ""
+msgstr "Внешний вид"
 
 msgid "Hide default background image"
-msgstr ""
+msgstr "Скрыть фоновое изображение по умолчанию"
 
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Применить пользовательские цвета"
 
 msgid "Primary color"
-msgstr ""
+msgstr "Основной цвет"
 
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Цвет, применяемый к основным кнопкам, флажкам, меткам, заголовкам, границам "
+"и меню."
 
 msgid "Text on primary color"
-msgstr ""
+msgstr "Текст на основном цвете"
 
 msgid "Color applied to text displayed over the Primary color."
-msgstr ""
+msgstr "Цвет, применяемый к тексту, отображаемому поверх основного цвета."
 
 msgid "Secondary color"
-msgstr ""
+msgstr "Вторичный цвет"
 
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Цвет, применяемый к активным элементам в меню, пагинации и представлениях-"
+"аккордеонах."
 
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Текст на вторичном цвете"
 
 msgid "Color applied to text displayed over the Secondary color."
-msgstr ""
+msgstr "Цвет, применяемый к тексту, отображаемому поверх вторичного цвета."
 
 msgid "Advanced parameters"
-msgstr ""
+msgstr "Расширенные параметры"
 
 msgid "Galette base URL"
-msgstr ""
+msgstr "Базовый URL Galette"
 
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
+"Введите базовый URL вашего экземпляра Galette. Вам следует изменять этот "
+"параметр, только если URL текущей страницы не:<br/>%galette_url"
 
 msgid "Post new contribution script URI"
-msgstr ""
+msgstr "URI скрипта после добавления взноса"
 
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
@@ -5125,389 +5273,435 @@ msgid ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 msgstr ""
+"Введите URI скрипта, который будет вызываться после добавления нового "
+"взноса.<br/>URI скрипта должен иметь префикс: '<em>galette://</em>' для "
+"внутреннего вызова Galette, '<em>file://</em>' для прямого вызова файла, "
+"'<em>get://</em>' или '<em>post://</em>' для HTTP-вызовов (в этих случаях "
+"префикс будет заменён на http://)."
 
 msgid "RSS feed URL"
-msgstr ""
+msgstr "URL RSS-ленты"
 
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
+"Введите полный URL RSS-ленты. Она будет отображаться на рабочем столе "
+"Galette."
 
 msgid "Can members create child?"
-msgstr ""
+msgstr "Могут ли участники создавать дочерние записи?"
 
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Могут ли менеджеры групп редактировать свои группы?"
 
 msgid "Can group managers create members?"
-msgstr ""
+msgstr "Могут ли менеджеры групп создавать участников?"
 
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Могут ли менеджеры групп редактировать участников?"
 
 msgid "Can group managers send mailings?"
-msgstr ""
+msgstr "Могут ли менеджеры групп отправлять рассылки?"
 
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "Могут ли менеджеры групп выполнять экспорт?"
 
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Менеджерам групп будет разрешён экспорт участников в CSV, PDF-карточки, "
+"листы посещаемости и PDF групп"
 
 msgid "Can group managers see contributions?"
-msgstr ""
+msgstr "Могут ли менеджеры групп видеть взносы?"
 
 msgid "Can group managers create contributions?"
-msgstr ""
+msgstr "Могут ли менеджеры групп создавать взносы?"
 
 msgid "Can group managers see transactions?"
-msgstr ""
+msgstr "Могут ли менеджеры групп видеть транзакции?"
 
 msgid "Can group managers create transactions?"
-msgstr ""
+msgstr "Могут ли менеджеры групп создавать транзакции?"
 
 msgid "Sender name:"
-msgstr ""
+msgstr "Имя отправителя:"
 
 msgid "Sender Email:"
-msgstr ""
+msgstr "Email отправителя:"
 
 msgid "Reply-To Email:"
-msgstr ""
+msgstr "Email для ответа:"
 
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
+"Оставьте пустым, чтобы использовать Email отправителя как адрес для ответа"
 
 msgid "Members administrator's Email:"
-msgstr ""
+msgstr "Email администратора участников:"
 
 msgid "Recipient of new online registation and edition emails"
-msgstr ""
+msgstr "Получатель писем о новых онлайн-регистрациях и редактированиях"
 
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 msgstr ""
+"(Вы можете ввести несколько адресов электронной почты, разделённых запятыми. "
+"Первый адрес будет использоваться по умолчанию.)"
 
 msgid "Send email to administrators?"
-msgstr ""
+msgstr "Отправлять письма администраторам?"
 
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 msgstr ""
+"Отправляет письмо каждый раз, когда новый участник регистрируется онлайн или "
+"редактирует свою учётную запись"
 
 msgid "Wrap emails text?"
-msgstr ""
+msgstr "Переносить текст писем?"
 
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
+"Автоматически переносить текст писем перед отправкой. Убедитесь, что вы "
+"делаете перенос самостоятельно, если отключаете эту функцию. Пожалуйста, "
+"учтите, что текущая редактируемая рассылка не будет затронута изменением."
 
 msgid "Send email to members?"
-msgstr ""
+msgstr "Отправлять письма участникам?"
 
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
+"Отправляет письмо каждый раз, когда карточка участника или взнос были "
+"добавлены или отредактированы. Это можно отключить для каждого случая."
 
 msgid "Activate HTML editor?"
-msgstr ""
+msgstr "Активировать HTML-редактор?"
 
 msgid "Should HTML editor be activated on page load ?"
-msgstr ""
+msgstr "Должен ли HTML-редактор быть активирован при загрузке страницы?"
 
 msgid "Mail signature"
-msgstr ""
+msgstr "Подпись в письме"
 
 msgid "Emailing method:"
-msgstr ""
+msgstr "Метод отправки писем:"
 
 msgid "Emailing disabled"
-msgstr ""
+msgstr "Отправка писем отключена"
 
 msgid "PHP mail() function"
-msgstr ""
+msgstr "Функция PHP mail()"
 
 msgid "Using a SMTP server (slower)"
-msgstr ""
+msgstr "Использование SMTP-сервера (медленнее)"
 
 msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
+msgstr "Использование GMAIL в качестве SMTP-сервера (медленнее)"
 
 msgid "Using Sendmail server"
-msgstr ""
+msgstr "Использование сервера Sendmail"
 
 msgid "Using QMAIL server"
-msgstr ""
+msgstr "Использование сервера QMAIL"
 
 msgid "Test email settings"
-msgstr ""
+msgstr "Проверить настройки почты"
 
 msgid "SMTP server:"
-msgstr ""
+msgstr "SMTP сервер:"
 
 msgid "SMTP port:"
-msgstr ""
+msgstr "SMTP порт:"
 
 msgid "Use SMTP authentication?"
-msgstr ""
+msgstr "Использовать аутентификацию SMTP?"
 
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
+"Будет ли отправка писем использовать аутентификацию SMTP? Вам нужно будет "
+"указать имя пользователя и пароль ниже. Для GMail аутентификация всегда "
+"будет включена."
 
 msgid "Use TLS for SMTP?"
-msgstr ""
+msgstr "Использовать TLS для SMTP?"
 
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
+"Вы хотите использовать возможности TLS сервера?<br/>Для GMail это всегда "
+"будет включено."
 
 msgid "Allow unsecure TLS?"
-msgstr ""
+msgstr "Разрешить небезопасный TLS?"
 
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
+"Вы хотите разрешить «небезопасные» соединения? Это может быть полезно, если "
+"ваш сервер использует самоподписанный сертификат, и в некоторых других "
+"случаях."
 
 msgid "SMTP (or GMail) user:"
-msgstr ""
+msgstr "Пользователь SMTP (или GMail):"
 
 msgid "SMTP (or GMail) password:"
-msgstr ""
+msgstr "Пароль SMTP (или GMail):"
 
 msgid "Vertical margins:"
-msgstr ""
+msgstr "Вертикальные поля:"
 
 msgid "Horizontal margins:"
-msgstr ""
+msgstr "Горизонтальные поля:"
 
 msgid "Horizontal spacing:"
-msgstr ""
+msgstr "Горизонтальный интервал:"
 
 msgid "Vertical spacing:"
-msgstr ""
+msgstr "Вертикальный интервал:"
 
 msgid "Print border"
-msgstr ""
+msgstr "Печатать границу"
 
 msgid "Check this box to print a grey border around each label."
 msgstr ""
+"Отметьте этот флажок, чтобы печатать серую границу вокруг каждой этикетки."
 
 msgid "Label width:"
-msgstr ""
+msgstr "Ширина этикетки:"
 
 msgid "Label height:"
-msgstr ""
+msgstr "Высота этикетки:"
 
 msgid "Number of label columns:"
-msgstr ""
+msgstr "Количество столбцов этикеток:"
 
 msgid "Number of label lines:"
-msgstr ""
+msgstr "Количество строк этикеток:"
 
 msgid "Font size:"
-msgstr ""
+msgstr "Размер шрифта:"
 
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
-msgstr ""
+msgstr "Каждая страница содержит %1$s столбцов и %2$s строк."
 
 msgid "Short Text (Card Center):"
-msgstr ""
+msgstr "Короткий текст (центр карточки):"
 
 msgid "(10 characters max)"
-msgstr ""
+msgstr "(макс. 10 символов)"
 
 msgid "Long Text (Bottom Line):"
-msgstr ""
+msgstr "Длинный текст (нижняя строка):"
 
 msgid "(65 characters max)"
-msgstr ""
+msgstr "(макс. 65 символов)"
 
 msgid "Strip Text Color:"
-msgstr ""
+msgstr "Цвет текста полосы:"
 
 msgid "Hexadecimal color notation: #RRGGBB"
-msgstr ""
+msgstr "Шестнадцатеричное обозначение цвета: #RRGGBB"
 
 msgid "Active Member Color:"
-msgstr ""
+msgstr "Цвет активного участника:"
 
 msgid "Board Members Color:"
-msgstr ""
+msgstr "Цвет членов совета:"
 
 msgid "Honor Members Color:"
-msgstr ""
+msgstr "Цвет почётных участников:"
 
 msgid "Current logo for printing"
-msgstr ""
+msgstr "Текущий логотип для печати"
 
 msgid "Allow members to print card ?"
-msgstr ""
+msgstr "Разрешить участникам печатать карточку?"
 
 msgid "Show title ?"
-msgstr ""
+msgstr "Показывать обращение?"
 
 msgid "(Show or not title in front of name)"
-msgstr ""
+msgstr "(Показывать или нет обращение перед именем)"
 
 msgid "Address type:"
-msgstr ""
+msgstr "Тип адреса:"
 
 msgid "(Choose address printed below name)"
-msgstr ""
+msgstr "(Выберите адрес, печатаемый под именем)"
 
 msgid "Year:"
-msgstr ""
+msgstr "Год:"
 
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
+"Вы можете ввести:<br/>- год,<br/>- два года через косую черту в качестве "
+"разделителя,<br/>- строку 'DEADLINE', чтобы использовать срок действия "
+"участника"
 
 msgid "Card width from 70 to 95mm:"
-msgstr ""
+msgstr "Ширина карточки от 70 до 95 мм:"
 
 msgid "Card height from 40 to 55mm:"
-msgstr ""
+msgstr "Высота карточки от 40 до 55 мм:"
 
 msgid "Password length:"
-msgstr ""
+msgstr "Длина пароля:"
 
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
+"Минимальная длина пароля, требуемая для всех учётных записей. Минимальный "
+"размер — 6."
 
 msgid "Enable password blacklists"
-msgstr ""
+msgstr "Включить чёрные списки паролей"
 
 msgid "Enable blacklists:"
-msgstr ""
+msgstr "Включить чёрные списки:"
 
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
+"Если вы включите чёрные списки, будет невозможно использовать любой из "
+"паролей, находящихся в чёрном списке. Список предоставляется вместе с "
+"Galette, но вы можете добавлять свои собственные."
 
 msgid "Enforce password strength"
-msgstr ""
+msgstr "Принудительная сложность пароля"
 
 msgid "Password strength:"
-msgstr ""
+msgstr "Сложность пароля:"
 
 msgid "None (default)"
-msgstr ""
+msgstr "Нет (по умолчанию)"
 
 msgid "Weak"
-msgstr ""
+msgstr "Слабый"
 
 msgid "Medium"
-msgstr ""
+msgstr "Средний"
 
 msgid "Strong"
-msgstr ""
+msgstr "Сильный"
 
 msgid "Very strong"
-msgstr ""
+msgstr "Очень сильный"
 
 msgid "Enforce minimal password strength for all password."
-msgstr ""
+msgstr "Применять минимальную сложность пароля для всех паролей."
 
 msgid "Levels are:"
-msgstr ""
+msgstr "Уровни:"
 
 msgid "for no strength enforcement"
-msgstr ""
+msgstr "без принудительной сложности"
 
 msgid "require at least one matched rule"
-msgstr ""
+msgstr "требовать совпадения хотя бы с одним правилом"
 
 msgid "require at least two matched rules"
-msgstr ""
+msgstr "требовать совпадения не менее чем с двумя правилами"
 
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
+"требовать совпадения не менее чем с тремя правилами (рекомендуется для "
+"большинства случаев)"
 
 msgid "requires all rules."
-msgstr ""
+msgstr "требует всех правил."
 
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
+"Правила включают строчные буквы, заглавные буквы, цифры и специальные "
+"символы."
 
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
+"Обратите внимание, что при любом уровне принудительной сложности "
+"пользователь не может использовать свою личную информацию (имя, логин и "
+"т.д.) в качестве пароля."
 
 msgid "Test a password:"
-msgstr ""
+msgstr "Проверить пароль:"
 
 msgid "Test a password with current selected values."
-msgstr ""
+msgstr "Проверить пароль с текущими выбранными значениями."
 
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
-msgstr ""
+msgstr "Не забудьте сохранить настройки, если результат вас устраивает ;)"
 
 msgid "Enter the email adress"
-msgstr ""
+msgstr "Введите адрес электронной почты"
 
 msgid "An error occurred sending test email :("
-msgstr ""
+msgstr "Произошла ошибка при отправке тестового письма :("
 
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 msgid "Att."
-msgstr ""
+msgstr "Вл."
 
 msgid "Sent"
-msgstr ""
+msgstr "Отправлено"
 
 msgid "Create new mailing"
-msgstr ""
+msgstr "Создать новую рассылку"
 
 msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
+"Рассылка существует в текущем сеансе. Нажмите здесь, если хотите продолжить "
+"или отменить её."
 
 msgid "Sent mailings:"
-msgstr ""
+msgstr "Отправленные рассылки:"
 
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
-msgstr ""
+msgstr "Показать детали рассылки '%1$s' в окне предпросмотра"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
-msgstr ""
+msgstr "Использовать рассылку '%1$s' в качестве шаблона для новой"
 
 #, php-format
 msgid "Delete mailing '%1$s'"
-msgstr ""
+msgstr "Удалить рассылку '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
-msgstr ""
+msgstr "В базе данных пока нет сохранённых отправленных рассылок."
 
 msgid "Available fields"
-msgstr ""
+msgstr "Доступные поля"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
 "the list."
 msgstr ""
+"Удаление последнего поля невозможно. В списке должно быть хотя бы одно поле."
 
 #, php-format
 msgid "%1$s search"
@@ -5517,191 +5711,195 @@ msgstr[1] "%1$s поисков"
 msgstr[2] "%1$s поисков"
 
 msgid "Search parameters"
-msgstr ""
+msgstr "Параметры поиска"
 
 msgid "Show parameters"
-msgstr ""
+msgstr "Показать параметры"
 
 msgid "Load saved search"
-msgstr ""
+msgstr "Загрузить сохранённый поиск"
 
 msgid "no search"
-msgstr ""
+msgstr "нет поиска"
 
 msgid "Attached to:"
-msgstr ""
+msgstr "Прикреплён к:"
 
 msgid "Detach?"
-msgstr ""
+msgstr "Открепить?"
 
 msgid "Attach member"
-msgstr ""
+msgstr "Прикрепить участника"
 
-#, fuzzy
-#| msgid "Members"
 msgid "Parent member"
-msgstr "Пользователи"
+msgstr "Родительский участник"
 
 msgid "Parent of:"
-msgstr ""
+msgstr "Родитель для:"
 
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Если вы предпочитаете не оформлять подписку онлайн, вы можете скачать пустую "
+"форму вступления"
 
 msgid "Notify member his account has been modified"
-msgstr ""
+msgstr "Уведомить участника об изменении его учётной записи"
 
 msgid "Notify member his account has been created"
-msgstr ""
+msgstr "Уведомить участника о создании его учётной записи"
 
 msgid "Member will be notified by email his account has been modified."
 msgstr ""
+"Участник будет уведомлён по электронной почте об изменении его учётной "
+"записи."
 
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
+"Участник получит своё имя пользователя и пароль по электронной почте, если у "
+"него есть адрес."
 
 msgid "An error occurred displaying groups interface :("
-msgstr ""
+msgstr "Произошла ошибка при отображении интерфейса групп :("
 
 msgid "Groups selection"
-msgstr ""
+msgstr "Выбор групп"
 
 msgid "Managed groups selection"
-msgstr ""
+msgstr "Выбор управляемых групп"
 
 msgid "Member of group"
-msgstr ""
+msgstr "Участник группы"
 
 msgid "Click on a row to select a group"
-msgstr ""
+msgstr "Нажмите на строку, чтобы выбрать группу"
 
 msgid "No entry selected"
-msgstr ""
+msgstr "Не выбрано ни одной записи"
 
 msgid ""
 "Please make sure to select at least one entry from the list to perform this "
 "action."
 msgstr ""
+"Пожалуйста, выберите хотя бы одну запись из списка для выполнения этого "
+"действия."
 
 msgid "Scheduled date"
-msgstr ""
+msgstr "Запланированная дата"
 
 msgid "Show payments by"
-msgstr ""
+msgstr "Показать платежи по"
 
 msgid "Paid scheduled payments:"
 msgstr "Оплаченные плановые платежи:"
 
 msgid "Not paid"
-msgstr ""
+msgstr "Не оплачено"
 
-#, fuzzy
-#| msgid "List of scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "Список запланированных платежей"
+msgstr "Показать все ваши запланированные платежи"
 
-#, fuzzy
-#| msgid "Remove scheduled payment"
-#| msgid_plural "Remove scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "Удалить запланированный платеж"
+msgstr "Показать все запланированные платежи участников"
 
 #, php-format
 msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%1$s запланированный платёж"
+msgstr[1] "%1$s запланированных платежа"
+msgstr[2] "%1$s запланированных платежей"
 
 #, php-format
 msgid "Found total scheduled %f"
-msgstr ""
+msgstr "Найдено запланированных на общую сумму %f"
 
 #, php-format
 msgid "Edit membership fee %1$s"
-msgstr ""
+msgstr "Редактировать членский взнос %1$s"
 
 #, php-format
 msgid "Edit donation %1$s"
-msgstr ""
+msgstr "Редактировать пожертвование %1$s"
 
 #, php-format
 msgid "Show only '%1$s' scheduled payments"
 msgstr "Показывать только запланированные платежи '%1$s'"
 
 msgid "Not paid and due"
-msgstr ""
+msgstr "Не оплачено и истекло"
 
 msgid "Delete scheduled payment"
-msgstr ""
+msgstr "Удалить запланированный платёж"
 
 msgid "No scheduled payment"
-msgstr ""
+msgstr "Нет запланированных платежей"
 
 msgid "Original string for name, that will be used for translations."
 msgstr ""
+"Исходная строка для названия, которая будет использоваться для переводов."
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
+"Отправить участнику ссылку для создания нового пароля, как если бы он "
+"использовал функцию «Забыли пароль?»."
 
 msgid "New password"
-msgstr ""
+msgstr "Новый пароль"
 
 msgid "Generate Member Card"
-msgstr ""
+msgstr "Создать карточку участника"
 
 msgid "View contributions"
-msgstr ""
+msgstr "Просмотреть взносы"
 
 #, php-format
 msgid "Create a new member with %1$s information."
-msgstr ""
+msgstr "Создать нового участника с информацией из %1$s ."
 
 msgid "Duplicate"
 msgstr "Дубликат"
 
 msgid "Family"
-msgstr ""
+msgstr "Семья"
 
 msgid "Groups:"
-msgstr ""
+msgstr "Группы:"
 
 msgid "Not managed group"
-msgstr ""
+msgstr "Неуправляемая группа"
 
 msgid "You are not part of managers for the requested group."
-msgstr ""
+msgstr "Вы не входите в состав менеджеров запрошенной группы."
 
 msgid "Please confirm your email address:"
-msgstr ""
+msgstr "Пожалуйста, подтвердите ваш адрес электронной почты:"
 
 msgid "Get my document"
-msgstr ""
+msgstr "Получить мой документ"
 
 msgid "New password:"
-msgstr ""
+msgstr "Новый пароль:"
 
 msgid "Confirmation:"
-msgstr ""
+msgstr "Подтверждение:"
 
 msgid "Change my password"
-msgstr ""
+msgstr "Изменить мой пароль"
 
 msgid "Originator"
-msgstr ""
+msgstr "Инициатор"
 
 msgid "Show transactions since"
-msgstr ""
+msgstr "Показать транзакции с"
 
 msgid "Show all your transactions"
 msgstr "Показать все ваши транзакции"
 
 msgid "Show all members transactions"
-msgstr ""
+msgstr "Показать все транзакции участников"
 
 #, php-format
 msgid "%1$s transaction"
@@ -5712,261 +5910,261 @@ msgstr[2] "%1$s транзакции"
 
 #, php-format
 msgid "Show only '%1$s' transactions"
-msgstr ""
+msgstr "Показать только транзакции типа «%1$s»"
 
 msgid "Remove transaction #%id"
-msgstr ""
+msgstr "Удалить транзакцию #%id"
 
 msgid "no transaction"
-msgstr ""
+msgstr "нет транзакций"
 
 msgid "Completely dispatched transaction"
-msgstr ""
+msgstr "Полностью распределённая транзакция"
 
 msgid "Uncomplete dispatched transaction"
-msgstr ""
+msgstr "Не полностью распределённая транзакция"
 
-#, fuzzy
-#| msgid "contribution"
 msgid "View corresponding contributions"
-msgstr "вклад"
+msgstr "Просмотреть соответствующие взносы"
 
 #, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
+"Нет перевода для «%s»!<br>Пожалуйста, заполните и отправьте форму ниже, "
+"чтобы создать его."
 
 msgid "Original text:"
-msgstr ""
+msgstr "Исходный текст:"
 
 msgid "Choose label to translate"
-msgstr ""
+msgstr "Выберите метку для перевода"
 
 msgid "No fields to translate."
-msgstr ""
+msgstr "Нет полей для перевода."
 
 msgid "Group members selection"
-msgstr ""
+msgstr "Выбор участников группы"
 
 msgid "Group managers selection"
-msgstr ""
+msgstr "Выбор менеджеров группы"
 
 msgid "Members by status"
-msgstr ""
+msgstr "Участники по статусу"
 
 msgid "Members by state of dues"
-msgstr ""
+msgstr "Участники по состоянию взносов"
 
 msgid "Contributions types repartition"
-msgstr ""
+msgstr "Распределение по типам взносов"
 
 msgid "Individuals and Companies"
-msgstr ""
+msgstr "Физические и юридические лица"
 
 msgid "Contributions over time"
-msgstr ""
+msgstr "Взносы во времени"
 
 msgid "Total contributions for the month"
-msgstr ""
+msgstr "Общая сумма взносов за месяц"
 
 msgid "Username or email:"
-msgstr ""
+msgstr "Имя пользователя или email:"
 
 msgid "Recover password"
-msgstr ""
+msgstr "Восстановить пароль"
 
 msgid "Simple search"
-msgstr ""
+msgstr "Простой поиск"
 
 msgid "Membership status"
-msgstr ""
+msgstr "Статус членства"
 
 msgid "Account activity"
-msgstr ""
+msgstr "Активность учётной записи"
 
 msgid "Select a group"
-msgstr ""
+msgstr "Выберите группу"
 
 msgid "With email:"
-msgstr ""
+msgstr "С email:"
 
 msgid "beetween"
-msgstr ""
+msgstr "между"
 
 msgid "Modification date"
-msgstr ""
+msgstr "Дата изменения"
 
 msgid "Due date"
-msgstr ""
+msgstr "Срок уплаты"
 
 msgid "Show public infos"
-msgstr ""
+msgstr "Показать публичную информацию"
 
 msgid "Advanced groups search"
-msgstr ""
+msgstr "Расширенный поиск по группам"
 
 msgid "Experimental"
-msgstr ""
+msgstr "Экспериментально"
 
 msgid "Add new group search criteria"
-msgstr ""
+msgstr "Добавить новый критерий поиска по группам"
 
 msgid "Logical operator"
-msgstr ""
+msgstr "Логический оператор"
 
 msgid "In all selected groups"
-msgstr ""
+msgstr "Во всех выбранных группах"
 
 msgid "In any of selected groups"
-msgstr ""
+msgstr "В любой из выбранных групп"
 
-#, fuzzy
-#| msgid "Groups"
 msgid "Group"
-msgstr "Группы"
+msgstr "Группа"
 
 msgid "Remove criteria"
-msgstr ""
+msgstr "Удалить критерий"
 
 msgid "Within contributions"
-msgstr ""
+msgstr "В рамках взносов"
 
 msgid "Free search"
-msgstr ""
+msgstr "Свободный поиск"
 
 msgid "Add new free search criteria"
-msgstr ""
+msgstr "Добавить новый критерий свободного поиска"
 
 msgid "Select a field"
-msgstr ""
+msgstr "Выберите поле"
 
-#, fuzzy
-#| msgid "separator"
 msgid "Query operator"
-msgstr "разделитель"
+msgstr "Оператор запроса"
 
 msgid "is"
-msgstr ""
+msgstr "равно"
 
 msgid "is not"
-msgstr ""
+msgstr "не равно"
 
-#, fuzzy
-#| msgid "Values:"
 msgid "Value"
-msgstr "Значения:"
+msgstr "Значение"
 
 msgid "before"
-msgstr ""
+msgstr "до"
 
 msgid "after"
-msgstr ""
+msgstr "после"
 
 msgid "contains"
-msgstr ""
+msgstr "содержит"
 
 msgid "do not contains"
-msgstr ""
+msgstr "не содержит"
 
 msgid "starts with"
-msgstr ""
+msgstr "начинается с"
 
 msgid "ends with"
-msgstr ""
+msgstr "заканчивается на"
 
 msgid "Application error"
-msgstr ""
+msgstr "Ошибка приложения"
 
 msgid "Details"
-msgstr ""
+msgstr "Подробности"
 
 msgid "Type:"
-msgstr ""
+msgstr "Тип:"
 
 msgid "Code:"
-msgstr ""
+msgstr "Код:"
 
 msgid "File:"
-msgstr ""
+msgstr "Файл:"
 
 msgid "Line:"
-msgstr ""
+msgstr "Строка:"
 
 msgid "Trace"
-msgstr ""
+msgstr "Трассировка"
 
 msgid "Document type"
-msgstr ""
+msgstr "Тип документа"
 
 msgid "Extra information displayed along with document."
-msgstr ""
+msgstr "Дополнительная информация, отображаемая вместе с документом."
 
 msgid ""
 "Each selected export will be stored into a separate file in the exports "
 "directory."
 msgstr ""
+"Каждый выбранный экспорт будет сохранён в отдельный файл в каталоге экспорта."
 
 msgid "The following files have been written on disk:"
-msgstr ""
+msgstr "Следующие файлы были записаны на диск:"
 
 msgid "Existing exports"
-msgstr ""
+msgstr "Существующие экспорты"
 
 msgid "The following exports already seems to exist on the disk:"
-msgstr ""
+msgstr "Следующие экспорты, по-видимому, уже существуют на диске:"
 
 msgid "Parameted exports"
-msgstr ""
+msgstr "Параметризованные экспорты"
 
 msgid "Which parameted export(s) do you want to run?"
-msgstr ""
+msgstr "Какой(ие) параметризованный(ые) экспорт(ы) вы хотите выполнить?"
 
 msgid "No parameted exports are available."
-msgstr ""
+msgstr "Нет доступных параметризованных экспортов."
 
 msgid "Galette tables exports"
-msgstr ""
+msgstr "Экспорт таблиц Galette"
 
 msgid "Additionnaly, which table(s) do you want to export?"
-msgstr ""
+msgstr "Дополнительно, какие таблицы вы хотите экспортировать?"
 
 msgid "Table name"
-msgstr ""
+msgstr "Имя таблицы"
 
 msgid "Help us know about you!"
-msgstr ""
+msgstr "Помогите нам узнать о вас!"
 
 msgid ""
 "Take a moment to share some information with us so we can know better "
 "Galette's uses."
 msgstr ""
+"Уделите минутку, чтобы поделиться с нами некоторой информацией, чтобы мы "
+"могли лучше узнать об использовании Galette."
 
 msgid ""
 "The panel will be automatically hidden once you have registered and send "
 "telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
+"Эта панель будет автоматически скрыта после того, как вы зарегистрируетесь и "
+"отправите телеметрию. Отметьте этот флажок, если вы хотите скрыть её в любом "
+"случае."
 
 msgid "Hide this panel"
-msgstr ""
+msgstr "Скрыть эту панель"
 
 msgid "My activities"
-msgstr ""
+msgstr "Мои действия"
 
 msgid "Activities"
 msgstr "Активность"
 
 msgid "Show dashboard on login"
-msgstr ""
+msgstr "Показывать панель управления при входе"
 
 msgid "This comment is only displayed for admins and staff members."
-msgstr ""
+msgstr "Этот комментарий отображается только для администраторов и сотрудников."
 
 msgid "This comment is reserved to the member."
-msgstr ""
+msgstr "Этот комментарий предназначен только для участника."
 
 msgid "Do member want to appear publically?"
-msgstr ""
+msgstr "Хочет ли участник отображаться публично?"
 
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
@@ -5975,112 +6173,123 @@ msgid ""
 "gallery page.<br/>Note that administrators can disabled public pages, this "
 "setting will have no effect in that case."
 msgstr ""
+"Если вы отметите этот флажок (и ваши взносы актуальны), ваши полное имя и "
+"другая информация будут публично видны в списке участников.<br>Если вы "
+"загрузили фотографию, она будет отображаться на странице галереи.<br>"
+"Обратите внимание, что администраторы могут отключить публичные страницы, в "
+"этом случае данная настройка не будет иметь эффекта."
 
 msgid "(at least %i characters)"
-msgstr ""
+msgstr "(не менее %i символов)"
 
 msgid "Password confirmation:"
-msgstr ""
+msgstr "Подтверждение пароля:"
 
 msgid "Manage user's groups"
-msgstr ""
+msgstr "Управление группами пользователя"
 
 msgid "Manage user's managed groups"
-msgstr ""
+msgstr "Управление управляемыми группами пользователя"
 
 msgid "Is company?"
-msgstr ""
+msgstr "Это компания?"
 
 msgid "Is member a company?"
-msgstr ""
+msgstr "Является ли участник компанией?"
 
 msgid ""
 "Do you manage a non profit organization, or a company? If you do so, check "
 "the box, and then enter its name in the field that will appear."
 msgstr ""
+"Вы управляете некоммерческой организацией или компанией? Если да, отметьте "
+"флажок, а затем введите её название в появившемся поле."
 
 msgid "(numbers only)"
-msgstr ""
+msgstr "(только цифры)"
 
 msgid ""
 "This field is required trying to avoid registration spam. We are sorry for "
 "the inconvennience."
 msgstr ""
+"Это поле необходимо для предотвращения спама при регистрации. Приносим "
+"извинения за неудобства."
 
 msgid "Captcha"
-msgstr ""
+msgstr "Капча"
 
 msgid "Select a group to add selected members to"
-msgstr ""
+msgstr "Выберите группу, в которую добавить выбранных участников"
 
 msgid "Select a group to remove selected members from"
-msgstr ""
+msgstr "Выберите группу, из которой удалить выбранных участников"
 
 msgid "Load previous members..."
-msgstr ""
+msgstr "Загрузить предыдущих участников..."
 
 msgid "Load following members..."
-msgstr ""
+msgstr "Загрузить следующих участников..."
 
 msgid "Search for name or ID and pick member"
-msgstr ""
+msgstr "Найдите по имени или ID и выберите участника"
 
 msgid "Not supplied"
-msgstr ""
+msgstr "Не указано"
 
 msgid "Picture:"
 msgstr "Изображение:"
 
 msgid "Cropping focus"
-msgstr ""
+msgstr "Фокус кадрирования"
 
 msgid "Center"
-msgstr ""
+msgstr "Центр"
 
 msgid "Top"
-msgstr ""
+msgstr "Верх"
 
 msgid "Bottom"
-msgstr ""
+msgstr "Низ"
 
 msgid "Left"
-msgstr ""
+msgstr "Лево"
 
 msgid "Right"
-msgstr ""
+msgstr "Право"
 
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Выберите область исходного изображения, которую нужно сохранить после "
+"обрезки до конечного соотношения сторон, определённого в настройках: %ratio"
 
 msgid "Enter as many occurrences you want."
-msgstr ""
+msgstr "Введите столько вхождений, сколько хотите."
 
 #, php-format
 msgid "Enter up to %1$s more occurrences."
-msgstr ""
+msgstr "Введите до %1$s дополнительных вхождений."
 
 msgid "Select an option"
-msgstr ""
+msgstr "Выберите опцию"
 
 msgid "delete"
-msgstr ""
+msgstr "удалить"
 
 msgid "Back to top"
-msgstr ""
+msgstr "Наверх"
 
 msgid "Public page content"
-msgstr ""
+msgstr "Содержание публичной страницы"
 
 msgid "Ajax page content"
-msgstr ""
+msgstr "Содержание Ajax-страницы"
 
 msgid "Language menu"
-msgstr ""
+msgstr "Меню языка"
 
 msgid "Page content"
-msgstr ""
+msgstr "Содержимое страницы"
 
 #, fuzzy
 #~| msgid "An error occurred moving field :("
