@@ -76,15 +76,6 @@ $app->map(
 
 //galette logs
 $app->get(
-    '/logs[/{option:page|order}/{value}]',
-    fn(Request $request, Response $response, RouteParser $routeParser, $args) => $response
-        ->withStatus(302)
-        ->withHeader(
-            'Location',
-            $routeParser->urlFor('history', $args)
-        )
-);
-$app->get(
     '/history[/{option:page|order}/{value}]',
     [HistoryController::class, 'list']
 )->setName('history')->add(Authenticate::class);
@@ -94,15 +85,6 @@ $app->post(
     [HistoryController::class, 'historyFilter']
 )->setName('history_filter')->add(Authenticate::class);
 
-$app->get(
-    '/logs/flush',
-    fn(Request $request, Response $response, RouteParser $routeParser) => $response
-        ->withStatus(302)
-        ->withHeader(
-            'Location',
-            $routeParser->urlFor('flushHistory')
-        )
-);
 $app->get(
     '/history/flush',
     [HistoryController::class, 'confirmHistoryFlush']
