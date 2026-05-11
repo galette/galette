@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-05-09 07:15+0000\n"
+"PO-Revision-Date: 2026-05-12 22:11+0000\n"
 "Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
@@ -1826,10 +1826,10 @@ msgid "Comment"
 msgstr ""
 
 msgid "Begin date"
-msgstr ""
+msgstr "Data de início"
 
 msgid "End date"
-msgstr ""
+msgstr "Data de término"
 
 msgid "Contribution id"
 msgstr ""
@@ -1989,7 +1989,7 @@ msgid "Amount:"
 msgstr ""
 
 msgid "Description:"
-msgstr ""
+msgstr "Descrição:"
 
 msgid "Originator:"
 msgstr ""
@@ -2034,7 +2034,7 @@ msgid "Contribution type:"
 msgstr "Tipo de contribuição:"
 
 msgid "Comments:"
-msgstr ""
+msgstr "Comentários:"
 
 msgid "Date"
 msgstr ""
@@ -2650,7 +2650,7 @@ msgid "Status:"
 msgstr "Status:"
 
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 msgid "First name:"
 msgstr ""
@@ -5570,7 +5570,7 @@ msgid "Create a new member with %1$s information."
 msgstr ""
 
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicado"
 
 msgid "Family"
 msgstr ""
@@ -5928,7 +5928,7 @@ msgid "Not supplied"
 msgstr ""
 
 msgid "Picture:"
-msgstr ""
+msgstr "Foto:"
 
 msgid "Cropping focus"
 msgstr ""
