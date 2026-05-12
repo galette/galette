@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Edson Wolf <edsonwolf@vivaldi.net>, 2026.
+# n-qber <nmkbertozzo@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
 "PO-Revision-Date: 2026-05-12 22:11+0000\n"
-"Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
+"Last-Translator: n-qber <nmkbertozzo@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -19,66 +20,66 @@ msgstr ""
 "X-Generator: Weblate 2026.5-dev\n"
 
 msgid "Unable to load transaction #%id!"
-msgstr ""
+msgstr "Não foi possível carregar a transação #%id!"
 
 msgid "Transaction"
-msgstr ""
+msgstr "Transação"
 
 msgid "modification"
-msgstr ""
+msgstr "modificação"
 
 msgid "creation"
-msgstr ""
+msgstr "criação"
 
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Um erro ocorreu ao armazenar a transação."
 
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "A transação foi armazenada com sucesso"
 
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "A contribuição foi anexada com sucesso à transação atual"
 
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Incapaz de atribuir contribuição à transação"
 
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "A contribuição foi retirada da transação atual"
 
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Não foi possível retirar a contribuição da transação"
 
 msgid "Payment types"
-msgstr ""
+msgstr "Tipos de pagamento"
 
 msgid "Edit payment type"
-msgstr ""
+msgstr "Editar tipo de pagamento"
 
 msgid "Missing required payment type's name!"
-msgstr ""
+msgstr "Faltando o nome do tipo de pagamento!"
 
 #, php-format
 msgid "Payment type '%1$s' has not been added!"
-msgstr ""
+msgstr "Tipo de pagamento '%1$s' não foi adicionado!"
 
 #, php-format
 msgid "Payment type '%1$s' has not been modified!"
-msgstr ""
+msgstr "O tipo de pagamento '%1$s' não foi modificado!"
 
 #, php-format
 msgid "Payment type '%1$s' has been successfully added."
-msgstr ""
+msgstr "O pagamento tipo '%1$s' foi adicionado com sucesso."
 
 #, php-format
 msgid "Payment type '%1$s' has been successfully modified."
-msgstr ""
+msgstr "O pagamento tipo '%1$s' foi modificado com sucesso."
 
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Remover pagamento tipo %1$s"
 
 msgid "Contribution is fully scheduled!"
-msgstr ""
+msgstr "A contribuição está totalmente agendada!"
 
 msgid "Add scheduled payment"
 msgstr ""
@@ -240,7 +241,7 @@ msgid "An error occurred moving field :("
 msgstr ""
 
 msgid "Subscription"
-msgstr ""
+msgstr "Assinatura"
 
 msgid "Member Profile"
 msgstr ""
