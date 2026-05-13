@@ -31,6 +31,8 @@ use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 
 use function Safe\dir;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
 
 /**
  * Galette main controller
@@ -651,6 +653,29 @@ class GaletteController extends AbstractController
      */
     public function empty(Response $response): Response
     {
+        return $response;
+    }
+
+    /**
+     * Store dark mode CSS in cache directory.
+     */
+    public function writeDarkCss(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        file_put_contents(GALETTE_CACHE_DIR . '/dark.css', $post);
+        return $response->withStatus(200);
+    }
+
+    /**
+     * Serve cached dark mode CSS.
+     */
+    public function getDarkCss(Response $response): Response
+    {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            $response = $response->withHeader('Content-type', 'text/css');
+            $response->getBody()->write(file_get_contents($cssfile));
+        }
         return $response;
     }
 }

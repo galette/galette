@@ -12,9 +12,6 @@ use Galette\Controllers\GaletteController;
 use Galette\Controllers\ImagesController;
 use Galette\Middleware\Authenticate;
 
-use function Safe\file_get_contents;
-use function Safe\file_put_contents;
-
 /**
  * @var \Slim\App<\DI\Container> $app
  */
@@ -56,22 +53,10 @@ $app->get(
 
 $app->post(
     '/write-dark-css',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        file_put_contents(GALETTE_CACHE_DIR . '/dark.css', $post);
-        return $response->withStatus(200);
-    }
+    [GaletteController::class, 'writeDarkCss']
 )->setName('writeDarkCSS');
 
 $app->get(
     '/get-dark-css',
-    function ($request, $response) {
-        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
-        if (file_exists($cssfile)) {
-            $response = $response->withHeader('Content-type', 'text/css');
-            $body = $response->getBody();
-            $body->write(file_get_contents($cssfile));
-        }
-        return $response;
-    }
+    [GaletteController::class, 'getDarkCss']
 )->setName('getDarkCSS');

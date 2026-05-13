@@ -18,6 +18,7 @@ use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
 use function Safe\ob_end_clean;
 use function Safe\ob_start;
 
@@ -239,6 +240,41 @@ class PluginsController extends AbstractController
             'modals/plugin_initdb.html.twig',
             $params
         );
+        return $response;
+    }
+
+    /**
+     * Serve a plugin static resource (CSS, JS, image, font, ...).
+     *
+     * @param string $plugin Plugin identifier
+     * @param string $path   Path of the resource within the plugin
+     */
+    public function resource(Response $response, string $plugin, string $path): Response
+    {
+        $ext = pathinfo($path)['extension'] ?? '';
+        $auth_ext = [
+            'js'    => 'text/javascript',
+            'css'   => 'text/css',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpg',
+            'jpeg'  => 'image/jpg',
+            'gif'   => 'image/gif',
+            'svg'   => 'image/svg+xml',
+            'map'   => 'application/json',
+            'woff'  => 'application/font-woff',
+            'woff2' => 'application/font-woff2'
+        ];
+        if (str_contains($path, '../') || !isset($auth_ext[$ext])) {
+            throw new \RuntimeException(
+                sprintf('Invalid extension %1$s (%2$s)!', $ext, $path),
+                404
+            );
+        }
+
+        $file = $this->plugins->getFile($plugin, $path);
+
+        $response = $response->withHeader('Content-type', $auth_ext[$ext]);
+        $response->getBody()->write(file_get_contents($file));
         return $response;
     }
 }

@@ -8,13 +8,10 @@
 
 declare(strict_types=1);
 
+use Galette\Controllers\PluginsController;
 use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Middleware\Authenticate;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-
-use function Safe\file_get_contents;
 
 /**
  * @var \Slim\App<\DI\Container> $app
@@ -29,42 +26,7 @@ $app->group(
         //Global route to access plugin resources (CSS, JS, images, ...)
         $app->get(
             '/{plugin}/res/{path:.*}',
-            function (Request $request, Response $response, $plugin, $path) use ($container) {
-                $ext = pathinfo($path)['extension'];
-                $auth_ext = [
-                    'js'    => 'text/javascript',
-                    'css'   => 'text/css',
-                    'png'   => 'image/png',
-                    'jpg'   => 'image/jpg',
-                    'jpeg'  => 'image/jpg',
-                    'gif'   => 'image/gif',
-                    'svg'   => 'image/svg+xml',
-                    'map'   => 'application/json',
-                    'woff'  => 'application/font-woff',
-                    'woff2' => 'application/font-woff2'
-                ];
-                if (!str_contains($path, '../') && isset($auth_ext[$ext])) {
-                    $file = $container->get(Plugins::class)->getFile(
-                        $plugin,
-                        $path
-                    );
-
-                    $response = $response->withHeader('Content-type', $auth_ext[$ext]);
-
-                    $body = $response->getBody();
-                    $body->write(file_get_contents($file));
-                    return $response;
-                } else {
-                    throw new \RuntimeException(
-                        sprintf(
-                            'Invalid extension %1$s (%2$s)!',
-                            $ext,
-                            $path
-                        ),
-                        404
-                    );
-                }
-            }
+            [PluginsController::class, 'resource']
         )->setName('plugin_res');
 
         //Declare configured routes for each plugin
