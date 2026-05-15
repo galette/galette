@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-04-23 23:00+0200\n"
-"PO-Revision-Date: 2026-05-14 15:11+0000\n"
+"PO-Revision-Date: 2026-05-15 10:07+0000\n"
 "Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
@@ -2038,7 +2038,7 @@ msgid "Comments:"
 msgstr "Comentários:"
 
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 msgid "Date of contribution:"
 msgstr ""
@@ -2161,7 +2161,7 @@ msgid "Scheduled date:"
 msgstr ""
 
 msgid "Paid"
-msgstr ""
+msgstr "Pago"
 
 msgid "Mastodon"
 msgstr ""
@@ -3598,7 +3598,7 @@ msgid "Dec"
 msgstr ""
 
 msgid "Today"
-msgstr ""
+msgstr "Hoje"
 
 msgid "Now"
 msgstr ""
@@ -4403,7 +4403,7 @@ msgid ""
 msgstr ""
 
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 msgid "Resume"
 msgstr ""
@@ -4486,7 +4486,7 @@ msgid "Filename"
 msgstr ""
 
 msgid "Creation date"
-msgstr ""
+msgstr "Data de criação"
 
 msgid "Add a document"
 msgstr "Adicionar um documento"
@@ -5510,7 +5510,7 @@ msgid "Paid scheduled payments:"
 msgstr ""
 
 msgid "Not paid"
-msgstr ""
+msgstr "Não pago"
 
 msgid "Show all your scheduled payments"
 msgstr ""
@@ -5728,7 +5728,7 @@ msgid "In any of selected groups"
 msgstr ""
 
 msgid "Group"
-msgstr ""
+msgstr "Grupo"
 
 msgid "Remove criteria"
 msgstr ""
