@@ -18,6 +18,7 @@ import {
 
 
 test.describe('Public Pages', () => {
+  test.describe.configure({ mode: 'serial' });
 
   // Enable public pages before each test and restore defaults after
   test.beforeEach(async ({ loggedInPage: page }) => {
@@ -285,7 +286,6 @@ test.describe('Public Pages', () => {
   // Visibility Tests by Role
   test.describe('Public Pages Visibility by Role', () => {
 
-    /* FIXME: works locally, but not on CI (not always...) :/
     test('Public - PUBLIC visibility allows anonymous access', async ({ browser, loggedInAs }) => {
       // Set all pages to PUBLIC (no auth required) using an admin session
       const adminPage = await loggedInAs('superadmin');
@@ -307,7 +307,7 @@ test.describe('Public Pages', () => {
       } finally {
         await context.close();
       }
-    });*/
+    });
 
     test('Public - RESTRICTED visibility requires authentication', async ({ browser, loggedInAs }) => {
       // Set to RESTRICTED (members only)
@@ -336,7 +336,6 @@ test.describe('Public Pages', () => {
       await memberPage.close();
     });
 
-    /* FIXME: works locally, but not on CI :/
     test('Public - PRIVATE visibility requires admin/staff access', async ({ browser, loggedInAs }) => {
       // Set to PRIVATE (admin/staff only)
       const adminPage = await loggedInAs('superadmin');
@@ -367,7 +366,7 @@ test.describe('Public Pages', () => {
       await staffPage.goto('/public/members/list');
       expect(staffPage.url()).toContain('/public/members/list');
       await staffPage.close();
-    });*/
+    });
 
     test('Public - HIDDEN visibility denies all access', async ({ loggedInAs }) => {
       // Set to HIDDEN (no one can access)
@@ -382,7 +381,6 @@ test.describe('Public Pages', () => {
       await superadminPage.close();
     });
 
-    /* FIXME: works locally, but not on CI (not always...) :/
     test('Public - Gallery visibility can differ from list visibility', async ({ browser, loggedInAs }) => {
       const adminPage = await loggedInAs('superadmin');
 
@@ -416,7 +414,6 @@ test.describe('Public Pages', () => {
       await memberPage.goto('/public/members/gallery');
       await NavigationHelper.expectRedirectTo(memberPage, /\/dashboard/);
       await memberPage.close();
-    });*/
+    });
   });
 });
-
