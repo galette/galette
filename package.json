@@ -61,7 +61,7 @@
     "darkreader": "^4.9.125",
     "fomantic-ui": "^2.9.4",
     "jquery": "^3.7.1",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "sortablejs": "^1.15.7",
     "summernote": "^0.9.1",
     "twemoji-emojis": "^14.1.0"
