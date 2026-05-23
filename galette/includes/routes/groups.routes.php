@@ -26,10 +26,10 @@ $app->post(
     [Crud\GroupsController::class, 'reorderList']
 )->setName('reorderGroups')->add(Authenticate::class);
 
-$app->get(
-    '/group/add/{name}',
+$app->post(
+    '/group/add',
     [Crud\GroupsController::class, 'doAdd']
-)->setName('add_group')->add(Authenticate::class);
+)->setName('doAddGroup')->add(Authenticate::class);
 
 $app->get(
     '/group/edit/{id:\d+}',
@@ -60,11 +60,6 @@ $app->post(
     '/ajax/group',
     [Crud\GroupsController::class, 'getGroup']
 )->setName('ajax_group')->add(Authenticate::class);
-
-$app->post(
-    '/ajax/unique-groupname',
-    [Crud\GroupsController::class, 'checkUniqueness']
-)->setName('ajax_groupname_unique')->add(Authenticate::class);
 
 $app->post(
     '/ajax/groups',

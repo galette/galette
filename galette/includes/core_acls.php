@@ -66,8 +66,8 @@ $core_acls = [
     'getDynamicFile'                    => 'member',
     // /Members rules
     // Groups rules
+    'doAddGroup'                        => 'staff', //adding group is for staff only
     '/(.+)?group(.+)?/i'                => 'groupmanager',
-    'add_group'                         => 'staff', //adding group is for staff only
     // /Groups rules
 
     '/(.+)?text(.+)?/i'                 => 'staff',

@@ -41,37 +41,12 @@ class GroupsController extends CrudController
 
     /**
      * Add action
-     *
-     * @param string $name Group name
      */
-    public function doAdd(Request $request, Response $response, ?string $name = null): Response
-    {
-        $group = new Group();
-        $group->setLogin($this->login);
-        $group->setName($name);
-        $group->store();
-        if (!$this->login->isSuperAdmin()) {
-            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
-        }
-        $id = $group->getId();
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('doEditGroup', ['id' => (string)$id]));
-    }
-
-
-    /**
-     * Check uniqueness
-     */
-    public function checkUniqueness(Request $request, Response $response): Response
+    public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+
         if (!isset($post['gname']) || $post['gname'] == '') {
-            Analog::log(
-                'Trying to check if group name is unique without name specified',
-                Analog::INFO
-            );
             return $this->withJson(
                 $response,
                 [
@@ -79,14 +54,48 @@ class GroupsController extends CrudController
                     'message' => htmlentities(_T("Group name is missing!"))
                 ]
             );
-        } else {
+        }
+        $name = $post['gname'];
+
+        //check group name uniqueness
+        if (!Groups::isUnique($this->zdb, $post['gname'])) {
             return $this->withJson(
                 $response,
                 [
-                    'success' => Groups::isUnique($this->zdb, $post['gname'])
+                    'success' => false,
+                    'message' => htmlentities(_T("Group name already exists!"))
                 ]
             );
         }
+
+        $group = new Group();
+        $group
+            ->setLogin($this->login)
+            ->setName($name)
+            ->store();
+        if (!$this->login->isSuperAdmin()) {
+            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
+        }
+        $id = $group->getId();
+
+        $redirect = $this->routeparser->urlFor('doEditGroup', ['id' => (string)$id]);
+        if ($this->isAjax($request)) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Group added")
+            );
+            return $this->withJson(
+                $response,
+                [
+                    'success' => true,
+                    'redirect' => $redirect
+                ]
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect);
     }
 
     // /CRUD - Create
