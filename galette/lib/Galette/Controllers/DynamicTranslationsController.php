@@ -81,7 +81,7 @@ class DynamicTranslationsController extends AbstractController
             );
         }
 
-        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(

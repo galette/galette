@@ -110,7 +110,7 @@ class ContributionsTypesController extends CrudController
         $params['entry'] = $entry;
 
         $params['html_editor'] = true;
-        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(

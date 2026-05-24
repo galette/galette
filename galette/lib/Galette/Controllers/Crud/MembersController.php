@@ -1143,7 +1143,7 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass change %1$s members'),
                     (string)count($data['id'])
@@ -1255,7 +1255,7 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Review mass change %1$s members'),
                     (string)count($data['id'])
@@ -1441,7 +1441,7 @@ class MembersController extends CrudController
             }
         }
 
-        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
+        if (!$this->isAjax($request)) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);

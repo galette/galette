@@ -309,7 +309,7 @@ class GaletteController extends AbstractController
             }
         }
 
-        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
+        if (!$this->isAjax($request)) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('preferences'));

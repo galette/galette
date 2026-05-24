@@ -194,7 +194,7 @@ class HistoryController extends AbstractController
             $response,
             'modals/confirm_removal.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => _T('Flush the logs'),
                 'form_url'      => $this->routeparser->urlFor('doFlushHistory'),
                 'cancel_uri'    => $data['redirect_uri'],

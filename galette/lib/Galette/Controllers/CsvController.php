@@ -354,7 +354,7 @@ class CsvController extends AbstractController
             $response,
             'modals/confirm_removal.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
                     $type,

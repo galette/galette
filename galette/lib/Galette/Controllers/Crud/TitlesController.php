@@ -88,7 +88,7 @@ class TitlesController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $title = new Title($id);
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(

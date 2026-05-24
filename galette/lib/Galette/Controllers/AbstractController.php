@@ -163,6 +163,14 @@ abstract class AbstractController
     }
 
     /**
+     * Check if request has been made via AJAX (XMLHttpRequest)
+     */
+    protected function isAjax(Request $request): bool
+    {
+        return $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    /**
      * Get a JSON response
      *
      * @param Response            $response Response instance

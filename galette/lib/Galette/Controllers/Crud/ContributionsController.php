@@ -55,7 +55,7 @@ class ContributionsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -237,7 +237,7 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_choose_contributions_type.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'   => sprintf(
                     _T('Mass add contribution on %1$s members'),
                     (string)count($data['id'])
@@ -279,7 +279,7 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_add_contributions.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass add contribution on %1$s members'),
                     (string)count($data['id'])
@@ -382,7 +382,7 @@ class ContributionsController extends CrudController
 
         $filter_args = [];
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
@@ -566,7 +566,7 @@ class ContributionsController extends CrudController
     {
         $ajax = false;
         $filter_args = [];
-        if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
+        if ($this->isAjax($request)) {
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }

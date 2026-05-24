@@ -231,7 +231,7 @@ class PdfController extends AbstractController
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || (isset($post['mode'])
             && $post['mode'] == 'ajax')
         ) {
@@ -398,7 +398,7 @@ class PdfController extends AbstractController
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || (isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true')
         ) {

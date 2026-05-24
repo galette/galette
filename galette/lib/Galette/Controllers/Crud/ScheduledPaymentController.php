@@ -46,7 +46,7 @@ class ScheduledPaymentController extends CrudController
             $scheduled = new ScheduledPayment($this->zdb);
         }
         $scheduled->setContribution($id_cotis);
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         if ($scheduled->getMissingAmount() == 0) {
             $this->redirectWithErrors(
@@ -100,7 +100,7 @@ class ScheduledPaymentController extends CrudController
 
         $filter_args = [];
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
@@ -212,7 +212,7 @@ class ScheduledPaymentController extends CrudController
     {
         $ajax = false;
         $filter_args = [];
-        if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
+        if ($this->isAjax($request)) {
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }
@@ -330,7 +330,7 @@ class ScheduledPaymentController extends CrudController
         } else {
             $scheduled = new ScheduledPayment($this->zdb, $id);
         }
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(

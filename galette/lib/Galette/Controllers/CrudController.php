@@ -100,7 +100,7 @@ abstract class CrudController extends AbstractController
         ];
 
         return [
-            'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+            'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
             'page_title'    => $this->confirmRemoveTitle($args),
             'form_url'      => $this->formUri($args),
             'cancel_uri'    => $this->cancelUri($args),

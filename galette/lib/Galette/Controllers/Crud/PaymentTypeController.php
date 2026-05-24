@@ -93,7 +93,7 @@ class PaymentTypeController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ptype = new PaymentType($this->zdb, $id);
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
 
         // display page

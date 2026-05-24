@@ -116,7 +116,7 @@ class StatusController extends CrudController
         $entry = $status->get($id);
         $params['entry'] = $entry;
 
-        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(

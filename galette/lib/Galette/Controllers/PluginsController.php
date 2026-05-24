@@ -229,7 +229,7 @@ class PluginsController extends AbstractController
             'istep'         => $istep,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
-            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'error_detected' => $error_detected,
             'install' => $install,
         ];

@@ -48,7 +48,7 @@ class DynamicFieldsController extends CrudController
             'form_name'         => $form_name,
             'action'            => 'add',
             'perm_names'        => DynamicField::getPermissionsList(),
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
 
@@ -179,7 +179,7 @@ class DynamicFieldsController extends CrudController
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
@@ -346,7 +346,7 @@ class DynamicFieldsController extends CrudController
             'action'        => 'edit',
             'form_name'     => $form_name,
             'perm_names'    => DynamicField::getPermissionsList(),
-            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'df'            => $df,
             'html_editor'   => true,
             'html_editor_active' => $this->preferences->pref_editor_enabled

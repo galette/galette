@@ -555,7 +555,7 @@ class MailingsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {

@@ -51,7 +51,7 @@ class DocumentsController extends CrudController
         $params = [
             'page_title'        => _T("Add document"),
             'action'            => 'add',
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
@@ -229,7 +229,7 @@ class DocumentsController extends CrudController
         $params = [
             'page_title'        => _T("Edit document"),
             'action'            => 'edit',
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
