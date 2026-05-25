@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-05-25 08:24+0200\n"
-"PO-Revision-Date: 2026-04-23 21:34+0000\n"
+"PO-Revision-Date: 2026-05-25 14:56+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1663,15 +1663,11 @@ msgstr "Le modèle d’import n’a pas été enregistré :("
 msgid "Membership fee"
 msgstr "Cotisation"
 
-#, fuzzy
-#| msgid "Membership fee"
 msgid "New membership fee"
-msgstr "Cotisation"
+msgstr "Nouvelle cotisation"
 
-#, fuzzy
-#| msgid "New installation"
 msgid "New donation"
-msgstr "Nouvelle installation"
+msgstr "Nouveau don"
 
 msgid "No related contribution type available, please create a new one."
 msgstr "Aucun type de contribution relatif disponible, veuillez en créer un."
@@ -1794,10 +1790,8 @@ msgstr "Une erreur est survenue lors du déplacement du champ :("
 msgid "Group name is missing!"
 msgstr "Le nom de groupe est manquant !"
 
-#, fuzzy
-#| msgid "A file with that name already exists!"
 msgid "Group name already exists!"
-msgstr "Un fichier portant ce nom existe déjà !"
+msgstr "Ce nom de groupe existe déjà !"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -1882,10 +1876,8 @@ msgstr "Le statut #%id a été mis à jour avec succès !"
 msgid "Remove status '%label'"
 msgstr "Suppression du statut « %label »"
 
-#, fuzzy
-#| msgid "No document"
 msgid "New document"
-msgstr "Aucun document"
+msgstr "Nouveau document"
 
 msgid "Edit document"
 msgstr "Modifier document"
@@ -1935,10 +1927,8 @@ msgstr "Impossible de charger la transaction #%id !"
 msgid "Transaction"
 msgstr "Transaction"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "New transaction"
-msgstr "Voir la transaction"
+msgstr "Nouvelle transaction"
 
 msgid "An error occurred while storing the transaction."
 msgstr "Une erreur est survenue lors de l'enregistrement de la transaction."
@@ -2008,20 +1998,14 @@ msgstr "Supprimer le type de paiement %1$s"
 msgid "Subscription"
 msgstr "Inscription"
 
-#, fuzzy
-#| msgid "file"
 msgid "Profile"
-msgstr "fichier"
+msgstr "Profil"
 
-#, fuzzy
-#| msgid "Edit field"
 msgid "Edit profile"
-msgstr "Édition de champ"
+msgstr "Édition du profil"
 
-#, fuzzy
-#| msgid "No member"
 msgid "New member"
-msgstr "Aucun adhérent"
+msgstr "Nouvel adhérent"
 
 #, php-format
 msgid "Mass change %1$s members"
@@ -6094,10 +6078,8 @@ msgstr "Facture"
 msgid "Receipt"
 msgstr "Reçu"
 
-#, fuzzy
-#| msgid "Navigation"
 msgid "Pagination"
-msgstr "Navigation"
+msgstr "Pagination"
 
 msgid "Previous"
 msgstr "Précédent"
@@ -6111,10 +6093,8 @@ msgstr "Menu principal"
 msgid "Compact menu"
 msgstr "Menu compact"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Mobile main menu"
-msgstr "Menu principal"
+msgstr "Menu principal mobile"
 
 msgid "Go back to Galette homepage"
 msgstr "Retour à la page d'accueil de Galette"
