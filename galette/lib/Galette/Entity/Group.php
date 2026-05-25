@@ -396,7 +396,7 @@ class Group
         }
         if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
             throw new RuntimeException(
-                _T("The group name you have requested already exists in the database.")
+                "The group name you have requested already exists in the database."
             );
         }
 
