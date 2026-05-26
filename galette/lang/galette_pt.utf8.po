@@ -7,13 +7,14 @@
 # Nelson JESUS <jesus.nels@gmail.com>, 2025.
 # Edson Wolf <edsonwolf@vivaldi.net>, 2026.
 # ramon0504 <ramon-sousa@hotmail.com>, 2026.
+# ssantos <ssantos@web.de>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-05-25 08:24+0200\n"
-"PO-Revision-Date: 2026-04-08 07:11+0000\n"
-"Last-Translator: Edson Wolf <edsonwolf@vivaldi.net>\n"
+"PO-Revision-Date: 2026-05-26 16:11+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -184,7 +185,7 @@ msgid "Cards"
 msgstr "Cartões"
 
 msgid "Member"
-msgstr ""
+msgstr "Membro"
 
 #, php-format
 msgid "Association %s"
@@ -875,7 +876,7 @@ msgid "Contributor:"
 msgstr ""
 
 msgid "Contribution type:"
-msgstr ""
+msgstr "Tipo de contribuição:"
 
 msgid "Amount:"
 msgstr ""
@@ -884,10 +885,10 @@ msgid "Payment type:"
 msgstr ""
 
 msgid "Comments:"
-msgstr ""
+msgstr "Comentários:"
 
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 msgid "Date of contribution:"
 msgstr ""
@@ -989,7 +990,7 @@ msgid "Scheduled date:"
 msgstr ""
 
 msgid "Paid"
-msgstr ""
+msgstr "Pago"
 
 msgid "Insert a carriage return"
 msgstr ""
@@ -1105,10 +1106,10 @@ msgid "Member card updated"
 msgstr ""
 
 msgid "Active"
-msgstr ""
+msgstr "Ativo"
 
 msgid "Inactive"
-msgstr ""
+msgstr "Inativo"
 
 msgid " (%age years old)"
 msgstr ""
@@ -1177,7 +1178,7 @@ msgid "Date:"
 msgstr ""
 
 msgid "Description:"
-msgstr ""
+msgstr "Descrição:"
 
 msgid "Originator:"
 msgstr ""
@@ -1766,10 +1767,8 @@ msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
 msgstr "O grupo pai dos seguintes grupos foi atualizado com sucesso: %1$s"
 
-#, fuzzy
-#| msgid "Groups"
 msgid "Group"
-msgstr "Grupos"
+msgstr "Grupo"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2064,7 +2063,7 @@ msgid "Company name"
 msgstr ""
 
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 msgid "Email,URL,IM"
 msgstr ""
@@ -2242,10 +2241,10 @@ msgid "Zipcode"
 msgstr ""
 
 msgid "Town"
-msgstr ""
+msgstr "Cidade"
 
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 msgid "Member's main group"
 msgstr ""
@@ -2266,7 +2265,7 @@ msgid "Contribution label"
 msgstr ""
 
 msgid "Amount"
-msgstr ""
+msgstr "Quantia"
 
 msgid "Amount (in letters)"
 msgstr ""
@@ -2278,13 +2277,13 @@ msgid "Contribution year"
 msgstr ""
 
 msgid "Comment"
-msgstr ""
+msgstr "Comentário"
 
 msgid "Begin date"
-msgstr ""
+msgstr "Data de início"
 
 msgid "End date"
-msgstr ""
+msgstr "Data de término"
 
 msgid "Member information"
 msgstr ""
@@ -2697,10 +2696,10 @@ msgid "Member id:"
 msgstr ""
 
 msgid "Status:"
-msgstr ""
+msgstr "Estado:"
 
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 msgid "First name:"
 msgstr ""
@@ -3346,7 +3345,7 @@ msgid "ID"
 msgstr ""
 
 msgid "Creation date"
-msgstr ""
+msgstr "Data de criação"
 
 msgid "Parameters"
 msgstr "Parâmetros"
@@ -3541,7 +3540,7 @@ msgid "Within contributions"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 msgid "Select"
 msgstr ""
@@ -3765,7 +3764,7 @@ msgid "Paid scheduled payments:"
 msgstr "Pagamentos programados efetuados:"
 
 msgid "Not paid"
-msgstr ""
+msgstr "Não pago"
 
 msgid "Apply filters"
 msgstr ""
@@ -4040,10 +4039,10 @@ msgid "Attached contributions"
 msgstr ""
 
 msgid "Begin"
-msgstr ""
+msgstr "Começar"
 
 msgid "End"
-msgstr ""
+msgstr "Fim"
 
 msgid "Duration"
 msgstr ""
@@ -4177,7 +4176,7 @@ msgid "Dry run"
 msgstr ""
 
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 msgid "No import file actually exists."
 msgstr ""
@@ -4224,7 +4223,7 @@ msgid "Create a new member with %1$s information."
 msgstr ""
 
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicado"
 
 msgid "Family"
 msgstr ""
@@ -5029,7 +5028,7 @@ msgid ""
 msgstr ""
 
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 msgid "Resume"
 msgstr ""
@@ -5255,7 +5254,7 @@ msgid "Priority"
 msgstr ""
 
 msgid "New status"
-msgstr ""
+msgstr "Novo estado"
 
 msgid "Choose an entry"
 msgstr ""
@@ -5477,7 +5476,7 @@ msgid "Half"
 msgstr ""
 
 msgid "Required"
-msgstr ""
+msgstr "Obrigatório"
 
 msgid "Help us know about you!"
 msgstr ""
@@ -5560,7 +5559,7 @@ msgid "Manage user's managed groups"
 msgstr ""
 
 msgid "Picture:"
-msgstr ""
+msgstr "Foto:"
 
 msgid "Cropping focus"
 msgstr ""
@@ -5747,7 +5746,7 @@ msgid "Dec"
 msgstr ""
 
 msgid "Today"
-msgstr ""
+msgstr "Hoje"
 
 msgid "Now"
 msgstr ""
