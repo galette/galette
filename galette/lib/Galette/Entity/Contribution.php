@@ -222,6 +222,7 @@ class Contribution implements AccessManagementInterface
 
         $now = new DateTime();
         $begin_date = new DateTime($this->begin_date);
+        $original_begin_date = clone $begin_date;
 
         if ($this->type->extension > ContributionsTypes::DONATION_TYPE && $preferences->pref_beg_membership == '') {
             $dext = new DateInterval('P' . $this->type->extension . 'M');
@@ -267,6 +268,11 @@ class Contribution implements AccessManagementInterface
 
         // Caution : the end_date to retrieve is the day before the next_begin_date.
         $end_date->sub(new DateInterval('P1D'));
+        // Edge case: when begin_date is exactly 1 day before pref_beg_membership,
+        // end_date would equal begin_date (a zero-duration membership). Advance by one year.
+        if ($end_date <= $original_begin_date) {
+            $end_date->add(new DateInterval('P1Y'));
+        }
         $this->end_date = $end_date->format('Y-m-d');
     }
 
