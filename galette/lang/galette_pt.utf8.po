@@ -74,7 +74,7 @@ msgstr "Um erro ocorreu enquanto importava os membros"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr "Ano-Mes-Dia"
+msgstr "Y-m-d"
 
 msgid "groups_list"
 msgstr "Lista de grupos"
@@ -104,7 +104,7 @@ msgid "adherent_form"
 msgstr "formulário de aderente"
 
 msgid "Y-m-d H:i:s"
-msgstr "Ano-Mes-Dia Hora:min:segundos"
+msgstr "Y-m-d H:i:s"
 
 msgid "attendance_sheet"
 msgstr "folha de presenças"
