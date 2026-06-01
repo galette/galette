@@ -191,6 +191,7 @@ final class HeadersCheck extends AbstractCommand
                         $extension = match ($shebang_matches['binary']) {
                             'bash' => 'sh',
                             'perl' => 'pl',
+                            'python', 'python3' => 'py',
                             default => $binary,
                         };
                     }
@@ -198,6 +199,7 @@ final class HeadersCheck extends AbstractCommand
             }
             switch ($extension) {
                 case 'pl':
+                case 'py':
                 case 'sh':
                 case 'yaml':
                 case 'yml':

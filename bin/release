@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
-/**
- * This file is part of Galette (https://galette.eu).
- * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
+#
+# This file is part of Galette (https://galette.eu).
+# SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 
 import os, sys, argparse, re, git, http.client, subprocess
 import urlgrabber.progress, tarfile, shutil, gitdb, time, fnmatch
