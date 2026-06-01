@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-05-25 14:56+0000\n"
+"PO-Revision-Date: 2026-06-01 06:41+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3772,13 +3772,9 @@ msgstr ""
 msgid "Plugin database initialization: %1$s"
 msgstr "Initialisation de base de données des plugins : %1$s"
 
-#, fuzzy
-#| msgid ""
-#| "An error occurred displaying plugin database initialization interface :("
 msgid "An error occurred on plugin database initialization :("
 msgstr ""
-"Une erreur est survenue lors de l'affichage de l'interface d'initialisation "
-"de la base de données :("
+"Une erreur est survenue à l'initialisation de la base de données du plugin :("
 
 msgid "A required file is missing"
 msgstr "Un fichier requis est manquant"
@@ -3786,20 +3782,14 @@ msgstr "Un fichier requis est manquant"
 msgid "Incompatible with current version"
 msgstr "Incompatible avec la version courante"
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "Accès et permissions de la base de données"
+msgstr "Version de base de données manquante"
 
-#, fuzzy
-#| msgid "Not registered"
 msgid "Not installed"
-msgstr "Non enregistré"
+msgstr "Non installé"
 
-#, fuzzy
-#| msgid "Member card updated"
 msgid "Need update"
-msgstr "Fiche adhérent mise à jour"
+msgstr "Mise à jour requise"
 
 msgid "Explicitly disabled"
 msgstr "Désactivé explicitement"
