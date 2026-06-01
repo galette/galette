@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -276,9 +276,6 @@ msgid "Cannot deactivate plugin."
 msgstr ""
 
 msgid "Cannot activate plugin."
-msgstr ""
-
-msgid "Module does not exists!"
 msgstr ""
 
 msgid "File not found!"
@@ -3619,40 +3616,10 @@ msgstr ""
 msgid "Active plugins"
 msgstr ""
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr ""
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr ""
-
 msgid "No active plugin."
 msgstr ""
 
 msgid "Inactive plugins"
-msgstr ""
-
-msgid "Cause"
-msgstr ""
-
-msgid "Enable"
-msgstr ""
-
-msgid "A required file is missing"
-msgstr ""
-
-msgid "Incompatible with current version"
-msgstr ""
-
-msgid "Explicitly disabled"
-msgstr ""
-
-msgid "Unknown"
-msgstr ""
-
-#, php-format
-msgid "Activate plugin '%1$s'"
 msgstr ""
 
 msgid "No inactive plugin."
@@ -3668,6 +3635,44 @@ msgstr ""
 
 #, php-format
 msgid "Plugin database initialization: %1$s"
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred checking overlapping fees :("
+msgid "An error occurred on plugin database initialization :("
+msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය."
+
+msgid "A required file is missing"
+msgstr ""
+
+msgid "Incompatible with current version"
+msgstr ""
+
+msgid "Database version missing"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Need update"
+msgstr ""
+
+msgid "Explicitly disabled"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr ""
+
+#, php-format
+msgid "Activate plugin '%1$s'"
 msgstr ""
 
 msgid "Members by status"

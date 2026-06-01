@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-05-02 12:09+0000\n"
 "Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
 "memory@weblate.org>\n"
@@ -281,9 +281,6 @@ msgstr "சொருகி செயலிழக்க முடியாது.
 
 msgid "Cannot activate plugin."
 msgstr "சொருகி செயல்படுத்த முடியாது."
-
-msgid "Module does not exists!"
-msgstr "தொகுதி இல்லை!"
 
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
@@ -3674,43 +3671,11 @@ msgstr "வெளியீட்டு தேதி"
 msgid "Active plugins"
 msgstr "செயலில் உள்ள செருகுநிரல்கள்"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "சொருகி '%1$s' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "'%1$s' தரவுத்தளத்தைத் தொடங்கவும்"
-
 msgid "No active plugin."
 msgstr "செயலில் சொருகி இல்லை."
 
 msgid "Inactive plugins"
 msgstr "செயலற்ற செருகுநிரல்கள்"
-
-msgid "Cause"
-msgstr "காரணம்"
-
-#, fuzzy
-#| msgid "Enabled"
-msgid "Enable"
-msgstr "இயக்கப்பட்டது"
-
-msgid "A required file is missing"
-msgstr "தேவையான கோப்பு இல்லை"
-
-msgid "Incompatible with current version"
-msgstr "தற்போதைய பதிப்போடு பொருந்தாது"
-
-msgid "Explicitly disabled"
-msgstr "வெளிப்படையாக முடக்கப்பட்டது"
-
-msgid "Unknown"
-msgstr "தெரியவில்லை"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "சொருகி '%1$s' செயல்படுத்தவும்"
 
 msgid "No inactive plugin."
 msgstr "செயலற்ற சொருகி இல்லை."
@@ -3727,6 +3692,51 @@ msgstr "சொருகி தரவுத்தள துவக்க இடை
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "சொருகி தரவுத்தள துவக்கம்: %1$s"
+
+#, fuzzy
+#| msgid ""
+#| "An error occurred displaying plugin database initialization interface :("
+msgid "An error occurred on plugin database initialization :("
+msgstr "சொருகி தரவுத்தள துவக்க இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
+
+msgid "A required file is missing"
+msgstr "தேவையான கோப்பு இல்லை"
+
+msgid "Incompatible with current version"
+msgstr "தற்போதைய பதிப்போடு பொருந்தாது"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "தரவுத்தள அணுகல் மற்றும் அனுமதிகள்"
+
+#, fuzzy
+#| msgid "Not registered"
+msgid "Not installed"
+msgstr "பதிவு செய்யப்படவில்லை"
+
+#, fuzzy
+#| msgid "Member card updated"
+msgid "Need update"
+msgstr "உறுப்பினர் அட்டை புதுப்பிக்கப்பட்டது"
+
+msgid "Explicitly disabled"
+msgstr "வெளிப்படையாக முடக்கப்பட்டது"
+
+msgid "Unknown"
+msgstr "தெரியவில்லை"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "சொருகி '%1$s' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "'%1$s' தரவுத்தளத்தைத் தொடங்கவும்"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "சொருகி '%1$s' செயல்படுத்தவும்"
 
 msgid "Members by status"
 msgstr "அந்தச்தால் உறுப்பினர்கள்"
@@ -6236,6 +6246,17 @@ msgstr "'அனுப்பு' பொத்தானை அழுத்தி�
 
 msgid "An error occurred sending telemetry information :("
 msgstr "டெலிமெட்ரி தகவல்களை அனுப்புவதில் பிழை ஏற்பட்டது :("
+
+#~ msgid "Module does not exists!"
+#~ msgstr "தொகுதி இல்லை!"
+
+#~ msgid "Cause"
+#~ msgstr "காரணம்"
+
+#, fuzzy
+#~| msgid "Enabled"
+#~ msgid "Enable"
+#~ msgstr "இயக்கப்பட்டது"
 
 #~ msgid "modification"
 #~ msgstr "மாற்றம்"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -278,9 +278,6 @@ msgstr "Impossible de desactivar l’ajuston."
 
 msgid "Cannot activate plugin."
 msgstr "Impossible d'activar l'ajuston."
-
-msgid "Module does not exists!"
-msgstr "Lo module existís pas !"
 
 msgid "File not found!"
 msgstr "Fichier non trobat !"
@@ -3761,43 +3758,11 @@ msgstr "Data de sortida"
 msgid "Active plugins"
 msgstr "Ajustons actius"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "Clicatz aicí per desactivar l’ajuston '%1$s'"
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "Inicializar la basa de donadas '%1$s'"
-
 msgid "No active plugin."
 msgstr "Ges d’ajuston actiu."
 
 msgid "Inactive plugins"
 msgstr "Ajustons inactius"
-
-msgid "Cause"
-msgstr "Causa"
-
-#, fuzzy
-#| msgid "Enabled"
-msgid "Enable"
-msgstr "Activat"
-
-msgid "A required file is missing"
-msgstr "Un fichier reclamat manca"
-
-msgid "Incompatible with current version"
-msgstr "Incompatible amb la version correnta"
-
-msgid "Explicitly disabled"
-msgstr "Explicitament desactivat"
-
-msgid "Unknown"
-msgstr "Desconeguda"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "Activar l’ajuston '%1$s'"
 
 msgid "No inactive plugin."
 msgstr "Ges d’ajuston inactiu."
@@ -3815,6 +3780,50 @@ msgstr ""
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred reinitializing texts :("
+msgid "An error occurred on plugin database initialization :("
+msgstr "La reactualizacion de tèxtes a mau capitat :("
+
+msgid "A required file is missing"
+msgstr "Un fichier reclamat manca"
+
+msgid "Incompatible with current version"
+msgstr "Incompatible amb la version correnta"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "Accès e permissions per la basa de donadas"
+
+#, fuzzy
+#| msgid "Not registered"
+msgid "Not installed"
+msgstr "Non enregistrat"
+
+#, fuzzy
+#| msgid "Member card updated"
+msgid "Need update"
+msgstr "Ficha de membre actualizada"
+
+msgid "Explicitly disabled"
+msgstr "Explicitament desactivat"
+
+msgid "Unknown"
+msgstr "Desconeguda"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Clicatz aicí per desactivar l’ajuston '%1$s'"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Inicializar la basa de donadas '%1$s'"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Activar l’ajuston '%1$s'"
 
 msgid "Members by status"
 msgstr "Membres segon l'estatut"
@@ -6343,6 +6352,17 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
+
+#~ msgid "Module does not exists!"
+#~ msgstr "Lo module existís pas !"
+
+#~ msgid "Cause"
+#~ msgstr "Causa"
+
+#, fuzzy
+#~| msgid "Enabled"
+#~ msgid "Enable"
+#~ msgstr "Activat"
 
 #~ msgid "modification"
 #~ msgstr "modificacion"

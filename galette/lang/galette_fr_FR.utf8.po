@@ -15,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-05-25 14:56+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -294,9 +294,6 @@ msgstr "Impossible de désactiver le plugin."
 
 msgid "Cannot activate plugin."
 msgstr "Impossible d’activer le plugin."
-
-msgid "Module does not exists!"
-msgstr "Le module n’existe pas !"
 
 msgid "File not found!"
 msgstr "Fichier non trouvé !"
@@ -3750,41 +3747,11 @@ msgstr "Date de sortie"
 msgid "Active plugins"
 msgstr "Plugins actifs"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "Cliquez ici pour désactiver le plugin « %1$s »"
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "Initialiser la base de données de « %1$s »"
-
 msgid "No active plugin."
 msgstr "Aucun plugin actif."
 
 msgid "Inactive plugins"
 msgstr "Plugins inactifs"
-
-msgid "Cause"
-msgstr "Cause"
-
-msgid "Enable"
-msgstr "Activer"
-
-msgid "A required file is missing"
-msgstr "Un fichier requis est manquant"
-
-msgid "Incompatible with current version"
-msgstr "Incompatible avec la version courante"
-
-msgid "Explicitly disabled"
-msgstr "Désactivé explicitement"
-
-msgid "Unknown"
-msgstr "Inconnu"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "Activer le plugin « %1$s »"
 
 msgid "No inactive plugin."
 msgstr "Aucun plugin inactif."
@@ -3804,6 +3771,53 @@ msgstr ""
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Initialisation de base de données des plugins : %1$s"
+
+#, fuzzy
+#| msgid ""
+#| "An error occurred displaying plugin database initialization interface :("
+msgid "An error occurred on plugin database initialization :("
+msgstr ""
+"Une erreur est survenue lors de l'affichage de l'interface d'initialisation "
+"de la base de données :("
+
+msgid "A required file is missing"
+msgstr "Un fichier requis est manquant"
+
+msgid "Incompatible with current version"
+msgstr "Incompatible avec la version courante"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "Accès et permissions de la base de données"
+
+#, fuzzy
+#| msgid "Not registered"
+msgid "Not installed"
+msgstr "Non enregistré"
+
+#, fuzzy
+#| msgid "Member card updated"
+msgid "Need update"
+msgstr "Fiche adhérent mise à jour"
+
+msgid "Explicitly disabled"
+msgstr "Désactivé explicitement"
+
+msgid "Unknown"
+msgstr "Inconnu"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Cliquez ici pour désactiver le plugin « %1$s »"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Initialiser la base de données de « %1$s »"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Activer le plugin « %1$s »"
 
 msgid "Members by status"
 msgstr "Adhérents par statut"
@@ -6362,6 +6376,15 @@ msgstr ""
 msgid "An error occurred sending telemetry information :("
 msgstr ""
 "Une erreur est survenue lors de l'envoi des informations de télémétrie :("
+
+#~ msgid "Module does not exists!"
+#~ msgstr "Le module n’existe pas !"
+
+#~ msgid "Cause"
+#~ msgstr "Cause"
+
+#~ msgid "Enable"
+#~ msgstr "Activer"
 
 #~ msgid "modification"
 #~ msgstr "modification"

@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-05-11 14:11+0000\n"
 "Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -302,9 +302,6 @@ msgstr "Не удалось деактивировать плагин."
 
 msgid "Cannot activate plugin."
 msgstr "Не удалось активировать плагин."
-
-msgid "Module does not exists!"
-msgstr "Модуль не существует!"
 
 msgid "File not found!"
 msgstr "Файл не найден!"
@@ -3718,41 +3715,11 @@ msgstr "Дата выпуска"
 msgid "Active plugins"
 msgstr "Активные плагины"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "Нажмите здесь, чтобы деактивировать плагин '%1$s'"
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "Инициализировать базу данных '%1$s'"
-
 msgid "No active plugin."
 msgstr "Нет активных плагинов."
 
 msgid "Inactive plugins"
 msgstr "Неактивные плагины"
-
-msgid "Cause"
-msgstr "Причина"
-
-msgid "Enable"
-msgstr "Включить"
-
-msgid "A required file is missing"
-msgstr "Отсутствует обязательный файл"
-
-msgid "Incompatible with current version"
-msgstr "Несовместим с текущей версией"
-
-msgid "Explicitly disabled"
-msgstr "Явно отключён"
-
-msgid "Unknown"
-msgstr "Неизвестно"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "Активировать плагин '%1$s'"
 
 msgid "No inactive plugin."
 msgstr "Нет неактивных плагинов."
@@ -3770,6 +3737,53 @@ msgstr ""
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Инициализация базы данных плагина: %1$s"
+
+#, fuzzy
+#| msgid ""
+#| "An error occurred displaying plugin database initialization interface :("
+msgid "An error occurred on plugin database initialization :("
+msgstr ""
+"Произошла ошибка при отображении интерфейса инициализации базы данных "
+"плагина :("
+
+msgid "A required file is missing"
+msgstr "Отсутствует обязательный файл"
+
+msgid "Incompatible with current version"
+msgstr "Несовместим с текущей версией"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "Доступ к базе данных и права доступа"
+
+#, fuzzy
+#| msgid "Not registered"
+msgid "Not installed"
+msgstr "Не зарегистрировано"
+
+#, fuzzy
+#| msgid "Member card updated"
+msgid "Need update"
+msgstr "Карточка участника обновлена"
+
+msgid "Explicitly disabled"
+msgstr "Явно отключён"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Нажмите здесь, чтобы деактивировать плагин '%1$s'"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Инициализировать базу данных '%1$s'"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Активировать плагин '%1$s'"
 
 msgid "Members by status"
 msgstr "Участники по статусу"
@@ -6312,6 +6326,15 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Произошла ошибка при отправке телеметрии :("
+
+#~ msgid "Module does not exists!"
+#~ msgstr "Модуль не существует!"
+
+#~ msgid "Cause"
+#~ msgstr "Причина"
+
+#~ msgid "Enable"
+#~ msgstr "Включить"
 
 #~ msgid "modification"
 #~ msgstr "модификация"

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -285,9 +285,6 @@ msgid "Cannot deactivate plugin."
 msgstr ""
 
 msgid "Cannot activate plugin."
-msgstr ""
-
-msgid "Module does not exists!"
 msgstr ""
 
 msgid "File not found!"
@@ -3751,41 +3748,11 @@ msgstr "تاريخ النشر"
 msgid "Active plugins"
 msgstr "الإضافات النشطة"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr ""
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr ""
-
 msgid "No active plugin."
 msgstr "ليس هناك إضافات نشطة."
 
 msgid "Inactive plugins"
 msgstr "الإضافات غير النشطة"
-
-msgid "Cause"
-msgstr "السبب"
-
-msgid "Enable"
-msgstr ""
-
-msgid "A required file is missing"
-msgstr "ملف مطلوب مفقود"
-
-msgid "Incompatible with current version"
-msgstr ""
-
-msgid "Explicitly disabled"
-msgstr ""
-
-msgid "Unknown"
-msgstr ""
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr ""
 
 msgid "No inactive plugin."
 msgstr "ليس هناك إضافات غير نشطة."
@@ -3800,6 +3767,46 @@ msgstr ""
 
 #, php-format
 msgid "Plugin database initialization: %1$s"
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred while storing list configuration :("
+msgid "An error occurred on plugin database initialization :("
+msgstr "حدث خطأ أثناء حفظ إعدادات القائمة :("
+
+msgid "A required file is missing"
+msgstr "ملف مطلوب مفقود"
+
+msgid "Incompatible with current version"
+msgstr ""
+
+msgid "Database version missing"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+#, fuzzy
+#| msgid "Release date"
+msgid "Need update"
+msgstr "تاريخ النشر"
+
+msgid "Explicitly disabled"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr ""
+
+#, php-format
+msgid "Activate plugin '%1$s'"
 msgstr ""
 
 msgid "Members by status"
@@ -6355,6 +6362,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr ""
+
+#~ msgid "Cause"
+#~ msgstr "السبب"
 
 #~ msgid "modification"
 #~ msgstr "تعديل"

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-05-01 09:04+0000\n"
 "Last-Translator: Женя <prikhodkozheka2011@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -288,9 +288,6 @@ msgstr "Не вдалося знедіяти розширення."
 
 msgid "Cannot activate plugin."
 msgstr "Не вдалося задіяти розширення."
-
-msgid "Module does not exists!"
-msgstr "Модуль не існує!"
 
 msgid "File not found!"
 msgstr "Файл не знайдено!"
@@ -3716,43 +3713,11 @@ msgstr "Дата виходу"
 msgid "Active plugins"
 msgstr "Діяльні розширення"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "Клацніть тут, щоб знедіяти розширення\"%1$s\""
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "Ініціалізувати базу даних \"%1$s\""
-
 msgid "No active plugin."
 msgstr "Немає діяльного розширення."
 
 msgid "Inactive plugins"
 msgstr "Бездіяльні розширення"
-
-msgid "Cause"
-msgstr "Причина"
-
-#, fuzzy
-#| msgid "Enabled"
-msgid "Enable"
-msgstr "Увімкнено"
-
-msgid "A required file is missing"
-msgstr "Необхідний файл відсутній"
-
-msgid "Incompatible with current version"
-msgstr "Несумісно з поточною версією"
-
-msgid "Explicitly disabled"
-msgstr "Явно вимкнено"
-
-msgid "Unknown"
-msgstr "Невідомо"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "Задіяти розширення \"%1$s\""
 
 msgid "No inactive plugin."
 msgstr "Немає незадіяних втулків."
@@ -3771,6 +3736,52 @@ msgstr ""
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Ініціалізація бази даних розширення: %1$s"
+
+#, fuzzy
+#| msgid ""
+#| "An error occurred displaying plugin database initialization interface :("
+msgid "An error occurred on plugin database initialization :("
+msgstr ""
+"Сталася помилка під час відображення інтерфейсу ініціалізації бази даних :("
+
+msgid "A required file is missing"
+msgstr "Необхідний файл відсутній"
+
+msgid "Incompatible with current version"
+msgstr "Несумісно з поточною версією"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "Доступ до бази даних і дозволи"
+
+#, fuzzy
+#| msgid "Not registered"
+msgid "Not installed"
+msgstr "Не зареєстровано"
+
+#, fuzzy
+#| msgid "Member card updated"
+msgid "Need update"
+msgstr "Картку члена оновлено"
+
+msgid "Explicitly disabled"
+msgstr "Явно вимкнено"
+
+msgid "Unknown"
+msgstr "Невідомо"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Клацніть тут, щоб знедіяти розширення\"%1$s\""
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Ініціалізувати базу даних \"%1$s\""
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Задіяти розширення \"%1$s\""
 
 msgid "Members by status"
 msgstr "Члени за станом"
@@ -6309,6 +6320,17 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
+
+#~ msgid "Module does not exists!"
+#~ msgstr "Модуль не існує!"
+
+#~ msgid "Cause"
+#~ msgstr "Причина"
+
+#, fuzzy
+#~| msgid "Enabled"
+#~ msgid "Enable"
+#~ msgstr "Увімкнено"
 
 #~ msgid "modification"
 #~ msgstr "модифікація"

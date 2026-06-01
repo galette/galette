@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -347,10 +347,6 @@ msgstr "No es pot desactivar el connector."
 #, fuzzy
 msgid "Cannot activate plugin."
 msgstr "No es pot activar el connector."
-
-#, fuzzy
-msgid "Module does not exists!"
-msgstr "El mòdul no existeix!"
 
 #, fuzzy
 msgid "File not found!"
@@ -4440,14 +4436,6 @@ msgstr "Data de publicació"
 msgid "Active plugins"
 msgstr "Connectors actius"
 
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr "Feu clic aquí per desactivar el connector '%1$s'"
-
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr "IVA '%1$s' base de dades"
-
 #, fuzzy
 msgid "No active plugin."
 msgstr "No hi ha cap connector actiu."
@@ -4455,34 +4443,6 @@ msgstr "No hi ha cap connector actiu."
 #, fuzzy
 msgid "Inactive plugins"
 msgstr "Connectors inactius"
-
-#, fuzzy
-msgid "Cause"
-msgstr "Cau"
-
-#, fuzzy
-msgid "Enable"
-msgstr "Activat"
-
-#, fuzzy
-msgid "A required file is missing"
-msgstr "Falta un fitxer necessari"
-
-#, fuzzy
-msgid "Incompatible with current version"
-msgstr "Incompatible amb la versió actual"
-
-#, fuzzy
-msgid "Explicitly disabled"
-msgstr "Explícitament desactivat"
-
-#, fuzzy
-msgid "Unknown"
-msgstr "Desconegut"
-
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr "Activa el connector '%1$s'"
 
 #, fuzzy
 msgid "No inactive plugin."
@@ -4505,6 +4465,53 @@ msgstr ""
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr ""
+
+#, fuzzy
+msgid "An error occurred on plugin database initialization :("
+msgstr ""
+"Hi ha hagut un error en mostrar la interfície d'inicialització de la base de "
+"dades de connectors ("
+
+#, fuzzy
+msgid "A required file is missing"
+msgstr "Falta un fitxer necessari"
+
+#, fuzzy
+msgid "Incompatible with current version"
+msgstr "Incompatible amb la versió actual"
+
+#, fuzzy
+#| msgid "Database access and permissions"
+msgid "Database version missing"
+msgstr "Accés i permisos de la base de dades"
+
+#, fuzzy
+msgid "Not installed"
+msgstr "No registrat"
+
+#, fuzzy
+msgid "Need update"
+msgstr "Targeta de soci actualitzada"
+
+#, fuzzy
+msgid "Explicitly disabled"
+msgstr "Explícitament desactivat"
+
+#, fuzzy
+msgid "Unknown"
+msgstr "Desconegut"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Feu clic aquí per desactivar el connector '%1$s'"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "IVA '%1$s' base de dades"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Activa el connector '%1$s'"
 
 #, fuzzy
 msgid "Members by status"
@@ -7570,6 +7577,18 @@ msgstr ""
 #, fuzzy
 msgid "An error occurred sending telemetry information :("
 msgstr "S'ha produït un error en enviar la informació de telemetria ("
+
+#, fuzzy
+#~ msgid "Module does not exists!"
+#~ msgstr "El mòdul no existeix!"
+
+#, fuzzy
+#~ msgid "Cause"
+#~ msgstr "Cau"
+
+#, fuzzy
+#~ msgid "Enable"
+#~ msgstr "Activat"
 
 #~ msgid "modification"
 #~ msgstr "modificació"
