@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 08:24+0200\n"
+"POT-Creation-Date: 2026-06-01 08:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 #: ../lib/Galette/IO/MembersCsv.php:149 ../lib/Galette/IO/MembersCsv.php:161
 #: ../lib/Galette/IO/MembersCsv.php:173 ../lib/Galette/IO/MembersCsv.php:185
 #: ../lib/Galette/Entity/ImportModel.php:177
-#: ../lib/Galette/Entity/Contribution.php:686
+#: ../lib/Galette/Entity/Contribution.php:692
 #: ../lib/Galette/Entity/Adherent.php:770
 #: ../lib/Galette/Entity/Adherent.php:784
 #: ../lib/Galette/Entity/Adherent.php:794
@@ -146,7 +146,6 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contributions_types_list.html.twig:202
 #: ../../tempcache/pages/plugins.html.twig:64
-#: ../../tempcache/pages/plugins.html.twig:207
 #: ../../tempcache/pages/groups_list.html.twig:63
 #: ../../tempcache/pages/import.html.twig:100
 #: ../../tempcache/pages/public/staff_list.html.twig:83
@@ -511,23 +510,19 @@ msgstr ""
 msgid "Logged in as:<br/>%login"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:269 ../lib/Galette/Core/Plugins.php:333
+#: ../lib/Galette/Core/Plugins.php:515 ../lib/Galette/Core/Plugins.php:580
 msgid "No such module."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:275
+#: ../lib/Galette/Core/Plugins.php:521
 msgid "Cannot deactivate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:339
+#: ../lib/Galette/Core/Plugins.php:586
 msgid "Cannot activate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:554 ../lib/Galette/Core/Plugins.php:610
-msgid "Module does not exists!"
-msgstr ""
-
-#: ../lib/Galette/Core/Plugins.php:607
+#: ../lib/Galette/Core/Plugins.php:978
 msgid "File not found!"
 msgstr ""
 
@@ -540,7 +535,7 @@ msgid "Checks"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:105 ../webroot/installer.php:285
-#: ../../tempcache/modals/plugin_initdb.html.twig:438
+#: ../../tempcache/modals/plugin_initdb.html.twig:440
 msgid "Installation mode"
 msgstr ""
 
@@ -557,7 +552,7 @@ msgid "Previous version selection"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:121 ../webroot/installer.php:332
-#: ../../tempcache/modals/plugin_initdb.html.twig:488
+#: ../../tempcache/modals/plugin_initdb.html.twig:496
 msgid "Database upgrade"
 msgstr ""
 
@@ -579,7 +574,7 @@ msgid "Galette initialization"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:141 ../webroot/installer.php:398
-#: ../../tempcache/modals/plugin_initdb.html.twig:503
+#: ../../tempcache/modals/plugin_initdb.html.twig:511
 msgid "End!"
 msgstr ""
 
@@ -767,7 +762,7 @@ msgstr ""
 #. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #: ../lib/Galette/Core/Preferences.php:645
-#: ../lib/Galette/Entity/Contribution.php:601
+#: ../lib/Galette/Entity/Contribution.php:607
 #: ../lib/Galette/Entity/Adherent.php:1149
 #: ../lib/Galette/Entity/Transaction.php:364
 #, php-format
@@ -1122,7 +1117,7 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:403 ../lib/Galette/Core/Galette.php:843
-#: ../lib/Galette/Controllers/PluginsController.php:48
+#: ../lib/Galette/Controllers/PluginsController.php:49
 msgid "Plugins"
 msgstr ""
 
@@ -1462,62 +1457,62 @@ msgstr ""
 msgid "Membership extension:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:529
+#: ../lib/Galette/Entity/Contribution.php:535
 #: ../lib/Galette/Entity/Transaction.php:315
 msgid "- Please select a member from a group you manage."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:548
+#: ../lib/Galette/Entity/Contribution.php:554
 #: ../lib/Galette/Entity/Transaction.php:327
 msgid "- The amount must be an integer!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:570
+#: ../lib/Galette/Entity/Contribution.php:576
 msgid "- The duration must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:587
+#: ../lib/Galette/Entity/Contribution.php:593
 msgid "- The end date must be after the start date!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:612
+#: ../lib/Galette/Entity/Contribution.php:618
 #: ../lib/Galette/Entity/Transaction.php:374
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:685
+#: ../lib/Galette/Entity/Contribution.php:691
 msgid "- Membership period overlaps period starting at "
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:745
+#: ../lib/Galette/Entity/Contribution.php:751
 msgid "Contribution added"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:750
+#: ../lib/Galette/Entity/Contribution.php:756
 msgid "Fail to add new contribution."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:765
+#: ../lib/Galette/Entity/Contribution.php:771
 msgid "Contribution updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1135
+#: ../lib/Galette/Entity/Contribution.php:1141
 #: ../lib/Galette/Entity/PdfContribution.php:57
 #: ../lib/Galette/Entity/Texts.php:603
 #: ../lib/Galette/Features/Replacements.php:416
 msgid "Contribution information"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1137
+#: ../lib/Galette/Entity/Contribution.php:1143
 msgid "Script output"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1161
+#: ../lib/Galette/Entity/Contribution.php:1167
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:105
 msgid "Membership"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1163
+#: ../lib/Galette/Entity/Contribution.php:1169
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:78
 #: ../../tempcache/pages/transaction_form.html.twig:201
 #: ../../tempcache/pages/contribution_form.html.twig:440
@@ -1525,11 +1520,11 @@ msgstr ""
 msgid "Donation"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1537
+#: ../lib/Galette/Entity/Contribution.php:1543
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1546
+#: ../lib/Galette/Entity/Contribution.php:1552
 #: ../lib/Galette/Entity/Transaction.php:350
 msgid "- Unknown payment type"
 msgstr ""
@@ -2236,12 +2231,12 @@ msgstr ""
 msgid "Download document"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:72
+#: ../lib/Galette/Controllers/PluginsController.php:73
 #, php-format
 msgid "Plugin %1$s has been enabled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:83
+#: ../lib/Galette/Controllers/PluginsController.php:84
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr ""
@@ -3720,12 +3715,12 @@ msgid "Read the manual"
 msgstr ""
 
 #: ../webroot/installer.php:321
-#: ../../tempcache/modals/plugin_initdb.html.twig:469
+#: ../../tempcache/modals/plugin_initdb.html.twig:475
 msgid "Version selection"
 msgstr ""
 
 #: ../webroot/installer.php:346
-#: ../../tempcache/modals/plugin_initdb.html.twig:486
+#: ../../tempcache/modals/plugin_initdb.html.twig:494
 msgid "Database installation"
 msgstr ""
 
@@ -3734,11 +3729,11 @@ msgid "Documentation"
 msgstr ""
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-#: ../includes/dependencies.php:113
+#: ../includes/dependencies.php:115
 msgid "YYYY-MM-DD"
 msgstr ""
 
-#: ../includes/dependencies.php:326
+#: ../includes/dependencies.php:327
 msgid "Failed CSRF check!"
 msgstr ""
 
@@ -4422,7 +4417,7 @@ msgstr ""
 #: ../install/steps/db_checks.php:227
 #: ../install/steps/db_select_version.php:136
 #: ../install/steps/db_select_version.php:147 ../install/steps/db.php:86
-#: ../../tempcache/pages/plugins.html.twig:366
+#: ../../tempcache/pages/plugins.html.twig:222
 #: ../../tempcache/modals/plugin_initdb.html.twig:390
 msgid "Next step"
 msgstr ""
@@ -4607,7 +4602,7 @@ msgstr ""
 
 #: ../install/steps/galette.php:30
 #: ../../tempcache/pages/contributions_types_list.html.twig:384
-#: ../../tempcache/pages/plugins.html.twig:428
+#: ../../tempcache/pages/plugins.html.twig:284
 #: ../../tempcache/pages/groups_list.html.twig:549
 #: ../../tempcache/pages/preferences.html.twig:3473
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:190
@@ -5056,7 +5051,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:118
 #: ../../tempcache/pages/contributions_types_list.html.twig:211
 #: ../../tempcache/pages/plugins.html.twig:68
-#: ../../tempcache/pages/plugins.html.twig:113
+#: ../../tempcache/pages/plugins.html.twig:443
 #: ../../tempcache/pages/transactions_list.html.twig:68
 #: ../../tempcache/pages/transactions_list.html.twig:469
 #: ../../tempcache/pages/history.html.twig:118
@@ -5129,12 +5124,12 @@ msgid "Delete '%s' field"
 msgstr ""
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:384
-#: ../../tempcache/pages/plugins.html.twig:324
-#: ../../tempcache/pages/plugins.html.twig:350
-#: ../../tempcache/pages/plugins.html.twig:366
-#: ../../tempcache/pages/plugins.html.twig:398
-#: ../../tempcache/pages/plugins.html.twig:422
-#: ../../tempcache/pages/plugins.html.twig:428
+#: ../../tempcache/pages/plugins.html.twig:180
+#: ../../tempcache/pages/plugins.html.twig:206
+#: ../../tempcache/pages/plugins.html.twig:222
+#: ../../tempcache/pages/plugins.html.twig:254
+#: ../../tempcache/pages/plugins.html.twig:278
+#: ../../tempcache/pages/plugins.html.twig:284
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:847
 #: ../../tempcache/pages/transactions_list.html.twig:660
 #: ../../tempcache/pages/groups_list.html.twig:515
@@ -5506,17 +5501,17 @@ msgid "Choice"
 msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:72
-#: ../../tempcache/pages/plugins.html.twig:119
+#: ../../tempcache/pages/plugins.html.twig:449
 msgid "Author"
 msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:76
-#: ../../tempcache/pages/plugins.html.twig:125
+#: ../../tempcache/pages/plugins.html.twig:455
 msgid "Version"
 msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:80
-#: ../../tempcache/pages/plugins.html.twig:131
+#: ../../tempcache/pages/plugins.html.twig:461
 msgid "Release date"
 msgstr ""
 
@@ -5524,74 +5519,81 @@ msgstr ""
 msgid "Active plugins"
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:146
-#, php-format
-msgid "Click here to deactivate plugin '%1$s'"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:167
-#, php-format
-msgid "Initialize '%1$s' database"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:188
+#: ../../tempcache/pages/plugins.html.twig:114
 msgid "No active plugin."
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:200
+#: ../../tempcache/pages/plugins.html.twig:126
 msgid "Inactive plugins"
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:211
-#: ../../tempcache/pages/plugins.html.twig:233
-msgid "Cause"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:215
-msgid "Enable"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:240
-msgid "A required file is missing"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:247
-msgid "Incompatible with current version"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:254
-msgid "Explicitly disabled"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:260
-msgid "Unknown"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:277
-#, php-format
-msgid "Activate plugin '%1$s'"
-msgstr ""
-
-#: ../../tempcache/pages/plugins.html.twig:292
+#: ../../tempcache/pages/plugins.html.twig:148
 msgid "No inactive plugin."
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:324
+#: ../../tempcache/pages/plugins.html.twig:180
 #: ../../tempcache/pages/preferences.html.twig:1868
 #: ../../tempcache/pages/preferences.html.twig:3130
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:350
-#: ../../tempcache/pages/plugins.html.twig:398
+#: ../../tempcache/pages/plugins.html.twig:206
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
-#: ../../tempcache/pages/plugins.html.twig:362
+#: ../../tempcache/pages/plugins.html.twig:218
 #, php-format
 msgid "Plugin database initialization: %1$s"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:254
+msgid "An error occurred on plugin database initialization :("
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:333
+msgid "A required file is missing"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:340
+msgid "Incompatible with current version"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:347
+msgid "Database version missing"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:354
+msgid "Not installed"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:364
+msgid "Need update"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:374
+msgid "Explicitly disabled"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:384
+msgid "Unknown"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:480
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:501
+#: ../../tempcache/pages/plugins.html.twig:527
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr ""
+
+#: ../../tempcache/pages/plugins.html.twig:548
+#, php-format
+msgid "Activate plugin '%1$s'"
 msgstr ""
 
 #: ../../tempcache/pages/charts.html.twig:71
@@ -9021,7 +9023,7 @@ msgstr ""
 msgid "Back to plugins management page"
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:452
+#: ../../tempcache/modals/plugin_initdb.html.twig:456
 msgid "Access permissions to database"
 msgstr ""
 
