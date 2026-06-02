@@ -238,7 +238,7 @@ class PluginsController extends AbstractController
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();
                 ob_end_clean();
-                if ($params['results'] !== 'install_dbperms_ok') {
+                if (!($conndb_ok === true && $supported_db === true && $permsdb_ok === true)) {
                     break;
                 }
 

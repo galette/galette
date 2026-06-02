@@ -150,13 +150,6 @@ if ($db_connected === true) {
         }
     }
 }
-
-// early bypass
-//FIXME: breaks regular installer
-if ($conndb_ok === true && $supported_db === true && $permsdb_ok === true) {
-    echo 'install_dbperms_ok';
-    return;
-}
 ?>
 
 <?php
