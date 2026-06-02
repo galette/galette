@@ -282,6 +282,44 @@ class PluginsController extends AbstractController
     }
 
     /**
+     * Plugin info page
+     *
+     * @param string $route Plugin route identifier
+     */
+    public function pluginInfo(Response $response, string $route): Response
+    {
+        $module = null;
+        foreach ($this->plugins->getActiveModules() as $mod) {
+            if ($mod['route'] === $route) {
+                $module = $mod;
+                break;
+            }
+        }
+
+        if ($module === null) {
+            return $response->withStatus(404);
+        }
+
+        $params = [
+            'page_title' => $module['name'],
+            'name'       => $module['name'],
+            'version'    => $module['version'],
+            'date'       => $module['date'],
+            'author'     => $module['author'],
+        ];
+        if ($this->login->isAdmin()) {
+            $params['module'] = $module;
+        }
+
+        $this->view->render(
+            $response,
+            'pages/plugin_info.html.twig',
+            $params
+        );
+        return $response;
+    }
+
+    /**
      * Serve a plugin static resource (CSS, JS, image, font, ...).
      *
      * @param string $plugin Plugin identifier

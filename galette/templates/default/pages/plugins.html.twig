@@ -40,7 +40,7 @@
                 <i class="{% if is_enabled %}check circle green{% else %}exclamation circle orange{% endif %} icon"></i>
             </span>
             {% if is_enabled %}
-                <a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a>
+                <a href="{{ url_for("pluginInfo", {"route": plugin.route}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a>
             {% else %}
                 {{ plugin.name }} ({{ name }})
 
