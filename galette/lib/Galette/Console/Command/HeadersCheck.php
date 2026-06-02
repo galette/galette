@@ -745,10 +745,9 @@ final class HeadersCheck extends AbstractCommand
             '(\.|.*\/\.).+', // Any hidden file/directory
             'local_.+', // local configuration files
 
-            'node_modules(?:\/.*)?', // npm imported libs
-            'galette\/vendor(?:\/.*)?', // composer imported libs
-            '.*\/vendor(?:\/.*)?', // composer imported libs
-            '.*\/coverage(?:\/.*)?', // composer imported libs
+            '(?:.*\/)?node_modules(?:\/.*)?', // npm imported libs
+            '(?:.*\/)?vendor(?:\/.*)?', // composer imported libs
+            '(?:.*\/)?coverage(?:\/.*)?', // code coverage reports
 
             'galette\/plugins(?:\/.*)?', // plugins
             'disabled\.plugins(?:\/.*)?', // plugins
