@@ -40,13 +40,14 @@
 # Kamborio <Kamborio15@users.noreply.hosted.weblate.org>, 2024.
 # Marco Moreno <hibarioath@proton.me>, 2025.
 # Francisco Serrador <fserrador@gmail.com>, 2025, 2026.
+# Libre <6n0n1m0s@proton.me>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-05-06 17:11+0000\n"
-"Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
+"PO-Revision-Date: 2026-06-03 08:01+0000\n"
+"Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -54,7 +55,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1683,15 +1684,11 @@ msgstr "El modelo importado no ha sido almacenado :("
 msgid "Membership fee"
 msgstr "Cuota de afiliación"
 
-#, fuzzy
-#| msgid "Membership fee"
 msgid "New membership fee"
-msgstr "Cuota de afiliación"
+msgstr "Cuota nueva de afiliación"
 
-#, fuzzy
-#| msgid "New installation"
 msgid "New donation"
-msgstr "Nueva instalación"
+msgstr "Donación nueva"
 
 msgid "No related contribution type available, please create a new one."
 msgstr ""
@@ -1817,10 +1814,8 @@ msgstr "Se ha producido un error al mover el campo :("
 msgid "Group name is missing!"
 msgstr "¡Falta el nombre del grupo!"
 
-#, fuzzy
-#| msgid "A file with that name already exists!"
 msgid "Group name already exists!"
-msgstr "¡Ya existe un archivo con ese nombre!"
+msgstr "¡Ya existe un nombre de grupo!"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -1903,10 +1898,8 @@ msgstr "¡Se ha actualizado con éxito el estado #%id!"
 msgid "Remove status '%label'"
 msgstr "Eliminar estado '%label'"
 
-#, fuzzy
-#| msgid "No document"
 msgid "New document"
-msgstr "No hay ningún documento"
+msgstr "Documento nuevo"
 
 msgid "Edit document"
 msgstr "Editar documento"
@@ -1956,10 +1949,8 @@ msgstr "¡No se ha podido cargar la transacción nº %id!"
 msgid "Transaction"
 msgstr "Transacción"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "New transaction"
-msgstr "Ver transacción"
+msgstr "Transacción nueva"
 
 msgid "An error occurred while storing the transaction."
 msgstr "Se ha producido un error al almacenar la transacción."
@@ -2029,20 +2020,14 @@ msgstr "Quitar tipo de pago %1$s"
 msgid "Subscription"
 msgstr "Suscripción"
 
-#, fuzzy
-#| msgid "file"
 msgid "Profile"
-msgstr "archivo"
+msgstr "Perfil"
 
-#, fuzzy
-#| msgid "Edit field"
 msgid "Edit profile"
-msgstr "Editar campo"
+msgstr "Editar perfil"
 
-#, fuzzy
-#| msgid "No member"
 msgid "New member"
-msgstr "Ningún miembro"
+msgstr "Miembro nuevo"
 
 #, php-format
 msgid "Mass change %1$s members"
@@ -3804,13 +3789,10 @@ msgstr ""
 msgid "Plugin database initialization: %1$s"
 msgstr "Inicialización de base de datos de plugin: '%1$s'"
 
-#, fuzzy
-#| msgid ""
-#| "An error occurred displaying plugin database initialization interface :("
 msgid "An error occurred on plugin database initialization :("
 msgstr ""
-"Se ha producido un error al mostrar la interfaz de inicialización de la base "
-"de datos del complemento :("
+"Se ha producido un error en el complemento de inicialización de la base de "
+"datos :("
 
 msgid "A required file is missing"
 msgstr "Falta un archivo requerido"
@@ -3818,20 +3800,14 @@ msgstr "Falta un archivo requerido"
 msgid "Incompatible with current version"
 msgstr "Incompatible con la versión actual"
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "Accesos y permisos de la base de datos"
+msgstr "Versión de base de datos ausente"
 
-#, fuzzy
-#| msgid "Not registered"
 msgid "Not installed"
-msgstr "No registrado"
+msgstr "No instalado"
 
-#, fuzzy
-#| msgid "Member card updated"
 msgid "Need update"
-msgstr "Tarjeta de miembro actualizada"
+msgstr "Requiere actualizar"
 
 msgid "Explicitly disabled"
 msgstr "Desactivado explícitamente"
@@ -6125,10 +6101,8 @@ msgstr "Factura"
 msgid "Receipt"
 msgstr "Recibo"
 
-#, fuzzy
-#| msgid "Navigation"
 msgid "Pagination"
-msgstr "Navegación"
+msgstr "Paginación"
 
 msgid "Previous"
 msgstr "Anterior"
@@ -6142,10 +6116,8 @@ msgstr "Menú principal"
 msgid "Compact menu"
 msgstr "Menú compacto"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Mobile main menu"
-msgstr "Menú principal"
+msgstr "Menú principal móvil"
 
 msgid "Go back to Galette homepage"
 msgstr "Volver a la página de inicio de Galette"
