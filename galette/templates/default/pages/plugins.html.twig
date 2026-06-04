@@ -36,15 +36,16 @@
     {% endif %}
     <tr>
         <td data-scope="row">
-            <span class="ui icon"{% if not is_enabled %} data-tooltip="{{ disabled_cause }}"{% endif %}>
-                <i class="{% if is_enabled %}check circle green{% else %}exclamation circle orange{% endif %} icon"></i>
+    {% if is_enabled %}
+            <i class="ui check circle green icon" aria-hidden="true"></i>
+            <a href="{{ url_for("pluginInfo", {"route": plugin.route}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a>
+    {% else %}
+            <span class="icon-only">
+                <i class="ui exclamation circle orange icon" aria-hidden="true"></i>
+                <span class="visually-hidden">{{ disabled_cause|trim }}</span>
             </span>
-            {% if is_enabled %}
-                <a href="{{ url_for("pluginInfo", {"route": plugin.route}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a>
-            {% else %}
-                {{ plugin.name }} ({{ name }})
-
-            {% endif %}
+            {{ plugin.name }} ({{ name }})
+    {% endif %}
         </td>
         <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
         <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
