@@ -12,6 +12,7 @@ namespace Galette\Updates;
 
 use Galette\Entity\PaymentType;
 use Galette\Updater\AbstractUpdater;
+use Galette\Updater\ScheduledPaymentsFix;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 
@@ -22,7 +23,18 @@ use Laminas\Db\Sql\Expression;
  */
 class UpgradeTo121 extends AbstractUpdater
 {
+    use ScheduledPaymentsFix;
+
     protected ?string $db_version = '1.21';
+
+    /**
+     * Pre stuff, if any.
+     * Will be executed first.
+     */
+    protected function preUpdate(): bool
+    {
+        return $this->fixScheduledPaymentsTable();
+    }
 
     /**
      * Update instructions

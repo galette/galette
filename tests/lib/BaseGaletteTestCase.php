@@ -313,7 +313,8 @@ abstract class BaseGaletteTestCase extends TestCase
             }
         }
 
-        $galette_log_var = implode("\n", $logs);
+        //rebuild log storage with remaining entries, keeping separator so they can still be checked later
+        $galette_log_var = count($logs) ? 'localhost - ' . implode('localhost - ', $logs) : '';
         $this->assertTrue(
             $found,
             "Log message '{$message}' not found in log storage for level '{$this->log_levels_names[$level]}'."

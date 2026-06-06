@@ -53,7 +53,7 @@ abstract class AbstractUpdater
     /**
      * Report
      *
-     * @var array<string,array<int|string>>
+     * @var array<int, array{message: string, type: int, res: bool}>
      */
     private array $report = [];
 
@@ -282,7 +282,7 @@ abstract class AbstractUpdater
     /**
      * Get upgrade report
      *
-     * @return array<string, array<int|string>>
+     * @return array<int, array{message: string, type: int, res: bool}>
      */
     public function getReport(): array
     {

@@ -13,6 +13,7 @@ namespace Galette\Updates;
 use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\ChoiceSpecifications;
 use Galette\Updater\AbstractUpdater;
+use Galette\Updater\ScheduledPaymentsFix;
 use Throwable;
 
 use function Safe\json_encode;
@@ -24,6 +25,8 @@ use function Safe\json_encode;
  */
 class UpgradeTo130 extends AbstractUpdater
 {
+    use ScheduledPaymentsFix;
+
     protected ?string $db_version = '1.30';
 
     /**
@@ -33,6 +36,16 @@ class UpgradeTo130 extends AbstractUpdater
     {
         parent::__construct();
         $this->setSqlScripts($this->db_version);
+    }
+
+    /**
+     * Pre stuff, if any.
+     * Will be executed first.
+     */
+    protected function preUpdate(): bool
+    {
+        //users already on 1.2.1 did not get the scheduled payments table fix; replay it (no-op if already applied)
+        return $this->fixScheduledPaymentsTable();
     }
 
     /**

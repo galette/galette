@@ -46,6 +46,10 @@ class Install extends BaseGaletteTestCase
      */
     public function testUpdates(): void
     {
+        //update scripts run under installer context (see webroot/installer.php)
+        global $installer;
+        $installer = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used in _T()
+
         $install = new \Galette\Core\Install();
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install',
