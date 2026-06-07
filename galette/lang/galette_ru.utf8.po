@@ -23,13 +23,14 @@
 # Sergey Bishop <bsaq32@gmail.com>, 2026.
 # Тырцев Леонид <tleonid2018.pro@gmail.com>, 2026.
 # Andrei Stepanov <adem4ik@gmail.com>, 2026.
+# Артур <atter192837@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-05-11 14:11+0000\n"
-"Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
+"PO-Revision-Date: 2026-06-08 18:01+0000\n"
+"Last-Translator: Артур <atter192837@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -38,7 +39,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.5-dev\n"
+"X-Generator: Weblate 2026.6\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1633,15 +1634,11 @@ msgstr "Импорт модель не была сохранена :("
 msgid "Membership fee"
 msgstr "Членский взнос"
 
-#, fuzzy
-#| msgid "Membership fee"
 msgid "New membership fee"
-msgstr "Членский взнос"
+msgstr "Новый членский взнос"
 
-#, fuzzy
-#| msgid "New installation"
 msgid "New donation"
-msgstr "Новая установка"
+msgstr "Новое пожертвование"
 
 msgid "No related contribution type available, please create a new one."
 msgstr "Не существует связанного типа вклада, пожалуйста, создайте новый."
@@ -1764,10 +1761,8 @@ msgstr "Произошла ошибка при перемещении поля :
 msgid "Group name is missing!"
 msgstr "Название группы отсутствует!"
 
-#, fuzzy
-#| msgid "A file with that name already exists!"
 msgid "Group name already exists!"
-msgstr "Файл с таким именем уже существует!"
+msgstr "Группа с таким названием уже существует!"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -1851,10 +1846,8 @@ msgstr "Статус #%id был успешно обновлен!"
 msgid "Remove status '%label'"
 msgstr "Удалить статус '%label'"
 
-#, fuzzy
-#| msgid "No document"
 msgid "New document"
-msgstr "Нет документов"
+msgstr "Новый документ"
 
 msgid "Edit document"
 msgstr "Редактировать документ"
@@ -1903,10 +1896,8 @@ msgstr "Невозможно загрузить транзакцию #%id!"
 msgid "Transaction"
 msgstr "Транзакция"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "New transaction"
-msgstr "Просмотреть транзакцию"
+msgstr "Новая транзакция"
 
 msgid "An error occurred while storing the transaction."
 msgstr "При сохранении транзакции произошла ошибка."
@@ -1976,20 +1967,14 @@ msgstr "Удалить тип платежа %1$s"
 msgid "Subscription"
 msgstr "Подписка"
 
-#, fuzzy
-#| msgid "file"
 msgid "Profile"
-msgstr "файл"
+msgstr "Профиль"
 
-#, fuzzy
-#| msgid "Edit field"
 msgid "Edit profile"
-msgstr "Поле редактирования"
+msgstr "Редактировать профиль"
 
-#, fuzzy
-#| msgid "No member"
 msgid "New member"
-msgstr "Нет участников"
+msgstr "Новый участник"
 
 #, php-format
 msgid "Mass change %1$s members"
@@ -3738,13 +3723,8 @@ msgstr ""
 msgid "Plugin database initialization: %1$s"
 msgstr "Инициализация базы данных плагина: %1$s"
 
-#, fuzzy
-#| msgid ""
-#| "An error occurred displaying plugin database initialization interface :("
 msgid "An error occurred on plugin database initialization :("
-msgstr ""
-"Произошла ошибка при отображении интерфейса инициализации базы данных "
-"плагина :("
+msgstr "Произошла ошибка при инициализации базы данных плагина :("
 
 msgid "A required file is missing"
 msgstr "Отсутствует обязательный файл"
@@ -3752,20 +3732,14 @@ msgstr "Отсутствует обязательный файл"
 msgid "Incompatible with current version"
 msgstr "Несовместим с текущей версией"
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "Доступ к базе данных и права доступа"
+msgstr "Отсутствует версия базы данных"
 
-#, fuzzy
-#| msgid "Not registered"
 msgid "Not installed"
-msgstr "Не зарегистрировано"
+msgstr "Не установлено"
 
-#, fuzzy
-#| msgid "Member card updated"
 msgid "Need update"
-msgstr "Карточка участника обновлена"
+msgstr "Необходимо обновление"
 
 msgid "Explicitly disabled"
 msgstr "Явно отключён"
@@ -6052,10 +6026,8 @@ msgstr "Счёт"
 msgid "Receipt"
 msgstr "Квитанция"
 
-#, fuzzy
-#| msgid "Donation"
 msgid "Pagination"
-msgstr "Пожертвование"
+msgstr "Нумерация страниц"
 
 msgid "Previous"
 msgstr "Назад"
@@ -6069,10 +6041,8 @@ msgstr "Главное меню"
 msgid "Compact menu"
 msgstr "Компактное меню"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Mobile main menu"
-msgstr "Главное меню"
+msgstr "Мобильное главное меню"
 
 msgid "Go back to Galette homepage"
 msgstr "Вернуться на главную страницу Galette"
