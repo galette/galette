@@ -123,7 +123,7 @@ class PaymentTypes extends Repository
     /**
      * Checks for missing payment types in the database
      */
-    protected function checkUpdate(): bool
+    public function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;

@@ -1126,6 +1126,11 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $texts->installInit(true);
             $this->proceedReport(_T("Mails texts"), true);
 
+            //add missing system payment types right now; do not wait for first use
+            $ptypes = new \Galette\Repository\PaymentTypes($zdb, $preferences, new Login($zdb, $i18n));
+            $ptypes->checkUpdate();
+            $this->proceedReport(_T("Payment types"), true);
+
             return true;
         }
         return false;
