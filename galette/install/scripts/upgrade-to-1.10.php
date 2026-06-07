@@ -12,7 +12,9 @@ namespace Galette\Updates;
 
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\ContributionsTypes;
+use Galette\Entity\PaymentType;
 use Galette\Updater\AbstractUpdater;
+use Galette\Updater\PaymentTypesIdsFix;
 use GalettePaypal\Paypal;
 
 /**
@@ -22,6 +24,8 @@ use GalettePaypal\Paypal;
  */
 class UpgradeTo110 extends AbstractUpdater
 {
+    use PaymentTypesIdsFix;
+
     protected ?string $db_version = '1.10';
 
     /**
@@ -38,6 +42,11 @@ class UpgradeTo110 extends AbstractUpdater
      */
     protected function update(): bool
     {
+        //a user defined payment type may already use the id reserved for the new "Payment schedule" system type
+        if (!$this->freeSystemPaymentTypesIds([PaymentType::SCHEDULED => 'payment schedule'])) {
+            return false;
+        }
+
         $this->zdb->beginTransaction();
 
         $results = $this->zdb->selectAll(DynamicField::TABLE);
