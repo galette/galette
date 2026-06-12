@@ -161,7 +161,7 @@ jobs:
         if: matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         env:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
