@@ -4,7 +4,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 --
 
-DROP SEQUENCE adherents_id_seq;
+DROP SEQUENCE IF EXISTS adherents_id_seq;
 CREATE SEQUENCE adherents_id_seq
     START 1
     INCREMENT 1
@@ -12,7 +12,7 @@ CREATE SEQUENCE adherents_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE cotisations_id_seq;
+DROP SEQUENCE IF EXISTS cotisations_id_seq;
 CREATE SEQUENCE cotisations_id_seq
     START 1
     INCREMENT 1
@@ -20,7 +20,7 @@ CREATE SEQUENCE cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE adherents;
+DROP TABLE IF EXISTS adherents;
 CREATE TABLE adherents (
     id_adh integer DEFAULT nextval('adherents_id_seq'::text) NOT NULL,
     id_statut integer DEFAULT '4' NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE adherents (
     date_echeance date
 );
 
-DROP TABLE cotisations;
+DROP TABLE IF EXISTS cotisations;
 CREATE TABLE cotisations (
     id_cotis integer DEFAULT nextval('cotisations_id_seq'::text)  NOT NULL,
     id_adh integer DEFAULT '0' NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE cotisations (
     date_cotis date NOT NULL
 );
 
-DROP TABLE statuts;
+DROP TABLE IF EXISTS statuts;
 CREATE TABLE statuts (
   id_statut integer NOT NULL,
   libelle_statut  character varying(20) DEFAULT '' NOT NULL,
@@ -83,7 +83,7 @@ INSERT INTO statuts VALUES (8,'Personne morale',70);
 INSERT INTO statuts VALUES (9,'Non membre',80);
 INSERT INTO statuts VALUES (10,'Vice-président',5);
 
-DROP TABLE types_cotisation;
+DROP TABLE IF EXISTS types_cotisation;
 CREATE TABLE types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL
@@ -93,10 +93,10 @@ INSERT INTO types_cotisation VALUES (1,'Cotisation annuelle normale');
 INSERT INTO types_cotisation VALUES (2,'Cotisation annuelle réduite');
 INSERT INTO types_cotisation VALUES (3,'Cotisation entreprise');
 INSERT INTO types_cotisation VALUES (4,'Donation en nature');
-INSERT INTO types_cotisation VALUES (5,'Donation pécunière');
+INSERT INTO types_cotisation VALUES (5,'Donation pécuniaire');
 INSERT INTO types_cotisation VALUES (6,'Partenariat');
 
-DROP TABLE preferences;
+DROP TABLE IF EXISTS preferences;
 CREATE TABLE preferences (
   pref_nom character varying(40) DEFAULT '' NOT NULL,
   pref_adresse character varying(150) DEFAULT '' NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE preferences (
   pref_admin_pass character varying(20) DEFAULT '' NOT NULL
 );
 
-DROP SEQUENCE logs_id_seq;
+DROP SEQUENCE IF EXISTS logs_id_seq;
 CREATE SEQUENCE logs_id_seq
     START 1
     INCREMENT 1
@@ -129,7 +129,7 @@ CREATE SEQUENCE logs_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE logs;
+DROP TABLE IF EXISTS logs;
 CREATE TABLE logs (
   id_log integer DEFAULT nextval('logs_id_seq'::text) NOT NULL,
   date_log timestamp NOT NULL,

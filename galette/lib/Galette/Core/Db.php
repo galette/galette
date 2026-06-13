@@ -538,11 +538,14 @@ class Db
     /**
      * Converts recursively database to UTF-8
      *
-     * @param ?string $prefix       Specified table prefix
-     * @param bool    $content_only Proceed only content (no table conversion)
+     * The per-table `CONVERT TO CHARACTER SET` statement transcodes both the
+     * column definitions *and* their stored content (latin1 data is rewritten
+     * as UTF-8 in place), so no extra row-by-row pass is needed.
+     *
+     * @param ?string $prefix Specified table prefix
      * @deprecated 1.2.2 upgrading from 0.6 will be discontinued.
      */
-    public function convertToUTF(?string $prefix = null, bool $content_only = false): void
+    public function convertToUTF(?string $prefix = null): void
     {
         Analog::log(
             'Upgrading from 0.6 will soon be discontinued.',
@@ -564,28 +567,18 @@ class Db
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
-                if ($content_only === false) {
-                    //Change whole table charset
-                    //CONVERT TO instruction will take care of each fields,
-                    //but converting data stay our problem.
-                    $query = 'ALTER TABLE ' . $table
-                        . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                $query = 'ALTER TABLE ' . $table
+                    . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
-                    $this->db->query(
-                        $query,
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
+                $this->db->query(
+                    $query,
+                    Adapter::QUERY_MODE_EXECUTE
+                );
 
-                    Analog::log(
-                        'Charset successfully changed for table `' . $table . '`',
-                        Analog::DEBUG
-                    );
-                }
-
-                //Data conversion
-                if ($table != $prefix . 'pictures' && $table != $prefix . 'database') {
-                    $this->convertContentToUTF($prefix, $table);
-                }
+                Analog::log(
+                    'Charset successfully changed for table `' . $table . '`',
+                    Analog::DEBUG
+                );
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -594,99 +587,6 @@ class Db
                 Analog::ERROR
             );
             throw $e;
-        }
-    }
-
-    /**
-     * Converts database content to UTF-8
-     *
-     * @param string $prefix Specified table prefix
-     * @param string $table  the table we want to convert datas from
-     * @deprecated 1.2.2
-     */
-    private function convertContentToUTF(string $prefix, string $table): void
-    {
-        try {
-            $query = 'SET NAMES latin1';
-            $this->db->query(
-                $query,
-                Adapter::QUERY_MODE_EXECUTE
-            );
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot SET NAMES on table `' . $table . '`. '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-        }
-
-        try {
-            $metadata = Factory::createSourceFromAdapter($this->db);
-            $tbl = $metadata->getTable($table);
-            $constraints = $tbl->getConstraints();
-            $pkeys = [];
-
-            foreach ($constraints as $constraint) {
-                if ($constraint->getType() === 'PRIMARY KEY') {
-                    $pkeys = $constraint->getColumns();
-                }
-            }
-
-            if (count($pkeys) == 0) {
-                //no primary key! How to do an update without that?
-                //Prior to 0.7, l10n and dynamic_fields tables does not
-                //contain any primary key. Since encoding conversion is done
-                //_before_ the SQL upgrade, we'll have to manually
-                //check these ones
-                if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {
-                    $pkeys = [
-                        'item_id',
-                        'field_id',
-                        'field_form',
-                        'val_index'
-                    ];
-                } elseif (preg_match('/' . $prefix . 'l10n/', $table) !== 0) {
-                    $pkeys = [
-                        'text_orig',
-                        'text_locale'
-                    ];
-                } else {
-                    //not a know case, we do not perform any update.
-                    throw new Exception(
-                        'Cannot define primary key for table `' . $table
-                        . '`, aborting'
-                    );
-                }
-            }
-
-            $select = $this->sql->select($table);
-            $results = $this->execute($select);
-
-            foreach ($results as $row) {
-                $data = [];
-                $where = [];
-
-                //build where
-                foreach ($pkeys as $k) {
-                    $where[$k] = $row->$k;
-                }
-
-                //build data
-                foreach ($row as $key => $value) {
-                    $data[$key] = $value;
-                }
-
-                //finally, update data!
-                $update = $this->sql->update($table);
-                $update->set($data)->where($where);
-                $this->execute($update);
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred while converting contents to UTF-8 for table '
-                . $table . ' (' . $e->getMessage() . ')',
-                Analog::ERROR
-            );
         }
     }
 

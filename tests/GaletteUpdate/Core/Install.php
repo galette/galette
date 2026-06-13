@@ -270,6 +270,49 @@ class Install extends BaseGaletteTestCase
     }
 
     /**
+     * Test data integrity after the 0.70 latin1 -> UTF-8 conversion.
+     *
+     * The 0.6 fixtures (tests/mysql_06.sql, tests/pgsql_06.sql) store accented
+     * labels in latin1 (byte 0xe9 for "é") and MUST be loaded with a latin1
+     * client (`mysql --default-character-set=latin1` / `PGCLIENTENCODING=LATIN1`),
+     * as the CI does (see .github/workflows/ci-linux.yml). After the upgrade those
+     * labels must read back as valid UTF-8 — neither mojibake nor double-encoded.
+     */
+    public function testUpdatedDatabaseContent(): void
+    {
+        // Read back over a dedicated connection (same pattern as
+        // testUpdatedDatabase()) to be independent from the upgrade session.
+        $db = new \Galette\Core\Db();
+
+        $select = $db->select('statuts');
+        $select->columns(['id_statut', 'libelle_statut']);
+        $statuts = [];
+        foreach ($db->execute($select) as $row) {
+            $statuts[(int)$row->id_statut] = $row->libelle_statut;
+        }
+
+        $this->assertSame('Président', $statuts[1]);
+        $this->assertSame('Trésorier', $statuts[2]);
+        $this->assertSame('Secrétaire', $statuts[3]);
+        $this->assertSame('Vice-président', $statuts[10]);
+
+        $select = $db->select('types_cotisation');
+        $select->columns(['id_type_cotis', 'libelle_type_cotis']);
+        $types = [];
+        foreach ($db->execute($select) as $row) {
+            $types[(int)$row->id_type_cotis] = $row->libelle_type_cotis;
+        }
+
+        $this->assertSame('Cotisation annuelle réduite', $types[2]);
+        $this->assertSame('Donation pécuniaire', $types[5]);
+
+        // Byte-level guards: make double-encoding / mojibake failures unambiguous.
+        $this->assertTrue(mb_check_encoding($statuts[1], 'UTF-8'));
+        $this->assertSame(9, mb_strlen($statuts[1], 'UTF-8')); // "Président" = 9 chars
+        $this->assertSame(10, strlen($statuts[1])); // one "é" = 2 bytes => 10 bytes
+    }
+
+    /**
      * Build constraint key since we can not rely on mysql ones
      *
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint Constraint from which key must be built
