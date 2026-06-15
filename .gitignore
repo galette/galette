@@ -9,6 +9,8 @@ nbproject
 /galette/build-stamp
 /galette/configure-stamp
 
+/galette/data/ENABLE_INSTALL
+
 /galette/data/cache/*
 !/galette/data/cache/readme.txt
 !/galette/data/cache/.htaccess

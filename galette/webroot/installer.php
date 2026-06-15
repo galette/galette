@@ -63,6 +63,29 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 
 $error_detected = [];
 
+//Installation mode is deduced from files, not asked to the user:
+// - no config file       => fresh install
+// - config file present  => update (credentials read from the config file)
+//It is refreshed on each request until database step has been passed, so a
+//session left over from an aborted run cannot keep a mode that no longer
+//matches what is on disk.
+$expected_mode = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')
+    ? GaletteInstall::UPDATE
+    : GaletteInstall::INSTALL;
+if (
+    $install->getMode() !== $expected_mode
+    && !$install->isStepPassed(GaletteInstall::STEP_DB)
+) {
+    $install->setMode($expected_mode);
+}
+//The installer is disabled unless the enable file is present (fail-safe). This
+//applies to both install and update. The check is dropped once telemetry step
+//has been passed, so the init and end screens keep rendering after the enable
+//file has been removed - which happens while the init screen is built. Any
+//earlier step is still guarded: removing the file always closes the installer.
+$install_disabled = !$install->isInstallEnabled()
+    && !$install->isStepPassed(GaletteInstall::STEP_TELEMETRY);
+
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', value: true); //@phpstan-ignore theCodingMachineSafe.function
 
@@ -87,13 +110,29 @@ if (
     }
 }
 
-if (isset($_POST['stepback_btn'])) {
+if ($install_disabled) {
+    //installer is disabled: do not process any step transition
+    $install->atCheckStep();
+} elseif (isset($_POST['stepback_btn'])) {
     $install->atPreviousStep();
+    if ($install->isTypeStep()) {
+        //Galette installer has no type step anymore, it is only used by plugins.
+        //Without this, going back from database step would render an empty page.
+        $install->atCheckStep();
+    }
 } elseif (isset($_POST['install_permsok']) && $_POST['install_permsok'] == 1) {
-    $install->atTypeStep();
-} elseif (isset($_POST['install_type'])) {
-    $install->setMode($_POST['install_type']);
-    $install->atDbStep();
+    if ($install->isUpgrade()) {
+        //read credentials from the existing config file, no need to ask again
+        if ($install->loadExistingConfigForUpdate($error_detected)) {
+            $install->atDbCheckStep();
+            $install->initDbConstants();
+        } else {
+            //configuration file unreadable/incomplete, fall back to asking
+            $install->atDbStep();
+        }
+    } else {
+        $install->atDbStep();
+    }
 } elseif (isset($_POST['install_dbtype'])) {
     $install->setDbType($_POST['install_dbtype'], $error_detected);
 
@@ -111,6 +150,9 @@ if (isset($_POST['stepback_btn'])) {
     }
     if (empty($_POST['install_dbname'])) {
         $error_detected[] = _T("No database name");
+    }
+    if (empty($_POST['install_dbprefix'])) {
+        $error_detected[] = _T("No table prefix");
     }
 
     if (count($error_detected) == 0) {
@@ -131,7 +173,16 @@ if (isset($_POST['stepback_btn'])) {
     if ($install->isInstall()) {
         $install->atDbInstallStep();
     } elseif ($install->isUpgrade()) {
-        $install->atVersionSelection();
+        //try to detect installed version from database to skip manual selection
+        $detected = isset($zdb) ? $install->getCurrentVersion($zdb) : false;
+        //an up to date database still goes through version selection, which is
+        //where the user is asked to confirm rerunning the update scripts
+        if ($detected !== false && $detected !== GALETTE_DB_VERSION) {
+            $install->setInstalledVersion($detected);
+            $install->atDbUpgradeStep();
+        } else {
+            $install->atVersionSelection();
+        }
     }
 } elseif (isset($_POST['previous_version'])) {
     $install->setInstalledVersion($_POST['previous_version']);
@@ -310,17 +361,6 @@ if (count($error_detected) > 0) {
                                     </div>
                                 </div>
                                 <div
-                                    class="step<?php echo $install->isTypeStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' disabled' : ''); ?>"
-                                    <?php if (!$install->isTypeStep() && !$install->isStepPassed(GaletteInstall::STEP_TYPE)) {
-                                        echo 'aria-disabled="true"';
-                                    } ?>
-                                >
-                                    <i class="question icon<?php echo $install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Installation mode"); ?></div>
-                                    </div>
-                                </div>
-                                <div
                                     class="step<?php echo $install->isDbStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB) ? ' disabled' : ''); ?>"
                                     <?php if (!$install->isDbStep() && !$install->isStepPassed(GaletteInstall::STEP_DB)) {
                                         echo 'aria-disabled="true"';
@@ -437,10 +477,10 @@ if (!$install->isUpgrade()) {
                         </div>
                         <div class="twelve wide column">
 <?php
-if ($install->isCheckStep()) {
+if ($install_disabled) {
+    include_once __DIR__ . '/../install/steps/disabled.php';
+} elseif ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/check.php';
-} elseif ($install->isTypeStep()) {
-    include_once __DIR__ . '/../install/steps/type.php';
 } elseif ($install->isDbStep()) {
     include_once __DIR__ . '/../install/steps/db.php';
 } elseif ($install->isDbCheckStep()) {

@@ -184,6 +184,10 @@ class Install extends AbstractCommand
             }
         }
 
+        if ($db_prefix === '') {
+            throw new \RuntimeException('Database table prefix cannot be empty.');
+        }
+
         $db_host = $input->getOption('dbhost');
         if ($db_host === null) {
             if ($use_config && $install->getDbHost() !== null) {
@@ -411,6 +415,12 @@ class Install extends AbstractCommand
         );
         if (!$init_ok) {
             $io->warning('Data initialization has failed :(');
+        }
+
+        //re-secure the web installer by removing the enable file if present
+        //(no-op if absent). CLI access already implies filesystem access.
+        if ($init_ok && !$install->disableInstaller()) {
+            $io->warning('Could not remove the installer enable file (' . $install->getEnableInstallFilePath() . ').');
         }
 
         $io->success('Galette installation is complete!');

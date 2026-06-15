@@ -12,6 +12,7 @@ import { test as base, expect } from '@playwright/test';
 import { test } from '../fixtures/auth.fixture';
 import { axeBuilder, formatViolations } from '../fixtures/a11y.fixture';
 import { MemberListPage } from '../pages/MemberListPage';
+import { InstallerHelper } from '../helpers';
 
 let animationTimeout = 500;
 
@@ -42,12 +43,42 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
-  base('A11y - installer page', async ({ page }) => {
-    await page.goto('/installer.php');
-    await page.locator('h1').waitFor({ state: 'visible' });
+  // Installer is disabled unless galette/data/ENABLE_INSTALL exists, both
+  // screens have to be audited. That file is global server state, shared with
+  // the installer specs of the chromium project: it has to be locked.
+  base.describe('Installer', () => {
+    base.describe.configure({ mode: 'serial' });
 
-    const results = await axeBuilder(page).analyze();
-    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    base.beforeEach(async () => {
+      await InstallerHelper.acquire();
+    });
+
+    base.afterEach(() => {
+      InstallerHelper.disable();
+      InstallerHelper.release();
+    });
+
+    base('A11y - installer page, disabled', async ({ page }) => {
+      InstallerHelper.disable();
+
+      await page.goto('/installer.php');
+      await page.locator('h1').waitFor({ state: 'visible' });
+      await expect(page.locator('a[href="installer.php"]')).toBeVisible();
+
+      const results = await axeBuilder(page).analyze();
+      expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    });
+
+    base('A11y - installer page, enabled', async ({ page }) => {
+      InstallerHelper.enable();
+
+      await page.goto('/installer.php');
+      await page.locator('h1').waitFor({ state: 'visible' });
+      await expect(page.locator('input[name="install_permsok"]')).toBeAttached();
+
+      const results = await axeBuilder(page).analyze();
+      expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    });
   });
 
   // Dashboard
