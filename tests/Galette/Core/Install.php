@@ -12,6 +12,10 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\BaseGaletteTestCase;
 
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\unlink;
+
 /**
  * Install tests class
  *
@@ -359,6 +363,84 @@ class Install extends BaseGaletteTestCase
         $step = $this->install->isAdminStep();
         $this->assertTrue($step);
         $this->expectLogEntry(\Analog\Analog::WARNING, 'It is forbidden to rerun database install!');
+    }
+
+    /**
+     * Test installer enable file lifecycle (fail-safe: presence enables)
+     */
+    public function testInstallEnabledLifecycle(): void
+    {
+        $enable_file = $this->install->getEnableInstallFilePath();
+
+        //preserve any pre-existing enable file
+        $preexisting = file_exists($enable_file);
+        $backup = $preexisting ? file_get_contents($enable_file) : null;
+        if ($preexisting) {
+            @unlink($enable_file);
+        }
+
+        try {
+            //absent by default => installer disabled
+            $this->assertFalse($this->install->isInstallEnabled());
+
+            //the admin creates the file => installer enabled
+            file_put_contents($enable_file, '');
+            $this->assertTrue($this->install->isInstallEnabled());
+
+            //Galette removes it on success => installer disabled again
+            $this->assertTrue($this->install->disableInstaller());
+            $this->assertFalse($this->install->isInstallEnabled());
+            $this->assertFileDoesNotExist($enable_file);
+
+            //disabling an already disabled installer is a no-op success
+            $this->assertTrue($this->install->disableInstaller());
+        } finally {
+            if ($preexisting) {
+                file_put_contents($enable_file, (string)$backup);
+            }
+        }
+    }
+
+    /**
+     * Test loading existing config for an update (credentials, including password)
+     */
+    public function testLoadExistingConfigForUpdate(): void
+    {
+        //the update loader reads everything, including the password
+        $errors = [];
+        $loaded = $this->install->loadExistingConfigForUpdate($errors);
+        $this->assertTrue($loaded, implode(', ', $errors));
+        $this->assertCount(0, $errors);
+
+        //values are read from the on-disk config file (which the test env may
+        //override at runtime), so assert they are populated rather than equal
+        //to the live constants. The key point is the password IS loaded, unlike
+        //the legacy loadExistingConfig() which leaves it null.
+        $this->assertNotEmpty($this->install->getDbType());
+        $this->assertNotEmpty($this->install->getDbPort());
+        $this->assertNotEmpty($this->install->getDbHost());
+        $this->assertNotEmpty($this->install->getDbUser());
+        $this->assertNotEmpty($this->install->getDbName());
+        $this->assertNotEmpty($this->install->getTablesPrefix());
+        $this->assertNotEmpty($this->install->getDbPass());
+    }
+
+    /**
+     * Test database constants are defined only once (idempotent)
+     */
+    public function testInitDbConstantsIdempotent(): void
+    {
+        $errors = [];
+        $this->install->setDbType(TYPE_DB, $errors);
+        $this->install->setDsn(HOST_DB, PORT_DB, NAME_DB, USER_DB, PWD_DB);
+        $this->install->setTablesPrefix(PREFIX_DB);
+
+        //constants are already defined by the bootstrap; calling this again
+        //must not raise a "constant already defined" error
+        $this->install->initDbConstants();
+        $this->install->initDbConstants();
+
+        $this->assertSame(HOST_DB, constant('HOST_DB'));
     }
 
     /**

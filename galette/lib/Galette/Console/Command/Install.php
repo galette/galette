@@ -417,6 +417,12 @@ class Install extends AbstractCommand
             $io->warning('Data initialization has failed :(');
         }
 
+        //re-secure the web installer by removing the enable file if present
+        //(no-op if absent). CLI access already implies filesystem access.
+        if (!$install->disableInstaller()) {
+            $io->warning('Could not remove the installer enable file (' . $install->getEnableInstallFilePath() . ').');
+        }
+
         $io->success('Galette installation is complete!');
         return Command::SUCCESS;
     }

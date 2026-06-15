@@ -24,6 +24,7 @@ use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\opendir;
 use function Safe\preg_match;
+use function Safe\unlink;
 
 /**
  * Galette installation
@@ -236,6 +237,14 @@ class Install
             }
             Analog::log($msg, Analog::WARNING);
         }
+    }
+
+    /**
+     * Set step to checks
+     */
+    public function atCheckStep(): void
+    {
+        $this->step = self::STEP_CHECK;
     }
 
     /**
@@ -859,6 +868,52 @@ class Install
     }
 
     /**
+     * Load existing config for an update, including the database password.
+     *
+     * Unlike loadExistingConfig(), this reads the stored password so that an
+     * update can run without asking the user for any credential again.
+     *
+     * @param array<int, string> $error_detected Errors array
+     *
+     * @return bool True if all required connection information has been loaded
+     */
+    public function loadExistingConfigForUpdate(array &$error_detected): bool
+    {
+        if (!file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+            $error_detected[] = _T("No configuration file found!");
+            return false;
+        }
+
+        $existing = $this->loadExistingConfigFile([], true);
+
+        $required = ['db_type', 'db_host', 'db_port', 'db_user', 'db_name', 'prefix'];
+        foreach ($required as $key) {
+            if (empty($existing[$key])) {
+                $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+                return false;
+            }
+        }
+
+        //password may legitimately be empty, only its presence is required
+        if (!array_key_exists('pwd_db', $existing)) {
+            $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+            return false;
+        }
+
+        $this->setDbType($existing['db_type'], $error_detected);
+        $this->setDsn(
+            $existing['db_host'],
+            $existing['db_port'],
+            $existing['db_name'],
+            $existing['db_user'],
+            $existing['pwd_db']
+        );
+        $this->setTablesPrefix($existing['prefix']);
+
+        return count($error_detected) === 0;
+    }
+
+    /**
      * Load contents from existing config file
      *
      * @param array<string, string> $post_data Data posted
@@ -1228,12 +1283,76 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      */
     public function initDbConstants(): void
     {
-        define('TYPE_DB', $this->getDbType());
-        define('PREFIX_DB', $this->getTablesPrefix());
-        define('USER_DB', $this->getDbUser());
-        define('PWD_DB', $this->getDbPass());
-        define('HOST_DB', $this->getDbHost());
-        define('PORT_DB', $this->getDbPort());
-        define('NAME_DB', $this->getDbName());
+        if (!defined('TYPE_DB')) {
+            define('TYPE_DB', $this->getDbType());
+        }
+        if (!defined('PREFIX_DB')) {
+            define('PREFIX_DB', $this->getTablesPrefix());
+        }
+        if (!defined('USER_DB')) {
+            define('USER_DB', $this->getDbUser());
+        }
+        if (!defined('PWD_DB')) {
+            define('PWD_DB', $this->getDbPass());
+        }
+        if (!defined('HOST_DB')) {
+            define('HOST_DB', $this->getDbHost());
+        }
+        if (!defined('PORT_DB')) {
+            define('PORT_DB', $this->getDbPort());
+        }
+        if (!defined('NAME_DB')) {
+            define('NAME_DB', $this->getDbName());
+        }
+    }
+
+    /**
+     * Get the installer enable file path.
+     *
+     * The web installer only runs while this file is present on the server.
+     * Its absence (the default state) disables the installer. This fail-safe
+     * semantic means an accidental deletion can only re-secure the installer,
+     * never open it. The file is created manually by the administrator (which
+     * proves filesystem access) and removed automatically once an install or
+     * update succeeds.
+     */
+    public function getEnableInstallFilePath(): string
+    {
+        if (defined('GALETTE_ENABLE_INSTALL_FILE')) {
+            return GALETTE_ENABLE_INSTALL_FILE;
+        }
+        return GALETTE_DATA_PATH . 'ENABLE_INSTALL';
+    }
+
+    /**
+     * Is the installer enabled (i.e. is the enable file present)?
+     */
+    public function isInstallEnabled(): bool
+    {
+        return file_exists($this->getEnableInstallFilePath());
+    }
+
+    /**
+     * Disable the installer by removing the enable file.
+     *
+     * Called after a successful install or update to re-secure the installer
+     * immediately. A no-op success if the file is already absent.
+     */
+    public function disableInstaller(): bool
+    {
+        $enable_file = $this->getEnableInstallFilePath();
+        if (file_exists($enable_file)) {
+            try {
+                unlink($enable_file);
+            } catch (FilesystemException) {
+                Analog::log(
+                    'Unable to remove installer enable file: ' . $enable_file,
+                    Analog::WARNING
+                );
+                return false;
+            }
+            Analog::log('Installer enable file removed from disk', Analog::INFO);
+        }
+        return true;
     }
 }

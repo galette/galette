@@ -23,9 +23,17 @@ $install->reinitReport();
 $config_file_ok = $install->writeConfFile();
 $objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n));
 
+$disable_ok = true;
 if ($config_file_ok === true && $objects_ok === true) {
+    //re-secure the installer by removing the enable file
+    $disable_ok = $install->disableInstaller();
     echo '<p class="ui green message">' . _T("Configuration file created!")
         . '<br/>' . _T("Data initialized.") . '</p>';
+    if ($disable_ok !== true) {
+        echo '<p class="ui orange message">'
+            . str_replace('%path', htmlentities($install->getEnableInstallFilePath()), _T("Unable to remove installer enable file (%path)"))
+            . '<br/>' . _T("Remember to remove it manually to re-secure the installer.") . '</p>';
+    }
 } else {
     echo '<p class="ui red message">' . _T("An error occurred :(") . '</p>';
 }
