@@ -40,13 +40,14 @@
 # André Westphal <xells1984@users.noreply.hosted.weblate.org>, 2026.
 # Wrapty <wrapty@gmail.com>, 2026.
 # Academion <m.holzhausen@tutamail.com>, 2026.
+# Poly <robloxlucak@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-04-23 21:31+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-06-21 02:01+0000\n"
+"Last-Translator: Poly <robloxlucak@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -54,7 +55,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1673,15 +1674,11 @@ msgstr "Das Importmodell wurde nicht gespeichert :("
 msgid "Membership fee"
 msgstr "Mitgliedsbeitrag"
 
-#, fuzzy
-#| msgid "Membership fee"
 msgid "New membership fee"
-msgstr "Mitgliedsbeitrag"
+msgstr "Neuer Mitgliedsbeitrag"
 
-#, fuzzy
-#| msgid "New installation"
 msgid "New donation"
-msgstr "Neue Installation"
+msgstr "Neue Spende"
 
 msgid "No related contribution type available, please create a new one."
 msgstr "Es ist kein Beitrag verfügbar, bitte erstellen Sie einen neuen."
@@ -1805,10 +1802,8 @@ msgstr "Beim Verschieben des Feldes ist ein Fehler aufgetreten :("
 msgid "Group name is missing!"
 msgstr "Der Gruppenname fehlt!"
 
-#, fuzzy
-#| msgid "A file with that name already exists!"
 msgid "Group name already exists!"
-msgstr "Eine Datei mit diesem Namen existiert schon!"
+msgstr "Der Gruppenname existiert bereits!"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -1892,10 +1887,8 @@ msgstr "Status #%id wurde erfolgreich aktualisiert!"
 msgid "Remove status '%label'"
 msgstr "Status '%label' entfernen"
 
-#, fuzzy
-#| msgid "No document"
 msgid "New document"
-msgstr "Kein Dokument"
+msgstr "Neues Dokument"
 
 msgid "Edit document"
 msgstr "Dokument bearbeiten"
@@ -1943,10 +1936,8 @@ msgstr "Die Transaktion #%id konnte nicht geladen werden!"
 msgid "Transaction"
 msgstr "Transaktion"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "New transaction"
-msgstr "Transaktion anzeigen"
+msgstr "Neue Transaktion"
 
 msgid "An error occurred while storing the transaction."
 msgstr "Beim Speichern der Transaktion ist ein Fehler aufgetreten."
@@ -2016,20 +2007,14 @@ msgstr "Zahlungsart %1$s entfernen"
 msgid "Subscription"
 msgstr "Mitgliedschaft"
 
-#, fuzzy
-#| msgid "file"
 msgid "Profile"
-msgstr "Datei"
+msgstr "Profil"
 
-#, fuzzy
-#| msgid "Edit field"
 msgid "Edit profile"
-msgstr "Feld bearbeiten"
+msgstr "Profil bearbeiten"
 
-#, fuzzy
-#| msgid "No member"
 msgid "New member"
-msgstr "Kein Mitglied"
+msgstr "Neues Mitglied"
 
 #, php-format
 msgid "Mass change %1$s members"
@@ -3140,11 +3125,11 @@ msgstr ""
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Die Auswahlmöglichkeiten für Feld %d wurden migriert."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "Die Auswahlmöglichkeiten für Feld %d können nicht migriert werden: %s"
 
 msgid "New installation"
 msgstr "Neue Installation"
@@ -3689,7 +3674,7 @@ msgid "Add new group search criteria"
 msgstr "Neue Gruppensuchkriterien hinzufügen"
 
 msgid "Logical operator"
-msgstr ""
+msgstr "Logischer Operator"
 
 msgid "In all selected groups"
 msgstr "In allen ausgewählten Gruppen"
@@ -3721,10 +3706,8 @@ msgstr "oder"
 msgid "Select a field"
 msgstr "Wählen Sie ein Feld"
 
-#, fuzzy
-#| msgid "separator"
 msgid "Query operator"
-msgstr "Trennzeichen"
+msgstr "Abfrageoperator"
 
 msgid "is"
 msgstr "ist"
@@ -3732,10 +3715,8 @@ msgstr "ist"
 msgid "is not"
 msgstr "ist nicht"
 
-#, fuzzy
-#| msgid "Values:"
 msgid "Value"
-msgstr "Werte:"
+msgstr "Wert"
 
 msgid "before"
 msgstr "vorher"
@@ -3761,8 +3742,6 @@ msgstr "Filter"
 msgid "Clear filter"
 msgstr "Filter löschen"
 
-#, fuzzy
-#| msgid "choice"
 msgid "Choice"
 msgstr "Wahl"
 
@@ -3803,13 +3782,8 @@ msgstr ""
 msgid "Plugin database initialization: %1$s"
 msgstr "Plugindatenbank initialisiert: %1$s"
 
-#, fuzzy
-#| msgid ""
-#| "An error occurred displaying plugin database initialization interface :("
 msgid "An error occurred on plugin database initialization :("
-msgstr ""
-"Bei der Anzeige der Plugin-Datenbankinitialisierungsschnittstelle ist ein "
-"Fehler aufgetreten :("
+msgstr "Ein Fehler trat auf der Plugin-Datenbank- Initialisierung auf :("
 
 msgid "A required file is missing"
 msgstr "Eine benötigte Datei fehlt"
@@ -3817,20 +3791,14 @@ msgstr "Eine benötigte Datei fehlt"
 msgid "Incompatible with current version"
 msgstr "Nicht mit der aktuellen Version kompatibel"
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "Datenbankzugriff und Berechtigungen"
+msgstr "Datenbankversion fehlt"
 
-#, fuzzy
-#| msgid "Not registered"
 msgid "Not installed"
-msgstr "Nicht angemeldet"
+msgstr "Nicht installiert"
 
-#, fuzzy
-#| msgid "Member card updated"
 msgid "Need update"
-msgstr "Mitgliedskarte upgedatet"
+msgstr "Update erforderlich"
 
 msgid "Explicitly disabled"
 msgstr "Ausdrücklich deaktiviert"
@@ -3944,7 +3912,6 @@ msgstr "Bitte wählen Sie für diese Aktion mindestens einen Eintrag aus."
 msgid "Scheduled date"
 msgstr "Geplantes Datum"
 
-#, fuzzy
 msgid "Show payments by"
 msgstr "Zahlungen anzeigen nach"
 
@@ -3981,9 +3948,9 @@ msgid_plural "%1$s scheduled payments"
 msgstr[0] "%1$s geplante Zahlung"
 msgstr[1] "%1$s geplante Zahlungen"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Found total scheduled %f"
-msgstr "Gesamtbetrag gefunden %f"
+msgstr "Gefundene Gesamtzahl %f"
 
 #, php-format
 msgid "Edit membership fee %1$s"
@@ -4164,10 +4131,8 @@ msgstr "Modell löschen und Standard wiederherstellen"
 msgid "Remove model"
 msgstr "Modell löschen"
 
-#, fuzzy
-#| msgid "Deletion"
 msgid "Selection"
-msgstr "Löschen"
+msgstr "Auswahl"
 
 msgid "Store new model"
 msgstr "Neues Modell speichern"
@@ -6087,10 +6052,8 @@ msgstr "%type entfernen"
 msgid "Add new social network"
 msgstr "Neues Soziales Netzwerk hinzufügen"
 
-#, fuzzy
-#| msgid "Social networks"
 msgid "Social network"
-msgstr "Soziale Netzwerke"
+msgstr "Soziales Netzwerk"
 
 msgid "Pages:"
 msgstr "Seiten:"
@@ -6125,10 +6088,8 @@ msgstr "Rechnung"
 msgid "Receipt"
 msgstr "Quittung"
 
-#, fuzzy
-#| msgid "Navigation"
 msgid "Pagination"
-msgstr "Navigation"
+msgstr "Pagination"
 
 msgid "Previous"
 msgstr "Bisherige"
@@ -6142,10 +6103,8 @@ msgstr "Hauptmenü"
 msgid "Compact menu"
 msgstr "Kompaktes Menü"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Mobile main menu"
-msgstr "Hauptmenü"
+msgstr "Hauptmenü für Mobilgeräte"
 
 msgid "Go back to Galette homepage"
 msgstr "Zurück zur Galette Startseite"
@@ -6270,10 +6229,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr "Vorführung"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Maintenance"
-msgstr "Hauptmenü"
+msgstr "Wartung"
 
 msgid "No manager attached"
 msgstr "Kein Mitglied hinzugefügt"
