@@ -1419,6 +1419,73 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test next year contribution with a beginning of membership date set.
+     * When the member is already up to date for the current period, a new
+     * contribution must start on the next membership begin date - not overlap
+     * the existing one.
+     */
+    public function testNextYearWithBeginMembership(): void
+    {
+        global $preferences;
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //membership begins the first day of next month
+        $beg_membership = new DateTime();
+        $beg_membership->add(new \DateInterval('P1M'));
+        $beg_membership = new DateTime($beg_membership->format('Y-m-01'));
+
+        //current period ends the day before the membership begin date (in the future)
+        $due_date = clone $beg_membership;
+        $due_date->sub(new \DateInterval('P1D'));
+
+        //current period begin date
+        $begin_date = clone $beg_membership;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+
+        //existing contribution covering the current period
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $due_date->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        //next contribution must start on the next membership begin date and
+        //cover the whole next period
+        $ny_end_date = clone $beg_membership;
+        $ny_end_date->add(new \DateInterval('P1Y'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+
+        $this->assertSame($beg_membership->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
      * Test contribution end date is set after start date - when relevant
      */
     public function testEndDateBeforeStartDate(): void

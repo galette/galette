@@ -469,12 +469,24 @@ class Contribution implements AccessManagementInterface
     {
         global $preferences;
 
-        $begin_date = new DateTime();
-        $begin_date->sub(new DateInterval('P1Y'));
-        [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
-        $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
-        while ($next_begin_date <= $begin_date) {
-            $next_begin_date->add(new DateInterval('P1Y'));
+        $now = new DateTime();
+        $due_date = self::getDueDate($this->zdb, $this->member);
+
+        if ($due_date != '' && new DateTime($due_date) >= $now) {
+            //member is still up to date: next contribution starts the day after
+            //the current end of membership (continuous renewal).
+            $next_begin_date = new DateTime($due_date);
+            $next_begin_date->add(new DateInterval('P1D'));
+        } else {
+            //no current membership (new member or membership expired):
+            //align begin date to the start of the current membership period.
+            $begin_date = clone $now;
+            $begin_date->sub(new DateInterval('P1Y'));
+            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
+            $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+            while ($next_begin_date <= $begin_date) {
+                $next_begin_date->add(new DateInterval('P1Y'));
+            }
         }
         $this->begin_date = $next_begin_date->format('Y-m-d');
     }
