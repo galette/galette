@@ -16,13 +16,14 @@
 # 19atlas <o.ustuncelik@gmail.com>, 2026.
 # Kehribar <103407696+dpentx@users.noreply.github.com>, 2026.
 # cqmaa <omeracamoglu@gmail.com>, 2026.
+# Dennis <snap-roofing0h@icloud.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-03-27 08:12+0000\n"
-"Last-Translator: cqmaa <omeracamoglu@gmail.com>\n"
+"PO-Revision-Date: 2026-06-26 06:01+0000\n"
+"Last-Translator: Dennis <snap-roofing0h@icloud.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -30,17 +31,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
-msgstr ""
+msgstr "%1$s dosyası açılamıyor!"
 
 #, php-format
 msgid ""
 "Fields count mismatch... There should be %1$s fields and there are %2$s (row "
 "%3$s)"
 msgstr ""
+"Alan sayısı uyuşmuyor... %1$s adet alan olması gerekir ama %2$s adet alan "
+"var (sıra %3$s)"
 
 #. TRANS: first parameter is a field name, second the row in error
 #, php-format
@@ -70,20 +73,20 @@ msgid "File is empty!"
 msgstr ""
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred reinitializing texts :("
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
-msgstr "Metinler yeniden başlatılırken bir hata meydana geldi :("
+msgstr ""
+"Metinler yeniden kaydederken bir hata meydana geldi( Sıra %1$s , üye %2$s)"
 
 msgid "An error occurred while importing members"
-msgstr ""
+msgstr "Üyeleri içe aktarırken bir hata oluştu"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr "d.m.Y"
+msgstr "d-m-Y"
 
 msgid "groups_list"
-msgstr ""
+msgstr "Grup listesi"
 
 msgid "Members by groups"
 msgstr ""
