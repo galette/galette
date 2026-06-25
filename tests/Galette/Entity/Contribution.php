@@ -1486,6 +1486,92 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test offered months with a beginning of membership date set.
+     *
+     * Offering months is only compatible with beginning of membership
+     * (pref_membership_ext must be empty). Two situations are checked:
+     * - a brand new member subscribing within the offered months window gets
+     *   the remaining months for free and the next full period;
+     * - a member already up to date must NOT get the offer applied a second
+     *   time: the continuous renewal already covers the next full period.
+     */
+    public function testNextYearWithBeginMembershipAndOfferedMonths(): void
+    {
+        global $preferences;
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //membership begins the first day of next month, so "now" always falls
+        //within the offered months window below.
+        $beg_membership = new DateTime();
+        $beg_membership->add(new \DateInterval('P1M'));
+        $beg_membership = new DateTime($beg_membership->format('Y-m-01'));
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+        $preferences->pref_membership_offermonths = 2;
+
+        //the contribution always ends the day before the next membership begin
+        //date, one year later - the offer must not add an extra year on top.
+        $end_date = clone $beg_membership;
+        $end_date->add(new \DateInterval('P1Y'));
+        $end_date->sub(new \DateInterval('P1D'));
+
+        //case 1: brand new member (no contribution yet). The current period
+        //started one year before the next begin date and is offered for free.
+        $new_begin_date = clone $beg_membership;
+        $new_begin_date->sub(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+        $this->assertSame($new_begin_date->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+
+        //case 2: member already up to date for the current period.
+        $due_date = clone $beg_membership;
+        $due_date->sub(new \DateInterval('P1D'));
+        $begin_date = clone $beg_membership;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $due_date->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+        $preferences->pref_membership_offermonths = $this->preferences->getDefaults()['pref_membership_offermonths'];
+
+        //the new contribution starts the day after the current end of membership
+        //and covers the next full period, without the offer being applied twice.
+        $this->assertSame($beg_membership->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
      * Test contribution end date is set after start date - when relevant
      */
     public function testEndDateBeforeStartDate(): void
