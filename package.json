@@ -32,9 +32,9 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.3",
-    "@playwright/test": "^1.61.0",
-    "@types/node": "^26.0.0",
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.0.1",
     "browser-sync": "^3.0.4",
     "clean-css": "^5.3.3",
     "css-loader": "^7.1.4",
