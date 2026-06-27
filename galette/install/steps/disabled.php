@@ -8,11 +8,12 @@
 
 declare(strict_types=1);
 
+use Galette\Core\I18n;
 use Galette\Core\Install as GaletteInstall;
 
 /**
  * @var GaletteInstall $install
- * @var \Galette\Core\I18n $i18n
+ * @var I18n $i18n
  */
 
 ?>
@@ -20,9 +21,7 @@ use Galette\Core\Install as GaletteInstall;
         <div class="header">
             <?php echo _T("The installer is disabled."); ?>
         </div>
-        <p><?php echo _T("For security reasons, Galette installer is disabled by default. To run an installation or an update, create an empty file at the following location on the server, then reload this page:"); ?></p>
-        <p><code><?php echo htmlentities($install->getEnableInstallFilePath()); ?></code></p>
-        <p><?php echo _T("Galette will remove this file automatically once the operation has succeeded."); ?></p>
+        <p><?php echo _T("For security reasons, Galette installer is disabled by default.") ; ?></p><p><?php echo sprintf(_T('To enable installer, create the empty %1$s file, then reload this page:'), '<code>galette/' . htmlentities(str_replace(GALETTE_ROOT, '', $install->getEnableInstallFilePath())) . '</code>'); ?></p>
     </div>
 
     <div class="ui section divider"></div>
