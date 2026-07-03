@@ -12,6 +12,7 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
 use Rector\CodeQuality\Rector as CodeQuality;
+use Galette\Tests\Rector\AddNamedArgumentsRector;
 
 define('GALETTE_ROOT', __DIR__ . '/galette/');
 require_once GALETTE_ROOT . '/includes/sys_config/versions.inc.php';
@@ -77,5 +78,6 @@ return RectorConfig::configure()
         CodeQuality\LogicalAnd\LogicalToBooleanRector::class,
         CodeQuality\NotEqual\CommonNotEqualRector::class,
         CodeQuality\Ternary\UnnecessaryTernaryExpressionRector::class,
+        AddNamedArgumentsRector::class,
     ])
     ;
