@@ -18,13 +18,14 @@
 # cqmaa <omeracamoglu@gmail.com>, 2026.
 # Dennis <snap-roofing0h@icloud.com>, 2026.
 # batuhan Okmen <batuhanokmen@gmail.com>, 2026.
+# H B <habibbktr@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-02 07:01+0000\n"
-"Last-Translator: batuhan Okmen <batuhanokmen@gmail.com>\n"
+"PO-Revision-Date: 2026-07-06 00:01+0000\n"
+"Last-Translator: H B <habibbktr@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -32,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.dev0\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -126,10 +127,10 @@ msgid "MMMM, EEEE d y"
 msgstr ""
 
 msgid "Signature"
-msgstr ""
+msgstr "İmza"
 
 msgid "Staff members"
-msgstr ""
+msgstr "Görevliler"
 
 msgid "Due free"
 msgstr ""
@@ -141,25 +142,25 @@ msgid "Impending due dates"
 msgstr ""
 
 msgid "Up to date"
-msgstr ""
+msgstr "Güncel"
 
 msgid "Late"
-msgstr ""
+msgstr "Geç"
 
 msgid "Individuals"
-msgstr ""
+msgstr "Bireyler"
 
 msgid "Companies"
-msgstr ""
+msgstr "Şirketler"
 
 msgid "contribution"
 msgstr "katılım"
 
 msgid "receipt"
-msgstr ""
+msgstr "fiş"
 
 msgid "invoice"
-msgstr ""
+msgstr "fatura"
 
 msgid "labels_print_filename"
 msgstr ""
@@ -249,26 +250,26 @@ msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
 msgid "No file was uploaded"
-msgstr ""
+msgstr "Hiçbir dosya yüklenmedi"
 
 msgid "Missing a temporary folder"
 msgstr ""
 
 msgid "Failed to write file to disk"
-msgstr ""
+msgstr "Dosya diske yazılamadı"
 
 msgid "File upload stopped by extension"
-msgstr ""
+msgstr "Dosya yüklenmesi eklenti tarafından durduruldu"
 
 msgid "Unknown upload error"
-msgstr ""
+msgstr "Bilinmeyen yüklenme hatası"
 
 msgid "An SQL error has occurred."
-msgstr ""
+msgstr "Bir SQL hatası yaşandı"
 
 #, php-format
 msgid "'%s' module"
-msgstr ""
+msgstr "'%s' modülü"
 
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr ""
@@ -293,10 +294,10 @@ msgid "Cannot deactivate plugin."
 msgstr ""
 
 msgid "Cannot activate plugin."
-msgstr ""
+msgstr "Eklenti etkinleştirilemedi"
 
 msgid "File not found!"
-msgstr ""
+msgstr "Dosya bulunamadı!"
 
 msgid "Unknown lang (%lang)"
 msgstr ""
@@ -311,7 +312,7 @@ msgid "Database"
 msgstr ""
 
 msgid "Database access and permissions"
-msgstr ""
+msgstr "Veritabanı erişimi ve izinleri"
 
 msgid "Previous version selection"
 msgstr ""
@@ -326,7 +327,7 @@ msgid "Admin parameters"
 msgstr ""
 
 msgid "Telemetry"
-msgstr ""
+msgstr "Telemetri"
 
 msgid "Galette initialization"
 msgstr ""
@@ -347,7 +348,7 @@ msgid "Write configuration file"
 msgstr ""
 
 msgid "Config file already exists and is up to date"
-msgstr ""
+msgstr "Yapılandırma dosyası zaten var ve güncel"
 
 msgid "Unable to create configuration file (%path)"
 msgstr ""
@@ -359,7 +360,7 @@ msgid "Contributions types"
 msgstr "Katkı türleri"
 
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 msgid "Fields config and categories"
 msgstr ""
@@ -383,11 +384,11 @@ msgid "Update models"
 msgstr ""
 
 msgid "First page"
-msgstr ""
+msgstr "İlk sayfa"
 
 #, php-format
 msgid "Previous page (%1$s)"
-msgstr ""
+msgstr "Önceki sayfa (%1$s)"
 
 #, php-format
 msgid "Current page (%1$s)"
@@ -403,10 +404,10 @@ msgstr ""
 
 #, php-format
 msgid "Last page (%1$s)"
-msgstr ""
+msgstr "Son sayfa (%1$s)"
 
 msgid "All"
-msgstr ""
+msgstr "Bütün"
 
 #, php-format
 msgid "How much is %1$s plus %2$s?"
@@ -439,10 +440,12 @@ msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr ""
 
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
+msgstr "- Emailler için gönderici adı belirtmek zorundasın"
 
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
+"- Galette'in e-posta gönderirken kullanabilmesi için bir e-posta adresi "
+"belirtilmelidir!"
 
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr ""
@@ -474,23 +477,23 @@ msgid "- Mandatory field %1$s empty."
 msgstr ""
 
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Şifreler uyuşmuyor"
 
 msgid "You have to select a staff member to retrieve its address"
-msgstr ""
+msgstr "Bir görevlinin e-postasını almak için bir görevli seçmelisin"
 
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr ""
+msgstr "Bir görevlinin telefon numarasını almak için bir görevli seçmelisin"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Geçersiz e-posta adresi:%s"
 
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- Kullanıcı adı en az 4 karakterden oluşmalıdır"
 
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Bu kullanıcı adı zaten başka bir üye tarafından kullanılıyor!"
 
 msgid "- The numbers and measures have to be integers!"
 msgstr ""
@@ -517,7 +520,7 @@ msgid "- Invalid year for cards."
 msgstr ""
 
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- Geçirsiz web sitesi URL'si"
 
 #. TRANS: first parameter is name, second is status
 #, fuzzy, php-format
@@ -532,24 +535,22 @@ msgid "Never"
 msgstr ""
 
 msgid "Main information"
-msgstr ""
+msgstr "Ana bilgi"
 
 msgid "Social networks"
-msgstr ""
+msgstr "Sosyal medyalar"
 
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "Karanlık mod CSS dosyası sıfırlanmıştır."
 
-#, fuzzy
-#| msgid "All accounts"
 msgid "My Account"
-msgstr "Tüm hesaplar"
+msgstr "Benim Hesabım"
 
 msgid "My contributions"
-msgstr ""
+msgstr "Benim katkılarım"
 
 msgid "View and filter all my contributions"
-msgstr ""
+msgstr "Benim katkılarımı göster ve filtrele"
 
 msgid "My scheduled payments"
 msgstr ""
@@ -594,10 +595,10 @@ msgid "Saved searches"
 msgstr "Kayıtlı aramalar"
 
 msgid "Add a member"
-msgstr ""
+msgstr "Bir üye ekle"
 
 msgid "Add new member in database"
-msgstr ""
+msgstr "Veritabanına yeni üye ekle"
 
 msgid "Empty adhesion form"
 msgstr ""
@@ -609,10 +610,10 @@ msgid "Contributions"
 msgstr ""
 
 msgid "List of contributions"
-msgstr ""
+msgstr "Katkıların listesi"
 
 msgid "View and filter contributions"
-msgstr ""
+msgstr "Katkıları göster ve filtrele"
 
 msgid "List of scheduled payments"
 msgstr "Planlanmış Ödemeler"
@@ -627,16 +628,16 @@ msgid "View and filter transactions"
 msgstr ""
 
 msgid "Add a membership fee"
-msgstr ""
+msgstr "Üyelik ücreti ekle"
 
 msgid "Add new membership fee in database"
-msgstr ""
+msgstr "Verisetine yeni üyelik ücreti ekle"
 
 msgid "Add a donation"
-msgstr ""
+msgstr "Yeni bir bağış ekle"
 
 msgid "Add new donation in database"
-msgstr ""
+msgstr "Verisetine yeni bağış ekle"
 
 msgid "Add a transaction"
 msgstr ""
@@ -661,10 +662,8 @@ msgstr "Gruplar"
 msgid "View and manage groups"
 msgstr ""
 
-#, fuzzy
-#| msgid "Download document"
 msgid "Documents"
-msgstr "Dokümanı indir"
+msgstr "Dokümanlar"
 
 msgid ""
 "Add documents to share related to your association (status, rules of "
