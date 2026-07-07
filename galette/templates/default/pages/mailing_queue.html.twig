@@ -71,12 +71,12 @@
                         dataType: 'json'
                     }).done(function(data) {
                         var done = data.sent_total + data.failed_total;
-                        $bar.progress('set total', data.total);
-                        $bar.progress('set progress', done);
                         $('#queue_sent').text(data.sent_total);
                         $('#queue_failed').text(data.failed_total);
                         $('#queue_remaining').text(data.remaining);
                         $('#queue_total').text(data.total);
+                        $bar.progress('set total', data.total);
+                        $bar.progress('set progress', done);
 
                         if (data.done) {
                             showEnd('{{ _T("Mailing has been successfully sent!")|escape('js') }}');
