@@ -60,6 +60,17 @@ class SysInfos
         $str .= str_pad('OS:', 20, '.') . ' ' . php_uname() . "\n";
         $str .= str_pad('Browser:', 20, '.') . ' ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 
+        $queue = new MailingQueue($zdb, $prefs);
+        $qstats = $queue->getStats();
+        $qusage = $queue->getUsage();
+        $str .= 'Mailing queue:' . "\n";
+        $str .= '  Pending: ' . $qstats['remaining'] . "\n";
+        $str .= '  Failed: ' . $qstats['failed_total'] . "\n";
+        $str .= '  Sent last hour: ' . $qusage['sent_last_hour']
+            . ($qusage['hourly_limit'] > 0 ? ' / ' . $qusage['hourly_limit'] : '') . "\n";
+        $str .= '  Sent last day: ' . $qusage['sent_last_day']
+            . ($qusage['daily_limit'] > 0 ? ' / ' . $qusage['daily_limit'] : '') . "\n\n";
+
         $str .= 'Modules:' . "\n";
         $mods = new CheckModules();
 

@@ -45,5 +45,6 @@ class SysInfos extends GaletteTestCase
         $this->assertStringContainsString('Galette version:', $rdata);
         $this->assertStringContainsString('PHP loaded modules:', $rdata);
         $this->assertStringContainsString('Plugins:', $rdata);
+        $this->assertStringContainsString('Mailing queue:', $rdata);
     }
 }

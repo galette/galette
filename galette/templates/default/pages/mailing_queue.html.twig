@@ -1,0 +1,156 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends "page.html.twig" %}
+
+{% block content %}
+        <div class="ui orange icon message">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Experimental") }}</div>
+                <p>{{ _T("Experimental feature. Be careful using it.") }}</p>
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div role="status">
+                <div class="ui message" id="queue_status_message" style="display: none;">
+                    <p id="queue_status"></p>
+                </div>
+            </div>
+
+            <div role="alert">
+                <div class="ui negative message" id="queue_error_message" style="display: none;">
+                    <p id="queue_error"></p>
+                </div>
+            </div>
+
+            <div id="mailing_progress" class="ui indicating progress" data-value="{{ stats.sent_total + stats.failed_total }}" data-total="{{ stats.total }}">
+                <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ stats.total }}" aria-valuenow="{{ stats.sent_total + stats.failed_total }}" aria-labelledby="mailing_progress_label">
+                    <div class="progress"></div>
+                </div>
+                <div class="label" id="mailing_progress_label">{{ _T("Sending in progress…") }}</div>
+            </div>
+
+            <div class="ui horizontal statistics">
+                <div class="statistic">
+                    <div class="value" id="queue_sent">{{ stats.sent_total }}</div>
+                    <div class="label">{{ _T("Sent") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_remaining">{{ stats.remaining }}</div>
+                    <div class="label">{{ _T("Remaining") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_failed">{{ stats.failed_total }}</div>
+                    <div class="label">{{ _T("Failed") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_total">{{ stats.total }}</div>
+                    <div class="label">{{ _T("Recipients") }}</div>
+                </div>
+            </div>
+
+{% if mail_usage.hourly_limit > 0 or mail_usage.daily_limit > 0 %}
+            <div class="ui small grey text" id="queue_quota">
+    {% if mail_usage.hourly_limit > 0 %}
+                <div>{{ _T("Sent in the last hour: %sent of %limit")|replace({'%sent': mail_usage.sent_last_hour, '%limit': mail_usage.hourly_limit}) }}</div>
+    {% endif %}
+    {% if mail_usage.daily_limit > 0 %}
+                <div>{{ _T("Sent in the last day: %sent of %limit")|replace({'%sent': mail_usage.sent_last_day, '%limit': mail_usage.daily_limit}) }}</div>
+    {% endif %}
+            </div>
+{% endif %}
+
+            <div id="queue_actions" style="display: none;">
+{% for link in end_links %}
+                <a href="{{ link.url }}" class="ui {% if loop.first %}primary {% endif %}button">{{ link.label }}</a>
+{% endfor %}
+            </div>
+            <button type="button" id="queue_retry" class="ui button" style="display: none;">{{ _T("Retry") }}</button>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                var mailingId = {{ mailing_id is null ? 'null' : mailing_id }};
+                var processUrl = '{{ process_url }}';
+                var delay = {{ batch_delay }} * 1000;
+                var $bar = $('#mailing_progress');
+                var $progressbar = $bar.find('.bar');
+                $bar.progress({
+                    total: {{ stats.total }},
+                    value: {{ stats.sent_total + stats.failed_total }}
+                });
+
+                function showEnd(message, type) {
+                    $('#queue_status').text(message);
+                    $('#queue_status_message')
+                        .removeClass('positive warning')
+                        .addClass(type)
+                        .show();
+                    $('#queue_actions').show();
+                }
+
+                function showError(message) {
+                    $('#queue_error').text(message);
+                    $('#queue_error_message').show();
+                    $('#queue_retry').show();
+                }
+
+                function processNext() {
+                    $.ajax({
+                        url: processUrl,
+                        type: 'POST',
+                        data: (mailingId === null ? {} : { id: mailingId }),
+                        dataType: 'json'
+                    }).done(function(data) {
+                        var done = data.sent_total + data.failed_total;
+                        $('#queue_sent').text(data.sent_total);
+                        $('#queue_failed').text(data.failed_total);
+                        $('#queue_remaining').text(data.remaining);
+                        $('#queue_total').text(data.total);
+                        $bar.progress('set total', data.total);
+                        $bar.progress('set progress', done);
+                        $progressbar.attr({
+                            'aria-valuemax': data.total,
+                            'aria-valuenow': done
+                        });
+
+                        if (data.done) {
+                            if (data.failed_total > 0) {
+                                showEnd(
+                                    '{{ _T("Sending is over, but %count recipient(s) could not be reached.")|escape('js') }}'.replace('%count', data.failed_total),
+                                    'warning'
+                                );
+                            } else {
+                                showEnd('{{ _T("Sending has been successfully completed!")|escape('js') }}', 'positive');
+                            }
+                            $('#mailing_progress .label').text('{{ _T("End!")|escape('js') }}');
+                            return;
+                        }
+                        if (data.rate_limited) {
+                            showEnd('{{ _T("Sending rate limit reached. Sending will resume later (reopen this page or drain the queue from a cron job).")|escape('js') }}', 'warning');
+                            return;
+                        }
+                        window.setTimeout(processNext, delay);
+                    }).fail(function() {
+                        showError('{{ _T("An error occurred while sending. You may retry.")|escape('js') }}');
+                    });
+                }
+
+                $('#queue_retry').on('click', function() {
+                    $(this).hide();
+                    $('#queue_error_message').hide();
+                    $('#queue_error').text('');
+                    processNext();
+                });
+
+                processNext();
+            });
+        </script>
+{% endblock %}

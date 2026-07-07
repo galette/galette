@@ -72,7 +72,24 @@ export default defineConfig({
     {
       name: 'chromium',
       testMatch: 'tests/e2e/specs/**/*.spec.ts',
-      testIgnore: 'tests/e2e/specs/a11y.spec.ts',
+      testIgnore: [
+        'tests/e2e/specs/a11y.spec.ts',
+        'tests/e2e/specs/*-queue.spec.ts',
+      ],
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    // ── Mail queue tests ──
+    // Those specs really send mail: they share the Mailpit inbox and the
+    // global mail preferences, which they mutate and reset. Running two of
+    // them at once would have one wipe the other's messages, or turn its
+    // transport off mid-drain, so they get a project of their own where a
+    // single worker runs them one after the other.
+    {
+      name: 'mail-queue',
+      testMatch: 'tests/e2e/specs/*-queue.spec.ts',
+      fullyParallel: false,
+      workers: 1,
       use: { ...devices['Desktop Chrome'] },
     },
     // ── Plugin tests (discovered via testMatch glob) ──

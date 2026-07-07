@@ -168,7 +168,9 @@ class ContribListener implements ListenerSubscriber
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
 
-        if ($sent) {
+        //a batched sending that only partly left is not a success: MAIL_PARTIAL
+        //is a status of its own, and it is truthy
+        if ($sent === GaletteMail::MAIL_SENT) {
             $this->history->add(
                 sprintf(
                     //TRANS: first parameter is the use name, second his email address
@@ -240,7 +242,9 @@ class ContribListener implements ListenerSubscriber
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
 
-        if ($sent) {
+        //several administrators may be notified at once: a partly delivered
+        //message has to be reported, not counted as sent
+        if ($sent === GaletteMail::MAIL_SENT) {
             $this->history->add(
                 sprintf(
                     //TRANS: first parameter is member name, second his email address
@@ -298,7 +302,7 @@ class ContribListener implements ListenerSubscriber
                     $mail->setMessage($message);
                     $sent = $mail->send();
 
-                    if (!$sent) {
+                    if ($sent !== GaletteMail::MAIL_SENT) {
                         $txt = _T('Post contribution script has failed.');
                         $this->history->add($txt, $message);
                         $warning_detected[] = $txt;

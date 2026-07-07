@@ -34,6 +34,8 @@ class MailingHistory extends History
     public const int FILTER_DC_SENT = 0;
     public const int FILTER_SENT = 1;
     public const int FILTER_NOT_SENT = 2;
+    /** Stored unsent, but with a queue still draining */
+    public const int FILTER_SENDING = 3;
 
     private int $id;
     private string $date;
@@ -117,6 +119,9 @@ class MailingHistory extends History
                 $r['attachments'] = $attachments; //@phpstan-ignore offsetAssign.valueType (ArrayObject<string, string> does not accept int<0, max>. seems wrong guess)
                 $ret[] = $r;
             }
+
+            $this->flagSendings($ret);
+
             return $ret;
         } catch (Throwable $e) {
             Analog::log(
@@ -125,6 +130,46 @@ class MailingHistory extends History
             );
             throw $e;
         }
+    }
+
+    /**
+     * Tell apart the mailings that are still being sent.
+     *
+     * A mailing whose queue has yet to drain is stored unsent, just like a
+     * draft or one that failed. Asking the queue is what separates them, in a
+     * single query for the whole page.
+     *
+     * @param array<int, object> $logs History rows, flagged in place
+     */
+    private function flagSendings(array $logs): void
+    {
+        $ids = [];
+        foreach ($logs as $log) {
+            if (empty($log[self::PK]) || !empty($log['mailing_sent'])) {
+                continue;
+            }
+            $ids[] = (int)$log[self::PK];
+        }
+
+        $sending = count($ids) > 0
+            ? (new MailingQueue($this->zdb, $this->preferences))->getSendingMailingIds($ids)
+            : [];
+
+        foreach ($logs as $log) {
+            $log['mailing_sending'] = in_array((int)$log[self::PK], $sending, strict: true);
+        }
+    }
+
+    /**
+     * The mailings whose queue still holds recipients, as a subquery.
+     *
+     * Kept as a subquery rather than a list of ids: an empty set would have to
+     * be turned into an impossible condition, and this clause is carried by
+     * the count query as well as by the page itself.
+     */
+    private function getSendingMailings(): Select
+    {
+        return (new MailingQueue($this->zdb, $this->preferences))->getSendingSelect();
     }
 
     /**
@@ -194,8 +239,15 @@ class MailingHistory extends History
                 case self::FILTER_SENT:
                     $select->where('mailing_sent = true');
                     break;
-                case self::FILTER_NOT_SENT:
+                case self::FILTER_SENDING:
                     $select->where('mailing_sent = false');
+                    $select->where->in(self::PK, $this->getSendingMailings());
+                    break;
+                case self::FILTER_NOT_SENT:
+                    //a mailing on its way is not a mailing that never left:
+                    //it has a filter of its own, and stays out of this one
+                    $select->where('mailing_sent = false');
+                    $select->where->notIn(self::PK, $this->getSendingMailings());
                     break;
                 case self::FILTER_DC_SENT:
                     //nothing to do here.

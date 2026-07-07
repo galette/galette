@@ -226,6 +226,7 @@ class AdvancedConfigController extends AbstractController
                     && $this->isDefault($schema['type'], $value, $schema['default']),
                 'sensitive' => $sensitive,
                 'readonly'  => PreferencesSchema::isReadOnly($name),
+                'alpha'     => PreferencesSchema::isAlpha($name),
                 'locked_by' => $locked ? $constant : null,
                 'plugin'    => PreferencesSchema::getOwner($name),
                 'min'       => $schema['min'] ?? null,

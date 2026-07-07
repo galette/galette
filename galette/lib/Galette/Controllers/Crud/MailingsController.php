@@ -18,11 +18,13 @@ use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
+use Galette\Core\MailingQueue;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Throwable;
 
 use function Safe\file_get_contents;
 
@@ -304,9 +306,101 @@ class MailingsController extends CrudController
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
                 $mailing->current_step = Mailing::STEP_SEND;
+
+                //when hourly/daily limits are set, sending must be spread over
+                //time: store the mailing and queue its recipients instead of
+                //sending synchronously
+                $queue = new MailingQueue($this->zdb, $this->preferences);
+
+                if ($queue->mustQueue()) {
+                    //the stored mailing and its recipients are one thing: a
+                    //history entry whose queue is half filled would be drained
+                    //by a cron job and reach only some of the members, with no
+                    //way to tell it apart from a complete one
+                    try {
+                        $this->zdb->beginTransaction();
+                        $mlh = new MailingHistory(
+                            zdb: $this->zdb,
+                            login: $this->login,
+                            preferences: $this->preferences,
+                            filters: null,
+                            mailing: $mailing
+                        );
+                        $mlh->storeMailing(sent: false);
+                        $nb = $queue->enqueue((int)$mailing->id, $mailing->recipients);
+                        $this->zdb->commit();
+                    } catch (Throwable $e) {
+                        $this->zdb->rollback();
+                        Analog::log(
+                            '[Mailings] Unable to queue mailing | ' . $e->getMessage(),
+                            Analog::ERROR
+                        );
+                        $error_detected[] = _T("The mailing could not be queued, nothing has been sent.");
+                        $mailing->current_step = Mailing::STEP_START;
+                        //what has been composed is kept, so it can be sent again
+                        $this->session->mailing = $mailing;
+                        return $this->redirect(
+                            response: $response,
+                            redirect_url: $this->routeparser->urlFor('mailing'),
+                            errors: $error_detected
+                        );
+                    }
+
+                    Analog::log(
+                        '[Mailings] ' . $nb . ' recipient(s) queued for mailing #' . $mailing->id,
+                        Analog::INFO
+                    );
+                    //cleanup and redirect to the progress page
+                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
+                    $this->session->mailing = null;
+                    $this->session->redirect_mailing = null;
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader(
+                            'Location',
+                            $this->routeparser->urlFor('mailingQueue', ['id' => (string)$mailing->id])
+                        );
+                }
+
                 //ok... let's go for fun
                 $sent = $mailing->send();
-                if ($sent == Mailing::MAIL_ERROR) {
+                if ($sent == Mailing::MAIL_PARTIAL) {
+                    //some of the messages have left and cannot be taken back:
+                    //offering the very same form again would send them twice.
+                    //Store what happened and send the user to the history.
+                    $mlh = new MailingHistory(
+                        zdb: $this->zdb,
+                        login: $this->login,
+                        preferences: $this->preferences,
+                        filters: null,
+                        mailing: $mailing
+                    );
+                    $mlh->storeMailing(sent: false);
+                    Analog::log(
+                        '[Mailings] Message was only partly sent, to '
+                        . count($mailing->getSentRecipients()) . ' of '
+                        . count($mailing->recipients) . ' recipient(s). Errors: '
+                        . print_r($mailing->errors, return: true),
+                        Analog::ERROR
+                    );
+                    foreach ($mailing->errors as $e) {
+                        $error_detected[] = $e;
+                    }
+                    $error_detected[] = str_replace(
+                        ['%sent', '%total'],
+                        [
+                            (string)count($mailing->getSentRecipients()),
+                            (string)count($mailing->recipients)
+                        ],
+                        _T("The mailing has only been sent to %sent recipient(s) out of %total. It has been stored, unsent, so you can check what has been delivered before sending it again.")
+                    );
+                    $mailing->current_step = Mailing::STEP_SENT;
+                    //cleanup
+                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
+                    $this->session->mailing = null;
+                    $this->session->redirect_mailing = null;
+                    $goto = $this->routeparser->urlFor('mailings');
+                } elseif ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
                         '[Mailings] Message was not sent. Errors: '
@@ -729,6 +823,124 @@ class MailingsController extends CrudController
             ]
         );
         return $response;
+    }
+
+    /**
+     * Mailing queue progress page
+     *
+     * @param int $id Mailing history id
+     */
+    #[Route(
+        name: 'mailingQueue',
+        pattern: '/mailing/queue/{id:\d+}',
+        methods: ['GET']
+    )]
+    public function queue(Request $request, Response $response, int $id): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/mailing_queue.html.twig',
+            [
+                'page_title'    => _T("Sending mailing"),
+                'mailing_id'    => $id,
+                'process_url'   => $this->routeparser->urlFor('mailingProcessQueue'),
+                'stats'         => $queue->getStats($id),
+                'mail_usage'    => $queue->getUsage(),
+                'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
+                'end_links'     => [
+                    [
+                        'url'   => $this->routeparser->urlFor('members'),
+                        'label' => _T("Back to members list")
+                    ],
+                    [
+                        'url'   => $this->routeparser->urlFor('mailings'),
+                        'label' => _T("Mailings history")
+                    ]
+                ],
+                'documentation' => 'usermanual/adherents.html#e-mailing'
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Process a batch of the mailing queue (AJAX)
+     */
+    #[Route(
+        name: 'mailingProcessQueue',
+        pattern: '/ajax/mailing/process-queue',
+        methods: ['POST']
+    )]
+    public function processQueue(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $mailing_id = isset($post['id']) && is_numeric($post['id'])
+            ? (int)$post['id']
+            : null;
+
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+        $progress = $queue->processBatch($mailing_id, MailingQueue::KIND_MAILING);
+
+        return $this->withJson($response, $progress);
+    }
+
+    /**
+     * Reminders queue progress page
+     */
+    #[Route(
+        name: 'remindersQueue',
+        pattern: '/reminders/queue',
+        methods: ['GET']
+    )]
+    public function remindersQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/mailing_queue.html.twig',
+            [
+                'page_title'    => _T("Sending reminders"),
+                'mailing_id'    => null,
+                'process_url'   => $this->routeparser->urlFor('remindersProcessQueue'),
+                'stats'         => $queue->getStats(mailing_id: null, kind: MailingQueue::KIND_REMINDER),
+                'mail_usage'    => $queue->getUsage(),
+                'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
+                'end_links'     => [
+                    [
+                        'url'   => $this->routeparser->urlFor('members'),
+                        'label' => _T("Back to members list")
+                    ],
+                    [
+                        'url'   => $this->routeparser->urlFor('reminders'),
+                        'label' => _T("Reminders")
+                    ]
+                ],
+                'documentation' => 'usermanual/contributions.html#reminders'
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Process a batch of the reminders queue (AJAX)
+     */
+    #[Route(
+        name: 'remindersProcessQueue',
+        pattern: '/ajax/reminders/process-queue',
+        methods: ['POST']
+    )]
+    public function remindersProcessQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+        $queue->setReminderContext($this->history, $this->login, $this->routeparser);
+        $progress = $queue->processBatch(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
+
+        return $this->withJson($response, $progress);
     }
 
     /**

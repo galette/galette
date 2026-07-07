@@ -28,11 +28,13 @@ class GaletteMail
 {
     public const int MAIL_ERROR = 0;
     public const int MAIL_SENT = 1;
+    /** Some of the messages a batched sending is made of have left, not all */
+    public const int MAIL_PARTIAL = 2;
 
     public const int METHOD_DISABLED = 0;
     public const int METHOD_PHPMAIL = 1;
     public const int METHOD_SMTP = 2;
-    public const int METHOD_QMAIL = 3;
+    //value 3 (former METHOD_QMAIL) is no longer used, do not reuse it
     public const int METHOD_GMAIL = 4;
     public const int METHOD_SENDMAIL = 5;
 
@@ -55,10 +57,15 @@ class GaletteMail
     private array $errors = [];
     /** @var array<string, string> */
     private array $recipients = [];
+    /** @var array<string, string> Recipients a message has actually left for */
+    private array $sent_recipients = [];
 
     private PHPMailer $mail;
     /** @var array<int,File> */
     protected array $attachments = [];
+
+    /** Is the sending quota already handled by the caller? */
+    private bool $quota_managed = false;
 
     /**
      * Constructor
@@ -77,13 +84,23 @@ class GaletteMail
     }
 
     /**
+     * Create the underlying PHPMailer instance.
+     * Extracted as a seam so tests can inject a double that does not
+     * actually send anything.
+     */
+    protected function createMailer(): PHPMailer
+    {
+        return new PHPMailer();
+    }
+
+    /**
      * Initialize PHPMailer
      */
     private function initMailer(): void
     {
         global $i18n;
 
-        $this->mail = new PHPMailer();
+        $this->mail = $this->createMailer();
         $this->mail->Timeout = $this->timeout;
 
         switch ($this->preferences->pref_mail_method) {
@@ -150,14 +167,12 @@ class GaletteMail
                 $this->mail->Username   = $this->preferences->pref_mail_smtp_user;
                 // SMTP account password
                 $this->mail->Password   = $this->preferences->pref_mail_smtp_password;
+                //keep the SMTP connection open across messages (mailing batches)
+                $this->mail->SMTPKeepAlive = (bool)$this->preferences->pref_mail_smtp_keepalive;
                 break;
             case self::METHOD_SENDMAIL:
                 // telling the class to use Sendmail transport
                 $this->mail->IsSendmail();
-                break;
-            case self::METHOD_QMAIL:
-                // telling the class to use QMail transport
-                $this->mail->IsQmail();
                 break;
         }
 
@@ -214,39 +229,31 @@ class GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return int Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return int GaletteMail::MAIL_SENT, GaletteMail::MAIL_ERROR, or
+     *             GaletteMail::MAIL_PARTIAL when a batched sending only
+     *             partly left (see getSentRecipients)
      */
     public function send(): int
     {
-        if (!isset($this->mail)) {
-            $this->initMailer();
+        //reinit errors array
+        $this->errors = [];
+        $this->sent_recipients = [];
+
+        if (!$this->checkQuota()) {
+            return self::MAIL_ERROR;
         }
 
-        //set sender
-        $this->mail->SetFrom(
-            $this->getSenderAddress(),
-            $this->getSenderName()
-        );
-        // Add a Reply-To field in the email headers.
-        // Fix bug #6654.
-        if ($this->preferences->pref_email_reply_to) {
-            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
-        } else {
-            $this->mail->AddReplyTo($this->getSenderAddress());
+        //when a batch size is set and there are more recipients than
+        //this size, split the mailing into several messages
+        $batch_size = (int)$this->preferences->pref_mail_batch_size;
+        if ($batch_size > 0 && count($this->recipients) > $batch_size) {
+            return $this->sendBatched(
+                $batch_size,
+                (int)$this->preferences->pref_mail_batch_delay
+            );
         }
 
-        if ($this->html) {
-            //the email is html :(
-            $this->mail->AltBody = $this->getTextMessage();
-            $this->mail->IsHTML(isHtml: true);
-        } else {
-            //the email is plaintext :)
-            $this->mail->AltBody = '';
-            $this->mail->IsHTML(isHtml: false);
-        }
-
-        $this->mail->Subject = $this->subject;
-        $this->mail->Body = $this->message;
+        $this->prepareMessage();
 
         //set at least on real recipient (not bcc)
         if (count($this->recipients) === 1) {
@@ -264,34 +271,7 @@ class GaletteMail
             );
         }
 
-        $signature = $this->preferences->getMailSignature($this->mail);
-        if ($signature != '') {
-            if ($this->html) {
-                //we are sending HTML message
-                //apply email sign to text version
-                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, as_text: true);
-                //then apply email sign to HTML version
-                $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style . '">'
-                    . nl2br($signature) . '</div>';
-                $this->mail->Body .= $hsign;
-            } else {
-                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, as_text: true);
-            }
-        }
-
-        //join attachments
-        if (count($this->attachments) > 0) {
-            foreach ($this->attachments as $attachment) {
-                $this->mail->AddAttachment(
-                    $attachment->getDestDir() . $attachment->getFileName()
-                );
-            }
-        }
-
         try {
-            //reinit errors array
-            $this->errors = [];
             //let's send the email
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;
@@ -312,6 +292,8 @@ class GaletteMail
                     'An email has been sent to: ' . $txt,
                     Analog::INFO
                 );
+                $this->sent_recipients = $this->recipients;
+                $this->recordQuota($this->recipients);
                 unset($this->mail);
                 return self::MAIL_SENT;
             }
@@ -349,7 +331,7 @@ class GaletteMail
 
         $connected = match ($this->preferences->pref_mail_method) {
             self::METHOD_SMTP, self::METHOD_GMAIL => $this->connectSmtp($mailer),
-            self::METHOD_SENDMAIL, self::METHOD_QMAIL => $this->checkSendmailBinary($mailer),
+            self::METHOD_SENDMAIL => $this->checkSendmailBinary($mailer),
             self::METHOD_PHPMAIL => $this->checkPhpMail(),
             default => $this->unknownMethod()
         };
@@ -424,14 +406,14 @@ class GaletteMail
     }
 
     /**
-     * Check the sendmail (or qmail) binary can be run
+     * Check the sendmail binary can be run
      *
      * @param PHPMailer $mailer Mailer the transport has been set up on
      */
     private function checkSendmailBinary(PHPMailer $mailer): bool
     {
-        //isSendmail() and isQmail() have already resolved the path and dropped
-        //the arguments it may carry
+        //isSendmail() has already resolved the path and dropped the
+        //arguments it may carry
         if (!is_executable($mailer->Sendmail)) {
             $this->errors[] = sprintf(
                 _T("'%s' does not exist, or cannot be run."),
@@ -459,6 +441,243 @@ class GaletteMail
         }
 
         return true;
+    }
+
+    /**
+     * Prepare the message (sender, reply-to, body, signature and attachments).
+     * Recipients are *not* set here; they are handled by the caller so the
+     * message can be reused across several batches.
+     */
+    private function prepareMessage(): void
+    {
+        if (!isset($this->mail)) {
+            $this->initMailer();
+        }
+
+        //set sender
+        $this->mail->SetFrom(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+        // Add a Reply-To field in the email headers.
+        // Fix bug #6654.
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
+        } else {
+            $this->mail->AddReplyTo($this->getSenderAddress());
+        }
+
+        if ($this->html) {
+            //the email is html :(
+            $this->mail->AltBody = $this->getTextMessage();
+            $this->mail->IsHTML(isHtml: true);
+        } else {
+            //the email is plaintext :)
+            $this->mail->AltBody = '';
+            $this->mail->IsHTML(isHtml: false);
+        }
+
+        $this->mail->Subject = $this->subject;
+        $this->mail->Body = $this->message;
+
+        $signature = $this->preferences->getMailSignature($this->mail);
+        if ($signature != '') {
+            if ($this->html) {
+                //we are sending HTML message
+                //apply email sign to text version
+                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, as_text: true);
+                //then apply email sign to HTML version
+                $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
+                $hsign = '<div style="' . $sign_style . '">'
+                    . nl2br($signature) . '</div>';
+                $this->mail->Body .= $hsign;
+            } else {
+                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, as_text: true);
+            }
+        }
+
+        //join attachments
+        if (count($this->attachments) > 0) {
+            foreach ($this->attachments as $attachment) {
+                $this->mail->AddAttachment(
+                    $attachment->getDestDir() . $attachment->getFileName()
+                );
+            }
+        }
+    }
+
+    /**
+     * Send the message to recipients in batches, reusing the SMTP connection.
+     *
+     * All recipients are added as BCC and split into chunks of at most
+     * $batch_size addresses per message, with an optional delay between two
+     * messages. This helps comply with mail servers that restrict the number
+     * of recipients per message or the sending rate.
+     *
+     * @param int $batch_size Maximum number of recipients (BCC) per message
+     * @param int $delay      Delay, in seconds, between two messages
+     *
+     * @return int GaletteMail::MAIL_SENT if every batch has been sent,
+     *             GaletteMail::MAIL_PARTIAL if only some of them have,
+     *             GaletteMail::MAIL_ERROR if none of them left
+     */
+    private function sendBatched(int $batch_size, int $delay): int
+    {
+        $this->prepareMessage();
+
+        //mailing: the main recipient is always the sender, members stay in BCC
+        $this->mail->ClearAddresses();
+        $this->mail->AddAddress(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+
+        $has_error = false;
+        $chunks = array_chunk($this->recipients, $batch_size, preserve_keys: true);
+        $nb_chunks = count($chunks);
+
+        foreach ($chunks as $i => $chunk) {
+            $this->mail->ClearBCCs();
+            foreach ($chunk as $address => $name) {
+                $this->mail->AddBCC($address, $name);
+            }
+
+            try {
+                if (!$this->mail->Send()) {
+                    $has_error = true;
+                    $this->errors[] = $this->mail->ErrorInfo;
+                    Analog::log(
+                        'An error occurred sending mailing batch to: '
+                        . implode(', ', array_keys($chunk))
+                        . "\n" . $this->mail->ErrorInfo,
+                        Analog::INFO
+                    );
+                } else {
+                    Analog::log(
+                        'A mailing batch has been sent to '
+                        . count($chunk) . ' recipient(s).',
+                        Analog::INFO
+                    );
+                    $this->sent_recipients += $chunk;
+                    $this->recordQuota($chunk);
+                }
+            } catch (Throwable $e) {
+                $has_error = true;
+                $this->errors[] = $e->getMessage();
+                Analog::log(
+                    'Error sending mailing batch: ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
+
+            //pause between two messages, but not after the last one
+            if ($delay > 0 && $i < $nb_chunks - 1) {
+                sleep($delay);
+            }
+        }
+
+        //close the (possibly kept-alive) SMTP connection
+        $this->mail->smtpClose();
+        unset($this->mail);
+
+        if (!$has_error) {
+            return self::MAIL_SENT;
+        }
+
+        //what already left cannot be taken back: say so, so the caller does
+        //not offer to send the whole thing again
+        return count($this->sent_recipients) > 0
+            ? self::MAIL_PARTIAL
+            : self::MAIL_ERROR;
+    }
+
+    /**
+     * Recipients the last send() actually delivered to.
+     *
+     * Only a batched sending can be partial; for any other message this is
+     * either every recipient, or none of them.
+     *
+     * @return array<string, string> Recipients, as email => name
+     */
+    public function getSentRecipients(): array
+    {
+        return $this->sent_recipients;
+    }
+
+    /**
+     * Tell this message its sending is already accounted for.
+     *
+     * Messages drained from the mailing queue have been counted, and allowed,
+     * by the queue itself: they must neither be checked against the quota
+     * twice nor recorded twice.
+     *
+     * @param bool $managed Whether the caller handles the quota
+     */
+    public function setQuotaManaged(bool $managed = true): self
+    {
+        $this->quota_managed = $managed;
+        return $this;
+    }
+
+    /**
+     * Get the quota bookkeeper for this message, if there is anything to book.
+     *
+     * Returns null when the caller already handles the quota, when there is no
+     * database at hand, or when no quota is configured at all - in which case
+     * nothing is ever counted nor written.
+     */
+    private function quotaLedger(): ?MailingQueue
+    {
+        if ($this->quota_managed) {
+            return null;
+        }
+
+        global $zdb;
+        if (!$zdb instanceof Db) {
+            return null;
+        }
+
+        $queue = new MailingQueue($zdb, $this->preferences);
+        return $queue->mustQueue() ? $queue : null;
+    }
+
+    /**
+     * Is there enough quota left to send this message right now?
+     *
+     * A direct sending cannot wait for the next window: either the whole
+     * message fits in what is left, or it is not sent at all.
+     */
+    private function checkQuota(): bool
+    {
+        $queue = $this->quotaLedger();
+        if ($queue === null) {
+            return true;
+        }
+
+        $remaining = $queue->getRemainingQuota();
+        $required = count($this->recipients);
+        if ($remaining === null || $remaining >= $required) {
+            return true;
+        }
+
+        $this->errors[] = _T("Sending quota has been reached, message has not been sent.");
+        Analog::log(
+            'Sending quota reached (' . $remaining . ' left, ' . $required
+            . ' required), message to ' . implode(', ', array_keys($this->recipients))
+            . ' has not been sent.',
+            Analog::WARNING
+        );
+        return false;
+    }
+
+    /**
+     * Record recipients that have just been sent against the quota.
+     *
+     * @param array<string, string> $recipients Recipients, as email => name
+     */
+    private function recordQuota(array $recipients): void
+    {
+        $this->quotaLedger()?->recordDirect($recipients);
     }
 
     /**

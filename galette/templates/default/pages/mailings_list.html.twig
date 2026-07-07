@@ -134,6 +134,12 @@
                                 <label for="filter_not_sent" >{{ _T('No') }}</label>
                             </div>
                         </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="sent_filter" id="filter_sending" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_SENDING") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_SENDING") %} checked="checked"{% endif %}>
+                                <label for="filter_sending" >{{ _T('In progress') }}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -169,6 +175,9 @@
                 {% if log.mailing_sent == 1 %}
                     <i class="ui paper plane green icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T('Sent') }}</span>
+                {% elseif log.mailing_sending %}
+                    <i class="ui paper plane outline orange icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Sending in progress…') }}</span>
                 {% else %}
                     <i class="ui pencil ruler red icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T('Not sent') }}</span>
@@ -183,6 +192,15 @@
                     <i class="ui eye green icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
                 </a>
+                {% if log.mailing_sending %}
+                <a
+                        href="{{ url_for('mailingQueue', {'id': log.mailing_id}) }}"
+                        class="icon-only"
+                >
+                    <i class="ui hourglass half orange icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Follow the sending of mailing '%1$s'")|format(log.mailing_subject) }}</span>
+                </a>
+                {% else %}
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                         class="icon-only"
@@ -196,6 +214,7 @@
                         {% endif %}
                     </span>
                 </a>
+                {% endif %}
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
                         class="delete icon-only"
@@ -259,6 +278,16 @@
                             <i class="ui paper plane green icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T('Sent') }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui paper plane outline orange icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Sending in progress…') }}</td>
+                        <th scope="row">
+                            <i class="ui hourglass half orange icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Follow the sending') }}</td>
                     </tr>
                 </tbody>
             </table>

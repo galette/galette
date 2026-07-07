@@ -7,6 +7,9 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
+    {# labels that are used #}
+    {% set alpha_label = _T("Experimental feature. Be careful using it.") %}
+
         <div class="ui icon error message">
             <i class="exclamation triangle icon" aria-hidden="true"></i>
             <div class="content">
@@ -39,7 +42,9 @@
             <tbody>
 {% for entry in entries %}
                 <tr data-name="{{ entry.name }}" id="{{ entry.name }}">
-                    <td data-scope="row" data-col-label="{{ _T("Name") }}"><code>{{ entry.name }}</code></td>
+                    <td data-scope="row" data-col-label="{{ _T("Name") }}">
+                        <code>{{ entry.name }}</code>
+                    </td>
                     <td class="collapsing" data-col-label="{{ _T("Type") }}">
                         {% if entry.known %}{{ entry.type }}{% else %}&mdash;{% endif %}
                     </td>
@@ -59,6 +64,16 @@
     {% endif %}
     {% if entry.plugin %}
                         <span class="ui teal label" title="{{ _T("Declared by the %s plugin, and only while it stays active.")|replace({'%s': entry.plugin}) }}">{{ entry.plugin }}</span>
+    {% endif %}
+    {% if entry.alpha %}
+                        <span
+                            class="ui icon"
+                            role="img"
+                            title="{{ alpha_label|e('html_attr') }}"
+                            aria-label="{{ alpha_label|e('html_attr') }}"
+                        >
+                            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+                        </span>
     {% endif %}
                     </td>
                     <td data-col-label="{{ _T("Value") }}">
@@ -202,6 +217,19 @@
                         <tr>
                             <th scope="row"><span class="ui teal label">{{ _T("plugin name") }}</span></th>
                             <td class="back">{{ _T("Declared by that plugin rather than by Galette. Deactivate the plugin and the setting becomes unknown again, keeping its value until the plugin comes back.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <span
+                                    class="ui icon"
+                                    role="img"
+                                    title="{{ alpha_label|e('html_attr') }}"
+                                    aria-label="{{ alpha_label|e('html_attr') }}"
+                                >
+                                    <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+                                </span>
+                            </th>
+                            <td class="back">{{ alpha_label }}</td>
                         </tr>
                     </tbody>
                 </table>

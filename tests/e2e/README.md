@@ -2,6 +2,11 @@
 
 This document describes the structure and organization of Playwright E2E tests for Galette.
 
+> **Sending real mail?** `specs/mailings-queue.spec.ts` actually sends a mailing
+> to a local SMTP catcher (Mailpit). To run it locally, see
+> [`README.mailing-queue.md`](README.mailing-queue.md). It skips automatically
+> when Mailpit is not running.
+
 ## Directory Structure
 
 ```

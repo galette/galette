@@ -44,6 +44,7 @@ class Reminder
     private Adherent $dest;
     private string $date;
     private bool $success = false;
+    private bool $quota_managed = false;
     private bool $nomail;
     private string $comment;
     private string $msg;
@@ -175,6 +176,20 @@ class Reminder
     }
 
     /**
+     * Tell the reminder its sending is already accounted for.
+     *
+     * Set by the mailing queue, which has checked the quota before draining
+     * the reminder rows it is about to send.
+     *
+     * @param bool $managed Whether the caller handles the quota
+     */
+    public function setQuotaManaged(bool $managed = true): self
+    {
+        $this->quota_managed = $managed;
+        return $this;
+    }
+
+    /**
      * Send the reminder
      *
      * @param Texts   $texts Text object
@@ -205,6 +220,7 @@ class Reminder
             );
 
             $mail = new GaletteMail($preferences);
+            $mail->setQuotaManaged($this->quota_managed);
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
                 [
@@ -280,6 +296,7 @@ class Reminder
     {
         return match ($name) {
             'member_id' => $this->dest->id,
+            'dest' => $this->dest,
             'type', 'date' => $this->$name,
             'comment' => $this->comment,
             default => throw new \RuntimeException(
@@ -301,7 +318,7 @@ class Reminder
     public function __isset(string $name): bool
     {
         return match ($name) {
-            'member_id', 'type', 'date', 'comment' => true,
+            'member_id', 'dest', 'type', 'date', 'comment' => true,
             default => false,
         };
     }
