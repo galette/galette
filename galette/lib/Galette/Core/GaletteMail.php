@@ -73,13 +73,23 @@ class GaletteMail
     }
 
     /**
+     * Create the underlying PHPMailer instance.
+     * Extracted as a seam so tests can inject a double that does not
+     * actually send anything.
+     */
+    protected function createMailer(): PHPMailer
+    {
+        return new PHPMailer();
+    }
+
+    /**
      * Initialize PHPMailer
      */
     private function initMailer(): void
     {
         global $i18n;
 
-        $this->mail = new PHPMailer();
+        $this->mail = $this->createMailer();
         $this->mail->Timeout = $this->timeout;
 
         switch ($this->preferences->pref_mail_method) {
