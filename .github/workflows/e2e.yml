@@ -49,6 +49,13 @@ jobs:
           --health-timeout=5s
           --health-retries=10
 
+      # Local SMTP catcher: captures mail without ever delivering it
+      mailpit:
+        image: axllent/mailpit:latest
+        ports:
+          - 1025:1025
+          - 8025:8025
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -99,6 +106,11 @@ jobs:
           timeout 15 bash -c 'until curl -sf http://127.0.0.1:8090/login > /dev/null; do sleep 1; done'
           echo "PHP server started"
 
+      - name: Wait for Mailpit
+        run: |
+          timeout 30 bash -c 'until curl -sf http://127.0.0.1:8025/readyz > /dev/null; do sleep 1; done'
+          echo "Mailpit is ready"
+
 
       - name: Install Playwright browsers
         run: |
@@ -111,6 +123,7 @@ jobs:
           E2E_BASE_URL: http://127.0.0.1:8090
           E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}
           E2E_ADMIN_PASS: ${{ secrets.E2E_ADMIN_PASS || 'admin' }}
+          E2E_MAILPIT_URL: http://127.0.0.1:8025
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
