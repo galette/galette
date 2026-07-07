@@ -31,7 +31,7 @@ class GaletteMail
     public const int METHOD_DISABLED = 0;
     public const int METHOD_PHPMAIL = 1;
     public const int METHOD_SMTP = 2;
-    public const int METHOD_QMAIL = 3;
+    //value 3 (former METHOD_QMAIL) is no longer used, do not reuse it
     public const int METHOD_GMAIL = 4;
     public const int METHOD_SENDMAIL = 5;
 
@@ -146,14 +146,12 @@ class GaletteMail
                 $this->mail->Username   = $this->preferences->pref_mail_smtp_user;
                 // SMTP account password
                 $this->mail->Password   = $this->preferences->pref_mail_smtp_password;
+                //keep the SMTP connection open across messages (mailing batches)
+                $this->mail->SMTPKeepAlive = (bool)$this->preferences->pref_mail_smtp_keepalive;
                 break;
             case self::METHOD_SENDMAIL:
                 // telling the class to use Sendmail transport
                 $this->mail->IsSendmail();
-                break;
-            case self::METHOD_QMAIL:
-                // telling the class to use QMail transport
-                $this->mail->IsQmail();
                 break;
         }
 
@@ -214,35 +212,17 @@ class GaletteMail
      */
     public function send(): int
     {
-        if (!isset($this->mail)) {
-            $this->initMailer();
+        //when a batch size is set and there are more recipients than
+        //this size, split the mailing into several messages
+        $batch_size = (int)$this->preferences->pref_mail_batch_size;
+        if ($batch_size > 0 && count($this->recipients) > $batch_size) {
+            return $this->sendBatched(
+                $batch_size,
+                (int)$this->preferences->pref_mail_batch_delay
+            );
         }
 
-        //set sender
-        $this->mail->SetFrom(
-            $this->getSenderAddress(),
-            $this->getSenderName()
-        );
-        // Add a Reply-To field in the email headers.
-        // Fix bug #6654.
-        if ($this->preferences->pref_email_reply_to) {
-            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
-        } else {
-            $this->mail->AddReplyTo($this->getSenderAddress());
-        }
-
-        if ($this->html) {
-            //the email is html :(
-            $this->mail->AltBody = $this->getTextMessage();
-            $this->mail->IsHTML(true);
-        } else {
-            //the email is plaintext :)
-            $this->mail->AltBody = '';
-            $this->mail->IsHTML(false);
-        }
-
-        $this->mail->Subject = $this->subject;
-        $this->mail->Body = $this->message;
+        $this->prepareMessage();
 
         //set at least on real recipient (not bcc)
         if (count($this->recipients) === 1) {
@@ -258,31 +238,6 @@ class GaletteMail
                 $this->getSenderAddress(),
                 $this->getSenderName()
             );
-        }
-
-        $signature = $this->preferences->getMailSignature($this->mail);
-        if ($signature != '') {
-            if ($this->html) {
-                //we are sending HTML message
-                //apply email sign to text version
-                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, true);
-                //then apply email sign to HTML version
-                $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style . '">'
-                    . nl2br($signature) . '</div>';
-                $this->mail->Body .= $hsign;
-            } else {
-                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, true);
-            }
-        }
-
-        //join attachments
-        if (count($this->attachments) > 0) {
-            foreach ($this->attachments as $attachment) {
-                $this->mail->AddAttachment(
-                    $attachment->getDestDir() . $attachment->getFileName()
-                );
-            }
         }
 
         try {
@@ -320,6 +275,145 @@ class GaletteMail
             unset($this->mail);
             return self::MAIL_ERROR;
         }
+    }
+
+    /**
+     * Prepare the message (sender, reply-to, body, signature and attachments).
+     * Recipients are *not* set here; they are handled by the caller so the
+     * message can be reused across several batches.
+     */
+    private function prepareMessage(): void
+    {
+        if (!isset($this->mail)) {
+            $this->initMailer();
+        }
+
+        //set sender
+        $this->mail->SetFrom(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+        // Add a Reply-To field in the email headers.
+        // Fix bug #6654.
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
+        } else {
+            $this->mail->AddReplyTo($this->getSenderAddress());
+        }
+
+        if ($this->html) {
+            //the email is html :(
+            $this->mail->AltBody = $this->getTextMessage();
+            $this->mail->IsHTML(true);
+        } else {
+            //the email is plaintext :)
+            $this->mail->AltBody = '';
+            $this->mail->IsHTML(false);
+        }
+
+        $this->mail->Subject = $this->subject;
+        $this->mail->Body = $this->message;
+
+        $signature = $this->preferences->getMailSignature($this->mail);
+        if ($signature != '') {
+            if ($this->html) {
+                //we are sending HTML message
+                //apply email sign to text version
+                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, true);
+                //then apply email sign to HTML version
+                $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
+                $hsign = '<div style="' . $sign_style . '">'
+                    . nl2br($signature) . '</div>';
+                $this->mail->Body .= $hsign;
+            } else {
+                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, true);
+            }
+        }
+
+        //join attachments
+        if (count($this->attachments) > 0) {
+            foreach ($this->attachments as $attachment) {
+                $this->mail->AddAttachment(
+                    $attachment->getDestDir() . $attachment->getFileName()
+                );
+            }
+        }
+    }
+
+    /**
+     * Send the message to recipients in batches, reusing the SMTP connection.
+     *
+     * All recipients are added as BCC and split into chunks of at most
+     * $batch_size addresses per message, with an optional delay between two
+     * messages. This helps comply with mail servers that restrict the number
+     * of recipients per message or the sending rate.
+     *
+     * @param int $batch_size Maximum number of recipients (BCC) per message
+     * @param int $delay      Delay, in seconds, between two messages
+     *
+     * @return int GaletteMail::MAIL_SENT if every batch has been sent,
+     *             GaletteMail::MAIL_ERROR if at least one batch failed
+     */
+    private function sendBatched(int $batch_size, int $delay): int
+    {
+        $this->prepareMessage();
+
+        //mailing: the main recipient is always the sender, members stay in BCC
+        $this->mail->ClearAddresses();
+        $this->mail->AddAddress(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+
+        //reinit errors array
+        $this->errors = [];
+        $has_error = false;
+        $chunks = array_chunk($this->recipients, $batch_size, true);
+        $nb_chunks = count($chunks);
+
+        foreach ($chunks as $i => $chunk) {
+            $this->mail->ClearBCCs();
+            foreach ($chunk as $address => $name) {
+                $this->mail->AddBCC($address, $name);
+            }
+
+            try {
+                if (!$this->mail->Send()) {
+                    $has_error = true;
+                    $this->errors[] = $this->mail->ErrorInfo;
+                    Analog::log(
+                        'An error occurred sending mailing batch to: '
+                        . implode(', ', array_keys($chunk))
+                        . "\n" . $this->mail->ErrorInfo,
+                        Analog::INFO
+                    );
+                } else {
+                    Analog::log(
+                        'A mailing batch has been sent to '
+                        . count($chunk) . ' recipient(s).',
+                        Analog::INFO
+                    );
+                }
+            } catch (Throwable $e) {
+                $has_error = true;
+                $this->errors[] = $e->getMessage();
+                Analog::log(
+                    'Error sending mailing batch: ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
+
+            //pause between two messages, but not after the last one
+            if ($delay > 0 && $i < $nb_chunks - 1) {
+                sleep($delay);
+            }
+        }
+
+        //close the (possibly kept-alive) SMTP connection
+        $this->mail->smtpClose();
+        unset($this->mail);
+
+        return $has_error ? self::MAIL_ERROR : self::MAIL_SENT;
     }
 
     /**

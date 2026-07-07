@@ -1,0 +1,106 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends "page.html.twig" %}
+
+{% block content %}
+        <div class="ui segment">
+            <div id="mailing_progress" class="ui indicating progress" data-value="{{ stats.sent_total + stats.failed_total }}" data-total="{{ stats.total }}">
+                <div class="bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="label">{{ _T("Sending in progress…") }}</div>
+            </div>
+
+            <div class="ui horizontal statistics">
+                <div class="statistic">
+                    <div class="value" id="queue_sent">{{ stats.sent_total }}</div>
+                    <div class="label">{{ _T("Sent") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_remaining">{{ stats.remaining }}</div>
+                    <div class="label">{{ _T("Remaining") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_failed">{{ stats.failed_total }}</div>
+                    <div class="label">{{ _T("Failed") }}</div>
+                </div>
+                <div class="statistic">
+                    <div class="value" id="queue_total">{{ stats.total }}</div>
+                    <div class="label">{{ _T("Recipients") }}</div>
+                </div>
+            </div>
+
+            <div class="ui message" id="queue_status_message" style="display: none;">
+                <p id="queue_status"></p>
+            </div>
+
+            <div id="queue_actions" style="display: none;">
+                <a href="{{ url_for('members') }}" class="ui primary button">{{ _T("Back to members list") }}</a>
+                <a href="{{ url_for('mailings') }}" class="ui button">{{ _T("Mailings history") }}</a>
+            </div>
+            <a href="#" id="queue_retry" class="ui button" style="display: none;">{{ _T("Retry") }}</a>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                var mailingId = {{ mailing_id }};
+                var delay = {{ batch_delay }} * 1000;
+                var $bar = $('#mailing_progress');
+                $bar.progress({
+                    total: {{ stats.total }},
+                    value: {{ stats.sent_total + stats.failed_total }}
+                });
+
+                function showEnd(message) {
+                    $('#queue_status').text(message);
+                    $('#queue_status_message').show();
+                    $('#queue_actions').show();
+                }
+
+                function processNext() {
+                    $.ajax({
+                        url: '{{ url_for("mailingProcessQueue") }}',
+                        type: 'POST',
+                        data: { id: mailingId },
+                        dataType: 'json'
+                    }).done(function(data) {
+                        var done = data.sent_total + data.failed_total;
+                        $bar.progress('set total', data.total);
+                        $bar.progress('set progress', done);
+                        $('#queue_sent').text(data.sent_total);
+                        $('#queue_failed').text(data.failed_total);
+                        $('#queue_remaining').text(data.remaining);
+                        $('#queue_total').text(data.total);
+
+                        if (data.done) {
+                            showEnd('{{ _T("Mailing has been successfully sent!")|escape('js') }}');
+                            return;
+                        }
+                        if (data.rate_limited) {
+                            showEnd('{{ _T("Sending rate limit reached. Sending will resume later (reopen this page or drain the queue from a cron job).")|escape('js') }}');
+                            return;
+                        }
+                        window.setTimeout(processNext, delay);
+                    }).fail(function() {
+                        $('#queue_status').text('{{ _T("An error occurred while sending. You may retry.")|escape('js') }}');
+                        $('#queue_status_message').show();
+                        $('#queue_retry').show();
+                    });
+                }
+
+                $('#queue_retry').on('click', function(e) {
+                    e.preventDefault();
+                    $(this).hide();
+                    processNext();
+                });
+
+                processNext();
+            });
+        </script>
+{% endblock %}

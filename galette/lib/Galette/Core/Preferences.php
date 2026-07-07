@@ -69,6 +69,11 @@ use function Safe\unlink;
  * @property      int      $pref_mail_smtp_port
  * @property      string   $pref_mail_smtp_user
  * @property      string   $pref_mail_smtp_password
+ * @property      bool     $pref_mail_smtp_keepalive                      Reuse SMTP connection across messages (SMTP/GMAIL only)
+ * @property      int      $pref_mail_batch_size                          Max recipients (BCC) per message, 0 = single message
+ * @property      int      $pref_mail_batch_delay                         Delay (seconds) between messages
+ * @property      int      $pref_mail_hourly_limit                        Max emails sent per hour, 0 = unlimited
+ * @property      int      $pref_mail_daily_limit                         Max emails sent per day, 0 = unlimited
  * @property      int      $pref_membership_ext
  * @property      string   $pref_beg_membership
  * @property      int      $pref_membership_offermonths

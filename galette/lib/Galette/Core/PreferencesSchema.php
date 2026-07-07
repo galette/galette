@@ -187,6 +187,31 @@ final class PreferencesSchema
                 'default' => '',
                 'sensitive' => true,
             ],
+            'pref_mail_smtp_keepalive' => ['type' => self::TYPE_BOOL, 'default' => true],
+            'pref_mail_batch_size' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+            ],
+            'pref_mail_batch_delay' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+            ],
+            'pref_mail_hourly_limit' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+            ],
+            'pref_mail_daily_limit' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+            ],
             'pref_membership_ext' => [
                 'type' => self::TYPE_INT,
                 'default' => 12,

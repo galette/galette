@@ -18,3 +18,23 @@ CREATE TABLE galette_plugins (
 
 -- preference values no longer fit in 255 characters (footer HTML, feature flags list)
 ALTER TABLE galette_preferences MODIFY COLUMN val_pref text NOT NULL;
+
+CREATE TABLE galette_mailing_queue (
+  mailing_queue_id int unsigned NOT NULL auto_increment,
+  mailing_id int unsigned NOT NULL,
+  recipient_id int unsigned DEFAULT NULL,
+  recipient_email varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  recipient_name varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  status tinyint(1) NOT NULL DEFAULT 0,
+  attempts int unsigned NOT NULL DEFAULT 0,
+  last_error longtext,
+  scheduled_at datetime DEFAULT NULL,
+  sent_at datetime DEFAULT NULL,
+  PRIMARY KEY (mailing_queue_id),
+  KEY galette_mailing_queue_status (status, scheduled_at),
+  KEY galette_mailing_queue_sent_at (sent_at),
+  FOREIGN KEY (mailing_id) REFERENCES galette_mailing_history (mailing_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- qmail method has been removed, fall back to sendmail (closest local MTA method)
+UPDATE galette_preferences SET val_pref = '5' WHERE nom_pref = 'pref_mail_method' AND val_pref = '3';
