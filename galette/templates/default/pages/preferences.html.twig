@@ -785,11 +785,17 @@
                             <label for="pref_mail_hourly_limit">{{ _T("Maximum emails per hour:") }}</label>
                             <input type="number" min="0" name="pref_mail_hourly_limit" id="pref_mail_hourly_limit" value="{{ pref.pref_mail_hourly_limit }}" size="10"/>
                             <i class="circular small basic question icon tooltip" title="{{ _T("Maximum number of emails to send per hour. When set (greater than 0), mass mailings are queued and spread over time. 0 means no hourly limit.") }}" aria-hidden="true"></i>
+{% if mail_usage is defined %}
+                            <div class="ui small grey text">{{ _T("Sent in the last hour:") }} {{ mail_usage.sent_last_hour }}{% if mail_usage.hourly_limit > 0 %} / {{ mail_usage.hourly_limit }}{% endif %}</div>
+{% endif %}
                         </div>
                         <div class="field">
                             <label for="pref_mail_daily_limit">{{ _T("Maximum emails per day:") }}</label>
                             <input type="number" min="0" name="pref_mail_daily_limit" id="pref_mail_daily_limit" value="{{ pref.pref_mail_daily_limit }}" size="10"/>
                             <i class="circular small basic question icon tooltip" title="{{ _T("Maximum number of emails to send per day. When set (greater than 0), mass mailings are queued and spread over time. 0 means no daily limit.") }}" aria-hidden="true"></i>
+{% if mail_usage is defined %}
+                            <div class="ui small grey text">{{ _T("Sent in the last day:") }} {{ mail_usage.sent_last_day }}{% if mail_usage.daily_limit > 0 %} / {{ mail_usage.daily_limit }}{% endif %}</div>
+{% endif %}
                         </div>
                         <div class="field inline">
                             <div class="ui right aligned toggle checkbox">
