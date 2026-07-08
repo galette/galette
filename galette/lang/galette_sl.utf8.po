@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-08 05:15+0000\n"
+"PO-Revision-Date: 2026-07-08 07:48+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -1211,106 +1211,107 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:491
 msgid "Various administrative tools"
-msgstr ""
+msgstr "Različna skrbniška orodja"
 
 #: ../lib/Galette/Core/Galette.php:569
 #: ../lib/Galette/Controllers/Crud/MembersController.php:342
+#, fuzzy
 msgid "Gallery"
-msgstr ""
+msgstr "Gallery"
 
 #: ../lib/Galette/Core/Galette.php:579
 #: ../lib/Galette/Controllers/Crud/MembersController.php:371
 msgid "Staff"
-msgstr ""
+msgstr "Osebje"
 
 #: ../lib/Galette/Core/Galette.php:589
 #: ../lib/Galette/Controllers/Crud/MembersController.php:401
 #: ../../tempcache/pages/preferences.html.twig:1453
 msgid "Staff gallery"
-msgstr ""
+msgstr "Galerija osebja"
 
 #: ../lib/Galette/Core/Galette.php:600
 msgid "Directories"
-msgstr ""
+msgstr "Imeniki"
 
 #: ../lib/Galette/Core/Galette.php:611
 msgid "Galleries"
-msgstr ""
+msgstr "Galerije"
 
 #: ../lib/Galette/Core/Galette.php:622 ../lib/Galette/Core/Galette.php:820
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Oglejte si dokumente, povezane z vašim združenjem"
 
 #: ../lib/Galette/Core/Galette.php:649
 #: ../../tempcache/pages/preferences.html.twig:1092
 msgid "Public pages"
-msgstr ""
+msgstr "Javne strani"
 
 #: ../lib/Galette/Core/Galette.php:791
 #: ../lib/Galette/DynamicFields/DynamicField.php:437
 msgid "Transactions"
-msgstr ""
+msgstr "Transakcije"
 
 #: ../lib/Galette/Core/Galette.php:897 ../lib/Galette/Core/Galette.php:902
 msgid "%membername: edit information"
-msgstr ""
+msgstr "%membername: uredi podatke"
 
 #: ../lib/Galette/Core/Galette.php:918 ../lib/Galette/Core/Galette.php:923
 msgid "%membername: contributions"
-msgstr ""
+msgstr "%membername: prispevki"
 
 #: ../lib/Galette/Core/Galette.php:939 ../lib/Galette/Core/Galette.php:944
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: odstrani iz baze podatkov"
 
 #: ../lib/Galette/Core/Galette.php:963 ../lib/Galette/Core/Galette.php:968
 #: ../../tempcache/pages/members_list.html.twig:606
 #: ../../tempcache/elements/group_persons.html.twig:199
 msgid "Log in as %membername"
-msgstr ""
+msgstr "Prijavi se kot %membername"
 
 #: ../lib/Galette/Core/Galette.php:1063
 msgid "Mass change"
-msgstr ""
+msgstr "Sprememba mase"
 
 #: ../lib/Galette/Core/Galette.php:1068
 msgid "Mass add contributions"
-msgstr ""
+msgstr "Prispevki za množično dodajanje"
 
 #: ../lib/Galette/Core/Galette.php:1073
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:58
 #: ../../tempcache/pages/groups_list.html.twig:748
 #: ../../tempcache/pages/contributions_list.html.twig:61
 msgid "Delete"
-msgstr ""
+msgstr "Izbriši"
 
 #: ../lib/Galette/Core/Galette.php:1089
 #: ../../tempcache/pages/members_list.html.twig:792
 msgid "Mail"
-msgstr ""
+msgstr "Pošta"
 
 #: ../lib/Galette/Core/Galette.php:1110
 #: ../../tempcache/elements/mailing_recipients.html.twig:113
 msgid "Generate labels"
-msgstr ""
+msgstr "Ustvari oznake"
 
 #: ../lib/Galette/Core/Galette.php:1115
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "Ustvari članske kartice"
 
 #: ../lib/Galette/Core/Galette.php:1120
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:58
 #: ../../tempcache/pages/contributions_list.html.twig:61
 msgid "Export as CSV"
-msgstr ""
+msgstr "Izvozi kot CSV"
 
 #: ../lib/Galette/Core/Galette.php:1168
 msgid "Galette news"
-msgstr ""
+msgstr "Novice iz Galette"
 
 #: ../lib/Galette/Core/Galette.php:1178
 msgid "Association news"
-msgstr ""
+msgstr "Novice združenja"
 
 #: ../lib/Galette/Core/History.php:205 ../lib/Galette/Core/History.php:292
 #: ../lib/Galette/Features/Replacements.php:641
@@ -1320,18 +1321,18 @@ msgstr ""
 #: ../../tempcache/elements/group.html.twig:144
 #: ../../tempcache/elements/group.html.twig:195
 msgid "None"
-msgstr ""
+msgstr "Nobena"
 
 #: ../lib/Galette/Core/Db.php:1108
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
-msgstr ""
+msgstr "Najmanjša različica za iskalnik %1$s je %2$s, najdenih je %1$s %3$s!"
 
 #. TRANS: first parameter is a field name, second its maximum length
 #: ../lib/Galette/Entity/PdfModel.php:258
 #, php-format
 msgid "%1$s should be less than %2$s characters long."
-msgstr ""
+msgstr "%1$s mora biti krajši od %2$s znakov."
 
 #. TRANS: parameter is a field name
 #: ../lib/Galette/Entity/PdfModel.php:268
