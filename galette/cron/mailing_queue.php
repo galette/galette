@@ -7,6 +7,7 @@
  */
 
 use Galette\Core\Galette;
+use Galette\Core\History;
 use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
 use Galette\Core\MailingQueue;
@@ -59,24 +60,25 @@ $queue = new MailingQueue(
     $container->get(\Galette\Core\Db::class),
     $preferences
 );
+//this is the generic drainer: it may encounter reminder rows too, so give it
+//the context needed to send them
+$queue->setReminderContext(
+    $container->get(History::class),
+    $container->get(Login::class)
+);
 $delay = (int)$preferences->pref_mail_batch_delay;
 
 $total_sent = 0;
 $total_failed = 0;
-$rate_limited = false;
 
-//drain the queue batch after batch, respecting the configured delay,
-//until it is empty or a rate limit is reached
+//drain the queue batch after batch, respecting the configured delay, until it
+//is empty or the rate limit is reached (remaining messages go out on next runs)
 do {
     $progress = $queue->processBatch();
     $total_sent += (int)$progress['batch_sent'];
     $total_failed += (int)$progress['batch_failed'];
 
-    if ($progress['done'] === true) {
-        break;
-    }
-    if ($progress['rate_limited'] === true) {
-        $rate_limited = true;
+    if ($progress['done'] === true || $progress['rate_limited'] === true) {
         break;
     }
 
@@ -85,16 +87,15 @@ do {
     }
 } while (true);
 
-if ($total_sent > 0 || $total_failed > 0) {
+//stay silent on success so cron does not notify the administrator on every run;
+//only report (and fail) when something actually failed
+if ($total_failed > 0) {
     echo str_replace(
         ['%sent', '%failed'],
         [(string)$total_sent, (string)$total_failed],
         _T("Mailing queue processed: %sent sent, %failed failed.")
     ) . "\n";
-}
-
-if ($rate_limited) {
-    echo _T("Sending rate limit reached, remaining messages will be sent on next runs.") . "\n";
+    exit(1);
 }
 
 exit(0);
