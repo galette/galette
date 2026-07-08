@@ -21,7 +21,9 @@ ALTER TABLE galette_preferences MODIFY COLUMN val_pref text NOT NULL;
 
 CREATE TABLE galette_mailing_queue (
   mailing_queue_id int unsigned NOT NULL auto_increment,
-  mailing_id int unsigned NOT NULL,
+  kind tinyint(1) NOT NULL DEFAULT 0,
+  mailing_id int unsigned DEFAULT NULL,
+  reminder_type int DEFAULT NULL,
   recipient_id int unsigned DEFAULT NULL,
   recipient_email varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   recipient_name varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
