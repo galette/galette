@@ -11,8 +11,9 @@ use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
+use Galette\Core\MailingQueue;
 use Galette\Core\Plugins;
-use Galette\Entity\Texts;
+use Galette\Core\Preferences;
 use Galette\Middleware\Authenticate;
 use Galette\Repository\Reminders;
 
@@ -57,65 +58,49 @@ if ($cron && !defined('GALETTE_URI')) {
     die(1);
 }
 
-$texts = new Texts(
-    $container->get(\Galette\Core\Preferences::class)
-);
+$preferences = $container->get(Preferences::class);
 $reminders = new Reminders();
-$success_detected = [];
-$error_detected = [];
-
 $list_reminders = $reminders->getList($container->get(Db::class), false);
-if (count($list_reminders) > 0) {
-    foreach ($list_reminders as $reminder) {
-        //send reminders by email
-        $sent = $reminder->send($texts, $container->get(History::class), $container->get(Db::class));
 
-        if ($sent === true) {
-            $success_detected[] = $reminder->getMessage();
-        } else {
-            $error_detected[] = $reminder->getMessage();
-        }
-    }
+//queue the due reminders, then drain the queue respecting the configured
+//throttling (delay, hourly/daily quota shared with mass mailings)
+$queue = new MailingQueue($container->get(Db::class), $preferences);
+$queue->setReminderContext(
+    $container->get(History::class),
+    $container->get(Login::class)
+);
+$queue->enqueueReminders($list_reminders);
 
-    if (count($error_detected) > 0) {
-        array_unshift(
-            $error_detected,
-            _T("Reminder has not been sent:")
-        );
-    }
+$delay = (int)$preferences->pref_mail_batch_delay;
+$total_sent = 0;
+$total_failed = 0;
 
-    if (count($success_detected) > 0) {
-        array_unshift(
-            $success_detected,
-            _T("Sent reminders:")
-        );
-    }
-}
+do {
+    $progress = $queue->processBatch(null, MailingQueue::KIND_REMINDER);
+    $total_sent += (int)$progress['batch_sent'];
+    $total_failed += (int)$progress['batch_failed'];
 
-//called from a cron. warning and errors has been stored into history
-//and probably logged
-if (count($error_detected) > 0) {
-    //if there are errors, we print them
-    echo "\n";
-    $count = 0;
-    foreach ($error_detected as $e) {
-        if ($count > 0) {
-            echo '    ';
-        }
-        echo $e . "\n";
-        $count++;
+    //stop when the queue is empty or the rate limit is reached (the remaining
+    //messages will be sent on the next runs)
+    if ($progress['done'] === true || $progress['rate_limited'] === true) {
+        break;
     }
-    //we can also print additional information.
-    if (count($success_detected) > 0) {
-        echo "\n";
-        echo str_replace(
-            '%i',
-            (string)count($success_detected),
-            _T("%i emails have been sent successfully.")
-        );
+    if ($delay > 0) {
+        sleep($delay);
     }
+} while (true);
+
+//called from a cron: successes and warnings have been stored into history and
+//logged. Stay completely silent unless something failed, otherwise cron would
+//notify the administrator on every (successful) run. A reached rate limit is
+//not an error: the remaining messages are sent on the next runs.
+if ($total_failed > 0) {
+    echo str_replace(
+        ['%sent', '%failed'],
+        [(string)$total_sent, (string)$total_failed],
+        _T("Reminders processed: %sent sent, %failed failed.")
+    ) . "\n";
     exit(1);
-} else {
-    //if there were no errors, we just exit properly for cron to be quiet.
-    exit(0);
 }
+
+exit(0);

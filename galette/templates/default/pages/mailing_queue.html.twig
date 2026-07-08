@@ -49,7 +49,8 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                var mailingId = {{ mailing_id }};
+                var mailingId = {{ mailing_id is null ? 'null' : mailing_id }};
+                var processUrl = '{{ process_url }}';
                 var delay = {{ batch_delay }} * 1000;
                 var $bar = $('#mailing_progress');
                 $bar.progress({
@@ -65,9 +66,9 @@
 
                 function processNext() {
                     $.ajax({
-                        url: '{{ url_for("mailingProcessQueue") }}',
+                        url: processUrl,
                         type: 'POST',
-                        data: { id: mailingId },
+                        data: (mailingId === null ? {} : { id: mailingId }),
                         dataType: 'json'
                     }).done(function(data) {
                         var done = data.sent_total + data.failed_total;

@@ -185,6 +185,16 @@ $app->post(
     [Crud\MailingsController::class, 'processQueue']
 )->setName('mailingProcessQueue')->add(Authenticate::class);
 
+$app->get(
+    '/reminders/queue',
+    [Crud\MailingsController::class, 'remindersQueue']
+)->setName('remindersQueue')->add(Authenticate::class);
+
+$app->post(
+    '/ajax/reminders/process-queue',
+    [Crud\MailingsController::class, 'remindersProcessQueue']
+)->setName('remindersProcessQueue')->add(Authenticate::class);
+
 //reminders
 $app->get(
     '/reminders',
