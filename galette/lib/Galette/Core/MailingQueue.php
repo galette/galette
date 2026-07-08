@@ -13,8 +13,11 @@ namespace Galette\Core;
 use Analog\Analog;
 use ArrayObject;
 use Galette\Entity\Adherent;
+use Galette\Entity\Reminder;
+use Galette\Entity\Texts;
 use Laminas\Db\Sql\Expression;
 use Safe\DateTime;
+use Slim\Routing\RouteParser;
 use Throwable;
 
 /**
@@ -37,8 +40,17 @@ class MailingQueue
     public const int STATUS_SENT = 1;
     public const int STATUS_FAILED = 2;
 
+    /** Item natures */
+    public const int KIND_MAILING = 0;
+    public const int KIND_REMINDER = 1;
+
     /** Maximum number of attempts before a recipient is marked as failed */
     public const int MAX_ATTEMPTS = 3;
+
+    /** Collaborators required to send reminder rows (set via setReminderContext) */
+    private ?History $history = null;
+    private ?Login $login = null;
+    private ?RouteParser $routeparser = null;
 
     /**
      * Default constructor
@@ -50,6 +62,25 @@ class MailingQueue
         private readonly Db $zdb,
         private readonly Preferences $preferences
     ) {
+    }
+
+    /**
+     * Provide the collaborators needed to send reminder rows.
+     * Required only when the queue holds reminders (KIND_REMINDER).
+     *
+     * @param History      $history     History instance
+     * @param Login        $login       Login instance
+     * @param ?RouteParser $routeparser Route parser (optional, for Texts links)
+     */
+    public function setReminderContext(
+        History $history,
+        Login $login,
+        ?RouteParser $routeparser = null
+    ): self {
+        $this->history = $history;
+        $this->login = $login;
+        $this->routeparser = $routeparser;
+        return $this;
     }
 
     /**
@@ -73,6 +104,7 @@ class MailingQueue
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values(
                     [
+                        'kind'            => self::KIND_MAILING,
                         'mailing_id'      => $mailing_id,
                         'recipient_id'    => $member->id,
                         'recipient_email' => $email,
@@ -97,6 +129,80 @@ class MailingQueue
     }
 
     /**
+     * Add reminders to the sending queue as individual, personalized items.
+     *
+     * Each reminder is rendered at drain time (from Texts, in the member's
+     * language) so the day counters stay accurate. A pending reminder for the
+     * same member and type is not queued twice (getList recomputes due
+     * reminders and their audit row only exists once actually sent).
+     *
+     * @param array<int, Reminder> $reminders Due reminders (see Reminders::getList)
+     *
+     * @return int Number of queued reminders
+     */
+    public function enqueueReminders(array $reminders): int
+    {
+        $count = 0;
+        $now = date('Y-m-d H:i:s');
+        try {
+            foreach ($reminders as $reminder) {
+                if (!$reminder->hasMail()) {
+                    continue;
+                }
+                $member = $reminder->dest;
+                $type = (int)$reminder->type;
+                //do not queue the same reminder twice while it is still pending
+                if ($this->hasPendingReminder((int)$member->id, $type)) {
+                    continue;
+                }
+
+                $insert = $this->zdb->insert(self::TABLE);
+                $insert->values(
+                    [
+                        'kind'            => self::KIND_REMINDER,
+                        'reminder_type'   => $type,
+                        'recipient_id'    => $member->id,
+                        'recipient_email' => $member->getEmail(),
+                        'recipient_name'  => $member->sname,
+                        'status'          => self::STATUS_PENDING,
+                        'attempts'        => 0,
+                        'scheduled_at'    => $now
+                    ]
+                );
+                $this->zdb->execute($insert);
+                $count++;
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Unable to enqueue reminders | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
+
+        return $count;
+    }
+
+    /**
+     * Is there already a pending reminder queued for this member and type?
+     *
+     * @param int $member_id Member id
+     * @param int $type      Reminder type (Reminder::IMPENDING|LATE)
+     */
+    private function hasPendingReminder(int $member_id, int $type): bool
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select->columns(['c' => new Expression('COUNT(*)')]);
+        $select->where->equalTo('kind', self::KIND_REMINDER);
+        $select->where->equalTo('status', self::STATUS_PENDING);
+        $select->where->equalTo('recipient_id', $member_id);
+        $select->where->equalTo('reminder_type', $type);
+
+        $row = $this->zdb->execute($select)->current();
+        return (int)$row->c > 0;
+    }
+
+    /**
      * Process a single batch of the queue, respecting the configured limits.
      *
      * At most one message (a BCC group of up to the effective batch size) is
@@ -105,22 +211,24 @@ class MailingQueue
      * cron drainer).
      *
      * @param ?int $only_mailing_id Restrict processing and stats to this mailing
+     * @param ?int $kind            Restrict processing and stats to this kind
      *
      * @return array<string, int|bool> Progress information: total, remaining,
      *   sent_total, failed_total, batch_sent, batch_failed, done, rate_limited
      */
-    public function processBatch(?int $only_mailing_id = null): array
+    public function processBatch(?int $only_mailing_id = null, ?int $kind = null): array
     {
         $batch_size = (int)$this->preferences->pref_mail_batch_size;
         $hourly = (int)$this->preferences->pref_mail_hourly_limit;
         $daily = (int)$this->preferences->pref_mail_daily_limit;
 
-        $pending = $this->countByStatus(self::STATUS_PENDING, $only_mailing_id);
+        $pending = $this->countByStatus(self::STATUS_PENDING, $only_mailing_id, $kind);
         if ($pending === 0) {
-            return $this->progress($only_mailing_id, false);
+            return $this->progress($only_mailing_id, false, 0, 0, $kind);
         }
 
-        //how many recipients may still be sent right now?
+        //how many recipients may still be sent right now? (the quota is global,
+        //shared across mailings and reminders)
         $allowed = $batch_size > 0 ? $batch_size : $pending;
         if ($hourly > 0) {
             $allowed = min($allowed, max(0, $hourly - $this->countSentSince('-1 hour')));
@@ -131,23 +239,32 @@ class MailingQueue
 
         if ($allowed <= 0) {
             //rate limit reached, nothing can be sent for now
-            return $this->progress($only_mailing_id, true);
+            return $this->progress($only_mailing_id, true, 0, 0, $kind);
         }
 
-        $mailing_id = $this->getNextPendingMailingId($only_mailing_id);
-        if ($mailing_id === null) {
-            return $this->progress($only_mailing_id, false);
+        $next = $this->getNextPendingRow($only_mailing_id, $kind);
+        if ($next === null) {
+            return $this->progress($only_mailing_id, false, 0, 0, $kind);
         }
 
-        $rows = $this->getPendingRows($mailing_id, $allowed);
-        $result = $this->sendRows($mailing_id, $rows);
-        $this->maybeMarkMailingSent($mailing_id);
+        if ((int)$next->kind === self::KIND_REMINDER) {
+            //reminders are individual personalized messages
+            $rows = $this->getPendingReminderRows($allowed);
+            $result = $this->sendReminderRows($rows);
+        } else {
+            //mailings share a body and are sent as a BCC chunk
+            $mailing_id = (int)$next->mailing_id;
+            $rows = $this->getPendingRows($mailing_id, $allowed);
+            $result = $this->sendRows($mailing_id, $rows);
+            $this->maybeMarkMailingSent($mailing_id);
+        }
 
         return $this->progress(
             $only_mailing_id,
             false,
             $result['sent'],
-            $result['failed']
+            $result['failed'],
+            $kind
         );
     }
 
@@ -155,12 +272,13 @@ class MailingQueue
      * Get current queue statistics, without sending anything.
      *
      * @param ?int $mailing_id Restrict stats to this mailing
+     * @param ?int $kind       Restrict stats to this kind
      *
      * @return array<string, int|bool>
      */
-    public function getStats(?int $mailing_id = null): array
+    public function getStats(?int $mailing_id = null, ?int $kind = null): array
     {
-        return $this->progress($mailing_id, false);
+        return $this->progress($mailing_id, false, 0, 0, $kind);
     }
 
     /**
@@ -222,6 +340,72 @@ class MailingQueue
                 if ($status === self::STATUS_FAILED) {
                     $failed++;
                 }
+            }
+        }
+
+        return ['sent' => $sent, 'failed' => $failed];
+    }
+
+    /**
+     * Send a chunk of queued reminders, one individual message each.
+     *
+     * Reuses Reminder::send() so the message rendering (Texts, member language),
+     * the History entry and the galette_reminders audit row are produced exactly
+     * as in the synchronous path. Reminders are not retried: send() already
+     * records an audit row on each attempt.
+     *
+     * @param array<int, ArrayObject<string, mixed>> $rows Pending reminder rows
+     *
+     * @return array{sent: int, failed: int}
+     */
+    private function sendReminderRows(array $rows): array
+    {
+        $sent = 0;
+        $failed = 0;
+
+        if ($this->history === null || $this->login === null) {
+            foreach ($rows as $row) {
+                $this->markRow((int)$row->mailing_queue_id, self::STATUS_FAILED, 'Reminder context not configured');
+                $failed++;
+            }
+            Analog::log(
+                'Cannot send queued reminders: reminder context not set (see MailingQueue::setReminderContext)',
+                Analog::ERROR
+            );
+            return ['sent' => $sent, 'failed' => $failed];
+        }
+
+        //a single Texts instance is reused across recipients (setMember per row)
+        $texts = new Texts($this->preferences, $this->routeparser);
+
+        foreach ($rows as $row) {
+            $qid = (int)$row->mailing_queue_id;
+            try {
+                $member = new Adherent($this->zdb, (int)$row->recipient_id);
+                $reminder = new Reminder();
+                $reminder->type = (int)$row->reminder_type;
+                $reminder->dest = $member;
+                $reminder->setDb($this->zdb)
+                    ->setLogin($this->login)
+                    ->setPreferences($this->preferences);
+                if ($this->routeparser !== null) {
+                    $reminder->setRouteparser($this->routeparser);
+                }
+
+                if ($reminder->send($texts, $this->history, $this->zdb)) {
+                    $this->markRow($qid, self::STATUS_SENT, null);
+                    $sent++;
+                } else {
+                    $this->markRow($qid, self::STATUS_FAILED, $reminder->getMessage());
+                    $failed++;
+                }
+            } catch (Throwable $e) {
+                $this->markRow($qid, self::STATUS_FAILED, $e->getMessage());
+                $failed++;
+                Analog::log(
+                    'Unable to send queued reminder #' . $qid . ' | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
             }
         }
 
@@ -322,17 +506,23 @@ class MailingQueue
     }
 
     /**
-     * Get the oldest mailing having pending recipients.
+     * Get the oldest pending row (any kind), to decide what to process next.
      *
-     * @param ?int $only Restrict to this mailing id
+     * @param ?int $only_mailing_id Restrict to this mailing id
+     * @param ?int $kind            Restrict to this kind
+     *
+     * @return ?ArrayObject<string, mixed>
      */
-    private function getNextPendingMailingId(?int $only = null): ?int
+    private function getNextPendingRow(?int $only_mailing_id = null, ?int $kind = null): ?ArrayObject
     {
         $select = $this->zdb->select(self::TABLE);
-        $select->columns(['mailing_id']);
+        $select->columns(['kind', 'mailing_id']);
         $select->where->equalTo('status', self::STATUS_PENDING);
-        if ($only !== null) {
-            $select->where->equalTo('mailing_id', $only);
+        if ($only_mailing_id !== null) {
+            $select->where->equalTo('mailing_id', $only_mailing_id);
+        }
+        if ($kind !== null) {
+            $select->where->equalTo('kind', $kind);
         }
         $select->order(self::PK . ' ASC');
         $select->limit(1);
@@ -341,7 +531,29 @@ class MailingQueue
         if (!$row instanceof ArrayObject) {
             return null;
         }
-        return (int)$row->mailing_id;
+        return $row;
+    }
+
+    /**
+     * Get pending reminder rows (individual messages).
+     *
+     * @param int $limit Maximum number of rows to fetch
+     *
+     * @return array<int, ArrayObject<string, mixed>>
+     */
+    private function getPendingReminderRows(int $limit): array
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select->where->equalTo('status', self::STATUS_PENDING);
+        $select->where->equalTo('kind', self::KIND_REMINDER);
+        $select->order(self::PK . ' ASC');
+        $select->limit($limit);
+
+        $rows = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
     /**
@@ -372,14 +584,18 @@ class MailingQueue
      *
      * @param int  $status     Status to count
      * @param ?int $mailing_id Restrict to this mailing id
+     * @param ?int $kind       Restrict to this kind
      */
-    private function countByStatus(int $status, ?int $mailing_id = null): int
+    private function countByStatus(int $status, ?int $mailing_id = null, ?int $kind = null): int
     {
         $select = $this->zdb->select(self::TABLE);
         $select->columns(['c' => new Expression('COUNT(*)')]);
         $select->where->equalTo('status', $status);
         if ($mailing_id !== null) {
             $select->where->equalTo('mailing_id', $mailing_id);
+        }
+        if ($kind !== null) {
+            $select->where->equalTo('kind', $kind);
         }
 
         $row = $this->zdb->execute($select)->current();
@@ -410,6 +626,7 @@ class MailingQueue
      * @param bool $rate_limited Whether the rate limit is currently reached
      * @param int  $batch_sent   Recipients sent during the last batch
      * @param int  $batch_failed Recipients failed during the last batch
+     * @param ?int $kind         Restrict stats to this kind
      *
      * @return array<string, int|bool>
      */
@@ -417,11 +634,12 @@ class MailingQueue
         ?int $mailing_id,
         bool $rate_limited,
         int $batch_sent = 0,
-        int $batch_failed = 0
+        int $batch_failed = 0,
+        ?int $kind = null
     ): array {
-        $pending = $this->countByStatus(self::STATUS_PENDING, $mailing_id);
-        $sent = $this->countByStatus(self::STATUS_SENT, $mailing_id);
-        $failed = $this->countByStatus(self::STATUS_FAILED, $mailing_id);
+        $pending = $this->countByStatus(self::STATUS_PENDING, $mailing_id, $kind);
+        $sent = $this->countByStatus(self::STATUS_SENT, $mailing_id, $kind);
+        $failed = $this->countByStatus(self::STATUS_FAILED, $mailing_id, $kind);
 
         return [
             'total'        => $pending + $sent + $failed,
