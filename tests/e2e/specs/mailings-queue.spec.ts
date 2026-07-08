@@ -67,19 +67,23 @@ test.describe('Mailing queue (real send to Mailpit)', () => {
     // select several members in the list
     await page.goto('/members');
     const checkboxes = page.locator('#listform input[name="entries_sel[]"]');
-    const available = await checkboxes.count();
-    expect(available).toBeGreaterThan(0);
+    expect(await checkboxes.count()).toBeGreaterThan(0);
 
-    const toSelect = Math.min(5, available);
-    for (let i = 0; i < toSelect; i++) {
-      await checkboxes.nth(i).check();
-    }
-
-    // trigger the "send mail" batch action exactly like the app does
-    await page.evaluate(() => {
+    // Check the boxes and trigger the "send mail" batch action programmatically.
+    // The Fomantic checkboxes are visually hidden (their label intercepts
+    // clicks, so .check() would time out); this mirrors exactly what the app's
+    // _sendmail() helper does on the members list.
+    const selected = await page.evaluate((max) => {
       const form = document.querySelector<HTMLFormElement>('#listform');
       if (!form) {
         throw new Error('members list form not found');
+      }
+      const boxes = Array.from(
+        form.querySelectorAll<HTMLInputElement>('input[name="entries_sel[]"]')
+      );
+      const count = Math.min(max, boxes.length);
+      for (let i = 0; i < count; i++) {
+        boxes[i].checked = true;
       }
       for (const name of ['sendmail', 'mailing_new', 'mailing']) {
         const input = document.createElement('input');
@@ -89,17 +93,15 @@ test.describe('Mailing queue (real send to Mailpit)', () => {
         form.appendChild(input);
       }
       form.submit();
-    });
+      return count;
+    }, 5);
+    expect(selected).toBeGreaterThan(0);
 
-    // mailing form: write the message and go to the preview step
+    // mailing form: write the message. The "Preview" button only opens an AJAX
+    // modal (it does not submit), so we send directly with the confirm button.
     await page.waitForURL(/\/mailing(\?|$)/);
     await page.locator('#mailing_objet').fill(subject);
     await page.locator('#mailing_corps').fill('E2E queue body');
-    const htmlToggle = page.locator('#mailing_html');
-    if (await htmlToggle.isChecked()) {
-      await htmlToggle.uncheck();
-    }
-    await page.locator('#btnpreview').click();
 
     // confirm sending: the mailing is queued and we land on the progress page
     await page.locator('button[name="mailing_confirm"]').click();
