@@ -30,6 +30,8 @@ class MailingQueue extends GaletteTestCase
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Core\MailingHistory::TABLE);
         $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Reminder::TABLE);
+        $this->zdb->execute($delete);
         $this->cleanMembers();
 
         parent::tearDown();
@@ -141,6 +143,94 @@ class MailingQueue extends GaletteTestCase
         $this->assertFalse($progress['done']);
 
         //reset preference for other tests
+        $this->preferences->pref_mail_daily_limit = 0;
+    }
+
+    /**
+     * Build a reminder for a member.
+     */
+    private function buildReminder(int $type, \Galette\Entity\Adherent $member): \Galette\Entity\Reminder
+    {
+        $reminder = new \Galette\Entity\Reminder();
+        $reminder->type = $type;
+        $reminder->dest = $member;
+        return $reminder;
+    }
+
+    /**
+     * Test reminders enqueue and the anti-duplicate guard
+     */
+    public function testEnqueueReminders(): void
+    {
+        $this->logSuperAdmin();
+
+        $adh1 = $this->getMemberOne();
+        $adh2 = $this->getMemberTwo();
+        $reminders = [
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $adh1),
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $adh2)
+        ];
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $this->assertSame(2, $queue->enqueueReminders($reminders));
+
+        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(2, $stats['total']);
+        $this->assertSame(2, $stats['remaining']);
+        $this->assertSame(0, $stats['sent_total']);
+
+        //enqueuing the same reminders again must not create duplicates
+        $this->assertSame(0, $queue->enqueueReminders($reminders));
+        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(2, $stats['total']);
+
+        //a different type for the same member is a distinct reminder
+        $this->assertSame(
+            1,
+            $queue->enqueueReminders([
+                $this->buildReminder(\Galette\Entity\Reminder::IMPENDING, $adh1)
+            ])
+        );
+        $this->assertSame(3, $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER)['total']);
+    }
+
+    /**
+     * Test that the global daily quota also gates reminders (no send attempted)
+     */
+    public function testRemindersShareGlobalQuota(): void
+    {
+        $this->logSuperAdmin();
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $queue->enqueueReminders([
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $this->getMemberOne()),
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $this->getMemberTwo())
+        ]);
+
+        //mark one reminder row as already sent, now
+        $select = $this->zdb->select(\Galette\Core\MailingQueue::TABLE);
+        $select->columns(['mailing_queue_id'])->order('mailing_queue_id ASC')->limit(1);
+        $first_id = (int)$this->zdb->execute($select)->current()->mailing_queue_id;
+        $update = $this->zdb->update(\Galette\Core\MailingQueue::TABLE);
+        $update->set(
+            [
+                'status'  => \Galette\Core\MailingQueue::STATUS_SENT,
+                'sent_at' => date('Y-m-d H:i:s')
+            ]
+        );
+        $update->where(['mailing_queue_id' => $first_id]);
+        $this->zdb->execute($update);
+
+        //global daily quota already reached: nothing more may be sent
+        $this->preferences->pref_mail_daily_limit = 1;
+
+        $progress = $queue->processBatch(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+
+        $this->assertTrue($progress['rate_limited']);
+        $this->assertSame(0, $progress['batch_sent']);
+        $this->assertSame(1, $progress['remaining']);
+        $this->assertSame(1, $progress['sent_total']);
+
         $this->preferences->pref_mail_daily_limit = 0;
     }
 }
