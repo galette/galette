@@ -524,6 +524,7 @@ class Db extends BaseGaletteTestCase
             'galette_field_types',
             'galette_fields_categories',
             'galette_mailing_history',
+            'galette_mailing_queue',
             'galette_payments_schedules',
             'galette_pdfmodels',
             'galette_plugins',
