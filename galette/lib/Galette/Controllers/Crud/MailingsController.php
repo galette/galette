@@ -781,6 +781,7 @@ class MailingsController extends CrudController
             [
                 'page_title'    => _T("Sending mailing"),
                 'mailing_id'    => $id,
+                'process_url'   => $this->routeparser->urlFor('mailingProcessQueue'),
                 'stats'         => $queue->getStats($id),
                 'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
                 'documentation' => 'usermanual/adherents.html#e-mailing'
@@ -805,7 +806,52 @@ class MailingsController extends CrudController
             : null;
 
         $queue = new MailingQueue($this->zdb, $this->preferences);
-        $progress = $queue->processBatch($mailing_id);
+        $progress = $queue->processBatch($mailing_id, MailingQueue::KIND_MAILING);
+
+        return $this->withJson($response, $progress);
+    }
+
+    /**
+     * Reminders queue progress page
+     */
+    #[Route(
+        name: 'remindersQueue',
+        pattern: '/reminders/queue',
+        methods: ['GET']
+    )]
+    public function remindersQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/mailing_queue.html.twig',
+            [
+                'page_title'    => _T("Sending reminders"),
+                'mailing_id'    => null,
+                'process_url'   => $this->routeparser->urlFor('remindersProcessQueue'),
+                'stats'         => $queue->getStats(null, MailingQueue::KIND_REMINDER),
+                'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
+                'documentation' => 'usermanual/contributions.html#reminders'
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Process a batch of the reminders queue (AJAX)
+     */
+    #[Route(
+        name: 'remindersProcessQueue',
+        pattern: '/ajax/reminders/process-queue',
+        methods: ['POST']
+    )]
+    public function remindersProcessQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+        $queue->setReminderContext($this->history, $this->login, $this->routeparser);
+        $progress = $queue->processBatch(null, MailingQueue::KIND_REMINDER);
 
         return $this->withJson($response, $progress);
     }
