@@ -282,6 +282,31 @@ class MailingQueue
     }
 
     /**
+     * Get sending usage over the recent rolling windows, against the configured
+     * hourly/daily limits (all natures combined, as the quota is global).
+     *
+     * @return array<string, ?int> sent_last_hour, sent_last_day, hourly_limit,
+     *   daily_limit, hourly_remaining, daily_remaining (the *_remaining values
+     *   are null when the matching limit is disabled)
+     */
+    public function getUsage(): array
+    {
+        $hourly = (int)$this->preferences->pref_mail_hourly_limit;
+        $daily = (int)$this->preferences->pref_mail_daily_limit;
+        $sent_hour = $this->countSentSince('-1 hour');
+        $sent_day = $this->countSentSince('-1 day');
+
+        return [
+            'sent_last_hour'   => $sent_hour,
+            'sent_last_day'    => $sent_day,
+            'hourly_limit'     => $hourly,
+            'daily_limit'      => $daily,
+            'hourly_remaining' => $hourly > 0 ? max(0, $hourly - $sent_hour) : null,
+            'daily_remaining'  => $daily > 0 ? max(0, $daily - $sent_day) : null
+        ];
+    }
+
+    /**
      * Send a chunk of queued recipients belonging to the same mailing.
      *
      * @param int                                    $mailing_id Mailing history id
