@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-08 07:48+0000\n"
+"PO-Revision-Date: 2026-07-09 08:52+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -223,7 +223,7 @@ msgstr "Lista prisotnosti"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:129
 msgid "MMMM, EEEE d y"
-msgstr "MMMM, EEEE d y"
+msgstr "dd.mm.yy"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:148
 msgid "Signature"
@@ -459,8 +459,8 @@ msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
-"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
-"the HTML form"
+"Naložena datoteka presega direktivo MAX_FILE_SIZE, ki je bila določena v "
+"obrazcu HTML"
 
 #: ../lib/Galette/IO/FileTrait.php:601
 msgid "The uploaded file was only partially uploaded"
@@ -501,11 +501,11 @@ msgstr "gonilnik PDO 'mysql' ali 'pgsql'"
 
 #: ../lib/Galette/Core/CheckModules.php:108 ../lib/Galette/Core/Install.php:166
 msgid "Ko"
-msgstr ""
+msgstr "Ko"
 
 #: ../lib/Galette/Core/CheckModules.php:115 ../lib/Galette/Core/Install.php:166
 msgid "Ok"
-msgstr ""
+msgstr "V redu"
 
 #: ../lib/Galette/Core/MailingHistory.php:434
 msgid "Delete mailing entries"
@@ -694,7 +694,7 @@ msgstr "Vse"
 #: ../lib/Galette/Core/Gaptcha.php:59
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Koliko je %1$s plus %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:60
 #, php-format
@@ -785,11 +785,11 @@ msgstr "Neujemanje gesel"
 
 #: ../lib/Galette/Core/Preferences.php:665
 msgid "You have to select a staff member to retrieve its address"
-msgstr "Za pridobitev naslova morate izbrati člana osebja."
+msgstr "Za pridobitev naslova morate izbrati člana osebja"
 
 #: ../lib/Galette/Core/Preferences.php:679
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Za pridobitev telefonske številke morate izbrati člana osebja."
+msgstr "Za pridobitev telefonske številke morate izbrati člana osebja"
 
 #: ../lib/Galette/Core/Preferences.php:731
 #, php-format
@@ -806,7 +806,7 @@ msgstr "- To uporabniško ime že uporablja drug član!"
 
 #: ../lib/Galette/Core/Preferences.php:765
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- Številke in mere morajo biti cela števila!"
 
 #: ../lib/Galette/Core/Preferences.php:770
 msgid "- The card height have to be an integer between 40 and 55!"
@@ -909,11 +909,11 @@ msgstr "Ogled moje članske izkaznice"
 
 #: ../lib/Galette/Core/Galette.php:165
 msgid "Add a child member"
-msgstr ""
+msgstr "Dodaj podrejenega člana"
 
 #: ../lib/Galette/Core/Galette.php:166
 msgid "Add new child member in database"
-msgstr ""
+msgstr "Dodaj novega podrejenega člana v bazo podatkov"
 
 #: ../lib/Galette/Core/Galette.php:176 ../lib/Galette/Core/Galette.php:559
 #: ../lib/Galette/Core/Galette.php:750
@@ -921,139 +921,139 @@ msgstr ""
 #: ../lib/Galette/DynamicFields/DynamicField.php:435
 #: ../../tempcache/elements/group.html.twig:256
 msgid "Members"
-msgstr ""
+msgstr "Člani"
 
 #: ../lib/Galette/Core/Galette.php:184
 #: ../lib/Galette/Controllers/Crud/MembersController.php:558
 msgid "List of members"
-msgstr ""
+msgstr "Seznam članov"
 
 #: ../lib/Galette/Core/Galette.php:185 ../lib/Galette/Core/Galette.php:751
 msgid "View, search into and filter member's list"
-msgstr ""
+msgstr "Ogled, iskanje in filtriranje seznama članov"
 
 #: ../lib/Galette/Core/Galette.php:192
 #: ../lib/Galette/Controllers/Crud/MembersController.php:764
 #: ../../tempcache/pages/advanced_search.html.twig:266
 msgid "Advanced search"
-msgstr ""
+msgstr "Napredno iskanje"
 
 #: ../lib/Galette/Core/Galette.php:193
 msgid "Perform advanced search into members list"
-msgstr ""
+msgstr "Izvedite napredno iskanje po seznamu članov"
 
 #: ../lib/Galette/Core/Galette.php:199
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:146
 msgid "Saved searches"
-msgstr ""
+msgstr "Shranjena iskanja"
 
 #: ../lib/Galette/Core/Galette.php:214
 #: ../../tempcache/pages/members_list.html.twig:113
 msgid "Add a member"
-msgstr ""
+msgstr "Dodaj člana"
 
 #: ../lib/Galette/Core/Galette.php:215
 msgid "Add new member in database"
-msgstr ""
+msgstr "Dodaj novega člana v bazo podatkov"
 
 #: ../lib/Galette/Core/Galette.php:221
 #: ../../tempcache/pages/member_form.html.twig:300
 #: ../../tempcache/elements/navigation/public_pages.html.twig:107
 msgid "Empty adhesion form"
-msgstr ""
+msgstr "Prazen obrazec za adhezijo"
 
 #: ../lib/Galette/Core/Galette.php:222
 #: ../../tempcache/pages/member_form.html.twig:294
 #: ../../tempcache/elements/navigation/public_pages.html.twig:107
 msgid "Download empty adhesion form"
-msgstr ""
+msgstr "Prenesite prazen obrazec za adhezijo"
 
 #: ../lib/Galette/Core/Galette.php:233 ../lib/Galette/Core/Galette.php:782
 #: ../lib/Galette/DynamicFields/DynamicField.php:436
 #: ../../tempcache/pages/members_list.html.twig:584
 msgid "Contributions"
-msgstr ""
+msgstr "Prispevki"
 
 #: ../lib/Galette/Core/Galette.php:241
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:503
 msgid "List of contributions"
-msgstr ""
+msgstr "Seznam prispevkov"
 
 #: ../lib/Galette/Core/Galette.php:242 ../lib/Galette/Core/Galette.php:783
 msgid "View and filter contributions"
-msgstr ""
+msgstr "Ogled in filtriranje prispevkov"
 
 #: ../lib/Galette/Core/Galette.php:255
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:150
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Seznam načrtovanih plačil"
 
 #: ../lib/Galette/Core/Galette.php:256
 msgid "View and filter scheduled payments"
-msgstr ""
+msgstr "Ogled in filtriranje načrtovanih plačil"
 
 #: ../lib/Galette/Core/Galette.php:268
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:503
 msgid "List of transactions"
-msgstr ""
+msgstr "Seznam transakcij"
 
 #: ../lib/Galette/Core/Galette.php:269 ../lib/Galette/Core/Galette.php:792
 msgid "View and filter transactions"
-msgstr ""
+msgstr "Ogled in filtriranje transakcij"
 
 #: ../lib/Galette/Core/Galette.php:282
 #: ../../tempcache/pages/member_show.html.twig:200
 #: ../../tempcache/pages/contributions_list.html.twig:315
 #: ../../tempcache/pages/contributions_list.html.twig:428
 msgid "Add a membership fee"
-msgstr ""
+msgstr "Dodajte članarino"
 
 #: ../lib/Galette/Core/Galette.php:283
 msgid "Add new membership fee in database"
-msgstr ""
+msgstr "Dodaj novo članarino v bazo podatkov"
 
 #: ../lib/Galette/Core/Galette.php:290
 #: ../../tempcache/pages/member_show.html.twig:215
 #: ../../tempcache/pages/contributions_list.html.twig:329
 #: ../../tempcache/pages/contributions_list.html.twig:441
 msgid "Add a donation"
-msgstr ""
+msgstr "Dodaj donacijo"
 
 #: ../lib/Galette/Core/Galette.php:291
 msgid "Add new donation in database"
-msgstr ""
+msgstr "Dodaj novo donacijo v bazo podatkov"
 
 #: ../lib/Galette/Core/Galette.php:303
 #: ../../tempcache/pages/transactions_list.html.twig:235
 #: ../../tempcache/pages/transactions_list.html.twig:295
 msgid "Add a transaction"
-msgstr ""
+msgstr "Dodaj transakcijo"
 
 #: ../lib/Galette/Core/Galette.php:304
 msgid "Add new transaction in database"
-msgstr ""
+msgstr "Dodaj novo transakcijo v bazo podatkov"
 
 #: ../lib/Galette/Core/Galette.php:315 ../lib/Galette/Core/Galette.php:800
 #: ../lib/Galette/Controllers/GaletteController.php:504
 msgid "Reminders"
-msgstr ""
+msgstr "Opomniki"
 
 #: ../lib/Galette/Core/Galette.php:316 ../lib/Galette/Core/Galette.php:801
 msgid "Send reminders to late members"
-msgstr ""
+msgstr "Pošlji opomnike zamujajočim članom"
 
 #: ../lib/Galette/Core/Galette.php:327
 msgid "Management"
-msgstr ""
+msgstr "Upravljanje"
 
 #: ../lib/Galette/Core/Galette.php:331 ../lib/Galette/Core/Galette.php:758
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:128
 msgid "Groups"
-msgstr ""
+msgstr "Skupine"
 
 #: ../lib/Galette/Core/Galette.php:332 ../lib/Galette/Core/Galette.php:759
 msgid "View and manage groups"
-msgstr ""
+msgstr "Ogled in upravljanje skupin"
 
 #: ../lib/Galette/Core/Galette.php:344 ../lib/Galette/Core/Galette.php:621
 #: ../lib/Galette/Core/Galette.php:819
@@ -1061,153 +1061,158 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:131
 #: ../../tempcache/pages/preferences.html.twig:1215
 msgid "Documents"
-msgstr ""
+msgstr "Dokumenti"
 
 #: ../lib/Galette/Core/Galette.php:345
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Dodajte dokumente za skupno rabo, povezane z vašim združenjem (status, "
+"poslovnik, ...)"
 
 #: ../lib/Galette/Core/Galette.php:352 ../lib/Galette/Core/Galette.php:774
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:412
 msgid "Mailings"
-msgstr ""
+msgstr "Pošiljke"
 
 #: ../lib/Galette/Core/Galette.php:353 ../lib/Galette/Core/Galette.php:775
 msgid "Manage mailings that has been sent"
-msgstr ""
+msgstr "Upravljanje poslanih poštnih sporočil"
 
 #: ../lib/Galette/Core/Galette.php:359
 #: ../lib/Galette/Controllers/GaletteController.php:346
 msgid "Charts"
-msgstr ""
+msgstr "Grafikoni"
 
 #: ../lib/Galette/Core/Galette.php:360
 msgid "Various charts"
-msgstr ""
+msgstr "Različni grafikoni"
 
 #: ../lib/Galette/Core/Galette.php:366
 #: ../lib/Galette/Controllers/CsvController.php:101
 #: ../install/steps/check.php:47
 msgid "Exports"
-msgstr ""
+msgstr "Izvoz"
 
 #: ../lib/Galette/Core/Galette.php:367
 msgid "Export some data in various formats"
-msgstr ""
+msgstr "Izvozite nekatere podatke v različnih oblikah"
 
 #: ../lib/Galette/Core/Galette.php:373
 #: ../lib/Galette/Controllers/CsvController.php:221
 #: ../install/steps/check.php:48
 msgid "Imports"
-msgstr ""
+msgstr "Uvoz"
 
 #: ../lib/Galette/Core/Galette.php:374
 msgid "Import members from CSV files"
-msgstr ""
+msgstr "Uvozi člane iz datotek CSV"
 
 #: ../lib/Galette/Core/Galette.php:381
 #: ../lib/Galette/Controllers/HistoryController.php:74
 #: ../install/steps/check.php:49
 msgid "Logs"
-msgstr ""
+msgstr "Dnevniki"
 
 #: ../lib/Galette/Core/Galette.php:382
 msgid "View application's logs"
-msgstr ""
+msgstr "Ogled dnevnikov aplikacije"
 
 #: ../lib/Galette/Core/Galette.php:392 ../install/steps/check.php:46
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguracija"
 
 #: ../lib/Galette/Core/Galette.php:397 ../lib/Galette/Core/Galette.php:836
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
+"Nastavitev aplikacij (naslov, spletna stran, konfiguracija članskih kartic, "
+"...)"
 
 #: ../lib/Galette/Core/Galette.php:403 ../lib/Galette/Core/Galette.php:843
 #: ../lib/Galette/Controllers/PluginsController.php:49
 msgid "Plugins"
-msgstr ""
+msgstr "Vtičniki"
 
 #: ../lib/Galette/Core/Galette.php:404 ../lib/Galette/Core/Galette.php:844
 msgid "Information about available plugins"
-msgstr ""
+msgstr "Informacije o razpoložljivih vtičnikih"
 
 #: ../lib/Galette/Core/Galette.php:410
 #: ../lib/Galette/Controllers/GaletteController.php:438
 msgid "Core lists"
-msgstr ""
+msgstr "Osnovni seznami"
 
 #: ../lib/Galette/Core/Galette.php:411
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Prilagodite polja seznamov in vrstni red"
 
 #: ../lib/Galette/Core/Galette.php:418
 #: ../lib/Galette/Controllers/GaletteController.php:362
 msgid "Core fields"
-msgstr ""
+msgstr "Osnovna polja"
 
 #: ../lib/Galette/Core/Galette.php:419
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
+"Prilagodite vrstni red polj, nastavite, katera so obvezna in komu so vidna"
 
 #: ../lib/Galette/Core/Galette.php:425
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:171
 #: ../../tempcache/pages/preferences.html.twig:125
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Dinamična polja"
 
 #: ../lib/Galette/Core/Galette.php:426
 msgid "Manage additional fields for various forms"
-msgstr ""
+msgstr "Upravljajte dodatna polja za različne obrazce"
 
 #: ../lib/Galette/Core/Galette.php:434
 msgid "Manage contributions types"
-msgstr ""
+msgstr "Upravljanje vrst prispevkov"
 
 #: ../lib/Galette/Core/Galette.php:442
 msgid "Manage payment types"
-msgstr ""
+msgstr "Upravljanje vrst plačil"
 
 #: ../lib/Galette/Core/Galette.php:449
 #: ../lib/Galette/Controllers/Crud/StatusController.php:68
 msgid "User statuses"
-msgstr ""
+msgstr "Stanja uporabnikov"
 
 #: ../lib/Galette/Core/Galette.php:457
 msgid "Manage titles"
-msgstr ""
+msgstr "Upravljanje naslovov"
 
 #: ../lib/Galette/Core/Galette.php:465
 msgid "Manage PDF models"
-msgstr ""
+msgstr "Upravljanje modelov PDF"
 
 #: ../lib/Galette/Core/Galette.php:471
 #: ../lib/Galette/Controllers/TextController.php:52
 msgid "Emails content"
-msgstr ""
+msgstr "Vsebina e-poštnih sporočil"
 
 #: ../lib/Galette/Core/Galette.php:472
 msgid "Manage emails texts and subjects"
-msgstr ""
+msgstr "Upravljanje besedil in zadev e-poštnih sporočil"
 
 #: ../lib/Galette/Core/Galette.php:478
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:50
 msgid "Labels translation"
-msgstr ""
+msgstr "Prevod oznak"
 
 #: ../lib/Galette/Core/Galette.php:479
 msgid "Manage translatable labels"
-msgstr ""
+msgstr "Upravljanje prevedljivih oznak"
 
 #: ../lib/Galette/Core/Galette.php:490
 #: ../lib/Galette/Controllers/AdminToolsController.php:34
 msgid "Administration tools"
-msgstr ""
+msgstr "Orodja za upravljanje"
 
 #: ../lib/Galette/Core/Galette.php:491
 msgid "Various administrative tools"
@@ -1215,9 +1220,8 @@ msgstr "Različna skrbniška orodja"
 
 #: ../lib/Galette/Core/Galette.php:569
 #: ../lib/Galette/Controllers/Crud/MembersController.php:342
-#, fuzzy
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "Galerija"
 
 #: ../lib/Galette/Core/Galette.php:579
 #: ../lib/Galette/Controllers/Crud/MembersController.php:371
@@ -1338,66 +1342,66 @@ msgstr "%1$s mora biti krajši od %2$s znakov."
 #: ../lib/Galette/Entity/PdfModel.php:268
 #, php-format
 msgid "%1$s should not be empty!"
-msgstr ""
+msgstr "%1$s ne sme biti prazno!"
 
 #: ../lib/Galette/Entity/PdfModel.php:376
 msgid "Unknown type %type!"
-msgstr ""
+msgstr "Neznan tip %type!"
 
 #: ../lib/Galette/Entity/PdfModel.php:387
 #: ../lib/Galette/Features/Replacements.php:232
 #: ../../tempcache/elements/edit_pdf_models.html.twig:57
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 msgid "Title"
-msgstr ""
+msgstr "Naslov"
 
 #: ../lib/Galette/Entity/PdfModel.php:387
 #: ../../tempcache/elements/edit_pdf_models.html.twig:74
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:125
 msgid "Subtitle"
-msgstr ""
+msgstr "Podnaslov"
 
 #: ../lib/Galette/Entity/PdfModel.php:397
 msgid "header and footer should not be empty!"
-msgstr ""
+msgstr "Glava in noga ne smeta biti prazna!"
 
 #: ../lib/Galette/Entity/PdfModel.php:401
 msgid "body should not be empty!"
-msgstr ""
+msgstr "telo ne sme biti prazno!"
 
 #: ../lib/Galette/Entity/Status.php:278
 #: ../lib/Galette/Entity/ContributionsTypes.php:315
 msgid "Label does not exist"
-msgstr ""
+msgstr "Oznaka ne obstaja"
 
 #: ../lib/Galette/Entity/Status.php:468
 msgid "You cannot delete default status!"
-msgstr ""
+msgstr "Privzetega stanja ne morete izbrisati!"
 
 #: ../lib/Galette/Entity/Status.php:478
 #: ../lib/Galette/Entity/ContributionsTypes.php:517
 msgid "Cannot delete this label: it's still used"
-msgstr ""
+msgstr "Te oznake ni mogoče izbrisati: še vedno se uporablja"
 
 #: ../lib/Galette/Entity/Title.php:79 ../lib/Galette/Entity/Title.php:93
 msgid "You cannot delete Mr. or Mrs. titles!"
-msgstr ""
+msgstr "Nazivov g. ali ga. ne morete izbrisati!"
 
 #: ../lib/Galette/Entity/Contribution.php:165
 #: ../lib/Galette/Features/Replacements.php:408
 msgid "Contribution id"
-msgstr ""
+msgstr "ID prispevka"
 
 #: ../lib/Galette/Entity/Contribution.php:169
 #: ../../tempcache/pages/contribution_form.html.twig:130
 msgid "Contributor:"
-msgstr ""
+msgstr "Sodelavec:"
 
 #: ../lib/Galette/Entity/Contribution.php:173
 #: ../../tempcache/pages/contributions_list.html.twig:174
 #: ../../tempcache/pages/contribution_form.html.twig:143
 msgid "Contribution type:"
-msgstr ""
+msgstr "Vrsta prispevka:"
 
 #: ../lib/Galette/Entity/Contribution.php:177
 #: ../lib/Galette/Entity/ScheduledPayment.php:584
@@ -1406,20 +1410,20 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:573
 #: ../../tempcache/pages/contribution_type_form.html.twig:92
 msgid "Amount:"
-msgstr ""
+msgstr "Znesek:"
 
 #: ../lib/Galette/Entity/Contribution.php:181
 #: ../lib/Galette/Entity/ScheduledPayment.php:572
 #: ../lib/Galette/Entity/Transaction.php:117
 #: ../../tempcache/components/forms/payment_types.html.twig:71
 msgid "Payment type:"
-msgstr ""
+msgstr "Vrsta plačila:"
 
 #: ../lib/Galette/Entity/Contribution.php:185
 #: ../lib/Galette/Entity/ScheduledPayment.php:592
 #: ../../tempcache/pages/contribution_form.html.twig:746
 msgid "Comments:"
-msgstr ""
+msgstr "Komentarji:"
 
 #: ../lib/Galette/Entity/Contribution.php:189
 #: ../../tempcache/pages/advanced_search.html.twig:1468
@@ -1443,86 +1447,86 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:298
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:132
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: ../lib/Galette/Entity/Contribution.php:193
 #: ../../tempcache/pages/contribution_form.html.twig:659
 msgid "Date of contribution:"
-msgstr ""
+msgstr "Datum prispevka:"
 
 #: ../lib/Galette/Entity/Contribution.php:194
 #: ../../tempcache/pages/contribution_form.html.twig:653
 msgid "Start date of membership:"
-msgstr ""
+msgstr "Datum začetka članstva:"
 
 #: ../lib/Galette/Entity/Contribution.php:198
 #: ../../tempcache/pages/contribution_form.html.twig:713
 msgid "End date of membership:"
-msgstr ""
+msgstr "Končni datum članstva:"
 
 #: ../lib/Galette/Entity/Contribution.php:202
 msgid "Transaction ID"
-msgstr ""
+msgstr "ID transakcije"
 
 #: ../lib/Galette/Entity/Contribution.php:208
 #: ../../tempcache/pages/contribution_form.html.twig:695
 msgid "Membership extension:"
-msgstr ""
+msgstr "Podaljšanje članstva:"
 
 #: ../lib/Galette/Entity/Contribution.php:535
 #: ../lib/Galette/Entity/Transaction.php:315
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Izberite člana iz skupine, ki jo upravljate."
 
 #: ../lib/Galette/Entity/Contribution.php:554
 #: ../lib/Galette/Entity/Transaction.php:327
 msgid "- The amount must be an integer!"
-msgstr ""
+msgstr "- Znesek mora biti celo število!"
 
 #: ../lib/Galette/Entity/Contribution.php:576
 msgid "- The duration must be a positive integer!"
-msgstr ""
+msgstr "- Trajanje mora biti pozitivno celo število!"
 
 #: ../lib/Galette/Entity/Contribution.php:593
 msgid "- The end date must be after the start date!"
-msgstr ""
+msgstr "- Končni datum mora biti po začetnem datumu!"
 
 #: ../lib/Galette/Entity/Contribution.php:618
 #: ../lib/Galette/Entity/Transaction.php:374
 msgid "- Sum of all contributions exceed corresponding transaction amount."
-msgstr ""
+msgstr "- Vsota vseh prispevkov presega ustrezni znesek transakcije."
 
 #: ../lib/Galette/Entity/Contribution.php:691
 msgid "- Membership period overlaps period starting at "
-msgstr ""
+msgstr "- Obdobje članstva se prekriva z obdobjem, ki se začne pri "
 
 #: ../lib/Galette/Entity/Contribution.php:751
 msgid "Contribution added"
-msgstr ""
+msgstr "Prispevek dodan"
 
 #: ../lib/Galette/Entity/Contribution.php:756
 msgid "Fail to add new contribution."
-msgstr ""
+msgstr "Dodajanje novega prispevka ni uspelo."
 
 #: ../lib/Galette/Entity/Contribution.php:771
 msgid "Contribution updated"
-msgstr ""
+msgstr "Prispevek posodobljen"
 
 #: ../lib/Galette/Entity/Contribution.php:1141
 #: ../lib/Galette/Entity/PdfContribution.php:57
 #: ../lib/Galette/Entity/Texts.php:603
 #: ../lib/Galette/Features/Replacements.php:416
 msgid "Contribution information"
-msgstr ""
+msgstr "Informacije o prispevkih"
 
 #: ../lib/Galette/Entity/Contribution.php:1143
 msgid "Script output"
-msgstr ""
+msgstr "Izhod skripte"
 
 #: ../lib/Galette/Entity/Contribution.php:1167
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:105
 msgid "Membership"
-msgstr ""
+msgstr "Članstvo"
 
 #: ../lib/Galette/Entity/Contribution.php:1169
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:78
@@ -1530,70 +1534,70 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:440
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:111
 msgid "Donation"
-msgstr ""
+msgstr "Donacija"
 
 #: ../lib/Galette/Entity/Contribution.php:1543
 msgid "Cannot change payment type if there is an attached scheduled payment"
-msgstr ""
+msgstr "Vrste plačila ni mogoče spremeniti, če je priloženo načrtovano plačilo"
 
 #: ../lib/Galette/Entity/Contribution.php:1552
 #: ../lib/Galette/Entity/Transaction.php:350
 msgid "- Unknown payment type"
-msgstr ""
+msgstr "- Neznana vrsta plačila"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:132
 msgid "Contribution is required"
-msgstr ""
+msgstr "Prispevek je potreben"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:134
 #: ../lib/Galette/Entity/ScheduledPayment.php:287
 msgid "Unable to load contribution"
-msgstr ""
+msgstr "Prispevka ni mogoče naložiti"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:139
 msgid "Amount must be a positive number"
-msgstr ""
+msgstr "Znesek mora biti pozitivno število"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:146
 msgid "Amount cannot be greater than non allocated amount"
-msgstr ""
+msgstr "Znesek ne more biti večji od nedodeljenega zneska"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:151
 msgid "Payment type for contribution must be set to scheduled"
-msgstr ""
+msgstr "Vrsta plačila za prispevek mora biti nastavljena na načrtovano"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:156
 msgid "Payment type is required"
-msgstr ""
+msgstr "Vrsta plačila je obvezna"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:159
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Načrtovanje načrtovanega plačila ni mogoče!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:165
 msgid "Scheduled date is required"
-msgstr ""
+msgstr "Načrtovani datum je obvezen"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:325
 msgid "Unable to load payment type"
-msgstr ""
+msgstr "Vrste plačila ni mogoče naložiti"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:564
 msgid "Scheduled payment ID"
-msgstr ""
+msgstr "ID načrtovanega plačila"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:568
 msgid "Contribution ID"
-msgstr ""
+msgstr "ID prispevka"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:576
 #: ../../tempcache/pages/contribution_form.html.twig:622
 msgid "Record date:"
-msgstr ""
+msgstr "Datum zapisa:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:580
 msgid "Scheduled date:"
-msgstr ""
+msgstr "Načrtovani datum:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:588
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:68
@@ -1603,7 +1607,7 @@ msgstr ""
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:628
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:809
 msgid "Paid"
-msgstr ""
+msgstr "Plačano"
 
 #: ../lib/Galette/Entity/Texts.php:101
 msgid "Insert a carriage return"
