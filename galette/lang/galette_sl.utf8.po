@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-09 16:41+0000\n"
+"PO-Revision-Date: 2026-07-10 12:19+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -1848,15 +1848,15 @@ msgstr "Prenos"
 
 #: ../lib/Galette/Entity/PaymentType.php:255
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 #: ../lib/Galette/Entity/PaymentType.php:256
 msgid "Stripe"
-msgstr ""
+msgstr "Stripe"
 
 #: ../lib/Galette/Entity/PaymentType.php:257
 msgid "HelloAsso"
-msgstr ""
+msgstr "HelloAsso"
 
 #: ../lib/Galette/Entity/PaymentType.php:258
 msgid "Payment schedule"
@@ -1913,7 +1913,7 @@ msgstr "Javno"
 #: ../lib/Galette/Entity/Reminder.php:219
 #, php-format
 msgid "%1$s <%2$s> (%3$s days)"
-msgstr ""
+msgstr "%1$s <%2$s> (%3$s dni)"
 
 #: ../lib/Galette/Entity/Reminder.php:229
 msgid "Sent reminder email for late membership"
@@ -1942,7 +1942,7 @@ msgstr "Opomnika za %članstvo ni mogoče poslati (ni e-poštnega naslova)."
 #: ../lib/Galette/Entity/Reminder.php:253
 #, php-format
 msgid "%1$s (#%2$s - %3$s days)"
-msgstr ""
+msgstr "%1$s (#%2$s - %3$s dni)"
 
 #: ../lib/Galette/Entity/Group.php:368
 msgid "Group has been detached from its parent"
@@ -1968,31 +1968,31 @@ msgstr "Skupine `%1$s` ni mogoče nastaviti kot nadrejene!"
 
 #: ../lib/Galette/Entity/Social.php:310
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:311
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: ../lib/Galette/Entity/Social.php:312
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: ../lib/Galette/Entity/Social.php:313
 msgid "LinkedIn"
-msgstr ""
+msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:314
 msgid "Viadeo"
-msgstr ""
+msgstr "Viadeo"
 
 #: ../lib/Galette/Entity/Social.php:315
 msgid "Jabber"
-msgstr ""
+msgstr "Jabber"
 
 #: ../lib/Galette/Entity/Social.php:316
 msgid "ICQ"
-msgstr ""
+msgstr "ICQ"
 
 #: ../lib/Galette/Entity/Social.php:317
 msgid "Website"
@@ -2000,11 +2000,11 @@ msgstr "Spletna stran"
 
 #: ../lib/Galette/Entity/Social.php:318
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../lib/Galette/Entity/Social.php:319
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #: ../lib/Galette/Controllers/TextController.php:110
 #, php-format
@@ -2199,7 +2199,7 @@ msgstr "Preskusno sporočilo"
 
 #: ../lib/Galette/Controllers/GaletteController.php:281
 msgid "Galette admin"
-msgstr ""
+msgstr "Galette admin"
 
 #: ../lib/Galette/Controllers/GaletteController.php:284
 msgid "Test message."
@@ -2470,19 +2470,19 @@ msgstr "Datoteke '%export' ni mogoče odstraniti z diska :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:483
 msgid "CSV import model"
-msgstr ""
+msgstr "CSV import model"
 
 #: ../lib/Galette/Controllers/CsvController.php:517
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galette_import_model.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:547
 msgid "Import model has been successfully stored :)"
-msgstr ""
+msgstr "Uvoženi model je bil uspešno shranjen :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:552
 msgid "Import model has not been stored :("
-msgstr ""
+msgstr "Uvoženi model ni bil shranjen :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:78
 #: ../../tempcache/pages/transaction_form.html.twig:191
@@ -2496,175 +2496,175 @@ msgstr "Nova članarina"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:83
 msgid "New donation"
-msgstr ""
+msgstr "Nova donacija"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:162
 msgid "No related contribution type available, please create a new one."
-msgstr ""
+msgstr "Ni sorodne vrste prispevka, ustvarite novega."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:254
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
 #, php-format
 msgid "Mass add contribution on %1$s members"
-msgstr ""
+msgstr "Ni sorodne vrste prispevka, ustvarite novega"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:634
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:263
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Neznana vrsta plačila!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:647
 msgid "- Unknown contribution type!"
-msgstr ""
+msgstr "- Neznana vrsta prispevka!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:694
 msgid "No contribution was selected, please check at least one."
-msgstr ""
+msgstr "Izbran ni bil noben prispevek, prosimo, označite vsaj enega."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:815
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Pri shranjevanju prispevka je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:821
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "Prispevek je bil uspešno shranjen"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:913
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr ""
+msgstr "Odstrani %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:915
 msgid "contributions"
-msgstr ""
+msgstr "prispevki"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:915
 msgid "transactions"
-msgstr ""
+msgstr "transakcije"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:919
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Odstrani %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:920
 msgid "transaction"
-msgstr ""
+msgstr "transakcija"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:77
 msgid "This search is already saved."
-msgstr ""
+msgstr "To iskanje je že shranjeno."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:82
 msgid "Search has been saved."
-msgstr ""
+msgstr "Iskanje je bilo shranjeno."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:224
 #: ../../tempcache/pages/saved_searches_list.html.twig:191
 msgid "Remove saved search"
-msgstr ""
+msgstr "Odstrani shranjeno iskanje"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:229
 #, php-format
 msgid "You are about to remove %1$s searches."
-msgstr ""
+msgstr "Odstranili boste %1$s iskanj."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:268
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Shranjeno iskanje je naloženo"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:287
 msgid "An SQL error has occurred while loading search."
-msgstr ""
+msgstr "Med nalaganjem iskanja je prišlo do napake SQL."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:98
 #: ../../tempcache/pages/configuration_titles.html.twig:232
 msgid "Edit title"
-msgstr ""
+msgstr "Uredi naslov"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:143
 msgid "Missing required title's short or long form!"
-msgstr ""
+msgstr "Manjka kratka ali dolga oblika zahtevanega naslova!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:150
 #, php-format
 msgid "Title '%1$s' has not been added!"
-msgstr ""
+msgstr "Naslov '%1$s' ni bil dodan!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:155
 #, php-format
 msgid "Title '%1$s' has not been modified!"
-msgstr ""
+msgstr "Naslov '%1$s' ni bil spremenjen!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:163
 #, php-format
 msgid "Title '%1$s' has been successfully added."
-msgstr ""
+msgstr "Naslov '%1$s' je bil uspešno dodan."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:168
 #, php-format
 msgid "Title '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Naslov '%1$s' je bil uspešno spremenjen."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:220
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Odstrani naslov %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:47
 #: ../../tempcache/pages/configuration_core_lists.html.twig:96
 msgid "Add field"
-msgstr ""
+msgstr "Dodaj polje"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:105
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Pri dodajanju dinamičnega polja je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:109
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:408
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "Dinamično polje je bilo uspešno shranjeno!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:313
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:199
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "Datoteka ne obstaja ali je ni mogoče prebrati :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:338
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Podatkov o polju ni mogoče pridobiti."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:345
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:219
 msgid "Edit field"
-msgstr ""
+msgstr "Uredi polje"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:402
 msgid "An error occurred editing dynamic field :("
-msgstr ""
+msgstr "Pri urejanju dinamičnega polja je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:475
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:497
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "Zahtevano polje ne obstaja!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:479
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "Odstrani dinamično polje %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:526
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "Polje je bilo uspešno premaknjeno"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:528
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Pri premikanju polja je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:54
 #: ../../tempcache/pages/groups_list.html.twig:515
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Manjka ime skupine!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:66
 msgid "Group name already exists!"
@@ -8617,7 +8617,6 @@ msgid "March"
 msgstr "Marec"
 
 #: ../../tempcache/elements/js/calendar.js.twig:71
-#, fuzzy
 msgid "April"
 msgstr "April"
 
