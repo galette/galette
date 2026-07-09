@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-09 08:52+0000\n"
+"PO-Revision-Date: 2026-07-09 09:31+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -1611,83 +1611,83 @@ msgstr "Plačano"
 
 #: ../lib/Galette/Entity/Texts.php:101
 msgid "Insert a carriage return"
-msgstr ""
+msgstr "Vstavi znak za premik vrstice"
 
 #: ../lib/Galette/Entity/Texts.php:105
 msgid "Insert a new blank line"
-msgstr ""
+msgstr "Vstavi novo prazno vrstico"
 
 #: ../lib/Galette/Entity/Texts.php:109
 msgid "Link validity"
-msgstr ""
+msgstr "Veljavnost povezave"
 
 #: ../lib/Galette/Entity/Texts.php:114
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Neposredna povezava za prenos članske izkaznice"
 
 #: ../lib/Galette/Entity/Texts.php:119
 msgid "Direct link for invoice/receipt download"
-msgstr ""
+msgstr "Neposredna povezava za prenos računa/potrdila"
 
 #: ../lib/Galette/Entity/Texts.php:124
 msgid "Galette's change password URI"
-msgstr ""
+msgstr "Galettein URI za spremembo gesla"
 
 #: ../lib/Galette/Entity/Texts.php:610
 msgid "Mail specific"
-msgstr ""
+msgstr "Pošta, specifična za"
 
 #: ../lib/Galette/Entity/Adherent.php:758
 msgid "Freed of dues"
-msgstr ""
+msgstr "Oproščen plačila dajatev"
 
 #. TRANS: first parameter is number of late days, second is registration date
 #: ../lib/Galette/Entity/Adherent.php:768
 #, php-format
 msgid "Never contributed: Registered %1$s days ago (since %2$s)"
-msgstr ""
+msgstr "Nikoli ni prispeval: Registriran pred %1$s dnevi (od %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:773
 #: ../lib/Galette/Filters/MembersList.php:263
 #: ../../tempcache/pages/members_list.html.twig:547
 msgid "Never contributed"
-msgstr ""
+msgstr "Nikoli nisem prispeval/a"
 
 #: ../lib/Galette/Entity/Adherent.php:777
 msgid "Last day!"
-msgstr ""
+msgstr "Zadnji dan!"
 
 #: ../lib/Galette/Entity/Adherent.php:777
 msgid "Late since today!"
-msgstr ""
+msgstr "Z zamudo od danes!"
 
 #. TRANS: first parameter is number of remaining days, second is end membership date
 #: ../lib/Galette/Entity/Adherent.php:782
 #, php-format
 msgid "%1$s days remaining (ending on %2$s)"
-msgstr ""
+msgstr "Preostane še %1$s dni (konča se %2$s)"
 
 #. TRANS: first parameter is number of late days, second is end membership date
 #: ../lib/Galette/Entity/Adherent.php:791
 #, php-format
 msgid "Late of %1$s days (since %2$s)"
-msgstr ""
+msgstr "Zamuja %1$s dni (od %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:797
 msgid "No longer member"
-msgstr ""
+msgstr "Ni več član"
 
 #: ../lib/Galette/Entity/Adherent.php:1182
 msgid "You have to select a group you own!"
-msgstr ""
+msgstr "Izbrati moraš skupino, ki jo imaš v lasti!"
 
 #: ../lib/Galette/Entity/Adherent.php:1281
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- Datum rojstva mora biti nastavljen v preteklosti!"
 
 #: ../lib/Galette/Entity/Adherent.php:1289
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
+msgstr "- Člani morajo biti mlajši od 200 let (trenutno %let)!"
 
 #. TRANS %1$s is the expected dat format, %2$s the field label
 #. TRANS: %1$s date format, %2$s is the field name
@@ -1698,75 +1698,75 @@ msgstr ""
 #: ../lib/Galette/Helpers/DatesHelper.php:181
 #, php-format
 msgid "- Wrong date format (%1$s) for %2$s!"
-msgstr ""
+msgstr "- Napačna oblika datuma (%1$s) za %2$s!"
 
 #: ../lib/Galette/Entity/Adherent.php:1323
 msgid "- Non-valid E-Mail address!"
-msgstr ""
+msgstr "- Neveljaven e-poštni naslov!"
 
 #: ../lib/Galette/Entity/Adherent.php:1341
 msgid "- This E-Mail address is already used by another member!"
-msgstr ""
+msgstr "- Ta e-poštni naslov že uporablja drug član!"
 
 #: ../lib/Galette/Entity/Adherent.php:1348
 #: ../lib/Galette/Entity/Adherent.php:1389
 msgid "An error has occurred while looking if login already exists."
-msgstr ""
+msgstr "Pri preverjanju, ali prijava že obstaja, je prišlo do napake."
 
 #: ../lib/Galette/Entity/Adherent.php:1358
 msgid "- The username must be composed of at least %i characters!"
-msgstr ""
+msgstr "- Uporabniško ime mora biti sestavljeno iz vsaj %i znakov!"
 
 #: ../lib/Galette/Entity/Adherent.php:1362
 msgid "- The username cannot contain the @ character"
-msgstr ""
+msgstr "- Uporabniško ime ne sme vsebovati znaka @"
 
 #: ../lib/Galette/Entity/Adherent.php:1382
 msgid "- This username is already in use, please choose another one!"
-msgstr ""
+msgstr "- To uporabniško ime je že v uporabi, prosimo, izberite drugo!"
 
 #: ../lib/Galette/Entity/Adherent.php:1399
 #: ../lib/Galette/Controllers/AuthController.php:479
 msgid "- The passwords don't match!"
-msgstr ""
+msgstr "- Gesli se ne ujemata!"
 
 #: ../lib/Galette/Entity/Adherent.php:1404
 msgid "Password misrepeated: "
-msgstr ""
+msgstr "Geslo napačno ponovljeno: "
 
 #: ../lib/Galette/Entity/Adherent.php:1438
 msgid "Status #%id does not exists in database."
-msgstr ""
+msgstr "Status #%id ne obstaja v zbirki podatkov."
 
 #: ../lib/Galette/Entity/Adherent.php:1472
 #, php-format
 msgid "Gender %gender does not exists!"
-msgstr ""
+msgstr "Spol %gender ne obstaja!"
 
 #: ../lib/Galette/Entity/Adherent.php:1478
 msgid "A member cannot be its own parent!"
-msgstr ""
+msgstr "Član ne more biti svoj lastni starš!"
 
 #: ../lib/Galette/Entity/Adherent.php:1624
 msgid "Self_subscription as a member: "
-msgstr ""
+msgstr "Samonaročnina kot član:"
 
 #: ../lib/Galette/Entity/Adherent.php:1630
 msgid "Member card added"
-msgstr ""
+msgstr "Dodana članska izkaznica"
 
 #: ../lib/Galette/Entity/Adherent.php:1637
 msgid "Fail to add new member."
-msgstr ""
+msgstr "Dodajanje novega člana ni uspelo."
 
 #: ../lib/Galette/Entity/Adherent.php:1667
 msgid "Member card updated"
-msgstr ""
+msgstr "Posodobljena članska izkaznica"
 
 #: ../lib/Galette/Entity/Adherent.php:1786
 #: ../../tempcache/components/forms/account.html.twig:72
 msgid "Active"
-msgstr ""
+msgstr "Aktivno"
 
 #: ../lib/Galette/Entity/Adherent.php:1786
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:299
@@ -1774,7 +1774,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:278
 #: ../../tempcache/components/forms/account.html.twig:80
 msgid "Inactive"
-msgstr ""
+msgstr "Neaktivno"
 
 #: ../lib/Galette/Entity/Adherent.php:2033
 #: ../../tempcache/pages/member_form.html.twig:948
@@ -1785,66 +1785,66 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:2086
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
-msgstr ""
+msgstr "Podvojeno iz %1$s (%2$s)"
 
 #: ../lib/Galette/Entity/Document.php:409
 msgid "Association status"
-msgstr ""
+msgstr "Status združenja"
 
 #: ../lib/Galette/Entity/Document.php:410
 msgid "Rules of procedure"
-msgstr ""
+msgstr "Poslovnik"
 
 #: ../lib/Galette/Entity/Document.php:411
 #: ../../tempcache/pages/member_show.html.twig:160
 #: ../../tempcache/elements/edit_pdf_models.html.twig:145
 msgid "Adhesion form"
-msgstr ""
+msgstr "Oblika adhezije"
 
 #: ../lib/Galette/Entity/Document.php:412
 msgid "Meeting minutes"
-msgstr ""
+msgstr "Zapisnik sestanka"
 
 #: ../lib/Galette/Entity/Document.php:413
 msgid "Votes results"
-msgstr ""
+msgstr "Rezultati glasovanja"
 
 #: ../lib/Galette/Entity/SavedSearch.php:141
 msgid "Form is mandatory!"
-msgstr ""
+msgstr "Obrazec je obvezen!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:322
 #, php-format
 msgid "Unknown form %form!"
-msgstr ""
+msgstr "Neznana oblika %form!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:337
 msgid "Name cannot be empty!"
-msgstr ""
+msgstr "Ime ne sme biti prazno!"
 
 #: ../lib/Galette/Entity/PaymentType.php:154
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "Vrst plačil sistema ni mogoče izbrisati!"
 
 #: ../lib/Galette/Entity/PaymentType.php:250
 msgid "Other"
-msgstr ""
+msgstr "Drugo"
 
 #: ../lib/Galette/Entity/PaymentType.php:251
 msgid "Cash"
-msgstr ""
+msgstr "Gotovina"
 
 #: ../lib/Galette/Entity/PaymentType.php:252
 msgid "Credit card"
-msgstr ""
+msgstr "Kreditna kartica"
 
 #: ../lib/Galette/Entity/PaymentType.php:253
 msgid "Check"
-msgstr ""
+msgstr "Preveri"
 
 #: ../lib/Galette/Entity/PaymentType.php:254
 msgid "Transfer"
-msgstr ""
+msgstr "Prenos"
 
 #: ../lib/Galette/Entity/PaymentType.php:255
 msgid "Paypal"
@@ -1860,54 +1860,54 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:258
 msgid "Payment schedule"
-msgstr ""
+msgstr "Plačilni urnik"
 
 #: ../lib/Galette/Entity/Transaction.php:101
 #: ../../tempcache/pages/plugin_info.html.twig:105
 #: ../../tempcache/pages/transaction_form.html.twig:116
 msgid "Date:"
-msgstr ""
+msgstr "Datum:"
 
 #: ../lib/Galette/Entity/Transaction.php:109
 #: ../../tempcache/pages/plugin_info.html.twig:89
 #: ../../tempcache/pages/transaction_form.html.twig:92
 #: ../../tempcache/pages/contribution_type_form.html.twig:82
 msgid "Description:"
-msgstr ""
+msgstr "Opis:"
 
 #: ../lib/Galette/Entity/Transaction.php:113
 #: ../../tempcache/pages/transaction_form.html.twig:106
 msgid "Originator:"
-msgstr ""
+msgstr "Izvornik:"
 
 #: ../lib/Galette/Entity/Transaction.php:334
 msgid "- Transaction description must be 150 characters long maximum."
-msgstr ""
+msgstr "- Opis transakcije mora biti dolg največ 150 znakov."
 
 #: ../lib/Galette/Entity/Transaction.php:427
 msgid "Transaction added"
-msgstr ""
+msgstr "Transakcija dodana"
 
 #: ../lib/Galette/Entity/Transaction.php:432
 msgid "Fail to add new transaction."
-msgstr ""
+msgstr "Dodajanje nove transakcije ni uspelo."
 
 #: ../lib/Galette/Entity/Transaction.php:446
 msgid "Transaction updated"
-msgstr ""
+msgstr "Transakcija posodobljena"
 
 #: ../lib/Galette/Entity/ListsConfig.php:173
 msgid "Is admin"
-msgstr ""
+msgstr "Je administrator"
 
 #: ../lib/Galette/Entity/ListsConfig.php:176
 msgid "Modified"
-msgstr ""
+msgstr "Spremenjeno"
 
 #: ../lib/Galette/Entity/ListsConfig.php:182
 #: ../lib/Galette/Features/Permissions.php:46
 msgid "Public"
-msgstr ""
+msgstr "Javno"
 
 #. TRANS first param is name, second email, third days interval
 #: ../lib/Galette/Entity/Reminder.php:219
@@ -1917,23 +1917,26 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:229
 msgid "Sent reminder email for late membership"
-msgstr ""
+msgstr "Poslano e-poštno sporočilo z opomnikom za zamudo pri članstvu"
 
 #: ../lib/Galette/Entity/Reminder.php:231
 msgid "Sent reminder email for impending membership"
-msgstr ""
+msgstr "Poslano e-poštno sporočilo z opomnikom za bližajoče se članstvo"
 
 #: ../lib/Galette/Entity/Reminder.php:237
 msgid "A problem happened while sending late membership email"
 msgstr ""
+"Pri pošiljanju e-poštnega sporočila o zamujenem članstvu je prišlo do težave"
 
 #: ../lib/Galette/Entity/Reminder.php:239
 msgid "A problem happened while sending impending membership email"
 msgstr ""
+"Pri pošiljanju e-poštnega sporočila o skorajšnjem članstvu je prišlo do "
+"težave"
 
 #: ../lib/Galette/Entity/Reminder.php:249
 msgid "Unable to send %membership reminder (no email address)."
-msgstr ""
+msgstr "Opomnika za %članstvo ni mogoče poslati (ni e-poštnega naslova)."
 
 #. TRANS: first parameter is name, second the id, this days interval
 #: ../lib/Galette/Entity/Reminder.php:253
@@ -1943,25 +1946,25 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:368
 msgid "Group has been detached from its parent"
-msgstr ""
+msgstr "Skupina je bila ločena od nadrejene skupine"
 
 #: ../lib/Galette/Entity/Group.php:425
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:85
 msgid "Group added"
-msgstr ""
+msgstr "Skupina je bila dodana"
 
 #: ../lib/Galette/Entity/Group.php:430
 msgid "Fail to add new group."
-msgstr ""
+msgstr "Dodajanje nove skupine ni uspelo."
 
 #: ../lib/Galette/Entity/Group.php:449
 msgid "Group updated"
-msgstr ""
+msgstr "Skupina posodobljena"
 
 #: ../lib/Galette/Entity/Group.php:676
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr ""
+msgstr "Skupine `%1$s` ni mogoče nastaviti kot nadrejene!"
 
 #: ../lib/Galette/Entity/Social.php:310
 msgid "Mastodon"
@@ -1993,7 +1996,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Social.php:317
 msgid "Website"
-msgstr ""
+msgstr "Spletna stran"
 
 #: ../lib/Galette/Entity/Social.php:318
 msgid "Blog"
@@ -2006,39 +2009,39 @@ msgstr ""
 #: ../lib/Galette/Controllers/TextController.php:110
 #, php-format
 msgid "Email: '%1$s' has not been modified!"
-msgstr ""
+msgstr "E-pošta: '%1$s' ni bila spremenjena!"
 
 #: ../lib/Galette/Controllers/TextController.php:115
 #, php-format
 msgid "Email: '%1$s' has been successfully modified."
-msgstr ""
+msgstr "E-poštni naslov: '%1$s' je bil uspešno spremenjen."
 
 #: ../lib/Galette/Controllers/HistoryController.php:141
 #: ../lib/Galette/Controllers/CrudController.php:211
 #: ../lib/Galette/Controllers/CsvController.php:394
 msgid "Removal has not been confirmed!"
-msgstr ""
+msgstr "Odstranitev ni bila potrjena!"
 
 #: ../lib/Galette/Controllers/HistoryController.php:153
 msgid "Logs have been flushed!"
-msgstr ""
+msgstr "Dnevniki so bili sprani!"
 
 #: ../lib/Galette/Controllers/HistoryController.php:164
 msgid "An error occurred trying to flush logs :("
-msgstr ""
+msgstr "Pri poskusu brisanja dnevnikov je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:198
 #: ../../tempcache/pages/history.html.twig:102
 msgid "Flush the logs"
-msgstr ""
+msgstr "Izbriši dnevnike"
 
 #: ../lib/Galette/Controllers/CrudController.php:220
 msgid "Successfully deleted!"
-msgstr ""
+msgstr "Uspešno izbrisano!"
 
 #: ../lib/Galette/Controllers/CrudController.php:232
 msgid "An error occurred trying to delete :("
-msgstr ""
+msgstr "Pri poskusu brisanja je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/PdfController.php:76
 #: ../lib/Galette/Controllers/PdfController.php:207
@@ -2049,145 +2052,150 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:998
 #: ../lib/Galette/Middleware/Authenticate.php:143
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "Nimate dovoljenja za zahtevani URL."
 
 #: ../lib/Galette/Controllers/PdfController.php:99
 #: ../lib/Galette/Controllers/PdfController.php:164
 #: ../lib/Galette/Controllers/Crud/MembersController.php:952
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Izbran ni bil noben član, prosimo, označite vsaj eno ime."
 
 #: ../lib/Galette/Controllers/PdfController.php:127
 #: ../lib/Galette/Controllers/PdfController.php:184
 #: ../lib/Galette/Controllers/PdfController.php:540
 msgid "Unable to get members list."
-msgstr ""
+msgstr "Seznama članov ni mogoče pridobiti."
 
 #: ../lib/Galette/Controllers/PdfController.php:254
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Konfiguracija lista prisotnosti"
 
 #: ../lib/Galette/Controllers/PdfController.php:292
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Za ustvarjanje seznama prisotnosti ni izbran noben član"
 
 #: ../lib/Galette/Controllers/PdfController.php:332
 #: ../lib/Galette/Controllers/PdfController.php:557
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:724
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "Prispevka št. %id ni mogoče naložiti!"
 
 #: ../lib/Galette/Controllers/PdfController.php:363
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Seznama skupin ni mogoče pridobiti."
 
 #: ../lib/Galette/Controllers/PdfController.php:435
 msgid "Missing PDF model type!"
-msgstr ""
+msgstr "Manjka vrsta modela PDF!"
 
 #: ../lib/Galette/Controllers/PdfController.php:468
 msgid "Model has been successfully stored!"
-msgstr ""
+msgstr "Model je bil uspešno shranjen!"
 
 #: ../lib/Galette/Controllers/PdfController.php:470
 msgid "Model has not been stored :("
-msgstr ""
+msgstr "Model ni bil shranjen :("
 
 #: ../lib/Galette/Controllers/PdfController.php:504
 msgid "Invalid link!"
-msgstr ""
+msgstr "Neveljavna povezava!"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:66
 msgid "Texts has been successfully reinitialized."
-msgstr ""
+msgstr "Aplikacija Besedila je bila uspešno ponovno inicializirana."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:68
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Pri ponovni inicializaciji besedil je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:76
 msgid "Fields configuration has been successfully reinitialized."
-msgstr ""
+msgstr "Konfiguracija polj je bila uspešno ponovno inicializirana."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:78
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "Pri ponovni inicializaciji konfiguracije polj je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:86
 msgid "PDF models has been successfully reinitialized."
-msgstr ""
+msgstr "Modeli PDF so bili uspešno ponovno inicializirani."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:88
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "Pri vnovični inicializaciji modelov PDF je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:100
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
+msgstr "Prijavna imena in gesla so bila uspešno izpolnjena (obdelanih %i)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:103
 msgid "An error occurred filling empty logins and passwords :("
 msgstr ""
+"Pri izpolnjevanju praznih prijavnih podatkov in gesel je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:111
 msgid "Dynamic dates has been fixed."
-msgstr ""
+msgstr "Dinamični datumi so bili popravljeni."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:113
 msgid "An error occurred fixing dynamic dates :("
-msgstr ""
+msgstr "Pri popravljanju dinamičnih datumov je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:72
 #: ../../tempcache/elements/footer.html.twig:114
 msgid "System information"
-msgstr ""
+msgstr "Informacije o sistemu"
 
 #: ../lib/Galette/Controllers/GaletteController.php:87
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:79
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:94
 msgid "Dashboard"
-msgstr ""
+msgstr "Nadzorna plošča"
 
 #: ../lib/Galette/Controllers/GaletteController.php:177
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "All accounts"
-msgstr ""
+msgstr "Vsi računi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:178
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Active accounts"
-msgstr ""
+msgstr "Aktivni računi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:179
 #: ../lib/Galette/Filters/MembersList.php:275
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Neaktivni računi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:203
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"Med shranjevanjem nastavitev je prišlo do napake SQL. Poskusite znova in se "
+"obrnite na skrbnika, če težava ne izgine."
 
 #: ../lib/Galette/Controllers/GaletteController.php:205
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Nastavitve so bile shranjene."
 
 #: ../lib/Galette/Controllers/GaletteController.php:218
 #: ../lib/Galette/Controllers/GaletteController.php:229
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1658
 msgid "Delete failed"
-msgstr ""
+msgstr "Brisanje ni uspelo"
 
 #: ../lib/Galette/Controllers/GaletteController.php:271
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Galette ste prosili, naj pošlje testno e-pošto, vendar je bila e-pošta v "
+"nastavitvah onemogočena."
 
 #: ../lib/Galette/Controllers/GaletteController.php:278
 msgid "Test message"
-msgstr ""
+msgstr "Preskusno sporočilo"
 
 #: ../lib/Galette/Controllers/GaletteController.php:281
 msgid "Galette admin"
@@ -2195,67 +2203,67 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:284
 msgid "Test message."
-msgstr ""
+msgstr "Testno sporočilo."
 
 #: ../lib/Galette/Controllers/GaletteController.php:291
 #, php-format
 msgid "An email has been sent to %1$s"
-msgstr ""
+msgstr "E-poštno sporočilo je bilo poslano na %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:299
 #, php-format
 msgid "No email sent to %1$s"
-msgstr ""
+msgstr "Na %1$s ni bilo poslano nobeno e-poštno sporočilo"
 
 #: ../lib/Galette/Controllers/GaletteController.php:307
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Neveljaven e-poštni naslov!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:414
 msgid "Fields configuration has been successfully stored"
-msgstr ""
+msgstr "Konfiguracija polj je bila uspešno shranjena"
 
 #: ../lib/Galette/Controllers/GaletteController.php:419
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "Pri shranjevanju konfiguracije polj je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
 msgid "List configuration has been successfully stored"
-msgstr ""
+msgstr "Konfiguracija seznama je bila uspešno shranjena"
 
 #: ../lib/Galette/Controllers/GaletteController.php:478
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "Pri shranjevanju konfiguracije seznama je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:541
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Zaenkrat ni opomnika za pošiljanje."
 
 #: ../lib/Galette/Controllers/GaletteController.php:578
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "Ni članov za nadaljevanje."
 
 #: ../lib/Galette/Controllers/GaletteController.php:585
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "Opomnik ni bil poslan:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:592
 msgid "Sent reminders:"
-msgstr ""
+msgstr "Poslani opomniki:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:645
 msgid "Download document"
-msgstr ""
+msgstr "Prenesi dokument"
 
 #: ../lib/Galette/Controllers/PluginsController.php:73
 #, php-format
 msgid "Plugin %1$s has been enabled"
-msgstr ""
+msgstr "Vtičnik %1$s je bil omogočen"
 
 #: ../lib/Galette/Controllers/PluginsController.php:84
 #, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr ""
+msgstr "Vtičnik %1$s je bil onemogočen"
 
 #: ../lib/Galette/Controllers/AuthController.php:55
 #: ../lib/Galette/Controllers/AuthController.php:170
@@ -2264,35 +2272,35 @@ msgstr ""
 #: ../../tempcache/pages/index.html.twig:111
 #: ../../tempcache/elements/navigation/public_pages.html.twig:116
 msgid "Login"
-msgstr ""
+msgstr "Prijava"
 
 #: ../lib/Galette/Controllers/AuthController.php:80
 msgid "You must provide both login and password."
-msgstr ""
+msgstr "Navesti morate tako prijavo kot geslo."
 
 #: ../lib/Galette/Controllers/AuthController.php:144
 #: ../../tempcache/elements/footer.html.twig:60
 #: ../../tempcache/elements/footer.html.twig:76
 msgid "A new Galette release is available."
-msgstr ""
+msgstr "Na voljo je nova izdaja Galette."
 
 #: ../lib/Galette/Controllers/AuthController.php:146
 #: ../../tempcache/elements/footer.html.twig:62
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
-msgstr ""
+msgstr "Trenutno uporabljate Galette %1$s, na voljo pa je %2$s."
 
 #: ../lib/Galette/Controllers/AuthController.php:165
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Vaše geslo je prešibko! Prosimo, razmislite o njegovi posodobitvi."
 
 #: ../lib/Galette/Controllers/AuthController.php:173
 msgid "Login failed."
-msgstr ""
+msgstr "Prijava ni uspela."
 
 #: ../lib/Galette/Controllers/AuthController.php:174
 msgid "Authentication failed"
-msgstr ""
+msgstr "Preverjanje pristnosti ni uspelo"
 
 #: ../lib/Galette/Controllers/AuthController.php:185
 #: ../../tempcache/elements/logged_user.html.twig:127
@@ -2301,51 +2309,54 @@ msgstr ""
 #: ../../tempcache/elements/logged_user.html.twig:371
 #: ../../tempcache/elements/logged_user.html.twig:389
 msgid "Log off"
-msgstr ""
+msgstr "Odjava"
 
 #: ../lib/Galette/Controllers/AuthController.php:206
 #, php-format
 msgid "Impersonating as %login"
-msgstr ""
+msgstr "Predstavljam se kot %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:218
 msgid "Unable to impersonate as %id"
-msgstr ""
+msgstr "Ni mogoče izdati imena %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:239
 #: ../lib/Galette/Controllers/AuthController.php:244
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Končano lažno predstavljanje"
 
 #: ../lib/Galette/Controllers/AuthController.php:264
 #: ../lib/Galette/Controllers/AuthController.php:450
 msgid "Password recovery"
-msgstr ""
+msgstr "Obnovitev gesla"
 
 #: ../lib/Galette/Controllers/AuthController.php:290
 #: ../../tempcache/pages/mailing_form.html.twig:66
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
+"Pošiljanje e-pošte je v nastavitvah onemogočeno. Vprašajte skrbnika galete"
 
 #: ../lib/Galette/Controllers/AuthController.php:347
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "E-pošta za obnovitev gesla je bila poslana na '%s'."
 
 #: ../lib/Galette/Controllers/AuthController.php:351
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"Na vaš naslov je bilo poslano e-poštno sporočilo.<br/>Preverite svoj "
+"nabiralnik in sledite navodilom."
 
 #: ../lib/Galette/Controllers/AuthController.php:353
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Članu je bilo poslano e-poštno sporočilo."
 
 #: ../lib/Galette/Controllers/AuthController.php:364
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "Pri pošiljanju gesla za račun '%s' je prišlo do težave"
 
 #: ../lib/Galette/Controllers/AuthController.php:378
 #: ../lib/Galette/Events/MemberListener.php:160
@@ -2353,61 +2364,63 @@ msgstr ""
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
+"Pri shranjevanju začasnega gesla za %s je prišlo do napake. Prosimo, "
+"obvestite skrbnika."
 
 #: ../lib/Galette/Controllers/AuthController.php:390
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr ""
+msgstr "Vaš račun (%s) ne vsebuje veljavnega e-poštnega naslova"
 
 #: ../lib/Galette/Controllers/AuthController.php:404
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "Vaš račun (%s) ne vsebuje veljavnega e-poštnega naslova"
 
 #: ../lib/Galette/Controllers/AuthController.php:410
 #, php-format
 msgid "Login %s does not exist"
-msgstr ""
+msgstr "Prijava %s ne obstaja"
 
 #: ../lib/Galette/Controllers/AuthController.php:434
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
-msgstr ""
+msgstr "Ta povezava ni več veljavna. Ponovno zahtevajte pridobitev gesla."
 
 #: ../lib/Galette/Controllers/AuthController.php:476
 #: ../webroot/installer.php:109 ../webroot/installer.php:154
 msgid "No password"
-msgstr ""
+msgstr "Brez gesla"
 
 #: ../lib/Galette/Controllers/AuthController.php:482
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "Vaše geslo je prešibko!"
 
 #: ../lib/Galette/Controllers/AuthController.php:491
 msgid "An error occurred while updating your password."
-msgstr ""
+msgstr "Pri posodabljanju gesla je prišlo do napake."
 
 #: ../lib/Galette/Controllers/AuthController.php:497
 #, php-format
 msgid "Password changed for member '%s'."
-msgstr ""
+msgstr "Geslo za člana '%s' je bilo spremenjeno."
 
 #: ../lib/Galette/Controllers/AuthController.php:506
 msgid "Your password has been changed!"
-msgstr ""
+msgstr "Vaše geslo je bilo spremenjeno!"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:130
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:155
 msgid "An error occurred saving label `%label` for language `%lang`"
-msgstr ""
+msgstr "Pri shranjevanju oznake `%label` za jezik `%lang` je prišlo do napake"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:162
 msgid "Labels has been successfully translated!"
-msgstr ""
+msgstr "Oznake so bile uspešno prevedene!"
 
 #: ../lib/Galette/Controllers/CsvController.php:151
 msgid "Table %table is empty, and has not been exported."
-msgstr ""
+msgstr "Tabela %table je prazna in ni bila izvožena."
 
 #: ../lib/Galette/Controllers/CsvController.php:169
 #, php-format
@@ -2415,43 +2428,45 @@ msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
+"Izvozne datoteke ni bilo mogoče zapisati na disk za '%export'. Prepričajte "
+"se, da lahko spletni strežnik piše v imenik exports."
 
 #: ../lib/Galette/Controllers/CsvController.php:179
 #, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr ""
+msgstr "Pri izvajanju parametriziranega izvoza '%export' je prišlo do napake."
 
 #: ../lib/Galette/Controllers/CsvController.php:269
 msgid "An error occurred importing the file :("
-msgstr ""
+msgstr "Pri uvozu datoteke je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/CsvController.php:279
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
-msgstr ""
+msgstr "Datoteka '%1$s' je bila uspešno uvožena :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:306
 msgid "No file has been uploaded!"
-msgstr ""
+msgstr "Nobena datoteka ni bila naložena!"
 
 #: ../lib/Galette/Controllers/CsvController.php:311
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Vaša datoteka je bila uspešno naložena!"
 
 #: ../lib/Galette/Controllers/CsvController.php:359
 #, php-format
 msgid "Remove %1$s file %2$s"
-msgstr ""
+msgstr "Odstrani datoteko %1$s %2$s"
 
 #: ../lib/Galette/Controllers/CsvController.php:407
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr ""
+msgstr "Datoteka '%export' je bila odstranjena z diska."
 
 #: ../lib/Galette/Controllers/CsvController.php:416
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr ""
+msgstr "Datoteke '%export' ni mogoče odstraniti z diska :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:483
 msgid "CSV import model"
