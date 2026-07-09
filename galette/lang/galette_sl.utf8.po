@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-09 11:24+0000\n"
+"PO-Revision-Date: 2026-07-09 12:48+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -7765,66 +7765,66 @@ msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:971
 msgid "Edit the contribution"
-msgstr ""
+msgstr "Uredi prispevek"
 
 #: ../../tempcache/pages/contributions_list.html.twig:984
 msgid "Delete the contribution"
-msgstr ""
+msgstr "Izbriši prispevek"
 
 #: ../../tempcache/pages/contributions_list.html.twig:1047
 msgid "Contribution"
-msgstr ""
+msgstr "Prispevek"
 
 #: ../../tempcache/pages/contributions_list.html.twig:1052
 msgid "Gift"
-msgstr ""
+msgstr "Darilo"
 
 #: ../../tempcache/pages/500.html.twig:61
 msgid "Application error"
-msgstr ""
+msgstr "Napaka aplikacije"
 
 #: ../../tempcache/pages/500.html.twig:93
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #: ../../tempcache/pages/500.html.twig:98
 msgid "Type:"
-msgstr ""
+msgstr "Vrsta:"
 
 #: ../../tempcache/pages/500.html.twig:108
 msgid "Code:"
-msgstr ""
+msgstr "Koda:"
 
 #: ../../tempcache/pages/500.html.twig:132
 #: ../../tempcache/pages/document_form.html.twig:76
 msgid "File:"
-msgstr ""
+msgstr "Datoteka:"
 
 #: ../../tempcache/pages/500.html.twig:142
 msgid "Line:"
-msgstr ""
+msgstr "Vrstica:"
 
 #: ../../tempcache/pages/500.html.twig:160
 msgid "Trace"
-msgstr ""
+msgstr "Sled"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
 #: ../../tempcache/pages/mailings_list.html.twig:336
 #: ../../tempcache/pages/mailing_form.html.twig:91
 msgid "Sender"
-msgstr ""
+msgstr "Pošiljatelj"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
 #: ../../tempcache/pages/mailings_list.html.twig:346
 #: ../../tempcache/pages/mailing_form.html.twig:145
 msgid "Recipients"
-msgstr ""
+msgstr "Prejemniki"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
 #: ../../tempcache/pages/mailings_list.html.twig:201
 #: ../../tempcache/pages/mailings_list.html.twig:352
 msgid "Subject"
-msgstr ""
+msgstr "Zadeva"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
 msgid "Att."
@@ -7833,50 +7833,52 @@ msgstr ""
 #: ../../tempcache/pages/mailings_list.html.twig:56
 #: ../../tempcache/pages/mailings_list.html.twig:368
 msgid "Sent"
-msgstr ""
+msgstr "Poslano"
 
 #: ../../tempcache/pages/mailings_list.html.twig:102
 msgid "Create new mailing"
-msgstr ""
+msgstr "Ustvari novo pošto"
 
 #: ../../tempcache/pages/mailings_list.html.twig:117
 msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
+"V trenutni seji obstaja poštno sporočilo. Kliknite tukaj, če ga želite "
+"nadaljevati ali preklicati."
 
 #: ../../tempcache/pages/mailings_list.html.twig:214
 msgid "Sent mailings:"
-msgstr ""
+msgstr "Poslana poštna sporočila:"
 
 #: ../../tempcache/pages/mailings_list.html.twig:339
 #: ../../tempcache/elements/modes.html.twig:53
 msgid "Superadmin"
-msgstr ""
+msgstr "Superadministrator"
 
 #: ../../tempcache/pages/mailings_list.html.twig:394
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
-msgstr ""
+msgstr "Prikaži podrobnosti poštnega sporočila '%1$s' v oknu za predogled"
 
 #: ../../tempcache/pages/mailings_list.html.twig:409
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
-msgstr ""
+msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
 
 #: ../../tempcache/pages/mailings_list.html.twig:422
 #, php-format
 msgid "Delete mailing '%1$s'"
-msgstr ""
+msgstr "Izbriši poštno sporočilo '%1$s'"
 
 #: ../../tempcache/pages/mailings_list.html.twig:434
 msgid "No sent mailing has been stored in the database yet."
-msgstr ""
+msgstr "V podatkovno bazo še ni shranjenih nobenih poslanih sporočil."
 
 #: ../../tempcache/pages/mailings_list.html.twig:478
 #: ../../tempcache/pages/mailing_form.html.twig:561
 msgid "An error occurred displaying preview :("
-msgstr ""
+msgstr "Pri prikazu predogleda je prišlo do napake :("
 
 #: ../../tempcache/pages/group_form.html.twig:111
 #: ../../tempcache/pages/group_form.html.twig:195
@@ -7885,85 +7887,85 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:642
 #: ../../tempcache/pages/mailing_form.html.twig:711
 msgid "An error occurred displaying members interface :("
-msgstr ""
+msgstr "Pri prikazu vmesnika za člane je prišlo do napake :("
 
 #: ../../tempcache/pages/group_form.html.twig:123
 msgid "Group members selection"
-msgstr ""
+msgstr "Izbira članov skupine"
 
 #: ../../tempcache/pages/group_form.html.twig:128
 msgid "Group managers selection"
-msgstr ""
+msgstr "Izbira vodij skupin"
 
 #: ../../tempcache/pages/group_form.html.twig:183
 #: ../../tempcache/elements/group_persons.html.twig:225
 msgid "No member attached"
-msgstr ""
+msgstr "Ni priloženega člana"
 
 #: ../../tempcache/pages/group_form.html.twig:229
 #: ../../tempcache/pages/mailing_form.html.twig:674
 msgid "Click on a row to select a member"
-msgstr ""
+msgstr "Kliknite na vrstico, da izberete člana"
 
 #: ../../tempcache/pages/index.html.twig:134
 msgid "Lost your password?"
-msgstr ""
+msgstr "Ste pozabili geslo?"
 
 #: ../../tempcache/pages/export.html.twig:64
 msgid ""
 "Each selected export will be stored into a separate file in the exports "
 "directory."
-msgstr ""
+msgstr "Vsak izbrani izvoz bo shranjen v ločeno datoteko v imeniku izvozov."
 
 #: ../../tempcache/pages/export.html.twig:87
 msgid "The following files have been written on disk:"
-msgstr ""
+msgstr "Na disk so bile zapisane naslednje datoteke:"
 
 #: ../../tempcache/pages/export.html.twig:122
 msgid "Existing exports"
-msgstr ""
+msgstr "Obstoječi izvozi"
 
 #: ../../tempcache/pages/export.html.twig:128
 msgid "The following exports already seems to exist on the disk:"
-msgstr ""
+msgstr "Zdi se, da naslednji izvozi že obstajajo na disku:"
 
 #: ../../tempcache/pages/export.html.twig:249
 msgid "Parameted exports"
-msgstr ""
+msgstr "Parametriran izvoz"
 
 #: ../../tempcache/pages/export.html.twig:258
 msgid "Which parameted export(s) do you want to run?"
-msgstr ""
+msgstr "Katere parametrizirane izvoze želite zagnati?"
 
 #: ../../tempcache/pages/export.html.twig:329
 msgid "No parameted exports are available."
-msgstr ""
+msgstr "Parametrični izvozi niso na voljo."
 
 #: ../../tempcache/pages/export.html.twig:343
 msgid "Galette tables exports"
-msgstr ""
+msgstr "Izvoz Galette tabel"
 
 #: ../../tempcache/pages/export.html.twig:349
 msgid "Additionnaly, which table(s) do you want to export?"
-msgstr ""
+msgstr "Poleg tega, katere tabele želite izvoziti?"
 
 #: ../../tempcache/pages/export.html.twig:362
 msgid "Table name"
-msgstr ""
+msgstr "Ime tabele"
 
 #: ../../tempcache/pages/export.html.twig:409
 #: ../../tempcache/elements/js/modal.js.twig:246
 msgid "Continue"
-msgstr ""
+msgstr "Nadaljuj"
 
 #: ../../tempcache/pages/document_form.html.twig:119
 msgid "Document type"
-msgstr ""
+msgstr "Vrsta dokumenta"
 
 #: ../../tempcache/pages/document_form.html.twig:129
 #: ../../tempcache/elements/edit_socials.html.twig:163
 msgid "Choose or enter your own..."
-msgstr ""
+msgstr "Izberite ali vnesite svojega ..."
 
 #: ../../tempcache/pages/document_form.html.twig:155
 #: ../../tempcache/pages/configuration_core_lists.html.twig:82
@@ -7975,11 +7977,11 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:69
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:117
 msgid "Permissions"
-msgstr ""
+msgstr "Dovoljenja"
 
 #: ../../tempcache/pages/document_form.html.twig:192
 msgid "Extra information displayed along with document."
-msgstr ""
+msgstr "Dodatne informacije so prikazane skupaj z dokumentom."
 
 #: ../../tempcache/pages/status_list.html.twig:82
 #: ../../tempcache/pages/status_list.html.twig:116
@@ -7990,79 +7992,79 @@ msgstr ""
 #: ../../tempcache/pages/status_list.html.twig:94
 #: ../../tempcache/pages/status_list.html.twig:99
 msgid "New status"
-msgstr ""
+msgstr "Novo stanje"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:62
 msgid "Choose an entry"
-msgstr ""
+msgstr "Izberite vnos"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:114
 msgid "Reference:"
-msgstr ""
+msgstr "Referenca:"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:183
 msgid "Email Subject"
-msgstr ""
+msgstr "Zadeva e-pošte"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:194
 msgid "(Max 255 characters)"
-msgstr ""
+msgstr "(Največ 255 znakov)"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:200
 msgid "Email Body:"
-msgstr ""
+msgstr "Telo e-pošte:"
 
 #: ../../tempcache/pages/configuration_core_lists.html.twig:102
 #: ../../tempcache/pages/configuration_core_lists.html.twig:112
 msgid "Available fields"
-msgstr ""
+msgstr "Razpoložljiva polja"
 
 #: ../../tempcache/pages/configuration_core_lists.html.twig:296
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
 "the list."
-msgstr ""
+msgstr "Brisanje zadnjega polja ni mogoče. Na seznamu mora biti vsaj eno polje."
 
 #: ../../tempcache/pages/contribution_form.html.twig:81
 msgid "Select contributor and membership fee type"
-msgstr ""
+msgstr "Izberite sodelavca in vrsto članarine"
 
 #: ../../tempcache/pages/contribution_form.html.twig:87
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "Izberite sodelavca in vrsto donacije"
 
 #: ../../tempcache/pages/contribution_form.html.twig:98
 msgid "Transaction related"
-msgstr ""
+msgstr "Povezano s transakcijo"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
-msgstr ""
+msgstr "Preklopi na plačilo"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
 msgid "Switch to donation"
-msgstr ""
+msgstr "Preklopi na donacijo"
 
 #: ../../tempcache/pages/contribution_form.html.twig:284
 msgid "View transaction"
-msgstr ""
+msgstr "Ogled transakcije"
 
 #: ../../tempcache/pages/contribution_form.html.twig:289
 msgid "Related transaction information"
-msgstr ""
+msgstr "Povezane informacije o transakciji"
 
 #: ../../tempcache/pages/contribution_form.html.twig:474
 #: ../../tempcache/pages/contribution_form.html.twig:1065
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Načrtovana plačila"
 
 #: ../../tempcache/pages/contribution_form.html.twig:550
 msgid "Details of membership fee"
-msgstr ""
+msgstr "Podrobnosti o članarini"
 
 #: ../../tempcache/pages/contribution_form.html.twig:556
 msgid "Details of donation"
-msgstr ""
+msgstr "Podrobnosti o donaciji"
 
 #: ../../tempcache/pages/contribution_form.html.twig:602
 msgid ""
@@ -8072,112 +8074,119 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"Ko izberete vrsto <strong>načrtovano plačilo</strong>, bo dodan prispevek in "
+"boste pozvani, da naknadno ustvarite ustrezna načrtovana plačila. V tem "
+"primeru mora biti znesek prispevka na tem obrazcu enak vsoti vseh "
+"načrtovanih plačil, ki jih boste določili v nadaljevanju."
 
 #: ../../tempcache/pages/contribution_form.html.twig:707
 msgid "months"
-msgstr ""
+msgstr "mesecev"
 
 #: ../../tempcache/pages/contribution_form.html.twig:785
 msgid "Notify member"
-msgstr ""
+msgstr "Obvesti člana"
 
 #: ../../tempcache/pages/contribution_form.html.twig:792
 msgid "Member will receive a notification by email, if he has an address."
-msgstr ""
+msgstr "Član bo prejel obvestilo po elektronski pošti, če ima naslov."
 
 #: ../../tempcache/pages/contribution_form.html.twig:1011
 msgid "Contribution amount should not be greater than %max"
-msgstr ""
+msgstr "Znesek prispevka ne sme biti večji od %max"
 
 #: ../../tempcache/pages/contribution_form.html.twig:1054
 #: ../../tempcache/pages/contribution_form.html.twig:1107
 msgid "An error occurred displaying scheduled payments :("
-msgstr ""
+msgstr "Pri prikazu načrtovanih plačil je prišlo do napake :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:83
 msgid "Mailing information"
-msgstr ""
+msgstr "Podatki o pošiljanju"
 
 #: ../../tempcache/pages/mailing_form.html.twig:107
 msgid "current logged in user"
-msgstr ""
+msgstr "trenutno prijavljen uporabnik"
 
 #: ../../tempcache/pages/mailing_form.html.twig:115
 msgid "other"
-msgstr ""
+msgstr "drugo"
 
 #: ../../tempcache/pages/mailing_form.html.twig:158
 msgid "Go back to members list"
-msgstr ""
+msgstr "Nazaj na seznam članov"
 
 #: ../../tempcache/pages/mailing_form.html.twig:167
 msgid "Manage selected members"
-msgstr ""
+msgstr "Upravljanje izbranih članov"
 
 #: ../../tempcache/pages/mailing_form.html.twig:206
 msgid "Existing attachments:"
-msgstr ""
+msgstr "Obstoječe priloge:"
 
 #: ../../tempcache/pages/mailing_form.html.twig:228
 #: ../../tempcache/pages/mailing_form.html.twig:731
 msgid "Remove attachment"
-msgstr ""
+msgstr "Odstrani prilogo"
 
 #: ../../tempcache/pages/mailing_form.html.twig:263
 msgid ""
 "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
 "or 'shift' keys are only available on compatible browsers."
 msgstr ""
+"Izberite datoteke, ki jih želite dodati kot priloge.<br/>Izbira več datotek "
+"s tipkama »ctrl« ali »shift« je na voljo samo v združljivih brskalnikih."
 
 #: ../../tempcache/pages/mailing_form.html.twig:271
 msgid "Add attachment"
-msgstr ""
+msgstr "Dodaj prilogo"
 
 #: ../../tempcache/pages/mailing_form.html.twig:294
 msgid "Write your mailing"
-msgstr ""
+msgstr "Napišite svojo pošto"
 
 #: ../../tempcache/pages/mailing_form.html.twig:301
 msgid "Object:"
-msgstr ""
+msgstr "Predmet:"
 
 #: ../../tempcache/pages/mailing_form.html.twig:339
 msgid "Interpret HTML"
-msgstr ""
+msgstr "Interpretacija HTML-ja"
 
 #: ../../tempcache/pages/mailing_form.html.twig:346
 #: ../../tempcache/elements/scripts.html.twig:404
 msgid "Activate HTML editor"
-msgstr ""
+msgstr "Aktiviraj urejevalnik HTML"
 
 #: ../../tempcache/pages/mailing_form.html.twig:362
 msgid "Preview"
-msgstr ""
+msgstr "Predogled"
 
 #: ../../tempcache/pages/mailing_form.html.twig:388
 #: ../../tempcache/pages/mailing_form.html.twig:479
 msgid "Cancel mailing"
-msgstr ""
+msgstr "Prekliči pošiljanje po pošti"
 
 #: ../../tempcache/pages/mailing_form.html.twig:405
 msgid "Preview your mailing"
-msgstr ""
+msgstr "Predogled poštnega sporočila"
 
 #: ../../tempcache/pages/mailing_form.html.twig:458
 msgid "Modifiy mailing"
-msgstr ""
+msgstr "Spremeni poštno sporočilo"
 
 #: ../../tempcache/pages/mailing_form.html.twig:608
 msgid "Members selection"
-msgstr ""
+msgstr "Izbira članov"
 
 #: ../../tempcache/pages/mailing_form.html.twig:728
 msgid "Are you sure you want to remove this attachment?"
-msgstr ""
+msgstr "Ali ste prepričani, da želite odstraniti to prilogo?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:728
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
+"S tem boste takoj odstranili prilogo z diska in tega ni mogoče razveljaviti."
 
 #: ../../tempcache/pages/mailing_form.html.twig:733
 #: ../../tempcache/elements/js/removal.js.twig:195
