@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-09 12:48+0000\n"
+"PO-Revision-Date: 2026-07-09 16:41+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -4110,7 +4110,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:258
 #: ../../tempcache/pages/configuration_texts.html.twig:74
 msgid "Language:"
-msgstr ""
+msgstr "Jezik:"
 
 #: ../includes/fields_defs/members_fields.php:266
 msgid "Birthplace:"
@@ -4910,7 +4910,7 @@ msgstr ""
 
 #: ../../tempcache/page.html.twig:235
 msgid "Language menu"
-msgstr ""
+msgstr "Jezikovni meni"
 
 #: ../../tempcache/page.html.twig:264 ../../tempcache/public_page.html.twig:223
 msgid "Back to top"
@@ -6786,7 +6786,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:696
 msgid "Default language:"
-msgstr ""
+msgstr "Privzeti jezik:"
 
 #: ../../tempcache/pages/preferences.html.twig:730
 msgid "Default payment type:"
@@ -8345,7 +8345,7 @@ msgstr ""
 
 #: ../../tempcache/pages/desktop.html.twig:307
 msgid "Show dashboard on login"
-msgstr ""
+msgstr "Prikaži nadzorno ploščo ob prijavi"
 
 #: ../../tempcache/macros.twig:583
 msgid "For the selection:"
@@ -8736,7 +8736,7 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:156
 msgid "Add new social network"
-msgstr ""
+msgstr "Dodaj novo družabno omrežje"
 
 #: ../../tempcache/elements/edit_socials.html.twig:189
 msgid "Social network"
