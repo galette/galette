@@ -34,7 +34,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "browser-sync": "^3.0.4",
     "clean-css": "^5.3.3",
     "css-loader": "^7.1.4",
@@ -51,7 +51,7 @@
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
     "playwright-ctrf-json-reporter": "^0.0.29",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
