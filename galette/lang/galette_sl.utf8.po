@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-11 10:39+0000\n"
+"PO-Revision-Date: 2026-07-11 16:01+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -3675,7 +3675,7 @@ msgstr "Pri pošiljanju e-pošte skrbniku računa '%s' je prišlo do težave."
 
 #: ../lib/Galette/Events/MemberListener.php:270
 msgid "A problem happened while sending account email to admin"
-msgstr "A problem happened while sending account email to admin"
+msgstr "Pri pošiljanju e-pošte računa skrbniku je prišlo do težave."
 
 #. TRANS: first parameter is the use name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:175
@@ -4022,18 +4022,23 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Pozdravljeni!{NEWLINE}Za vaš račun pri {ASSO_NAME} je bila poslana zahteva "
+"za obnovitev gesla, vendar je trenutno neaktivna in je zato ni mogoče "
+"obdelati.{NEWLINE}Če menite, da gre za napako, se obrnite na skrbnika ali "
+"člana osebja.{NEWLINE}Se vidimo kmalu!{NEWLINE}(to e-poštno sporočilo je "
+"bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:115
 msgid "Lost password email (disabled)"
-msgstr ""
+msgstr "E-poštno sporočilo za izgubljeno geslo (onemogočeno)"
 
 #: ../includes/fields_defs/members_fields.php:18
 msgid "Member id:"
-msgstr ""
+msgstr "ID člana:"
 
 #: ../includes/fields_defs/members_fields.php:28
 msgid "Status:"
-msgstr ""
+msgstr "Stanje:"
 
 #: ../includes/fields_defs/members_fields.php:38
 #: ../../tempcache/pages/plugin_info.html.twig:81
@@ -4044,126 +4049,126 @@ msgstr ""
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:85
 #: ../../tempcache/elements/group.html.twig:85
 msgid "Name:"
-msgstr ""
+msgstr "Priimek:"
 
 #: ../includes/fields_defs/members_fields.php:46
 msgid "First name:"
-msgstr ""
+msgstr "Ime:"
 
 #: ../includes/fields_defs/members_fields.php:54
 msgid "Company:"
-msgstr ""
+msgstr "Podjetje:"
 
 #: ../includes/fields_defs/members_fields.php:62
 msgid "Nickname:"
-msgstr ""
+msgstr "Vzdevek:"
 
 #: ../includes/fields_defs/members_fields.php:72
 msgid "Title:"
-msgstr ""
+msgstr "Naslov:"
 
 #: ../includes/fields_defs/members_fields.php:80
 msgid "Birth date:"
-msgstr ""
+msgstr "Datum rojstva:"
 
 #: ../includes/fields_defs/members_fields.php:88
 msgid "Gender:"
-msgstr ""
+msgstr "Spol:"
 
 #: ../includes/fields_defs/members_fields.php:96
 #: ../../tempcache/pages/preferences.html.twig:298
 #: ../../tempcache/pages/preferences.html.twig:308
 msgid "Address:"
-msgstr ""
+msgstr "Naslov:"
 
 #: ../includes/fields_defs/members_fields.php:104
 #: ../../tempcache/pages/preferences.html.twig:321
 msgid "Zip Code:"
-msgstr ""
+msgstr "Zip Code:"
 
 #: ../includes/fields_defs/members_fields.php:112
 #: ../../tempcache/pages/preferences.html.twig:331
 msgid "City:"
-msgstr ""
+msgstr "Mesto:"
 
 #: ../includes/fields_defs/members_fields.php:120
 #: ../../tempcache/pages/preferences.html.twig:343
 msgid "Region:"
-msgstr ""
+msgstr "Regija:"
 
 #: ../includes/fields_defs/members_fields.php:128
 #: ../../tempcache/pages/preferences.html.twig:353
 msgid "Country:"
-msgstr ""
+msgstr "Država:"
 
 #: ../includes/fields_defs/members_fields.php:136
 #: ../../tempcache/pages/preferences.html.twig:449
 msgid "Phone:"
-msgstr ""
+msgstr "Telefon:"
 
 #: ../includes/fields_defs/members_fields.php:144
 msgid "Mobile phone:"
-msgstr ""
+msgstr "Mobilni telefon:"
 
 #: ../includes/fields_defs/members_fields.php:152
 #: ../../tempcache/pages/preferences.html.twig:549
 msgid "E-Mail:"
-msgstr ""
+msgstr "E-pošta:"
 
 #: ../includes/fields_defs/members_fields.php:160
 msgid "Other information (admin):"
-msgstr ""
+msgstr "Druge informacije (administrator):"
 
 #: ../includes/fields_defs/members_fields.php:168
 msgid "Other information:"
-msgstr ""
+msgstr "Druge informacije:"
 
 #: ../includes/fields_defs/members_fields.php:176
 msgid "Profession:"
-msgstr ""
+msgstr "Poklic:"
 
 #: ../includes/fields_defs/members_fields.php:184 ../install/steps/admin.php:18
 #: ../../tempcache/pages/preferences.html.twig:3144
 #: ../../tempcache/pages/index.html.twig:89
 #: ../../tempcache/pages/index.html.twig:93
 msgid "Username:"
-msgstr ""
+msgstr "Uporabniško ime:"
 
 #: ../includes/fields_defs/members_fields.php:192 ../install/steps/admin.php:22
 #: ../install/steps/db.php:64 ../../tempcache/pages/preferences.html.twig:3158
 #: ../../tempcache/pages/index.html.twig:101
 #: ../../tempcache/pages/index.html.twig:105
 msgid "Password:"
-msgstr ""
+msgstr "Geslo:"
 
 #: ../includes/fields_defs/members_fields.php:200
 #: ../../tempcache/elements/group.html.twig:68
 msgid "Creation date:"
-msgstr ""
+msgstr "Datum nastanka:"
 
 #: ../includes/fields_defs/members_fields.php:208
 msgid "Modification date:"
-msgstr ""
+msgstr "Datum spremembe:"
 
 #: ../includes/fields_defs/members_fields.php:218
 msgid "Account:"
-msgstr ""
+msgstr "Račun:"
 
 #: ../includes/fields_defs/members_fields.php:226
 msgid "Galette Admin:"
-msgstr ""
+msgstr "Administrator Galette:"
 
 #: ../includes/fields_defs/members_fields.php:234
 msgid "Freed of dues:"
-msgstr ""
+msgstr "Oproščen plačila:"
 
 #: ../includes/fields_defs/members_fields.php:242
 msgid "Be visible on public pages:"
-msgstr ""
+msgstr "Bodite vidni na javnih straneh:"
 
 #: ../includes/fields_defs/members_fields.php:250
 msgid "Due date:"
-msgstr ""
+msgstr "Rok:"
 
 #: ../includes/fields_defs/members_fields.php:258
 #: ../../tempcache/pages/configuration_texts.html.twig:74
@@ -4172,75 +4177,76 @@ msgstr "Jezik:"
 
 #: ../includes/fields_defs/members_fields.php:266
 msgid "Birthplace:"
-msgstr ""
+msgstr "Rojstni kraj:"
 
 #: ../includes/fields_defs/members_fields.php:274
+#, fuzzy
 msgid "Id GNUpg (GPG):"
-msgstr ""
+msgstr "Id GNUpg (GPG):"
 
 #: ../includes/fields_defs/members_fields.php:282
 msgid "fingerprint:"
-msgstr ""
+msgstr "prstni odtis:"
 
 #: ../includes/fields_defs/members_fields.php:290
 msgid "Parent:"
-msgstr ""
+msgstr "Starš:"
 
 #: ../includes/fields_defs/members_fields.php:298
 msgid "Member number:"
-msgstr ""
+msgstr "Številka člana:"
 
 #: ../includes/fields_defs/members_fields.php:316
 msgid "State of dues"
-msgstr ""
+msgstr "Stanje dolgov"
 
 #: ../includes/i18n.inc.php:27
 msgid "Realization:"
-msgstr ""
+msgstr "Realizacija:"
 
 #: ../includes/i18n.inc.php:28
 msgid "Graphics:"
-msgstr ""
+msgstr "Grafika:"
 
 #: ../includes/i18n.inc.php:29
 msgid "Publisher:"
-msgstr ""
+msgstr "Založnik:"
 
 #: ../includes/i18n.inc.php:30
 msgid "President"
-msgstr ""
+msgstr "Predsednik"
 
 #: ../includes/i18n.inc.php:31
 msgid "Vice-president"
-msgstr ""
+msgstr "Podpredsednik"
 
 #: ../includes/i18n.inc.php:32
 msgid "Treasurer"
-msgstr ""
+msgstr "Blagajnik"
 
 #: ../includes/i18n.inc.php:33
 msgid "Vice-treasurer"
-msgstr ""
+msgstr "Podblagajnik"
 
 #: ../includes/i18n.inc.php:34
 msgid "Secretary"
-msgstr ""
+msgstr "Tajnica"
 
 #: ../includes/i18n.inc.php:35
 msgid "Vice-secretary"
-msgstr ""
+msgstr "Podsekretar"
 
 #: ../includes/i18n.inc.php:36
 msgid "Active member"
-msgstr ""
+msgstr "Aktivni član"
 
 #: ../includes/i18n.inc.php:37
 msgid "Benefactor member"
-msgstr ""
+msgstr "Član dobrotnika"
 
 #: ../includes/i18n.inc.php:38
 msgid "Founder member"
-msgstr ""
+msgstr "Ustanovni član"
 
 #: ../includes/i18n.inc.php:39
 msgid "Old-timer"
@@ -5698,132 +5704,136 @@ msgstr "Ni nameščeno"
 
 #: ../../tempcache/pages/plugins.html.twig:364
 msgid "Need update"
-msgstr ""
+msgstr "Potrebna je posodobitev"
 
 #: ../../tempcache/pages/plugins.html.twig:374
 msgid "Explicitly disabled"
-msgstr ""
+msgstr "Izrecno onemogočeno"
 
 #: ../../tempcache/pages/plugins.html.twig:384
 msgid "Unknown"
-msgstr ""
+msgstr "Neznano"
 
 #: ../../tempcache/pages/plugins.html.twig:480
 #, php-format
 msgid "Click here to deactivate plugin '%1$s'"
-msgstr ""
+msgstr "Kliknite tukaj za deaktivacijo vtičnika '%1$s'"
 
 #: ../../tempcache/pages/plugins.html.twig:501
 #: ../../tempcache/pages/plugins.html.twig:527
 #, php-format
 msgid "Initialize '%1$s' database"
-msgstr ""
+msgstr "Inicializiraj bazo podatkov '%1$s'"
 
 #: ../../tempcache/pages/plugins.html.twig:548
 #, php-format
 msgid "Activate plugin '%1$s'"
-msgstr ""
+msgstr "Aktiviraj vtičnik '%1$s'"
 
 #: ../../tempcache/pages/charts.html.twig:71
 #: ../../tempcache/pages/charts.html.twig:160
 msgid "Members by status"
-msgstr ""
+msgstr "Člani po statusu"
 
 #: ../../tempcache/pages/charts.html.twig:81
 #: ../../tempcache/pages/charts.html.twig:226
 msgid "Members by state of dues"
-msgstr ""
+msgstr "Člani po stanju članarine"
 
 #: ../../tempcache/pages/charts.html.twig:91
 #: ../../tempcache/pages/charts.html.twig:291
 msgid "Contributions types repartition"
-msgstr ""
+msgstr "Razdelitev vrst prispevkov"
 
 #: ../../tempcache/pages/charts.html.twig:101
 #: ../../tempcache/pages/charts.html.twig:356
 msgid "Individuals and Companies"
-msgstr ""
+msgstr "Posamezniki in podjetja"
 
 #: ../../tempcache/pages/charts.html.twig:111
 msgid "Contributions over time"
-msgstr ""
+msgstr "Prispevki skozi čas"
 
 #: ../../tempcache/pages/charts.html.twig:417
 msgid "Total contributions for the month"
-msgstr ""
+msgstr "Skupni prispevki za mesec"
 
 #: ../../tempcache/pages/admintools.html.twig:66
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
 "following tools!"
 msgstr ""
+"Pred uporabo katerega koli od naslednjih orodij se prepričajte, da ste "
+"naredili varnostno kopijo baze podatkov!"
 
 #: ../../tempcache/pages/admintools.html.twig:73
 msgid "Select actions(s)"
-msgstr ""
+msgstr "Izberite dejanja"
 
 #: ../../tempcache/pages/admintools.html.twig:83
 #: ../../tempcache/pages/admintools.html.twig:91
 #: ../../tempcache/pages/admintools.html.twig:105
 #: ../../tempcache/pages/admintools.html.twig:113
 msgid "Reset all emails contents to their default values"
-msgstr ""
+msgstr "Ponastavi vsebino vseh e-poštnih sporočil na privzete vrednosti"
 
 #: ../../tempcache/pages/admintools.html.twig:87
 msgid "Reset emails contents"
-msgstr ""
+msgstr "Ponastavi vsebino e-poštnih sporočil"
 
 #: ../../tempcache/pages/admintools.html.twig:95
 #: ../../tempcache/pages/admintools.html.twig:119
 #: ../../tempcache/pages/admintools.html.twig:141
 msgid "(all existing values will be removed)"
-msgstr ""
+msgstr "(vse obstoječe vrednosti bodo odstranjene)"
 
 #: ../../tempcache/pages/admintools.html.twig:109
 msgid "Reset fields configuration"
-msgstr ""
+msgstr "Ponastavi konfiguracijo polj"
 
 #: ../../tempcache/pages/admintools.html.twig:115
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
+"To vključuje položaje polj, vrstni red, vidnost, ravni dostopa in obvezne "
+"oznake."
 
 #: ../../tempcache/pages/admintools.html.twig:129
 #: ../../tempcache/pages/admintools.html.twig:137
 msgid "Reset all PDF models to their default values"
-msgstr ""
+msgstr "Ponastavi vse modele PDF na privzete vrednosti"
 
 #: ../../tempcache/pages/admintools.html.twig:133
 msgid "Reinitialize PDF models"
-msgstr ""
+msgstr "Ponovna inicializacija modelov PDF"
 
 #: ../../tempcache/pages/admintools.html.twig:151
 #: ../../tempcache/pages/admintools.html.twig:159
 msgid "Fill all empty login and passwords"
-msgstr ""
+msgstr "Izpolnite vsa prazna polja za prijavo in geslo"
 
 #: ../../tempcache/pages/admintools.html.twig:155
 msgid "Generate empty logins and passwords"
-msgstr ""
+msgstr "Ustvari prazne prijave in gesla"
 
 #: ../../tempcache/pages/admintools.html.twig:169
 #: ../../tempcache/pages/admintools.html.twig:173
 #: ../../tempcache/pages/admintools.html.twig:177
 msgid "Fix dynamic fields dates format"
-msgstr ""
+msgstr "Popravi obliko datumov dinamičnih polj"
 
 #: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
-msgstr ""
+msgstr "Pojdi"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:71
 msgid "Short form:"
-msgstr ""
+msgstr "Kratka oblika:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:81
 msgid "Long form:"
-msgstr ""
+msgstr "Dolga oblika:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:97
 #: ../../tempcache/pages/configuration_core_fields.html.twig:168
@@ -5850,46 +5860,46 @@ msgstr ""
 #: ../../tempcache/elements/edit_pdf_models.html.twig:172
 #: ../../tempcache/elements/group.html.twig:297
 msgid "Save"
-msgstr ""
+msgstr "Shrani"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:273
 msgid "Some warnings has been thrown:"
-msgstr ""
+msgstr "Izdanih je bilo nekaj opozoril:"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:281
 msgid "Please correct above warnings to continue."
-msgstr ""
+msgstr "Za nadaljevanje popravite zgornja opozorila."
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:287
 msgid "Warning"
-msgstr ""
+msgstr "Opozorilo"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:56
 msgid "No entry selected"
-msgstr ""
+msgstr "Ni izbranega vnosa"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:56
 msgid ""
 "Please make sure to select at least one entry from the list to perform this "
 "action."
-msgstr ""
+msgstr "Za izvedbo tega dejanja izberite vsaj en vnos s seznama."
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:68
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:119
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:577
 msgid "Scheduled date"
-msgstr ""
+msgstr "Načrtovani datum"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:98
 msgid "Show payments by"
-msgstr ""
+msgstr "Prikaži plačila po"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:127
 #: ../../tempcache/pages/history.html.twig:144
 #: ../../tempcache/pages/contributions_list.html.twig:132
 #: ../../tempcache/pages/mailings_list.html.twig:166
 msgid "since"
-msgstr ""
+msgstr "odkar"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:144
 #: ../../tempcache/pages/transactions_list.html.twig:112
@@ -5897,18 +5907,18 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:149
 #: ../../tempcache/pages/mailings_list.html.twig:183
 msgid "until"
-msgstr ""
+msgstr "dokler"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:173
 msgid "Paid scheduled payments:"
-msgstr ""
+msgstr "Plačana načrtovana plačila:"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:219
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:612
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:634
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:816
 msgid "Not paid"
-msgstr ""
+msgstr "Ni plačano"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:229
 #: ../../tempcache/pages/transactions_list.html.twig:131
@@ -5917,7 +5927,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:209
 #: ../../tempcache/pages/mailings_list.html.twig:271
 msgid "Apply filters"
-msgstr ""
+msgstr "Uporabi filtre"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:239
 #: ../../tempcache/pages/transactions_list.html.twig:141
@@ -5927,71 +5937,73 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:219
 #: ../../tempcache/pages/mailings_list.html.twig:281
 msgid "Reset all filters to defaults"
-msgstr ""
+msgstr "Ponastavi vse filtre na privzete vrednosti"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:279
 msgid "Show all your scheduled payments"
-msgstr ""
+msgstr "Prikažite vsa načrtovana plačila"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:285
 msgid "Show all members scheduled payments"
-msgstr ""
+msgstr "Prikaži vsa načrtovana plačila članov"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:316
 #: ../../tempcache/pages/transactions_list.html.twig:215
 #: ../../tempcache/pages/contributions_list.html.twig:295
 msgid "See member profile"
-msgstr ""
+msgstr "Oglejte si profil člana"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:348
 #, php-format
 msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s načrtovano plačilo"
+msgstr[1] "%1$s načrtovana plačila"
+msgstr[2] "%1$s načrtovanih plačil"
+msgstr[3] "%1$s načrtovanih plačil"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:391
 #, php-format
 msgid "Found total scheduled %f"
-msgstr ""
+msgstr "Najdenih skupno načrtovanih %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:507
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:787
 #, php-format
 msgid "Edit membership fee %1$s"
-msgstr ""
+msgstr "Uredi članarino %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:513
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:797
 #, php-format
 msgid "Edit donation %1$s"
-msgstr ""
+msgstr "Uredi donacijo %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:545
 #, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr ""
+msgstr "Prikaži samo načrtovana plačila '%1$s'"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:558
 #: ../../tempcache/pages/transactions_list.html.twig:456
 #: ../../tempcache/pages/contributions_list.html.twig:904
 #, php-format
 msgid "Show '%1$s' card"
-msgstr ""
+msgstr "Prikaži kartico »%1$s«"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:608
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:621
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:825
 msgid "Not paid and due"
-msgstr ""
+msgstr "Ni plačano in zapadlo"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:679
 msgid "Delete scheduled payment"
-msgstr ""
+msgstr "Izbriši načrtovano plačilo"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:699
 msgid "No scheduled payment"
-msgstr ""
+msgstr "Brez načrtovanega plačila"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:721
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:725
@@ -6002,7 +6014,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:1026
 #: ../../tempcache/pages/contributions_list.html.twig:1030
 msgid "Legend"
-msgstr ""
+msgstr "Legenda"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:748
 #: ../../tempcache/pages/transactions_list.html.twig:607
@@ -6010,103 +6022,105 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:573
 #: ../../tempcache/pages/contributions_list.html.twig:1077
 msgid "Modification"
-msgstr ""
+msgstr "Sprememba"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:755
 #: ../../tempcache/pages/transactions_list.html.twig:618
 #: ../../tempcache/pages/members_list.html.twig:593
 #: ../../tempcache/pages/contributions_list.html.twig:1084
 msgid "Deletion"
-msgstr ""
+msgstr "Izbris"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:768
 #: ../../tempcache/pages/transactions_list.html.twig:634
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/contributions_list.html.twig:1108
 msgid "Statuses and interactions"
-msgstr ""
+msgstr "Stanja in interakcije"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:836
 #: ../../tempcache/pages/transactions_list.html.twig:652
 #: ../../tempcache/pages/contributions_list.html.twig:1155
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Filter po ustreznem članu"
 
 #: ../../tempcache/pages/status_form.html.twig:82
 msgid "Priority:"
-msgstr ""
+msgstr "Prednost:"
 
 #: ../../tempcache/pages/status_form.html.twig:92
 #: ../../tempcache/pages/status_list.html.twig:67
 msgid ""
 "Note: members with a status priority lower than %priority are staff members."
-msgstr ""
+msgstr "Opomba: člani s statusno prioriteto nižjo od %priority so člani osebja."
 
 #: ../../tempcache/pages/transactions_list.html.twig:65
 msgid "Originator"
-msgstr ""
+msgstr "Izvornik"
 
 #: ../../tempcache/pages/transactions_list.html.twig:95
 msgid "Show transactions since"
-msgstr ""
+msgstr "Prikaži transakcije od"
 
 #: ../../tempcache/pages/transactions_list.html.twig:178
 msgid "Show all your transactions"
-msgstr ""
+msgstr "Prikaži vse svoje transakcije"
 
 #: ../../tempcache/pages/transactions_list.html.twig:184
 msgid "Show all members transactions"
-msgstr ""
+msgstr "Prikaži vse transakcije članov"
 
 #: ../../tempcache/pages/transactions_list.html.twig:264
 #, php-format
 msgid "%1$s transaction"
 msgid_plural "%1$s transactions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Transakcija %1$s"
+msgstr[1] "Transakciji %1$s"
+msgstr[2] "%1$s transakcij"
+msgstr[3] "%1$s transakcije"
 
 #: ../../tempcache/pages/transactions_list.html.twig:378
 #: ../../tempcache/pages/transactions_list.html.twig:402
 #: ../../tempcache/pages/member_show.html.twig:179
 msgid "View contributions"
-msgstr ""
+msgstr "Ogled prispevkov"
 
 #: ../../tempcache/pages/transactions_list.html.twig:443
 #, php-format
 msgid "Show only '%1$s' transactions"
-msgstr ""
+msgstr "Prikaži samo transakcije '%1$s'"
 
 #: ../../tempcache/pages/transactions_list.html.twig:500
 #: ../../tempcache/pages/contributions_list.html.twig:604
 #: ../../tempcache/pages/contributions_list.html.twig:693
 msgid "Edit transaction #%id"
-msgstr ""
+msgstr "Uredi transakcijo št. %id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:517
 msgid "Remove transaction #%id"
-msgstr ""
+msgstr "Odstrani transakcijo št. %id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:537
 msgid "no transaction"
-msgstr ""
+msgstr "brez transakcije"
 
 #: ../../tempcache/pages/transactions_list.html.twig:568
 #: ../../tempcache/pages/members_list.html.twig:508
 #: ../../tempcache/pages/contributions_list.html.twig:1038
 msgid "Reading the list"
-msgstr ""
+msgstr "Branje seznama"
 
 #: ../../tempcache/pages/transactions_list.html.twig:577
 msgid "Completely dispatched transaction"
-msgstr ""
+msgstr "Popolnoma odposlana transakcija"
 
 #: ../../tempcache/pages/transactions_list.html.twig:582
 msgid "Uncomplete dispatched transaction"
-msgstr ""
+msgstr "Nedokončana odposlana transakcija"
 
 #: ../../tempcache/pages/transactions_list.html.twig:645
 msgid "View corresponding contributions"
-msgstr ""
+msgstr "Oglejte si ustrezne prispevke"
 
 #: ../../tempcache/pages/groups_list.html.twig:104
 #: ../../tempcache/pages/history.html.twig:73
@@ -6114,32 +6128,38 @@ msgstr ""
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vnos %1$s"
+msgstr[1] "%1$s vnosa"
+msgstr[2] "%1$s vnosov"
+msgstr[3] "%1$s vnosov"
 
 #: ../../tempcache/pages/groups_list.html.twig:104
 #, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Skupina, ki jo upravlja %1$s"
+msgstr[1] "%1$s upravljani skupini"
+msgstr[2] "%1$s upravljanih skupin"
+msgstr[3] "%1$s upravljanih skupin"
 
 #: ../../tempcache/pages/groups_list.html.twig:130
 msgid "Export all groups and their members as PDF"
-msgstr ""
+msgstr "Izvozi vse skupine in njihove člane kot PDF"
 
 #: ../../tempcache/pages/groups_list.html.twig:135
 msgid "All groups PDF"
-msgstr ""
+msgstr "Vse skupine PDF"
 
 #: ../../tempcache/pages/groups_list.html.twig:148
 #: ../../tempcache/pages/groups_list.html.twig:506
 msgid "New group"
-msgstr ""
+msgstr "Nova skupina"
 
 #: ../../tempcache/pages/groups_list.html.twig:189
 msgid "Move an item at the top of the list to reset its parent"
 msgstr ""
+"Premaknite element na vrh seznama, da ponastavite njegovega nadrejenega "
+"elementa"
 
 #: ../../tempcache/pages/groups_list.html.twig:357
 msgid ""
@@ -6147,6 +6167,8 @@ msgid ""
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"Nekatere spremembe, ki ste jih naredili (zgoraj označene z rdečo), niso "
+"dovoljene. Shranjevanje sprememb na seznam bo mogoče le, če so vse dovoljene."
 
 #: ../../tempcache/pages/groups_list.html.twig:382
 #: ../../tempcache/pages/member_form.html.twig:736
@@ -6154,10 +6176,11 @@ msgstr ""
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
+"Elementi na tem seznamu so bili spremenjeni. Ne pozabite shraniti sprememb."
 
 #: ../../tempcache/pages/groups_list.html.twig:557
 msgid "Create"
-msgstr ""
+msgstr "Ustvari"
 
 #: ../../tempcache/pages/groups_list.html.twig:634
 #: ../../tempcache/pages/configuration_core_lists.html.twig:78
@@ -6166,85 +6189,85 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:322
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:419
 msgid "Field name"
-msgstr ""
+msgstr "Ime polja"
 
 #: ../../tempcache/pages/groups_list.html.twig:707
 msgid "Export as PDF"
-msgstr ""
+msgstr "Export as PDF"
 
 #: ../../tempcache/pages/groups_list.html.twig:730
 #: ../../tempcache/modals/mass_change_members.html.twig:243
 #: ../../tempcache/modals/mass_add_contributions.html.twig:113
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #: ../../tempcache/pages/groups_list.html.twig:732
 #: ../../tempcache/pages/member_form.html.twig:117
 msgid "Display"
-msgstr ""
+msgstr "Prikaz"
 
 #: ../../tempcache/pages/import_model.html.twig:66
 msgid "Current model"
-msgstr ""
+msgstr "Trenutni model"
 
 #: ../../tempcache/pages/import_model.html.twig:74
 msgid "Change model"
-msgstr ""
+msgstr "Spremeni model"
 
 #: ../../tempcache/pages/import_model.html.twig:88
 msgid "Default fields"
-msgstr ""
+msgstr "Privzeta polja"
 
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
 msgid "Model parameted on %1$s"
-msgstr ""
+msgstr "Model parametriran na %1$s"
 
 #: ../../tempcache/pages/import_model.html.twig:104
 #: ../../tempcache/pages/import_model.html.twig:199
 msgid "Field"
-msgstr ""
+msgstr "Polje"
 
 #: ../../tempcache/pages/import_model.html.twig:121
 #, php-format
 msgid "Missing field '%1$s'"
-msgstr ""
+msgstr "Manjkajoče polje '%1$s'"
 
 #: ../../tempcache/pages/import_model.html.twig:149
 msgid "Generate empty CSV file"
-msgstr ""
+msgstr "Ustvari prazno datoteko CSV"
 
 #: ../../tempcache/pages/import_model.html.twig:165
 msgid "Remove model and back to defaults"
-msgstr ""
+msgstr "Odstrani model in se vrni na privzete nastavitve"
 
 #: ../../tempcache/pages/import_model.html.twig:171
 msgid "Remove model"
-msgstr ""
+msgstr "Odstrani model"
 
 #: ../../tempcache/pages/import_model.html.twig:194
 #: ../../tempcache/pages/export.html.twig:266
 #: ../../tempcache/pages/export.html.twig:357
 msgid "Selection"
-msgstr ""
+msgstr "Izbor"
 
 #: ../../tempcache/pages/import_model.html.twig:246
 msgid "Store new model"
-msgstr ""
+msgstr "Shrani nov model"
 
 #: ../../tempcache/pages/import_model.html.twig:267
 msgid "Go back to import page"
-msgstr ""
+msgstr "Nazaj na stran za uvoz"
 
 #: ../../tempcache/pages/import_model.html.twig:290
 msgid "No field selected"
-msgstr ""
+msgstr "Ni izbranega polja"
 
 #: ../../tempcache/pages/import_model.html.twig:290
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
 "action."
-msgstr ""
+msgstr "Za izvedbo tega dejanja izberite vsaj eno polje s seznama."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
 #, php-format
@@ -6252,65 +6275,69 @@ msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
+"Ni prevoda za '%s'!<br>Izpolnite in pošljite spodnji obrazec, da ga "
+"ustvarite."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:85
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
 msgid "Original text:"
-msgstr ""
+msgstr "Izvirno besedilo:"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:89
 msgid "Choose label to translate"
-msgstr ""
+msgstr "Izberite oznako za prevod"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:207
 msgid "No fields to translate."
-msgstr ""
+msgstr "Ni polj za prevajanje."
 
 #: ../../tempcache/pages/documents_list.html.twig:52
 #: ../../tempcache/pages/documents_list.html.twig:149
 msgid "Filename"
-msgstr ""
+msgstr "Ime datoteke"
 
 #: ../../tempcache/pages/documents_list.html.twig:52
 #: ../../tempcache/pages/documents_list.html.twig:169
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:431
 msgid "Visibility"
-msgstr ""
+msgstr "Vidljivost"
 
 #: ../../tempcache/pages/documents_list.html.twig:67
 #: ../../tempcache/pages/documents_public_list.html.twig:109
 #, php-format
 msgid "%1$s document"
 msgid_plural "%1$s documents"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Dokument %1$s"
+msgstr[1] "%1$s dokumenta"
+msgstr[2] "%1$s dokumentov"
+msgstr[3] "%1$s dokumentov"
 
 #: ../../tempcache/pages/documents_list.html.twig:98
 msgid "Add a document"
-msgstr ""
+msgstr "Dodaj dokument"
 
 #: ../../tempcache/pages/documents_list.html.twig:224
 #: ../../tempcache/pages/documents_public_list.html.twig:67
 msgid "No document"
-msgstr ""
+msgstr "Ni dokumenta"
 
 #: ../../tempcache/pages/transaction_form.html.twig:73
 msgid "Transaction details"
-msgstr ""
+msgstr "Podrobnosti transakcije"
 
 #: ../../tempcache/pages/transaction_form.html.twig:178
 #: ../../tempcache/pages/contribution_form.html.twig:405
 msgid "Dispatch type:"
-msgstr ""
+msgstr "Vrsta pošiljke:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:182
 #: ../../tempcache/pages/contribution_form.html.twig:409
 msgid "Select a contribution type to create for dispatch transaction"
-msgstr ""
+msgstr "Izberite vrsto prispevka, ki ga želite ustvariti za transakcijo odpreme"
 
 #: ../../tempcache/pages/transaction_form.html.twig:218
 msgid "Attached contributions"
-msgstr ""
+msgstr "Priloženi prispevki"
 
 #: ../../tempcache/pages/transaction_form.html.twig:230
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:170
@@ -6318,7 +6345,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:104
 #: ../../tempcache/pages/contributions_list.html.twig:843
 msgid "Begin"
-msgstr ""
+msgstr "Začni"
 
 #: ../../tempcache/pages/transaction_form.html.twig:234
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:182
@@ -6326,35 +6353,35 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:114
 #: ../../tempcache/pages/contributions_list.html.twig:849
 msgid "End"
-msgstr ""
+msgstr "Konec"
 
 #: ../../tempcache/pages/transaction_form.html.twig:238
 #: ../../tempcache/pages/contributions_list.html.twig:71
 #: ../../tempcache/pages/contributions_list.html.twig:935
 msgid "Duration"
-msgstr ""
+msgstr "Trajanje"
 
 #: ../../tempcache/pages/transaction_form.html.twig:279
 msgid "Dispatched amount:"
-msgstr ""
+msgstr "Odposlani znesek:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:296
 msgid "Not dispatched amount:"
-msgstr ""
+msgstr "Neodposlana količina:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:332
 #: ../../tempcache/pages/transaction_form.html.twig:339
 #: ../../tempcache/pages/contribution_form.html.twig:358
 #: ../../tempcache/pages/contribution_form.html.twig:365
 msgid "Create a new fee that will be attached to the current transaction"
-msgstr ""
+msgstr "Ustvarite novo provizijo, ki bo priložena trenutni transakciji"
 
 #: ../../tempcache/pages/transaction_form.html.twig:352
 #: ../../tempcache/pages/transaction_form.html.twig:359
 #: ../../tempcache/pages/contribution_form.html.twig:378
 #: ../../tempcache/pages/contribution_form.html.twig:385
 msgid "Create a new donation that will be attached to the current transaction"
-msgstr ""
+msgstr "Ustvarite novo donacijo, ki bo priložena trenutni transakciji"
 
 #: ../../tempcache/pages/transaction_form.html.twig:373
 #: ../../tempcache/pages/transaction_form.html.twig:380
@@ -6362,132 +6389,137 @@ msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
+"Izberite obstoječi prispevek v zbirki podatkov in ga priložite trenutni "
+"transakciji"
 
 #: ../../tempcache/pages/transaction_form.html.twig:461
 msgid "Detach contribution from this transaction"
-msgstr ""
+msgstr "Odstrani prispevek iz te transakcije"
 
 #: ../../tempcache/pages/transaction_form.html.twig:482
 #: ../../tempcache/pages/contributions_list.html.twig:1004
 msgid "no contribution"
-msgstr ""
+msgstr "brez prispevka"
 
 #: ../../tempcache/pages/transaction_form.html.twig:538
 #: ../../tempcache/pages/contribution_form.html.twig:845
 msgid "No member registered!"
-msgstr ""
+msgstr "Ni registriranega člana!"
 
 #: ../../tempcache/pages/transaction_form.html.twig:543
 #: ../../tempcache/pages/contribution_form.html.twig:850
 msgid "Unfortunately, there is no member in your database yet,"
-msgstr ""
+msgstr "Žal v vaši bazi podatkov še ni nobenega člana,"
 
 #: ../../tempcache/pages/transaction_form.html.twig:550
 #: ../../tempcache/pages/contribution_form.html.twig:857
 msgid "please create a member"
-msgstr ""
+msgstr "prosim, ustvarite člana"
 
 #: ../../tempcache/pages/transaction_form.html.twig:610
 #: ../../tempcache/pages/transaction_form.html.twig:664
 #: ../../tempcache/pages/transaction_form.html.twig:695
 #: ../../tempcache/pages/transaction_form.html.twig:726
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "Pri prikazu prispevkov je prišlo do napake :("
 
 #: ../../tempcache/pages/transaction_form.html.twig:621
 msgid "Contributions selection"
-msgstr ""
+msgstr "Izbor prispevkov"
 
 #: ../../tempcache/pages/transaction_form.html.twig:743
 msgid "Click on a contribution row to attach it to the current transaction"
-msgstr ""
+msgstr "Kliknite na vrstico s prispevkom, da jo priložite trenutni transakciji"
 
 #: ../../tempcache/pages/member_form.html.twig:149
 #: ../../tempcache/pages/member_show.html.twig:297
 msgid "Attached to:"
-msgstr ""
+msgstr "Priloženo:"
 
 #: ../../tempcache/pages/member_form.html.twig:180
 msgid "Detach?"
-msgstr ""
+msgstr "Odklopiti?"
 
 #: ../../tempcache/pages/member_form.html.twig:205
 msgid "Attach member"
-msgstr ""
+msgstr "Pripni člana"
 
 #: ../../tempcache/pages/member_form.html.twig:212
 msgid "Parent member"
-msgstr ""
+msgstr "Starševski član"
 
 #: ../../tempcache/pages/member_form.html.twig:232
 #: ../../tempcache/pages/member_show.html.twig:315
 msgid "Parent of:"
-msgstr ""
+msgstr "Starš:"
 
 #: ../../tempcache/pages/member_form.html.twig:284
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Če se ne želite naročiti prek spleta, lahko prenesete prazen obrazec za "
+"pristop"
 
 #: ../../tempcache/pages/member_form.html.twig:332
 #: ../../tempcache/pages/preferences.html.twig:895
 msgid "After member creation:"
-msgstr ""
+msgstr "Po ustvarjanju člana:"
 
 #: ../../tempcache/pages/member_form.html.twig:346
 #: ../../tempcache/pages/preferences.html.twig:906
 msgid "create a new contribution (default action)"
-msgstr ""
+msgstr "ustvari nov prispevek (privzeto dejanje)"
 
 #: ../../tempcache/pages/member_form.html.twig:361
 #: ../../tempcache/pages/preferences.html.twig:916
 msgid "create a new transaction"
-msgstr ""
+msgstr "ustvari novo transakcijo"
 
 #: ../../tempcache/pages/member_form.html.twig:373
 #: ../../tempcache/pages/preferences.html.twig:926
 msgid "create another new member"
-msgstr ""
+msgstr "ustvari še enega novega člana"
 
 #: ../../tempcache/pages/member_form.html.twig:383
 #: ../../tempcache/pages/preferences.html.twig:936
 msgid "show member"
-msgstr ""
+msgstr "pokaži člana"
 
 #: ../../tempcache/pages/member_form.html.twig:393
 #: ../../tempcache/pages/preferences.html.twig:946
 msgid "go to members list"
-msgstr ""
+msgstr "pojdi na seznam članov"
 
 #: ../../tempcache/pages/member_form.html.twig:403
 #: ../../tempcache/pages/preferences.html.twig:956
 msgid "go to main page"
-msgstr ""
+msgstr "pojdi na glavno stran"
 
 #: ../../tempcache/pages/member_form.html.twig:445
 msgid "Notify member his account has been modified"
-msgstr ""
+msgstr "Obvesti člana, da je bil njegov račun spremenjen"
 
 #: ../../tempcache/pages/member_form.html.twig:451
 msgid "Notify member his account has been created"
-msgstr ""
+msgstr "Obvesti člana, da je bil njegov račun ustvarjen"
 
 #: ../../tempcache/pages/member_form.html.twig:464
 msgid "Member will be notified by email his account has been modified."
-msgstr ""
+msgstr "Član bo o spremembi svojega računa obveščen po elektronski pošti."
 
 #: ../../tempcache/pages/member_form.html.twig:470
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
+"Član bo uporabniško ime in geslo prejel po elektronski pošti, če ima naslov."
 
 #: ../../tempcache/pages/member_form.html.twig:660
 msgid "An error occurred displaying groups interface :("
-msgstr ""
+msgstr "Pri prikazu vmesnika skupin je prišlo do napake :("
 
 #: ../../tempcache/pages/member_form.html.twig:670
 msgid "Groups selection"
-msgstr ""
+msgstr "Izbira skupin"
 
 #: ../../tempcache/pages/member_form.html.twig:675
 msgid "Managed groups selection"
