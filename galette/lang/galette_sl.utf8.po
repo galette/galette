@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-10 12:19+0000\n"
+"PO-Revision-Date: 2026-07-11 10:39+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -2668,245 +2668,249 @@ msgstr "Manjka ime skupine!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:66
 msgid "Group name already exists!"
-msgstr ""
+msgstr "Ime skupine že obstaja!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:162
 #, php-format
 msgid "New parent is %1$s"
-msgstr ""
+msgstr "Novi starš je %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:167
 msgid "Parent removed"
-msgstr ""
+msgstr "Starš je bil odstranjen"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:176
 #, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr ""
+msgstr "Nadrejena skupina naslednjih skupin je bila uspešno spremenjena: %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:315
 #: ../../tempcache/pages/advanced_search.html.twig:619
 msgid "Group"
-msgstr ""
+msgstr "Skupina"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:369
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
-msgstr ""
+msgstr "Skupina `%1$s` je bila uspešno shranjena."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Pri shranjevanju skupine je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:466
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "Odstrani skupino %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:487
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
+"Skupina ni prazna, zato je ni mogoče izbrisati. Namesto tega uporabite "
+"kaskadno brisanje."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:54
 msgid "Contribution is fully scheduled!"
-msgstr ""
+msgstr "Prispevek je v celoti načrtovan!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:70
 msgid "Add scheduled payment"
-msgstr ""
+msgstr "Dodaj načrtovano plačilo"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:311
 msgid "No scheduled payment was selected, please check at least one."
-msgstr ""
+msgstr "Izbrano ni bilo nobeno načrtovano plačilo, označite vsaj eno."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:340
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:666
 msgid "Edit scheduled payment"
-msgstr ""
+msgstr "Urejanje načrtovanega plačila"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:403
 msgid "Scheduled payment has not been added!"
-msgstr ""
+msgstr "Načrtovano plačilo ni bilo dodano!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:405
 msgid "Scheduled payment has not been modified!"
-msgstr ""
+msgstr "Načrtovano plačilo ni bilo spremenjeno!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:410
 msgid "Scheduled payment has been successfully added."
-msgstr ""
+msgstr "Načrtovano plačilo je bilo uspešno dodano."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:412
 msgid "Scheduled payment has been successfully modified."
-msgstr ""
+msgstr "Načrtovano plačilo je bilo uspešno spremenjeno."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:461
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Odstrani načrtovano plačilo"
+msgstr[1] "Odstrani načrtovano plačila"
+msgstr[2] "Odstrani načrtovano plačila"
+msgstr[3] "Odstrani načrtovano plačila"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:112
 #: ../../tempcache/pages/status_list.html.twig:261
 msgid "Edit status"
-msgstr ""
+msgstr "Uredi stanje"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:173
 msgid "Missing required status name!"
-msgstr ""
+msgstr "Manjka obvezno ime statusa!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:179
 msgid "Status has not been added :("
-msgstr ""
+msgstr "Status ni bil dodan :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:179
 msgid "Status #%id has not been updated"
-msgstr ""
+msgstr "Stanje #%id ni bilo posodobljeno"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:185
 msgid "Status has been successfully added!"
-msgstr ""
+msgstr "Status je bil uspešno dodan!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:185
 msgid "Status #%id has been successfully updated!"
-msgstr ""
+msgstr "Stanje #%id je bilo uspešno posodobljeno!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:246
 msgid "Remove status '%label'"
-msgstr ""
+msgstr "Odstrani stanje '%label'"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:52
 msgid "New document"
-msgstr ""
+msgstr "Nov dokument"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:230
 #: ../../tempcache/pages/documents_list.html.twig:194
 msgid "Edit document"
-msgstr ""
+msgstr "Uredi dokument"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:291
 msgid "An error occurred adding document :("
-msgstr ""
+msgstr "Pri dodajanju dokumenta je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:300
 msgid "Document has been successfully stored!"
-msgstr ""
+msgstr "Dokument je bil uspešno shranjen!"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:345
 #: ../../tempcache/pages/documents_list.html.twig:207
 msgid "Delete document"
-msgstr ""
+msgstr "Izbriši dokument"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:68
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:72
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:208
 msgid "Trying to load mailing while email is disabled in preferences."
-msgstr ""
+msgstr "Poskus nalaganja pošte, medtem ko je e-pošta v nastavitvah onemogočena."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:113
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:226
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "Za pošiljanje pošte ni izbran noben član!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:159
 msgid "Mailing"
-msgstr ""
+msgstr "Pošiljanje"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:242
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "Vnesite predmet za sporočilo."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:248
 msgid "Please enter a message."
-msgstr ""
+msgstr "Prosimo, vnesite sporočilo."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:320
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "Pošiljka je bila uspešno poslana!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:343
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "Pošiljanje je bilo uspešno shranjeno."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:528
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "Odstrani poštni naslov št. %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:602
 #: ../../tempcache/pages/mailings_list.html.twig:488
 #: ../../tempcache/pages/mailing_form.html.twig:571
 msgid "Mailing preview"
-msgstr ""
+msgstr "Predogled pošte"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:108
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:218
 msgid "Unable to load transaction #%id!"
-msgstr ""
+msgstr "Transakcije št. %id ni mogoče naložiti!"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:151
 msgid "Transaction"
-msgstr ""
+msgstr "Transakcija"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 msgid "New transaction"
-msgstr ""
+msgstr "Nova transakcija"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:289
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Pri shranjevanju transakcije je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:297
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "Transakcija je bila uspešno shranjena"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:354
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Prispevek je bil uspešno priložen trenutni transakciji"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Prispevka ni mogoče priložiti transakciji"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:395
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "Prispevek je bil uspešno odklopljen od trenutne transakcije"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:403
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Prispevka ni mogoče ločiti od transakcije"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:107
 #: ../../tempcache/pages/contributions_types_list.html.twig:264
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:98
 msgid "Contribution type"
-msgstr ""
+msgstr "Vrsta prispevka"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:172
 msgid "Missing required contribution type name!"
-msgstr ""
+msgstr "Manjka obvezno ime vrste prispevka!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:178
 msgid "Contribution type has not been added :("
-msgstr ""
+msgstr "Vrsta prispevka ni bila dodana :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:178
 msgid "Contribution type #%id has not been updated"
-msgstr ""
+msgstr "Vrsta prispevka #%id ni bila posodobljena"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:184
 msgid "Contribution type has been successfully added!"
-msgstr ""
+msgstr "Vrsta prispevka je bila uspešno dodana!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:184
 msgid "Contribution type #%id has been successfully updated!"
-msgstr ""
+msgstr "Vrsta prispevka #%id je bila uspešno posodobljena!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:245
 msgid "Remove contribution type '%label'"
-msgstr ""
+msgstr "Odstrani vrsto prispevka '%label'"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:104
 #: ../lib/Galette/Features/Replacements.php:412
@@ -2920,205 +2924,208 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:929
 #: ../../tempcache/pages/configuration_payment_types.html.twig:143
 msgid "Payment type"
-msgstr ""
+msgstr "Vrsta plačila"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:147
 msgid "Missing required payment type's name!"
-msgstr ""
+msgstr "Manjka ime obvezne vrste plačila!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:154
 #, php-format
 msgid "Payment type '%1$s' has not been added!"
-msgstr ""
+msgstr "Vrsta plačila '%1$s' ni bila dodana!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:159
 #, php-format
 msgid "Payment type '%1$s' has not been modified!"
-msgstr ""
+msgstr "Vrsta plačila '%1$s' ni bila spremenjena!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:167
 #, php-format
 msgid "Payment type '%1$s' has been successfully added."
-msgstr ""
+msgstr "Vrsta plačila »%1$s« je bila uspešno dodana."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:172
 #: ../install/scripts/upgrade-to-1.21.php:63
 #, php-format
 msgid "Payment type '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Vrsta plačila »%1$s« je bila uspešno spremenjena."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:227
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Odstrani vrsto plačila %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:131
 msgid "Subscription"
-msgstr ""
+msgstr "Naročnina"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:242
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1036
 msgid "Edit profile"
-msgstr ""
+msgstr "Uredi profil"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1037
 msgid "New member"
-msgstr ""
+msgstr "Nov član"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1145
 #, php-format
 msgid "Mass change %1$s members"
-msgstr ""
+msgstr "Masovna sprememba %1$s članov"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1173
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1285
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Masovne spremembe niso bile potrjene!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1198
 #: ../../tempcache/components/forms/mass_groups.html.twig:74
 msgid "Add to group"
-msgstr ""
+msgstr "Dodaj v skupino"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1208
 #: ../../tempcache/components/forms/mass_groups.html.twig:81
 msgid "Remove from group"
-msgstr ""
+msgstr "Odstrani iz skupine"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1257
 #, php-format
 msgid "Review mass change %1$s members"
-msgstr ""
+msgstr "Množična sprememba pregleda %1$s članov"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1346
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Nič za početi!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1371
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1641
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "Pri shranjevanju člana je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1403
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1622
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Pri dodajanju člana v njegove skupine je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1421
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Član %1$s je bil uspešno spremenjen!"
+msgstr[1] "Število članov %1$s je bilo uspešno spremenjeno!"
+msgstr[2] "Število članov %1$s je bilo uspešno spremenjeno!"
+msgstr[3] "Število članov %1$s je bilo uspešno spremenjeno!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1429
 msgid "Something went wrong during mass edition!"
-msgstr ""
+msgstr "Med množično izdajo je šlo nekaj narobe!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1461
 #: ../lib/Galette/Middleware/Authenticate.php:76
 msgid "Login required"
-msgstr ""
+msgstr "Zahtevana prijava"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1488
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Neveljavna captcha"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1599
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Vaš račun je bil ustvarjen!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1604
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "Poslali smo vam e-pošto, preverite svoj nabiralnik."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1607
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Nov član je bil uspešno dodan."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1610
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Račun člana je bil spremenjen."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1636
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
+"Pri dodajanju člana v njegove skupine kot upravitelja je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1776
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Odstrani člana %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1784
 #, php-format
 msgid "You are about to remove %1$s members."
-msgstr ""
+msgstr "Odstranili boste %1$s članov."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1919
 msgid "No member #%id."
-msgstr ""
+msgstr "Ni člana #%id."
 
 #: ../lib/Galette/Controllers/AjaxController.php:47
 #: ../webroot/installer.php:249
 #: ../../tempcache/elements/messages_inline.html.twig:98
 msgid "- ERROR -"
-msgstr ""
+msgstr "- NAPAKA -"
 
 #: ../lib/Galette/Controllers/AjaxController.php:58
 #: ../../tempcache/elements/messages_inline.html.twig:179
 msgid "- WARNING -"
-msgstr ""
+msgstr "- OPOZORILO -"
 
 #: ../lib/Galette/Controllers/AjaxController.php:233
 msgid "Telemetry information has been sent. Thank you!"
-msgstr ""
+msgstr "Telemetrični podatki so bili poslani. Hvala!"
 
 #: ../lib/Galette/Controllers/AjaxController.php:253
 msgid "Thank you for registering!"
-msgstr ""
+msgstr "Hvala za registracijo!"
 
 #: ../lib/Galette/Filters/MembersList.php:242
 #: ../lib/Galette/Features/Replacements.php:240
 #: ../../tempcache/pages/preferences.html.twig:2763
 msgid "Member number"
-msgstr ""
+msgstr "Številka člana"
 
 #: ../lib/Galette/Filters/MembersList.php:243
 #: ../lib/Galette/Features/Replacements.php:276
 #: ../lib/Galette/Features/Replacements.php:340
 msgid "Company name"
-msgstr ""
+msgstr "Ime podjetja"
 
 #: ../lib/Galette/Filters/MembersList.php:244
 #: ../lib/Galette/Features/Replacements.php:280
 #: ../lib/Galette/Features/Replacements.php:284
 #: ../../tempcache/pages/mailing_form.html.twig:132
 msgid "Address"
-msgstr ""
+msgstr "Naslov"
 
 #: ../lib/Galette/Filters/MembersList.php:245
 msgid "Email,URL,IM"
-msgstr ""
+msgstr "E-pošta, URL, neposredno sporočilo"
 
 #: ../lib/Galette/Filters/MembersList.php:246
 msgid "Job"
-msgstr ""
+msgstr "Delo"
 
 #: ../lib/Galette/Filters/MembersList.php:247
 msgid "Infos"
-msgstr ""
+msgstr "Informacije"
 
 #: ../lib/Galette/Filters/MembersList.php:248
 #: ../../tempcache/components/forms/member_dropdown.html.twig:71
 msgid "Member ID"
-msgstr ""
+msgstr "ID člana"
 
 #: ../lib/Galette/Filters/MembersList.php:259
 msgid "All members"
-msgstr ""
+msgstr "Vsi člani"
 
 #: ../lib/Galette/Filters/MembersList.php:260
 #: ../../tempcache/pages/preferences.html.twig:1195
@@ -3128,100 +3135,100 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1436
 #: ../../tempcache/pages/preferences.html.twig:1494
 msgid "Up to date members"
-msgstr ""
+msgstr "Posodobljeni člani"
 
 #: ../lib/Galette/Filters/MembersList.php:261
 msgid "Close expiries"
-msgstr ""
+msgstr "Bližnji izteki"
 
 #: ../lib/Galette/Filters/MembersList.php:262
 msgid "Latecomers"
-msgstr ""
+msgstr "Zamudniki"
 
 #: ../lib/Galette/Filters/MembersList.php:265
 msgid "Administrators"
-msgstr ""
+msgstr "Skrbniki"
 
 #: ../lib/Galette/Filters/MembersList.php:266
 msgid "Non members"
-msgstr ""
+msgstr "Nečlani"
 
 #: ../lib/Galette/Util/FakeData.php:58
 msgid "Photo has not been stored!"
-msgstr ""
+msgstr "Fotografija ni bila shranjena!"
 
 #: ../lib/Galette/Util/FakeData.php:65
 msgid "Photo has not been copied!"
-msgstr ""
+msgstr "Fotografija ni bila kopirana!"
 
 #: ../lib/Galette/Util/Password.php:68
 msgid "Password is blacklisted!"
-msgstr ""
+msgstr "Geslo je na črni listi!"
 
 #: ../lib/Galette/Util/Password.php:76
 #, php-format
 msgid "Too short (%1$s characters minimum, %2$s found)"
-msgstr ""
+msgstr "Prekratko (najmanj %1$s znakov, najdenih %2$s)"
 
 #: ../lib/Galette/Util/Password.php:89
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "Ne uporabljajte svojih osebnih podatkov kot geslo!"
 
 #: ../lib/Galette/Util/Password.php:125
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Ne vsebuje malih črk"
 
 #: ../lib/Galette/Util/Password.php:129
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Ne vsebuje velikih črk"
 
 #: ../lib/Galette/Util/Password.php:132
 msgid "Does not contains letters"
-msgstr ""
+msgstr "Ne vsebuje črk"
 
 #: ../lib/Galette/Util/Password.php:138
 msgid "Does not contains numbers"
-msgstr ""
+msgstr "Ne vsebuje številk"
 
 #: ../lib/Galette/Util/Password.php:144
 msgid "Does not contains special characters"
-msgstr ""
+msgstr "Ne vsebuje posebnih znakov"
 
 #. TRANS: parameter is a field name
 #: ../lib/Galette/Features/Dynamics.php:123
 #, php-format
 msgid "Missing required field %1$s"
-msgstr ""
+msgstr "Manjka obvezno polje %1$s"
 
 #. TRANS: paramter is a field name
 #: ../lib/Galette/Features/I18n.php:40
 #, php-format
 msgid "Unable to add dynamic translation for %1$s :("
-msgstr ""
+msgstr "Dinamičnega prevajanja za %1$s ni mogoče dodati :("
 
 #. TRANS: paramter is a field name
 #: ../lib/Galette/Features/I18n.php:64
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
-msgstr ""
+msgstr "Dinamičnega prevajanja za %1$s ni mogoče posodobiti :("
 
 #. TRANS: paramter is a field name
 #: ../lib/Galette/Features/I18n.php:86
 #, php-format
 msgid "Unable to remove old dynamic translation for %1$s :("
-msgstr ""
+msgstr "Starega dinamičnega prevoda za %1$s ni mogoče odstraniti :("
 
 #: ../lib/Galette/Features/Permissions.php:42
 msgid "Inaccessible"
-msgstr ""
+msgstr "Nedostopno"
 
 #: ../lib/Galette/Features/Permissions.php:50
 msgid "User, read only"
-msgstr ""
+msgstr "Uporabnik, samo za branje"
 
 #: ../lib/Galette/Features/Permissions.php:51
 msgid "User, read/write"
-msgstr ""
+msgstr "Uporabnik, branje/pisanje"
 
 #: ../lib/Galette/Features/Permissions.php:52
 #: ../../tempcache/pages/member_form.html.twig:720
@@ -3233,7 +3240,7 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:158
 #: ../../tempcache/elements/group_persons.html.twig:162
 msgid "Group manager"
-msgstr ""
+msgstr "Vodja skupine"
 
 #: ../lib/Galette/Features/Permissions.php:53
 #: ../../tempcache/pages/members_list.html.twig:658
@@ -3242,94 +3249,94 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:147
 #: ../../tempcache/elements/group_persons.html.twig:151
 msgid "Staff member"
-msgstr ""
+msgstr "Član osebja"
 
 #: ../lib/Galette/Features/Permissions.php:54
 #: ../../tempcache/elements/ajax_members.html.twig:136
 #: ../../tempcache/elements/group_persons.html.twig:140
 msgid "Administrator"
-msgstr ""
+msgstr "Skrbnik"
 
 #: ../lib/Galette/Features/Replacements.php:101
 #, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr ""
+msgstr "Oznaka za dinamično polje »%s«"
 
 #: ../lib/Galette/Features/Replacements.php:104
 #, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr ""
+msgstr "Vnos obrazca za dinamično polje »%s«"
 
 #: ../lib/Galette/Features/Replacements.php:110
 #, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr ""
+msgstr "Vrednost za dinamično polje »%s«"
 
 #: ../lib/Galette/Features/Replacements.php:171
 msgid "Your organisation name"
-msgstr ""
+msgstr "Ime vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:175
 msgid "Your organisation slogan"
-msgstr ""
+msgstr "Slogan vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:179
 #: ../lib/Galette/Features/Replacements.php:183
 msgid "Your organisation address"
-msgstr ""
+msgstr "Naslov vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:183
 #: ../lib/Galette/Features/Replacements.php:284
 msgid "with break lines"
-msgstr ""
+msgstr "z lomnimi črtami"
 
 #: ../lib/Galette/Features/Replacements.php:187
 msgid "Your organisation phone number"
-msgstr ""
+msgstr "Telefonska številka vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:191
 msgid "Your organisation email address"
-msgstr ""
+msgstr "E-poštni naslov vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:195
 msgid "Your organisation website"
-msgstr ""
+msgstr "Spletna stran vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:199
 msgid "Your organisation logo"
-msgstr ""
+msgstr "Logotip vaše organizacije"
 
 #: ../lib/Galette/Features/Replacements.php:203
 msgid "Your organisation logo (print specific)"
-msgstr ""
+msgstr "Logotip vaše organizacije (posebno za tisk)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:208
 msgid "Current date (Y-m-d)"
-msgstr ""
+msgstr "Trenutni datum (Y-m-d)"
 
 #: ../lib/Galette/Features/Replacements.php:212
 msgid "Galette's login URI"
-msgstr ""
+msgstr "Galettein prijavni URI"
 
 #: ../lib/Galette/Features/Replacements.php:216
 #: ../../tempcache/pages/preferences.html.twig:574
 msgid "Footer text:"
-msgstr ""
+msgstr "Besedilo v nogi:"
 
 #: ../lib/Galette/Features/Replacements.php:236
 msgid "Member's ID"
-msgstr ""
+msgstr "ID člana"
 
 #: ../lib/Galette/Features/Replacements.php:248
 #: ../lib/Galette/Features/Replacements.php:344
 msgid "Last name"
-msgstr ""
+msgstr "Priimek"
 
 #: ../lib/Galette/Features/Replacements.php:252
 #: ../lib/Galette/Features/Replacements.php:348 ../includes/i18n.inc.php:80
 msgid "First name"
-msgstr ""
+msgstr "Ime"
 
 #: ../lib/Galette/Features/Replacements.php:256
 #: ../../tempcache/pages/preferences.html.twig:2747
@@ -3340,61 +3347,61 @@ msgstr ""
 #: ../../tempcache/elements/group_persons.html.twig:56
 #: ../../tempcache/elements/group_persons.html.twig:180
 msgid "Nickname"
-msgstr ""
+msgstr "Vzdevek"
 
 #: ../lib/Galette/Features/Replacements.php:260
 msgid "Gender"
-msgstr ""
+msgstr "Spol"
 
 #: ../lib/Galette/Features/Replacements.php:264
 #: ../../tempcache/pages/advanced_search.html.twig:274
 msgid "Birth date"
-msgstr ""
+msgstr "Datum rojstva"
 
 #: ../lib/Galette/Features/Replacements.php:268
 msgid "Birth place"
-msgstr ""
+msgstr "Rojstni kraj"
 
 #: ../lib/Galette/Features/Replacements.php:272
 #: ../../tempcache/pages/preferences.html.twig:2755
 msgid "Profession"
-msgstr ""
+msgstr "Poklic"
 
 #: ../lib/Galette/Features/Replacements.php:288
 msgid "Zipcode"
-msgstr ""
+msgstr "Poštna številka"
 
 #: ../lib/Galette/Features/Replacements.php:292
 msgid "Town"
-msgstr ""
+msgstr "Mesto"
 
 #: ../lib/Galette/Features/Replacements.php:296 ../includes/i18n.inc.php:77
 msgid "Country"
-msgstr ""
+msgstr "Država"
 
 #: ../lib/Galette/Features/Replacements.php:316
 msgid "Member's main group"
-msgstr ""
+msgstr "Glavna skupina člana"
 
 #: ../lib/Galette/Features/Replacements.php:320
 msgid "Member's groups (as list)"
-msgstr ""
+msgstr "Skupine članov (kot seznam)"
 
 #: ../lib/Galette/Features/Replacements.php:324
 msgid "Member state of dues"
-msgstr ""
+msgstr "Država članica, ki plačuje dajatve"
 
 #: ../lib/Galette/Features/Replacements.php:328
 msgid "Membership remaining days"
-msgstr ""
+msgstr "Preostali dnevi članstva"
 
 #: ../lib/Galette/Features/Replacements.php:332
 msgid "Membership expired since"
-msgstr ""
+msgstr "Članstvo je poteklo od"
 
 #: ../lib/Galette/Features/Replacements.php:376
 msgid "Contribution label"
-msgstr ""
+msgstr "Oznaka prispevka"
 
 #: ../lib/Galette/Features/Replacements.php:380
 #: ../../tempcache/pages/contributions_types_list.html.twig:77
@@ -3413,210 +3420,214 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:322
 #: ../../tempcache/pages/contribution_form.html.twig:487
 msgid "Amount"
-msgstr ""
+msgstr "Znesek"
 
 #: ../lib/Galette/Features/Replacements.php:384
 msgid "Amount (in letters)"
-msgstr ""
+msgstr "Znesek (z velikimi črkami)"
 
 #: ../lib/Galette/Features/Replacements.php:388
 msgid "Full date"
-msgstr ""
+msgstr "Polni datum"
 
 #: ../lib/Galette/Features/Replacements.php:392
 msgid "Contribution year"
-msgstr ""
+msgstr "Leto prispevka"
 
 #: ../lib/Galette/Features/Replacements.php:396
 #: ../../tempcache/pages/document_form.html.twig:184
 msgid "Comment"
-msgstr ""
+msgstr "Komentar"
 
 #: ../lib/Galette/Features/Replacements.php:400
 #: ../../tempcache/pages/advanced_search.html.twig:737
 msgid "Begin date"
-msgstr ""
+msgstr "Začetni datum"
 
 #: ../lib/Galette/Features/Replacements.php:404
 #: ../../tempcache/pages/advanced_search.html.twig:781
 msgid "End date"
-msgstr ""
+msgstr "Končni datum"
 
 #: ../lib/Galette/Features/Replacements.php:817
 msgid "Member information"
-msgstr ""
+msgstr "Informacije o članih"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:130
 #: ../../tempcache/elements/modes.html.twig:76
 msgid "Galette is currently under maintenance!"
-msgstr ""
+msgstr "Galette je trenutno v vzdrževanju!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:132
 msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
 msgstr ""
+"Primerek Galette, ki ga zahtevate, je trenutno v vzdrževanju. Prosimo, "
+"vrnite se pozneje."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:144
 msgid "Galette needs update!"
-msgstr ""
+msgstr "Galette potrebuje posodobitev!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:146
 msgid "Your Galette database is not present, or not up to date."
-msgstr ""
+msgstr "Vaša baza podatkov Galette ni prisotna ali ni posodobljena."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:147
 msgid "Please run install or upgrade procedure (check the documentation)"
-msgstr ""
+msgstr "Zaženite postopek namestitve ali nadgradnje (preverite dokumentacijo)"
 
 #: ../lib/Galette/Middleware/PublicPages.php:74
 msgid "Unauthorized"
-msgstr ""
+msgstr "Nepooblaščeno"
 
 #: ../lib/Galette/Middleware/Authenticate.php:132
 msgid "Unknown ACL rule '%acl'!"
-msgstr ""
+msgstr "Neznano pravilo ACL '%acl'!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:178
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
-msgstr ""
+msgstr "Pot '%1$s' ni registrirana v ACL-jih!"
 
 #: ../lib/Galette/Renderers/Html.php:49
 msgid "Galette error"
-msgstr ""
+msgstr "Galettejeva napaka"
 
 #: ../lib/Galette/Renderers/Html.php:52 ../../tempcache/pages/404.html.twig:75
 msgid "Page not found"
-msgstr ""
+msgstr "Strani ni bilo mogoče najti"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:495
 msgid "Missing required field name!"
-msgstr ""
+msgstr "Manjka ime obveznega polja!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:504
 msgid "Missing required field permissions!"
-msgstr ""
+msgstr "Manjkajoča dovoljenja za obvezna polja!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:508
 msgid "Unknown permission!"
-msgstr ""
+msgstr "Neznano dovoljenje!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:513
 msgid "Missing required form!"
-msgstr ""
+msgstr "Manjka zahtevani obrazec!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:517
 msgid "Unknown form!"
-msgstr ""
+msgstr "Neznana oblika!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:526
 msgid "- Field name already used."
-msgstr ""
+msgstr "- Ime polja je že uporabljeno."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:533
 msgid "- Width must be a positive integer!"
-msgstr ""
+msgstr "- Širina mora biti pozitivno celo število!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:543
 msgid "- Height must be a positive integer!"
-msgstr ""
+msgstr "- Višina mora biti pozitivno celo število!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:553
 msgid "- Size must be a positive integer!"
-msgstr ""
+msgstr "- Velikost mora biti pozitivno celo število!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:563
 msgid "- Min size must be a positive integer!"
-msgstr ""
+msgstr "- Najmanjša velikost mora biti pozitivno celo število!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:572
 msgid "- Min size must be lower than size!"
-msgstr ""
+msgstr "- Minimalna velikost mora biti manjša od velikosti!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:577
 msgid "- Repeat must be an integer!"
-msgstr ""
+msgstr "- Ponavljanje mora biti celo število!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:687
 msgid "An error occurred storing the field."
-msgstr ""
+msgstr "Pri shranjevanju polja je prišlo do napake."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:881
 msgid "separator"
-msgstr ""
+msgstr "ločilo"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:882
 msgid "free text"
-msgstr ""
+msgstr "prosto besedilo"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:883
 msgid "single line"
-msgstr ""
+msgstr "ena vrstica"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:884
 msgid "choice"
-msgstr ""
+msgstr "izbira"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:885
 msgid "date"
-msgstr ""
+msgstr "datum"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:886
 msgid "boolean"
-msgstr ""
+msgstr "logična vrednost"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:887
 msgid "file"
-msgstr ""
+msgstr "datoteka"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:452
 msgid "Scheduled payments deleted (%list)"
-msgstr ""
+msgstr "Načrtovana plačila izbrisana (%seznam)"
 
 #: ../lib/Galette/Repository/Members.php:291
 msgid "Member Picture deleted"
-msgstr ""
+msgstr "Slika člana je izbrisana"
 
 #: ../lib/Galette/Repository/Members.php:371
 msgid "Delete members cards, transactions and dues"
-msgstr ""
+msgstr "Izbriši članske kartice, transakcije in članarine"
 
 #: ../lib/Galette/Repository/Members.php:388
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
+"Člana, ki ima še vedno odvisnosti (poštna sporočila, ...), ni mogoče "
+"odstraniti."
 
 #: ../lib/Galette/Repository/SavedSearches.php:216
 msgid "Searches deleted (%list)"
-msgstr ""
+msgstr "Izbrisana iskanja (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:496
 msgid "Contributions deleted (%list)"
-msgstr ""
+msgstr "Prispevki izbrisani (%list)"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:94
 #: ../lib/Galette/Helpers/DatesHelper.php:101
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:95
 #: ../lib/Galette/Helpers/DatesHelper.php:118
 msgid "Y-m"
-msgstr ""
+msgstr "Y-m"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:155
 msgid "start date filter"
-msgstr ""
+msgstr "filter začetnega datuma"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:155
 msgid "end date filter"
-msgstr ""
+msgstr "filter končnega datuma"
 
 #. TRANS: %1$s is field name, %2$s is list of known date formats
 #: ../lib/Galette/Helpers/DatesHelper.php:160
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
-msgstr ""
+msgstr "Neznana oblika datuma za %1$s.<br/>Znane oblike so: %2$s"
 
 #: ../lib/Galette/Events/MemberListener.php:125
 #: ../lib/Galette/Events/ContribListener.php:103
@@ -3624,51 +3635,53 @@ msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
+"Galette ste prosili, naj članu pošlje potrditveno e-pošto, vendar je bila e-"
+"pošta v nastavitvah onemogočena."
 
 #: ../lib/Galette/Events/MemberListener.php:136
 #: ../lib/Galette/Events/ContribListener.php:118
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr ""
+msgstr "- Potrditve ne morete poslati po e-pošti, če član nima naslova!"
 
 #: ../lib/Galette/Events/MemberListener.php:191
 #, php-format
 msgid "New account email sent to '%s'."
-msgstr ""
+msgstr "Novo e-poštno sporočilo računa je bilo poslano na '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:191
 #, php-format
 msgid "Account modification email sent to '%s'."
-msgstr ""
+msgstr "E-poštno sporočilo o spremembi računa je bilo poslano na '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:199
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
-msgstr ""
+msgstr "Pri pošiljanju e-pošte računa na '%s' je prišlo do težave"
 
 #: ../lib/Galette/Events/MemberListener.php:256
 #, php-format
 msgid "New account email sent to admin for '%s'."
-msgstr ""
+msgstr "Skrbniku je bil poslan nov e-poštni naslov za račun '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:257
 msgid "Account modification email sent to admin."
-msgstr ""
+msgstr "E-poštno sporočilo o spremembi računa je bilo poslano skrbniku."
 
 #: ../lib/Galette/Events/MemberListener.php:269
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
-msgstr ""
+msgstr "Pri pošiljanju e-pošte skrbniku računa '%s' je prišlo do težave."
 
 #: ../lib/Galette/Events/MemberListener.php:270
 msgid "A problem happened while sending account email to admin"
-msgstr ""
+msgstr "A problem happened while sending account email to admin"
 
 #. TRANS: first parameter is the use name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:175
 #, php-format
 msgid "Email sent to user %1$s (%2$s)"
-msgstr ""
+msgstr "E-pošta poslana uporabniku %1$s (%2$s)"
 
 #. TRANS: first parameter is the use name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:183
@@ -3676,12 +3689,14 @@ msgstr ""
 msgid ""
 "A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
+"Pri pošiljanju potrdila o prispevku uporabniku %1$s (%2$s) je prišlo do "
+"težave"
 
 #. TRANS: first parameter is member name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:247
 #, php-format
 msgid "Email sent to admin for user %1$s (%2$s)"
-msgstr ""
+msgstr "E-pošta poslana administratorju za uporabnika %1$s (%2$s)"
 
 #. TRANS: first parameter is member name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:255
@@ -3689,89 +3704,89 @@ msgstr ""
 msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
-msgstr ""
+msgstr "E-pošta poslana administratorju za uporabnika %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:284
 msgid "Post contribution script failed"
-msgstr ""
+msgstr "Skript za prispevek objave ni uspel"
 
 #: ../lib/Galette/Events/ContribListener.php:293
 msgid "The configured post contribution script has failed."
-msgstr ""
+msgstr "Konfiguriran skript za prispevanje k objavi ni uspel."
 
 #: ../lib/Galette/Events/ContribListener.php:294
 msgid "You can find contribution information and script output below."
-msgstr ""
+msgstr "Spodaj najdete informacije o prispevkih in izpis skripte."
 
 #: ../lib/Galette/Events/ContribListener.php:302
 msgid "Post contribution script has failed."
-msgstr ""
+msgstr "Skript za prispevek k objavi ni uspel."
 
 #: ../webroot/installer.php:100
 msgid "No host"
-msgstr ""
+msgstr "Brez gostitelja"
 
 #: ../webroot/installer.php:103
 msgid "No port"
-msgstr ""
+msgstr "Brez vrat"
 
 #: ../webroot/installer.php:106 ../webroot/installer.php:148
 msgid "No user name"
-msgstr ""
+msgstr "Brez uporabniškega imena"
 
 #: ../webroot/installer.php:112
 msgid "No database name"
-msgstr ""
+msgstr "Brez imena baze podatkov"
 
 #: ../webroot/installer.php:151
 msgid "The username cannot contain the @ character"
-msgstr ""
+msgstr "Uporabniško ime ne sme vsebovati znaka @"
 
 #: ../webroot/installer.php:199
 msgid "Galette Installation"
-msgstr ""
+msgstr "Namestitev Galette"
 
 #: ../webroot/installer.php:207 ../../tempcache/page.html.twig:75
 #: ../../tempcache/public_page.html.twig:83
 msgid "Skip to content"
-msgstr ""
+msgstr "Preskoči na vsebino"
 
 #: ../webroot/installer.php:211
 msgid "Galette installation"
-msgstr ""
+msgstr "Namestitev Galette"
 
 #: ../webroot/installer.php:214 ../webroot/installer.php:216
 #: ../../tempcache/page.html.twig:217 ../../tempcache/page.html.twig:222
 msgid "Read the manual"
-msgstr ""
+msgstr "Preberite priročnik"
 
 #: ../webroot/installer.php:321
 #: ../../tempcache/modals/plugin_initdb.html.twig:475
 msgid "Version selection"
-msgstr ""
+msgstr "Izbira različice"
 
 #: ../webroot/installer.php:346
 #: ../../tempcache/modals/plugin_initdb.html.twig:494
 msgid "Database installation"
-msgstr ""
+msgstr "Namestitev baze podatkov"
 
 #: ../webroot/installer.php:439 ../../tempcache/elements/footer.html.twig:97
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentacija"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 #: ../includes/dependencies.php:115
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD.MM.YYYY"
 
 #: ../includes/dependencies.php:327
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Preverjanje CSRF ni uspelo!"
 
 #: ../includes/fields_defs/texts_fields.php:16
 #: ../includes/fields_defs/texts_fields.php:24
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaši identifikatorji"
 
 #: ../includes/fields_defs/texts_fields.php:17
 msgid ""
@@ -3783,10 +3798,17 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}Pravkar ste se naročili v sistem za upravljanje članov "
+"{ASSO_NAME}.{NEWLINE}Zdaj lahko v realnem času spremljate stanje svoje "
+"naročnine in posodabljate svoje nastavitve prek spletnega vmesnika.{NEWLINE}"
+"Za nastavitev novega gesla se prijavite na ta naslov:{BR}{CHG_PWD_URI}"
+"{NEWLINE}Uporabniško ime: {LOGIN}{BR}Zgornja povezava bo veljavna do "
+"{LINK_VALIDITY}.{NEWLINE}Se vidimo kmalu!{NEWLINE}(to e-poštno sporočilo je "
+"bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:19
 msgid "New user registration"
-msgstr ""
+msgstr "Registracija novega uporabnika"
 
 #: ../includes/fields_defs/texts_fields.php:25
 msgid ""
@@ -3796,14 +3818,19 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}Nekdo (verjetno vi) je prosil za obnovitev vašega "
+"gesla.{NEWLINE}Za nastavitev novega gesla se prijavite na ta naslov:{BR}"
+"{CHG_PWD_URI}{NEWLINE}Uporabniško ime: {LOGIN}{BR}Zgornja povezava bo "
+"veljavna do {LINK_VALIDITY}.{NEWLINE}Se vidimo kmalu!{NEWLINE}(to e-poštno "
+"sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:27
 msgid "Lost password email"
-msgstr ""
+msgstr "E-poštni naslov za izgubljeno geslo"
 
 #: ../includes/fields_defs/texts_fields.php:32
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaš prispevek"
 
 #: ../includes/fields_defs/texts_fields.php:33
 msgid ""
@@ -3813,14 +3840,19 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}Vaš prispevek je uspešno upošteval/a {ASSO_NAME}."
+"{NEWLINE}Velja do {DEADLINE}.{NEWLINE}Zdaj se lahko prijavite in brskate ali "
+"spreminjate svoje osebne podatke z uporabo identifikatorjev galette na tem "
+"naslovu:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Se vidimo kmalu!"
+"{NEWLINE}(to e-poštno sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:35
 msgid "Receipt send for new contribution"
-msgstr ""
+msgstr "Potrdilo o prejemu novega prispevka"
 
 #: ../includes/fields_defs/texts_fields.php:40
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nova registracija od {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:41
 msgid ""
@@ -3828,14 +3860,17 @@ msgid ""
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
+"Pozdravljeni, dragi administrator,{NEWLINE}Registriran je bil nov član z "
+"naslednjimi podatki:{BR}* Ime: {NAME_ADH}{BR}* Prijava: {LOGIN}{BR}* E-"
+"pošta: {MAIL_ADH}{NEWLINE}S spoštovanjem,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:43
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Registracija novega uporabnika (poslano administratorju)"
 
 #: ../includes/fields_defs/texts_fields.php:48
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nov prispevek za {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:49
 msgid ""
@@ -3843,14 +3878,17 @@ msgid ""
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Pozdravljeni, dragi administrator,{NEWLINE}Prispevek uporabnika {NAME_ADH} "
+"je bil registriran (nov rok: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}S "
+"spoštovanjem,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:51
 msgid "New contribution (sent to admin)"
-msgstr ""
+msgstr "Nov prispevek (poslan administratorju)"
 
 #: ../includes/fields_defs/texts_fields.php:56
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nova samoregistracija od uporabnika {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:57
 msgid ""
@@ -3858,14 +3896,17 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Pozdravljeni, dragi administrator,{NEWLINE}Nov član se je registriral na "
+"spletu z naslednjimi podatki:{BR}* Ime: {NAME_ADH}{BR}* Prijava: {LOGIN}{BR}"
+"* E-pošta: {MAIL_ADH}{NEWLINE}S spoštovanjem,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:59
 msgid "New self registration (sent to admin)"
-msgstr ""
+msgstr "Nova samoregistracija (poslano administratorju)"
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaš račun je bil spremenjen"
 
 #: ../includes/fields_defs/texts_fields.php:65
 msgid ""
@@ -3874,14 +3915,18 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Pozdravljeni!{NEWLINE}Vaš račun pri {ASSO_NAME} (z uporabniškim imenom '"
+"{LOGIN}') je spremenil skrbnik ali član osebja.{NEWLINE}Za pregled sprememb "
+"in/ali njihovo spreminjanje se lahko prijavite v {LOGIN_URI}.{NEWLINE}Se "
+"vidimo kmalu!{NEWLINE}(to e-poštno sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "Informs user that his account has been modified"
-msgstr ""
+msgstr "Obvesti uporabnika, da je bil njegov račun spremenjen"
 
 #: ../includes/fields_defs/texts_fields.php:72
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaše članstvo bo kmalu poteklo"
 
 #: ../includes/fields_defs/texts_fields.php:73
 msgid ""
@@ -3889,29 +3934,35 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}vaše članstvo v {ASSO_NAME} bo kmalu poteklo čez "
+"{DAYS_REMAINING} dni.{NEWLINE}Se vidimo kmalu!{NEWLINE}(to e-poštno "
+"sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:75
 #: ../../tempcache/pages/reminder.html.twig:87
 msgid "Impending due date"
-msgstr ""
+msgstr "Bližajoči se rok"
 
 #: ../includes/fields_defs/texts_fields.php:80
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaše članstvo je poteklo"
 
 #: ../includes/fields_defs/texts_fields.php:81
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}Vaše članstvo pri {ASSO_NAME} je poteklo pred "
+"{DAYS_EXPIRED} dnevi.{NEWLINE}Se vidimo kmalu!{NEWLINE}(to e-poštno "
+"sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "Late due date"
-msgstr ""
+msgstr "Pozen datum zapadlosti"
 
 #: ../includes/fields_defs/texts_fields.php:88
 msgid "[{ASSO_NAME}] Your donation"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vaša donacija"
 
 #: ../includes/fields_defs/texts_fields.php:89
 msgid ""
@@ -3919,42 +3970,49 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Pozdravljeni,{NEWLINE}Vaša donacija za {ASSO_NAME} je bila uspešno shranjena."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Hvala!{NEWLINE}(to e-poštno sporočilo je "
+"bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:91
 msgid "Receipt send for new donations"
-msgstr ""
+msgstr "Potrdilo o prejemu novih donacij"
 
 #: ../includes/fields_defs/texts_fields.php:96
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nova donacija za {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:97
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Pozdravljeni, dragi administrator,{NEWLINE}Donacija od {NAME_ADH} je bila "
+"registrirana.{BR}{CONTRIB_INFO}{NEWLINE}S spoštovanjem,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "New donation (sent to admin)"
-msgstr ""
+msgstr "Nova donacija (poslana administratorju)"
 
 #: ../includes/fields_defs/texts_fields.php:104
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr ""
+msgstr "Račun [{ASSO_NAME}] {NAME_ADH} je bil spremenjen"
 
 #: ../includes/fields_defs/texts_fields.php:105
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Pozdravljeni! {NEWLINE}{NAME_ADH} je spremenil/a svoj račun. {NEWLINE}Se "
+"vidimo kmalu! {NEWLINE}(to e-poštno sporočilo je bilo poslano samodejno)"
 
 #: ../includes/fields_defs/texts_fields.php:107
 msgid "Informs admin a member edit his information"
-msgstr ""
+msgstr "Obvesti administratorja, da je član uredil svoje podatke"
 
 #: ../includes/fields_defs/texts_fields.php:112
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
-msgstr ""
+msgstr "Račun [{ASSO_NAME}] {NAME_ADH} ni aktiven"
 
 #: ../includes/fields_defs/texts_fields.php:113
 msgid ""
@@ -4186,160 +4244,160 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:39
 msgid "Old-timer"
-msgstr ""
+msgstr "Starec"
 
 #: ../includes/i18n.inc.php:40
 msgid "Legal entity"
-msgstr ""
+msgstr "Pravna oseba"
 
 #: ../includes/i18n.inc.php:41
 msgid "Non-member"
-msgstr ""
+msgstr "Nečlan"
 
 #: ../includes/i18n.inc.php:42
 msgid "Reduced annual contribution"
-msgstr ""
+msgstr "Znižan letni prispevek"
 
 #: ../includes/i18n.inc.php:43
 msgid "Company fee"
-msgstr ""
+msgstr "Provizija podjetja"
 
 #: ../includes/i18n.inc.php:44
 msgid "Donation in kind"
-msgstr ""
+msgstr "Donacija v naravi"
 
 #: ../includes/i18n.inc.php:45
 msgid "Donation in money"
-msgstr ""
+msgstr "Donacija v denarju"
 
 #: ../includes/i18n.inc.php:46
 msgid "Partnership"
-msgstr ""
+msgstr "Partnerstvo"
 
 #: ../includes/i18n.inc.php:47
 msgid "french"
-msgstr ""
+msgstr "francoščina"
 
 #: ../includes/i18n.inc.php:48
 msgid "english"
-msgstr ""
+msgstr "angleščina"
 
 #: ../includes/i18n.inc.php:49
 msgid "spanish"
-msgstr ""
+msgstr "španski"
 
 #: ../includes/i18n.inc.php:50
 msgid "annual fee"
-msgstr ""
+msgstr "letna pristojbina"
 
 #: ../includes/i18n.inc.php:51
 msgid "annual fee (to be paid)"
-msgstr ""
+msgstr "letna članarina (plačljiva)"
 
 #: ../includes/i18n.inc.php:52
 msgid "company fee"
-msgstr ""
+msgstr "provizija podjetja"
 
 #: ../includes/i18n.inc.php:53
 msgid "donation in kind"
-msgstr ""
+msgstr "donacija v naravi"
 
 #: ../includes/i18n.inc.php:54
 msgid "donation in money"
-msgstr ""
+msgstr "donacija v denarju"
 
 #: ../includes/i18n.inc.php:55
 msgid "partnership"
-msgstr ""
+msgstr "partnerstvo"
 
 #: ../includes/i18n.inc.php:56
 msgid "reduced annual fee"
-msgstr ""
+msgstr "znižana letna članarina"
 
 #: ../includes/i18n.inc.php:57
 msgid "Identity"
-msgstr ""
+msgstr "Identiteta"
 
 #: ../includes/i18n.inc.php:58
 msgid "Galette-related data"
-msgstr ""
+msgstr "Podatki, povezani z Galette"
 
 #: ../includes/i18n.inc.php:59
 msgid "Contact information"
-msgstr ""
+msgstr "Kontaktni podatki"
 
 #: ../includes/i18n.inc.php:60
 msgid "Mr."
-msgstr ""
+msgstr "G."
 
 #: ../includes/i18n.inc.php:61
 msgid "Mrs."
-msgstr ""
+msgstr "Ga."
 
 #: ../includes/i18n.inc.php:62
 msgid "Miss"
-msgstr ""
+msgstr "Gospodična"
 
 #: ../includes/i18n.inc.php:63
 msgid "Identity:"
-msgstr ""
+msgstr "Identiteta:"
 
 #: ../includes/i18n.inc.php:64
 msgid "Galette-related data:"
-msgstr ""
+msgstr "Podatki, povezani z Galette:"
 
 #: ../includes/i18n.inc.php:65
 msgid "Contact information:"
-msgstr ""
+msgstr "Kontaktni podatki:"
 
 #: ../includes/i18n.inc.php:66
 msgid "Society"
-msgstr ""
+msgstr "Družba"
 
 #: ../includes/i18n.inc.php:67
 msgid "Politeness"
-msgstr ""
+msgstr "Vljudnost"
 
 #: ../includes/i18n.inc.php:69
 msgid "Main"
-msgstr ""
+msgstr "Glavni"
 
 #: ../includes/i18n.inc.php:70
 msgid "** Galette identifier, if applicable"
-msgstr ""
+msgstr "** Galettejeva identifikacijska številka, če je na voljo"
 
 #: ../includes/i18n.inc.php:71
 msgid "* Only for compagnies"
-msgstr ""
+msgstr "* Samo za podjetja"
 
 #: ../includes/i18n.inc.php:72
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
-msgstr ""
+msgstr "S tem se strinjam, da bom upošteval/a statut in pravila združenja %s."
 
 #: ../includes/i18n.inc.php:73
 msgid "At ................................................"
-msgstr ""
+msgstr "Ob ................................................"
 
 #: ../includes/i18n.inc.php:74
 msgid "On .......... / .......... / .......... "
-msgstr ""
+msgstr "Ob .......... / .......... / .......... "
 
 #: ../includes/i18n.inc.php:75
 msgid "Username"
-msgstr ""
+msgstr "Uporabniško ime"
 
 #: ../includes/i18n.inc.php:76
 msgid "Email address"
-msgstr ""
+msgstr "E-poštni naslov"
 
 #: ../includes/i18n.inc.php:78
 msgid "City"
-msgstr ""
+msgstr "Mesto"
 
 #: ../includes/i18n.inc.php:79
 msgid "Zip Code"
-msgstr ""
+msgstr "Poštna številka"
 
 #: ../includes/i18n.inc.php:81
 msgid ""
@@ -4347,100 +4405,106 @@ msgid ""
 "website of the association. The amount of donations are free to be decided "
 "by the generous donor."
 msgstr ""
+"Minimalni prispevek za vsako vrsto članstva je določen na spletni strani "
+"združenja. Višino donacij prosto določi velikodušni donator."
 
 #: ../includes/i18n.inc.php:82
 msgid "Required membership:"
-msgstr ""
+msgstr "Zahtevano članstvo:"
 
 #: ../includes/i18n.inc.php:83
 msgid ""
 "Complete the following form and send it with your funds, in order to "
 "complete your subscription."
 msgstr ""
+"Izpolnite spodnji obrazec in ga pošljite skupaj s sredstvi, da dokončate "
+"naročnino."
 
 #: ../includes/i18n.inc.php:84
 msgid "on"
-msgstr ""
+msgstr "na"
 
 #: ../includes/i18n.inc.php:85
 msgid "from"
-msgstr ""
+msgstr "od"
 
 #: ../includes/i18n.inc.php:86
 msgid "to"
-msgstr ""
+msgstr "do"
 
 #: ../includes/i18n.inc.php:87
 msgid "Association"
-msgstr ""
+msgstr "Združenje"
 
 #: ../install/scripts/upgrade-to-0.8.php:57
 msgid "Unable to create main datadir in %path!"
-msgstr ""
+msgstr "Glavne podatkovne mape v %path ni mogoče ustvariti!"
 
 #: ../install/scripts/upgrade-to-0.8.php:73
 #, php-format
 msgid "Unable to create datadir in %dir!"
-msgstr ""
+msgstr "Ni mogoče ustvariti podatkovne mape v %dir!"
 
 #: ../install/scripts/upgrade-to-0.8.php:147
 #, php-format
 msgid "File %1$s has not been moved :-/"
-msgstr ""
+msgstr "Datoteka %1$s ni bila premaknjena :-/"
 
 #: ../install/scripts/upgrade-to-0.8.php:161
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr ""
+msgstr "Imenik %dir je bil premaknjen!"
 
 #: ../install/scripts/upgrade-to-0.8.php:173
 #, php-format
 msgid "Directory %dir has not been moved :("
-msgstr ""
+msgstr "Imenik %dir ni bil premaknjen :("
 
 #: ../install/scripts/upgrade-to-0.8.php:182
 #, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
-msgstr ""
+msgstr "Imenik %dir ni na prvotni poti in ne bo premaknjen."
 
 #: ../install/scripts/upgrade-to-1.22.php:84
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Izbire za polje %d so bile preseljene."
 
 #: ../install/scripts/upgrade-to-1.22.php:94
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "Izbir za polje %d ni mogoče preseliti: %s"
 
 #: ../install/steps/type.php:26
 #: ../../tempcache/modals/plugin_initdb.html.twig:130
 msgid "New installation"
-msgstr ""
+msgstr "Izbire za polje %d ni bilo mogoče preseliti: %s"
 
 #: ../install/steps/type.php:30
 msgid "you're installing Galette for the first time"
-msgstr ""
+msgstr "Galette nameščate prvič"
 
 #: ../install/steps/type.php:31
 msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr ""
+"želite izbrisati starejšo različico Galette, ne da bi ohranili svoje podatke"
 
 #: ../install/steps/type.php:40 ../install/steps/db_select_version.php:38
 #: ../../tempcache/modals/plugin_initdb.html.twig:160
 msgid "Update"
-msgstr ""
+msgstr "Posodobitev"
 
 #: ../install/steps/type.php:44
 msgid ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
 msgstr ""
+"Galette že imate nameščen in ga želite nadgraditi na najnovejšo različico"
 
 #: ../install/steps/type.php:46 ../../tempcache/pages/import.html.twig:64
 #: ../../tempcache/modals/plugin_initdb.html.twig:175
 msgid "Warning: Don't forget to backup your current database."
-msgstr ""
+msgstr "Opozorilo: Ne pozabite varnostno kopirati trenutne baze podatkov."
 
 #: ../install/steps/type.php:53 ../install/steps/db_install.php:59
 #: ../install/steps/check.php:142 ../install/steps/admin.php:34
@@ -4451,163 +4515,173 @@ msgstr ""
 #: ../../tempcache/pages/plugins.html.twig:222
 #: ../../tempcache/modals/plugin_initdb.html.twig:390
 msgid "Next step"
-msgstr ""
+msgstr "Naslednji korak"
 
 #: ../install/steps/type.php:56 ../install/steps/db_install.php:73
 #: ../install/steps/galette.php:72 ../install/steps/db_checks.php:238
 #: ../install/steps/db_select_version.php:139
 #: ../install/steps/db_select_version.php:150 ../install/steps/db.php:89
 msgid "Back"
-msgstr ""
+msgstr "Nazaj"
 
 #: ../install/steps/db_install.php:21
 msgid "Database has not been installed!"
-msgstr ""
+msgstr "Podatkovna baza ni nameščena!"
 
 #: ../install/steps/db_install.php:23
 msgid "Database has not been upgraded!"
-msgstr ""
+msgstr "Baza podatkov ni bila posodobljena!"
 
 #: ../install/steps/db_install.php:27
 msgid "Database has been installed :)"
-msgstr ""
+msgstr "Baza podatkov je nameščena :)"
 
 #: ../install/steps/db_install.php:29
 msgid "Database has been upgraded :)"
-msgstr ""
+msgstr "Baza podatkov je bila posodobljena :)"
 
 #: ../install/steps/db_install.php:55 ../install/steps/check.php:136
 #: ../install/steps/galette.php:54
 #: ../../tempcache/modals/plugin_initdb.html.twig:384
 msgid "Retry"
-msgstr ""
+msgstr "Poskusi znova"
 
 #: ../install/steps/check.php:43
 msgid "Photos"
-msgstr ""
+msgstr "Fotografije"
 
 #: ../install/steps/check.php:44
 msgid "Cache"
-msgstr ""
+msgstr "Predpomnilnik"
 
 #: ../install/steps/check.php:45
 msgid "Temporary images"
-msgstr ""
+msgstr "Začasne slike"
 
 #: ../install/steps/check.php:50
 #: ../../tempcache/pages/mailings_list.html.twig:358
 #: ../../tempcache/pages/mailing_form.html.twig:251
 msgid "Attachments"
-msgstr ""
+msgstr "Priloge"
 
 #: ../install/steps/check.php:51
 msgid "Files"
-msgstr ""
+msgstr "Datoteke"
 
 #: ../install/steps/check.php:63
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "Dobrodošli pri namestitvi Galette!"
 
 #: ../install/steps/check.php:66
 msgid "Galette requirements are met :)"
-msgstr ""
+msgstr "Galettejeve zahteve so izpolnjene :)"
 
 #: ../install/steps/check.php:70
 msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
 msgstr ""
+"Vaše nastavitve datuma v PHP niso pravilne. Morda ste spregledali nastavitve "
+"časovnega pasu, ki so obvezne od različice PHP 5.3 naprej?"
 
 #: ../install/steps/check.php:75
 msgid "PHP version"
-msgstr ""
+msgstr "Različica PHP-ja"
 
 #: ../install/steps/check.php:79
 msgid "Date settings"
-msgstr ""
+msgstr "Nastavitve datuma"
 
 #: ../install/steps/check.php:84
 msgid "PHP Modules"
-msgstr ""
+msgstr "PHP moduli"
 
 #: ../install/steps/check.php:87
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
+"Manjkajo nekateri PHP moduli. Namestite jih ali se obrnite na podporo.<br/>"
+"Več informacij o zahtevanih modulih najdete v dokumentaciji."
 
 #: ../install/steps/check.php:94
 msgid "Files permissions"
-msgstr ""
+msgstr "Dovoljenja za datoteke"
 
 #: ../install/steps/check.php:111
 msgid "Files permissions are not OK!"
-msgstr ""
+msgstr "Dovoljenja za datoteke niso v redu!"
 
 #: ../install/steps/check.php:115
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
+"Za delovanje po pričakovanjih Galette potrebuje dovoljenje za pisanje v "
+"zgoraj navedene datoteke."
 
 #: ../install/steps/check.php:117
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
+"Za posodobitev potrebuje Galette dovoljenje za pisanje v zgoraj navedene "
+"datoteke."
 
 #: ../install/steps/check.php:121
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
-msgstr ""
+msgstr "V sistemih UNIX/Linux lahko dovoljenja podelite s temi ukazi"
 
 #: ../install/steps/check.php:122
 msgid "apache_user"
-msgstr ""
+msgstr "apache_uporabnik"
 
 #: ../install/steps/check.php:122
 msgid "file_name"
-msgstr ""
+msgstr "ime_datoteke"
 
 #: ../install/steps/check.php:122
 msgid "directory_name"
-msgstr ""
+msgstr "ime_datoteke"
 
 #: ../install/steps/check.php:124
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
 msgstr ""
+"V sistemu Windows preverite, ali so ti imeniki v plošči z lastnostmi v "
+"načinu samo za branje."
 
 #: ../install/steps/admin.php:16
 msgid "Please chose the parameters of the admin account on Galette"
-msgstr ""
+msgstr "Prosimo, izberite parametre skrbniškega računa na Galette"
 
 #: ../install/steps/admin.php:26
 #: ../../tempcache/pages/preferences.html.twig:3167
 msgid "Retype password:"
-msgstr ""
+msgstr "Ponovno vnesite geslo:"
 
 #: ../install/steps/admin.php:44
 msgid "Password mismatch!"
-msgstr ""
+msgstr "Neujemanje gesla!"
 
 #: ../install/steps/telemetry.php:31 ../../tempcache/pages/desktop.html.twig:89
 msgid "Send anonymous and imprecise data about your Galette instance"
-msgstr ""
+msgstr "Pošljite anonimne in nenatančne podatke o svojem primerku Galette"
 
 #: ../install/steps/telemetry.php:33
 #: ../../tempcache/modals/telemetry.html.twig:74
 msgid "Send telemetry information"
-msgstr ""
+msgstr "Pošlji telemetrične podatke"
 
 #: ../install/steps/telemetry.php:40
 #: ../../tempcache/pages/desktop.html.twig:108
 msgid "Register your organization as a Galette user"
-msgstr ""
+msgstr "Registrirajte svojo organizacijo kot uporabnika Galette"
 
 #: ../install/steps/telemetry.php:42
 #: ../../tempcache/pages/preferences.html.twig:654
 #: ../../tempcache/pages/desktop.html.twig:113
 msgid "Register"
-msgstr ""
+msgstr "Registracija"
 
 #: ../install/steps/telemetry.php:50
 #: ../../tempcache/modals/telemetry.html.twig:52
@@ -4615,6 +4689,8 @@ msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
+"Telemetrični podatki so <strong>anonimni</strong>; ne bo poslano nič o vaši "
+"organizaciji ali njenih članih."
 
 #: ../install/steps/telemetry.php:52
 #: ../../tempcache/modals/telemetry.html.twig:60
@@ -4622,14 +4698,16 @@ msgid ""
 "Also note that all data are sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
+"Upoštevajte tudi, da se vsi podatki pošiljajo prek <strong>zaščitene "
+"povezave HTTPS</strong>."
 
 #: ../install/steps/galette.php:27
 msgid "Configuration file created!"
-msgstr ""
+msgstr "Konfiguracijska datoteka ustvarjena!"
 
 #: ../install/steps/galette.php:28
 msgid "Data initialized."
-msgstr ""
+msgstr "Podatki inicializirani."
 
 #: ../install/steps/galette.php:30
 #: ../../tempcache/pages/contributions_types_list.html.twig:384
@@ -4654,169 +4732,179 @@ msgstr ""
 #: ../../tempcache/elements/scripts.html.twig:235
 #: ../../tempcache/elements/scripts.html.twig:255
 msgid "An error occurred :("
-msgstr ""
+msgstr "Prišlo je do napake :("
 
 #: ../install/steps/db_checks.php:50
 msgid "CREATE operation not allowed"
-msgstr ""
+msgstr "Operacija CREATE ni dovoljena"
 
 #: ../install/steps/db_checks.php:57
 msgid "CREATE operation allowed"
-msgstr ""
+msgstr "Operacija CREATE je dovoljena"
 
 #: ../install/steps/db_checks.php:64
 msgid "INSERT operation not allowed"
-msgstr ""
+msgstr "Operacija INSERT ni dovoljena"
 
 #: ../install/steps/db_checks.php:71
 msgid "INSERT operation allowed"
-msgstr ""
+msgstr "Operacija INSERT je dovoljena"
 
 #: ../install/steps/db_checks.php:78
 msgid "UPDATE operation not allowed"
-msgstr ""
+msgstr "Operacija POSODOBITVE ni dovoljena"
 
 #: ../install/steps/db_checks.php:85
 msgid "UPDATE operation allowed"
-msgstr ""
+msgstr "Operacija POSODOBITVE je dovoljena"
 
 #: ../install/steps/db_checks.php:92
 msgid "SELECT operation not allowed"
-msgstr ""
+msgstr "Operacija SELECT ni dovoljena"
 
 #: ../install/steps/db_checks.php:99
 msgid "SELECT operation allowed"
-msgstr ""
+msgstr "Operacija SELECT je dovoljena"
 
 #: ../install/steps/db_checks.php:106
 msgid "DELETE operation not allowed"
-msgstr ""
+msgstr "Operacija DELETE ni dovoljena"
 
 #: ../install/steps/db_checks.php:113
 msgid "DELETE operation allowed"
-msgstr ""
+msgstr "Operacija DELETE je dovoljena"
 
 #: ../install/steps/db_checks.php:120
 msgid "DROP operation not allowed"
-msgstr ""
+msgstr "Operacija DROP ni dovoljena"
 
 #: ../install/steps/db_checks.php:127
 msgid "DROP operation allowed"
-msgstr ""
+msgstr "Operacija DROP je dovoljena"
 
 #: ../install/steps/db_checks.php:135
 msgid "ALTER operation not allowed"
-msgstr ""
+msgstr "Operacija ALTER ni dovoljena"
 
 #: ../install/steps/db_checks.php:142
 msgid "ALTER operation allowed"
-msgstr ""
+msgstr "Operacija ALTER je dovoljena"
 
 #: ../install/steps/db_checks.php:158
 msgid "Check of the database"
-msgstr ""
+msgstr "Preverjanje baze podatkov"
 
 #: ../install/steps/db_checks.php:160
 msgid "Database exists and connection parameters are OK."
-msgstr ""
+msgstr "Baza podatkov obstaja in parametri povezave so v redu."
 
 #: ../install/steps/db_checks.php:164
 msgid "Incompatible database version."
-msgstr ""
+msgstr "Nezdružljiva različica baze podatkov."
 
 #: ../install/steps/db_checks.php:168
 msgid "Connection to database successfull"
-msgstr ""
+msgstr "Povezava z bazo podatkov je bila uspešna"
 
 #: ../install/steps/db_checks.php:169 ../install/steps/db_checks.php:171
 msgid "Permissions to database are OK."
-msgstr ""
+msgstr "Dovoljenja za dostop do baze podatkov so v redu."
 
 #: ../install/steps/db_checks.php:177
 msgid "Unable to connect to the database"
-msgstr ""
+msgstr "Ni mogoče vzpostaviti povezave z bazo podatkov"
 
 #: ../install/steps/db_checks.php:184
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
+"Do podatkovne baze ni mogoče dostopati. Prosimo, vrnite se in ponovno "
+"vnesite parametre povezave."
 
 #: ../install/steps/db_checks.php:189
 msgid "Permissions on the base"
-msgstr ""
+msgstr "Dovoljenja na osnovni postaji"
 
 #: ../install/steps/db_checks.php:196
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
+"GALETTE nima dovolj dovoljenj za dostop do baze podatkov za nadaljevanje "
+"namestitve."
 
 #: ../install/steps/db_checks.php:198
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
+"GALETTE nima dovolj dovoljenj za dostop do baze podatkov za nadaljevanje "
+"posodabljanja."
 
 #: ../install/steps/end.php:19
 msgid "Galette has been successfully installed!"
-msgstr ""
+msgstr "Galette je bil uspešno nameščen!"
 
 #: ../install/steps/end.php:22
 msgid "Galette has been successfully updated!"
-msgstr ""
+msgstr "Galette je bila uspešno posodobljena!"
 
 #: ../install/steps/end.php:32
 msgid "Homepage"
-msgstr ""
+msgstr "Domača stran"
 
 #: ../install/steps/db_select_version.php:31
 #: ../install/steps/db_select_version.php:45
 msgid "It seems you already use latest Galette version!"
-msgstr ""
+msgstr "Zdi se, da že uporabljate najnovejšo različico Galette!"
 
 #: ../install/steps/db_select_version.php:34
 msgid "Are you sure you want to upgrade?"
-msgstr ""
+msgstr "Ali ste prepričani, da želite nadgraditi?"
 
 #: ../install/steps/db_select_version.php:37
 #: ../../tempcache/pages/404.html.twig:93
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:58
 msgid "Home"
-msgstr ""
+msgstr "Domov"
 
 #: ../install/steps/db_select_version.php:49
 msgid "Select your previous Galette version below, and then click next."
-msgstr ""
+msgstr "Spodaj izberite prejšnjo različico Galette in nato kliknite naprej."
 
 #: ../install/steps/db_select_version.php:53
 msgid "No update script found!"
-msgstr ""
+msgstr "Ni najdenega skripta za posodobitev!"
 
 #: ../install/steps/db_select_version.php:59
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
 msgstr ""
+"Prejšnja različica je starejša od 0.7. <strong>Prepričajte se, da izberete "
+"pravilno različico</strong>."
 
 #: ../install/steps/db_select_version.php:63
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
 msgstr ""
+"Vaša prejšnja različica bi morala biti izbrana in <strong>prikazana krepko</"
+"strong>."
 
 #: ../install/steps/db_select_version.php:68
 msgid "Your current Galette version is..."
-msgstr ""
+msgstr "Vaša trenutna različica Galette je ..."
 
 #: ../install/steps/db_select_version.php:90
 #: ../../tempcache/modals/plugin_initdb.html.twig:230
 msgid "older than %version"
-msgstr ""
+msgstr "starejše od %različice"
 
 #: ../install/steps/db_select_version.php:97
 #: ../../tempcache/modals/plugin_initdb.html.twig:237
 msgid "comprised between"
-msgstr ""
+msgstr "sestavljeno med"
 
 #: ../install/steps/db_select_version.php:98
 #: ../../tempcache/pages/advanced_search.html.twig:297
@@ -4830,7 +4918,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1145
 #: ../../tempcache/modals/plugin_initdb.html.twig:241
 msgid "and"
-msgstr ""
+msgstr "in"
 
 #: ../install/steps/db_select_version.php:135
 #: ../../tempcache/pages/configuration_title_form.html.twig:102
@@ -4851,54 +4939,57 @@ msgstr ""
 #: ../../tempcache/modals/telemetry.html.twig:147
 #: ../../tempcache/modals/mass_add_contributions.html.twig:122
 msgid "Cancel"
-msgstr ""
+msgstr "Prekliči"
 
 #: ../install/steps/db.php:32
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
+"Če še ni bila ustvarjena, ustvarite bazo podatkov in uporabnika za Galette."
 
 #: ../install/steps/db.php:34
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr ""
+msgstr "Potrebna dovoljenja so CREATE, DROP, DELETE, UPDATE, SELECT in INSERT."
 
 #: ../install/steps/db.php:36
 msgid "Enter connection data for the existing database."
-msgstr ""
+msgstr "Vnesite podatke za povezavo z obstoječo zbirko podatkov."
 
 #: ../install/steps/db.php:39
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
 msgstr ""
+"Zdi se, da ste Galette že enkrat namestili.<br/>Vsi obstoječi podatki bodo "
+"odstranjeni, če boste še naprej uporabljali obstoječo bazo podatkov!"
 
 #: ../install/steps/db.php:44
 msgid "Database type:"
-msgstr ""
+msgstr "Vrsta baze podatkov:"
 
 #: ../install/steps/db.php:52
 msgid "Host:"
-msgstr ""
+msgstr "Gostitelj:"
 
 #: ../install/steps/db.php:56
 msgid "Port:"
-msgstr ""
+msgstr "Pristanišče:"
 
 #: ../install/steps/db.php:60
 msgid "User:"
-msgstr ""
+msgstr "Uporabnik:"
 
 #: ../install/steps/db.php:68
 msgid "Database:"
-msgstr ""
+msgstr "Zbirka podatkov:"
 
 #: ../install/steps/db.php:72
 msgid "Table prefix:"
-msgstr ""
+msgstr "Predpona tabele:"
 
 #: ../install/steps/db.php:77
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
-msgstr ""
+msgstr "(Navedite TRENUTNO predpono vaših Galette tabel)"
 
 #: ../../tempcache/page.html.twig:135 ../../tempcache/public_page.html.twig:147
 #: ../../tempcache/elements/logged_user.html.twig:275
@@ -4906,7 +4997,7 @@ msgstr ""
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:135
 #, php-format
 msgid "Open '%s' in a new window"
-msgstr ""
+msgstr "Odpri '%s' v novem oknu"
 
 #: ../../tempcache/page.html.twig:235
 msgid "Language menu"
@@ -4914,11 +5005,11 @@ msgstr "Jezikovni meni"
 
 #: ../../tempcache/page.html.twig:264 ../../tempcache/public_page.html.twig:223
 msgid "Back to top"
-msgstr ""
+msgstr "Nazaj na vrh"
 
 #: ../../tempcache/page.html.twig:342
 msgid "Page content"
-msgstr ""
+msgstr "Vsebina strani"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:49
 #: ../../tempcache/pages/saved_searches_list.html.twig:91
@@ -4937,7 +5028,7 @@ msgstr ""
 #: ../../tempcache/pages/mailings_list.html.twig:321
 #: ../../tempcache/pages/configuration_payment_types.html.twig:121
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:49
 #: ../../tempcache/pages/saved_searches_list.html.twig:100
@@ -4946,49 +5037,51 @@ msgstr ""
 #: ../../tempcache/pages/documents_list.html.twig:52
 #: ../../tempcache/pages/documents_list.html.twig:175
 msgid "Creation date"
-msgstr ""
+msgstr "Datum nastanka"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:49
 #: ../../tempcache/pages/preferences.html.twig:85
 msgid "Parameters"
-msgstr ""
+msgstr "Parametri"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:64
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Iskanje %1$s"
+msgstr[1] "Iskanje %1$s"
+msgstr[2] "%1$s iskanj"
+msgstr[3] "%1$s iskanj"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:112
 msgid "Search parameters"
-msgstr ""
+msgstr "Iskalni parametri"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:118
 msgid "Show parameters"
-msgstr ""
+msgstr "Prikaži parametre"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:177
 msgid "Load saved search"
-msgstr ""
+msgstr "Naloži shranjeno iskanje"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:205
 msgid "no search"
-msgstr ""
+msgstr "brez iskanja"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:69
 #: ../../tempcache/pages/configuration_titles.html.twig:93
 #: ../../tempcache/pages/configuration_titles.html.twig:98
 #: ../../tempcache/pages/configuration_titles.html.twig:146
 msgid "Short form"
-msgstr ""
+msgstr "Kratka oblika"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:73
 #: ../../tempcache/pages/configuration_titles.html.twig:105
 #: ../../tempcache/pages/configuration_titles.html.twig:110
 #: ../../tempcache/pages/configuration_titles.html.twig:152
 msgid "Long form"
-msgstr ""
+msgstr "Dolga oblika"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:77
 #: ../../tempcache/pages/contributions_types_list.html.twig:85
@@ -5007,11 +5100,11 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:94
 #: ../../tempcache/elements/group_persons.html.twig:66
 msgid "Actions"
-msgstr ""
+msgstr "Dejanja"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:87
 msgid "Add title"
-msgstr ""
+msgstr "Dodaj naslov"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:121
 #: ../../tempcache/pages/contributions_types_list.html.twig:180
@@ -5024,58 +5117,58 @@ msgstr ""
 #: ../../tempcache/elements/edit_socials.html.twig:198
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:54
 msgid "Add"
-msgstr ""
+msgstr "Dodaj"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:167
 #, php-format
 msgid "Edit '%s' title"
-msgstr ""
+msgstr "Uredi naslov '%s'"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:188
 #, php-format
 msgid "Delete '%s' title"
-msgstr ""
+msgstr "Izbriši naslov '%s'"
 
 #: ../../tempcache/pages/plugin_info.html.twig:70
 #, php-format
 msgid "By %1$s"
-msgstr ""
+msgstr "Od %1$s"
 
 #: ../../tempcache/pages/plugin_info.html.twig:97
 msgid "Version:"
-msgstr ""
+msgstr "Različica:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:113
 msgid "Author:"
-msgstr ""
+msgstr "Avtor:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:121
 msgid "Path:"
-msgstr ""
+msgstr "Pot:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:129
 msgid "Main route:"
-msgstr ""
+msgstr "Glavna pot:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:137
 msgid "ACLs"
-msgstr ""
+msgstr "ACL-ji"
 
 #: ../../tempcache/pages/plugin_info.html.twig:144
 msgid "Route"
-msgstr ""
+msgstr "Pot"
 
 #: ../../tempcache/pages/plugin_info.html.twig:148
 msgid "ACL"
-msgstr ""
+msgstr "ACL"
 
 #: ../../tempcache/pages/plugin_info.html.twig:175
 msgid "No ACLs!"
-msgstr ""
+msgstr "Brez ACL-jev!"
 
 #: ../../tempcache/pages/plugin_info.html.twig:189
 msgid "Raw information"
-msgstr ""
+msgstr "Surove informacije"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:73
 #: ../../tempcache/pages/contributions_types_list.html.twig:113
@@ -5090,7 +5183,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:275
 #: ../../tempcache/pages/export.html.twig:307
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:81
 #: ../../tempcache/pages/contributions_types_list.html.twig:137
@@ -5098,11 +5191,11 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:229
 #: ../../tempcache/pages/contribution_type_form.html.twig:132
 msgid "Membership extension"
-msgstr ""
+msgstr "Podaljšanje članstva"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:95
 msgid "New contribution type"
-msgstr ""
+msgstr "Nova vrsta prispevka"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:144
 #: ../../tempcache/pages/contributions_types_list.html.twig:236
@@ -5112,7 +5205,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_core_fields.html.twig:301
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:175
 msgid "Default"
-msgstr ""
+msgstr "Privzeto"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:144
 #: ../../tempcache/pages/contributions_types_list.html.twig:152
@@ -5122,15 +5215,17 @@ msgstr ""
 #, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s mesec"
+msgstr[1] "%1$s meseca"
+msgstr[2] "%1$s mesecev"
+msgstr[3] "%1$s mesecev"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:272
 #: ../../tempcache/pages/status_list.html.twig:193
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:195
 #, php-format
 msgid "Edit '%s' field"
-msgstr ""
+msgstr "Uredi polje '%s'"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:285
 #: ../../tempcache/pages/preferences.html.twig:207
@@ -5143,7 +5238,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_types.html.twig:164
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "Prevedi '%s'"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:298
 #: ../../tempcache/pages/status_list.html.twig:219
@@ -5152,7 +5247,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:221
 #, php-format
 msgid "Delete '%s' field"
-msgstr ""
+msgstr "Izbriši polje '%s'"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:384
 #: ../../tempcache/pages/plugins.html.twig:180
@@ -5230,7 +5325,7 @@ msgstr ""
 #: ../../tempcache/modals/telemetry.html.twig:126
 #: ../../tempcache/modals/telemetry.html.twig:220
 msgid "Close"
-msgstr ""
+msgstr "Zapri"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:384
 #: ../../tempcache/pages/preferences.html.twig:3473
@@ -5238,51 +5333,51 @@ msgstr ""
 #: ../../tempcache/pages/status_list.html.twig:304
 #: ../../tempcache/pages/configuration_payment_types.html.twig:270
 msgid "Translate labels"
-msgstr ""
+msgstr "Prevedi oznake"
 
 #: ../../tempcache/pages/advanced_search.html.twig:67
 msgid "Simple search"
-msgstr ""
+msgstr "Preprosto iskanje"
 
 #: ../../tempcache/pages/advanced_search.html.twig:75
 #: ../../tempcache/pages/members_list.html.twig:197
 msgid "Search:"
-msgstr ""
+msgstr "Iskanje:"
 
 #: ../../tempcache/pages/advanced_search.html.twig:81
 #: ../../tempcache/pages/members_list.html.twig:203
 msgid "Enter a value"
-msgstr ""
+msgstr "Vnesite vrednost"
 
 #: ../../tempcache/pages/advanced_search.html.twig:87
 #: ../../tempcache/pages/members_list.html.twig:209
 msgid "in:"
-msgstr ""
+msgstr "v:"
 
 #: ../../tempcache/pages/advanced_search.html.twig:116
 msgid "Membership status"
-msgstr ""
+msgstr "Status članstva"
 
 #: ../../tempcache/pages/advanced_search.html.twig:145
 msgid "Account activity"
-msgstr ""
+msgstr "Dejavnost računa"
 
 #: ../../tempcache/pages/advanced_search.html.twig:174
 #: ../../tempcache/pages/member_form.html.twig:726
 #: ../../tempcache/pages/member_show.html.twig:550
 #: ../../tempcache/components/forms/groups.html.twig:146
 msgid "Member of group"
-msgstr ""
+msgstr "Član skupine"
 
 #: ../../tempcache/pages/advanced_search.html.twig:179
 #: ../../tempcache/pages/advanced_search.html.twig:627
 #: ../../tempcache/components/forms/mass_groups.html.twig:54
 msgid "Select a group"
-msgstr ""
+msgstr "Izberite skupino"
 
 #: ../../tempcache/pages/advanced_search.html.twig:208
 msgid "With email:"
-msgstr ""
+msgstr "Z e-pošto:"
 
 #: ../../tempcache/pages/advanced_search.html.twig:222
 #: ../../tempcache/pages/advanced_search.html.twig:461
@@ -5290,17 +5385,17 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:346
 #: ../../tempcache/pages/mailings_list.html.twig:229
 msgid "Don't care"
-msgstr ""
+msgstr "Vseeno mi je"
 
 #: ../../tempcache/pages/advanced_search.html.twig:238
 #: ../../tempcache/pages/members_list.html.twig:362
 msgid "With"
-msgstr ""
+msgstr "Z"
 
 #: ../../tempcache/pages/advanced_search.html.twig:254
 #: ../../tempcache/pages/members_list.html.twig:378
 msgid "Without"
-msgstr ""
+msgstr "Brez"
 
 #: ../../tempcache/pages/advanced_search.html.twig:280
 #: ../../tempcache/pages/advanced_search.html.twig:322
@@ -5311,7 +5406,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:787
 #: ../../tempcache/pages/advanced_search.html.twig:829
 msgid "beetween"
-msgstr ""
+msgstr "med"
 
 #: ../../tempcache/pages/advanced_search.html.twig:289
 #: ../../tempcache/pages/advanced_search.html.twig:306
@@ -5350,19 +5445,19 @@ msgstr ""
 #: ../../tempcache/components/dynamic_fields.html.twig:637
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142
 msgid "yyyy-mm-dd format"
-msgstr ""
+msgstr "oblika yyyy-mm-dd"
 
 #: ../../tempcache/pages/advanced_search.html.twig:360
 msgid "Modification date"
-msgstr ""
+msgstr "Datum spremembe"
 
 #: ../../tempcache/pages/advanced_search.html.twig:402
 msgid "Due date"
-msgstr ""
+msgstr "Rok"
 
 #: ../../tempcache/pages/advanced_search.html.twig:447
 msgid "Show public infos"
-msgstr ""
+msgstr "Prikaži javne informacije"
 
 #: ../../tempcache/pages/advanced_search.html.twig:537
 #: ../../tempcache/pages/advanced_search.html.twig:1077
@@ -5372,43 +5467,43 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:189
 #: ../../tempcache/components/forms/groups.html.twig:53
 msgid "This feature requires javascript."
-msgstr ""
+msgstr "Ta funkcija zahteva javascript."
 
 #: ../../tempcache/pages/advanced_search.html.twig:544
 msgid "Advanced groups search"
-msgstr ""
+msgstr "Napredno iskanje skupin"
 
 #: ../../tempcache/pages/advanced_search.html.twig:546
 #: ../../tempcache/pages/advanced_search.html.twig:1086
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimentalno"
 
 #: ../../tempcache/pages/advanced_search.html.twig:556
 msgid "Add new group search criteria"
-msgstr ""
+msgstr "Dodajanje novih kriterijev iskanja po skupinah"
 
 #: ../../tempcache/pages/advanced_search.html.twig:564
 #: ../../tempcache/pages/advanced_search.html.twig:1131
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 msgid "Logical operator"
-msgstr ""
+msgstr "Logični operator"
 
 #: ../../tempcache/pages/advanced_search.html.twig:575
 msgid "In all selected groups"
-msgstr ""
+msgstr "V vseh izbranih skupinah"
 
 #: ../../tempcache/pages/advanced_search.html.twig:585
 msgid "In any of selected groups"
-msgstr ""
+msgstr "V kateri koli izbrani skupini"
 
 #: ../../tempcache/pages/advanced_search.html.twig:658
 #: ../../tempcache/pages/advanced_search.html.twig:1614
 msgid "Remove criteria"
-msgstr ""
+msgstr "Odstrani merila"
 
 #: ../../tempcache/pages/advanced_search.html.twig:687
 msgid "Within contributions"
-msgstr ""
+msgstr "Znotraj prispevkov"
 
 #: ../../tempcache/pages/advanced_search.html.twig:853
 #: ../../tempcache/pages/advanced_search.html.twig:858
@@ -5423,7 +5518,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:73
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:123
 msgid "Type"
-msgstr ""
+msgstr "Vrsta"
 
 #: ../../tempcache/pages/advanced_search.html.twig:994
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:163
@@ -5431,29 +5526,29 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:179
 #: ../../tempcache/elements/edit_pdf_models.html.twig:127
 msgid "Select"
-msgstr ""
+msgstr "Izberite"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1084
 msgid "Free search"
-msgstr ""
+msgstr "Brezplačno iskanje"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1096
 msgid "Add new free search criteria"
-msgstr ""
+msgstr "Dodajte nova brezplačna iskalna merila"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1155
 #: ../../tempcache/pages/preferences.html.twig:1048
 msgid "or"
-msgstr ""
+msgstr "ali"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1175
 #: ../../tempcache/pages/advanced_search.html.twig:1948
 msgid "Select a field"
-msgstr ""
+msgstr "Izberite polje"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1335
 msgid "Query operator"
-msgstr ""
+msgstr "Operator poizvedbe"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1352
 #: ../../tempcache/pages/advanced_search.html.twig:1441
@@ -5461,49 +5556,49 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1534
 #: ../../tempcache/pages/advanced_search.html.twig:1681
 msgid "is"
-msgstr ""
+msgstr "je"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1362
 #: ../../tempcache/pages/advanced_search.html.twig:1554
 #: ../../tempcache/pages/advanced_search.html.twig:1701
 msgid "is not"
-msgstr ""
+msgstr "ni"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1369
 #: ../../tempcache/pages/advanced_search.html.twig:1591
 #: ../../tempcache/pages/advanced_search.html.twig:1927
 msgid "Value"
-msgstr ""
+msgstr "Vrednost"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1451
 #: ../../tempcache/pages/advanced_search.html.twig:1741
 msgid "before"
-msgstr ""
+msgstr "prej"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1461
 #: ../../tempcache/pages/advanced_search.html.twig:1751
 msgid "after"
-msgstr ""
+msgstr "po"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1544
 #: ../../tempcache/pages/advanced_search.html.twig:1691
 msgid "contains"
-msgstr ""
+msgstr "vsebuje"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1564
 #: ../../tempcache/pages/advanced_search.html.twig:1711
 msgid "do not contains"
-msgstr ""
+msgstr "ne vsebuje"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1574
 #: ../../tempcache/pages/advanced_search.html.twig:1721
 msgid "starts with"
-msgstr ""
+msgstr "začne se z"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1584
 #: ../../tempcache/pages/advanced_search.html.twig:1731
 msgid "ends with"
-msgstr ""
+msgstr "konča z"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1643
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:234
@@ -5513,7 +5608,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:214
 #: ../../tempcache/pages/mailings_list.html.twig:276
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1651
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:244
@@ -5524,80 +5619,82 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:224
 #: ../../tempcache/pages/mailings_list.html.twig:286
 msgid "Clear filter"
-msgstr ""
+msgstr "Počisti filter"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1900
 #: ../../tempcache/pages/import.html.twig:95
 msgid "Choice"
-msgstr ""
+msgstr "Izbira"
 
 #: ../../tempcache/pages/plugins.html.twig:72
 #: ../../tempcache/pages/plugins.html.twig:449
 msgid "Author"
-msgstr ""
+msgstr "Avtor"
 
 #: ../../tempcache/pages/plugins.html.twig:76
 #: ../../tempcache/pages/plugins.html.twig:455
 msgid "Version"
-msgstr ""
+msgstr "Različica"
 
 #: ../../tempcache/pages/plugins.html.twig:80
 #: ../../tempcache/pages/plugins.html.twig:461
 msgid "Release date"
-msgstr ""
+msgstr "Datum izdaje"
 
 #: ../../tempcache/pages/plugins.html.twig:92
 msgid "Active plugins"
-msgstr ""
+msgstr "Aktivni vtičniki"
 
 #: ../../tempcache/pages/plugins.html.twig:114
 msgid "No active plugin."
-msgstr ""
+msgstr "Ni aktivnega vtičnika."
 
 #: ../../tempcache/pages/plugins.html.twig:126
 msgid "Inactive plugins"
-msgstr ""
+msgstr "Neaktivni vtičniki"
 
 #: ../../tempcache/pages/plugins.html.twig:148
 msgid "No inactive plugin."
-msgstr ""
+msgstr "Ni neaktivnega vtičnika."
 
 #: ../../tempcache/pages/plugins.html.twig:180
 #: ../../tempcache/pages/preferences.html.twig:1868
 #: ../../tempcache/pages/preferences.html.twig:3130
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
+msgstr "Aplikacija deluje v demo načinu. Ta funkcionalnost žal ni omogočena."
 
 #: ../../tempcache/pages/plugins.html.twig:206
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
+"Pri prikazu vmesnika za inicializacijo baze podatkov vtičnika je prišlo do "
+"napake :("
 
 #: ../../tempcache/pages/plugins.html.twig:218
 #, php-format
 msgid "Plugin database initialization: %1$s"
-msgstr ""
+msgstr "Inicializacija baze podatkov vtičnikov: %1$s"
 
 #: ../../tempcache/pages/plugins.html.twig:254
 msgid "An error occurred on plugin database initialization :("
-msgstr ""
+msgstr "Pri inicializaciji baze podatkov vtičnika je prišlo do napake :("
 
 #: ../../tempcache/pages/plugins.html.twig:333
 msgid "A required file is missing"
-msgstr ""
+msgstr "Manjka zahtevana datoteka"
 
 #: ../../tempcache/pages/plugins.html.twig:340
 msgid "Incompatible with current version"
-msgstr ""
+msgstr "Nezdružljivo s trenutno različico"
 
 #: ../../tempcache/pages/plugins.html.twig:347
 msgid "Database version missing"
-msgstr ""
+msgstr "Manjka različica baze podatkov"
 
 #: ../../tempcache/pages/plugins.html.twig:354
 msgid "Not installed"
-msgstr ""
+msgstr "Ni nameščeno"
 
 #: ../../tempcache/pages/plugins.html.twig:364
 msgid "Need update"
