@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-11 16:01+0000\n"
+"PO-Revision-Date: 2026-07-14 08:01+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #: ../lib/Galette/IO/CsvIn.php:164 ../lib/Galette/IO/CsvIn.php:212
 #, php-format
@@ -810,7 +810,7 @@ msgstr "- Številke in mere morajo biti cela števila!"
 
 #: ../lib/Galette/Core/Preferences.php:770
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr "- To uporabniško ime že uporablja drug član!"
+msgstr "- Višina kartice mora biti celo število med 40 in 55!"
 
 #: ../lib/Galette/Core/Preferences.php:775
 msgid "- The card width have to be an integer between 70 and 95!"
@@ -1103,7 +1103,7 @@ msgstr "Izvozite nekatere podatke v različnih oblikah"
 #: ../lib/Galette/Controllers/CsvController.php:221
 #: ../install/steps/check.php:48
 msgid "Imports"
-msgstr "Uvoz"
+msgstr "Uvozi"
 
 #: ../lib/Galette/Core/Galette.php:374
 msgid "Import members from CSV files"
@@ -2506,7 +2506,7 @@ msgstr "Ni sorodne vrste prispevka, ustvarite novega."
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
 #, php-format
 msgid "Mass add contribution on %1$s members"
-msgstr "Ni sorodne vrste prispevka, ustvarite novega"
+msgstr "Množično dodajanje prispevkov za %1$s članov"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:634
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:263
@@ -3675,7 +3675,7 @@ msgstr "Pri pošiljanju e-pošte skrbniku računa '%s' je prišlo do težave."
 
 #: ../lib/Galette/Events/MemberListener.php:270
 msgid "A problem happened while sending account email to admin"
-msgstr "Pri pošiljanju e-pošte računa skrbniku je prišlo do težave."
+msgstr "Pri pošiljanju e-pošte računa skrbniku je prišlo do težave"
 
 #. TRANS: first parameter is the use name, second his email address
 #: ../lib/Galette/Events/ContribListener.php:175
@@ -4180,7 +4180,6 @@ msgid "Birthplace:"
 msgstr "Rojstni kraj:"
 
 #: ../includes/fields_defs/members_fields.php:274
-#, fuzzy
 msgid "Id GNUpg (GPG):"
 msgstr "Id GNUpg (GPG):"
 
@@ -6523,62 +6522,64 @@ msgstr "Izbira skupin"
 
 #: ../../tempcache/pages/member_form.html.twig:675
 msgid "Managed groups selection"
-msgstr ""
+msgstr "Izbira upravljanih skupin"
 
 #: ../../tempcache/pages/member_form.html.twig:780
 msgid "Click on a row to select a group"
-msgstr ""
+msgstr "Kliknite na vrstico, da izberete skupino"
 
 #: ../../tempcache/pages/import.html.twig:74
 msgid "Existing files"
-msgstr ""
+msgstr "Obstoječe datoteke"
 
 #: ../../tempcache/pages/import.html.twig:87
 msgid "The following files seems ready to import on the disk:"
-msgstr ""
+msgstr "Zdi se, da so naslednje datoteke na disku pripravljene za uvoz:"
 
 #: ../../tempcache/pages/import.html.twig:108
 #: ../../tempcache/pages/import.html.twig:176
 #: ../../tempcache/pages/export.html.twig:144
 #: ../../tempcache/pages/export.html.twig:198
 msgid "Size"
-msgstr ""
+msgstr "Velikost"
 
 #: ../../tempcache/pages/import.html.twig:162
 msgid "see"
-msgstr ""
+msgstr "glej"
 
 #: ../../tempcache/pages/import.html.twig:194
 #: ../../tempcache/pages/export.html.twig:216
 #, php-format
 msgid "Remove '%1$s' from disk"
-msgstr ""
+msgstr "Odstrani '%1$s' z diska"
 
 #: ../../tempcache/pages/import.html.twig:218
 msgid "Run the import process, but do *not* store anything in the database"
-msgstr ""
+msgstr "Zaženite postopek uvoza, vendar *ne* shranite ničesar v bazo podatkov"
 
 #: ../../tempcache/pages/import.html.twig:222
 msgid "Dry run"
-msgstr ""
+msgstr "Suhi tek"
 
 #: ../../tempcache/pages/import.html.twig:235
 msgid "Import"
-msgstr ""
+msgstr "Uvoz"
 
 #: ../../tempcache/pages/import.html.twig:247
 msgid "No import file actually exists."
-msgstr ""
+msgstr "Uvozna datoteka dejansko ne obstaja."
 
 #: ../../tempcache/pages/import.html.twig:249
 msgid ""
 "Use upload form below to send a new file on server, or copy it directly in "
 "the imports directory."
 msgstr ""
+"Za pošiljanje nove datoteke na strežnik uporabite spodnji obrazec za "
+"nalaganje ali pa jo kopirajte neposredno v imenik uvozov."
 
 #: ../../tempcache/pages/import.html.twig:268
 msgid "Upload new file"
-msgstr ""
+msgstr "Naloži novo datoteko"
 
 #: ../../tempcache/pages/import.html.twig:279
 #: ../../tempcache/pages/preferences.html.twig:266
@@ -6587,94 +6588,96 @@ msgstr ""
 #: ../../tempcache/components/forms/picture.html.twig:81
 #: ../../tempcache/components/dynamic_fields.html.twig:780
 msgid "Choose a file"
-msgstr ""
+msgstr "Izberite datoteko"
 
 #: ../../tempcache/pages/import.html.twig:293
 msgid "Upload file"
-msgstr ""
+msgstr "Naloži datoteko"
 
 #: ../../tempcache/pages/import.html.twig:306
 msgid "Configure import model"
-msgstr ""
+msgstr "Konfiguriraj model uvoza"
 
 #: ../../tempcache/pages/import.html.twig:337
 #: ../../tempcache/pages/import.html.twig:348
 msgid "No file selected"
-msgstr ""
+msgstr "Ni izbrane datoteke"
 
 #: ../../tempcache/pages/import.html.twig:337
 msgid "Please make sure to select one file to import."
-msgstr ""
+msgstr "Prosimo, izberite eno datoteko za uvoz."
 
 #: ../../tempcache/pages/import.html.twig:348
 msgid "Please make sure to select one file to upload."
-msgstr ""
+msgstr "Prosimo, izberite eno datoteko za nalaganje."
 
 #: ../../tempcache/pages/member_show.html.twig:112
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
+"Pošlji članu povezavo za ustvarjanje novega gesla, kot če bi uporabil "
+"funkcijo »pozabljeno geslo«."
 
 #: ../../tempcache/pages/member_show.html.twig:119
 msgid "New password"
-msgstr ""
+msgstr "Novo geslo"
 
 #: ../../tempcache/pages/member_show.html.twig:147
 msgid "Generate Member Card"
-msgstr ""
+msgstr "Ustvari člansko kartico"
 
 #: ../../tempcache/pages/member_show.html.twig:229
 #, php-format
 msgid "Create a new member with %1$s information."
-msgstr ""
+msgstr "Ustvari novega člana z %1$s podatki."
 
 #: ../../tempcache/pages/member_show.html.twig:236
 msgid "Duplicate"
-msgstr ""
+msgstr "Podvoji"
 
 #: ../../tempcache/pages/member_show.html.twig:285
 msgid "Family"
-msgstr ""
+msgstr "Družina"
 
 #: ../../tempcache/pages/member_show.html.twig:521
 #: ../../tempcache/components/forms/mass_groups.html.twig:48
 #: ../../tempcache/components/forms/groups.html.twig:46
 msgid "Groups:"
-msgstr ""
+msgstr "Skupine:"
 
 #: ../../tempcache/pages/member_show.html.twig:721
 msgid "Not managed group"
-msgstr ""
+msgstr "Ni upravljana skupina"
 
 #: ../../tempcache/pages/member_show.html.twig:721
 msgid "You are not part of managers for the requested group."
-msgstr ""
+msgstr "Niste del upraviteljev zahtevane skupine."
 
 #: ../../tempcache/pages/reminder.html.twig:65
 msgid "Choose wich reminder(s) you want to send:"
-msgstr ""
+msgstr "Izberite, katere opomnike želite poslati:"
 
 #: ../../tempcache/pages/reminder.html.twig:92
 #: ../../tempcache/pages/reminder.html.twig:129
 msgid "preview"
-msgstr ""
+msgstr "predogled"
 
 #: ../../tempcache/pages/reminder.html.twig:98
 #: ../../tempcache/pages/reminder.html.twig:135
 #, php-format
 msgid "%s members with an email address"
-msgstr ""
+msgstr "%s članov z e-poštnim naslovom"
 
 #: ../../tempcache/pages/reminder.html.twig:104
 #: ../../tempcache/pages/reminder.html.twig:141
 #, php-format
 msgid "%s members without email address"
-msgstr ""
+msgstr "%s članov brez e-poštnega naslova"
 
 #: ../../tempcache/pages/reminder.html.twig:159
 msgid "Generate labels for members without email address"
-msgstr ""
+msgstr "Ustvari oznake za člane brez e-poštnega naslova"
 
 #: ../../tempcache/pages/reminder.html.twig:170
 #: ../../tempcache/pages/preferences.html.twig:3396
@@ -6682,129 +6685,131 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:472
 #: ../../tempcache/modals/telemetry.html.twig:140
 msgid "Send"
-msgstr ""
+msgstr "Pošlji"
 
 #: ../../tempcache/pages/reminder.html.twig:198
 #: ../../tempcache/pages/mailing_form.html.twig:414
 #: ../../tempcache/modals/mailing_preview.html.twig:125
 msgid "Subject:"
-msgstr ""
+msgstr "Zadeva:"
 
 #: ../../tempcache/pages/reminder.html.twig:210
 #: ../../tempcache/pages/500.html.twig:118
 #: ../../tempcache/pages/mailing_form.html.twig:311
 #: ../../tempcache/pages/mailing_form.html.twig:424
 msgid "Message:"
-msgstr ""
+msgstr "Sporočilo:"
 
 #: ../../tempcache/pages/reminder.html.twig:256
 msgid "No reminder selected"
-msgstr ""
+msgstr "Ni izbranega opomnika"
 
 #: ../../tempcache/pages/reminder.html.twig:256
 msgid "Please make sure to select at least one reminder."
-msgstr ""
+msgstr "Prosimo, izberite vsaj en opomnik."
 
 #: ../../tempcache/pages/password_lost.html.twig:69
 #: ../../tempcache/pages/password_lost.html.twig:73
 msgid "Username or email:"
-msgstr ""
+msgstr "Uporabniško ime ali e-pošta:"
 
 #: ../../tempcache/pages/password_lost.html.twig:79
 msgid "Recover password"
-msgstr ""
+msgstr "Obnovi geslo"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:335
 msgid "IP"
-msgstr ""
+msgstr "IP-naslov"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:341
 msgid "User"
-msgstr ""
+msgstr "Uporabnik"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:227
 #: ../../tempcache/pages/history.html.twig:347
 msgid "Action"
-msgstr ""
+msgstr "Dejanje"
 
 #: ../../tempcache/pages/history.html.twig:190
 msgid "Select an user"
-msgstr ""
+msgstr "Izberite uporabnika"
 
 #: ../../tempcache/pages/history.html.twig:232
 msgid "Select an action"
-msgstr ""
+msgstr "Izberite dejanje"
 
 #: ../../tempcache/pages/history.html.twig:364
 #: ../../tempcache/pages/history.html.twig:369
 msgid "Show associated query"
-msgstr ""
+msgstr "Prikaži povezano poizvedbo"
 
 #: ../../tempcache/pages/history.html.twig:399
 msgid "logs are empty"
-msgstr ""
+msgstr "dnevniki so prazni"
 
 #: ../../tempcache/pages/password_recover.html.twig:70
 #: ../../tempcache/pages/password_recover.html.twig:74
 msgid "New password:"
-msgstr ""
+msgstr "Novo geslo:"
 
 #: ../../tempcache/pages/password_recover.html.twig:82
 #: ../../tempcache/pages/password_recover.html.twig:86
 msgid "Confirmation:"
-msgstr ""
+msgstr "Potrditev:"
 
 #: ../../tempcache/pages/password_recover.html.twig:92
 msgid "Change my password"
-msgstr ""
+msgstr "Spremeni moje geslo"
 
 #: ../../tempcache/pages/preferences.html.twig:69
 msgid "General"
-msgstr ""
+msgstr "Splošno"
 
 #: ../../tempcache/pages/preferences.html.twig:93
 msgid "Rights"
-msgstr ""
+msgstr "Pravice"
 
 #: ../../tempcache/pages/preferences.html.twig:101
 msgid "E-Mail"
-msgstr ""
+msgstr "E-pošta"
 
 #: ../../tempcache/pages/preferences.html.twig:136
 msgid "Security parameters"
-msgstr ""
+msgstr "Varnostni parametri"
 
 #: ../../tempcache/pages/preferences.html.twig:148
 #: ../../tempcache/pages/members_list.html.twig:653
 #: ../../tempcache/pages/members_list.html.twig:810
 msgid "Admin"
-msgstr ""
+msgstr "Skrbnik"
 
 #: ../../tempcache/pages/preferences.html.twig:168
 msgid "Name of the association:"
-msgstr ""
+msgstr "Ime združenja:"
 
 #: ../../tempcache/pages/preferences.html.twig:182
 msgid "Association's short description:"
-msgstr ""
+msgstr "Kratek opis združenja:"
 
 #: ../../tempcache/pages/preferences.html.twig:186
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 msgstr ""
+"Vnesite kratek opis vašega združenja, ki bo prikazan na indeksni strani in v "
+"naslovu strani."
 
 #: ../../tempcache/pages/preferences.html.twig:223
 #: ../../tempcache/pages/preferences.html.twig:2616
 msgid "Logo:"
-msgstr ""
+msgstr "Logotip:"
 
 #: ../../tempcache/pages/preferences.html.twig:239
 msgid "Current logo"
-msgstr ""
+msgstr "Trenutni logotip"
 
 #: ../../tempcache/pages/preferences.html.twig:264
 #: ../../tempcache/pages/preferences.html.twig:2657
@@ -6812,106 +6817,111 @@ msgstr ""
 #: ../../tempcache/components/forms/picture.html.twig:79
 #: ../../tempcache/components/dynamic_fields.html.twig:778
 msgid "Choose another file"
-msgstr ""
+msgstr "Izberite drugo datoteko"
 
 #: ../../tempcache/pages/preferences.html.twig:281
 #: ../../tempcache/pages/preferences.html.twig:2674
 #: ../../tempcache/components/forms/picture.html.twig:59
 msgid "Delete image"
-msgstr ""
+msgstr "Izbriši sliko"
 
 #: ../../tempcache/pages/preferences.html.twig:310
 msgid " (continuation)"
-msgstr ""
+msgstr " (nadaljevanje)"
 
 #: ../../tempcache/pages/preferences.html.twig:365
 msgid "Postal address:"
-msgstr ""
+msgstr "Poštni naslov:"
 
 #: ../../tempcache/pages/preferences.html.twig:369
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
+"Uporabite zgoraj naveden naslov ali izberite člana osebja, da pridobite "
+"njegov naslov."
 
 #: ../../tempcache/pages/preferences.html.twig:377
 #: ../../tempcache/pages/preferences.html.twig:466
 #: ../../tempcache/pages/mailing_form.html.twig:98
 msgid "from preferences"
-msgstr ""
+msgstr "iz nastavitev"
 
 #: ../../tempcache/pages/preferences.html.twig:393
 msgid "from a staff user"
-msgstr ""
+msgstr "od uporabnika v podjetju"
 
 #: ../../tempcache/pages/preferences.html.twig:409
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Zaposleni, katerega naslov je treba pridobiti"
 
 #: ../../tempcache/pages/preferences.html.twig:414
 #: ../../tempcache/pages/preferences.html.twig:519
 msgid "-- Choose a staff member --"
-msgstr ""
+msgstr "-- Izberite člana osebja --"
 
 #: ../../tempcache/pages/preferences.html.twig:453
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
+"Uporabite spodnjo telefonsko številko ali izberite člana osebja, da "
+"pridobite njegovo telefonsko številko."
 
 #: ../../tempcache/pages/preferences.html.twig:482
 msgid "phone from a staff user"
-msgstr ""
+msgstr "telefon od uporabnika v službi"
 
 #: ../../tempcache/pages/preferences.html.twig:498
 msgid "mobile phone from a staff user"
-msgstr ""
+msgstr "mobilni telefon od uporabnika zaposlenega"
 
 #: ../../tempcache/pages/preferences.html.twig:514
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Zaposleni, čigar telefonsko številko je treba pridobiti"
 
 #: ../../tempcache/pages/preferences.html.twig:559
 msgid "Website:"
-msgstr ""
+msgstr "Spletna stran:"
 
 #: ../../tempcache/pages/preferences.html.twig:580
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 msgstr ""
+"Vnesite besedilo (dovoljen je HTML), ki bo prikazano v nogi vsake strani"
 
 #: ../../tempcache/pages/preferences.html.twig:599
 msgid "Prevent search engines indexation"
-msgstr ""
+msgstr "Preprečite indeksiranje iskalnikov"
 
 #: ../../tempcache/pages/preferences.html.twig:610
 msgid "Telemetry date:"
-msgstr ""
+msgstr "Datum telemetrije:"
 
 #: ../../tempcache/pages/preferences.html.twig:614
 msgid "Last telemetry sent date."
-msgstr ""
+msgstr "Datum zadnjega pošiljanja telemetrije."
 
 #: ../../tempcache/pages/preferences.html.twig:624
 msgid "send"
-msgstr ""
+msgstr "pošlji"
 
 #: ../../tempcache/pages/preferences.html.twig:632
 msgid "Registration date:"
-msgstr ""
+msgstr "Datum registracije:"
 
 #: ../../tempcache/pages/preferences.html.twig:636
 msgid "Date on which you registered your Galette instance."
-msgstr ""
+msgstr "Datum, ko ste registrirali svoj primerek Galette."
 
 #: ../../tempcache/pages/preferences.html.twig:645
 msgid "Update your information"
-msgstr ""
+msgstr "Posodobite svoje podatke"
 
 #: ../../tempcache/pages/preferences.html.twig:657
 msgid "Not registered"
-msgstr ""
+msgstr "Ni registrirano"
 
 #: ../../tempcache/pages/preferences.html.twig:696
 msgid "Default language:"
@@ -6919,78 +6929,82 @@ msgstr "Privzeti jezik:"
 
 #: ../../tempcache/pages/preferences.html.twig:730
 msgid "Default payment type:"
-msgstr ""
+msgstr "Privzeta vrsta plačila:"
 
 #: ../../tempcache/pages/preferences.html.twig:759
 msgid "Default account filter:"
-msgstr ""
+msgstr "Privzeti filter računa:"
 
 #: ../../tempcache/pages/preferences.html.twig:788
 msgid "Number of columns on the member form"
-msgstr ""
+msgstr "Število stolpcev na obrazcu člana"
 
 #: ../../tempcache/pages/preferences.html.twig:822
 msgid "Lines / Page:"
-msgstr ""
+msgstr "Vrstice/stran:"
 
 #: ../../tempcache/pages/preferences.html.twig:861
 msgid "Default membership status:"
-msgstr ""
+msgstr "Privzeto stanje članstva:"
 
 #: ../../tempcache/pages/preferences.html.twig:972
 msgid "Force member picture ratio"
-msgstr ""
+msgstr "Razmerje slik člana sile"
 
 #: ../../tempcache/pages/preferences.html.twig:977
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
+"Če je označeno, bo slika člana spremenjena in obrezana na spodaj izbrano "
+"razmerje."
 
 #: ../../tempcache/pages/preferences.html.twig:988
 msgid "Select a ratio"
-msgstr ""
+msgstr "Izberite razmerje"
 
 #: ../../tempcache/pages/preferences.html.twig:997
 #: ../../tempcache/components/forms/picture.html.twig:92
 msgid "Square (1:1)"
-msgstr ""
+msgstr "Kvadrat (1:1)"
 
 #: ../../tempcache/pages/preferences.html.twig:1005
 #: ../../tempcache/components/forms/picture.html.twig:92
 msgid "Portrait (3:4)"
-msgstr ""
+msgstr "Portret (3:4)"
 
 #: ../../tempcache/pages/preferences.html.twig:1013
 #: ../../tempcache/components/forms/picture.html.twig:92
 msgid "Landscape (4:3)"
-msgstr ""
+msgstr "Pokrajina (4:3)"
 
 #: ../../tempcache/pages/preferences.html.twig:1029
 msgid "Default membership extension:"
-msgstr ""
+msgstr "Privzeta razširitev članstva:"
 
 #: ../../tempcache/pages/preferences.html.twig:1039
 msgid "(Months)"
-msgstr ""
+msgstr "(Meseci)"
 
 #: ../../tempcache/pages/preferences.html.twig:1055
 msgid "Beginning of membership:"
-msgstr ""
+msgstr "Začetek članstva:"
 
 #: ../../tempcache/pages/preferences.html.twig:1061
+#, fuzzy
 msgid "(dd/mm)"
-msgstr ""
+msgstr "(dd/mm)"
 
 #: ../../tempcache/pages/preferences.html.twig:1067
 msgid "Number of months offered:"
-msgstr ""
+msgstr "Število ponujenih mesecev:"
 
 #: ../../tempcache/pages/preferences.html.twig:1073
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
+"Pri uporabi možnosti začetka članstva lahko ponudite zadnje mesece v letu."
 
 #: ../../tempcache/pages/preferences.html.twig:1075
 msgid ""
@@ -6998,24 +7012,29 @@ msgid ""
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
+"Recimo, da ponujate zadnja 2 meseca in imate podaljšanje 31. decembra. Vsi "
+"prispevki, ustvarjeni v tekočem letu, bodo veljavni do tega datuma, od "
+"oktobra pa bodo veljavni za celotno naslednje leto."
 
 #: ../../tempcache/pages/preferences.html.twig:1107
 msgid "Self subscription enabled?"
-msgstr ""
+msgstr "Je samonaročnina omogočena?"
 
 #: ../../tempcache/pages/preferences.html.twig:1124
 msgid "Display the link to download the empty adhesion form"
-msgstr ""
+msgstr "Prikaži povezavo za prenos praznega obrazca za adhezijo"
 
 #: ../../tempcache/pages/preferences.html.twig:1141
 msgid "Public pages enabled?"
-msgstr ""
+msgstr "Javne strani omogočene?"
 
 #: ../../tempcache/pages/preferences.html.twig:1163
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"Veljalo bo za vse javne strani, ki niso navedene tukaj, vključno s tistimi z "
+"vtičniki."
 
 #: ../../tempcache/pages/preferences.html.twig:1175
 #: ../../tempcache/pages/preferences.html.twig:1236
@@ -7024,7 +7043,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1416
 #: ../../tempcache/pages/preferences.html.twig:1474
 msgid "Hidden"
-msgstr ""
+msgstr "Skrito"
 
 #: ../../tempcache/pages/preferences.html.twig:1185
 #: ../../tempcache/pages/preferences.html.twig:1246
@@ -7033,7 +7052,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1426
 #: ../../tempcache/pages/preferences.html.twig:1484
 msgid "Everyone"
-msgstr ""
+msgstr "Vsi"
 
 #: ../../tempcache/pages/preferences.html.twig:1205
 #: ../../tempcache/pages/preferences.html.twig:1266
@@ -7042,7 +7061,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1446
 #: ../../tempcache/pages/preferences.html.twig:1504
 msgid "Admin and staff only"
-msgstr ""
+msgstr "Samo za administracijo in osebje"
 
 #: ../../tempcache/pages/preferences.html.twig:1226
 #: ../../tempcache/pages/preferences.html.twig:1287
@@ -7050,78 +7069,82 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1406
 #: ../../tempcache/pages/preferences.html.twig:1464
 msgid "Inherit"
-msgstr ""
+msgstr "Podedovanje"
 
 #: ../../tempcache/pages/preferences.html.twig:1276
 msgid "Members list"
-msgstr ""
+msgstr "Seznam članov"
 
 #: ../../tempcache/pages/preferences.html.twig:1334
 msgid "Members gallery"
-msgstr ""
+msgstr "Galerija članov"
 
 #: ../../tempcache/pages/preferences.html.twig:1395
 msgid "Staff list"
-msgstr ""
+msgstr "Seznam osebja"
 
 #: ../../tempcache/pages/preferences.html.twig:1518
 msgid "Include groups managers with staff?"
-msgstr ""
+msgstr "Vključite vodje skupin z osebjem?"
 
 #: ../../tempcache/pages/preferences.html.twig:1530
 msgid "Appearance"
-msgstr ""
+msgstr "Videz"
 
 #: ../../tempcache/pages/preferences.html.twig:1545
 msgid "Hide default background image"
-msgstr ""
+msgstr "Skrij privzeto sliko ozadja"
 
 #: ../../tempcache/pages/preferences.html.twig:1559
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Uporabi barve po meri"
 
 #: ../../tempcache/pages/preferences.html.twig:1569
 msgid "Primary color"
-msgstr ""
+msgstr "Primarna barva"
 
 #: ../../tempcache/pages/preferences.html.twig:1577
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Barva, uporabljena za primarne gumbe, potrditvena polja, oznake, glave, "
+"obrobe in menije."
 
 #: ../../tempcache/pages/preferences.html.twig:1583
 msgid "Text on primary color"
-msgstr ""
+msgstr "Besedilo v primarni barvi"
 
 #: ../../tempcache/pages/preferences.html.twig:1591
 msgid "Color applied to text displayed over the Primary color."
-msgstr ""
+msgstr "Barva, uporabljena za besedilo, prikazano čez primarno barvo."
 
 #: ../../tempcache/pages/preferences.html.twig:1600
 msgid "Secondary color"
-msgstr ""
+msgstr "Sekundarna barva"
 
 #: ../../tempcache/pages/preferences.html.twig:1608
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Barva, uporabljena za aktivne elemente v menijih, oštevilčevanju in "
+"harmonikastih pogledih."
 
 #: ../../tempcache/pages/preferences.html.twig:1614
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Besedilo na sekundarni barvi"
 
 #: ../../tempcache/pages/preferences.html.twig:1622
 msgid "Color applied to text displayed over the Secondary color."
-msgstr ""
+msgstr "Barva, uporabljena za besedilo, prikazano čez sekundarno barvo."
 
 #: ../../tempcache/pages/preferences.html.twig:1633
 msgid "Advanced parameters"
-msgstr ""
+msgstr "Napredni parametri"
 
 #: ../../tempcache/pages/preferences.html.twig:1641
 msgid "Galette base URL"
-msgstr ""
+msgstr "Osnovni URL Galette"
 
 #: ../../tempcache/pages/preferences.html.twig:1647
 #, php-format
@@ -7129,10 +7152,12 @@ msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
+"Vnesite osnovni URL za vaš primerek Galette. Ta parameter spremenite le, če "
+"trenutni URL strani ni:<br/>%galette_url"
 
 #: ../../tempcache/pages/preferences.html.twig:1661
 msgid "Post new contribution script URI"
-msgstr ""
+msgstr "URI skripte za nov prispevek"
 
 #: ../../tempcache/pages/preferences.html.twig:1667
 msgid ""
@@ -7142,105 +7167,118 @@ msgid ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 msgstr ""
+"Vnesite URI skripte, ki bo poklican po dodajanju novega prispevka.<br/>URI "
+"skripte mora imeti predpono '<em>galette://</em>' za notranji klic Galette, "
+"'<em>file://</em>' za neposredni klic datoteke, '<em>get://</em>' ali '<em>"
+"post://</em>' za klice HTTP (v teh primerih bo predpona nadomeščena s "
+"http://)."
 
 #: ../../tempcache/pages/preferences.html.twig:1682
 msgid "RSS feed URL"
-msgstr ""
+msgstr "URL vira RSS"
 
 #: ../../tempcache/pages/preferences.html.twig:1688
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
-msgstr ""
+msgstr "Vnesite celoten URL vira RSS. Prikazan bo na namizju Galette."
 
 #: ../../tempcache/pages/preferences.html.twig:1718
 msgid "Can members create child?"
-msgstr ""
+msgstr "Ali lahko člani ustvarijo otroka?"
 
 #: ../../tempcache/pages/preferences.html.twig:1732
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
 
 #: ../../tempcache/pages/preferences.html.twig:1746
 msgid "Can group managers create members?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin ustvarjajo člane?"
 
 #: ../../tempcache/pages/preferences.html.twig:1760
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin urejajo člane?"
 
 #: ../../tempcache/pages/preferences.html.twig:1774
 msgid "Can group managers send mailings?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin pošiljajo poštna sporočila?"
 
 #: ../../tempcache/pages/preferences.html.twig:1788
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "Ali lahko vodje skupin izvajajo izvoz?"
 
 #: ../../tempcache/pages/preferences.html.twig:1793
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Upravitelji skupin bodo lahko izvozili člane v obliki csv, pdf kartic, list "
+"prisotnosti in pdf skupin"
 
 #: ../../tempcache/pages/preferences.html.twig:1806
 msgid "Can group managers see contributions?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin vidijo prispevke?"
 
 #: ../../tempcache/pages/preferences.html.twig:1820
 msgid "Can group managers create contributions?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupine vidijo prispevke?"
 
 #: ../../tempcache/pages/preferences.html.twig:1834
 msgid "Can group managers see transactions?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin vidijo transakcije?"
 
 #: ../../tempcache/pages/preferences.html.twig:1848
 msgid "Can group managers create transactions?"
-msgstr ""
+msgstr "Ali lahko upravitelji skupin ustvarjajo transakcije?"
 
 #: ../../tempcache/pages/preferences.html.twig:1880
 msgid "Sender name:"
-msgstr ""
+msgstr "Ime pošiljatelja:"
 
 #: ../../tempcache/pages/preferences.html.twig:1890
 msgid "Sender Email:"
-msgstr ""
+msgstr "E-pošta pošiljatelja:"
 
 #: ../../tempcache/pages/preferences.html.twig:1900
 msgid "Reply-To Email:"
-msgstr ""
+msgstr "Odgovori na e-poštni naslov:"
 
 #: ../../tempcache/pages/preferences.html.twig:1906
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
+"Pustite prazno, če želite kot naslov za odgovor uporabiti e-pošto "
+"pošiljatelja"
 
 #: ../../tempcache/pages/preferences.html.twig:1921
 msgid "Members administrator's Email:"
-msgstr ""
+msgstr "E-poštni naslov administratorja članov:"
 
 #: ../../tempcache/pages/preferences.html.twig:1927
 msgid "Recipient of new online registation and edition emails"
-msgstr ""
+msgstr "Prejemnik novih spletnih registracij in e-poštnih sporočil o izdaj"
 
 #: ../../tempcache/pages/preferences.html.twig:1937
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 msgstr ""
+"(Vnesete lahko več e-poštnih naslovov, ločenih z vejico. Prvi naslov bo "
+"privzeti.)"
 
 #: ../../tempcache/pages/preferences.html.twig:1950
 msgid "Send email to administrators?"
-msgstr ""
+msgstr "Pošlji e-pošto administratorjem?"
 
 #: ../../tempcache/pages/preferences.html.twig:1955
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 msgstr ""
+"Pošlje e-pošto vsakič, ko se nov član registrira na spletu ali uredi svoj "
+"račun"
 
 #: ../../tempcache/pages/preferences.html.twig:1968
 msgid "Wrap emails text?"
-msgstr ""
+msgstr "Prelom besedila e-poštnih sporočil?"
 
 #: ../../tempcache/pages/preferences.html.twig:1973
 msgid ""
@@ -7248,360 +7286,381 @@ msgid ""
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
+"Samodejno prelomi besedila e-poštnih sporočil pred pošiljanjem. Če to "
+"onemogočite, se prepričajte, da ste prelomili tudi sami. Upoštevajte, da "
+"sprememba ne bo vplivala na trenutno urejanje pošte."
 
 #: ../../tempcache/pages/preferences.html.twig:1986
 msgid "Send email to members?"
-msgstr ""
+msgstr "Pošlji e-pošto članom?"
 
 #: ../../tempcache/pages/preferences.html.twig:1991
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
+"Pošlje e-pošto vsakič, ko je dodana ali urejena članska izkaznica ali "
+"prispevek. To je mogoče onemogočiti za vsak primer posebej."
 
 #: ../../tempcache/pages/preferences.html.twig:2004
 msgid "Activate HTML editor?"
-msgstr ""
+msgstr "Aktivirati urejevalnik HTML?"
 
 #: ../../tempcache/pages/preferences.html.twig:2009
 msgid "Should HTML editor be activated on page load ?"
-msgstr ""
+msgstr "Ali naj se urejevalnik HTML aktivira ob nalaganju strani?"
 
 #: ../../tempcache/pages/preferences.html.twig:2015
 msgid "Mail signature"
-msgstr ""
+msgstr "Podpis pošte"
 
 #: ../../tempcache/pages/preferences.html.twig:2032
 msgid "Emailing method:"
-msgstr ""
+msgstr "Način pošiljanja po e-pošti:"
 
 #: ../../tempcache/pages/preferences.html.twig:2044
 msgid "Emailing disabled"
-msgstr ""
+msgstr "Pošiljanje e-pošte onemogočeno"
 
 #: ../../tempcache/pages/preferences.html.twig:2058
 msgid "PHP mail() function"
-msgstr ""
+msgstr "Funkcija PHP mail()"
 
 #: ../../tempcache/pages/preferences.html.twig:2072
 msgid "Using a SMTP server (slower)"
-msgstr ""
+msgstr "Uporaba strežnika SMTP (počasneje)"
 
 #: ../../tempcache/pages/preferences.html.twig:2086
 msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
+msgstr "Uporaba Gmaila kot strežnika SMTP (počasneje)"
 
 #: ../../tempcache/pages/preferences.html.twig:2100
 msgid "Using Sendmail server"
-msgstr ""
+msgstr "Uporaba strežnika Sendmail"
 
 #: ../../tempcache/pages/preferences.html.twig:2114
 msgid "Using QMAIL server"
-msgstr ""
+msgstr "Uporaba strežnika QMAIL"
 
 #: ../../tempcache/pages/preferences.html.twig:2130
 msgid "Test email settings"
-msgstr ""
+msgstr "Preizkusne nastavitve e-pošte"
 
 #: ../../tempcache/pages/preferences.html.twig:2138
 msgid "SMTP server:"
-msgstr ""
+msgstr "SMTP strežnik:"
 
 #: ../../tempcache/pages/preferences.html.twig:2148
 msgid "SMTP port:"
-msgstr ""
+msgstr "Vrata SMTP:"
 
 #: ../../tempcache/pages/preferences.html.twig:2166
 msgid "Use SMTP authentication?"
-msgstr ""
+msgstr "Uporabljam overjanje SMTP?"
 
 #: ../../tempcache/pages/preferences.html.twig:2171
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
+"Ali bi pošiljanje e-pošte uporabljalo preverjanje pristnosti SMTP? Spodaj "
+"boste morali vnesti uporabniško ime in geslo. Za Gmail bo preverjanje "
+"pristnosti vedno vklopljeno."
 
 #: ../../tempcache/pages/preferences.html.twig:2184
 msgid "Use TLS for SMTP?"
-msgstr ""
+msgstr "Ali želite uporabljati TLS za SMTP?"
 
 #: ../../tempcache/pages/preferences.html.twig:2189
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
+"Ali želite uporabljati zmogljivosti TLS strežnika?<br/>Za Gmail bo to vedno "
+"vklopljeno."
 
 #: ../../tempcache/pages/preferences.html.twig:2202
 msgid "Allow unsecure TLS?"
-msgstr ""
+msgstr "Dovoliti nevaren TLS?"
 
 #: ../../tempcache/pages/preferences.html.twig:2207
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
+"Ali želite dovoliti »nevarne« povezave? To je lahko uporabno, če vaš "
+"strežnik uporablja samopodpisano potrdilo in v nekaterih drugih primerih."
 
 #: ../../tempcache/pages/preferences.html.twig:2216
 msgid "SMTP (or GMail) user:"
-msgstr ""
+msgstr "Uporabnik SMTP (ali Gmail):"
 
 #: ../../tempcache/pages/preferences.html.twig:2226
 msgid "SMTP (or GMail) password:"
-msgstr ""
+msgstr "Geslo za SMTP (ali Gmail):"
 
 #: ../../tempcache/pages/preferences.html.twig:2256
 #: ../../tempcache/pages/preferences.html.twig:2797
 msgid "Vertical margins:"
-msgstr ""
+msgstr "Navpični robovi:"
 
 #: ../../tempcache/pages/preferences.html.twig:2278
 #: ../../tempcache/pages/preferences.html.twig:2819
 msgid "Horizontal margins:"
-msgstr ""
+msgstr "Vodoravni robovi:"
 
 #: ../../tempcache/pages/preferences.html.twig:2300
 #: ../../tempcache/pages/preferences.html.twig:2863
 msgid "Horizontal spacing:"
-msgstr ""
+msgstr "Vodoravni razmik:"
 
 #: ../../tempcache/pages/preferences.html.twig:2322
 #: ../../tempcache/pages/preferences.html.twig:2841
 msgid "Vertical spacing:"
-msgstr ""
+msgstr "Navpični razmik:"
 
 #: ../../tempcache/pages/preferences.html.twig:2346
 msgid "Print border"
-msgstr ""
+msgstr "Obroba tiskanja"
 
 #: ../../tempcache/pages/preferences.html.twig:2351
 msgid "Check this box to print a grey border around each label."
-msgstr ""
+msgstr "Označite to polje, če želite okoli vsake nalepke natisniti siv rob."
 
 #: ../../tempcache/pages/preferences.html.twig:2365
 msgid "Label width:"
-msgstr ""
+msgstr "Širina etikete:"
 
 #: ../../tempcache/pages/preferences.html.twig:2387
 msgid "Label height:"
-msgstr ""
+msgstr "Višina nalepke:"
 
 #: ../../tempcache/pages/preferences.html.twig:2409
 msgid "Number of label columns:"
-msgstr ""
+msgstr "Število stolpcev z oznakami:"
 
 #: ../../tempcache/pages/preferences.html.twig:2428
 msgid "Number of label lines:"
-msgstr ""
+msgstr "Število vrstic etikete:"
 
 #: ../../tempcache/pages/preferences.html.twig:2447
 msgid "Font size:"
-msgstr ""
+msgstr "Velikost pisave:"
 
 #: ../../tempcache/pages/preferences.html.twig:2472
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
-msgstr ""
+msgstr "Vsaka stran vsebuje %1$s stolpcev in %2$s vrstic."
 
 #: ../../tempcache/pages/preferences.html.twig:2481
 msgid "Short Text (Card Center):"
-msgstr ""
+msgstr "Kratko besedilo (sredina kartic):"
 
 #: ../../tempcache/pages/preferences.html.twig:2513
 msgid "(10 characters max)"
-msgstr ""
+msgstr "(največ 10 znakov)"
 
 #: ../../tempcache/pages/preferences.html.twig:2519
 msgid "Long Text (Bottom Line):"
-msgstr ""
+msgstr "Dolgo besedilo (spodnja vrstica):"
 
 #: ../../tempcache/pages/preferences.html.twig:2551
 msgid "(65 characters max)"
-msgstr ""
+msgstr "(največ 65 znakov)"
 
 #: ../../tempcache/pages/preferences.html.twig:2558
 msgid "Strip Text Color:"
-msgstr ""
+msgstr "Barva besedila traku:"
 
 #: ../../tempcache/pages/preferences.html.twig:2566
 #: ../../tempcache/pages/preferences.html.twig:2580
 #: ../../tempcache/pages/preferences.html.twig:2594
 #: ../../tempcache/pages/preferences.html.twig:2608
 msgid "Hexadecimal color notation: #RRGGBB"
-msgstr ""
+msgstr "Šestnajstiški barvni zapis: #RRGGBB"
 
 #: ../../tempcache/pages/preferences.html.twig:2572
 msgid "Active Member Color:"
-msgstr ""
+msgstr "Barva aktivnega člana:"
 
 #: ../../tempcache/pages/preferences.html.twig:2586
 msgid "Board Members Color:"
-msgstr ""
+msgstr "Barva članov upravnega odbora:"
 
 #: ../../tempcache/pages/preferences.html.twig:2600
 msgid "Honor Members Color:"
-msgstr ""
+msgstr "Barva častnih članov:"
 
 #: ../../tempcache/pages/preferences.html.twig:2632
 msgid "Current logo for printing"
-msgstr ""
+msgstr "Trenutni logotip za tisk"
 
 #: ../../tempcache/pages/preferences.html.twig:2697
 msgid "Allow members to print card ?"
-msgstr ""
+msgstr "Dovoliti članom tiskanje kartice?"
 
 #: ../../tempcache/pages/preferences.html.twig:2711
 msgid "Show title ?"
-msgstr ""
+msgstr "Naslov predstave?"
 
 #: ../../tempcache/pages/preferences.html.twig:2716
 msgid "(Show or not title in front of name)"
-msgstr ""
+msgstr "(Prikaži ali ne prikaži naziv pred imenom)"
 
 #: ../../tempcache/pages/preferences.html.twig:2722
 msgid "Address type:"
-msgstr ""
+msgstr "Vrsta naslova:"
 
 #: ../../tempcache/pages/preferences.html.twig:2739
 #: ../../tempcache/elements/ajax_members.html.twig:63
 msgid "Zip - Town"
-msgstr ""
+msgstr "Poštna številka - Mesto"
 
 #: ../../tempcache/pages/preferences.html.twig:2768
 msgid "(Choose address printed below name)"
-msgstr ""
+msgstr "(Izberite naslov, natisnjen pod imenom)"
 
 #: ../../tempcache/pages/preferences.html.twig:2774
 msgid "Year:"
-msgstr ""
+msgstr "Leto:"
 
 #: ../../tempcache/pages/preferences.html.twig:2780
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
+"Vnesete lahko:<br/>- eno leto,<br/>- dve leti z ločilom poševnice,<br/>- niz "
+"»DEADLINE« za uporabo roka za člane"
 
 #: ../../tempcache/pages/preferences.html.twig:2885
 msgid "Card width from 70 to 95mm:"
-msgstr ""
+msgstr "Širina kartice od 70 do 95 mm:"
 
 #: ../../tempcache/pages/preferences.html.twig:2907
 msgid "Card height from 40 to 55mm:"
-msgstr ""
+msgstr "Višina kartice od 40 do 55 mm:"
 
 #: ../../tempcache/pages/preferences.html.twig:2949
 msgid "Password length:"
-msgstr ""
+msgstr "Dolžina gesla:"
 
 #: ../../tempcache/pages/preferences.html.twig:2955
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
+"Za vse račune je potrebna minimalna dolžina gesla. Minimalna velikost je 6."
 
 #: ../../tempcache/pages/preferences.html.twig:2974
 msgid "Enable password blacklists"
-msgstr ""
+msgstr "Omogoči črne sezname gesel"
 
 #: ../../tempcache/pages/preferences.html.twig:2976
 msgid "Enable blacklists:"
-msgstr ""
+msgstr "Omogoči črne sezname:"
 
 #: ../../tempcache/pages/preferences.html.twig:2981
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
+"Če omogočite črne sezname, ne bo mogoče uporabljati nobenega od gesel s "
+"črnega seznama. Seznam je na voljo skupaj z Galette, vendar lahko dodate "
+"svoja."
 
 #: ../../tempcache/pages/preferences.html.twig:2987
 msgid "Enforce password strength"
-msgstr ""
+msgstr "Uveljavi moč gesla"
 
 #: ../../tempcache/pages/preferences.html.twig:2989
 msgid "Password strength:"
-msgstr ""
+msgstr "Moč gesla:"
 
 #: ../../tempcache/pages/preferences.html.twig:3000
 msgid "None (default)"
-msgstr ""
+msgstr "Brez (privzeto)"
 
 #: ../../tempcache/pages/preferences.html.twig:3010
 #: ../../tempcache/pages/preferences.html.twig:3061
 msgid "Weak"
-msgstr ""
+msgstr "Šibko"
 
 #: ../../tempcache/pages/preferences.html.twig:3020
 #: ../../tempcache/pages/preferences.html.twig:3067
 msgid "Medium"
-msgstr ""
+msgstr "Srednje"
 
 #: ../../tempcache/pages/preferences.html.twig:3030
 #: ../../tempcache/pages/preferences.html.twig:3073
 msgid "Strong"
-msgstr ""
+msgstr "Močan"
 
 #: ../../tempcache/pages/preferences.html.twig:3040
 #: ../../tempcache/pages/preferences.html.twig:3079
 msgid "Very strong"
-msgstr ""
+msgstr "Zelo močan"
 
 #: ../../tempcache/pages/preferences.html.twig:3046
 msgid "Enforce minimal password strength for all password."
-msgstr ""
+msgstr "Za vsa gesla uveljavi minimalno moč gesla."
 
 #: ../../tempcache/pages/preferences.html.twig:3050
 msgid "Levels are:"
-msgstr ""
+msgstr "Stopnje so:"
 
 #: ../../tempcache/pages/preferences.html.twig:3057
 msgid "for no strength enforcement"
-msgstr ""
+msgstr "brez uveljavljanja moči"
 
 #: ../../tempcache/pages/preferences.html.twig:3063
 msgid "require at least one matched rule"
-msgstr ""
+msgstr "zahteva vsaj eno ujemajoče se pravilo"
 
 #: ../../tempcache/pages/preferences.html.twig:3069
 msgid "require at least two matched rules"
-msgstr ""
+msgstr "zahtevata vsaj dve ujemajoči se pravili"
 
 #: ../../tempcache/pages/preferences.html.twig:3075
 msgid "require at least three matched rules (recommended for most usages)"
-msgstr ""
+msgstr "zahtevajo vsaj tri ujemajoča se pravila (priporočeno za večino uporab)"
 
 #: ../../tempcache/pages/preferences.html.twig:3081
 msgid "requires all rules."
-msgstr ""
+msgstr "zahteva vsa pravila."
 
 #: ../../tempcache/pages/preferences.html.twig:3086
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
-msgstr ""
+msgstr "Pravila vključujejo male črke, velike črke, številke in posebne znake."
 
 #: ../../tempcache/pages/preferences.html.twig:3090
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
+"Upoštevajte, da uporabnik pri kateri koli ravni izvrševanja ne more "
+"uporabiti svojih osebnih podatkov (ime, prijava, ...) kot geslo."
 
 #: ../../tempcache/pages/preferences.html.twig:3098
 msgid "Test a password:"
-msgstr ""
+msgstr "Preizkusite geslo:"
 
 #: ../../tempcache/pages/preferences.html.twig:3104
 msgid "Test a password with current selected values."
-msgstr ""
+msgstr "Preizkusite geslo s trenutno izbranimi vrednostmi."
 
 #: ../../tempcache/pages/preferences.html.twig:3106
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
+"Ne pozabite shraniti svojih nastavitev, če ste zadovoljni z rezultatom ;)"
 
 #: ../../tempcache/pages/preferences.html.twig:3337
 msgid "Enter the email adress"
-msgstr ""
+msgstr "Vnesite e-poštni naslov"
 
 #: ../../tempcache/pages/preferences.html.twig:3388
 msgid "An error occurred sending test email :("
-msgstr ""
+msgstr "Pri pošiljanju testnega e-poštnega sporočila je prišlo do napake :("
 
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
@@ -7611,8 +7670,10 @@ msgstr ""
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Član %1$s"
+msgstr[1] "%1$sčlana"
+msgstr[2] "%1$s članov"
+msgstr[3] "%1$s člani"
 
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
 #: ../../tempcache/pages/public/staff_gallery.html.twig:102
@@ -7620,7 +7681,7 @@ msgstr[1] ""
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/members_list.html.twig:1095
 msgid "No member"
-msgstr ""
+msgstr "Ni člana"
 
 #: ../../tempcache/pages/public/staff_list.html.twig:99
 #: ../../tempcache/pages/public/list.html.twig:82
@@ -7628,228 +7689,233 @@ msgstr ""
 #: ../../tempcache/pages/public/members_list.html.twig:99
 #: ../../tempcache/elements/group.html.twig:65
 msgid "Information"
-msgstr ""
+msgstr "Informacije"
 
 #: ../../tempcache/pages/public/staff_list.html.twig:157
 #, php-format
 msgid "\"%1$s\" group managers"
-msgstr ""
+msgstr "Upravitelji skupine »%1$s«"
 
 #: ../../tempcache/pages/public/list.html.twig:121
 #: ../../tempcache/pages/public/list.html.twig:125
 #: ../../tempcache/pages/members_list.html.twig:633
 #: ../../tempcache/pages/members_list.html.twig:751
 msgid "Is a company"
-msgstr ""
+msgstr "Je podjetje"
 
 #: ../../tempcache/pages/public/list.html.twig:135
 #: ../../tempcache/pages/public/list.html.twig:139
 #: ../../tempcache/pages/members_list.html.twig:641
 #: ../../tempcache/pages/members_list.html.twig:762
 msgid "Is a man"
-msgstr ""
+msgstr "Je moški"
 
 #: ../../tempcache/pages/public/list.html.twig:149
 #: ../../tempcache/pages/public/list.html.twig:153
 #: ../../tempcache/pages/members_list.html.twig:646
 #: ../../tempcache/pages/members_list.html.twig:773
 msgid "Is a woman"
-msgstr ""
+msgstr "Je ženska"
 
 #: ../../tempcache/pages/public/gallery.html.twig:155
 msgid "Manages:"
-msgstr ""
+msgstr "Upravlja:"
 
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:184
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:399
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:408
 msgid "New dynamic field"
-msgstr ""
+msgstr "Novo dinamično polje"
 
 #: ../../tempcache/pages/directlink.html.twig:66
 #: ../../tempcache/pages/directlink.html.twig:70
 msgid "Please confirm your email address:"
-msgstr ""
+msgstr "Prosimo, potrdite svoj e-poštni naslov:"
 
 #: ../../tempcache/pages/directlink.html.twig:76
 msgid "Get my document"
-msgstr ""
+msgstr "Pridobi moj dokument"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:79
 msgid "Original string for name, that will be used for translations."
-msgstr ""
+msgstr "Izvirni niz za ime, ki bo uporabljen za prevode."
 
 #: ../../tempcache/pages/members_list.html.twig:64
 msgid "No member selected"
-msgstr ""
+msgstr "Ni izbranega člana"
 
 #: ../../tempcache/pages/members_list.html.twig:64
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
-msgstr ""
+msgstr "Za izvedbo tega dejanja izberite vsaj enega člana s seznama."
 
 #: ../../tempcache/pages/members_list.html.twig:238
 #: ../../tempcache/pages/members_list.html.twig:267
 #: ../../tempcache/pages/members_list.html.twig:296
 msgid "among:"
-msgstr ""
+msgstr "med:"
 
 #: ../../tempcache/pages/members_list.html.twig:301
 msgid "All groups"
-msgstr ""
+msgstr "Vse skupine"
 
 #: ../../tempcache/pages/members_list.html.twig:332
 msgid "Members that have an email address:"
-msgstr ""
+msgstr "Člani, ki imajo e-poštni naslov:"
 
 #: ../../tempcache/pages/members_list.html.twig:397
 msgid "Save selected criteria"
-msgstr ""
+msgstr "Shrani izbrane kriterije"
 
 #: ../../tempcache/pages/members_list.html.twig:423
 msgid "Advanced search mode"
-msgstr ""
+msgstr "Napredni način iskanja"
 
 #: ../../tempcache/pages/members_list.html.twig:427
 msgid "Save current advanced search criteria"
-msgstr ""
+msgstr "Shrani trenutne kriterije naprednega iskanja"
 
 #: ../../tempcache/pages/members_list.html.twig:437
 msgid "Change search criteria"
-msgstr ""
+msgstr "Spremeni iskalne kriterije"
 
 #: ../../tempcache/pages/members_list.html.twig:442
 msgid "Change criteria"
-msgstr ""
+msgstr "Spremeni merila"
 
 #: ../../tempcache/pages/members_list.html.twig:461
 msgid "Show/hide query"
-msgstr ""
+msgstr "Prikaži/skrij poizvedbo"
 
 #: ../../tempcache/pages/members_list.html.twig:520
 msgid "Active account"
-msgstr ""
+msgstr "Aktiven račun"
 
 #: ../../tempcache/pages/members_list.html.twig:528
 msgid "Inactive account"
-msgstr ""
+msgstr "Neaktiven račun"
 
 #: ../../tempcache/pages/members_list.html.twig:535
 msgid "Membership in order"
-msgstr ""
+msgstr "Članstvo v redu"
 
 #: ../../tempcache/pages/members_list.html.twig:540
 msgid "Membership will expire soon (<30d)"
-msgstr ""
+msgstr "Članstvo bo kmalu poteklo (<30 dni)"
 
 #: ../../tempcache/pages/members_list.html.twig:552
 msgid "Lateness in fee"
-msgstr ""
+msgstr "Zamuda pri plačilu pristojbine"
 
 #: ../../tempcache/pages/members_list.html.twig:628
 msgid "Send an email"
-msgstr ""
+msgstr "Pošlji e-pošto"
 
 #: ../../tempcache/pages/members_list.html.twig:674
 #: ../../tempcache/pages/members_list.html.twig:958
 msgid "Is a sponsor"
-msgstr ""
+msgstr "Je sponzor"
 
 #: ../../tempcache/pages/members_list.html.twig:1166
 msgid "Search title"
-msgstr ""
+msgstr "Iskanje po naslovu"
 
 #: ../../tempcache/pages/members_list.html.twig:1256
 #: ../../tempcache/pages/mailings_list.html.twig:123
 msgid "Existing mailing"
-msgstr ""
+msgstr "Obstoječa pošta"
 
 #: ../../tempcache/pages/members_list.html.twig:1256
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
+"Poštni naslov že obstaja. Ali želite ustvariti novega ali nadaljevati z "
+"obstoječim?"
 
 #: ../../tempcache/pages/members_list.html.twig:1256
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 #: ../../tempcache/pages/members_list.html.twig:1256
 msgid "Resume"
-msgstr ""
+msgstr "Življenjepis"
 
 #: ../../tempcache/pages/members_list.html.twig:1294
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
+"Pri prikazu vmesnika s podrobnostmi o prisotnosti je prišlo do napake :("
 
 #: ../../tempcache/pages/members_list.html.twig:1517
 msgid "Required field!"
-msgstr ""
+msgstr "Obvezno polje!"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:69
 msgid "Scheduled payment"
-msgstr ""
+msgstr "Načrtovano plačilo"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:144
 msgid "View contribution"
-msgstr ""
+msgstr "Ogled prispevka"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:149
 msgid "Related contribution information"
-msgstr ""
+msgstr "Povezane informacije o prispevkih"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:229
 #: ../../tempcache/pages/contribution_form.html.twig:338
 #: ../../tempcache/pages/contribution_form.html.twig:499
 msgid "Not dispatched amount"
-msgstr ""
+msgstr "Neodposlani znesek"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:247
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:254
 #: ../../tempcache/pages/contribution_form.html.twig:513
 #: ../../tempcache/pages/contribution_form.html.twig:520
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Ustvari novo načrtovano plačilo"
 
 #: ../../tempcache/pages/contributions_list.html.twig:59
 msgid "No contribution selected"
-msgstr ""
+msgstr "Ni izbranega prispevka"
 
 #: ../../tempcache/pages/contributions_list.html.twig:59
 msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
-msgstr ""
+msgstr "Za izvedbo tega dejanja izberite vsaj en prispevek s seznama."
 
 #: ../../tempcache/pages/contributions_list.html.twig:93
 msgid "Show contributions by"
-msgstr ""
+msgstr "Prikaži prispevke avtorjev"
 
 #: ../../tempcache/pages/contributions_list.html.twig:124
 msgid "Record"
-msgstr ""
+msgstr "Zapis"
 
 #: ../../tempcache/pages/contributions_list.html.twig:258
 msgid "Show all your contributions"
-msgstr ""
+msgstr "Prikaži vse svoje prispevke"
 
 #: ../../tempcache/pages/contributions_list.html.twig:264
 msgid "Show all members contributions"
-msgstr ""
+msgstr "Prikaži prispevke vseh članov"
 
 #: ../../tempcache/pages/contributions_list.html.twig:397
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Prispevek %1$s"
+msgstr[1] "%1$s prispevka"
+msgstr[2] "%1$s prispevkov"
+msgstr[3] "%1$s prispevki"
 
 #: ../../tempcache/pages/contributions_list.html.twig:483
 #, php-format
 msgid "Found contributions total %f"
-msgstr ""
+msgstr "Skupaj najdenih prispevkov %f"
 
 #: ../../tempcache/pages/contributions_list.html.twig:610
 #: ../../tempcache/pages/contributions_list.html.twig:648
@@ -7860,37 +7926,37 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:1128
 #: ../../tempcache/pages/contributions_list.html.twig:1146
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "Znesek ni v celoti odposlan"
 
 #: ../../tempcache/pages/contributions_list.html.twig:642
 #: ../../tempcache/pages/contributions_list.html.twig:811
 #: ../../tempcache/pages/contribution_form.html.twig:469
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Ogled načrtovanih plačil"
 
 #: ../../tempcache/pages/contributions_list.html.twig:699
 #: ../../tempcache/pages/contributions_list.html.twig:774
 #: ../../tempcache/pages/contributions_list.html.twig:1119
 #: ../../tempcache/pages/contributions_list.html.twig:1126
 msgid "Is part of a transaction"
-msgstr ""
+msgstr "Je del transakcije"
 
 #: ../../tempcache/pages/contributions_list.html.twig:740
 #: ../../tempcache/pages/contributions_list.html.twig:1137
 #: ../../tempcache/pages/contributions_list.html.twig:1144
 #: ../../tempcache/pages/contribution_form.html.twig:110
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "Ima načrtovana plačila"
 
 #: ../../tempcache/pages/contributions_list.html.twig:891
 #, php-format
 msgid "Show only '%1$s' contributions"
-msgstr ""
+msgstr "Prikaži samo prispevke '%1$s'"
 
 #: ../../tempcache/pages/contributions_list.html.twig:954
 #: ../../tempcache/pages/contributions_list.html.twig:1096
 msgid "Print an invoice or a receipt (depending on contribution type)"
-msgstr ""
+msgstr "Natisnite račun ali potrdilo (odvisno od vrste prispevka)"
 
 #: ../../tempcache/pages/contributions_list.html.twig:971
 msgid "Edit the contribution"
@@ -7956,8 +8022,9 @@ msgid "Subject"
 msgstr "Zadeva"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
+#, fuzzy
 msgid "Att."
-msgstr ""
+msgstr "Att."
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
 #: ../../tempcache/pages/mailings_list.html.twig:368
@@ -8116,7 +8183,7 @@ msgstr "Dodatne informacije so prikazane skupaj z dokumentom."
 #: ../../tempcache/pages/status_list.html.twig:116
 #: ../../tempcache/pages/status_list.html.twig:175
 msgid "Priority"
-msgstr ""
+msgstr "Prednost"
 
 #: ../../tempcache/pages/status_list.html.twig:94
 #: ../../tempcache/pages/status_list.html.twig:99
@@ -8321,38 +8388,38 @@ msgstr ""
 #: ../../tempcache/elements/js/removal.js.twig:195
 #: ../../tempcache/modals/confirm_removal.html.twig:162
 msgid "Remove"
-msgstr ""
+msgstr "Odstrani"
 
 #: ../../tempcache/pages/404.html.twig:81
 msgid "Sorry, the page you are looking for could not be found."
-msgstr ""
+msgstr "Žal strani, ki jo iščete, ni bilo mogoče najti."
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:83
 msgid "Add payment type"
-msgstr ""
+msgstr "Dodaj vrsto plačila"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:89
 msgid "Label"
-msgstr ""
+msgstr "Oznaka"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:151
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr ""
+msgstr "Uredi vrsto plačila '%s'"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:185
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr ""
+msgstr "Izbriši vrsto plačila '%s'"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:70
 #, php-format
 msgid "Edit field %1$s"
-msgstr ""
+msgstr "Urejanje polja %1$s"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:99
 msgid "Permissions:"
-msgstr ""
+msgstr "Dovoljenja:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:132
 msgid "Required:"
