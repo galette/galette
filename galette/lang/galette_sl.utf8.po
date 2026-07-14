@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-14 08:01+0000\n"
+"PO-Revision-Date: 2026-07-15 07:31+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -6991,7 +6991,6 @@ msgid "Beginning of membership:"
 msgstr "Začetek članstva:"
 
 #: ../../tempcache/pages/preferences.html.twig:1061
-#, fuzzy
 msgid "(dd/mm)"
 msgstr "(dd/mm)"
 
@@ -8022,7 +8021,6 @@ msgid "Subject"
 msgstr "Zadeva"
 
 #: ../../tempcache/pages/mailings_list.html.twig:56
-#, fuzzy
 msgid "Att."
 msgstr "Att."
 
@@ -8423,63 +8421,63 @@ msgstr "Dovoljenja:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:132
 msgid "Required:"
-msgstr ""
+msgstr "Zahtevano:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:162
 msgid "Width:"
-msgstr ""
+msgstr "Širina:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:178
 msgid "Height:"
-msgstr ""
+msgstr "Višina:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:194
 msgid "Min Size:"
-msgstr ""
+msgstr "Minimalna velikost:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:202
 msgid "Minimum number of characters."
-msgstr ""
+msgstr "Najmanjše število znakov."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:214
 msgid "Size:"
-msgstr ""
+msgstr "Velikost:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:225
 msgid "Maximum file size, in Ko."
-msgstr ""
+msgstr "Največja velikost datoteke v Ko."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:231
 msgid "Maximum number of characters."
-msgstr ""
+msgstr "Največje število znakov."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:246
 msgid "Repeat:"
-msgstr ""
+msgstr "Ponovi:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:254
 msgid "Number of values or zero if infinite."
-msgstr ""
+msgstr "Število vrednosti ali nič, če je neskončno."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:266
 msgid "Values:"
-msgstr ""
+msgstr "Vrednosti:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:274
 msgid "Choice list (one entry per line)."
-msgstr ""
+msgstr "Seznam izbir (en vnos na vrstico)."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:283
 msgid "Information:"
-msgstr ""
+msgstr "Informacije:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:291
 msgid "Extra information displayed along with dynamic field."
-msgstr ""
+msgstr "Dodatne informacije so prikazane skupaj z dinamičnim poljem."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:297
 msgid "Display information above input"
-msgstr ""
+msgstr "Prikaži informacije nad vnosom"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:325
 #: ../../tempcache/elements/edit_core_fields.html.twig:69
@@ -8488,19 +8486,19 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:88
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:155
 msgid "Width in forms"
-msgstr ""
+msgstr "Širina v obrazcih"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:342
 #: ../../tempcache/elements/edit_core_fields.html.twig:309
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:169
 msgid "Full"
-msgstr ""
+msgstr "Polno"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:353
 #: ../../tempcache/elements/edit_core_fields.html.twig:320
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:162
 msgid "Half"
-msgstr ""
+msgstr "Pol"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:513
 #: ../../tempcache/elements/edit_core_fields.html.twig:62
@@ -8509,35 +8507,39 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:81
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:133
 msgid "Required"
-msgstr ""
+msgstr "Zahtevano"
 
 #: ../../tempcache/pages/desktop.html.twig:71
 msgid "Help us know about you!"
-msgstr ""
+msgstr "Pomagajte nam izvedeti več o vas!"
 
 #: ../../tempcache/pages/desktop.html.twig:78
 msgid ""
 "Take a moment to share some information with us so we can know better "
 "Galette's uses."
 msgstr ""
+"Vzemite si trenutek in nam posredujte nekaj informacij, da bomo lahko bolje "
+"spoznali uporabo Galette."
 
 #: ../../tempcache/pages/desktop.html.twig:122
 msgid ""
 "The panel will be automatically hidden once you have registered and send "
 "telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
+"Plošča se bo samodejno skrila, ko se registrirate in pošljete telemetrične "
+"podatke. Označite polje, če jo želite vseeno skriti."
 
 #: ../../tempcache/pages/desktop.html.twig:132
 msgid "Hide this panel"
-msgstr ""
+msgstr "Skrij to ploščo"
 
 #: ../../tempcache/pages/desktop.html.twig:157
 msgid "My activities"
-msgstr ""
+msgstr "Moje dejavnosti"
 
 #: ../../tempcache/pages/desktop.html.twig:196
 msgid "Activities"
-msgstr ""
+msgstr "Dejavnosti"
 
 #: ../../tempcache/pages/desktop.html.twig:307
 msgid "Show dashboard on login"
@@ -8545,144 +8547,150 @@ msgstr "Prikaži nadzorno ploščo ob prijavi"
 
 #: ../../tempcache/macros.twig:583
 msgid "For the selection:"
-msgstr ""
+msgstr "Za izbor:"
 
 #: ../../tempcache/public_page.html.twig:290
 msgid "Public page content"
-msgstr ""
+msgstr "Vsebina javne strani"
 
 #: ../../tempcache/components/forms/company.html.twig:66
 msgid "Is company?"
-msgstr ""
+msgstr "Je podjetje?"
 
 #: ../../tempcache/components/forms/company.html.twig:66
 msgid "Is member a company?"
-msgstr ""
+msgstr "Je član podjetje?"
 
 #: ../../tempcache/components/forms/company.html.twig:66
 msgid ""
 "Do you manage a non profit organization, or a company? If you do so, check "
 "the box, and then enter its name in the field that will appear."
 msgstr ""
+"Ali upravljate neprofitno organizacijo ali podjetje? Če je tako, označite "
+"polje in nato v polje, ki se bo prikazalo, vnesite njeno ime."
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:74
 msgid "Select a group to add selected members to"
-msgstr ""
+msgstr "Izberite skupino, v katero želite dodati izbrane člane"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:81
 msgid "Select a group to remove selected members from"
-msgstr ""
+msgstr "Izberite skupino, iz katere želite odstraniti izbrane člane"
 
 #: ../../tempcache/components/forms/titles.html.twig:75
 msgid "Not supplied"
-msgstr ""
+msgstr "Ni dobavljeno"
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:77
 msgid "Load previous members..."
-msgstr ""
+msgstr "Naloži prejšnje člane ..."
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:83
 msgid "Load following members..."
-msgstr ""
+msgstr "Naloži naslednje člane ..."
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:91
 msgid "Search for name or ID and pick member"
-msgstr ""
+msgstr "Poiščite ime ali ID in izberite člana"
 
 #: ../../tempcache/components/forms/password.html.twig:55
 msgid "Password confirmation:"
-msgstr ""
+msgstr "Potrditev gesla:"
 
 #: ../../tempcache/components/forms/captcha.html.twig:75
 msgid "(numbers only)"
-msgstr ""
+msgstr "(samo številke)"
 
 #: ../../tempcache/components/forms/captcha.html.twig:78
 msgid ""
 "This field is required trying to avoid registration spam. We are sorry for "
 "the inconvennience."
 msgstr ""
+"To polje je obvezno, da se izognemo neželeni pošti ob registraciji. "
+"Oprostite za nevšečnosti."
 
 #: ../../tempcache/components/forms/captcha.html.twig:102
 msgid "Captcha"
-msgstr ""
+msgstr "Kapča"
 
 #: ../../tempcache/components/forms/groups.html.twig:186
 msgid "Manage user's groups"
-msgstr ""
+msgstr "Upravljanje uporabniških skupin"
 
 #: ../../tempcache/components/forms/groups.html.twig:199
 msgid "Manage user's managed groups"
-msgstr ""
+msgstr "Upravljanje upravljanih skupin uporabnikov"
 
 #: ../../tempcache/components/forms/picture.html.twig:46
 msgid "Picture:"
-msgstr ""
+msgstr "Slika:"
 
 #: ../../tempcache/components/forms/picture.html.twig:98
 msgid "Cropping focus"
-msgstr ""
+msgstr "Obrezovanje fokusa"
 
 #: ../../tempcache/components/forms/picture.html.twig:103
 msgid "Center"
-msgstr ""
+msgstr "Center"
 
 #: ../../tempcache/components/forms/picture.html.twig:107
 msgid "Top"
-msgstr ""
+msgstr "Zgoraj"
 
 #: ../../tempcache/components/forms/picture.html.twig:111
 msgid "Bottom"
-msgstr ""
+msgstr "Dno"
 
 #: ../../tempcache/components/forms/picture.html.twig:115
 msgid "Left"
-msgstr ""
+msgstr "Levo"
 
 #: ../../tempcache/components/forms/picture.html.twig:119
 msgid "Right"
-msgstr ""
+msgstr "Desno"
 
 #: ../../tempcache/components/forms/picture.html.twig:124
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Izberite območje izvirne slike, ki ga želite ohraniti po obrezovanju na "
+"končno razmerje, določeno v nastavitvah: %razmerje"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:67
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:53
 msgid "Additionnal fields:"
-msgstr ""
+msgstr "Dodatna polja:"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:234
 msgid "Enter as many occurrences you want."
-msgstr ""
+msgstr "Vnesite poljubno število pojavitev."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:259
 #: ../../tempcache/components/dynamic_fields.html.twig:321
 #, php-format
 msgid "Enter up to %1$s more occurrences."
-msgstr ""
+msgstr "Vnesite še do %1$s pojavitev."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:590
 msgid "Select an option"
-msgstr ""
+msgstr "Izberite možnost"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:821
 msgid "delete"
-msgstr ""
+msgstr "izbriši"
 
 #: ../../tempcache/components/form.html.twig:265
 msgid "This comment is only displayed for admins and staff members."
-msgstr ""
+msgstr "Ta komentar je prikazan samo administratorjem in članom osebja."
 
 #: ../../tempcache/components/form.html.twig:274
 msgid "This comment is reserved to the member."
-msgstr ""
+msgstr "Ta komentar je rezerviran za člana."
 
 #: ../../tempcache/components/form.html.twig:345
 msgid "Do member want to appear publically?"
-msgstr ""
+msgstr "Ali želi član javno nastopiti?"
 
 #: ../../tempcache/components/form.html.twig:348
 msgid ""
@@ -8692,23 +8700,28 @@ msgid ""
 "gallery page.<br/>Note that administrators can disabled public pages, this "
 "setting will have no effect in that case."
 msgstr ""
+"Če označite to polje (in če ste posodobljeni s svojimi prispevki), bodo vaše "
+"polno ime in drugi podatki javno vidni na seznamu članov.<br>Če ste naložili "
+"fotografijo, bo prikazana na strani galerije.<br>Upoštevajte, da lahko "
+"skrbniki onemogočijo javne strani, ta nastavitev v tem primeru ne bo imela "
+"učinka."
 
 #: ../../tempcache/components/form.html.twig:360
 msgid "(at least %i characters)"
-msgstr ""
+msgstr "(vsaj %i znakov)"
 
 #: ../../tempcache/ajax.html.twig:56
 msgid "Ajax page content"
-msgstr ""
+msgstr "Vsebina strani Ajax"
 
 #: ../../tempcache/elements/member_card.html.twig:69
 msgid "Picture"
-msgstr ""
+msgstr "Slika"
 
 #: ../../tempcache/elements/member_card.html.twig:86
 #: ../../tempcache/elements/member_card.html.twig:91
 msgid "Download VCard"
-msgstr ""
+msgstr "Prenesi VCard"
 
 #: ../../tempcache/elements/member_card.html.twig:99
 #: ../../tempcache/elements/member_card.html.twig:104
@@ -8719,7 +8732,7 @@ msgstr ""
 #: ../../tempcache/elements/member_card.html.twig:211
 #: ../../tempcache/elements/member_card.html.twig:216
 msgid "Display QR Code"
-msgstr ""
+msgstr "Prikaži QR kodo"
 
 #: ../../tempcache/elements/logged_user.html.twig:90
 #: ../../tempcache/elements/logged_user.html.twig:164
@@ -8729,7 +8742,7 @@ msgstr ""
 #: ../../tempcache/elements/navigation/public_pages.html.twig:158
 #: ../../tempcache/elements/navigation/public_pages.html.twig:168
 msgid "Disable dark mode"
-msgstr ""
+msgstr "Onemogoči temni način"
 
 #: ../../tempcache/elements/logged_user.html.twig:92
 #: ../../tempcache/elements/logged_user.html.twig:166
@@ -8739,7 +8752,7 @@ msgstr ""
 #: ../../tempcache/elements/navigation/public_pages.html.twig:160
 #: ../../tempcache/elements/navigation/public_pages.html.twig:170
 msgid "Enable dark mode"
-msgstr ""
+msgstr "Omogoči temni način"
 
 #: ../../tempcache/elements/logged_user.html.twig:125
 #: ../../tempcache/elements/logged_user.html.twig:200
@@ -8747,58 +8760,58 @@ msgstr ""
 #: ../../tempcache/elements/logged_user.html.twig:369
 #: ../../tempcache/elements/logged_user.html.twig:387
 msgid "Unimpersonate"
-msgstr ""
+msgstr "Ne predstavljaj se kot nekdo, ki se izdaja za nekoga drugega"
 
 #: ../../tempcache/elements/logged_user.html.twig:141
 #: ../../tempcache/elements/logged_user.html.twig:243
 msgid "User menu"
-msgstr ""
+msgstr "Uporabniški meni"
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:142
 #: ../../tempcache/elements/js/choose_adh.js.twig:221
 msgid "An error occurred retrieving members :("
-msgstr ""
+msgstr "Pri pridobivanju članov je prišlo do napake :("
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:293
 msgid "An error occurred retrieving dates :("
-msgstr ""
+msgstr "Pri pridobivanju datumov je prišlo do napake :("
 
 #: ../../tempcache/elements/js/messages.js.twig:326
 #: ../../tempcache/elements/messages_inline.html.twig:419
 msgid "Your telemetry data are more than one year old."
-msgstr ""
+msgstr "Vaši telemetrični podatki so stari več kot eno leto."
 
 #: ../../tempcache/elements/js/messages.js.twig:328
 #: ../../tempcache/elements/messages_inline.html.twig:423
 msgid "Do you want to send it again?"
-msgstr ""
+msgstr "Ali ga želite poslati znova?"
 
 #: ../../tempcache/elements/js/messages.js.twig:369
 #: ../../tempcache/elements/messages_inline.html.twig:435
 msgid "Later"
-msgstr ""
+msgstr "Kasneje"
 
 #: ../../tempcache/elements/js/loader.js.twig:57
 #: ../../tempcache/elements/js/loader.js.twig:76
 #: ../../tempcache/elements/js/modal_action.js.twig:60
 msgid "Loading..."
-msgstr ""
+msgstr "Nalaganje ..."
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:107
 msgid "Password is valid :)"
-msgstr ""
+msgstr "Geslo je veljavno :)"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:113
 msgid "Password is not valid!"
-msgstr ""
+msgstr "Geslo ni veljavno!"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:143
 msgid "An error occured checking password :("
-msgstr ""
+msgstr "Pri preverjanju gesla je prišlo do napake :("
 
 #: ../../tempcache/elements/js/calendar.js.twig:54
 msgid "S,M,T,W,T,F,S"
-msgstr ""
+msgstr "N,P,T,S,Č,P,S"
 
 #: ../../tempcache/elements/js/calendar.js.twig:59
 msgid "January"
@@ -8871,7 +8884,7 @@ msgstr "Jun"
 
 #: ../../tempcache/elements/js/calendar.js.twig:133
 msgid "Jul"
-msgstr ""
+msgstr "Jul"
 
 #: ../../tempcache/elements/js/calendar.js.twig:137
 msgid "Aug"
@@ -8909,25 +8922,25 @@ msgstr "Spremeni dovoljenja za '%1$s'"
 #: ../../tempcache/elements/edit_core_fields.html.twig:221
 #, php-format
 msgid "Field '%1$s' cannot be set as required."
-msgstr ""
+msgstr "Polja '%1$s' ni mogoče nastaviti kot obvezno."
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:223
 #, php-format
 msgid "Mark '%1$s' as (not) required"
-msgstr ""
+msgstr "Označi '%1$s' kot (ne)obvezno"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:287
 msgid "Change field's width with in forms"
-msgstr ""
+msgstr "Spremeni širino polja z obrazci"
 
 #: ../../tempcache/elements/edit_socials.html.twig:69
 msgid "Disable social networks on member form"
-msgstr ""
+msgstr "Onemogočanje družbenih omrežij na obrazcu za člane"
 
 #: ../../tempcache/elements/edit_socials.html.twig:130
 #: ../../tempcache/elements/edit_socials.html.twig:135
 msgid "Remove %type"
-msgstr ""
+msgstr "Odstrani %type"
 
 #: ../../tempcache/elements/edit_socials.html.twig:156
 msgid "Add new social network"
@@ -8972,7 +8985,7 @@ msgstr "Telo sporočila"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:110
 msgid "CSS styles"
-msgstr ""
+msgstr "Slogi CSS-ja"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:133
 msgid "Invoice"
