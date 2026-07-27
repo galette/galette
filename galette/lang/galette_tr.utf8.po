@@ -19,13 +19,14 @@
 # Dennis <snap-roofing0h@icloud.com>, 2026.
 # batuhan Okmen <batuhanokmen@gmail.com>, 2026.
 # H B <habibbktr@gmail.com>, 2026.
+# Ahmet Güneş <a.gunes55@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-06 00:01+0000\n"
-"Last-Translator: H B <habibbktr@gmail.com>\n"
+"PO-Revision-Date: 2026-07-28 13:01+0000\n"
+"Last-Translator: Ahmet Güneş <a.gunes55@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -115,7 +116,7 @@ msgid "adherent_form"
 msgstr "üye_formu"
 
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "Y-a-g S:d:sn"
 
 msgid "attendance_sheet"
 msgstr "yoklama formu"
@@ -136,10 +137,10 @@ msgid "Due free"
 msgstr ""
 
 msgid "Never contribute"
-msgstr ""
+msgstr "Asla katkıda bulunma"
 
 msgid "Impending due dates"
-msgstr ""
+msgstr "Yaklaşan son teslim tarihleri"
 
 msgid "Up to date"
 msgstr "Güncel"
@@ -163,16 +164,16 @@ msgid "invoice"
 msgstr "fatura"
 
 msgid "labels_print_filename"
-msgstr ""
+msgstr "etiketler_yazdırma_dosyaadı"
 
 msgid "Member's Labels"
-msgstr ""
+msgstr "Üye Etiketleri"
 
 msgid "Labels"
-msgstr ""
+msgstr "Etiketler"
 
 msgid "filtered_memberslist"
-msgstr ""
+msgstr "filtrelenmiş_üyelerlistesi"
 
 msgid "Man"
 msgstr ""
