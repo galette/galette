@@ -163,13 +163,17 @@
             <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
             <td class="collapsing" data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
             <td data-col-label="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
-            <td class="center collapsing" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
-            <td class="center collapsing{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+            <td class="collapsing" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
+            <td class="collapsing{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+                <span class="icon-only">
                 {% if log.mailing_sent == 1 %}
-                    <i class="ui thumbs up green icon" aria-hidden="true"></i>
+                    <i class="ui paper plane green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Sent') }}</span>
                 {% else %}
-                    <i class="ui thumbs down red icon" aria-hidden="true"></i>
+                    <i class="ui pencil ruler red icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Not sent') }}</span>
                 {% endif %}
+                </span>
             </td>
             <td class="center actions_row collapsing">
                 <a
@@ -183,8 +187,14 @@
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                         class="icon-only"
                 >
-                    <i class="ui clone blue icon" aria-hidden="true"></i>
-                    <span class="visually-hidden">{{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}</span>
+                    <i class="ui {% if log.mailing_sent == 1 %}clone{% else %}edit{% endif %} blue icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">
+                        {% if log.mailing_sent == 1 %}
+                            {{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}
+                        {% else %}
+                            {{ _T("Edit mailing '%1$s'")|format(log.mailing_subject) }}
+                        {% endif %}
+                    </span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
@@ -200,7 +210,65 @@
     {% endfor %}
 {% endblock %}
 
+{% block legend %}
+    <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+        <div class="header">{{ _T("Legend") }}</div>
+        <div class="content">
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th scope="colgroup" colspan="4">{{ _T("Actions") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui eye green icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Mailing preview') }}</td>
+                        <th scope="row">
+                            <i class="ui edit icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Modification") }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui clone blue icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Use as a template for a new mailing") }}</td>
+                        <th scope="row">
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Deletion") }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th scope="colgroup" colspan="4">{{ _T('Statuses and interactions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui pencil ruler red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('No sent') }}</td>
+                        <th scope="row">
+                            <i class="ui paper plane green icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Sent') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         {% include "elements/js/removal.js.twig" with {
             single_action: "true"
