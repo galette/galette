@@ -79,7 +79,13 @@
                                         {% endif %}
                                     </a>
                                     {% else %}
-                                        {{ column.label }}
+                                        {% if column.abbr_title is defined %}
+                                            <abbr title="{{ column.abbr_title }}">
+                                        {% endif %}
+                                            {{ column.label }}
+                                        {% if column.abbr_title is defined %}
+                                            </abbr>
+                                        {% endif %}
                                     {% endif %}
                                 </th>
                             {% endfor %}
