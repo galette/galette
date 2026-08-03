@@ -110,6 +110,14 @@ jobs:
           enable-assets-cache: ${{ matrix.cache }}
           skip-checkout: true
 
+      - name: Install libfaketime
+        # Allows date-sensitive tests to freeze "now" (see tests/lib/FakeTime.php).
+        # LD_PRELOAD is only set on the unit test steps below, not globally.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfaketime
+          echo "FAKETIME_LIB=$(dpkg -L libfaketime | grep -m1 'libfaketime.so.1$')" >> "$GITHUB_ENV"
+
       - name: Init for PostgreSQL (update)
         env:
           POSTGRES_HOST: localhost
@@ -145,10 +153,16 @@ jobs:
         if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Unit tests
+        env:
+          LD_PRELOAD: ${{ env.FAKETIME_LIB }}
+          FAKETIME_NO_CACHE: '1'
         run: galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/Galette/
         if: matrix.coverage != 'pcov'
 
       - name: Unit tests (with coverage)
+        env:
+          LD_PRELOAD: ${{ env.FAKETIME_LIB }}
+          FAKETIME_NO_CACHE: '1'
         run: galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
         if: matrix.coverage == 'pcov'
 

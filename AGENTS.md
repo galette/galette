@@ -152,6 +152,53 @@ DB=mysql galette/vendor/bin/phpunit --test-suffix=.php \
   tests/Galette/
 ```
 
+### Date-sensitive tests (freezing "now")
+
+Galette reads the current date/time directly through `new DateTime()` and
+`date()`, so some tests (membership periods, due dates, ...) can behave
+differently depending on the day the suite runs - typically failing on the last
+day of a month and passing the next day.
+
+To make such cases deterministic, the `Galette\Tests\FakeTime` trait
+(`tests/lib/FakeTime.php`) freezes "now" to an arbitrary instant. It relies on
+[libfaketime](https://github.com/wolfcw/libfaketime), which must be preloaded
+when running PHPUnit:
+
+```bash
+# Debian/Ubuntu: apt-get install libfaketime  (lib in /usr/lib/x86_64-linux-gnu/faketime/)
+# Fedora:        dnf install libfaketime      (lib in /usr/lib64/)
+LD_PRELOAD=/usr/lib64/libfaketime.so.1 FAKETIME_NO_CACHE=1 \
+  DB=pgsql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+```
+
+`FAKETIME_NO_CACHE=1` is required so the faked time can change from one test to
+the next within the same PHPUnit process. When libfaketime is **not** preloaded,
+tests using the trait are skipped (never run against the real clock). CI
+(`.github/workflows/ci-linux.yml`) installs and preloads it automatically.
+
+In a test, use the trait like this:
+
+```php
+use Galette\Tests\FakeTime;
+
+class MyTest extends GaletteTestCase
+{
+    use FakeTime;
+
+    public function tearDown(): void
+    {
+        $this->restoreRealTime();
+        parent::tearDown();
+    }
+
+    public function testSomething(): void
+    {
+        $this->setFakeTime('2026-07-31 12:00:00');
+        // ... "now" is now frozen to July 31st, 2026
+    }
+}
+```
+
 ### E2E Testing (Playwright)
 
 **📚 Detailed E2E documentation:** [`tests/e2e/README.md`](tests/e2e/README.md)

@@ -12,6 +12,7 @@ namespace Galette\Tests\Entity;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
+use Galette\Tests\FakeTime;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -22,7 +23,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class Contribution extends GaletteTestCase
 {
+    use FakeTime;
+
     protected int $seed = 95842354;
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        $this->restoreRealTime();
+        parent::tearDown();
+    }
 
     /**
      * Set up tests
@@ -1569,6 +1581,115 @@ class Contribution extends GaletteTestCase
         //and covers the next full period, without the offer being applied twice.
         $this->assertSame($beg_membership->format('Y-m-d'), $contrib->begin_date);
         $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
+     * Critical "now" dates for membership renewal.
+     *
+     * Each entry pins "now" to the very last valid day of a membership period
+     * (the day before the next membership begin date). These are the dates that
+     * used to break: for instance a member renewing on July 31st (period ending
+     * that day, next period starting on August 1st) got a contribution starting
+     * one year in the past, while the same scenario on August 1st worked fine.
+     *
+     * The list focuses on month/year boundaries and leap years, which is where
+     * date arithmetic (adding/subtracting months or years) overflows.
+     *
+     * @return array<string, array{now: string}>
+     */
+    public static function lastMembershipDayProvider(): array
+    {
+        return [
+            //the originally reported failing case (PR opened on July 31st)
+            'end of July (reported)'  => ['now' => '2026-07-31'],
+            //end of a 30-days month
+            'end of June'             => ['now' => '2026-06-30'],
+            //end of February, non leap year
+            'end of February'         => ['now' => '2026-02-28'],
+            //end of February, leap year (2024-02-29 minus one year is invalid)
+            'end of February (leap)'  => ['now' => '2024-02-29'],
+            //month before a short month (Jan 31st + 1 month overflows)
+            'end of January'          => ['now' => '2026-01-31'],
+            //year boundary
+            'end of December'         => ['now' => '2026-12-31'],
+            //plain mid-month control case, must keep working too
+            'mid-month control'       => ['now' => '2026-05-15'],
+        ];
+    }
+
+    /**
+     * A member renewing on the very last valid day of their membership must get
+     * a contribution continuing the current period (starting the day after the
+     * current end of membership), never one starting a year in the past.
+     *
+     * This is a regression test for the July 31st failure: the check comparing
+     * the stored due date (midnight) against "now" (with the current time)
+     * wrongly considered an up-to-date member as expired on their last valid day.
+     *
+     * @param string $now Date to freeze "now" to (last valid membership day)
+     */
+    #[DataProvider('lastMembershipDayProvider')]
+    public function testRenewalOnLastMembershipDay(string $now): void
+    {
+        global $preferences;
+
+        //freeze the clock at noon on the given day
+        $this->setFakeTime($now . ' 12:00:00');
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //today is the last valid day; the next period begins tomorrow
+        $today = new DateTime((new DateTime())->format('Y-m-d'));
+        $next_begin_date = clone $today;
+        $next_begin_date->add(new \DateInterval('P1D'));
+
+        //current period begins one year before the next begin date
+        $begin_date = clone $next_begin_date;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $preferences->pref_beg_membership = $next_begin_date->format('d/m');
+        $preferences->pref_membership_ext = '';
+
+        //existing contribution covering the current period, ending today
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $today->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        //the renewal must cover the next full period
+        $ny_end_date = clone $next_begin_date;
+        $ny_end_date->add(new \DateInterval('P1Y'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+
+        $this->assertSame(
+            $next_begin_date->format('Y-m-d'),
+            $contrib->begin_date,
+            'Renewal on the last valid day must start on the next membership begin date'
+        );
+        $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
     }
 
     /**
