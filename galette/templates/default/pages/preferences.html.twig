@@ -851,7 +851,7 @@
             <div class="ui icon info visible message">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
-                    {{ _T("Each page contains %1$s columns and  %2$s rows.")|replace({"%1$s": pref.pref_card_cols, "%2$s": pref.pref_card_rows}) }}
+                    {{ _T("Each page contains %1$s columns and  %2$s rows.")|replace({"%1$s": callstatic('\\Galette\\IO\\PdfMembersCards', 'getCols'), "%2$s": callstatic('\\Galette\\IO\\PdfMembersCards', 'getRows')}) }}
                 </div>
             </div>
             <div class="ui stackable two column grid">
