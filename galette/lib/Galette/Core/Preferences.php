@@ -103,8 +103,6 @@ use function Safe\unlink;
  * @property      string   $pref_card_self
  * @property      int      $pref_card_hsize
  * @property      int      $pref_card_vsize
- * @property      int      $pref_card_cols
- * @property      int      $pref_card_rows
  * @property      string   $pref_theme                                    Preferred theme
  * @property      bool     $pref_hide_bg_image
  * @property      bool     $pref_enable_custom_colors
@@ -1145,13 +1143,6 @@ class Preferences
                 'pref_enable_custom_colors'
             ]
         ];
-
-        if ($name === 'pref_card_cols') {
-            return PdfMembersCards::getCols();
-        }
-        if ($name === 'pref_card_rows') {
-            return PdfMembersCards::getRows();
-        }
 
         if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
             return PdfMembersCards::HEIGHT;
