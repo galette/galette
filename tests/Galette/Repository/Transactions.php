@@ -174,6 +174,87 @@ class Transactions extends GaletteTestCase
     }
 
     /**
+     * Test getList as a group manager
+     */
+    public function testGetListAsGroupManager(): void
+    {
+        $this->logSuperAdmin();
+
+        //two transactions for first member
+        $member_one = $this->getMemberOne();
+        $this->createTransaction();
+        $this->createTransaction();
+
+        //one transaction for second member, that will manage groups
+        $member_two = $this->getMemberTwo();
+        $this->createTransaction();
+
+        //as admin, all transactions are listed and counted
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //second member manages two groups, first member is part of both of them
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $this->assertTrue($g2->store());
+        $this->assertTrue($g2->setManagers([$member_two]));
+        $this->assertTrue($g2->setMembers([$member_one]));
+
+        $this->login->logOut();
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager());
+
+        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_transactions;
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->assertTrue($this->preferences->store());
+
+        //group manager only sees its own transactions
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(1, $transactions->getCount());
+
+        //let groups managers see their groups members transactions
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
+        $this->assertTrue($this->preferences->store());
+
+        //first member is part of two managed groups, its transactions are listed only once
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //count is required for pagination to work
+        $filters = new \Galette\Filters\TransactionsList();
+        $filters->show = 2;
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
+        $list = $transactions->getList(true);
+        $this->assertCount(2, $list);
+        $this->assertSame(3, $transactions->getCount());
+        $this->assertSame(2, $filters->pages);
+
+        $filters->current_page = 2;
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
+        $list = $transactions->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //reset
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = $orig_pref;
+        $this->assertTrue($this->preferences->store());
+    }
+
+    /**
      * Test remove
      */
     public function testRemove(): void

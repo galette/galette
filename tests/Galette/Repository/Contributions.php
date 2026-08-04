@@ -203,6 +203,93 @@ class Contributions extends GaletteTestCase
     }
 
     /**
+     * Test getList as a group manager
+     */
+    public function testGetListAsGroupManager(): void
+    {
+        $this->logSuperAdmin();
+
+        //two contributions for first member
+        $member_one = $this->getMemberOne();
+        $this->createContribution();
+        $data = $this->getContribData();
+        $data['id_type_cotis'] = 4; //donation
+        $data['montant_cotis'] = 8;
+        $this->createContrib($data);
+
+        //one contribution for second member, that will manage groups
+        $member_two = $this->getMemberTwo();
+        $this->createContribution();
+
+        //as admin, all contributions are listed and counted
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(192.0, $contributions->getSum());
+
+        //second member manages two groups, first member is part of both of them
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $this->assertTrue($g2->store());
+        $this->assertTrue($g2->setManagers([$member_two]));
+        $this->assertTrue($g2->setMembers([$member_one]));
+
+        $this->login->logOut();
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager());
+
+        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_contributions;
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $this->assertTrue($this->preferences->store());
+
+        //group manager only sees its own contributions
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(1, $contributions->getCount());
+        $this->assertSame(92.0, $contributions->getSum());
+
+        //let groups managers see their groups members contributions
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $this->assertTrue($this->preferences->store());
+
+        //first member is part of two managed groups, its contributions are listed only once
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(192.0, $contributions->getSum());
+
+        //count is required for pagination to work
+        $filters = new \Galette\Filters\ContributionsList();
+        $filters->show = 2;
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+        $list = $contributions->getList(true);
+        $this->assertCount(2, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(2, $filters->pages);
+
+        $filters->current_page = 2;
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+        $list = $contributions->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(3, $contributions->getCount());
+
+        //reset
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = $orig_pref;
+        $this->assertTrue($this->preferences->store());
+    }
+
+    /**
      * Test getArrayList
      */
     public function testGetArrayList(): void
