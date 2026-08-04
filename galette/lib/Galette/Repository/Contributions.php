@@ -406,17 +406,19 @@ class Contributions
                 //limit to managed members from managed groups
                 $mgroups = $this->login->getManagedGroups();
 
-                $select->join(
-                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                    'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    [],
-                    $select::JOIN_LEFT
+                //use a subquery rather than a join, so a member belonging to
+                //several managed groups does not duplicate its contributions
+                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
+                $groups_select->columns([Adherent::PK]);
+                $groups_select->where->in(
+                    'users_groups.' . Group::PK,
+                    array_values($mgroups)
                 );
+
                 $select->where->nest()
-                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->in('c.' . Adherent::PK, $groups_select)
                     ->or
                     ->in('c.' . Adherent::PK, $member_clause);
-                $select->group('c.' . Contribution::PK);
 
                 //member clause is already handled, reset it
                 $member_clause = null;

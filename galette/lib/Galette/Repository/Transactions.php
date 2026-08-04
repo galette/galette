@@ -286,14 +286,17 @@ class Transactions
                 //limit to managed members from managed groups
                 $mgroups = $this->login->getManagedGroups();
 
-                $select->join(
-                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                    't.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    [],
-                    $select::JOIN_LEFT
+                //use a subquery rather than a join, so a member belonging to
+                //several managed groups does not duplicate its transactions
+                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
+                $groups_select->columns([Adherent::PK]);
+                $groups_select->where->in(
+                    'users_groups.' . Group::PK,
+                    array_values($mgroups)
                 );
+
                 $select->where->nest()
-                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->in('t.' . Adherent::PK, $groups_select)
                     ->or
                     ->in('t.' . Adherent::PK, $member_clause);
 
