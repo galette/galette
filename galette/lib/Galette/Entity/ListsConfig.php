@@ -57,7 +57,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array<string, int|string>
+     * @return array<string, mixed>
      */
     protected function buildField(ArrayObject $rset): array
     {

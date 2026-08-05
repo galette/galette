@@ -732,22 +732,12 @@ class Members
 
             //check if there are dynamic fields for contributions in filter
             $hasDfc = false;
-            $hasCdfc = false;
-            $cdfcs = [];
 
             if ($this->filters instanceof AdvancedMembersList && $this->filters->withinContributions() && count($this->filters->contrib_dynamic) > 0) {
                 $hasDfc = true;
-                //check if there are dynamic fields in the filter
-                foreach (array_keys($this->filters->contrib_dynamic) as $k) {
-                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
-                    if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
-                        $hasCdfc = true;
-                        $cdfcs[] = (int)$k;
-                    }
-                }
             }
 
-            if ($hasDfc === true || $hasCdfc === true) {
+            if ($hasDfc === true) {
                 $select->join(
                     ['dfc' => PREFIX_DB . DynamicFieldsHandle::TABLE],
                     'dfc.item_id=ct.' . Contribution::PK,
@@ -776,8 +766,6 @@ class Members
                     );
                 }
             }
-
-            // choice dynamic fields joins removed as choice data is now in JSON
 
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
                 $this->buildWhereClause($select);

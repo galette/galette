@@ -630,20 +630,17 @@ class GaletteController extends AbstractController
             }
 
             if ($labels === true) {
-                if (count($labels_members) > 0) {
-                    $session_var = $this->getFilterName('reminders_labels');
-                    $labels_filters = new MembersList();
-                    $labels_filters->selected = $labels_members;
-                    $this->session->$session_var = $labels_filters;
-                    return $response
-                        ->withStatus(307)
-                        ->withHeader(
-                            'Location',
-                            $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
-                        );
-                } else {
-                    $error_detected[] = _T("There are no member to proceed.");
-                }
+                //at least one reminder has been found, labels members list cannot be empty
+                $session_var = $this->getFilterName('reminders_labels');
+                $labels_filters = new MembersList();
+                $labels_filters->selected = $labels_members;
+                $this->session->$session_var = $labels_filters;
+                return $response
+                    ->withStatus(307)
+                    ->withHeader(
+                        'Location',
+                        $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
+                    );
             }
 
             if (count($error_detected) > 0) {

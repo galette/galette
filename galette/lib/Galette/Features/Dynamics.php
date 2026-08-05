@@ -43,8 +43,7 @@ trait Dynamics
      */
     private function loadDynamicFields(): void
     {
-        //@phpstan-ignore-next-line function.alreadyNarrowedType
-        if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
+        if (($this->login ?? null) instanceof Login) {
             $login = $this->login;
         } else {
             global $login;

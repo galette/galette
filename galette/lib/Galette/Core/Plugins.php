@@ -125,7 +125,7 @@ class Plugins
     private function findClassLoader(): ClassLoader
     {
         foreach (spl_autoload_functions() as $func) {
-            if (is_array($func) && isset($func[0]) && $func[0] instanceof ClassLoader) {
+            if (is_array($func) && $func[0] instanceof ClassLoader) {
                 return $func[0];
             }
         }
