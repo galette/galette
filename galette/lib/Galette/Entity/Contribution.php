@@ -300,7 +300,7 @@ class Contribution implements AccessManagementInterface
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_transactions || $preferences->pref_bool_groupsmanagers_see_transactions)) {
+                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions)) {
                     //limit to managed members from managed groups
                     $mgroups = $this->login->getManagedGroups();
                     $select->join(
