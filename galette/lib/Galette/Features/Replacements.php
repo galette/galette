@@ -456,12 +456,25 @@ trait Replacements
     }
 
     /**
+     * Convert address line breaks to HTML ones
+     *
+     * Unlike nl2br(), original line breaks are dropped; kept ones would be
+     * rendered as an extra leading space by TCPDF.
+     *
+     * @param string $address Postal address
+     */
+    private static function addressToHtml(string $address): string
+    {
+        return preg_replace('/\R/', '<br/>', $address);
+    }
+
+    /**
      * Set main replacements
      */
     public function setMain(): self
     {
         $address = $this->preferences->getPostalAddress();
-        $address_multi = str_replace("/\n/", "<br>", $address);
+        $address_multi = self::addressToHtml($address);
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
@@ -627,7 +640,7 @@ trait Replacements
         global $login;
 
         $address = $member->getAddress();
-        $address_multi = str_replace("/\n/", "<br>", $address);
+        $address_multi = self::addressToHtml($address);
 
         if ($member->isMan()) {
             $gender = _T("Man");

@@ -329,6 +329,47 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
+     * Test multiline address replacements
+     */
+    public function testMultilineAddressReplacements(): void
+    {
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => null,
+            'model_subtitle' => null,
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'asso: {ASSO_ADDRESS_MULTI} adh: {ADDRESS_ADH_MULTI}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+
+        $data = $this->dataAdherentOne();
+        $data['adresse_adh'] = "66, boulevard De Oliveira\nBâtiment B, 3rd floor";
+        $this->createMember($data);
+        $model->setMember($this->adh);
+
+        $asso_address = $this->preferences->getPostalAddress();
+        //make sure the tested addresses are relevant
+        $this->assertStringContainsString("\n", $asso_address);
+        $this->assertStringContainsString("\n", $this->adh->getAddress());
+
+        $this->assertSame(
+            sprintf(
+                'asso: %s adh: 66, boulevard De Oliveira<br/>Bâtiment B, 3rd floor',
+                str_replace("\n", '<br/>', $asso_address)
+            ),
+            $model->hbody
+        );
+
+        //no leftover newline, it would be rendered as an extra leading space
+        $this->assertStringNotContainsString("\n", $model->hbody);
+    }
+
+    /**
      * Create test contribution in database
      *
      * @param DynamicField $cdf Contribution dynamic field

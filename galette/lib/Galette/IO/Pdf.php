@@ -18,6 +18,10 @@ use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
 
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\preg_split;
+
 /*
  * TCPDF configuration file for Galette
  */
@@ -361,6 +365,60 @@ abstract class Pdf extends TCPDF
         }
         $hbody .= $this->model->hbody;
         $this->writeHtml($hbody);
+    }
+
+    /**
+     * Output HTML content
+     *
+     * @param string $html   HTML content
+     * @param bool   $ln     Add a new line after content
+     * @param bool   $fill   Paint the background
+     * @param bool   $reseth Reset last cell height
+     * @param bool   $cell   Add current padding to each write
+     * @param string $align  Content alignment
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function writeHTML($html, $ln = true, $fill = false, $reseth = false, $cell = false, $align = ''): void
+    {
+        parent::writeHTML(
+            html: self::normalizeHtml((string)$html),
+            ln: $ln,
+            fill: $fill,
+            reseth: $reseth,
+            cell: $cell,
+            align: $align
+        );
+    }
+
+    /**
+     * Drop HTML insignificant whitespace
+     *
+     * Web browsers ignore the whitespace that follows a line break or a block opening
+     * tag; TCPDF renders it as a leading space instead. As PDF models are stored
+     * indented, each indented line would then be shifted from the others.
+     *
+     * @param string $html HTML content
+     */
+    public static function normalizeHtml(string $html): string
+    {
+        //do not alter <pre> contents, whitespace is significant there
+        $parts = preg_split(
+            pattern: '#(<pre\b.*?</pre>)#si',
+            subject: $html,
+            limit: -1,
+            flags: PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+        );
+
+        $blocks = 'br|div|p|table|thead|tbody|tr|td|th|ul|ol|li|dl|dt|dd|blockquote|h[1-6]';
+        foreach ($parts as &$part) {
+            if (preg_match('#^<pre\b#i', $part)) {
+                continue;
+            }
+            $part = preg_replace('#(<(?:' . $blocks . ')\b[^>]*>)\s+#i', '$1', $part);
+        }
+
+        return implode('', $parts);
     }
 
     /**
