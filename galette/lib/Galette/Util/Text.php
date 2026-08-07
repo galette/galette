@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Galette\Converter\ImageConverter;
+use Galette\Converter\ParagraphConverter;
+use Galette\Converter\TextConverter;
 use League\HTMLToMarkdown\HtmlConverter;
 
 use function Safe\preg_replace;
@@ -95,6 +97,9 @@ class Text
         $converter = new HtmlConverter();
         $environment = $converter->getEnvironment();
         $environment->addConverter(new ImageConverter()); // optionally - add converter manually
+        //do not escape Markdown special characters, result is used as plain text
+        $environment->addConverter(new TextConverter());
+        $environment->addConverter(new ParagraphConverter());
 
         $config = $converter->getConfig();
         $config->setOption('strip_tags', true); //remove all tags

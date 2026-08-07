@@ -158,6 +158,42 @@ class Text extends GaletteTestCase
             [
                 'input' => '<div>Invalid <strong>HTML tags',
                 'expected' => 'Invalid **HTML tags**'
+            ],
+            [
+                //Markdown special characters must not be escaped in plain text
+                'input' => '<p>Mail: a_b@gmail.com</p>',
+                'expected' => 'Mail: a_b@gmail.com'
+            ],
+            [
+                'input' => 'Mail: a_b@gmail.com',
+                'expected' => 'Mail: a_b@gmail.com'
+            ],
+            [
+                'input' => '<p>Some [brackets], a * star and a \\ backslash</p>',
+                'expected' => 'Some [brackets], a * star and a \\ backslash'
+            ],
+            [
+                'input' => '<p>- an item</p><p>&gt; a quote</p><p>1. first</p>',
+                'expected' => "- an item\n\n> a quote\n\n1. first"
+            ],
+            [
+                'input' => '<p>HTML entities: a &amp; b, 5 &lt; 6</p>',
+                'expected' => 'HTML entities: a & b, 5 < 6'
+            ],
+            [
+                //whitespace only text nodes are dropped before a block element...
+                'input' => '<div><p>an item</p> <p>another one</p></div>',
+                'expected' => "an item\n\nanother one"
+            ],
+            [
+                //... and at the end of the contents
+                'input' => '<div>an item <em>emphasized</em> </div>',
+                'expected' => 'an item *emphasized*'
+            ],
+            [
+                //but kept between inline elements
+                'input' => '<div><em>an item</em> <em>another one</em></div>',
+                'expected' => '*an item* *another one*'
             ]
         ];
     }
