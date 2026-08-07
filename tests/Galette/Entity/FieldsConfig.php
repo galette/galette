@@ -29,11 +29,11 @@ class FieldsConfig extends GaletteTestCase
     {
         parent::setUp();
         $this->fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
     }
 
@@ -71,10 +71,10 @@ class FieldsConfig extends GaletteTestCase
 
         //new object with values loaded from database to compare
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();
@@ -98,11 +98,11 @@ class FieldsConfig extends GaletteTestCase
         $this->assertFalse($isrequired);
 
         $lists_config = new \Galette\Entity\ListsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
         $this->assertTrue($lists_config->load());
 
@@ -261,10 +261,10 @@ class FieldsConfig extends GaletteTestCase
 
         //new object instanciation should add missing field back
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();
@@ -291,10 +291,10 @@ class FieldsConfig extends GaletteTestCase
 
         //new object instanciation should add missing fieldis and categories
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();

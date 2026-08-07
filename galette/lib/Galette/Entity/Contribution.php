@@ -304,10 +304,10 @@ class Contribution implements AccessManagementInterface
                     //limit to managed members from managed groups
                     $mgroups = $this->login->getManagedGroups();
                     $select->join(
-                        ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                        'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                        [],
-                        $select::JOIN_LEFT
+                        name: ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
+                        on: 'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
+                        columns: [],
+                        type: $select::JOIN_LEFT
                     );
                     $select->where
                         ->nest()

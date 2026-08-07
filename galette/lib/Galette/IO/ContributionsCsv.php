@@ -137,11 +137,11 @@ class ContributionsCsv extends CsvOut
         try {
             $fp = fopen($this->path, 'w');
             $this->export(
-                $contributions_list,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE,
-                $labels,
-                $fp
+                rs: $contributions_list,
+                separator: self::DEFAULT_SEPARATOR,
+                quote: self::DEFAULT_QUOTE,
+                titles: $labels,
+                file: $fp
             );
             fclose($fp);
         } catch (FilesystemException) {

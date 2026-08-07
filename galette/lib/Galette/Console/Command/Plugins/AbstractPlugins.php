@@ -54,7 +54,12 @@ abstract class AbstractPlugins extends AbstractCommand
     {
         $this
             ->addArgument('plugins', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Plugins names')
-            ->addOption('all', 'a', InputOption::VALUE_NONE, 'Enable plugin(s)')
+            ->addOption(
+                name: 'all',
+                shortcut: 'a',
+                mode: InputOption::VALUE_NONE,
+                description: 'Enable plugin(s)'
+            )
         ;
     }
 

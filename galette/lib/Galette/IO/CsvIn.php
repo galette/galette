@@ -98,13 +98,13 @@ class CsvIn extends Csv
         private readonly Status $status
     ) {
         $this->init(
-            self::DEFAULT_DIRECTORY,
-            $this->extensions,
-            [
+            dest: self::DEFAULT_DIRECTORY,
+            extensions: $this->extensions,
+            mimes: [
                 'csv'    =>    'text/csv',
                 'txt'    =>    'text/plain'
             ],
-            2048
+            maxlength: 2048
         );
 
         parent::__construct(self::DEFAULT_DIRECTORY);
@@ -220,10 +220,10 @@ class CsvIn extends Csv
 
         //check required fields
         $fc = new FieldsConfig(
-            $this->zdb,
-            Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
         $config_required = $fc->getRequired();
         $this->required = [];
@@ -245,11 +245,11 @@ class CsvIn extends Csv
         $row = 0;
         while (
             ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
-                $handle,
-                1000,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE,
-                self::DEFAULT_ESCAPE
+                stream: $handle,
+                length: 1000,
+                separator: self::DEFAULT_SEPARATOR,
+                enclosure: self::DEFAULT_QUOTE,
+                escape: self::DEFAULT_ESCAPE
             )) !== false
         ) {
             //check fields count
@@ -442,11 +442,11 @@ class CsvIn extends Csv
             $this->zdb->beginTransaction();
             while (
                 ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
-                    $handle,
-                    1000,
-                    self::DEFAULT_SEPARATOR,
-                    self::DEFAULT_QUOTE,
-                    self::DEFAULT_ESCAPE
+                    stream: $handle,
+                    length: 1000,
+                    separator: self::DEFAULT_SEPARATOR,
+                    enclosure: self::DEFAULT_QUOTE,
+                    escape: self::DEFAULT_ESCAPE
                 )) !== false
             ) {
                 if ($row > 0) {

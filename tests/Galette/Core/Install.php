@@ -248,11 +248,11 @@ class Install extends BaseGaletteTestCase
         $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
-            HOST_DB,
-            PORT_DB,
-            NAME_DB,
-            USER_DB,
-            PWD_DB
+            host: HOST_DB,
+            port: PORT_DB,
+            name: NAME_DB,
+            user: USER_DB,
+            pass: PWD_DB
         );
         $this->install->setTablesPrefix(
             PREFIX_DB
@@ -305,11 +305,11 @@ class Install extends BaseGaletteTestCase
         $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
-            HOST_DB,
-            PORT_DB,
-            NAME_DB,
-            USER_DB,
-            PWD_DB
+            host: HOST_DB,
+            port: PORT_DB,
+            name: NAME_DB,
+            user: USER_DB,
+            pass: PWD_DB
         );
         $this->install->setTablesPrefix(
             PREFIX_DB

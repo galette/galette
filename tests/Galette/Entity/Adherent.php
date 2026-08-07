@@ -992,11 +992,11 @@ class Adherent extends GaletteTestCase
         $this->assertSame(
             $expected,
             \Galette\Entity\Adherent::getNameWithCase(
-                $name,
-                $surname,
-                $title,
-                $id,
-                $nick,
+                name: $name,
+                surname: $surname,
+                title: $title,
+                id: $id,
+                nick: $nick,
             )
         );
     }

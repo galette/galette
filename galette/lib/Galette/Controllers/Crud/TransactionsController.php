@@ -42,7 +42,7 @@ class TransactionsController extends ContributionsController
     )]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
@@ -71,7 +71,7 @@ class TransactionsController extends ContributionsController
                 );
         }
 
-        return $this->storeTransaction($request, $response, 'add', $trans);
+        return $this->storeTransaction(request: $request, response: $response, action: 'add', trans: $trans);
     }
 
     // /CRUD - Create
@@ -258,7 +258,13 @@ class TransactionsController extends ContributionsController
                 );
         }
 
-        return $this->storeTransaction($request, $response, 'edit', $trans, $id);
+        return $this->storeTransaction(
+            request: $request,
+            response: $response,
+            action: 'edit',
+            trans: $trans,
+            id: $id
+        );
     }
 
     /**

@@ -32,7 +32,7 @@ abstract class PdfContribution extends PdfModel
      */
     public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int|null $args = null)
     {
-        parent::__construct($zdb, $preferences, $type, $args);
+        parent::__construct(zdb: $zdb, preferences: $preferences, type: $type, args: $args);
 
         $this
             ->setLegacy()

@@ -104,10 +104,10 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
         && $translator->translationExists($plural, $domain)
     ) {
         return $translator->translatePlural(
-            $singular,
-            $plural,
-            $count,
-            $domain
+            singular: $singular,
+            plural: $plural,
+            number: $count,
+            textDomain: $domain
         );
     }
 
@@ -193,10 +193,10 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
     $csingular = contextualizedString($singular, $context);
     $cplural = contextualizedString($plural, $context);
     $ret = _Tn(
-        $csingular,
-        $cplural,
-        $count,
-        $domain
+        singular: $csingular,
+        plural: $cplural,
+        count: $count,
+        domain: $domain
     );
 
     if ($ret == $csingular) {

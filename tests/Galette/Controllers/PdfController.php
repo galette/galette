@@ -47,7 +47,12 @@ class PdfController extends GaletteRoutingTestCase
 
         $route_name = 'storePdfModels';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $request = $request->withParsedBody(
             [
                 'store' => true,
@@ -361,7 +366,12 @@ class PdfController extends GaletteRoutingTestCase
 
         $route_name = 'attendance_sheet';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
 
         $this->logSuperAdmin();
 
@@ -401,7 +411,12 @@ class PdfController extends GaletteRoutingTestCase
     {
         $route_name = 'attendance_sheet_details';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
 
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);

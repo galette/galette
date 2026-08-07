@@ -510,10 +510,15 @@ class Picture
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
             Shouldn't we want to stop the process here? */
-            $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
+            $this->resizeImage(
+                source: $this->buildDestPath(),
+                ext: $this->extension,
+                dest: null,
+                cropping: $this->cropping
+            );
         }
 
-        return $this->storeInDb($zdb, $this->db_id, $this->buildDestPath(), $this->extension);
+        return $this->storeInDb(zdb: $zdb, id: $this->db_id, file: $this->buildDestPath(), ext: $this->extension);
     }
 
     /**
@@ -649,21 +654,21 @@ class Picture
         //retrieve valid members ids
         $members = new Members();
         $valids = $members->getArrayList(
-            array_map(intval(...), $existing_diff),
-            null,
-            false,
-            false,
-            [self::PK]
+            ids: array_map(intval(...), $existing_diff),
+            orderby: null,
+            with_photos: false,
+            as_members: false,
+            fields: [self::PK]
         );
 
         foreach ($valids as $valid) {
             /** @var ArrayObject<string,mixed> $valid */
             $file = $existing_disk[$valid->id_adh];
             $this->storeInDb(
-                $zdb,
-                (int)$file['id'],
-                $this->store_path . $file['id'] . '.' . $file['ext'],
-                $file['ext']
+                zdb: $zdb,
+                id: (int)$file['id'],
+                file: $this->store_path . $file['id'] . '.' . $file['ext'],
+                ext: $file['ext']
             );
         }
     }
@@ -845,11 +850,44 @@ class Picture
             imagealphablending($thumb_cropped, false);
             imagesavealpha($thumb_cropped, true);
             // First, crop.
-            imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+            imagecopyresampled(
+                dst_image: $thumb_cropped,
+                src_image: $image,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: $crop_x,
+                src_y: $crop_y,
+                dst_width: $cur_width,
+                dst_height: $cur_height,
+                src_width: $cur_width,
+                src_height: $cur_height
+            );
             // Then, resize.
-            imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+            imagecopyresampled(
+                dst_image: $thumb,
+                src_image: $thumb_cropped,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: 0,
+                src_y: 0,
+                dst_width: $w,
+                dst_height: $h,
+                src_width: $crop_width,
+                src_height: $crop_height
+            );
         } else { // Resize
-            imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+            imagecopyresampled(
+                dst_image: $thumb,
+                src_image: $image,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: 0,
+                src_y: 0,
+                dst_width: $w,
+                dst_height: $h,
+                src_width: $cur_width,
+                src_height: $cur_height
+            );
         }
 
         return match ($ext) {

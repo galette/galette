@@ -115,10 +115,10 @@ class TextController extends AbstractController
 
         $mtxt = $texts->getTexts($cur_ref, $cur_lang);
         $res = $texts->setTexts(
-            $cur_ref,
-            $cur_lang,
-            $post['text_subject'],
-            $post['text_body']
+            ref: $cur_ref,
+            lang: $cur_lang,
+            subject: $post['text_subject'],
+            body: $post['text_body']
         );
 
         if (!$res) {

@@ -38,11 +38,11 @@ class ListsConfig extends GaletteTestCase
     {
         parent::setUp();
         $this->lists_config = new \Galette\Entity\ListsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
     }
 

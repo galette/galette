@@ -20,7 +20,7 @@ _T('Translation, other domain', 'other');
 
 _Tn('I have a dream', 'I have several dreams', 1);
 _Tx('button', 'Cancel');
-_Tnx('button', 'Proceed action', 'Proceed actions', 3);
+_Tnx(context: 'button', singular: 'Proceed action', plural: 'Proceed actions', count: 3);
 //TRANS: %s is user name
 sprintf(_T('Hello %s'), 'you');
 //TRANS: %1$s is the day name, %2$s the hour in the day

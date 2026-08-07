@@ -55,11 +55,11 @@ class MailingHistory extends GaletteTestCase
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
         $mh = new \Galette\Core\MailingHistory(
-            $this->zdb,
-            $this->login,
-            $this->preferences,
-            null,
-            $mailing
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: null,
+            mailing: $mailing
         );
         //user store mailing request (not send yet)
         $this->assertTrue($mh->storeMailing());
@@ -78,13 +78,13 @@ class MailingHistory extends GaletteTestCase
 
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
         $mh = new \Galette\Core\MailingHistory(
-            $this->zdb,
-            $this->login,
-            $this->preferences,
-            null,
-            $mailing
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: null,
+            mailing: $mailing
         );
-        $this->assertTrue($mh::loadFrom($this->zdb, $first_not_sent_id, $mailing, false));
+        $this->assertTrue($mh::loadFrom(zdb: $this->zdb, id: $first_not_sent_id, mailing: $mailing, new: false));
 
         $this->assertSame('Test mailing', $mailing->subject);
         $this->assertCount(2, $entry->mailing_recipients);
@@ -109,13 +109,13 @@ class MailingHistory extends GaletteTestCase
 
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
         $mh = new \Galette\Core\MailingHistory(
-            $this->zdb,
-            $this->login,
-            $this->preferences,
-            null,
-            $mailing
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: null,
+            mailing: $mailing
         );
-        $this->assertTrue($mh::loadFrom($this->zdb, $second_not_sent_id, $mailing, false));
+        $this->assertTrue($mh::loadFrom(zdb: $this->zdb, id: $second_not_sent_id, mailing: $mailing, new: false));
 
         //store "sent" mailing
         $this->assertTrue($mh->storeMailing(true));
@@ -144,11 +144,11 @@ class MailingHistory extends GaletteTestCase
 
         $filters = new \Galette\Filters\MailingsList();
         $mh = new \Galette\Core\MailingHistory(
-            $this->zdb,
-            $this->login,
-            $this->preferences,
-            $filters,
-            $mailing
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: $filters,
+            mailing: $mailing
         );
         //user store mailing request (not send yet)
         $this->assertTrue($mh->storeMailing());

@@ -182,10 +182,10 @@ $app->addRoutingMiddleware();
  * for middleware added after it.
  */
 $errorMiddleware = $app->addErrorMiddleware(
-    Galette::isDebugEnabled(),
-    true,
-    true,
-    $logger
+    displayErrorDetails: Galette::isDebugEnabled(),
+    logErrors: true,
+    logErrorDetails: true,
+    logger: $logger
 );
 
 /** @var \Slim\Handlers\ErrorHandler $errorHandler */

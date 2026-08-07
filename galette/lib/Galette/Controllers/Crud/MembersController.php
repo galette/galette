@@ -62,7 +62,7 @@ class MembersController extends CrudController
     )]
     public function add(Request $request, Response $response): Response
     {
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
@@ -81,7 +81,7 @@ class MembersController extends CrudController
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
         $this->setAddChild();
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
@@ -376,16 +376,16 @@ class MembersController extends CrudController
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
                 'page_title' => _T("Members"),
                 'template' => 'pages/public/members_list.html.twig',
                 'html_class' => '',
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
@@ -407,16 +407,16 @@ class MembersController extends CrudController
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
                 'page_title' => _T("Gallery"),
                 'template' => 'pages/public/members_gallery.html.twig',
                 'html_class' => 'gallery',
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
@@ -442,8 +442,8 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $filter_name,
                 'with_photos' => false,
                 'page_title' => _T("Staff"),
@@ -451,8 +451,8 @@ class MembersController extends CrudController
                 'html_class' => '',
                 'staff' => true,
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
@@ -478,8 +478,8 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $filter_name,
                 'with_photos' => true,
                 'page_title' => _T("Staff gallery"),
@@ -487,8 +487,8 @@ class MembersController extends CrudController
                 'html_class' => 'gallery',
                 'staff' => true,
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
@@ -559,7 +559,12 @@ class MembersController extends CrudController
     )]
     public function filterPublicMembersList(Request $request, Response $response): Response
     {
-        return $this->filterPublicList($request, $response, 'list', 'publicMembersList');
+        return $this->filterPublicList(
+            request: $request,
+            response: $response,
+            type: 'list',
+            route: 'publicMembersList'
+        );
     }
 
     /**
@@ -573,7 +578,12 @@ class MembersController extends CrudController
     )]
     public function filterPublicMembersGallery(Request $request, Response $response): Response
     {
-        return $this->filterPublicList($request, $response, 'trombi', 'publicMembersGallery');
+        return $this->filterPublicList(
+            request: $request,
+            response: $response,
+            type: 'trombi',
+            route: 'publicMembersGallery'
+        );
     }
 
     /**

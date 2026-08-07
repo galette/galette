@@ -95,10 +95,10 @@ class Groups
             }
 
             $select->join(
-                ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                'ggroup.' . Group::PK . '=gusers.' . Group::PK,
-                ['members' => new Expression('count(gusers.' . Group::PK . ')')],
-                $select::JOIN_LEFT
+                name: ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
+                on: 'ggroup.' . Group::PK . '=gusers.' . Group::PK,
+                columns: ['members' => new Expression('count(gusers.' . Group::PK . ')')],
+                type: $select::JOIN_LEFT
             );
 
             if ($full !== true) {

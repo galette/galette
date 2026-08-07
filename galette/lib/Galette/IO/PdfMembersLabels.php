@@ -120,7 +120,7 @@ class PdfMembersLabels extends Pdf
             );
             // Draw a frame around the label
             if ($this->preferences->pref_etiq_border) {
-                $this->Rect($x, $y, $this->lw, $this->lh);
+                $this->Rect(x: $x, y: $y, w: $this->lw, h: $this->lh);
             }
 
             // Prepare full address
@@ -143,7 +143,19 @@ class PdfMembersLabels extends Pdf
                 $this->preferences->pref_etiq_corps
             );
             // Print full address
-            $this->writeHTMLCell($this->lw, $this->line_h, $x, $y, nl2br($full_address), 0, 0, false, true, 'L', true);
+            $this->writeHTMLCell(
+                w: $this->lw,
+                h: $this->line_h,
+                x: $x,
+                y: $y,
+                html: nl2br($full_address),
+                border: 0,
+                ln: 0,
+                fill: false,
+                reseth: true,
+                align: 'L',
+                autopadding: true
+            );
 
             // Next label
             $nb_etiq++;

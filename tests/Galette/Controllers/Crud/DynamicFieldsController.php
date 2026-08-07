@@ -95,7 +95,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $route_arguments = [
             'form_name' => 'adh'
         ];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $cfield_data = [
             'store' => true,
             'field_name' => 'Dynamic test field',
@@ -145,7 +150,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $route_arguments = [
             'form_name' => 'adh'
         ];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $cfield_data = [
             'store' => true,
             'field_name' => 'Dynamic test field',
@@ -177,10 +187,10 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     public function testAddErrorDynamicField(): void
     {
         $request = $this->createRequest(
-            'addDynamicField',
-            ['form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'addDynamicField',
+            route_args: ['form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
 
         $request = $request->withParsedBody(
@@ -221,10 +231,10 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $field_id = $this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => (string)$field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -270,10 +280,10 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $field_id = $this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => (string)$field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -311,10 +321,10 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $field_id = (string)$this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => (string)$field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -593,11 +603,11 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             $dynfile_id => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
         $member_request = $this->createRequest('doEditMember', ['id' => (string)$member_one->id], 'POST');

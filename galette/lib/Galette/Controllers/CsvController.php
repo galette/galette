@@ -139,11 +139,11 @@ class CsvController extends AbstractController
                     try {
                         $fp = fopen($filepath, 'w');
                         $csv->export(
-                            $results,
-                            Csv::DEFAULT_SEPARATOR,
-                            Csv::DEFAULT_QUOTE,
-                            true,
-                            $fp
+                            rs: $results,
+                            separator: Csv::DEFAULT_SEPARATOR,
+                            quote: Csv::DEFAULT_QUOTE,
+                            titles: true,
+                            file: $fp
                         );
                         fclose($fp);
                         $written[] = [
@@ -262,13 +262,13 @@ class CsvController extends AbstractController
         $this->session->import_file = $post['import_file'];
 
         $res = $csv->import(
-            $this->zdb,
-            $this->preferences,
-            $this->history,
-            $post['import_file'],
-            $this->members_fields,
-            $this->members_fields_cats,
-            $dryrun
+            zdb: $this->zdb,
+            preferences: $this->preferences,
+            history: $this->history,
+            filename: $post['import_file'],
+            members_fields: $this->members_fields,
+            members_fields_cats: $this->members_fields_cats,
+            dryrun: $dryrun
         );
         if ($res !== true) {
             if ($res < 0) {
@@ -560,10 +560,10 @@ class CsvController extends AbstractController
 
         $ocsv = new CsvOut();
         $res = $ocsv->export(
-            new ResultSet(),
-            Csv::DEFAULT_SEPARATOR,
-            Csv::DEFAULT_QUOTE,
-            $fields
+            rs: new ResultSet(),
+            separator: Csv::DEFAULT_SEPARATOR,
+            quote: Csv::DEFAULT_QUOTE,
+            titles: $fields
         );
         $filename = _T("galette_import_model.csv");
 

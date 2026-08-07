@@ -66,11 +66,11 @@ class Document extends GaletteTestCase
 
         $uploaded_files = [
             'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                2048,
-                UPLOAD_ERR_OK
+                fileNameOrStream: '/tmp/status.pdf',
+                name: 'status.pdf',
+                type: 'application/pdf',
+                size: 2048,
+                error: UPLOAD_ERR_OK
             )
         ];
         $post = [
@@ -103,11 +103,11 @@ class Document extends GaletteTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = [
             'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/afile.pdf',
-                'afile.pdf',
-                'application/pdf',
-                4096,
-                UPLOAD_ERR_OK
+                fileNameOrStream: '/tmp/afile.pdf',
+                name: 'afile.pdf',
+                type: 'application/pdf',
+                size: 4096,
+                error: UPLOAD_ERR_OK
             )
         ];
         $post = [
@@ -140,11 +140,11 @@ class Document extends GaletteTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = [
             'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/member.pdf',
-                'member.pdf',
-                'application/pdf',
-                4096,
-                UPLOAD_ERR_OK
+                fileNameOrStream: '/tmp/member.pdf',
+                name: 'member.pdf',
+                type: 'application/pdf',
+                size: 4096,
+                error: UPLOAD_ERR_OK
             )
         ];
         $post = [
@@ -158,11 +158,11 @@ class Document extends GaletteTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = [
             'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/noaccess.pdf',
-                'noaccess.pdf',
-                'application/pdf',
-                4096,
-                UPLOAD_ERR_OK
+                fileNameOrStream: '/tmp/noaccess.pdf',
+                name: 'noaccess.pdf',
+                type: 'application/pdf',
+                size: 4096,
+                error: UPLOAD_ERR_OK
             )
         ];
         $post = [
@@ -265,11 +265,11 @@ class Document extends GaletteTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = [
             'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/afile.pdf',
-                'afile.pdf',
-                'application/pdf',
-                4096,
-                UPLOAD_ERR_OK
+                fileNameOrStream: '/tmp/afile.pdf',
+                name: 'afile.pdf',
+                type: 'application/pdf',
+                size: 4096,
+                error: UPLOAD_ERR_OK
             )
         ];
         $post = [

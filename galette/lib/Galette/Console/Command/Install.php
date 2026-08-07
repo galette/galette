@@ -45,17 +45,72 @@ class Install extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->addoption('dbtype', null, InputOption::VALUE_REQUIRED, 'Database type (' . implode(', ', $this->db_types) . ')')
-            ->addOption('dbhost', null, InputOption::VALUE_REQUIRED, 'Database hostname or IP address')
-            ->addOption('dbport', null, InputOption::VALUE_REQUIRED, 'Database port')
-            ->addOption('dbname', null, InputOption::VALUE_REQUIRED, 'Database schema name')
-            ->addOption('dbprefix', null, InputOption::VALUE_OPTIONAL, 'Database table prefix')
-            ->addOption('dbuser', null, InputOption::VALUE_REQUIRED, 'Database user')
-            ->addOption('dbpass', null, InputOption::VALUE_OPTIONAL, 'Database password')
-            ->addOption('admin', null, InputOption::VALUE_REQUIRED, 'Administrator username')
-            ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Administrator password')
-            ->addOption('ignore-config', null, InputOption::VALUE_NONE, 'Ignore existing configuration file')
-            ->addOption('write-config', 'w', InputOption::VALUE_NONE, 'Write configuration file (incompatible with --ignore-config)')
+            ->addoption(
+                name: 'dbtype',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database type (' . implode(', ', $this->db_types) . ')'
+            )
+            ->addOption(
+                name: 'dbhost',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database hostname or IP address'
+            )
+            ->addOption(
+                name: 'dbport',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database port'
+            )
+            ->addOption(
+                name: 'dbname',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database schema name'
+            )
+            ->addOption(
+                name: 'dbprefix',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Database table prefix'
+            )
+            ->addOption(
+                name: 'dbuser',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database user'
+            )
+            ->addOption(
+                name: 'dbpass',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Database password'
+            )
+            ->addOption(
+                name: 'admin',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Administrator username'
+            )
+            ->addOption(
+                name: 'password',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Administrator password'
+            )
+            ->addOption(
+                name: 'ignore-config',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Ignore existing configuration file'
+            )
+            ->addOption(
+                name: 'write-config',
+                shortcut: 'w',
+                mode: InputOption::VALUE_NONE,
+                description: 'Write configuration file (incompatible with --ignore-config)'
+            )
         ;
     }
 
@@ -233,7 +288,13 @@ class Install extends AbstractCommand
         $install
             ->setMode(\Galette\Core\Install::INSTALL)
             ->setDbType($db_type, $errors)
-            ->setDsn($db_host, $db_port, $db_name, $db_user, $db_pass)
+            ->setDsn(
+                host: $db_host,
+                port: $db_port,
+                name: $db_name,
+                user: $db_user,
+                pass: $db_pass
+            )
             ->setTablesPrefix($db_prefix)
         ;
 

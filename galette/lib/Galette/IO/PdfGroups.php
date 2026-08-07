@@ -46,18 +46,18 @@ class PdfGroups extends Pdf
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->Cell(
-            0,
-            10,
-            _T("Members by groups"),
-            0,
-            0,
-            'C',
-            false,
-            '',
-            0,
-            false,
-            'M',
-            'M'
+            w: 0,
+            h: 10,
+            txt: _T("Members by groups"),
+            border: 0,
+            ln: 0,
+            align: 'C',
+            fill: false,
+            link: '',
+            stretch: 0,
+            ignore_min_height: false,
+            calign: 'M',
+            valign: 'M'
         );
     }
 
@@ -111,7 +111,7 @@ class PdfGroups extends Pdf
                 $this->ln(5);
             }
             $this->SetFont('', 'B', self::SHEET_FONT + 1);
-            $this->Cell(190, 4, $group->getName(), 0, 1, 'C');
+            $this->Cell(w: 190, h: 4, txt: $group->getName(), border: 0, ln: 1, align: 'C');
             $this->SetFont('', '', self::SHEET_FONT);
 
             $managers_list = $group->getManagers();
@@ -121,22 +121,22 @@ class PdfGroups extends Pdf
             }
             if (count($managers) > 0) {
                 $this->Cell(
-                    190,
-                    4,
-                    _T("Managers:") . ' ' . implode(', ', $managers),
-                    0,
-                    1,
-                    ($this->i18n->isRTL() ? 'L' : 'R')
+                    w: 190,
+                    h: 4,
+                    txt: _T("Managers:") . ' ' . implode(', ', $managers),
+                    border: 0,
+                    ln: 1,
+                    align: $this->i18n->isRTL() ? 'L' : 'R'
                 );
             }
             $this->ln(3);
 
             $this->SetFont('', 'B');
             $this->SetFillColor(255, 255, 255);
-            $this->Cell(80, 7, _T("Name"), 1, 0, 'C', true);
-            $this->Cell(50, 7, _T("Email"), 1, 0, 'C', true);
-            $this->Cell(30, 7, _T("Phone"), 1, 0, 'C', true);
-            $this->Cell(30, 7, _T("GSM"), 1, 1, 'C', true);
+            $this->Cell(w: 80, h: 7, txt: _T("Name"), border: 1, ln: 0, align: 'C', fill: true);
+            $this->Cell(w: 50, h: 7, txt: _T("Email"), border: 1, ln: 0, align: 'C', fill: true);
+            $this->Cell(w: 30, h: 7, txt: _T("Phone"), border: 1, ln: 0, align: 'C', fill: true);
+            $this->Cell(w: 30, h: 7, txt: _T("GSM"), border: 1, ln: 1, align: 'C', fill: true);
 
             $this->SetFont('', '');
 
@@ -144,12 +144,12 @@ class PdfGroups extends Pdf
 
             foreach ($members as $m) {
                 $align = ($this->i18n->isRTL() ? 'R' : 'L');
-                $this->Cell(80, 7, $m->sname, 1, 0, $align);
-                $this->Cell(50, 7, $m->email, 1, 0, $align);
-                $this->Cell(30, 7, $m->phone, 1, 0, $align);
-                $this->Cell(30, 7, $m->gsm, 1, 1, $align);
+                $this->Cell(w: 80, h: 7, txt: $m->sname, border: 1, ln: 0, align: $align);
+                $this->Cell(w: 50, h: 7, txt: $m->email, border: 1, ln: 0, align: $align);
+                $this->Cell(w: 30, h: 7, txt: $m->phone, border: 1, ln: 0, align: $align);
+                $this->Cell(w: 30, h: 7, txt: $m->gsm, border: 1, ln: 1, align: $align);
             }
-            $this->Cell(190, 0, '', 'T');
+            $this->Cell(w: 190, h: 0, txt: '', border: 'T');
             $first = false;
         }
     }

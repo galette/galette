@@ -54,7 +54,7 @@ abstract class Pdf extends TCPDF
         global $i18n;
 
         $this->i18n = $i18n;
-        parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
+        parent::__construct(orientation: 'P', unit: 'mm', format: 'A4', unicode: true, encoding: 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
         //add helvetica, hard-called from lib
@@ -216,13 +216,13 @@ abstract class Pdf extends TCPDF
             $pdf->SetFont(self::FONT, '', self::FONT_SIZE - 3);
             $pdf->Ln();
             $pdf->Cell(
-                0,
-                4,
-                $this->getAliasRightShift() . $this->PageNo()
+                w: 0,
+                h: 4,
+                txt: $this->getAliasRightShift() . $this->PageNo()
                 . '/' . $this->getAliasNbPages(),
-                0,
-                1,
-                ($this->i18n->isRTL() ? 'L' : 'R')
+                border: 0,
+                ln: 1,
+                align: $this->i18n->isRTL() ? 'L' : 'R'
             );
         }
     }
@@ -253,7 +253,7 @@ abstract class Pdf extends TCPDF
             $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
         }
         $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
-        $this->writeHtml($html, true, false, true, false, '');
+        $this->writeHtml(html: $html, ln: true, fill: false, reseth: true, cell: false, align: '');
 
         if ($title !== null) {
             $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
@@ -314,16 +314,24 @@ abstract class Pdf extends TCPDF
         $ystart = $this->GetY();
 
         $this->MultiCell(
-            180 - $wlogo,
-            6,
-            $this->preferences->pref_nom,
-            0,
-            ($this->i18n->isRTL() ? 'R' : 'L')
+            w: 180 - $wlogo,
+            h: 6,
+            txt: $this->preferences->pref_nom,
+            border: 0,
+            align: $this->i18n->isRTL() ? 'R' : 'L'
         );
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         if ($title !== null) {
-            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), false);
+            $this->Cell(
+                w: 0,
+                h: 6,
+                txt: $title,
+                border: 0,
+                ln: 1,
+                align: $this->i18n->isRTL() ? 'R' : 'L',
+                fill: false
+            );
         }
         $yend = $this->getY(); //store position at the end of the text
 
@@ -333,7 +341,7 @@ abstract class Pdf extends TCPDF
         } else {
             $x = 190 - $wlogo; //right align
         }
-        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+        $this->Image(file: $logofile, x: $x, y: $this->GetY(), w: $wlogo, h: $hlogo);
         $this->y += $hlogo + 3;
         //if position after logo is < than position after text,
         //we have to change y
@@ -375,7 +383,7 @@ abstract class Pdf extends TCPDF
             $fontname = static::FONT;
         }
         $this->SetFontSize($fontsize);
-        while ((int)$this->GetStringWidth($text, $fontname, $fontstyle, $fontsize) > $maxsize) {
+        while ((int)$this->GetStringWidth(s: $text, fontname: $fontname, fontstyle: $fontstyle, fontsize: $fontsize) > $maxsize) {
             $fontsize--;
             $this->SetFontSize($fontsize);
         }
@@ -392,7 +400,7 @@ abstract class Pdf extends TCPDF
         $length -= 2; //keep a margin
         if ((int)$this->GetStringWidth($str) > $length) {
             while ((int)$this->GetStringWidth($str . '...') > $length) {
-                $str = mb_substr($str, 0, -1, 'UTF-8');
+                $str = mb_substr(string: $str, start: 0, length: -1, encoding: 'UTF-8');
             }
             $str .= '...';
         }

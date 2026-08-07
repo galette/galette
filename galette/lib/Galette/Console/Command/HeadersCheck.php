@@ -58,24 +58,24 @@ final class HeadersCheck extends AbstractCommand
         parent::configure();
 
         $this->addOption(
-            'directory',
-            'd',
-            InputOption::VALUE_OPTIONAL,
-            'Directory to parse (optional)',
+            name: 'directory',
+            shortcut: 'd',
+            mode: InputOption::VALUE_OPTIONAL,
+            description: 'Directory to parse (optional)',
         );
 
         $this->addOption(
-            'header-file',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'Header file to use (optional)',
+            name: 'header-file',
+            shortcut: null,
+            mode: InputOption::VALUE_OPTIONAL,
+            description: 'Header file to use (optional)',
         );
 
         $this->addOption(
-            'fix',
-            'f',
-            InputOption::VALUE_NONE,
-            'Fix missing and outdated headers'
+            name: 'fix',
+            shortcut: 'f',
+            mode: InputOption::VALUE_NONE,
+            description: 'Fix missing and outdated headers'
         );
 
         $this->addOption(
@@ -285,10 +285,10 @@ final class HeadersCheck extends AbstractCommand
             }
 
             $updated_header_lines = $this->getLicenceHeaderLines(
-                $header_file_path,
-                $header_line_prefix,
-                $header_prepend_line,
-                $header_append_line,
+                header_file_path: $header_file_path,
+                line_prefix: $header_line_prefix,
+                prepend_line: $header_prepend_line,
+                append_line: $header_append_line,
                 //$preserved_tagged_data
             );
 

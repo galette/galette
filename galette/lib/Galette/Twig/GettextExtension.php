@@ -78,7 +78,7 @@ class GettextExtension extends AbstractExtension
         int $count,
         string $domain = 'galette'
     ): string {
-        return _Tn($singular, $plural, $count, $domain);
+        return _Tn(singular: $singular, plural: $plural, count: $count, domain: $domain);
     }
 
     /**
@@ -112,6 +112,6 @@ class GettextExtension extends AbstractExtension
         int $count,
         string $domain = 'galette'
     ): string {
-        return _Tnx($context, $singular, $plural, $count, $domain);
+        return _Tnx(context: $context, singular: $singular, plural: $plural, count: $count, domain: $domain);
     }
 }

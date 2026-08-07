@@ -385,7 +385,7 @@ abstract class PdfModel
             case 'title':
             case 'subtitle':
                 $field = $name == 'title' ? _T("Title") : _T("Subtitle");
-                $this->checkChars($value, 100, $field, true);
+                $this->checkChars(value: $value, chars: 100, field: $field, empty: true);
                 $this->$name = $value;
                 break;
             case 'header':

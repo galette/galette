@@ -872,11 +872,11 @@ class Adherent implements AccessManagementInterface
         $results = $zdb->execute($select);
         $row = $results->current();
         return self::getNameWithCase(
-            $row->nom_adh,
-            $row->prenom_adh,
-            false,
-            ($wid === true ? (int)$row->id_adh : false),
-            ($wnick === true ? $row->pseudo_adh : false)
+            name: $row->nom_adh,
+            surname: $row->prenom_adh,
+            title: false,
+            id: $wid === true ? (int)$row->id_adh : false,
+            nick: $wnick === true ? $row->pseudo_adh : false
         );
     }
 

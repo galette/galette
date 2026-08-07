@@ -222,10 +222,10 @@ abstract class Pagination
         for ($i = $idepart; $i <= $ifin; $i++) {
             if ($i == $this->current_page) {
                 $paginate .= $this->getLink(
-                    "$i",
-                    $this->getHref($this->current_page),
-                    sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
-                    true
+                    content: "$i",
+                    url: $this->getHref($this->current_page),
+                    title: sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
+                    current: true
                 );
             } else {
                 $paginate .= $this->getLink(

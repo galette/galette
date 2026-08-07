@@ -74,12 +74,12 @@ class Db extends BaseGaletteTestCase
     public function testConnectivity(): void
     {
         $res = $this->zdb->testConnectivity(
-            TYPE_DB,
-            USER_DB,
-            PWD_DB,
-            HOST_DB,
-            PORT_DB,
-            NAME_DB
+            type: TYPE_DB,
+            user: USER_DB,
+            pass: PWD_DB,
+            host: HOST_DB,
+            port: PORT_DB,
+            db: NAME_DB
         );
         $this->assertTrue($res);
     }

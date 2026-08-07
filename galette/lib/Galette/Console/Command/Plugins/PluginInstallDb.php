@@ -46,7 +46,13 @@ class PluginInstallDb extends AbstractPlugins
             $install = new \Galette\Core\PluginInstall();
             $install
                 ->setDbType(TYPE_DB, $errors)
-                ->setDsn(HOST_DB, PORT_DB, NAME_DB, USER_DB, PWD_DB)
+                ->setDsn(
+                    host: HOST_DB,
+                    port: PORT_DB,
+                    name: NAME_DB,
+                    user: USER_DB,
+                    pass: PWD_DB
+                )
                 ->setTablesPrefix(PREFIX_DB)
             ;
 

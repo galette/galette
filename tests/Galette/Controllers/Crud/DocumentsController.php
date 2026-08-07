@@ -65,11 +65,11 @@ class DocumentsController extends GaletteRoutingTestCase
 
         return [
             'document_file' => new UploadedFile(
-                $filename,
-                $this->pdf_filename,
-                'application/pdf',
-                $filesize,
-                UPLOAD_ERR_OK
+                fileNameOrStream: $filename,
+                name: $this->pdf_filename,
+                type: 'application/pdf',
+                size: $filesize,
+                error: UPLOAD_ERR_OK
             )
         ];
     }

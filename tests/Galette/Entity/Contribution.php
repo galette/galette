@@ -372,7 +372,12 @@ class Contribution extends GaletteTestCase
 
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 'Fake description', 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P2M'));
@@ -529,7 +534,12 @@ class Contribution extends GaletteTestCase
         //create monthly fee type - 2 months extension
         //extension should be ignored since we use a beg membership date in settings
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 'Fake description', 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -982,7 +992,12 @@ class Contribution extends GaletteTestCase
         //then, test with a contribution type with a 2 months extension (will be ignored since we setup beg membershipe date)
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 'Fake description', 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
@@ -1016,7 +1031,12 @@ class Contribution extends GaletteTestCase
     {
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 'Fake description', 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,

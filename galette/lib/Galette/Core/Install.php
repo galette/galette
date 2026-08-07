@@ -415,12 +415,12 @@ class Install
     public function testDbConnexion(): bool
     {
         return Db::testConnectivity(
-            $this->db_type,
-            $this->db_user,
-            $this->db_pass,
-            $this->db_host,
-            $this->db_port,
-            $this->db_name
+            type: $this->db_type,
+            user: $this->db_user,
+            pass: $this->db_pass,
+            host: $this->db_host,
+            port: $this->db_port,
+            db: $this->db_name
         );
     }
 
@@ -842,11 +842,11 @@ class Install
                 || $existing['db_name'] !== null
             ) {
                 $this->setDsn(
-                    $existing['db_host'],
-                    $existing['db_port'],
-                    $existing['db_name'],
-                    $existing['db_user'],
-                    null
+                    host: $existing['db_host'],
+                    port: $existing['db_port'],
+                    name: $existing['db_name'],
+                    user: $existing['db_user'],
+                    pass: null
                 );
             }
 
@@ -1060,13 +1060,13 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
             include_once __DIR__ . '/../../../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
-                $zdb,
-                \Galette\Entity\Adherent::TABLE,
+                zdb: $zdb,
+                table: \Galette\Entity\Adherent::TABLE,
                 //@phpstan-ignore variable.undefined
-                $members_fields,
+                defaults: $members_fields,
                 //@phpstan-ignore variable.undefined
-                $members_fields_cats,
-                true
+                cats_defaults: $members_fields_cats,
+                install: true
             );
 
             $texts = new \Galette\Entity\Texts($preferences);

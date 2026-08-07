@@ -112,11 +112,11 @@ class Members extends GaletteTestCase
 
                 copy($url, $file);
                 $uploaded_file = new \Slim\Psr7\UploadedFile(
-                    $file,
-                    'fakephoto.jpg',
-                    'image/jpeg',
-                    filesize($file),
-                    UPLOAD_ERR_OK
+                    fileNameOrStream: $file,
+                    name: 'fakephoto.jpg',
+                    type: 'image/jpeg',
+                    size: filesize($file),
+                    error: UPLOAD_ERR_OK
                 );
                 $this->assertGreaterThan(0, (int)$member->picture->storeFile($uploaded_file));
                 $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
@@ -505,7 +505,15 @@ class Members extends GaletteTestCase
 
         //get export list (no priorite_statut if not explicitely required)
         $members = new \Galette\Repository\Members();
-        $list = $members->getMembersList(false, ['nom_adh', 'prenom_adh', 'ville_adh'], true, false, false, true, true);
+        $list = $members->getMembersList(
+            as_members: false,
+            fields: ['nom_adh', 'prenom_adh', 'ville_adh'],
+            count: true,
+            staff: false,
+            managed: false,
+            limit: true,
+            export: true
+        );
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {

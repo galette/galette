@@ -591,22 +591,22 @@ class ContributionsController extends GaletteRoutingTestCase
         //member_one is listed
         $this->assertStringContainsString(
             $member_one->getNameWithCase(
-                $member_one->name,
-                $member_one->surname,
-                false,
-                (int)$member_one->id,
-                $member_one->nickname
+                name: $member_one->name,
+                surname: $member_one->surname,
+                title: false,
+                id: (int)$member_one->id,
+                nick: $member_one->nickname
             ),
             $body
         );
         //member_two is listed
         $this->assertStringContainsString(
             $member_two->getNameWithCase(
-                $member_two->name,
-                $member_two->surname,
-                false,
-                (int)$member_two->id,
-                $member_two->nickname
+                name: $member_two->name,
+                surname: $member_two->surname,
+                title: false,
+                id: (int)$member_two->id,
+                nick: $member_two->nickname
             ),
             $body
         );

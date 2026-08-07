@@ -51,7 +51,20 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }
-            $this->Cell(0, 10, $head_title, 0, 0, 'C', false, '', 0, false, 'M', 'M');
+            $this->Cell(
+                w: 0,
+                h: 10,
+                txt: $head_title,
+                border: 0,
+                ln: 0,
+                align: 'C',
+                fill: false,
+                link: '',
+                stretch: 0,
+                ignore_min_height: false,
+                calign: 'M',
+                valign: 'M'
+            );
         }
     }
 
@@ -128,31 +141,38 @@ class PdfAttendanceSheet extends Pdf
         if ($this->sheet_date) {
             $format = __("MMMM, EEEE d y");
             $formatter = new \IntlDateFormatter(
-                $this->i18n->getLongID(),
-                \IntlDateFormatter::FULL,
-                \IntlDateFormatter::NONE,
-                \date_default_timezone_get(),
-                \IntlDateFormatter::GREGORIAN,
-                $format
+                locale: $this->i18n->getLongID(),
+                dateType: \IntlDateFormatter::FULL,
+                timeType: \IntlDateFormatter::NONE,
+                timezone: \date_default_timezone_get(),
+                calendar: \IntlDateFormatter::GREGORIAN,
+                pattern: $format
             );
             $datetime = new DateTimeImmutable($this->sheet_date->format('Y-m-d'));
             $date = DateTime::createFromImmutable($datetime);
             $date_fmt = mb_convert_case($formatter->format($date), MB_CASE_TITLE);
-            $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
+            $this->Cell(w: 190, h: 7, txt: $date_fmt, border: 0, ln: 1, align: 'C');
         }
 
         // Header
         $this->SetFont('', 'B');
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(110, 7, _T("Name"), 1, 0, 'C', true);
-        $this->Cell(80, 7, _T("Signature"), 1, 1, 'C', true);
+        $this->Cell(w: 110, h: 7, txt: _T("Name"), border: 1, ln: 0, align: 'C', fill: true);
+        $this->Cell(w: 80, h: 7, txt: _T("Signature"), border: 1, ln: 1, align: 'C', fill: true);
 
         // Data
         $this->SetFont('');
         $mcount = 0;
         foreach ($members as $m) {
             $mcount++;
-            $this->Cell(10, 16, (string)$mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
+            $this->Cell(
+                w: 10,
+                h: 16,
+                txt: (string)$mcount,
+                border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB',
+                ln: 0,
+                align: 'R'
+            );
 
             if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();
@@ -173,18 +193,25 @@ class PdfAttendanceSheet extends Pdf
                 if ($this->i18n->isRTL()) {
                     $ximg = $this->getPageWidth() - $x - $wlogo;
                 }
-                $this->Cell($wlogo + 2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
-                $this->Image($p, $ximg, $y, $wlogo, $hlogo);
+                $this->Cell(w: $wlogo + 2, h: 16, txt: '', border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', ln: 0);
+                $this->Image(file: $p, x: $ximg, y: $y, w: $wlogo, h: $hlogo);
             } else {
                 $x = $this->getX() + 1;
-                $this->Cell(1, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
+                $this->Cell(w: 1, h: 16, txt: '', border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', ln: 0);
             }
 
             $xs = $this->getX() - $x + 1;
-            $this->Cell(100 - $xs, 16, $m->sname, ($this->i18n->isRTL() ? 'L' : 'R') . 'TB', 0, ($this->i18n->isRTL() ? 'R' : 'L'));
-            $this->Cell(80, 16, '', 1, 1, ($this->i18n->isRTL() ? 'R' : 'L'));
+            $this->Cell(
+                w: 100 - $xs,
+                h: 16,
+                txt: $m->sname,
+                border: ($this->i18n->isRTL() ? 'L' : 'R') . 'TB',
+                ln: 0,
+                align: $this->i18n->isRTL() ? 'R' : 'L'
+            );
+            $this->Cell(w: 80, h: 16, txt: '', border: 1, ln: 1, align: $this->i18n->isRTL() ? 'R' : 'L');
         }
-        $this->Cell(190, 0, '', 'T');
+        $this->Cell(w: 190, h: 0, txt: '', border: 'T');
     }
 
     /**

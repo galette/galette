@@ -235,17 +235,17 @@ $container->set(\Galette\Twig\FeatureFlagExtension::class, fn(ContainerInterface
 // -----------------------------------------------------------------------------
 
 $container->set(\Galette\Entity\FieldsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\FieldsConfig(
-    $c->get(\Galette\Core\Db::class),
-    Galette\Entity\Adherent::TABLE,
-    $c->get('members_fields'),
-    $c->get('members_fields_cats')
+    zdb: $c->get(\Galette\Core\Db::class),
+    table: Galette\Entity\Adherent::TABLE,
+    defaults: $c->get('members_fields'),
+    cats_defaults: $c->get('members_fields_cats')
 ));
 
 $container->set(\Galette\Entity\ListsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\ListsConfig(
-    $c->get(\Galette\Core\Db::class),
-    Galette\Entity\Adherent::TABLE,
-    $c->get('members_fields'),
-    $c->get('members_fields_cats')
+    zdb: $c->get(\Galette\Core\Db::class),
+    table: Galette\Entity\Adherent::TABLE,
+    defaults: $c->get('members_fields'),
+    cats_defaults: $c->get('members_fields_cats')
 ));
 
 $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c) {
@@ -255,18 +255,18 @@ $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c
     foreach ($domains as $domain) {
         //load translation file for domain
         $translator->addTranslationFilePattern(
-            'gettext',
-            GALETTE_ROOT . '/lang/',
-            '/%s/LC_MESSAGES/' . $domain . '.mo',
-            $domain
+            type: 'gettext',
+            baseDir: GALETTE_ROOT . '/lang/',
+            pattern: '/%s/LC_MESSAGES/' . $domain . '.mo',
+            textDomain: $domain
         );
 
         //check if a local lang file exists and load it
         $translator->addTranslationFilePattern(
-            'phparray',
-            GALETTE_ROOT . '/lang/',
-            $domain . '_%s_local_lang.php',
-            $domain
+            type: 'phparray',
+            baseDir: GALETTE_ROOT . '/lang/',
+            pattern: $domain . '_%s_local_lang.php',
+            textDomain: $domain
         );
     }
 
@@ -299,13 +299,13 @@ $container->set(
         $responseFactory = $app->getResponseFactory();
         $storage = null;
         $guard = new \Slim\Csrf\Guard(
-            $responseFactory,
-            'csrf',
-            $storage,
-            null,
-            200,
-            16,
-            true
+            responseFactory: $responseFactory,
+            prefix: 'csrf',
+            storage: $storage,
+            failureHandler: null,
+            storageLimit: 200,
+            strength: 16,
+            persistentTokenMode: true
         );
 
         $exclusions = $c->get('CsrfExclusions');

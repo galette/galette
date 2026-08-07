@@ -34,10 +34,10 @@ class ContributionsTypes extends GaletteTestCase
         $this->assertSame(
             -2,
             $ctype->add(
-                'annual fee',
-                '',
-                10,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                label: 'annual fee',
+                description: '',
+                amount: 10,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
         $this->expectLogEntry(
@@ -47,10 +47,10 @@ class ContributionsTypes extends GaletteTestCase
 
         $this->assertTrue(
             $ctype->add(
-                'Test contribution type',
-                'Test contribution type description',
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                label: 'Test contribution type',
+                description: 'Test contribution type description',
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
@@ -83,21 +83,21 @@ class ContributionsTypes extends GaletteTestCase
         $this->assertSame(
             \Galette\Entity\ContributionsTypes::ID_NOT_EXITS,
             $ctype->update(
-                42,
-                'annual fee',
-                '',
-                10,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                id: 42,
+                label: 'annual fee',
+                description: '',
+                amount: 10,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
         $this->assertTrue(
             $ctype->update(
-                $id,
-                'Tested contribution type',
-                'Test contribution type description',
-                42,
-                \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+                id: $id,
+                label: 'Tested contribution type',
+                description: 'Test contribution type description',
+                amount: 42,
+                extension: \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
             )
         );
 
@@ -217,10 +217,10 @@ class ContributionsTypes extends GaletteTestCase
         $label = 'Test no description';
         $this->assertTrue(
             $ctype->add(
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
         $ctype_id = $ctype->id;
@@ -232,11 +232,11 @@ class ContributionsTypes extends GaletteTestCase
         $label .= ' (modified)';
         $this->assertTrue(
             $ctype->update(
-                $ctype_id,
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                id: $ctype_id,
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
@@ -249,11 +249,11 @@ class ContributionsTypes extends GaletteTestCase
         $label .= ' - ' . $real_description;
         $this->assertTrue(
             $ctype->update(
-                $ctype_id,
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                id: $ctype_id,
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
@@ -266,11 +266,11 @@ class ContributionsTypes extends GaletteTestCase
         $label .= ' - ' . $description;
         $this->assertTrue(
             $ctype->update(
-                $ctype_id,
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                id: $ctype_id,
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
@@ -320,10 +320,10 @@ class ContributionsTypes extends GaletteTestCase
         $label = 'Test description';
         $this->assertTrue(
             $ctype->add(
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
         $ctype_id = $ctype->id;
@@ -335,11 +335,11 @@ class ContributionsTypes extends GaletteTestCase
         $label .= ' (modified)';
         $this->assertTrue(
             $ctype->update(
-                $ctype_id,
-                $label,
-                $description,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                id: $ctype_id,
+                label: $label,
+                description: $description,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
 
@@ -388,10 +388,10 @@ class ContributionsTypes extends GaletteTestCase
         $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
         $this->assertTrue(
             $ctype->add(
-                'Test payload ' . $payload,
-                $payload,
-                null,
-                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+                label: 'Test payload ' . $payload,
+                description: $payload,
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
         $ctype_id = $ctype->id;

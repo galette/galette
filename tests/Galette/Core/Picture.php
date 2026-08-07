@@ -148,11 +148,11 @@ class Picture extends GaletteTestCase
 
         foreach ($files as $file) {
             $uploaded_file = new \Slim\Psr7\UploadedFile(
-                'none',
-                $file,
-                'image/jpeg',
-                \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100,
-                UPLOAD_ERR_OK
+                fileNameOrStream: 'none',
+                name: $file,
+                type: 'image/jpeg',
+                size: \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100,
+                error: UPLOAD_ERR_OK
             );
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
             $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->storeFile($uploaded_file));

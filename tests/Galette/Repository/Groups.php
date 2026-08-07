@@ -189,7 +189,12 @@ class Groups extends GaletteTestCase
         //name does not exist on another level - unique
         $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, $europe));
         //name is the current one - unique
-        $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, null, $group_id));
+        $this->assertTrue(\Galette\Repository\Groups::isUnique(
+            zdb: $this->zdb,
+            name: $unique_name,
+            parent: null,
+            current: $group_id
+        ));
 
         //tests on another level
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france));

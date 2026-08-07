@@ -184,11 +184,11 @@ class GaletteController extends GaletteRoutingTestCase
         copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'logo' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
 
@@ -227,11 +227,11 @@ class GaletteController extends GaletteRoutingTestCase
         copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'card_logo' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
 

@@ -299,11 +299,37 @@ class PdfMembersCards extends Pdf
                 $this->wphoto = $this->wi / 3;
                 $this->hphoto = $this->wphoto * 1.3;
             }
-            $this->Rect($x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, 'F', ['width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => [255, 255, 255]], [255, 255, 255]);
-            $this->Image($photofile, $x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, '', '', '', false, 300, '', false, false, 0, 'T', false, false);
+            $this->Rect(
+                x: $x0 + 1,
+                y: $y0 + 1,
+                w: $this->wphoto,
+                h: $this->hphoto,
+                style: 'F',
+                border_style: ['width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => [255, 255, 255]],
+                fill_color: [255, 255, 255]
+            );
+            $this->Image(
+                file: $photofile,
+                x: $x0 + 1,
+                y: $y0 + 1,
+                w: $this->wphoto,
+                h: $this->hphoto,
+                type: '',
+                link: '',
+                align: '',
+                resize: false,
+                dpi: 300,
+                palign: '',
+                ismask: false,
+                imgmask: false,
+                border: 0,
+                fitbox: 'T',
+                hidden: false,
+                fitonpage: false
+            );
 
             // Logo
-            $this->Image($this->logofile, $xl - 1, $y0 + 1, round($this->wlogo));
+            $this->Image(file: $this->logofile, x: $xl - 1, y: $y0 + 1, w: round($this->wlogo));
 
             // Define max space for text
             $this->max_text_size_top = $this->max_text_size_full - intval($this->wlogo + $this->wphoto);
@@ -319,17 +345,17 @@ class PdfMembersCards extends Pdf
                 $an_cot = $member->due_date ?? '';
             }
             $this->fixSize(
-                $an_cot,
-                intval(round($this->max_text_size_top * 0.80, PHP_ROUND_HALF_DOWN)),
-                14,
-                'B'
+                text: $an_cot,
+                maxsize: intval(round($this->max_text_size_top * 0.80, PHP_ROUND_HALF_DOWN)),
+                fontsize: 14,
+                fontstyle: 'B'
             );
             $this->year_font_size = intval(round($this->FontSizePt, PHP_ROUND_HALF_DOWN));
             $xan_cot = $x0 + $this->wphoto + $this->max_text_size_top / 2 - $this->GetStringWidth(
-                $an_cot,
-                self::FONT,
-                'B',
-                $this->year_font_size
+                s: $an_cot,
+                fontname: self::FONT,
+                fontstyle: 'B',
+                fontsize: $this->year_font_size
             ) / 2;
             $this->SetXY($xan_cot, $y0 + 1);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
@@ -352,22 +378,32 @@ class PdfMembersCards extends Pdf
             $this->adh_nbr = _T("Member") . ' n° : ' . $member_id;
             if ($this->hlogo + 1 > 7) {
                 $this->fixSize(
-                    $this->adh_nbr,
-                    intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
-                    8,
-                    'B'
+                    text: $this->adh_nbr,
+                    maxsize: intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 8,
+                    fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth(
+                    s: $this->adh_nbr,
+                    fontname: $this->FontFamily,
+                    fontstyle: $this->FontStyle,
+                    fontsize: $this->FontSizePt
+                ) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
                 $this->SetXY($xid, $y0 + 8);
             } else {
                 $this->fixSize(
-                    $this->adh_nbr,
-                    intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                    10,
-                    'B'
+                    text: $this->adh_nbr,
+                    maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 10,
+                    fontstyle: 'B'
                 );
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth(
+                    s: $this->adh_nbr,
+                    fontname: $this->FontFamily,
+                    fontstyle: $this->FontStyle,
+                    fontsize: $this->FontSizePt
+                ) / 2 + $this->wphoto / 2;
                 $this->SetXY($xid, $y0 + 8);
             }
             $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
@@ -376,23 +412,33 @@ class PdfMembersCards extends Pdf
             // Abbrev: Adapt font size to text length
             if (13 < $this->hlogo + 1) {
                 $this->fixSize(
-                    $this->abrev,
-                    intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
-                    12,
-                    'B'
+                    text: $this->abrev,
+                    maxsize: intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 12,
+                    fontstyle: 'B'
                 );
 
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth(
+                    s: $this->abrev,
+                    fontname: $this->FontFamily,
+                    fontstyle: $this->FontStyle,
+                    fontsize: $this->FontSizePt
+                ) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
             } else {
                 $this->fixSize(
-                    $this->abrev,
-                    intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                    12,
-                    'B'
+                    text: $this->abrev,
+                    maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 12,
+                    fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth(
+                    s: $this->abrev,
+                    fontname: $this->FontFamily,
+                    fontstyle: $this->FontStyle,
+                    fontsize: $this->FontSizePt
+                ) / 2 + $this->wphoto / 2;
             }
             $this->SetXY($xid, $y0 + 13);
             $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, false);
@@ -400,10 +446,10 @@ class PdfMembersCards extends Pdf
             // Name: Adapt font size to text length on one line, if font is to small on two lines
             $this->SetTextColor(0);
             $this->fixSize(
-                $nom_adh_ext,
-                intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                8,
-                'B'
+                text: $nom_adh_ext,
+                maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                fontsize: 8,
+                fontstyle: 'B'
             );
             $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
             if ($this->hlogo + 2 >= + 20) {
@@ -419,10 +465,10 @@ class PdfMembersCards extends Pdf
                 }
                 $nom_adh_ext .= mb_strtoupper($member->name);
                 $this->fixSize(
-                    $nom_adh_ext,
-                    intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                    7,
-                    'B'
+                    text: $nom_adh_ext,
+                    maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 7,
+                    fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
                 $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
@@ -430,10 +476,10 @@ class PdfMembersCards extends Pdf
                 $this->SetFontSize(7);
 
                 $this->fixSize(
-                    $member->surname,
-                    intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                    7,
-                    'B'
+                    text: $member->surname,
+                    maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                    fontsize: 7,
+                    fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
                 $this->writeHTML('<strong>' . $member->surname . '</strong>', true, false);
@@ -446,10 +492,10 @@ class PdfMembersCards extends Pdf
 
             // Email (adapt too)
             $this->fixSize(
-                $email,
-                intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                6,
-                'B'
+                text: $email,
+                maxsize: intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                fontsize: 6,
+                fontstyle: 'B'
             );
             $this->setX($x0 + $this->wphoto + 2);
             $this->writeHTML('<strong>' . $email . '</strong>', false, false);
@@ -461,10 +507,10 @@ class PdfMembersCards extends Pdf
             }
             $this->SetFont(self::FONT, 'B');
             $this->fixSize(
-                $this->preferences->pref_card_strip,
-                $this->max_text_size_full,
-                12,
-                'B'
+                text: $this->preferences->pref_card_strip,
+                maxsize: $this->max_text_size_full,
+                fontsize: 12,
+                fontstyle: 'B'
             );
 
 
@@ -492,17 +538,17 @@ class PdfMembersCards extends Pdf
 
             $this->SetXY($x0, $y0 + $this->he - $this->cell_he);
             $this->Cell(
-                $this->wi,
-                $this->cell_he,
-                $this->preferences->pref_card_strip,
-                0,
-                0,
-                'C',
-                true
+                w: $this->wi,
+                h: $this->cell_he,
+                txt: $this->preferences->pref_card_strip,
+                border: 0,
+                ln: 0,
+                align: 'C',
+                fill: true
             );
 
             // Draw a gray frame around the card
-            $this->Rect($x0, $y0, $this->wi, $this->he);
+            $this->Rect(x: $x0, y: $y0, w: $this->wi, h: $this->he);
             $nb_card++;
         }
     }

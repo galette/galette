@@ -81,7 +81,12 @@ class SeedFixtures extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->addOption('clean', null, InputOption::VALUE_NONE, 'Remove all E2E fixtures and exit');
+            ->addOption(
+                name: 'clean',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Remove all E2E fixtures and exit'
+            );
     }
 
     /**
@@ -508,13 +513,13 @@ class SeedFixtures extends AbstractCommand
         $size = 200;
         $img = imagecreatetruecolor($size, $size);
 
-        $bg = imagecolorallocate($img, $color[0], $color[1], $color[2]);
-        $white = imagecolorallocate($img, 255, 255, 255);
+        $bg = imagecolorallocate(image: $img, red: $color[0], green: $color[1], blue: $color[2]);
+        $white = imagecolorallocate(image: $img, red: 255, green: 255, blue: 255);
         if ($bg === false || $white === false) {
             return null;
         }
 
-        imagefilledrectangle($img, 0, 0, $size - 1, $size - 1, $bg);
+        imagefilledrectangle(image: $img, x1: 0, y1: 0, x2: $size - 1, y2: $size - 1, color: $bg);
 
         // Draw initials centered
         $font_size = 5; // largest built-in font
@@ -523,10 +528,17 @@ class SeedFixtures extends AbstractCommand
         $text_width = $char_width * mb_strlen($initials);
         $x = (int)(($size - $text_width) / 2);
         $y = (int)(($size - $char_height) / 2);
-        imagestring($img, $font_size, $x, $y, $initials, $white);
+        imagestring(image: $img, font: $font_size, x: $x, y: $y, string: $initials, color: $white);
 
         // Draw a decorative circle
-        imageellipse($img, (int)($size / 2), (int)($size / 2), $size - 20, $size - 20, $white);
+        imageellipse(
+            image: $img,
+            center_x: (int)($size / 2),
+            center_y: (int)($size / 2),
+            width: $size - 20,
+            height: $size - 20,
+            color: $white
+        );
 
         $filepath = GALETTE_PHOTOS_PATH . $id . '.png';
         imagepng($img, $filepath);
@@ -736,7 +748,7 @@ class SeedFixtures extends AbstractCommand
                     continue;
                 }
                 $field_id = $this->dynamic_field_ids[$field_name];
-                $handle->setValue($adh->id, $field_id, 1, $value);
+                $handle->setValue(item: $adh->id, field: $field_id, index: 1, value: $value);
             }
 
             $handle->storeValues($adh->id);

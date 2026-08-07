@@ -294,7 +294,7 @@ class CsvOut extends Csv
             }
         }
 
-        $this->export($results, $separator, $quote, $title, $fp);
+        $this->export(rs: $results, separator: $separator, quote: $quote, titles: $title, file: $fp);
         fclose($fp);
 
         return (string)$export['filename'];
@@ -358,7 +358,7 @@ class CsvOut extends Csv
             }
         }
 
-        $this->export($results, $separator, $quote, $title, $fp);
+        $this->export(rs: $results, separator: $separator, quote: $quote, titles: $title, file: $fp);
         fclose($fp);
 
         return $export['filename'];

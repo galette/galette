@@ -189,10 +189,10 @@ class Db
                 $results = $this->execute($select);
                 $result = $results->current();
                 return number_format(
-                    (float)$result->version,
-                    3,
-                    '.',
-                    ''
+                    num: (float)$result->version,
+                    decimals: 3,
+                    decimal_separator: '.',
+                    thousands_separator: ''
                 );
             } else {
                 return '0.63';

@@ -206,7 +206,7 @@ class ContributionsController extends CrudController
                 );
         }
 
-        return $this->addEditPage($request, $response, $type, $contrib);
+        return $this->addEditPage(request: $request, response: $response, type: $type, contrib: $contrib);
     }
 
     /**
@@ -241,7 +241,7 @@ class ContributionsController extends CrudController
                 );
         }
 
-        return $this->store($request, $response, 'add', $type, $contrib);
+        return $this->store(request: $request, response: $response, action: 'add', type: $type, contrib: $contrib);
     }
 
     /**
@@ -593,15 +593,15 @@ class ContributionsController extends CrudController
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
-            $request->withQueryParams(
+            request: $request->withQueryParams(
                 $request->getQueryParams() + [
                     Adherent::PK => $this->login->id
                 ]
             ),
-            $response,
-            null,
-            null,
-            $type
+            response: $response,
+            option: null,
+            value: null,
+            type: $type
         );
     }
 
@@ -791,7 +791,7 @@ class ContributionsController extends CrudController
             );
         }
 
-        return $this->addEditPage($request, $response, $type, $contrib);
+        return $this->addEditPage(request: $request, response: $response, type: $type, contrib: $contrib);
     }
 
     /**
@@ -819,7 +819,14 @@ class ContributionsController extends CrudController
             );
         }
 
-        return $this->store($request, $response, 'edit', $type, $contrib, $id);
+        return $this->store(
+            request: $request,
+            response: $response,
+            action: 'edit',
+            type: $type,
+            contrib: $contrib,
+            id: $id
+        );
     }
 
     /**

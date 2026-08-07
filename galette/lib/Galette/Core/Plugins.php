@@ -607,18 +607,18 @@ class Plugins
         foreach ($domains as $domain) {
             //load translation file for domain
             $this->translator->addTranslationFilePattern(
-                'gettext',
-                $this->modules[$id]['root'] . '/lang/',
-                '/%s/LC_MESSAGES/' . $domain . '.mo',
-                $domain
+                type: 'gettext',
+                baseDir: $this->modules[$id]['root'] . '/lang/',
+                pattern: '/%s/LC_MESSAGES/' . $domain . '.mo',
+                textDomain: $domain
             );
 
             //check if a local lang file exists and load it
             $this->translator->addTranslationFilePattern(
-                'phparray',
-                $this->modules[$id]['root'] . '/lang/',
-                $domain . '_%s_local_lang.php',
-                $domain
+                type: 'phparray',
+                baseDir: $this->modules[$id]['root'] . '/lang/',
+                pattern: $domain . '_%s_local_lang.php',
+                textDomain: $domain
             );
         }
     }

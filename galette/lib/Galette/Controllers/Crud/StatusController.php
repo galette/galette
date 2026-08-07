@@ -56,7 +56,7 @@ class StatusController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null, 'add');
+        return $this->store(request: $request, response: $response, id: null, action: 'add');
     }
 
     // /CRUD - Create

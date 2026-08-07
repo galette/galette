@@ -115,12 +115,12 @@ class MembersCsv extends CsvOut
 
         $members = new Members($filters);
         $members_list = $members->getArrayList(
-            $filters->selected,
-            null,
-            false,
-            false,
-            $fields,
-            true
+            ids: $filters->selected,
+            orderby: null,
+            with_photos: false,
+            as_members: false,
+            fields: $fields,
+            export: true
         );
 
         $statuses = $this->status->getList();
@@ -225,11 +225,11 @@ class MembersCsv extends CsvOut
         try {
             $fp = fopen($this->path, 'w');
             $this->export(
-                $members_list,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE,
-                $labels,
-                $fp
+                rs: $members_list,
+                separator: self::DEFAULT_SEPARATOR,
+                quote: self::DEFAULT_QUOTE,
+                titles: $labels,
+                file: $fp
             );
             fclose($fp);
         } catch (FilesystemException) {

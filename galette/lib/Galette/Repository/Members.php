@@ -127,12 +127,12 @@ class Members
         bool $limit = true
     ): array|ResultSet {
         return $this->getMembersList(
-            $as_members,
-            $fields,
-            $count,
-            true,
-            false,
-            $limit
+            as_members: $as_members,
+            fields: $fields,
+            count: $count,
+            staff: true,
+            managed: false,
+            limit: $limit
         );
     }
 
@@ -156,12 +156,12 @@ class Members
         bool $limit = true
     ): array|ResultSet {
         return $this->getMembersList(
-            $as_members,
-            $fields,
-            $count,
-            false,
-            true,
-            $limit
+            as_members: $as_members,
+            fields: $fields,
+            count: $count,
+            staff: false,
+            managed: true,
+            limit: $limit
         );
     }
 
@@ -210,10 +210,10 @@ class Members
             }
 
             $select = $this->buildSelect(
-                $_mode,
-                $fields,
-                false,
-                $count
+                mode: $_mode,
+                fields: $fields,
+                photos: false,
+                count: $count
             );
 
             //add limits to retrieve only relavant rows
@@ -412,13 +412,13 @@ class Members
     public function getList(bool $as_members = false, ?array $fields = null): array|ResultSet
     {
         return $this->getMembersList(
-            $as_members,
-            $fields,
-            false,
-            false,
-            false,
-            true,
-            false
+            as_members: $as_members,
+            fields: $fields,
+            count: false,
+            staff: false,
+            managed: false,
+            limit: true,
+            export: false
         );
     }
 
@@ -437,10 +437,10 @@ class Members
         try {
             $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
-                self::SHOW_PUBLIC_LIST,
-                null,
-                $with_photos,
-                true
+                mode: self::SHOW_PUBLIC_LIST,
+                fields: null,
+                photos: $with_photos,
+                count: true
             );
 
             $this->filters->setLimits($select);
@@ -491,10 +491,10 @@ class Members
         try {
             $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
-                self::SHOW_STAFF_PUBLIC_LIST,
-                null,
-                $with_photos,
-                true
+                mode: self::SHOW_STAFF_PUBLIC_LIST,
+                fields: null,
+                photos: $with_photos,
+                count: true
             );
 
             $results = $zdb->execute($select);
@@ -576,10 +576,10 @@ class Members
                 $damode = self::SHOW_EXPORT;
             }
             $select = $this->buildSelect(
-                $damode,
-                $fields,
-                false,
-                false
+                mode: $damode,
+                fields: $fields,
+                photos: false,
+                count: false
             );
             $select->where->in('a.' . self::PK, $ids);
             if (is_array($orderby) && count($orderby) > 0) {
@@ -647,17 +647,17 @@ class Members
             $select->quantifier('DISTINCT');
 
             $select->join(
-                ['so' => PREFIX_DB . Social::TABLE],
-                'a.' . Adherent::PK . '=so.' . Adherent::PK,
-                [],
-                $select::JOIN_LEFT
+                name: ['so' => PREFIX_DB . Social::TABLE],
+                on: 'a.' . Adherent::PK . '=so.' . Adherent::PK,
+                columns: [],
+                type: $select::JOIN_LEFT
             );
 
             $select->join(
-                ['parent' => PREFIX_DB . self::TABLE],
-                'a.parent_id=parent.' . self::PK,
-                [],
-                $select::JOIN_LEFT
+                name: ['parent' => PREFIX_DB . self::TABLE],
+                on: 'a.parent_id=parent.' . self::PK,
+                columns: [],
+                type: $select::JOIN_LEFT
             );
 
             switch ($mode) {
@@ -709,10 +709,10 @@ class Members
                 && $this->filters->withinContributions()
             ) {
                 $select->join(
-                    ['ct' => PREFIX_DB . Contribution::TABLE],
-                    'ct.' . self::PK . '=a.' . self::PK,
-                    [],
-                    $select::JOIN_LEFT
+                    name: ['ct' => PREFIX_DB . Contribution::TABLE],
+                    on: 'ct.' . self::PK . '=a.' . self::PK,
+                    columns: [],
+                    type: $select::JOIN_LEFT
                 );
             }
 
@@ -739,10 +739,10 @@ class Members
 
             if ($hasDfc === true) {
                 $select->join(
-                    ['dfc' => PREFIX_DB . DynamicFieldsHandle::TABLE],
-                    'dfc.item_id=ct.' . Contribution::PK,
-                    [],
-                    $select::JOIN_LEFT
+                    name: ['dfc' => PREFIX_DB . DynamicFieldsHandle::TABLE],
+                    on: 'dfc.item_id=ct.' . Contribution::PK,
+                    columns: [],
+                    type: $select::JOIN_LEFT
                 );
             }
 
@@ -759,10 +759,10 @@ class Members
                     $subselect->where(['df.field_form' => 'adh']);
                     $subselect->where(['df.field_id' => $df]);
                     $select->join(
-                        ['df' . $df => $subselect],
-                        'a.id_adh = df' . $df . '.item_id',
-                        [],
-                        $select::JOIN_LEFT
+                        name: ['df' . $df => $subselect],
+                        on: 'a.id_adh = df' . $df . '.item_id',
+                        columns: [],
+                        type: $select::JOIN_LEFT
                     );
                 }
             }
@@ -809,10 +809,10 @@ class Members
 
                 if ($preferences->pref_bool_groupsmanagers_are_staff) {
                     $select->join(
-                        ['gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
-                        'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                        [],
-                        $select::JOIN_LEFT
+                        name: ['gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
+                        on: 'a.' . Adherent::PK . '=gr.' . Adherent::PK,
+                        columns: [],
+                        type: $select::JOIN_LEFT
                     );
                     $select->where
                         ->nest()
@@ -871,10 +871,10 @@ class Members
             $countSelect->reset($countSelect::JOINS);
             foreach ($joins as $join) {
                 $countSelect->join(
-                    $join['name'],
-                    $join['on'],
-                    [],
-                    $join['type']
+                    name: $join['name'],
+                    on: $join['on'],
+                    columns: [],
+                    type: $join['type']
                 );
                 unset($join['columns']);
             }
@@ -1157,15 +1157,15 @@ class Members
 
             if ($this->filters->group_filter) {
                 $select->join(
-                    ['g' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
-                    [],
-                    $select::JOIN_LEFT
+                    name: ['g' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
+                    on: 'a.' . Adherent::PK . '=g.' . Adherent::PK,
+                    columns: [],
+                    type: $select::JOIN_LEFT
                 )->join(
-                    ['gs' => PREFIX_DB . Group::TABLE],
-                    'gs.' . Group::PK . '=g.' . Group::PK,
-                    [],
-                    $select::JOIN_LEFT
+                    name: ['gs' => PREFIX_DB . Group::TABLE],
+                    on: 'gs.' . Group::PK . '=g.' . Group::PK,
+                    columns: [],
+                    type: $select::JOIN_LEFT
                 )->where(
                     '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter)
                     . ' OR gs.parent_group = NULL OR gs.parent_group = '
@@ -1777,11 +1777,11 @@ class Members
                 $pk = Adherent::PK;
 
                 $members[(int)$member->$pk] = Adherent::getNameWithCase(
-                    $member->nom_adh,
-                    $member->prenom_adh,
-                    false,
-                    (int)$member->id_adh,
-                    $member->pseudo_adh
+                    name: $member->nom_adh,
+                    surname: $member->prenom_adh,
+                    title: false,
+                    id: (int)$member->id_adh,
+                    nick: $member->pseudo_adh
                 );
             }
         }
@@ -1789,7 +1789,7 @@ class Members
         //check if current attached member is part of the list
         if ($current !== null && !isset($members[$current])) {
             $members
-                = [$current => Adherent::getSName($zdb, $current, true, true)]
+                = [$current => Adherent::getSName(zdb: $zdb, id: $current, wid: true, wnick: true)]
                 + $members
             ;
         }

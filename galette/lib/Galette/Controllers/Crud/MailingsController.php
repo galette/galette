@@ -317,7 +317,13 @@ class MailingsController extends CrudController
                         $error_detected[] = $e;
                     }
                 } else {
-                    $mlh = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
+                    $mlh = new MailingHistory(
+                        zdb: $this->zdb,
+                        login: $this->login,
+                        preferences: $this->preferences,
+                        filters: null,
+                        mailing: $mailing
+                    );
                     $mlh->storeMailing(true);
                     Analog::log(
                         '[Mailings] Message has been sent.',
@@ -349,7 +355,13 @@ class MailingsController extends CrudController
 
             if (isset($post['mailing_save'])) {
                 //user requested to save the mailing
-                $histo = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
+                $histo = new MailingHistory(
+                    zdb: $this->zdb,
+                    login: $this->login,
+                    preferences: $this->preferences,
+                    filters: null,
+                    mailing: $mailing
+                );
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
@@ -393,7 +405,12 @@ class MailingsController extends CrudController
             $filters->show = $request->getQueryParams()['nbshow'];
         }
 
-        $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+        $mailhist = new MailingHistory(
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: $filters
+        );
 
         switch ($option) {
             case 'page':
@@ -406,7 +423,12 @@ class MailingsController extends CrudController
                 $mailhist->clean();
                 //reinitialize object after flush
                 $filters = new MailingsList();
-                $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+                $mailhist = new MailingHistory(
+                    zdb: $this->zdb,
+                    login: $this->login,
+                    preferences: $this->preferences,
+                    filters: $filters
+                );
                 break;
             default:
                 break;
@@ -590,7 +612,7 @@ class MailingsController extends CrudController
 
         if ($id !== null) {
             $mailing = new Mailing($this->preferences);
-            MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
+            MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         } else {
             $mailing = $this->session->mailing;
 
@@ -653,7 +675,7 @@ class MailingsController extends CrudController
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
         $mailing = new Mailing($this->preferences);
-        MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
+        MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         $attachments = $mailing->attachments;
         $attachment = $attachments[$pos];
         $filepath = $attachment->getDestDir() . $attachment->getFileName();
@@ -683,14 +705,14 @@ class MailingsController extends CrudController
 
         if (isset($post['recipients'])) {
             $members = $m->getArrayList(
-                $post['recipients'],
-                null,
-                false,
-                true,
-                null,
-                false,
-                false,
-                true
+                ids: $post['recipients'],
+                orderby: null,
+                with_photos: false,
+                as_members: true,
+                fields: null,
+                export: false,
+                dues: false,
+                parent: true
             );
         }
         $mailing->setRecipients($members);

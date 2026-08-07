@@ -46,12 +46,12 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
         $sfactory = new \Slim\Psr7\Factory\StreamFactory();
 
         return new \Slim\Psr7\Request(
-            $method,
-            $ufactory->createUri($route),
-            new \Slim\Psr7\Headers(['Content-Type' => [$content_type]]),
-            [],
-            [],
-            $sfactory->createStream()
+            method: $method,
+            uri: $ufactory->createUri($route),
+            headers: new \Slim\Psr7\Headers(['Content-Type' => [$content_type]]),
+            cookies: [],
+            serverParams: [],
+            body: $sfactory->createStream()
         );
     }
 

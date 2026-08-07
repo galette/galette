@@ -394,7 +394,14 @@ class Group
         if ($this->parent_group) {
             $parent_group = $this->parent_group->getId();
         }
-        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
+        if (
+            !Groups::isUnique(
+                zdb: $zdb,
+                name: $this->getName(),
+                parent: $parent_group,
+                current: $this->id ?? null
+            )
+        ) {
             throw new RuntimeException(
                 "The group name you have requested already exists in the database."
             );

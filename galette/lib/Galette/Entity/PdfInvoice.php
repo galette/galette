@@ -31,6 +31,6 @@ class PdfInvoice extends PdfContribution
      */
     public function __construct(Db $zdb, Preferences $preferences, ArrayObject|int|null $args = null)
     {
-        parent::__construct($zdb, $preferences, self::INVOICE_MODEL, $args);
+        parent::__construct(zdb: $zdb, preferences: $preferences, type: self::INVOICE_MODEL, args: $args);
     }
 }

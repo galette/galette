@@ -46,11 +46,11 @@ class FakeData
         try {
             copy($url, $file);
             $uploaded_file = new UploadedFile(
-                $file,
-                'fakephoto.jpg',
-                'image/jpeg',
-                filesize($file),
-                UPLOAD_ERR_OK
+                fileNameOrStream: $file,
+                name: 'fakephoto.jpg',
+                type: 'image/jpeg',
+                size: filesize($file),
+                error: UPLOAD_ERR_OK
             );
             $res = $member->picture->storeFile($uploaded_file);
             if ($res < 0) {

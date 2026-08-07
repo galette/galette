@@ -42,9 +42,24 @@ class PluginsList extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->addOption('complete', null, InputOption::VALUE_NONE, 'Display complete information')
-            ->addOption('enabled', null, InputOption::VALUE_NONE, 'Display enabled plugins')
-            ->addOption('disabled', null, InputOption::VALUE_NONE, 'Display disabled plugins')
+            ->addOption(
+                name: 'complete',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Display complete information'
+            )
+            ->addOption(
+                name: 'enabled',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Display enabled plugins'
+            )
+            ->addOption(
+                name: 'disabled',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Display disabled plugins'
+            )
         ;
     }
 
@@ -93,7 +108,13 @@ class PluginsList extends AbstractCommand
         array &$definitions
     ): void {
         foreach ($this->plugins->getActiveModules() as $module_id => $module) {
-            $this->pluginDefinition($input, $io, $module_id, $module, $definitions);
+            $this->pluginDefinition(
+                input: $input,
+                io: $io,
+                module_id: $module_id,
+                module: $module,
+                definitions: $definitions
+            );
         }
     }
 
@@ -110,7 +131,13 @@ class PluginsList extends AbstractCommand
         array &$definitions
     ): void {
         foreach ($this->plugins->getDisabledModules() as $module_id => $module) {
-            $this->pluginDefinition($input, $io, $module_id, $module, $definitions);
+            $this->pluginDefinition(
+                input: $input,
+                io: $io,
+                module_id: $module_id,
+                module: $module,
+                definitions: $definitions
+            );
         }
     }
 

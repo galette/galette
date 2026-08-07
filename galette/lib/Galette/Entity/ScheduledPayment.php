@@ -514,11 +514,11 @@ class ScheduledPayment
         $select->quantifier('DISTINCT');
 
         $select->join(
-            ['s' => PREFIX_DB . self::TABLE],
+            name: ['s' => PREFIX_DB . self::TABLE],
             //$on,
-            'c.' . Contribution::PK . '=s.' . Contribution::PK,
-            ['allocated' => new Expression('SUM(s.amount)')],
-            $select::JOIN_LEFT
+            on: 'c.' . Contribution::PK . '=s.' . Contribution::PK,
+            columns: ['allocated' => new Expression('SUM(s.amount)')],
+            type: $select::JOIN_LEFT
         );
 
         $select->group('c.' . Contribution::PK);

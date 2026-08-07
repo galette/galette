@@ -111,11 +111,11 @@ class ScheduledPaymentsCsv extends CsvOut
         try {
             $fp = fopen($this->path, 'w');
             $this->export(
-                $scheduled_list,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE,
-                $labels,
-                $fp
+                rs: $scheduled_list,
+                separator: self::DEFAULT_SEPARATOR,
+                quote: self::DEFAULT_QUOTE,
+                titles: $labels,
+                file: $fp
             );
             fclose($fp);
         } catch (FilesystemException) {

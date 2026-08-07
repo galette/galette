@@ -66,7 +66,7 @@ class MailingHistory extends History
             $filters = new MailingsList();
         }
 
-        parent::__construct($zdb, $login, $preferences, $filters);
+        parent::__construct(zdb: $zdb, login: $login, preferences: $preferences, filters: $filters);
     }
 
     /**
@@ -79,10 +79,10 @@ class MailingHistory extends History
         try {
             $select = $this->zdb->select($this->getTableName(), 'a');
             $select->join(
-                ['b' => PREFIX_DB . Adherent::TABLE],
-                'a.mailing_sender=b.' . Adherent::PK,
-                ['nom_adh', 'prenom_adh'],
-                $select::JOIN_LEFT
+                name: ['b' => PREFIX_DB . Adherent::TABLE],
+                on: 'a.mailing_sender=b.' . Adherent::PK,
+                columns: ['nom_adh', 'prenom_adh'],
+                type: $select::JOIN_LEFT
             );
             $this->buildWhereClause($select);
             $select->order($this->buildOrderClause());

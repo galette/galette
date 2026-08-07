@@ -133,7 +133,7 @@ trait Dynamics
                             unlink(GALETTE_FILES_PATH . $test_filename);
                         }
                     }
-                    $this->dynamics->setValue($this->getID(), $field_id, $val_index, '');
+                    $this->dynamics->setValue(item: $this->getID(), field: $field_id, index: $val_index, value: '');
                 } else {
                     if ($fields[$field_id] instanceof Date && !empty(trim((string)$value))) {
                         //check date format
@@ -170,7 +170,12 @@ trait Dynamics
                     }
                     //actual field value
                     if ($value !== null && trim((string)$value) !== '') {
-                        $this->dynamics->setValue($this->getID() ?? null, $field_id, $val_index, $value);
+                        $this->dynamics->setValue(
+                            item: $this->getID() ?? null,
+                            field: $field_id,
+                            index: $val_index,
+                            value: $value
+                        );
                     } else {
                         $this->dynamics->unsetValue($field_id, $val_index);
                     }

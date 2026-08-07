@@ -50,7 +50,7 @@ class ContributionsTypesController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null, 'add');
+        return $this->store(request: $request, response: $response, id: null, action: 'add');
     }
 
     // /CRUD - Create
@@ -192,7 +192,13 @@ class ContributionsTypesController extends CrudController
         }
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $ctype->add($label, $description, $amount, $field) : $ctype->update($id, $label, $description, $amount, $field));
+            $ret = ($action === 'add' ? $ctype->add(label: $label, description: $description, amount: $amount, extension: $field) : $ctype->update(
+                id: $id,
+                label: $label,
+                description: $description,
+                amount: $amount,
+                extension: $field
+            ));
         } else {
             $ret = false;
             $error_detected[] = _T('Missing required contribution type name!');
