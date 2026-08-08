@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace Galette\Console\Command;
 
 use Galette\Core\Db;
+use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\Login;
+use Galette\Core\MailingHistory;
 use Galette\Core\Picture;
 use Galette\Core\Preferences;
 use Galette\DynamicFields\DynamicField;
@@ -145,6 +147,9 @@ class SeedFixtures extends AbstractCommand
         $io->section('Creating contributions');
         $this->createContributions($io);
 
+        $io->section('Creating mailings');
+        $this->createMailings($io);
+
         $io->section('Setting dynamic field values');
         $this->setDynamicFieldValues($io);
 
@@ -173,6 +178,11 @@ class SeedFixtures extends AbstractCommand
         }
 
         if (count($member_ids) > 0) {
+            // Delete mailings sent by fixture members (FK on mailing_sender is RESTRICT)
+            $delete = $this->zdb->delete(MailingHistory::TABLE);
+            $delete->where->in('mailing_sender', $member_ids);
+            $this->zdb->execute($delete);
+
             // Delete dynamic field values for members
             $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
             $delete->where->in('item_id', $member_ids);
@@ -728,6 +738,52 @@ class SeedFixtures extends AbstractCommand
         }
 
         $io->text(sprintf('  Created %d contributions.', $count));
+    }
+
+    /**
+     * Create mailings history entries
+     */
+    private function createMailings(SymfonyStyle $io): void
+    {
+        $count = 0;
+        foreach ($this->getMailingData() as $mailing_data) {
+            if (!isset($this->members[$mailing_data['sender_login']])) {
+                continue;
+            }
+            $sender = $this->members[$mailing_data['sender_login']];
+
+            $recipients = [];
+            foreach ($mailing_data['recipients'] as $login) {
+                if (!isset($this->members[$login])) {
+                    continue;
+                }
+                $recipient = $this->members[$login];
+                $recipients[$recipient->id] = $recipient->sname . ' <' . $recipient->email . '>';
+            }
+
+            if (count($recipients) === 0) {
+                continue;
+            }
+
+            $insert = $this->zdb->insert(MailingHistory::TABLE);
+            $insert->values([
+                'mailing_sender'            => $sender->id,
+                'mailing_sender_name'       => $mailing_data['sender_name'] ?? $sender->sname,
+                'mailing_sender_address'    => $mailing_data['sender_address'] ?? $sender->email,
+                'mailing_subject'           => $mailing_data['subject'],
+                'mailing_body'              => $mailing_data['body'],
+                'mailing_date'              => $mailing_data['date'],
+                'mailing_recipients'        => Galette::jsonEncode($recipients),
+                'mailing_sent'              => $mailing_data['sent']
+                    ? true
+                    : ($this->zdb->isPostgres() ? 'false' : 0),
+            ]);
+            $this->zdb->execute($insert);
+
+            $count++;
+        }
+
+        $io->text(sprintf('  Created %d mailings.', $count));
     }
 
     /**
@@ -1985,6 +2041,560 @@ class SeedFixtures extends AbstractCommand
                 'type_paiement_cotis' => 2,
                 'date_debut_cotis' => $ago('14 months'), 'date_fin_cotis' => $ago('2 months'),
                 'date_enreg' => $ago('14 months'),
+            ],
+        ];
+    }
+
+    /**
+     * Get mailings data
+     *
+     * @return array<array<string,mixed>>
+     */
+    private function getMailingData(): array
+    {
+        $ago = static fn(string $s): string => (new DateTime())->modify("-$s")->format('Y-m-d H:i:s');
+
+        $starwars = ['luke.skywalker', 'leia.organa', 'anakin.skywalker', 'han.solo', 'obiwan.kenobi'];
+        $matrix = ['neo.anderson', 'morpheus', 'trinity'];
+        $westeros = ['arya.stark', 'daenerys.targaryen', 'jon.snow'];
+        $futurama = ['philip.fry', 'turanga.leela', 'bender.rodriguez'];
+        $citesdor = ['esteban.dore', 'zia.dore', 'tao.dore'];
+        $olympe = ['ulysse', 'nono', 'telemaque.ulysse'];
+        $halloween = ['jack.skellington', 'sally.ragdoll', 'zero.skellington'];
+        $funebres = ['victor.vandort', 'emily.lamariee'];
+        $poudlard = ['hermione.granger', 'ron.weasley', 'albus.dumbledore'];
+        $terredumilieu = ['frodon.sacquet', 'gandalf', 'legolas.sylvain'];
+        $springfield = ['homer.simpson', 'bart.simpson', 'lisa.simpson'];
+        $gaulois = ['asterix', 'obelix', 'panoramix'];
+        $kaamelott = ['arthur.pendragon', 'perceval.gallois', 'leodagan.lancelot'];
+        $delorean = ['marty.mcfly', 'doc.brown'];
+        $metrocity = ['inspecteur.gadget', 'penny.parker'];
+        $fbi = ['fox.mulder', 'dana.scully'];
+        $ghostbusters = ['peter.venkman', 'egon.spengler', 'ray.stantz'];
+        $children = ['ben.skywalker', 'jacen.solo', 'rickon.stark', 'yancy.fry', 'tao.dore', 'junior.anderson', 'telemaque.ulysse', 'zero.skellington'];
+        $everyone = array_merge(
+            $starwars,
+            $matrix,
+            $westeros,
+            $futurama,
+            $citesdor,
+            $olympe,
+            $halloween,
+            $funebres,
+            $poudlard,
+            $terredumilieu,
+            $springfield,
+            $gaulois,
+            $kaamelott,
+            $delorean,
+            $metrocity,
+            $fbi,
+            $ghostbusters,
+            ['maestro']
+        );
+        $board = ['leia.organa', 'albus.dumbledore', 'gandalf', 'arthur.pendragon', 'maestro'];
+
+        return [
+            // Association wide announcements
+            [
+                'sender_login' => 'leia.organa',
+                'subject' => 'Convocation à l\'assemblée générale ordinaire',
+                'body' => "<p>Chers membres,</p><p>Vous êtes convoqué·es à l'assemblée générale ordinaire qui se tiendra le premier samedi du mois prochain, à 14h, salle du Conseil.</p><p>Ordre du jour : rapport moral, rapport financier, renouvellement du bureau, questions diverses.</p><p>Le pouvoir est joint à ce message pour les membres empêchés.</p>",
+                'date' => $ago('23 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'leia.organa',
+                'subject' => 'Compte-rendu de l\'assemblée générale',
+                'body' => "<p>Bonjour,</p><p>Vous trouverez ci-dessous le compte-rendu de notre dernière assemblée générale, ainsi que la composition du nouveau bureau.</p><p>Merci à toutes et tous pour votre participation record cette année.</p>",
+                'date' => $ago('22 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Rappel : cotisations arrivant à échéance',
+                'body' => "Bonjour,\n\nVotre cotisation arrive à échéance dans moins d'un mois.\n\nVous pouvez la renouveler directement depuis votre espace adhérent, ou nous faire parvenir un chèque à l'adresse de l'association.\n\nBien cordialement,\nLe trésorier",
+                'date' => $ago('20 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Relance : cotisation échue',
+                'body' => "Bonjour,\n\nSauf erreur de notre part, votre cotisation est échue depuis plus de deux mois.\n\nMerci de régulariser votre situation avant la prochaine assemblée générale afin de conserver votre droit de vote.\n\nLe trésorier",
+                'date' => $ago('19 months'),
+                'sent' => true,
+                'recipients' => ['luke.skywalker', 'han.solo', 'philip.fry', 'homer.simpson', 'perceval.gallois'],
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Lettre d\'information — numéro de printemps',
+                'body' => "<h3>Au sommaire ce mois-ci</h3><ul><li>Le retour des ateliers du samedi</li><li>Portrait de membre : une vie d'aventures</li><li>Les comptes de l'association en toute transparence</li><li>Agenda des prochaines sorties</li></ul><p>Bonne lecture !</p>",
+                'date' => $ago('18 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Lettre d\'information — numéro d\'été',
+                'body' => "<h3>Au sommaire ce mois-ci</h3><ul><li>Bilan de la saison</li><li>Les permanences pendant les vacances</li><li>Appel à bénévoles pour le forum des associations</li></ul>",
+                'date' => $ago('15 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Lettre d\'information — numéro d\'automne',
+                'body' => "<h3>Au sommaire ce mois-ci</h3><ul><li>Reprise des activités</li><li>Nouveaux tarifs d'adhésion</li><li>Le coin des enfants</li></ul>",
+                'date' => $ago('12 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Lettre d\'information — numéro d\'hiver',
+                'body' => "<h3>Au sommaire ce mois-ci</h3><ul><li>Retour en images sur la fête de fin d'année</li><li>Les projets pour la saison prochaine</li><li>Rappel sur le renouvellement des cotisations</li></ul>",
+                'date' => $ago('9 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'gandalf',
+                'subject' => 'Modification des statuts : consultation des membres',
+                'body' => "<p>Bonjour,</p><p>Le conseil d'administration propose une modification de l'article 7 des statuts, relatif à la durée des mandats.</p><p>Merci de nous faire part de vos remarques avant la fin du mois. Une assemblée générale extraordinaire sera convoquée si nécessaire.</p>",
+                'date' => $ago('11 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'leia.organa',
+                'subject' => 'Convocation à l\'assemblée générale extraordinaire',
+                'body' => "<p>Chers membres,</p><p>Une assemblée générale extraordinaire est convoquée afin de statuer sur la modification de l'article 7 des statuts.</p><p>Le quorum étant fixé aux deux tiers, votre présence ou votre pouvoir est indispensable.</p>",
+                'date' => $ago('10 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+
+            // Board and internal organisation
+            [
+                'sender_login' => 'leia.organa',
+                'subject' => 'Réunion du bureau — ordre du jour',
+                'body' => "Bonjour à toutes et tous,\n\nProchaine réunion du bureau mardi à 18h30.\n\nOrdre du jour :\n- point trésorerie\n- préparation du forum des associations\n- renouvellement du matériel\n- questions diverses\n\nMerci de confirmer votre présence.",
+                'date' => $ago('17 months'),
+                'sent' => true,
+                'recipients' => $board,
+            ],
+            [
+                'sender_login' => 'arthur.pendragon',
+                'subject' => 'Réunion du bureau — report',
+                'body' => "Bonjour,\n\nLa réunion de mardi est reportée à jeudi, même heure, même salle. Toutes mes excuses pour ce changement de dernière minute.",
+                'date' => $ago('16 months'),
+                'sent' => true,
+                'recipients' => $board,
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Budget prévisionnel : vos retours',
+                'body' => "<p>Bonjour,</p><p>Voici la première version du budget prévisionnel pour la saison prochaine.</p><p>Merci de me faire parvenir vos remarques avant la réunion du bureau, en particulier sur les postes « déplacements » et « communication ».</p>",
+                'date' => $ago('14 months'),
+                'sent' => true,
+                'recipients' => $board,
+            ],
+            [
+                'sender_login' => 'gandalf',
+                'subject' => 'Appel à candidatures pour le conseil d\'administration',
+                'body' => "<p>Bonjour,</p><p>Trois sièges sont à pourvoir au conseil d'administration.</p><p>Les candidatures sont ouvertes jusqu'à quinze jours avant l'assemblée générale. Un simple message suffit pour se déclarer candidat·e.</p>",
+                'date' => $ago('13 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Résultats de l\'élection du conseil d\'administration',
+                'body' => "<p>Bonjour,</p><p>Le dépouillement est terminé. Vous trouverez ci-dessous les résultats détaillés du scrutin ainsi que la composition du nouveau conseil.</p><p>Félicitations aux élu·es et merci aux candidat·es.</p>",
+                'date' => $ago('9 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+
+            // Events
+            [
+                'sender_login' => 'jack.skellington',
+                'subject' => 'Soirée d\'Halloween : inscriptions ouvertes',
+                'body' => "<p>Bonsoir à toutes et à tous,</p><p>La soirée annuelle se tiendra le 31 octobre à partir de 20h. Déguisement vivement conseillé, citrouilles fournies.</p><p>Inscription obligatoire, places limitées.</p>",
+                'date' => $ago('21 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'jack.skellington',
+                'subject' => 'Soirée d\'Halloween : dernières places',
+                'body' => "Il reste une dizaine de places pour la soirée. Premier arrivé, premier servi !",
+                'date' => $ago('21 months'),
+                'sent' => true,
+                'recipients' => $halloween,
+            ],
+            [
+                'sender_login' => 'sally.ragdoll',
+                'subject' => 'Merci pour cette soirée',
+                'body' => "<p>Un grand merci à toutes celles et ceux qui ont participé, décoré, cuisiné et rangé.</p><p>Les photos seront mises en ligne dans l'espace membres d'ici la fin de la semaine.</p>",
+                'date' => $ago('20 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'asterix',
+                'subject' => 'Banquet annuel du village',
+                'body' => "<p>Le banquet aura lieu le dernier samedi du mois, sur la place du village.</p><p>Chacun apporte quelque chose : merci de m'indiquer ce que vous prévoyez pour éviter d'avoir treize plats de sanglier.</p>",
+                'date' => $ago('18 months'),
+                'sent' => true,
+                'recipients' => $gaulois,
+            ],
+            [
+                'sender_login' => 'obelix',
+                'subject' => 'Banquet : il reste du sanglier',
+                'body' => "Il reste beaucoup de sanglier. Enfin, il en restait.",
+                'date' => $ago('18 months'),
+                'sent' => true,
+                'recipients' => $gaulois,
+            ],
+            [
+                'sender_login' => 'panoramix',
+                'subject' => 'Atelier « préparer sa potion » : nouvelle session',
+                'body' => "<p>Une nouvelle session de l'atelier est programmée le mois prochain.</p><p>Matériel fourni, apportez simplement un tablier. Les mineurs doivent être accompagnés.</p>",
+                'date' => $ago('16 months'),
+                'sent' => true,
+                'recipients' => array_merge($gaulois, $poudlard),
+            ],
+            [
+                'sender_login' => 'doc.brown',
+                'subject' => 'Conférence : « Voyager dans le temps sans perdre le fil »',
+                'body' => "<p>Bonjour,</p><p>La conférence se tiendra vendredi à 20h15 précises. Merci d'arriver à l'heure, ce sera pertinent.</p><p>Entrée libre pour les adhérents, 5 € pour les non-adhérents.</p>",
+                'date' => $ago('15 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'marty.mcfly',
+                'subject' => 'Covoiturage pour la conférence de vendredi',
+                'body' => "Salut,\n\nJe pars du centre-ville vers 19h30, j'ai trois places dans la voiture. Faites-moi signe si ça vous arrange.",
+                'date' => $ago('15 months'),
+                'sent' => true,
+                'recipients' => array_merge($delorean, $springfield),
+            ],
+            [
+                'sender_login' => 'peter.venkman',
+                'subject' => 'Sortie annuelle : le programme',
+                'body' => "<p>Bonjour,</p><p>Rendez-vous samedi à 8h devant le local. Prévoir des chaussures de marche, un pique-nique et de quoi vous protéger du soleil.</p><p>Retour prévu vers 18h.</p>",
+                'date' => $ago('13 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'egon.spengler',
+                'subject' => 'Sortie annuelle : liste du matériel',
+                'body' => "Bonjour,\n\nMerci de vérifier votre matériel avant samedi. Chaque équipe doit disposer de :\n- une trousse de premiers secours\n- deux lampes\n- un jeu de piles de rechange\n\nJe passerai un contrôle rapide au départ.",
+                'date' => $ago('13 months'),
+                'sent' => true,
+                'recipients' => $ghostbusters,
+            ],
+            [
+                'sender_login' => 'peter.venkman',
+                'subject' => 'Sortie annulée pour cause de météo',
+                'body' => "<p>Bonjour,</p><p>Compte tenu des prévisions, la sortie de samedi est annulée et reportée au mois prochain.</p><p>Les inscriptions restent valables, aucune démarche n'est nécessaire de votre part.</p>",
+                'date' => $ago('12 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'turanga.leela',
+                'subject' => 'Tournoi interne : inscriptions',
+                'body' => "<p>Les inscriptions au tournoi interne sont ouvertes jusqu'à la fin du mois.</p><p>Deux catégories : découverte et confirmé. Les équipes seront constituées par tirage au sort.</p>",
+                'date' => $ago('11 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'turanga.leela',
+                'subject' => 'Tournoi interne : tirage au sort et poules',
+                'body' => "Bonjour,\n\nLe tirage au sort a été effectué ce matin. Vous trouverez la composition des poules et les horaires de chaque rencontre en pièce jointe.\n\nBonne chance à toutes les équipes.",
+                'date' => $ago('10 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'bender.rodriguez',
+                'subject' => 'Pot de fin de tournoi',
+                'body' => "Pot de clôture vendredi soir au local. J'apporte de quoi boire, quelqu'un se dévoue pour le reste ?",
+                'date' => $ago('9 months'),
+                'sent' => true,
+                'recipients' => $futurama,
+            ],
+
+            // Groups and activities
+            [
+                'sender_login' => 'morpheus',
+                'subject' => 'Formation des nouveaux membres',
+                'body' => "<p>Bonjour,</p><p>Une session d'accueil des nouveaux membres est organisée le deuxième mardi du mois.</p><p>Au programme : présentation de l'association, visite du local, remise du livret d'accueil et de la carte de membre.</p>",
+                'date' => $ago('17 months'),
+                'sent' => true,
+                'recipients' => array_merge($matrix, ['neo.anderson', 'jon.snow', 'marty.mcfly']),
+            ],
+            [
+                'sender_login' => 'trinity',
+                'subject' => 'Accès au local : nouveaux codes',
+                'body' => "Bonjour,\n\nLes codes d'accès du local ont été modifiés ce week-end. Le nouveau code vous a été communiqué séparément par SMS.\n\nMerci de ne pas le diffuser en dehors des adhérents.",
+                'date' => $ago('8 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'hermione.granger',
+                'subject' => 'Reprise des ateliers du samedi',
+                'body' => "<p>Bonjour,</p><p>Les ateliers du samedi reprennent dès la semaine prochaine, de 10h à 12h.</p><p>Le planning du trimestre est disponible dans l'espace membres.</p>",
+                'date' => $ago('14 months'),
+                'sent' => true,
+                'recipients' => $poudlard,
+            ],
+            [
+                'sender_login' => 'hermione.granger',
+                'subject' => 'Atelier du samedi : changement de salle',
+                'body' => "L'atelier de samedi se tiendra exceptionnellement en salle 2, la salle habituelle étant occupée.",
+                'date' => $ago('12 months'),
+                'sent' => true,
+                'recipients' => $poudlard,
+            ],
+            [
+                'sender_login' => 'lisa.simpson',
+                'subject' => 'Groupe jeunes : programme du trimestre',
+                'body' => "<p>Bonjour,</p><p>Voici le programme des activités jeunes pour le trimestre à venir.</p><p>Une autorisation parentale est nécessaire pour les sorties, merci de la rapporter signée avant la première séance.</p>",
+                'date' => $ago('11 months'),
+                'sent' => true,
+                'recipients' => $children,
+            ],
+            [
+                'sender_login' => 'lisa.simpson',
+                'subject' => 'Groupe jeunes : rappel autorisations parentales',
+                'body' => "Bonjour,\n\nIl manque encore plusieurs autorisations parentales pour la sortie de fin de mois.\n\nMerci de les rapporter lors de la prochaine séance, sans quoi nous ne pourrons pas emmener les enfants concernés.",
+                'date' => $ago('10 months'),
+                'sent' => true,
+                'recipients' => $children,
+            ],
+            [
+                'sender_login' => 'esteban.dore',
+                'subject' => 'Section exploration : compte-rendu de la dernière séance',
+                'body' => "<p>Bonjour,</p><p>Merci à celles et ceux qui étaient présents. Le compte-rendu et les relevés sont disponibles dans le dossier partagé.</p><p>Prochaine séance dans quinze jours.</p>",
+                'date' => $ago('8 months'),
+                'sent' => true,
+                'recipients' => $citesdor,
+            ],
+            [
+                'sender_login' => 'ulysse',
+                'subject' => 'Section astronomie : observation nocturne',
+                'body' => "<p>Bonsoir,</p><p>Observation prévue vendredi soir si le ciel est dégagé. Rendez-vous à 21h sur le plateau.</p><p>Prévoir des vêtements chauds, il fait plus froid qu'on ne le croit.</p>",
+                'date' => $ago('7 months'),
+                'sent' => true,
+                'recipients' => $olympe,
+            ],
+            [
+                'sender_login' => 'nono',
+                'subject' => 'Section astronomie : observation reportée',
+                'body' => "Ciel couvert, observation reportée à la semaine prochaine.",
+                'date' => $ago('7 months'),
+                'sent' => true,
+                'recipients' => $olympe,
+            ],
+            [
+                'sender_login' => 'legolas.sylvain',
+                'subject' => 'Randonnée de printemps',
+                'body' => "<p>Bonjour,</p><p>La randonnée annuelle aura lieu le premier dimanche du mois prochain. 18 km, dénivelé modéré.</p><p>Départ 8h30 du parking du local, retour en fin d'après-midi.</p>",
+                'date' => $ago('6 months'),
+                'sent' => true,
+                'recipients' => $terredumilieu,
+            ],
+            [
+                'sender_login' => 'frodon.sacquet',
+                'subject' => 'Randonnée : objet trouvé',
+                'body' => "Bonjour,\n\nUn anneau a été retrouvé sur le parcours de dimanche. Il est déposé au local, à récupérer aux heures de permanence.",
+                'date' => $ago('6 months'),
+                'sent' => true,
+                'recipients' => $terredumilieu,
+            ],
+
+            // Administrative and practical
+            [
+                'sender_login' => 'dana.scully',
+                'subject' => 'Mise à jour de vos coordonnées',
+                'body' => "<p>Bonjour,</p><p>Plusieurs messages nous reviennent en erreur. Merci de vérifier et, si besoin, de mettre à jour votre adresse électronique et votre numéro de téléphone depuis votre espace adhérent.</p>",
+                'date' => $ago('5 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'fox.mulder',
+                'subject' => 'Enquête de satisfaction annuelle',
+                'body' => "<p>Bonjour,</p><p>Comme chaque année, nous vous invitons à répondre à notre courte enquête de satisfaction. Cinq minutes suffisent.</p><p>Vos réponses sont anonymes et nous aident à faire évoluer nos activités.</p>",
+                'date' => $ago('5 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'fox.mulder',
+                'subject' => 'Enquête de satisfaction : derniers jours',
+                'body' => "Bonjour,\n\nL'enquête de satisfaction est encore ouverte quelques jours. Nous avons pour l'instant un peu plus de la moitié des réponses.\n\nMerci d'avance à celles et ceux qui n'ont pas encore répondu.",
+                'date' => $ago('4 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'penny.parker',
+                'subject' => 'Nouvel espace adhérent : mode d\'emploi',
+                'body' => "<p>Bonjour,</p><p>Le nouvel espace adhérent est en ligne. Vous pouvez désormais consulter vos cotisations, télécharger vos reçus et mettre à jour vos informations.</p><p>Un guide pas à pas est disponible sur la page d'accueil.</p>",
+                'date' => $ago('4 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'inspecteur.gadget',
+                'subject' => 'Problème de connexion : procédure',
+                'body' => "Bonjour,\n\nSi vous n'arrivez pas à vous connecter, utilisez le lien « mot de passe oublié » de la page de connexion.\n\nEn cas de difficulté persistante, répondez à ce message en indiquant votre identifiant.",
+                'date' => $ago('3 months'),
+                'sent' => true,
+                'recipients' => ['homer.simpson', 'obelix', 'perceval.gallois', 'philip.fry'],
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Reçus fiscaux de l\'année écoulée',
+                'body' => "<p>Bonjour,</p><p>Les reçus fiscaux correspondant à vos dons de l'année écoulée sont désormais disponibles dans votre espace adhérent.</p><p>En cas d'anomalie sur un montant, merci de me contacter directement.</p>",
+                'date' => $ago('3 months'),
+                'sent' => true,
+                'recipients' => ['leia.organa', 'morpheus', 'daenerys.targaryen', 'jack.skellington', 'philip.fry'],
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Nouveaux tarifs d\'adhésion',
+                'body' => "<p>Bonjour,</p><p>L'assemblée générale a voté une revalorisation des tarifs d'adhésion, applicable à partir de la prochaine saison.</p><p>Le tarif réduit reste inchangé pour les étudiants et les demandeurs d'emploi.</p>",
+                'date' => $ago('2 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'arya.stark',
+                'subject' => 'Permanences pendant les vacances',
+                'body' => "Bonjour,\n\nLe local sera ouvert les mercredis après-midi uniquement pendant toute la durée des vacances.\n\nLes activités reprendront normalement à la rentrée.",
+                'date' => $ago('2 months'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'jon.snow',
+                'subject' => 'Appel à bénévoles pour le forum des associations',
+                'body' => "<p>Bonjour,</p><p>Nous cherchons quatre bénévoles pour tenir le stand de l'association lors du forum, le premier week-end de septembre.</p><p>Deux créneaux sont proposés : matin (9h-13h) et après-midi (13h-18h).</p>",
+                'date' => $ago('7 weeks'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'daenerys.targaryen',
+                'subject' => 'Merci aux bénévoles du forum',
+                'body' => "<p>Un immense merci aux bénévoles qui ont tenu le stand tout le week-end.</p><p>Bilan très positif : une trentaine de contacts et déjà plusieurs adhésions enregistrées.</p>",
+                'date' => $ago('6 weeks'),
+                'sent' => true,
+                'recipients' => $westeros,
+            ],
+            [
+                'sender_login' => 'victor.vandort',
+                'subject' => 'Invitation à la cérémonie de clôture de saison',
+                'body' => "<p>Bonjour,</p><p>Nous vous convions à la cérémonie de clôture de la saison, suivie d'un buffet.</p><p>Merci de confirmer votre présence ainsi que le nombre d'accompagnants.</p>",
+                'date' => $ago('5 weeks'),
+                'sent' => true,
+                'recipients' => array_merge($funebres, $halloween),
+            ],
+            [
+                'sender_login' => 'emily.lamariee',
+                'subject' => 'Clôture de saison : confirmations manquantes',
+                'body' => "Bonjour,\n\nIl nous manque encore quelques confirmations pour le buffet. Le traiteur doit avoir les effectifs définitifs en fin de semaine.\n\nMerci de répondre même en cas d'empêchement.",
+                'date' => $ago('4 weeks'),
+                'sent' => true,
+                'recipients' => array_merge($funebres, $halloween),
+            ],
+            [
+                'sender_login' => 'homer.simpson',
+                'subject' => 'Objets oubliés au local',
+                'body' => "Bonjour,\n\nPlusieurs affaires traînent au local depuis des semaines : deux vestes, un thermos et une paire de lunettes.\n\nElles seront données si personne ne les réclame d'ici la fin du mois.",
+                'date' => $ago('3 weeks'),
+                'sent' => true,
+                'recipients' => $springfield,
+            ],
+            [
+                'sender_login' => 'perceval.gallois',
+                'subject' => 'Question sur le règlement intérieur',
+                'body' => "Bonjour,\n\nJ'ai relu le règlement intérieur trois fois et j'ai toujours pas compris l'article 4.\n\nQuelqu'un peut m'expliquer ? C'est pas pour moi, c'est pour un ami.",
+                'date' => $ago('3 weeks'),
+                'sent' => true,
+                'recipients' => $kaamelott,
+            ],
+            [
+                'sender_login' => 'leodagan.lancelot',
+                'subject' => 'Réponse : article 4 du règlement intérieur',
+                'body' => "<p>Bonjour,</p><p>L'article 4 précise simplement que le matériel emprunté doit être restitué dans l'état où il a été prêté, sous huitaine.</p><p>Rien de plus.</p>",
+                'date' => $ago('2 weeks'),
+                'sent' => true,
+                'recipients' => $kaamelott,
+            ],
+            [
+                'sender_login' => 'arthur.pendragon',
+                'subject' => 'Rappel du règlement d\'emprunt du matériel',
+                'body' => "<p>Bonjour,</p><p>Pour faire suite aux échanges de ces derniers jours, un rappel du règlement d'emprunt est joint à ce message.</p><p>Merci de bien vouloir noter vos emprunts sur le registre du local.</p>",
+                'date' => $ago('12 days'),
+                'sent' => true,
+                'recipients' => $everyone,
+            ],
+
+            // Recent, not sent yet (drafts)
+            [
+                'sender_login' => 'leia.organa',
+                'subject' => 'Projet : convocation à la prochaine assemblée générale',
+                'body' => "<p>Chers membres,</p><p>[brouillon — dates et ordre du jour à confirmer en réunion de bureau]</p><p>Vous êtes convoqué·es à l'assemblée générale ordinaire qui se tiendra…</p>",
+                'date' => $ago('9 days'),
+                'sent' => false,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'maestro',
+                'subject' => 'Lettre d\'information — numéro à paraître',
+                'body' => "<h3>Au sommaire</h3><ul><li>Retour sur le forum des associations</li><li>Les nouveautés de la saison</li><li>[article à compléter]</li></ul>",
+                'date' => $ago('6 days'),
+                'sent' => false,
+                'recipients' => $everyone,
+            ],
+            [
+                'sender_login' => 'albus.dumbledore',
+                'subject' => 'Relance cotisations — à valider avant envoi',
+                'body' => "Bonjour,\n\nSauf erreur de notre part, votre cotisation est échue.\n\n[à relire par le bureau avant envoi]",
+                'date' => $ago('4 days'),
+                'sent' => false,
+                'recipients' => ['luke.skywalker', 'anakin.skywalker', 'han.solo', 'ron.weasley', 'ray.stantz'],
+            ],
+            [
+                'sender_login' => 'trinity',
+                'subject' => 'Test de la nouvelle configuration d\'envoi',
+                'body' => "Message de test envoyé après reconfiguration du serveur de courriel. Merci d'ignorer.",
+                'date' => $ago('2 days'),
+                'sent' => false,
+                'sender_name' => 'Association Galette',
+                'sender_address' => 'contact@galette-fixtures.test',
+                'recipients' => $matrix,
+            ],
+            [
+                'sender_login' => 'penny.parker',
+                'subject' => 'Brouillon : enquête sur les créneaux horaires',
+                'body' => "<p>Bonjour,</p><p>Afin d'ajuster les créneaux de la saison prochaine, nous aimerions connaître vos disponibilités.</p><p>[lien vers le questionnaire à insérer]</p>",
+                'date' => $ago('1 day'),
+                'sent' => false,
+                'recipients' => $everyone,
             ],
         ];
     }

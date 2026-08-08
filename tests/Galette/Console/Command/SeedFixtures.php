@@ -11,13 +11,17 @@ declare(strict_types=1);
 namespace Galette\Tests\Console\Command;
 
 use Galette\Console\Command\SeedFixtures as SeedFixturesCommand;
+use Galette\Core\MailingHistory;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
 use Galette\Entity\Transaction;
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 use Symfony\Component\Console\Tester\CommandTester;
+
+use function Safe\json_decode;
 
 /**
  * SeedFixtures command tests class
@@ -48,6 +52,25 @@ class SeedFixtures extends GaletteTestCase
     {
         $this->runSeed(['--clean' => true]);
         parent::tearDown();
+    }
+
+    /**
+     * Get identifiers of all seeded members
+     *
+     * @return array<int, int>
+     */
+    private function getFixtureMemberIds(): array
+    {
+        $select = $this->zdb->select(Adherent::TABLE);
+        $select->columns(['id_adh']);
+        $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
+        $results = $this->zdb->execute($select);
+
+        $member_ids = [];
+        foreach ($results as $row) {
+            $member_ids[] = (int)$row->id_adh;
+        }
+        return $member_ids;
     }
 
     /**
@@ -140,15 +163,7 @@ class SeedFixtures extends GaletteTestCase
     {
         $this->runSeed();
 
-        // Get fixture member IDs
-        $select = $this->zdb->select(Adherent::TABLE);
-        $select->columns(['id_adh']);
-        $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
-        $results = $this->zdb->execute($select);
-        $member_ids = [];
-        foreach ($results as $row) {
-            $member_ids[] = (int)$row->id_adh;
-        }
+        $member_ids = $this->getFixtureMemberIds();
 
         $select = $this->zdb->select(Contribution::TABLE);
         $select->where->in('id_adh', $member_ids);
@@ -164,20 +179,133 @@ class SeedFixtures extends GaletteTestCase
     {
         $this->runSeed();
 
-        $select = $this->zdb->select(Adherent::TABLE);
-        $select->columns(['id_adh']);
-        $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
-        $results = $this->zdb->execute($select);
-        $member_ids = [];
-        foreach ($results as $row) {
-            $member_ids[] = (int)$row->id_adh;
-        }
+        $member_ids = $this->getFixtureMemberIds();
 
         $select = $this->zdb->select(Transaction::TABLE);
         $select->where->in('id_adh', $member_ids);
         $results = $this->zdb->execute($select);
 
         $this->assertGreaterThanOrEqual(5, $results->count());
+    }
+
+    /**
+     * Test that seeding creates mailings history entries
+     */
+    public function testSeedCreatesMailings(): void
+    {
+        $this->runSeed();
+
+        $member_ids = $this->getFixtureMemberIds();
+
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->where->in('mailing_sender', $member_ids);
+        $results = $this->zdb->execute($select);
+
+        $this->assertGreaterThanOrEqual(50, $results->count());
+
+        $sent = 0;
+        $not_sent = 0;
+        foreach ($results as $row) {
+            $this->assertNotEmpty($row->mailing_subject);
+            $this->assertNotEmpty($row->mailing_body);
+            $this->assertNotEmpty($row->mailing_sender_name);
+            $this->assertNotEmpty($row->mailing_sender_address);
+
+            //dates are all in the past
+            $this->assertLessThan(
+                (new DateTime())->format('Y-m-d H:i:s'),
+                $row->mailing_date
+            );
+
+            //recipients are stored as a JSON map of member id => "name <address>"
+            $recipients = json_decode($row->mailing_recipients, true);
+            $this->assertIsArray($recipients);
+            $this->assertNotEmpty($recipients);
+            foreach ($recipients as $id => $recipient) {
+                $this->assertContains((int)$id, $member_ids);
+                $this->assertMatchesRegularExpression('/^.+ <.+@.+>$/', $recipient);
+            }
+
+            if ($row->mailing_sent) {
+                $sent++;
+            } else {
+                $not_sent++;
+            }
+        }
+
+        //both sent mailings and drafts are seeded
+        $this->assertGreaterThan(0, $sent);
+        $this->assertGreaterThan(0, $not_sent);
+    }
+
+    /**
+     * Test that seeded mailings are usable from MailingHistory
+     */
+    public function testSeededMailingsHistory(): void
+    {
+        $this->runSeed();
+        $this->logSuperAdmin();
+
+        $mh = new MailingHistory($this->zdb, $this->login, $this->preferences);
+        $mh->filters->show = 0; //no pagination
+        $list = $mh->getHistory();
+
+        $this->assertGreaterThanOrEqual(50, count($list));
+
+        //recipients have been decoded, and senders resolved from members table
+        foreach ($list as $entry) {
+            $this->assertIsArray($entry->mailing_recipients);
+            $this->assertNotEmpty($entry->mailing_recipients);
+            $this->assertNotNull($entry->mailing_sender_name);
+            $this->assertSame(0, $entry->attachments);
+        }
+
+        //not sent mailings only
+        $mh->filters->sent_filter = MailingHistory::FILTER_NOT_SENT;
+        $not_sent = $mh->getHistory();
+        $this->assertGreaterThan(0, count($not_sent));
+        foreach ($not_sent as $entry) {
+            $this->assertEquals(0, $entry->mailing_sent);
+        }
+
+        //sent mailings only
+        $mh->filters->sent_filter = MailingHistory::FILTER_SENT;
+        $sent = $mh->getHistory();
+        $this->assertGreaterThan(0, count($sent));
+        foreach ($sent as $entry) {
+            $this->assertEquals(1, $entry->mailing_sent);
+        }
+
+        $this->assertSame(count($list), count($sent) + count($not_sent));
+    }
+
+    /**
+     * Test that a seeded mailing can be loaded as a Mailing
+     */
+    public function testSeededMailingLoad(): void
+    {
+        $this->runSeed();
+        $this->logSuperAdmin();
+
+        $mh = new MailingHistory($this->zdb, $this->login, $this->preferences);
+        $mh->filters->show = 0; //no pagination
+        $mh->filters->subject_filter = 'assemblée générale';
+        $list = $mh->getHistory();
+
+        $this->assertGreaterThan(0, count($list));
+
+        $mailing = new \Galette\Core\Mailing($this->preferences, []);
+        $this->assertTrue(
+            MailingHistory::loadFrom(
+                zdb: $this->zdb,
+                id: (int)$list[0]->mailing_id,
+                mailing: $mailing,
+                new: false
+            )
+        );
+
+        $this->assertStringContainsStringIgnoringCase('assemblée générale', $mailing->subject);
+        $this->assertNotEmpty($mailing->recipients);
     }
 
     /**
@@ -192,6 +320,11 @@ class SeedFixtures extends GaletteTestCase
         $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
         $this->assertGreaterThan(0, $this->zdb->execute($select)->count());
 
+        $member_ids = $this->getFixtureMemberIds();
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->where->in('mailing_sender', $member_ids);
+        $this->assertGreaterThan(0, $this->zdb->execute($select)->count());
+
         // Clean
         $tester = $this->runSeed(['--clean' => true]);
         $this->assertSame(0, $tester->getStatusCode());
@@ -199,6 +332,11 @@ class SeedFixtures extends GaletteTestCase
         // Verify members are gone
         $select = $this->zdb->select(Adherent::TABLE);
         $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+
+        // Verify mailings are gone as well (FK on mailing_sender is RESTRICT)
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->where->in('mailing_sender', $member_ids);
         $this->assertSame(0, $this->zdb->execute($select)->count());
     }
 

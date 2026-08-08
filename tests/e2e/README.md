@@ -480,6 +480,7 @@ Fixture data includes:
 - **Multiple roles**: admin, treasurer, secretary, standard members
 - **Contributions**: various states (up-to-date, expired)
 - **Groups**: family relationships, staff roles
+- **Mailings**: 60+ history entries, sent and unsent, with various senders and recipients
 
 See `TEST_CREDENTIALS.md` for complete list of fixture users.
 

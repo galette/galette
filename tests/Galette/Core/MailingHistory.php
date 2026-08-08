@@ -33,6 +33,10 @@ class MailingHistory extends GaletteTestCase
             $this->preferences
         );
 
+        //start from an empty history; database may already hold entries (seeded fixtures for
+        //example). Test runs in a transaction, this is rolled back on teardown.
+        $this->zdb->execute($this->zdb->delete(\Galette\Core\MailingHistory::TABLE));
+
         //nothing in the logs at the beginning
         $list = $mh->getHistory();
         $this->assertCount(0, $list);
