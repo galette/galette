@@ -8,6 +8,7 @@
 
 {% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
 {% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+{% set can_manage = login.isAdmin() or login.isStaff() %}
 
 {% if can_edit %}
     {% set form = {
@@ -23,7 +24,7 @@
     }
 ] %}
 
-{% macro group_item(login, can_export, can_edit, group, level, parent_id) %}
+{% macro group_item(login, can_export, can_edit, can_manage, group, level, parent_id) %}
     <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if login.isGroupManager(group.getId()) %}1{% else %}0{% endif %}">
         <td class="left{% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
             {% for i in 0..level %}{% if not loop.first %}<i class="icon group-indent" aria-hidden="true"></i>{% endif %}{% endfor %}
@@ -39,22 +40,30 @@
             {{ group.getName() }}
         </td>
         <td class="center actions_row collapsing">
+            {% if login.isGroupManager(group.getId()) %}
+                {% for mode in ['members', 'managers'] %}
+                <a href="#" class="group-persons icon-only jsonly displaynone" data-group="{{ group.getId() }}" data-mode="{{ mode }}" data-name="{{ group.getName() }}" data-view-url="{{ url_for("ajaxGroupPersons", {"id": group.getId(), "mode": mode}) }}"{% if can_manage %} data-store-url="{{ url_for("storeGroupPersons", {"id": group.getId(), "mode": mode}) }}"{% endif %}>
+                    <i class="ui {% if mode == 'members' %}users blue{% else %}user shield teal{% endif %} icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% if mode == 'members' %}{{ _T('Group "%1$s" members')|format(group.getName()) }}{% else %}{{ _T('Group "%1$s" managers')|format(group.getName()) }}{% endif %}</span>
+                </a>
+                {% endfor %}
+            {% endif %}
             {% if login.isGroupManager(group.getId()) and can_export %}
                 <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="icon-only">
                     <i class="file pdf green icon" aria-hidden="true"></i>
-                    <span class="visually-hidden">{{ _T("Export as PDF") }}</span>
+                    <span class="visually-hidden">{{ _T('Export group "%1$s" as PDF')|format(group.getName()) }}</span>
                 </a>
             {% endif %}
             {% if login.isGroupManager(group.getId()) %}
                 <a href="{{ url_for("editGroup", {"id": group.getId()}) }}" class="icon-only">
                     <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
-                    <span class="visually-hidden">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
+                    <span class="visually-hidden">{% if can_edit %}{{ _T('Edit group "%1$s"')|format(group.getName()) }}{% else %}{{ _T('Display group "%1$s"')|format(group.getName()) }}{% endif %}</span>
                 </a>
             {% endif %}
             {% if login.isAdmin() or login.isStaff() %}
                 <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete icon-only">
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="visually-hidden">{{ _T("Delete") }}</span>
+                    <span class="visually-hidden">{{ _T('Delete group "%1$s"')|format(group.getName()) }}</span>
                 </a>
             {% endif %}
         </td>
@@ -63,7 +72,7 @@
         {% set sublevel = level + 1 %}
         {% for child_group in group.getGroups() %}
             {% set level = child_group.getParents()|length %}
-            {{ _self.group_item(login, can_export, can_edit, child_group, level, group.getId()) }}
+            {{ _self.group_item(login, can_export, can_edit, can_manage, child_group, level, group.getId()) }}
         {% endfor %}
     {% endif %}
 {% endmacro %}
@@ -119,7 +128,7 @@
 {% block body %}
     {% for group in groups_root %}
         {% set level = group.getParents()|length %}
-        {{ _self.group_item(login, can_export, can_edit, group, level, 0) }}
+        {{ _self.group_item(login, can_export, can_edit, can_manage, group, level, 0) }}
     {% endfor %}
 {% endblock %}
 
@@ -135,6 +144,9 @@
 
 {% block javascripts %}
     <script type="module">
+        {% include "elements/js/members_selection.js.twig" %}
+        {% include "elements/js/group_persons_modal.js.twig" %}
+
         {% if can_edit %}
             // Selecting necessary DOM elements
             const listForm = document.getElementById('listform');
@@ -435,6 +447,35 @@
                     single_action: "true"
                 } %}
             {% endif %}
+
+            {# Group members and managers modals #}
+            const escapeHtml = function(text) {
+                return $('<div/>').text(text).html();
+            };
+
+            $('.group-persons').on('click', function(){
+                var _link = $(this);
+                var _mode = _link.data('mode');
+                var _name = escapeHtml(_link.data('name'));
+
+                galetteGroupPersons({
+                    title: (_mode === 'managers')
+                        ? '{{ _T("Managers of group %1$s")|e('js') }}'.replace('%1$s', function(){ return _name; })
+                        : '{{ _T("Members of group %1$s")|e('js') }}'.replace('%1$s', function(){ return _name; }),
+                    manageTitle: (_mode === 'managers')
+                        ? '{{ _T("Group managers selection")|e('js') }}'
+                        : '{{ _T("Group members selection")|e('js') }}',
+                    viewUrl: _link.data('view-url'),
+                    storeUrl: _link.data('store-url'),
+                    listData: {
+                        from: 'groups',
+                        gid: _link.data('group'),
+                        mode: _mode
+                    }
+                });
+
+                return false;
+            });
 
             {% if can_edit %}
                 initSortable();

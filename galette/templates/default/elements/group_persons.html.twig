@@ -4,6 +4,17 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
+{#
+ # Available variables:
+ #
+ # - persons: list of Adherent to display.
+ # - person_mode: either "members" or "managers".
+ # - readonly: true to skip hidden inputs (display only, out of any form).
+ #}
+
+{% set readonly = readonly|default(false) %}
+{% set nbcols = login.isSuperAdmin() ? 3 : 2 %}
+
                 <div class="ui basic fitted segment loader_selector">
                     <table class="listing ui celled striped table">
                         <thead>
@@ -23,9 +34,11 @@
                         </thead>
                         <tbody>
 {% for person in persons %}
-                            <tr>
+                            <tr data-id="{{ person.id }}">
                                 <td class="username_row" data-col-label="{{ _T("Name") }}">
+                                {% if not readonly %}
                                 <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
+                                {% endif %}
                                 {% if person.isCompany() %}
                                     <span>
                                         <i class="ui building outline icon tooltip" aria-hidden="true"></i>
@@ -75,11 +88,14 @@
                                         <span class="visually-hidden">{{ _T("Log in as %membername")|replace({"%membername": person.sname}) }}</span>
                                     </a>
                                 </td>
-                            </tr>
     {% endif %}
+                            </tr>
 {% else %}
                             <tr>
-                                <td colspan="{% if login.isSuperAdmin() %}3{% else %}2{% endif %}">
+                                <td colspan="{{ nbcols }}">
+    {% if not readonly %}
+                                <input type="hidden" name="{{ person_mode }}[]" value=""/>
+    {% endif %}
     {% if person_mode == 'members' %}
                                     {{ _T("No member attached") }}
     {% else %}
@@ -91,4 +107,3 @@
                         </tbody>
                     </table>
                 </div>
-

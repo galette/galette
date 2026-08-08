@@ -230,6 +230,8 @@
 {% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or not callstatic('\\Galette\\Core\\Galette', 'isDemo')) and mailing_saved is not defined %}
     {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
 <script type="text/javascript">
+    {% include "elements/js/members_selection.js.twig" %}
+
     $(function() {
         {# Preview popup #}
         $('#btnpreview').click(function(){
@@ -287,150 +289,41 @@
         }
 
         {# Members popup #}
-        $('#btnusers').click(function(){
-            $.ajax({
-                url: '{{ url_for('ajaxMembers') }}',
-                type: "POST",
-                data: {
-                    multiple: true
-                },
-                {% include "elements/js/loader.js.twig" with {
-                    selector: '#btnusers',
-                    loader: 'button'
-                } %},
-                success: function(res){
-                    _members_dialog(res);
-                },
-                error: function() {
-                    {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                        modal_without_content: true,
-                        modal_class: "mini",
-                        modal_deny_only: true,
-                        modal_cancel_text: _T("Close")|e("js"),
-                        modal_classname: "redalert",
-                    } %}
+        $('#btnusers').on('click', function(){
+            galetteMembersSelection({
+                title: '{{ _T("Members selection")|e('js') }}',
+                loaderFrom: '#btnusers',
+                onValidate: function(selection, done) {
+                    $.ajax({
+                        url: '{{ url_for('mailingRecipients') }}',
+                        type: "POST",
+                        data: {
+                            recipients: selection.all
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#btnvalid',
+                            loader: 'button'
+                        } %},
+                        success: function(res){
+                            $('#unreachables_count').remove();
+                            $('#recipients_count').replaceWith(res);
+                            done();
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
                 }
             });
             return false;
         });
-
-        var _members_dialog = function(res){
-            {% include "elements/js/modal.js.twig" with {
-                modal_title_twig: _T("Members selection")|e("js"),
-                modal_content: "res",
-                modal_class: "members-selection fullscreen",
-                modal_content_class: "scrolling",
-                modal_deny_only: true,
-                modal_cancel_text: _T("Close")|e("js")
-            } %}
-            _members_ajax_mapper(res);
-        }
-
-        var _members_ajax_mapper = function(res){
-            $('#btnvalid').click(function(){
-                //first, let's store new recipients in mailing object
-                var _recipients = new Array();
-                $('li[id^="member_"]').each(function(){
-                    _recipients[_recipients.length] = this.id.substring(7, this.id.length);
-                });
-                $.ajax({
-                    url: '{{ url_for('mailingRecipients') }}',
-                    type: "POST",
-                    data: {
-                        recipients: _recipients
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: '#btnvalid',
-                        loader: 'button'
-                    } %},
-                    success: function(res){
-                        $('#unreachables_count').remove();
-                        $('#recipients_count').replaceWith(res);
-                        $('.members-selection').modal('hide');
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-            });
-            //Remap links
-            var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){
-                $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {
-                    $('#selected_members ul').append(_none);
-                }
-            });
-            $('#listing tbody tr').click(function(event){
-                event.preventDefault();
-                var _mlink = $(this).find('.username_row a');
-                var _mid = _mlink[0].href.match(/.*\/(\d+)$/)[1];
-                var _mname = _mlink.text();
-                $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
-                    $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){
-                        $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {
-                            $('#selected_members ul').append(_none);
-                        }
-                    });
-                }
-                return false;
-            }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a member")|e('js') }}');
-
-            $('.members-selection .pagination a').click(function(){
-                var _members = new Array();
-                var _unreach = new Array();
-                $('li[id^="member_"]').each(function(){
-                    var _mid = this.id.substring(7, this.id.length);
-                    if ($(this).hasClass('unreachables')) {
-                        _unreach[_unreach.length] = _mid;
-                    } else {
-                        _members[_members.length] = _mid;
-                    }
-                });
-
-                $.ajax({
-                    url: this.href,
-                    type: "POST",
-                    data: {
-                        multiple: true,
-                        members: _members,
-                        unreachables: _unreach
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        loader: '#listing'
-                    } %},
-                    success: function(res){
-                        $('#listing').remove();
-                        var _listing = $($.parseHTML(res)).find('#listing');
-                        $('.members-selection .eleven.wide.column').append(_listing);
-                        _members_ajax_mapper(res);
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-                return false;
-            });
-        }
 
         {% set modal_onapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
         $('.rm_attachement').click(function(event){

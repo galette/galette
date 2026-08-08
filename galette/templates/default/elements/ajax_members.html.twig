@@ -4,11 +4,35 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
+{% set multiple = multiple|default(false) %}
+{% set selected_ids = [] %}
+{% if selected_members is iterable %}
+    {% for member in selected_members %}
+        {% set selected_ids = selected_ids|merge([member.id]) %}
+    {% endfor %}
+{% endif %}
+{% set nbcols = multiple ? 4 : 3 %}
+
 <div class="ui stackable grid align-items-center">
     <div class="eleven wide column">
+        <div class="ui basic fitted segment">
+            <div class="ui fluid action input">
+                <label for="members_search" class="visually-hidden">{{ _T("Search a member") }}</label>
+                <input type="search" id="members_search" name="filter_str" value="{{ filters.filter_str }}" placeholder="{{ _T("Name or nickname") }}"/>
+                <button type="button" class="ui icon button" id="members_search_btn">
+                    <i class="search icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Search a member") }}</span>
+                </button>
+            </div>
+        </div>
         <table id="listing" class="listing select_members{% if not multiple %} single{% endif %} ui celled table">
             <thead>
                 <tr>
+{% if multiple %}
+                    <th class="listing collapsing">
+                        <span class="visually-hidden">{{ _T("Selection") }}</span>
+                    </th>
+{% endif %}
                     <th class="listing id_row collapsing">#</th>
                     <th class="listing left">
                         {{ _T("Name") }}
@@ -21,7 +45,15 @@
             <tbody>
 {% for member in members_list %}
     {% if excluded is not defined or excluded != member.id %}
-                <tr class="{{ member.getRowClass() }}">
+                <tr class="{{ member.getRowClass() }}" data-id="{{ member.id }}" data-name="{{ member.sfullname }}">
+        {% if multiple %}
+                    <td class="collapsing">
+                        <div class="ui fitted read-only checkbox">
+                            <input type="checkbox" class="select-member" tabindex="-1" value="{{ member.id }}"{% if member.id in selected_ids %} checked="checked"{% endif %}/>
+                            <label><span class="visually-hidden">{{ member.sfullname }}</span></label>
+                        </div>
+                    </td>
+        {% endif %}
                     <td class="right collapsing">{{ member.id }}</td>
                     <td class="username_row">
                     {% if member.isCompany() %}
@@ -68,14 +100,14 @@
                 </tr>
     {% endif %}
 {% else %}
-                <tr><td colspan="3" class="emptylist">{{ _T("no member") }}</td></tr>
+                <tr><td colspan="{{ nbcols }}" class="emptylist">{{ _T("no member") }}</td></tr>
 {% endfor %}
             </tbody>
 {% if is_paginated %}
             <tfoot>
             {# keep this one after "tbody" element to prevent display issues #}
                 <tr>
-                    <td colspan="3" class="center">
+                    <td colspan="{{ nbcols }}" class="center">
                         <div class="ui basic left aligned fitted segment">
                             <div class="ui inverted pagination stackable menu">
                                 <div class="header item">
@@ -94,23 +126,19 @@
     <div class="five wide column">
         <section id="selected_members" class="ui basic fitted segment">
             <div class="ui top attached accordion-styled header">
-                {{ _T("Selected members") }}
+                {{ _T("Selected members") }} (<span id="selected_members_count">{{ selected_ids|length }}</span>)
             </div>
             <div class="ui bottom attached accordion-styled segment">
-    {% for recipient in selected_members %}
-    {% else %}
-                <p id="none_selected">{{ _T("No members has been selected yet.") }}</p>
-    {% endfor %}
                 <ul class="ui middle aligned relaxed divided selection list">
-    {% for recipient in selected_members %}
-                    <li id="member_{{ recipient.id }}" class="item">
+    {% for recipient in selected_members|default([]) %}
+                    <li id="member_{{ recipient.id }}" class="item" data-id="{{ recipient.id }}" title="{{ _T("Click to remove from selection") }}">
                         <i class="ui user minus icon" aria-hidden="true"></i>
                         <span class="ui content">{{ recipient.sfullname }}</span>
                     </li>
     {% endfor %}
-    {% if unreachables_members is defined and unreachables_members|length > 0 %}
+    {% if unreachables_members is iterable %}
         {% for recipient in unreachables_members %}
-                    <li id="member_{{ recipient.id }}" class="item">
+                    <li id="member_{{ recipient.id }}" class="item unreachable" data-id="{{ recipient.id }}" data-unreachable="1">
                         <i class="icons">
                             <i class="dont disabled icon" aria-hidden="true"></i>
                             <i class="top right corner minus icon" aria-hidden="true"></i>
@@ -119,10 +147,13 @@
                     </li>
         {% endfor %}
     {% endif %}
+                    <li id="none_selected" class="item{% if selected_ids|length > 0 or unreachables_members is iterable and unreachables_members|length > 0 %} displaynone{% endif %}">
+                        {{ _T("No members has been selected yet.") }}
+                    </li>
                 </ul>
             </div>
             <div class="ui basic center aligned fitted segment">
-                <button class="ui fluid primary button" id="btnvalid">{{ _T("Validate") }}</button>
+                <button type="button" class="ui fluid primary button" id="btnvalid">{{ _T("Validate") }}</button>
                 {% if the_id is defined %}
                     <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
                 {% endif %}
@@ -130,3 +161,4 @@
         </section>
     </div>
 {% endif %}
+</div>

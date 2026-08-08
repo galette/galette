@@ -41,6 +41,11 @@ $app->post(
     [Crud\GroupsController::class, 'doEdit']
 )->setName('doEditGroup')->add(Authenticate::class);
 
+$app->post(
+    '/group/{id:\d+}/persons/{mode:members|managers}',
+    [Crud\GroupsController::class, 'storePersons']
+)->setName('storeGroupPersons')->add(Authenticate::class);
+
 $app->get(
     '/group/remove/{id:\d+}',
     [Crud\GroupsController::class, 'confirmDelete']
@@ -60,6 +65,11 @@ $app->post(
     '/ajax/group',
     [Crud\GroupsController::class, 'getGroup']
 )->setName('ajax_group')->add(Authenticate::class);
+
+$app->post(
+    '/ajax/group/{id:\d+}/persons/{mode:members|managers}',
+    [Crud\GroupsController::class, 'ajaxPersons']
+)->setName('ajaxGroupPersons')->add(Authenticate::class);
 
 $app->post(
     '/ajax/groups',

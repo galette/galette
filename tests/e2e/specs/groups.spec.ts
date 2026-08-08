@@ -78,20 +78,53 @@ test.describe('Groups', () => {
       const formPage = new GroupFormPage(page);
       await formPage.goto(parseInt(createdGroupId));
 
+      expect(await formPage.getMembersCount()).toBe(0);
+
       // Open members selection modal
       await formPage.openMembersSelection();
 
       // Add a member (using fixture member Luke Skywalker)
       await formPage.addMemberInModal('SKYWALKER');
 
-      // Validate the modal
+      // Validate the modal; selection is stored right away
       await formPage.validateMembersModal();
 
-      // Save the form
-      await formPage.save();
+      // Members table and count are refreshed without reloading the page
+      expect(await formPage.getMembersCount()).toBe(1);
+      await expect(formPage.getMembersList()).toHaveCount(1);
 
-      // Verify we're back on groups list or edit page
-      await page.waitForLoadState('networkidle');
+      // ... and it is persisted
+      await formPage.goto(parseInt(createdGroupId));
+      expect(await formPage.getMembersCount()).toBe(1);
+      expect(await formPage.hasMember('SKYWALKER')).toBeTruthy();
+    });
+
+    test('Groups - Display members from the list', async ({ loggedInPage: page }) => {
+      const listPage = new GroupListPage(page);
+      await listPage.goto();
+
+      const modifiedName = `${TEST_GROUP.name} - Modified`;
+      await listPage.openPersonsModal(modifiedName, 'members');
+
+      const modal = page.locator('.ui.modal.group-persons-view.visible');
+      await expect(modal.locator('table.listing tbody tr')).toHaveCount(1);
+      await expect(modal).toContainText('SKYWALKER');
+
+      // Read-only listing, hidden inputs belong to the group form only
+      await expect(modal.locator('input[name="members[]"]')).toHaveCount(0);
+
+      // Switch to the selection interface and empty the group
+      await listPage.manageInPersonsModal();
+      await page.locator('#selected_members li[data-id]').first().click();
+      await expect(page.locator('#selected_members li[data-id]')).toHaveCount(0);
+      await page.locator('#btnvalid').click();
+
+      await expect(page.locator('.ui.toast.success')).toBeVisible({ timeout: 10000 });
+
+      // Group is now empty
+      await listPage.goto();
+      await listPage.openPersonsModal(modifiedName, 'members');
+      await expect(page.locator('.ui.modal.group-persons-view.visible')).toContainText(/No member|Aucun membre/i);
     });
 
     test('Groups - Delete group', async ({ loggedInPage: page }) => {

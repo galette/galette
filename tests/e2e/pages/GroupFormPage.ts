@@ -86,10 +86,13 @@ export class GroupFormPage {
    * Assumes modal is already open
    */
   async addMemberInModal(memberName: string): Promise<void> {
-    await this.page.getByRole('link', { name: '2', exact: true }).click();
+    // Narrow the listing down to the wanted member
+    await this.page.locator('#members_search').fill(memberName);
+    await this.page.locator('#members_search_btn').click();
+
     // Click on the row containing the member name
     const memberRow = this.page.locator('#listing tbody tr').filter({ hasText: memberName });
-    await memberRow.nth(1).click();
+    await memberRow.first().click();
 
     // Verify the member was added to the selected list
     await this.page.locator(`#selected_members li:has-text("${memberName}")`).waitFor({ state: 'visible' });
@@ -107,6 +110,8 @@ export class GroupFormPage {
 
   /**
    * Validate the members selection modal
+   *
+   * The selection is stored right away, so this waits for the success toast.
    */
   async validateMembersModal(): Promise<void> {
     await this.page.locator('#btnvalid').click();
@@ -114,8 +119,22 @@ export class GroupFormPage {
     // Wait for modal to close
     await this.page.locator('.ui.modal.members-selection.visible').waitFor({ state: 'hidden' });
 
-    // Wait for the yellow warning message indicating unsaved changes
-    await this.page.locator('.ui.icon.yellow.message').waitFor({ state: 'visible', timeout: 5000 });
+    // Selection is stored on the fly, a success toast is displayed
+    await this.page.locator('.ui.toast.success').waitFor({ state: 'visible', timeout: 10000 });
+  }
+
+  /**
+   * Get the members count displayed in the section header
+   */
+  async getMembersCount(): Promise<number> {
+    return parseInt(await this.page.locator('#group_members .persons-count').innerText());
+  }
+
+  /**
+   * Get the managers count displayed in the section header
+   */
+  async getManagersCount(): Promise<number> {
+    return parseInt(await this.page.locator('#group_managers .persons-count').innerText());
   }
 
   /**

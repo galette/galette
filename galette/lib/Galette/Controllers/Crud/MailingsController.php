@@ -703,9 +703,11 @@ class MailingsController extends CrudController
         $m = new Members();
         $members = [];
 
-        if (isset($post['recipients'])) {
+        //an empty value is sent when the whole selection has been cleared
+        $recipients = array_filter((array)($post['recipients'] ?? []));
+        if (count($recipients)) {
             $members = $m->getArrayList(
-                ids: $post['recipients'],
+                ids: $recipients,
                 orderby: null,
                 with_photos: false,
                 as_members: true,

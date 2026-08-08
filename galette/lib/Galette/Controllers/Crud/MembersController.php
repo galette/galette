@@ -899,6 +899,28 @@ class MembersController extends CrudController
     }
 
     /**
+     * Load members from a selection sent by the selection modal
+     *
+     * The modal always sends an empty entry, so an emptied selection is not
+     * mistaken for "nothing sent at all".
+     *
+     * @param mixed $ids Members ids
+     *
+     * @return array<int, Adherent>
+     */
+    private function loadSelection(mixed $ids): array
+    {
+        $ids = array_filter((array)$ids);
+        if (!count($ids)) {
+            return [];
+        }
+
+        $m = new Members();
+        $members = $m->getArrayList($ids);
+        return is_array($members) ? $members : [];
+    }
+
+    /**
      * Members list for ajax
      *
      * @param string|null     $option One of 'page' or 'order'
@@ -922,6 +944,16 @@ class MembersController extends CrudController
         //numbers of rows to display
         if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
             $filters->show = (int)$post['nbshow'];
+        }
+
+        //search field of the selection modal; back to first page on a new search
+        if (array_key_exists('filter_str', $post)) {
+            $filter_str = trim((string)$post['filter_str']);
+            if ($filter_str !== (string)$filters->filter_str) {
+                $filters->filter_str = $filter_str === '' ? null : $filter_str;
+                $filters->current_page = 1;
+            }
+            $filters->field_filter = Members::FILTER_NAME;
         }
 
         $members = new Members($filters);
@@ -956,10 +988,9 @@ class MembersController extends CrudController
                 $selected_members = $mailing->recipients;
                 $unreachables_members = $mailing->unreachables;
             } else {
-                $m = new Members();
-                $selected_members = $m->getArrayList($post['members']);
-                if (isset($post['unreachables']) && is_array($post['unreachables'])) {
-                    $unreachables_members = $m->getArrayList($post['unreachables']);
+                $selected_members = $this->loadSelection($post['members']);
+                if (isset($post['unreachables'])) {
+                    $unreachables_members = $this->loadSelection($post['unreachables']);
                 }
             }
         } else {
@@ -987,10 +1018,9 @@ class MembersController extends CrudController
                             throw new \Exception('Unknown mode.');
                         }
                     } else {
-                        $m = new Members();
-                        $selected_members = $m->getArrayList($post['members']);
-                        if (isset($post['unreachables']) && is_array($post['unreachables'])) {
-                            $unreachables_members = $m->getArrayList($post['unreachables']);
+                        $selected_members = $this->loadSelection($post['members']);
+                        if (isset($post['unreachables'])) {
+                            $unreachables_members = $this->loadSelection($post['unreachables']);
                         }
                     }
                     break;

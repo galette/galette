@@ -27,6 +27,10 @@
 /*--------------------------
      Ajax select members
 ---------------------------*/
+#selected_members {
+  position: sticky;
+  top: 1em;
+}
 #selected_members .bottom.segment {
   max-height: 320px;
   overflow-y: auto;

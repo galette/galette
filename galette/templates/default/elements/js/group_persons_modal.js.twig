@@ -1,0 +1,143 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+/**
+ * Group members/managers modals.
+ *
+ * Requires members_selection.js.twig to be included on the same page.
+ *
+ * Two entry points:
+ *
+ * - galetteManageGroupPersons(options): open the members selection modal and
+ *   store the new list right away.
+ * - galetteGroupPersons(options): display a group's members (or managers)
+ *   read-only; when `storeUrl` is set, a "Manage" button switches to the
+ *   selection modal above.
+ *
+ * Options:
+ *
+ * - title:       read-only modal's title.
+ * - manageTitle: selection modal's title.
+ * - viewUrl:     ajaxGroupPersons URL (read-only modal only).
+ * - storeUrl:    storeGroupPersons URL; omit to get a read-only modal.
+ * - listData:    extra data for the members listing ({from, gid, mode}).
+ * - loaderFrom:  selector of the element holding the loader.
+ * - onStored:    callback receiving the JSON response once stored.
+ */
+#}
+
+(function () {
+    var _error = function () {
+        {% include "elements/js/modal.js.twig" with {
+            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+            modal_without_content: true,
+            modal_class: "mini",
+            modal_deny_only: true,
+            modal_cancel_text: _T("Close")|e("js"),
+            modal_classname: "redalert",
+        } %}
+    };
+
+    var _toast = function (message, type) {
+        $('body').toast({
+            displayTime: (type === 'success') ? 'auto' : 0,
+            minDisplayTime: 5000,
+            wordsPerMinute: 80,
+            showProgress: 'bottom',
+            closeIcon: true,
+            position: 'top attached',
+            message: message,
+            showIcon: (type === 'success') ? 'check circle' : 'exclamation triangle',
+            class: type
+        });
+    };
+
+    var _defaults = function (options) {
+        return $.extend({
+            title: '',
+            manageTitle: '{{ _T("Members selection")|e('js') }}',
+            viewUrl: null,
+            storeUrl: null,
+            listData: {},
+            loaderFrom: null,
+            onStored: function () {}
+        }, options || {});
+    };
+
+    window.galetteManageGroupPersons = function (options) {
+        var opts = _defaults(options);
+
+        galetteMembersSelection({
+            title: opts.manageTitle,
+            listData: opts.listData,
+            loaderFrom: opts.loaderFrom,
+            onValidate: function (selection, done) {
+                $.ajax({
+                    url: opts.storeUrl,
+                    type: "POST",
+                    data: {persons: selection.all},
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: "#btnvalid",
+                        loader: "button"
+                    } %},
+                    success: function (res) {
+                        if (res.success === true) {
+                            done();
+                            _toast(res.message, 'success');
+                            opts.onStored(res);
+                        } else {
+                            _toast(res.message, 'error');
+                        }
+                    },
+                    error: _error
+                });
+            }
+        });
+    };
+
+    window.galetteGroupPersons = function (options) {
+        var opts = _defaults(options);
+
+        var _manage = function () {
+            $('.group-persons-view').modal('hide');
+            galetteManageGroupPersons(opts);
+        };
+
+        $.ajax({
+            url: opts.viewUrl,
+            type: "POST",
+            beforeSend: function () {
+                if (opts.loaderFrom) {
+                    $(opts.loaderFrom).addClass('loading');
+                }
+            },
+            complete: function () {
+                if (opts.loaderFrom) {
+                    $(opts.loaderFrom).removeClass('loading');
+                }
+            },
+            success: function (res) {
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title: "opts.title",
+                    modal_content: "res",
+                    modal_class: "group-persons-view large",
+                    modal_content_class: "scrolling",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_onshow: "if (!opts.storeUrl) { $(this).find('.manage-persons').remove(); } return true;",
+                    modal_additional_button: {
+                        text: _T("Manage")|e("js"),
+                        icon: "users cog",
+                        class: "icon labeled primary manage-persons",
+                        click: "function () { _manage(); return false; }"
+                    }
+                } %}
+            },
+            error: _error
+        });
+    };
+})();

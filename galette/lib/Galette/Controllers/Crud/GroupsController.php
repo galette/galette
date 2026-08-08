@@ -259,41 +259,116 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Group members ajax loader
+     * Group persons (members or managers) ajax loader
+     *
+     * @param int    $id   Group id
+     * @param string $mode One of 'members' or 'managers'
      */
     #[Route(
-        name: 'ajaxGroupMembers',
-        pattern: '/ajax/group/members',
+        name: 'ajaxGroupPersons',
+        pattern: '/ajax/group/{id:\d+}/persons/{mode:members|managers}',
         methods: ['POST']
     )]
-    public function ajaxMembers(Request $request, Response $response): Response
+    public function ajaxPersons(Request $request, Response $response, int $id, string $mode): Response
     {
-        $post = $request->getParsedBody();
-
-        $ids = $post['persons'];
-        $mode = $post['person_mode'];
-
-        if (!$ids || !$mode) {
-            Analog::log(
-                'Missing persons and mode for ajaxGroupMembers',
-                Analog::INFO
-            );
-            die();
+        if (!$this->login->isGroupManager($id)) {
+            throw new \RuntimeException('Trying to display group persons without appropriate permissions');
         }
 
-        $m = new Members();
-        $persons = $m->getArrayList($ids);
+        $group = new Group($id);
+        $group->setLogin($this->login);
 
         // display page
         $this->view->render(
             $response,
             'elements/group_persons.html.twig',
             [
-                'persons'       => $persons,
-                'person_mode'   => $mode
+                'persons'       => $mode === 'managers' ? $group->getManagers() : $group->getMembers(),
+                'person_mode'   => $mode,
+                'readonly'      => true
             ]
         );
         return $response;
+    }
+
+    /**
+     * Store group persons (members or managers)
+     *
+     * Unlike the whole group form, this stores the list right away.
+     *
+     * @param int    $id   Group id
+     * @param string $mode One of 'members' or 'managers'
+     */
+    #[Route(
+        name: 'storeGroupPersons',
+        pattern: '/group/{id:\d+}/persons/{mode:members|managers}',
+        methods: ['POST']
+    )]
+    public function storePersons(Request $request, Response $response, int $id, string $mode): Response
+    {
+        $group = new Group($id);
+        $group->setLogin($this->login);
+
+        if (!$group->canEdit($this->login)) {
+            throw new \RuntimeException('Trying to edit group persons without appropriate permissions');
+        }
+
+        $post = $request->getParsedBody();
+        $ids = $post['persons'] ?? [];
+        if (!is_array($ids)) {
+            $ids = [];
+        }
+        //an empty value is sent when the whole selection has been cleared
+        $ids = array_filter($ids);
+
+        $persons = [];
+        if (count($ids)) {
+            $m = new Members();
+            $loaded = $m->getArrayList($ids);
+            if (is_array($loaded)) {
+                $persons = $loaded;
+            }
+        }
+
+        try {
+            $stored = $mode === 'managers' ? $group->setManagers($persons) : $group->setMembers($persons);
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot store group persons | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            $stored = false;
+        }
+
+        if ($stored !== true) {
+            return $this->withJson(
+                $response,
+                [
+                    'success' => false,
+                    'message' => $mode === 'managers'
+                        ? _T("An error occurred while storing group managers.")
+                        : _T("An error occurred while storing group members.")
+                ]
+            );
+        }
+
+        return $this->withJson(
+            $response,
+            [
+                'success' => true,
+                'message' => $mode === 'managers'
+                    ? _T("Group managers have been successfully stored.")
+                    : _T("Group members have been successfully stored."),
+                'count'   => count($persons),
+                'html'    => $this->view->fetch(
+                    'elements/group_persons.html.twig',
+                    [
+                        'persons'       => $persons,
+                        'person_mode'   => $mode
+                    ]
+                )
+            ]
+        );
     }
 
     /**
@@ -386,8 +461,9 @@ class GroupsController extends CrudController
 
             //handle group managers
             if (isset($post['managers'])) {
-                $managers_id = $post['managers'];
-                $managers = $m->getArrayList($managers_id);
+                //an empty value is sent when the list is empty
+                $managers_id = array_filter((array)$post['managers']);
+                $managers = count($managers_id) ? $m->getArrayList($managers_id) : [];
                 if (is_array($managers)) {
                     $group->setManagers($managers);
                 }
@@ -395,8 +471,9 @@ class GroupsController extends CrudController
 
             //handle group members
             if (isset($post['members'])) {
-                $members_id = $post['members'];
-                $members = $m->getArrayList($members_id);
+                //an empty value is sent when the list is empty
+                $members_id = array_filter((array)$post['members']);
+                $members = count($members_id) ? $m->getArrayList($members_id) : [];
                 if (is_array($members)) {
                     $group->setMembers($members);
                 }

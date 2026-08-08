@@ -207,11 +207,6 @@ $app->post(
     [Crud\MembersController::class, 'ajaxList']
 )->setName('ajaxMembers')->add(Authenticate::class);
 
-$app->post(
-    '/ajax/group/members',
-    [Crud\GroupsController::class, 'ajaxMembers']
-)->setName('ajaxGroupMembers')->add(Authenticate::class);
-
 $app->get(
     '/members/mass-change',
     [Crud\MembersController::class, 'massChange']

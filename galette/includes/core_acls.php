@@ -60,7 +60,6 @@ $core_acls = [
     '/(.+)?addMemberChild/i'            => 'member',
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
-    'ajaxGroupMembers'                  => 'staff',
     'duplicateMember'                   => 'staff',
     'filterContributions'               => 'member',
     'adhesionForm'                      => 'member',

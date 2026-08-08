@@ -71,6 +71,29 @@ export class GroupListPage {
   }
 
   /**
+   * Get the "display members" (or managers) button of a group
+   */
+  getPersonsButtonByName(name: string, mode: 'members' | 'managers'): Locator {
+    return this.getGroupRowByName(name).locator(`a.group-persons[data-mode="${mode}"]`);
+  }
+
+  /**
+   * Open the members (or managers) modal of a group from the list
+   */
+  async openPersonsModal(name: string, mode: 'members' | 'managers'): Promise<void> {
+    await this.getPersonsButtonByName(name, mode).click();
+    await this.page.locator('.ui.modal.group-persons-view.visible').waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Switch the persons modal to the selection interface
+   */
+  async manageInPersonsModal(): Promise<void> {
+    await this.page.locator('.ui.modal.group-persons-view .manage-persons').click();
+    await this.page.locator('.ui.modal.members-selection.visible').waitFor({ state: 'visible' });
+  }
+
+  /**
    * Click delete button for a group by name
    */
   async deleteGroupByName(name: string): Promise<void> {

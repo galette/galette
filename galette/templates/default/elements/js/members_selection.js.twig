@@ -1,0 +1,211 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+/**
+ * Members selection modal.
+ *
+ * Displays the paginated members list on the left, the current selection on the
+ * right, and hands the selected ids over to the caller on validation.
+ *
+ * Include this file once per page, then call:
+ *
+ *   galetteMembersSelection({
+ *       title:      'Group members selection',   // modal title
+ *       listData:   {from: 'groups', gid: 42, mode: 'members'},
+ *       loaderFrom: '#btnusers_small',           // element holding the loader
+ *       onValidate: function (sel, done) { ... }  // call done() to close modal
+ *   });
+ *
+ * `onValidate` receives the current selection as {members, unreachables, all}
+ * (`members` holds the reachable ones only). Each list always starts with an
+ * empty entry, so an emptied selection cannot be mistaken for "nothing sent";
+ * the server side filters those out.
+ */
+#}
+
+window.galetteMembersSelection = function (options) {
+    var opts = $.extend({
+        title: '{{ _T("Members selection")|e('js') }}',
+        listUrl: '{{ url_for('ajaxMembers') }}',
+        listData: {},
+        loaderFrom: null,
+        onValidate: function (ids, done) {
+            done();
+        }
+    }, options || {});
+
+    var _removeTitle = '{{ _T("Click to remove from selection")|e('js') }}';
+    var _selectTitle = '{{ _T("Click on a row to select a member")|e('js') }}';
+
+    var _error = function () {
+        {% include "elements/js/modal.js.twig" with {
+            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+            modal_without_content: true,
+            modal_class: "mini",
+            modal_deny_only: true,
+            modal_cancel_text: _T("Close")|e("js"),
+            modal_classname: "redalert",
+        } %}
+    };
+
+    {# Current selection; an empty entry is always sent so an emptied selection is not lost #}
+    var _selection = function () {
+        var _sel = {members: [''], unreachables: [''], all: ['']};
+        $('#selected_members ul li[data-id]').each(function () {
+            var _item = $(this);
+            var _id = _item.attr('data-id');
+            if (_item.attr('data-unreachable')) {
+                _sel.unreachables.push(_id);
+            } else {
+                _sel.members.push(_id);
+            }
+            _sel.all.push(_id);
+        });
+        return _sel;
+    };
+
+    {# Data sent on every listing request: caller's own data, selection and search #}
+    var _listData = function () {
+        var _data = $.extend({}, opts.listData, _selection());
+        var _search = $('#members_search');
+        if (_search.length) {
+            _data.filter_str = _search.val();
+        }
+        return _data;
+    };
+
+    var _refreshSelection = function () {
+        var _count = $('#selected_members ul li[data-id]').length;
+        $('#selected_members_count').text(_count);
+        $('#none_selected').toggleClass('displaynone', _count > 0);
+    };
+
+    var _setChecked = function (id, checked) {
+        $('#listing tbody tr[data-id="' + id + '"] .select-member').prop('checked', checked);
+    };
+
+    var _unselect = function (id) {
+        $('#selected_members ul li[data-id="' + id + '"]:not([data-unreachable])').remove();
+        _setChecked(id, false);
+        _refreshSelection();
+    };
+
+    var _select = function (id, name) {
+        if ($('#selected_members ul li[data-id="' + id + '"]').length === 0) {
+            var _li = $('<li class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content"></span></li>');
+            _li.attr('id', 'member_' + id).attr('data-id', id).attr('title', _removeTitle);
+            _li.find('.content').text(name);
+            $('#selected_members ul').append(_li);
+        }
+        _setChecked(id, true);
+        _refreshSelection();
+    };
+
+    {# (Re)bind events on the modal contents; called again after each listing refresh #}
+    var _mapper = function () {
+        $('#selected_members ul').off('click.galette').on('click.galette', 'li[data-id]:not([data-unreachable])', function () {
+            _unselect($(this).attr('data-id'));
+            return false;
+        });
+
+        $('#listing tbody tr[data-id]')
+            .css('cursor', 'pointer')
+            .attr('title', _selectTitle)
+            .off('click.galette')
+            .on('click.galette', function (event) {
+                event.preventDefault();
+                var _row = $(this);
+                var _id = _row.attr('data-id');
+                if ($('#selected_members ul li[data-id="' + _id + '"]').length > 0) {
+                    _unselect(_id);
+                } else {
+                    _select(_id, _row.attr('data-name'));
+                }
+                return false;
+            });
+
+        $('.members-selection .pagination a').off('click.galette').on('click.galette', function () {
+            _load(this.href, _listData(), true);
+            return false;
+        });
+
+        var _search = function () {
+            _load(opts.listUrl, _listData(), true);
+        };
+
+        $('#members_search_btn').off('click.galette').on('click.galette', function () {
+            _search();
+            return false;
+        });
+
+        $('#members_search').off('keydown.galette').on('keydown.galette', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                _search();
+            }
+        });
+
+        $('#btnvalid').off('click.galette').on('click.galette', function () {
+            opts.onValidate(_selection(), function () {
+                $('.members-selection').modal('hide');
+            });
+            return false;
+        });
+
+        _refreshSelection();
+    };
+
+    {# Load (or reload) the members listing #}
+    var _load = function (url, data, refresh) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: $.extend({multiple: true}, data),
+            beforeSend: function () {
+                if (refresh) {
+                    var _target = $('.members-selection .eleven.wide.column');
+                    _target.find('.dimmer:not(.modals)').remove();
+                    _target.append(
+                        '<div class="ui active inverted dimmer"><div class="ui text loader">{{ _T("Loading...")|e('js') }}</div></div>'
+                    );
+                } else if (opts.loaderFrom) {
+                    $(opts.loaderFrom).addClass('loading');
+                }
+            },
+            complete: function () {
+                $('.members-selection .eleven.wide.column .dimmer:not(.modals)').remove();
+                if (opts.loaderFrom) {
+                    $(opts.loaderFrom).removeClass('loading');
+                }
+            },
+            success: function (res) {
+                if (refresh) {
+                    var _listing = $($.parseHTML(res)).find('#listing');
+                    $('#listing').replaceWith(_listing);
+                    _mapper();
+                } else {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title: "opts.title",
+                        modal_content: "res",
+                        modal_class: "members-selection fullscreen",
+                        modal_content_class: "scrolling",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_other_options: {
+                            autofocus: false
+                        }
+                    } %}
+                    _mapper();
+                }
+            },
+            error: _error
+        });
+    };
+
+    {# an empty search resets any filter left in session by a previous opening #}
+    _load(opts.listUrl, $.extend({filter_str: ''}, opts.listData), false);
+};
