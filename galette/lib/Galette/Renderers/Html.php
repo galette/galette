@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Renderers;
 
 use Galette\Exception\PHPStartupException;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Flash\Messages;
 use Slim\Interfaces\ErrorRendererInterface;
@@ -50,6 +51,9 @@ class Html implements ErrorRendererInterface
         if ($exception instanceof HttpNotFoundException) {
             $code = 404;
             $title = __('Page not found');
+        } elseif ($exception instanceof HttpForbiddenException) {
+            $code = 403;
+            $title = __('Access denied');
         }
 
         $php_error = error_get_last();

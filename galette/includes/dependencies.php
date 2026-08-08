@@ -10,15 +10,10 @@ declare(strict_types=1);
 
 use Analog\Analog;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
 use Twig\Extra\String\StringExtension;
 use Twig\Extra\Intl\IntlExtension;
-
-use function Safe\preg_match;
 
 /**
  * @var \Slim\App<DI\Container> $app
@@ -59,7 +54,6 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     );
 
     //Twig extensions
-    $view->addExtension($c->get(\Galette\Twig\CsrfExtension::class));
     $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
     $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
     $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
@@ -294,41 +288,10 @@ $container->set(
 );
 
 $container->set(
-    \Slim\Csrf\Guard::class,
-    function (ContainerInterface $c) use ($app) {
-        $responseFactory = $app->getResponseFactory();
-        $storage = null;
-        $guard = new \Slim\Csrf\Guard(
-            responseFactory: $responseFactory,
-            prefix: 'csrf',
-            storage: $storage,
-            failureHandler: null,
-            storageLimit: 200,
-            strength: 16,
-            persistentTokenMode: true
-        );
-
-        $exclusions = $c->get('CsrfExclusions');
-        $guard->setFailureHandler(function (ServerRequestInterface $request, RequestHandler $handler) use ($exclusions) {
-            $response = $handler->handle($request);
-            $routeContext = RouteContext::fromRequest($request);
-            $route = $routeContext->getRoute();
-
-            foreach ($exclusions as $exclusion) {
-                if (preg_match($exclusion, (string)$route->getname())) {
-                    //route is excluded form CSRF checks
-                    return $response;
-                }
-            }
-            Analog::log(
-                'CSRF check has failed',
-                Analog::CRITICAL
-            );
-            throw new \RuntimeException(_T('Failed CSRF check!'));
-        });
-
-        return $guard;
-    }
+    \Galette\Middleware\Csrf::class,
+    fn(ContainerInterface $c): \Galette\Middleware\Csrf => new \Galette\Middleware\Csrf(
+        $c->get('CsrfExclusions')
+    )
 );
 
 /**
@@ -349,7 +312,6 @@ $deprecateds = [
     'fields_config' => \Galette\Entity\FieldsConfig::class,
     'lists_config' => \Galette\Entity\ListsConfig::class,
     'translator' => \Galette\Core\Translator::class,
-    'csrf' => \Slim\Csrf\Guard::class,
     'event_manager' => \League\Event\EventDispatcher::class,
 ];
 

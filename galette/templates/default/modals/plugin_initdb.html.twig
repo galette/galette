@@ -142,9 +142,6 @@
                 <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon" aria-hidden="true"></i> {{ _T("Back to plugins management page") }}</a>
         {% endif %}
     {% endif %}
-        {% if mode != 'ajax' %}
-                {% include 'components/forms/csrf.html.twig' %}
-        {% endif %}
             </div>
         {# _T("Steps:") #}
             <div class="ui mini mobile stackable fluid steps">

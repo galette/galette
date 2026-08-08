@@ -45,9 +45,6 @@
         {% endif %}
                 </div>
             </div>
-            {% if mode != 'ajax' %}
-                {% include "components/forms/csrf.html.twig" %}
-            {% endif %}
         </form>
     {% endblock %}
     {% if form is defined %}
@@ -125,7 +122,6 @@
 
     {% if form is defined %}
             {% block extra_form %}{% endblock %}
-            {% include "components/forms/csrf.html.twig" %}
         </form>
     {% endif %}
         {% block legend %}{% endblock %}

@@ -105,7 +105,7 @@ $app->setBasePath((function () {
 
 $app->add($session);
 
-$app->add(\Slim\Csrf\Guard::class);
+$app->add(\Galette\Middleware\Csrf::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 

@@ -30,7 +30,6 @@
                             </div>
                             <input type="submit" class="ui fluid large primary submit button" value="{{ _T("Login") }}"/>
                             <input type="hidden" name="ident" value="1" />
-                            {% include "components/forms/csrf.html.twig" %}
                         </div>
     {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                         <div class="ui center aligned secondary segment">

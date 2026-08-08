@@ -684,8 +684,6 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         //check for submit form requirements
         $this->assertStringContainsString('<button type="submit" name="valid"', $body, 'Submit button not found');
-        $this->assertStringContainsString('<input type="hidden" name="csrf_name"', $body, 'CSRF name field not found');
-        $this->assertStringContainsString('<input type="hidden" name="csrf_value"', $body, 'CSRF value field not found');
 
         $this->login->logOut();
         //reset admin status
@@ -734,8 +732,6 @@ class TransactionsController extends GaletteRoutingTestCase
         );
         //check for submit form requirements
         $this->assertStringNotContainsString('<button type="submit" name="valid"', $body, 'Submit button found!');
-        $this->assertStringNotContainsString('<input type="hidden" name="csrf_name"', $body, 'CSRF name field found!');
-        $this->assertStringNotContainsString('<input type="hidden" name="csrf_value"', $body, 'CSRF value field found!');
 
         //all attachments features are present
         $this->assertStringContainsString($this->routeparser->urlFor('addContribution', ['type' => \Galette\Entity\Contribution::TYPE_FEE]), $body);

@@ -207,7 +207,6 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            {% include "components/forms/csrf.html.twig" %}
             </div>
 
     {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}

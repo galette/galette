@@ -75,7 +75,6 @@
                                     <i class="ui file import blue icon" aria-hidden="true"></i>
                                     {{ _T('Import') }}
                                 </button>
-                                {% include "components/forms/csrf.html.twig" %}
                             </div>
 {% else %}
                             <p>{{ _T('No import file actually exists.') }}<br/>{{ _T('Use upload form below to send a new file on server, or copy it directly in the imports directory.') }}</p>
@@ -117,7 +116,6 @@
                             <i class="cogs icon" aria-hidden="true"></i>
                             {{ _T('Configure import model') }}
                         </a>
-                        {% include "components/forms/csrf.html.twig" %}
                     </div>
                 </div>
             </form>

@@ -1,0 +1,35 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+<!DOCTYPE html>
+<html lang="{{ galette_lang }}" class="public_page">
+    <head>
+        {% include 'elements/header.html.twig' %}
+    </head>
+    <body class="{% if preferences.pref_enable_custom_colors %}custom-colors{% endif %}">
+        <div class="ui container">
+            <header class="ui basic center aligned segment">
+                <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />
+            </header>
+            <main>
+                <div class="ui red message">
+                    <h1 class="ui center aligned header">{{ _T("Access denied") }}</h1>
+                </div>
+                <div class="ui basic fitted center aligned segment">
+                    <p class="ui large text">{{ _T("You don’t have permission to access this resource.") }}</p>
+                </div>
+            </main>
+            <nav class="ui basic center aligned segment" role="navigation">
+                <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
+                    <i class="home icon" aria-hidden="true"></i>
+                    {{ _T("Home") }}
+                </a>
+            </nav>
+        </div>
+
+        {% include "elements/footer.html.twig" %}
+    </body>
+</html>

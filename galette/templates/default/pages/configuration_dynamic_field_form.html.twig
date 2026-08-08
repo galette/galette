@@ -117,7 +117,6 @@
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
         </div>
     {% endif %}
-            {% include "components/forms/csrf.html.twig" %}
      </form>
 {% elseif action == 'add' %}
     <form action="{{ url_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
@@ -162,7 +161,6 @@
                         <option value="0"{% if df is not defined or not df.isRequired() %} selected="selected"{% endif %}>{{ _T("No") }}</option>
                         <option value="1"{% if df is defined and df.isRequired() %} selected="selected"{% endif %}>{{ _T("Yes") }}</option>
                     </select>
-                    {% include "components/forms/csrf.html.twig" %}
                 </div>
     {% if mode != 'ajax' %}
             </div>
