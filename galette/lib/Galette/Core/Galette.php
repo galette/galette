@@ -737,8 +737,9 @@ class Galette
          * @var Plugins $plugins
          * @var Db $zdb
          * @var ContainerInterface $container
+         * @var Preferences $preferences
          */
-        global $login, $plugins, $zdb, $container;
+        global $login, $plugins, $zdb, $container, $preferences;
 
         $dashboards = [];
 
@@ -778,6 +779,14 @@ class Galette
                         ],
                         'icon' => 'postbox'
                     ],
+                ]
+            );
+        }
+
+        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_contributions) || $login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Contributions"),
                         'title' => _T("View and filter contributions"),
@@ -787,6 +796,14 @@ class Galette
                         ],
                         'icon' => 'receipt'
                     ],
+                ]
+            );
+        }
+
+        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_transactions) || $login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Transactions"),
                         'title' => _T("View and filter transactions"),
@@ -796,6 +813,14 @@ class Galette
                         ],
                         'icon' => 'book'
                     ],
+                ]
+            );
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Reminders"),
                         'title' => _T("Send reminders to late members"),

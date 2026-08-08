@@ -322,6 +322,96 @@ class Galette extends GaletteTestCase
     }
 
     /**
+     * Test getDashboards for groups managers
+     *
+     * Contributions and transactions entries depend on dedicated preferences.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testGetGroupManagerDashboards(): void
+    {
+        global $login, $preferences;
+
+        $db = new \Galette\Core\Db();
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+        $login->method('isGroupManager')->willReturn(true);
+
+        //groups managers cannot see contributions nor transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups'],
+            array_column($dashboards, 'label')
+        );
+        $this->assertCount(3, \Galette\Core\Galette::getMyDashboards());
+
+        //groups managers can see contributions
+        $preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Contributions'],
+            array_column($dashboards, 'label')
+        );
+
+        //groups managers can see transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Transactions'],
+            array_column($dashboards, 'label')
+        );
+
+        //groups managers can see both contributions and transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Contributions', 'Transactions'],
+            array_column($dashboards, 'label')
+        );
+
+        //mailings and reminders are never proposed to groups managers
+        $this->assertNotContains('Mailings', array_column($dashboards, 'label'));
+        $this->assertNotContains('Reminders', array_column($dashboards, 'label'));
+
+        //staff members get all entries, whatever groups managers preferences are
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+        $login->method('isGroupManager')->willReturn(true);
+
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Mailings', 'Contributions', 'Transactions', 'Reminders'],
+            array_column($dashboards, 'label')
+        );
+    }
+
+    /**
      * Test getListActions
      */
     #[AllowMockObjectsWithoutExpectations]
