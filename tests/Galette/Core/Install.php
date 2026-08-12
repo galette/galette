@@ -376,7 +376,7 @@ class Install extends BaseGaletteTestCase
         $preexisting = file_exists($enable_file);
         $backup = $preexisting ? file_get_contents($enable_file) : null;
         if ($preexisting) {
-            @unlink($enable_file);
+            unlink($enable_file);
         }
 
         try {
