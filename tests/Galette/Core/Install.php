@@ -432,7 +432,7 @@ class Install extends BaseGaletteTestCase
     {
         $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
-        $this->install->setDsn(HOST_DB, PORT_DB, NAME_DB, USER_DB, PWD_DB);
+        $this->install->setDsn(host: HOST_DB, port: PORT_DB, name: NAME_DB, user: USER_DB, pass: PWD_DB);
         $this->install->setTablesPrefix(PREFIX_DB);
 
         //constants are already defined by the bootstrap; calling this again

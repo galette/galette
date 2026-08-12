@@ -902,11 +902,11 @@ class Install
 
         $this->setDbType($existing['db_type'], $error_detected);
         $this->setDsn(
-            $existing['db_host'],
-            $existing['db_port'],
-            $existing['db_name'],
-            $existing['db_user'],
-            $existing['pwd_db']
+            host: $existing['db_host'],
+            port: $existing['db_port'],
+            name: $existing['db_name'],
+            user: $existing['db_user'],
+            pass: $existing['pwd_db']
         );
         $this->setTablesPrefix($existing['prefix']);
 
