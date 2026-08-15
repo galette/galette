@@ -1,6 +1,11 @@
 Changes
 -------
 
+1.2.1 -> 1.3.0
+
+- CSRF protection now relies on HTTP headers (Sec-Fetch-Site, with a fallback on Origin) rather than on per form tokens
+- Session cookie is now flagged SameSite=Lax
+
 1.2.0.1 -> 1.2.1
 
 - Rework groups management user interface
