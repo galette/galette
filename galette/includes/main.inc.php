@@ -26,6 +26,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 use function Safe\define;
+use function Safe\ini_set;
 use function Safe\parse_url;
 
 if (!defined('GLOB_BRACE')) {
@@ -72,6 +73,11 @@ $session = new SessionMiddleware([
 ]);
 
 if (session_status() === PHP_SESSION_NONE) {
+    //Do not send the session cookie along with cross site requests.
+    //"Lax" rather than "Strict", so that following a link from an
+    //email or from the association website does not look like a logged out
+    //session.
+    ini_set('session.cookie_samesite', 'Lax');
     $session->start();
 }
 //Galette needs database update!
