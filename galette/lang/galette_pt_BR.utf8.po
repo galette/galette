@@ -5,13 +5,14 @@
 # n-qber <nmkbertozzo@gmail.com>, 2026.
 # Luiz paulo de souza fontes junior <Lp.fontes@hotmail.com>, 2026.
 # Kauan Pacheco <KauanPacheco@proton.me>, 2026.
+# José Paulino <jpaulinophb@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-08-07 07:55+0000\n"
-"Last-Translator: Kauan Pacheco <KauanPacheco@proton.me>\n"
+"PO-Revision-Date: 2026-08-18 19:48+0000\n"
+"Last-Translator: José Paulino <jpaulinophb@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.8.1.dev0\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -479,43 +480,45 @@ msgstr "É necessário selecionar um membro da equipe para obter seu endereço"
 
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr ""
+"Você precisa selecionar um membro da equipe para obter o número de telefone "
+"dele"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Endereço de e-mail inválido: %s"
 
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- O nome de usuário deve ter pelo menos 4 caracteres!"
 
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Este nome de usuário já está sendo usado por outro membro!"
 
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- Os números e as medidas devem ser inteiros!"
 
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- A altura do cartão deve ser um número inteiro entre 40 e 55!"
 
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- A largura do cartão deve ser um número inteiro entre 70 e 95!"
 
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Número inválido de meses de extensão da adesão."
 
 msgid "- Invalid format of beginning of membership."
-msgstr ""
+msgstr "- Formato inválido para o início da adesão."
 
 msgid "- Invalid date for beginning of membership."
-msgstr ""
+msgstr "- Data de início da adesão inválida."
 
 msgid "- Invalid number of offered months."
-msgstr ""
+msgstr "- Número inválido de meses oferecidos."
 
 msgid "- Invalid year for cards."
-msgstr ""
+msgstr "- Ano inválido para cartões."
 
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- URL do site inválida."
 
 #. TRANS: first parameter is name, second is status
 #, php-format
