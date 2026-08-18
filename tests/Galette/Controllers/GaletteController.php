@@ -132,7 +132,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Galette"', $body);
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);

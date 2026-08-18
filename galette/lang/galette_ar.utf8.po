@@ -1425,7 +1425,7 @@ msgid "Inactive accounts"
 msgstr "الحسابات غير النشطة"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 
@@ -1463,13 +1463,13 @@ msgstr ""
 msgid "Fields configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr ""
 
 msgid "List configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "حدث خطأ أثناء حفظ إعدادات القائمة :("
 
 msgid "No reminder to send for now."
@@ -1679,7 +1679,7 @@ msgstr "نوع مساهمة جديد"
 msgid "No contribution was selected, please check at least one."
 msgstr "لم يتم تحديد أي مساهمة ، يرجى تحديد واحدة على الأقل."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "حدث خطأ أثناء تخزين المساهمة."
 
 msgid "Contribution has been successfully stored"
@@ -1819,7 +1819,7 @@ msgstr "الفِرَق"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "تم حفظ مجموعة 'اسم المجموعة٪' بنجاح"
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "حدث خطأ أثناء تخزين الفريق."
 
 #, php-format
@@ -1978,7 +1978,7 @@ msgstr "عملية التحويل"
 msgid "New transaction"
 msgstr "معاملة"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "حدث خطأ أثناء حفظ عملية التحويل."
 
 msgid "Transaction has been successfully stored"
@@ -2103,7 +2103,7 @@ msgstr "مراجعة التغيرات %count الاعضاء"
 msgid "Nothing to do!"
 msgstr "لاشي لتفعلة!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "حدث خطأ أثناء تسجيل العضو."
 
 msgid "An error occurred adding member to its groups."
@@ -3770,7 +3770,7 @@ msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, fuzzy
-#| msgid "An error occurred while storing list configuration :("
+#| msgid "An error occurred while saving list configuration :("
 msgid "An error occurred on plugin database initialization :("
 msgstr "حدث خطأ أثناء حفظ إعدادات القائمة :("
 

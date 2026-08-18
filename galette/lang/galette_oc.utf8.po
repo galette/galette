@@ -1411,7 +1411,7 @@ msgid "Inactive accounts"
 msgstr "Còmptes inactius"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "Una error SQL a capitat au moment de l’enregistrament dei preferéncias. "
@@ -1454,13 +1454,13 @@ msgstr "Adreiça electronica invalida !"
 msgid "Fields configuration has been successfully stored"
 msgstr "La configuracion dei camps per defaut es estat sauvagardada"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "L'enregistrament de la configuration dei camps a mau capitat :("
 
 msgid "List configuration has been successfully stored"
 msgstr "La configuracion dei listas es sauvagardada"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "I a agut una error dau temps de la sauvagarda de la lista :("
 
 msgid "No reminder to send for now."
@@ -1675,7 +1675,7 @@ msgstr "- Mena de contribucion inconeguda"
 msgid "No contribution was selected, please check at least one."
 msgstr "Vos fau seleccionar au mens una contribucion."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "Capitèt una error per l'enregistrament de l'escotisson."
 
 msgid "Contribution has been successfully stored"
@@ -1810,7 +1810,7 @@ msgstr "Gropes"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Lo grope \"%1$s\" es estat enregistrat correctament."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "Capitèt una error per lo registrament dau grope."
 
 #, php-format
@@ -1932,7 +1932,7 @@ msgstr "Transaccion"
 msgid "New transaction"
 msgstr "Veire la transaccion"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "Una error capitèt per l'enregistrament de la transaccion."
 
 msgid "Transaction has been successfully stored"
@@ -2041,7 +2041,7 @@ msgstr "Revisar lo cambi massiu de %1$s membres"
 msgid "Nothing to do!"
 msgstr "Ren de faire !"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "Capitèt una error per l'enregistrament dau membre."
 
 msgid "An error occurred adding member to its groups."

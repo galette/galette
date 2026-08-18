@@ -415,7 +415,7 @@ class GroupsController extends CrudController
                 //something went wrong :'(
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("An error occurred while storing the group.")
+                    _T("An error occurred while saving the group.")
                 );
             }
         } catch (Throwable $e) {

@@ -227,7 +227,7 @@ class GaletteController extends AbstractController
         if (isset($post['valid']) && $post['valid'] == '1') {
             if ($this->preferences->check($post, $this->login)) {
                 if (!$this->preferences->store()) {
-                    $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
+                    $error_detected[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $success_detected[] = _T("Preferences has been saved.");
                 }
@@ -463,7 +463,7 @@ class GaletteController extends AbstractController
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occurred while storing fields configuration :(")
+                _T("An error occurred while saving fields configuration :(")
             );
         }
 
@@ -532,7 +532,7 @@ class GaletteController extends AbstractController
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occurred while storing list configuration :(")
+                _T("An error occurred while saving list configuration :(")
             );
         }
 

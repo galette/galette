@@ -1433,7 +1433,7 @@ msgid "Inactive accounts"
 msgstr "Inaktive Konten"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "Beim Speichern von Einstellungen ist ein SQL-Fehler aufgetreten. Versuchen "
@@ -1476,13 +1476,13 @@ msgstr "Ungültige E-Mail-Adresse!"
 msgid "Fields configuration has been successfully stored"
 msgstr "Feldeinstellungen wurden erfolgreich gespeichert"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "Beim Speichern der Feldkonfiguration ist ein Fehler aufgetreten:("
 
 msgid "List configuration has been successfully stored"
 msgstr "Listenkonfiguration wurde erfolgreich gespeichert"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "Beim Speichern der Listenkonfiguration ist ein Fehler aufgetreten :("
 
 msgid "No reminder to send for now."
@@ -1697,7 +1697,7 @@ msgid "No contribution was selected, please check at least one."
 msgstr ""
 "Es wurde kein Beitrag ausgewählt, bitte kreuzen Sie mindestens einen an."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "Beim Speichern des Beitrags ist ein Fehler aufgetreten."
 
 msgid "Contribution has been successfully stored"
@@ -1824,7 +1824,7 @@ msgstr "Gruppe"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Die Gruppe `%1$s` wurde erfolgreich gespeichert."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "Beim Speichern der Gruppe ist ein Fehler aufgetreten."
 
 #, php-format
@@ -1939,7 +1939,7 @@ msgstr "Transaktion"
 msgid "New transaction"
 msgstr "Neue Transaktion"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "Beim Speichern der Transaktion ist ein Fehler aufgetreten."
 
 msgid "Transaction has been successfully stored"
@@ -2036,7 +2036,7 @@ msgstr "Massenänderung für %1$s Mitglieder prüfen"
 msgid "Nothing to do!"
 msgstr "Nichts zu tun!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "Beim Speichern des Mitglieds ist ein Fehler aufgetreten."
 
 msgid "An error occurred adding member to its groups."
@@ -6686,7 +6686,7 @@ msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 #~ "Sie benutzen schon die aktuelle Version von Galette!<br/>Wollen Sie "
 #~ "trotzdem upgraden?"
 
-#~ msgid "An SQL error has occurred while storing search."
+#~ msgid "An SQL error has occurred while saving search."
 #~ msgstr "Beim Speichern der Suche ist ein SQL-Fehler aufgetreten."
 
 #~ msgid "contribution type"

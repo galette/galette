@@ -875,7 +875,7 @@ class ContributionsController extends CrudController
             //something went wrong :'(
             return $this->redirectWithErrors(
                 $response,
-                [_T("An error occurred while storing the contribution.")],
+                [_T("An error occurred while saving the contribution.")],
                 $redirect_url
             );
         }

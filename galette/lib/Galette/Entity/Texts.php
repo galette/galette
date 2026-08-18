@@ -343,7 +343,7 @@ class Texts
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred while storing email text. | '
+                'An error has occurred while saving email text. | '
                 . $e->getMessage(),
                 Analog::ERROR
             );

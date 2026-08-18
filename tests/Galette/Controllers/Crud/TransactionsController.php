@@ -536,7 +536,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $member_three = $this->createMember($member_three_data);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
         $date = new DateTime();
         $tdata = [

@@ -1378,7 +1378,7 @@ msgid "Inactive accounts"
 msgstr "செயலற்ற கணக்குகள்"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "விருப்பங்களை சேமிக்கும் போது ஒரு கவிமொ பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் "
@@ -1420,13 +1420,13 @@ msgstr "தவறான மின்னஞ்சல் முகவரி!"
 msgid "Fields configuration has been successfully stored"
 msgstr "புலம் உள்ளமைவு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "புலங்கள் உள்ளமைவை சேமிக்கும் போது பிழை ஏற்பட்டது :("
 
 msgid "List configuration has been successfully stored"
 msgstr "பட்டியல் உள்ளமைவு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "பட்டியல் உள்ளமைவை சேமிக்கும் போது பிழை ஏற்பட்டது :("
 
 msgid "No reminder to send for now."
@@ -1640,7 +1640,7 @@ msgid "No contribution was selected, please check at least one."
 msgstr ""
 "பங்களிப்பு எதுவும் தேர்ந்தெடுக்கப்படவில்லை, தயவுசெய்து குறைந்தபட்சம் ஒன்றைச் சரிபார்க்கவும்."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "பங்களிப்பை சேமிக்கும் போது பிழை ஏற்பட்டது."
 
 msgid "Contribution has been successfully stored"
@@ -1771,7 +1771,7 @@ msgstr "குழுக்கள்"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "குழு `%1$s` வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "குழுவை சேமிக்கும் போது பிழை ஏற்பட்டது."
 
 #, php-format
@@ -1890,7 +1890,7 @@ msgstr "பரிவர்த்தனை"
 msgid "New transaction"
 msgstr "பரிவர்த்தனையைக் காண்க"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "பரிவர்த்தனையை சேமிக்கும் போது பிழை ஏற்பட்டது."
 
 msgid "Transaction has been successfully stored"
@@ -1993,7 +1993,7 @@ msgstr "வெகுசன மாற்றம் %1$s உறுப்பின�
 msgid "Nothing to do!"
 msgstr "செய்ய எதுவும் இல்லை!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "உறுப்பினரை சேமிக்கும் போது பிழை ஏற்பட்டது."
 
 msgid "An error occurred adding member to its groups."

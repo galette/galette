@@ -63,7 +63,7 @@ msgstr ""
 
 #. TRANS: first parameter is row, second member name
 #, fuzzy, php-format
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
@@ -1375,7 +1375,7 @@ msgid "Dynamic dates has been fixed."
 msgstr ""
 
 #, fuzzy
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred fixing dynamic dates :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
@@ -1395,7 +1395,7 @@ msgid "Inactive accounts"
 msgstr "Kontoù diweredekaet"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 
@@ -1433,13 +1433,13 @@ msgstr "Chomlec'h postel diwiriek !"
 msgid "Fields configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr ""
 
 msgid "List configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr ""
 
 msgid "No reminder to send for now."
@@ -1646,7 +1646,7 @@ msgstr "Aozañ an doare kendeurel"
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr ""
 
 msgid "Contribution has been successfully stored"
@@ -1779,7 +1779,7 @@ msgstr "Strolladoù"
 msgid "Group `%1$s` has been successfully saved."
 msgstr ""
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr ""
 
 #, php-format
@@ -1877,7 +1877,7 @@ msgid "Edit document"
 msgstr "Pellgargañ an teul"
 
 #, fuzzy
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred adding document :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
@@ -1932,7 +1932,7 @@ msgstr "Trañzaktadenn"
 msgid "New transaction"
 msgstr "Trañzaktadenn"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
 msgid "Transaction has been successfully stored"
@@ -2051,7 +2051,7 @@ msgstr ""
 msgid "Nothing to do!"
 msgstr "Mann ebet d'ober!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr ""
 
 msgid "An error occurred adding member to its groups."
@@ -3697,7 +3697,7 @@ msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, fuzzy
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred on plugin database initialization :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
@@ -5447,7 +5447,7 @@ msgid "Contribution amount should not be greater than %max"
 msgstr ""
 
 #, fuzzy
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred displaying scheduled payments :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
@@ -5768,7 +5768,7 @@ msgid "User menu"
 msgstr ""
 
 #, fuzzy
-#| msgid "An error occurred while storing the transaction."
+#| msgid "An error occurred while saving the transaction."
 msgid "An error occurred retrieving members :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 

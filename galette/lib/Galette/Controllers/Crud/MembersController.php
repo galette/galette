@@ -1525,7 +1525,7 @@ class MembersController extends CrudController
                     if ($valid === true) {
                         $done = $member->store();
                         if (!$done) {
-                            $error_detected[] = _T("An error occurred while storing the member.");
+                            $error_detected[] = _T("An error occurred while saving the member.");
                         } else {
                             if (
                                 isset($post['group_to_add'])
@@ -1795,7 +1795,7 @@ class MembersController extends CrudController
                 }
             } else {
                 //something went wrong :'(
-                $error_detected[] = _T("An error occurred while storing the member.");
+                $error_detected[] = _T("An error occurred while saving the member.");
             }
         }
 

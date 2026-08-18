@@ -548,7 +548,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $member_three = $this->createMember($member_three_data);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $cdata = $this->getContribData();
         $cdata['id_type_cotis'] = 5; //donation
         $cdata['id_adh'] = $member_three->id; //member not part of "Group 1"

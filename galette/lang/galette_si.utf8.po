@@ -1377,7 +1377,7 @@ msgid "Inactive accounts"
 msgstr ""
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 
@@ -1415,13 +1415,13 @@ msgstr ""
 msgid "Fields configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr ""
 
 msgid "List configuration has been successfully stored"
 msgstr ""
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr ""
 
 msgid "No reminder to send for now."
@@ -1624,7 +1624,7 @@ msgstr ""
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr ""
 
 msgid "Contribution has been successfully stored"
@@ -1761,7 +1761,7 @@ msgstr "කණ්ඩාය"
 msgid "Group `%1$s` has been successfully saved."
 msgstr ""
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr ""
 
 #, php-format
@@ -1905,7 +1905,7 @@ msgstr "ගණුදෙනුව"
 msgid "New transaction"
 msgstr "ගණුදෙනුව"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය."
 
 msgid "Transaction has been successfully stored"
@@ -2012,7 +2012,7 @@ msgstr ""
 msgid "Nothing to do!"
 msgstr ""
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr ""
 
 msgid "An error occurred adding member to its groups."

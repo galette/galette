@@ -2169,7 +2169,7 @@ msgstr "Neaktivni računi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:203
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "Med shranjevanjem nastavitev je prišlo do napake SQL. Poskusite znova in se "
@@ -2224,7 +2224,7 @@ msgid "Fields configuration has been successfully stored"
 msgstr "Konfiguracija polj je bila uspešno shranjena"
 
 #: ../lib/Galette/Controllers/GaletteController.php:419
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "Pri shranjevanju konfiguracije polj je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
@@ -2232,7 +2232,7 @@ msgid "List configuration has been successfully stored"
 msgstr "Konfiguracija seznama je bila uspešno shranjena"
 
 #: ../lib/Galette/Controllers/GaletteController.php:478
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "Pri shranjevanju konfiguracije seznama je prišlo do napake :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:541
@@ -2522,7 +2522,7 @@ msgid "No contribution was selected, please check at least one."
 msgstr "Izbran ni bil noben prispevek, prosimo, označite vsaj enega."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:815
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "Pri shranjevanju prispevka je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:821
@@ -2696,7 +2696,7 @@ msgid "Group `%1$s` has been successfully saved."
 msgstr "Skupina `%1$s` je bila uspešno shranjena."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "Pri shranjevanju skupine je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:466
@@ -2859,7 +2859,7 @@ msgid "New transaction"
 msgstr "Nova transakcija"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:289
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "Pri shranjevanju transakcije je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:297
@@ -3003,7 +3003,7 @@ msgstr "Nič za početi!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1371
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1641
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "Pri shranjevanju člana je prišlo do napake."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1403

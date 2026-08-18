@@ -790,7 +790,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $this->logSuperAdmin();
         $mdata = $this->dataAdherentOne();
         $mdata['login_adh'] = 'login_4_test';

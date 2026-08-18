@@ -1689,7 +1689,7 @@ msgid "Inactive accounts"
 msgstr "Comptes inactius"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "S'ha produït un error SQL mentre es desaven les preferències. Torneu-ho a "
@@ -1737,14 +1737,14 @@ msgstr "Correu electrònic invàlid!"
 msgid "Fields configuration has been successfully stored"
 msgstr "La configuració dels camps s'ha desat correctament"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "S'ha produït un error en emmagatzemar la configuració dels camps :("
 
 #, fuzzy
 msgid "List configuration has been successfully stored"
 msgstr "La configuració de la llista s'ha desat correctament"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "Hi ha hagut un error en desar la configuració de la llista :("
 
 #, fuzzy
@@ -1993,7 +1993,7 @@ msgid "No contribution was selected, please check at least one."
 msgstr ""
 "No s'ha seleccionat cap contribució, si us plau selecciona'n al menys una."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "S'ha produït un error emmagatzemant la contribució."
 
 msgid "Contribution has been successfully stored"
@@ -2126,7 +2126,7 @@ msgstr "Grups"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "El grup «%1$s» s'ha desat correctament."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "S'ha produït un error en desar el grup."
 
 #, php-format
@@ -2273,7 +2273,7 @@ msgstr "Transacció"
 msgid "New transaction"
 msgstr "Visualitza la transacció"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "S'ha produït un error en emmagatzemar la transacció."
 
 msgid "Transaction has been successfully stored"
@@ -2389,7 +2389,7 @@ msgstr "Revisar el canvi massiu %1$s membres"
 msgid "Nothing to do!"
 msgstr "Res a fer!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
 msgid "An error occurred adding member to its groups."
@@ -7918,7 +7918,7 @@ msgstr "S'ha produït un error en enviar la informació de telemetria ("
 #~ "Sembla que ja utilitzeu l'última versió de Galette!<br>Segur que voleu "
 #~ "actualitzar?"
 
-#~ msgid "An SQL error has occurred while storing search."
+#~ msgid "An SQL error has occurred while saving search."
 #~ msgstr "S'ha produït un error SQL en emmagatzemar la cerca."
 
 #, fuzzy

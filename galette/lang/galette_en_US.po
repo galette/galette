@@ -2165,10 +2165,10 @@ msgstr "Inactive accounts"
 
 #: ../lib/Galette/Controllers/GaletteController.php:203
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 
 #: ../lib/Galette/Controllers/GaletteController.php:205
@@ -2220,16 +2220,16 @@ msgid "Fields configuration has been successfully stored"
 msgstr "Fields configuration has been successfully stored"
 
 #: ../lib/Galette/Controllers/GaletteController.php:419
-msgid "An error occurred while storing fields configuration :("
-msgstr "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
+msgstr "An error occurred while saving fields configuration :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
 msgid "List configuration has been successfully stored"
 msgstr "List configuration has been successfully stored"
 
 #: ../lib/Galette/Controllers/GaletteController.php:478
-msgid "An error occurred while storing list configuration :("
-msgstr "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
+msgstr "An error occurred while saving list configuration :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:541
 msgid "No reminder to send for now."
@@ -2517,8 +2517,8 @@ msgid "No contribution was selected, please check at least one."
 msgstr "No contribution was selected, please check at least one."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:815
-msgid "An error occurred while storing the contribution."
-msgstr "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
+msgstr "An error occurred while saving the contribution."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:821
 msgid "Contribution has been successfully stored"
@@ -2692,8 +2692,8 @@ msgid "Group `%1$s` has been successfully saved."
 msgstr "Group `%1$s` has been successfully saved."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
-msgid "An error occurred while storing the group."
-msgstr "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
+msgstr "An error occurred while saving the group."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:466
 #, php-format
@@ -2851,8 +2851,8 @@ msgid "New transaction"
 msgstr "New transaction"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:289
-msgid "An error occurred while storing the transaction."
-msgstr "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
+msgstr "An error occurred while saving the transaction."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:297
 msgid "Transaction has been successfully stored"
@@ -2995,8 +2995,8 @@ msgstr "Nothing to do!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1371
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1641
-msgid "An error occurred while storing the member."
-msgstr "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
+msgstr "An error occurred while saving the member."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1403
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1622

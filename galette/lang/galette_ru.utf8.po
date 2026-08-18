@@ -1399,7 +1399,7 @@ msgid "Inactive accounts"
 msgstr "Неактивные аккаунты"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "При сохранении предпочтений произошла ошибка SQL. Пожалуйста, попробуйте еще "
@@ -1441,13 +1441,13 @@ msgstr "Неверный адрес эл. почты!"
 msgid "Fields configuration has been successfully stored"
 msgstr "Конфигурация полей успешно сохранена"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "Произошла ошибка при сохранении конфигурации полей :("
 
 msgid "List configuration has been successfully stored"
 msgstr "Конфигурация списка успешно сохранена"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "Произошла ошибка при сохранении конфигурации списка :("
 
 msgid "No reminder to send for now."
@@ -1656,7 +1656,7 @@ msgstr "- Неизвестный способ вклада!"
 msgid "No contribution was selected, please check at least one."
 msgstr "Не выбран ни один вклад, отметьте хотя бы один."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "При сохранении вклада произошла ошибка."
 
 msgid "Contribution has been successfully stored"
@@ -1783,7 +1783,7 @@ msgstr "Группа"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Группа «%1$s» успешно сохранена."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "При сохранении группы произошла ошибка."
 
 #, php-format
@@ -1899,7 +1899,7 @@ msgstr "Транзакция"
 msgid "New transaction"
 msgstr "Новая транзакция"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "При сохранении транзакции произошла ошибка."
 
 msgid "Transaction has been successfully stored"
@@ -1996,7 +1996,7 @@ msgstr "Обзор массового изменения %1$s членов"
 msgid "Nothing to do!"
 msgstr "Нечего делать!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "При сохранении участника произошла ошибка."
 
 msgid "An error occurred adding member to its groups."

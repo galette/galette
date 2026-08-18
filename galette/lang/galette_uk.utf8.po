@@ -1386,7 +1386,7 @@ msgid "Inactive accounts"
 msgstr "Бездіяльні облікові записи"
 
 msgid ""
-"An SQL error has occurred while storing preferences. Please try again, and "
+"An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
 "Під час зберігання налаштувань сталася помилка SQL. Повторіть спробу і, якщо "
@@ -1428,13 +1428,13 @@ msgstr "Недійсна е-пошта!"
 msgid "Fields configuration has been successfully stored"
 msgstr "Конфігурацію полів успішно збережено"
 
-msgid "An error occurred while storing fields configuration :("
+msgid "An error occurred while saving fields configuration :("
 msgstr "Під час зберігання конфігурації полів сталася помилка :("
 
 msgid "List configuration has been successfully stored"
 msgstr "Конфігурацію списків успішно збережено"
 
-msgid "An error occurred while storing list configuration :("
+msgid "An error occurred while saving list configuration :("
 msgstr "Під час зберігання конфігурації списків сталася помилка :("
 
 msgid "No reminder to send for now."
@@ -1649,7 +1649,7 @@ msgstr "- Невідомий тип внеску!"
 msgid "No contribution was selected, please check at least one."
 msgstr "Жодного внеску не вибрано. Помітьте принаймні один."
 
-msgid "An error occurred while storing the contribution."
+msgid "An error occurred while saving the contribution."
 msgstr "Під час зберігання внеску сталася помилка."
 
 msgid "Contribution has been successfully stored"
@@ -1780,7 +1780,7 @@ msgstr "Групи"
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Групу `%1$s` успішно збережено."
 
-msgid "An error occurred while storing the group."
+msgid "An error occurred while saving the group."
 msgstr "Під час зберігання групи сталася помилка."
 
 #, php-format
@@ -1899,7 +1899,7 @@ msgstr "Переказ"
 msgid "New transaction"
 msgstr "Переглянути переказ"
 
-msgid "An error occurred while storing the transaction."
+msgid "An error occurred while saving the transaction."
 msgstr "Під час зберігання транзакції сталася помилка."
 
 msgid "Transaction has been successfully stored"
@@ -2002,7 +2002,7 @@ msgstr "Перегляньте масові зміни %1$s членів"
 msgid "Nothing to do!"
 msgstr "Нічого немає!"
 
-msgid "An error occurred while storing the member."
+msgid "An error occurred while saving the member."
 msgstr "Під час зберігання члена сталася помилка."
 
 msgid "An error occurred adding member to its groups."
@@ -6635,7 +6635,7 @@ msgstr "Під час надсилання відомостей про теле�
 #~ "Здається, ви вже використовуєте останню версію Galette!<br>Ви дійсно "
 #~ "бажаєте виконати оновлення?"
 
-#~ msgid "An SQL error has occurred while storing search."
+#~ msgid "An SQL error has occurred while saving search."
 #~ msgstr "Під час зберігання пошуку сталася помилка SQL."
 
 #~ msgid "contribution type"

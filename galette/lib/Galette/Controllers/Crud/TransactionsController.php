@@ -313,7 +313,7 @@ class TransactionsController extends ContributionsController
             //something went wrong :'(
             return $this->redirectWithErrors(
                 $response,
-                [_T("An error occurred while storing the transaction.")],
+                [_T("An error occurred while saving the transaction.")],
                 $redirect_url
             );
         }

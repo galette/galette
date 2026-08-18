@@ -299,7 +299,7 @@ class ListsConfig extends FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->rollback();
             Analog::log(
-                '[' . $class . '] An error occurred while storing list '
+                '[' . $class . '] An error occurred while saving list '
                 . 'configuration for table `' . $this->table . '`.'
                 . $e->getMessage(),
                 Analog::ERROR

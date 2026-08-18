@@ -783,7 +783,7 @@ class FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->rollback();
             Analog::log(
-                '[' . $class . '] An error occurred while storing fields '
+                '[' . $class . '] An error occurred while saving fields '
                 . 'configuration for table `' . $this->table . '`.'
                 . $e->getMessage(),
                 Analog::ERROR
