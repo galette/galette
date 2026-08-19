@@ -18,6 +18,7 @@ use Galette\IO\ContributionsCsv;
 use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
 use Safe\Exceptions\FilesystemException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
@@ -56,8 +57,10 @@ class CsvController extends AbstractController
      *
      * @param string $filepath File path on disk
      * @param string $filename File name for output
+     *
+     * @throws HttpNotFoundException
      */
-    protected function sendResponse(Response $response, string $filepath, string $filename): Response
+    protected function sendResponse(Request $request, Response $response, string $filepath, string $filename): Response
     {
         if (!file_exists($filepath)) {
             Analog::log(
@@ -65,8 +68,7 @@ class CsvController extends AbstractController
                 . $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
-            //FIXME: use a proper error page
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
         $response = $response->withHeader('Content-Description', 'File Transfer')
@@ -354,12 +356,17 @@ class CsvController extends AbstractController
         pattern: '/{type:export|import}/get/{file}',
         methods: ['GET']
     )]
-    public function getFile(Response $response, string $file, string $type): Response
+    public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
         $filename = $file;
         $filepath = $type === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
@@ -634,7 +641,12 @@ class CsvController extends AbstractController
         $filepath = $this->members_csv->getPath();
         $filename = $this->members_csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
@@ -666,7 +678,12 @@ class CsvController extends AbstractController
         $filepath = $csv->getPath();
         $filename = $csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
@@ -690,6 +707,11 @@ class CsvController extends AbstractController
         $filepath = $this->scheduled_payments_csv->getPath();
         $filename = $this->scheduled_payments_csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 }

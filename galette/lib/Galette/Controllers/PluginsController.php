@@ -13,6 +13,9 @@ namespace Galette\Controllers;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\Plugins;
 use Throwable;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpForbiddenException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Galette;
@@ -132,7 +135,7 @@ class PluginsController extends AbstractController
                 'Trying to access plugin database initialization in DEMO mode.',
                 Analog::WARNING
             );
-            return $response->withStatus(403);
+            throw new HttpForbiddenException($request);
         }
 
         $params = [];
@@ -144,7 +147,7 @@ class PluginsController extends AbstractController
                 'Unable to load plugin `' . $plugid . '`!',
                 Analog::URGENT
             );
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
         $plugin = $this->plugins->getModule($plugid);
@@ -162,7 +165,7 @@ class PluginsController extends AbstractController
                 Analog::WARNING
             );
 
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
         // If available, ensure the plugin actually uses a database before offering
@@ -174,7 +177,7 @@ class PluginsController extends AbstractController
                 Analog::WARNING
             );
 
-            return $response->withStatus(400);
+            throw new HttpBadRequestException($request);
         }
 
         $mdplugin = md5((string)$plugin['root']);
@@ -307,7 +310,7 @@ class PluginsController extends AbstractController
         pattern: '/plugins/{route}',
         methods: ['GET']
     )]
-    public function pluginInfo(Response $response, string $route): Response
+    public function pluginInfo(Request $request, Response $response, string $route): Response
     {
         $module = null;
         foreach ($this->plugins->getActiveModules() as $mod) {
@@ -318,7 +321,7 @@ class PluginsController extends AbstractController
         }
 
         if ($module === null) {
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
         $params = [
@@ -352,7 +355,7 @@ class PluginsController extends AbstractController
         methods: ['GET'],
         requiresAuth: false
     )]
-    public function resource(Response $response, string $plugin, string $path): Response
+    public function resource(Request $request, Response $response, string $plugin, string $path): Response
     {
         $ext = pathinfo($path)['extension'] ?? '';
         $auth_ext = [
@@ -368,13 +371,27 @@ class PluginsController extends AbstractController
             'woff2' => 'application/font-woff2'
         ];
         if (str_contains($path, '../') || !isset($auth_ext[$ext])) {
-            throw new \RuntimeException(
+            Analog::log(
                 sprintf('Invalid extension %1$s (%2$s)!', $ext, $path),
-                404
+                Analog::WARNING
             );
+            throw new HttpNotFoundException($request);
         }
 
-        $file = $this->plugins->getFile($plugin, $path);
+        try {
+            $file = $this->plugins->getFile($plugin, $path);
+        } catch (Throwable $e) {
+            Analog::log(
+                sprintf(
+                    'Unable to serve resource `%1$s` from plugin `%2$s`: %3$s',
+                    $path,
+                    $plugin,
+                    $e->getMessage()
+                ),
+                Analog::WARNING
+            );
+            throw new HttpNotFoundException($request, previous: $e);
+        }
 
         $response = $response->withHeader('Content-type', $auth_ext[$ext]);
         $response->getBody()->write(file_get_contents($file));

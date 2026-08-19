@@ -14,6 +14,7 @@ use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
@@ -1655,8 +1656,9 @@ class MembersController extends CrudController
         if (isset($post['id_adh'])) {
             $member->load((int)$post['id_adh']);
             if (!$member->canEdit($this->login)) {
-                //redirection should have been done before. Just throw an Exception.
-                throw new \RuntimeException(
+                //redirection should have been done before. Just deny access.
+                throw new HttpForbiddenException(
+                    $request,
                     str_replace(
                         '%id',
                         (string)$member->id,
@@ -1667,8 +1669,8 @@ class MembersController extends CrudController
         } elseif ($member->id != '') {
             $member->load($this->login->id);
         } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
-            //redirection should have been done before. Just throw an Exception.
-            throw new \RuntimeException('No right to store new member!');
+            //redirection should have been done before. Just deny access.
+            throw new HttpForbiddenException($request, 'No right to store new member!');
         }
 
         // flagging required fields

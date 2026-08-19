@@ -197,6 +197,8 @@ $errorMiddleware = $app->addErrorMiddleware(
 /** @var \Slim\Handlers\ErrorHandler $errorHandler */
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();
 $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
+//also use Galette error pages for clients that do not negotiate content type (Accept: */*)
+$errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
 
 /**
  * Twig-View Middleware

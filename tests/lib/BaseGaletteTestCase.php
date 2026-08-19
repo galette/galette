@@ -96,6 +96,19 @@ abstract class BaseGaletteTestCase extends TestCase
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $this->app->addRoutingMiddleware();
+
+        //error middleware, as in galette/includes/main.inc.php, so HTTP exceptions
+        //are rendered as error pages instead of bubbling up
+        $errorMiddleware = $this->app->addErrorMiddleware(
+            displayErrorDetails: \Galette\Core\Galette::isDebugEnabled(),
+            logErrors: false,
+            logErrorDetails: false
+        );
+        /** @var \Slim\Handlers\ErrorHandler $errorHandler */
+        $errorHandler = $errorMiddleware->getDefaultErrorHandler();
+        $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
+        $errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
+
         if ($this->app_mode === GALETTE_MODE) {
             $this->app->add(\Slim\Views\TwigMiddleware::createFromContainer($this->app, \Slim\Views\Twig::class));
         }

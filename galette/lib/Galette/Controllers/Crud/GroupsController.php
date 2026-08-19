@@ -13,6 +13,7 @@ namespace Galette\Controllers\Crud;
 use Throwable;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -333,7 +334,7 @@ class GroupsController extends CrudController
                 'Trying to display group ' . $id . ' without appropriate permissions',
                 Analog::INFO
             );
-            return $response->withStatus(403);
+            throw new HttpForbiddenException($request);
         }
 
         $parent_groups = [];

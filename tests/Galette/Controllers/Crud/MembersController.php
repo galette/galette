@@ -1433,14 +1433,8 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertFalse($this->login->isStaff());
         $this->assertFalse($this->login->isGroupManager());
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store new member!', $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
         $this->login->logout();
 
         $result = $this->zdb->execute($count_select);
@@ -1511,15 +1505,9 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
 
-        //with default preferences, groups manager cannot add member (will throw an exception)
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store new member!', $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        //with default preferences, groups manager cannot add member (access denied)
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no member added
@@ -1898,14 +1886,8 @@ class MembersController extends GaletteRoutingTestCase
         $mdata['nom_adh'] = 'Another changed name';
         $request = $request->withParsedBody($mdata);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -1984,14 +1966,8 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
 
         //groups manager: no right by default
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -2056,14 +2032,8 @@ class MembersController extends GaletteRoutingTestCase
         $child_data['nom_adh'] = 'Another changed name';
         $child_request = $child_request->withParsedBody($child_data);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($child_request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $child->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($child_request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -2102,14 +2072,8 @@ class MembersController extends GaletteRoutingTestCase
         $mdata['bool_admin_adh'] = true;
         $request = $request->withParsedBody($mdata);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
 
         $this->expectLogEntry(
             \Analog\Analog::CRITICAL,
@@ -2137,14 +2101,8 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata);
 
         //no right for staff member to set admin flag
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
         $this->expectLogEntry(
             \Analog\Analog::CRITICAL,
             sprintf(

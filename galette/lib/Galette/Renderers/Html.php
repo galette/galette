@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Renderers;
 
 use Galette\Exception\PHPStartupException;
+use Slim\Exception\HttpException;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Flash\Messages;
@@ -54,6 +55,9 @@ class Html implements ErrorRendererInterface
         } elseif ($exception instanceof HttpForbiddenException) {
             $code = 403;
             $title = __('Access denied');
+        } elseif ($exception instanceof HttpException && $exception->getCode() >= 400 && $exception->getCode() < 600) {
+            //any other HTTP error; rely on generic error page if there is no dedicated one
+            $code = $exception->getCode();
         }
 
         $php_error = error_get_last();
@@ -62,10 +66,15 @@ class Html implements ErrorRendererInterface
             $exception = new PHPStartupException($php_error['message'], $php_error['type'], $exception);
         }
 
+        $template = 'pages/' . (string)$code . '.html.twig';
+        if (!$this->view->getLoader()->exists($template)) {
+            $template = 'pages/500.html.twig';
+        }
+
         $response = (new Response())->withStatus($code);
         $response = $this->view->render(
             $response,
-            'pages/' . (string)$code . '.html.twig',
+            $template,
             [
                 'page_title'    => $title,
                 'exception'     => $exception

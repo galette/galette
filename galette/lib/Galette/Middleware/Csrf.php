@@ -119,7 +119,7 @@ class Csrf
             return false;
         }
 
-        $origin_host = strtolower($parsed['host']);
+        $origin_host = strtolower((string)$parsed['host']);
         $origin_port = $parsed['port'] ?? null;
 
         foreach ($this->getExpectedHosts($request) as [$host, $port]) {
