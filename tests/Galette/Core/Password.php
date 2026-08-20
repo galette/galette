@@ -14,6 +14,8 @@ use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\DateTime;
 
+use function Safe\preg_replace;
+
 /**
  * Password tests class
  *
@@ -52,6 +54,22 @@ class Password extends GaletteTestCase
 
         $random = $this->pass->makeRandomPassword();
         $this->assertSame(\Galette\Core\Password::DEFAULT_SIZE, strlen($random));
+
+        //generated values must stay inside the character set, and must be able
+        //to reach both of its ends
+        $property = new \ReflectionProperty(\Galette\Core\AbstractPassword::class, 'chars');
+        $chars = (string)$property->getValue($this->pass);
+        $generated = '';
+        for ($i = 0; $i < 100; $i++) {
+            $generated .= $this->pass->makeRandomPassword(50);
+        }
+        $this->assertSame(
+            '',
+            preg_replace('/[' . preg_quote($chars, '/') . ']/', '', $generated),
+            'Generated value contains characters outside the character set'
+        );
+        $this->assertStringContainsString($chars[0], $generated);
+        $this->assertStringContainsString($chars[strlen($chars) - 1], $generated);
     }
 
     /**
