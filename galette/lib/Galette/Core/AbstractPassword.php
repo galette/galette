@@ -28,11 +28,11 @@ abstract class AbstractPassword
     protected string $new_password;
 
     /**
-     * Generates a random password based on default salt
+     * Generates a random string from the character set
      *
-     * @param int|null $size Password size (optional)
+     * @param int|null $size Size (optional)
      *
-     * @return string random password
+     * @return string random string
      */
     public function makeRandomPassword(?int $size = null): string
     {
@@ -40,7 +40,7 @@ abstract class AbstractPassword
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, strlen($this->chars) - 1) % strlen($this->chars);
+            $num = random_int(0, strlen($this->chars) - 1);
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }
