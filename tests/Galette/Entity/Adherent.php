@@ -324,6 +324,33 @@ class Adherent extends GaletteTestCase
     }
 
     /**
+     * A member created without login nor password - typically from a CSV import
+     * that does not carry those columns - gets generated ones. The generated
+     * password must be stored hashed, and must not be usable.
+     */
+    public function testGeneratedCredentialsOnCreation(): void
+    {
+        $this->logSuperAdmin();
+
+        $data = $this->dataAdherentOne();
+        unset($data['login_adh'], $data['mdp_adh'], $data['mdp_adh2']);
+
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $member->setDependencies($this->preferences, $this->members_fields, $this->history);
+        $this->assertTrue($member->check($data, [], []));
+        $this->assertTrue($member->store());
+
+        $stored = new \Galette\Entity\Adherent($this->zdb, $member->id);
+        $this->assertNotEmpty($stored->login);
+        $this->assertNotEmpty($stored->password);
+        $this->assertSame(
+            '$2y$',
+            substr((string)$stored->password, 0, 4),
+            'Generated password is not stored as a hash: ' . $stored->password
+        );
+    }
+
+    /**
      * Tests check errors
      */
     #[AllowMockObjectsWithoutExpectations]

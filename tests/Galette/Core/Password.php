@@ -73,6 +73,45 @@ class Password extends GaletteTestCase
     }
 
     /**
+     * Test generated logins
+     */
+    public function testMakeRandomLogin(): void
+    {
+        $logins = [];
+
+        for ($i = 0; $i < 200; $i++) {
+            $login = $this->pass->makeRandomLogin();
+            $this->assertSame(15, strlen($login));
+            //a login must never carry '@', which Adherent::validate() rejects
+            //since it identifies an email address
+            $this->assertStringNotContainsString('@', $login);
+            $this->assertNotContains($login, $logins);
+            $logins[] = $login;
+        }
+
+        $this->assertSame(10, strlen($this->pass->makeRandomLogin(10)));
+    }
+
+    /**
+     * Test hash generated for accounts left without a password
+     */
+    public function testMakeUnusablePasswordHash(): void
+    {
+        $hash = $this->pass->makeUnusablePasswordHash();
+
+        //a real hash, not a cleartext value stored in the password column
+        $this->assertSame('$2y$', substr($hash, 0, 4));
+        $this->assertSame(60, strlen($hash));
+
+        //nothing guessable may match it
+        foreach (['', '*', 'password', 'NULL', $hash] as $candidate) {
+            $this->assertFalse(password_verify($candidate, $hash), 'matched with ' . $candidate);
+        }
+
+        $this->assertNotSame($hash, $this->pass->makeUnusablePasswordHash());
+    }
+
+    /**
      * Create member and get its id
      */
     private function localCreateMember(): int

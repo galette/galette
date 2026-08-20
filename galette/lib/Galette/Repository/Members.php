@@ -1557,7 +1557,7 @@ class Members
                         || !isset($m->login_adh)
                         || $m->login_adh == 'NULL'
                     ) {
-                        $m->login_adh = $p->makeRandomPassword(15);
+                        $m->login_adh = $p->makeRandomLogin();
                         $dirty = true;
                     }
 
@@ -1566,11 +1566,7 @@ class Members
                         || !isset($m->mdp_adh)
                         || $m->mdp_adh == 'NULL'
                     ) {
-                        $randomp = $p->makeRandomPassword(15);
-                        $m->mdp_adh = password_hash(
-                            $randomp,
-                            PASSWORD_BCRYPT
-                        );
+                        $m->mdp_adh = $p->makeUnusablePasswordHash();
                         $dirty = true;
                     }
 
