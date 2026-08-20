@@ -103,11 +103,6 @@ class AuthController extends AbstractController
                 (string)$password,
                 $this->preferences->pref_admin_pass
             );
-            if (!$pw_superadmin) {
-                $pw_superadmin = (
-                    md5((string)$password) === $this->preferences->pref_admin_pass
-                );
-            }
             if ($pw_superadmin) {
                 $this->login->logAdmin($nick, $this->preferences);
             }

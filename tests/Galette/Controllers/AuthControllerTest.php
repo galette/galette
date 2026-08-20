@@ -88,4 +88,59 @@ class AuthControllerTest extends GaletteRoutingTestCase
         $this->assertFalse($this->session->login->isImpersonated());
         $this->expectFlashData(['success_detected' => ['Impersonating ended']]);
     }
+
+    /**
+     * The super administrator password lives in preferences and used to accept a
+     * bare md5 hash as a fallback. Only password_verify() is allowed now.
+     */
+    public function testSuperAdminLegacyMd5PasswordIsRejected(): void
+    {
+        $password = 'Sup3r-P@ss!2026';
+        $this->setAdminPass(md5($password));
+
+        $test_response = $this->app->handle($this->createLoginRequest($password));
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('login')]],
+            $test_response->getHeaders()
+        );
+        $this->assertFalse($this->login->isLogged());
+        $this->expectFlashData(['error_detected' => ['Login failed.']]);
+
+        //a properly hashed password still works
+        $this->setAdminPass(password_hash($password, PASSWORD_BCRYPT));
+
+        $test_response = $this->app->handle($this->createLoginRequest($password));
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertTrue($this->login->isLogged());
+        $this->assertTrue($this->login->isSuperAdmin());
+        $this->flash_data = [];
+    }
+
+    /**
+     * Store a raw value as super administrator password, bypassing
+     * Preferences::__set() which would hash it.
+     */
+    private function setAdminPass(string $hash): void
+    {
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => $hash])
+            ->where(['nom_pref' => 'pref_admin_pass']);
+        $this->zdb->execute($update);
+        $this->preferences->load();
+    }
+
+    /**
+     * Build a super administrator login request
+     */
+    private function createLoginRequest(string $password): \Slim\Psr7\Request
+    {
+        return $this->createRequest('dologin', [], 'POST')
+            ->withParsedBody([
+                'login' => $this->preferences->pref_admin_login,
+                'password' => $password
+            ]);
+    }
 }
