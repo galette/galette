@@ -35,44 +35,6 @@ class Password extends GaletteTestCase
     }
 
     /**
-     * Test unique password generator
-     */
-    public function testRandom(): void
-    {
-        $results = [];
-
-        for ($i = 0; $i < 200; $i++) {
-            $random = $this->pass->makeRandomPassword(15);
-            $this->assertSame(15, strlen($random));
-
-            $exists = in_array($random, $results);
-            $this->assertFalse($exists);
-
-            $results[] = $random;
-            $this->assertCount($i + 1, $results);
-        }
-
-        $random = $this->pass->makeRandomPassword();
-        $this->assertSame(\Galette\Core\Password::DEFAULT_SIZE, strlen($random));
-
-        //generated values must stay inside the character set, and must be able
-        //to reach both of its ends
-        $property = new \ReflectionProperty(\Galette\Core\AbstractPassword::class, 'chars');
-        $chars = (string)$property->getValue($this->pass);
-        $generated = '';
-        for ($i = 0; $i < 100; $i++) {
-            $generated .= $this->pass->makeRandomPassword(50);
-        }
-        $this->assertSame(
-            '',
-            preg_replace('/[' . preg_quote($chars, '/') . ']/', '', $generated),
-            'Generated value contains characters outside the character set'
-        );
-        $this->assertStringContainsString($chars[0], $generated);
-        $this->assertStringContainsString($chars[strlen($chars) - 1], $generated);
-    }
-
-    /**
      * Test generated logins
      */
     public function testMakeRandomLogin(): void
@@ -90,6 +52,18 @@ class Password extends GaletteTestCase
         }
 
         $this->assertSame(10, strlen($this->pass->makeRandomLogin(10)));
+
+        //generated logins must stay inside the character set, and must be able
+        //to reach both of its ends
+        $chars = \Galette\Core\AbstractPassword::LOGIN_CHARS;
+        $generated = implode('', $logins);
+        $this->assertSame(
+            '',
+            preg_replace('/[' . preg_quote($chars, '/') . ']/', '', $generated),
+            'Generated login contains characters outside the character set'
+        );
+        $this->assertStringContainsString($chars[0], $generated);
+        $this->assertStringContainsString($chars[strlen($chars) - 1], $generated);
     }
 
     /**

@@ -29,11 +29,6 @@ class Password extends AbstractPassword
     public const string TABLE = 'tmppasswds';
     public const string PK = Adherent::PK;
 
-    /** @var int Overrides default password size */
-    public const int DEFAULT_SIZE = 50;
-    /** @var string Overrides default character set */
-    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
     /**
      * Default constructor
      *

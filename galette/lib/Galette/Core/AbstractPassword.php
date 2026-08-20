@@ -20,26 +20,11 @@ namespace Galette\Core;
 
 abstract class AbstractPassword
 {
-    /** Default password size */
-    public const int DEFAULT_SIZE = 8;
     /** Characters a generated login is drawn from: no '@', no ambiguous glyph */
     public const string LOGIN_CHARS = 'abcdefghjkmnpqrstuvwxyz0123456789';
 
-    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected ?string $hash = null;
     protected string $token = '';
-
-    /**
-     * Generates a random string from the character set
-     *
-     * @param int|null $size Size (optional)
-     *
-     * @return string random string
-     */
-    public function makeRandomPassword(?int $size = null): string
-    {
-        return $this->makeRandomString($this->chars, $size ?? static::DEFAULT_SIZE);
-    }
 
     /**
      * Generates a login, to fill up an account that has none - for instance a
