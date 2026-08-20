@@ -143,4 +143,54 @@ class AuthControllerTest extends GaletteRoutingTestCase
                 'password' => $password
             ]);
     }
+
+    /**
+     * The password recovery link must carry a token, and the value stored in
+     * database must not be usable as a link on its own.
+     */
+    public function testPasswordRecoveryUsesADedicatedToken(): void
+    {
+        $member = $this->createMember($this->dataAdherentOne());
+
+        $password = new \Galette\Core\Password($this->zdb);
+        $this->assertTrue($password->generateNewPassword($member->id));
+        $token = $password->getToken();
+        $stored = $password->getHash();
+        $this->assertNotSame($token, $stored);
+
+        //the stored value must not open the recovery page
+        $test_response = $this->app->handle(
+            $this->createRequest('password-recovery', ['hash' => $stored])
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('password-lost')]],
+            $test_response->getHeaders()
+        );
+        $this->flash_data = [];
+
+        //the token does
+        $test_response = $this->app->handle(
+            $this->createRequest('password-recovery', ['hash' => $token])
+        );
+        $this->assertSame(200, $test_response->getStatusCode());
+
+        //and it lets the member set a new password, once
+        $newpass = 'Rec0very-P@ss!2026';
+        $request = $this->createRequest('do-password-recovery', [], 'POST')
+            ->withParsedBody([
+                'hash' => $token,
+                'mdp_adh' => $newpass,
+                'mdp_adh2' => $newpass
+            ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['Your password has been changed!']]);
+
+        $stored_member = new \Galette\Entity\Adherent($this->zdb, $member->id);
+        $this->assertTrue(password_verify($newpass, (string)$stored_member->password));
+
+        //the token has been consumed
+        $this->assertFalse($password->isTokenValid($token));
+    }
 }

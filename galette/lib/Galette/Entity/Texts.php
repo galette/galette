@@ -172,7 +172,7 @@ class Texts
             'change_pass_uri'   => $this->preferences->getURL()
                 . $this->routeparser->urlFor(
                     'password-recovery',
-                    ['hash' => base64_encode($password->getHash())]
+                    ['hash' => $password->getToken()]
                 )
         ]);
         return $this;

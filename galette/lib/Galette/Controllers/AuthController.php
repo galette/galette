@@ -22,8 +22,6 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Galette\Util\Release;
 
-use function Safe\base64_decode;
-
 /**
  * Galette authentication controller
  *
@@ -482,7 +480,7 @@ class AuthController extends AbstractController
     )]
     public function recoverPassword(Response $response, string $hash, Password $password): Response
     {
-        if (!$password->isHashValid(base64_decode($hash))) {
+        if (!$password->isTokenValid($hash)) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("This link is no longer valid. You should ask to retrieve your password again.")
@@ -524,7 +522,7 @@ class AuthController extends AbstractController
     ): Response {
         $post = $request->getParsedBody();
 
-        if (!$id_adh = $password->isHashValid(base64_decode((string)$post['hash']))) {
+        if (!$id_adh = $password->isTokenValid((string)$post['hash'])) {
             return $this->redirect(
                 response: $response,
                 redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
@@ -559,7 +557,7 @@ class AuthController extends AbstractController
                     );
                     //once password has been changed, we can remove the
                     //temporary password entry
-                    $password->removeHash(base64_decode((string)$post['hash']));
+                    $password->removeToken((string)$post['hash']);
                     return $this->redirect(
                         response: $response,
                         redirect_url: $this->routeparser->urlFor('slash'),
