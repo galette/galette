@@ -296,6 +296,29 @@ class Login extends GaletteTestCase
     }
 
     /**
+     * Passwords hashed with md5 are no longer accepted. Such hashes may still
+     * exist on instances upgraded from Galette older than 0.7.4, since nothing
+     * ever re-hashed them.
+     */
+    public function testLegacyMd5PasswordIsRejected(): void
+    {
+        $this->createUser();
+        $this->login->logOut();
+
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['mdp_adh' => md5($this->mdp_adh)])
+            ->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $this->zdb->execute($update);
+
+        $this->assertFalse($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($this->login->isLogged());
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Passwords mismatch for login `' . $this->login_adh . '`'
+        );
+    }
+
+    /**
      * Test logged user name
      */
     public function testLoggedInAs(): void
