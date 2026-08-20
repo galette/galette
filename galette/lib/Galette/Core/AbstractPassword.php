@@ -22,6 +22,8 @@ abstract class AbstractPassword
 {
     /** Default password size */
     public const int DEFAULT_SIZE = 8;
+    /** Characters a generated login is drawn from: no '@', no ambiguous glyph */
+    public const string LOGIN_CHARS = 'abcdefghjkmnpqrstuvwxyz0123456789';
 
     protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected ?string $hash = null;
@@ -36,15 +38,50 @@ abstract class AbstractPassword
      */
     public function makeRandomPassword(?int $size = null): string
     {
-        $size ??= static::DEFAULT_SIZE;
-        $pass = '';
-        $i = 0;
-        while ($i <= $size - 1) {
-            $num = random_int(0, strlen($this->chars) - 1);
-            $pass .= substr($this->chars, $num, 1);
-            $i++;
+        return $this->makeRandomString($this->chars, $size ?? static::DEFAULT_SIZE);
+    }
+
+    /**
+     * Generates a login, to fill up an account that has none - for instance a
+     * member imported from a file that does not carry logins.
+     *
+     * @param int $size Login size
+     *
+     * @return string random login
+     */
+    public function makeRandomLogin(int $size = 15): string
+    {
+        return $this->makeRandomString(self::LOGIN_CHARS, $size);
+    }
+
+    /**
+     * Generates a hash no password can match, to fill up an account that has no
+     * password. The cleartext value is discarded on purpose: such an account
+     * stays unusable until a password is set for it, its owner recovering it
+     * through the lost password procedure.
+     *
+     * @return string password hash
+     */
+    public function makeUnusablePasswordHash(): string
+    {
+        return password_hash(base64_encode(random_bytes(32)), PASSWORD_BCRYPT);
+    }
+
+    /**
+     * Draws a random string from a character set
+     *
+     * @param string $chars Characters to draw from
+     * @param int    $size  Expected size
+     *
+     * @return string random string
+     */
+    private function makeRandomString(string $chars, int $size): string
+    {
+        $string = '';
+        for ($i = 0; $i < $size; $i++) {
+            $string .= $chars[random_int(0, strlen($chars) - 1)];
         }
-        return $pass;
+        return $string;
     }
 
     /**

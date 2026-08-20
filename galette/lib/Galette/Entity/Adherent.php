@@ -256,7 +256,7 @@ class Adherent implements AccessManagementInterface
         //Default values for both creation and update
         $defaults = [
             'gender' => self::NC,
-            'login' => $gp->makeRandomPassword(15),
+            'login' => $gp->makeRandomLogin(),
             //fields that cannot be null in database
             'surname'  => '',
             'nickname' => '',
@@ -275,7 +275,7 @@ class Adherent implements AccessManagementInterface
                 'creation_date' => date("Y-m-d"),
                 'status' => $this->getDefaultStatus(),
                 'title' => null,
-                'password' => $gp->makeRandomPassword(),
+                'password' => $gp->makeUnusablePasswordHash(),
                 'picture' => new Picture(),
                 'admin' => false,
                 'staff' => false,
@@ -1119,15 +1119,9 @@ class Adherent implements AccessManagementInterface
 
                 // now, check validity
                 if ($key !== 'mdp_adh') { //mdp_adh is handled after all data has been set
-                    if (empty($this->id) && empty($value) && ($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                    if (empty($this->id) && empty($value) && $key == 'login_adh' && !isset($required[$key])) {
                         $p = new Password($this->zdb);
-                        $generated_value = $p->makeRandomPassword(15);
-                        if ($key == 'login_adh') {
-                            //'@' is not permitted in logins
-                            $value = str_replace('@', 'a', $generated_value);
-                        } else {
-                            $value = $generated_value;
-                        }
+                        $value = $p->makeRandomLogin();
                     }
                     $this->validate($key, $value, $values);
                 }
