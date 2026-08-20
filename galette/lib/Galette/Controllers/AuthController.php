@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Controllers\Attributes\Route;
@@ -261,8 +262,19 @@ class AuthController extends AbstractController
         pattern: '/unimpersonate',
         methods: ['GET']
     )]
-    public function unimpersonate(Response $response): Response
+    public function unimpersonate(Request $request, Response $response): Response
     {
+        if (!$this->login->isImpersonated()) {
+            //this route grants super administrator rights back; it must only be
+            //reachable from a session that is actually impersonating someone.
+            Analog::log(
+                'Trying to unimpersonate while not impersonating!',
+                Analog::WARNING
+            );
+            $this->history->add(_T("Attempt to unimpersonate from a non impersonated session"));
+            throw new HttpForbiddenException($request);
+        }
+
         $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
         $this->history->add(_T("Impersonating ended"));
