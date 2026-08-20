@@ -170,19 +170,32 @@ class Password extends GaletteTestCase
         $pass = $this->pass;
         $res = $pass->generateNewPassword($id_adh);
         $this->assertTrue($res);
-        $new_pass = $pass->getNewPassword();
-        $this->assertSame($pass::DEFAULT_SIZE, strlen($new_pass));
-        $hash = $pass->getHash();
-        $this->assertSame(60, strlen($hash));
 
-        $is_valid = $pass->isHashValid($hash);
-        $this->assertNotFalse($is_valid);
+        //the token travels by email, 32 random bytes rendered as hexadecimal
+        $token = $pass->getToken();
+        $this->assertSame(64, strlen($token));
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $token);
+
+        //what is stored must NOT be the token: a read access to the table must
+        //not hand over working recovery links
+        $hash = $pass->getHash();
+        $this->assertNotSame($token, $hash);
+        $this->assertSame(hash('sha256', $token), $hash);
 
         $select = $this->zdb->select(\Galette\Core\Password::TABLE);
+        $stored = $this->zdb->execute($select)->current();
+        $this->assertSame($hash, $stored->tmp_passwd);
+        $this->assertStringNotContainsString($token, $stored->tmp_passwd);
+
+        //only the token opens the door, its stored hash does not
+        $this->assertNotFalse($pass->isTokenValid($token));
+        $this->assertFalse($pass->isTokenValid($hash));
+        $this->assertFalse($pass->isTokenValid(substr($token, 0, -1) . '0'));
+
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        $removed = $pass->removeHash($hash);
+        $removed = $pass->removeToken($token);
         $this->assertTrue($removed);
 
         $results = $this->zdb->execute($select);
@@ -272,7 +285,7 @@ class Password extends GaletteTestCase
      * Test hash validity that throws an exception
      */
     #[AllowMockObjectsWithoutExpectations]
-    public function testIsHashValidWException(): void
+    public function testIsTokenValidWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
@@ -286,7 +299,7 @@ class Password extends GaletteTestCase
             );
 
         $pass = new \Galette\Core\Password($zdb, false);
-        $res = $pass->isHashValid('thehash');
+        $res = $pass->isTokenValid('thetoken');
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }
@@ -295,7 +308,7 @@ class Password extends GaletteTestCase
      * Test hash removal that throws an exception
      */
     #[AllowMockObjectsWithoutExpectations]
-    public function testRemoveHashWException(): void
+    public function testRemoveTokenWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
@@ -309,7 +322,7 @@ class Password extends GaletteTestCase
             );
 
         $pass = new \Galette\Core\Password($zdb, false);
-        $res = $pass->removeHash('thehash');
+        $res = $pass->removeToken('thetoken');
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }

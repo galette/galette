@@ -27,7 +27,7 @@ abstract class AbstractPassword
 
     protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected ?string $hash = null;
-    protected string $new_password;
+    protected string $token = '';
 
     /**
      * Generates a random string from the character set
@@ -97,13 +97,13 @@ abstract class AbstractPassword
     abstract protected function cleanExpired(): bool;
 
     /**
-     * Retrieve new password for sending it to the user
+     * Retrieve the token to send to the user
      *
-     * @return string the new password
+     * @return string the token
      */
-    public function getNewPassword(): string
+    public function getToken(): string
     {
-        return $this->new_password;
+        return $this->token;
     }
 
     /**
@@ -117,13 +117,13 @@ abstract class AbstractPassword
     }
 
     /**
-     * Set password
+     * Set token
      *
-     * @param string $password Password
+     * @param string $token Token
      */
-    protected function setPassword(string $password): self
+    protected function setToken(string $token): self
     {
-        $this->new_password = $password;
+        $this->token = $token;
         return $this;
     }
 
