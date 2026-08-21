@@ -17,6 +17,7 @@ use Galette\DynamicFields\Boolean;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Galette\Core\AuthThrottle;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
 use Galette\Entity\Adherent;
@@ -209,13 +210,33 @@ class MembersController extends CrudController
         description: 'Process self-subscription form',
         requiresAuth: false
     )]
-    public function doSelfSubscribe(Request $request, Response $response): Response
+    public function doSelfSubscribe(Request $request, Response $response, AuthThrottle $throttle): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
+
+        //anybody can subscribe, and every subscription creates rows and sends
+        //mail. The arithmetic question of the form stops a careless robot, not
+        //one written for this form.
+        $delay = $throttle->getSubscribeDelay();
+        if ($delay > 0) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Too many requests. Please try again later.")
+            );
+            $this->history->add(_T("Self subscription throttled"));
+            Analog::log(
+                'Self subscription throttled, ' . $delay . ' seconds left.',
+                Analog::INFO
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('subscribe'));
+        }
+        $throttle->recordSubscribe();
 
         $this->setSelfMembership();
         return $this->doAdd($request, $response);

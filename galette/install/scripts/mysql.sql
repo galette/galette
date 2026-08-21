@@ -399,6 +399,20 @@ CREATE TABLE galette_plugins (
   PRIMARY KEY (plugin_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+-- table for authentication attempts throttling
+DROP TABLE IF EXISTS galette_auth_attempts;
+CREATE TABLE galette_auth_attempts (
+  id_attempt int unsigned NOT NULL auto_increment,
+  scope varchar(64) NOT NULL,
+  identifier varchar(255) NOT NULL,
+  failures int NOT NULL DEFAULT 0,
+  first_failure datetime NULL DEFAULT NULL,
+  last_failure datetime NULL DEFAULT NULL,
+  locked_until datetime NULL DEFAULT NULL,
+  PRIMARY KEY (id_attempt),
+  UNIQUE KEY galette_auth_attempts_scope (scope, identifier)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (

@@ -9,6 +9,15 @@ Changes
 - New galette:superadmin:password console command to change the super administrator password
 - Compatibility tests now check ctype, dom, fileinfo, filter and iconv PHP modules; gettext is no longer reported as optional
 - Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
+- Session identifier is renewed on login, and when impersonating a member or coming back from it
+- Failed authentication attempts are now counted, and further attempts refused for a while: per account and address, per address, and per account as a backstop against attacks spread over many addresses. Thresholds and durations are in the advanced configuration
+- Session identifier is renewed on login, and when impersonating a member or coming back from it
+- Failed authentication attempts are now counted, and further attempts refused for a while: per account and address, per address, and per account as a backstop against attacks spread over many addresses. Thresholds and durations are in the advanced configuration
+- Password recovery requests are limited as well, per account asked about and per address asking
+- Self subscriptions are limited per address
+- Plugins can limit their own forms through the same mechanism, under a name of their own
+- Password recovery no longer says whether an account exists, and being refused no longer says how long is left; both are in the history and the logs
+- A new page under Configuration lists what is being refused, and lifts it
 
 1.2.0.1 -> 1.2.1
 

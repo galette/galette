@@ -1,0 +1,75 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    {% set date_format = _T('Y-m-d H:i:s') %}
+    <p>
+        {{ _T("Repeated failures get further attempts refused for a while. What is refused right now is listed below; lifting a line lets whoever it stands for try again at once.") }}
+        <a href="{{ url_for('preferences') }}#security">{{ _T("Thresholds and durations are in the settings.") }}</a>
+    </p>
+    {% if locks|length == 0 %}
+    <div class="ui info message">
+        <div class="header">{{ _T("Nothing is being refused") }}</div>
+        <p>{{ _T("No account and no address is waiting; counters that can no longer refuse anyone are dropped on their own.") }}</p>
+    </div>
+    {% else %}
+    <form action="{{ url_for('doAuthAttempts') }}" method="post" class="ui form">
+        <table class="listing ui celled striped table">
+            <caption class="visually-hidden">{{ _T("Authentication attempts currently refused") }}</caption>
+            <thead>
+                <tr>
+                    <th>{{ _T("What is counted") }}</th>
+                    <th>{{ _T("Account") }}</th>
+                    <th>{{ _T("Address") }}</th>
+                    <th class="collapsing">{{ _T("Failures") }}</th>
+                    <th class="collapsing">{{ _T("Refused until") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for lock in locks %}
+                <tr>
+                    <td class="left" data-scope="row" data-col-label="{{ _T("What is counted") }}">
+            {% if lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_ACCOUNT_IP') %}
+                        {{ _T("Failed attempts on one account, from one address") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_IP') %}
+                        {{ _T("Failed attempts from one address, on any account") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_ACCOUNT') %}
+                        {{ _T("Failed attempts on one account, from anywhere") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_RECOVERY_ACCOUNT') %}
+                        {{ _T("Password recovery requests for one account") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_RECOVERY_IP') %}
+                        {{ _T("Password recovery requests from one address") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_SUBSCRIBE_IP') %}
+                        {{ _T("Self subscriptions from one address") }}
+            {% else %}
+                        {# a scope of its own, from a plugin: its name is all we know of it #}
+                        {{ lock.scope|escape }}
+            {% endif %}
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Account") }}">{{ lock.login|default('')|escape }}</td>
+                    <td class="left" data-col-label="{{ _T("Address") }}">{{ lock.address|default('')|escape }}</td>
+                    <td class="right collapsing" data-col-label="{{ _T("Failures") }}">{{ lock.failures }}</td>
+                    <td class="nowrap collapsing" data-col-label="{{ _T("Refused until") }}">{{ lock.until|date(date_format) }}</td>
+                    <td class="center actions_row collapsing">
+                        <button type="submit" name="release" value="{{ lock.id }}" class="ui tiny labeled icon button">
+                            <i class="unlock green icon" aria-hidden="true"></i>
+                            {{ _T("Lift") }}
+                        </button>
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" name="release_all" value="1" class="ui red button">
+            <i class="unlock icon" aria-hidden="true"></i>
+            {{ _T("Lift them all") }}
+        </button>
+    </form>
+    {% endif %}
+{% endblock %}

@@ -69,3 +69,15 @@ $app->post(
     '/password-recovery',
     [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');
+
+//authentication attempts currently refused
+$app->get(
+    '/authentication-attempts',
+    [AuthController::class, 'authAttempts']
+)->setName('authAttempts')->add(Authenticate::class);
+
+//lift a refused authentication attempt
+$app->post(
+    '/authentication-attempts',
+    [AuthController::class, 'doAuthAttempts']
+)->setName('doAuthAttempts')->add(Authenticate::class);

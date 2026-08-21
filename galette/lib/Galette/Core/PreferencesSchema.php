@@ -90,6 +90,8 @@ final class PreferencesSchema
     public const string ERR_WEBSITE = 'website';
     public const string ERR_EMAIL = 'email';
     public const string ERR_POSITIVE_NUMBER = 'positive_number';
+    public const string ERR_THROTTLE_ATTEMPTS = 'throttle_attempts';
+    public const string ERR_THROTTLE_SECONDS = 'throttle_seconds';
 
     /** @var array<int, string> Every type an entry may declare */
     private const array TYPES = [
@@ -508,6 +510,73 @@ final class PreferencesSchema
             'pref_bool_groupsmanagers_see_contributions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_bool_groupsmanagers_see_transactions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_noindex' => ['type' => self::TYPE_BOOL, 'default' => false],
+            /* Throttling of failed authentication attempts */
+            'pref_throttle_account_ip_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 5,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+            ],
+            'pref_throttle_account_ip_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 900,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
+            'pref_throttle_ip_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 30,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+            ],
+            'pref_throttle_ip_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 900,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
+            'pref_throttle_account_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 100,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+            ],
+            'pref_throttle_account_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 86400,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
+            'pref_throttle_delay' => [
+                'type' => self::TYPE_INT,
+                'default' => 900,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
+            'pref_throttle_recovery_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 3,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+            ],
+            'pref_throttle_recovery_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 3600,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
+            'pref_throttle_subscribe_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 5,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+            ],
+            'pref_throttle_subscribe_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 3600,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+            ],
             /* Settings that used to live in behavior.inc.php only */
             'pref_x_forwarded_for_index' => [
                 'type' => self::TYPE_INT,
@@ -725,6 +794,17 @@ final class PreferencesSchema
             self::ERR_CARD_YEAR => _T("- Invalid year for cards."),
             self::ERR_WEBSITE => _T("- Invalid website URL."),
             self::ERR_POSITIVE_NUMBER => _T("- Value for '%field' must be a positive number!"),
+            //throttling can be made as generous as wanted, but not turned off
+            self::ERR_THROTTLE_ATTEMPTS => str_replace(
+                '%min',
+                (string)AuthThrottle::MIN_ATTEMPTS,
+                _T("- Value for '%field' must be %min attempts or more!")
+            ),
+            self::ERR_THROTTLE_SECONDS => str_replace(
+                '%min',
+                (string)AuthThrottle::MIN_SECONDS,
+                _T("- Value for '%field' must be %min seconds or more!")
+            ),
             default => throw new \InvalidArgumentException(sprintf('Unknown error identifier "%s".', $id)),
         };
 

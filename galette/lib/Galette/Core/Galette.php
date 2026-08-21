@@ -400,6 +400,13 @@ class Galette
                                 ]
                             ],
                             [
+                                'label' => _T("Authentication attempts"),
+                                'title' => _T("See what is being refused after repeated failures, and lift it"),
+                                'route' => [
+                                    'name' => 'authAttempts'
+                                ]
+                            ],
+                            [
                                 'label' => _T("Plugins"),
                                 'title' => _T("Information about available plugins"),
                                 'route' => [

@@ -15,6 +15,7 @@ use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Controllers\Attributes\Route;
+use Galette\Core\AuthThrottle;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
@@ -80,7 +81,8 @@ class AuthController extends AbstractController
         Request $request,
         Response $response,
         \Galette\Util\Password $checkpass,
-        Release $release
+        Release $release,
+        AuthThrottle $throttle
     ): Response {
         $post =  $request->getParsedBody();
         $nick = $post['login'] ?? '';
@@ -90,6 +92,27 @@ class AuthController extends AbstractController
             $this->flash->addMessage(
                 'loginfault',
                 _T("You must provide both login and password.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('login'));
+        }
+
+        //evaluated before any credential check, so that a locked out caller
+        //costs nothing but a lookup
+        $delay = $throttle->getRetryDelay((string)$nick);
+        if ($delay > 0) {
+            //no countdown on the page: how long is left is a measure of what
+            //has been tried on this account, and whoever is refused has no
+            //business learning it. It is in the history and in the log.
+            $this->flash->addMessage(
+                'loginfault',
+                _T("Too many failed attempts. Please try again later.")
+            );
+            $this->history->add(_T("Authentication throttled"), (string)$nick);
+            Analog::log(
+                'Authentication throttled for `' . $nick . '`, ' . $delay . ' seconds left.',
+                Analog::INFO
             );
             return $response
                 ->withStatus(301)
@@ -109,6 +132,8 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
+            $throttle->recordSuccess((string)$nick);
+
             //privileges just changed: rotate the session id so that an
             //identifier known before authentication cannot be reused
             \RKA\Session::regenerate();
@@ -181,6 +206,8 @@ class AuthController extends AbstractController
             $this->history->add(_T("Login"));
             return $this->galetteRedirect($request, $response);
         } else {
+            $throttle->recordFailure((string)$nick);
+            //the message stays the same whether the account exists or not
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
             return $response->withStatus(301)->withHeader('Location', $this->routeparser->urlFor('login'));
@@ -322,8 +349,12 @@ class AuthController extends AbstractController
         methods: ['GET', 'POST'],
         requiresAuth: false
     )]
-    public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
-    {
+    public function retrievePassword(
+        Request $request,
+        Response $response,
+        AuthThrottle $throttle,
+        ?int $id_adh = null
+    ): Response {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
         if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
@@ -353,6 +384,27 @@ class AuthController extends AbstractController
         } else {
             $post = $request->getParsedBody();
             $login_adh = htmlspecialchars((string)$post['login'], ENT_QUOTES);
+
+            //anybody can ask, and what it does is send a mail to somebody
+            //else: without a limit, that is a way to fill the mailbox of a
+            //member, and to walk through logins to find out which ones exist
+            $delay = $throttle->getRecoveryDelay($login_adh);
+            if ($delay > 0) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Too many requests. Please try again later.")
+                );
+                $this->history->add(_T("Password recovery throttled"), $login_adh);
+                Analog::log(
+                    'Password recovery throttled for `' . $login_adh . '`, ' . $delay . ' seconds left.',
+                    Analog::INFO
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $redirect_url);
+            }
+            $throttle->recordRecovery($login_adh);
+
             $adh = new Adherent($this->zdb, $login_adh);
         }
 
@@ -399,16 +451,12 @@ class AuthController extends AbstractController
                                 _T("Email sent to '%s' for password recovery.")
                             )
                         );
-                        if ($from_admin === false) {
-                            $message = _T("An email has been sent to your address.<br/>Please check your inbox and follow the instructions.");
-                        } else {
-                            $message = _T("An email has been sent to the member.");
+                        if ($from_admin === true) {
+                            $this->flash->addMessage(
+                                'success_detected',
+                                _T("An email has been sent to the member.")
+                            );
                         }
-
-                        $this->flash->addMessage(
-                            'success_detected',
-                            $message
-                        );
                     } else {
                         $str = str_replace(
                             '%s',
@@ -416,12 +464,9 @@ class AuthController extends AbstractController
                             _T("A problem happened while sending password for account '%s'")
                         );
                         $this->history->add($str);
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $str
-                        );
-
-                        $error_detected[] = $str;
+                        if ($from_admin === true) {
+                            $this->flash->addMessage('error_detected', $str);
+                        }
                     }
                 } else {
                     $str = str_replace(
@@ -430,10 +475,9 @@ class AuthController extends AbstractController
                         _T("An error occurred storing temporary password for %s. Please inform an admin.")
                     );
                     $this->history->add($str);
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $str
-                    );
+                    if ($from_admin === true) {
+                        $this->flash->addMessage('error_detected', $str);
+                    }
                 }
             } else {
                 $str = str_replace(
@@ -442,10 +486,9 @@ class AuthController extends AbstractController
                     _T("Your account (%s) do not contain any valid email address")
                 );
                 $this->history->add($str);
-                $this->flash->addMessage(
-                    'error_detected',
-                    $str
-                );
+                if ($from_admin === true) {
+                    $this->flash->addMessage('error_detected', $str);
+                }
             }
         } else {
             //account has not been found
@@ -464,9 +507,20 @@ class AuthController extends AbstractController
             }
 
             $this->history->add($str);
+            if ($from_admin === true) {
+                $this->flash->addMessage('error_detected', $str);
+            }
+        }
+
+        if ($from_admin === false) {
+            //one answer for every outcome, and the same one: whether an
+            //account exists, whether it holds a usable address, whether the
+            //mail went out. Anything else here is a way to find out which
+            //logins are real, one request at a time. What happened is in the
+            //history, where only staff can read it.
             $this->flash->addMessage(
-                'error_detected',
-                $str
+                'success_detected',
+                _T("If an account matches, an email has been sent to its address.<br/>Please check your inbox and follow the instructions.")
             );
         }
 
@@ -578,5 +632,61 @@ class AuthController extends AbstractController
             redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']]),
             errors: $errors
         );
+    }
+
+    /**
+     * Authentication attempts currently refused
+     */
+    #[Route(
+        name: 'authAttempts',
+        pattern: '/authentication-attempts',
+        methods: ['GET']
+    )]
+    public function authAttempts(Response $response, AuthThrottle $throttle): Response
+    {
+        $this->view->render(
+            $response,
+            'pages/authentication_attempts.html.twig',
+            [
+                'page_title' => _T("Authentication attempts"),
+                'locks'      => $throttle->getLocks()
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Lift a refused authentication attempt, or all of them
+     */
+    #[Route(
+        name: 'doAuthAttempts',
+        pattern: '/authentication-attempts',
+        methods: ['POST']
+    )]
+    public function doAuthAttempts(Request $request, Response $response, AuthThrottle $throttle): Response
+    {
+        $post = $request->getParsedBody();
+
+        if (isset($post['release_all'])) {
+            $done = $throttle->releaseAll();
+            $message = _T("All authentication counters have been lifted.");
+        } else {
+            $done = $throttle->release((int)($post['release'] ?? 0));
+            $message = _T("The counter has been lifted.");
+        }
+
+        if ($done) {
+            $this->history->add(_T("Authentication counters lifted"));
+            $this->flash->addMessage('success_detected', $message);
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Nothing to lift; it may have expired on its own.")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('authAttempts'));
     }
 }

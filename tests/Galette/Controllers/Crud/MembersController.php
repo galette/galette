@@ -1767,6 +1767,54 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Subscribing is limited: the form is public, and each subscription
+     * creates rows and sends mail
+     */
+    public function testSelfSubscriptionIsThrottled(): void
+    {
+        $this->preferences->pref_bool_selfsubscribe = true;
+        $this->assertTrue($this->preferences->store());
+
+        $throttle = new \Galette\Core\AuthThrottle($this->zdb, $this->preferences, clean: false);
+        for ($i = 0; $i < $this->preferences->pref_throttle_subscribe_attempts; $i++) {
+            $throttle->recordSubscribe();
+        }
+        $this->assertGreaterThan(0, $throttle->getSubscribeDelay());
+
+        $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
+        $rgaptcha = new \ReflectionClass($gaptcha);
+        $rgaptcha->getProperty('gaptcha')->setValue($gaptcha, 8);
+        $this->session->gaptcha = $gaptcha;
+
+        $member_data = $this->dataAdherentOne();
+        unset($member_data['mdp_adh'], $member_data['mdp_adh2']);
+        $member_data['gaptcha'] = 8;
+
+        $request = $this->createRequest('storeselfmembers', [], 'POST')->withParsedBody($member_data);
+        $test_response = $this->app->handle($request);
+
+        $this->preferences->pref_bool_selfsubscribe = false;
+        $this->assertTrue($this->preferences->store());
+
+        //sent back to the form, and nothing created
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('subscribe')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertCount(0, $this->zdb->execute($this->zdb->select(\Galette\Entity\Adherent::TABLE)));
+
+        $flash = $this->flash_data['slimFlash']['error_detected'][0] ?? '';
+        $this->assertStringContainsString('Too many requests', $flash);
+        $this->flash_data = [];
+        $this->expectNoLogEntry();
+
+        //the counter is lifted, and it goes through
+        $this->assertTrue($throttle->releaseAll());
+        $this->assertSame(0, $throttle->getSubscribeDelay());
+    }
+
+    /**
      * Test member duplication route
      */
     public function testMemberDuplicate(): void

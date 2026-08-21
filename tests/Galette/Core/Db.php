@@ -530,7 +530,8 @@ class Db extends BaseGaletteTestCase
             'galette_preferences',
             'galette_searches',
             'galette_tmplinks',
-            'galette_documents'
+            'galette_documents',
+            'galette_auth_attempts'
         ];
 
         $tables = $this->zdb->getTables();

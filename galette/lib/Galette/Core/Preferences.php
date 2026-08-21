@@ -156,6 +156,17 @@ use Galette\Repository\Members;
  * @property      bool     $pref_noindex
  * @property      int      $pref_x_forwarded_for_index
  * @property      int      $pref_session_timeout
+ * @property      int      $pref_throttle_account_ip_attempts
+ * @property      int      $pref_throttle_account_ip_window
+ * @property      int      $pref_throttle_ip_attempts
+ * @property      int      $pref_throttle_ip_window
+ * @property      int      $pref_throttle_account_attempts
+ * @property      int      $pref_throttle_account_window
+ * @property      int      $pref_throttle_delay
+ * @property      int      $pref_throttle_recovery_attempts
+ * @property      int      $pref_throttle_recovery_window
+ * @property      int      $pref_throttle_subscribe_attempts
+ * @property      int      $pref_throttle_subscribe_window
  */
 class Preferences
 {
