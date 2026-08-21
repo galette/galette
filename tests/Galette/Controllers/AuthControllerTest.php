@@ -13,6 +13,8 @@ namespace Galette\Tests\Controllers;
 use Analog\Analog;
 use Galette\Tests\GaletteRoutingTestCase;
 
+use function Safe\session_id;
+
 /**
  * Galette authentication controller tests
  *
@@ -69,17 +71,21 @@ class AuthControllerTest extends GaletteRoutingTestCase
 
         //impersonate through its own route, so the whole flow is exercised
         $this->logSuperAdmin();
+        $before_impersonate = session_id();
         $test_response = $this->app->handle(
             $this->createRequest('impersonate', ['id' => (string)$member->id])
         );
         $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertNotSame($before_impersonate, session_id());
         $this->assertTrue($this->session->login->isImpersonated());
         $this->assertFalse($this->session->login->isSuperAdmin());
         $this->flash_data = [];
 
+        $before_unimpersonate = session_id();
         $test_response = $this->app->handle($this->createRequest('unimpersonate'));
 
         $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertNotSame($before_unimpersonate, session_id());
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('slash')]],
             $test_response->getHeaders()
@@ -192,5 +198,51 @@ class AuthControllerTest extends GaletteRoutingTestCase
 
         //the token has been consumed
         $this->assertFalse($password->isTokenValid($token));
+    }
+
+    /**
+     * The session id must change whenever the privilege level of the session
+     * does, so that an identifier fixed before authentication cannot be reused.
+     */
+    public function testSessionIdIsRegeneratedOnLogin(): void
+    {
+        $member = $this->createMember($this->dataAdherentOne());
+
+        $before = session_id();
+        $this->assertNotEmpty($before);
+
+        $request = $this->createRequest('dologin', [], 'POST')
+            ->withParsedBody([
+                'login' => $member->login,
+                'password' => 'J^B-()f'
+            ]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertTrue($this->login->isLogged());
+        $this->assertNotSame($before, session_id());
+        $this->flash_data = [];
+    }
+
+    /**
+     * A failed authentication must not rotate the session id: there is no
+     * privilege change to protect, and rotating would let anyone reset it.
+     */
+    public function testSessionIdIsKeptOnFailedLogin(): void
+    {
+        $before = session_id();
+
+        $request = $this->createRequest('dologin', [], 'POST')
+            ->withParsedBody([
+                'login' => 'does.not.exist',
+                'password' => 'whatever'
+            ]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertFalse($this->login->isLogged());
+        $this->assertSame($before, session_id());
+        $this->expectLogEntry(Analog::WARNING, 'No entry found for login `does.not.exist`');
+        $this->flash_data = [];
     }
 }
