@@ -211,8 +211,9 @@ class Links extends GaletteTestCase
             $exception_trhown = true;
             $this->expectLogEntry(
                 \Analog\Analog::ERROR,
+                //match the constraint name only: message is localised by the server
                 $this->zdb->isPostgres()
-                    ? 'duplicate key value violates unique constraint "galette_tmplinks_pkey"'
+                    ? 'galette_tmplinks_pkey'
                     : "Duplicate entry '1-1' for key"
             );
             $this->assertSame(
