@@ -164,7 +164,12 @@ class Password extends GaletteTestCase
         //only the token opens the door, its stored hash does not
         $this->assertNotFalse($pass->isTokenValid($token));
         $this->assertFalse($pass->isTokenValid($hash));
-        $this->assertFalse($pass->isTokenValid(substr($token, 0, -1) . '0'));
+        //a token differing by a single character must not be accepted. Mutate
+        //to a character the last one is not, or one time in sixteen the "mutated"
+        //token would be the token itself
+        $mutated = substr($token, 0, -1) . ($token[-1] === '0' ? '1' : '0');
+        $this->assertNotSame($token, $mutated);
+        $this->assertFalse($pass->isTokenValid($mutated));
 
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
