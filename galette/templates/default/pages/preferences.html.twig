@@ -1019,7 +1019,26 @@
         </div>{# /tab segment #}
 
         <div class="ui{{ tab == 'dyn_fields' ? ' active' }} tab segment" data-tab="dyn_fields">
+{% if preferences.getDynamicFields().getFields() is empty %}
+            <div class="ui icon info visible message">
+                <i class="info circle blue icon" aria-hidden="true"></i>
+                <div class="content">
+                    {{ _T("There is not yet any dynamic field configured for '%formname'")|replace({'%formname': _T("Settings")}) }}
+                </div>
+            </div>
+{% else %}
             {% include "components/dynamic_fields.html.twig" with {'object': preferences} %}
+{% endif %}
+            <div class="ui basic fitted segment">
+                <a
+                    href="{{ url_for('configureDynamicFields', {'form_name': 'prefs'}) }}"
+                    class="ui labeled icon button"
+                    title="{{ _T("Manage additional fields for various forms") }}"
+                >
+                    <i class="cogs grey icon" aria-hidden="true"></i>
+                    {{ _T("Configure dynamic fields") }}
+                </a>
+            </div>
         </div>{# /tab segment #}
 
 {% if login.isAdmin() %}
