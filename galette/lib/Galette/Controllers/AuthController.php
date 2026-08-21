@@ -109,6 +109,10 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
+            //privileges just changed: rotate the session id so that an
+            //identifier known before authentication cannot be reused
+            \RKA\Session::regenerate();
+
             if (
                 $this->login->isSuperAdmin()
                 || $this->login->isAdmin()
@@ -217,6 +221,7 @@ class AuthController extends AbstractController
         $success = $this->login->impersonate($id);
 
         if ($success === true) {
+            \RKA\Session::regenerate();
             $this->session->login = $this->login;
             $msg = str_replace(
                 '%login',
@@ -271,6 +276,7 @@ class AuthController extends AbstractController
         $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
         $this->history->add(_T("Impersonating ended"));
+        \RKA\Session::regenerate();
         $this->session->login = $login;
         $this->login = $login;
         $this->flash->addMessage(
