@@ -187,7 +187,7 @@ class History
      *
      * @param Select $select Original select
      */
-    private function buildLists(Select $select): void
+    protected function buildLists(Select $select): void
     {
         $this->users = [];
         try {
@@ -267,7 +267,7 @@ class History
      *
      * @param Select $select Original select
      */
-    private function buildWhereClause(Select $select): void
+    protected function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
