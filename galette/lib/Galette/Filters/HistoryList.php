@@ -38,8 +38,8 @@ class HistoryList extends Pagination
     public const int ORDERBY_ACTION = 3;
 
     //filters
-    private ?string $start_date_filter = null;
-    private ?string $end_date_filter = null;
+    protected ?string $start_date_filter = null;
+    protected ?string $end_date_filter = null;
     private ?string $user_filter = null;
     private ?string $action_filter = null;
 
