@@ -20,13 +20,14 @@
 # batuhan Okmen <batuhanokmen@gmail.com>, 2026.
 # H B <habibbktr@gmail.com>, 2026.
 # Ahmet Güneş <a.gunes55@gmail.com>, 2026.
+# Cahit OK <cahitok333@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-07-28 13:01+0000\n"
-"Last-Translator: Ahmet Güneş <a.gunes55@gmail.com>\n"
+"PO-Revision-Date: 2026-08-22 22:52+0000\n"
+"Last-Translator: Cahit OK <cahitok333@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -176,7 +177,7 @@ msgid "filtered_memberslist"
 msgstr "filtrelenmiş_üyelerlistesi"
 
 msgid "Man"
-msgstr ""
+msgstr "Erkek"
 
 msgid "Woman"
 msgstr "Kadın"
@@ -231,10 +232,10 @@ msgid "Mime-Type not allowed"
 msgstr "MIME türüne izin verilmiyor"
 
 msgid "A file with that name already exists!"
-msgstr ""
+msgstr "Bu isimde bir dosya zaten mevcut!"
 
 msgid "File does not comply with requirements."
-msgstr ""
+msgstr "Dosya gereksinimleri karşılamıyor"
 
 msgid "Unable to write file or temporary file"
 msgstr ""
@@ -5982,7 +5983,7 @@ msgstr ""
 
 #, php-format
 msgid "Translate '%s' field"
-msgstr ""
+msgstr "‘%s' kısmını çevir"
 
 #, php-format
 msgid "Move up '%s' field"
