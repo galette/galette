@@ -11,6 +11,12 @@ parameters:
         - galette/install/
         - galette/webroot/
         - tests/
+    excludePaths:
+        # generated at runtime by the test suite (compiled Twig templates,
+        # caches, uploads, ...); analysing it reports hundreds of false
+        # positives on __TwigTemplate_* classes.
+        # (?) marks it optional: it does not exist on a fresh checkout
+        - tests/tests-data (?)
     scanFiles:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
