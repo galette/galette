@@ -221,6 +221,9 @@ $(function() {
 
     _bindDropdownsAutosubmit();
 
+    /* Fomantic dropdowns say nothing about themselves; this describes them. */
+    _dropdownA11y.install();
+
     _keyboardNavigation();
 
     var _back2Top = document.getElementById("back2top");
