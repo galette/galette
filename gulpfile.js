@@ -15,6 +15,8 @@ const localServer = {
 }
 
 var gulp = require('gulp'),
+  fs = require('fs'),
+  execFileSync = require('child_process').execFileSync,
   del = require('del'),
   uglify = require('gulp-uglify'),
   cleanCSS = require('gulp-clean-css'),
@@ -175,6 +177,27 @@ function theme() {
   return merge(config, theme, emojis);
 }
 
+/* Fomantic ships next to no ARIA in its dropdown component, and the six years
+ * old upstream issue is still open. The patch is applied to a pristine copy of
+ * the module at each build, so it fails loudly -- rather than silently -- the
+ * day the component moves under it.
+ */
+function fomanticA11y(cb) {
+  const module = 'definitions/modules/dropdown.js',
+    pristine = './node_modules/fomantic-ui/src/' + module,
+    target = './semantic/src/' + module;
+
+  if (!fs.existsSync(target)) {
+    cb(new Error('Fomantic sources are missing, run "npm run fomantic-install" first'));
+
+    return;
+  }
+
+  fs.copyFileSync(pristine, target);
+  execFileSync('patch', ['-s', target, './patches/fomantic-dropdown-a11y.patch'], {stdio: 'inherit'});
+  cb();
+}
+
 function clean() {
   return del([
     paths.assets.public,
@@ -286,11 +309,12 @@ function watch() {
 
 exports.galette = galette;
 exports.theme = theme;
+exports['fomantic-a11y'] = fomanticA11y;
 exports.clean = clean;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.movefiles = movefiles;
 exports.watch = watch;
 
-var build = gulp.series(theme, clean, styles, scripts, movefiles, 'build ui', galette);
+var build = gulp.series(theme, fomanticA11y, clean, styles, scripts, movefiles, 'build ui', galette);
 exports.default = build;

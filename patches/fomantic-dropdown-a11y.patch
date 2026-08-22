@@ -1,0 +1,371 @@
+Describe Fomantic UI dropdowns to assistive technologies.
+
+Fomantic 2.9.4 ships exactly one ARIA attribute in its whole dropdown
+component -- an aria-labelledby on the search input -- and the 2.10 branch
+ships the same one. A dropdown built from a <select> hides that select with
+display: none, so the <label for="..."> of the form names a control which is
+no longer in the accessibility tree, and what is left for everybody else is a
+nameless, roleless div[tabindex="0"].
+
+A dropdown standing for a form control becomes a combobox over a listbox of
+options, named from the label pointing at the select, at the container, or at
+the name of the hidden input the value is kept in. Options carry their
+selected state, and the control points at the entry the cursor sits on.
+
+What the keyboard was missing comes with it: enter and space open what is
+closed, escape closes and keeps the focus, home and end reach both ends of a
+list the way the arrows walk it, and the focus is caught back when the
+component drops it on the document body.
+
+Dropdowns revealing a menu are left alone: their menu is a child of the very
+element they are opened from, so describing them needs a change of markup
+rather than of attributes.
+
+Applied to semantic/src at build time by the fomantic-a11y gulp task.
+Reported upstream as https://github.com/fomantic/Fomantic-UI/issues/1332
+--- a/dropdown.js
++++ b/dropdown.js
+@@ -102,6 +102,8 @@
+                 selectObserver,
+                 menuObserver,
+                 classObserver,
++                ariaRequired = false,
++                ariaFocused,
+                 module,
+                 tempDisableApiCache = false
+             ;
+@@ -136,6 +138,8 @@
+                         module.save.defaults();
+                         module.restore.selected();
+ 
++                        module.aria.setup();
++
+                         module.bind.events();
+ 
+                         module.observeChanges();
+@@ -371,19 +375,10 @@
+                         }
+                         if (module.is.search() && !module.has.search()) {
+                             module.verbose('Adding search input');
+-                            var
+-                                labelNode = $module.prev('label')
+-                            ;
+                             $search = $('<input />')
+                                 .addClass(className.search)
+                                 .prop('autocomplete', module.is.chrome() ? 'fomantic-search' : 'off')
+                             ;
+-                            if (labelNode.length > 0) {
+-                                if (!labelNode.attr('id')) {
+-                                    labelNode.attr('id', '_' + module.get.id() + '_formLabel');
+-                                }
+-                                $search.attr('aria-labelledby', labelNode.attr('id'));
+-                            }
+                             $search.insertBefore($text);
+                         }
+                         if (module.is.multiple() && module.is.searchSelection() && !module.has.sizer()) {
+@@ -432,6 +427,7 @@
+                             }
+                             if ($input.is('[required]')) {
+                                 settings.forceSelection = true;
++                                ariaRequired = true;
+                             }
+                             if (!settings.allowTab) {
+                                 $input.removeAttr('tabindex');
+@@ -477,6 +473,7 @@
+                 refreshItems: function () {
+                     $item = $menu.find(selector.item);
+                     $divider = settings.hideDividers ? $item.parent().children(selector.divider) : $();
++                    module.aria.items();
+                 },
+ 
+                 refreshSelectors: function () {
+@@ -548,6 +545,7 @@
+                             return true;
+                         }
+                         if (settings.onShow.call(element) !== false) {
++                            module.aria.expanded(true);
+                             module.remove.empty();
+                             module.animate.show(function () {
+                                 module.bind.intent();
+@@ -568,6 +566,7 @@
+                     if (module.is.active() && !module.is.animatingOutward()) {
+                         module.debug('Hiding dropdown');
+                         if (settings.onHide.call(element) !== false) {
++                            module.aria.expanded(false);
+                             module.animate.hide(function () {
+                                 module.remove.visible();
+                                 // hiding search focus
+@@ -607,6 +606,7 @@
+ 
+                 hideMenu: function () {
+                     module.verbose('Hiding menu  instantaneously');
++                    module.aria.expanded(false);
+                     module.remove.active();
+                     module.remove.visible();
+                     $menu.transition('destroy').transition('hide');
+@@ -620,6 +620,164 @@
+                     $subMenus.transition('hide');
+                 },
+ 
++                aria: {
++                    /*
++                     * A dropdown standing for a form control is a combobox over
++                     * a listbox of options. The <select> it is built from is
++                     * hidden with display: none, so the <label for="..."> of
++                     * the form names a control which is no longer in the
++                     * accessibility tree, and what is left for everybody else
++                     * is a nameless, roleless div[tabindex="0"].
++                     *
++                     * A dropdown revealing a menu is left alone here: its menu
++                     * is a child of the very element it is opened from, so a
++                     * role on that element would nest the entries of the menu
++                     * inside their own button, and describing it needs a change
++                     * of markup rather than of attributes.
++                     */
++                    setup: function () {
++                        if (!module.has.menu() || !(module.is.selection() || module.has.input())) {
++                            return;
++                        }
++                        var
++                            $control = module.aria.control()
++                        ;
++                        $control.attr({
++                            role: 'combobox',
++                            'aria-haspopup': 'listbox',
++                            'aria-controls': module.aria.identify($menu, 'listbox'),
++                            'aria-expanded': 'false',
++                        });
++                        if (module.has.search()) {
++                            $control.attr('aria-autocomplete', 'list');
++                        }
++                        if (ariaRequired || $input.is('[required]')) {
++                            $control.attr('aria-required', 'true');
++                        }
++                        if (module.is.disabled() || $input.is('[disabled]')) {
++                            $control.attr('aria-disabled', 'true');
++                        }
++                        $menu.attr('role', 'listbox');
++                        if (module.is.multiple()) {
++                            $menu.attr('aria-multiselectable', 'true');
++                        }
++                        module.aria.name($control);
++                        module.aria.items();
++                    },
++                    // the search variant moves the focus to its own input, and
++                    // then the container is not focusable at all
++                    control: function () {
++                        return module.has.search() ? $search : $module;
++                    },
++                    identify: function ($element, suffix) {
++                        if (!$element.attr('id')) {
++                            $element.attr('id', '_' + module.get.id() + '_' + suffix);
++                        }
++
++                        return $element.attr('id');
++                    },
++                    // the label of the form points at the select, or at the
++                    // name of the hidden input the value is kept in, or simply
++                    // sits before the dropdown -- whichever it is, the name has
++                    // to be carried over to whatever is left focusable
++                    label: function () {
++                        var
++                            $label = $()
++                        ;
++                        $.each([$input.attr('id'), $module.attr('id'), $input.attr('name')], function (index, reference) {
++                            if ($label.length === 0 && reference) {
++                                $label = $('label[for="' + String(reference).replace(/["\\]/g, '\\$&') + '"]').eq(0);
++                            }
++                        });
++                        if ($label.length === 0) {
++                            $label = $module.prev('label');
++                        }
++                        if ($label.length === 0) {
++                            $label = $module.closest('label');
++                        }
++
++                        return $label.eq(0);
++                    },
++                    name: function ($control) {
++                        if ($control.attr('aria-label') || $control.attr('aria-labelledby')) {
++                            return;
++                        }
++                        var
++                            $label   = module.aria.label(),
++                            fallback = $module.attr('aria-label') || $module.attr('title') || $input.attr('title')
++                        ;
++                        if ($label.length > 0) {
++                            $control.attr('aria-labelledby', module.aria.identify($label, 'formLabel'));
++                        } else if (fallback) {
++                            $control.attr('aria-label', fallback);
++                        }
++                    },
++                    isDescribed: function () {
++                        return $menu.attr('role') === 'listbox';
++                    },
++                    expanded: function (isExpanded) {
++                        if (!module.aria.isDescribed()) {
++                            return;
++                        }
++                        module.aria.control().attr('aria-expanded', isExpanded ? 'true' : 'false');
++                        module.aria.items();
++                    },
++                    // "active" is the chosen value, "selected" is where the
++                    // keyboard cursor sits: two different things, and both are
++                    // kept in classes
++                    items: function () {
++                        if (!module.aria.isDescribed()) {
++                            return;
++                        }
++                        $menu.children(selector.item).each(function (index) {
++                            var
++                                $currentItem = $(this)
++                            ;
++                            module.aria.identify($currentItem, 'option' + index);
++                            $currentItem.attr({
++                                role: 'option',
++                                'aria-selected': $currentItem.hasClass(className.active) ? 'true' : 'false',
++                            });
++                        });
++                        module.aria.cursor();
++                    },
++                    cursor: function () {
++                        if (!module.aria.isDescribed()) {
++                            return;
++                        }
++                        var
++                            $children = $menu.children(selector.item),
++                            $control  = module.aria.control(),
++                            $cursor   = $children.filter('.' + className.selected).eq(0)
++                        ;
++                        // an open menu with nothing under the cursor still has
++                        // the chosen value to point at
++                        if ($cursor.length === 0) {
++                            $cursor = $children.filter('.' + className.active).eq(0);
++                        }
++                        // the state of the control rather than that of the menu:
++                        // the two are set apart by the closing animation
++                        if ($control.attr('aria-expanded') === 'true' && $cursor.length > 0) {
++                            $control.attr('aria-activedescendant', module.aria.identify($cursor, 'option' + $children.index($cursor)));
++                        } else {
++                            $control.removeAttr('aria-activedescendant');
++                        }
++                    },
++                    // the component drops the focus on the document body once a
++                    // value has been picked, and a keyboard user would have to
++                    // tab again from the top of the page
++                    refocus: function () {
++                        var
++                            focusable = ariaFocused || module.aria.control()[0]
++                        ;
++                        setTimeout(function () {
++                            if (focusable && document.activeElement === document.body) {
++                                $(focusable).trigger('focus');
++                            }
++                        }, 0);
++                    },
++                },
++
+                 bind: {
+                     events: function () {
+                         module.bind.keyboardEvents();
+@@ -1593,6 +1751,9 @@
+                             pressedKey    = event.which,
+                             isShortcutKey = module.is.inObject(pressedKey, keys) || event.key === settings.delimiter
+                         ;
++                        // whatever holds the focus right now is what has to get
++                        // it back, be it the container or something inside it
++                        ariaFocused = document.activeElement;
+                         if (isShortcutKey) {
+                             var
+                                 $currentlySelected = $item.not(selector.unselectable).filter('.' + className.selected).eq(0),
+@@ -1638,6 +1799,7 @@
+                                     } else if (selectedIsSelectable) {
+                                         module.verbose('Selecting item from keyboard shortcut', $selectedItem);
+                                         module.event.item.click.call($selectedItem, event);
++                                        module.aria.refocus();
+                                         if (module.is.searchSelection()) {
+                                             if (!settings.keepSearchTerm) {
+                                                 module.remove.searchTerm();
+@@ -1740,6 +1902,40 @@
+                                     event.preventDefault();
+                                 }
+ 
++                                // space (select, or close when the cursor is nowhere)
++                                if (pressedKey === keys.space && !module.has.search()) {
++                                    if (selectedIsSelectable) {
++                                        module.verbose('Selecting item from keyboard shortcut', $selectedItem);
++                                        module.event.item.click.call($selectedItem, event);
++                                    } else {
++                                        module.verbose('Space key pressed on no item, closing dropdown');
++                                        module.hide();
++                                    }
++                                    module.aria.refocus();
++                                    event.preventDefault();
++                                }
++
++                                // home and end (both ends of the menu)
++                                if ((pressedKey === keys.home || pressedKey === keys.end) && !module.has.search()) {
++                                    $nextItem = pressedKey === keys.home
++                                        ? $visibleItems.not(selector.unselectable).eq(0)
++                                        : $visibleItems.not(selector.unselectable).last();
++                                    if ($nextItem.length > 0) {
++                                        module.verbose('Home or end key pressed, changing active item');
++                                        $item
++                                            .removeClass(className.selected)
++                                        ;
++                                        $nextItem
++                                            .addClass(className.selected)
++                                        ;
++                                        module.set.scrollPosition($nextItem);
++                                        if (settings.selectOnKeydown && module.is.single() && !$nextItem.hasClass(className.actionable)) {
++                                            module.set.selectedItem($nextItem);
++                                        }
++                                    }
++                                    event.preventDefault();
++                                }
++
+                                 // page down (show next page)
+                                 if (pressedKey === keys.pageUp) {
+                                     module.scrollPage('up');
+@@ -1754,6 +1950,7 @@
+                                 if (pressedKey === keys.escape) {
+                                     module.verbose('Escape key pressed, closing dropdown');
+                                     module.hide();
++                                    module.aria.refocus();
+                                     event.stopPropagation();
+                                 }
+                             } else {
+@@ -1761,6 +1958,13 @@
+                                 if (pressedKey === keys.enter || delimiterPressed) {
+                                     event.preventDefault();
+                                 }
++                                // enter or space (open menu)
++                                if ((pressedKey === keys.enter || pressedKey === keys.space) && !module.is.visible() && !module.has.search() && !settings.allowAdditions) {
++                                    module.verbose('Enter or space key pressed, showing dropdown');
++                                    module.show();
++                                    event.preventDefault();
++                                }
++
+                                 // down arrow (open menu)
+                                 if (pressedKey === keys.downArrow && !module.is.visible()) {
+                                     module.verbose('Down key pressed, showing dropdown');
+@@ -1768,6 +1972,7 @@
+                                     event.preventDefault();
+                                 }
+                             }
++                            module.aria.cursor();
+                         } else {
+                             if (!module.has.search()) {
+                                 module.set.selectedLetter(String.fromCharCode(pressedKey));
+@@ -4199,8 +4404,11 @@
+             deleteKey: 46,
+             enter: 13,
+             escape: 27,
++            space: 32,
+             pageUp: 33,
+             pageDown: 34,
++            end: 35,
++            home: 36,
+             leftArrow: 37,
+             upArrow: 38,
+             rightArrow: 39,

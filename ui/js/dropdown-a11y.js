@@ -5,21 +5,28 @@
  */
 
 /**
- * Accessibility for Fomantic UI dropdowns.
+ * Accessibility for Fomantic UI dropdowns revealing a menu.
  *
- * Fomantic 2.9.4 (and the 2.10 nightly) -- ships exactly one ARIA
- * attribute in its whole dropdown component: an aria-labelledby on the search
- * input. No role, no aria-expanded, no aria-selected. A dropdown built from a
- * <select> hides that select with display: none, so its <label for="..."> names
- * a control which is no longer in the accessibility tree, and what is left for
- * everyone else is a nameless, roleless div[tabindex="0"].
+ * Everything a dropdown standing for a form control needs -- the combobox and
+ * its listbox, the name taken from the label of the form, the state of the
+ * options, and the keys the component was missing -- lives in the component
+ * itself, added by patches/fomantic-dropdown-a11y.patch at build time, so that
+ * the very same diff can be proposed upstream.
  *
- * The attributes are added here, once, rather than in each of the dropdowns
- * spread over the templates. The state is kept in step with a MutationObserver:
- * Fomantic marks an open dropdown with the classes "active visible" on its
- * container, whoever opened it, so the state follows the DOM rather than
- * depending on the component callbacks -- which a score of template call sites
- * override with their own.
+ * What is left here is what cannot be described with attributes alone. A
+ * dropdown revealing a menu is a disclosure: a button, and what it shows. But
+ * the menu the component builds is a child of the very element it is opened
+ * from, so a role on that element nests the entries of the menu inside their
+ * own button -- announced inconsistently by assistive technologies, and
+ * reported by axe as nested-interactive. The button has to be an inner element,
+ * which is a change of markup, and one upstream would rightly weigh against
+ * every other layout built on that component.
+ *
+ * Deliberately not role="menu": these hold plain links and actions, and a menu
+ * promises a keyboard model of its own (arrows mandatory, Tab leaving the whole
+ * menu) that this does not implement. A half kept promise reads worse than
+ * none, so the pattern is the disclosure the W3C recommends for site
+ * navigation.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -35,81 +42,6 @@ var _dropdownA11y = (function() {
             $element.attr('id', prefix + '_a11y_' + _uid);
         }
         return $element.attr('id');
-    };
-
-    /**
-     * Name the control of a dropdown that picks a value.
-     *
-     * The label of the form points at the select, which is hidden, or at the
-     * container; either way the name has to be carried over to whatever is left
-     * focusable. Fomantic names the search variant itself, so an existing name
-     * is never overwritten.
-     */
-    var _nameControl = function($control, $value, $dd) {
-        if ($control.attr('aria-label') || $control.attr('aria-labelledby')) {
-            return;
-        }
-
-        var $label = $();
-        //the name of the value element as a last resort: a dropdown keeping its
-        //value in a hidden input has nothing labelable in it, so the templates
-        //point the label at that name, which ties the two together for nobody
-        //-- only ARIA can, from here
-        [$value.attr('id'), $dd.attr('id'), $value.attr('name')].forEach(function(reference) {
-            if (!$label.length && reference) {
-                $label = $('label').filter(function() {
-                    return this.getAttribute('for') === reference;
-                }).first();
-            }
-        });
-        if (!$label.length) {
-            $label = $dd.closest('label');
-        }
-        if ($label.length) {
-            $control.attr('aria-labelledby', _ensureId($label.first(), 'label'));
-            return;
-        }
-
-        var fallback = $value.attr('title') || $dd.attr('aria-label') || $dd.attr('title');
-        if (fallback) {
-            $control.attr('aria-label', fallback);
-        }
-    };
-
-    /**
-     * A dropdown that picks a value: a combobox over a listbox of options
-     */
-    var _asListbox = function($dd, $menu, $value) {
-        var $search = $dd.children('input.search').first(),
-            //the search variant moves the focus to its input, and then the
-            //container is not focusable at all
-            $control = $search.length ? $search : $dd
-        ;
-
-        $control.attr({
-            'role': 'combobox',
-            'aria-haspopup': 'listbox',
-            'aria-controls': _ensureId($menu, 'listbox'),
-            'aria-expanded': 'false'
-        });
-        if ($search.length) {
-            $control.attr('aria-autocomplete', 'list');
-        }
-        _nameControl($control, $value, $dd);
-
-        if ($value.prop('required')) {
-            $control.attr('aria-required', 'true');
-        }
-        if ($value.prop('disabled') || $dd.hasClass('disabled')) {
-            $control.attr('aria-disabled', 'true');
-        }
-
-        $menu.attr('role', 'listbox');
-        if ($value.prop('multiple')) {
-            $menu.attr('aria-multiselectable', 'true');
-        }
-
-        $dd.data('a11yControl', $control);
     };
 
     /**
@@ -143,27 +75,15 @@ var _dropdownA11y = (function() {
     };
 
     /**
-     * A dropdown that reveals a menu: a button, and what it shows.
-     *
-     * Deliberately not role="menu": these hold plain links and actions, and a
-     * menu promises a keyboard model of its own (arrows mandatory, Tab leaving
-     * the whole menu) that this does not implement. A half kept promise reads
-     * worse than none, so the pattern is the disclosure the W3C recommends for
-     * site navigation.
+     * A dropdown that reveals a menu: a button, and what it shows
      */
     var _asDisclosure = function($dd, $menu) {
-        //the menu the component builds is a child of the very element it is
-        //opened from. A role on that element would nest the entries of the menu
-        //inside their own button -- announced inconsistently by assistive
-        //technologies, and reported by axe as nested-interactive -- so the
-        //button is an inner element holding what is visible of the trigger, and
-        //nothing else.
-        var $caret = $dd.children('.dropdown.icon'),
-            $trigger = $('<span class="a11y-trigger"></span>')
-        ;
         //the caret stays a direct child, which is how the stylesheet of the
         //component addresses it -- unless it is all there is to the trigger, and
         //then the button has to hold it or it would have no box at all
+        var $caret = $dd.children('.dropdown.icon'),
+            $trigger = $('<span class="a11y-trigger"></span>')
+        ;
         $dd.contents().not($menu).not($caret).not($dd.children('input, select')).appendTo($trigger);
         if (!$trigger.contents().length) {
             $caret.appendTo($trigger);
@@ -188,51 +108,24 @@ var _dropdownA11y = (function() {
             $trigger.attr('aria-label', name);
         }
 
-        $dd.data('a11yControl', $trigger);
+        $dd.data('a11yTrigger', $trigger);
     };
 
     /**
-     * Which option is selected, and which one the keyboard cursor is on.
+     * Report whether the menu is open.
      *
-     * Fomantic keeps both in classes: "active" is the chosen value, "selected"
-     * is where the cursor sits.
-     */
-    var _refreshOptions = function($dd, $menu) {
-        var $control = $dd.data('a11yControl') || $dd;
-
-        $menu.children('.item').each(function() {
-            var $item = $(this);
-            $item.attr({
-                'role': 'option',
-                'aria-selected': $item.hasClass('active') ? 'true' : 'false'
-            });
-        });
-
-        var $cursor = $menu.children('.item.selected').first();
-        if ($dd.hasClass('visible') && $cursor.length) {
-            $control.attr('aria-activedescendant', _ensureId($cursor, 'option'));
-        } else {
-            $control.removeAttr('aria-activedescendant');
-        }
-    };
-
-    /**
-     * Report whether the dropdown is open
+     * Fomantic marks an open dropdown with the classes "active visible" on its
+     * container, whoever opened it, so the state follows the DOM rather than
+     * depending on the component callbacks -- which a score of template call
+     * sites override with their own.
      */
     var _refreshState = function($dd) {
-        if (!$dd.data('a11yBound')) {
+        var $trigger = $dd.data('a11yTrigger');
+        if (!$trigger) {
             return;
         }
 
-        var $control = $dd.data('a11yControl') || $dd,
-            $menu = $dd.children('.menu').first()
-        ;
-
-        $control.attr('aria-expanded', $dd.hasClass('visible') ? 'true' : 'false');
-
-        if ($menu.attr('role') === 'listbox') {
-            _refreshOptions($dd, $menu);
-        }
+        $trigger.attr('aria-expanded', $dd.hasClass('visible') ? 'true' : 'false');
     };
 
     /**
@@ -256,15 +149,13 @@ var _dropdownA11y = (function() {
         }
 
         //what the value is kept in, the two places the component looks at;
-        //"selection" is how it marks a dropdown standing for a form control,
-        //and some of them are built without any value element at all
-        var $value = $dd.children('select, input[type="hidden"]').first();
-        if ($value.length || $dd.hasClass('selection')) {
-            _asListbox($dd, $menu, $value);
-        } else {
-            _asDisclosure($dd, $menu);
+        //"selection" is how it marks a dropdown standing for a form control.
+        //Those are described by the component itself.
+        if ($dd.children('select, input[type="hidden"]').length || $dd.hasClass('selection')) {
+            return;
         }
 
+        _asDisclosure($dd, $menu);
         $dd.data('a11yBound', true);
         _refreshState($dd);
     };
@@ -316,9 +207,6 @@ var _dropdownA11y = (function() {
                 if ($target.hasClass('dropdown')) {
                     _setup($target);
                     _refreshState($target);
-                } else if ($target.hasClass('item')) {
-                    //the cursor moved, or a value was picked
-                    _refreshState($target.closest('.ui.dropdown'));
                 }
             });
         }).observe(document.documentElement, {
@@ -329,82 +217,6 @@ var _dropdownA11y = (function() {
         });
     };
 
-    /**
-     * What the component leaves to do on the keyboard.
-     *
-     * Fomantic opens on the down arrow only, closes on Escape only when its
-     * cursor already sits on an entry, and drops the focus on the document body
-     * once a value has been picked. Delegated from the document, so dropdowns
-     * created later are covered too.
-     */
-    var _keyboard = function() {
-        $(document).on('keydown', '.ui.dropdown', function(event) {
-            var $dd = $(event.target).closest('.ui.dropdown');
-            if (!$dd.data('a11yBound') || $dd.hasClass('disabled')) {
-                return;
-            }
-
-            var $control = $dd.data('a11yControl') || $dd,
-                $menu = $dd.children('.menu').first(),
-                isSearch = $(event.target).is('input.search'),
-                open = $dd.hasClass('visible')
-            ;
-
-            //Enter and Space open what is closed. Space is left alone in a
-            //search field, where it is a character like any other.
-            if (event.key === 'Enter' || (event.key === ' ' && !isSearch)) {
-                if (!open) {
-                    $dd.dropdown('show');
-                    event.preventDefault();
-                    return;
-                }
-                if (event.key === ' ' && !$menu.children('.item.selected').length) {
-                    //open, but the cursor is nowhere: close rather than pick
-                    $dd.dropdown('hide');
-                    event.preventDefault();
-                    return;
-                }
-                //otherwise Fomantic picks the entry; it then blurs, and a
-                //keyboard user would have to tab from the top of the page
-                window.setTimeout(function() {
-                    if (document.activeElement === document.body) {
-                        $control.trigger('focus');
-                    }
-                }, 0);
-                return;
-            }
-
-            if (event.key === 'Escape' && open) {
-                $dd.dropdown('hide');
-                $control.trigger('focus');
-                event.preventDefault();
-                event.stopPropagation();
-                return;
-            }
-
-            //Fomantic knows neither Home nor End. In a search field they
-            //belong to the text being typed, and are left alone.
-            if ((event.key === 'Home' || event.key === 'End') && open && !isSearch) {
-                var $items = $menu.children('.item:not(.filtered):not(.disabled)'),
-                    $target = event.key === 'Home' ? $items.first() : $items.last()
-                ;
-                if ($target.length) {
-                    $items.removeClass('selected');
-                    $target.addClass('selected');
-                    $target[0].scrollIntoView({block: 'nearest'});
-                    //the arrow keys of the component pick the value as the
-                    //cursor moves; these two behave the same way, or the same
-                    //list would answer differently to two ways of walking it
-                    if ($dd.dropdown('setting', 'selectOnKeydown') && !$dd.hasClass('multiple')) {
-                        $dd.dropdown('set selected', $target.attr('data-value'));
-                    }
-                    _refreshState($dd);
-                    event.preventDefault();
-                }
-            }
-        });
-    };
-
     return {
         /**
          * Describe the dropdowns of the page, and keep doing so
@@ -412,14 +224,6 @@ var _dropdownA11y = (function() {
         install: function() {
             _sweep();
             _observe();
-            _keyboard();
-        },
-
-        /**
-         * Describe the dropdowns of a subtree that was just built
-         */
-        refresh: function(root) {
-            _sweep(root);
         }
     };
 })();
