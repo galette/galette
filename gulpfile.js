@@ -82,6 +82,7 @@ var paths = {
   scripts: {
     main: [
       './node_modules/js-cookie/dist/js.cookie.js',
+      './ui/js/dropdown-a11y.js',
       './ui/js/common.js'
     ],
     masschanges: [
