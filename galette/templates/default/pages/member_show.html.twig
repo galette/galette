@@ -30,7 +30,7 @@
                                 {{ _T("Modification") }}
                             </a>
                 {% endif %}
-                            <div class="ui combo top right pointing simple dropdown icon button">
+                            <div class="ui combo top right pointing simple dropdown icon button" aria-label="{{ _T("Actions") }}">
                                 <i class="dropdown icon" aria-hidden="true"></i>
                                 <div class="menu">
                 {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}

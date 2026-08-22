@@ -445,7 +445,7 @@
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('and') }}</option>
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('or') }}</option>
                                         </select>
-                                        <label for="free_field_selector_{{ loop.index }}" class="visually-hidden">{{ _T('Logical operator') }}</label>
+                                        <label for="free_field_selector_{{ loop.index }}" class="visually-hidden">{{ _T('Select a field') }}</label>
                                         <div id="free_field_selector_{{ loop.index }}" class="field_selector ui search selection dropdown origselect">
                                             <input type="hidden" name="free_field[]" value="{{ fs.field }}">
                                             <i class="dropdown icon"></i>
