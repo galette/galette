@@ -20,6 +20,10 @@
 
             // Next results
             $('{{ js_chosen_id }} .next-results').off().on('click', function() {
+                if ($(this).hasClass('disabled')) {
+                    // the class of the component only keeps the mouse away
+                    return;
+                }
                 var _data = {
                     page: _current_page + 1,
                 };
@@ -77,6 +81,10 @@
 
             // Previous results
             $('{{ js_chosen_id }} .prev-results').off().on('click', function() {
+                if ($(this).hasClass('disabled')) {
+                    // the class of the component only keeps the mouse away
+                    return;
+                }
                 var _data = {
                     page: _current_page - 1,
                 };
