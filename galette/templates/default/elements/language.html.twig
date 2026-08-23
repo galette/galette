@@ -21,17 +21,25 @@
     <div class="image header title"{% if ui == 'item'%} data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
-        <span>{{ i18n.getName() }}</span>
+        <span>{{ i18n.getName() }} ({{ i18n.getLongId(true) }})</span>
         <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
     </div>
 {% endif %}
     <div class="{{ content_classes }}">
 {% for glang in languages %}
-    {% if glang.getID() != i18n.getID() %}
-        {% set html_lang -%}
-            <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getWebID() }}">{{ glang.getName() }}</span>
-        {%- endset %}
+    {% set html_lang -%}
+        <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getWebID() }}">{{ glang.getName() }}</span>
+    {%- endset %}
+    {% if glang.getID() == i18n.getID() %}
+        <a href="?ui_pref_lang={{ glang.getID() }}"
+           class="item active tooltip"
+           data-html="{{ _T("Current locale '%1$s'")|replace({"%1$s": html_lang})|e }}"
+           aria-current="true"
+        >
+            {{ html_lang }} ({{ glang.getLongId(true) }})
+        </a>
+    {% else %}
         <a href="?ui_pref_lang={{ glang.getID() }}"
            class="item tooltip"
            data-html="{{ _T("Switch locale to '%locale'")|replace({"%locale": html_lang})|e }}"

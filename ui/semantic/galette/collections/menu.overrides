@@ -87,6 +87,23 @@
   }
 }
 
+/*--------------------------
+     Language selector
+---------------------------*/
+
+.ui.language.dropdown > .menu > .item[aria-current],
+.language.item > .content > .item[aria-current] {
+    background: @activeItemBackground !important;
+    color: @activeItemTextColor !important;
+    font-weight: @activeItemFontWeight !important;
+    box-shadow: @activeItemBoxShadow !important;
+}
+.ui.language.dropdown > .menu > .item[aria-current]:hover,
+.language.item > .content > .item[aria-current]:hover {
+    background: @activeHoverItemBackground !important;
+    color: @activeHoverItemColor !important;
+}
+
 /* --------------
       Hover
 --------------- */
