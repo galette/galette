@@ -195,7 +195,7 @@
         <script type="text/javascript" src="{{ base_path() }}/assets/js/xml.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/formatting.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getWebID() }}.min.js"></script>
         <script type="text/javascript">
             function activateHtmlEditor(elt, basic, styletags, insert) {
                 var _styletags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -223,7 +223,7 @@
                     ];
                 }
                 elt.summernote({
-                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    lang: '{{ i18n.getWebID() }}',
                     disableDragAndDrop: true,
                     height: 240,
                     toolbar: _toolbar,

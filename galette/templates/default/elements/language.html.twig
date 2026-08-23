@@ -28,9 +28,9 @@
 {% endif %}
     <div class="{{ content_classes }}">
 {% for glang in languages %}
-    {% if glang.getAbbrev() != galette_lang %}
+    {% if glang.getID() != i18n.getID() %}
         {% set html_lang -%}
-            <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getAbbrev() }}">{{ glang.getName() }}</span>
+            <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getWebID() }}">{{ glang.getName() }}</span>
         {%- endset %}
         <a href="?ui_pref_lang={{ glang.getID() }}"
            class="item tooltip"

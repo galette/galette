@@ -204,6 +204,16 @@ class I18n
     }
 
     /**
+     * Get current id in web format (with - instead of _)
+     *
+     * @return string current language identifier in web format
+     */
+    public function getWebID(): string
+    {
+        return str_replace('_', '-', $this->id);
+    }
+
+    /**
      * Get long identifier
      *
      * @param bool $noutf if true, remove utf part

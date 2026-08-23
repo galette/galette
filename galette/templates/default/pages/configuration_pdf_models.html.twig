@@ -42,7 +42,7 @@
 
             function _initCodeEditor() {
                 $('textarea.codeeditor').summernote({
-                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    lang: '{{ i18n.getWebID() }}',
                     height: 240,
                     toolbar: [
                         ['view', ['codeview']]

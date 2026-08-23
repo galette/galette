@@ -97,7 +97,7 @@ class UpdateAndMaintenance
         $theme_path = $path . GALETTE_THEME;
 
         return "<!DOCTYPE html>
-<html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
+<html class=\"public_page\" lang=\"" . $this->i18n->getWebID() . "\"" . ($this->i18n->isRTL() ? " dir=\"rtl\"" : "") . ">
     <head>
         <title>" . $contents['title'] . "</title>
         <meta charset=\"UTF-8\"/>

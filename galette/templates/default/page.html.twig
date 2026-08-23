@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
+<html lang="{{ i18n.getWebID() }}"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
     <head>
         {% include 'elements/header.html.twig' with {
             galette_lang: galette_lang

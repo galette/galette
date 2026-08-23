@@ -194,7 +194,7 @@ if (isset($_POST['stepback_btn'])) {
 header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $i18n->getAbbrev(); ?>"<?php echo $i18n->isRtl() ? ' dir="rtl"' : ''; ?>>
+<html lang="<?php echo $i18n->getWebID(); ?>"<?php echo $i18n->isRtl() ? ' dir="rtl"' : ''; ?>>
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepDetail('title'); ?></title>
         <meta charset="UTF-8"/>
@@ -224,7 +224,7 @@ header('Content-Type: text/html; charset=UTF-8');
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getAbbrev(); ?>)</span></a>
+                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getWebID(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getID(); ?>)</span></a>
     <?php
 }
 ?>
