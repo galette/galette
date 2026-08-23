@@ -8,9 +8,7 @@
 
 <html lang="{{ i18n.getWebID() }}"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
     <head>
-        {% include 'elements/header.html.twig' with {
-            galette_lang: galette_lang
-        } %}
+        {% include 'elements/header.html.twig' %}
     </head>
     <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
