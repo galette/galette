@@ -6,21 +6,22 @@
 
 {% if ui is defined %}
     {% if ui == 'item'%}
-        {% set component_classes = "tooltip focus-visible language item" %}
+        {% set component_classes = "focus-visible language item" %}
         {% set content_classes = "content" %}
         {% set header = true %}
     {% elseif ui == 'dropdown' %}
-        {% set component_classes = "tooltip focus-visible language ui dropdown navigation right-aligned item" %}
+        {% set component_classes = "focus-visible language ui dropdown navigation right-aligned item" %}
         {% set content_classes = "menu" %}
         {% set header = false %}
     {% endif %}
 {% endif %}
 
-<div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}" title="{{ _T("Choose your language") }}">
+<div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}">
 {% if header == true %}
     <div class="image header title"{% if ui == 'item'%} data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ _T("Choose your language") }}</span>
         <span>{{ i18n.getName() }} ({{ i18n.getLongId(true) }})</span>
         <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
