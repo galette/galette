@@ -1,0 +1,118 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+        <div class="ui icon warning message">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Here be dragons") }}</div>
+                <p>{{ _T("This page lists every setting, including those the settings form deliberately does not show. Changing one without knowing what it does may break your installation.") }}</p>
+            </div>
+        </div>
+
+        <div class="ui basic fitted segment">
+            <div class="ui fluid icon input">
+                <label for="config_filter" class="visually-hidden">{{ _T("Filter settings") }}</label>
+                <input type="search" id="config_filter" placeholder="{{ _T("Search a setting...") }}"/>
+                <i class="search icon" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <table class="listing ui celled striped table" id="advanced_config">
+            <thead>
+                <tr>
+                    <th>{{ _T("Name") }}</th>
+                    <th class="collapsing">{{ _T("Type") }}</th>
+                    <th class="collapsing">{{ _T("Status") }}</th>
+                    <th>{{ _T("Value") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for entry in entries %}
+                <tr data-name="{{ entry.name }}">
+                    <td data-scope="row" data-col-label="{{ _T("Name") }}"><code>{{ entry.name }}</code></td>
+                    <td class="collapsing" data-col-label="{{ _T("Type") }}">
+                        {% if entry.known %}{{ entry.type }}{% else %}&mdash;{% endif %}
+                    </td>
+                    <td class="collapsing" data-col-label="{{ _T("Status") }}">
+    {% if not entry.known %}
+                        <span class="ui grey label" title="{{ _T("This setting is not known by Galette. It may come from an older version or from a plugin.") }}">{{ _T("unknown") }}</span>
+    {% elseif entry.locked_by %}
+                        <span class="ui red label" title="{{ _T("Set by the %s constant in behavior.inc.php, which takes precedence.")|replace({'%s': entry.locked_by}) }}">{{ _T("locked") }}</span>
+    {% elseif entry.is_default %}
+                        <span class="ui basic label">{{ _T("default") }}</span>
+    {% else %}
+                        <span class="ui blue label">{{ _T("modified") }}</span>
+    {% endif %}
+                    </td>
+                    <td data-col-label="{{ _T("Value") }}">
+    {% if not entry.known or entry.locked_by %}
+                        <code>{% if entry.value is not null %}{{ entry.value }}{% endif %}</code>
+    {% elseif entry.sensitive %}
+                        {% if entry.is_set %}{{ _T("set") }}{% else %}{{ _T("not set") }}{% endif %}
+    {% else %}
+                        <form id="cfg_{{ entry.name }}" action="{{ url_for('saveAdvancedConfig') }}" method="post" class="ui form advanced-config-form">
+                            <input type="hidden" name="name" value="{{ entry.name }}"/>
+                            <label for="value_{{ entry.name }}" class="visually-hidden">{{ entry.name }}</label>
+        {% if entry.type == 'bool' %}
+                            <input type="hidden" name="value" value="0"/>
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="value_{{ entry.name }}" name="value" value="1"{% if entry.value %} checked="checked"{% endif %}/>
+                                <label for="value_{{ entry.name }}">{{ _T("Enabled") }}</label>
+                            </div>
+        {% elseif entry.type == 'int' %}
+                            <input type="number" id="value_{{ entry.name }}" name="value" value="{{ entry.value }}"{% if entry.min is not null %} min="{{ entry.min }}"{% endif %}{% if entry.max is not null %} max="{{ entry.max }}"{% endif %}/>
+        {% elseif entry.type == 'html' %}
+                            <textarea id="value_{{ entry.name }}" name="value" rows="3">{{ entry.value }}</textarea>
+        {% elseif entry.type == 'color' %}
+                            <input type="color" id="value_{{ entry.name }}" name="value" value="{{ entry.value }}"/>
+        {% elseif entry.type == 'url' %}
+                            <input type="url" id="value_{{ entry.name }}" name="value" value="{{ entry.value }}"/>
+        {% else %}
+                            <input type="text" id="value_{{ entry.name }}" name="value" value="{{ entry.value }}"/>
+        {% endif %}
+                        </form>
+    {% endif %}
+                    </td>
+                    <td class="center actions_row collapsing">
+    {% if entry.known and not entry.locked_by and not entry.sensitive %}
+                        <button type="submit" form="cfg_{{ entry.name }}" class="ui labeled icon button">
+                            <i class="save icon" aria-hidden="true"></i>
+                            {{ _T("Save") }}
+                        </button>
+        {% if not entry.is_default %}
+                        <form action="{{ url_for('resetAdvancedConfig') }}" method="post" class="ui form">
+                            <input type="hidden" name="name" value="{{ entry.name }}"/>
+                            <button type="submit" class="ui labeled icon button">
+                                <i class="undo icon" aria-hidden="true"></i>
+                                {{ _T("Reset") }}
+                            </button>
+                        </form>
+        {% endif %}
+    {% endif %}
+                    </td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            // Filter rows on the setting name, so the page stays usable with
+            // more than a hundred of them. Without JS the whole list shows.
+            document.getElementById('config_filter').addEventListener('input', function () {
+                var needle = this.value.toLowerCase();
+                document.querySelectorAll('#advanced_config tbody tr').forEach(function (row) {
+                    var name = row.getAttribute('data-name').toLowerCase();
+                    row.hidden = needle !== '' && name.indexOf(needle) === -1;
+                });
+            });
+        </script>
+{% endblock %}

@@ -16,6 +16,7 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
+use Galette\Controllers\AdvancedConfigController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
 use Galette\Middleware\Authenticate;
@@ -379,6 +380,21 @@ $app->post(
     '/admin-tools',
     [AdminToolsController::class, 'process']
 )->setName('doAdminTools')->add(Authenticate::class);
+
+$app->get(
+    '/advanced-config',
+    [AdvancedConfigController::class, 'advancedConfig']
+)->setName('advancedConfig')->add(Authenticate::class);
+
+$app->post(
+    '/advanced-config',
+    [AdvancedConfigController::class, 'saveAdvancedConfig']
+)->setName('saveAdvancedConfig')->add(Authenticate::class);
+
+$app->post(
+    '/advanced-config/reset',
+    [AdvancedConfigController::class, 'resetAdvancedConfig']
+)->setName('resetAdvancedConfig')->add(Authenticate::class);
 
 $app->get(
     '/payment-types',

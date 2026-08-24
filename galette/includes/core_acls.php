@@ -15,6 +15,7 @@ $core_acls = [
     'impersonate'                       => 'superadmin',
     'unimpersonate'                     => 'member',
     '/(.+)?admin(.+)?/i'                => 'superadmin',
+    '/(.+)?[aA]dvancedConfig(.+)?/i'    => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'admin',
     'setRegistered'                     => 'admin',
     '/(.+)?preferences(.+)?/i'          => 'admin',

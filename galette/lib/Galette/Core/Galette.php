@@ -493,6 +493,13 @@ class Galette
                                 'name' => 'adminTools'
                             ]
                         ];
+                        $menus['configuration']['items'][] = [
+                            'label' => _T("Advanced configuration"),
+                            'title' => _T("Edit every setting, including those the settings form does not show"),
+                            'route' => [
+                                'name' => 'advancedConfig'
+                            ]
+                        ];
                     }
                 }
             }
