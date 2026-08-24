@@ -321,6 +321,21 @@ final class PreferencesSchema
             'pref_bool_groupsmanagers_see_contributions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_bool_groupsmanagers_see_transactions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_noindex' => ['type' => self::TYPE_BOOL, 'default' => false],
+            /* Settings that used to live in behavior.inc.php only */
+            'pref_x_forwarded_for_index' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'constant' => 'GALETTE_X_FORWARDED_FOR_INDEX',
+            ],
+            'pref_session_timeout' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'constant' => 'GALETTE_TIMEOUT',
+            ],
         ];
     }
 

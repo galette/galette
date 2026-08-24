@@ -14,6 +14,10 @@ use Galette\Tests\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+
+use function Safe\define;
 
 /**
  * Preferences tests class
@@ -230,6 +234,62 @@ class Preferences extends GaletteTestCase
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame($stored, $prefs->pref_admin_pass);
+    }
+
+    /**
+     * A preference with no legacy constant reads straight from database
+     */
+    public function testGetConfigValue(): void
+    {
+        $this->preferences->load();
+
+        $this->assertNull(\Galette\Core\PreferencesSchema::getConstant('pref_numrows'));
+        $this->assertSame(
+            $this->preferences->pref_numrows,
+            $this->preferences->getConfigValue('pref_numrows')
+        );
+    }
+
+    /**
+     * A defined legacy constant wins over the stored value, and says so once
+     *
+     * Isolated: define() cannot be undone, and the constant would otherwise
+     * leak into every test running after this one in the same process.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testConstantOverridesPreference(): void
+    {
+        $this->preferences->load();
+
+        //pref_galette_url is the one superseding GALETTE_URI
+        $constant = \Galette\Core\PreferencesSchema::getConstant('pref_galette_url');
+        $this->assertSame('GALETTE_URI', $constant);
+
+        if (defined($constant)) {
+            $this->markTestSkipped($constant . ' is defined in this environment');
+        }
+
+        //not defined: the stored value is used, and nothing is logged
+        $this->preferences->setValue('pref_galette_url', 'https://example.com', $this->login);
+        $this->assertSame('https://example.com', $this->preferences->getConfigValue('pref_galette_url'));
+
+        define('GALETTE_URI', 'https://from-the-file.example.com');
+
+        $this->assertSame(
+            'https://from-the-file.example.com',
+            $this->preferences->getConfigValue('pref_galette_url')
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Constant GALETTE_URI is defined and takes precedence over preference pref_galette_url.'
+        );
+
+        //reported once only, so reading it in a loop does not flood the log
+        $this->preferences->getConfigValue('pref_galette_url');
+        $this->expectNoLogEntry();
+
+        $this->preferences->setValue('pref_galette_url', '', $this->login);
     }
 
     /**

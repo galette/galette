@@ -52,9 +52,16 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //CONFIGURE AND START SESSION
 
 //Session duration
+//See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+//Preferences are unavailable from the installer, from tests, and while database
+//needs an update; the constant is then the only source left.
+$session_lifetime = isset($preferences)
+    ? (int)$preferences->getConfigValue('pref_session_timeout')
+    : (defined('GALETTE_TIMEOUT') ? (int)GALETTE_TIMEOUT : 0);
+
 if (!defined('GALETTE_TIMEOUT')) {
-    //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
-    define('GALETTE_TIMEOUT', 0);
+    //still defined, for third party code reading it
+    define('GALETTE_TIMEOUT', $session_lifetime);
 }
 
 $session_name = '';
@@ -69,7 +76,7 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
 $session_name = 'galette_' . $session_name;
 $session = new SessionMiddleware([
     'name'      => $session_name,
-    'lifetime'  => GALETTE_TIMEOUT
+    'lifetime'  => $session_lifetime
 ]);
 
 if (session_status() === PHP_SESSION_NONE) {
