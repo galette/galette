@@ -144,16 +144,18 @@ var _keyboardNavigation = function() {
     });
     // Mobile menu trigger
     var _mobile_menu_trigger = document.querySelector('#top-navbar a.toc.item');
-    _mobile_menu_trigger.addEventListener('keydown', event => {
-        if (event.keyCode == 13) {
-            // Open mobile menu
-            event.target.click();
-            // Jump to mobile menu
-            var url = location.href;
-            location.href = "#sidebarmenu";
-            history.replaceState(null,null,url);
-        }
-    });
+    if (_mobile_menu_trigger) {
+        _mobile_menu_trigger.addEventListener('keydown', event => {
+            if (event.keyCode == 13) {
+                // Open mobile menu
+                event.target.click();
+                // Jump to mobile menu
+                var url = location.href;
+                location.href = "#sidebarmenu";
+                history.replaceState(null,null,url);
+            }
+        });
+    }
 }
 
 /* Required for keyboard accessibility on simple dropdowns with autosubmit.
@@ -224,16 +226,18 @@ $(function() {
     _keyboardNavigation();
 
     var _back2Top = document.getElementById("back2top");
-    document.body.addEventListener('scroll', function() {
-        if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-            _back2Top.style.display = "block";
-        } else {
-            _back2Top.style.display = "none";
+    if (_back2Top) {
+        document.body.addEventListener('scroll', function() {
+            if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+                _back2Top.style.display = "block";
+            } else {
+                _back2Top.style.display = "none";
+            }
+        });
+        _back2Top.onclick = function(event){
+            event.preventDefault();
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
         }
-    });
-    _back2Top.onclick = function(event){
-        event.preventDefault();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
     }
 });
