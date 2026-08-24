@@ -22,7 +22,7 @@
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
         <span class="visually-hidden">{{ _T("Choose your language") }}</span>
-        <span>{{ i18n.getName() }} ({{ i18n.getLongId(true) }})</span>
+        <span>{{ i18n.getName() }}</span>
         <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
     </div>
@@ -34,18 +34,18 @@
     {%- endset %}
     {% if glang.getID() == i18n.getID() %}
         <a href="?ui_pref_lang={{ glang.getID() }}"
-           class="item active tooltip"
+           class="item tooltip"
            data-html="{{ _T("Current locale '%1$s'")|replace({"%1$s": html_lang})|e }}"
            aria-current="true"
         >
-            {{ html_lang }} ({{ glang.getLongId(true) }})
+            {{ html_lang }}
         </a>
     {% else %}
         <a href="?ui_pref_lang={{ glang.getID() }}"
            class="item tooltip"
            data-html="{{ _T("Switch locale to '%1$s'")|replace({"%1$s": html_lang})|e }}"
         >
-            {{ html_lang }} ({{ glang.getLongId(true) }})
+            {{ html_lang }}
         </a>
     {% endif %}
 {% endfor %}
