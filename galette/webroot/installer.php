@@ -8,6 +8,7 @@
 
 declare(strict_types=1);
 
+use Galette\Core\Galette;
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Analog\Analog;
@@ -432,7 +433,7 @@ if ($install->isCheckStep()) {
                         <nav class="ui horizontal bulleted link list">
                             <a id="copyright" href="https://galette.eu/" class="item">
                                 <i class="icon cookie bite"></i>
-                                Galette <?php echo GALETTE_DISPLAY_VERSION; ?>
+                                Galette <?php echo Galette::gitVersion(false); ?>
                             </a>
                             <a href="https://doc.galette.eu" class="item">
                                 <i class="icon book"></i>

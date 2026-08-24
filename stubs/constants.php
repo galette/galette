@@ -12,7 +12,6 @@
     $random_val = static fn(array $values) => $values[array_rand($values)];
 
     define('GALETTE_VERSION', $random_val(['0.7', '0.9.1', '1.0.0', '1.2.0']));
-    define('GALETTE_DISPLAY_VERSION', $random_val(['v1.2.1', 'v1.2.1-git-32bb53f0c']));
 
     // Directories constants
     define('GALETTE_BASE_PATH', dirname(__FILE__, 2) . '/galette');

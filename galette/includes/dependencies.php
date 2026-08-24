@@ -78,6 +78,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('plugin_headers', $plugins->getTplHeaders());
     $view->getEnvironment()->addGlobal('plugin_scripts', $plugins->getTplScripts());
 
+    $view->getEnvironment()->addGlobal('display_version', \Galette\Core\Galette::gitVersion(false));
     $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
     $view->getEnvironment()->addGlobal('plugins', $plugins);
