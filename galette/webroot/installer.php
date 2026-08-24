@@ -219,14 +219,48 @@ header('Content-Type: text/html; charset=UTF-8');
                 </div>
                 <div class="language ui dropdown navigation item">
                     <i class="icon language" aria-hidden="true"></i>
-                    <span><?php echo $i18n->getAbbrev(); ?></span>
+                    <span class="visually-hidden"><?php echo _T("Choose your language"); ?></span>
+                    <span><?php echo $i18n->getName(); ?></span>
                     <i class="icon dropdown" aria-hidden="true"></i>
                     <div class="menu">
 <?php
 foreach ($i18n->getList() as $langue) {
-    ?>
-                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getWebID(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getID(); ?>)</span></a>
-    <?php
+    if ($langue->getID() === $i18n->getID()) {
+        ?>
+                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>"
+                           class="item tooltip"
+                           data-html="<?php echo sprintf(_T('Current locale \'%1$s\''), $langue->getName()); ?>"
+                           data-position="left center"
+                           aria-current="true"
+                        >
+                            <span
+                                <?php if ($langue->isRtl()) {
+                                    ?>dir="rtl"<?php
+                                } ?>
+                                lang="<?php echo $langue->getWebID(); ?>"
+                            >
+                                    <?php echo $langue->getName(); ?>
+                            </span>
+                        </a>
+        <?php
+    } else {
+        ?>
+                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>"
+                           class="item tooltip"
+                           data-html="<?php echo sprintf(_T('Switch locale to \'%1$s\''), $langue->getName()); ?>"
+                           data-position="left center"
+                        >
+                            <span
+                                <?php if ($langue->isRtl()) {
+                                    ?>dir="rtl"<?php
+                                } ?>
+                                lang="<?php echo $langue->getWebID(); ?>"
+                            >
+                                    <?php echo $langue->getName(); ?>
+                            </span>
+                        </a>
+        <?php
+    }
 }
 ?>
                     </div>
