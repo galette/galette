@@ -236,7 +236,10 @@ class Group extends GaletteTestCase
         $warning = new \ArrayObject([
             'Level' => 'Error',
             'Code'  => '1451',
-            'Message' => "Cannot delete or update a parent row: a foreign key constraint fails (`galette_tests`.`galette_groups`, CONSTRAINT `galette_groups_ibfk_1` FOREIGN KEY (`parent_group`) REFERENCES `galette_groups` (`id_group`) ON UPDATE CASCADE)"
+            'Message' => sprintf(
+                "Cannot delete or update a parent row: a foreign key constraint fails (`%s`.`galette_groups`, CONSTRAINT `galette_groups_ibfk_1` FOREIGN KEY (`parent_group`) REFERENCES `galette_groups` (`id_group`) ON UPDATE CASCADE)",
+                $this->zdb->getDatabase()
+            )
         ]);
         $this->expected_mysql_warnings[] = $warning;
     }

@@ -1171,7 +1171,10 @@ class Members extends GaletteTestCase
         $warning = new \ArrayObject([
             'Level' => 'Error',
             'Code'  => '1451',
-            'Message' => "Cannot delete or update a parent row: a foreign key constraint fails (`galette_tests`.`galette_mailing_history`, CONSTRAINT `galette_mailing_history_ibfk_1` FOREIGN KEY (`mailing_sender`) REFERENCES `galette_adherents` (`id_adh`) ON UPDATE CASCADE)"
+            'Message' => sprintf(
+                "Cannot delete or update a parent row: a foreign key constraint fails (`%s`.`galette_mailing_history`, CONSTRAINT `galette_mailing_history_ibfk_1` FOREIGN KEY (`mailing_sender`) REFERENCES `galette_adherents` (`id_adh`) ON UPDATE CASCADE)",
+                $this->zdb->getDatabase()
+            )
         ]);
         $this->expected_mysql_warnings[] = $warning;
 
