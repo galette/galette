@@ -65,17 +65,22 @@ class History
      * X-Forwarded-For, if present and the configuration specifies it.
      * (blindly trusting X-Forwarded-For would make the IP address logging
      * very easy to deveive.
+     *
+     * @param ?Preferences $preferences Preferences instance; falls back on the
+     *                                  global one, for callers that have none
      */
-    public static function findUserIPAddress(): string
+    public static function findUserIPAddress(?Preferences $preferences = null): string
     {
-        if (
-            defined('GALETTE_X_FORWARDED_FOR_INDEX')
-            && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-        ) {
+        $preferences ??= $GLOBALS['preferences'] ?? null;
+        //1-based index, counted from the end of the header; 0 disables the lookup
+        $index = (int)($preferences?->getConfigValue('pref_x_forwarded_for_index') ?? 0);
+
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if ($index > 0 && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $split_xff = preg_split('/,\s*/', (string)$_SERVER['HTTP_X_FORWARDED_FOR']);
-            $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            //a header shorter than the configured index means it did not come
+            //through the expected proxies; the address cannot be trusted
+            $ip = $split_xff[count($split_xff) - $index] ?? '';
         }
 
         if (
@@ -99,7 +104,7 @@ class History
      */
     public function add(string $action, string $argument = '', string $query = ''): bool
     {
-        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIpAddress();
+        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIPAddress($this->preferences);
 
         try {
             $values = [
