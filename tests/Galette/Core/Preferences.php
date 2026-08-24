@@ -14,6 +14,10 @@ use Galette\Tests\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+
+use function Safe\define;
 
 /**
  * Preferences tests class
@@ -230,6 +234,135 @@ class Preferences extends GaletteTestCase
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame($stored, $prefs->pref_admin_pass);
+    }
+
+    /**
+     * A preference with no legacy constant reads straight from database
+     */
+    public function testGetConfigValue(): void
+    {
+        $this->preferences->load();
+
+        $this->assertNull(\Galette\Core\PreferencesSchema::getConstant('pref_numrows'));
+        $this->assertSame(
+            $this->preferences->pref_numrows,
+            $this->preferences->getConfigValue('pref_numrows')
+        );
+    }
+
+    /**
+     * A defined legacy constant wins over the stored value, and says so once
+     *
+     * Isolated: define() cannot be undone, and the constant would otherwise
+     * leak into every test running after this one in the same process.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testConstantOverridesPreference(): void
+    {
+        $this->preferences->load();
+
+        //pref_galette_url is the one superseding GALETTE_URI
+        $constant = \Galette\Core\PreferencesSchema::getConstant('pref_galette_url');
+        $this->assertSame('GALETTE_URI', $constant);
+
+        if (defined($constant)) {
+            $this->markTestSkipped($constant . ' is defined in this environment');
+        }
+
+        //not defined: the stored value is used, and nothing is logged
+        $this->preferences->setValue('pref_galette_url', 'https://example.com', $this->login);
+        $this->assertSame('https://example.com', $this->preferences->getConfigValue('pref_galette_url'));
+
+        define('GALETTE_URI', 'https://from-the-file.example.com');
+
+        $this->assertSame(
+            'https://from-the-file.example.com',
+            $this->preferences->getConfigValue('pref_galette_url')
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Constant GALETTE_URI is defined and takes precedence over preference pref_galette_url.'
+        );
+
+        //reported once only, so reading it in a loop does not flood the log
+        $this->preferences->getConfigValue('pref_galette_url');
+        $this->expectNoLogEntry();
+
+        $this->preferences->setValue('pref_galette_url', '', $this->login);
+    }
+
+    /**
+     * Values Galette maintains itself are never writable from a payload
+     */
+    public function testReadOnlyPreferences(): void
+    {
+        $this->preferences->load();
+        $this->logSuperAdmin();
+
+        $readonly = [
+            'pref_instance_uuid',
+            'pref_registration_uuid',
+            'pref_telemetry_date',
+            'pref_registration_date',
+            'pref_adhesion_form',
+        ];
+
+        foreach ($readonly as $name) {
+            $this->assertTrue(
+                \Galette\Core\PreferencesSchema::isReadOnly($name),
+                $name . ' should be read-only'
+            );
+
+            $this->assertFalse($this->preferences->setValue($name, 'tampered', $this->login));
+            $this->assertSame(
+                ["Preference '" . $name . "' is maintained by Galette and cannot be changed!"],
+                $this->preferences->getErrors()
+            );
+
+            $this->assertFalse($this->preferences->resetValue($name, $this->login));
+        }
+
+        //nor through the settings form
+        $uuid = $this->preferences->pref_instance_uuid;
+        $values = $this->preferences->getDefaults();
+        $values['pref_nom'] = 'Galette';
+        $values['pref_instance_uuid'] = 'tampered';
+        $this->preferences->check($values, $this->login);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+    }
+
+    /**
+     * Galette still writes those values itself
+     */
+    public function testReadOnlyPreferencesAreStillMaintained(): void
+    {
+        $this->preferences->load();
+
+        $uuid = $this->preferences->generateUUID('instance');
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{40}$/', $uuid);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+
+        $this->assertTrue($this->preferences->updateTelemetryDate());
+        $this->assertNotEmpty($this->preferences->pref_telemetry_date);
+    }
+
+    /**
+     * Galette must never define a constant superseded by a preference
+     *
+     * behavior.inc.php is skipped under GALETTE_TESTS, so anything defined
+     * here was defined by Galette's own bootstrap. That makes the setting look
+     * overridden by the file on every instance, hides it behind a read-only
+     * cell, and logs a bogus override warning on each read.
+     */
+    public function testGaletteDefinesNoSupersededConstant(): void
+    {
+        foreach (\Galette\Core\PreferencesSchema::getConstants() as $name => $constant) {
+            $this->assertFalse(
+                defined($constant),
+                $constant . ' is defined by Galette itself, ' . $name . ' would look locked everywhere'
+            );
+        }
     }
 
     /**

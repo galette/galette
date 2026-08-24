@@ -52,10 +52,15 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //CONFIGURE AND START SESSION
 
 //Session duration
-if (!defined('GALETTE_TIMEOUT')) {
-    //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
-    define('GALETTE_TIMEOUT', 0);
-}
+//See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+//Preferences are unavailable from the installer, from tests, and while database
+//needs an update; the constant is then the only source left.
+//GALETTE_TIMEOUT is deliberately not defined from the preference: doing so
+//would make the setting look overridden by behavior.inc.php on the advanced
+//configuration page, and log a bogus warning on every read.
+$session_lifetime = isset($preferences)
+    ? (int)$preferences->getConfigValue('pref_session_timeout')
+    : (defined('GALETTE_TIMEOUT') ? (int)GALETTE_TIMEOUT : 0);
 
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instantiate sessions,
@@ -69,7 +74,7 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
 $session_name = 'galette_' . $session_name;
 $session = new SessionMiddleware([
     'name'      => $session_name,
-    'lifetime'  => GALETTE_TIMEOUT
+    'lifetime'  => $session_lifetime
 ]);
 
 if (session_status() === PHP_SESSION_NONE) {

@@ -241,3 +241,56 @@ tr.inactives.plugins th {
         background: @pluginsInactiveBackground !important;
     }
 }
+
+/* Advanced configuration: the only listing holding form fields. Without this
+   the inputs keep their natural width, the table stops shrinking with its
+   container and the save buttons end up out of reach below ~1450px. */
+#advanced_config .ui.action.input {
+    width: 100%;
+}
+
+#advanced_config .ui.action.input > input {
+    min-width: 0;
+    width: auto;
+    flex: 1 1 auto;
+}
+
+#advanced_config code {
+    word-break: break-all;
+}
+
+#advanced_config .advanced-config-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+#advanced_config .advanced-config-actions > form:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* a toggle does not stretch on its own, which would leave its save button
+   hanging in the middle of the cell instead of at the right edge */
+#advanced_config .ui.action.input > .ui.checkbox {
+    flex: 1 1 auto;
+}
+
+/* landing from the constants table below: say which row was aimed at, the
+   jump alone gives no clue on a table this long */
+#advanced_config > tbody > tr:target,
+#advanced_config > tbody > tr:target:hover {
+    background: @lightSecondaryColor;
+    box-shadow: inset 3px 0 0 0 @primaryColor;
+}
+
+.advanced-config-jump {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* the setting linked to sits above this table, so the arrow has to point
+   there rather than further down the page */
+.advanced-config-jump > i.icon {
+    transform: rotate(180deg);
+}

@@ -150,6 +150,8 @@ use function Safe\unlink;
  * @property      bool     $pref_bool_groupsmanagers_see_transactions
  * @property-read string[] $vpref_email_newadh                            list of mail senders
  * @property      bool     $pref_noindex
+ * @property      int      $pref_x_forwarded_for_index
+ * @property      int      $pref_session_timeout
  */
 class Preferences
 {
@@ -217,6 +219,9 @@ class Preferences
 
     /** @var Social[] */
     private array $socials;
+
+    /** @var array<string, bool> Constants already reported as overriding a preference */
+    private array $reported_overrides = [];
 
     // flagging required fields, derived from PreferencesSchema
     /** @var array<string,int> */
@@ -679,6 +684,11 @@ class Preferences
     private function assignValues(array $insert_values, Login $login): void
     {
         foreach ($insert_values as $champ => $valeur) {
+            //values Galette maintains itself are never taken from a payload
+            if (PreferencesSchema::isReadOnly($champ)) {
+                continue;
+            }
+
             if (
                 PreferencesSchema::getAcl($champ) === PreferencesSchema::ACL_SUPERADMIN
                 && !$login->isSuperAdmin()
@@ -715,6 +725,15 @@ class Preferences
                 '%name',
                 $name,
                 _T("Unknown preference '%name'!")
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Preference '%name' is maintained by Galette and cannot be changed!")
             );
             return false;
         }
@@ -774,6 +793,15 @@ class Preferences
                 '%name',
                 $name,
                 _T("Unknown preference '%name'!")
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Preference '%name' is maintained by Galette and cannot be changed!")
             );
             return false;
         }
@@ -1321,6 +1349,41 @@ class Preferences
     }
 
     /**
+     * Get a preference, letting the legacy constant win if it is defined
+     *
+     * Some settings used to live in behavior.inc.php only. They are now stored
+     * like any other preference, but an instance still carrying the constant
+     * must keep behaving as before, so the constant takes precedence and its
+     * use is reported once.
+     *
+     * @param string $name Preference name
+     */
+    public function getConfigValue(string $name): mixed
+    {
+        $constant = PreferencesSchema::getConstant($name);
+
+        if ($constant === null || !defined($constant)) {
+            return $this->$name;
+        }
+
+        if (!isset($this->reported_overrides[$name])) {
+            $this->reported_overrides[$name] = true;
+            Analog::log(
+                sprintf(
+                    'Constant %1$s is defined and takes precedence over preference %2$s. '
+                    . 'Remove it from behavior.inc.php to manage that setting from the '
+                    . 'advanced configuration page.',
+                    $constant,
+                    $name
+                ),
+                Analog::WARNING
+            );
+        }
+
+        return constant($constant);
+    }
+
+    /**
      * Get preferences defaults
      *
      * Derived from the schema on first access: a static property initializer
@@ -1391,25 +1454,25 @@ class Preferences
      */
     public function getURL(): string
     {
-        if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
-            $url = $this->prefs['pref_galette_url'];
-        } else {
-            $url = $this->getDefaultURL();
+        //GALETTE_URI, when defined, wins over the stored value
+        $url = $this->getConfigValue('pref_galette_url');
+        if (!empty($url)) {
+            return (string)$url;
         }
-        return $url;
+
+        return $this->getDefaultURL();
     }
 
     /**
-     * Get default URL (when not set by user in preferences)
+     * Get default URL (when neither preference nor constant is set)
      */
     public function getDefaultURL(): string
     {
         if (defined('GALETTE_CRON')) {
-            if (defined('GALETTE_URI')) {
-                return GALETTE_URI;
-            } else {
-                throw new \RuntimeException(_T('Please define constant "GALETTE_URI" with the path to your instance.'));
-            }
+            //no incoming request to guess the instance URL from
+            throw new \RuntimeException(
+                _T('Please define constant "GALETTE_URI" with the path to your instance.')
+            );
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');

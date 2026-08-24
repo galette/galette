@@ -106,6 +106,44 @@ class PreferencesSchema extends GaletteTestCase
     }
 
     /**
+     * Every colour is typed as one
+     *
+     * The settings form already renders them all with an <input type="color">,
+     * so the schema has to agree, otherwise the advanced page offers a plain
+     * text field for half of them.
+     */
+    public function testColoursAreTypedAsColours(): void
+    {
+        $colours = [
+            'pref_cc_primary',
+            'pref_cc_primary_text',
+            'pref_cc_secondary',
+            'pref_cc_secondary_text',
+            'pref_card_tcol',
+            'pref_card_scol',
+            'pref_card_bcol',
+            'pref_card_hcol',
+        ];
+
+        foreach ($colours as $name) {
+            $this->assertSame(Schema::TYPE_COLOR, Schema::getType($name), $name);
+            $this->assertMatchesRegularExpression(
+                '/^#[0-9A-Fa-f]{6}$/',
+                (string)Schema::getDefaults()[$name],
+                $name . ' default is not a colour'
+            );
+        }
+
+        //and nothing else claims to be one
+        $typed = array_keys(
+            array_filter(Schema::getAll(), fn(array $e): bool => $e['type'] === Schema::TYPE_COLOR)
+        );
+        sort($colours);
+        sort($typed);
+        $this->assertSame($colours, $typed);
+    }
+
+    /**
      * Only the superadmin credentials require the superadmin level
      */
     public function testAcl(): void
