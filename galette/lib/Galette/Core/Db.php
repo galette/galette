@@ -763,6 +763,17 @@ class Db
     }
 
     /**
+     * Get the name of the database we are connected to
+     *
+     * Read from the connection options rather than from NAME_DB, so it stays
+     * correct when the adapter has been built from an explicit DSN.
+     */
+    public function getDatabase(): string
+    {
+        return (string)$this->options['database'];
+    }
+
+    /**
      * Get database information
      *
      * @return array<string, string|null>
