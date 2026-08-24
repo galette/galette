@@ -12,7 +12,6 @@ namespace Galette\Core;
 
 use Galette\Features\Dynamics;
 use Safe\DateTime;
-use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
@@ -93,14 +92,14 @@ use function Safe\unlink;
  * @property      string   $pref_card_scol
  * @property      string   $pref_card_bcol
  * @property      string   $pref_card_hcol
- * @property      string   $pref_bool_display_title
+ * @property      bool     $pref_bool_display_title
  * @property      int      $pref_card_address
  * @property      string   $pref_card_year
  * @property      int      $pref_card_marges_v
  * @property      int      $pref_card_marges_h
  * @property      int      $pref_card_vspace
  * @property      int      $pref_card_hspace
- * @property      string   $pref_card_self
+ * @property      bool     $pref_card_self
  * @property      int      $pref_card_hsize
  * @property      int      $pref_card_vsize
  * @property      string   $pref_theme                                    Preferred theme
@@ -209,155 +208,19 @@ class Preferences
         'val_pref'
     ];
 
-    /** @var array<string, bool|int|string> */
-    private static array $defaults = [
-        'pref_admin_login'    =>    'admin',
-        'pref_admin_pass'    =>    'admin',
-        'pref_nom'        =>    'Galette',
-        'pref_slogan'        =>    '',
-        'pref_adresse'        =>    '-',
-        'pref_adresse2'        =>    '',
-        'pref_cp'        =>    '',
-        'pref_ville'        =>    '',
-        'pref_region'        =>    '',
-        'pref_pays'        =>    '',
-        'pref_postal_address'  => self::POSTAL_ADDRESS_FROM_PREFS,
-        'pref_postal_staff_member' => '',
-        'pref_org_phone_number' => '',
-        'pref_org_phone' => self::PHONE_NUMBER_FROM_PREFS,
-        'pref_org_phone_staff_member' => '',
-        'pref_org_email' => '',
-        'pref_disable_members_socials' => false,
-        'pref_lang'        =>    I18n::DEFAULT_LANG,
-        'pref_numrows'        =>    30,
-        'pref_statut'        =>    Status::DEFAULT_STATUS,
-        /* Appearance */
-        'pref_hide_bg_image'    =>    false,
-        'pref_enable_custom_colors'    =>    false,
-        'pref_cc_primary'    =>    '#ffb619',
-        'pref_cc_primary_text'    =>    '#000000',
-        'pref_cc_secondary'    =>    '#ffda89',
-        'pref_cc_secondary_text'    =>    '#1b1c1d',
-        /* Preferences for emails */
-        'pref_email_nom'    =>    'Galette',
-        'pref_email'        =>    'mail@domain.com',
-        'pref_email_newadh'    =>    'mail@domain.com',
-        'pref_bool_mailadh'    =>    false,
-        'pref_bool_mailowner' => false,
-        'pref_editor_enabled'    =>    false,
-        'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
-        'pref_mail_smtp'    =>    '',
-        'pref_mail_smtp_host'   => '',
-        'pref_mail_smtp_auth'   => false,
-        'pref_mail_smtp_secure' => false,
-        'pref_mail_smtp_port'   => '',
-        'pref_mail_smtp_user'   => '',
-        'pref_mail_smtp_password'   => '',
-        'pref_membership_ext'    =>    12,
-        'pref_beg_membership'    =>    '',
-        'pref_membership_offermonths' => 0,
-        'pref_email_reply_to'    =>    '',
-        'pref_website'        =>    '',
-        /* Preferences for labels */
-        'pref_etiq_marges_v'    =>    10,
-        'pref_etiq_marges_h'    =>    10,
-        'pref_etiq_hspace'    =>    10,
-        'pref_etiq_vspace'    =>    5,
-        'pref_etiq_hsize'    =>    90,
-        'pref_etiq_vsize'    =>    35,
-        'pref_etiq_cols'    =>    2,
-        'pref_etiq_rows'    =>    7,
-        'pref_etiq_corps'    =>    12,
-        'pref_etiq_border'    =>    true,
-        /* Preferences for members cards */
-        'pref_force_picture_ratio'    =>    false,
-        'pref_member_picture_ratio'    =>    'square_ratio',
-        'pref_card_abrev'    =>    'GALETTE',
-        'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
-        'pref_card_tcol'    =>    '#FFFFFF',
-        'pref_card_scol'    =>    '#8C2453',
-        'pref_card_bcol'    =>    '#53248C',
-        'pref_card_hcol'    =>    '#248C53',
-        'pref_bool_display_title'    =>    false,
-        'pref_card_hsize'    =>    PdfMembersCards::WIDTH,
-        'pref_card_vsize'    =>    PdfMembersCards::HEIGHT,
-        'pref_card_address'    =>    1,
-        'pref_card_year'    =>    '',
-        'pref_card_marges_v'    =>    15,
-        'pref_card_marges_h'    =>    20,
-        'pref_card_vspace'    =>    5,
-        'pref_card_hspace'    =>    10,
-        'pref_card_self'    =>    1,
-        'pref_theme'        =>    'default',
-        'pref_bool_publicpages' => true,
-        'pref_publicpages_visibility_generic' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_documents' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_memberslist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_staffgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_bool_groupsmanagers_are_staff' => false,
-        'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
-        /* Preferences for member/subscribe form */
-        'pref_bool_selfsubscribe' => true,
-        'pref_member_form_grid' => 'one',
-        'pref_bool_empty_form_link' => false,
-        /* New contribution script */
-        'pref_new_contrib_script' => '',
-        'pref_bool_wrap_mails' => true,
-        'pref_rss_url' => Galette::RSS_URL,
-        'pref_adhesion_form' => \Galette\IO\PdfAdhesionForm::class,
-        'pref_mail_allow_unsecure' => false,
-        'pref_instance_uuid' => '',
-        'pref_registration_uuid' => '',
-        'pref_telemetry_date' => '',
-        'pref_registration_date' => '',
-        'pref_footer' => '',
-        'pref_filter_account' => Members::ALL_ACCOUNTS,
-        'pref_galette_url' => '',
-        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT,
-        /* Security related */
-        'pref_password_length' => 6,
-        'pref_password_blacklist' => false,
-        'pref_password_strength' => self::PWD_NONE,
-        'pref_default_paymenttype' => PaymentType::CHECK,
-        'pref_bool_create_member' => false,
-        'pref_bool_groupsmanagers_create_member' => false,
-        'pref_bool_groupsmanagers_edit_member' => false,
-        'pref_bool_groupsmanagers_edit_groups' => false,
-        'pref_bool_groupsmanagers_mailings' => false,
-        'pref_bool_groupsmanagers_exports' => true,
-        'pref_bool_groupsmanagers_create_contributions' => false,
-        'pref_bool_groupsmanagers_create_transactions' => false,
-        'pref_bool_groupsmanagers_see_contributions' => false,
-        'pref_bool_groupsmanagers_see_transactions' => false,
-        'pref_noindex' => false
-    ];
+    /**
+     * Preferences defaults, lazily derived from PreferencesSchema
+     *
+     * @var array<string, bool|int|string>|null
+     */
+    private static ?array $defaults = null;
 
     /** @var Social[] */
     private array $socials;
 
-    // flagging required fields
+    // flagging required fields, derived from PreferencesSchema
     /** @var array<string,int> */
-    private array $required = [
-        'pref_nom' => 1,
-        'pref_lang' => 1,
-        'pref_numrows' => 1,
-        'pref_statut' => 1,
-        'pref_etiq_marges_v' => 1,
-        'pref_etiq_marges_h' => 1,
-        'pref_etiq_hspace' => 1,
-        'pref_etiq_vspace' => 1,
-        'pref_etiq_hsize' => 1,
-        'pref_etiq_vsize' => 1,
-        'pref_etiq_cols' => 1,
-        'pref_etiq_rows' => 1,
-        'pref_etiq_corps' => 1,
-        'pref_card_marges_v' => 1,
-        'pref_card_marges_h' => 1,
-        'pref_card_hspace' => 1,
-        'pref_card_vspace' => 1
-    ];
+    private array $required = [];
 
     /**
      * Default constructor
@@ -370,6 +233,7 @@ class Preferences
     public function __construct(Db $zdb, bool $load = true)
     {
         $this->zdb = $zdb;
+        $this->required = PreferencesSchema::getRequired();
         if ($load) {
             $this->load();
             $this->checkUpdate();
@@ -383,7 +247,7 @@ class Preferences
     private function checkUpdate(): bool
     {
         $params = [];
-        foreach (self::$defaults as $k => $v) {
+        foreach (self::defaults() as $k => $v) {
             if (!isset($this->prefs[$k])) {
                 if ($k == 'pref_admin_pass' && $v == 'admin') {
                     $v = password_hash($v, PASSWORD_BCRYPT);
@@ -485,7 +349,7 @@ class Preferences
             $this->zdb->execute($delete);
 
             //we then replace default values with the ones user has selected
-            $values = self::$defaults;
+            $values = self::defaults();
             $values['pref_lang'] = $lang;
             $values['pref_admin_login'] = $adm_login;
             $values['pref_admin_pass'] = $adm_pass;
@@ -512,7 +376,7 @@ class Preferences
             $this->zdb->handleSequence(
                 self::TABLE,
                 self::PK,
-                count(self::$defaults)
+                count(self::defaults())
             );
 
             Analog::log(
@@ -548,21 +412,11 @@ class Preferences
     public function check(array $values, Login $login): bool
     {
         $this->errors = [];
-        $insert_values = [];
         $this->getRequiredFields($login); //make sure required are all set
 
         $this->checkCssImpacted($values);
 
-        // obtain fields
-        foreach ($this->getFieldsNames() as $fieldname) {
-            if (isset($values[$fieldname])) {
-                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
-            } else {
-                $value = "";
-            }
-
-            $insert_values[$fieldname] = $value;
-        }
+        $insert_values = $this->completeValues($values);
 
         //cleanup fields for demo
         if (Galette::isDemo()) {
@@ -573,59 +427,164 @@ class Preferences
             );
         }
 
-        // missing relations
+        $this->checkRelations($values, $insert_values);
+
+        $this->dynamicsCheck($values, [], []);
+
+        $this->assignValues($insert_values, $login);
+
+        $this->checkSocials($values);
+
+        return 0 === count($this->errors);
+    }
+
+    /**
+     * Build a complete set of values out of a submitted payload
+     *
+     * Every known preference gets an entry: a field missing from the payload
+     * is blanked, which is what lets an unchecked checkbox turn its preference
+     * off.
+     *
+     * @param array<string, mixed> $values Submitted values
+     *
+     * @return array<string, mixed>
+     */
+    private function completeValues(array $values): array
+    {
+        $complete = [];
+
+        foreach ($this->getFieldsNames() as $fieldname) {
+            if (isset($values[$fieldname])) {
+                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
+            } else {
+                $value = "";
+            }
+
+            $complete[$fieldname] = $value;
+        }
+
+        return $complete;
+    }
+
+    /**
+     * Run every relation between preferences, in order
+     *
+     * These cannot be expressed on a single field: they need the whole set.
+     * Order matters, errors are reported in the order rules run here.
+     *
+     * @param array<string, mixed> $values        Submitted values
+     * @param array<string, mixed> $insert_values Complete set, altered in place
+     */
+    private function checkRelations(array $values, array &$insert_values): void
+    {
+        $this->checkMailRelations($insert_values);
+        $this->checkMembershipDates($insert_values);
+        $this->checkOfferedMonths($insert_values);
+        $this->checkRequiredValues($values);
+        $this->checkPasswordConfirmation($values, $insert_values);
+        $this->checkStaffMemberSource(
+            insert_values: $insert_values,
+            source_field: 'pref_postal_address',
+            member_field: 'pref_postal_staff_member',
+            from_prefs: self::POSTAL_ADDRESS_FROM_PREFS,
+            from_staff: [self::POSTAL_ADDRESS_FROM_STAFF],
+            error: _T("You have to select a staff member to retrieve its address")
+        );
+        $this->checkStaffMemberSource(
+            insert_values: $insert_values,
+            source_field: 'pref_org_phone',
+            member_field: 'pref_org_phone_staff_member',
+            from_prefs: self::PHONE_NUMBER_FROM_PREFS,
+            from_staff: [self::PHONE_NUMBER_FROM_STAFF, self::PHONE_NUMBER_MOBILE_FROM_STAFF],
+            error: _T("You have to select a staff member to retrieve its phone number")
+        );
+    }
+
+    /**
+     * Check what sending emails requires, according to the chosen method
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     */
+    private function checkMailRelations(array $insert_values): void
+    {
         if (
-            !Galette::isDemo()
-            && isset($insert_values['pref_mail_method'])
-            && $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED
+            Galette::isDemo()
+            || !isset($insert_values['pref_mail_method'])
+            || $insert_values['pref_mail_method'] <= GaletteMail::METHOD_DISABLED
         ) {
-            if (
-                !isset($insert_values['pref_email_nom'])
-                || $insert_values['pref_email_nom'] == ''
-            ) {
-                $this->errors[] = _T("- You must indicate a sender name for emails!");
-            }
-            if (
-                !isset($insert_values['pref_email'])
-                || $insert_values['pref_email'] == ''
-            ) {
-                $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
-            }
-            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP && (!isset($insert_values['pref_mail_smtp_host']) || $insert_values['pref_mail_smtp_host'] == '')) {
-                $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
-            }
-            if (
-                $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
-                && $insert_values['pref_mail_smtp_auth'])
-            ) {
-                if (
-                    !isset($insert_values['pref_mail_smtp_user'])
-                    || trim((string)$insert_values['pref_mail_smtp_user']) == ''
-                ) {
-                    $this->errors[] = _T("- You must provide a login for SMTP authentication.");
-                }
-                if (
-                    !isset($insert_values['pref_mail_smtp_password'])
-                    || ($insert_values['pref_mail_smtp_password']) == ''
-                ) {
-                    $this->errors[] = _T("- You must provide a password for SMTP authentication.");
-                }
-            }
+            return;
         }
 
         if (
-            (!isset($insert_values['pref_beg_membership']) || $insert_values['pref_beg_membership'] == '')
-            && (!isset($insert_values['pref_membership_ext']) || $insert_values['pref_membership_ext'] == '')
+            !isset($insert_values['pref_email_nom'])
+            || $insert_values['pref_email_nom'] == ''
         ) {
+            $this->errors[] = _T("- You must indicate a sender name for emails!");
+        }
+
+        if (
+            !isset($insert_values['pref_email'])
+            || $insert_values['pref_email'] == ''
+        ) {
+            $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
+        }
+
+        if (
+            $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            && (!isset($insert_values['pref_mail_smtp_host']) || $insert_values['pref_mail_smtp_host'] == '')
+        ) {
+            $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
+        }
+
+        $needs_credentials = $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+            || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            && $insert_values['pref_mail_smtp_auth']);
+
+        if (!$needs_credentials) {
+            return;
+        }
+
+        if (
+            !isset($insert_values['pref_mail_smtp_user'])
+            || trim((string)$insert_values['pref_mail_smtp_user']) == ''
+        ) {
+            $this->errors[] = _T("- You must provide a login for SMTP authentication.");
+        }
+
+        if (
+            !isset($insert_values['pref_mail_smtp_password'])
+            || ($insert_values['pref_mail_smtp_password']) == ''
+        ) {
+            $this->errors[] = _T("- You must provide a password for SMTP authentication.");
+        }
+    }
+
+    /**
+     * A membership either extends for a duration or starts on a fixed date
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     */
+    private function checkMembershipDates(array $insert_values): void
+    {
+        $has_beginning = isset($insert_values['pref_beg_membership'])
+            && $insert_values['pref_beg_membership'] != '';
+        $has_extension = isset($insert_values['pref_membership_ext'])
+            && $insert_values['pref_membership_ext'] != '';
+
+        if (!$has_beginning && !$has_extension) {
             $this->errors[] = _T("- You must indicate a membership extension or a beginning of membership.");
-        } elseif (
-            $insert_values['pref_beg_membership'] != ''
-            && $insert_values['pref_membership_ext'] != ''
-        ) {
+        } elseif ($has_beginning && $has_extension) {
             $this->errors[] = _T("- Default membership extension and beginning of membership are mutually exclusive.");
         }
+    }
 
+    /**
+     * Offered months only make sense along a fixed beginning of membership
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     */
+    private function checkOfferedMonths(array $insert_values): void
+    {
         if (
             isset($insert_values['pref_membership_offermonths'])
             && (int)$insert_values['pref_membership_offermonths'] > 0
@@ -634,8 +593,18 @@ class Preferences
         ) {
             $this->errors[] = _T("- Offering months is only compatible with beginning of membership.");
         }
+    }
 
-        // missing required fields?
+    /**
+     * Check required preferences are all filled
+     *
+     * Reads the submitted payload rather than the completed set: a preference
+     * missing from the payload is blank there, and would not be reported.
+     *
+     * @param array<string, mixed> $values Submitted values
+     */
+    private function checkRequiredValues(array $values): void
+    {
         foreach (array_keys($this->required) as $val) {
             if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
                 $this->errors[] = sprintf(
@@ -645,197 +614,391 @@ class Preferences
                 );
             }
         }
+    }
 
-        // Check passwords. Hash will be done into the Preferences class
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp((string)$insert_values['pref_admin_pass'], (string)$values['pref_admin_pass_check']) != 0) {
+    /**
+     * Check the superadmin password against its confirmation
+     *
+     * Hashing happens later, in __set().
+     *
+     * @param array<string, mixed> $values        Submitted values
+     * @param array<string, mixed> $insert_values Complete set of values
+     */
+    private function checkPasswordConfirmation(array $values, array $insert_values): void
+    {
+        if (
+            !Galette::isDemo()
+            && isset($values['pref_admin_pass_check'])
+            && strcmp((string)$insert_values['pref_admin_pass'], (string)$values['pref_admin_pass_check']) != 0
+        ) {
             $this->errors[] = _T("Passwords mismatch");
         }
+    }
 
-        //postal address
-        if (isset($insert_values['pref_postal_address'])) {
-            $value = $insert_values['pref_postal_address'];
-            if ($value == Preferences::POSTAL_ADDRESS_FROM_PREFS) {
-                if (isset($insert_values['pref_postal_staff_member'])) {
-                    unset($insert_values['pref_postal_staff_member']);
-                }
-            } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
-                if (!isset($insert_values['pref_postal_staff_member']) || $insert_values['pref_postal_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member to retrieve its address");
-                }
-            }
+    /**
+     * Check a preference taken from a staff member designates one
+     *
+     * When the value is read from the preferences themselves, the staff member
+     * is dropped from the set rather than blanked, so the stored one survives.
+     *
+     * @param array<string, mixed> $insert_values Complete set, altered in place
+     * @param string               $source_field  Preference telling where to read from
+     * @param string               $member_field  Preference holding the staff member
+     * @param int                  $from_prefs    Value meaning "from the preferences"
+     * @param array<int>           $from_staff    Values meaning "from a staff member"
+     * @param string               $error         Message when no staff member is set
+     */
+    private function checkStaffMemberSource(
+        array &$insert_values,
+        string $source_field,
+        string $member_field,
+        int $from_prefs,
+        array $from_staff,
+        string $error
+    ): void {
+        if (!isset($insert_values[$source_field])) {
+            return;
         }
 
-        //phone number
-        if (isset($insert_values['pref_org_phone'])) {
-            $value = $insert_values['pref_org_phone'];
-            if ($value == Preferences::PHONE_NUMBER_FROM_PREFS) {
-                if (isset($insert_values['pref_org_phone_staff_member'])) {
-                    unset($insert_values['pref_org_phone_staff_member']);
-                }
-            } elseif ($value == Preferences::PHONE_NUMBER_FROM_STAFF || $value == Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF) {
-                if (!isset($insert_values['pref_org_phone_staff_member']) || $insert_values['pref_org_phone_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member to retrieve its phone number");
-                }
+        $value = $insert_values[$source_field];
+        if ($value == $from_prefs) {
+            unset($insert_values[$member_field]);
+        } elseif (in_array($value, $from_staff)) {
+            if (!isset($insert_values[$member_field]) || $insert_values[$member_field] < 1) {
+                $this->errors[] = $error;
             }
         }
+    }
 
-        $this->dynamicsCheck($values, [], []);
-
-        // update preferences
+    /**
+     * Assign checked values, honouring the access level each one requires
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     * @param Login                $login         Logged in user
+     */
+    private function assignValues(array $insert_values, Login $login): void
+    {
         foreach ($insert_values as $champ => $valeur) {
-            $checked = $login->isSuperAdmin();
-            if (!$checked) {
-                if ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login') {
-                    $checked = true;
-                }
-            } elseif ($champ == "pref_admin_pass" && empty($_POST['pref_admin_pass'] ?? '')) {
-                $checked = false;
+            if (
+                PreferencesSchema::getAcl($champ) === PreferencesSchema::ACL_SUPERADMIN
+                && !$login->isSuperAdmin()
+            ) {
+                continue;
             }
 
-            if ($checked) {
-                $this->$champ = $valeur;
+            //an empty password must not overwrite the stored one
+            if ($champ === 'pref_admin_pass' && empty($_POST['pref_admin_pass'] ?? '')) {
+                continue;
             }
+
+            $this->$champ = $valeur;
+        }
+    }
+
+    /**
+     * Store a single preference
+     *
+     * The change is merged into the current complete set and run through the
+     * very same rules as a whole form submission, so a value breaking a
+     * relation between preferences is refused here too.
+     *
+     * @param string $name  Preference name
+     * @param mixed  $value Value to store
+     * @param Login  $login Logged in user
+     */
+    public function setValue(string $name, mixed $value, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!PreferencesSchema::has($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Unknown preference '%name'!")
+            );
+            return false;
         }
 
-        $this->checkSocials($values);
+        if (
+            PreferencesSchema::getAcl($name) === PreferencesSchema::ACL_SUPERADMIN
+            && !$login->isSuperAdmin()
+        ) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("You are not allowed to change preference '%name'!")
+            );
+            return false;
+        }
 
-        return 0 === count($this->errors);
+        $this->getRequiredFields($login); //make sure required are all set
+
+        //merge the change into what is currently stored
+        $values = $this->prefs;
+        $values[$name] = $value;
+
+        $this->checkCssImpacted($values);
+
+        $insert_values = $this->completeValues($values);
+        $this->checkRelations($values, $insert_values);
+
+        if (count($this->errors) > 0) {
+            return false;
+        }
+
+        //a relation may have dropped the key as not applicable
+        $checked = $insert_values[$name] ?? $values[$name];
+
+        //validation and normalisation happen in __set(), which reports through
+        //the error channel rather than a return value
+        $this->$name = $checked;
+        if ($this->getErrors() !== []) {
+            return false;
+        }
+
+        return $this->persistValue($name, $this->prefs[$name]);
+    }
+
+    /**
+     * Reset a single preference to its default
+     *
+     * @param string $name  Preference name
+     * @param Login  $login Logged in user
+     */
+    public function resetValue(string $name, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!PreferencesSchema::has($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Unknown preference '%name'!")
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isSensitive($name)) {
+            //resetting a secret would set a publicly known value
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Preference '%name' holds a secret and cannot be reset to its default!")
+            );
+            return false;
+        }
+
+        return $this->setValue($name, self::defaults()[$name], $login);
     }
 
     /**
      * Validate value of a field
+     *
+     * Constraints come from the schema. The few checks that cannot be
+     * expressed declaratively are delegated to a dedicated method each.
      *
      * @param string $fieldname Field name
      * @param mixed  $value     Value to be set
      */
     public function validateValue(string $fieldname, mixed $value): mixed
     {
+        $entry = PreferencesSchema::get($fieldname);
+        if ($entry === null) {
+            //unknown preference, it may come from a plugin: leave it untouched
+            return $value;
+        }
+
+        return match ($entry['type']) {
+            PreferencesSchema::TYPE_EMAIL,
+            PreferencesSchema::TYPE_EMAILS => $this->validateEmails($fieldname, $value),
+            PreferencesSchema::TYPE_INT => $this->validateNumber($fieldname, $entry, $value),
+            PreferencesSchema::TYPE_COLOR => $this->validateColor($fieldname, $value),
+            PreferencesSchema::TYPE_LOGIN => $this->validateAdminLogin($entry, $value),
+            PreferencesSchema::TYPE_PASSWORD => $this->validateAdminPass($value),
+            PreferencesSchema::TYPE_DATE_MD => $this->validateBegMembership($value),
+            PreferencesSchema::TYPE_YEAR => $this->validateCardYear($value),
+            PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
+            PreferencesSchema::TYPE_HTML => $this->cleanHtmlValue((string)$value),
+            default => $value,
+        };
+    }
+
+    /**
+     * Check email validity
+     *
+     * A TYPE_EMAILS field accepts a comma-separated list of valid addresses,
+     * such as "mail@domain.com,other@mail.com".
+     *
+     * @param string $fieldname Field name
+     * @param mixed  $value     Value to check
+     */
+    private function validateEmails(string $fieldname, mixed $value): mixed
+    {
+        $addresses = [];
+        if (trim((string)$value) != '') {
+            $addresses = PreferencesSchema::getType($fieldname) === PreferencesSchema::TYPE_EMAILS
+                ? explode(',', (string)$value)
+                : [$value];
+        }
+
+        foreach ($addresses as $address) {
+            if (!GaletteMail::isValidEmail($address)) {
+                $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                Analog::log($msg, Analog::WARNING);
+                $this->errors[] = $msg;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check a number against the bounds declared in the schema
+     *
+     * Integers without any bound are not validated, only cast on read.
+     *
+     * @param string               $fieldname Field name
+     * @param array<string, mixed> $entry     Schema entry
+     * @param mixed                $value     Value to check
+     */
+    private function validateNumber(string $fieldname, array $entry, mixed $value): mixed
+    {
+        if (!isset($entry['min']) && !isset($entry['max'])) {
+            return $value;
+        }
+
+        if (
+            !is_numeric($value)
+            || (isset($entry['min']) && $value < $entry['min'])
+            || (isset($entry['max']) && $value > $entry['max'])
+        ) {
+            $this->errors[] = PreferencesSchema::getErrorMessage((string)$entry['error'], $fieldname);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Normalize a color
+     *
+     * An unparsable color is not an error: strip background colors fall back
+     * to black, and the text color to white.
+     *
+     * @param string $fieldname Field name
+     * @param mixed  $value     Value to normalize
+     */
+    private function validateColor(string $fieldname, mixed $value): string
+    {
+        $matches = [];
+        if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string)$value, $matches)) {
+            return $fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000';
+        }
+
+        return '#' . $matches[2];
+    }
+
+    /**
+     * Check superadmin login
+     *
+     * @param array<string, mixed> $entry Schema entry
+     * @param mixed                $value Value to check
+     */
+    private function validateAdminLogin(array $entry, mixed $value): mixed
+    {
         global $login;
 
-        switch ($fieldname) {
-            case 'pref_email':
-            case 'pref_email_newadh':
-            case 'pref_email_reply_to':
-            case 'pref_org_email':
-                //check emails validity
-                //may be a comma-separated list of valid emails:
-                //"mail@domain.com,other@mail.com" only for pref_email_newadh.
-                $addresses = [];
-                if (trim((string)$value) != '') {
-                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', (string)$value) : [$value];
-                }
-                foreach ($addresses as $address) {
-                    if (!GaletteMail::isValidEmail($address)) {
-                        $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
-                        Analog::log($msg, Analog::WARNING);
-                        $this->errors[] = $msg;
-                    }
-                }
-                break;
-            case 'pref_admin_login':
-                if (Galette::isDemo()) {
-                    Analog::log(
-                        'Trying to set superadmin login while in DEMO.',
-                        Analog::WARNING
-                    );
-                } elseif (strlen((string)$value) < 4) {
-                    $this->errors[] = _T("- The username must be composed of at least 4 characters!");
-                } elseif ($login->loginExists($value)) {
-                    //check if login is already taken
-                    $this->errors[] = _T("- This username is already used by another member !");
-                }
-                break;
-            case 'pref_numrows':
-            case 'pref_etiq_marges_h':
-            case 'pref_etiq_marges_v':
-            case 'pref_etiq_hspace':
-            case 'pref_etiq_vspace':
-            case 'pref_etiq_hsize':
-            case 'pref_etiq_vsize':
-            case 'pref_etiq_cols':
-            case 'pref_etiq_rows':
-            case 'pref_etiq_corps':
-            case 'pref_card_marges_v':
-            case 'pref_card_marges_h':
-            case 'pref_card_hspace':
-            case 'pref_card_vspace':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- The numbers and measures have to be integers!");
-                }
-                break;
-            case 'pref_card_vsize':
-                if (!is_numeric($value) || $value < 40 || $value > 55) {
-                    $this->errors[] = _T("- The card height have to be an integer between 40 and 55!");
-                }
-                break;
-            case 'pref_card_hsize':
-                if (!is_numeric($value) || $value < 70 || $value > 95) {
-                    $this->errors[] = _T("- The card width have to be an integer between 70 and 95!");
-                }
-                break;
-            case 'pref_card_tcol':
-            case 'pref_card_scol':
-            case 'pref_card_bcol':
-            case 'pref_card_hcol':
-                $matches = [];
-                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string)$value, $matches)) {
-                    // Set strip background colors to black or white (for tcol)
-                    $value = ($fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000');
-                } else {
-                    $value = '#' . $matches[2];
-                }
-                break;
-            case 'pref_admin_pass':
-                if (Galette::isDemo()) {
-                    Analog::log(
-                        'Trying to set superadmin pass while in DEMO.',
-                        Analog::WARNING
-                    );
-                } else {
-                    $pwcheck = new \Galette\Util\Password($this);
-                    $pwcheck->addPersonalInformation([$this->pref_admin_login]);
-                    if (!$pwcheck->isValid($value)) {
-                        $this->errors = array_merge(
-                            $this->errors,
-                            $pwcheck->getErrors()
-                        );
-                    }
-                }
-                break;
-            case 'pref_membership_ext':
-                if (!is_numeric($value) || $value <= 0) {
-                    $this->errors[] = _T("- Invalid number of months of membership extension.");
-                }
-                break;
-            case 'pref_beg_membership':
-                $beg_membership = explode("/", (string)$value);
-                if (count($beg_membership) != 2) {
-                    $this->errors[] = _T("- Invalid format of beginning of membership.");
-                } else {
-                    $now = getdate();
-                    if (!checkdate((int)$beg_membership[1], (int)$beg_membership[0], $now['year'])) {
-                        $this->errors[] = _T("- Invalid date for beginning of membership.");
-                    }
-                }
-                break;
-            case 'pref_membership_offermonths':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- Invalid number of offered months.");
-                }
-                break;
-            case 'pref_card_year':
-                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string)$value)) {
-                    $this->errors[] = _T("- Invalid year for cards.");
-                }
-                break;
-            case 'pref_footer':
-                $value = $this->cleanHtmlValue($value);
-                break;
-            case 'pref_website':
-                if (!isValidWebUrl($value)) {
-                    $this->errors[] = _T("- Invalid website URL.");
-                }
-                break;
+        if (Galette::isDemo()) {
+            Analog::log(
+                'Trying to set superadmin login while in DEMO.',
+                Analog::WARNING
+            );
+        } elseif (strlen((string)$value) < (int)$entry['minlength']) {
+            $this->errors[] = PreferencesSchema::getErrorMessage((string)$entry['error']);
+        } elseif ($login->loginExists($value)) {
+            //check if login is already taken
+            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_LOGIN_EXISTS);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check superadmin password strength
+     *
+     * @param mixed $value Value to check
+     */
+    private function validateAdminPass(mixed $value): mixed
+    {
+        if (Galette::isDemo()) {
+            Analog::log(
+                'Trying to set superadmin pass while in DEMO.',
+                Analog::WARNING
+            );
+            return $value;
+        }
+
+        $pwcheck = new \Galette\Util\Password($this);
+        $pwcheck->addPersonalInformation([$this->pref_admin_login]);
+        if (!$pwcheck->isValid($value)) {
+            $this->errors = array_merge(
+                $this->errors,
+                $pwcheck->getErrors()
+            );
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check beginning of membership, expressed as a day/month pair
+     *
+     * @param mixed $value Value to check
+     */
+    private function validateBegMembership(mixed $value): mixed
+    {
+        $beg_membership = explode("/", (string)$value);
+        if (count($beg_membership) != 2) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(
+                PreferencesSchema::ERR_BEG_MEMBERSHIP_FORMAT
+            );
+        } else {
+            $now = getdate();
+            if (!checkdate((int)$beg_membership[1], (int)$beg_membership[0], $now['year'])) {
+                $this->errors[] = PreferencesSchema::getErrorMessage(
+                    PreferencesSchema::ERR_BEG_MEMBERSHIP_DATE
+                );
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check year for members cards
+     *
+     * @param mixed $value Value to check
+     */
+    private function validateCardYear(mixed $value): mixed
+    {
+        if (
+            $value !== 'DEADLINE'
+            && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string)$value)
+        ) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_CARD_YEAR);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check website URL
+     *
+     * @param mixed $value Value to check
+     */
+    private function validateWebUrl(mixed $value): mixed
+    {
+        if (!isValidWebUrl($value)) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_WEBSITE);
         }
 
         return $value;
@@ -859,7 +1022,7 @@ class Preferences
 
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            foreach (self::$defaults as $k => $v) {
+            foreach (self::defaults() as $k => $v) {
                 if (
                     Galette::isDemo()
                     && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
@@ -873,7 +1036,7 @@ class Preferences
                 if ($k === 'pref_adhesion_form') {
                     if (trim($v) == '') {
                         //Reset to default, should not be empty
-                        $v = self::$defaults['pref_adhesion_form'];
+                        $v = self::defaults()['pref_adhesion_form'];
                     }
                     $value = $v;
                 }
@@ -1076,77 +1239,6 @@ class Preferences
     {
         $forbidden = ['defaults'];
         $virtuals = ['vpref_email_newadh'];
-        $types = [
-            'int' => [
-                'pref_card_address',
-                'pref_card_hsize',
-                'pref_card_hspace',
-                'pref_card_marges_h',
-                'pref_card_marges_v',
-                'pref_card_vsize',
-                'pref_card_vspace',
-                'pref_default_paymenttype',
-                'pref_etiq_marges_v',
-                'pref_etiq_marges_h',
-                'pref_etiq_hspace',
-                'pref_etiq_vspace',
-                'pref_etiq_hsize',
-                'pref_etiq_vsize',
-                'pref_etiq_cols',
-                'pref_etiq_rows',
-                'pref_etiq_corps',
-                'pref_filter_account',
-                'pref_mail_method',
-                'pref_mail_smtp_port',
-                'pref_membership_ext',
-                'pref_membership_offermonths',
-                'pref_numrows',
-                'pref_postal_address',
-                'pref_postal_staff_member',
-                'pref_org_phone',
-                'pref_org_phone_staff_member',
-                'pref_password_length',
-                'pref_password_strength',
-                'pref_publicpages_visibility_generic',
-                'pref_publicpages_visibility_documents',
-                'pref_publicpages_visibility_memberslist',
-                'pref_publicpages_visibility_membersgallery',
-                'pref_publicpages_visibility_stafflist',
-                'pref_publicpages_visibility_staffgallery',
-                'pref_redirect_on_create',
-                'pref_statut'
-            ],
-            'bool' => [
-                'pref_bool_create_member',
-                'pref_bool_groupsmanagers_create_member',
-                'pref_bool_groupsmanagers_edit_member',
-                'pref_bool_groupsmanagers_edit_groups',
-                'pref_bool_groupsmanagers_exports',
-                'pref_bool_groupsmanagers_mailings',
-                'pref_bool_groupsmanagers_create_contributions',
-                'pref_bool_groupsmanagers_create_transactions',
-                'pref_bool_groupsmanagers_see_contributions',
-                'pref_bool_groupsmanagers_see_transactions',
-                'pref_bool_groupsmanagers_are_staff',
-                'pref_bool_mailadh',
-                'pref_bool_mailowner',
-                'pref_bool_publicpages',
-                'pref_bool_selfsubscribe',
-                'pref_bool_empty_form_link',
-                'pref_bool_wrap_mails',
-                'pref_disable_members_socials',
-                'pref_editor_enabled',
-                'pref_etiq_border',
-                'pref_force_picture_ratio',
-                'pref_mail_smtp_auth',
-                'pref_mail_smtp_secure',
-                'pref_mail_allow_unsecure',
-                'pref_password_blacklist',
-                'pref_hide_bg_image',
-                'pref_enable_custom_colors',
-                'pref_noindex'
-            ]
-        ];
 
         if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
             return PdfMembersCards::HEIGHT;
@@ -1166,7 +1258,7 @@ class Preferences
                 return $this->cleanHtmlValue($this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
-                    $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
+                    $this->prefs[$name] = self::defaults()['pref_adhesion_form'];
                 }
                 $value = $this->prefs[$name];
                 if ($this->zdb->isPostgres() && $value === 'f') {
@@ -1178,12 +1270,12 @@ class Preferences
                     $value = $values[0]; //take first as default
                 }
 
-                if (in_array($name, $types['int']) && $value !== '') {
-                    $value = (int)$value;
-                }
-
-                if (in_array($name, $types['bool']) && $value !== '') {
-                    $value = (bool)$value;
+                if ($value !== '') {
+                    $value = match (PreferencesSchema::getType($name)) {
+                        PreferencesSchema::TYPE_INT => (int)$value,
+                        PreferencesSchema::TYPE_BOOL => (bool)$value,
+                        default => $value,
+                    };
                 }
 
                 return $value;
@@ -1229,13 +1321,29 @@ class Preferences
     }
 
     /**
+     * Get preferences defaults
+     *
+     * Derived from the schema on first access: a static property initializer
+     * cannot call a method.
+     *
+     * @return array<string, bool|int|string>
+     */
+    private static function defaults(): array
+    {
+        if (self::$defaults === null) {
+            self::$defaults = PreferencesSchema::getDefaults();
+        }
+        return self::$defaults;
+    }
+
+    /**
      * Get default preferences
      *
      * @return array<string, mixed>
      */
     public function getDefaults(): array
     {
-        return self::$defaults;
+        return self::defaults();
     }
 
     /**
@@ -1247,7 +1355,7 @@ class Preferences
     public function __set(string $name, mixed $value): void
     {
         //does this pref exist?
-        if (!array_key_exists($name, self::$defaults)) {
+        if (!array_key_exists($name, self::defaults())) {
             Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
                 . $name . ')',
@@ -1533,13 +1641,32 @@ class Preferences
         string $field,
         mixed $value,
     ): bool {
+        if (!$this->persistValue($field, $value)) {
+            return false;
+        }
+
+        $this->$field = $value;
+        return true;
+    }
+
+    /**
+     * Write one preference to database, without touching the loaded value
+     *
+     * Assigning goes through __set(), which validates and, for the superadmin
+     * password, hashes. A caller holding an already normalised value must not
+     * go through it again.
+     *
+     * @param string $field Field name
+     * @param mixed  $value Field value
+     */
+    private function persistValue(string $field, mixed $value): bool
+    {
         try {
             $update = $this->zdb->update(self::TABLE);
             $update
                 ->set(['val_pref'  => $value])
                 ->where->equalTo('nom_pref', $field);
             $this->zdb->execute($update);
-            $this->$field = $value;
             Analog::log(
                 sprintf('%s updated.', $field),
                 Analog::INFO

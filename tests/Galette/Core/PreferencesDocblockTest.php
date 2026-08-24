@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Galette\Core\PreferencesSchema;
 use Galette\Tests\GaletteTestCase;
 use ReflectionClass;
 
-use function Safe\file_get_contents;
-use function Safe\preg_match;
 use function Safe\preg_match_all;
 
 /**
@@ -109,22 +108,6 @@ class PreferencesDocblockTest extends GaletteTestCase
     }
 
     /**
-     * Both cast lists only mention preferences that exist
-     */
-    public function testCastListsHoldNoStrayEntry(): void
-    {
-        $declared = array_keys($this->preferences->getDefaults());
-
-        foreach (array_keys($this->getCastTypes()) as $name) {
-            $this->assertContains(
-                $name,
-                $declared,
-                $name . ' is cast by __get() but is not a declared preference'
-            );
-        }
-    }
-
-    /**
      * Read the property annotations off the class docblock
      *
      * @return array<string, string> Property name => documented type
@@ -171,35 +154,21 @@ class PreferencesDocblockTest extends GaletteTestCase
     }
 
     /**
-     * Read the int and bool cast lists out of __get()
-     *
-     * They are a local variable, so there is no way to it but the source.
+     * The types the schema declares, for the preferences that get cast
      *
      * @return array<string, string> Preference name => cast type
      */
     private function getCastTypes(): array
     {
-        $reflection = new ReflectionClass(\Galette\Core\Preferences::class);
-        $file = (string)$reflection->getFileName();
-        $source = file_get_contents($file);
-
-        $block = [];
-        $found = preg_match('/\$types = \[(.*?)\n        \];/s', $source, $block);
-        $this->assertSame(1, $found, 'cast lists not found in __get()');
-
         $casts = [];
-        foreach (['int', 'bool'] as $type) {
-            $list = [];
-            if (preg_match("/'" . $type . "' => \[(.*?)\]/s", $block[1], $list) !== 1) {
-                continue;
-            }
-            $names = [];
-            preg_match_all("/'(\w+)'/", $list[1], $names);
-            foreach ($names[1] as $name) {
+
+        foreach (array_keys(PreferencesSchema::getAll()) as $name) {
+            $type = PreferencesSchema::getType($name);
+            if (in_array($type, [PreferencesSchema::TYPE_INT, PreferencesSchema::TYPE_BOOL], true)) {
                 $casts[$name] = $type;
             }
         }
-        $this->assertNotEmpty($casts, 'no cast list found');
+        $this->assertNotEmpty($casts, 'the schema casts nothing');
 
         return $casts;
     }
