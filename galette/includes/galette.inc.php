@@ -75,11 +75,6 @@ if (
     $profiler->start();
 }
 
-//Version to display
-if (!defined('GALETTE_HIDE_VERSION')) {
-    define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
-}
-
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
