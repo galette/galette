@@ -15,3 +15,6 @@ CREATE TABLE galette_plugins (
   version decimal DEFAULT NULL,
   PRIMARY KEY (plugin_id)
 );
+
+-- preference values no longer fit in 255 characters (footer HTML, feature flags list)
+ALTER TABLE galette_preferences ALTER COLUMN val_pref TYPE text;

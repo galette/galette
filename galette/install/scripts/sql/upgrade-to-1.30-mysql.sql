@@ -15,3 +15,6 @@ CREATE TABLE galette_plugins (
   version DECIMAL(4,3) NULL DEFAULT NULL,
   PRIMARY KEY (plugin_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- preference values no longer fit in 255 characters (footer HTML, feature flags list)
+ALTER TABLE galette_preferences MODIFY COLUMN val_pref text NOT NULL;

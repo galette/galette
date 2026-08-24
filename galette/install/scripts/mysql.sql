@@ -114,7 +114,7 @@ DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref int unsigned NOT NULL auto_increment,
   nom_pref varchar(100) NOT NULL default '',
-  val_pref varchar(255) NOT NULL default '',
+  val_pref text NOT NULL,
   PRIMARY KEY (id_pref),
   UNIQUE (nom_pref)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
