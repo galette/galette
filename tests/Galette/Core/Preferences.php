@@ -115,6 +115,124 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test writing a single preference
+     */
+    public function testSetValue(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_numrows;
+
+        $this->assertTrue(
+            $this->preferences->setValue('pref_numrows', 42, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame(42, $this->preferences->pref_numrows);
+
+        //value really reached database
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(42, $prefs->pref_numrows);
+
+        //reset to default
+        $this->assertTrue(
+            $this->preferences->resetValue('pref_numrows', $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame(
+            $this->preferences->getDefaults()['pref_numrows'],
+            $this->preferences->pref_numrows
+        );
+
+        $this->preferences->setValue('pref_numrows', $original, $this->login);
+    }
+
+    /**
+     * A single write goes through the per-field constraints of the schema
+     */
+    public function testSetValueChecksField(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_card_vsize', 12, $this->login));
+        $this->assertSame(
+            ['- The card height have to be an integer between 40 and 55!'],
+            $this->preferences->getErrors()
+        );
+
+        //nothing was stored
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertNotSame(12, $prefs->pref_card_vsize);
+    }
+
+    /**
+     * A single write cannot break a relation between preferences either
+     */
+    public function testSetValueChecksRelations(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_beg_membership;
+
+        //default has an extension set, so a beginning of membership conflicts
+        $this->assertNotSame('', $this->preferences->pref_membership_ext);
+        $this->assertFalse($this->preferences->setValue('pref_beg_membership', '01/06', $this->login));
+        $this->assertSame(
+            ['- Default membership extension and beginning of membership are mutually exclusive.'],
+            $this->preferences->getErrors()
+        );
+
+        $this->preferences->setValue('pref_beg_membership', $original, $this->login);
+    }
+
+    /**
+     * Unknown preferences are refused rather than silently created
+     */
+    public function testSetValueRefusesUnknown(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_nope', 'x', $this->login));
+        $this->assertSame(["Unknown preference 'pref_nope'!"], $this->preferences->getErrors());
+
+        $this->assertFalse($this->preferences->resetValue('pref_nope', $this->login));
+        $this->assertSame(["Unknown preference 'pref_nope'!"], $this->preferences->getErrors());
+    }
+
+    /**
+     * Superadmin credentials require the superadmin level
+     */
+    public function testSetValueHonoursAcl(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_admin_login', 'someone', $this->login));
+        $this->assertSame(
+            ["You are not allowed to change preference 'pref_admin_login'!"],
+            $this->preferences->getErrors()
+        );
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertNotSame('someone', $prefs->pref_admin_login);
+    }
+
+    /**
+     * A secret must not be resettable to a publicly known default
+     */
+    public function testResetValueRefusesSecrets(): void
+    {
+        $this->preferences->load();
+        $stored = $this->preferences->pref_admin_pass;
+
+        $this->logSuperAdmin();
+        $this->assertFalse($this->preferences->resetValue('pref_admin_pass', $this->login));
+        $this->assertSame(
+            ["Preference 'pref_admin_pass' holds a secret and cannot be reset to its default!"],
+            $this->preferences->getErrors()
+        );
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame($stored, $prefs->pref_admin_pass);
+    }
+
+    /**
      * Test fields names
      */
     public function testFieldsNames(): void
