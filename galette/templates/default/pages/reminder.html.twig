@@ -30,7 +30,7 @@
                             <input type="checkbox" name="reminders[]" id="reminder_late" value="{{ constant("Galette\\Entity\\Reminder::LATE") }}"{% if late_disabled %} disabled="disabled"{% endif %}/>
                             <label for="reminder_late">{{ _T("Late") }}</label>
                         </div>
-                        <a class="show_previews" id="late" href="#impending_preview">({{ _T("preview") }})</a> -
+                        <a class="show_previews" id="late" href="#late_preview">({{ _T("preview") }})</a> -
                         <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_late}) }}</a>
                         <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_late_nomail}) }}</a>
                     </div>

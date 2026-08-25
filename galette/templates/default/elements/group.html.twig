@@ -75,10 +75,10 @@
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <a href="#" class="jsonly disabled ui labeled icon button" id="btnmanagers_small">
+                    <button type="button" class="jsonly disabled ui labeled icon button" id="btnmanagers_small">
                         <i class="user shield icon" aria-hidden="true"></i>
                         {{ _T("Manage managers") }}
-                    </a>
+                    </button>
                     {% endif %}
                     {% include "elements/group_persons.html.twig" with {'person_mode': "managers", 'persons': managers} %}
                 {% endif %}
@@ -95,10 +95,10 @@
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <a href="#" class="jsonly disabled ui labeled icon button" id="btnusers_small">
+                    <button type="button" class="jsonly disabled ui labeled icon button" id="btnusers_small">
                         <i class="user icon" aria-hidden="true"></i>
                         {{ _T("Manage members") }}
-                    </a>
+                    </button>
                     {% endif %}
                     {% include "elements/group_persons.html.twig" with {'person_mode': "members", 'persons': members} %}
                 {% endif %}

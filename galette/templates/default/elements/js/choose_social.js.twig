@@ -28,7 +28,7 @@ $(function(){
     _rmSocial();
     _dropdownSocials();
 
-    $('a.addsocial').click(function(e) {
+    $('.addsocial').click(function(e) {
         e.preventDefault();
 
         var _newindex = $(this).parents('.addsocial').find('.combo-social:last .socials-dropdown').attr('id').replace('social_new_type_', '');

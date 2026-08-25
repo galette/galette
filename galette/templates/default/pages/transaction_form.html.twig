@@ -133,15 +133,15 @@
                                             </a>
                 {% endif %}
                 {% if login.isStaff() or login.isAdmin() or preferences.pref_bool_groupsmanagers_see_contributions %}
-                                            <a
-                                                href="#"
+                                            <button
+                                                type="button"
                                                 class="ui icon blue compact button tooltip"
                                                 title="{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}"
                                                 id="contribslist"
                                             >
                                                 <i class="receipt icon" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
-                                            </a>
+                                            </button>
                 {% endif %}
                                         </div>
                                     </th>

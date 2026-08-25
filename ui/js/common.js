@@ -16,13 +16,13 @@ var _bindFomanticComponents = function() {
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
-        $popup           = $('a[title], .tooltip'),
+        $popup           = $('a[title], button[title], .tooltip'),
         $iconOnly        = $('.icon-only'),
         $inlinePopup     = $('.inline-tooltip'),
         $infoPopup       = $('i.circular.basic.question.icon.tooltip'),
-        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
-        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
-        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
+        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title], .ui.vertical.accordion.menu button[title]'),
+        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title], .ui.top.fixed.menu button.item[title]'),
+        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title], .ui.dropdown.right-aligned button[title]')
     ;
 
     $sidebar.sidebar('attach events', '.toc.item');
@@ -142,14 +142,14 @@ var _keyboardNavigation = function() {
             }
         })
     });
-    // Mobile menu trigger
-    var _mobile_menu_trigger = document.querySelector('#top-navbar a.toc.item');
+    // Mobile menu trigger. Opening it is the business of the button, which
+    // answers to Enter and to Space on its own; what is left to do here is to
+    // take the reading position into the panel it just opened.
+    var _mobile_menu_trigger = document.querySelector('#top-navbar .toc.item');
     if (_mobile_menu_trigger) {
-        _mobile_menu_trigger.addEventListener('keydown', event => {
-            if (event.keyCode == 13) {
-                // Open mobile menu
-                event.target.click();
-                // Jump to mobile menu
+        _mobile_menu_trigger.addEventListener('click', event => {
+            // a click with no pointer behind it was a key press
+            if (event.detail === 0) {
                 var url = location.href;
                 location.href = "#sidebarmenu";
                 history.replaceState(null,null,url);

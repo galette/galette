@@ -23,7 +23,7 @@
             <div class="four wide column">
                 <div class="ui vertical inverted pointing fluid menu tabbed">
         {% for type, documents in typed_documents %}
-                    <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
+                    <a href="#{{ _self.getSlug(type) }}" class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
                         {{ _T(type) }}
                         <p class="ui small disabled text">({{ _Tn("%1$s document", "%1$s documents", documents|length)|format(documents|length) }})</p>
                     </a>
@@ -32,7 +32,7 @@
             </div>
             <div class="twelve wide column">
         {% for type, documents in typed_documents %}
-                <div class="ui tab{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _self.getSlug(type) }}">
+                <div id="{{ _self.getSlug(type) }}" class="ui tab{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _self.getSlug(type) }}">
                     <div class="ui segment">
                         <div class="ui divided relaxed list">
             {% for document in documents %}

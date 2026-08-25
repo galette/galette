@@ -219,14 +219,14 @@
                 <div class="active ui title">
                     <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
-                    <a
-                        href="#"
+                    <button
+                        type="button"
                         id="addbutton_g"
                         class="ui tiny compact icon green button icon-only"
                     >
                         <i class="plus icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T('Add new group search criteria') }}</span>
-                    </a>
+                    </button>
                 </div>
                 <div class="active content">
                     <div class="field">
@@ -251,13 +251,13 @@
                                         <option value="{{ group.getId() }}"{% if gs.group == group.getId() %} selected="selected"{% endif %}>{{ group.getName() }}</option>
                         {% endfor %}
                                     </select>
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         class="ui small compact red icon button filtered fright delete delcriteria icon-only"
                                     >
                                         <i class="trash alt icon" aria-hidden="true"></i>
                                         <span class="visually-hidden">{{ _T('Remove criteria') }}</span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </li>
@@ -422,14 +422,14 @@
                     <div class="active ui title">
                         <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                         {{ _T('Free search') }} ({{ _T('Experimental') }})
-                        <a
-                            href="#"
+                        <button
+                            type="button"
                             id="addbutton"
                             class="ui tiny compact icon green button icon-only"
                         >
                             <i class="plus icon" aria-hidden="true"></i>
                             <span class="visually-hidden">{{ _T('Add new free search criteria') }}</span>
-                        </a>
+                        </button>
                     </div>
                     <div class="active content">
                         <ul id="fs_sortable" class="sortable-items">
@@ -541,13 +541,13 @@
                                             <input id="free_text_{{ loop.index }}" type="text" name="free_text[]" value="{{ fs.search }}"{% if cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Text" %} class="large"{% endif %}/>
     {% endif %}
                                         </div>
-                                        <a
-                                            href="#"
+                                        <button
+                                            type="button"
                                             class="ui small compact red icon button filtered fright delete delcriteria icon-only"
                                         >
                                             <i class="trash alt icon" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ _T('Remove criteria') }}</span>
-                                        </a>
+                                        </button>
 
                                     </div>
                                 </div>
