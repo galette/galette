@@ -20,6 +20,7 @@ use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Exception\MissingAssetException;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
 use UnhandledMatchError;
@@ -76,6 +77,10 @@ class Picture
     protected string $format;
     protected string $mime;
     protected bool $has_picture = false;
+    /** Path of the default picture, when it could not be found on disk */
+    protected ?string $missing_asset = null;
+    /** Whether file_path comes from the default picture */
+    private bool $on_default_path = false;
     protected string $store_path = GALETTE_PHOTOS_PATH;
     protected int $max_width = 200;
     protected int $max_height = 200;
@@ -124,8 +129,13 @@ class Picture
         }
 
         //we should not have an empty file_path, but...
-        if (!empty($this->file_path)) {
-            $this->setSizes();
+        if (!empty($this->file_path) && !$this->setSizes() && !$this->on_default_path) {
+            //picture could not be read; fall back to the default one
+            $this->has_picture = false;
+            $this->getDefaultPicture();
+            if (!empty($this->file_path)) {
+                $this->setSizes();
+            }
         }
     }
 
@@ -155,8 +165,13 @@ class Picture
         }
 
         //we should not have an empty file_path, but...
-        if (!empty($this->file_path)) {
-            $this->setSizes();
+        if (!empty($this->file_path) && !$this->setSizes() && !$this->on_default_path) {
+            //picture could not be read; fall back to the default one
+            $this->has_picture = false;
+            $this->getDefaultPicture();
+            if (!empty($this->file_path)) {
+                $this->setSizes();
+            }
         }
     }
 
@@ -265,18 +280,77 @@ class Picture
      */
     protected function getDefaultPicture(): void
     {
-        $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/default.png');
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->has_picture = false;
+        $this->setDefaultPath(_CURRENT_THEME_PATH . 'images/default.png');
+    }
+
+    /**
+     * Set path to the default picture, if it can be found.
+     *
+     * A missing default picture means assets have not been built. Rather than
+     * failing here - pictures are built from the dependency container, long
+     * before any error page can be rendered - the failure is recorded and
+     * reported when the picture is actually used.
+     *
+     * @param string $path Path to the default picture
+     */
+    protected function setDefaultPath(string $path): void
+    {
+        $this->on_default_path = true;
+
+        //realpath() cannot be trusted here: its cache outlives the request
+        //(realpath_cache_ttl, 120s by default), so it keeps resolving paths
+        //removed meanwhile by another process - a build, or a branch switch.
+        if (!file_exists($path)) {
+            $this->missing_asset = $path;
+            return;
+        }
+
+        $this->file_path = realpath($path);
+        $this->missing_asset = null;
+    }
+
+    /**
+     * Intended path of the picture file, whether it exists or not.
+     *
+     * Unlike getPath(), this does not throw on a missing file; it is meant for
+     * subclasses that build upon another picture.
+     */
+    protected function getDefaultPath(): ?string
+    {
+        return $this->missing_asset ?? ($this->file_path ?? null);
+    }
+
+    /**
+     * Throw if the picture file is not available.
+     *
+     * @throws MissingAssetException
+     */
+    protected function checkAvailable(): void
+    {
+        if ($this->missing_asset !== null) {
+            throw new MissingAssetException($this->missing_asset);
+        }
     }
 
     /**
      * Set picture sizes
      */
-    private function setSizes(): void
+    private function setSizes(): bool
     {
-        [$width, $height] = getimagesize($this->file_path);
+        try {
+            [$width, $height] = getimagesize($this->file_path);
+        } catch (Throwable) {
+            //file went away since its path was resolved; never fail here,
+            //pictures are built long before an error page can be rendered.
+            //Falling back to the default picture clears this again.
+            $this->missing_asset = $this->file_path;
+            unset($this->file_path);
+            return false;
+        }
+
         $this->height = $height;
         $this->width = $width;
         $this->optimal_height = $height;
@@ -293,6 +367,8 @@ class Picture
             $this->optimal_width = $this->max_width;
             $this->optimal_height = (int)($this->height * $ratio);
         }
+
+        return true;
     }
 
     /**
@@ -300,6 +376,7 @@ class Picture
      */
     public function getContents(): void
     {
+        $this->checkAvailable();
         readfile($this->file_path);
     }
 
@@ -312,6 +389,7 @@ class Picture
      */
     public function display(Response $response): Response
     {
+        $this->checkAvailable();
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
             ->withHeader('Expires', '0')
@@ -906,6 +984,7 @@ class Picture
      */
     public function getOptimalHeight(): int
     {
+        $this->checkAvailable();
         return (int)round($this->optimal_height, 1);
     }
 
@@ -916,6 +995,7 @@ class Picture
      */
     public function getHeight(): int
     {
+        $this->checkAvailable();
         return $this->height;
     }
 
@@ -926,6 +1006,7 @@ class Picture
      */
     public function getOptimalWidth(): int
     {
+        $this->checkAvailable();
         return (int)round($this->optimal_width, 1);
     }
 
@@ -936,6 +1017,7 @@ class Picture
      */
     public function getWidth(): int
     {
+        $this->checkAvailable();
         return $this->width;
     }
 
@@ -964,6 +1046,7 @@ class Picture
      */
     public function getPath(): string
     {
+        $this->checkAvailable();
         return $this->file_path;
     }
 

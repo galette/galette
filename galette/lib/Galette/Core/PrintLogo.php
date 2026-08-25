@@ -35,12 +35,21 @@ class PrintLogo extends Logo
     protected function getDefaultPicture(): void
     {
         //if we are here, we want to serve default logo
-        $pic = new Logo();
-        $this->file_path = $pic->getPath();
+        $pic = $this->getLogo();
         $this->format = $pic->getFormat();
         $this->mime = $pic->getMime();
         //anyway, we have no custom print logo
         $this->custom = false;
+        //do not use getPath(), it would throw on a missing logo; report it on use
+        $this->setDefaultPath((string)$pic->getDefaultPath());
+    }
+
+    /**
+     * Logo the print logo is built upon
+     */
+    protected function getLogo(): Logo
+    {
+        return new Logo();
     }
 
     /**
@@ -50,6 +59,7 @@ class PrintLogo extends Logo
      */
     public function getPath(): string
     {
+        $this->checkAvailable();
         if ($this->getFormat() !== 'webp') {
             return $this->file_path;
         }

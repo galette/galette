@@ -39,4 +39,42 @@ class PrintLogo extends BaseGaletteTestCase
         $this->assertSame('png', $logo->getFormat());
         $this->assertFalse($logo->isCustom());
     }
+
+    /**
+     * Test a missing logo is only reported when the print logo is used.
+     *
+     * Print logos build upon Logo, whose path cannot be asked for while
+     * constructing them without reintroducing a failure from the container.
+     */
+    public function testMissingDefaultLogo(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        //building it must not throw...
+        $logo = new class extends \Galette\Core\PrintLogo {
+            /**
+             * Get logo
+             */
+            protected function getLogo(): \Galette\Core\Logo
+            {
+                return new class extends \Galette\Core\Logo {
+                    /**
+                     * Get default picture
+                     */
+                    protected function getDefaultPicture(): void
+                    {
+                        $this->format = 'webp';
+                        $this->mime = 'image/webp';
+                        $this->setDefaultPath('/nonexistent/images/galette.webp');
+                    }
+                };
+            }
+        };
+
+        //...using it must
+        $this->expectException(\Galette\Exception\MissingAssetException::class);
+        $this->expectExceptionMessage('assets may not have been built');
+        $logo->getPath();
+    }
 }
