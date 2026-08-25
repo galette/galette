@@ -17,13 +17,13 @@
             <div class="ui basic center aligned fitted segment">
                 <span class="ui tiny header">{{ login.loggedInAs()|raw }}</span>
             </div>
-            <a
-                href="#"
+            <button
+                type="button"
                 class="ui fluid darkmode{% if login.isDarkModeEnabled() %} black{% endif %} basic button"
             >
                 <i class="icon adjust" aria-hidden="true"></i>
                 {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
-            </a>
+            </button>
             <a
                 class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -42,14 +42,14 @@
                 <div class="right menu">
                     <div class="item">
                         <div class="ui icon buttons">
-                            <a
-                                href="#"
+                            <button
+                                type="button"
                                 class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
                                 title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                             >
                                 <i class="icon adjust" aria-hidden="true"></i>
                                 <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
-                            </a>
+                            </button>
                             <a
                                 class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
                                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -95,15 +95,15 @@
                         </div>
                     </div>
                 </div>
-                <a
-                    href="#"
-                    class="item darkmode{% if login.isDarkModeEnabled() %} black{% endif %}"
+                <button
+                    type="button"
+                    class="item darkmode plain-button{% if login.isDarkModeEnabled() %} black{% endif %}"
                     title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                     data-position="right center"
                 >
                     <i class="icon adjust" aria-hidden="true"></i>
                     <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
-                </a>
+                </button>
                 <a
                     class="item{% if login.isImpersonated() %} purple{% else %} red{% endif %}"
                     href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"

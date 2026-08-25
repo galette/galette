@@ -175,14 +175,14 @@
             {% set scheduled_amount = scheduled.getAllocation(contribution.id) %}
                             <div class="ui yellow segment">
                                 <div class="ui tiny header">
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         class="ui mini icon blue compact button tooltip"
                                         id="scheduledslist"
                                     >
                                         <i class="eye icon tooltip" aria-hidden="true"></i>
                                         <span class="ui special popup">{{ _T("View scheduled payments") }}</span>
-                                    </a>
+                                    </button>
                                     {{ _T("Scheduled payments") }}
                                 </div>
             {% if not contribution.isScheduleFullyAllocated() %}

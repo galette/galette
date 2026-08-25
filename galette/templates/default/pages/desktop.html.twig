@@ -23,10 +23,10 @@
                     <div class="sixteen wide column">
                         <div class="ui wrapping spaced buttons">
             {% if not telemetry_sent %}
-                            <a id="telemetry" class="large ui blue button" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
+                            <button type="button" id="telemetry" class="large ui blue button" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
                                 <i class="chart bar icon" aria-hidden="true"></i>
                                 {{ _T("Telemetry") }}
-                            </a>
+                            </button>
             {% endif %}
             {% if not registered %}
                             <a class="large ui blue button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
