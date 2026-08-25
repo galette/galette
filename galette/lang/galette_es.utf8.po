@@ -90,9 +90,6 @@ msgstr "del miembro %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "¡La dirección de correo electrónico %address ya está ocupada! {%extra}"
 
-msgid "Lang %lang does not exists!"
-msgstr "¡El lenguaje %lang no existe!"
-
 msgid "File is empty!"
 msgstr "¡El archivo está vacío!"
 
@@ -324,8 +321,8 @@ msgstr "No se puede activar el plugin."
 msgid "File not found!"
 msgstr "¡No se encontró el archivo!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Idioma desconocido (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Idioma desconocido (%1$s)"
 
 msgid "Checks"
 msgstr "Comprobaciones"
@@ -1621,8 +1618,8 @@ msgstr "¡Tu contraseña ha sido cambiada!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Se ha producido un error guardando la etiqueta `%label` para el idioma "
-"`%lang`"
+"Se ha producido un error guardando la etiqueta `%1$s` para el idioma "
+"`%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "¡Las etiquetas han sido traducidas con éxito!"

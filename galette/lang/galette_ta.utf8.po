@@ -56,9 +56,6 @@ msgstr "உறுப்பினரிடமிருந்து %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "மின்னஞ்சல் முகவரி %address ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "லாங் %lang இல்லை!"
-
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
 
@@ -285,8 +282,8 @@ msgstr "சொருகி செயல்படுத்த முடியா�
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
 
-msgid "Unknown lang (%lang)"
-msgstr "தெரியாத மட்டும் (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "தெரியாத மட்டும் (%1$s)"
 
 msgid "Checks"
 msgstr "காசோலைகள்"
@@ -1552,7 +1549,7 @@ msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr "மொழி `%lang` லேபிள் `%label` சேமிக்கும் பிழை ஏற்பட்டது"
+msgstr "மொழி `%2$s` லேபிள் `%1$s` சேமிக்கும் பிழை ஏற்பட்டது"
 
 msgid "Labels has been successfully translated!"
 msgstr "சிட்டை வெற்றிகரமாக மொழிபெயர்க்கப்பட்டுள்ளது!"

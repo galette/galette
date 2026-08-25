@@ -50,9 +50,6 @@ msgstr ""
 msgid "Email address %address is already used! (%extra)"
 msgstr ""
 
-msgid "Lang %lang does not exists!"
-msgstr ""
-
 msgid "File is empty!"
 msgstr ""
 
@@ -278,7 +275,7 @@ msgstr ""
 msgid "File not found!"
 msgstr ""
 
-msgid "Unknown lang (%lang)"
+msgid "Unknown lang (%1$s)"
 msgstr ""
 
 msgid "Checks"

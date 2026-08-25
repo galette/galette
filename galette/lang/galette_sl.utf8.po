@@ -52,9 +52,6 @@ msgstr "od člana %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "E-poštni naslov %address je že uporabljen! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "Jezik %lang ne obstaja!"
-
 msgid "File is empty!"
 msgstr "Datoteka je prazna!"
 
@@ -283,8 +280,8 @@ msgstr "Vtičnika ni mogoče aktivirati."
 msgid "File not found!"
 msgstr "Datoteke ni bilo mogoče najti!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Neznan jezik (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Neznan jezik (%1$s)"
 
 msgid "Checks"
 msgstr "Čeki"
@@ -1551,7 +1548,7 @@ msgid "Your password has been changed!"
 msgstr "Vaše geslo je bilo spremenjeno!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr "Pri shranjevanju oznake `%label` za jezik `%lang` je prišlo do napake"
+msgstr "Pri shranjevanju oznake `%1$s` za jezik `%1$s` je prišlo do napake"
 
 msgid "Labels has been successfully translated!"
 msgstr "Oznake so bile uspešno prevedene!"

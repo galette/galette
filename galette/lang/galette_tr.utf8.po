@@ -70,9 +70,6 @@ msgstr "üye %id_adh'den"
 msgid "Email address %address is already used! (%extra)"
 msgstr "E-posta adresi %adres zaten kullanılıyor! (%ekstra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "Dil %lang mevcut değil!"
-
 msgid "File is empty!"
 msgstr "Dosya boş!"
 
@@ -301,7 +298,7 @@ msgstr "Eklenti etkinleştirilemedi"
 msgid "File not found!"
 msgstr "Dosya bulunamadı!"
 
-msgid "Unknown lang (%lang)"
+msgid "Unknown lang (%1$s)"
 msgstr ""
 
 msgid "Checks"

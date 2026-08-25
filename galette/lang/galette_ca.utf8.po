@@ -64,10 +64,6 @@ msgid "Email address %address is already used! (%extra)"
 msgstr "L'adreça de correu electrònic %address ja s'utilitza! (%extra)"
 
 #, fuzzy
-msgid "Lang %lang does not exists!"
-msgstr "Lang %lang no existeix!"
-
-#, fuzzy
 msgid "File is empty!"
 msgstr "El fitxer és buit!"
 
@@ -352,8 +348,8 @@ msgstr "No es pot activar el connector."
 msgid "File not found!"
 msgstr "No s'ha trobat el fitxer!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Lang desconeguda (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Lang desconeguda (%1$s)"
 
 msgid "Checks"
 msgstr "Xecs"
@@ -1895,7 +1891,7 @@ msgstr "La contrasenya ha canviat!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Hi ha hagut un error en desar l'etiqueta `%label` per al llenguatge `%lang`"
+"Hi ha hagut un error en desar l'etiqueta `%1$s` per al llenguatge `%2$s`"
 
 #, fuzzy
 msgid "Labels has been successfully translated!"

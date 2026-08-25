@@ -54,9 +54,6 @@ msgstr "do membro %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "O endereço de Email %address já está sendo usado! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "A linguagem %lang não existe!"
-
 msgid "File is empty!"
 msgstr "O arquivo está vazio!"
 
@@ -289,8 +286,8 @@ msgstr "Não é possível ativar o plugin."
 msgid "File not found!"
 msgstr "Arquivo não encontrado!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Linguagem desconhecida (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Linguagem desconhecida (%1$s)"
 
 msgid "Checks"
 msgstr "Checando"

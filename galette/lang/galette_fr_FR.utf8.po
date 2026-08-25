@@ -61,9 +61,6 @@ msgstr "depuis l’adhérent %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "L’adresse courriel %address est déjà utilisée ! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "La langue %lang n'existe pas !"
-
 msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
@@ -298,8 +295,8 @@ msgstr "Impossible d’activer le plugin."
 msgid "File not found!"
 msgstr "Fichier non trouvé !"
 
-msgid "Unknown lang (%lang)"
-msgstr "Langue (%lang) inconnue"
+msgid "Unknown lang (%1$s)"
+msgstr "Langue (%1$s) inconnue"
 
 msgid "Checks"
 msgstr "Vérifications"
@@ -1598,8 +1595,8 @@ msgstr "Votre mot de passe a été changé !"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Une erreur est survenue lors de l'enregistrement de l'étiquette « %label » "
-"pour la langue « %lang »"
+"Une erreur est survenue lors de l'enregistrement de l'étiquette « %1$s » "
+"pour la langue « %2$s »"
 
 msgid "Labels has been successfully translated!"
 msgstr "Les étiquettes ont été traduites avec succès !"

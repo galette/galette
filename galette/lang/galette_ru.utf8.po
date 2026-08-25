@@ -74,9 +74,6 @@ msgstr "от участника %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "Адрес электронной почты %address уже используется! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "Язык %lang не существует!"
-
 msgid "File is empty!"
 msgstr "Файл пуст!"
 
@@ -307,8 +304,8 @@ msgstr "Не удалось активировать плагин."
 msgid "File not found!"
 msgstr "Файл не найден!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Неизвестный язык (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Неизвестный язык (%1$s)"
 
 msgid "Checks"
 msgstr "Проверки"
@@ -1574,7 +1571,7 @@ msgid "Your password has been changed!"
 msgstr "Ваш пароль был изменён!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr "Произошла ошибка при сохранении метки `%label` для языка `%lang`"
+msgstr "Произошла ошибка при сохранении метки `%1$s` для языка `%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "Метки были успешно переведены!"

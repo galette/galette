@@ -51,9 +51,6 @@ msgstr "dau membre %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "L'adreiça de corrier electronic %address es ja utilizada ! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "La lenga %lang se tròba pas !"
-
 msgid "File is empty!"
 msgstr "Lo fichier es vuege !"
 
@@ -282,8 +279,8 @@ msgstr "Impossible d'activar l'ajuston."
 msgid "File not found!"
 msgstr "Fichier non trobat !"
 
-msgid "Unknown lang (%lang)"
-msgstr "Lenga desconeguda (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Lenga desconeguda (%1$s)"
 
 msgid "Checks"
 msgstr "Chèc"
@@ -1589,7 +1586,7 @@ msgstr "Vòstre senhau es estat cambiat !"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Capitèt mau l’enregistrament de l’etiqueta `%label` per la lenga `%lang`"
+"Capitèt mau l’enregistrament de l’etiqueta `%1$s` per la lenga `%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "Leis etiquetas son estadas traduchas !"

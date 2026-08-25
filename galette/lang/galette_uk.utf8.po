@@ -60,9 +60,6 @@ msgstr "від члена %id_adh"
 msgid "Email address %address is already used! (%extra)"
 msgstr "Адреса е-пошти %address вже використовується! (%extra)"
 
-msgid "Lang %lang does not exists!"
-msgstr "Мови %lang не існує!"
-
 msgid "File is empty!"
 msgstr "Файл порожній!"
 
@@ -292,8 +289,8 @@ msgstr "Не вдалося задіяти розширення."
 msgid "File not found!"
 msgstr "Файл не знайдено!"
 
-msgid "Unknown lang (%lang)"
-msgstr "Невідома мова (%lang)"
+msgid "Unknown lang (%1$s)"
+msgstr "Невідома мова (%1$s)"
 
 msgid "Checks"
 msgstr "Чеки"
@@ -1563,7 +1560,7 @@ msgid "Your password has been changed!"
 msgstr "Ваш пароль було змінено!"
 
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr "Не вдалося зберегти мітку `%label` для мови`%lang`"
+msgstr "Не вдалося зберегти мітку `%1$s` для мови`%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "Мітки успішно перекладено!"
