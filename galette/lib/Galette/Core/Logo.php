@@ -13,8 +13,6 @@ namespace Galette\Core;
 use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 
-use function Safe\realpath;
-
 /**
  * This class stores and serve the logo.
  * If no custom logo is found, we take galette's default one.
@@ -61,16 +59,16 @@ class Logo extends Picture
             $special = '_xmas';
         }
 
-        $this->file_path = realpath(
+        $this->format = 'webp';
+        $this->mime = 'image/webp';
+        $this->custom = false;
+        $this->setDefaultPath(
             sprintf(
                 '%s/images/galette%s.webp',
                 _CURRENT_THEME_PATH,
                 $special
             )
         );
-        $this->format = 'webp';
-        $this->mime = 'image/webp';
-        $this->custom = false;
     }
 
     /**
