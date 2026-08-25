@@ -1,0 +1,4 @@
+<?php
+$lang['Checks'] = 'V"érifications';
+$lang['Dashboard'] = 'Truc';
+return $lang;

@@ -185,10 +185,9 @@ class I18n
         if (isset($this->langs[$id])) {
             return $this->langs[$id]['longname'];
         } else {
-            return str_replace(
-                '%lang',
-                $id,
-                _T('Unknown lang (%lang)')
+            return sprintf(
+                _T('Unknown lang (%1$s)'),
+                $id
             );
         }
     }

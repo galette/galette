@@ -1587,7 +1587,7 @@ msgstr "Senhau cambiat per lo membre '%s'."
 msgid "Your password has been changed!"
 msgstr "Vòstre senhau es estat cambiat !"
 
-msgid "An error occurred saving label `%label` for language `%lang`"
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 "Capitèt mau l’enregistrament de l’etiqueta `%label` per la lenga `%lang`"
 
@@ -6204,7 +6204,7 @@ msgid "Choose your language"
 msgstr "Chausir la lenga"
 
 #, php-format
-msgid "Switch locale to '%locale'"
+msgid "Switch locale to '%1$s'"
 msgstr ""
 
 msgid ""

@@ -368,10 +368,9 @@ class CsvIn extends Csv
                             $column = $this->preferences->pref_lang;
                         } elseif (!isset($this->langs[$column])) {
                             $this->addError(
-                                str_replace(
-                                    '%lang',
-                                    $column,
-                                    _T("Lang %lang does not exists!")
+                                sprintf(
+                                    _T('Unknown lang (%1$s)'),
+                                    $column
                                 )
                             );
                             return false;

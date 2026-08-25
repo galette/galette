@@ -16,8 +16,6 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
 
-use function Safe\preg_replace;
-
 /**
  * Galette dynamic translations controller
  *
@@ -134,16 +132,11 @@ class DynamicTranslationsController extends AbstractController
                     $post['text_orig']
                 );
                 if (!$res) {
-                    $error_detected[] = preg_replace(
-                        [
-                            '/%label/',
-                            '/%lang/'
-                        ],
-                        [
-                            $post['text_orig'],
-                            $this->i18n->getLongID()
-                        ],
-                        _T("An error occurred saving label `%label` for language `%lang`")
+                    $error_detected[] = sprintf(
+                        //TRANS: first parameter is the label, second parameter is the language ID
+                        _T('An error occurred saving label `%1$s` for language `%2$s`'),
+                        $post['text_orig'],
+                        $this->i18n->getLongID()
                     );
                 }
             }
@@ -159,16 +152,11 @@ class DynamicTranslationsController extends AbstractController
                         $value
                     );
                     if (!$res) {
-                        $error_detected[] = preg_replace(
-                            [
-                                '/%label/',
-                                '/%lang/'
-                            ],
-                            [
-                                $post['text_orig'],
-                                $trans_lang
-                            ],
-                            _T("An error occurred saving label `%label` for language `%lang`")
+                        $error_detected[] = sprintf(
+                            //TRANS: first parameter is the label, second parameter is the language ID
+                            _T('An error occurred saving label `%1$s` for language `%2$s`'),
+                            $post['text_orig'],
+                            $trans_lang
                         );
                     }
                 }

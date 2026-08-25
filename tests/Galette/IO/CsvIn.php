@@ -471,7 +471,7 @@ class CsvIn extends GaletteTestCase
         $flash_messages = [
             'error_detected' => [
                 'File does not comply with requirements.',
-                'Lang NO_EX does not exists!'
+                'Unknown lang (NO_EX)'
             ]
         ];
         $members_list = [
@@ -494,7 +494,7 @@ class CsvIn extends GaletteTestCase
         );
         $this->expectLogEntry(
             \Analog\Analog::ERROR,
-            '[Galette\IO\CsvIn] Lang NO_EX does not exists!'
+            '[Galette\IO\CsvIn] Unknown lang (NO_EX)'
         );
 
         $members_list['FAKER_LANG']['pref_lang'] = 'fr_FR'; //existing title

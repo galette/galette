@@ -43,7 +43,7 @@
     {% else %}
         <a href="?ui_pref_lang={{ glang.getID() }}"
            class="item tooltip"
-           data-html="{{ _T("Switch locale to '%locale'")|replace({"%locale": html_lang})|e }}"
+           data-html="{{ _T("Switch locale to '%1$s'")|replace({"%1$s": html_lang})|e }}"
         >
             {{ html_lang }} ({{ glang.getLongId(true) }})
         </a>

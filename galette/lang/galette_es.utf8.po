@@ -1619,7 +1619,7 @@ msgstr "La contraseña cambió para el usuario '%s'."
 msgid "Your password has been changed!"
 msgstr "¡Tu contraseña ha sido cambiada!"
 
-msgid "An error occurred saving label `%label` for language `%lang`"
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 "Se ha producido un error guardando la etiqueta `%label` para el idioma "
 "`%lang`"
@@ -6227,8 +6227,8 @@ msgid "Choose your language"
 msgstr "Elige tu idioma"
 
 #, php-format
-msgid "Switch locale to '%locale'"
-msgstr "Cambiar localización a '%locale'"
+msgid "Switch locale to '%1$s'"
+msgstr "Cambiar localización a '%1$s'"
 
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "

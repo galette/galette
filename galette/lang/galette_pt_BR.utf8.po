@@ -1543,7 +1543,7 @@ msgstr ""
 msgid "Your password has been changed!"
 msgstr ""
 
-msgid "An error occurred saving label `%label` for language `%lang`"
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 
 msgid "Labels has been successfully translated!"
@@ -5882,7 +5882,7 @@ msgid "Choose your language"
 msgstr ""
 
 #, php-format
-msgid "Switch locale to '%locale'"
+msgid "Switch locale to '%1$s'"
 msgstr ""
 
 msgid ""

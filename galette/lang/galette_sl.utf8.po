@@ -1550,7 +1550,7 @@ msgstr "Geslo za člana '%s' je bilo spremenjeno."
 msgid "Your password has been changed!"
 msgstr "Vaše geslo je bilo spremenjeno!"
 
-msgid "An error occurred saving label `%label` for language `%lang`"
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Pri shranjevanju oznake `%label` za jezik `%lang` je prišlo do napake"
 
 msgid "Labels has been successfully translated!"
@@ -6101,8 +6101,8 @@ msgid "Choose your language"
 msgstr "Izberite svoj jezik"
 
 #, php-format
-msgid "Switch locale to '%locale'"
-msgstr "Preklopi jezikovne nastavitve na '%locale'"
+msgid "Switch locale to '%1$s'"
+msgstr "Preklopi jezikovne nastavitve na '%1$s'"
 
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "

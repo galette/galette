@@ -1562,7 +1562,7 @@ msgstr "Пароль для члена \"%s\" змінено."
 msgid "Your password has been changed!"
 msgstr "Ваш пароль було змінено!"
 
-msgid "An error occurred saving label `%label` for language `%lang`"
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Не вдалося зберегти мітку `%label` для мови`%lang`"
 
 msgid "Labels has been successfully translated!"
@@ -6171,8 +6171,8 @@ msgid "Choose your language"
 msgstr "Виберіть свою мову"
 
 #, php-format
-msgid "Switch locale to '%locale'"
-msgstr "Змінити мову на \"%locale\""
+msgid "Switch locale to '%1$s'"
+msgstr "Змінити мову на \"%1$s\""
 
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
