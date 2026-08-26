@@ -19,6 +19,11 @@ declare(strict_types=1);
  *   - Handles clean URLs by delegating to index.php when the requested URI doesn't match an existing file in the webroot
  */
 
+//GALETTE_TESTS cannot be defined in a web context (it would also switch the log
+//handler, News, Db and FakeData), but the environment variable is enough to keep the
+//release check from calling galette.eu on every rendered page.
+putenv('GALETTE_TESTS=1'); //@phpstan-ignore theCodingMachineSafe.function
+
 require_once __DIR__ . '/test_env.inc.php';
 
 // Galette root

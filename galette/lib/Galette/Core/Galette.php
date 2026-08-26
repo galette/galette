@@ -76,7 +76,7 @@ class Galette
      */
     public static function getNewRelease(): array
     {
-        if (defined('GALETTE_TESTS')) {
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
             return [
                 'new' => false,
                 'version' => GALETTE_VERSION
