@@ -21,13 +21,13 @@
                 <div class="ui basic fitted center aligned segment">
                     <p class="ui large text">{{ _T("Sorry, the page you are looking for could not be found.") }}</p>
                 </div>
+                <div class="ui basic center aligned segment">
+                    <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
+                        <i class="home icon" aria-hidden="true"></i>
+                        {{ _T("Home") }}
+                    </a>
+                </div>
             </main>
-            <nav class="ui basic center aligned segment" role="navigation">
-                <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
-                    <i class="home icon" aria-hidden="true"></i>
-                    {{ _T("Home") }}
-                </a>
-            </nav>
         </div>
 
         {% include "elements/footer.html.twig" %}
