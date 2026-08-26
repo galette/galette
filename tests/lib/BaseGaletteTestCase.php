@@ -94,6 +94,9 @@ abstract class BaseGaletteTestCase extends TestCase
         $_SERVER['HTTP_HOST'] = '';
 
         $container->set(\Slim\Flash\Messages::class, $this->flash);
+        //release check is autowired into controllers and hits the network from its
+        //constructor: serve a local listing instead of querying galette.eu
+        $container->set(\Galette\Util\Release::class, \DI\factory(fn() => new StubRelease()));
 
         $this->app->addRoutingMiddleware();
 
