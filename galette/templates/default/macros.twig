@@ -58,6 +58,9 @@
         <a
                 href="{{ url_for(route.name, route.args|default([])) }}"
                 class="{{ class }}"
+                {# the class the macro just computed is what tells a screen reader
+                   which entry of the menu is the page being read #}
+                {% if 'active' in class|split(' ') %}aria-current="page"{% endif %}
                 {% if title %}title="{{ title }}"{% endif %}
                 {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
                 {% if mode == "compact" %}tabindex="-1"{% endif %}
