@@ -75,7 +75,7 @@ class MembersList extends Pagination
      */
     protected function getDefaultOrder(): int|string
     {
-        return 'nom_adh';
+        return 'list_adh_name';
     }
 
     /**
