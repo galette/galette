@@ -100,17 +100,17 @@
     <table class="listing ui celled striped table">
         <thead>
             <tr>
-                <th class="listing">{{ _T('Name') }}</th>
-                <th class="listing">{{ _T('Description') }}</th>
-                <th class="listing">{{ _T('Author') }}</th>
-                <th class="listing collapsing">{{ _T('Version') }}</th>
-                <th class="listing collapsing">{{ _T('Release date') }}</th>
-                <th class="listing actions_row collapsing">{{ _T('Actions') }}</th>
+                <th scope="col" class="listing">{{ _T('Name') }}</th>
+                <th scope="col" class="listing">{{ _T('Description') }}</th>
+                <th scope="col" class="listing">{{ _T('Author') }}</th>
+                <th scope="col" class="listing collapsing">{{ _T('Version') }}</th>
+                <th scope="col" class="listing collapsing">{{ _T('Release date') }}</th>
+                <th scope="col" class="listing actions_row collapsing">{{ _T('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
             <tr class="with-headers plugins">
-                <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
+                <th scope="rowgroup" colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
             {{ _self.showPluginEntry(name, plugin) }}
@@ -120,7 +120,7 @@
             </tr>
 {% endfor %}
             <tr class="with-headers inactives plugins">
-                <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
+                <th scope="rowgroup" colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_disabled_list %}
             {{ _self.showPluginEntry(name, plugin) }}

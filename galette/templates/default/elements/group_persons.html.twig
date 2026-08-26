@@ -8,14 +8,14 @@
                     <table class="listing ui celled striped table">
                         <thead>
                             <tr>
-                                <th class="left">
+                                <th scope="col" class="left">
                                     {{ _T("Name") }}
                                 </th>
-                                <th class="left">
+                                <th scope="col" class="left">
                                     {{ _T("Nickname") }}
                                 </th>
                                 {% if login.isSuperAdmin() %}
-                                <th class="collapsing">
+                                <th scope="col" class="collapsing">
                                     {{ _T("Actions") }}
                                 </th>
                                 {% endif %}

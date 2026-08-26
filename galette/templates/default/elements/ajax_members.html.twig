@@ -9,11 +9,11 @@
         <table id="listing" class="listing select_members{% if not multiple %} single{% endif %} ui celled table">
             <thead>
                 <tr>
-                    <th class="listing id_row collapsing">#</th>
-                    <th class="listing left">
+                    <th scope="col" class="listing id_row collapsing">#</th>
+                    <th scope="col" class="listing left">
                         {{ _T("Name") }}
                     </th>
-                    <th class="listing left">
+                    <th scope="col" class="listing left">
                         {{ _T("Zip - Town") }}
                     </th>
                 </tr>

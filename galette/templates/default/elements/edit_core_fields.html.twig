@@ -8,12 +8,12 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="id_row collapsing">#</th>
-                    <th>{{ _T("Name") }}</th>
-                    <th>{{ _T("Permissions") }}</th>
-                    <th class="date_row{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}">{{ _T("Required") }}</th>
+                    <th scope="col" class="id_row collapsing">#</th>
+                    <th scope="col">{{ _T("Name") }}</th>
+                    <th scope="col">{{ _T("Permissions") }}</th>
+                    <th scope="col" class="date_row{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}">{{ _T("Required") }}</th>
 {% if preferences.pref_member_form_grid != 'one' %}
-                    <th class="date_row collapsing">{{ _T("Width in forms") }}</th>
+                    <th scope="col" class="date_row collapsing">{{ _T("Width in forms") }}</th>
 {% endif %}
                 </tr>
             </thead>
