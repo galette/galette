@@ -135,12 +135,15 @@ abstract class BaseGaletteTestCase extends TestCase
 
         // Isolate logger
         global $galette_log_var;
-        $this->expectNoLogEntry();
+        $leftovers = $this->getCleanedLogs();
         $galette_log_var = null;
         $galette_run_log = \Analog\Handler\LevelName::init(
             \Analog\Handler\Variable::init($galette_log_var)
         );
         \Analog\Analog::handler($galette_run_log);
+        //assert once storage has been reset, so a stray entry fails the test that
+        //produced it instead of cascading on every subsequent setUp()
+        $this->assertCount(0, $leftovers, print_r($leftovers, true));
 
         $this->zdb = $container->get(\Galette\Core\Db::class);
         $container->get(\Galette\Core\I18n::class)->changeLanguage('en_US');
@@ -182,7 +185,10 @@ abstract class BaseGaletteTestCase extends TestCase
         }
 
         if ($this->check_logs) {
+            global $galette_log_var;
             $logs = $this->getCleanedLogs();
+            //drain storage before asserting, so a stray entry is only reported once
+            $galette_log_var = null;
             $this->assertCount(0, $logs, implode("\n", $logs));
         }
 
