@@ -19,7 +19,7 @@
             {% endif %}
         </span>
     </div>
-    <nav class="ui fluid container">
+    <nav class="ui fluid container" aria-label="{{ _T('Public pages menu') }}">
         {% include "elements/navigation/public_pages.html.twig" with {
                 tips_position: "bottom center",
                 sign_in: true,
