@@ -57,7 +57,7 @@ trait Cacheable
      */
     private function checkCache(): bool
     {
-        $cfile = GALETTE_CACHE_DIR . $this->getCacheFilename();
+        $cfile = $this->getCacheFilename();
         if (file_exists($cfile)) {
             try {
                 $dformat = 'Y-m-d H:i:s';
