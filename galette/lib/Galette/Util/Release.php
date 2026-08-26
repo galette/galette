@@ -30,6 +30,7 @@ class Release
     /** @var array<string, mixed> */
     private array $default_options = [
         'timeout' => 2.0,
+        'connect_timeout' => 1.0,
         'verify' => false
     ];
     private ?string $latest = null;
