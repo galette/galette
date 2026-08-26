@@ -20,7 +20,7 @@
                 </tr>
                     {% else %}
                 <tr>
-                    <th class="three wide column">{{ field.getName()|escape }}</th>
+                    <th scope="row" class="three wide column">{{ field.getName()|escape }}</th>
                     <td>
                         {% for field_data in object.getDynamicFields().getValues(field.getId()) %}
                             {% if not loop.first %}<br />{% endif %}

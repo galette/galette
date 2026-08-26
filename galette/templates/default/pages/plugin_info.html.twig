@@ -33,8 +33,8 @@
         <dd>
             <table>
                 <thead>
-                    <th>{{ _T('Route') }}</th>
-                    <th>{{ _T('ACL') }}</th>
+                    <th scope="col">{{ _T('Route') }}</th>
+                    <th scope="col">{{ _T('ACL') }}</th>
                 </thead>
        {% for route, acl in module.acls %}
                 <tr>

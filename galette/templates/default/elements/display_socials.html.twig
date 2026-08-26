@@ -15,7 +15,7 @@
             <table class="ui very basic definition striped stackable padded table">
     {% for social in socials %}
             <tr>
-                <th class="three wide column">{{ social.getSystemType(social.type) }}</th>
+                <th scope="row" class="three wide column">{{ social.getSystemType(social.type) }}</th>
                 <td>{{ social.displayUrl()|raw }}</td>
             </tr>
     {% endfor %}

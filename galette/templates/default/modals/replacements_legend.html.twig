@@ -10,7 +10,7 @@
         <table class="ui very basic table">
     {% for legend in legends %}
         <tr>
-            <th colspan="4">
+            <th scope="colgroup" colspan="4">
                 {{ legend.title }}
             </th>
         </tr>
@@ -18,7 +18,7 @@
             {% if loop.index0 % 2 == 0 %}
                 <tr>
             {% endif %}
-            <th><code>{{ pattern.pattern|trim('/') }}</code></th>
+            <th scope="row"><code>{{ pattern.pattern|trim('/') }}</code></th>
             <td class="back">
                 {% if pattern.title is defined %}{{ pattern.title }}{% endif %}
             </td>

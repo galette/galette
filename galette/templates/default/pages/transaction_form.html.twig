@@ -82,29 +82,29 @@
                         <table class="listing ui very compact small celled yellow table">
                             <thead>
                                 <tr>
-                                    <th class="id_row collapsing">#</th>
-                                    <th class="left date_row collapsing">{{ _T("Date") }}</th>
-                                    <th class="left date_row collapsing">{{ _T("Begin") }}</th>
-                                    <th class="left date_row collapsing">{{ _T("End") }}</th>
-                                    <th class="left collapsing">{{ _T("Duration") }}</th>
+                                    <th scope="col" class="id_row collapsing">#</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("Date") }}</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("Begin") }}</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("End") }}</th>
+                                    <th scope="col" class="left collapsing">{{ _T("Duration") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <th class="left">{{ _T("Member") }}</th>
+                                    <th scope="col" class="left">{{ _T("Member") }}</th>
             {% endif %}
-                                    <th class="left">{{ _T("Type") }}</th>
-                                    <th class="left collapsing">{{ _T("Amount") }}</th>
+                                    <th scope="col" class="left">{{ _T("Type") }}</th>
+                                    <th scope="col" class="left collapsing">{{ _T("Amount") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <th class="actions_row collapsing">{{ _T("Actions") }}</th>
+                                    <th scope="col" class="actions_row collapsing">{{ _T("Actions") }}</th>
             {% endif %}
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getDispatchedAmount() }}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getMissingAmount() }}</th>
                                     <td></td>
                                 </tr>

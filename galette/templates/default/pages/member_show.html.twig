@@ -120,13 +120,13 @@
                             <table class="ui very basic definition striped collapsing stackable padded table">
                 {% if member.hasParent() %}
                                 <tr>
-                                    <th>{{ _T("Attached to:") }}</th>
+                                    <th scope="row">{{ _T("Attached to:") }}</th>
                                     <td><a href="{{ url_for("member", {"id": member.parent.id}) }}">{{ member.parent.sfullname }}</a></td>
                                 </tr>
                 {% endif %}
                 {% if member.hasChildren() %}
                                 <tr>
-                                    <th>{{ _T("Parent of:") }}</th>
+                                    <th scope="row">{{ _T("Parent of:") }}</th>
                                     <td>
                     {% for child in member.children %}
                                         <a href="{{ url_for("member", {"id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
@@ -186,7 +186,7 @@
                 {% endif %}
                 {% if loop.first and loop.parent.loop.last and (member.getGroups()|length != 0 or member.getManagedGroups()|length != 0) %}
                             <tr>
-                                <th class="three wide column">{{ _T("Groups:") }}</th>
+                                <th scope="row" class="three wide column">{{ _T("Groups:") }}</th>
                                 <td>
                                     <div class="ui large labels">
             {% for kgroup, group in groups %}
@@ -207,7 +207,7 @@
                             </tr>
                 {% endif %}
                             <tr>
-                                <th class="three wide column">{{ element.label }}</th>
+                                <th scope="row" class="three wide column">{{ element.label }}</th>
                                 <td>
                 {% if element.field_id == 'nom_adh' %}
                     {% if member.isCompany() %}

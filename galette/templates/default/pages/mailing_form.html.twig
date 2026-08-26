@@ -181,11 +181,11 @@
                         <table class="ui very basic striped unstackable table">
                             <tbody>
                                 <tr>
-                                    <th class="two wide">{{ _T("Subject:") }}</th>
+                                    <th scope="row" class="two wide">{{ _T("Subject:") }}</th>
                                     <td>{{ mailing.subject }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="two wide">{{ _T("Message:") }}</th>
+                                    <th scope="row" class="two wide">{{ _T("Message:") }}</th>
                                     <td>
             {% if mailing.html %}
                                         {{ mailing.message }}
