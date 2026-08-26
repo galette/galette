@@ -59,6 +59,11 @@
     {% elseif list_type is not defined %}
                 <div class="ui basic fitted segment loader_selector large-table-wrapper">
                     <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table{% if table.class is defined %} {{ table.class }}{% endif %}">
+                    {% if page_title is defined and page_title is not empty %}
+                        {# a table is walked out of its surroundings, so it has to name
+                           itself; the page already has this title in its heading #}
+                        <caption class="visually-hidden">{{ page_title }}</caption>
+                    {% endif %}
                         <thead>
                             <tr>
                         {% block header %}
