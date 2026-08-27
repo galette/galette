@@ -17,7 +17,7 @@ body.nojs .ui.message > .close.icon {
   margin-bottom: 1em;
 }
 
-.ui.message a {
+.ui.message a:not(.button) {
   color: @textColor;
   text-decoration: underline;
 }
