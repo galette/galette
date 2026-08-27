@@ -290,8 +290,18 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
 }
 
 @media only screen and (max-width: 991px) {
-  #top-navbar nav {
-    display: none;
+  #top-navbar {
+    button.toc {
+      width: 52px;
+      margin-right: 0;
+      justify-content: center;
+      .icon {
+        margin-right: 0;
+      }
+    }
+    nav {
+      display: none;
+    }
   }
   .sidebar.uncover + .fixed.menu .toc i::before {
     content: '\f00d';
