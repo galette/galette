@@ -32,7 +32,7 @@
                         </td>
                         <td class="left" data-col-label="{{ _T("Available fields") }}" colspan="2">
                             <label for="remaining_fields_dropdown" class="visually-hidden">{{ _T("Field name") }}</label>
-                            <div id="remaining_fields_dropdown" class="ui fluid search clearable selection dropdown">
+                            <div id="remaining_fields_dropdown" class="ui fluid search selection dropdown">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">{{ _T("Available fields") }}</div>
                                 <div id="remaining_fields" class="menu sortable-items">
@@ -72,7 +72,7 @@
                             {{ permission }}
                         </td>
                         <td class="center actions_row collapsing">
-                            <button type="button" class="delete icon-only plain-button">
+                            <button type="button" class="ui delete icon-only button">
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                                 <span class="visually-hidden">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>
                             </button>
@@ -83,7 +83,7 @@
             </table>
         </div>
         <div class="ui basic center aligned segment">
-            <button type="submit" class="ui labeled icon primary button action icon-only">
+            <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
         </div>
@@ -156,9 +156,9 @@
                         _table_item +='<input type="hidden" name="fields[]" value="' + _field_id + '"/>' + _field_label;
                         _table_item +='</td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';
-                        _table_item +='<td class="center actions_row"><button type="button" class="delete plain-button">';
-                        _table_item +='<i class="ui trash red icon tooltip" aria-hidden="true"></i>';
-                        _table_item +='<span class="ui special popup">{{ _T("Delete '%s' field")|replace({"%s": ' + _field_label + '})|e('js') }}</span>';
+                        _table_item +='<td class="center actions_row collapsing"><button type="button" class="ui delete icon-only button">';
+                        _table_item +='<i class="ui trash red icon" aria-hidden="true"></i>';
+                        _table_item +='<span class="visually-hidden">' + '{{ _T("Delete '%s' field")|e('js') }}'.replace('%s', _field_label) + '</span>';
                         _table_item +='</button></td>';
                         _table_item +='</tr>';
 
@@ -168,6 +168,7 @@
                 $('#remaining_fields_dropdown').dropdown('clear');
                 _listed_fields.innerHTML += _table_item;
             }
+            _bindFomanticComponents();
         }
 
         function _addToList() {
