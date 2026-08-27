@@ -25,7 +25,7 @@
                 <span class="visually-hidden">{{ _T("Download VCard") }}</span>
             </a>
             {% if qrcodes.vcard is defined %}
-                <button type="button" class="qrcode tooltip plain-button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_vcard">
+                <button type="button" class="ui qrcode tooltip icon-only link button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_vcard">
                     <i class="qrcode icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
                 </button>
@@ -44,7 +44,7 @@
                                 {% if member.phone %}
                                     {{ member.phone }}
                                     {% if qrcodes.phone is defined %}
-                                        <button type="button" class="qrcode tooltip plain-button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_phone">
+                                        <button type="button" class="ui qrcode tooltip icon-only link button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_phone">
                                             <i class="qrcode icon" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
                                         </button>
@@ -54,7 +54,7 @@
                                     {% if member.phone %}, {% endif %}
                                     {{ member.gsm }}
                                     {% if qrcodes.gsm is defined %}
-                                        <button type="button" class="qrcode tooltip plain-button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_gsm">
+                                        <button type="button" class="ui qrcode tooltip icon-only link button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_gsm">
                                             <i class="qrcode icon" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
                                         </button>
@@ -71,7 +71,7 @@
                             <div class="description">
                                 {{ member.getEMail() }}
                                 {% if qrcodes.email is defined %}
-                                    <button type="button" class="qrcode tooltip plain-button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_email">
+                                    <button type="button" class="ui qrcode tooltip icon-only link button" title="{{ _T("Display QR Code") }}" data-modal="qrcode_email">
                                         <i class="qrcode icon" aria-hidden="true"></i>
                                         <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
                                     </button>

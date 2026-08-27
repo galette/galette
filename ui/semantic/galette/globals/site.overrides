@@ -33,24 +33,6 @@
   }
 }
 
-/* A control that acts on click is a button, including where it must not look
-   like one: the chrome the browser gives a button has to go, the box it sits
-   in keeps coming from the classes of the component. */
-button.plain-button {
-  appearance: none;
-  background: none;
-  border: 0;
-  font: inherit;
-  color: inherit;
-  text-align: inherit;
-  cursor: pointer;
-
-  &:not(.item) {
-      margin: 0;
-      padding: 0;
-  }
-}
-
 .disabled,
 .disabled a {
   color: @unselectedTextColor;
@@ -165,7 +147,7 @@ body.pushable:not(.loggedin) {
   width: auto;
 }
 
-#top-navbar div.item a.button:not(:first-child) {
+#top-navbar div.item .button:not(:first-child) {
   margin-left: .5rem;
 }
 
@@ -290,8 +272,18 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
 }
 
 @media only screen and (max-width: 991px) {
-  #top-navbar nav {
-    display: none;
+  #top-navbar {
+    button.toc {
+      width: 52px;
+      margin-right: 0;
+      justify-content: center;
+      .icon {
+        margin-right: 0;
+      }
+    }
+    nav {
+      display: none;
+    }
   }
   .sidebar.uncover + .fixed.menu .toc i::before {
     content: '\f00d';
@@ -321,8 +313,8 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
       display: none;
     }
   }
-  #top-navbar div.item a.button.darkmode span {
-    display: none;
+  #top-navbar div.item .button.darkmode {
+    align-self: stretch;
   }
 
   aside.computer.toc {

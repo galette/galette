@@ -53,6 +53,12 @@
   .ui.vertical.menu:not(.pointing) div.item .item.button::before {
     content: none;
   }
+  .ui.vertical.menu button {
+    width: 100%;
+    border-radius: 0;
+    margin-right: 0;
+    font-size: inherit;
+  }
   .ui.vertical.accordion.menu {
     a.active.item,
     a.item:hover {
@@ -155,7 +161,7 @@
      Compact mode logout menu
 -----------------------------------*/
 .compact_menu #logoutmenu {
-  & > a.item {
+  & > .item {
     &.darkmode {
       background-color: @darkmodeItemBackground;
       &:hover,
