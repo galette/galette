@@ -165,7 +165,7 @@ body.pushable:not(.loggedin) {
   width: auto;
 }
 
-#top-navbar div.item a.button:not(:first-child) {
+#top-navbar div.item .button:not(:first-child) {
   margin-left: .5rem;
 }
 
@@ -321,8 +321,8 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
       display: none;
     }
   }
-  #top-navbar div.item a.button.darkmode span {
-    display: none;
+  #top-navbar div.item .button.darkmode {
+    align-self: stretch;
   }
 
   aside.computer.toc {

@@ -55,7 +55,7 @@
             title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
         >
             <i class="icon adjust" aria-hidden="true"></i>
-            <span>{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
+            <span{% if mode !== 'sidebar' %} class="visually-hidden"{% endif %}>{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
         </button>
     </div>
 {% endif %}
