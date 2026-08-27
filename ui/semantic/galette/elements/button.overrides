@@ -55,3 +55,21 @@ a.ui.button:hover i.icon {
 #recup_mailing.ui.button > .icon {
   margin: 0 !important;
 }
+
+/*----------------------------------------------
+     Style buttons as icon only links
+-----------------------------------------------*/
+button.ui.icon-only.button {
+  background: none;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  &.link {
+    i.icon {
+      color: @linkColor;
+    }
+    &:hover i.icon {
+      color: @linkHoverColor;
+    }
+  }
+}
