@@ -59,17 +59,16 @@ a.ui.button:hover i.icon {
 /*----------------------------------------------
      Style buttons as icon only links
 -----------------------------------------------*/
-button.ui.icon-only.button {
+button.ui.icon-only.link.button,
+.actions_row > button.ui.icon-only.button {
   background: none;
   margin: 0;
   padding: 0;
   font-size: inherit;
-  &.link {
-    i.icon {
-      color: @linkColor;
-    }
-    &:hover i.icon {
-      color: @linkHoverColor;
-    }
+  i.icon {
+    color: @linkColor;
+  }
+  &:hover i.icon {
+    color: @linkHoverColor;
   }
 }
