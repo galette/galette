@@ -33,24 +33,6 @@
   }
 }
 
-/* A control that acts on click is a button, including where it must not look
-   like one: the chrome the browser gives a button has to go, the box it sits
-   in keeps coming from the classes of the component. */
-button.plain-button {
-  appearance: none;
-  background: none;
-  border: 0;
-  font: inherit;
-  color: inherit;
-  text-align: inherit;
-  cursor: pointer;
-
-  &:not(.item) {
-      margin: 0;
-      padding: 0;
-  }
-}
-
 .disabled,
 .disabled a {
   color: @unselectedTextColor;
