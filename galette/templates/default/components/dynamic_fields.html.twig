@@ -168,7 +168,7 @@
                           {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
                         {% endif %}
                         <div class="
-                            {% if get_class(field) == 'Galette\\DynamicFields\\File' or (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
+                            {% if (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
                                repetable {% endif %}{{ columns }}column">
                             {% for field_data in values %}
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
