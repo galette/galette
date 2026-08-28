@@ -7,11 +7,11 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <div class="ui icon warning message">
+        <div class="ui icon error message">
             <i class="exclamation triangle icon" aria-hidden="true"></i>
             <div class="content">
-                <div class="header">{{ _T("Here be dragons") }}</div>
-                <p>{{ _T("This page lists every setting, including those the settings form deliberately does not show. Changing one without knowing what it does may break your installation.") }}</p>
+                <div class="header">{{ _T("- WARNING -") }}</div>
+                <p>{{ _T("This page can break your installation, be very careful.") }}</p>
             </div>
         </div>
 
@@ -23,6 +23,10 @@
             </div>
         </div>
 
+        <div class="ui basic right aligned fitted segment jsonly displaynone">
+            <button type="button" class="show_legend ui blue tertiary button">{{ _T("Show legend") }}</button>
+        </div>
+
         <table class="listing ui celled striped table" id="advanced_config">
             <thead>
                 <tr>
@@ -30,12 +34,11 @@
                     <th class="collapsing">{{ _T("Type") }}</th>
                     <th class="collapsing">{{ _T("Status") }}</th>
                     <th>{{ _T("Value") }}</th>
-                    <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
             </thead>
             <tbody>
 {% for entry in entries %}
-                <tr data-name="{{ entry.name }}">
+                <tr data-name="{{ entry.name }}" id="{{ entry.name }}">
                     <td data-scope="row" data-col-label="{{ _T("Name") }}"><code>{{ entry.name }}</code></td>
                     <td class="collapsing" data-col-label="{{ _T("Type") }}">
                         {% if entry.known %}{{ entry.type }}{% else %}&mdash;{% endif %}
@@ -45,6 +48,10 @@
                         <span class="ui grey label" title="{{ _T("This setting is not known by Galette. It may come from an older version or from a plugin.") }}">{{ _T("unknown") }}</span>
     {% elseif entry.locked_by %}
                         <span class="ui red label" title="{{ _T("Set by the %s constant in behavior.inc.php, which takes precedence.")|replace({'%s': entry.locked_by}) }}">{{ _T("locked") }}</span>
+    {% elseif entry.readonly %}
+                        <span class="ui grey label" title="{{ _T("Galette maintains this value itself; it is shown for information only.") }}">{{ _T("read-only") }}</span>
+    {% elseif entry.sensitive %}
+                        <span class="ui grey label" title="{{ _T("Held as a secret: its value is never displayed, and it is changed from the settings form.") }}">{{ _T("secret") }}</span>
     {% elseif entry.is_default %}
                         <span class="ui basic label">{{ _T("default") }}</span>
     {% else %}
@@ -52,14 +59,16 @@
     {% endif %}
                     </td>
                     <td data-col-label="{{ _T("Value") }}">
-    {% if not entry.known or entry.locked_by %}
+    {% if not entry.known or entry.locked_by or entry.readonly %}
                         <code>{% if entry.value is not null %}{{ entry.value }}{% endif %}</code>
     {% elseif entry.sensitive %}
                         {% if entry.is_set %}{{ _T("set") }}{% else %}{{ _T("not set") }}{% endif %}
     {% else %}
+                        <div class="advanced-config-actions">
                         <form id="cfg_{{ entry.name }}" action="{{ url_for('saveAdvancedConfig') }}" method="post" class="ui form advanced-config-form">
                             <input type="hidden" name="name" value="{{ entry.name }}"/>
                             <label for="value_{{ entry.name }}" class="visually-hidden">{{ entry.name }}</label>
+                            <div class="ui action input">
         {% if entry.type == 'bool' %}
                             <input type="hidden" name="value" value="0"/>
                             <div class="ui toggle checkbox">
@@ -77,30 +86,120 @@
         {% else %}
                             <input type="text" id="value_{{ entry.name }}" name="value" value="{{ entry.value }}"/>
         {% endif %}
+                                <button type="submit" class="ui icon button" title="{{ _T("Save") }}">
+                                    <i class="save icon" aria-hidden="true"></i>
+                                    <span class="visually-hidden">{{ _T("Save '%s'")|replace({'%s': entry.name}) }}</span>
+                                </button>
+                            </div>
                         </form>
-    {% endif %}
-                    </td>
-                    <td class="center actions_row collapsing">
-    {% if entry.known and not entry.locked_by and not entry.sensitive %}
-                        <button type="submit" form="cfg_{{ entry.name }}" class="ui labeled icon button">
-                            <i class="save icon" aria-hidden="true"></i>
-                            {{ _T("Save") }}
-                        </button>
         {% if not entry.is_default %}
                         <form action="{{ url_for('resetAdvancedConfig') }}" method="post" class="ui form">
-                            <input type="hidden" name="name" value="{{ entry.name }}"/>
-                            <button type="submit" class="ui labeled icon button">
+                            <button type="submit" class="ui icon button" title="{{ _T("Reset to default") }}">
                                 <i class="undo icon" aria-hidden="true"></i>
-                                {{ _T("Reset") }}
+                                <span class="visually-hidden">{{ _T("Reset '%s' to its default")|replace({'%s': entry.name}) }}</span>
                             </button>
+                            <input type="hidden" name="name" value="{{ entry.name }}"/>
                         </form>
         {% endif %}
+                        </div>
     {% endif %}
                     </td>
                 </tr>
 {% endfor %}
             </tbody>
         </table>
+
+        <h2 class="ui dividing header">{{ _T("Constants behavior.inc.php understands") }}</h2>
+
+        <div class="ui icon info message">
+            <i class="file code icon" aria-hidden="true"></i>
+            <div class="content">
+                <p>{{ _T("Galette reads these from %s, so they cannot be edited from here. One marked deprecated is still declared there although a setting above replaces it, and overrides that setting until you remove it.")|replace({'%s': 'galette/config/behavior.inc.php'}) }}</p>
+            </div>
+        </div>
+
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th>{{ _T("Name") }}</th>
+                    <th class="collapsing">{{ _T("Status") }}</th>
+                    <th>{{ _T("Value") }}</th>
+                    <th>{{ _T("Description") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for constant in constants %}
+                <tr>
+                    <td data-scope="row" data-col-label="{{ _T("Name") }}">
+                        <code>{{ constant.name }}</code>
+    {% if constant.replaced_by %}
+                        <span class="ui orange label" title="{{ _T("Replaced by the \"%s\" setting.")|replace({'%s': constant.replaced_by}) }}">{{ _T("deprecated") }}</span>
+    {% endif %}
+                    </td>
+                    <td class="collapsing" data-col-label="{{ _T("Status") }}">
+    {% if constant.defined %}
+                        <span class="ui blue label">{{ _T("defined") }}</span>
+    {% else %}
+                        <span class="ui basic label">{{ _T("not set") }}</span>
+    {% endif %}
+                    </td>
+                    <td data-col-label="{{ _T("Value") }}">
+    {% if constant.defined %}
+                        <code>{{ constant.value }}</code>
+    {% endif %}
+                    </td>
+                    <td data-col-label="{{ _T("Description") }}">
+                        {{ constant.description }}
+    {% if constant.replaced_by %}
+                        <a href="#{{ constant.replaced_by }}" class="advanced-config-jump">
+                            <i class="level down alternate icon" aria-hidden="true"></i>
+                            {{ _T("Go to %s")|replace({'%s': constant.replaced_by}) }}
+                        </a>
+    {% endif %}
+                    </td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+
+        <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+            <div class="header">{{ _T("Legend") }}</div>
+            <div class="content">
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th scope="colgroup" colspan="2">{{ _T("Statuses") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><span class="ui basic label">{{ _T("default") }}</span></th>
+                            <td class="back">{{ _T("Never changed: the value Galette ships with.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui blue label">{{ _T("modified") }}</span></th>
+                            <td class="back">{{ _T("Changed from the default, here or from the settings form. It can be reset.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui grey label">{{ _T("read-only") }}</span></th>
+                            <td class="back">{{ _T("Galette maintains this value itself, such as a generated identifier or a date it records. It is shown for information only.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui grey label">{{ _T("secret") }}</span></th>
+                            <td class="back">{{ _T("A password or a token. Its value is never displayed, only whether one is set, and it is changed from the settings form.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui red label">{{ _T("locked") }}</span></th>
+                            <td class="back">{{ _T("A constant defined in behavior.inc.php takes precedence over the stored value. Remove it from that file to manage the setting from here.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui grey label">{{ _T("unknown") }}</span></th>
+                            <td class="back">{{ _T("A row found in database that Galette does not describe. It may come from an older version or from a plugin.") }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -114,5 +213,30 @@
                     row.hidden = needle !== '' && name.indexOf(needle) === -1;
                 });
             });
+
+            // _bind_legend() is only called from the lists layout, which this
+            // page does not extend
+            $(function() {
+                _bind_legend();
+            });
+
+            // A jump from the constants table must not land on a row the
+            // filter is hiding. Without JS there is no filter, so no guard.
+            var _revealTarget = function () {
+                if (!window.location.hash) {
+                    return;
+                }
+                var filter = document.getElementById('config_filter');
+                if (filter.value !== '') {
+                    filter.value = '';
+                    filter.dispatchEvent(new Event('input'));
+                }
+                var row = document.getElementById(window.location.hash.slice(1));
+                if (row) {
+                    row.scrollIntoView({ block: 'center' });
+                }
+            };
+            window.addEventListener('hashchange', _revealTarget);
+            $(_revealTarget);
         </script>
 {% endblock %}

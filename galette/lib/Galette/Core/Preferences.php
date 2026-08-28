@@ -684,6 +684,11 @@ class Preferences
     private function assignValues(array $insert_values, Login $login): void
     {
         foreach ($insert_values as $champ => $valeur) {
+            //values Galette maintains itself are never taken from a payload
+            if (PreferencesSchema::isReadOnly($champ)) {
+                continue;
+            }
+
             if (
                 PreferencesSchema::getAcl($champ) === PreferencesSchema::ACL_SUPERADMIN
                 && !$login->isSuperAdmin()
@@ -720,6 +725,15 @@ class Preferences
                 '%name',
                 $name,
                 _T("Unknown preference '%name'!")
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Preference '%name' is maintained by Galette and cannot be changed!")
             );
             return false;
         }
@@ -779,6 +793,15 @@ class Preferences
                 '%name',
                 $name,
                 _T("Unknown preference '%name'!")
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = str_replace(
+                '%name',
+                $name,
+                _T("Preference '%name' is maintained by Galette and cannot be changed!")
             );
             return false;
         }

@@ -43,6 +43,7 @@ use Galette\Repository\Members;
  *     minlength?: int,
  *     error?: string,
  *     sensitive?: bool,
+ *     readonly?: bool,
  *     acl?: string,
  *     constant?: string
  * }
@@ -160,10 +161,10 @@ final class PreferencesSchema
             /* Appearance */
             'pref_hide_bg_image' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_enable_custom_colors' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_cc_primary' => ['type' => self::TYPE_STRING, 'default' => '#ffb619'],
-            'pref_cc_primary_text' => ['type' => self::TYPE_STRING, 'default' => '#000000'],
-            'pref_cc_secondary' => ['type' => self::TYPE_STRING, 'default' => '#ffda89'],
-            'pref_cc_secondary_text' => ['type' => self::TYPE_STRING, 'default' => '#1b1c1d'],
+            'pref_cc_primary' => ['type' => self::TYPE_COLOR, 'default' => '#ffb619'],
+            'pref_cc_primary_text' => ['type' => self::TYPE_COLOR, 'default' => '#000000'],
+            'pref_cc_secondary' => ['type' => self::TYPE_COLOR, 'default' => '#ffda89'],
+            'pref_cc_secondary_text' => ['type' => self::TYPE_COLOR, 'default' => '#1b1c1d'],
             /* Preferences for emails */
             'pref_email_nom' => ['type' => self::TYPE_STRING, 'default' => 'Galette'],
             'pref_email' => ['type' => self::TYPE_EMAIL, 'default' => 'mail@domain.com'],
@@ -288,12 +289,13 @@ final class PreferencesSchema
             'pref_adhesion_form' => [
                 'type' => self::TYPE_STRING,
                 'default' => \Galette\IO\PdfAdhesionForm::class,
+                'readonly' => true,
             ],
             'pref_mail_allow_unsecure' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_instance_uuid' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_registration_uuid' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_telemetry_date' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_registration_date' => ['type' => self::TYPE_STRING, 'default' => ''],
+            'pref_instance_uuid' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
+            'pref_registration_uuid' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
+            'pref_telemetry_date' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
+            'pref_registration_date' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
             'pref_footer' => ['type' => self::TYPE_HTML, 'default' => ''],
             'pref_filter_account' => ['type' => self::TYPE_INT, 'default' => Members::ALL_ACCOUNTS],
             'pref_galette_url' => [
@@ -421,6 +423,20 @@ final class PreferencesSchema
     public static function isSensitive(string $name): bool
     {
         return self::getAll()[$name]['sensitive'] ?? false;
+    }
+
+    /**
+     * Is that preference maintained by Galette itself?
+     *
+     * Such a value is displayed but never offered for edition: it is a
+     * generated identifier or a date Galette records on its own, and letting
+     * anyone rewrite it would only break things.
+     *
+     * @param string $name Preference name
+     */
+    public static function isReadOnly(string $name): bool
+    {
+        return self::getAll()[$name]['readonly'] ?? false;
     }
 
     /**

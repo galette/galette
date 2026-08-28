@@ -293,6 +293,79 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Values Galette maintains itself are never writable from a payload
+     */
+    public function testReadOnlyPreferences(): void
+    {
+        $this->preferences->load();
+        $this->logSuperAdmin();
+
+        $readonly = [
+            'pref_instance_uuid',
+            'pref_registration_uuid',
+            'pref_telemetry_date',
+            'pref_registration_date',
+            'pref_adhesion_form',
+        ];
+
+        foreach ($readonly as $name) {
+            $this->assertTrue(
+                \Galette\Core\PreferencesSchema::isReadOnly($name),
+                $name . ' should be read-only'
+            );
+
+            $this->assertFalse($this->preferences->setValue($name, 'tampered', $this->login));
+            $this->assertSame(
+                ["Preference '" . $name . "' is maintained by Galette and cannot be changed!"],
+                $this->preferences->getErrors()
+            );
+
+            $this->assertFalse($this->preferences->resetValue($name, $this->login));
+        }
+
+        //nor through the settings form
+        $uuid = $this->preferences->pref_instance_uuid;
+        $values = $this->preferences->getDefaults();
+        $values['pref_nom'] = 'Galette';
+        $values['pref_instance_uuid'] = 'tampered';
+        $this->preferences->check($values, $this->login);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+    }
+
+    /**
+     * Galette still writes those values itself
+     */
+    public function testReadOnlyPreferencesAreStillMaintained(): void
+    {
+        $this->preferences->load();
+
+        $uuid = $this->preferences->generateUUID('instance');
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{40}$/', $uuid);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+
+        $this->assertTrue($this->preferences->updateTelemetryDate());
+        $this->assertNotEmpty($this->preferences->pref_telemetry_date);
+    }
+
+    /**
+     * Galette must never define a constant superseded by a preference
+     *
+     * behavior.inc.php is skipped under GALETTE_TESTS, so anything defined
+     * here was defined by Galette's own bootstrap. That makes the setting look
+     * overridden by the file on every instance, hides it behind a read-only
+     * cell, and logs a bogus override warning on each read.
+     */
+    public function testGaletteDefinesNoSupersededConstant(): void
+    {
+        foreach (\Galette\Core\PreferencesSchema::getConstants() as $name => $constant) {
+            $this->assertFalse(
+                defined($constant),
+                $constant . ' is defined by Galette itself, ' . $name . ' would look locked everywhere'
+            );
+        }
+    }
+
+    /**
      * Test fields names
      */
     public function testFieldsNames(): void

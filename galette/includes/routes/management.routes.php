@@ -396,6 +396,11 @@ $app->post(
     [AdvancedConfigController::class, 'resetAdvancedConfig']
 )->setName('resetAdvancedConfig')->add(Authenticate::class);
 
+$app->post(
+    '/advanced-config/confirm',
+    [AdvancedConfigController::class, 'confirmAdvancedConfig']
+)->setName('confirmAdvancedConfig')->add(Authenticate::class);
+
 $app->get(
     '/payment-types',
     [Crud\PaymentTypeController::class, 'list']
