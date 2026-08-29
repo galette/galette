@@ -363,11 +363,13 @@ var _dropdownA11y = (function() {
      * hidden span and to aria-describedby through the referenced element.
      */
     var _describeAutosubmit = function($dd) {
-        var $control = $dd.data('a11yControl') || $dd;
-
-        if (!$control.length) {
+        //_setup() is what stores the control the description has to be
+        //attached to; until it has run, there is nothing to point at
+        if (!$dd.data('a11yBound')) {
             return;
         }
+
+        var $control = $dd.data('a11yControl') || $dd;
 
         var $description = $dd
             .closest('.field')
@@ -384,14 +386,6 @@ var _dropdownA11y = (function() {
 
         if (!description) {
             return;
-        }
-
-        //_setup() normally stores the control in a11yControl.
-        //The fallback is necessary when the dropdown is initialised
-        //asynchronously by Fomantic.
-        if (!$control || !$control.length) {
-            var $search = $dd.children('input.search').first();
-            $control = $search.length ? $search : $dd;
         }
 
         //Keep the text node and the data attribute synchronized.
