@@ -23,6 +23,7 @@
             {% elseif get_class(field) != 'Galette\\DynamicFields\\Boolean' %}
                 <label for="info_field_{{ field.getId() }}_{{ loop }}">
                     {{ field.getName()|escape }}
+                    {% if loop > 1 %}({{ loop }}){% endif %}
                 </label>
             {% endif %}
             {% if field.getInformation() and field.hasInformationAbove() %}
@@ -64,12 +65,12 @@
                     {% endfor %}
                 </select>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
-                <div id="dynamic_date_{{ field.getId() }}_rangestart" class="ui calendar">
+                <div id="dynamic_date_{{ field.getId() }}_{{ loop }}_rangestart" class="ui calendar">
                     <div class="ui fluid input left icon">
                         <i class="calendar icon" aria-hidden="true"></i>
                         <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
                             value="{{ valuedata }}" class="dynamic_date modif_date" placeholder="{{ _T("yyyy-mm-dd format") }}"
-                            {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
+                            {% if field.isRepeatable() or field.getRepeat() == 0 %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
                         {% if not masschange %}
                             {% if field.isRequired() %} required="required"{% endif %}
                         {% endif %}
@@ -160,16 +161,17 @@
                         {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
                             {% set can_add = true %}
                         {% endif #}
-                        {% if get_class(field) == 'Galette\\DynamicFields\\File' or (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
+                        {# a field takes several occurrences when its repeat is greater than one, or zero (as many as wanted); a null repeat means it takes a single one #}
+                        {% set multi_occurrences = (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() is same as(0)) %}
+                        {% set repeatable = not masschange and multi_occurrences %}
+                        {% if get_class(field) == 'Galette\\DynamicFields\\File' or multi_occurrences %}
                           {% set columns = 'sixteen wide ' %}
                         {% elseif field.getWidthInForms() == 1 or (preferences.pref_member_form_grid == 'two' and field.getWidthInForms() == 3) %}
                           {% set columns = '' %}
                         {% else %}
                           {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
                         {% endif %}
-                        <div class="
-                            {% if (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
-                               repetable {% endif %}{{ columns }}column">
+                        <div class="{% if repeatable %}repeatable {% endif %}{{ columns }}column">
                             {% for field_data in values %}
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
@@ -182,20 +184,33 @@
                                 {% else %}
                                     {% set current_count = 0 %}
                                 {% endif %}
-                                {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
+                                <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
+                                    {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
+                                </div>
                             {% endif %}
-                            {% if field.isRepeatable() %}
+                            {% if repeatable %}
                                 {% if field.getRepeat() == 0 %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurrences you want.") }}</p>
-                                {% elseif values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
-                                    {% if values is iterable %}
+                                    <p class="exemple repeat_msg" aria-live="polite">{{ _T("Enter as many occurrences you want.") }}</p>
+                                {% else %}
+                                    {% if values is iterable and values|length > 0 %}
                                         {% set current_count = values|length %}
                                     {% else %}
                                         {% set current_count = 1 %}
                                     {% endif %}
-                                    {% set remaining = field.getRepeat() - current_count %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %1$s more occurrences.")|format(remaining) }}</p>
+                                    {% if current_count < field.getRepeat() %}
+                                        <p class="exemple repeat_msg" aria-live="polite">{{ _T("Enter up to %1$s more occurrences.")|format(field.getRepeat() - current_count) }}</p>
+                                    {% endif %}
                                 {% endif %}
+                                {#
+                                 # Pristine markup used by javascript to add a new occurrence:
+                                 # this way, added occurrences keep their label and information text.
+                                 # __IDX__ is replaced with the occurrence number.
+                                 #}
+                                <template class="repeat_template" data-add-label="{{ _T("Add an occurrence of %1$s")|format(field.getName())|escape }}">
+                                    <div class="field{% if field.isRequired() %} required{% endif %}">
+                                        {{ _self.draw_field(field, {'field_val': ''}, disabled, '__IDX__', object, masschange) }}
+                                    </div>
+                                </template>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -205,68 +220,84 @@
         </div>
         {% if not masschange %}
             <script type="text/javascript">
-                var _addLnk = function(){
-                    return $('<button type="button" class="ui tiny green labeled icon button"><i class="plus icon" aria-hidden="true"></i> {{ _T("Add") }}</button>');
-                };
+                $(function() {
+                    {# only used to (re)initialize calendars on added occurrences #}
+                    {% include "elements/js/calendar.js.twig" with {selector: '.repeat_no_calendar'} %}
 
-                var _lnkEvent = function(_a, _input, _parent) {
-                    var _vals = _input[0].id.split(/_/);
-                    var _total = $(_input[0]).data('maxrepeat'); //max number of occurrences
-                    var _current = _vals[_vals.length-1]; //current occurrence
+                    var _repeatMsg = '{{ _T("Enter up to %1$s more occurrences.")|format("__COUNT__")|e('js') }}';
 
-                   _a.click(function(e) {
-                        var _new = _input.clone();
+                    var _addButton = function(_label) {
+                        return $('<button type="button" class="ui tiny green labeled icon button repeat_add"><i class="plus icon" aria-hidden="true"></i> {{ _T("Add")|e('js') }}</button>')
+                            .attr('aria-label', _label);
+                    };
 
-                        var _id = '';
+                    var _getControl = function(_field) {
+                        return _field.find('input, select, textarea').not('.mass_checkbox').first();
+                    };
 
-                        for ( var i = 0 ; i < _vals.length -1 ; i++ ) {
-                            _id += _vals[i] + '_';
+                    var _getIndex = function(_field) {
+                        var _matches = (_getControl(_field).attr('id') || '').match(/_(\d+)$/);
+                        return _matches ? parseInt(_matches[1], 10) : 0;
+                    };
+
+                    var _addOccurrence = function(_parent, _template, _max, _button) {
+                        var _last = _parent.children('.field').last();
+                        var _index = _getIndex(_last) + 1;
+                        var _new = $(_template.innerHTML.replace(/__IDX__/g, _index).trim());
+
+                        _new.insertAfter(_last);
+
+                        var _calendars = _new.find('.ui.calendar');
+                        if (_calendars.length > 0) {
+                            _calendarWidget(_calendars);
                         }
 
-                        _current = Number(_current) + 1;
-                        _new.attr('id', _id + _current);
-                        _new.attr('name', _id + _current);
-                        _new.val('');
-                        _a.remove();
-                        _parent.append(_new);
-                        _parent.append('<br/><br/>');
-                        _new.focus();
-                        if( _total == '0' || _current < _total ) {
-                            var _b = _addLnk();
-                            _lnkEvent(_b, _new, _parent);
-                            _parent.append(_b);
-                            if (_current < _total) {
-                                $('#repeat_msg').html('{{ _T("Enter up to %1$s more occurrences.")|format("COUNT")|e('js') }}'.replace(/COUNT/, _total - _current));
+                        _getControl(_new).trigger('focus');
+
+                        if (_max > 0) {
+                            var _remaining = _max - _index;
+                            if (_remaining > 0) {
+                                _parent.children('.repeat_msg').text(_repeatMsg.replace(/__COUNT__/, _remaining));
+                            } else {
+                                _parent.children('.repeat_msg').remove();
+                                _button.remove();
                             }
-                        } else if (_current == _total) {
-                            $('#repeat_msg').remove();
                         }
-                        return false;
-                    });
-                }
+                    };
 
-                $(function(){
-                    $('.repetable').each(function(){
-                        var _total;
-                        var _current;
+                    $('.repeatable').each(function() {
                         var _parent = $(this);
+                        var _template = _parent.children('template.repeat_template')[0];
 
-                        var _input = $(this).find('.field:last input');
-                        if ( _input.length > 0 ) {
-                            while ( $(this).find('.field').length > 1 && _input.val() == '' ) {
-                                _input.remove();
-                                _input = $(this).find('.field:last input')
-                            }
-                            var _vals = _input[0].id.split(/_/);
-                            var _total = $(_input[0]).data('maxrepeat'); //max number of occurrences
-                            var _current = _vals[_vals.length-1]; //current occurrence
-
-                            if ( _total == '0' || _current < _total ) {
-                                var _a = _addLnk();
-                                $(this).append(_a);
-                                _lnkEvent(_a, _input, _parent);
-                            }
+                        if (!_template) {
+                            return;
                         }
+
+                        {# drop trailing empty occurrences, but always keep one to fill in #}
+                        var _fields = _parent.children('.field');
+                        while (_fields.length > 1 && !_getControl(_fields.last()).val()) {
+                            _fields.last().remove();
+                            _fields = _parent.children('.field');
+                        }
+
+                        var _last = _fields.last();
+                        var _control = _getControl(_last);
+                        if (_control.length === 0) {
+                            return;
+                        }
+
+                        {# a missing or empty maxrepeat means the field is not repeatable, a zero one means infinite #}
+                        var _max = parseInt(_control.attr('data-maxrepeat'), 10);
+                        if (isNaN(_max) || (_max > 0 && _getIndex(_last) >= _max)) {
+                            return;
+                        }
+
+                        var _button = _addButton($(_template).data('add-label'));
+                        _parent.append(_button);
+                        _button.on('click', function(e) {
+                            e.preventDefault();
+                            _addOccurrence(_parent, _template, _max, _button);
+                        });
                     });
                 });
             </script>
