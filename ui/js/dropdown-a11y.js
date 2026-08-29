@@ -207,14 +207,7 @@ var _dropdownA11y = (function() {
      */
     var _sweep = function(root) {
         $(root || document).find('.ui.dropdown').each(function() {
-            var $dd = $(this);
-            _setup($dd);
-            if ($dd.hasClass('autosubmit')) {
-                _describeAutosubmit($dd);
-            }
-            //the entries of a dropdown are replaced as results are fetched,
-            //long after it was first described
-            _refreshState($dd);
+            _processDropdown($(this));
         });
     };
 
@@ -254,8 +247,7 @@ var _dropdownA11y = (function() {
 
                 var $target = $(record.target);
                 if ($target.hasClass('dropdown')) {
-                    _setup($target);
-                    _refreshState($target);
+                    _processDropdown($target);
                 } else if ($target.hasClass('item')) {
                     //the cursor moved, or a value was picked
                     _refreshState($target.closest('.ui.dropdown'));
@@ -267,6 +259,23 @@ var _dropdownA11y = (function() {
             attributes: true,
             attributeFilter: ['class']
         });
+    };
+
+    /**
+     * Fully process a dropdown: bind autosubmit behavior, apply
+     * accessibility attributes, describe it, and refresh its current state.
+     */
+    var _processDropdown = function($dd) {
+        if ($dd.hasClass('autosubmit')) {
+            _bindAutosubmit($dd);
+        }
+        _setup($dd);
+        if ($dd.hasClass('autosubmit')) {
+            _describeAutosubmit($dd);
+        }
+        //the entries of a dropdown are replaced as results are fetched,
+        //long after it was first described
+        _refreshState($dd);
     };
 
     /**
@@ -380,7 +389,6 @@ var _dropdownA11y = (function() {
         //_setup() normally stores the control in a11yControl.
         //The fallback is necessary when the dropdown is initialised
         //asynchronously by Fomantic.
-        var $control = $dd.data('a11yControl');
         if (!$control || !$control.length) {
             var $search = $dd.children('input.search').first();
             $control = $search.length ? $search : $dd;
@@ -415,41 +423,25 @@ var _dropdownA11y = (function() {
      * Selecting an item updates the dropdown value, closes it, restores focus
      * to the combobox and submits the containing form.
      */
-    var _bindAutosubmit = function(root) {
-        $(root || document)
-            .find('.ui.dropdown.autosubmit')
-            .each(function() {
-                var $dd = $(this);
+    var _bindAutosubmit = function($dd) {
+        if (!$dd.data('autosubmitBound')) {
+            $dd.dropdown({
+                action: function(text, value, element) {
+                    var $element = element && element.jquery
+                            ? element
+                            : $(element),
+                        $dropdown = $element.closest('.ui.dropdown'),
+                        $form = $dropdown.closest('form');
 
-                //The dropdown may not yet have been initialised when this
-                //function is called. _setup() will describe it once a menu
-                //is available.
-                _setup($dd);
-
-                if (!$dd.data('autosubmitBound')) {
-                    $dd.dropdown({
-                        action: function(text, value, element) {
-                            var $element = element && element.jquery
-                                    ? element
-                                    : $(element),
-                                $dropdown = $element.closest('.ui.dropdown'),
-                                $form = $dropdown.closest('form');
-
-                            $dropdown.dropdown('set value', value);
-                            $dropdown.dropdown('hide');
-                            $form.trigger('submit');
-                        }
-                    });
-
-                    $dd.data('autosubmitBound', true);
+                    $dropdown.dropdown('set value', value);
+                    $dropdown.dropdown('hide');
+                    $form.trigger('submit');
                 }
-
-                _setup($dd);
-                _describeAutosubmit($dd);
-                _refreshState($dd);
             });
-    };
 
+            $dd.data('autosubmitBound', true);
+        }
+    };
 
     return {
         /**
@@ -457,7 +449,6 @@ var _dropdownA11y = (function() {
          */
         install: function() {
             _sweep();
-            _bindAutosubmit();
             _observe();
             _keyboard();
         },
@@ -467,7 +458,6 @@ var _dropdownA11y = (function() {
          */
         refresh: function(root) {
             _sweep(root);
-            _bindAutosubmit(root);
         }
     };
 })();
