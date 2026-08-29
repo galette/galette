@@ -28,12 +28,15 @@
  * keyboard model chosen and implemented, in the markup as much as here, not
  * attributes describing a model it does not follow.
  *
- * The attributes are added here, once, rather than in each of the dropdowns
- * spread over the templates. The state is kept in step with a MutationObserver:
- * Fomantic marks an open dropdown with the classes "active visible" on its
- * container, whoever opened it, so the state follows the DOM rather than
- * depending on the component callbacks -- which a score of template call sites
- * override with their own.
+ * The attributes and keyboard behaviour are added here, once, rather than in
+ * each of the dropdowns spread over the templates. This also binds the
+ * autosubmit behaviour for dropdowns which represent a form control and
+ * submit their containing form after a value is selected.
+ *
+ * The state is kept in step with a MutationObserver: Fomantic marks an open
+ * dropdown with the classes "active visible" on its container, whoever opened
+ * it, so the state follows the DOM rather than depending on the component
+ * callbacks -- which a score of template call sites override with their own.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -206,6 +209,9 @@ var _dropdownA11y = (function() {
         $(root || document).find('.ui.dropdown').each(function() {
             var $dd = $(this);
             _setup($dd);
+            if ($dd.hasClass('autosubmit')) {
+                _describeAutosubmit($dd);
+            }
             //the entries of a dropdown are replaced as results are fetched,
             //long after it was first described
             _refreshState($dd);
@@ -339,12 +345,119 @@ var _dropdownA11y = (function() {
         });
     };
 
+    /**
+     * Associate the existing autosubmit description with the actual
+     * combobox control.
+     *
+     * The description is defined by the template through the
+     * data-autosubmit-description attribute. The value is copied both to the
+     * hidden span and to aria-describedby through the referenced element.
+     */
+    var _describeAutosubmit = function($dd) {
+        var $control = $dd.data('a11yControl') || $dd;
+
+        if (!$control.length) {
+            return;
+        }
+
+        var $description = $dd
+            .closest('.field')
+            .find('span[data-autosubmit-description]')
+            .first();
+
+        if (!$description.length) {
+            return;
+        }
+
+        var description = $.trim(
+            $description.attr('data-autosubmit-description') || ''
+        );
+
+        if (!description) {
+            return;
+        }
+
+        //_setup() normally stores the control in a11yControl.
+        //The fallback is necessary when the dropdown is initialised
+        //asynchronously by Fomantic.
+        var $control = $dd.data('a11yControl');
+        if (!$control || !$control.length) {
+            var $search = $dd.children('input.search').first();
+            $control = $search.length ? $search : $dd;
+        }
+
+        //Keep the text node and the data attribute synchronized.
+        $description.text(description);
+
+        //Use a stable id for this description. _ensureId() does not replace
+        //an id already present in the template.
+        var descriptionId = _ensureId(
+            $description,
+            'dropdown_help'
+        );
+
+        //Preserve existing aria-describedby references.
+        var describedBy = ($control.attr('aria-describedby') || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        if (describedBy.indexOf(descriptionId) === -1) {
+            describedBy.push(descriptionId);
+        }
+        $control.attr(
+            'aria-describedby',
+            describedBy.join(' ')
+        );
+    };
+
+    /**
+     * Keyboard accessibility for dropdowns with autosubmit.
+     *
+     * Selecting an item updates the dropdown value, closes it, restores focus
+     * to the combobox and submits the containing form.
+     */
+    var _bindAutosubmit = function(root) {
+        $(root || document)
+            .find('.ui.dropdown.autosubmit')
+            .each(function() {
+                var $dd = $(this);
+
+                //The dropdown may not yet have been initialised when this
+                //function is called. _setup() will describe it once a menu
+                //is available.
+                _setup($dd);
+
+                if (!$dd.data('autosubmitBound')) {
+                    $dd.dropdown({
+                        action: function(text, value, element) {
+                            var $element = element && element.jquery
+                                    ? element
+                                    : $(element),
+                                $dropdown = $element.closest('.ui.dropdown'),
+                                $form = $dropdown.closest('form');
+
+                            $dropdown.dropdown('set value', value);
+                            $dropdown.dropdown('hide');
+                            $form.trigger('submit');
+                        }
+                    });
+
+                    $dd.data('autosubmitBound', true);
+                }
+
+                _setup($dd);
+                _describeAutosubmit($dd);
+                _refreshState($dd);
+            });
+    };
+
+
     return {
         /**
          * Describe the dropdowns of the page, and keep doing so
          */
         install: function() {
             _sweep();
+            _bindAutosubmit();
             _observe();
             _keyboard();
         },
@@ -354,6 +467,7 @@ var _dropdownA11y = (function() {
          */
         refresh: function(root) {
             _sweep(root);
+            _bindAutosubmit(root);
         }
     };
 })();
