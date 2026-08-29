@@ -414,8 +414,8 @@ var _dropdownA11y = (function() {
     /**
      * Keyboard accessibility for dropdowns with autosubmit.
      *
-     * Selecting an item updates the dropdown value, closes it, restores focus
-     * to the combobox and submits the containing form.
+     * Selecting an item updates the dropdown value, closes it and submits the
+     * containing form, which takes the focus away with the page it replaces.
      */
     var _bindAutosubmit = function($dd) {
         if (!$dd.data('autosubmitBound')) {
