@@ -23,6 +23,7 @@
             {% elseif get_class(field) != 'Galette\\DynamicFields\\Boolean' %}
                 <label for="info_field_{{ field.getId() }}_{{ loop }}">
                     {{ field.getName()|escape }}
+                    {% if loop > 1 %}({{ loop }}){% endif %}
                 </label>
             {% endif %}
             {% if field.getInformation() and field.hasInformationAbove() %}
@@ -162,7 +163,7 @@
                         {% endif #}
                         {# a field takes several occurrences when its repeat is greater than one, or zero (as many as wanted); a null repeat means it takes a single one #}
                         {% set multi_occurrences = (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() is same as(0)) %}
-                        {% set repetable = not masschange and multi_occurrences %}
+                        {% set repeatable = not masschange and multi_occurrences %}
                         {% if get_class(field) == 'Galette\\DynamicFields\\File' or multi_occurrences %}
                           {% set columns = 'sixteen wide ' %}
                         {% elseif field.getWidthInForms() == 1 or (preferences.pref_member_form_grid == 'two' and field.getWidthInForms() == 3) %}
@@ -170,7 +171,7 @@
                         {% else %}
                           {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
                         {% endif %}
-                        <div class="{% if repetable %}repetable {% endif %}{{ columns }}column">
+                        <div class="{% if repeatable %}repeatable {% endif %}{{ columns }}column">
                             {% for field_data in values %}
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
@@ -187,7 +188,7 @@
                                     {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
                                 </div>
                             {% endif %}
-                            {% if repetable %}
+                            {% if repeatable %}
                                 {% if field.getRepeat() == 0 %}
                                     <p class="exemple repeat_msg" aria-live="polite">{{ _T("Enter as many occurrences you want.") }}</p>
                                 {% else %}
@@ -264,7 +265,7 @@
                         }
                     };
 
-                    $('.repetable').each(function() {
+                    $('.repeatable').each(function() {
                         var _parent = $(this);
                         var _template = _parent.children('template.repeat_template')[0];
 
