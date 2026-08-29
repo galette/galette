@@ -158,21 +158,6 @@ var _keyboardNavigation = function() {
     }
 }
 
-/* Required for keyboard accessibility on simple dropdowns with autosubmit.
- */
-var _bindDropdownsAutosubmit = function() {
-    $('.ui.dropdown.autosubmit').dropdown({
-        action: function(text, value, element) {
-            var element = element.parentElement === undefined ? element[0] : element;
-            var dropdown = element.closest('.ui.dropdown');
-            var form = element.closest('form');
-            $(dropdown).dropdown('set value', value);
-            $(dropdown).dropdown('hide');
-            $(form).trigger('submit');
-        }
-    });
-}
-
 var _bind_check = function(boxelt) {
     if (boxelt === undefined) {
         boxelt = 'entries_sel'
@@ -221,9 +206,9 @@ $(function() {
 
     _bindFomanticComponents();
 
-    _bindDropdownsAutosubmit();
-
-    /* Fomantic dropdowns say nothing about themselves; this describes them. */
+    /* Add the accessibility semantics and keyboard behaviour for Fomantic
+     * dropdowns, including form submission for autosubmit dropdowns.
+     */
     _dropdownA11y.install();
 
     _keyboardNavigation();

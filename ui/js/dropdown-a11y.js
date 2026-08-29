@@ -28,12 +28,15 @@
  * keyboard model chosen and implemented, in the markup as much as here, not
  * attributes describing a model it does not follow.
  *
- * The attributes are added here, once, rather than in each of the dropdowns
- * spread over the templates. The state is kept in step with a MutationObserver:
- * Fomantic marks an open dropdown with the classes "active visible" on its
- * container, whoever opened it, so the state follows the DOM rather than
- * depending on the component callbacks -- which a score of template call sites
- * override with their own.
+ * The attributes and keyboard behaviour are added here, once, rather than in
+ * each of the dropdowns spread over the templates. This also binds the
+ * autosubmit behaviour for dropdowns which represent a form control and
+ * submit their containing form after a value is selected.
+ *
+ * The state is kept in step with a MutationObserver: Fomantic marks an open
+ * dropdown with the classes "active visible" on its container, whoever opened
+ * it, so the state follows the DOM rather than depending on the component
+ * callbacks -- which a score of template call sites override with their own.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -204,11 +207,7 @@ var _dropdownA11y = (function() {
      */
     var _sweep = function(root) {
         $(root || document).find('.ui.dropdown').each(function() {
-            var $dd = $(this);
-            _setup($dd);
-            //the entries of a dropdown are replaced as results are fetched,
-            //long after it was first described
-            _refreshState($dd);
+            _processDropdown($(this));
         });
     };
 
@@ -248,8 +247,7 @@ var _dropdownA11y = (function() {
 
                 var $target = $(record.target);
                 if ($target.hasClass('dropdown')) {
-                    _setup($target);
-                    _refreshState($target);
+                    _processDropdown($target);
                 } else if ($target.hasClass('item')) {
                     //the cursor moved, or a value was picked
                     _refreshState($target.closest('.ui.dropdown'));
@@ -261,6 +259,23 @@ var _dropdownA11y = (function() {
             attributes: true,
             attributeFilter: ['class']
         });
+    };
+
+    /**
+     * Fully process a dropdown: bind autosubmit behavior, apply
+     * accessibility attributes, describe it, and refresh its current state.
+     */
+    var _processDropdown = function($dd) {
+        if ($dd.hasClass('autosubmit')) {
+            _bindAutosubmit($dd);
+        }
+        _setup($dd);
+        if ($dd.hasClass('autosubmit')) {
+            _describeAutosubmit($dd);
+        }
+        //the entries of a dropdown are replaced as results are fetched,
+        //long after it was first described
+        _refreshState($dd);
     };
 
     /**
@@ -337,6 +352,89 @@ var _dropdownA11y = (function() {
                 }
             }
         });
+    };
+
+    /**
+     * Associate the existing autosubmit description with the actual
+     * combobox control.
+     *
+     * The description is defined by the template through the
+     * data-autosubmit-description attribute. The value is copied both to the
+     * hidden span and to aria-describedby through the referenced element.
+     */
+    var _describeAutosubmit = function($dd) {
+        //_setup() is what stores the control the description has to be
+        //attached to; until it has run, there is nothing to point at
+        if (!$dd.data('a11yBound')) {
+            return;
+        }
+
+        var $control = $dd.data('a11yControl') || $dd;
+
+        var $description = $dd
+            .closest('.field')
+            .find('span[data-autosubmit-description]')
+            .first();
+
+        if (!$description.length) {
+            return;
+        }
+
+        var description = $.trim(
+            $description.attr('data-autosubmit-description') || ''
+        );
+
+        if (!description) {
+            return;
+        }
+
+        //Keep the text node and the data attribute synchronized.
+        $description.text(description);
+
+        //Use a stable id for this description. _ensureId() does not replace
+        //an id already present in the template.
+        var descriptionId = _ensureId(
+            $description,
+            'dropdown_help'
+        );
+
+        //Preserve existing aria-describedby references.
+        var describedBy = ($control.attr('aria-describedby') || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        if (describedBy.indexOf(descriptionId) === -1) {
+            describedBy.push(descriptionId);
+        }
+        $control.attr(
+            'aria-describedby',
+            describedBy.join(' ')
+        );
+    };
+
+    /**
+     * Keyboard accessibility for dropdowns with autosubmit.
+     *
+     * Selecting an item updates the dropdown value, closes it and submits the
+     * containing form, which takes the focus away with the page it replaces.
+     */
+    var _bindAutosubmit = function($dd) {
+        if (!$dd.data('autosubmitBound')) {
+            $dd.dropdown({
+                action: function(text, value, element) {
+                    var $element = element && element.jquery
+                            ? element
+                            : $(element),
+                        $dropdown = $element.closest('.ui.dropdown'),
+                        $form = $dropdown.closest('form');
+
+                    $dropdown.dropdown('set value', value);
+                    $dropdown.dropdown('hide');
+                    $form.trigger('submit');
+                }
+            });
+
+            $dd.data('autosubmitBound', true);
+        }
     };
 
     return {

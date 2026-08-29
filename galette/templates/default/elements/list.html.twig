@@ -40,6 +40,14 @@
                                 {% endfor %}
                                 </div>
                             </div>
+                            <span
+                                class="visually-hidden"
+                                {% if mode != 'ajax' %}
+                                    data-autosubmit-description="{{ _T('Selecting an item from the list will automatically reload the page') }}"
+                                {% else %}
+                                    data-autosubmit-description="{{ _T('Selecting an item from the list will automatically reload the table') }}"
+                                {% endif %}
+                            ></span>
                         </div>
                     </div>
         {% endif %}
