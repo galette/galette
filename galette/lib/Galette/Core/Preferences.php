@@ -24,14 +24,13 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Enums\ContactSource;
 use Galette\Enums\PasswordStrength;
+use Galette\Core\Preferences\Assets;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
-use function Safe\mkdir;
 use function Safe\preg_match;
 use function Safe\preg_replace;
-use function Safe\unlink;
 
 /**
  * Preferences for galette
@@ -223,6 +222,8 @@ class Preferences
     /** @var Social[] */
     private array $socials;
 
+    private Assets $assets;
+
     /** @var array<string, bool> Constants already reported as overriding a preference */
     private array $reported_overrides = [];
 
@@ -241,6 +242,7 @@ class Preferences
     public function __construct(Db $zdb, bool $load = true)
     {
         $this->zdb = $zdb;
+        $this->assets = new Assets();
         $this->required = PreferencesSchema::getRequired();
         if ($load) {
             $this->load();
@@ -1709,27 +1711,7 @@ class Preferences
      */
     public function cleanHtmlValue(string $value): string
     {
-        $config = \HTMLPurifier_Config::createDefault();
-        $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
-        if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0o755, true);
-        }
-        $config->set('Cache.SerializerPath', $cache_dir);
-        $config->set('URI.AllowedSchemes', [
-            'http' => true,
-            'https' => true,
-            'mailto' => true,
-            'ftp' => true,
-        ]);
-        $purifier = new \HTMLPurifier($config);
-
-        // Remove all dangerous schemes
-        $value = preg_replace(
-            '/\b(?:javascript|data|vbscript):\s*/i',
-            '',
-            $value
-        );
-        return $purifier->purify($value);
+        return $this->assets->cleanHtmlValue(value: $value);
     }
 
     /**
@@ -1848,22 +1830,24 @@ class Preferences
      */
     protected function checkCssImpacted(array $values): void
     {
-        //check if custom CSS is enabled
-        if (($values['pref_enable_custom_colors'] ?? '') != $this->pref_enable_custom_colors) {
-            $this->delete_dark_css = true;
-            return;
-        }
-
-        $css_fields = array_filter(
-            array_keys($this->prefs),
-            fn($field) => str_starts_with((string)$field, 'pref_cc_')
-        );
-        foreach ($css_fields as $css_field) {
-            if ($values[$css_field] != $this->$css_field) {
-                $this->delete_dark_css = true;
-                return;
+        $watched = ['pref_enable_custom_colors'];
+        foreach (array_keys($this->prefs) as $field) {
+            if (str_starts_with((string)$field, 'pref_cc_')) {
+                $watched[] = $field;
             }
         }
+
+        $current = [];
+        foreach ($watched as $field) {
+            //read through __get: a boolean stored as an empty string does not
+            //compare to a submitted one the way the raw value would
+            $current[$field] = $this->$field;
+        }
+
+        $this->delete_dark_css = $this->assets->isCssImpacted(
+            submitted: $values,
+            current: $current
+        );
     }
 
     /**
@@ -1877,15 +1861,7 @@ class Preferences
             return;
         }
 
-        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
-        if (file_exists($cssfile)) {
-            unlink($cssfile);
-            // Inform user when the dark mode CSS file has been reset
-            $flash->addMessage(
-                'info_detected',
-                _T("Dark mode CSS file has been reset.")
-            );
-        }
+        $this->assets->resetDarkCss(flash: $flash);
     }
 
     /**
@@ -1898,28 +1874,9 @@ class Preferences
      */
     public function handleLogo(Logo|PrintLogo $logo, UploadedFileInterface $uploaded_file): array|bool
     {
-        $this->errors = [];
-        if ($uploaded_file->getError() === UPLOAD_ERR_OK) {
-            $res = $logo->storeFile($uploaded_file);
-            if ($res !== true) {
-                $this->errors[] = $logo->getErrorMessage($res);
-            }
-        } elseif ($uploaded_file->getError() !== UPLOAD_ERR_NO_FILE) {
-            $this->errors[] = $logo->getPhpErrorMessage(
-                $uploaded_file->getError()
-            );
-        }
+        $this->errors = $this->assets->storeLogo(logo: $logo, uploaded_file: $uploaded_file);
 
-        if (count($this->errors) > 0) {
-            Analog::log(
-                'Some errors has been thew attempting to edit/store logo' . "\n"
-                . print_r($this->errors, true),
-                Analog::WARNING
-            );
-            return $this->errors;
-        } else {
-            return true;
-        }
+        return $this->errors === [] ? true : $this->errors;
     }
 
     /**
