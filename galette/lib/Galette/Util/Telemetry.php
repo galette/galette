@@ -290,7 +290,7 @@ class Telemetry
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
         if (empty($uuid)) {
-            $uuid = $this->prefs->generateUuid($type);
+            $uuid = $this->prefs->generateUUID($type);
         }
         return $uuid;
     }
