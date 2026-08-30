@@ -381,11 +381,9 @@ class Preferences
 
         //cleanup fields for demo
         if (Galette::isDemo()) {
-            unset(
-                $insert_values['pref_admin_login'],
-                $insert_values['pref_admin_pass'],
-                $insert_values['pref_mail_method']
-            );
+            foreach (PreferencesSchema::getDemoLocked() as $locked) {
+                unset($insert_values[$locked]);
+            }
         }
 
         $this->checkRelations($values, $insert_values);
@@ -1003,10 +1001,7 @@ class Preferences
     {
         $values = [];
         foreach (self::defaults() as $k => $v) {
-            if (
-                Galette::isDemo()
-                && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
-            ) {
+            if (Galette::isDemo() && PreferencesSchema::isDemoLocked($k)) {
                 continue;
             }
 

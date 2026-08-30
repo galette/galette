@@ -52,6 +52,7 @@ use Galette\Repository\Members;
  *     error?: string,
  *     sensitive?: bool,
  *     readonly?: bool,
+ *     demo_locked?: bool,
  *     acl?: string,
  *     constant?: string,
  *     plugin?: string
@@ -280,12 +281,14 @@ final class PreferencesSchema
                 'minlength' => 4,
                 'error' => self::ERR_LOGIN_LENGTH,
                 'acl' => self::ACL_SUPERADMIN,
+                'demo_locked' => true,
             ],
             'pref_admin_pass' => [
                 'type' => self::TYPE_PASSWORD,
                 'default' => 'admin',
                 'sensitive' => true,
                 'acl' => self::ACL_SUPERADMIN,
+                'demo_locked' => true,
             ],
             'pref_nom' => ['type' => self::TYPE_STRING, 'default' => 'Galette', 'required' => true],
             'pref_slogan' => ['type' => self::TYPE_STRING, 'default' => ''],
@@ -336,6 +339,7 @@ final class PreferencesSchema
             'pref_mail_method' => [
                 'type' => self::TYPE_INT,
                 'default' => GaletteMail::METHOD_DISABLED,
+                'demo_locked' => true,
             ],
             'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => ''],
             'pref_mail_smtp_host' => ['type' => self::TYPE_STRING, 'default' => ''],
@@ -598,6 +602,35 @@ final class PreferencesSchema
     public static function isReadOnly(string $name): bool
     {
         return self::getAll()[$name]['readonly'] ?? false;
+    }
+
+    /**
+     * Is that preference frozen on a demonstration instance?
+     *
+     * A public demo hands its credentials to everyone, so the values that
+     * would let a visitor take the instance over - or use it to send mail -
+     * are never written there.
+     *
+     * @param string $name Preference name
+     */
+    public static function isDemoLocked(string $name): bool
+    {
+        return self::getAll()[$name]['demo_locked'] ?? false;
+    }
+
+    /**
+     * Get every preference frozen on a demonstration instance
+     *
+     * @return array<string>
+     */
+    public static function getDemoLocked(): array
+    {
+        return array_keys(
+            array_filter(
+                self::getAll(),
+                static fn(array $entry): bool => $entry['demo_locked'] ?? false
+            )
+        );
     }
 
     /**
