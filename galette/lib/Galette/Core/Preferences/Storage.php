@@ -23,7 +23,7 @@ use Throwable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-final class Storage
+final readonly class Storage
 {
     public const string TABLE = 'preferences';
     public const string PK = 'id_pref';
@@ -36,7 +36,7 @@ final class Storage
      *
      * @param Db $zdb Db instance
      */
-    public function __construct(private readonly Db $zdb)
+    public function __construct(private Db $zdb)
     {
     }
 

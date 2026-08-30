@@ -26,14 +26,14 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-final class Identity
+final readonly class Identity
 {
     /**
      * Constructor
      *
      * @param Db $zdb Db instance
      */
-    public function __construct(private readonly Db $zdb)
+    public function __construct(private Db $zdb)
     {
     }
 
