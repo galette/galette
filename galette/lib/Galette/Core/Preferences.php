@@ -1097,12 +1097,14 @@ class Preferences
                 'pref_etiq_corps',
                 'pref_filter_account',
                 'pref_mail_method',
+                'pref_mail_smtp_port',
                 'pref_membership_ext',
+                'pref_membership_offermonths',
                 'pref_numrows',
                 'pref_postal_address',
                 'pref_postal_staff_member',
                 'pref_org_phone',
-                'pref_org_phone_staff',
+                'pref_org_phone_staff_member',
                 'pref_password_length',
                 'pref_password_strength',
                 'pref_publicpages_visibility_generic',
@@ -1125,6 +1127,7 @@ class Preferences
                 'pref_bool_groupsmanagers_create_transactions',
                 'pref_bool_groupsmanagers_see_contributions',
                 'pref_bool_groupsmanagers_see_transactions',
+                'pref_bool_groupsmanagers_are_staff',
                 'pref_bool_mailadh',
                 'pref_bool_mailowner',
                 'pref_bool_publicpages',
@@ -1140,7 +1143,8 @@ class Preferences
                 'pref_mail_allow_unsecure',
                 'pref_password_blacklist',
                 'pref_hide_bg_image',
-                'pref_enable_custom_colors'
+                'pref_enable_custom_colors',
+                'pref_noindex'
             ]
         ];
 
