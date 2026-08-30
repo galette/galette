@@ -1471,7 +1471,7 @@ class Preferences
         if (defined('GALETTE_CRON')) {
             //no incoming request to guess the instance URL from
             throw new \RuntimeException(
-                _T('Please define constant "GALETTE_URI" with the path to your instance.')
+                _T('Please set your instance URL from the advanced configuration, or define the "GALETTE_URI" constant.')
             );
         }
 

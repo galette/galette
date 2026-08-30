@@ -52,8 +52,10 @@ if (!$container->get(Login::class)->isCron()) {
     die(1);
 }
 
-if ($cron && !defined('GALETTE_URI')) {
-    echo _T('Please define constant "GALETTE_URI" with the path to your instance.') . "\n";
+//a cron run has no incoming request to guess the instance URL from: it has to
+//be configured, either as a preference or as the legacy constant
+if ($cron && empty($container->get(\Galette\Core\Preferences::class)->getConfigValue('pref_galette_url'))) {
+    echo _T('Please set your instance URL from the advanced configuration, or define the "GALETTE_URI" constant.') . "\n";
     die(1);
 }
 
