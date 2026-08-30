@@ -9,19 +9,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-05-02 12:09+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
-">\n"
+"PO-Revision-Date: 2026-08-31 12:51+0000\n"
+"Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
+"ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -206,7 +205,8 @@ msgstr "கோப்பு மிகப் பெரியது. அதிக�
 
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr "படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க பக்க அளவு %sPX ஆகும்"
+msgstr ""
+"படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %sபுள்ளி ஆகும்"
 
 msgid "Mime-Type not allowed"
 msgstr "மைம்-வகை அனுமதிக்கப்படவில்லை"
@@ -931,7 +931,7 @@ msgid "Script output"
 msgstr "ச்கிரிப்ட் வெளியீடு"
 
 msgid "Membership"
-msgstr "உறுப்பினர்"
+msgstr "உறுப்பினர்அடையாளம்"
 
 msgid "Donation"
 msgstr "நன்கொடை"
@@ -982,7 +982,7 @@ msgid "Scheduled date:"
 msgstr "திட்டமிடப்பட்ட தேதி:"
 
 msgid "Paid"
-msgstr "பணம்"
+msgstr "பணம் செலுத்தப்பட்டது"
 
 msgid "Insert a carriage return"
 msgstr "வண்டி திரும்ப செருகவும்"
@@ -1609,15 +1609,11 @@ msgstr "இறக்குமதி மாதிரி சேமிக்கப�
 msgid "Membership fee"
 msgstr "உறுப்பினர் கட்டணம்"
 
-#, fuzzy
-#| msgid "Membership fee"
 msgid "New membership fee"
-msgstr "உறுப்பினர் கட்டணம்"
+msgstr "புதிய உறுப்பினர் கட்டணம்"
 
-#, fuzzy
-#| msgid "New installation"
 msgid "New donation"
-msgstr "புதிய நிறுவல்"
+msgstr "புதிய நன்கொடை"
 
 msgid "No related contribution type available, please create a new one."
 msgstr ""
@@ -1742,10 +1738,8 @@ msgstr "நகரும் புலம் ஒரு பிழை ஏற்ப�
 msgid "Group name is missing!"
 msgstr "குழு பெயர் காணவில்லை!"
 
-#, fuzzy
-#| msgid "A file with that name already exists!"
 msgid "Group name already exists!"
-msgstr "அந்த பெயருடன் ஒரு கோப்பு ஏற்கனவே உள்ளது!"
+msgstr "குழுவின் பெயர் ஏற்கனவே உள்ளது!"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -1759,10 +1753,8 @@ msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
 msgstr "பின்வரும் குழுக்களின் பெற்றோர் வெற்றிகரமாக மாற்றப்பட்டுள்ளனர் : %1$s"
 
-#, fuzzy
-#| msgid "Groups"
 msgid "Group"
-msgstr "குழுக்கள்"
+msgstr "குழு"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -1831,10 +1823,8 @@ msgstr "நிலை #%id வெற்றிகரமாக புதுப்�
 msgid "Remove status '%label'"
 msgstr "நிலையை அகற்று '%label'"
 
-#, fuzzy
-#| msgid "No document"
 msgid "New document"
-msgstr "ஆவணம் இல்லை"
+msgstr "புதிய ஆவணம்"
 
 msgid "Edit document"
 msgstr "ஆவணத்தைத் திருத்து"
@@ -1882,10 +1872,8 @@ msgstr "பரிவர்த்தனை #%idஐ ஏற்ற முடிய�
 msgid "Transaction"
 msgstr "பரிவர்த்தனை"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "New transaction"
-msgstr "பரிவர்த்தனையைக் காண்க"
+msgstr "புதிய பரிவர்த்தனை"
 
 msgid "An error occurred while saving the transaction."
 msgstr "பரிவர்த்தனையை சேமிக்கும் போது பிழை ஏற்பட்டது."
@@ -1955,20 +1943,14 @@ msgstr "கட்டண வகை %1$s ஐ அகற்று"
 msgid "Subscription"
 msgstr "சந்தா"
 
-#, fuzzy
-#| msgid "file"
 msgid "Profile"
-msgstr "கோப்பு"
+msgstr "சுயவிவரம்"
 
-#, fuzzy
-#| msgid "Edit field"
 msgid "Edit profile"
-msgstr "புலம் திருத்து"
+msgstr "சுயவிவரத்தைத் திருத்தவும்"
 
-#, fuzzy
-#| msgid "No member"
 msgid "New member"
-msgstr "உறுப்பினர் இல்லை"
+msgstr "புதிய உறுப்பினர்"
 
 #, php-format
 msgid "Mass change %1$s members"
@@ -2541,12 +2523,12 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"வணக்கம், {NEWLINE} நீங்கள் {asso_name of இன் உறுப்பினர் மேலாண்மை அமைப்பில் சந்தா "
-"செலுத்தியுள்ளீர்கள். {ASSO_NAME} இப்போது உங்கள் சந்தாவின் நிலையை நிகழ்நேரத்தில் "
-"பின்பற்றவும், உங்கள் விருப்பங்களை வலை இடைமுகத்திலிருந்து புதுப்பிக்கவும் முடியும். "
-"{நியூலைன் Your உங்கள் புதிய கடவுச்சொல்லை அமைக்க இந்த முகவரியில் உள்நுழைக: {NEWLINE} "
-"{NEWLINE} {BR} பயனர்பெயர்: {CHG_PWD_URI} {NEWLINE} மேலே உள்ள இணைப்பு {LOGIN} வரை "
-"செல்லுபடியாகும். (இந்த மின்னஞ்சல் தானாக அனுப்பப்பட்டது)"
+"வணக்கம், {NEWLINE} நீங்கள் {ASSO_NAME} இன் உறுப்பினர் மேலாண்மை அமைப்பில் சந்தா "
+"செலுத்தியுள்ளீர்கள். {NEWLINE} இப்போது உங்கள் சந்தாவின் நிலையை நிகழ்நேரத்தில் பின்பற்றவும், "
+"உங்கள் விருப்பங்களை வலை இடைமுகத்திலிருந்து புதுப்பிக்கவும் முடியும். {NEWLINE} உங்கள் "
+"புதிய கடவுச்சொல்லை அமைக்க இந்த முகவரியில் உள்நுழைக:{BR} {CHG_PWD_URI} {NEWLINE} "
+"பயனர்பெயர்:{LOGIN}{BR} மேலே உள்ள இணைப்பு {LINK_VALIDITY} வரை செல்லுபடியாகும்."
+"{NEWLINE} (இந்த மின்னஞ்சல் தானாக அனுப்பப்பட்டது)"
 
 msgid "New user registration"
 msgstr "புதிய பயனர் பதிவு"
@@ -2559,7 +2541,10 @@ msgid ""
 "automatically)"
 msgstr ""
 "வணக்கம், {NEWLINE} யாரோ (அநேகமாக நீங்கள்) உங்கள் கடவுச்சொல்லை மீட்டெடுக்க கேட்டார்கள். "
-"{NEWLINE} வரை செல்லுபடியாகும்."
+"{NEWLINE} உங்கள் புதிய கடவுச்சொல்லை அமைக்க, இந்த முகவரியில் உள்நுழையவும்: {BR}"
+"{CHG_PWD_URI}{NEWLINE}பயனர் பெயர்: {LOGIN}{BR}மேலே உள்ள இணைப்பு {LINK_VALIDITY} "
+"வரை செல்லுபடியாகும்.{NEWLINE}விரைவில் சந்திப்போம்!{NEWLINE}(இந்த மின்னஞ்சல் தானாகவே "
+"அனுப்பப்பட்டது)"
 
 msgid "Lost password email"
 msgstr "கடவுச்சொல் மின்னஞ்சல் இழந்தது"
@@ -3579,7 +3564,7 @@ msgid "Add new group search criteria"
 msgstr "புதிய குழு தேடல் அளவுகோல்களைச் சேர்க்கவும்"
 
 msgid "Logical operator"
-msgstr ""
+msgstr "தருக்க ஆபரேட்டர்"
 
 msgid "In all selected groups"
 msgstr "தேர்ந்தெடுக்கப்பட்ட அனைத்து குழுக்களிலும்"
@@ -3611,10 +3596,8 @@ msgstr "அல்லது"
 msgid "Select a field"
 msgstr "ஒரு புலத்தைத் தேர்ந்தெடுக்கவும்"
 
-#, fuzzy
-#| msgid "separator"
 msgid "Query operator"
-msgstr "பிரிப்பான்"
+msgstr "வினவல் ஆபரேட்டர்"
 
 msgid "is"
 msgstr "என்பது"
@@ -3622,10 +3605,8 @@ msgstr "என்பது"
 msgid "is not"
 msgstr "இல்லை"
 
-#, fuzzy
-#| msgid "Values:"
 msgid "Value"
-msgstr "மதிப்புகள்:"
+msgstr "மதிப்பு"
 
 msgid "before"
 msgstr "முன்"
@@ -3651,8 +3632,6 @@ msgstr "வடிப்பி"
 msgid "Clear filter"
 msgstr "தெளிவான வடிகட்டி"
 
-#, fuzzy
-#| msgid "choice"
 msgid "Choice"
 msgstr "தேர்வு"
 
@@ -3690,11 +3669,8 @@ msgstr "சொருகி தரவுத்தள துவக்க இடை
 msgid "Plugin database initialization: %1$s"
 msgstr "சொருகி தரவுத்தள துவக்கம்: %1$s"
 
-#, fuzzy
-#| msgid ""
-#| "An error occurred displaying plugin database initialization interface :("
 msgid "An error occurred on plugin database initialization :("
-msgstr "சொருகி தரவுத்தள துவக்க இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
+msgstr "செருகுநிரல் தரவுத்தள துவக்கத்தில் பிழை ஏற்பட்டது :("
 
 msgid "A required file is missing"
 msgstr "தேவையான கோப்பு இல்லை"
@@ -3702,20 +3678,14 @@ msgstr "தேவையான கோப்பு இல்லை"
 msgid "Incompatible with current version"
 msgstr "தற்போதைய பதிப்போடு பொருந்தாது"
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "தரவுத்தள அணுகல் மற்றும் அனுமதிகள்"
+msgstr "தரவுத்தள பதிப்பு காணவில்லை"
 
-#, fuzzy
-#| msgid "Not registered"
 msgid "Not installed"
-msgstr "பதிவு செய்யப்படவில்லை"
+msgstr "நிறுவப்படவில்லை"
 
-#, fuzzy
-#| msgid "Member card updated"
 msgid "Need update"
-msgstr "உறுப்பினர் அட்டை புதுப்பிக்கப்பட்டது"
+msgstr "அப்டேட் வேண்டும்"
 
 msgid "Explicitly disabled"
 msgstr "வெளிப்படையாக முடக்கப்பட்டது"
@@ -4047,10 +4017,8 @@ msgstr "மாதிரியை அகற்று இயல்புநில�
 msgid "Remove model"
 msgstr "மாதிரியை அகற்று"
 
-#, fuzzy
-#| msgid "Deletion"
 msgid "Selection"
-msgstr "நீக்குதல்"
+msgstr "தேர்வு"
 
 msgid "Store new model"
 msgstr "புதிய மாடலை சேமிக்கவும்"
@@ -5934,10 +5902,8 @@ msgstr "%type அகற்று"
 msgid "Add new social network"
 msgstr "புதிய சமூக வலைப்பின்னலைச் சேர்க்கவும்"
 
-#, fuzzy
-#| msgid "Social networks"
 msgid "Social network"
-msgstr "சமூக வலைப்பின்னல்கள்"
+msgstr "சமூக வலைப்பின்னல்"
 
 msgid "Pages:"
 msgstr "பக்கங்கள்:"
@@ -5972,10 +5938,8 @@ msgstr "விலைப்பட்டியல்"
 msgid "Receipt"
 msgstr "பற்றுச்சீட்டு"
 
-#, fuzzy
-#| msgid "Donation"
 msgid "Pagination"
-msgstr "நன்கொடை"
+msgstr "பேசினேசன்"
 
 msgid "Previous"
 msgstr "முந்தைய"
@@ -5989,10 +5953,8 @@ msgstr "பட்டியல் விளையாடுங்கள்"
 msgid "Compact menu"
 msgstr "சிறிய பட்டியல்"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Mobile main menu"
-msgstr "பட்டியல் விளையாடுங்கள்"
+msgstr "மொபைல் முதன்மை பட்டியல்"
 
 msgid "Go back to Galette homepage"
 msgstr "கேலட் முகப்புப்பக்கத்திற்குச் செல்லுங்கள்"
