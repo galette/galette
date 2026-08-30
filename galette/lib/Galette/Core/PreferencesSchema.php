@@ -44,6 +44,7 @@ use Galette\Repository\Members;
  *     error?: string,
  *     sensitive?: bool,
  *     readonly?: bool,
+ *     advanced?: bool,
  *     acl?: string,
  *     constant?: string
  * }
@@ -146,7 +147,7 @@ final class PreferencesSchema
             ],
             'pref_org_phone_staff_member' => ['type' => self::TYPE_INT, 'default' => ''],
             'pref_org_email' => ['type' => self::TYPE_EMAIL, 'default' => ''],
-            'pref_disable_members_socials' => ['type' => self::TYPE_BOOL, 'default' => false],
+            'pref_disable_members_socials' => ['type' => self::TYPE_BOOL, 'default' => false, 'advanced' => true],
             'pref_lang' => [
                 'type' => self::TYPE_STRING,
                 'default' => I18n::DEFAULT_LANG,
@@ -176,7 +177,7 @@ final class PreferencesSchema
                 'type' => self::TYPE_INT,
                 'default' => GaletteMail::METHOD_DISABLED,
             ],
-            'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => ''],
+            'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => '', 'advanced' => true],
             'pref_mail_smtp_host' => ['type' => self::TYPE_STRING, 'default' => ''],
             'pref_mail_smtp_auth' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_mail_smtp_secure' => ['type' => self::TYPE_BOOL, 'default' => false],
@@ -355,6 +356,7 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'constant' => 'GALETTE_X_FORWARDED_FOR_INDEX',
+                'advanced' => true,
             ],
             'pref_session_timeout' => [
                 'type' => self::TYPE_INT,
@@ -362,6 +364,7 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'constant' => 'GALETTE_TIMEOUT',
+                'advanced' => true,
             ],
         ];
     }
@@ -462,6 +465,20 @@ final class PreferencesSchema
     public static function isReadOnly(string $name): bool
     {
         return self::getAll()[$name]['readonly'] ?? false;
+    }
+
+    /**
+     * Is that preference left out of the settings form?
+     *
+     * Such a preference is only offered by the advanced configuration page, so
+     * a settings submission that does not carry it is not a request to turn it
+     * off: it keeps what is stored.
+     *
+     * @param string $name Preference name
+     */
+    public static function isAdvanced(string $name): bool
+    {
+        return self::getAll()[$name]['advanced'] ?? false;
     }
 
     /**
