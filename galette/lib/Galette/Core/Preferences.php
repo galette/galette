@@ -27,6 +27,7 @@ use Galette\Core\Preferences\Assets;
 use Galette\Core\Preferences\Fields;
 use Galette\Core\Preferences\Identity;
 use Galette\Core\Preferences\Relations;
+use Galette\Core\Preferences\Signature;
 use Galette\Core\Preferences\Storage;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
@@ -220,6 +221,7 @@ class Preferences
     private Fields $fields;
     private Identity $identity;
     private Relations $relations;
+    private Signature $signature;
     private Storage $storage;
 
     /** @var array<string, bool> Constants already reported as overriding a preference */
@@ -244,6 +246,7 @@ class Preferences
         $this->fields = new Fields(assets: $this->assets);
         $this->identity = new Identity(zdb: $zdb);
         $this->relations = new Relations();
+        $this->signature = new Signature(zdb: $zdb);
         $this->storage = new Storage(zdb: $zdb);
         $this->required = PreferencesSchema::getRequired();
         if ($load) {
@@ -1051,39 +1054,11 @@ class Preferences
      */
     protected function getSignaturePatterns(bool $legacy = true): array
     {
-        $s_patterns = [];
-        $social = new Social($this->zdb);
-
-        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
-
-        foreach ($types as $type) {
-            $s_patterns['asso_social_' . strtolower($type)] = [
-                'title' => $social->getSystemType($type),
-                'pattern' => '/{ASSO_SOCIAL_' . strtoupper($type) . '}/'
-            ];
-        }
-
-        if ($legacy === true) {
-            $main = $this->getMainPatterns();
-            $s_patterns['_asso_name'] = [
-                'title'     => $main['asso_name']['title'],
-                'pattern'   => '/{NAME}/'
-            ];
-
-            $s_patterns['_asso_website'] = [
-                'title'     => $main['asso_website']['title'],
-                'pattern'   => '/{WEBSITE}/'
-            ];
-
-            foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
-                $s_patterns['_asso_social_' . $legacy_type] = [
-                    'title' => $s_patterns['asso_social_' . $legacy_type]['title'],
-                    'pattern' => '/{' . strtoupper($legacy_type) . '}/'
-                ];
-            }
-        }
-
-        return $s_patterns;
+        return $this->signature->getPatterns(
+            core_types: $this->getCoreRegisteredTypes(),
+            main_patterns: $legacy ? $this->getMainPatterns() : [],
+            legacy: $legacy
+        );
     }
 
     /**
@@ -1093,37 +1068,13 @@ class Preferences
      */
     public function setSocialReplacements(): self
     {
-        $replacements = [];
-
-        $done_replacements = $this->getReplacements();
-        $replacements['_asso_name'] = $done_replacements['asso_name'];
-        $replacements['asso_website'] = $this->pref_website;
-        $replacements['_asso_website'] = $replacements['asso_website'];
-
-        $social = new Social($this->zdb);
-        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
-
-        foreach ($types as $type) {
-            $replace_value = null;
-            $socials = Social::getListForMember(null, $type);
-            if (count($socials)) {
-                $replace_value = '';
-                foreach ($socials as $social) {
-                    if ($replace_value != '') {
-                        $replace_value .= ', ';
-                    }
-                    $replace_value .= $social->url;
-                }
-            }
-            $replacements['asso_social_' . strtolower($type)] = $replace_value;
-        }
-
-
-        foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
-            $replacements['_asso_social_' . $legacy_type] = $replacements['asso_social_' . $legacy_type];
-        }
-
-        $this->setReplacements($replacements);
+        $this->setReplacements(
+            $this->signature->getSocialReplacements(
+                core_types: $this->getCoreRegisteredTypes(),
+                done_replacements: $this->getReplacements(),
+                website: $this->pref_website
+            )
+        );
 
         return $this;
     }
