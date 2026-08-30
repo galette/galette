@@ -177,9 +177,6 @@ class GaletteController extends AbstractController
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'general';
 
-        //mailing queue usage (consumed quota over the rolling windows)
-        $mail_usage = (new MailingQueue($this->zdb, $this->preferences))->getUsage();
-
         // display page
         $this->view->render(
             $response,
@@ -189,7 +186,6 @@ class GaletteController extends AbstractController
                 'staff_members'         => $m->getStaffMembersList(true),
                 'time'                  => time(),
                 'pref'                  => $pref,
-                'mail_usage'            => $mail_usage,
                 'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',

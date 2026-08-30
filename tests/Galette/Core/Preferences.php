@@ -1342,6 +1342,9 @@ class Preferences extends GaletteTestCase
 
         $this->preferences->pref_session_timeout = 42;
         $this->preferences->pref_x_forwarded_for_index = 2;
+        $this->preferences->pref_mail_batch_size = 25;
+        $this->preferences->pref_mail_hourly_limit = 100;
+        $this->preferences->pref_mail_smtp_keepalive = true;
 
         //what the settings form submits: every preference it renders
         $post = [];
@@ -1360,5 +1363,8 @@ class Preferences extends GaletteTestCase
 
         $this->assertSame(42, $this->preferences->pref_session_timeout);
         $this->assertSame(2, $this->preferences->pref_x_forwarded_for_index);
+        $this->assertSame(25, $this->preferences->pref_mail_batch_size);
+        $this->assertSame(100, $this->preferences->pref_mail_hourly_limit);
+        $this->assertTrue($this->preferences->pref_mail_smtp_keepalive);
     }
 }

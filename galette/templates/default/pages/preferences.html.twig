@@ -769,42 +769,6 @@
                             <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"/>
                         </div>
                     </div>
-                    <h4 class="ui dividing header">{{ _T("Mass mailing") }}</h4>
-                    <div id="mailing_batch" class="field">
-                        <div class="field">
-                            <label for="pref_mail_batch_size">{{ _T("Recipients per message:") }}</label>
-                            <input type="number" min="0" name="pref_mail_batch_size" id="pref_mail_batch_size" value="{{ pref.pref_mail_batch_size }}" size="10"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Maximum number of recipients (hidden copy) per message when sending a mass mailing. Use it to comply with servers that limit the number of recipients per message. 0 means a single message for the whole list (previous behaviour).") }}" aria-hidden="true"></i>
-                        </div>
-                        <div class="field">
-                            <label for="pref_mail_batch_delay">{{ _T("Delay between messages (seconds):") }}</label>
-                            <input type="number" min="0" name="pref_mail_batch_delay" id="pref_mail_batch_delay" value="{{ pref.pref_mail_batch_delay }}" size="10"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Pause, in seconds, between two messages of a mass mailing. Use it to comply with servers that throttle sending rate.") }}" aria-hidden="true"></i>
-                        </div>
-                        <div class="field">
-                            <label for="pref_mail_hourly_limit">{{ _T("Maximum emails per hour:") }}</label>
-                            <input type="number" min="0" name="pref_mail_hourly_limit" id="pref_mail_hourly_limit" value="{{ pref.pref_mail_hourly_limit }}" size="10"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Maximum number of emails to send per hour. When set (greater than 0), mass mailings are queued and spread over time. 0 means no hourly limit.") }}" aria-hidden="true"></i>
-{% if mail_usage is defined %}
-                            <div class="ui small grey text">{{ _T("Sent in the last hour:") }} {{ mail_usage.sent_last_hour }}{% if mail_usage.hourly_limit > 0 %} / {{ mail_usage.hourly_limit }}{% endif %}</div>
-{% endif %}
-                        </div>
-                        <div class="field">
-                            <label for="pref_mail_daily_limit">{{ _T("Maximum emails per day:") }}</label>
-                            <input type="number" min="0" name="pref_mail_daily_limit" id="pref_mail_daily_limit" value="{{ pref.pref_mail_daily_limit }}" size="10"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Maximum number of emails to send per day. When set (greater than 0), mass mailings are queued and spread over time. 0 means no daily limit.") }}" aria-hidden="true"></i>
-{% if mail_usage is defined %}
-                            <div class="ui small grey text">{{ _T("Sent in the last day:") }} {{ mail_usage.sent_last_day }}{% if mail_usage.daily_limit > 0 %} / {{ mail_usage.daily_limit }}{% endif %}</div>
-{% endif %}
-                        </div>
-                        <div class="field inline">
-                            <div class="ui right aligned toggle checkbox">
-                                <input type="checkbox" name="pref_mail_smtp_keepalive" id="pref_mail_smtp_keepalive" value="1" {% if pref.pref_mail_smtp_keepalive == 1 %}checked="checked"{% endif %}/>
-                                <label for="pref_mail_smtp_keepalive">{{ _T("Reuse SMTP connection?") }}</label>
-                            </div>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Keep the SMTP connection open to send several messages in a row instead of reconnecting each time. Only applies to SMTP and GMAIL methods.") }}" aria-hidden="true"></i>
-                        </div>
-                    </div>
                 </div>{# /column #}
             </div>{# /column grid #}
     {% endif %}

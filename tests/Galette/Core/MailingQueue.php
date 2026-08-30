@@ -59,11 +59,11 @@ class MailingQueue extends GaletteTestCase
         );
 
         $mh = new \Galette\Core\MailingHistory(
-            $this->zdb,
-            $this->login,
-            $this->preferences,
-            null,
-            $mailing
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: null,
+            mailing: $mailing
         );
         $this->assertTrue($mh->storeMailing(false));
 
