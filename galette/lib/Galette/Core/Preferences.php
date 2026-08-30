@@ -24,14 +24,13 @@ use Galette\Entity\Status;
 use Galette\Enums\ContactSource;
 use Galette\Enums\PasswordStrength;
 use Galette\Core\Preferences\Assets;
+use Galette\Core\Preferences\Fields;
 use Galette\Core\Preferences\Identity;
 use Galette\Core\Preferences\Relations;
 use Galette\Core\Preferences\Storage;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
-
-use function Safe\preg_match;
 
 /**
  * Preferences for galette
@@ -207,12 +206,6 @@ class Preferences
 
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
-    /** @var array<string> */
-    private static array $fields = [
-        'nom_pref',
-        'val_pref'
-    ];
-
     /**
      * Preferences defaults, lazily derived from PreferencesSchema
      *
@@ -224,6 +217,7 @@ class Preferences
     private array $socials;
 
     private Assets $assets;
+    private Fields $fields;
     private Identity $identity;
     private Relations $relations;
     private Storage $storage;
@@ -247,6 +241,7 @@ class Preferences
     {
         $this->zdb = $zdb;
         $this->assets = new Assets();
+        $this->fields = new Fields(assets: $this->assets);
         $this->identity = new Identity(zdb: $zdb);
         $this->relations = new Relations();
         $this->storage = new Storage(zdb: $zdb);
@@ -587,214 +582,38 @@ class Preferences
     /**
      * Validate value of a field
      *
-     * Constraints come from the schema. The few checks that cannot be
-     * expressed declaratively are delegated to a dedicated method each.
+     * Errors are appended to the preferences error bag rather than returned:
+     * the caller is __set(), which has no other channel.
      *
-     * @param string $fieldname Field name
-     * @param mixed  $value     Value to be set
+     * @param string     $fieldname Field name
+     * @param mixed      $value     Value to be set
+     * @param Login|null $login     Logged in user, to tell an already taken superadmin login
      */
-    public function validateValue(string $fieldname, mixed $value): mixed
+    public function validateValue(string $fieldname, mixed $value, ?Login $login = null): mixed
     {
-        $entry = PreferencesSchema::get($fieldname);
-        if ($entry === null) {
-            //unknown preference, it may come from a plugin: leave it untouched
-            return $value;
-        }
+        $value = $this->fields->validate(
+            fieldname: $fieldname,
+            value: $value,
+            preferences: $this,
+            login: $login ?? $this->currentLogin()
+        );
 
-        return match ($entry['type']) {
-            PreferencesSchema::TYPE_EMAIL,
-            PreferencesSchema::TYPE_EMAILS => $this->validateEmails($fieldname, $value),
-            PreferencesSchema::TYPE_INT => $this->validateNumber($fieldname, $entry, $value),
-            PreferencesSchema::TYPE_COLOR => $this->validateColor($fieldname, $value),
-            PreferencesSchema::TYPE_LOGIN => $this->validateAdminLogin($entry, $value),
-            PreferencesSchema::TYPE_PASSWORD => $this->validateAdminPass($value),
-            PreferencesSchema::TYPE_DATE_MD => $this->validateBegMembership($value),
-            PreferencesSchema::TYPE_YEAR => $this->validateCardYear($value),
-            PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
-            PreferencesSchema::TYPE_HTML => $this->cleanHtmlValue((string)$value),
-            default => $value,
-        };
-    }
-
-    /**
-     * Check email validity
-     *
-     * A TYPE_EMAILS field accepts a comma-separated list of valid addresses,
-     * such as "mail@domain.com,other@mail.com".
-     *
-     * @param string $fieldname Field name
-     * @param mixed  $value     Value to check
-     */
-    private function validateEmails(string $fieldname, mixed $value): mixed
-    {
-        $addresses = [];
-        if (trim((string)$value) != '') {
-            $addresses = PreferencesSchema::getType($fieldname) === PreferencesSchema::TYPE_EMAILS
-                ? explode(',', (string)$value)
-                : [$value];
-        }
-
-        foreach ($addresses as $address) {
-            if (!GaletteMail::isValidEmail($address)) {
-                $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
-                Analog::log($msg, Analog::WARNING);
-                $this->errors[] = $msg;
-            }
-        }
+        $this->errors = array_merge($this->errors, $this->fields->getErrors());
 
         return $value;
     }
 
     /**
-     * Check a number against the bounds declared in the schema
+     * Who is connected, as far as the validators are concerned
      *
-     * Integers without any bound are not validated, only cast on read.
-     *
-     * @param string               $fieldname Field name
-     * @param array<string, mixed> $entry     Schema entry
-     * @param mixed                $value     Value to check
+     * Nothing hands a Login down to __set(), and the superadmin login check
+     * needs one; the global goes away as soon as every caller passes one.
      */
-    private function validateNumber(string $fieldname, array $entry, mixed $value): mixed
+    private function currentLogin(): ?Login
     {
-        if (!isset($entry['min']) && !isset($entry['max'])) {
-            return $value;
-        }
+        $login = $GLOBALS['login'] ?? null;
 
-        if (
-            !is_numeric($value)
-            || (isset($entry['min']) && $value < $entry['min'])
-            || (isset($entry['max']) && $value > $entry['max'])
-        ) {
-            $this->errors[] = PreferencesSchema::getErrorMessage((string)$entry['error'], $fieldname);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Normalize a color
-     *
-     * An unparsable color is not an error: strip background colors fall back
-     * to black, and the text color to white.
-     *
-     * @param string $fieldname Field name
-     * @param mixed  $value     Value to normalize
-     */
-    private function validateColor(string $fieldname, mixed $value): string
-    {
-        $matches = [];
-        if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string)$value, $matches)) {
-            return $fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000';
-        }
-
-        return '#' . $matches[2];
-    }
-
-    /**
-     * Check superadmin login
-     *
-     * @param array<string, mixed> $entry Schema entry
-     * @param mixed                $value Value to check
-     */
-    private function validateAdminLogin(array $entry, mixed $value): mixed
-    {
-        global $login;
-
-        if (Galette::isDemo()) {
-            Analog::log(
-                'Trying to set superadmin login while in DEMO.',
-                Analog::WARNING
-            );
-        } elseif (strlen((string)$value) < (int)$entry['minlength']) {
-            $this->errors[] = PreferencesSchema::getErrorMessage((string)$entry['error']);
-        } elseif ($login->loginExists($value)) {
-            //check if login is already taken
-            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_LOGIN_EXISTS);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Check superadmin password strength
-     *
-     * @param mixed $value Value to check
-     */
-    private function validateAdminPass(mixed $value): mixed
-    {
-        if (Galette::isDemo()) {
-            Analog::log(
-                'Trying to set superadmin pass while in DEMO.',
-                Analog::WARNING
-            );
-            return $value;
-        }
-
-        $pwcheck = new \Galette\Util\Password($this);
-        $pwcheck->addPersonalInformation([$this->pref_admin_login]);
-        if (!$pwcheck->isValid($value)) {
-            $this->errors = array_merge(
-                $this->errors,
-                $pwcheck->getErrors()
-            );
-        }
-
-        return $value;
-    }
-
-    /**
-     * Check beginning of membership, expressed as a day/month pair
-     *
-     * @param mixed $value Value to check
-     */
-    private function validateBegMembership(mixed $value): mixed
-    {
-        $beg_membership = explode("/", (string)$value);
-        if (count($beg_membership) != 2) {
-            $this->errors[] = PreferencesSchema::getErrorMessage(
-                PreferencesSchema::ERR_BEG_MEMBERSHIP_FORMAT
-            );
-        } else {
-            $now = getdate();
-            if (!checkdate((int)$beg_membership[1], (int)$beg_membership[0], $now['year'])) {
-                $this->errors[] = PreferencesSchema::getErrorMessage(
-                    PreferencesSchema::ERR_BEG_MEMBERSHIP_DATE
-                );
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * Check year for members cards
-     *
-     * @param mixed $value Value to check
-     */
-    private function validateCardYear(mixed $value): mixed
-    {
-        if (
-            $value !== 'DEADLINE'
-            && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string)$value)
-        ) {
-            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_CARD_YEAR);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Check website URL
-     *
-     * @param mixed $value Value to check
-     */
-    private function validateWebUrl(mixed $value): mixed
-    {
-        if (!isValidWebUrl($value)) {
-            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_WEBSITE);
-        }
-
-        return $value;
+        return $login instanceof Login ? $login : null;
     }
 
     /**
