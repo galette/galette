@@ -34,6 +34,17 @@
                 </div>
             </div>
 
+{% if mail_usage.hourly_limit > 0 or mail_usage.daily_limit > 0 %}
+            <div class="ui small grey text" id="queue_quota">
+    {% if mail_usage.hourly_limit > 0 %}
+                <div>{{ _T("Sent in the last hour: %sent of %limit")|replace({'%sent': mail_usage.sent_last_hour, '%limit': mail_usage.hourly_limit}) }}</div>
+    {% endif %}
+    {% if mail_usage.daily_limit > 0 %}
+                <div>{{ _T("Sent in the last day: %sent of %limit")|replace({'%sent': mail_usage.sent_last_day, '%limit': mail_usage.daily_limit}) }}</div>
+    {% endif %}
+            </div>
+{% endif %}
+
             <div class="ui message" id="queue_status_message" style="display: none;">
                 <p id="queue_status"></p>
             </div>

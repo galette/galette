@@ -313,7 +313,13 @@ class MailingsController extends CrudController
                     || ((int)$this->preferences->pref_mail_daily_limit > 0);
 
                 if ($use_queue) {
-                    $mlh = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
+                    $mlh = new MailingHistory(
+                        zdb: $this->zdb,
+                        login: $this->login,
+                        preferences: $this->preferences,
+                        filters: null,
+                        mailing: $mailing
+                    );
                     $mlh->storeMailing(false);
                     $queue = new MailingQueue($this->zdb, $this->preferences);
                     $nb = $queue->enqueue((int)$mailing->id, $mailing->recipients);
@@ -783,6 +789,7 @@ class MailingsController extends CrudController
                 'mailing_id'    => $id,
                 'process_url'   => $this->routeparser->urlFor('mailingProcessQueue'),
                 'stats'         => $queue->getStats($id),
+                'mail_usage'    => $queue->getUsage(),
                 'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
                 'documentation' => 'usermanual/adherents.html#e-mailing'
             ]
@@ -832,6 +839,7 @@ class MailingsController extends CrudController
                 'mailing_id'    => null,
                 'process_url'   => $this->routeparser->urlFor('remindersProcessQueue'),
                 'stats'         => $queue->getStats(null, MailingQueue::KIND_REMINDER),
+                'mail_usage'    => $queue->getUsage(),
                 'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
                 'documentation' => 'usermanual/contributions.html#reminders'
             ]

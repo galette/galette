@@ -224,7 +224,13 @@ class MailingQueue
 
         $pending = $this->countByStatus(self::STATUS_PENDING, $only_mailing_id, $kind);
         if ($pending === 0) {
-            return $this->progress($only_mailing_id, false, 0, 0, $kind);
+            return $this->progress(
+                mailing_id: $only_mailing_id,
+                rate_limited: false,
+                batch_sent: 0,
+                batch_failed: 0,
+                kind: $kind
+            );
         }
 
         //how many recipients may still be sent right now? (the quota is global,
@@ -239,12 +245,24 @@ class MailingQueue
 
         if ($allowed <= 0) {
             //rate limit reached, nothing can be sent for now
-            return $this->progress($only_mailing_id, true, 0, 0, $kind);
+            return $this->progress(
+                mailing_id: $only_mailing_id,
+                rate_limited: true,
+                batch_sent: 0,
+                batch_failed: 0,
+                kind: $kind
+            );
         }
 
         $next = $this->getNextPendingRow($only_mailing_id, $kind);
         if ($next === null) {
-            return $this->progress($only_mailing_id, false, 0, 0, $kind);
+            return $this->progress(
+                mailing_id: $only_mailing_id,
+                rate_limited: false,
+                batch_sent: 0,
+                batch_failed: 0,
+                kind: $kind
+            );
         }
 
         if ((int)$next->kind === self::KIND_REMINDER) {
@@ -260,11 +278,11 @@ class MailingQueue
         }
 
         return $this->progress(
-            $only_mailing_id,
-            false,
-            $result['sent'],
-            $result['failed'],
-            $kind
+            mailing_id: $only_mailing_id,
+            rate_limited: false,
+            batch_sent: $result['sent'],
+            batch_failed: $result['failed'],
+            kind: $kind
         );
     }
 
@@ -278,7 +296,13 @@ class MailingQueue
      */
     public function getStats(?int $mailing_id = null, ?int $kind = null): array
     {
-        return $this->progress($mailing_id, false, 0, 0, $kind);
+        return $this->progress(
+            mailing_id: $mailing_id,
+            rate_limited: false,
+            batch_sent: 0,
+            batch_failed: 0,
+            kind: $kind
+        );
     }
 
     /**
@@ -361,7 +385,7 @@ class MailingQueue
                 $status = $attempts >= self::MAX_ATTEMPTS
                     ? self::STATUS_FAILED
                     : self::STATUS_PENDING;
-                $this->markRow($qid, $status, $error, $attempts);
+                $this->markRow(id: $qid, status: $status, error: $error, attempts: $attempts);
                 if ($status === self::STATUS_FAILED) {
                     $failed++;
                 }
