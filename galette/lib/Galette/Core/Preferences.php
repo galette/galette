@@ -693,23 +693,6 @@ class Preferences
      * Are public pages visible?
      *
      * @param Authentication $login Authentication instance
-     *
-     * @deprecated 1.2.0
-     */
-    public function showPublicPages(Authentication $login): bool
-    {
-        Analog::log(
-            'Preferences::showPublicPages() is deprecated, use Preferences::showPublicPage() instead.',
-            Analog::WARNING
-        );
-        return $this->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
-            || $this->showPublicPage($login, 'pref_publicpages_visibility_membersgallery');
-    }
-
-    /**
-     * Are public pages visible?
-     *
-     * @param Authentication $login Authentication instance
      * @param string         $right Right to check
      */
     public function showPublicPage(Authentication $login, string $right): bool
