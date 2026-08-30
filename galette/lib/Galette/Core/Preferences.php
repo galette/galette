@@ -25,6 +25,7 @@ use Galette\Enums\ContactSource;
 use Galette\Enums\PasswordStrength;
 use Galette\Core\Preferences\Assets;
 use Galette\Core\Preferences\Identity;
+use Galette\Core\Preferences\Storage;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
@@ -166,8 +167,8 @@ class Preferences
     /** @var array<string> */
     private array $errors = [];
 
-    public const string TABLE = 'preferences';
-    public const string PK = 'id_pref';
+    public const string TABLE = Storage::TABLE;
+    public const string PK = Storage::PK;
 
     /** @deprecated 1.3.0 Use ContactSource::Preferences */
     public const int POSTAL_ADDRESS_FROM_PREFS = ContactSource::Preferences->value;
@@ -223,6 +224,7 @@ class Preferences
 
     private Assets $assets;
     private Identity $identity;
+    private Storage $storage;
 
     /** @var array<string, bool> Constants already reported as overriding a preference */
     private array $reported_overrides = [];
@@ -244,6 +246,7 @@ class Preferences
         $this->zdb = $zdb;
         $this->assets = new Assets();
         $this->identity = new Identity(zdb: $zdb);
+        $this->storage = new Storage(zdb: $zdb);
         $this->required = PreferencesSchema::getRequired();
         if ($load) {
             $this->load();
@@ -295,7 +298,7 @@ class Preferences
      */
     private function checkUpdate(): bool
     {
-        $params = [];
+        $missing = [];
         foreach (self::defaults() as $k => $v) {
             if (!isset($this->prefs[$k])) {
                 if ($k == 'pref_admin_pass' && $v == 'admin') {
@@ -306,55 +309,11 @@ class Preferences
                     'The field `' . $k . '` does not exist, Galette will attempt to create it.',
                     Analog::INFO
                 );
-                $params[] = [
-                    'nom_pref'  => $k,
-                    'val_pref'  => $v
-                ];
+                $missing[$k] = $v;
             }
         }
-        if (count($params)) {
-            try {
-                $this->zdb->handleSequence(
-                    self::TABLE,
-                    self::PK,
-                    7 //there were 7 entries in preferences before autoincrement was added...
-                );
 
-                $insert = $this->zdb->insert(self::TABLE);
-                $insert->values(
-                    [
-                        'nom_pref'  => ':nom_pref',
-                        'val_pref'  => ':val_pref'
-                    ]
-                );
-                $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-                foreach ($params as $p) {
-                    $stmt->execute(
-                        [
-                            'nom_pref' => $p['nom_pref'],
-                            'val_pref' => $p['val_pref']
-                        ]
-                    );
-                }
-            } catch (Throwable $e) {
-                Analog::log(
-                    sprintf(
-                        'Unable to add missing preferences. %s',
-                        $e->getMessage()
-                    ),
-                    Analog::WARNING
-                );
-                return false;
-            }
-
-            Analog::log(
-                'Missing preferences were successfully stored into database.',
-                Analog::INFO
-            );
-        }
-
-        return true;
+        return $this->storage->insertMissing(values: $missing);
     }
 
     /**
@@ -363,22 +322,15 @@ class Preferences
     public function load(): bool
     {
         $this->prefs = [];
+        $values = $this->storage->readAll();
 
-        try {
-            $result = $this->zdb->selectAll(self::TABLE);
-            foreach ($result as $pref) {
-                $this->prefs[$pref->nom_pref] = $pref->val_pref;
-            }
-            $this->socials = Social::getListForMember(null);
-            return true;
-        } catch (Throwable) {
-            Analog::log(
-                'Preferences cannot be loaded. Galette should not work without '
-                . 'preferences. Exiting.',
-                Analog::URGENT
-            );
+        if ($values === null) {
             return false;
         }
+
+        $this->prefs = $values;
+        $this->socials = Social::getListForMember(null);
+        return true;
     }
 
     /**
@@ -392,54 +344,14 @@ class Preferences
      */
     public function installInit(string $lang, string $adm_login, string $adm_pass): bool
     {
-        try {
-            //first, we drop all values
-            $delete = $this->zdb->delete(self::TABLE);
-            $this->zdb->execute($delete);
+        //replace default values with the ones user has selected
+        $values = self::defaults();
+        $values['pref_lang'] = $lang;
+        $values['pref_admin_login'] = $adm_login;
+        $values['pref_admin_pass'] = $adm_pass;
+        $values['pref_card_year'] = date('Y');
 
-            //we then replace default values with the ones user has selected
-            $values = self::defaults();
-            $values['pref_lang'] = $lang;
-            $values['pref_admin_login'] = $adm_login;
-            $values['pref_admin_pass'] = $adm_pass;
-            $values['pref_card_year'] = date('Y');
-
-            $insert = $this->zdb->insert(self::TABLE);
-            $insert->values(
-                [
-                    'nom_pref'  => ':nom_pref',
-                    'val_pref'  => ':val_pref'
-                ]
-            );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-            foreach ($values as $k => $v) {
-                $stmt->execute(
-                    [
-                        'nom_pref' => $k,
-                        'val_pref' => $v
-                    ]
-                );
-            }
-
-            $this->zdb->handleSequence(
-                self::TABLE,
-                self::PK,
-                count(self::defaults())
-            );
-
-            Analog::log(
-                'Default preferences were successfully stored into database.',
-                Analog::INFO
-            );
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default preferences.' . $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
-        }
+        return $this->storage->replaceAll(values: $values);
     }
 
     /**
@@ -1089,76 +1001,45 @@ class Preferences
      */
     public function store(bool $updating = false): bool
     {
+        $values = [];
+        foreach (self::defaults() as $k => $v) {
+            if (
+                Galette::isDemo()
+                && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
+            ) {
+                continue;
+            }
+
+            //do not store pref_adhesion_form, it's designed to be overridden by plugin
+            if ($k === 'pref_adhesion_form') {
+                //cannot be empty, reset to default
+                $values[$k] = trim($v) == '' ? self::defaults()['pref_adhesion_form'] : $v;
+                continue;
+            }
+
+            $values[$k] = $this->prefs[$k];
+        }
+
+        if (!$this->storage->updateMany(values: $values)) {
+            return false;
+        }
+
         try {
-            $this->zdb->beginTransaction();
-            $update = $this->zdb->update(self::TABLE);
-            $update->set(
-                [
-                    'val_pref'  => ':val_pref'
-                ]
-            )->where->equalTo('nom_pref', ':nom_pref');
-
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
-
-            foreach (self::defaults() as $k => $v) {
-                if (
-                    Galette::isDemo()
-                    && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
-                ) {
-                    continue;
-                }
-                Analog::log('Storing ' . $k, Analog::DEBUG);
-
-                $value = $this->prefs[$k];
-                //do not store pdf_adhesion_form, it's designed to be overridden by plugin
-                if ($k === 'pref_adhesion_form') {
-                    if (trim($v) == '') {
-                        //Reset to default, should not be empty
-                        $v = self::defaults()['pref_adhesion_form'];
-                    }
-                    $value = $v;
-                }
-
-                $stmt->execute(
-                    [
-                        'val_pref'  => $value,
-                        'nom_pref'  => $k
-                    ]
-                );
-            }
-            $this->zdb->commit();
-            Analog::log(
-                'Preferences were successfully stored into database.',
-                Analog::INFO
-            );
-
-            //prevent socials removal; see https://bugs.galette.eu/issues/1912
             if ($updating === false) {
+                //prevent socials removal; see https://bugs.galette.eu/issues/1912
                 $this->storeSocials(null);
-            }
-
-            if ($updating === false) {
                 //dynamic fields
                 $this->dynamicsStore(true);
             }
-
-            return true;
         } catch (Throwable $e) {
-            if ($this->zdb->inTransaction()) {
-                $this->zdb->rollback();
-            }
-
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
             Analog::log(
-                'Unable to store preferences | ' . print_r($messages, true),
+                'Unable to store preferences related data | ' . $e->getMessage(),
                 Analog::WARNING
             );
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1685,29 +1566,7 @@ class Preferences
      */
     private function persistValue(string $field, mixed $value): bool
     {
-        try {
-            $update = $this->zdb->update(self::TABLE);
-            $update
-                ->set(['val_pref'  => $value])
-                ->where->equalTo('nom_pref', $field);
-            $this->zdb->execute($update);
-            Analog::log(
-                sprintf('%s updated.', $field),
-                Analog::INFO
-            );
-            return true;
-        } catch (Throwable $e) {
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
-            Analog::log(
-                sprintf('Unable to store update field %s | %s', $field, print_r($messages, true)),
-                Analog::WARNING
-            );
-            return false;
-        }
+        return $this->storage->updateOne(name: $field, value: $value);
     }
 
     /**
