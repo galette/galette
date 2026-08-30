@@ -331,8 +331,16 @@ final class PreferencesSchema
             'pref_cc_secondary_text' => ['type' => self::TYPE_COLOR, 'default' => '#1b1c1d'],
             /* Preferences for emails */
             'pref_email_nom' => ['type' => self::TYPE_STRING, 'default' => 'Galette'],
-            'pref_email' => ['type' => self::TYPE_EMAIL, 'default' => 'mail@domain.com'],
-            'pref_email_newadh' => ['type' => self::TYPE_EMAILS, 'default' => 'mail@domain.com'],
+            'pref_email' => [
+                'type' => self::TYPE_EMAIL,
+                'default' => 'mail@domain.com',
+                'demo_locked' => true,
+            ],
+            'pref_email_newadh' => [
+                'type' => self::TYPE_EMAILS,
+                'default' => 'mail@domain.com',
+                'demo_locked' => true,
+            ],
             'pref_bool_mailadh' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_bool_mailowner' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_editor_enabled' => ['type' => self::TYPE_BOOL, 'default' => false],
@@ -365,7 +373,11 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_OFFERMONTHS,
             ],
-            'pref_email_reply_to' => ['type' => self::TYPE_EMAIL, 'default' => ''],
+            'pref_email_reply_to' => [
+                'type' => self::TYPE_EMAIL,
+                'default' => '',
+                'demo_locked' => true,
+            ],
             'pref_website' => ['type' => self::TYPE_URL, 'default' => ''],
             /* Preferences for labels */
             'pref_etiq_marges_v' => $measure + ['default' => 10, 'required' => true],

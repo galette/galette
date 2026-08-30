@@ -1284,9 +1284,9 @@ class Preferences
             return;
         }
 
-        if (($name == 'pref_email' || $name == 'pref_email_newadh' || $name == 'pref_email_reply_to') && Galette::isDemo()) {
+        if (Galette::isDemo() && PreferencesSchema::isDemoLocked($name)) {
             Analog::log(
-                'Trying to set pref_email while in DEMO.',
+                sprintf('Trying to set %s while in DEMO.', $name),
                 Analog::WARNING
             );
             return;
