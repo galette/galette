@@ -63,6 +63,14 @@
  */
 //define('GALETTE_SQL_DEBUG', true);
 
+/**
+ * Feature flags to activate, among those declared in
+ * includes/sys_config/feature_flags.inc.php
+ *
+ * They only apply when GALETTE_DEBUG is enabled.
+ */
+//define('GALETTE_FEATURE_FLAGS', ['acls', 'oauth2']);
+
 /*
  * Settings moved to the advanced configuration page
  *
@@ -103,13 +111,6 @@
 //define('GALETTE_X_FORWARDED_FOR_INDEX', 1);
 
 /**
- * Hide Galette version from the pages footer
- *
- * Now stored as pref_hide_version.
- */
-//define('GALETTE_HIDE_VERSION', true);
-
-/**
  * Session cookie lifetime, in seconds. 0 means until the browser is closed.
  *
  * @see https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
@@ -117,13 +118,3 @@
  * Now stored as pref_session_timeout.
  */
 //define('GALETTE_TIMEOUT', 0);
-
-/**
- * Feature flags to activate, among those declared in
- * includes/sys_config/feature_flags.inc.php
- *
- * They only apply when GALETTE_DEBUG is enabled.
- *
- * Now stored as pref_feature_flags, as a comma separated list.
- */
-//define('GALETTE_FEATURE_FLAGS', ['acls', 'oauth2']);
