@@ -54,6 +54,7 @@ use Galette\Repository\Members;
  *     readonly?: bool,
  *     demo_locked?: bool,
  *     mailer?: bool,
+ *     advanced?: bool,
  *     acl?: string,
  *     constant?: string,
  *     plugin?: string
@@ -313,7 +314,7 @@ final class PreferencesSchema
             ],
             'pref_org_phone_staff_member' => ['type' => self::TYPE_INT, 'default' => ''],
             'pref_org_email' => ['type' => self::TYPE_EMAIL, 'default' => ''],
-            'pref_disable_members_socials' => ['type' => self::TYPE_BOOL, 'default' => false],
+            'pref_disable_members_socials' => ['type' => self::TYPE_BOOL, 'default' => false, 'advanced' => true],
             'pref_lang' => [
                 'type' => self::TYPE_STRING,
                 'default' => I18n::DEFAULT_LANG,
@@ -355,7 +356,7 @@ final class PreferencesSchema
                 'demo_locked' => true,
                 'mailer' => true,
             ],
-            'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => ''],
+            'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => '', 'advanced' => true],
             'pref_mail_smtp_host' => ['type' => self::TYPE_STRING, 'default' => '', 'mailer' => true],
             'pref_mail_smtp_auth' => ['type' => self::TYPE_BOOL, 'default' => false, 'mailer' => true],
             'pref_mail_smtp_secure' => ['type' => self::TYPE_BOOL, 'default' => false, 'mailer' => true],
@@ -516,66 +517,77 @@ final class PreferencesSchema
                 'default' => 5,
                 'min' => AuthThrottle::MIN_ATTEMPTS,
                 'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true
             ],
             'pref_throttle_account_ip_window' => [
                 'type' => self::TYPE_INT,
                 'default' => 900,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             'pref_throttle_ip_attempts' => [
                 'type' => self::TYPE_INT,
                 'default' => 30,
                 'min' => AuthThrottle::MIN_ATTEMPTS,
                 'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true
             ],
             'pref_throttle_ip_window' => [
                 'type' => self::TYPE_INT,
                 'default' => 900,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             'pref_throttle_account_attempts' => [
                 'type' => self::TYPE_INT,
                 'default' => 100,
                 'min' => AuthThrottle::MIN_ATTEMPTS,
                 'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true
             ],
             'pref_throttle_account_window' => [
                 'type' => self::TYPE_INT,
                 'default' => 86400,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             'pref_throttle_delay' => [
                 'type' => self::TYPE_INT,
                 'default' => 900,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             'pref_throttle_recovery_attempts' => [
                 'type' => self::TYPE_INT,
                 'default' => 3,
                 'min' => AuthThrottle::MIN_ATTEMPTS,
                 'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true
             ],
             'pref_throttle_recovery_window' => [
                 'type' => self::TYPE_INT,
                 'default' => 3600,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             'pref_throttle_subscribe_attempts' => [
                 'type' => self::TYPE_INT,
                 'default' => 5,
                 'min' => AuthThrottle::MIN_ATTEMPTS,
                 'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true
             ],
             'pref_throttle_subscribe_window' => [
                 'type' => self::TYPE_INT,
                 'default' => 3600,
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true
             ],
             /* Settings that used to live in behavior.inc.php only */
             'pref_x_forwarded_for_index' => [
@@ -584,6 +596,7 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'constant' => 'GALETTE_X_FORWARDED_FOR_INDEX',
+                'advanced' => true,
             ],
             'pref_session_timeout' => [
                 'type' => self::TYPE_INT,
@@ -591,6 +604,7 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'constant' => 'GALETTE_TIMEOUT',
+                'advanced' => true,
             ],
         ];
     }
@@ -738,6 +752,20 @@ final class PreferencesSchema
                 static fn(array $entry): bool => $entry['mailer'] ?? false
             )
         );
+    }
+
+    /**
+     * Is that preference left out of the settings form?
+     *
+     * Such a preference is only offered by the advanced configuration page, so
+     * a settings submission that does not carry it is not a request to turn it
+     * off: it keeps what is stored.
+     *
+     * @param string $name Preference name
+     */
+    public static function isAdvanced(string $name): bool
+    {
+        return self::getAll()[$name]['advanced'] ?? false;
     }
 
     /**

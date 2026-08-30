@@ -435,6 +435,10 @@ class Preferences
      * is blanked, which is what lets an unchecked checkbox turn its preference
      * off.
      *
+     * A preference the settings form does not render is the exception: the
+     * payload never carries it, so blanking it would reset it every time the
+     * form is saved. It keeps what is stored instead.
+     *
      * @param array<string, mixed> $values Submitted values
      *
      * @return array<string, mixed>
@@ -452,6 +456,8 @@ class Preferences
 
             if (isset($values[$fieldname])) {
                 $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
+            } elseif (PreferencesSchema::isAdvanced($fieldname)) {
+                $value = $this->prefs[$fieldname];
             } else {
                 $value = "";
             }
