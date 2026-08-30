@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Galette\Core\Preferences;
+use Galette\Enums\PasswordStrength;
 use Galette\Entity\Adherent;
 
 use function Safe\file_get_contents;
@@ -85,7 +86,8 @@ class Password
         }
 
         //check also against personal information
-        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE && in_array(mb_strtolower($password), $this->personal_infos)) {
+        $strength = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength);
+        if ($strength !== null && $strength !== PasswordStrength::None && in_array(mb_strtolower($password), $this->personal_infos)) {
             $this->errors[] = _T('Do not use any of your personal information as password!');
         }
 

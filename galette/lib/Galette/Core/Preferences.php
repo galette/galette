@@ -22,6 +22,9 @@ use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
+use Galette\Enums\ContactSource;
+use Galette\Enums\PasswordStrength;
+use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
@@ -168,39 +171,39 @@ class Preferences
     public const string TABLE = 'preferences';
     public const string PK = 'id_pref';
 
-    /** Postal address will be the one given in the preferences */
-    public const int POSTAL_ADDRESS_FROM_PREFS = 0;
-    /** Postal address will be the one of the selected staff member */
-    public const int POSTAL_ADDRESS_FROM_STAFF = 1;
+    /** @deprecated 1.3.0 Use ContactSource::Preferences */
+    public const int POSTAL_ADDRESS_FROM_PREFS = ContactSource::Preferences->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMember */
+    public const int POSTAL_ADDRESS_FROM_STAFF = ContactSource::StaffMember->value;
 
-    /** Phone number will be the one given in the preferences */
-    public const int PHONE_NUMBER_FROM_PREFS = 0;
-    /** Phone number will be the one of the selected staff member */
-    public const int PHONE_NUMBER_FROM_STAFF = 1;
-    /** Phone number will be the GSM of the selected staff member */
-    public const int PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
+    /** @deprecated 1.3.0 Use ContactSource::Preferences */
+    public const int PHONE_NUMBER_FROM_PREFS = ContactSource::Preferences->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMember */
+    public const int PHONE_NUMBER_FROM_STAFF = ContactSource::StaffMember->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMemberMobile */
+    public const int PHONE_NUMBER_MOBILE_FROM_STAFF = ContactSource::StaffMemberMobile->value;
 
-    /** Public pages stuff */
-    /** Public pages are publicly visibles */
-    public const int PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
-    /** Public pages are visibles for up-to-date members only */
-    public const int PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
-    /** Public pages are visibles for admin and staff members only */
-    public const int PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
-    /** Public pages are hidden */
-    public const int PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
-    public const int PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Everyone */
+    public const int PUBLIC_PAGES_VISIBILITY_PUBLIC = PublicPageVisibility::Everyone->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::UpToDateMembers */
+    public const int PUBLIC_PAGES_VISIBILITY_RESTRICTED = PublicPageVisibility::UpToDateMembers->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::StaffOnly */
+    public const int PUBLIC_PAGES_VISIBILITY_PRIVATE = PublicPageVisibility::StaffOnly->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Hidden */
+    public const int PUBLIC_PAGES_VISIBILITY_HIDDEN = PublicPageVisibility::Hidden->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Inherit */
+    public const int PUBLIC_PAGES_VISIBILITY_INHERIT = PublicPageVisibility::Inherit->value;
 
-    /** No password strength */
-    public const int PWD_NONE = 0;
-    /** Weak password strength */
-    public const int PWD_WEAK = 1;
-    /** Medium password strength */
-    public const int PWD_MEDIUM = 2;
-    /** Strong password strength */
-    public const int PWD_STRONG = 3;
-    /** Very strong password strength */
-    public const int PWD_VERY_STRONG = 4;
+    /** @deprecated 1.3.0 Use PasswordStrength::None */
+    public const int PWD_NONE = PasswordStrength::None->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Weak */
+    public const int PWD_WEAK = PasswordStrength::Weak->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Medium */
+    public const int PWD_MEDIUM = PasswordStrength::Medium->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Strong */
+    public const int PWD_STRONG = PasswordStrength::Strong->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::VeryStrong */
+    public const int PWD_VERY_STRONG = PasswordStrength::VeryStrong->value;
 
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
@@ -1172,7 +1175,7 @@ class Preferences
         ];
 
 
-        if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
+        if (ContactSource::tryFrom((int)$this->prefs['pref_postal_address']) === ContactSource::Preferences) {
             $_address = $this->prefs['pref_adresse'];
             if ($this->prefs['pref_adresse2']) {
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
@@ -1222,12 +1225,14 @@ class Preferences
      */
     public function getPhoneNumber(): string
     {
-        if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
+        $source = ContactSource::tryFrom((int)$this->prefs['pref_org_phone']);
+
+        if ($source === null || !$source->isStaffMember()) {
             $_phone = $this->prefs['pref_org_phone_number'];
         } else {
             //get selected staff phone number
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_MOBILE_FROM_STAFF ? $adh->gsm : $adh->phone;
+            $_phone = $source === ContactSource::StaffMemberMobile ? $adh->gsm : $adh->phone;
         }
 
         return $_phone ?? '';
@@ -1276,28 +1281,19 @@ class Preferences
             //Core does not handle plugins permission, just a global right.
             $right = 'pref_publicpages_visibility_generic';
         }
-        switch ($this->prefs[$right]) {
-            case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
-                //inherit from generic right
-                return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
-            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                //pages are publicly visibles
-                return true;
-            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                //pages should be displayed only for up-to-date members
-                return
-                    $login->isUp2Date()
-                    || $login->isAdmin()
-                    || $login->isStaff()
-                ;
-            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
-                //pages should be displayed only for staff and admins
-                return $login->isAdmin() || $login->isStaff();
-            case self::PUBLIC_PAGES_VISIBILITY_HIDDEN:
-                return false;
-            default:
-                throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
+
+        $visibility = PublicPageVisibility::tryFrom((int)$this->prefs[$right]);
+        if ($visibility === null) {
+            throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
         }
+
+        return $visibility->isVisibleFor(
+            login: $login,
+            inherit: fn(): bool => $this->showPublicPage(
+                login: $login,
+                right: 'pref_publicpages_visibility_generic'
+            )
+        );
     }
 
     /**
