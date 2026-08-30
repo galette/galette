@@ -20,17 +20,16 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
-use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Enums\ContactSource;
 use Galette\Enums\PasswordStrength;
 use Galette\Core\Preferences\Assets;
+use Galette\Core\Preferences\Identity;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
 use function Safe\preg_match;
-use function Safe\preg_replace;
 
 /**
  * Preferences for galette
@@ -223,6 +222,7 @@ class Preferences
     private array $socials;
 
     private Assets $assets;
+    private Identity $identity;
 
     /** @var array<string, bool> Constants already reported as overriding a preference */
     private array $reported_overrides = [];
@@ -243,6 +243,7 @@ class Preferences
     {
         $this->zdb = $zdb;
         $this->assets = new Assets();
+        $this->identity = new Identity(zdb: $zdb);
         $this->required = PreferencesSchema::getRequired();
         if ($load) {
             $this->load();
@@ -1167,57 +1168,7 @@ class Preferences
      */
     public function getPostalAddress(): string
     {
-        $regs = [
-            '/%name/',
-            '/%complement/',
-            '/%address/',
-            '/%zip/',
-            '/%town/',
-            '/%country/',
-        ];
-
-
-        if (ContactSource::tryFrom((int)$this->prefs['pref_postal_address']) === ContactSource::Preferences) {
-            $_address = $this->prefs['pref_adresse'];
-            if ($this->prefs['pref_adresse2']) {
-                $_address .= "\n" . $this->prefs['pref_adresse2'];
-            }
-            $_country = $this->prefs['pref_pays'] != '' ? '- ' . $this->prefs['pref_pays'] : '';
-            $replacements = [
-                $this->prefs['pref_nom'],
-                "\n",
-                $_address,
-                $this->prefs['pref_cp'],
-                $this->prefs['pref_ville'],
-                $_country
-            ];
-        } else {
-            //get selected staff member address
-            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
-            $_complement = sprintf(
-                //TRANS: first parameter is name, second is status
-                _T('%1$s association\'s %2$s'),
-                $this->prefs['pref_nom'],
-                $adh->sstatus,
-            ) . "\n";
-            $_address = $adh->address;
-            $_country = $adh->country != '' ? '- ' . $adh->country : '';
-
-            $replacements = [
-                $adh->sfullname . "\n",
-                $_complement,
-                $_address,
-                $adh->zipcode,
-                $adh->town,
-                $_country
-            ];
-        }
-
-        return preg_replace(
-            $regs,
-            $replacements,
-            "%name%complement%address\n%zip %town %country"
-        );
+        return $this->identity->getPostalAddress(prefs: $this->prefs);
     }
 
     /**
@@ -1227,17 +1178,7 @@ class Preferences
      */
     public function getPhoneNumber(): string
     {
-        $source = ContactSource::tryFrom((int)$this->prefs['pref_org_phone']);
-
-        if ($source === null || !$source->isStaffMember()) {
-            $_phone = $this->prefs['pref_org_phone_number'];
-        } else {
-            //get selected staff phone number
-            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            $_phone = $source === ContactSource::StaffMemberMobile ? $adh->gsm : $adh->phone;
-        }
-
-        return $_phone ?? '';
+        return $this->identity->getPhoneNumber(prefs: $this->prefs);
     }
 
     /**
