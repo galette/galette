@@ -325,13 +325,43 @@ class Plugins
         uasort($this->modules, $this->sortModules(...));
 
         // Load translation, _prepend and ns_file
+        $declared = false;
         foreach (array_keys($this->getActiveModules()) as $id) {
             if ($lang !== null) {
                 $this->loadModuleL10N($id, $lang);
             }
             $this->loadEventProviders($id);
             $this->overridePrefs($id);
+            $declared = $this->registerPreferences($id) || $declared;
         }
+
+        if ($declared) {
+            //preferences were built before any plugin was known
+            $this->preferences->refreshSchema();
+        }
+    }
+
+    /**
+     * Register the preferences a module declares
+     *
+     * @param string $id Module ID
+     *
+     * @return bool Whether the module declared any
+     */
+    private function registerPreferences(string $id): bool
+    {
+        $class = $this->getClassName($id, true);
+        if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+            return false;
+        }
+
+        $plugin = $this->container->get($class);
+        if (!$plugin instanceof Plugins\PreferencesProviderInterface) {
+            return false;
+        }
+
+        PreferencesSchema::register($this->modules[$id]['route'], $plugin->getPreferences());
+        return true;
     }
 
     /**
@@ -500,6 +530,7 @@ class Plugins
     public function resetModulesList(): void
     {
         $this->modules = [];
+        PreferencesSchema::reset();
     }
 
     /**
@@ -520,6 +551,8 @@ class Plugins
         } catch (Exception $e) {
             throw new Exception(_T("Cannot deactivate plugin."), $e->getCode(), $e);
         }
+
+        PreferencesSchema::unregister($this->modules[$id]['route']);
     }
 
     /**

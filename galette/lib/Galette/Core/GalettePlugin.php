@@ -23,6 +23,7 @@ use Galette\Entity\Adherent;
  * - DashboardProviderInterface: if the plugin provides extra dashboard entries
  * - MemberActionProviderInterface: if the plugin provides extra member actions
  * - NewsProviderInterface: if the plugin provides news to be displayed in the dashboard
+ * - PreferencesProviderInterface: if the plugin stores settings in Galette preferences
  *
  * Note: a plugin can implement one or more of these interfaces, but it is not mandatory to implement all of them.
  * Methods are kept in the base class for backward compatibility, they will throw a deprecation warning if used

@@ -227,17 +227,21 @@ class AdvancedConfigController extends AbstractController
                 'sensitive' => $sensitive,
                 'readonly'  => PreferencesSchema::isReadOnly($name),
                 'locked_by' => $locked ? $constant : null,
+                'plugin'    => PreferencesSchema::getOwner($name),
                 'min'       => $schema['min'] ?? null,
                 'max'       => $schema['max'] ?? null,
             ];
         }
 
-        //rows left in database by an older version or by a plugin
+        //rows left in database by an older version, or by a plugin that is no
+        //longer active: an active one declares its preferences and is listed above
         foreach (array_diff($this->preferences->getFieldsNames(), array_keys(PreferencesSchema::getAll())) as $name) {
             $entries[] = [
-                'name'  => $name,
-                'known' => false,
-                'value' => $this->preferences->$name,
+                'name'   => $name,
+                'known'  => false,
+                //nothing describes it any more, so nothing owns it either
+                'plugin' => null,
+                'value'  => $this->preferences->$name,
             ];
         }
 

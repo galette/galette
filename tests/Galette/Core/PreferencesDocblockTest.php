@@ -37,11 +37,14 @@ class PreferencesDocblockTest extends GaletteTestCase
 
     /**
      * Every preference is annotated, and nothing else is
+     *
+     * Core preferences only: a plugin declares its own into the schema, and
+     * naming them on this class would have core depend on its plugins.
      */
     public function testDocblockMatchesPreferences(): void
     {
         $documented = $this->getDocumentedProperties();
-        $declared = array_keys($this->preferences->getDefaults());
+        $declared = array_keys(\Galette\Core\PreferencesSchema::getCore());
 
         foreach ($declared as $name) {
             $this->assertArrayHasKey(
@@ -91,7 +94,7 @@ class PreferencesDocblockTest extends GaletteTestCase
         $documented = $this->getDocumentedProperties();
         $casts = $this->getCastTypes();
 
-        foreach (array_keys($this->preferences->getDefaults()) as $name) {
+        foreach (array_keys(\Galette\Core\PreferencesSchema::getCore()) as $name) {
             $expected = $casts[$name] ?? 'string';
 
             $this->assertSame(

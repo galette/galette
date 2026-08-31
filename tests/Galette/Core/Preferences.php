@@ -367,6 +367,11 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test fields names
+     *
+     * Every declared preference must have a row. The converse does not hold:
+     * a plugin that has been deactivated, or an older version of Galette,
+     * leaves rows behind, and the advanced configuration page reports them as
+     * unknown rather than pretending they cannot exist.
      */
     public function testFieldsNames(): void
     {
@@ -374,10 +379,18 @@ class Preferences extends GaletteTestCase
         $fields_names = $this->preferences->getFieldsNames();
         $expected = array_keys($this->preferences->getDefaults());
 
-        sort($fields_names);
-        sort($expected);
+        $this->assertSame(
+            [],
+            array_values(array_diff($expected, $fields_names)),
+            'declared preferences missing from database'
+        );
 
-        $this->assertSame($expected, $fields_names);
+        foreach (array_diff($fields_names, $expected) as $name) {
+            $this->assertFalse(
+                \Galette\Core\PreferencesSchema::has($name),
+                $name . ' is declared but has no row'
+            );
+        }
     }
 
     /**

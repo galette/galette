@@ -57,6 +57,9 @@
     {% else %}
                         <span class="ui blue label">{{ _T("modified") }}</span>
     {% endif %}
+    {% if entry.plugin %}
+                        <span class="ui teal label" title="{{ _T("Declared by the %s plugin, and only while it stays active.")|replace({'%s': entry.plugin}) }}">{{ entry.plugin }}</span>
+    {% endif %}
                     </td>
                     <td data-col-label="{{ _T("Value") }}">
     {% if not entry.known or entry.locked_by or entry.readonly %}
@@ -194,7 +197,11 @@
                         </tr>
                         <tr>
                             <th scope="row"><span class="ui grey label">{{ _T("unknown") }}</span></th>
-                            <td class="back">{{ _T("A row found in database that Galette does not describe. It may come from an older version or from a plugin.") }}</td>
+                            <td class="back">{{ _T("A row found in database that Galette does not describe. It may come from an older version, or from a plugin that is no longer active.") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="ui teal label">{{ _T("plugin name") }}</span></th>
+                            <td class="back">{{ _T("Declared by that plugin rather than by Galette. Deactivate the plugin and the setting becomes unknown again, keeping its value until the plugin comes back.") }}</td>
                         </tr>
                     </tbody>
                 </table>

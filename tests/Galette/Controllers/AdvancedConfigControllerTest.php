@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Controllers;
 
+use Galette\Controllers\AdvancedConfigController;
 use Galette\Tests\GaletteRoutingTestCase;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -280,6 +281,62 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
                 $body,
                 'status ' . $status . ' missing from the legend'
             );
+        }
+    }
+
+    /**
+     * A preference a plugin declares is listed, editable, and credited to it
+     */
+    public function testPluginPreferenceIsEditable(): void
+    {
+        $this->reachPage();
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $row = $this->rowFor($body, 'pref_plugin1_label');
+
+        $this->assertStringContainsString('>plugin1<', $row, 'owning plugin not shown');
+        $this->assertStringContainsString('name="value"', $row, 'not offered for edition');
+    }
+
+    /**
+     * A row nothing describes is still rendered
+     *
+     * Such rows exist in the field, left by an older version or by a plugin
+     * that has been removed, and they carry none of what the table shows for
+     * a described one.
+     */
+    public function testUnknownRowIsRendered(): void
+    {
+        $this->reachPage();
+
+        $insert = $this->zdb->insert(\Galette\Core\Preferences::TABLE);
+        $insert->values(['nom_pref' => 'pref_left_over', 'val_pref' => 'from an older version']);
+        $this->zdb->execute($insert);
+        //the instance the page renders from was loaded before that row existed
+        $this->preferences->load();
+
+        try {
+            $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+            $row = $this->rowFor($body, 'pref_left_over');
+
+            $this->assertStringContainsString('>' . _T("unknown") . '<', $row);
+            $this->assertStringContainsString('from an older version', $row);
+            $this->assertStringNotContainsString('name="value"', $row, 'offered for edition');
+
+            //the table reads those outside of any "known" guard, so every entry
+            //has to carry them. strict_variables follows GALETTE_DEBUG, so a
+            //missing one only breaks the page on a debugging instance
+            $method = new \ReflectionMethod(AdvancedConfigController::class, 'getEntries');
+            $entries = $method->invoke($this->container->get(AdvancedConfigController::class));
+            foreach ($entries as $entry) {
+                foreach (['name', 'known', 'plugin', 'value'] as $key) {
+                    $this->assertArrayHasKey($key, $entry, $entry['name'] . ' has no ' . $key);
+                }
+            }
+        } finally {
+            $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
+            $delete->where(['nom_pref' => 'pref_left_over']);
+            $this->zdb->execute($delete);
         }
     }
 

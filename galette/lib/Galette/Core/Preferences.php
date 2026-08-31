@@ -246,6 +246,44 @@ class Preferences
     }
 
     /**
+     * Take into account preferences declared after this instance was built
+     *
+     * Preferences are constructed before plugins are even listed, so a plugin
+     * declaring its own arrives too late for the constructor. This picks the
+     * new entries up and creates their missing rows.
+     */
+    public function refreshSchema(): void
+    {
+        $this->required = PreferencesSchema::getRequired();
+        $this->checkUpdate();
+    }
+
+    /**
+     * Forget the defaults derived from the schema
+     *
+     * Called by PreferencesSchema whenever a plugin registration changes what
+     * the schema holds.
+     */
+    public static function invalidateDefaults(): void
+    {
+        self::$defaults = null;
+    }
+
+    /**
+     * Get the value of a preference declared by a plugin
+     *
+     * Those are deliberately not annotated on this class: naming them here
+     * would have core depend on its plugins. Static analysis therefore cannot
+     * follow `$preferences->pref_myplugin_thing`, and this is the way in.
+     *
+     * @param string $name Preference name
+     */
+    public function getPluginValue(string $name): mixed
+    {
+        return $this->__get($name);
+    }
+
+    /**
      * Check if all fields referenced in the default array do exist,
      * create them if not
      */
@@ -459,6 +497,12 @@ class Preferences
         $complete = [];
 
         foreach ($this->getFieldsNames() as $fieldname) {
+            if (PreferencesSchema::getOwner($fieldname) !== null) {
+                //declared by a plugin: it is never part of the core form, and
+                //taking it as missing would blank it on every save
+                continue;
+            }
+
             if (isset($values[$fieldname])) {
                 $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
             } else {

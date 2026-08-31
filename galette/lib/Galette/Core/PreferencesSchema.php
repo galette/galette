@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Status;
@@ -26,6 +27,13 @@ use Galette\Repository\Members;
  * Adding a preference means adding one entry here: `Preferences` derives its
  * defaults, its required fields and its type casts from this schema, and the
  * advanced configuration page lists it automatically.
+ *
+ * Plugins declare their own preferences through `PreferencesProviderInterface`;
+ * `Plugins` hands them to `register()`, which merges them into the schema so
+ * every accessor below treats them like any other preference. They are named
+ * `pref_<plugin route>_*` and carry the owning plugin in their `plugin` key.
+ * Their entries only exist while the plugin is active: deactivate it and the
+ * rows stay in database, unknown and read-only, until it comes back.
  *
  * Translated strings are deliberately kept out of the structural schema: it is
  * read on every `Preferences::__get()` call, and `_T()` must not run before the
@@ -45,7 +53,8 @@ use Galette\Repository\Members;
  *     sensitive?: bool,
  *     readonly?: bool,
  *     acl?: string,
- *     constant?: string
+ *     constant?: string,
+ *     plugin?: string
  * }
  */
 final class PreferencesSchema
@@ -80,8 +89,30 @@ final class PreferencesSchema
     public const string ERR_EMAIL = 'email';
     public const string ERR_POSITIVE_NUMBER = 'positive_number';
 
-    /** @var array<string, Entry>|null */
+    /** @var array<int, string> Every type an entry may declare */
+    private const array TYPES = [
+        self::TYPE_STRING,
+        self::TYPE_INT,
+        self::TYPE_BOOL,
+        self::TYPE_EMAIL,
+        self::TYPE_EMAILS,
+        self::TYPE_URL,
+        self::TYPE_COLOR,
+        self::TYPE_HTML,
+        self::TYPE_PASSWORD,
+        self::TYPE_LOGIN,
+        self::TYPE_DATE_MD,
+        self::TYPE_YEAR,
+    ];
+
+    /** @var array<string, Entry>|null Core and plugin entries, merged */
     private static ?array $schema = null;
+
+    /** @var array<string, Entry>|null Core entries alone */
+    private static ?array $core = null;
+
+    /** @var array<string, array<string, Entry>> Plugin route => its entries */
+    private static array $plugin_schema = [];
 
     /**
      * Get the whole schema
@@ -94,9 +125,141 @@ final class PreferencesSchema
     public static function getAll(): array
     {
         if (self::$schema === null) {
-            self::$schema = self::build();
+            self::$schema = self::getCore();
+            foreach (self::$plugin_schema as $entries) {
+                //union, never array_merge: a plugin cannot shadow a core preference
+                self::$schema += $entries;
+            }
         }
         return self::$schema;
+    }
+
+    /**
+     * Get the core schema alone, without any plugin contribution
+     *
+     * Core code that describes itself needs this rather than `getAll()`: the
+     * `@property` annotations on `Preferences` cannot name a plugin's keys
+     * without inverting the dependency.
+     *
+     * @return array<string, Entry>
+     */
+    public static function getCore(): array
+    {
+        if (self::$core === null) {
+            self::$core = self::build();
+        }
+        return self::$core;
+    }
+
+    /**
+     * Register the preferences a plugin declares
+     *
+     * Malformed entries are dropped and reported rather than thrown on:
+     * registration runs while modules are being loaded, where an exception
+     * would take the whole instance down over one faulty third-party plugin.
+     *
+     * @param string              $plugin  Plugin route name
+     * @param array<string,mixed> $entries Preference name => Entry
+     */
+    public static function register(string $plugin, array $entries): void
+    {
+        $accepted = [];
+        $prefix = 'pref_' . $plugin . '_';
+
+        foreach ($entries as $name => $entry) {
+            $error = self::rejectEntry(plugin: $plugin, prefix: $prefix, name: $name, entry: $entry);
+            if ($error !== null) {
+                Analog::log(
+                    sprintf('Plugin "%s" declares an invalid preference: %s', $plugin, $error),
+                    Analog::ERROR
+                );
+                continue;
+            }
+            /** @var Entry $entry */
+            $entry['plugin'] = $plugin;
+            $accepted[$name] = $entry;
+        }
+
+        self::$plugin_schema[$plugin] = $accepted;
+        self::invalidate();
+    }
+
+    /**
+     * Why an entry cannot be accepted, null when it can
+     *
+     * The prefix rule is what keeps a plugin off core preferences: no core
+     * name can ever carry a plugin prefix.
+     *
+     * @param string $plugin Plugin route name
+     * @param string $prefix Prefix every name of that plugin must carry
+     * @param string $name   Preference name
+     * @param mixed  $entry  Candidate entry
+     */
+    private static function rejectEntry(string $plugin, string $prefix, string $name, mixed $entry): ?string
+    {
+        if (!is_array($entry)) {
+            return sprintf('"%s" is not an array', $name);
+        }
+
+        if (!str_starts_with($name, $prefix)) {
+            return sprintf('"%s" is not prefixed with "%s"', $name, $prefix);
+        }
+
+        if (!isset($entry['type']) || !in_array($entry['type'], self::TYPES, true)) {
+            return sprintf('"%s" has no known type', $name);
+        }
+
+        if (!array_key_exists('default', $entry) || !is_scalar($entry['default'])) {
+            return sprintf('"%s" has no scalar default value', $name);
+        }
+
+        return null;
+    }
+
+    /**
+     * Drop the preferences a plugin declared
+     *
+     * @param string $plugin Plugin route name
+     */
+    public static function unregister(string $plugin): void
+    {
+        if (isset(self::$plugin_schema[$plugin])) {
+            unset(self::$plugin_schema[$plugin]);
+            self::invalidate();
+        }
+    }
+
+    /**
+     * Drop every plugin registration
+     *
+     * The registry is static, so it outlives a request only under a test
+     * runner; that is where this is needed.
+     */
+    public static function reset(): void
+    {
+        if (count(self::$plugin_schema) > 0) {
+            self::$plugin_schema = [];
+            self::invalidate();
+        }
+    }
+
+    /**
+     * Which plugin declared that preference, if any
+     *
+     * @param string $name Preference name
+     */
+    public static function getOwner(string $name): ?string
+    {
+        return self::getAll()[$name]['plugin'] ?? null;
+    }
+
+    /**
+     * Forget the merged schema, and the defaults Preferences derives from it
+     */
+    private static function invalidate(): void
+    {
+        self::$schema = null;
+        Preferences::invalidateDefaults();
     }
 
     /**
