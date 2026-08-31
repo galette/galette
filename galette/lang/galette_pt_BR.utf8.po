@@ -6,13 +6,14 @@
 # Luiz paulo de souza fontes junior <Lp.fontes@hotmail.com>, 2026.
 # Kauan Pacheco <KauanPacheco@proton.me>, 2026.
 # José Paulino <jpaulinophb@gmail.com>, 2026.
+# TheMoon <pudimdebacon3@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-06-01 08:33+0200\n"
-"PO-Revision-Date: 2026-08-18 19:48+0000\n"
-"Last-Translator: José Paulino <jpaulinophb@gmail.com>\n"
+"PO-Revision-Date: 2026-08-31 17:35+0000\n"
+"Last-Translator: TheMoon <pudimdebacon3@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "galette/galette/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -526,31 +527,31 @@ msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 msgid "Main information"
-msgstr ""
+msgstr "Mais informações"
 
 msgid "Social networks"
 msgstr "Redes sociais"
 
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "O arquivo CSS do modo escuro foi resetado."
 
 msgid "My Account"
-msgstr ""
+msgstr "Minha conta"
 
 msgid "My contributions"
-msgstr ""
+msgstr "Minhas contribuições"
 
 msgid "View and filter all my contributions"
-msgstr ""
+msgstr "Ver e filtrar todas as minhas contribuições"
 
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Meus pagamentos programados"
 
 msgid "View and filter all my scheduled payments"
-msgstr ""
+msgstr "Ver e filtrar todos os meus pagamentos agendados"
 
 msgid "My transactions"
 msgstr ""
