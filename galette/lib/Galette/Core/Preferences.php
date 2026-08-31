@@ -610,13 +610,13 @@ class Preferences
      * Who is connected, as far as the validators are concerned
      *
      * Nothing hands a Login down to __set(), and the superadmin login check
-     * needs one; the global goes away as soon as every caller passes one.
+     * needs one. The Replacements trait has php-di inject it, so it is there
+     * on any instance the container built; one built with new has none, and
+     * the check that needs it is simply skipped.
      */
     private function currentLogin(): ?Login
     {
-        $login = $GLOBALS['login'] ?? null;
-
-        return $login instanceof Login ? $login : null;
+        return $this->login ?? null;
     }
 
     /**
