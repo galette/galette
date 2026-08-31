@@ -71,7 +71,8 @@ class Texts
         }
         $this
             ->setDb($zdb)
-            ->setLogin($login);
+            ->setLogin($login)
+            ->setI18n($container?->get(I18n::class) ?? new I18n());
 
         $this
             ->setLegacy()

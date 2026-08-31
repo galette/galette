@@ -60,7 +60,12 @@ trait Replacements
     #[Inject]
     protected Preferences $preferences;
 
-    //Cannot be injected here: Uncaught Exception: Serialization of 'Psr\Http\Server\RequestHandlerInterface@anonymous' is not allowed in [no active file]:0
+    //Cannot be injected: Preferences hosts this trait, GaletteMail holds a
+    //Preferences, and MailingsController keeps a Mailing in session. Injecting
+    //the route parser would drag the whole Slim application into that session
+    //write and fail with "Serialization of
+    //'Psr\Http\Server\RequestHandlerInterface@anonymous' is not allowed".
+    //Hosts set it themselves through setRouteparser().
     protected RouteParser $routeparser;
 
     #[Inject]
@@ -543,8 +548,6 @@ trait Replacements
      */
     public function setNoContribution(): self
     {
-        global $login;
-
         $c_replacements = [
             'contrib_label'     => null,
             'contrib_amount'    => null,
@@ -571,7 +574,7 @@ trait Replacements
         $this->setReplacements($c_replacements);
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('contrib');
         $this->setDynamicFields(
             form_name: 'contrib',
@@ -589,9 +592,7 @@ trait Replacements
      */
     public function setContribution(Contribution $contrib): self
     {
-        global $login, $i18n;
-
-        $formatter = new NumberFormatter($i18n->getID(), NumberFormatter::SPELLOUT);
+        $formatter = new NumberFormatter($this->i18n->getID(), NumberFormatter::SPELLOUT);
 
         $c_replacements = [
             'contrib_label'     => $contrib->type->libelle,
@@ -619,7 +620,7 @@ trait Replacements
         $this->setReplacements($c_replacements);
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('contrib');
         $this->setDynamicFields(
             form_name: 'contrib',
@@ -637,8 +638,6 @@ trait Replacements
      */
     public function setMember(Adherent $member): self
     {
-        global $login;
-
         $address = $member->getAddress();
         $address_multi = self::addressToHtml($address);
 
@@ -702,7 +701,7 @@ trait Replacements
         );
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('adh');
         $this->setDynamicFields(
             form_name: 'adh',

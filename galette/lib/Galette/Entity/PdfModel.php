@@ -14,6 +14,7 @@ use ArrayObject;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Galette\Core\Db;
+use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
@@ -82,7 +83,8 @@ abstract class PdfModel
         $this->preferences = $preferences;
         $this
             ->setDb($zdb)
-            ->setLogin($login);
+            ->setLogin($login)
+            ->setI18n($container->get(I18n::class));
 
         if (is_int($args)) {
             $this->load($args);

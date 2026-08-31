@@ -66,12 +66,13 @@ class History
      * (blindly trusting X-Forwarded-For would make the IP address logging
      * very easy to deveive.
      *
-     * @param ?Preferences $preferences Preferences instance; falls back on the
-     *                                  global one, for callers that have none
+     * @param ?Preferences $preferences Preferences instance. Without one, the
+     *                                  header is not looked at: a caller that
+     *                                  cannot say how many proxies sit in
+     *                                  front gets the remote address
      */
     public static function findUserIPAddress(?Preferences $preferences = null): string
     {
-        $preferences ??= $GLOBALS['preferences'] ?? null;
         //1-based index, counted from the end of the header; 0 disables the lookup
         $index = (int)($preferences?->getConfigValue('pref_x_forwarded_for_index') ?? 0);
 
