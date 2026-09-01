@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #
 # This file is part of Galette (https://galette.eu).
@@ -7,7 +7,7 @@
 #
 
 import os, sys, argparse, re, git, http.client, subprocess
-import urlgrabber.progress, tarfile, shutil, gitdb, time, fnmatch
+import tarfile, shutil, gitdb, time, fnmatch
 from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
@@ -80,6 +80,9 @@ def propose_version():
 
     for tagref in tagrefs:
         tag = tagref.tag
+        if tag is None:
+            # lightweight tag, there is no tag object to read
+            continue
         if valid_version(tag.tag):
             # last minor version is always the last one :)
             if tag.tag > last_minor:
@@ -132,10 +135,16 @@ def is_existing_version(ver):
     """
     Look specified version exists
     """
+    global tag_commit
+
     for tagref in tagrefs:
         tag = tagref.tag
+        if tag is None:
+            # lightweight tag, there is no tag object to read
+            continue
         if valid_version(tag.tag):
             if tag.tag == ver:
+                tag_commit = tag.hexsha
                 return True
     return False
 
@@ -211,6 +220,9 @@ def _do_build(ver):
         local_dl_repo,
         archive_name
     )
+
+    if not os.path.exists(local_dl_repo):
+        os.makedirs(local_dl_repo)
 
     if not force:
         # first check if a version
@@ -613,6 +625,11 @@ def main():
         action="store_true"
     )
     parser.add_argument(
+        '--no-sign',
+        help='Do not sign the archive',
+        action='store_true'
+    )
+    parser.add_argument(
         '-n',
         '--nightly',
         help='Build nightly',
@@ -656,11 +673,15 @@ def main():
     repo = git.Repo(galette_repo)
     tagrefs = repo.tags
 
+    assume_yes = args.assume_yes
+
     if args.f == True:
         force = ask_user_confirm(
             'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
         )
-    assume_yes = args.assume_yes
+
+    if args.no_sign:
+        sign = False
 
     if args.local:
         if not args.download_url:
