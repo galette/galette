@@ -9,11 +9,16 @@
  */
 
 import { test as base, expect } from '@playwright/test';
+import { rmSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
 import { test } from '../fixtures/auth.fixture';
 import { axeBuilder, formatViolations } from '../fixtures/a11y.fixture';
 import { MemberListPage } from '../pages/MemberListPage';
 
 let animationTimeout = 500;
+
+// Playwright runs from the directory holding playwright.config.ts, i.e. the repo root
+const enableInstallFile = path.resolve(process.cwd(), 'galette/data/ENABLE_INSTALL');
 
 test.describe('Accessibility', () => {
 
@@ -42,12 +47,32 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
-  base('A11y - installer page', async ({ page }) => {
+  // Installer is disabled unless galette/data/ENABLE_INSTALL exists,
+  // both screens have to be audited.
+  base('A11y - installer page, disabled', async ({ page }) => {
+    rmSync(enableInstallFile, { force: true });
+
     await page.goto('/installer.php');
     await page.locator('h1').waitFor({ state: 'visible' });
+    await expect(page.locator('a[href="installer.php"]')).toBeVisible();
 
     const results = await axeBuilder(page).analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  base('A11y - installer page, enabled', async ({ page }) => {
+    writeFileSync(enableInstallFile, '');
+
+    try {
+      await page.goto('/installer.php');
+      await page.locator('h1').waitFor({ state: 'visible' });
+      await expect(page.locator('input[name="install_permsok"]')).toBeAttached();
+
+      const results = await axeBuilder(page).analyze();
+      expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    } finally {
+      rmSync(enableInstallFile, { force: true });
+    }
   });
 
   // Dashboard

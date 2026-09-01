@@ -48,6 +48,10 @@ if (!defined('GALETTE_DATA_PATH')) {
     //@phpstan-ignore theCodingMachineSafe.function
     define('GALETTE_DATA_PATH', GALETTE_ROOT . 'data/');
 }
+if (!defined('GALETTE_ENABLE_INSTALL_FILE')) {
+    //@phpstan-ignore theCodingMachineSafe.function
+    define('GALETTE_ENABLE_INSTALL_FILE', GALETTE_DATA_PATH . 'ENABLE_INSTALL');
+}
 if (!defined('GALETTE_PLUGINS_DATA_PATH')) {
     //@phpstan-ignore theCodingMachineSafe.function
     define('GALETTE_PLUGINS_DATA_PATH', GALETTE_DATA_PATH . 'plugins/');

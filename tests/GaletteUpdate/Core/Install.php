@@ -78,6 +78,10 @@ class Install extends BaseGaletteTestCase
         $this->assertTrue($exec);
         $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
 
+        //on a properly versioned database, the installed version is detectable,
+        //which lets the installer auto-skip the manual version selection step
+        $this->assertNotFalse($install->getCurrentVersion($this->zdb));
+
         $this->expectLogEntry(
             \Analog\Analog::WARNING,
             'Upgrading from 0.6 will soon be discontinued.'
