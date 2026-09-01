@@ -45,6 +45,8 @@ abstract class AbstractController
     #[Inject]
     protected Db $zdb;
     #[Inject]
+    protected \Galette\Core\AccessControl $accessControl;
+    #[Inject]
     protected Login $login;
     #[Inject]
     protected Preferences $preferences;

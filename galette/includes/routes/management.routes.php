@@ -18,6 +18,7 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\AdvancedConfigController;
 use Galette\Controllers\TextController;
+use Galette\Controllers\RbacController;
 use Galette\DynamicFields\DynamicField;
 use Galette\Middleware\Authenticate;
 
@@ -480,3 +481,14 @@ $app->get(
     '/document/get/{id:\d+}',
     [Crud\DocumentsController::class, 'getDocument']
 )->setName('getDocumentFile');
+
+// RBAC management
+$app->get(
+    '/rbac',
+    [RbacController::class, 'index']
+)->setName('rbac_matrix')->add($authenticate);
+
+$app->post(
+    '/rbac',
+    [RbacController::class, 'save']
+)->setName('save_rbac_matrix')->add($authenticate);

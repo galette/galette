@@ -579,4 +579,49 @@ class AuthController extends AbstractController
             errors: $errors
         );
     }
+    /**
+     * API Login - returns user info and scopes (JWT placeholder)
+     */
+    public function apiLogin(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $nick = $post['login'] ?? '';
+        $password = $post['password'] ?? '';
+
+        if ($nick === $this->preferences->pref_admin_login) {
+            $pw_superadmin = password_verify(
+                (string)$password,
+                $this->preferences->pref_admin_pass
+            );
+            if (!$pw_superadmin) {
+                $pw_superadmin = (
+                    md5((string)$password) === $this->preferences->pref_admin_pass
+                );
+            }
+            if ($pw_superadmin) {
+                $this->login->logAdmin($nick, $this->preferences);
+            }
+        } else {
+            $this->login->logIn($nick, $password);
+        }
+
+        if ($this->login->isLogged()) {
+            $userId = (int)$this->login->id;
+            $scopes = ($this->login->isSuperAdmin())
+                ? ['*:*']
+                : $this->accessControl->getUserPermissions($userId);
+
+            return $this->withJson($response, [
+                'status' => 'success',
+                'uid' => $userId,
+                'scopes' => $scopes,
+                'message' => 'JWT generation requires firebase/php-jwt'
+            ]);
+        }
+
+        return $this->withJson($response, [
+            'status' => 'error',
+            'message' => _T('Login failed.')
+        ], 401);
+    }
 }
