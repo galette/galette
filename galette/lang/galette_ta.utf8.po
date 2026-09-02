@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-08-25 13:51+0200\n"
-"PO-Revision-Date: 2026-09-02 16:10+0000\n"
+"PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
 "ta/>\n"
@@ -2531,7 +2531,7 @@ msgid "Database installation"
 msgstr "தரவுத்தள நிறுவல்"
 
 msgid "Documentation"
-msgstr ""
+msgstr "ஆவணமாக்கல்"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
