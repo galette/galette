@@ -7078,7 +7078,7 @@ msgid "Password is not valid!"
 msgstr "La contrasenya no és vàlida!"
 
 #, fuzzy
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "S'ha produït un error en comprovar la contrasenya ("
 
 msgid "S,M,T,W,T,F,S"

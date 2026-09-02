@@ -69,7 +69,7 @@ $('{{ selector }}').on('keyup', function() {
         },
         error: function () {
             {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("An error occured checking password :(")|e("js"),
+                        modal_title_twig: _T("An error occurred checking password :(")|e("js"),
                         modal_without_content: true,
                         modal_class: "mini",
                         modal_deny_only: true,

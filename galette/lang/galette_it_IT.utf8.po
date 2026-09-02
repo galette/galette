@@ -5956,7 +5956,7 @@ msgstr "La password è valida :)"
 msgid "Password is not valid!"
 msgstr "La password non è valida!"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Si è verificato un errore durante la verifica della password :("
 
 msgid "S,M,T,W,T,F,S"

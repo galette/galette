@@ -5882,7 +5882,7 @@ msgstr "Пароль действителен :)"
 msgid "Password is not valid!"
 msgstr "Пароль недействителен!"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Произошла ошибка при проверке пароля :("
 
 msgid "S,M,T,W,T,F,S"

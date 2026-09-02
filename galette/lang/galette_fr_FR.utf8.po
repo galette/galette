@@ -5938,7 +5938,7 @@ msgstr "Mot de passe valide :)"
 msgid "Password is not valid!"
 msgstr "Mot de passe invalide !"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Une erreur est survenue lors de la vérification du mot de passe :("
 
 msgid "S,M,T,W,T,F,S"

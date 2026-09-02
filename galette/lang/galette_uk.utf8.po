@@ -5899,7 +5899,7 @@ msgstr "Пароль дійсний :)"
 msgid "Password is not valid!"
 msgstr "Пароль не дійсний!"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Під час перевірки пароля сталася помилка :("
 
 msgid "S,M,T,W,T,F,S"

@@ -5930,7 +5930,7 @@ msgstr "Senhau valide :)"
 msgid "Password is not valid!"
 msgstr "Senhau invalide !"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Pecaire ! Una error capitèt per la verificacion dau senhau :("
 
 msgid "S,M,T,W,T,F,S"

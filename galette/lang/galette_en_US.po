@@ -8860,8 +8860,8 @@ msgid "Password is not valid!"
 msgstr "Password is not valid!"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:144
-msgid "An error occured checking password :("
-msgstr "An error occured checking password :("
+msgid "An error occurred checking password :("
+msgstr "An error occurred checking password :("
 
 #: ../../tempcache/elements/js/calendar.js.twig:55
 msgid "S,M,T,W,T,F,S"

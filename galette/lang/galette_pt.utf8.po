@@ -5641,7 +5641,7 @@ msgstr ""
 msgid "Password is not valid!"
 msgstr ""
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr ""
 
 msgid "S,M,T,W,T,F,S"

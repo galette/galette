@@ -5797,7 +5797,7 @@ msgstr "கடவுச்சொல் செல்லுபடியாகு�
 msgid "Password is not valid!"
 msgstr "கடவுச்சொல் செல்லுபடியாகாது!"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "கடவுச்சொல்லைச் சரிபார்ப்பதில் பிழை ஏற்பட்டது :("
 
 msgid "S,M,T,W,T,F,S"

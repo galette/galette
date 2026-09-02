@@ -5835,7 +5835,7 @@ msgstr "Geslo je veljavno :)"
 msgid "Password is not valid!"
 msgstr "Geslo ni veljavno!"
 
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr "Pri preverjanju gesla je prišlo do napake :("
 
 msgid "S,M,T,W,T,F,S"

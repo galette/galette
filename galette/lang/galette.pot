@@ -8632,7 +8632,7 @@ msgid "Password is not valid!"
 msgstr ""
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:144
-msgid "An error occured checking password :("
+msgid "An error occurred checking password :("
 msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:55
