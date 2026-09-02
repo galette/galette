@@ -15,26 +15,33 @@
 {% set columns = [
     {
         'label': _T('ID'),
+        'order': constant("Galette\\Filters\\DocumentsList::ORDERBY_ID"),
         'collapse': true
     },
     {
-        'label': _T("Filename")
+        'label': _T("Filename"),
+        'order': constant("Galette\\Filters\\DocumentsList::ORDERBY_NAME")
     },
     {
-        'label': _T('Type')
+        'label': _T('Type'),
+        'order': constant("Galette\\Filters\\DocumentsList::ORDERBY_TYPE")
     },
     {
         'label': _T('Visibility')
     },
     {
         'label': _T("Creation date"),
+        'order': constant("Galette\\Filters\\DocumentsList::ORDERBY_DATE"),
         'collapse': true
     }
 ] %}
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%1$s document", "%1$s documents", nb)|format(nb)
+        'label': _Tn("%1$s document", "%1$s documents", nb)|format(nb),
+        'route': {
+            'name': 'documentsFilter'
+        }
     } %}
     {{ parent() }}
 {% endblock %}
@@ -53,6 +60,67 @@
 
 {% block header %}
     {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <form action="{{ url_for('documentsFilter') }}" method="post" class="ui form filters">
+        <div class="ui secondary yellow segment">
+            <div class="four fields">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{{ _T('since') }}</label>
+                        <div class="ui calendar" id="documents-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon" aria-hidden="true"></i>
+                                <input placeholder="{{ _T('yyyy-mm-dd format') }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{{ _T('until') }}</label>
+                        <div class="ui calendar" id="documents-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon" aria-hidden="true"></i>
+                                <input placeholder="{{ _T('yyyy-mm-dd format') }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="filename_filter">{{ _T('Filename') }}</label>
+                    <input type="text" name="filename_filter" id="filename_filter" value="{{ filters.filename_filter }}"/>
+                </div>
+                <div class="field">
+                    <label for="type_filter">{{ _T('Type') }}</label>
+                    <select id="type_filter" name="type_filter" class="ui search dropdown">
+                        <option value="0">{{ _T('Select') }}</option>
+                        {% for doc_type, tdoc_type in types %}
+                            <option value="{{ doc_type }}"{% if doc_type == filters.type_filter %} selected="selected"{% endif %}>{{ tdoc_type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="visibility_filter">{{ _T('Visibility') }}</label>
+                    <select id="visibility_filter" name="visibility_filter" class="ui search dropdown">
+                        <option value="none">{{ _T('Select') }}</option>
+                        {% for key, value in perm_names %}
+                            <option value="{{ key }}"{% if key == filters.visibility_filter %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="ui right aligned basic fitted segment field">
+                <button type="submit" name="filter" class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T('Filter') }}
+                </button>
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
+            </div>
+        </div>
+    </form>
 {% endblock %}
 
 {% block body %}

@@ -36,7 +36,7 @@
                     <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     <div class="jsonly displaynone default text">{{ _T("Choose or enter your own...") }}</div>
                     <div class="jsonly displaynone menu">
-                        {% for doc_type, tdoc_type in document.getTypes() %}
+                        {% for doc_type, tdoc_type in types %}
                             <div class="item" data-value="{{ doc_type }}">{{ tdoc_type }}</div>
                         {% endfor %}
                     </div>
