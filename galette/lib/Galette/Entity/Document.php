@@ -321,7 +321,7 @@ class Document
 
         $documents = new Documents($this->zdb, $login);
 
-        return $documents->getSystemTypes($translated)[$type] ?? _T($type);
+        return $documents->getSystemTypes($translated)[$type] ?? $type;
     }
 
     /**

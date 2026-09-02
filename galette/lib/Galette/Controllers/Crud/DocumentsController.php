@@ -190,6 +190,7 @@ class DocumentsController extends CrudController
     )]
     public function publicList(Response $response): Response
     {
+        $document = new Document($this->zdb);
         $documents = new Documents(
             $this->zdb,
             $this->login
@@ -198,6 +199,7 @@ class DocumentsController extends CrudController
 
         $params = [
             'page_title' => _T("Documents"),
+            'document_object' => $document,
             'typed_documents' => $documents_list,
             'documentation' => 'usermanual/documents.html#public-list'
         ];
