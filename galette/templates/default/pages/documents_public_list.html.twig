@@ -24,7 +24,7 @@
                 <div class="ui vertical inverted pointing fluid menu tabbed">
         {% for type, documents in typed_documents %}
                     <a href="#{{ _self.getSlug(type) }}" class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
-                        {{ _T(type) }}
+                        {{ document_object.getSystemType(type) }}
                         <p class="ui small disabled text">({{ _Tn("%1$s document", "%1$s documents", documents|length)|format(documents|length) }})</p>
                     </a>
         {% endfor %}

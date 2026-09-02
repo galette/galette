@@ -102,7 +102,7 @@ class Documents
         $results = $this->zdb->execute($select);
 
         foreach ($results as $r) {
-            $types[$r->type] = _T($r->type);
+            $types[$r->type] = $r->type;
         }
 
         return $types;
