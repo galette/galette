@@ -68,7 +68,7 @@ class DocumentsController extends CrudController
             'action'            => 'add',
             'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $documents->getSystemTypes(),
+            'types'             => $documents->getTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
@@ -371,7 +371,7 @@ class DocumentsController extends CrudController
             'action'            => 'edit',
             'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $documents->getSystemTypes(),
+            'types'             => $documents->getTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
