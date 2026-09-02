@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-07-15 07:31+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -51,6 +51,10 @@ msgstr "od člana %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "E-poštni naslov %address je že uporabljen! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Neznan jezik (%1$s)"
 
 msgid "File is empty!"
 msgstr "Datoteka je prazna!"
@@ -279,9 +283,6 @@ msgstr "Vtičnika ni mogoče aktivirati."
 
 msgid "File not found!"
 msgstr "Datoteke ni bilo mogoče najti!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Neznan jezik (%1$s)"
 
 msgid "Checks"
 msgstr "Čeki"
@@ -1428,9 +1429,6 @@ msgstr "Pri shranjevanju konfiguracije seznama je prišlo do napake :("
 msgid "No reminder to send for now."
 msgstr "Zaenkrat ni opomnika za pošiljanje."
 
-msgid "There are no member to proceed."
-msgstr "Ni članov za nadaljevanje."
-
 msgid "Reminder has not been sent:"
 msgstr "Opomnik ni bil poslan:"
 
@@ -1479,6 +1477,9 @@ msgstr "Predstavljam se kot %login"
 
 msgid "Unable to impersonate as %id"
 msgstr "Ni mogoče izdati imena %id"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Končano lažno predstavljanje"
@@ -1547,6 +1548,9 @@ msgstr "Geslo za člana '%s' je bilo spremenjeno."
 msgid "Your password has been changed!"
 msgstr "Vaše geslo je bilo spremenjeno!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, fuzzy, php-format
+#| msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Pri shranjevanju oznake `%1$s` za jezik `%1$s` je prišlo do napake"
 
@@ -2033,6 +2037,27 @@ msgstr "Telemetrični podatki so bili poslani. Hvala!"
 msgid "Thank you for registering!"
 msgstr "Hvala za registracijo!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Naslov '%1$s' ni bil dodan!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Številka člana"
 
@@ -2265,6 +2290,9 @@ msgstr "Končni datum"
 msgid "Member information"
 msgstr "Informacije o članih"
 
+msgid "Failed CSRF check!"
+msgstr "Preverjanje CSRF ni uspelo!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "Galette je trenutno v vzdrževanju!"
 
@@ -2299,6 +2327,9 @@ msgstr "Galettejeva napaka"
 
 msgid "Page not found"
 msgstr "Strani ni bilo mogoče najti"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Manjka ime obveznega polja!"
@@ -2510,9 +2541,6 @@ msgstr "Dokumentacija"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD.MM.YYYY"
-
-msgid "Failed CSRF check!"
-msgstr "Preverjanje CSRF ni uspelo!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Vaši identifikatorji"
@@ -4965,6 +4993,15 @@ msgstr "Širina kartice od 70 do 95 mm:"
 msgid "Card height from 40 to 55mm:"
 msgstr "Višina kartice od 40 do 55 mm:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Za '%formname' še ni konfigurirano nobeno dinamično polje"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Novo dinamično polje"
+
 msgid "Password length:"
 msgstr "Dolžina gesla:"
 
@@ -5280,6 +5317,11 @@ msgstr "Vrstica:"
 msgid "Trace"
 msgstr "Sled"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "Nimate dovoljenja za zahtevani URL."
+
 msgid "Sender"
 msgstr "Pošiljatelj"
 
@@ -5311,6 +5353,11 @@ msgstr "Poslana poštna sporočila:"
 msgid "Superadmin"
 msgstr "Superadministrator"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Ni dobavljeno"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Prikaži podrobnosti poštnega sporočila '%1$s' v oknu za predogled"
@@ -5319,12 +5366,25 @@ msgstr "Prikaži podrobnosti poštnega sporočila '%1$s' v oknu za predogled"
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Izbriši poštno sporočilo '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Izbriši poštno sporočilo '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "V podatkovno bazo še ni shranjenih nobenih poslanih sporočil."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "Pri prikazu predogleda je prišlo do napake :("
@@ -6063,10 +6123,6 @@ msgstr "Premakni polje '%s' navzgor"
 msgid "Move down '%s' field"
 msgstr "Premakni polje '%s' navzdol"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Za '%formname' še ni konfigurirano nobeno dinamično polje"
-
 msgid "Parent group:"
 msgstr "Starševska skupina:"
 
@@ -6096,6 +6152,11 @@ msgstr "Še ni bila izbrana nobena skupina."
 
 msgid "Choose your language"
 msgstr "Izberite svoj jezik"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Trenutna stran (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6247,3 +6308,6 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Pri pošiljanju telemetričnih podatkov je prišlo do napake :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Ni članov za nadaljevanje."

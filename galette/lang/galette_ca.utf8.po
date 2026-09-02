@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -62,6 +62,10 @@ msgstr "de membre %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "L'adreça de correu electrònic %address ja s'utilitza! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Lang desconeguda (%1$s)"
 
 #, fuzzy
 msgid "File is empty!"
@@ -347,9 +351,6 @@ msgstr "No es pot activar el connector."
 #, fuzzy
 msgid "File not found!"
 msgstr "No s'ha trobat el fitxer!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Lang desconeguda (%1$s)"
 
 msgid "Checks"
 msgstr "Xecs"
@@ -1747,10 +1748,6 @@ msgstr "Hi ha hagut un error en desar la configuració de la llista :("
 msgid "No reminder to send for now."
 msgstr "No hi ha recordatori per enviar ara."
 
-#, fuzzy
-msgid "There are no member to proceed."
-msgstr "No hi ha cap membre per continuar."
-
 msgid "Reminder has not been sent:"
 msgstr "El recordatori no s'ha enviat:"
 
@@ -1807,6 +1804,9 @@ msgstr "S'està suplantant com a %login"
 #, fuzzy
 msgid "Unable to impersonate as %id"
 msgstr "No s'ha pogut suplantar com a percentid"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 #, fuzzy
 msgid "Impersonating ended"
@@ -1889,6 +1889,8 @@ msgstr "S'ha canviat la contrasenya pel membre '%s'."
 msgid "Your password has been changed!"
 msgstr "La contrasenya ha canviat!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 "Hi ha hagut un error en desar l'etiqueta `%1$s` per al llenguatge `%2$s`"
@@ -2449,6 +2451,27 @@ msgstr "S'ha enviat informació de telemetria. Gràcies!"
 msgid "Thank you for registering!"
 msgstr "Gràcies per registrar-vos!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "No s'ha afegit el títol «%1$s»!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 #, fuzzy
 msgid "Member number"
 msgstr "Número de membre"
@@ -2739,6 +2762,10 @@ msgid "Member information"
 msgstr "Informació del membre"
 
 #, fuzzy
+msgid "Failed CSRF check!"
+msgstr "Comprovació de CSFR fallida!"
+
+#, fuzzy
 msgid "Galette is currently under maintenance!"
 msgstr "Galette està actualment en manteniment!"
 
@@ -2779,6 +2806,9 @@ msgstr "Error de Galette"
 
 msgid "Page not found"
 msgstr "No s'ha trobat la pàgina"
+
+msgid "Access denied"
+msgstr ""
 
 #, fuzzy
 msgid "Missing required field name!"
@@ -3047,10 +3077,6 @@ msgstr "Documentació"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "YYYY-MM-DD"
-
-#, fuzzy
-msgid "Failed CSRF check!"
-msgstr "Comprovació de CSFR fallida!"
 
 #, fuzzy
 msgid "[{ASSO_NAME}] Your identifiers"
@@ -6013,6 +6039,14 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr ""
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Encara no hi ha cap camp dinàmic configurat per a '%formname'"
+
+#, fuzzy
+msgid "Configure dynamic fields"
+msgstr "Camp dinàmic nou"
+
 #, fuzzy
 msgid "Password length:"
 msgstr "Longitud de la contrasenya"
@@ -6406,6 +6440,11 @@ msgid "Trace"
 msgstr "Traça"
 
 #, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "No teniu permís per a l'URL sol·licitat."
+
+#, fuzzy
 msgid "Sender"
 msgstr "Remitent"
 
@@ -6445,6 +6484,10 @@ msgstr "MAIlings enviats"
 msgid "Superadmin"
 msgstr "Superadministrador"
 
+#, fuzzy
+msgid "Not sent"
+msgstr "No subministrat"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mostra els detalls «%1$s» del mailing a la finestra de vista prèvia"
@@ -6453,6 +6496,11 @@ msgstr "Mostra els detalls «%1$s» del mailing a la finestra de vista prèvia"
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Usa «%1$s» del mailing com a plantilla per a un de nou"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Suprimeix el correu '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Suprimeix el correu '%1$s'"
@@ -6460,6 +6508,14 @@ msgstr "Suprimeix el correu '%1$s'"
 #, fuzzy
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Encara no s'ha desat mailing enviat a la base de dades."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Usa «%1$s» del mailing com a plantilla per a un de nou"
+
+msgid "No sent"
+msgstr ""
 
 #, fuzzy
 msgid "An error occurred displaying preview :("
@@ -7348,10 +7404,6 @@ msgstr "Mou el camp '%s' amunt"
 msgid "Move down '%s' field"
 msgstr "Mou avall el camp '%s'"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Encara no hi ha cap camp dinàmic configurat per a '%formname'"
-
 msgid "Parent group:"
 msgstr "Grup pare:"
 
@@ -7389,6 +7441,11 @@ msgstr "Encara no s'ha seleccionat cap grup."
 #, fuzzy
 msgid "Choose your language"
 msgstr "Canvia la llengua"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Pàgina actual (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -7573,6 +7630,10 @@ msgstr ""
 #, fuzzy
 msgid "An error occurred sending telemetry information :("
 msgstr "S'ha produït un error en enviar la informació de telemetria ("
+
+#, fuzzy
+#~ msgid "There are no member to proceed."
+#~ msgstr "No hi ha cap membre per continuar."
 
 #, fuzzy
 #~ msgid "Module does not exists!"

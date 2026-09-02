@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-06-08 18:01+0000\n"
 "Last-Translator: Артур <atter192837@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -73,6 +73,10 @@ msgstr "от участника %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "Адрес электронной почты %address уже используется! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Неизвестный язык (%1$s)"
 
 msgid "File is empty!"
 msgstr "Файл пуст!"
@@ -303,9 +307,6 @@ msgstr "Не удалось активировать плагин."
 
 msgid "File not found!"
 msgstr "Файл не найден!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Неизвестный язык (%1$s)"
 
 msgid "Checks"
 msgstr "Проверки"
@@ -1450,9 +1451,6 @@ msgstr "Произошла ошибка при сохранении конфиг
 msgid "No reminder to send for now."
 msgstr "Пока что напоминание не нужно отправлять."
 
-msgid "There are no member to proceed."
-msgstr "Нет участников, которые могли бы продолжить работу."
-
 msgid "Reminder has not been sent:"
 msgstr "Напоминание не было отправлено:"
 
@@ -1501,6 +1499,9 @@ msgstr "Притворяется как %login"
 
 msgid "Unable to impersonate as %id"
 msgstr "Не удалось притвориться как %id"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Выдача себя за другого окончена"
@@ -1570,6 +1571,8 @@ msgstr "Пароль участника '%s' была обновлена."
 msgid "Your password has been changed!"
 msgstr "Ваш пароль был изменён!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Произошла ошибка при сохранении метки `%1$s` для языка `%2$s`"
 
@@ -2054,6 +2057,27 @@ msgstr "Информация телеметрии была отправлена.
 msgid "Thank you for registering!"
 msgstr "Спасибо за регистрацию!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Название '%1$s' не было добавлено!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Номер участника"
 
@@ -2286,6 +2310,9 @@ msgstr "Дата окончания"
 msgid "Member information"
 msgstr "Информация об участнике"
 
+msgid "Failed CSRF check!"
+msgstr "Ошибка проверки CSRF!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "Galette в настоящее время на обслуживании!"
 
@@ -2322,6 +2349,9 @@ msgstr "Ошибка Galette"
 
 msgid "Page not found"
 msgstr "Страница не найдена"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Отсутствует обязательное имя поля!"
@@ -2536,9 +2566,6 @@ msgstr "Документация"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "ГГГГ-ММ-ДД"
-
-msgid "Failed CSRF check!"
-msgstr "Ошибка проверки CSRF!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ваши идентификаторы"
@@ -4999,6 +5026,15 @@ msgstr "Ширина карточки от 70 до 95 мм:"
 msgid "Card height from 40 to 55mm:"
 msgstr "Высота карточки от 40 до 55 мм:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Для «%formname» ещё не настроено ни одного динамического поля"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Новое динамическое поле"
+
 msgid "Password length:"
 msgstr "Длина пароля:"
 
@@ -5321,6 +5357,11 @@ msgstr "Строка:"
 msgid "Trace"
 msgstr "Трассировка"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "У вас нет разрешения на использование запрашиваемого URL."
+
 msgid "Sender"
 msgstr "Отправитель"
 
@@ -5352,6 +5393,11 @@ msgstr "Отправленные рассылки:"
 msgid "Superadmin"
 msgstr "Суперадминистратор"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Не указано"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Показать детали рассылки '%1$s' в окне предпросмотра"
@@ -5360,12 +5406,25 @@ msgstr "Показать детали рассылки '%1$s' в окне пре
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Использовать рассылку '%1$s' в качестве шаблона для новой"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Удалить рассылку '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Удалить рассылку '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "В базе данных пока нет сохранённых отправленных рассылок."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Использовать рассылку '%1$s' в качестве шаблона для новой"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "Произошла ошибка при отображении предпросмотра :("
@@ -6110,10 +6169,6 @@ msgstr "Переместить поле «%s» вверх"
 msgid "Move down '%s' field"
 msgstr "Переместить поле «%s» вниз"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Для «%formname» ещё не настроено ни одного динамического поля"
-
 msgid "Parent group:"
 msgstr "Родительская группа:"
 
@@ -6143,6 +6198,11 @@ msgstr "Пока не выбрано ни одной группы."
 
 msgid "Choose your language"
 msgstr "Выберите ваш язык"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Текущая страница (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6293,6 +6353,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Произошла ошибка при отправке телеметрии :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Нет участников, которые могли бы продолжить работу."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "Модуль не существует!"

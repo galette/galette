@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-08-31 17:35+0000\n"
 "Last-Translator: TheMoon <pudimdebacon3@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -54,6 +54,10 @@ msgstr "do membro %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "O endereço de Email %address já está sendo usado! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Linguagem desconhecida (%1$s)"
 
 msgid "File is empty!"
 msgstr "O arquivo está vazio!"
@@ -286,9 +290,6 @@ msgstr "Não é possível ativar o plugin."
 
 msgid "File not found!"
 msgstr "Arquivo não encontrado!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Linguagem desconhecida (%1$s)"
 
 msgid "Checks"
 msgstr "Checando"
@@ -1427,9 +1428,6 @@ msgstr ""
 msgid "No reminder to send for now."
 msgstr ""
 
-msgid "There are no member to proceed."
-msgstr ""
-
 msgid "Reminder has not been sent:"
 msgstr ""
 
@@ -1477,6 +1475,9 @@ msgid "Impersonating as %login"
 msgstr ""
 
 msgid "Unable to impersonate as %id"
+msgstr ""
+
+msgid "Attempt to unimpersonate from a non impersonated session"
 msgstr ""
 
 msgid "Impersonating ended"
@@ -1541,6 +1542,8 @@ msgstr ""
 msgid "Your password has been changed!"
 msgstr ""
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 
@@ -2025,6 +2028,27 @@ msgstr ""
 msgid "Thank you for registering!"
 msgstr ""
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Tipo de pagamento '%1$s' não foi adicionado!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr ""
 
@@ -2257,6 +2281,9 @@ msgstr "Data de término"
 msgid "Member information"
 msgstr ""
 
+msgid "Failed CSRF check!"
+msgstr ""
+
 msgid "Galette is currently under maintenance!"
 msgstr ""
 
@@ -2288,6 +2315,9 @@ msgid "Galette error"
 msgstr ""
 
 msgid "Page not found"
+msgstr ""
+
+msgid "Access denied"
 msgstr ""
 
 msgid "Missing required field name!"
@@ -2493,9 +2523,6 @@ msgstr "Documentação"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr ""
-
-msgid "Failed CSRF check!"
 msgstr ""
 
 msgid "[{ASSO_NAME}] Your identifiers"
@@ -4786,6 +4813,15 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr ""
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr ""
+
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Configure dynamic fields"
+msgstr "Campos dinâmicos"
+
 msgid "Password length:"
 msgstr ""
 
@@ -5087,6 +5123,9 @@ msgstr ""
 msgid "Trace"
 msgstr ""
 
+msgid "You don’t have permission to access this resource."
+msgstr ""
+
 msgid "Sender"
 msgstr ""
 
@@ -5116,6 +5155,9 @@ msgstr ""
 msgid "Superadmin"
 msgstr ""
 
+msgid "Not sent"
+msgstr ""
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
@@ -5125,10 +5167,20 @@ msgid "Use mailing '%1$s' as a template for a new one"
 msgstr ""
 
 #, php-format
+msgid "Edit mailing '%1$s'"
+msgstr ""
+
+#, php-format
 msgid "Delete mailing '%1$s'"
 msgstr ""
 
 msgid "No sent mailing has been stored in the database yet."
+msgstr ""
+
+msgid "Use as a template for a new mailing"
+msgstr ""
+
+msgid "No sent"
 msgstr ""
 
 msgid "An error occurred displaying preview :("
@@ -5845,10 +5897,6 @@ msgstr ""
 msgid "Move down '%s' field"
 msgstr ""
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
-
 msgid "Parent group:"
 msgstr ""
 
@@ -5878,6 +5926,11 @@ msgstr ""
 
 msgid "Choose your language"
 msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Página atual (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"

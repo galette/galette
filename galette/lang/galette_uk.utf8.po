@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-05-01 09:04+0000\n"
 "Last-Translator: Женя <prikhodkozheka2011@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -59,6 +59,10 @@ msgstr "від члена %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "Адреса е-пошти %address вже використовується! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Невідома мова (%1$s)"
 
 msgid "File is empty!"
 msgstr "Файл порожній!"
@@ -288,9 +292,6 @@ msgstr "Не вдалося задіяти розширення."
 
 msgid "File not found!"
 msgstr "Файл не знайдено!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Невідома мова (%1$s)"
 
 msgid "Checks"
 msgstr "Чеки"
@@ -1437,9 +1438,6 @@ msgstr "Під час зберігання конфігурації спискі
 msgid "No reminder to send for now."
 msgstr "Нагадувань про надсилання поки що немає."
 
-msgid "There are no member to proceed."
-msgstr "Немає члена для продовження."
-
 msgid "Reminder has not been sent:"
 msgstr "Нагадування не надіслано:"
 
@@ -1488,6 +1486,9 @@ msgstr "Видає себе за %login"
 
 msgid "Unable to impersonate as %id"
 msgstr "Не вдається видати себе за %id"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Видавання себе за іншого завершено"
@@ -1559,6 +1560,8 @@ msgstr "Пароль для члена \"%s\" змінено."
 msgid "Your password has been changed!"
 msgstr "Ваш пароль було змінено!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Не вдалося зберегти мітку `%1$s` для мови`%2$s`"
 
@@ -2059,6 +2062,27 @@ msgstr "Телеметричні відомості було надіслано.
 msgid "Thank you for registering!"
 msgstr "Дякуємо за реєстрацію!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Заголовок \"%1$s\" не додано!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Номер члена"
 
@@ -2291,6 +2315,9 @@ msgstr "Дата завершення"
 msgid "Member information"
 msgstr "Відомості про члена"
 
+msgid "Failed CSRF check!"
+msgstr "Не вдалося перевірити CSRF!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "Наразі в Galette проводиться техобслуговування!"
 
@@ -2326,6 +2353,9 @@ msgstr "Помилка Galette"
 
 msgid "Page not found"
 msgstr "Сторінку не знайдено"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Відсутня назва обов'язкового поля!"
@@ -2549,9 +2579,6 @@ msgstr "Документація"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD.MM.YYYY"
-
-msgid "Failed CSRF check!"
-msgstr "Не вдалося перевірити CSRF!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ваші ідентифікатори"
@@ -5020,6 +5047,15 @@ msgstr "Ширина карти від 70 до 95 мм:"
 msgid "Card height from 40 to 55mm:"
 msgstr "Висота картки від 40 до 55 мм:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Ще немає жодного динамічного поля, налаштованого для ' '%formname'"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Нове динамічне поле"
+
 msgid "Password length:"
 msgstr "Довжина пароля:"
 
@@ -5341,6 +5377,11 @@ msgstr "Рядок:"
 msgid "Trace"
 msgstr "Слід"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "У Вас нема дозволу на запитувану URL-адресу."
+
 msgid "Sender"
 msgstr "Відправник"
 
@@ -5372,6 +5413,11 @@ msgstr "Надіслані розсилання:"
 msgid "Superadmin"
 msgstr "Суперадміністратор"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Не вказано"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
@@ -5382,12 +5428,25 @@ msgstr ""
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Використовувати поштове розсилання '%1$s' як шаблон для нового"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Видалити розсилання '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Видалити розсилання '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Жодна надіслана розсилка ще не зберігалася в базі даних."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Використовувати поштове розсилання '%1$s' як шаблон для нового"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "Під час відображення попереднього перегляду сталася помилка :("
@@ -6133,10 +6192,6 @@ msgstr "Перемістити '%s' вгору"
 msgid "Move down '%s' field"
 msgstr "Перемістити вниз поле '%s'"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Ще немає жодного динамічного поля, налаштованого для ' '%formname'"
-
 msgid "Parent group:"
 msgstr "Батьківська група:"
 
@@ -6166,6 +6221,11 @@ msgstr "Групи ще не вибрано."
 
 msgid "Choose your language"
 msgstr "Виберіть свою мову"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Поточна сторінка (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6317,6 +6377,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Немає члена для продовження."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "Модуль не існує!"

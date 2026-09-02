@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -57,6 +57,10 @@ msgid "from member %id_adh"
 msgstr ""
 
 msgid "Email address %address is already used! (%extra)"
+msgstr ""
+
+#, php-format
+msgid "Unknown lang (%1$s)"
 msgstr ""
 
 msgid "File is empty!"
@@ -285,9 +289,6 @@ msgid "Cannot activate plugin."
 msgstr ""
 
 msgid "File not found!"
-msgstr ""
-
-msgid "Unknown lang (%1$s)"
 msgstr ""
 
 msgid "Checks"
@@ -1472,9 +1473,6 @@ msgstr "حدث خطأ أثناء حفظ إعدادات القائمة :("
 msgid "No reminder to send for now."
 msgstr ""
 
-msgid "There are no member to proceed."
-msgstr ""
-
 msgid "Reminder has not been sent:"
 msgstr ""
 
@@ -1522,6 +1520,9 @@ msgid "Impersonating as %login"
 msgstr ""
 
 msgid "Unable to impersonate as %id"
+msgstr ""
+
+msgid "Attempt to unimpersonate from a non impersonated session"
 msgstr ""
 
 msgid "Impersonating ended"
@@ -1586,6 +1587,8 @@ msgstr ""
 msgid "Your password has been changed!"
 msgstr ""
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 
@@ -2165,6 +2168,27 @@ msgstr ""
 msgid "Thank you for registering!"
 msgstr "شكراً على التسجيل!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "لم يتم اضافة العنوان '%s'!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "رقم العضو"
 
@@ -2407,6 +2431,9 @@ msgstr ""
 msgid "Member information"
 msgstr "معلومات العضو"
 
+msgid "Failed CSRF check!"
+msgstr ""
+
 msgid "Galette is currently under maintenance!"
 msgstr ""
 
@@ -2439,6 +2466,9 @@ msgstr "خطأ في غاليت"
 
 msgid "Page not found"
 msgstr "الصفحة غير موجودة"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr ""
@@ -2645,9 +2675,6 @@ msgstr "الدليل"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr ""
-
-msgid "Failed CSRF check!"
 msgstr ""
 
 msgid "[{ASSO_NAME}] Your identifiers"
@@ -5036,6 +5063,15 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr ""
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr ""
+
+#, fuzzy
+#| msgid "Remove dynamic field %1$s"
+msgid "Configure dynamic fields"
+msgstr "تم حذف الحقل الديناميكي %1$s"
+
 msgid "Password length:"
 msgstr "طول كلمة المرور:"
 
@@ -5368,6 +5404,11 @@ msgstr ""
 msgid "Trace"
 msgstr ""
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "ليس لديك الاذن لعنوان URLالمطلوب"
+
 msgid "Sender"
 msgstr ""
 
@@ -5397,6 +5438,9 @@ msgstr ""
 msgid "Superadmin"
 msgstr ""
 
+msgid "Not sent"
+msgstr ""
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
@@ -5405,11 +5449,24 @@ msgstr ""
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "استخدم '%1$s' البريد كقالب لإنشاء واحد جديد"
 
+#, fuzzy, php-format
+#| msgid "Add a donation"
+msgid "Edit mailing '%1$s'"
+msgstr "إضافة تبرع"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr ""
 
 msgid "No sent mailing has been stored in the database yet."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "استخدم '%1$s' البريد كقالب لإنشاء واحد جديد"
+
+msgid "No sent"
 msgstr ""
 
 msgid "An error occurred displaying preview :("
@@ -6182,10 +6239,6 @@ msgstr ""
 msgid "Move down '%s' field"
 msgstr ""
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
-
 msgid "Parent group:"
 msgstr ""
 
@@ -6214,6 +6267,10 @@ msgid "No groups has been selected yet."
 msgstr ""
 
 msgid "Choose your language"
+msgstr ""
+
+#, php-format
+msgid "Current locale '%1$s'"
 msgstr ""
 
 #, php-format

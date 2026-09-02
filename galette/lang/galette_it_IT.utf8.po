@@ -32,7 +32,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-04-26 21:09+0000\n"
 "Last-Translator: Pierfrancesco Passerini <p.passerini@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -75,6 +75,10 @@ msgstr "dal socio %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "L’indirizzo e-mail %address è già usato! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Lingua sconosciuta (%1$s)"
 
 msgid "File is empty!"
 msgstr "Il file è vuoto!"
@@ -307,9 +311,6 @@ msgstr "Non è possibile attivare il plugin."
 
 msgid "File not found!"
 msgstr "File non trovato!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Lingua sconosciuta (%1$s)"
 
 msgid "Checks"
 msgstr "Controlli"
@@ -1478,9 +1479,6 @@ msgstr ""
 msgid "No reminder to send for now."
 msgstr "Nessun promemoria da inviare per adesso."
 
-msgid "There are no member to proceed."
-msgstr "Non ci sono membri per procedere."
-
 msgid "Reminder has not been sent:"
 msgstr "Il promemoria non è stato inviato:"
 
@@ -1530,6 +1528,9 @@ msgstr "Accedi come %login"
 
 msgid "Unable to impersonate as %id"
 msgstr "Impossibile accedere come %id"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Imitazione conclusa"
@@ -1600,6 +1601,8 @@ msgstr "Passowrd cambiata per il socio '%s'."
 msgid "Your password has been changed!"
 msgstr "La tua password è stata cambiata!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "Si è verificato un errore nel salvare `%1$s` per la lingua `%2$s`"
 
@@ -2101,6 +2104,27 @@ msgstr "Le informazioni di telemetria sono state inviate. Grazie!"
 msgid "Thank you for registering!"
 msgstr "Grazie per esserti registrato!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Titolo '%1$s' non è stato aggiunto!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Numero del socio"
 
@@ -2333,6 +2357,9 @@ msgstr "Data di fine"
 msgid "Member information"
 msgstr "Informazione socio"
 
+msgid "Failed CSRF check!"
+msgstr "Controllo CSRF fallito!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "Galette è attualmente in manutenzione!"
 
@@ -2369,6 +2396,9 @@ msgstr "Errore di Galette"
 
 msgid "Page not found"
 msgstr "Pagina non trovata"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Campo nome obbligatorio mancante!"
@@ -2588,9 +2618,6 @@ msgstr "Documentazione"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD/MM/YYYY"
-
-msgid "Failed CSRF check!"
-msgstr "Controllo CSRF fallito!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[ASSO_NAME] I vostri identificatori"
@@ -5073,6 +5100,15 @@ msgstr "Larghezza tessera da 70 a 95mm:"
 msgid "Card height from 40 to 55mm:"
 msgstr "Altezza tessera da 40 a 55mm:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Non c'è ancora alcun campo dinamico configurato per '%formname '"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Nuovo campo dinamico"
+
 msgid "Password length:"
 msgstr "Lunghezza password:"
 
@@ -5391,6 +5427,11 @@ msgstr "Riga:"
 msgid "Trace"
 msgstr "Traccia"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "Non hai i premessi per l'URL richiesto."
+
 msgid "Sender"
 msgstr "Mittente"
 
@@ -5422,6 +5463,11 @@ msgstr "Invii postali effettuati:"
 msgid "Superadmin"
 msgstr "Superamministratore"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Non fornito"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mostra invio postale '%1$s' nella finestra di anteprima"
@@ -5430,6 +5476,11 @@ msgstr "Mostra invio postale '%1$s' nella finestra di anteprima"
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Usa invio postale '%1$s' come modello per uno nuovo"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Elimina invio postale '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Elimina invio postale '%1$s'"
@@ -5437,6 +5488,14 @@ msgstr "Elimina invio postale '%1$s'"
 msgid "No sent mailing has been stored in the database yet."
 msgstr ""
 "Nessun invio postale effettuato è stato ancora memorizzato nel database."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Usa invio postale '%1$s' come modello per uno nuovo"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "Errore durante la visualizzazione dell'anteprima :("
@@ -6188,10 +6247,6 @@ msgstr "Sposta in alto il campo '%s'"
 msgid "Move down '%s' field"
 msgstr "Sposta in basso il campo '%s'"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Non c'è ancora alcun campo dinamico configurato per '%formname '"
-
 msgid "Parent group:"
 msgstr "Gruppo genitore:"
 
@@ -6221,6 +6276,11 @@ msgstr "Nessun gruppo selezionato."
 
 msgid "Choose your language"
 msgstr "Scelta lingua"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Pagina attuale (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6379,6 +6439,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Si è verificato un errore durante l’invio della telemetria :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Non ci sono membri per procedere."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "Il modulo non esiste!"

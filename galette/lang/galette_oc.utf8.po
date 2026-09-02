@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-04-23 21:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -50,6 +50,10 @@ msgstr "dau membre %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "L'adreiça de corrier electronic %address es ja utilizada ! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Lenga desconeguda (%1$s)"
 
 msgid "File is empty!"
 msgstr "Lo fichier es vuege !"
@@ -278,9 +282,6 @@ msgstr "Impossible d'activar l'ajuston."
 
 msgid "File not found!"
 msgstr "Fichier non trobat !"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Lenga desconeguda (%1$s)"
 
 msgid "Checks"
 msgstr "Chèc"
@@ -1463,9 +1464,6 @@ msgstr "I a agut una error dau temps de la sauvagarda de la lista :("
 msgid "No reminder to send for now."
 msgstr "Ges de rampèu de mandar per ara."
 
-msgid "There are no member to proceed."
-msgstr "I a ges de membre de tractar."
-
 msgid "Reminder has not been sent:"
 msgstr "Lo rampèu es pas estat mandat :"
 
@@ -1514,6 +1512,9 @@ msgstr "Connectat (simulacion) per %login"
 
 msgid "Unable to impersonate as %id"
 msgstr "Impossible d'accedir per %id"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Semblança acabada"
@@ -1584,9 +1585,10 @@ msgstr "Senhau cambiat per lo membre '%s'."
 msgid "Your password has been changed!"
 msgstr "Vòstre senhau es estat cambiat !"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr ""
-"Capitèt mau l’enregistrament de l’etiqueta `%1$s` per la lenga `%2$s`"
+msgstr "Capitèt mau l’enregistrament de l’etiqueta `%1$s` per la lenga `%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "Leis etiquetas son estadas traduchas !"
@@ -2097,6 +2099,27 @@ msgstr "Leis informacions de telemetria son estat mandadas. Granmercé !"
 msgid "Thank you for registering!"
 msgstr "Grandmercé per l'enregistrament !"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "S'es pas pogut ajustar lo títol «%1$s»!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Numèro de membre"
 
@@ -2333,6 +2356,9 @@ msgstr "Data de fin"
 msgid "Member information"
 msgstr "Informacions dau membre"
 
+msgid "Failed CSRF check!"
+msgstr ""
+
 msgid "Galette is currently under maintenance!"
 msgstr "Galeta es en mantenença d'aquesta passa !"
 
@@ -2371,6 +2397,9 @@ msgstr "Error de Galeta"
 
 msgid "Page not found"
 msgstr "Pagina pas trobada"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Lo nom dau camp manca !"
@@ -2586,9 +2615,6 @@ msgstr "Documentacion"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "YYYY/MM/DD"
-
-msgid "Failed CSRF check!"
-msgstr ""
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Vòstreis Identificants"
@@ -5062,6 +5088,15 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr "Autor de la carta de 40 a 55mm :"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "I a encar ges de camp dinamic configurat per '%formname'"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Camp dinamic novèu"
+
 msgid "Password length:"
 msgstr "Longor dau senhau :"
 
@@ -5378,6 +5413,11 @@ msgstr "Linha :"
 msgid "Trace"
 msgstr "Traça"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "Avètz pas la permission per l'URL demandada."
+
 msgid "Sender"
 msgstr "Expeditor"
 
@@ -5407,6 +5447,11 @@ msgstr "Mandadís passats :"
 msgid "Superadmin"
 msgstr "Subre-administrator"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Non indicat"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mostrar lo mandadís '%1$s' per lo menut dins un fenestron de prevista"
@@ -5415,12 +5460,25 @@ msgstr "Mostrar lo mandadís '%1$s' per lo menut dins un fenestron de prevista"
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Se servir dau mandadís '%1$s' per gabarit per n'en crear un novèu"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Levar lo mandadís '%1$s'"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Levar lo mandadís '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Ges de mandadís en resèrva."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Se servir dau mandadís '%1$s' per gabarit per n'en crear un novèu"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr ""
@@ -6166,10 +6224,6 @@ msgstr "Montar lo camp '%s'"
 msgid "Move down '%s' field"
 msgstr "Descendre lo camp '%s'"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "I a encar ges de camp dinamic configurat per '%formname'"
-
 msgid "Parent group:"
 msgstr "Grope parent :"
 
@@ -6199,6 +6253,11 @@ msgstr "Ges de grope seleccionat per ara."
 
 msgid "Choose your language"
 msgstr "Chausir la lenga"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Pagina correnta (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6349,6 +6408,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "I a ges de membre de tractar."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "Lo module existís pas !"

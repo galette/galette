@@ -24,8 +24,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-08-22 22:52+0000\n"
 "Last-Translator: Cahit OK <cahitok333@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -69,6 +69,10 @@ msgstr "üye %id_adh'den"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "E-posta adresi %adres zaten kullanılıyor! (%ekstra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr ""
 
 msgid "File is empty!"
 msgstr "Dosya boş!"
@@ -297,9 +301,6 @@ msgstr "Eklenti etkinleştirilemedi"
 
 msgid "File not found!"
 msgstr "Dosya bulunamadı!"
-
-msgid "Unknown lang (%1$s)"
-msgstr ""
 
 msgid "Checks"
 msgstr ""
@@ -1470,9 +1471,6 @@ msgstr "Yapılandırma listelemesi depo edilirken bir hata meydana geldi :("
 msgid "No reminder to send for now."
 msgstr "Şu anlık herhangi bir hatırlatıcı gönderilmedi."
 
-msgid "There are no member to proceed."
-msgstr "Devam edilecek üye yok."
-
 msgid "Reminder has not been sent:"
 msgstr "Hatırlatıcı gönderilmedi:"
 
@@ -1521,6 +1519,9 @@ msgstr "%login olarak taklit ediliyor"
 
 msgid "Unable to impersonate as %id"
 msgstr "%id kimliği taklit edilemiyor"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Kimliklenme sona erdi"
@@ -1589,6 +1590,8 @@ msgstr "'%s' üyesi için parola değişti."
 msgid "Your password has been changed!"
 msgstr "Parolanız değiştirildi!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
 
@@ -2098,6 +2101,27 @@ msgstr ""
 msgid "Thank you for registering!"
 msgstr ""
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Başlık '%1$s' eklenemedi!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr ""
 
@@ -2332,6 +2356,9 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
+msgid "Failed CSRF check!"
+msgstr ""
+
 msgid "Galette is currently under maintenance!"
 msgstr ""
 
@@ -2364,6 +2391,9 @@ msgstr "Galette hatası"
 
 msgid "Page not found"
 msgstr "Sayfa bulunamadı"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr ""
@@ -2570,9 +2600,6 @@ msgstr ""
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD.MM.YYYY"
-
-msgid "Failed CSRF check!"
-msgstr ""
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr ""
@@ -4905,6 +4932,15 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr ""
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr ""
+
+#, fuzzy
+#| msgid "Remove dynamic field %1$s"
+msgid "Configure dynamic fields"
+msgstr "%1$s dinamik alanını kaldır"
+
 msgid "Password length:"
 msgstr ""
 
@@ -5220,6 +5256,11 @@ msgstr ""
 msgid "Trace"
 msgstr ""
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "Ulaşılmaya çalışılan URL için yetkiniz bulunmamaktadır."
+
 msgid "Sender"
 msgstr ""
 
@@ -5249,6 +5290,9 @@ msgstr ""
 msgid "Superadmin"
 msgstr ""
 
+msgid "Not sent"
+msgstr ""
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
@@ -5257,11 +5301,22 @@ msgstr ""
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Edit contribution type"
+msgid "Edit mailing '%1$s'"
+msgstr "Katılım türünü güncelle"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr ""
 
 msgid "No sent mailing has been stored in the database yet."
+msgstr ""
+
+msgid "Use as a template for a new mailing"
+msgstr ""
+
+msgid "No sent"
 msgstr ""
 
 msgid "An error occurred displaying preview :("
@@ -5990,10 +6045,6 @@ msgstr ""
 msgid "Move down '%s' field"
 msgstr ""
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
-
 msgid "Parent group:"
 msgstr ""
 
@@ -6022,6 +6073,10 @@ msgid "No groups has been selected yet."
 msgstr ""
 
 msgid "Choose your language"
+msgstr ""
+
+#, php-format
+msgid "Current locale '%1$s'"
 msgstr ""
 
 #, php-format
@@ -6163,6 +6218,9 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr ""
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Devam edilecek üye yok."
 
 #~ msgid "modification"
 #~ msgstr "değişiklik"

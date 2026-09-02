@@ -9,12 +9,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-08-31 12:51+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
-"ta/>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
+">\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,6 +54,10 @@ msgstr "உறுப்பினரிடமிருந்து %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "மின்னஞ்சல் முகவரி %address ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "தெரியாத மட்டும் (%1$s)"
 
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
@@ -205,8 +209,7 @@ msgstr "கோப்பு மிகப் பெரியது. அதிக�
 
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr ""
-"படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %sபுள்ளி ஆகும்"
+msgstr "படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %sபுள்ளி ஆகும்"
 
 msgid "Mime-Type not allowed"
 msgstr "மைம்-வகை அனுமதிக்கப்படவில்லை"
@@ -281,9 +284,6 @@ msgstr "சொருகி செயல்படுத்த முடியா�
 
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "தெரியாத மட்டும் (%1$s)"
 
 msgid "Checks"
 msgstr "காசோலைகள்"
@@ -1429,9 +1429,6 @@ msgstr "பட்டியல் உள்ளமைவை சேமிக்க�
 msgid "No reminder to send for now."
 msgstr "இப்போது அனுப்ப நினைவூட்டல் இல்லை."
 
-msgid "There are no member to proceed."
-msgstr "தொடர உறுப்பினர் இல்லை."
-
 msgid "Reminder has not been sent:"
 msgstr "நினைவூட்டல் அனுப்பப்படவில்லை:"
 
@@ -1480,6 +1477,9 @@ msgstr "%login ஆள்மாறாட்டம் செய்தல்"
 
 msgid "Unable to impersonate as %id"
 msgstr "%idயாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "ஆள்மாறாட்டம் முடிந்தது"
@@ -1548,6 +1548,8 @@ msgstr "'%s' உறுப்பினர்களுக்கான கடவு
 msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr "மொழி `%2$s` லேபிள் `%1$s` சேமிக்கும் பிழை ஏற்பட்டது"
 
@@ -2031,6 +2033,27 @@ msgstr "டெலிமெட்ரி செய்தி அனுப்பப�
 msgid "Thank you for registering!"
 msgstr "பதிவு செய்ததற்கு நன்றி!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "'%1$s' தலைப்பு சேர்க்கப்படவில்லை!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "உறுப்பினர் எண்"
 
@@ -2263,6 +2286,9 @@ msgstr "முடிவு தேதி"
 msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
+msgid "Failed CSRF check!"
+msgstr "தோல்வியுற்ற சி.எச்.ஆர்.எஃப் காசோலை!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "கேலட் தற்போது பராமரிப்பில் உள்ளது!"
 
@@ -2298,6 +2324,9 @@ msgstr "கேலட் பிழை"
 
 msgid "Page not found"
 msgstr "பக்கம் கிடைக்கவில்லை"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "தேவையான புல பெயரைக் காணவில்லை!"
@@ -2507,9 +2536,6 @@ msgstr "ஆவணப்படுத்துதல்"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "Yyyy-mm-dd"
-
-msgid "Failed CSRF check!"
-msgstr "தோல்வியுற்ற சி.எச்.ஆர்.எஃப் காசோலை!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] உங்கள் அடையாளங்காட்டிகள்"
@@ -4930,6 +4956,15 @@ msgstr "அட்டை அகலம் 70 முதல் 95 மிமீ வ�
 msgid "Card height from 40 to 55mm:"
 msgstr "அட்டை உயரம் 40 முதல் 55 மிமீ வரை:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "'%Formname' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "புதிய மாறும் புலம்"
+
 msgid "Password length:"
 msgstr "கடவுச்சொல் நீளம்:"
 
@@ -5243,6 +5278,11 @@ msgstr "வரி:"
 msgid "Trace"
 msgstr "சுவடு"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "கோரப்பட்ட முகவரி க்கு உங்களிடம் இசைவு இல்லை."
+
 msgid "Sender"
 msgstr "அனுப்புநர்"
 
@@ -5274,6 +5314,11 @@ msgstr "அனுப்பப்பட்ட அஞ்சல்கள்:"
 msgid "Superadmin"
 msgstr "சூப்பர்பாட்மின்"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "வழங்கப்படவில்லை"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "முன்னோட்ட சாளரத்தில் அஞ்சல் '%1$s' விவரங்களைக் காண்பி"
@@ -5282,12 +5327,25 @@ msgstr "முன்னோட்ட சாளரத்தில் அஞ்ச�
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "புதிய ஒன்றிற்கான வார்ப்புருவாக '%1$s' அஞ்சலைப் பயன்படுத்தவும்"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "'%1$s' என்ற அஞ்சல் அனுப்பவும்"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "'%1$s' என்ற அஞ்சல் அனுப்பவும்"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "அனுப்பப்பட்ட அஞ்சல் எதுவும் இதுவரை தரவுத்தளத்தில் சேமிக்கப்படவில்லை."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "புதிய ஒன்றிற்கான வார்ப்புருவாக '%1$s' அஞ்சலைப் பயன்படுத்தவும்"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "முன்னோட்டத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
@@ -6025,10 +6083,6 @@ msgstr "'%s' புலத்தை நகர்த்தவும்"
 msgid "Move down '%s' field"
 msgstr "'%s' புலத்தை நகர்த்தவும்"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "'%Formname' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
-
 msgid "Parent group:"
 msgstr "பெற்றோர் குழு:"
 
@@ -6058,6 +6112,11 @@ msgstr "இதுவரை எந்த குழுக்களும் தே
 
 msgid "Choose your language"
 msgstr "உங்கள் மொழியைத் தேர்வுசெய்க"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "தற்போதைய பக்கம் (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6205,6 +6264,9 @@ msgstr "'அனுப்பு' பொத்தானை அழுத்தி�
 
 msgid "An error occurred sending telemetry information :("
 msgstr "டெலிமெட்ரி தகவல்களை அனுப்புவதில் பிழை ஏற்பட்டது :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "தொடர உறுப்பினர் இல்லை."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "தொகுதி இல்லை!"

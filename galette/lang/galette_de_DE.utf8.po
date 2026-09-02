@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 08:33+0200\n"
+"POT-Creation-Date: 2026-08-25 13:51+0200\n"
 "PO-Revision-Date: 2026-06-21 02:01+0000\n"
 "Last-Translator: Poly <robloxlucak@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -89,6 +89,10 @@ msgstr "von Mitglied %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
 msgstr "Die E-Mail-Adresse %address wird schon genutzt! (%extra)"
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Unbekannte Sprache (%1$s)"
 
 msgid "File is empty!"
 msgstr "Datei ist leer!"
@@ -320,9 +324,6 @@ msgstr "Kann Plugin nicht aktivieren."
 
 msgid "File not found!"
 msgstr "Die Datei wurde nicht gefunden!"
-
-msgid "Unknown lang (%1$s)"
-msgstr "Unbekannte Sprache (%1$s)"
 
 msgid "Checks"
 msgstr "Prüfungen"
@@ -1485,9 +1486,6 @@ msgstr "Beim Speichern der Listenkonfiguration ist ein Fehler aufgetreten :("
 msgid "No reminder to send for now."
 msgstr "Es wurde keine Erinnerung geschickt."
 
-msgid "There are no member to proceed."
-msgstr "Es gibt keine Mitglieder zum Fortfahren."
-
 msgid "Reminder has not been sent:"
 msgstr "Erinnerung wurde nicht gesandt:"
 
@@ -1536,6 +1534,9 @@ msgstr "Als %login anmelden"
 
 msgid "Unable to impersonate as %id"
 msgstr "Anmelden als %id nicht möglich"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr ""
 
 msgid "Impersonating ended"
 msgstr "Nicht mehr als ein anderer Benutzer angemeldet"
@@ -1607,10 +1608,12 @@ msgstr "Das Passwort für das Mitglied '%s' wurde geändert."
 msgid "Your password has been changed!"
 msgstr "Dein Passwort wurde geändert!"
 
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Beim Speichern der Bezeichnung `%1$s` für die Sprache `%2$s` ist ein "
-"Fehler aufgetreten"
+"Beim Speichern der Bezeichnung `%1$s` für die Sprache `%2$s` ist ein Fehler "
+"aufgetreten"
 
 msgid "Labels has been successfully translated!"
 msgstr "Beschreibungen erfolgreich übersetzt!"
@@ -2097,6 +2100,27 @@ msgstr "Nutzungsdaten wurden übermittelt. Vielen Dank!"
 msgid "Thank you for registering!"
 msgstr "Vielen Dank für ihre Anmeldung!"
 
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr ""
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Title '%1$s' has not been added!"
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Titel '%1$s' wurde nicht hinzugefügt!"
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr ""
+
 msgid "Member number"
 msgstr "Mitgliedsnummer"
 
@@ -2332,6 +2356,9 @@ msgstr "Enddatum"
 msgid "Member information"
 msgstr "Mitgliederinformation"
 
+msgid "Failed CSRF check!"
+msgstr "CSRF-Prüfung fehlgeschlagen!"
+
 msgid "Galette is currently under maintenance!"
 msgstr "Galette ist momentan im Wartungsmodus!"
 
@@ -2368,6 +2395,9 @@ msgstr "Galette-Fehler"
 
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Erforderlicher Feldname fehlt!"
@@ -2586,9 +2616,6 @@ msgstr "Dokumentation"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD/MM/YYYY"
-
-msgid "Failed CSRF check!"
-msgstr "CSRF-Prüfung fehlgeschlagen!"
 
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ihre Kennzeichnung"
@@ -5056,6 +5083,15 @@ msgstr "Kartenbreite von 70 bis 95 mm:"
 msgid "Card height from 40 to 55mm:"
 msgstr "Kartenhöhe von 40 bis 55 mm:"
 
+#, php-format
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "Für '%formname' ist noch kein dynamisches Feld konfiguriert"
+
+#, fuzzy
+#| msgid "New dynamic field"
+msgid "Configure dynamic fields"
+msgstr "Neues dynamisches Feld"
+
 msgid "Password length:"
 msgstr "Passwortlänge:"
 
@@ -5377,6 +5413,11 @@ msgstr "Linie:"
 msgid "Trace"
 msgstr "Verfolgen"
 
+#, fuzzy
+#| msgid "You do not have permission for requested URL."
+msgid "You don’t have permission to access this resource."
+msgstr "Du hast keine Berechtigung für die angeforderte URL."
+
 msgid "Sender"
 msgstr "Absender"
 
@@ -5408,6 +5449,11 @@ msgstr "Verschickte Mailings:"
 msgid "Superadmin"
 msgstr "Superadmin"
 
+#, fuzzy
+#| msgid "Not supplied"
+msgid "Not sent"
+msgstr "Bitte auswählen"
+
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mailkampagane '%1$s' als Vorschau anzeigen"
@@ -5416,12 +5462,25 @@ msgstr "Mailkampagane '%1$s' als Vorschau anzeigen"
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Mailkampagne '%1$s' als Vorlage für eine neue Kampagne benutzen"
 
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Edit mailing '%1$s'"
+msgstr "Mailkampagne '%1$s' löschen"
+
 #, php-format
 msgid "Delete mailing '%1$s'"
 msgstr "Mailkampagne '%1$s' löschen"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Keine Mails sind bisher in der Datenbank gespeichert."
+
+#, fuzzy
+#| msgid "Use mailing '%1$s' as a template for a new one"
+msgid "Use as a template for a new mailing"
+msgstr "Mailkampagne '%1$s' als Vorlage für eine neue Kampagne benutzen"
+
+msgid "No sent"
+msgstr ""
 
 msgid "An error occurred displaying preview :("
 msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
@@ -6172,10 +6231,6 @@ msgstr "Feld '%s' nach oben verschieben"
 msgid "Move down '%s' field"
 msgstr "Das Feld „%s“ nach unten schieben"
 
-#, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Für '%formname' ist noch kein dynamisches Feld konfiguriert"
-
 msgid "Parent group:"
 msgstr "Übergeordnete Gruppe:"
 
@@ -6205,6 +6260,11 @@ msgstr "Es ist keine Gruppe ausgewählt."
 
 msgid "Choose your language"
 msgstr "Wählen Sie ihre Sprache"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Aktuelle Seite (%1$s)"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -6360,6 +6420,9 @@ msgstr "Du kannst die Rohdaten prüfen die beim Senden verschickt werden."
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
+
+#~ msgid "There are no member to proceed."
+#~ msgstr "Es gibt keine Mitglieder zum Fortfahren."
 
 #~ msgid "Module does not exists!"
 #~ msgstr "Modul existiert nicht!"
