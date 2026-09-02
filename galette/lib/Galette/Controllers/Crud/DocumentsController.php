@@ -14,6 +14,7 @@ use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Document;
 use Galette\Filters\DocumentsList;
+use Galette\Repository\Documents;
 use Galette\IO\File;
 use Throwable;
 use Galette\Controllers\CrudController;
@@ -48,6 +49,14 @@ class DocumentsController extends CrudController
     )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
+        $filters = new DocumentsList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+
         if (isset($this->session->document)) {
             $document = $this->session->document;
             unset($this->session->document);
@@ -59,7 +68,7 @@ class DocumentsController extends CrudController
             'action'            => 'add',
             'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $document->getSystemTypes(),
+            'types'             => $documents->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
@@ -112,16 +121,51 @@ class DocumentsController extends CrudController
     ): Response {
         $filters = new DocumentsList();
 
+        $session_varname = $this->getFilterName(static::getDefaultFilterName());
+
+        if (isset($this->session->$session_varname)) {
+            $filters = $this->session->$session_varname;
+        } else {
+            $filters = new DocumentsList();
+        }
+
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $filters->show = $request->getQueryParams()['nbshow'];
+        }
+
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
+        }
+
         $document = new Document($this->zdb);
-        $documents = $document->getList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+        $documents_list = $documents->getList();
+        $documents_count = $documents->getCount();
+
+        //store filters into session
+        $this->session->$session_varname = $filters;
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view);
 
         $params = [
             'page_title' => _T("Documents"),
-            'nb' => count($documents),
-            'documents' => $documents,
+            'nb' => $documents_count,
+            'documents' => $documents_list,
+            'types' => $documents->getTypes(),
+            'perm_names' => $document::getPermissionsList(true),
             'filters' => $filters,
             'documentation' => 'usermanual/documents.html'
         ];
@@ -146,12 +190,15 @@ class DocumentsController extends CrudController
     )]
     public function publicList(Response $response): Response
     {
-        $document = new Document($this->zdb);
-        $documents = $document->getTypedList();
+        $documents = new Documents(
+            $this->zdb,
+            $this->login
+        );
+        $documents_list = $documents->getTypedList();
 
         $params = [
             'page_title' => _T("Documents"),
-            'typed_documents' => $documents,
+            'typed_documents' => $documents_list,
             'documentation' => 'usermanual/documents.html#public-list'
         ];
 
@@ -174,8 +221,53 @@ class DocumentsController extends CrudController
     )]
     public function filter(Request $request, Response $response): Response
     {
-        //no filtering
-        return $response;
+        $filter_name = $this->getFilterName(static::getDefaultFilterName());
+
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($this->session->$filter_name !== null) {
+            $filters = $this->session->$filter_name;
+        } else {
+            $filters = new DocumentsList();
+        }
+
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
+                }
+            }
+
+            if (isset($post['filename_filter']) && $post['filename_filter'] !== '') {
+                $filters->filename_filter = $post['filename_filter'];
+            }
+
+            if (isset($post['type_filter']) && $post['type_filter'] !== '') {
+                $filters->type_filter = $post['type_filter'];
+            }
+
+            if (isset($post['visibility_filter']) && $post['visibility_filter'] !== 'none') {
+                $filters->visibility_filter = $post['visibility_filter'];
+            }
+        }
+
+        $this->session->$filter_name = $filters;
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('documentsList'),
+            errors: $error_detected
+        );
     }
 
     /**
@@ -258,6 +350,14 @@ class DocumentsController extends CrudController
     )]
     public function edit(Request $request, Response $response, int $id): Response
     {
+        $filters = new DocumentsList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+
         if (isset($this->session->document)) {
             $document = $this->session->document;
             unset($this->session->document);
@@ -269,7 +369,7 @@ class DocumentsController extends CrudController
             'action'            => 'edit',
             'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $document->getSystemTypes(),
+            'types'             => $documents->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
@@ -402,4 +502,12 @@ class DocumentsController extends CrudController
 
     // /CRUD - Delete
     // /CRUD
+
+    /**
+     * Get default filter name
+     */
+    public static function getDefaultFilterName(): string
+    {
+        return 'documents';
+    }
 }

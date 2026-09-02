@@ -13,7 +13,7 @@ namespace Galette\Core;
 use Analog\Analog;
 use Safe\DateTime;
 use Galette\Entity\Adherent;
-use Galette\Entity\Document;
+use Galette\Repository\Documents;
 use Galette\IO\News;
 use Galette\Util\Release;
 use Psr\Container\ContainerInterface;
@@ -841,9 +841,9 @@ class Galette
         }
 
         //display documents menu if at least one document is present with current ACLs
-        $document = new Document($zdb);
-        $documents = $document->getList();
-        if ($login->isSuperAdmin() || count($documents)) {
+        $documents = new Documents($zdb, $login);
+        $documents_list = $documents->getList();
+        if ($login->isSuperAdmin() || count($documents_list)) {
             $dashboards = array_merge(
                 $dashboards,
                 [

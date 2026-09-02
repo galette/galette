@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
 use Galette\IO\FileTrait;
+use Galette\Repository\Documents;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Galette\Core\Db;
@@ -39,12 +40,6 @@ class Document
     public const string TABLE = 'documents';
     public const string PK = 'id_document';
 
-    public const string STATUS = 'status';
-    public const string RULES = 'rules';
-    public const string ADHESION = 'adhesion';
-    public const string MINUTES = 'minutes';
-    public const string VOTES = 'votes';
-
     private int $id;
     private string $type;
     private string $filename;
@@ -53,7 +48,6 @@ class Document
     private ?string $comment = null;
     /** @var string[] */
     private array $errors = [];
-    private bool $public_list = false;
 
     /**
      * Main constructor
@@ -99,90 +93,6 @@ class Document
     }
 
     /**
-     * Get documents
-     *
-     * @param string|null $type Type to retrieve
-     *
-     * @return array<int,Document>
-     *
-     * @throws Throwable
-     */
-    public function getList(?string $type = null): array
-    {
-        global $login;
-
-        try {
-            $select = $this->zdb->select(self::TABLE);
-
-            if ($type !== null) {
-                $select->where(['type' => $type]);
-            }
-
-            $select->order(self::PK);
-
-            $results = $this->zdb->execute($select);
-            $documents = [];
-            $access_level = $login->getAccessLevel();
-
-            foreach ($results as $r) {
-                // skip entries according to access control
-                if (
-                    $r->visible == FieldsConfig::NOBODY
-                    && (($this->public_list === false && !$login->isAdmin()) || $this->public_list === true)
-                    || ($r->visible == FieldsConfig::ADMIN
-                        && $access_level < Authentication::ACCESS_ADMIN)
-                    || ($r->visible == FieldsConfig::STAFF
-                        && $access_level < Authentication::ACCESS_STAFF)
-                    || ($r->visible == FieldsConfig::MANAGER
-                        && $access_level < Authentication::ACCESS_MANAGER)
-                    || (($r->visible == FieldsConfig::USER_READ || $r->visible == FieldsConfig::USER_WRITE)
-                        && $access_level < Authentication::ACCESS_USER)
-                ) {
-                    continue;
-                }
-
-                $documents[$r->{self::PK}] = new Document($this->zdb, $r);
-            }
-            return $documents;
-        } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred loading documents. Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Get list by type
-     *
-     * @return array<string, array<int, Document>>
-     *
-     * @throws Throwable
-     */
-    public function getTypedList(): array
-    {
-        $this->public_list = true;
-        $list = $this->getList();
-        $sys_types = $this->getSystemTypes(false);
-
-        $typed_list = array_fill_keys($sys_types, []);
-        foreach ($list as $document) {
-            $typed_list[$document->getType()][] = $document;
-        }
-
-        //cleanup: some system types may have no entries
-        foreach ($sys_types as $type) {
-            if (count($typed_list[$type]) == 0) {
-                unset($typed_list[$type]);
-            }
-        }
-
-        return $typed_list;
-    }
-
-    /**
      * Check if a document can be shown
      *
      * @param Login $login Login
@@ -224,6 +134,8 @@ class Document
      */
     public function store(array $post, array $files): bool
     {
+        global $login;
+
         $this->setType($post['document_type']);
         $this->setComment($post['comment']);
         $this->permission = (int)$post['visible'];
@@ -235,6 +147,8 @@ class Document
         }
 
         try {
+            $documents = new Documents($this->zdb, $login);
+
             $values = [
                 'type' => $this->type,
                 'filename' => $this->filename,
@@ -256,7 +170,7 @@ class Document
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-                if (!in_array($this->type, $this->getSystemTypes(false))) {
+                if (!in_array($this->type, $documents->getSystemTypes(false))) {
                     $this->addTranslation($this->type);
                 }
             }
@@ -396,66 +310,18 @@ class Document
     }
 
     /**
-     * Get system social types
-     *
-     * @param bool $translated Return translated types (default) or not
-     *
-     * @return array<string,string>
-     */
-    public function getSystemTypes(bool $translated = true): array
-    {
-        if ($translated) {
-            $systypes = [
-                self::STATUS => _T('Association status'),
-                self::RULES => _T('Rules of procedure'),
-                self::ADHESION => _T('Adhesion form'),
-                self::MINUTES => _T('Meeting minutes'),
-                self::VOTES => _T('Votes results')
-            ];
-        } else {
-            $systypes = [
-                self::STATUS => 'Association status',
-                self::RULES => 'Rules of procedure',
-                self::ADHESION => 'Adhesion form',
-                self::MINUTES => 'Meeting minutes',
-                self::VOTES => 'Votes results'
-            ];
-        }
-        return $systypes;
-    }
-
-    /**
-     * Get system documents types
+     * Get document system type
      *
      * @param string $type       Document type
      * @param bool   $translated Return translated types (default) or not
      */
     public function getSystemType(string $type, bool $translated = true): string
     {
-        return $this->getSystemTypes($translated)[$type] ?? _T($type);
-    }
+        global $login;
 
-    /**
-     * Get all known types
-     *
-     * @return array<string,string>
-     *
-     * @throws Throwable
-     */
-    public function getTypes(): array
-    {
-        $types = $this->getSystemTypes();
+        $documents = new Documents($this->zdb, $login);
 
-        $select = $this->zdb->select(self::TABLE);
-        $select->quantifier('DISTINCT');
-        $select->where->notIn('type', array_keys($this->getSystemTypes(false)));
-        $results = $this->zdb->execute($select);
-
-        foreach ($results as $r) {
-            $types[$r->type] = _T($r->type);
-        }
-
-        return $types;
+        return $documents->getSystemTypes($translated)[$type] ?? _T($type);
     }
 
     /**

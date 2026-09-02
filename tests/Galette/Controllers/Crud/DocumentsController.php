@@ -84,7 +84,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->copyFixture();
         $uploaded_files = $this->getUploadedDocument(false);
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => $visibility
         ];
@@ -134,7 +134,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -257,7 +257,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -299,7 +299,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->copyFixture();
         $uploaded_files = $this->getUploadedDocument(false);
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -364,7 +364,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -461,7 +461,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->getDocumentInstance();
         $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
