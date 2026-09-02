@@ -17,7 +17,7 @@ You'll find a [detailled description on Galette's website](https://galette.eu/si
 * bugs and features: https://bugs.galette.eu/projects/galette
 * mailing lists:
   * users: https://lists.mailman3.com/postorius/lists/galette-users.mailman3.com/
-  * developpers: https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
+  * developers: https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
 * documentation: https://doc.galette.eu/en/develop
 * translation: https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
 
@@ -25,7 +25,7 @@ To use Galette, you can either:
 
 * download latest stable version available from [Galette website](https://galette.eu)
 * use the [nightly build](https://galette.eu/download/galette-dev.tar.bz2) to test new features
-* use [Galette soure code from repository](https://doc.galette.eu/en/develop/source_code.html) (make sure you install third party dependencies), this solution requires some technical skills
+* use [Galette source code from repository](https://doc.galette.eu/en/develop/source_code.html) (make sure you install third party dependencies), this solution requires some technical skills
 
 This project is tested with BrowserStack
 
@@ -49,4 +49,4 @@ Pour utiliser Galette, vous pouvez, au choix :
 
 * télécharger la dernière version stable depuis le [site web de Galette](https://galette.eu)
 * utiliser [l'archive quotidienne (nightly build)](https://galette.eu/download/galette-dev.tar.bz2) pour tester les nouvelles fonctionnalités
-* utiliser [le code source de Galette depuis le dépôt](https://doc.galette.eu/fr/develop/source_code.html) (assurez-vous d'installer les biliothèques tierces), cette solution requiert quelques compétences techniques
+* utiliser [le code source de Galette depuis le dépôt](https://doc.galette.eu/fr/develop/source_code.html) (assurez-vous d'installer les bibliothèques tierces), cette solution requiert quelques compétences techniques
