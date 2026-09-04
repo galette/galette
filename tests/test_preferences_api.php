@@ -37,6 +37,13 @@ if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../../'); //@phpstan-ignore theCodingMachineSafe.function
 }
 
+//This script deliberately skips includes/galette.inc.php, so the constants that
+//file defaults have to be stated here: Db logging asks Galette whether debug is
+//on before running the very first query.
+if (!defined('GALETTE_DEBUG')) {
+    define('GALETTE_DEBUG', false); //@phpstan-ignore theCodingMachineSafe.function
+}
+
 // Load Galette config and autoloader only
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
 require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';
