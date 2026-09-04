@@ -322,7 +322,7 @@ class Documents
                 );
             }
 
-            if ($this->filters->visibility_filter !== null && $this->filters->visibility_filter != '0') {
+            if ($this->filters->visibility_filter !== null && $this->filters->visibility_filter != 'none') {
                 $select->where->equalTo(
                     'visible',
                     $this->filters->visibility_filter
