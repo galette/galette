@@ -329,8 +329,21 @@ class Preferences
             return false;
         }
 
+        //values are kept even when the socials fail: checkUpdate() would
+        //otherwise take every preference for missing and insert them again
         $this->prefs = $values;
-        $this->socials = Social::getListForMember(null);
+
+        try {
+            $this->socials = Social::getListForMember(null);
+        } catch (Throwable) {
+            Analog::log(
+                'Preferences cannot be loaded. Galette should not work without '
+                . 'preferences. Exiting.',
+                Analog::URGENT
+            );
+            return false;
+        }
+
         return true;
     }
 
