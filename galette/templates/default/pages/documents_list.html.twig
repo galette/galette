@@ -104,7 +104,7 @@
                     <select id="visibility_filter" name="visibility_filter" class="ui search dropdown">
                         <option value="none">{{ _T('Select') }}</option>
                         {% for key, value in perm_names %}
-                            <option value="{{ key }}"{% if key == filters.visibility_filter %} selected="selected"{% endif %}>{{ value }}</option>
+                            <option value="{{ key }}"{% if filters.visibility_filter is not null and key == filters.visibility_filter %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
                     </select>
                 </div>

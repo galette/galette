@@ -260,6 +260,8 @@ class DocumentsController extends CrudController
 
             if (isset($post['visibility_filter']) && $post['visibility_filter'] !== 'none') {
                 $filters->visibility_filter = $post['visibility_filter'];
+            } else {
+                $filters->visibility_filter = null;
             }
         }
 
