@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
 use Galette\Util\Password;
+use Galette\Util\Html;
 
 use function Safe\preg_match;
 
@@ -33,15 +34,6 @@ final class Fields
 {
     /** @var array<string> */
     private array $errors = [];
-
-    /**
-     * Constructor
-     *
-     * @param Assets $assets Assets helper, for the HTML fields
-     */
-    public function __construct(private readonly Assets $assets)
-    {
-    }
 
     /**
      * Check a value against what its type requires, and normalise it
@@ -75,7 +67,7 @@ final class Fields
             PreferencesSchema::TYPE_DATE_MD => $this->validateBegMembership($value),
             PreferencesSchema::TYPE_YEAR => $this->validateCardYear($value),
             PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
-            PreferencesSchema::TYPE_HTML => $this->assets->cleanHtmlValue(value: (string)$value),
+            PreferencesSchema::TYPE_HTML => Html::clean((string)$value),
             default => $value,
         };
     }

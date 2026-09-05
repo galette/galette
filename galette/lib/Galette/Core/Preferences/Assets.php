@@ -16,8 +16,6 @@ use Galette\Core\PrintLogo;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Flash\Messages;
 
-use function Safe\mkdir;
-use function Safe\preg_replace;
 use function Safe\unlink;
 
 /**
@@ -65,37 +63,6 @@ final class Assets
         }
 
         return $errors;
-    }
-
-    /**
-     * Purify HTML an administrator typed
-     *
-     * @param string $value Value to clean
-     */
-    public function cleanHtmlValue(string $value): string
-    {
-        $config = \HTMLPurifier_Config::createDefault();
-        $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
-        if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0o755, true);
-        }
-        $config->set('Cache.SerializerPath', $cache_dir);
-        $config->set('URI.AllowedSchemes', [
-            'http' => true,
-            'https' => true,
-            'mailto' => true,
-            'ftp' => true,
-        ]);
-        $purifier = new \HTMLPurifier($config);
-
-        // Remove all dangerous schemes
-        $value = preg_replace(
-            '/\b(?:javascript|data|vbscript):\s*/i',
-            '',
-            $value
-        );
-
-        return $purifier->purify($value);
     }
 
     /**

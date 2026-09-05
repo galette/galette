@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Galette\IO\File;
-use Galette\Util\Text;
+use Galette\Util\Html;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -367,7 +367,7 @@ class GaletteMail
      */
     protected function getTextMessage(): string
     {
-        return Text::convertHtmlToText($this->message);
+        return Html::convertToText($this->message);
     }
 
     /**

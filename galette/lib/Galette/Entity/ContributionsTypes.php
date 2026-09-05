@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Entity;
 
+use Galette\Util\Html;
 use Analog\Analog;
 use Galette\Core\Db;
 use ArrayObject;
@@ -623,8 +624,6 @@ class ContributionsTypes
      */
     private function formatDescription(string $description): string
     {
-        global $preferences;
-
         //If we just have empty tags, we consider that description is empty
         if (trim(strip_tags($description)) === '') {
             return '';
@@ -643,7 +642,7 @@ class ContributionsTypes
             '',
             $description
         );
-        $cleaned = $preferences->cleanHtmlValue($cleaned);
+        $cleaned = Html::clean((string)$cleaned);
         return trim((string)$cleaned);
     }
 }

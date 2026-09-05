@@ -10,11 +10,6 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
-use Galette\Converter\ImageConverter;
-use Galette\Converter\ParagraphConverter;
-use Galette\Converter\TextConverter;
-use League\HTMLToMarkdown\HtmlConverter;
-
 use function Safe\preg_replace;
 
 /**
@@ -91,23 +86,11 @@ class Text
      * Convert HTML to text
      *
      * @param string $html HTML to convert
+     *
+     * @deprecated 1.3.0 Use Galette\Util\Html::convertToText()
      */
     public static function convertHtmlToText(string $html): string
     {
-        $converter = new HtmlConverter();
-        $environment = $converter->getEnvironment();
-        $environment->addConverter(new ImageConverter()); // optionally - add converter manually
-        //do not escape Markdown special characters, result is used as plain text
-        $environment->addConverter(new TextConverter());
-        $environment->addConverter(new ParagraphConverter());
-
-        $config = $converter->getConfig();
-        $config->setOption('strip_tags', true); //remove all tags
-        $config->setOption('hard_break', true); //convert <br> to \n only
-        $config->setOption('header_style', 'atx'); //set headers style to atx (with #)
-        $config->setOption('strip_placeholder_links', true); //to remove links without links
-        $config->setOption('remove_nodes', 'meta script style'); //nodes to just remove
-
-        return $converter->convert($html);
+        return Html::convertToText($html);
     }
 }

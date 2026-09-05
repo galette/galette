@@ -623,7 +623,7 @@ class Texts
         //some replacements may produce HTML code; while system texts are text only
         foreach ($replaces as &$replace) {
             if (is_string($replace)) {
-                $replace = \Galette\Util\Text::convertHtmlToText($replace);
+                $replace = \Galette\Util\Html::convertToText($replace);
             }
         }
         $this->trait_setReplacements($replaces);

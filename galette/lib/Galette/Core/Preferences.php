@@ -15,6 +15,7 @@ use Safe\DateTime;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use Galette\Util\Html;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -245,7 +246,7 @@ class Preferences
     {
         $this->zdb = $zdb;
         $this->assets = new Assets();
-        $this->fields = new Fields(assets: $this->assets);
+        $this->fields = new Fields();
         $this->identity = new Identity(zdb: $zdb);
         $this->relations = new Relations();
         $this->signature = new Signature(zdb: $zdb);
@@ -795,7 +796,7 @@ class Preferences
             ) {
                 return GaletteMail::METHOD_DISABLED;
             } elseif ($name == 'pref_footer') {
-                return $this->cleanHtmlValue($this->prefs[$name]);
+                return Html::clean((string)$this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
                     $this->prefs[$name] = self::defaults()['pref_adhesion_form'];
@@ -1082,7 +1083,7 @@ class Preferences
 
         $signature = $this->proceedReplacements($signature);
         if ($as_text) {
-            $signature = Text::convertHtmlToText($signature);
+            $signature = Html::convertToText($signature);
         }
 
         return "\r\n-- \r\n" . $signature;
@@ -1126,10 +1127,12 @@ class Preferences
      * Purify HTML value
      *
      * @param string $value Value to clean
+     *
+     * @deprecated 1.3.0 Use Galette\Util\Html::clean()
      */
     public function cleanHtmlValue(string $value): string
     {
-        return $this->assets->cleanHtmlValue(value: $value);
+        return Html::clean($value);
     }
 
     /**

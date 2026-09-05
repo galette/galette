@@ -12,6 +12,7 @@ namespace Galette\DynamicFields;
 
 use ArrayObject;
 use Galette\Features\Permissions;
+use Galette\Util\Html;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -581,8 +582,7 @@ abstract class DynamicField
         }
 
         if (isset($values['field_information']) && trim((string)$values['field_information']) != '') {
-            global $preferences;
-            $this->information = $preferences->cleanHtmlValue($values['field_information']);
+            $this->information = Html::clean((string)$values['field_information']);
         }
 
         $this->information_above = (bool)($values['field_information_above'] ?? false);

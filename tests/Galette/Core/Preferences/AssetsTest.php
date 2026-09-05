@@ -24,23 +24,6 @@ use function Safe\file_put_contents;
 class AssetsTest extends GaletteTestCase
 {
     /**
-     * Dangerous markup never survives
-     */
-    public function testCleanHtmlValue(): void
-    {
-        $assets = new Assets();
-
-        $this->assertSame('<p>Hello</p>', $assets->cleanHtmlValue('<p>Hello</p>'));
-        $this->assertStringNotContainsString('<script', $assets->cleanHtmlValue('<script>alert(1)</script>'));
-        $this->assertStringNotContainsString(
-            'javascript:',
-            $assets->cleanHtmlValue('<a href="javascript:alert(1)">x</a>')
-        );
-        //a link to an allowed scheme is kept
-        $this->assertStringContainsString('https://galette.eu', $assets->cleanHtmlValue('<a href="https://galette.eu">x</a>'));
-    }
-
-    /**
      * A colour change makes the generated stylesheet stale
      */
     public function testIsCssImpacted(): void
