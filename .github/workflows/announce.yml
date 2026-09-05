@@ -1,0 +1,107 @@
+name: Announce
+
+# Triggered by the release being published, not by the tag being pushed: at tag
+# time the archive is not attached yet, so the announcement would link an empty
+# release and the website would name a download that does not exist. This works
+# whether the release is created by hand or by a future release workflow — it
+# presumes nothing about how the archive is produced.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to announce'
+        required: true
+      dry-run:
+        description: 'Compose everything, publish and dispatch nothing'
+        type: boolean
+        default: true
+
+concurrency:
+  group: "announce-${{ github.event.release.tag_name || inputs.version }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    # A prerelease is never announced. That is what keeps the rolling `nightly`
+    # release of nightly.yml from tooting the first night it is created.
+    if: github.repository == 'galette/galette' && github.event.release.prerelease != true
+
+    env:
+      APP_ID: ${{ secrets.RELEASE_BOT_APP_ID }}
+
+    steps:
+      - name: Resolve the version
+        id: version
+        env:
+          VERSION: ${{ inputs.version || github.event.release.tag_name }}
+          DRY_RUN: ${{ inputs.dry-run || false }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+){2,3}$ ]]; then
+            echo "::error::'${VERSION}' does not look like a Galette version"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "dry-run=${DRY_RUN}" >> "$GITHUB_OUTPUT"
+          echo "Announcing Galette ${VERSION} (dry run: ${DRY_RUN})"
+
+      # Scoped to the two repositories it has to knock on. Without owner and
+      # repositories the action mints a token for this repository only, and the
+      # dispatches below would answer 404.
+      - name: Mint a token for website and galettedoc
+        id: app-token
+        if: env.APP_ID != '' && steps.version.outputs.dry-run != 'true'
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          owner: galette
+          repositories: |
+            website
+            galettedoc
+
+      # The token only rings the doorbell. Each repository opens its own pull
+      # request, with its own workflow, against its own branch.
+      - name: Ask website and galettedoc for their version bump
+        if: steps.app-token.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -uo pipefail
+          for repo in website galettedoc; do
+            # Warned about rather than fatal, and one by one: a repository that
+            # refuses the event must not cost the other one its pull request, nor
+            # the release its announcement.
+            if gh api --method POST "repos/galette/${repo}/dispatches" \
+                 -f event_type=galette-release \
+                 -f "client_payload[version]=${VERSION}" --silent; then
+              echo "galette/${repo} has been asked to bump to ${VERSION}."
+            else
+              echo "::warning::could not dispatch galette-release to galette/${repo}, see the error above. It may mean the app is not installed there, or that the token was not scoped to it. Its version bump will have to be done by hand, or the workflow run from the repository with the version as input."
+            fi
+          done
+
+      - name: Say why nothing was dispatched
+        if: env.APP_ID == '' && steps.version.outputs.dry-run != 'true'
+        run: |
+          echo "::warning::RELEASE_BOT_APP_ID is not set, so website and galettedoc were not asked to bump to ${{ steps.version.outputs.version }}."
+
+      - name: Announce on Mastodon
+        uses: galette/.github/actions/toot@main
+        with:
+          status: |
+            Galette ${{ steps.version.outputs.version }} is out!
+
+            ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.version.outputs.version }}
+          token: ${{ secrets.MASTODON_TOKEN }}
+          instance: ${{ vars.MASTODON_INSTANCE }}
+          idempotency-key: galette-${{ steps.version.outputs.version }}
+          dry-run: ${{ steps.version.outputs.dry-run }}
