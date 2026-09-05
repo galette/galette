@@ -724,7 +724,10 @@ class Preferences
             $right = 'pref_publicpages_visibility_generic';
         }
 
-        $visibility = PublicPageVisibility::tryFrom((int)$this->prefs[$right]);
+        //a stored value that is not a plain integer must not be coerced:
+        //(int)'garbage' is 0, which would read as "visible by everyone"
+        $stored = filter_var($this->prefs[$right], FILTER_VALIDATE_INT);
+        $visibility = $stored === false ? null : PublicPageVisibility::tryFrom($stored);
         if ($visibility === null) {
             throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
         }

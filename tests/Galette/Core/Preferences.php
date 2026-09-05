@@ -576,6 +576,40 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test a stored visibility that is not a plain integer
+     *
+     * Casting it would read as zero, that is "visible by everyone": a row
+     * Galette cannot make sense of has to close the page, not open it.
+     */
+    public function testCorruptedPublicPageVisibility(): void
+    {
+        $right = 'pref_publicpages_visibility_generic';
+        $default = \Galette\Core\PreferencesSchema::getDefaults()[$right];
+
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => 'garbage'])->where->equalTo('nom_pref', $right);
+        $this->zdb->execute($update);
+
+        $preferences = new \Galette\Core\Preferences($this->zdb);
+        $preferences->pref_bool_publicpages = true;
+
+        try {
+            $preferences->showPublicPage(
+                new \Galette\Core\Login($this->zdb, new \Galette\Core\I18n()),
+                $right
+            );
+            $this->fail('An unusable visibility must not let the page through.');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Unknown public pages right: garbage', $e->getMessage());
+        } finally {
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => $default])->where->equalTo('nom_pref', $right);
+            $this->zdb->execute($update);
+            $this->preferences->load();
+        }
+    }
+
+    /**
      * Data provider for colors
      *
      * @return array<array{prop: string, color: string, expected: string}>
