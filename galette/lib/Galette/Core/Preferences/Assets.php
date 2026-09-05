@@ -58,7 +58,7 @@ final class Assets
 
         if ($errors !== []) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store logo' . "\n"
+                'Some errors were thrown while attempting to edit/store the logo' . "\n"
                 . print_r($errors, true),
                 Analog::WARNING
             );
