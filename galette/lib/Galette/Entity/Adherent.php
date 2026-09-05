@@ -245,6 +245,11 @@ class Adherent implements AccessManagementInterface
     /**
      * Returns default values for a new member
      *
+     * The password is deliberately absent: an account created without one gets
+     * its unusable hash from check(), or from store() when it was never
+     * checked. Generating it here would cost a bcrypt round on every single
+     * instantiation, for a value discarded as soon as a password is provided.
+     *
      * @return array<string, mixed>
      */
     public function getDefaultValues(): array
@@ -275,7 +280,6 @@ class Adherent implements AccessManagementInterface
                 'creation_date' => date("Y-m-d"),
                 'status' => $this->getDefaultStatus(),
                 'title' => null,
-                'password' => $gp->makeUnusablePasswordHash(),
                 'picture' => new Picture(),
                 'admin' => false,
                 'staff' => false,
@@ -1133,6 +1137,12 @@ class Adherent implements AccessManagementInterface
             $this->validate('mdp_adh', $values['mdp_adh'], $values);
         }
 
+        if (empty($this->id) && !isset($this->password)) {
+            //no password provided; the account gets a hash nothing can match,
+            //which also satisfies the mandatory password check below
+            $this->password = (new Password($this->zdb))->makeUnusablePasswordHash();
+        }
+
         // missing required fields?
         foreach (array_keys($required) as $key) {
             $prop = $this->fields[$key]['propname'];
@@ -1605,6 +1615,8 @@ class Adherent implements AccessManagementInterface
                         }
                     }
                 }
+
+                $values['mdp_adh'] ??= (new Password($this->zdb))->makeUnusablePasswordHash();
 
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
