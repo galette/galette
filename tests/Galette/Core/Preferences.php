@@ -1341,4 +1341,43 @@ class Preferences extends GaletteTestCase
         $this->assertTrue(isset($this->preferences->vpref_email_newadh));
         $this->assertTrue(isset($this->preferences->socials));
     }
+
+    /**
+     * Test that saving the settings form leaves advanced preferences alone
+     *
+     * They are not rendered by that form, so the payload never carries them.
+     * Blanking them, as any other missing field, would reset them on every
+     * save.
+     */
+    public function testFormSaveKeepsAdvancedPreferences(): void
+    {
+        $this->logSuperAdmin();
+
+        $this->preferences->pref_session_timeout = 42;
+        $this->preferences->pref_x_forwarded_for_index = 2;
+        $this->preferences->pref_mail_batch_size = 25;
+        $this->preferences->pref_mail_hourly_limit = 100;
+        $this->preferences->pref_mail_smtp_keepalive = true;
+
+        //what the settings form submits: every preference it renders
+        $post = [];
+        foreach ($this->preferences->getFieldsNames() as $name) {
+            if (!\Galette\Core\PreferencesSchema::isAdvanced($name)) {
+                $post[$name] = $this->preferences->$name;
+            }
+        }
+        $post['pref_admin_pass'] = '';
+        $post['pref_admin_pass_bis'] = '';
+
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $this->assertSame(42, $this->preferences->pref_session_timeout);
+        $this->assertSame(2, $this->preferences->pref_x_forwarded_for_index);
+        $this->assertSame(25, $this->preferences->pref_mail_batch_size);
+        $this->assertSame(100, $this->preferences->pref_mail_hourly_limit);
+        $this->assertTrue($this->preferences->pref_mail_smtp_keepalive);
+    }
 }

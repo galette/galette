@@ -64,7 +64,7 @@ class Login extends Authentication
     public function logCron(string $name, Preferences $preferences): bool
     {
         //known cronable files
-        $ok = ['reminder'];
+        $ok = ['reminder', 'mailing_queue'];
 
         if (in_array($name, $ok)) {
             $this->logged = true;

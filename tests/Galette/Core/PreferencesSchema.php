@@ -13,6 +13,9 @@ namespace Galette\Tests\Core;
 use Galette\Core\PreferencesSchema as Schema;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\file_get_contents;
+use function Safe\preg_match;
+
 /**
  * Preferences schema tests class
  *
@@ -245,5 +248,39 @@ class PreferencesSchema extends GaletteTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown error identifier "nope".');
         Schema::getErrorMessage('nope');
+    }
+
+    /**
+     * A preference is either on the settings form, or flagged as advanced
+     *
+     * Preferences::completeValues() blanks whatever the payload does not
+     * carry, so a preference the form does not render has to say so: without
+     * the flag, saving the settings form would reset it every time. Keeping
+     * both in step is what makes that safe.
+     */
+    public function testOffFormPreferencesAreFlagged(): void
+    {
+        $form = file_get_contents(
+            GALETTE_ROOT . 'templates/default/pages/preferences.html.twig'
+        );
+
+        foreach (array_keys(Schema::getAll()) as $name) {
+            //a name is a prefix of longer ones, only a whole one counts
+            $on_form = preg_match('/' . $name . '(?![a-zA-Z0-9_])/', $form) === 1;
+
+            if ($on_form) {
+                $this->assertFalse(
+                    Schema::isAdvanced($name),
+                    $name . ' is flagged as advanced but the settings form renders it'
+                );
+                continue;
+            }
+
+            $this->assertTrue(
+                Schema::isAdvanced($name) || Schema::isReadOnly($name),
+                $name . ' is not on the settings form and is not flagged as advanced,'
+                . ' so saving the form would blank it'
+            );
+        }
     }
 }

@@ -20,9 +20,12 @@ declare(strict_types=1);
  * - set_public_page_visibility: Set visibility for a specific public page
  * - restore_default_public_pages: Restore default public pages configuration
  * - get_public_pages_config: Get current public pages configuration
+ * - configure_mail: Configure SMTP mailing (used with a local mail catcher)
+ * - reset_mail: Disable mailing and reset batching/throttling preferences
  */
 
 use Galette\Core\Db;
+use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
 
 use function Safe\file_get_contents;
@@ -101,6 +104,33 @@ try {
                 $preferences->pref_publicpages_visibility_documents = Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;
                 $preferences->store();
                 echo json_encode(['success' => true, 'message' => 'Default public pages configuration restored']);
+                break;
+
+            case 'configure_mail':
+                //point Galette to a local SMTP catcher (e.g. Mailpit) and set
+                //batching/throttling so mass mailings go through the queue
+                $preferences->pref_mail_method = GaletteMail::METHOD_SMTP;
+                $preferences->pref_mail_smtp_host = $input['host'] ?? '127.0.0.1';
+                $preferences->pref_mail_smtp_port = $input['port'] ?? 1025;
+                $preferences->pref_mail_smtp_auth = false;
+                $preferences->pref_mail_smtp_secure = false;
+                $preferences->pref_mail_smtp_keepalive = true;
+                $preferences->pref_mail_batch_size = $input['batch_size'] ?? 2;
+                $preferences->pref_mail_batch_delay = $input['batch_delay'] ?? 0;
+                $preferences->pref_mail_hourly_limit = $input['hourly_limit'] ?? 0;
+                $preferences->pref_mail_daily_limit = $input['daily_limit'] ?? 1000;
+                $preferences->store();
+                echo json_encode(['success' => true, 'message' => 'Mail configured']);
+                break;
+
+            case 'reset_mail':
+                $preferences->pref_mail_method = GaletteMail::METHOD_DISABLED;
+                $preferences->pref_mail_batch_size = 0;
+                $preferences->pref_mail_batch_delay = 0;
+                $preferences->pref_mail_hourly_limit = 0;
+                $preferences->pref_mail_daily_limit = 0;
+                $preferences->store();
+                echo json_encode(['success' => true, 'message' => 'Mail reset']);
                 break;
 
             default:

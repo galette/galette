@@ -641,20 +641,26 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertCount(1, $lreminders->getList($this->zdb));
         $this->assertCount(1, $ireminders->getList($this->zdb));
 
+        //reminders are not sent from the request any more: they are queued,
+        //and the progress page takes over from there
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
-        // no real email provider setup so gives an error
-        $this->expectFlashData(
-            [
-                'error_detected' =>  [
-                    'Reminder has not been sent:',
-                    'DURAND René <meunier.josephine20250802103040@ledoux.com> (30 days)',
-                    'HOARAU Lucas <phoarau20250802103040@tele2.fr> (40 days)',
-                ]
-            ]
-        );
+        $this->expectFlashData([]);
         $this->assertEquals(301, $test_response->getStatusCode());
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('reminders')]], $test_response->getHeaders());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('remindersQueue')]],
+            $test_response->getHeaders()
+        );
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(2, $stats['total']);
+        $this->assertSame(2, $stats['remaining']);
+        $this->assertSame(0, $stats['sent_total']);
+
+        $this->zdb->execute(
+            $this->zdb->delete(\Galette\Core\MailingQueue::TABLE)
+        );
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
     }
 

@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use Galette\Core\Db;
 use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\LightSlimApp;
@@ -14,8 +13,6 @@ use Galette\Core\Login;
 use Galette\Core\MailingQueue;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
-use Galette\Middleware\Authenticate;
-use Galette\Repository\Reminders;
 
 use function Safe\define;
 use function Safe\session_start;
@@ -44,7 +41,7 @@ $cron = (PHP_SAPI === 'cli');
 if ($cron) {
     $container->get(Login::class)->logCron(
         basename($argv[0], '.php'),
-        $container->get(\Galette\Core\Preferences::class)
+        $container->get(Preferences::class)
     );
     define('GALETTE_CRON', true);
 }
@@ -53,54 +50,50 @@ if (!$container->get(Login::class)->isCron()) {
     die(1);
 }
 
-//a cron run has no incoming request to guess the instance URL from: it has to
-//be configured, either as a preference or as the legacy constant
-if ($cron && empty($container->get(\Galette\Core\Preferences::class)->getConfigValue('pref_galette_url'))) {
-    echo _T('Please set your instance URL from the advanced configuration, or define the "GALETTE_URI" constant.') . "\n";
+if ($cron && !defined('GALETTE_URI')) {
+    echo _T('Please define constant "GALETTE_URI" with the path to your instance.') . "\n";
     die(1);
 }
 
 $preferences = $container->get(Preferences::class);
-$reminders = new Reminders();
-$list_reminders = $reminders->getList($container->get(Db::class), false);
-
-//queue the due reminders, then drain the queue respecting the configured
-//throttling (delay, hourly/daily quota shared with mass mailings)
-$queue = new MailingQueue($container->get(Db::class), $preferences);
+$queue = new MailingQueue(
+    $container->get(\Galette\Core\Db::class),
+    $preferences
+);
+//this is the generic drainer: it may encounter reminder rows too, so give it
+//the context needed to send them
 $queue->setReminderContext(
     $container->get(History::class),
     $container->get(Login::class)
 );
-$queue->enqueueReminders($list_reminders);
-
 $delay = (int)$preferences->pref_mail_batch_delay;
+
 $total_sent = 0;
 $total_failed = 0;
 
+//drain the queue batch after batch, respecting the configured delay, until it
+//is empty or the rate limit is reached (remaining messages go out on next runs)
 do {
-    $progress = $queue->processBatch(null, MailingQueue::KIND_REMINDER);
+    $progress = $queue->processBatch();
     $total_sent += (int)$progress['batch_sent'];
     $total_failed += (int)$progress['batch_failed'];
 
-    //stop when the queue is empty or the rate limit is reached (the remaining
-    //messages will be sent on the next runs)
     if ($progress['done'] === true || $progress['rate_limited'] === true) {
         break;
     }
+
     if ($delay > 0) {
         sleep($delay);
     }
 } while (true);
 
-//called from a cron: successes and warnings have been stored into history and
-//logged. Stay completely silent unless something failed, otherwise cron would
-//notify the administrator on every (successful) run. A reached rate limit is
-//not an error: the remaining messages are sent on the next runs.
+//stay silent on success so cron does not notify the administrator on every run;
+//only report (and fail) when something actually failed
 if ($total_failed > 0) {
     echo str_replace(
         ['%sent', '%failed'],
         [(string)$total_sent, (string)$total_failed],
-        _T("Reminders processed: %sent sent, %failed failed.")
+        _T("Mailing queue processed: %sent sent, %failed failed.")
     ) . "\n";
     exit(1);
 }
