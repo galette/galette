@@ -142,6 +142,26 @@ class Password extends GaletteTestCase
     }
 
     /**
+     * Test a strength value the enum cannot read
+     *
+     * Only an explicit "none" turns the personal information check off; a
+     * stored value out of range must not disable it.
+     */
+    public function testPersonalInformationWithUnknownStrength(): void
+    {
+        $this->preferences->pref_password_strength = 99;
+
+        $password = new \Galette\Util\Password($this->preferences);
+        $password->addPersonalInformation(['mylogin']);
+
+        $this->assertFalse($password->isValid('mylogin'));
+        $this->assertContains(
+            'Do not use any of your personal information as password!',
+            $password->getErrors()
+        );
+    }
+
+    /**
      * Test with personal information
      */
     public function testPersonalInformation(): void

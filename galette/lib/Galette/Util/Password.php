@@ -85,9 +85,10 @@ class Password
             $this->errors = array_merge($this->errors, $this->strength_errors);
         }
 
-        //check also against personal information
+        //check also against personal information. Only an explicit None turns
+        //it off: a stored value the enum cannot read must not disable a check
         $strength = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength);
-        if ($strength !== null && $strength !== PasswordStrength::None && in_array(mb_strtolower($password), $this->personal_infos)) {
+        if ($strength !== PasswordStrength::None && in_array(mb_strtolower($password), $this->personal_infos)) {
             $this->errors[] = _T('Do not use any of your personal information as password!');
         }
 
