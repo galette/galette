@@ -1365,6 +1365,28 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test the superadmin login check runs on the caller's login
+     *
+     * An instance built by hand has none injected; check() is given one and
+     * has to use it, or an already taken login would go through.
+     */
+    public function testAdminLoginCheckedWithoutInjection(): void
+    {
+        $this->logSuperAdmin();
+        $memberOne = $this->getMemberOne();
+
+        $preferences = new \Galette\Core\Preferences($this->zdb);
+        $post = $preferences->getDefaults();
+        $post['pref_admin_login'] = $memberOne->login;
+
+        $this->assertFalse($preferences->check($post, $this->login));
+        $this->assertContains(
+            '- This username is already used by another member !',
+            $preferences->getErrors()
+        );
+    }
+
+    /**
      * Test __isset
      */
     public function testIsset(): void

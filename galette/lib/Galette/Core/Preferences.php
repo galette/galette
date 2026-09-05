@@ -220,6 +220,8 @@ class Preferences
     private Assets $assets;
     private Fields $fields;
     private Identity $identity;
+    /** Login the assignment currently under way runs on behalf of */
+    private ?Login $acting_login = null;
     private Relations $relations;
     private Signature $signature;
     private Storage $storage;
@@ -456,6 +458,25 @@ class Preferences
      */
     private function assignValues(array $insert_values, Login $login): void
     {
+        //__set() has no room for a Login, and the superadmin login check needs
+        //one; hold the caller's for as long as the assignments run
+        $this->acting_login = $login;
+
+        try {
+            $this->assignChecked($insert_values, $login);
+        } finally {
+            $this->acting_login = null;
+        }
+    }
+
+    /**
+     * Assign the values the given user is allowed to change
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     * @param Login                $login         Logged in user
+     */
+    private function assignChecked(array $insert_values, Login $login): void
+    {
         foreach ($insert_values as $champ => $valeur) {
             //values Galette maintains itself are never taken from a payload
             if (PreferencesSchema::isReadOnly($champ)) {
@@ -546,7 +567,13 @@ class Preferences
 
         //validation and normalisation happen in __set(), which reports through
         //the error channel rather than a return value
-        $this->$name = $checked;
+        $this->acting_login = $login;
+        try {
+            $this->$name = $checked;
+        } finally {
+            $this->acting_login = null;
+        }
+
         if ($this->getErrors() !== []) {
             return false;
         }
@@ -629,7 +656,7 @@ class Preferences
      */
     private function currentLogin(): ?Login
     {
-        return $this->login ?? null;
+        return $this->acting_login ?? $this->login ?? null;
     }
 
     /**
