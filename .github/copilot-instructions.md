@@ -396,6 +396,9 @@ vendor/bin/phpcs
 - Test migrations on empty database and database with existing data
 - Include both "up" migration and rollback capability when possible
 
+### Depreciations
+- Galette removes what the current stable release already marks @deprecated when the next major opens. Do not report such a removal as a breaking change: the deprecation is the notice. Only flag the removal of something still supported in the stable branch.
+
 ## Key Configuration Files
 
 ### PHP Configuration
