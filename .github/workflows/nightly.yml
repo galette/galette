@@ -1,0 +1,209 @@
+name: Nightly
+
+# The archive galette.eu has served for years is still built by its own cron;
+# this publishes a second one, attested, on GitHub. `bin/release -n -l -d` writes
+# to a local directory instead of scp'ing, so the two never meet and nothing has
+# to be switched off for this to run.
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: "nightly"
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    if: github.repository == 'galette/galette'
+
+    steps:
+      # bin/release -n resolves the local develop branch, so it has to exist.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+          fetch-depth: 1
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Show versions
+        run: |
+          php --version
+          composer --version
+          echo "node $(node --version)"
+          echo "npm $(npm --version)"
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      # bin/release runs composer inside dist/src, but the cache directory is
+      # global, so this is still the right thing to warm.
+      - name: Cache Composer dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: "${{ runner.os }}-composer-nightly-${{ hashFiles('composer.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-composer-nightly-
+            ${{ runner.os }}-composer-
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: "${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      # Deliberately not actions/setup-python: it puts another interpreter first
+      # on PATH, and bin/release would then run without these two modules.
+      #
+      # Pinned because this job publishes and attests an archive: npm and
+      # composer are held by their lockfiles, and these two were the only inputs
+      # of the build left floating. Bump them by hand.
+      - name: Python dependencies for bin/release
+        run: python3 -m pip install --user --quiet --disable-pip-version-check 'GitPython==3.1.61' 'termcolor==3.3.0'
+
+      # -l -d <dir> is what keeps the build off ssh.galette.eu: in local mode the
+      # "does this release already exist?" check reads that directory and the
+      # upload becomes a copy into it. Nightly mode also forces --force,
+      # --assume-yes and no signing, so there is no prompt and no GPG key.
+      - name: Build the archive
+        id: build
+        env:
+          OUTDIR: ${{ runner.temp }}/nightly
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUTDIR"
+          python3 bin/release -V -n -l -d "$OUTDIR"
+
+          # bin/release ignores the exit code of every subprocess it runs, so a
+          # failed composer install yields an archive without vendor/ and a happy
+          # exit status. The archive is the only thing worth believing.
+          mapfile -t archives < <(find "$OUTDIR" -maxdepth 1 -type f -name '*.tar.bz2')
+          if [ "${#archives[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one archive in ${OUTDIR}, found ${#archives[@]}"
+            exit 1
+          fi
+          archive="${archives[0]}"
+          name=$(basename "$archive")
+          prefix="${name%.tar.bz2}"
+          entries=$(tar -tjf "$archive")
+
+          # galette/vendor, not vendor: composer.json sets vendor-dir to
+          # galette/vendor/, where the plugins keep theirs at the root.
+          if ! grep -qx "${prefix}/galette/vendor/autoload.php" <<< "$entries"; then
+            echo "::error::composer install failed: no ${prefix}/galette/vendor/autoload.php in ${name}"
+            exit 1
+          fi
+          # Fomantic and gulp produce this one, and bin/release keeps it where it
+          # deletes the unminified siblings. Without it the archive would ship a
+          # Galette with no interface.
+          if ! grep -qx "${prefix}/galette/webroot/themes/default/ui/semantic.min.css" <<< "$entries"; then
+            echo "::error::the assets were not built: no semantic.min.css in ${name}"
+            exit 1
+          fi
+          # bin/release seds GALETTE_NIGHTLY to the commit and date it built. If
+          # it still reads false, the archive announces itself as a release.
+          if tar -xjOf "$archive" "${prefix}/galette/includes/sys_config/versions.inc.php" \
+             | grep -q "GALETTE_NIGHTLY', false"; then
+            echo "::error::${name} still declares GALETTE_NIGHTLY as false, it would pass for a release"
+            exit 1
+          fi
+
+          echo "archive=$archive" >> "$GITHUB_OUTPUT"
+          echo "archive-name=$name" >> "$GITHUB_OUTPUT"
+          ls -lh "$archive"
+
+      # Ties the archive to this repository, this workflow and the commit that
+      # built it, without a private key living anywhere. Verify a download with
+      # `gh attestation verify <archive> --repo galette/galette`.
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: ${{ steps.build.outputs.archive }}
+
+      # One rolling prerelease whose asset and notes are replaced every night, so
+      # watchers are notified once and never again. Being a prerelease it is
+      # excluded from releases/latest, and announce.yml ignores it.
+      - name: Publish the nightly
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TAG: nightly
+          ARCHIVE: ${{ steps.build.outputs.archive }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          # The tag follows the built commit, so the release page's source links
+          # and the compare link GitHub puts at the end of generated notes both
+          # point at what was actually built. Pushed with GITHUB_TOKEN, which
+          # starts no workflow run and notifies nobody.
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag --force --annotate "$TAG" --message "Nightly build $(date -u '+%Y-%m-%d')" "$SHA"
+          # Not fatal: whatever refuses the tag, a nightly is still worth
+          # publishing without its source links being exact.
+          git push --force origin "refs/tags/${TAG}" || {
+            echo "::warning::could not move the ${TAG} tag, see the error above. It may mean a ruleset restricts tag creation or updates, or that the name once belonged to an immutable release that was deleted. The release is still published; its source links will point at whichever commit the tag already had."
+          }
+
+          header=$(printf 'Automatic build of the `develop` branch, rebuilt every night. Not meant for production use.\n\nCommit: %s\nBuilt: %s UTC' \
+            "$SHA" "$(date -u '+%Y-%m-%d %H:%M')")
+
+          # What the nightly carries over the last stable release. previous_tag is
+          # passed explicitly: left to itself GitHub would take the most recent
+          # release, which is the nightly itself, and produce nothing.
+          previous_tag=$(gh release list --repo "$REPO" --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName // empty' || true)
+          changelog=''
+          if [ -n "$previous_tag" ]; then
+            changelog=$(gh api "repos/${REPO}/releases/generate-notes" \
+              -f tag_name="$TAG" \
+              -f target_commitish="$SHA" \
+              -f previous_tag_name="$previous_tag" \
+              --jq '.body' || true)
+          fi
+          if [ -n "$changelog" ]; then
+            notes=$(printf '%s\n\n%s' "$header" "$changelog")
+          else
+            notes="$header"
+          fi
+
+          if ! gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --repo "$REPO" \
+              --target develop \
+              --prerelease \
+              --title 'Nightly build' \
+              --notes "$notes"
+          fi
+
+          # Checked on the release rather than left to fail on the upload: the API
+          # answers a bare "Cannot upload assets to an immutable release", which
+          # says nothing about what to do. The check also covers the release this
+          # run just created, so the problem surfaces tonight and not tomorrow.
+          if [ "$(gh api "repos/${REPO}/releases/tags/${TAG}" --jq '.immutable // false')" = "true" ]; then
+            echo "::error::the ${TAG} release is immutable, so its archive cannot be replaced every night. Turn immutable releases off for ${REPO}, then delete the ${TAG} release and its tag before re-running. Note that deleting an immutable release burns its tag name for good."
+            exit 1
+          fi
+
+          gh release upload "$TAG" "$ARCHIVE" --clobber --repo "$REPO" || {
+            echo "::error::could not attach ${ARCHIVE##*/} to the ${TAG} release, see the error above. It may mean the release became immutable since it was created."
+            exit 1
+          }
+          gh release edit "$TAG" --repo "$REPO" --notes "$notes"
