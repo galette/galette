@@ -53,7 +53,11 @@ final readonly class Identity
             '/%country/',
         ];
 
-        if (ContactSource::tryFrom((int)$prefs['pref_postal_address']) === ContactSource::Preferences) {
+        //an unreadable source falls back on the preferences: reading from a
+        //staff member nobody designated would hand out an arbitrary address
+        $source = ContactSource::tryFrom((int)$prefs['pref_postal_address']);
+
+        if ($source === null || !$source->isStaffMember()) {
             $_address = $prefs['pref_adresse'];
             if ($prefs['pref_adresse2']) {
                 $_address .= "\n" . $prefs['pref_adresse2'];

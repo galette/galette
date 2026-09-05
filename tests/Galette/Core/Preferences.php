@@ -1326,6 +1326,37 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test a stored contact source the enum cannot read
+     *
+     * Anything but a designated staff member has to fall back on the
+     * preferences: reading from a member nobody chose would hand out an
+     * arbitrary address.
+     */
+    public function testCorruptedPostalAddressSource(): void
+    {
+        $right = 'pref_postal_address';
+        $default = \Galette\Core\PreferencesSchema::getDefaults()[$right];
+
+        //what the preferences source yields, to compare against
+        $from_prefs = $this->preferences->getPostalAddress();
+
+        //99 is a plain integer, so it survives the cast, and no enum case
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => 99])->where->equalTo('nom_pref', $right);
+        $this->zdb->execute($update);
+
+        try {
+            $corrupted = (new \Galette\Core\Preferences($this->zdb))->getPostalAddress();
+            $this->assertSame($from_prefs, $corrupted);
+        } finally {
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => $default])->where->equalTo('nom_pref', $right);
+            $this->zdb->execute($update);
+            $this->preferences->load();
+        }
+    }
+
+    /**
      * Test phone number
      */
     public function testOrgPhone(): void
