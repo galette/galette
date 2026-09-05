@@ -6,6 +6,7 @@ Changes
 - CSRF protection now relies on HTTP headers (Sec-Fetch-Site, with a fallback on Origin) rather than on per form tokens
 - Session cookie is now flagged SameSite=Lax
 - Global accessibility improvements
+- New galette:superadmin:password console command to change the super administrator password
 
 1.2.0.1 -> 1.2.1
 
