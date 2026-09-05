@@ -182,12 +182,14 @@ jobs:
           files: tests/clover.xml
         if: matrix.coverage == 'pcov'
 
-      - name: Sanitize ref name for artifact upload
+      - name: Sanitize database image name for artifact upload
         if: failure()
         id: sanitize
+        env:
+          DB_IMAGE: ${{ matrix.db-image }}
         run: |
-          db_image=$(echo -n "${{ github.event.inputs.ref }}" | sed 's/[\\\/'"'"':<>|*?]/-/g')
-          echo "db_image=$db_image" >> $GITHUB_OUTPUT
+          db_image=$(echo -n "$DB_IMAGE" | sed 's/[\\\/'"'"':<>|*?]/-/g')
+          echo "db_image=$db_image" >> "$GITHUB_OUTPUT"
 
       - name: Upload test data (logs, photos, etc.)
         uses: actions/upload-artifact@v7
@@ -261,11 +263,20 @@ jobs:
       - name: Fail database tests
         run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteDbFails/
 
+      - name: Sanitize database image name for artifact upload
+        if: failure()
+        id: sanitize
+        env:
+          DB_IMAGE: ${{ matrix.db-image }}
+        run: |
+          db_image=$(echo -n "$DB_IMAGE" | sed 's/[\\\/'"'"':<>|*?]/-/g')
+          echo "db_image=$db_image" >> "$GITHUB_OUTPUT"
+
       - name: Upload test data (logs, photos, etc.)
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: test-data-fail-${{ matrix.php-version }}-${{ matrix.db-image }}
+          name: test-data-fail-${{ matrix.php-version }}-${{ steps.sanitize.outputs.db_image }}
           path: |
             tests/tests-data/
             galette/data/logs/
