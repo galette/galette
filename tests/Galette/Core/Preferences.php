@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function Safe\define;
+use function Safe\file_put_contents;
 
 /**
  * Preferences tests class
@@ -607,6 +608,41 @@ class Preferences extends GaletteTestCase
             $this->zdb->execute($update);
             $this->preferences->load();
         }
+    }
+
+    /**
+     * Test the dark mode stylesheet reset survives a second check
+     *
+     * The flag is a latch: only resetDarkCss() acting on it clears it. A
+     * later check that leaves the colours alone must not drop a reset that
+     * is still pending, or a stale dark.css keeps being served.
+     */
+    public function testDarkCssResetLatches(): void
+    {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        file_put_contents($cssfile, '/* stale */');
+
+        $post = $this->preferences->getDefaults();
+        $post['pref_enable_custom_colors'] = true;
+        $post['pref_cc_primary'] = '#123456';
+
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        //same payload again: the colours no longer differ from what is stored
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $flash_data = [];
+        $flash = new \Slim\Flash\Messages($flash_data);
+        $this->preferences->resetDarkCss($flash);
+
+        //the file only goes away when the flag survived the second check
+        $this->assertFileDoesNotExist($cssfile);
     }
 
     /**

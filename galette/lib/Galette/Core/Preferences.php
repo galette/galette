@@ -1240,10 +1240,11 @@ class Preferences
             $current[$field] = $this->$field;
         }
 
-        $this->delete_dark_css = $this->assets->isCssImpacted(
-            submitted: $values,
-            current: $current
-        );
+        //the flag latches: it is cleared by resetDarkCss() acting on it, not by
+        //a later check that happens to leave the colours alone
+        if ($this->assets->isCssImpacted(submitted: $values, current: $current)) {
+            $this->delete_dark_css = true;
+        }
     }
 
     /**
