@@ -14,6 +14,7 @@ use Galette\Converter\ImageConverter;
 use Galette\Converter\ParagraphConverter;
 use Galette\Converter\TextConverter;
 use League\HTMLToMarkdown\HtmlConverter;
+use Safe\Exceptions\FilesystemException;
 
 use function Safe\mkdir;
 use function Safe\preg_replace;
@@ -39,8 +40,15 @@ class Html
     {
         $config = \HTMLPurifier_Config::createDefault();
         $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
-        if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0o755, true);
+        if (!is_dir($cache_dir)) {
+            try {
+                mkdir($cache_dir, 0o755, true);
+            } catch (FilesystemException $e) {
+                //another request may have created it in between
+                if (!is_dir($cache_dir)) {
+                    throw $e;
+                }
+            }
         }
         $config->set('Cache.SerializerPath', $cache_dir);
         $config->set('URI.AllowedSchemes', [
