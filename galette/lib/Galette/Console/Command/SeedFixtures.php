@@ -110,9 +110,7 @@ class SeedFixtures extends AbstractCommand
         $this->members_fields = $container->get('members_fields');
 
         // Ensure HTTP_HOST is set for CLI context (used by Preferences::getURL())
-        if (!isset($_SERVER['HTTP_HOST'])) {
-            $_SERVER['HTTP_HOST'] = 'localhost';
-        }
+        $_SERVER['HTTP_HOST'] ??= 'localhost';
 
         // Log in as superadmin for all operations
         $this->login->logAdmin('superadmin', $this->preferences);

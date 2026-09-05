@@ -269,9 +269,7 @@ class Links extends GaletteTestCase
      */
     protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
-        if ($contrib === null) {
-            $contrib = $this->contrib;
-        }
+        $contrib ??= $this->contrib;
 
         $begin_date = $contrib->raw_begin_date;
 

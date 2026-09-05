@@ -35,9 +35,7 @@ if (!defined('GALETTE_BASE_PATH')) {
 }
 
 //we'll only include relevant parts if we work from installer
-if (!isset($installer)) {
-    $installer = false;
-}
+$installer ??= false;
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
@@ -130,10 +128,7 @@ if (defined('GALETTE_TESTS')) {
 
     if (!$installer || defined('GALETTE_LOGGER_CHECKED')) {
         //logs everything in galette log file
-        if (!isset($logfile)) {
-            //if no filename has been set (i.e. from install), set default one
-            $logfile = 'galette';
-        }
+        $logfile ??= 'galette';
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
         $galette_run_log = LevelName::init(Handler\File::init($log_path));
     } else {

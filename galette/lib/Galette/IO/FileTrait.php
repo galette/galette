@@ -234,9 +234,7 @@ trait FileTrait
     {
         $this->upload_errors = []; //Reset errors
 
-        if ($callback === null) {
-            $callback = [$this, 'storeFile'];
-        }
+        $callback ??= [$this, 'storeFile'];
 
         if (!isset($request_files[$key]) || count($request_files) === 0) { // @phpstan-ignore identical.alwaysFalse
             return true;

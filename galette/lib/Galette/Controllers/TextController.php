@@ -40,12 +40,8 @@ class TextController extends AbstractController
         ?string $lang = null,
         ?string $ref = null
     ): Response {
-        if ($lang === null) {
-            $lang = $this->preferences->pref_lang;
-        }
-        if ($ref === null) {
-            $ref = Texts::DEFAULT_REF;
-        }
+        $lang ??= $this->preferences->pref_lang;
+        $ref ??= Texts::DEFAULT_REF;
 
         $texts->setCurrent($ref);
         $mtxt = $texts->getTexts($ref, $lang);

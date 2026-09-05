@@ -224,9 +224,7 @@ class Install extends AbstractCommand
         }
 
         $db_pass = $input->getOption('dbpass');
-        if ($db_pass === null) {
-            $db_pass = $io->askHidden('Database password');
-        }
+        $db_pass ??= $io->askHidden('Database password');
 
         $displayed_db_pass = 'None';
         if ($db_pass !== null) {
@@ -234,9 +232,7 @@ class Install extends AbstractCommand
         }
 
         $galette_sa = $input->getOption('admin');
-        if ($galette_sa === null) {
-            $galette_sa = $io->ask('Superadmin name', 'admin');
-        }
+        $galette_sa ??= $io->ask('Superadmin name', 'admin');
 
         $galette_sa_pass = $input->getOption('password');
         if ($galette_sa_pass === null) {

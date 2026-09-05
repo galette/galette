@@ -48,9 +48,7 @@ class Charts
      */
     public function __construct(?array $types = null)
     {
-        if ($types === null) {
-            $types = [self::DEFAULT_CHART];
-        }
+        $types ??= [self::DEFAULT_CHART];
         $this->types = $types;
         $this->load();
     }

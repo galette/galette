@@ -63,9 +63,7 @@ class Texts
         if ($login === null && $container !== null) {
             $login = $container->get(Login::class);
         }
-        if ($login === null) {
-            $login = new Login($zdb, new I18n());
-        }
+        $login ??= new Login($zdb, new I18n());
         if ($routeparser !== null) {
             $this->routeparser = $routeparser;
         }

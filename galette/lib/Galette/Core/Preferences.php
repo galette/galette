@@ -1437,9 +1437,7 @@ class Preferences
      */
     private static function defaults(): array
     {
-        if (self::$defaults === null) {
-            self::$defaults = PreferencesSchema::getDefaults();
-        }
+        self::$defaults ??= PreferencesSchema::getDefaults();
         return self::$defaults;
     }
 

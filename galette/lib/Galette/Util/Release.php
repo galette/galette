@@ -70,9 +70,7 @@ class Release
      */
     public function getLatestRelease(): ?string
     {
-        if (!isset($this->latest)) {
-            $this->latest = $this->findLatestRelease();
-        }
+        $this->latest ??= $this->findLatestRelease();
         if ($this->latest === null) {
             //disable caching, no version has been found
             $this->nocache = true;
@@ -194,8 +192,6 @@ class Release
      */
     protected function prepareForCache(): void
     {
-        if (!isset($this->latest)) {
-            $this->latest = $this->findLatestRelease();
-        }
+        $this->latest ??= $this->findLatestRelease();
     }
 }

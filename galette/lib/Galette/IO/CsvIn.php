@@ -558,9 +558,7 @@ class CsvIn extends Csv
                 break;
         }
 
-        if ($error === null) {
-            $error = $this->getErrorMessageFromCode($code);
-        }
+        $error ??= $this->getErrorMessageFromCode($code);
 
         return $error;
     }

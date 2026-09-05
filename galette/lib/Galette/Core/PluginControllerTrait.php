@@ -62,9 +62,7 @@ trait PluginControllerTrait
      */
     public function getFilterName(string $filter_name, ?array $args = null): string
     {
-        if (!isset($args['prefix'])) {
-            $args['prefix'] = 'plugin_' . $this->module_info['module']['route'];
-        }
+        $args['prefix'] ??= 'plugin_' . $this->module_info['module']['route'];
 
         return parent::getFilterName($filter_name, $args);
     }

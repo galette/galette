@@ -415,9 +415,7 @@ class Contribution implements AccessManagementInterface
         }
         if (isset($args['trans'])) {
             $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
-            if (!isset($this->member)) {
-                $this->member = $this->transaction->member;
-            }
+            $this->member ??= $this->transaction->member;
             $this->amount = $this->transaction->getMissingAmount();
             $this->payment_type = $this->transaction->payment_type;
         }

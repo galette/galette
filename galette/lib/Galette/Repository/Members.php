@@ -1245,9 +1245,7 @@ class Members
                 switch ($this->filters->groups_search_log_op) {
                     case AdvancedMembersList::OP_AND:
                         foreach ($gresults as $gresult) {
-                            if (!isset($ids[$gresult['id_adh']])) {
-                                $ids[$gresult['id_adh']] = 0;
-                            }
+                            $ids[$gresult['id_adh']] ??= 0;
                             $ids[$gresult['id_adh']] += 1;
                         }
                         break;

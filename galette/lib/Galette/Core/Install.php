@@ -482,9 +482,7 @@ class Install
      */
     public function getScripts(?string $path = null): array
     {
-        if ($path === null) {
-            $path = GALETTE_ROOT . '/install';
-        }
+        $path ??= GALETTE_ROOT . '/install';
         $update_scripts = [];
 
         if ($this->isUpgrade()) {

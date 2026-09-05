@@ -437,9 +437,7 @@ abstract class Pdf extends TCPDF
         string $fontstyle = '',
         ?string $fontname = null
     ): void {
-        if ($fontname === null) {
-            $fontname = static::FONT;
-        }
+        $fontname ??= static::FONT;
         $this->SetFontSize($fontsize);
         while ((int)$this->GetStringWidth(s: $text, fontname: $fontname, fontstyle: $fontstyle, fontsize: $fontsize) > $maxsize) {
             $fontsize--;

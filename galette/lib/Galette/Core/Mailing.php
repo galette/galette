@@ -123,9 +123,7 @@ class Mailing extends GaletteMail
      */
     private function generateTmpPath(?string $id = null): void
     {
-        if ($id === null) {
-            $id = $this->generateNewId();
-        }
+        $id ??= $this->generateNewId();
         $this->tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
     }
 

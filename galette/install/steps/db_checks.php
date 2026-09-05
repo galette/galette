@@ -26,9 +26,7 @@ $supported_db = true;
 $result = [];
 
 if ($db_connected === true) {
-    if (!isset($zdb)) {
-        $zdb = new GaletteDb();
-    }
+    $zdb ??= new GaletteDb();
 
     if (!$zdb->isEngineSUpported()) {
         $supported_db = false;

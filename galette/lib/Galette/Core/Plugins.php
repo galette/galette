@@ -248,19 +248,17 @@ class Plugins
                                 Analog::WARNING
                             );
                             // Ensure plugin appears in modules list even if required files are missing.
-                            if (!isset($this->modules[$entry])) {
-                                $this->modules[$entry] = [
-                                    'name'      => $entry,
-                                    'desc'      => '',
-                                    'author'    => '',
-                                    'version'   => '',
-                                    'date'      => '',
-                                    'priority'  => 0,
-                                    'root'      => $full_entry,
-                                    'route'     => null,
-                                    'dbversion' => null,
-                                ];
-                            }
+                            $this->modules[$entry] ??= [
+                                'name'      => $entry,
+                                'desc'      => '',
+                                'author'    => '',
+                                'version'   => '',
+                                'date'      => '',
+                                'priority'  => 0,
+                                'root'      => $full_entry,
+                                'route'     => null,
+                                'dbversion' => null,
+                            ];
                             $this->setDisabled(self::DISABLED_MISS);
                         } else {
                             //Will call $this->register()

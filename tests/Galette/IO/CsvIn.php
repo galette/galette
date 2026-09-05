@@ -74,12 +74,8 @@ class CsvIn extends GaletteTestCase
         ?int $count_after = null,
         array $values = []
     ): void {
-        if ($count_before === null) {
-            $count_before = 0;
-        }
-        if ($count_after === null) {
-            $count_after = $count_before + count($members_list);
-        }
+        $count_before ??= 0;
+        $count_after ??= $count_before + count($members_list);
 
         $this->logSuperAdmin();
 

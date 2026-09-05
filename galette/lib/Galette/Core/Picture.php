@@ -1075,9 +1075,7 @@ class Picture
                 break;
         }
 
-        if ($error === null) {
-            $error = $this->getErrorMessageFromCode($code);
-        }
+        $error ??= $this->getErrorMessageFromCode($code);
 
         return $error;
     }

@@ -595,9 +595,7 @@ abstract class DynamicField
                 if ($len > 0) {
                     $fixed_values[] = $val;
                     if ($len > $this->size) {
-                        if ($this->old_size === null) {
-                            $this->old_size = $this->size;
-                        }
+                        $this->old_size ??= $this->size;
                         $this->size = $len;
                     }
                 }

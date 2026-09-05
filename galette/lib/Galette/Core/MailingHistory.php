@@ -62,9 +62,7 @@ class MailingHistory extends History
         ?MailingsList $filters = null,
         private readonly ?Mailing $mailing = null
     ) {
-        if ($filters === null) {
-            $filters = new MailingsList();
-        }
+        $filters ??= new MailingsList();
 
         parent::__construct(zdb: $zdb, login: $login, preferences: $preferences, filters: $filters);
     }

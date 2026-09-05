@@ -561,9 +561,7 @@ class CsvController extends AbstractController
         $fields = $model->getFields();
         $defaults = $this->csvin->getDefaultFields();
 
-        if ($fields === null) {
-            $fields = $defaults;
-        }
+        $fields ??= $defaults;
 
         $ocsv = new CsvOut();
         $res = $ocsv->export(

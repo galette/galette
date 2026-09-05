@@ -486,9 +486,7 @@ class Db
         $metadata = Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
-        if ($prefix === null) {
-            $prefix = PREFIX_DB;
-        }
+        $prefix ??= PREFIX_DB;
 
         $tables_list = [];
         //filter table_list: we only want PREFIX_DB tables
@@ -558,9 +556,7 @@ class Db
             );
             return;
         }
-        if ($prefix === null) {
-            $prefix = PREFIX_DB;
-        }
+        $prefix ??= PREFIX_DB;
 
         $table = '';
         try {

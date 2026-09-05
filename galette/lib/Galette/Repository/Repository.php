@@ -62,9 +62,7 @@ abstract class Repository
                 );
             }
         }
-        if ($ns === null) {
-            $ns = 'Galette\\Entity';
-        }
+        $ns ??= 'Galette\\Entity';
         $entity = $ns . '\\' . $entity;
         if (class_exists($entity)) {
             $this->entity = $entity;

@@ -224,9 +224,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function checkMemberOneExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
-        if ($adh === null) {
-            $adh = $this->adh;
-        }
+        $adh ??= $this->adh;
 
         $expecteds = $this->dataAdherentOne();
         unset($expecteds['mdp_adh2']);
@@ -309,9 +307,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function checkMemberTwoExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
-        if ($adh === null) {
-            $adh = $this->adh;
-        }
+        $adh ??= $this->adh;
 
         $expecteds = $this->dataAdherentTwo();
         unset($expecteds['mdp_adh2']);
@@ -527,9 +523,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
-        if ($contrib === null) {
-            $contrib = $this->contrib;
-        }
+        $contrib ??= $this->contrib;
 
         $begin_date = $contrib->raw_begin_date;
 

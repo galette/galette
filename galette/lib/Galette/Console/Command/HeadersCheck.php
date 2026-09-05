@@ -239,10 +239,7 @@ final class HeadersCheck extends AbstractCommand
                     break;
             }
 
-            if ($header_start_pattern === null) {
-                // If there is no specific "start pattern", then first regular comment line is consider are header start.
-                $header_start_pattern = $header_content_pattern;
-            }
+            $header_start_pattern ??= $header_content_pattern;
 
             $header_found         = false;
             $header_missing       = false;

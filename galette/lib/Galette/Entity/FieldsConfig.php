@@ -434,9 +434,7 @@ class FieldsConfig
                         break;
                     }
                 }
-                if ($cat_label === null) {
-                    $cat_label = $c->category;
-                }
+                $cat_label ??= $c->category;
                 $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
@@ -603,9 +601,7 @@ class FieldsConfig
                         break;
                     }
                 }
-                if ($cat_label === null) {
-                    $cat_label = $c->category;
-                }
+                $cat_label ??= $c->category;
                 $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,

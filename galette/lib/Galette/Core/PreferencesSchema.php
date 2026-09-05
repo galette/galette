@@ -145,9 +145,7 @@ final class PreferencesSchema
      */
     public static function getCore(): array
     {
-        if (self::$core === null) {
-            self::$core = self::build();
-        }
+        self::$core ??= self::build();
         return self::$core;
     }
 
