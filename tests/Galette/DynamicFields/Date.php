@@ -123,7 +123,7 @@ class Date extends GaletteTestCase
         );
         $this->assertSame(
             '',
-            $this->date->getDisplayValue(null)
+            $this->date->getDisplayValue(value: null)
         );
     }
 }

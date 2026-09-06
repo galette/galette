@@ -68,7 +68,7 @@ class PluginPreferencesTest extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->setValue('pref_plugin1_count', 7, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame(7, $this->preferences->getPluginValue('pref_plugin1_count'));
 

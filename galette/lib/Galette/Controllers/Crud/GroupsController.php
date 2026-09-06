@@ -129,7 +129,7 @@ class GroupsController extends CrudController
         $group = new Group();
         $group->setLogin($this->login);
 
-        $groups_root = $groups->getList(false);
+        $groups_root = $groups->getList(full: false);
         $groups_list = $groups->getList();
 
         // display page

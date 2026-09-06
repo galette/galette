@@ -157,7 +157,7 @@ class PluginsController extends AbstractController
         // reach the database initialization step.
         if (
             $this->plugins->isDisabled($plugid)
-            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], true)
+            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)
         ) {
             Analog::log(
                 'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '

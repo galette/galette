@@ -37,7 +37,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $this->assertTrue(
             $this->preferences->setValue('pref_admin_pass', self::PASSWORD, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $request = $this->createRequest('confirmAdvancedConfig', method: 'POST')
@@ -244,7 +244,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $this->assertTrue(
             $this->preferences->setValue('pref_card_tcol', '#ffffff', $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         //stored as typed, validateValue() does not touch the case
         $this->assertSame('#ffffff', $this->preferences->pref_card_tcol);
@@ -412,7 +412,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $this->assertTrue(
             $this->preferences->setValue('pref_galette_url', 'https://stored.example.com', $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         define('GALETTE_URI', 'https://from-the-file.example.com');

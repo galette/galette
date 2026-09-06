@@ -180,7 +180,7 @@ class Social
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-                if (!in_array($this->type, $this->getSystemTypes(false))) {
+                if (!in_array($this->type, $this->getSystemTypes(translated: false))) {
                     $this->addTranslation($this->type);
                 }
             }

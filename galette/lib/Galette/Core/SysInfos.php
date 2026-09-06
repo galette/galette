@@ -32,7 +32,7 @@ class SysInfos
     {
         $telemetry = new Telemetry($zdb, $prefs, $plugins);
 
-        $str = str_pad('Galette version:', 20, '.') . ' ' . Galette::gitVersion(true) . "\n";
+        $str = str_pad('Galette version:', 20, '.') . ' ' . Galette::gitVersion(time: true) . "\n";
 
         if (Galette::isDemo()) {
             $str .= $this->getPluginsInfo($plugins);

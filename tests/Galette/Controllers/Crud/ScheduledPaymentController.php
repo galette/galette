@@ -100,7 +100,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         ];
         $scheduled_one = new \Galette\Entity\ScheduledPayment($this->zdb);
         $check = $scheduled_one->check($data);
-        $this->assertTrue($check, print_r($scheduled_one->getErrors(), true));
+        $this->assertTrue($check, print_r($scheduled_one->getErrors(), return: true));
         $store = $scheduled_one->store();
         $this->assertTrue($store);
 
@@ -112,7 +112,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         ];
         $scheduled_two = new \Galette\Entity\ScheduledPayment($this->zdb);
         $check = $scheduled_two->check($data);
-        $this->assertTrue($check, print_r($scheduled_two->getErrors(), true));
+        $this->assertTrue($check, print_r($scheduled_two->getErrors(), return: true));
         $store = $scheduled_two->store();
         $this->assertTrue($store);
         $this->login->logOut();

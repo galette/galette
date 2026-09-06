@@ -208,7 +208,7 @@ class Transaction implements AccessManagementInterface
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
-                $c->remove($cids, $hist, false);
+                $c->remove($cids, $hist, transaction: false);
             }
 
             //remove transaction itself
@@ -216,7 +216,7 @@ class Transaction implements AccessManagementInterface
             $delete->where([self::PK => $this->id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
-                $this->dynamicsRemove(true);
+                $this->dynamicsRemove(transaction: true);
             } else {
                 Analog::log(
                     'Transaction has not been removed!',
@@ -306,7 +306,7 @@ class Transaction implements AccessManagementInterface
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $member = new Adherent($this->zdb, (int)$value, false);
+                            $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 !$this->login->isStaff()
                                 && !$this->login->isAdmin()
@@ -380,7 +380,7 @@ class Transaction implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction'
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -451,7 +451,7 @@ class Transaction implements AccessManagementInterface
             }
 
             //dynamic fields
-            $this->dynamicsStore(true);
+            $this->dynamicsStore(transaction: true);
 
             $this->zdb->commit();
 
@@ -629,7 +629,7 @@ class Transaction implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;

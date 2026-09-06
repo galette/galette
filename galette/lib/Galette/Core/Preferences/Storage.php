@@ -143,7 +143,7 @@ final readonly class Storage
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                sprintf('Unable to store update field %s | %s', $name, print_r($this->messages($e), true)),
+                sprintf('Unable to store update field %s | %s', $name, print_r($this->messages($e), return: true)),
                 Analog::WARNING
             );
             return false;
@@ -181,7 +181,7 @@ final readonly class Storage
             }
 
             Analog::log(
-                'Unable to store preferences | ' . print_r($this->messages($e), true),
+                'Unable to store preferences | ' . print_r($this->messages($e), return: true),
                 Analog::WARNING
             );
             return false;

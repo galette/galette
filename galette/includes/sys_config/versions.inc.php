@@ -19,7 +19,7 @@ define('GALETTE_PHP_MIN', '8.3'); //@phpstan-ignore theCodingMachineSafe.functio
 define('GALETTE_MYSQL_MIN', '8.0'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_MARIADB_MIN', '10.5'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_PGSQL_MIN', '13'); //@phpstan-ignore theCodingMachineSafe.function
-define('GALETTE_NIGHTLY', false); //@phpstan-ignore theCodingMachineSafe.function
+define('GALETTE_NIGHTLY', value: false); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_VERSION', 'v1.3-dev'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_COMPAT_VERSION', '1.3.0'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_DB_VERSION', '1.300'); //@phpstan-ignore theCodingMachineSafe.function

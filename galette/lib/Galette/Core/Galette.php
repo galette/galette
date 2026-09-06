@@ -97,7 +97,7 @@ class Galette
      */
     public static function getAllMenus(): array
     {
-        return static::getMenus(true);
+        return static::getMenus(public: true);
     }
 
     /**
@@ -507,7 +507,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -636,7 +636,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins public menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -714,7 +714,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -885,7 +885,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -1011,7 +1011,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -1049,7 +1049,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -1158,7 +1158,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -1216,7 +1216,7 @@ class Galette
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
             /** @var GalettePlugin $plugin */
             $plugin = $container->get($plugin_class);
             if (
@@ -1314,7 +1314,7 @@ class Galette
      */
     public static function jsonDecode(string $string): array
     {
-        $decoded = \json_decode($string, true); // @phpstan-ignore theCodingMachineSafe.function
+        $decoded = \json_decode($string, associative: true); // @phpstan-ignore theCodingMachineSafe.function
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('JSON decode error: ' . json_last_error_msg());
         }
@@ -1368,7 +1368,7 @@ class Galette
             if ($cron) {
                 $files = array_filter(
                     $files,
-                    static fn(string $file): bool => !in_array(basename($file), $cron_exclusions, true)
+                    static fn(string $file): bool => !in_array(basename($file), $cron_exclusions, strict: true)
                 );
             }
 

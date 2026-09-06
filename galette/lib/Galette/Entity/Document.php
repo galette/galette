@@ -170,7 +170,7 @@ class Document
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-                if (!in_array($this->type, $documents->getSystemTypes(false))) {
+                if (!in_array($this->type, $documents->getSystemTypes(translated: false))) {
                     $this->addTranslation($this->type);
                 }
             }
@@ -352,7 +352,7 @@ class Document
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a document file' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;

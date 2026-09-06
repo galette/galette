@@ -138,7 +138,7 @@ class History
     {
         try {
             $this->zdb->db->query(
-                'DELETE FROM ' . $this->getTableName(true),
+                'DELETE FROM ' . $this->getTableName(prefixed: true),
                 Adapter::QUERY_MODE_EXECUTE
             );
             $this->add('Logs flushed');

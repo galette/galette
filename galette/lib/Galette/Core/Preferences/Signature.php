@@ -113,7 +113,7 @@ final readonly class Signature
         foreach ($this->types($core_types) as $type) {
             $urls = array_map(
                 static fn(Social $social): string => $social->url,
-                Social::getListForMember(null, $type)
+                Social::getListForMember(id_adh: null, type: $type)
             );
 
             $replacements['asso_social_' . strtolower($type)] = $urls === []
@@ -137,6 +137,6 @@ final readonly class Signature
      */
     private function types(array $core_types): array
     {
-        return $core_types + (new Social($this->zdb))->getSystemTypes(false);
+        return $core_types + (new Social($this->zdb))->getSystemTypes(translated: false);
     }
 }

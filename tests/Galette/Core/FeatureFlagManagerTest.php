@@ -47,7 +47,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testFeatureFlagsDisabledInProductionMode(): void
     {
-        $manager = $this->getManagerMock(false);
+        $manager = $this->getManagerMock(debug_on: false);
 
         // Even if declared, flags should be disabled without debug mode
         $this->assertFalse(
@@ -66,7 +66,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testGetDeclaredFlags(): void
     {
-        $manager = $this->getManagerMock(true);
+        $manager = $this->getManagerMock(debug_on: true);
         $flags = $manager->getDeclaredFlags();
 
         $this->assertEquals(
@@ -84,7 +84,7 @@ class FeatureFlagManagerTest extends BaseGaletteTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testGetAllFlagsWithStatus(): void
     {
-        $manager = $this->getManagerMock(true);
+        $manager = $this->getManagerMock(debug_on: true);
 
         $flagsWithStatus = $manager->getAllFlagsWithStatus();
         $this->assertCount(4, $flagsWithStatus);

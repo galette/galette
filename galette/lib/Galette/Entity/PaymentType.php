@@ -137,7 +137,7 @@ class PaymentType implements \Stringable
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing payment type: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;

@@ -72,7 +72,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['inittexts'])) {
             //proceed emails texts reinitialization
-            $res = $texts->installInit(false);
+            $res = $texts->installInit(check_first: false);
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");
             } else {
@@ -92,7 +92,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['initpdfmodels'])) {
             //proceed emails texts reinitialization
-            $res = $models->installInit(false);
+            $res = $models->installInit(check_first: false);
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
             } else {

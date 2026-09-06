@@ -68,7 +68,7 @@ abstract class BaseGaletteTestCase extends TestCase
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        session_regenerate_id(true);
+        session_regenerate_id(delete_old_session: true);
         $_SESSION = [];
         $flash_data = [];
         $this->flash_data = &$flash_data;
@@ -146,7 +146,7 @@ abstract class BaseGaletteTestCase extends TestCase
         \Analog\Analog::handler($galette_run_log);
         //assert once storage has been reset, so a stray entry fails the test that
         //produced it instead of cascading on every subsequent setUp()
-        $this->assertCount(0, $leftovers, print_r($leftovers, true));
+        $this->assertCount(0, $leftovers, print_r($leftovers, return: true));
 
         $this->zdb = $container->get(\Galette\Core\Db::class);
         $container->get(\Galette\Core\I18n::class)->changeLanguage('en_US');
@@ -243,8 +243,8 @@ abstract class BaseGaletteTestCase extends TestCase
                 unset($expected[$found_index]);
             } else {
                 $this->fail(
-                    'Unexpected MySQL warning: ' . print_r($warning, true) . PHP_EOL
-                    . 'Expected warnings: ' . print_r($this->expected_mysql_warnings, true)
+                    'Unexpected MySQL warning: ' . print_r($warning, return: true) . PHP_EOL
+                    . 'Expected warnings: ' . print_r($this->expected_mysql_warnings, return: true)
                 );
             }
         }
@@ -353,6 +353,6 @@ abstract class BaseGaletteTestCase extends TestCase
     protected function expectNoLogEntry(): void
     {
         $logs = $this->getCleanedLogs();
-        $this->assertCount(0, $logs, print_r($logs, true));
+        $this->assertCount(0, $logs, print_r($logs, return: true));
     }
 }

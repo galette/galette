@@ -62,7 +62,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($data['amount'], $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
     }
@@ -103,7 +103,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($this->contrib->amount, $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
 
@@ -119,7 +119,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($data['amount'], $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
     }

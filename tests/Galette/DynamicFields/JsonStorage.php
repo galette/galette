@@ -45,7 +45,7 @@ class JsonStorage extends GaletteTestCase
         $result = $this->zdb->execute($select)->current();
 
         $this->assertNotEmpty($result->field_specifications);
-        $spec = json_decode($result->field_specifications, true);
+        $spec = json_decode($result->field_specifications, associative: true);
         $this->assertSame(
             [
                 [

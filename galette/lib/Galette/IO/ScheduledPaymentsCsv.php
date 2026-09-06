@@ -68,7 +68,7 @@ class ScheduledPaymentsCsv extends CsvOut
 
         $scheduleds = new ScheduledPayments($this->zdb, $this->login, $filters);
         $scheduled_list = $scheduleds->getArrayList($filters->selected);
-        $ptypes = PaymentTypes::getAll(false);
+        $ptypes = PaymentTypes::getAll(schedulable: false);
 
         foreach ($scheduled_list as &$scheduled) {
             /** @var ArrayObject<string, int|string> $scheduled */

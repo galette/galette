@@ -57,7 +57,7 @@ if (!defined('GALETTE_BASE_PATH')) {
 // DO NOT define GALETTE_TESTS if we are in a web context (e2e)
 // as it prevents the application from initializing and running Slim.
 if (php_sapi_name() !== 'cli-server' && !defined('GALETTE_TESTS')) { //@phpstan-ignore theCodingMachineSafe.function
-    define('GALETTE_TESTS', true); //@phpstan-ignore theCodingMachineSafe.function
+    define('GALETTE_TESTS', value: true); //@phpstan-ignore theCodingMachineSafe.function
 }
 
 if (!defined('GALETTE_TESTS_PATH')) {
@@ -74,7 +74,7 @@ if (!defined('GALETTE_DATA_PATH')) {
 
 // Ensure tests-data directory exists
 if (!is_dir(GALETTE_DATA_PATH)) {
-    mkdir(GALETTE_DATA_PATH, 0o777, true); //@phpstan-ignore theCodingMachineSafe.function
+    mkdir(GALETTE_DATA_PATH, 0o777, recursive: true); //@phpstan-ignore theCodingMachineSafe.function
 }
 
 // Map of directories to ensure they exist (as they might be used in realpath())
@@ -99,7 +99,7 @@ foreach ($test_directories as $constant => $suffix) {
         define($constant, $path); //@phpstan-ignore theCodingMachineSafe.function
     }
     if (!is_dir($path)) {
-        mkdir($path, 0o777, true); //@phpstan-ignore theCodingMachineSafe.function
+        mkdir($path, 0o777, recursive: true); //@phpstan-ignore theCodingMachineSafe.function
     }
 }
 

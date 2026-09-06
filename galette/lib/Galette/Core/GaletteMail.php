@@ -234,11 +234,11 @@ class GaletteMail
         if ($this->html) {
             //the email is html :(
             $this->mail->AltBody = $this->getTextMessage();
-            $this->mail->IsHTML(true);
+            $this->mail->IsHTML(isHtml: true);
         } else {
             //the email is plaintext :)
             $this->mail->AltBody = '';
-            $this->mail->IsHTML(false);
+            $this->mail->IsHTML(isHtml: false);
         }
 
         $this->mail->Subject = $this->subject;
@@ -265,14 +265,14 @@ class GaletteMail
             if ($this->html) {
                 //we are sending HTML message
                 //apply email sign to text version
-                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, true);
+                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, as_text: true);
                 //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style . '">'
                     . nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, true);
+                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, as_text: true);
             }
         }
 

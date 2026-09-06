@@ -98,7 +98,7 @@ class Documents
 
         $select = $this->zdb->select(self::TABLE);
         $select->quantifier('DISTINCT');
-        $select->where->notIn('type', array_keys($this->getSystemTypes(false)));
+        $select->where->notIn('type', array_keys($this->getSystemTypes(translated: false)));
         $results = $this->zdb->execute($select);
 
         foreach ($results as $r) {
@@ -171,8 +171,8 @@ class Documents
     public function getTypedList(): array
     {
         $this->public_list = true;
-        $list = $this->getList(null, false);
-        $sys_types = $this->getSystemTypes(false);
+        $list = $this->getList(type: null, filtered: false);
+        $sys_types = $this->getSystemTypes(translated: false);
 
         $typed_list = array_fill_keys($sys_types, []);
         foreach ($list as $document) {

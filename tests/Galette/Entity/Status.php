@@ -131,7 +131,7 @@ class Status extends GaletteTestCase
             $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence');
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . $this->zdb->getSequenceName($status::TABLE, $status::PK, true) . '\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($status::TABLE, $status::PK, prefixed: true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }

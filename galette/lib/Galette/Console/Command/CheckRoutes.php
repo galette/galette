@@ -222,7 +222,7 @@ class CheckRoutes extends AbstractCommand
         if (preg_match('#^/plugins/([a-z0-9][a-z0-9\-]*)/(.+|$)#', $pattern, $matches)) {
             $candidate = $matches[1];
             // Verify the extracted name is a known plugin route slug (if the list is available)
-            if (!in_array($candidate, $this->pluginRoutes, true)) {
+            if (!in_array($candidate, $this->pluginRoutes, strict: true)) {
                 return '';
             }
             return $candidate;

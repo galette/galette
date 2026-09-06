@@ -155,7 +155,7 @@ class Boolean extends GaletteTestCase
         );
         $this->assertSame(
             'No',
-            $this->bool->getDisplayValue(null)
+            $this->bool->getDisplayValue(value: null)
         );
     }
 }

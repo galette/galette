@@ -32,7 +32,7 @@ class PdfModel extends GaletteTestCase
         parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $models->installInit(false);
+        $res = $models->installInit(check_first: false);
         $this->assertTrue($res);
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -255,7 +255,7 @@ class PdfModel extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 

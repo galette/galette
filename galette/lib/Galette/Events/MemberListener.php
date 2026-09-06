@@ -86,10 +86,10 @@ class MemberListener implements ListenerSubscriber
         );
 
         if ($member->sendEMail()) {
-            $this->sendMemberEmail($member, true);
+            $this->sendMemberEmail($member, new: true);
         }
 
-        $this->sendAdminEmail($member, true);
+        $this->sendAdminEmail($member, new: true);
     }
 
     /**
@@ -105,10 +105,10 @@ class MemberListener implements ListenerSubscriber
         );
 
         if ($member->sendEMail()) {
-            $this->sendMemberEmail($member, false);
+            $this->sendMemberEmail($member, new: false);
         }
 
-        $this->sendAdminEmail($member, false);
+        $this->sendAdminEmail($member, new: false);
     }
 
     /**

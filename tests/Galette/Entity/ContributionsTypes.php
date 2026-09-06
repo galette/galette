@@ -164,7 +164,7 @@ class ContributionsTypes extends GaletteTestCase
             $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect contributions types sequence');
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . $this->zdb->getSequenceName($ctypes::TABLE, $ctypes::PK, true) . '\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($ctypes::TABLE, $ctypes::PK, prefixed: true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }

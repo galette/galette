@@ -120,7 +120,7 @@ abstract class PdfModel
                 if ($init === true) {
                     $models = new PdfModels($this->zdb, $this->preferences, $login);
                     $models->installInit();
-                    $this->load($id, false);
+                    $this->load($id, init: false);
                 } else {
                     throw new \RuntimeException('Model not found!');
                 }
@@ -218,7 +218,7 @@ abstract class PdfModel
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing model: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;

@@ -215,7 +215,7 @@ class ScheduledPayment
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing scheduled payment: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -417,7 +417,7 @@ class ScheduledPayment
     public function isDue(): bool
     {
         $now = time();
-        $date = $this->getScheduledDate(false)->getTimestamp();
+        $date = $this->getScheduledDate(formatted: false)->getTimestamp();
         return !$this->isPaid() && $date < $now;
     }
 

@@ -115,7 +115,7 @@ class MembersController extends CrudController
 
         // flagging required fields
         $fc = $this->fields_config;
-        $form_elements = $fc->getFormElements($this->login, true, true);
+        $form_elements = $fc->getFormElements($this->login, new: true, selfs: true);
 
         // members
         $m = new Members();
@@ -648,9 +648,9 @@ class MembersController extends CrudController
         $members = new Members($filters);
 
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(true);
+            $members_list = $members->getMembersList(as_members: true);
         } else {
-            $members_list = $members->getManagedMembersList(true);
+            $members_list = $members->getManagedMembersList(as_members: true);
         }
 
         $groups = new Groups($this->zdb, $this->login);
@@ -928,7 +928,7 @@ class MembersController extends CrudController
         $members = new Members($filters);
         if (!$this->login->isAdmin() && !$this->login->isStaff()) {
             if ($this->login->isGroupManager()) {
-                $members_list = $members->getManagedMembersList(true);
+                $members_list = $members->getManagedMembersList(as_members: true);
             } else {
                 Analog::log(
                     str_replace(
@@ -941,7 +941,7 @@ class MembersController extends CrudController
                 throw new \Exception('Access denied.');
             }
         } else {
-            $members_list = $members->getMembersList(true);
+            $members_list = $members->getMembersList(as_members: true);
         }
 
         //assign pagination variables to the template and add pagination links
@@ -1178,7 +1178,7 @@ class MembersController extends CrudController
 
         //Groups
         $groups = new Groups($this->zdb, $this->login);
-        $groups_list = $groups->getSimpleList(true);
+        $groups_list = $groups->getSimpleList(as_groups: true);
 
         $form_elements = $fc->getFormElements(
             $this->login,
@@ -1787,7 +1787,7 @@ class MembersController extends CrudController
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $managed_groups_adh,
-                        true
+                        manager: true
                     );
                     $member->loadGroups();
 
@@ -2030,9 +2030,9 @@ class MembersController extends CrudController
 
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
-                $ids = $m->getMembersList(false, $fields);
+                $ids = $m->getMembersList(as_members: false, fields: $fields);
             } else {
-                $ids = $m->getManagedMembersList(false, $fields);
+                $ids = $m->getManagedMembersList(as_members: false, fields: $fields);
             }
 
             $ids = $ids->toArray();

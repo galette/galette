@@ -162,7 +162,7 @@ abstract class AbstractEntity
                 "An error occurred inserting %s: %s\n%s",
                 static::class,
                 $e->getMessage(),
-                var_export($data, true)
+                var_export($data, return: true)
             );
             Analog::log($msg, Analog::ERROR);
             throw new EntityException($msg, $e->getCode(), $e);
@@ -272,7 +272,7 @@ abstract class AbstractEntity
                 "An error occurred updating %s: %s\n%s",
                 static::class,
                 $e->getMessage(),
-                var_export($data, true)
+                var_export($data, return: true)
             );
             Analog::log($msg, Analog::ERROR);
             throw new EntityException($msg, $e->getCode(), $e);

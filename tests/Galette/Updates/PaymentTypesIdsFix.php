@@ -53,7 +53,7 @@ class PaymentTypesIdsFix extends GaletteTestCase
 
             //restore default payment types, even if test has failed
             $ptypes = new PaymentTypes($this->zdb, $this->preferences, $this->login);
-            $ptypes->installInit(false);
+            $ptypes->installInit(check_first: false);
         }
         parent::tearDown();
     }

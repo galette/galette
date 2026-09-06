@@ -648,8 +648,8 @@ class Db extends BaseGaletteTestCase
     public function testSequenceName(): void
     {
         $this->assertSame('adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent'));
-        $this->assertSame('galette_adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', true));
-        $this->assertSame('adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', false));
+        $this->assertSame('galette_adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', prefixed: true));
+        $this->assertSame('adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', prefixed: false));
     }
 
     /**

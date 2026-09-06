@@ -148,7 +148,7 @@ class Install extends BaseGaletteTestCase
                     )
                 ) {
                     //dunno why default is not correct, 1.15-mysql upgrade does contain the correct statement.
-                    $column->setColumnDefault(null);
+                    $column->setColumnDefault(columnDefault: null);
                 }
 
                 $this->assertEquals(
@@ -169,7 +169,7 @@ class Install extends BaseGaletteTestCase
             $this->assertSame(
                 count($latest_constraints),
                 count($constraints),
-                sprintf('Constraints count differs on %s!', $table_name) . print_r($constraints, true) . print_r($latest_constraints, true)
+                sprintf('Constraints count differs on %s!', $table_name) . print_r($constraints, return: true) . print_r($latest_constraints, return: true)
             );
 
             //constraint naming in mysql is not explicit, so we can't rely on it

@@ -54,7 +54,7 @@ class SavedSearches extends GaletteTestCase
         $this->assertTrue($saved->store());
         $sid_1 = $saved->id;
 
-        $list = $searches->getList(true);
+        $list = $searches->getList(as_search: true);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $this->assertSame(1, $searches->getCount());
@@ -62,20 +62,20 @@ class SavedSearches extends GaletteTestCase
         $result = array_pop($list);
         $this->assertInstanceOf(\Galette\Entity\SavedSearch::class, $result);
 
-        $list = $searches->getList(false);
+        $list = $searches->getList(as_search: false);
         $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $list);
 
         //another one
         $post['name'] = 'Another search';
         $this->assertTrue($saved->store());
         $sid_2 = $saved->id;
-        $this->assertCount(2, $searches->getList(true));
+        $this->assertCount(2, $searches->getList(as_search: true));
         $this->assertSame(2, $searches->getCount());
 
         $post['name'] = 'Last one';
         $this->assertTrue($saved->store());
         $sid_3 = $saved->id;
-        $this->assertCount(3, $searches->getList(true));
+        $this->assertCount(3, $searches->getList(as_search: true));
         $this->assertSame(3, $searches->getCount());
 
         $this->assertFalse($searches->remove([], $this->history));
@@ -84,14 +84,14 @@ class SavedSearches extends GaletteTestCase
             'Asking to remove searches, but without providing an array or a single numeric value.'
         );
         $this->assertTrue($searches->remove($sid_2, $this->history));
-        $list = $searches->getList(true);
+        $list = $searches->getList(as_search: true);
         $this->assertCount(2, $list);
         foreach ($list as $entry) {
             $this->assertNotSame($sid_2, $entry->id);
         }
 
         $this->assertTrue($searches->remove([$sid_1, $sid_3], $this->history));
-        $list = $searches->getList(true);
+        $list = $searches->getList(as_search: true);
         $this->assertCount(0, $list);
     }
 }

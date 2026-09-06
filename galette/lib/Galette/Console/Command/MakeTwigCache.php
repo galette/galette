@@ -207,7 +207,7 @@ class MakeTwigCache extends AbstractCommand
                     '_Tx',
                     '_Tnx',
                 ];
-                if (in_array($name, $translation_functions, true)) {
+                if (in_array($name, $translation_functions, strict: true)) {
                     // Return a function that has its own name as callback
                     // for translation functions, so Twig will generate code following this pattern:
                     // $name($parameter, ...)`, e.g. `_T('str')` or `_Tn('str', 'strs', 5)`.

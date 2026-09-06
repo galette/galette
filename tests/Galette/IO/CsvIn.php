@@ -84,7 +84,7 @@ class CsvIn extends GaletteTestCase
         $this->assertSame(
             $count_before,
             $list->count(),
-            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true)
+            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), return: true)
         );
 
         $this->getModel($fields);

@@ -22,7 +22,7 @@ use Galette\Util\Telemetry;
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
-define('GALETTE_INSTALLER', true); //@phpstan-ignore theCodingMachineSafe.function
+define('GALETTE_INSTALLER', value: true); //@phpstan-ignore theCodingMachineSafe.function
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
@@ -64,7 +64,7 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 $error_detected = [];
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
-    define('GALETTE_LOGGER_CHECKED', true); //@phpstan-ignore theCodingMachineSafe.function
+    define('GALETTE_LOGGER_CHECKED', value: true); //@phpstan-ignore theCodingMachineSafe.function
 
     $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
     $galette_run_log = LevelName::init(Handler\File::init($log_path));
@@ -467,7 +467,7 @@ if ($install->isCheckStep()) {
                         <nav class="ui horizontal bulleted link list">
                             <a id="copyright" href="https://galette.eu/" class="item">
                                 <i class="icon cookie bite"></i>
-                                Galette <?php echo Galette::gitVersion(false); ?>
+                                Galette <?php echo Galette::gitVersion(time: false); ?>
                             </a>
                             <a href="https://doc.galette.eu" class="item">
                                 <i class="icon book"></i>

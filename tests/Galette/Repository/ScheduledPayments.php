@@ -30,7 +30,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
 
-        $list = $scheduledPayments->getList(true, null);
+        $list = $scheduledPayments->getList(as_object: true, fields: null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $scheduledPayments->getCount());
@@ -77,7 +77,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->assertTrue($check);
         $this->assertTrue($scheduledPayment->store());
 
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertIsArray($list);
         $this->assertCount(2, $list);
         $this->assertSame(35.0, $scheduledPayments->getSum());
@@ -86,7 +86,7 @@ class ScheduledPayments extends GaletteTestCase
         $filters = new \Galette\Filters\ScheduledPaymentsList();
         $filters->from_contribution = $this->contrib->id + 1;
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ScheduledPaymentsList();
@@ -94,33 +94,33 @@ class ScheduledPayments extends GaletteTestCase
         $filters->start_date_filter = $scheduled_date->modify('-1 day')->format('Y-m-d');
         $filters->end_date_filter = $scheduled_date->modify('+1 day')->format('Y-m-d');
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(1, $list);
         $this->assertSame(25.0, $scheduledPayments->getSum());
 
         $filters = new \Galette\Filters\ScheduledPaymentsList();
         $filters->payment_type_filter = \Galette\Entity\PaymentType::CASH;
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(1, $list);
         $this->assertSame(10.0, $scheduledPayments->getSum());
 
         $filters = new \Galette\Filters\ScheduledPaymentsList();
         $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_DC;
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(2, $list);
         $this->assertSame(35.0, $scheduledPayments->getSum());
 
         $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_YES;
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(1, $list);
         $this->assertSame(10.0, $scheduledPayments->getSum());
 
         $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_NO;
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(1, $list);
         $this->assertSame(25.0, $scheduledPayments->getSum());
     }
@@ -133,7 +133,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
 
-        $list = $scheduledPayments->getList(true, null);
+        $list = $scheduledPayments->getList(as_object: true, fields: null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $scheduledPayments->getCount());
@@ -180,13 +180,13 @@ class ScheduledPayments extends GaletteTestCase
         $this->assertTrue($scheduledPayment->store());
         $id_2 = $scheduledPayment->getId();
 
-        $list = $scheduledPayments->getArrayList([$id_1, $id_2], true);
+        $list = $scheduledPayments->getArrayList([$id_1, $id_2], as_object: true);
         $this->assertIsArray($list);
         $this->assertCount(2, $list);
         $contrib = array_pop($list);
         $this->assertTrue($contrib instanceof \Galette\Entity\ScheduledPayment);
 
-        $list = $scheduledPayments->getArrayList([$id_1, $id_2], false);
+        $list = $scheduledPayments->getArrayList([$id_1, $id_2], as_object: false);
         $this->assertIsArray($list);
         $this->assertCount(2, $list);
         $contrib = array_pop($list);
@@ -201,7 +201,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
 
-        $list = $scheduledPayments->getList(true, null);
+        $list = $scheduledPayments->getList(as_object: true, fields: null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $scheduledPayments->getCount());
@@ -248,13 +248,13 @@ class ScheduledPayments extends GaletteTestCase
         $this->assertTrue($scheduledPayment->store());
         $id_2 = $scheduledPayment->getId();
 
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertIsArray($list);
         $this->assertCount(2, $list);
 
         $this->assertTrue($scheduledPayments->remove([$id_1, $id_2], $this->history));
 
-        $list = $scheduledPayments->getList(true);
+        $list = $scheduledPayments->getList(as_object: true);
         $this->assertCount(0, $list);
     }
 }

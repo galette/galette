@@ -171,7 +171,7 @@ class GaletteController extends AbstractController
         $d->close();
 
         //List payment types for default to be selected
-        $ptlist = $ptypes->getList(false);
+        $ptlist = $ptypes->getList(schedulable: false);
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'general';
@@ -182,7 +182,7 @@ class GaletteController extends AbstractController
             'pages/preferences.html.twig',
             [
                 'page_title'            => _T("Settings"),
-                'staff_members'         => $m->getStaffMembersList(true),
+                'staff_members'         => $m->getStaffMembersList(as_members: true),
                 'time'                  => time(),
                 'pref'                  => $pref,
                 'pref_numrows_options'  => [

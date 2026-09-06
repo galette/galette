@@ -34,7 +34,7 @@ class PdfMembersLabels extends Pdf
      */
     public function __construct(Preferences $prefs)
     {
-        $this->setRTL(false);
+        $this->setRTL(enable: false);
         $this->filename = __('labels_print_filename') . '.pdf';
         parent::__construct($prefs);
     }
@@ -57,7 +57,7 @@ class PdfMembersLabels extends Pdf
         $this->SetDisplayMode('fullpage');
 
         // Disable Auto Page breaks
-        $this->SetAutoPageBreak(false, 0);
+        $this->SetAutoPageBreak(auto: false, margin: 0);
 
         // Set colors
         $this->SetDrawColor(160, 160, 160);

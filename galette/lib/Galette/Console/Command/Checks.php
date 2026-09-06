@@ -40,7 +40,7 @@ class Checks extends AbstractCommand
         ]);
 
         $io = new SymfonyStyle($input, $output);
-        $cm = new CheckModules(false);
+        $cm = new CheckModules(do: false);
 
         $check_messages = [];
 
@@ -57,7 +57,7 @@ class Checks extends AbstractCommand
                 PHP_VERSION
             );
             require_once GALETTE_ROOT . '/vendor/autoload.php';
-            $cm->doCheck(false); //do not load with translations!
+            $cm->doCheck(translated: false); //do not load with translations!
 
             $modules_missing = $cm->getMissings();
             foreach ($modules_missing as $m) {

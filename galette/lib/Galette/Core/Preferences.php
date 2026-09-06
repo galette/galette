@@ -337,7 +337,7 @@ class Preferences
         $this->prefs = $values;
 
         try {
-            $this->socials = Social::getListForMember(null);
+            $this->socials = Social::getListForMember(id_adh: null);
         } catch (Throwable) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without '
@@ -690,9 +690,9 @@ class Preferences
         try {
             if ($updating === false) {
                 //prevent socials removal; see https://bugs.galette.eu/issues/1912
-                $this->storeSocials(null);
+                $this->storeSocials(id: null);
                 //dynamic fields
-                $this->dynamicsStore(true);
+                $this->dynamicsStore(transaction: true);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -1045,11 +1045,11 @@ class Preferences
             'patterns'  => $this->getMainPatterns()
         ];
 
-        $s_patterns = $this->getSignaturePatterns(false);
+        $s_patterns = $this->getSignaturePatterns(legacy: false);
         if (count($s_patterns)) {
             $legend['socials'] = [
                 'title' => _T('Social networks'),
-                'patterns' => $this->getSignaturePatterns(false)
+                'patterns' => $this->getSignaturePatterns(legacy: false)
             ];
         }
 
@@ -1295,7 +1295,7 @@ class Preferences
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been threw attempting to edit/store preferences files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;

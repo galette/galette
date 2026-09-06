@@ -27,8 +27,8 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) { //@phpstan-ignore if.a
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 
-$cm = new Galette\Core\CheckModules(false);
-$cm->doCheck(false); //do not load with translations!
+$cm = new Galette\Core\CheckModules(do: false);
+$cm->doCheck(translated: false); //do not load with translations!
 
 if (!$cm->isValid()) {
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');

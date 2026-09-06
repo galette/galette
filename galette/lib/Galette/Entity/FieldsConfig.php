@@ -569,7 +569,7 @@ class FieldsConfig
      */
     public function getAllowedFields(Login $login): array
     {
-        $form_elements = $this->getFormElements($login, false);
+        $form_elements = $this->getFormElements($login, new: false);
         $to_check = [];
         foreach ($form_elements['fieldsets'] as $fieldset) {
             $to_check = array_merge($to_check, array_keys($fieldset->elements));
@@ -990,7 +990,7 @@ class FieldsConfig
         foreach ($mass_fields as $mass_field) {
             $this->setNotRequired($mass_field);
         }
-        $form_elements = $this->getFormElements($login, false);
+        $form_elements = $this->getFormElements($login, new: false);
         unset($form_elements['hiddens']);
 
         foreach ($form_elements['fieldsets'] as &$form_element) {

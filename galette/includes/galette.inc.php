@@ -77,7 +77,7 @@ if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
 if (!defined('GALETTE_DEBUG')) {
-    define('GALETTE_DEBUG', false);
+    define('GALETTE_DEBUG', value: false);
 }
 
 if (!isset($_COOKIE['show_galette_dashboard'])) {

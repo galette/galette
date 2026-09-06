@@ -110,7 +110,7 @@ trait Cacheable
         $cfile = $this->getCacheFilename();
         $cdir = dirname((string)$cfile);
         if (!file_exists($cdir)) {
-            mkdir($cdir, 0o755, true);
+            mkdir($cdir, 0o755, recursive: true);
         }
         $stream = fopen($cfile, 'w+');
         fwrite(

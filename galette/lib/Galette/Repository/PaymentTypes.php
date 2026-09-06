@@ -208,7 +208,7 @@ class PaymentTypes extends Repository
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);
-            $this->defaults = $paytype->getSystemTypes(false);
+            $this->defaults = $paytype->getSystemTypes(translated: false);
         }
         return parent::loadDefaults();
     }

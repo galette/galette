@@ -37,7 +37,7 @@ class PdfGroups extends Pdf
         $this->filename = __('groups_list') . '.pdf';
         parent::__construct($prefs);
         // Enable Auto Page breaks
-        $this->SetAutoPageBreak(true, $this->footer_height + $this->getMargins()['bottom']);
+        $this->SetAutoPageBreak(auto: true, margin: $this->footer_height + $this->getMargins()['bottom']);
     }
 
     /**

@@ -646,7 +646,7 @@ class ContributionsController extends GaletteRoutingTestCase
                 'type' => \Galette\Entity\Contribution::TYPE_DONATION
             ];
         }
-        $this->checkContribExpected(null, $expected);
+        $this->checkContribExpected(contrib: null, new_expecteds: $expected);
         $this->login->logout();
 
         $route_name = 'editContribution';
@@ -977,7 +977,7 @@ class ContributionsController extends GaletteRoutingTestCase
                 'type' => \Galette\Entity\Contribution::TYPE_DONATION
             ];
         }
-        $this->checkContribExpected(null, $expected);
+        $this->checkContribExpected(contrib: null, new_expecteds: $expected);
         $this->login->logout();
 
         $member_two = $this->getMemberTwo();

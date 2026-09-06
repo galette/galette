@@ -132,12 +132,12 @@ class Telemetry
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->prefs->getURL());
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, value: true);
+        curl_setopt($ch, CURLOPT_HEADER, value: true);
 
         // disable SSL certificate validation (wildcard, self-signed)
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, value: false);
 
         if ($response = curl_exec($ch)) {
             $headers = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));

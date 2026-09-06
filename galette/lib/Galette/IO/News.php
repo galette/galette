@@ -120,7 +120,7 @@ class News
             }
 
             $context = stream_context_create($this->stream_opts);
-            $data = file_get_contents($this->feed_url, false, $context);
+            $data = file_get_contents($this->feed_url, use_include_path: false, context: $context);
             if (!$data) {
                 throw new \Exception();
             }
@@ -210,7 +210,7 @@ class News
         try {
             $galette_website_langs = $url . '/langs.json';
             $context = stream_context_create($this->stream_opts);
-            $langs = json_decode(file_get_contents($galette_website_langs, false, $context));
+            $langs = json_decode(file_get_contents($galette_website_langs, use_include_path: false, context: $context));
 
             if ($i18n->getAbbrev() != 'en' && in_array($i18n->getAbbrev(), $langs)) {
                 $url .= '/' . $i18n->getAbbrev();

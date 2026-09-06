@@ -227,7 +227,7 @@ class Login extends Authentication
         ) {
             $this->managed_groups = Groups::loadManagedGroups(
                 $this->id,
-                false
+                as_group: false
             );
         }
     }

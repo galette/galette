@@ -228,7 +228,7 @@ class DynamicField extends GaletteTestCase
 
         $df->load($df->getId());
         $this->assertSame(['One', 'Two', 'Three'], $df->getValues());
-        $this->assertSame("One\nTwo\nThree", $df->getValues(true));
+        $this->assertSame("One\nTwo\nThree", $df->getValues(imploded: true));
         $this->assertSame(1, $df->getIndex());
     }
 

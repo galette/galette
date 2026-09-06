@@ -266,7 +266,7 @@ class Group extends GaletteTestCase
         $group = new \Galette\Entity\Group($parent_id);
         $this->logSuperAdmin();
         $group->setLogin($this->login);
-        $this->assertTrue($group->remove(true)); //cascade removal, all will be removed
+        $this->assertTrue($group->remove(cascade: true)); //cascade removal, all will be removed
         $this->assertFalse($group->load($parent_id));
     }
 }

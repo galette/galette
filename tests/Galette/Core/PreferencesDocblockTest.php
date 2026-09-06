@@ -55,7 +55,7 @@ class PreferencesDocblockTest extends GaletteTestCase
         }
 
         foreach (array_keys($documented) as $name) {
-            if (in_array($name, self::VIRTUALS, true)) {
+            if (in_array($name, self::VIRTUALS, strict: true)) {
                 continue;
             }
             $this->assertContains(
@@ -167,7 +167,7 @@ class PreferencesDocblockTest extends GaletteTestCase
 
         foreach (array_keys(PreferencesSchema::getAll()) as $name) {
             $type = PreferencesSchema::getType($name);
-            if (in_array($type, [PreferencesSchema::TYPE_INT, PreferencesSchema::TYPE_BOOL], true)) {
+            if (in_array($type, [PreferencesSchema::TYPE_INT, PreferencesSchema::TYPE_BOOL], strict: true)) {
                 $casts[$name] = $type;
             }
         }

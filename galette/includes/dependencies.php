@@ -78,16 +78,16 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('plugin_headers', $plugins->getTplHeaders());
     $view->getEnvironment()->addGlobal('plugin_scripts', $plugins->getTplScripts());
 
-    $view->getEnvironment()->addGlobal('display_version', \Galette\Core\Galette::gitVersion(false));
+    $view->getEnvironment()->addGlobal('display_version', \Galette\Core\Galette::gitVersion(time: false));
     $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
     $view->getEnvironment()->addGlobal('plugins', $plugins);
     $view->getEnvironment()->addGlobal('preferences', $c->get(\Galette\Core\Preferences::class));
     $view->getEnvironment()->addGlobal('existing_mailing', $c->get(\RKA\Session::class)->mailing !== null);
-    $view->getEnvironment()->addGlobal('html_editor', false);
-    $view->getEnvironment()->addGlobal('require_charts', false);
-    $view->getEnvironment()->addGlobal('require_mass', false);
-    $view->getEnvironment()->addGlobal('autocomplete', false);
+    $view->getEnvironment()->addGlobal('html_editor', value: false);
+    $view->getEnvironment()->addGlobal('require_charts', value: false);
+    $view->getEnvironment()->addGlobal('require_mass', value: false);
+    $view->getEnvironment()->addGlobal('autocomplete', value: false);
     if ($c->get(\Galette\Core\Login::class)->isAdmin() && $c->get(\Galette\Core\Preferences::class)->pref_telemetry_date) {
         $telemetry = new \Galette\Util\Telemetry(
             $c->get(\Galette\Core\Db::class),
@@ -95,13 +95,13 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
             $c->get(\Galette\Core\Plugins::class)
         );
         if ($telemetry->shouldRenew()) {
-            $view->getEnvironment()->addGlobal('renew_telemetry', true);
+            $view->getEnvironment()->addGlobal('renew_telemetry', value: true);
         }
     }
 
-    $view->getEnvironment()->addGlobal('cur_route', null);
-    $view->getEnvironment()->addGlobal('cur_subroute', null);
-    $view->getEnvironment()->addGlobal('navigate', null);
+    $view->getEnvironment()->addGlobal('cur_route', value: null);
+    $view->getEnvironment()->addGlobal('cur_subroute', value: null);
+    $view->getEnvironment()->addGlobal('navigate', value: null);
 
     //TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
     $view->getEnvironment()->addGlobal('fui_dateformatter', __("YYYY-MM-DD"));

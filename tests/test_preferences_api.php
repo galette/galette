@@ -41,7 +41,7 @@ if (!defined('GALETTE_BASE_PATH')) {
 //file defaults have to be stated here: Db logging asks Galette whether debug is
 //on before running the very first query.
 if (!defined('GALETTE_DEBUG')) {
-    define('GALETTE_DEBUG', false); //@phpstan-ignore theCodingMachineSafe.function
+    define('GALETTE_DEBUG', value: false); //@phpstan-ignore theCodingMachineSafe.function
 }
 
 // Load Galette config and autoloader only
@@ -62,7 +62,7 @@ header('Content-Type: application/json');
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $input = json_decode(file_get_contents('php://input'), true);
+        $input = json_decode(file_get_contents('php://input'), associative: true);
         $action = $input['action'] ?? '';
 
         switch ($action) {

@@ -143,7 +143,7 @@ class SavedSearchesController extends CrudController
         }
 
         $searches = new SavedSearches($this->zdb, $this->login, $filters);
-        $list = $searches->getList(true);
+        $list = $searches->getList(as_search: true);
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);

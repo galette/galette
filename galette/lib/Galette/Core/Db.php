@@ -955,7 +955,7 @@ class Db
         // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres()
-                ? $this->getSequenceName($entity::TABLE, $entity::PK, true)
+                ? $this->getSequenceName($entity::TABLE, $entity::PK, prefixed: true)
                 : null
         );
     }

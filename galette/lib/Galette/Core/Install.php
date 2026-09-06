@@ -224,7 +224,7 @@ class Install
                 $this->step = self::STEP_DB_CHECKS;
             } else {
                 if ($this->step === self::STEP_DB_UPGRADE) {
-                    $this->setInstalledVersion(null);
+                    $this->setInstalledVersion(version: null);
                 }
                 $this->step -= 1;
             }
@@ -971,7 +971,7 @@ class Install
         ];
 
         //if config file is already up-to-date, nothing to write
-        $existing = $this->loadExistingConfigFile([], true);
+        $existing = $this->loadExistingConfigFile([], pass: true);
 
         if (
             isset($existing['db_type'])
@@ -1052,7 +1052,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         if ($this->isInstall()) {
-            $preferences = new Preferences($zdb, false);
+            $preferences = new Preferences($zdb, load: false);
             $ct = new \Galette\Entity\ContributionsTypes($zdb);
             $status = new \Galette\Entity\Status($zdb);
             include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
@@ -1095,7 +1095,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $this->proceedReport(_T("Fields config and categories"), $res);
 
             //Install texts
-            $res = $texts->installInit(false);
+            $res = $texts->installInit(check_first: false);
             $this->proceedReport(_T("Mails texts"), $res);
 
             //Install titles
@@ -1103,7 +1103,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $this->proceedReport(_T("Titles"), $res);
 
             //Install PDF models
-            $res = $models->installInit(false);
+            $res = $models->installInit(check_first: false);
             $this->proceedReport(_T("PDF models"), $res);
 
             //Install payment types
@@ -1113,21 +1113,21 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             return !$this->error;
         } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
-            $preferences->store(true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
-            $this->proceedReport(_T("Update preferences"), true);
+            $preferences->store(updating: true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
+            $this->proceedReport(_T("Update preferences"), res: true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
-            $models->installInit(true);
-            $this->proceedReport(_T("Update models"), true);
+            $models->installInit(check_first: true);
+            $this->proceedReport(_T("Update models"), res: true);
 
             $texts = new \Galette\Entity\Texts($preferences);
-            $texts->installInit(true);
-            $this->proceedReport(_T("Mails texts"), true);
+            $texts->installInit(check_first: true);
+            $this->proceedReport(_T("Mails texts"), res: true);
 
             //add missing system payment types right now; do not wait for first use
             $ptypes = new \Galette\Repository\PaymentTypes($zdb, $preferences, new Login($zdb, $i18n));
             $ptypes->checkUpdate();
-            $this->proceedReport(_T("Payment types"), true);
+            $this->proceedReport(_T("Payment types"), res: true);
 
             return true;
         }
@@ -1200,7 +1200,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     public function getCurrentVersion(Db $zdb): string|false
     {
         try {
-            $db_ver = $zdb->getDbVersion(true);
+            $db_ver = $zdb->getDbVersion(check_table: true);
             if (isset($this->versions_mapper[$db_ver])) {
                 return $this->versions_mapper[$db_ver];
             } else {

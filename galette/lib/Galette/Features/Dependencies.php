@@ -54,7 +54,7 @@ trait Dependencies
     {
         $this->deps = array_fill_keys(
             array_keys($this->deps),
-            false
+            value: false
         );
         return $this;
     }

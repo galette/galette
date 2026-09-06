@@ -47,13 +47,13 @@ class News extends BaseGaletteTestCase
         //ensure allow_url_fopen is on
         try {
             if (!ini_get('allow_url_fopen')) {
-                ini_set('allow_url_fopen', true);
+                ini_set('allow_url_fopen', value: true);
             }
         } catch (InfoException) {
             $this->markTestSkipped('allow_url_fopen cannot be set to true, skipping test');
         }
         //load news without caching
-        $news = new \Galette\IO\News($this->local_url, true);
+        $news = new \Galette\IO\News($this->local_url, nocache: true);
         $posts = $news->getPosts();
         $this->assertGreaterThan(0, count($posts));
     }
@@ -66,13 +66,13 @@ class News extends BaseGaletteTestCase
         //ensure allow_url_fopen is on
         try {
             if (!ini_get('allow_url_fopen')) {
-                ini_set('allow_url_fopen', true);
+                ini_set('allow_url_fopen', value: true);
             }
         } catch (InfoException) {
             $this->markTestSkipped('allow_url_fopen cannot be set to true, skipping test');
         }
         //load news without caching
-        $news = new \Galette\IO\News('file:///' . realpath(GALETTE_ROOT . '../tests/rss.xml'), true);
+        $news = new \Galette\IO\News('file:///' . realpath(GALETTE_ROOT . '../tests/rss.xml'), nocache: true);
         $posts = $news->getPosts();
         $this->assertCount(10, $posts);
 

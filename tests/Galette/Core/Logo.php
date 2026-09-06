@@ -37,7 +37,7 @@ class Logo extends BaseGaletteTestCase
         $instance = new \Galette\Core\Logo();
         $this->assertNull($instance->getDestDir());
         $this->assertNull($instance->getFileName());
-        $this->assertTrue(in_array($instance->getPath(), $expected_paths, true));
+        $this->assertTrue(in_array($instance->getPath(), $expected_paths, strict: true));
         $this->assertSame('image/webp', $instance->getMime());
         $this->assertSame('webp', $instance->getFormat());
         $this->assertFalse($instance->isCustom());

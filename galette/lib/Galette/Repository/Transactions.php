@@ -353,14 +353,14 @@ class Transactions
             foreach ($results as $transaction) {
                 /** @var ArrayObject<string, int|string> $transaction */
                 $c = new Transaction($this->zdb, $this->login, $transaction);
-                $res = $c->remove($hist, false);
+                $res = $c->remove($hist, transaction: false);
                 if ($res === false) {
                     throw new Exception();
                 }
             }
             $this->zdb->commit();
             $hist->add(
-                "Transactions deleted (" . print_r($list, true) . ')'
+                "Transactions deleted (" . print_r($list, return: true) . ')'
             );
             return true;
         } catch (Throwable $e) {

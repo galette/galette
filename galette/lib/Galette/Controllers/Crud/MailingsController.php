@@ -100,7 +100,7 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                $members = $m->getList(true);
+                $members = $m->getList(as_members: true);
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
@@ -137,7 +137,7 @@ class MailingsController extends CrudController
             $this->session->labels = $mailing->unreachables;
 
             if (!$this->login->isSuperAdmin()) {
-                $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                 $params['sender_current'] = [
                     'name'  => $member->sname,
                     'email' => $member->getEmail()
@@ -263,7 +263,7 @@ class MailingsController extends CrudController
 
                 switch ($post['sender'] ?? false) {
                     case GaletteMail::SENDER_CURRENT:
-                        $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                        $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                         $mailing->setSender(
                             $member->sname,
                             $member->getEmail()
@@ -310,7 +310,7 @@ class MailingsController extends CrudController
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
                         '[Mailings] Message was not sent. Errors: '
-                        . print_r($mailing->errors, true),
+                        . print_r($mailing->errors, return: true),
                         Analog::ERROR
                     );
                     foreach ($mailing->errors as $e) {
@@ -324,7 +324,7 @@ class MailingsController extends CrudController
                         filters: null,
                         mailing: $mailing
                     );
-                    $mlh->storeMailing(true);
+                    $mlh->storeMailing(sent: true);
                     Analog::log(
                         '[Mailings] Message has been sent.',
                         Analog::INFO
@@ -618,7 +618,7 @@ class MailingsController extends CrudController
 
             switch ($post['sender']) {
                 case GaletteMail::SENDER_CURRENT:
-                    $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                    $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                     $mailing->setSender(
                         $member->sname,
                         $member->getEmail()

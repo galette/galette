@@ -77,7 +77,7 @@ class PdfMembersCards extends Pdf
      */
     public function __construct(Preferences $prefs)
     {
-        $this->setRTL(false);
+        $this->setRTL(enable: false);
         $this->filename = __('cards') . '.pdf';
         parent::__construct($prefs);
     }
@@ -100,7 +100,7 @@ class PdfMembersCards extends Pdf
         $this->SetDisplayMode('fullpage');
 
         // Disable Auto Page breaks
-        $this->SetAutoPageBreak(false, 0);
+        $this->SetAutoPageBreak(auto: false, margin: 0);
 
         // Set colors
         $this->SetDrawColor(160, 160, 160);
@@ -358,7 +358,7 @@ class PdfMembersCards extends Pdf
                 fontsize: $this->year_font_size
             ) / 2;
             $this->SetXY($xan_cot, $y0 + 1);
-            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', ln: false, fill: false);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -367,7 +367,7 @@ class PdfMembersCards extends Pdf
             $this->SetFontSize($this->year_font_size);
             $xan_cot -= 0.1;
             $this->SetXY($xan_cot, $y0 + 1 - 0.1);
-            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', ln: false, fill: false);
 
             //Write member number, center of available space
             $this->SetFontSize(8);
@@ -407,7 +407,7 @@ class PdfMembersCards extends Pdf
                 $this->SetXY($xid, $y0 + 8);
             }
             $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-            $this->writeHTML('<strong>' . $this->adh_nbr . '  </strong>', false, false);
+            $this->writeHTML('<strong>' . $this->adh_nbr . '  </strong>', ln: false, fill: false);
 
             // Abbrev: Adapt font size to text length
             if (13 < $this->hlogo + 1) {
@@ -441,7 +441,7 @@ class PdfMembersCards extends Pdf
                 ) / 2 + $this->wphoto / 2;
             }
             $this->SetXY($xid, $y0 + 13);
-            $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, false);
+            $this->writeHTML('<strong>' . $this->abrev . '</strong>', ln: true, fill: false);
 
             // Name: Adapt font size to text length on one line, if font is to small on two lines
             $this->SetTextColor(0);
@@ -471,7 +471,7 @@ class PdfMembersCards extends Pdf
                     fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
+                $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', ln: true, fill: false);
                 $this->SetX($x0 + $this->wphoto + 2);
                 $this->SetFontSize(7);
 
@@ -482,12 +482,12 @@ class PdfMembersCards extends Pdf
                     fontstyle: 'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $this->writeHTML('<strong>' . $member->surname . '</strong>', true, false);
+                $this->writeHTML('<strong>' . $member->surname . '</strong>', ln: true, fill: false);
                 if ($this->he < 44) {
                     $this->ban_max_he = 10;
                 }
             } else {
-                $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
+                $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', ln: true, fill: false);
             }
 
             // Email (adapt too)
@@ -498,7 +498,7 @@ class PdfMembersCards extends Pdf
                 fontstyle: 'B'
             );
             $this->setX($x0 + $this->wphoto + 2);
-            $this->writeHTML('<strong>' . $email . '</strong>', false, false);
+            $this->writeHTML('<strong>' . $email . '</strong>', ln: false, fill: false);
             $this->email_y = $this->getY();
 
             // Lower colored strip with long text

@@ -154,7 +154,7 @@ class Groups
      */
     public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
-        return self::loadGroups($id, true, $as_group);
+        return self::loadGroups($id, managed: true, as_group: $as_group);
     }
 
     /**
@@ -306,7 +306,7 @@ class Groups
                 $zdb->rollback();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id
-                . ') to specified groups ' . print_r($groups, true);
+                . ') to specified groups ' . print_r($groups, return: true);
             if ($manager === true) {
                 $msg .= ' as a manager';
             }
@@ -408,7 +408,7 @@ class Groups
             return false;
         }
         if (!count($groups)) {
-            $groups = self::loadManagedGroups($this->login->id, false);
+            $groups = self::loadManagedGroups($this->login->id, as_group: false);
         }
 
         $select = $this->zdb->select(Adherent::TABLE, 'adh');

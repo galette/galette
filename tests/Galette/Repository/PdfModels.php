@@ -27,7 +27,7 @@ class PdfModels extends GaletteTestCase
         parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $models->installInit(false);
+        $res = $models->installInit(check_first: false);
         $this->assertTrue($res);
     }
 

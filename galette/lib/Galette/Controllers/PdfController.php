@@ -119,7 +119,7 @@ class PdfController extends AbstractController
         $members = $m->getArrayList(
             $selected,
             ['nom_adh', 'prenom_adh'],
-            true
+            with_photos: true
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -314,7 +314,7 @@ class PdfController extends AbstractController
         $members = $m->getArrayList(
             $filters->selected,
             ['nom_adh', 'prenom_adh'],
-            true
+            with_photos: true
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -392,7 +392,7 @@ class PdfController extends AbstractController
     )]
     public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
-        $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
+        $groups_list = $id !== null ? $groups->getList(full: true, id: $id) : $groups->getList();
 
         if (count($groups_list) < 1) {
             Analog::log(
@@ -585,7 +585,7 @@ class PdfController extends AbstractController
             $members = $m->getArrayList(
                 [$id],
                 ['nom_adh', 'prenom_adh'],
-                true
+                with_photos: true
             );
 
             if (!is_array($members) || count($members) < 1) {

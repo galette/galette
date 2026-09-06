@@ -49,7 +49,7 @@ use function Safe\define;
 /**
  * Define the following constant to ignore the default configuration file.
  */
-define('K_TCPDF_EXTERNAL_CONFIG', true);
+define('K_TCPDF_EXTERNAL_CONFIG', value: true);
 
 /**
  * Installation path (/var/www/tcpdf/).
@@ -214,18 +214,18 @@ define('K_SMALL_RATIO', 2 / 3);
 /**
  * Set to true to enable the special procedure used to avoid the overlappind of symbols on Thai language.
  */
-define('K_THAI_TOPCHARS', true);
+define('K_THAI_TOPCHARS', value: true);
 
 /**
  * If true allows to call TCPDF methods using HTML syntax
  * IMPORTANT: For security reason, disable this feature if you are printing user HTML content.
  */
-define('K_TCPDF_CALLS_IN_HTML', true);
+define('K_TCPDF_CALLS_IN_HTML', value: true);
 
 /**
  * If true and PHP version is greater than 5, then the Error() method throw new exception instead of terminating the execution.
  */
-define('K_TCPDF_THROW_EXCEPTION_ERROR', false);
+define('K_TCPDF_THROW_EXCEPTION_ERROR', value: false);
 
 /**
  * Default timezone for datetime functions

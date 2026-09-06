@@ -151,7 +151,7 @@ class Reminder
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing reminder: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;

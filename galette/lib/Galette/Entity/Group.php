@@ -278,7 +278,7 @@ class Group
                         Analog::INFO
                     );
                     foreach ($subgroups as $subgroup) {
-                        $subgroup->remove(true);
+                        $subgroup->remove(cascade: true);
                     }
                 }
 

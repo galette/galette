@@ -70,9 +70,9 @@ class SavedSearch extends GaletteTestCase
         //store search
         $this->assertTrue($saved->check($post));
         $this->assertTrue($saved->store());
-        $this->assertCount(1, $searches->getList(true));
+        $this->assertCount(1, $searches->getList(as_search: true));
         //store again, got a duplicate
         $this->assertTrue($saved->store());
-        $this->assertCount(2, $searches->getList(true));
+        $this->assertCount(2, $searches->getList(as_search: true));
     }
 }

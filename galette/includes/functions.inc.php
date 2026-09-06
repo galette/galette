@@ -247,5 +247,5 @@ function contextualizedString(string $string, string $context): string
  */
 function __(string $string, string $domain = 'galette'): string
 {
-    return _T($string, $domain, false);
+    return _T($string, $domain, nt: false);
 }

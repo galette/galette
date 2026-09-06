@@ -212,7 +212,7 @@ class SavedSearches
                 $hist->add(
                     str_replace(
                         '%list',
-                        print_r($list, true),
+                        print_r($list, return: true),
                         _T("Searches deleted (%list)")
                     )
                 );

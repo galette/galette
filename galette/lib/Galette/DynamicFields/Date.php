@@ -145,7 +145,7 @@ class Date extends DynamicField
                 "Dynamic dates updated, %1\$s row(s) affected on %2\$s found.\n%3\$s",
                 count($updates),
                 $results->count(),
-                print_r($debug_dates, true)
+                print_r($debug_dates, return: true)
             ),
             Analog::INFO
         );

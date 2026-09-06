@@ -96,9 +96,9 @@ class Picture
     public function __construct(string|int|null $id_adh = null)
     {
         $this->init(
-            null,
-            ['jpeg', 'jpg', 'png', 'gif', 'webp'],
-            [
+            dest: null,
+            extensions: ['jpeg', 'jpg', 'png', 'gif', 'webp'],
+            mimes: [
                 'jpg'    =>    'image/jpeg',
                 'png'    =>    'image/png',
                 'gif'    =>    'image/gif',
@@ -920,13 +920,13 @@ class Picture
 
         // Turn off alpha blending and set alpha flag. That prevent alpha
         // transparency to be saved as an arbitrary color (black in my tests)
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-        imagealphablending($thumb, false);
-        imagesavealpha($thumb, true);
+        imagealphablending($image, enable: false);
+        imagesavealpha($image, enable: true);
+        imagealphablending($thumb, enable: false);
+        imagesavealpha($thumb, enable: true);
         if ($thumb_cropped !== false) { // Crop
-            imagealphablending($thumb_cropped, false);
-            imagesavealpha($thumb_cropped, true);
+            imagealphablending($thumb_cropped, enable: false);
+            imagesavealpha($thumb_cropped, enable: true);
             // First, crop.
             imagecopyresampled(
                 dst_image: $thumb_cropped,

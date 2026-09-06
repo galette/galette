@@ -27,7 +27,7 @@ class PaymentTypes extends GaletteTestCase
         parent::setUp();
 
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
-        $res = $types->installInit(false);
+        $res = $types->installInit(check_first: false);
         $this->assertTrue($res);
     }
 

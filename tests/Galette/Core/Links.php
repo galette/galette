@@ -32,7 +32,7 @@ class Links extends GaletteTestCase
     {
         parent::setUp();
 
-        $this->links = new \Galette\Core\Links($this->zdb, false);
+        $this->links = new \Galette\Core\Links($this->zdb, clean: false);
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -165,7 +165,7 @@ class Links extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(2, $results->count());
 
-        new \Galette\Core\Links($this->zdb, true);
+        new \Galette\Core\Links($this->zdb, clean: true);
 
         $results = $this->zdb->execute($select);
         $result = $results->current();

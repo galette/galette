@@ -542,7 +542,7 @@ class Contribution implements AccessManagementInterface
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $member = new Adherent($this->zdb, (int)$value, false);
+                            $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 $this->checklogin
                                 && !$this->login->isStaff()
@@ -649,7 +649,7 @@ class Contribution implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been threw attempting to edit/store a contribution'
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -728,7 +728,7 @@ class Contribution implements AccessManagementInterface
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
                 'Existing errors prevents storing contribution: '
-                . print_r($this->errors, true)
+                . print_r($this->errors, return: true)
             );
         }
 
@@ -798,7 +798,7 @@ class Contribution implements AccessManagementInterface
             }
 
             //dynamic fields
-            $this->dynamicsStore(true);
+            $this->dynamicsStore(transaction: true);
 
             $this->zdb->commit();
             $this->orig_amount = $this->amount;
@@ -865,7 +865,7 @@ class Contribution implements AccessManagementInterface
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
-                $this->dynamicsRemove(true);
+                $this->dynamicsRemove(transaction: true);
             } else {
                 Analog::log(
                     'Contribution has not been removed!',
@@ -1156,7 +1156,7 @@ class Contribution implements AccessManagementInterface
                 Analog::ERROR
             );
             $res = _T("Contribution information") . "\n";
-            $res .= print_r($contrib, true);
+            $res .= print_r($contrib, return: true);
             $res .= "\n\n" . _T("Script output") . "\n";
             $res .= $es->getOutput();
         }
@@ -1240,7 +1240,7 @@ class Contribution implements AccessManagementInterface
                 case 'raw_date':
                 case 'raw_begin_date':
                 case 'raw_end_date':
-                    return $this->getDate(substr($name, 4), false);
+                    return $this->getDate(substr($name, 4), formatted: false);
                 case 'date':
                 case 'begin_date':
                 case 'end_date':
@@ -1380,7 +1380,7 @@ class Contribution implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been threw attempting to edit/store a contribution files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -1446,7 +1446,7 @@ class Contribution implements AccessManagementInterface
 
         //groups managers can see contributions of their group members - if preferences is enabled
         if ($preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
-            $member = new Adherent($this->zdb, (int)$this->member, false);
+            $member = new Adherent($this->zdb, (int)$this->member, deps: false);
             return $login->isGroupManager(array_keys($member->getGroups()));
         }
 

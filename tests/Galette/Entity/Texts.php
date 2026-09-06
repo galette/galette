@@ -47,13 +47,13 @@ class Texts extends GaletteTestCase
             $this->assertGreaterThanOrEqual($count_texts, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . $this->zdb->getSequenceName($texts::TABLE, $texts::PK, true) . '\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($texts::TABLE, $texts::PK, prefixed: true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
 
         //reinstall texts
-        $texts->installInit(false);
+        $texts->installInit(check_first: false);
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
         $this->assertCount($count_texts, $list);

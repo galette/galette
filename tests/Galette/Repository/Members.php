@@ -484,14 +484,14 @@ class Members extends GaletteTestCase
 
         //not filtered list
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(true);
+        $list = $members->getList(as_members: true);
 
         $this->assertCount(10, $list);
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $list[0]);
 
         //get list with specified fields
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(false, ['nom_adh', 'prenom_adh', 'ville_adh']);
+        $list = $members->getList(as_members: false, fields: ['nom_adh', 'prenom_adh', 'ville_adh']);
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
@@ -743,7 +743,7 @@ class Members extends GaletteTestCase
     {
         $members = new \Galette\Repository\Members();
 
-        $list = $members->getPublicList(false);
+        $list = $members->getPublicList(with_photos: false);
         $this->assertSame(2, $members->getCount());
         $this->assertArrayHasKey('staff', $list);
         $this->assertArrayHasKey('members', $list);
@@ -759,7 +759,7 @@ class Members extends GaletteTestCase
         $this->assertTrue($adh->appearsInMembersList());
         $this->assertNull($adh->picture);
 
-        $list = $members->getPublicList(true);
+        $list = $members->getPublicList(with_photos: true);
         $this->assertSame(1, $members->getCount());
 
         $staff = $list['staff'];
@@ -781,7 +781,7 @@ class Members extends GaletteTestCase
     public function testGroupsSearch(): void
     {
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(true);
+        $list = $members->getList(as_members: true);
         $this->assertSame(10, count($list));
         $this->assertSame(10, $members->getCount());
 

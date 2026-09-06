@@ -204,7 +204,7 @@ final class PreferencesSchema
             return sprintf('"%s" is not prefixed with "%s"', $name, $prefix);
         }
 
-        if (!isset($entry['type']) || !in_array($entry['type'], self::TYPES, true)) {
+        if (!isset($entry['type']) || !in_array($entry['type'], self::TYPES, strict: true)) {
             return sprintf('"%s" has no known type', $name);
         }
 

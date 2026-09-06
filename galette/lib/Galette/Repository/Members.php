@@ -277,7 +277,7 @@ class Members
 
                 $p = new Picture($member->id_adh);
                 if ($p->hasPicture()) {
-                    if (!$p->delete(false)) {
+                    if (!$p->delete(transaction: false)) {
                         Analog::log(
                             'Unable to delete picture for member ' . $str_adh,
                             Analog::ERROR
@@ -805,7 +805,7 @@ class Members
                     ]
                 );
             } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
-                $select->where->equalTo('a.bool_display_info', true);
+                $select->where->equalTo('a.bool_display_info', right: true);
 
                 if ($preferences->pref_bool_groupsmanagers_are_staff) {
                     $select->join(
@@ -1136,7 +1136,7 @@ class Members
                         );
                         break;
                     case self::MEMBERSHIP_ADMIN:
-                        $select->where->equalTo('a.bool_admin_adh', true);
+                        $select->where->equalTo('a.bool_admin_adh', right: true);
                         break;
                     case self::MEMBERSHIP_NONE:
                         $select->where->equalTo('a.id_statut', Status::DEFAULT_STATUS);
@@ -1761,9 +1761,9 @@ class Members
 
         $list_members = [];
         if ($login->isAdmin() || $login->isStaff()) {
-            $list_members = $this->getList(false, $required_fields);
+            $list_members = $this->getList(as_members: false, fields: $required_fields);
         } elseif ($login->isGroupManager()) {
-            $list_members = $this->getManagedMembersList(false, $required_fields);
+            $list_members = $this->getManagedMembersList(as_members: false, fields: $required_fields);
         }
 
         if (count($list_members) > 0) {

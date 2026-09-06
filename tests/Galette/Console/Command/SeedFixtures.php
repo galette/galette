@@ -218,7 +218,7 @@ class SeedFixtures extends GaletteTestCase
             );
 
             //recipients are stored as a JSON map of member id => "name <address>"
-            $recipients = json_decode($row->mailing_recipients, true);
+            $recipients = json_decode($row->mailing_recipients, associative: true);
             $this->assertIsArray($recipients);
             $this->assertNotEmpty($recipients);
             foreach ($recipients as $id => $recipient) {

@@ -45,7 +45,7 @@ if ($cron) {
         basename($argv[0], '.php'),
         $container->get(\Galette\Core\Preferences::class)
     );
-    define('GALETTE_CRON', true);
+    define('GALETTE_CRON', value: true);
 }
 
 if (!$container->get(Login::class)->isCron()) {
@@ -66,7 +66,7 @@ $reminders = new Reminders();
 $success_detected = [];
 $error_detected = [];
 
-$list_reminders = $reminders->getList($container->get(Db::class), false);
+$list_reminders = $reminders->getList($container->get(Db::class), nomail: false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
         //send reminders by email

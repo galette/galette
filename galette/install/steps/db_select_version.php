@@ -19,7 +19,7 @@ use Galette\Core\Db as GaletteDb;
 
 $versions = array_keys($install->getScripts());
 $current = $install->getCurrentVersion($zdb);
-$raw_current = $zdb->getDbVersion(true);
+$raw_current = $zdb->getDbVersion(check_table: true);
 $last = '0.00';
 ?>
     <form action="installer.php" method="post" class="ui form">

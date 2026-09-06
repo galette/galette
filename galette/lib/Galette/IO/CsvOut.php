@@ -139,7 +139,7 @@ class CsvOut extends Csv
                 $this->write();
             }
         }
-        $this->write(true);
+        $this->write(last: true);
         return $this->result;
     }
 

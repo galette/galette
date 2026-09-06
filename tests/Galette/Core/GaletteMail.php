@@ -168,9 +168,9 @@ class GaletteMail extends GaletteTestCase
     {
         $mail = new \Galette\Core\GaletteMail($this->preferences);
         $this->assertFalse($mail->isHtml());
-        $this->assertTrue($mail->isHTML(true));
+        $this->assertTrue($mail->isHTML(set: true));
         $this->assertTrue($mail->isHTML());
-        $this->assertFalse($mail->isHtml(false));
+        $this->assertFalse($mail->isHtml(set: false));
         $this->assertFalse($mail->isHTML());
     }
 

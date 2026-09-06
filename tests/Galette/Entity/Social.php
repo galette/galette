@@ -36,7 +36,7 @@ class Social extends GaletteTestCase
         $this->assertSame('myurl', $social->url);
 
         //null as member id for Galette main preferences
-        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setLinkedMember(null));
+        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setLinkedMember(id: null));
         $this->assertNull($social->id_adh);
         $this->assertNull($social->member);
 
@@ -54,11 +54,11 @@ class Social extends GaletteTestCase
     {
         $social = new \Galette\Entity\Social($this->zdb);
         $this->assertCount(10, $social->getSystemTypes());
-        $this->assertSame($social->getSystemTypes(true), $social->getSystemTypes());
-        $this->assertCount(10, $social->getSystemTypes(false));
+        $this->assertSame($social->getSystemTypes(translated: true), $social->getSystemTypes());
+        $this->assertCount(10, $social->getSystemTypes(translated: false));
 
         $this->assertSame('Twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER));
-        $this->assertSame('twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER, false));
+        $this->assertSame('twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER, translated: false));
     }
 
     /**
@@ -66,7 +66,7 @@ class Social extends GaletteTestCase
      */
     public function testGetListForMember(): void
     {
-        $this->assertEmpty(\Galette\Entity\Social::getListForMember(null));
+        $this->assertEmpty(\Galette\Entity\Social::getListForMember(id_adh: null));
 
         $this->getMemberTwo();
         $this->assertEmpty(\Galette\Entity\Social::getListForMember($this->adh->id));
@@ -101,7 +101,7 @@ class Social extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Galette mastodon URL')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
 
@@ -110,7 +110,7 @@ class Social extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::JABBER)
                 ->setUrl('Galette jabber')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
 
@@ -119,14 +119,14 @@ class Social extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Another Galette mastodon URL')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
 
-        $this->assertCount(3, \Galette\Entity\Social::getListForMember(null));
-        $this->assertCount(1, \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER));
+        $this->assertCount(3, \Galette\Entity\Social::getListForMember(id_adh: null));
+        $this->assertCount(1, \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER));
 
         $this->assertTrue($social->remove());
-        $this->assertCount(2, \Galette\Entity\Social::getListForMember(null));
+        $this->assertCount(2, \Galette\Entity\Social::getListForMember(id_adh: null));
     }
 }

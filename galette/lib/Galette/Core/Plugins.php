@@ -348,7 +348,7 @@ class Plugins
      */
     private function registerPreferences(string $id): bool
     {
-        $class = $this->getClassName($id, true);
+        $class = $this->getClassName($id, full: true);
         if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
             return false;
         }
@@ -483,7 +483,7 @@ class Plugins
      */
     private function check(): void
     {
-        $plugin_class = $this->getClassName($this->id, true);
+        $plugin_class = $this->getClassName($this->id, full: true);
         if (
             !class_exists($plugin_class)
             || !is_subclass_of($plugin_class, GalettePlugin::class)

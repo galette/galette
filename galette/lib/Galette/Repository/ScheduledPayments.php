@@ -64,7 +64,7 @@ class ScheduledPayments
     public function getListFromContribution(int $contrib_id): array
     {
         $this->filters->from_contribution = $contrib_id;
-        return $this->getList(true);
+        return $this->getList(as_object: true);
     }
 
     /**
@@ -448,7 +448,7 @@ class ScheduledPayments
             $hist->add(
                 str_replace(
                     '%list',
-                    print_r($list, true),
+                    print_r($list, return: true),
                     _T("Scheduled payments deleted (%list)")
                 )
             );

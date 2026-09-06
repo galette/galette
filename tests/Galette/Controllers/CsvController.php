@@ -107,12 +107,12 @@ class CsvController extends GaletteRoutingTestCase
         $group->setName('Group one' . $this->seed);
         $this->assertTrue($group->store());
         $group_one_id = $group->getId();
-        $group_one_creation_date = (new DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
+        $group_one_creation_date = (new DateTime($group->getCreationDate(formatted: false)))->format('Y-m-d H:i:s');
         $group = new \Galette\Entity\Group();
         $group->setName('Group two' . $this->seed);
         $this->assertTrue($group->store());
         $group_two_id = $group->getId();
-        $group_two_creation_date = (new DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
+        $group_two_creation_date = (new DateTime($group->getCreationDate(formatted: false)))->format('Y-m-d H:i:s');
 
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('export')]], $test_response->getHeaders());

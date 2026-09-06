@@ -42,7 +42,7 @@ class Html
         $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
         if (!is_dir($cache_dir)) {
             try {
-                mkdir($cache_dir, 0o755, true);
+                mkdir($cache_dir, 0o755, recursive: true);
             } catch (FilesystemException $e) {
                 //another request may have created it in between
                 if (!is_dir($cache_dir)) {
@@ -84,10 +84,10 @@ class Html
         $environment->addConverter(new ParagraphConverter());
 
         $config = $converter->getConfig();
-        $config->setOption('strip_tags', true); //remove all tags
-        $config->setOption('hard_break', true); //convert <br> to \n only
+        $config->setOption('strip_tags', value: true); //remove all tags
+        $config->setOption('hard_break', value: true); //convert <br> to \n only
         $config->setOption('header_style', 'atx'); //set headers style to atx (with #)
-        $config->setOption('strip_placeholder_links', true); //to remove links without links
+        $config->setOption('strip_placeholder_links', value: true); //to remove links without links
         $config->setOption('remove_nodes', 'meta script style'); //nodes to just remove
 
         return $converter->convert($html);

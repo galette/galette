@@ -64,7 +64,7 @@ class Csrf
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        if (in_array(strtoupper($request->getMethod()), self::BODYLESS_METHODS, true)) {
+        if (in_array(strtoupper($request->getMethod()), self::BODYLESS_METHODS, strict: true)) {
             //no CSRF check on methods that are not supposed to change anything
             return $handler->handle($request);
         }
@@ -92,7 +92,7 @@ class Csrf
         //name; browsers always send a legitimate value, scripts cannot alter it.
         $fetch_site = $request->getHeaderLine('Sec-Fetch-Site');
         if ($fetch_site !== '') {
-            return in_array($fetch_site, self::TRUSTED_FETCH_SITES, true);
+            return in_array($fetch_site, self::TRUSTED_FETCH_SITES, strict: true);
         }
 
         //fallback on `Origin` (also a forbidden header name) for older browsers

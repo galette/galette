@@ -275,7 +275,7 @@ class Install extends AbstractCommand
             && !$input->getOption('no-interaction')
         ) {
             $io->warning("Configuration file already exists and matches the provided database information.\nAll existing data will be lost if you continue.");
-            if (!$io->confirm('Do you want to continue?', false)) {
+            if (!$io->confirm('Do you want to continue?', default: false)) {
                 $io->writeln('Aborted.');
                 return Command::FAILURE;
             }
@@ -401,7 +401,7 @@ class Install extends AbstractCommand
 
         $io->info('Initializing data, please wait...');
         if (!defined('GALETTE_INSTALLER')) {
-            define('GALETTE_INSTALLER', true);
+            define('GALETTE_INSTALLER', value: true);
         }
         $i18n = new \Galette\Core\I18n();
         $init_ok = $install->initObjects(

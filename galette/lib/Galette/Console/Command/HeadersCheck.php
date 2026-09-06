@@ -305,8 +305,8 @@ final class HeadersCheck extends AbstractCommand
             }
 
             if ($this->input->getOption('fix')) {
-                $pre_header_lines  = $this->stripEmptyLines($pre_header_lines, false, true);
-                $post_header_lines = $this->stripEmptyLines($post_header_lines, true, false);
+                $pre_header_lines  = $this->stripEmptyLines($pre_header_lines, strip_top_lines: false, strip_bottom_lines: true);
+                $post_header_lines = $this->stripEmptyLines($post_header_lines, strip_top_lines: true, strip_bottom_lines: false);
 
                 $file_contents = '';
                 if ($pre_header_lines !== []) {
@@ -403,7 +403,7 @@ final class HeadersCheck extends AbstractCommand
 
         $lines = $this->appendTaggedData($lines, $extra_tagged_data, $line_prefix);
 
-        return $this->stripEmptyLines($lines, true, true);
+        return $this->stripEmptyLines($lines, strip_top_lines: true, strip_bottom_lines: true);
     }
 
     /**

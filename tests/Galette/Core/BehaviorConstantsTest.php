@@ -50,7 +50,7 @@ class BehaviorConstantsTest extends GaletteTestCase
         $this->assertContains('GALETTE_MODE', $names);
         $this->assertSame(
             GALETTE_MODE,
-            $status[array_search('GALETTE_MODE', $names, true)]['value']
+            $status[array_search('GALETTE_MODE', $names, strict: true)]['value']
         );
     }
 
@@ -65,7 +65,7 @@ class BehaviorConstantsTest extends GaletteTestCase
         $superseded = PreferencesSchema::getConstants();
         $this->assertNotEmpty($superseded);
 
-        $listed = array_column(BehaviorConstants::getStatus(), null, 'name');
+        $listed = array_column(BehaviorConstants::getStatus(), column_key: null, index_key: 'name');
 
         foreach ($superseded as $preference => $constant) {
             if (defined($constant)) {
@@ -84,7 +84,7 @@ class BehaviorConstantsTest extends GaletteTestCase
 
         //the ones with no replacement are never flagged
         foreach ($listed as $constant) {
-            if (in_array($constant['name'], $superseded, true)) {
+            if (in_array($constant['name'], $superseded, strict: true)) {
                 continue;
             }
             $this->assertNull($constant['replaced_by'], $constant['name'] . ' has no replacement');
@@ -99,11 +99,11 @@ class BehaviorConstantsTest extends GaletteTestCase
     public function testDeclaredSupersededConstantShowsItsValue(): void
     {
         $this->assertFalse(defined('GALETTE_URI'));
-        $this->assertArrayNotHasKey('GALETTE_URI', array_column(BehaviorConstants::getStatus(), null, 'name'));
+        $this->assertArrayNotHasKey('GALETTE_URI', array_column(BehaviorConstants::getStatus(), column_key: null, index_key: 'name'));
 
         define('GALETTE_URI', 'https://from-the-file.example.com');
 
-        $listed = array_column(BehaviorConstants::getStatus(), null, 'name');
+        $listed = array_column(BehaviorConstants::getStatus(), column_key: null, index_key: 'name');
         $this->assertArrayHasKey('GALETTE_URI', $listed);
         $this->assertTrue($listed['GALETTE_URI']['defined']);
         $this->assertSame('https://from-the-file.example.com', $listed['GALETTE_URI']['value']);

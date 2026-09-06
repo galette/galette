@@ -56,7 +56,7 @@ class UpgradeTo120 extends AbstractUpdater
             foreach ($metadata->getConstraints($table) as $constraint) {
                 if (
                     $constraint->isForeignKey()
-                    && in_array($constraint->getReferencedTableName(), $fkeys_tables, true)
+                    && in_array($constraint->getReferencedTableName(), $fkeys_tables, strict: true)
                 ) {
                     $this->reworked_fkeys[] = $constraint;
                 }

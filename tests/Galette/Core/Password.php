@@ -31,7 +31,7 @@ class Password extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->pass = new \Galette\Core\Password($this->zdb, false);
+        $this->pass = new \Galette\Core\Password($this->zdb, clean: false);
     }
 
     /**
@@ -118,7 +118,7 @@ class Password extends GaletteTestCase
         if ($this->zdb->isPostgres()) {
             // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
             return (int)$this->zdb->driver->getLastGeneratedValue(
-                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, true)
+                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, prefixed: true)
             );
         } else {
             return (int)$this->zdb->driver->getLastGeneratedValue();
@@ -207,7 +207,7 @@ class Password extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        new \Galette\Core\Password($this->zdb, true);
+        new \Galette\Core\Password($this->zdb, clean: true);
 
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
@@ -232,7 +232,7 @@ class Password extends GaletteTestCase
                 }
             );
 
-        $pass = new \Galette\Core\Password($zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $res = $pass->generateNewPassword(12);
         $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query!');
         $this->assertFalse($res);
@@ -255,7 +255,7 @@ class Password extends GaletteTestCase
                 }
             );
 
-        $pass = new \Galette\Core\Password($zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $this->assertFalse($pass->cleanExpired());
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
     }
@@ -277,7 +277,7 @@ class Password extends GaletteTestCase
                 }
             );
 
-        $pass = new \Galette\Core\Password($zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $res = $pass->isTokenValid('thetoken');
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
@@ -300,7 +300,7 @@ class Password extends GaletteTestCase
                 }
             );
 
-        $pass = new \Galette\Core\Password($zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $res = $pass->removeToken('thetoken');
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);

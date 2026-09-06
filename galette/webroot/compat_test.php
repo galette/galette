@@ -18,8 +18,8 @@ if (!$phpok) { //@phpstan-ignore booleanNot.alwaysFalse
     $php_message .= sprintf(' (%s minimum required)', GALETTE_PHP_MIN);
 } else {
     require_once GALETTE_ROOT . '/vendor/autoload.php';
-    $cm = new Galette\Core\CheckModules(false);
-    $cm->doCheck(false); //do not load with translations!
+    $cm = new Galette\Core\CheckModules(do: false);
+    $cm->doCheck(translated: false); //do not load with translations!
 }
 
 $compat_ok = $phpok //@phpstan-ignore booleanAnd.leftAlwaysTrue

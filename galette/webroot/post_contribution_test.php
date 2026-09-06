@@ -34,7 +34,7 @@ if (defined('STDIN')) {
         unset($_POST['galette_internal']);
         Analog\Analog::info(
             'Requested as Galette HTTP POST with parameters:' . "\n"
-            . print_r($args, true)
+            . print_r($args, return: true)
         );
     } else {
         echo 'Requested as HTTP POST with parameters:<br/>';

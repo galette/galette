@@ -35,7 +35,7 @@ class SlimApp
         protected string $mode = GALETTE_MODE
     ) {
         $builder = new ContainerBuilder();
-        $builder->useAttributes(true);
+        $builder->useAttributes(bool: true);
         $builder->addDefinitions($this->getContainerDefinitions());
         $container = $builder->build();
 

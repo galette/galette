@@ -84,9 +84,9 @@ class ContribListener implements ListenerSubscriber
         $this->callPostContributionScript($contrib);
 
         if ($contrib->sendEMail()) {
-            $this->sendContribEmail($contrib, true);
+            $this->sendContribEmail($contrib, new: true);
         }
-        $this->sendAdminEmail($contrib, true);
+        $this->sendAdminEmail($contrib, new: true);
     }
 
     /**
@@ -305,7 +305,7 @@ class ContribListener implements ListenerSubscriber
                         //Mails are disabled... We log (not safe, but)...
                         Analog::log(
                             'Email to admin has not been sent. Here was the data: '
-                            . "\n" . print_r($res, true),
+                            . "\n" . print_r($res, return: true),
                             Analog::ERROR
                         );
                     }
@@ -313,7 +313,7 @@ class ContribListener implements ListenerSubscriber
                     //Mails are disabled... We log (not safe, but)...
                     Analog::log(
                         'Post contribution script has failed. Here was the data: '
-                        . "\n" . print_r($res, true),
+                        . "\n" . print_r($res, return: true),
                         Analog::ERROR
                     );
                 }

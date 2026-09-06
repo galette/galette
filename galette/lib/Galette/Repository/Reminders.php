@@ -65,7 +65,7 @@ class Reminders
         $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
 
         $members = new Members($filters);
-        $members_list = $members->getList(true);
+        $members_list = $members->getList(as_members: true);
 
         if (!count($members_list)) {
             return;
@@ -122,7 +122,7 @@ class Reminders
         $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
 
         $members = new Members($filters);
-        $members_list = $members->getList(true);
+        $members_list = $members->getList(as_members: true);
 
         if (!count($members_list)) {
             return;

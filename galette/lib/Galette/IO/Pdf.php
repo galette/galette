@@ -74,7 +74,7 @@ abstract class Pdf extends TCPDF
         );
 
         if ($this->i18n->isRTL()) {
-            $this->setRTL(true);
+            $this->setRTL(enable: true);
         }
 
         if ($model !== null) {
@@ -101,7 +101,7 @@ abstract class Pdf extends TCPDF
      */
     protected function setNoHeader(): void
     {
-        $this->SetPrintHeader(false);
+        $this->SetPrintHeader(val: false);
         $this->setHeaderMargin(0);
     }
 
@@ -110,7 +110,7 @@ abstract class Pdf extends TCPDF
      */
     protected function setNoFooter(): void
     {
-        $this->SetPrintFooter(false);
+        $this->SetPrintFooter(val: false);
         $this->setFooterMargin(0);
         $this->has_footer = false;
     }

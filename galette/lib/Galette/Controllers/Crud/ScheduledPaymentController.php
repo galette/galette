@@ -92,7 +92,7 @@ class ScheduledPaymentController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null);
+        return $this->store($request, $response, id: null);
     }
 
     // /CRUD - Create
@@ -285,7 +285,7 @@ class ScheduledPaymentController extends CrudController
                     $this->preferences,
                     $this->login
                 );
-                $ptlist = $ptypes->getList(false);
+                $ptlist = $ptypes->getList(schedulable: false);
                 if (isset($ptlist[$ptf])) {
                     $filters->payment_type_filter = $ptf;
                 } elseif ($ptf == -1) {

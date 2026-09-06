@@ -129,7 +129,7 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->setValue('pref_numrows', 42, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame(42, $this->preferences->pref_numrows);
 
@@ -140,7 +140,7 @@ class Preferences extends GaletteTestCase
         //reset to default
         $this->assertTrue(
             $this->preferences->resetValue('pref_numrows', $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame(
             $this->preferences->getDefaults()['pref_numrows'],
@@ -628,13 +628,13 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         //same payload again: the colours no longer differ from what is stored
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $flash_data = [];
@@ -724,28 +724,28 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(2, $socials);
 
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER)
         );
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK)
         );
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::BLOG)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::BLOG)
         );
 
         //create one new social network
@@ -763,24 +763,24 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(3, $socials);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON);
         $this->assertCount(1, $search);
         $masto = array_pop($search);
         $this->assertSame('Galette mastodon URL', $masto->url);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER);
         $this->assertCount(1, $search);
         $jabber = array_pop($search);
         $this->assertSame('Galette jabber ID - modified', $jabber->url);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK);
         $this->assertCount(1, $search);
         $facebook = array_pop($search);
         $this->assertSame('Galette does not have facebook', $facebook->url);
@@ -797,29 +797,29 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, $post);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(2, $socials);
 
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK)
         );
 
         $this->assertTrue(
             $this->preferences->check($preferences, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
     }
@@ -839,7 +839,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertSame(
             "\r\n-- \r\nGalette https://galette.eu",
-            $this->preferences->getMailSignature($mail, true)
+            $this->preferences->getMailSignature($mail, as_text: true)
         );
 
         //with legacy values
@@ -854,12 +854,12 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('https://framapiaf.org/@galette')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
 
         $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE} - {ASSO_SOCIAL_MASTODON}";
@@ -873,12 +873,12 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Galette mastodon URL - the return')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
         $this->assertCount(
             2,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertSame(
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return",
@@ -893,7 +893,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertSame(
             "\r\n-- \r\nGalette (http:///logo) [our website](https://galette.eu)",
-            $this->preferences->getMailSignature($mail, true)
+            $this->preferences->getMailSignature($mail, as_text: true)
         );
     }
 
@@ -919,7 +919,7 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType('mynewtype')
                 ->setUrl('Galette specific social network URL')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
 
@@ -949,13 +949,13 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_website' => 'https://galette.eu']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_website' => 'galette.eu']);
         $this->assertFalse(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame(['- Invalid website URL.'], $this->preferences->getErrors());
     }
@@ -1024,7 +1024,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '10']);
@@ -1034,7 +1034,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null, 'pref_membership_offermonths' => -1]);
@@ -1048,7 +1048,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01', 'pref_membership_offermonths' => 2]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
     }
 
@@ -1070,26 +1070,26 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_email' => 'email@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame('email@address.com', $this->preferences->pref_email);
 
         $post = array_merge($preferences, ['pref_email' => 'email+me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email-me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email.me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email@localhost']);
@@ -1107,7 +1107,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_email_newadh' => 'email@address.com,another@galette.eu']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame('email@address.com', $this->preferences->pref_email_newadh);
         $this->assertSame(['email@address.com', 'another@galette.eu'], $this->preferences->vpref_email_newadh);
@@ -1122,7 +1122,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -1152,7 +1152,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -1182,7 +1182,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -1242,7 +1242,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_nom' => 'Galette']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $this->logSuperAdmin();
@@ -1285,7 +1285,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_admin_pass' => 'G@L3tt3', 'pref_admin_pass_check' => 'G@L3tt3']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
     }
 
@@ -1302,7 +1302,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF]);
@@ -1319,7 +1319,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $expected = "DURAND René\nGalette association's Non-member\n66, boulevard De Oliveira\n39 069 Martel - Antarctique";
         $this->assertSame($expected, $this->preferences->getPostalAddress());
@@ -1369,7 +1369,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_PREFS]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_STAFF]);
@@ -1390,7 +1390,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $expected = '0439153432';
         $this->assertSame($expected, $this->preferences->getPhoneNumber());
@@ -1410,7 +1410,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame('admin', $this->preferences->pref_admin_login);
 
@@ -1422,7 +1422,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_admin_login' => 'GSuperUser']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $memberOne = $this->getMemberOne();

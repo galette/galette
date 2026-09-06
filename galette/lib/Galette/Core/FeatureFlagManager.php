@@ -110,7 +110,7 @@ class FeatureFlagManager
         foreach ($envFlags as $key => $value) {
             if ($value === '1' || $value === 'true' || $value === 'on') {
                 $flagName = strtolower(str_replace('GALETTE_FEATURE_', '', $key));
-                if (!in_array($flagName, $this->declaredFlags, true)) {
+                if (!in_array($flagName, $this->declaredFlags, strict: true)) {
                     $this->declaredFlags[] = $flagName;
                 }
             }
@@ -151,7 +151,7 @@ class FeatureFlagManager
         $flag = strtolower($flag);
 
         // Track this flag as accessed
-        if (!in_array($flag, $this->accessedFlags, true)) {
+        if (!in_array($flag, $this->accessedFlags, strict: true)) {
             $this->accessedFlags[] = $flag;
         }
 
@@ -170,7 +170,7 @@ class FeatureFlagManager
         // Features are ONLY available in debug mode
         if (!Galette::isDebugEnabled()) {
             // Log warning if someone tries to use a feature flag in production
-            if (in_array($flag, $this->declaredFlags, true)) {
+            if (in_array($flag, $this->declaredFlags, strict: true)) {
                 Analog::log(
                     sprintf(
                         'Feature flag "%s" is declared but cannot be enabled in production mode. '
@@ -184,7 +184,7 @@ class FeatureFlagManager
         }
 
         // Check if the flag is declared
-        if (!in_array($flag, $this->declaredFlags, true)) {
+        if (!in_array($flag, $this->declaredFlags, strict: true)) {
             return false;
         }
 
@@ -312,7 +312,7 @@ class FeatureFlagManager
             return false;
         }
 
-        return in_array(strtolower($flag), $this->declaredFlags, true);
+        return in_array(strtolower($flag), $this->declaredFlags, strict: true);
     }
 
     /**
@@ -355,8 +355,8 @@ class FeatureFlagManager
 
         // Start with all registered flags
         foreach (array_keys($this->registryFlags) as $flag) {
-            $isDeclared = in_array($flag, $this->declaredFlags, true);
-            $isAccessed = in_array($flag, $this->accessedFlags, true);
+            $isDeclared = in_array($flag, $this->declaredFlags, strict: true);
+            $isAccessed = in_array($flag, $this->accessedFlags, strict: true);
             $dependencies = $this->getDependencies($flag);
             $dependenciesSatisfied = $this->areDependenciesSatisfied($flag);
             $description = $this->getDescription($flag);
@@ -374,7 +374,7 @@ class FeatureFlagManager
         // Add accessed flags that are not in registry (with warning)
         foreach ($this->accessedFlags as $flag) {
             if (!isset($result[$flag])) {
-                $isDeclared = in_array($flag, $this->declaredFlags, true);
+                $isDeclared = in_array($flag, $this->declaredFlags, strict: true);
                 $result[$flag] = [
                     'enabled' => $isDeclared && $this->isDebugMode(),
                     'declared' => $isDeclared,

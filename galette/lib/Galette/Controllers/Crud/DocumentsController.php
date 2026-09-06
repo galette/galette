@@ -165,7 +165,7 @@ class DocumentsController extends CrudController
             'nb' => $documents_count,
             'documents' => $documents_list,
             'types' => $documents->getTypes(),
-            'perm_names' => $document::getPermissionsList(true),
+            'perm_names' => $document::getPermissionsList(can_public: true),
             'filters' => $filters,
             'documentation' => 'usermanual/documents.html'
         ];

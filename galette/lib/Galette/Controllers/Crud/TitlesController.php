@@ -46,7 +46,7 @@ class TitlesController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null);
+        return $this->store($request, $response, id: null);
     }
 
     // /CRUD - Create

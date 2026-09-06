@@ -122,7 +122,7 @@ class MailingHistory extends GaletteTestCase
         $this->assertTrue($mh::loadFrom(zdb: $this->zdb, id: $second_not_sent_id, mailing: $mailing, new: false));
 
         //store "sent" mailing
-        $this->assertTrue($mh->storeMailing(true));
+        $this->assertTrue($mh->storeMailing(sent: true));
 
         //still one entry in the logs
         $list = $mh->getHistory();

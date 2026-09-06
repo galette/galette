@@ -165,7 +165,7 @@ class Adherent extends GaletteTestCase
         $this->assertSame($expected, $adh->deps);
 
         //all deps can be disabled on instanciation
-        $adh = new \Galette\Entity\Adherent($this->zdb, null, false);
+        $adh = new \Galette\Entity\Adherent($this->zdb, args: null, deps: false);
         $expected = [
             'picture'   => false,
             'groups'    => false,
@@ -178,7 +178,7 @@ class Adherent extends GaletteTestCase
         $this->assertSame($expected, $adh->deps);
 
         //dyanmics deps can be used on instanciation
-        $adh = new \Galette\Entity\Adherent($this->zdb, null, ['dynamics' => true]);
+        $adh = new \Galette\Entity\Adherent($this->zdb, args: null, deps: ['dynamics' => true]);
         $expected = [
             'picture'   => true,
             'groups'    => true,
@@ -230,8 +230,8 @@ class Adherent extends GaletteTestCase
         ];
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
-            null,
-            $deps
+            args: null,
+            deps: $deps
         );
 
         $this->assertSame($deps, $adh->deps);
@@ -257,7 +257,7 @@ class Adherent extends GaletteTestCase
     {
         $this->getMemberOne();
         $this->assertFalse($this->adh->sendEMail());
-        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $this->adh->setSendmail(true));
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $this->adh->setSendmail(send: true));
         $this->assertTrue($this->adh->sendEMail());
     }
 
@@ -1061,10 +1061,10 @@ class Adherent extends GaletteTestCase
         $this->assertSame(\Galette\Entity\Contribution::STATUS_NEVER, $this->adh->getDueStatus());
 
         //non-active members always have OLD due status
-        $this->changeMemberActivation(false);
+        $this->changeMemberActivation(active: false);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
         $this->assertSame('Never contributed', $this->adh->getDues());
-        $this->changeMemberActivation(true);
+        $this->changeMemberActivation(active: true);
 
         //create a close to be expired contribution
         $due_date = clone $now;
@@ -1096,13 +1096,13 @@ class Adherent extends GaletteTestCase
         );
 
         //non-active members always have OLD due status
-        $this->changeMemberActivation(false);
+        $this->changeMemberActivation(active: false);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
         $this->assertSame(
             '30 days remaining (ending on ' . $due_date->format('Y-m-d') . ')',
             $this->adh->getDues()
         );
-        $this->changeMemberActivation(true);
+        $this->changeMemberActivation(active: true);
 
         //create an expired contribution, 29 days ago
         $due_date = clone $now;
@@ -1134,13 +1134,13 @@ class Adherent extends GaletteTestCase
         );
 
         //non-active members always have OLD due status
-        $this->changeMemberActivation(false);
+        $this->changeMemberActivation(active: false);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
         $this->assertSame(
             'No longer member',
             $this->adh->getDues()
         );
-        $this->changeMemberActivation(true);
+        $this->changeMemberActivation(active: true);
         $this->login->logout();
     }
 
@@ -1747,7 +1747,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($adh->isGroupMember($g2->getName()));
         $this->assertFalse($adh->isGroupManager($g1->getName()));
         $this->assertFalse($adh->isGroupManager($g2->getName()));
-        $this->assertFalse($adh->isGroupManager(null));
+        $this->assertFalse($adh->isGroupManager(group_name: null));
 
         //make member1 admin
         $check = $adh1->check(['bool_admin_adh' => true], [], []);
@@ -1764,7 +1764,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($adh->isAdmin());
         $this->assertFalse($adh->isGroupManager($g1->getName()));
         $this->assertFalse($adh->isGroupManager($g2->getName()));
-        $this->assertTrue($adh->isGroupManager(null));
+        $this->assertTrue($adh->isGroupManager(group_name: null));
 
         //do not load group dependency, to make sure loadGroups() is called
         $adh = new \Galette\Entity\Adherent($this->zdb, $adh2->id, ['groups' => false]);
@@ -1772,7 +1772,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($adh->isGroupMember($g2->getName()));
         $this->assertTrue($adh->isGroupManager($g1->getName()));
         $this->assertFalse($adh->isGroupManager($g2->getName()));
-        $this->assertTrue($adh->isGroupManager(null));
+        $this->assertTrue($adh->isGroupManager(group_name: null));
 
         $this->login->logOut();
     }

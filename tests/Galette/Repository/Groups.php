@@ -110,7 +110,7 @@ class Groups extends GaletteTestCase
             $this->assertNotEmpty($group_name);
         }
 
-        $list = \Galette\Repository\Groups::getSimpleList(true);
+        $list = \Galette\Repository\Groups::getSimpleList(as_groups: true);
         $this->assertCount(17, $list);
         foreach ($list as $group) {
             $this->assertInstanceOf(\Galette\Entity\Group::class, $group);
@@ -131,10 +131,10 @@ class Groups extends GaletteTestCase
 
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
-        $parents_list = $groups->getList(false);
+        $parents_list = $groups->getList(full: false);
         $this->assertCount(3, $parents_list);
 
-        $parents_list = $groups->getList(true);
+        $parents_list = $groups->getList(full: true);
         $this->assertCount(17, $parents_list);
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
@@ -142,7 +142,7 @@ class Groups extends GaletteTestCase
         $result = $this->zdb->execute($select)->current();
         $europe = (int)$result->{\Galette\Entity\Group::PK};
 
-        $children_list = $groups->getList(true, $europe);
+        $children_list = $groups->getList(full: true, id: $europe);
         $this->assertCount(4, $children_list);
 
         //set manager on one group, impersonate him, and check it gets only one group
@@ -244,7 +244,7 @@ class Groups extends GaletteTestCase
                 [
                     sprintf('%s|%s', $france->getId(), $france->getName())
                 ],
-                true
+                manager: true
             ),
         );
 
@@ -260,7 +260,7 @@ class Groups extends GaletteTestCase
                 [
                     sprintf('%s|%s', $france->getId(), $france->getName())
                 ],
-                true
+                manager: true
             ),
         );
 

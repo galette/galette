@@ -130,7 +130,7 @@ class Choice extends GaletteTestCase
         );
         $this->assertSame(
             '',
-            $this->choice->getDisplayValue(null)
+            $this->choice->getDisplayValue(value: null)
         );
     }
 }

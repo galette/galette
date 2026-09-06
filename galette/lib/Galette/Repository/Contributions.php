@@ -66,7 +66,7 @@ class Contributions
     public function getListFromTransaction(int $trans_id): array
     {
         $this->filters->from_transaction = $trans_id;
-        return $this->getList(true);
+        return $this->getList(as_contrib: true);
     }
 
     /**
@@ -483,7 +483,7 @@ class Contributions
             $contributions = $this->zdb->execute($select);
             foreach ($contributions as $contribution) {
                 $c = new Contribution($this->zdb, $this->login, $contribution);
-                $res = $c->remove(false);
+                $res = $c->remove(transaction: false);
                 if ($res === false) {
                     throw new \Exception();
                 }
@@ -494,7 +494,7 @@ class Contributions
             $hist->add(
                 str_replace(
                     '%list',
-                    print_r($list, true),
+                    print_r($list, return: true),
                     _T("Contributions deleted (%list)")
                 )
             );

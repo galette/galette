@@ -97,7 +97,7 @@ abstract class AbstractPlugins extends AbstractCommand
                     $choices
                 );
                 $question->setAutocompleterValues(array_keys($choices));
-                $question->setMultiselect(true);
+                $question->setMultiselect(multiselect: true);
                 $answer = $question_helper->ask(
                     $input,
                     $output,

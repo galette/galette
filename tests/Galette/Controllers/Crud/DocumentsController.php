@@ -82,7 +82,7 @@ class DocumentsController extends GaletteRoutingTestCase
     private function createStatusDocument(int $visibility = \Galette\Entity\FieldsConfig::ALL): \Galette\Entity\Document
     {
         $this->copyFixture();
-        $uploaded_files = $this->getUploadedDocument(false);
+        $uploaded_files = $this->getUploadedDocument(useFakeFile: false);
         $post = [
             'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
@@ -297,7 +297,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, [], 'POST');
 
         $this->copyFixture();
-        $uploaded_files = $this->getUploadedDocument(false);
+        $uploaded_files = $this->getUploadedDocument(useFakeFile: false);
         $post = [
             'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',

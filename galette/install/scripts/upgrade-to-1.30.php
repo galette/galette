@@ -100,7 +100,7 @@ class UpgradeTo130 extends AbstractUpdater
                 }
 
                 // Drop the old table
-                $this->zdb->drop($contents_table, true);
+                $this->zdb->drop($contents_table, maymiss: true);
             } catch (Throwable $e) {
                 // Table might not exist or other error, just log and continue
                 $this->addReportEntry(

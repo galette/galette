@@ -473,7 +473,7 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
             // through the inheritance chain, so an attribute on CrudController
             // legitimately documents a route handled by a subclass.
             $classMatches = is_string($declaredClass)
-                && is_a($declaredClass, $className, true);
+                && is_a($declaredClass, $className, allow_string: true);
             if (!$classMatches || $declaredMethod !== $methodName) {
                 $errors[] = sprintf(
                     "%s::%s() — route '%s' is actually handled by %s::%s()",

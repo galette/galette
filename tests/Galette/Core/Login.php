@@ -343,7 +343,7 @@ class Login extends GaletteTestCase
             ),
             $this->login->loggedInAs()
         );
-        $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(true));
+        $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(only_name: true));
     }
 
     /**

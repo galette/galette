@@ -105,7 +105,7 @@ class PluginInstallDb extends AbstractPlugins
                 Plugins::DISABLED_NOT_UP2DATE,
             ];
 
-            if (!in_array($disabled_cause, $allowed_causes, true)) {
+            if (!in_array($disabled_cause, $allowed_causes, strict: true)) {
                 $io->writeln(
                     sprintf(
                         'Plugin "%s" is disabled (%s); skipping database installation',

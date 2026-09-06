@@ -459,7 +459,7 @@ class Adherent implements AccessManagementInterface
     private function loadParent(): void
     {
         if (isset($this->parent) && !$this->parent instanceof Adherent) {
-            $deps = array_fill_keys(array_keys($this->deps), false);
+            $deps = array_fill_keys(array_keys($this->deps), value: false);
             $this->parent = new Adherent($this->zdb, (int)$this->parent, $deps);
         }
     }
@@ -1193,7 +1193,7 @@ class Adherent implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a member' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -2070,7 +2070,7 @@ class Adherent implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a member files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;

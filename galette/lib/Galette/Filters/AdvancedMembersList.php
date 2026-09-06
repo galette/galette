@@ -329,7 +329,7 @@ class AdvancedMembersList extends MembersList
                 case 'rcontrib_end_date_begin':
                 case 'rcontrib_end_date_end':
                     $rname = substr($name, 1);
-                    return $this->getDate($rname, true, false);
+                    return $this->getDate($rname, formatted: true, translated: false);
                 case 'search_fields':
                     $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
                     $key = array_search('selected', $search_fields);
