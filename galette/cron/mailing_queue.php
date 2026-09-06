@@ -43,7 +43,7 @@ if ($cron) {
         basename($argv[0], '.php'),
         $container->get(Preferences::class)
     );
-    define('GALETTE_CRON', true);
+    define('GALETTE_CRON', value: true);
 }
 
 if (!$container->get(Login::class)->isCron()) {

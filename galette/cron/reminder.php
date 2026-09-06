@@ -78,7 +78,7 @@ $total_sent = 0;
 $total_failed = 0;
 
 do {
-    $progress = $queue->processBatch(null, MailingQueue::KIND_REMINDER);
+    $progress = $queue->processBatch(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
     $total_sent += (int)$progress['batch_sent'];
     $total_failed += (int)$progress['batch_failed'];
 

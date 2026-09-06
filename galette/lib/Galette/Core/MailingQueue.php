@@ -357,7 +357,7 @@ class MailingQueue
         $members = [];
         foreach ($rows as $row) {
             if ($row->recipient_id !== null) {
-                $members[] = new Adherent($this->zdb, (int)$row->recipient_id, false);
+                $members[] = new Adherent($this->zdb, (int)$row->recipient_id, deps: false);
             }
         }
         $mailing->setRecipients($members);
@@ -373,12 +373,12 @@ class MailingQueue
         foreach ($rows as $row) {
             $rid = (int)$row->recipient_id;
             $qid = (int)$row->mailing_queue_id;
-            if (in_array($rid, $unreachable_ids, true)) {
+            if (in_array($rid, $unreachable_ids, strict: true)) {
                 //no usable email address, do not retry
                 $this->markRow($qid, self::STATUS_FAILED, 'No valid email address');
                 $failed++;
             } elseif ($res === Mailing::MAIL_SENT) {
-                $this->markRow($qid, self::STATUS_SENT, null);
+                $this->markRow($qid, self::STATUS_SENT, error: null);
                 $sent++;
             } else {
                 $attempts = (int)$row->attempts + 1;
@@ -442,7 +442,7 @@ class MailingQueue
                 }
 
                 if ($reminder->send($texts, $this->history, $this->zdb)) {
-                    $this->markRow($qid, self::STATUS_SENT, null);
+                    $this->markRow($qid, self::STATUS_SENT, error: null);
                     $sent++;
                 } else {
                     $this->markRow($qid, self::STATUS_FAILED, $reminder->getMessage());

@@ -320,7 +320,7 @@ class MailingsController extends CrudController
                         filters: null,
                         mailing: $mailing
                     );
-                    $mlh->storeMailing(false);
+                    $mlh->storeMailing(sent: false);
                     $queue = new MailingQueue($this->zdb, $this->preferences);
                     $nb = $queue->enqueue((int)$mailing->id, $mailing->recipients);
                     Analog::log(
@@ -838,7 +838,7 @@ class MailingsController extends CrudController
                 'page_title'    => _T("Sending reminders"),
                 'mailing_id'    => null,
                 'process_url'   => $this->routeparser->urlFor('remindersProcessQueue'),
-                'stats'         => $queue->getStats(null, MailingQueue::KIND_REMINDER),
+                'stats'         => $queue->getStats(mailing_id: null, kind: MailingQueue::KIND_REMINDER),
                 'mail_usage'    => $queue->getUsage(),
                 'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
                 'documentation' => 'usermanual/contributions.html#reminders'
@@ -859,7 +859,7 @@ class MailingsController extends CrudController
     {
         $queue = new MailingQueue($this->zdb, $this->preferences);
         $queue->setReminderContext($this->history, $this->login, $this->routeparser);
-        $progress = $queue->processBatch(null, MailingQueue::KIND_REMINDER);
+        $progress = $queue->processBatch(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
 
         return $this->withJson($response, $progress);
     }

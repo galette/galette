@@ -735,7 +735,7 @@ class GaletteController extends GaletteRoutingTestCase
         );
 
         $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
-        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $stats = $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
         $this->assertSame(2, $stats['total']);
         $this->assertSame(2, $stats['remaining']);
         $this->assertSame(0, $stats['sent_total']);

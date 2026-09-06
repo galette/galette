@@ -517,7 +517,7 @@ class GaletteMail
         //reinit errors array
         $this->errors = [];
         $has_error = false;
-        $chunks = array_chunk($this->recipients, $batch_size, true);
+        $chunks = array_chunk($this->recipients, $batch_size, preserve_keys: true);
         $nb_chunks = count($chunks);
 
         foreach ($chunks as $i => $chunk) {

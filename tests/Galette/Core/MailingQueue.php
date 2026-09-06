@@ -65,7 +65,7 @@ class MailingQueue extends GaletteTestCase
             filters: null,
             mailing: $mailing
         );
-        $this->assertTrue($mh->storeMailing(false));
+        $this->assertTrue($mh->storeMailing(sent: false));
 
         return $mailing;
     }
@@ -174,14 +174,14 @@ class MailingQueue extends GaletteTestCase
         $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
         $this->assertSame(2, $queue->enqueueReminders($reminders));
 
-        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $stats = $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
         $this->assertSame(2, $stats['total']);
         $this->assertSame(2, $stats['remaining']);
         $this->assertSame(0, $stats['sent_total']);
 
         //enqueuing the same reminders again must not create duplicates
         $this->assertSame(0, $queue->enqueueReminders($reminders));
-        $stats = $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $stats = $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
         $this->assertSame(2, $stats['total']);
 
         //a different type for the same member is a distinct reminder
@@ -191,7 +191,7 @@ class MailingQueue extends GaletteTestCase
                 $this->buildReminder(\Galette\Entity\Reminder::IMPENDING, $adh1)
             ])
         );
-        $this->assertSame(3, $queue->getStats(null, \Galette\Core\MailingQueue::KIND_REMINDER)['total']);
+        $this->assertSame(3, $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER)['total']);
     }
 
     /**
@@ -224,7 +224,7 @@ class MailingQueue extends GaletteTestCase
         //global daily quota already reached: nothing more may be sent
         $this->preferences->pref_mail_daily_limit = 1;
 
-        $progress = $queue->processBatch(null, \Galette\Core\MailingQueue::KIND_REMINDER);
+        $progress = $queue->processBatch(only_mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
 
         $this->assertTrue($progress['rate_limited']);
         $this->assertSame(0, $progress['batch_sent']);
