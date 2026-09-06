@@ -12,12 +12,17 @@ namespace Galette\Tests\Rector;
 
 use PhpParser\Comment;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
+use PHPStan\Reflection\ExtendedMethodReflection;
+use PHPStan\Reflection\FunctionReflection;
+use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
+use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Reflection\ReflectionResolver;
 use Rector\Rector\AbstractRector;
@@ -25,10 +30,13 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
- * Turn positional arguments into named arguments on calls passing many arguments.
+ * Turn positional arguments into named arguments where the name carries meaning.
  *
- * When a call passes at least MIN_ARGUMENTS arguments, every positional argument is
- * rewritten as a named one, using the parameter names resolved from the callee.
+ * Naming starts at the first argument when the call passes at least MIN_ARGUMENTS
+ * arguments, and otherwise at the first boolean or null literal, whose meaning is
+ * unreadable at the call site. Every following positional argument is named too,
+ * since PHP forbids a positional argument after a named one. Names are resolved
+ * from the callee through reflection.
  *
  * When the resulting call would exceed LINE_LENGTH_LIMIT characters, a line break is
  * forced right after the opening parenthesis so the call becomes multi-line. Rector
@@ -37,9 +45,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  * to one argument per line. Run php-cs-fixer after Rector to get the final layout.
  *
  * Deliberately skips:
- *  - calls below the MIN_ARGUMENTS threshold;
+ *  - short calls with no boolean or null literal to disambiguate;
  *  - first-class callables (`foo(...)`) and argument unpacking (`...$args`);
  *  - variadic callees (e.g. sprintf), whose tail arguments cannot be named;
+ *  - callees declaring `@no-named-arguments`, which keep their parameter names out
+ *    of their backward compatibility promise (PHPUnit does so on its whole API);
  *  - calls whose callee cannot be resolved (no reflection available).
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
@@ -61,7 +71,8 @@ final class AddNamedArgumentsRector extends AbstractRector
      */
     public function __construct(
         private readonly ReflectionResolver $reflectionResolver,
-        private readonly BetterStandardPrinter $betterStandardPrinter
+        private readonly BetterStandardPrinter $betterStandardPrinter,
+        private readonly ValueResolver $valueResolver
     ) {
     }
 
@@ -71,7 +82,8 @@ final class AddNamedArgumentsRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Use named arguments on calls passing at least ' . self::MIN_ARGUMENTS . ' arguments',
+            'Use named arguments on calls passing at least ' . self::MIN_ARGUMENTS
+                . ' arguments, or a boolean or null literal',
             [
                 new CodeSample(
                     <<<'CODE_SAMPLE'
@@ -79,6 +91,14 @@ final class AddNamedArgumentsRector extends AbstractRector
                         CODE_SAMPLE,
                     <<<'CODE_SAMPLE'
                         $object->method(first: $a, second: $b, third: $c, fourth: $d, fifth: $e, sixth: $f);
+                        CODE_SAMPLE
+                ),
+                new CodeSample(
+                    <<<'CODE_SAMPLE'
+                        in_array($value, $array, true);
+                        CODE_SAMPLE,
+                    <<<'CODE_SAMPLE'
+                        in_array($value, $array, strict: true);
                         CODE_SAMPLE
                 ),
             ]
@@ -105,10 +125,6 @@ final class AddNamedArgumentsRector extends AbstractRector
 
         $args = $node->getArgs();
 
-        if (count($args) < self::MIN_ARGUMENTS) {
-            return null;
-        }
-
         $hasPositional = false;
         foreach ($args as $arg) {
             // Argument unpacking (spread) is not compatible with naming the tail.
@@ -129,6 +145,10 @@ final class AddNamedArgumentsRector extends AbstractRector
             return null;
         }
 
+        if ($this->refusesNamedArguments($reflection)) {
+            return null;
+        }
+
         $parametersAcceptor = ParametersAcceptorSelector::combineAcceptors($reflection->getVariants());
 
         // Variadic tail arguments cannot be named.
@@ -138,8 +158,14 @@ final class AddNamedArgumentsRector extends AbstractRector
 
         $parameters = $parametersAcceptor->getParameters();
 
+        $startPosition = $this->resolveFirstPositionToName($args);
+        if ($startPosition === null) {
+            return null;
+        }
+
         $changed = false;
-        foreach ($args as $index => $arg) {
+        for ($index = $startPosition, $count = count($args); $index < $count; ++$index) {
+            $arg = $args[$index];
             if ($arg->name !== null) {
                 continue;
             }
@@ -158,6 +184,50 @@ final class AddNamedArgumentsRector extends AbstractRector
         $this->wrapWhenTooLong($node);
 
         return $node;
+    }
+
+    /**
+     * Position of the first argument to name, or null when the call does not qualify.
+     *
+     * A long call is named as a whole: past MIN_ARGUMENTS arguments, the positions
+     * stop being readable. A short one is named only from its first boolean or null
+     * literal, a value that says nothing about its own role at the call site.
+     *
+     * @param Arg[] $args
+     */
+    private function resolveFirstPositionToName(array $args): ?int
+    {
+        if (count($args) >= self::MIN_ARGUMENTS) {
+            return 0;
+        }
+
+        foreach ($args as $position => $arg) {
+            if ($arg->name !== null) {
+                continue;
+            }
+            if ($this->valueResolver->isTrueOrFalse($arg->value) || $this->valueResolver->isNull($arg->value)) {
+                return $position;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the callee keeps its parameter names out of its backward compatibility
+     * promise, through the `@no-named-arguments` annotation. Naming an argument there
+     * ties the call to a name the callee is free to change, and PHPStan rejects it.
+     *
+     * PHPUnit carries the annotation on its whole API, mock builders included.
+     */
+    private function refusesNamedArguments(MethodReflection|FunctionReflection $reflection): bool
+    {
+        if ($reflection instanceof ExtendedMethodReflection || $reflection instanceof FunctionReflection) {
+            return $reflection->acceptsNamedArguments()->no();
+        }
+
+        // a bare MethodReflection does not expose the information: assume naming is fine
+        return false;
     }
 
     /**

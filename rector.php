@@ -8,35 +8,45 @@
 
 declare(strict_types=1);
 
-use Rector\Caching\ValueObject\Storage\FileCacheStorage;
-use Rector\Config\RectorConfig;
-use Rector\ValueObject\PhpVersion;
-use Rector\CodeQuality\Rector as CodeQuality;
 use Galette\Tests\Rector\AddNamedArgumentsRector;
+use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodeQuality\Rector as CodeQuality;
+use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector as DeadCode;
 
 define('GALETTE_ROOT', __DIR__ . '/galette/');
-require_once GALETTE_ROOT . '/includes/sys_config/versions.inc.php';
-require_once GALETTE_ROOT . '/includes/sys_config/paths.inc.php';
+// class constants such as CsvOut::DEFAULT_DIRECTORY are built from these,
+// they must be defined before reflection autoloads any Galette class
+require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
+require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';
 
 return RectorConfig::configure()
     ->withPaths([
-        GALETTE_ROOT . '/lib',
-        GALETTE_ROOT . '/includes',
-        GALETTE_ROOT . '/install',
-        GALETTE_ROOT . '/webroot',
+        GALETTE_ROOT . 'index.php',
+        GALETTE_ROOT . 'cron',
+        GALETTE_ROOT . 'lib',
+        GALETTE_ROOT . 'includes',
+        GALETTE_ROOT . 'install',
+        GALETTE_ROOT . 'webroot',
         __DIR__ . '/tests',
     ])
+    // No argument on purpose: both the target version and the PHP sets applied are
+    // read from composer.json ("php": ">=8.3"), so the next PHP bump happens there only.
+    ->withPhpSets()
     ->withSkip([
-        Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector::class,
+        // runtime scratch directory, entirely gitignored: holds the compiled Twig cache
+        __DIR__ . '/tests/tests-data',
+        // written by the test install, not versioned
+        __DIR__ . '/tests/config/*/local_config.inc.php',
     ])
-    ->withPhpVersion(PhpVersion::PHP_83)
     ->withCache(
         cacheDirectory: sys_get_temp_dir() . '/galette-rector',
         cacheClass: FileCacheStorage::class
     )
     ->withParallel(timeoutSeconds: 300)
-    // uncomment to reach your current PHP version
-    ->withPhpSets(php83: true)
+    // Deliberately a hand-picked subset rather than withPreparedSets(): only rules whose
+    // output is unambiguously better are enabled, the opinionated ones (ternary,
+    // early-return, inlining rewrites) are left out.
     ->withRules([
         CodeQuality\Assign\CombinedAssignRector::class,
         CodeQuality\BooleanAnd\RemoveUselessIsObjectCheckRector::class,
@@ -64,12 +74,11 @@ return RectorConfig::configure()
         CodeQuality\Identical\SimplifyArraySearchRector::class,
         CodeQuality\Identical\SimplifyConditionsRector::class,
         CodeQuality\Identical\StrlenZeroToIdenticalEmptyStringRector::class,
-        CodeQuality\If_\CombineIfRector::class,
         CodeQuality\If_\CompleteMissingIfElseBracketRector::class,
         CodeQuality\If_\ConsecutiveNullCompareReturnsToNullCoalesceQueueRector::class,
-        // TODO maybe later CodeQuality\If_\ExplicitBoolCompareRector::class,
-        CodeQuality\If_\ShortenElseIfRector::class,
-        CodeQuality\If_\SimplifyIfElseToTernaryRector::class,
+        // TODO maybe later, successors of the deprecated ExplicitBoolCompareRector:
+        // CodeQuality\If_\ArrayExplicitBoolCompareRector::class,
+        // CodeQuality\If_\ObjectExplicitBoolCompareRector::class,
         CodeQuality\If_\SimplifyIfNotNullReturnRector::class,
         CodeQuality\If_\SimplifyIfNullableReturnRector::class,
         CodeQuality\If_\SimplifyIfReturnBoolRector::class,
@@ -78,6 +87,9 @@ return RectorConfig::configure()
         CodeQuality\LogicalAnd\LogicalToBooleanRector::class,
         CodeQuality\NotEqual\CommonNotEqualRector::class,
         CodeQuality\Ternary\UnnecessaryTernaryExpressionRector::class,
+        DeadCode\Assign\RemoveUnusedVariableAssignRector::class,
+        // covers CodeQuality\CallLike\AddNameTo{Boolean,Null}ArgumentRector too, which
+        // ignore @no-named-arguments and named PHPUnit's willReturn(value: …)
         AddNamedArgumentsRector::class,
     ])
     ;
