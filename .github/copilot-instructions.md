@@ -60,7 +60,7 @@ See also `AGENTS.md` for project instructions.
 ### Prerequisites
 - **PHP:** see `GALETTE_PHP_MIN` in `galette/includes/sys_config/versions.inc.php`
 - **PHP Extensions Required:**
-  - curl, date, dom, fileinfo, gd, gettext, intl, json, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML, ssl, tidy, xml
+  - ctype, dom, fileinfo, filter, gd, gettext, iconv, intl, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML (optional: curl, openssl)
   - **pcov** (for code coverage - optional): `pecl install pcov`
 - **Node.js:** Latest LTS recommended (for npm/gulp)
 - **Composer:** 2.x
