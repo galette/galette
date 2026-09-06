@@ -7,6 +7,8 @@ Changes
 - Session cookie is now flagged SameSite=Lax
 - Global accessibility improvements
 - New galette:superadmin:password console command to change the super administrator password
+- Compatibility tests now check ctype, dom, fileinfo, filter and iconv PHP modules; gettext is no longer reported as optional
+- Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
 
 1.2.0.1 -> 1.2.1
 

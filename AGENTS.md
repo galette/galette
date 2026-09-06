@@ -77,7 +77,7 @@ Minor PHP, MySQL, Postgres versions are defined in `galette/includes/sys_config/
 ### Prerequisites
 
 - **PHP:** (see versions)
-- **PHP Extensions:** curl, date, dom, fileinfo, gd, gettext, intl, json, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML, ssl, tidy, xml
+- **PHP Extensions:** ctype, dom, fileinfo, filter, gd, gettext, iconv, intl, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML (optional: curl, openssl)
 - **pcov** (for coverage — not Xdebug): `pecl install pcov`
 - **Node.js** (LTS), **Composer** 2.x
 - **Database:** MySQL/MariaDB or PostgreSQL (see versions)

@@ -28,14 +28,19 @@ class CheckModules
     private array $modules = [
         //name      => required
         'SimpleXML' => true,
+        'ctype'     => true,
+        'dom'       => true,
+        'fileinfo'  => true,
+        'filter'    => true,
         'gd'        => true,
-        'pdo'       => true,
-        'curl'      => false,
-        'gettext'   => false,
-        'mbstring'  => true,
-        'openssl'   => false,
+        'gettext'   => true,
+        'iconv'     => true,
         'intl'      => true,
-        'session'   => true
+        'mbstring'  => true,
+        'pdo'       => true,
+        'session'   => true,
+        'curl'      => false,
+        'openssl'   => false
     ];
 
 
@@ -129,6 +134,16 @@ class CheckModules
         }
 
         return $html;
+    }
+
+    /**
+     * Retrieve checked modules, along with their required state
+     *
+     * @return array<string,bool>
+     */
+    public function getModules(): array
+    {
+        return $this->modules;
     }
 
     /**
