@@ -22,6 +22,9 @@ require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';
 
 return RectorConfig::configure()
     ->withPaths([
+        __DIR__ . '/bin',
+        //extensionless, so not picked up by the directory above
+        __DIR__ . '/bin/console',
         GALETTE_ROOT . 'index.php',
         GALETTE_ROOT . 'cron',
         GALETTE_ROOT . 'lib',

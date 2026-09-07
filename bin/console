@@ -9,6 +9,9 @@
 
 declare(strict_types=1);
 
+use function Safe\define;
+use function Safe\session_start;
+
 if (!isset($basepath)) {
     if (file_exists('../galette/index.php')) {
         $basepath = '../galette/';
@@ -19,47 +22,45 @@ if (!isset($basepath)) {
     }
 }
 
-define('GALETTE_ENV', 'CLI');
+\define('GALETTE_ENV', 'CLI'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 if (getenv('GALETTE_TESTS')) {
     require_once __DIR__ . '/../tests/test_env.inc.php';
 }
-define('GALETTE_ROOT', realpath(__DIR__ . '/../galette/') . '/');
+\define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
 
-//specific logfile for console
-$logfile = 'galette_cli';
+//specific logfile for console, read back by includes/galette.inc.php through the
+//scope of the require below, hence unused as far as the sniff can tell
+$logfile = 'galette_cli'; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
 
 require_once $basepath . 'vendor/autoload.php';
 require_once $basepath . 'includes/sys_config/versions.inc.php';
 
-$installer = false;
-if ($argc > 1) {
-    if ($argv[1] == 'galette:install') {
-        $installer = true;
-    }
-}
+$args = $_SERVER['argv'] ?? [];
+$installer = is_array($args) && ($args[1] ?? null) === 'galette:install';
 
 // In test mode, GALETTE_CONFIG_PATH is already set to the test config directory,
 // so skip the production config file check to allow all commands to be registered.
 if (!getenv('GALETTE_TESTS') && ($installer || !file_exists($basepath . 'config/config.inc.php'))) {
-    define('GALETTE_INSTALLER', true);
+    define('GALETTE_INSTALLER', value: true);
     $installer = true; //consider we're installing
 } elseif ($installer) {
-    define('GALETTE_INSTALLER', true);
+    define('GALETTE_INSTALLER', value: true);
 }
 require_once $basepath . 'includes/galette.inc.php';
 
 session_start();
 $session_name = 'galette_cli_' . str_replace('.', '_', GALETTE_VERSION);
-$session = &$_SESSION['galette'][$session_name];
+$session = &$_SESSION['galette'][$session_name]; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
 
+/** @var \Galette\Core\Plugins $plugins */
 $gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp();
 $container = $app->getContainer();
 
 $console = new \Galette\Console\GaletteApplication($basepath);
 $console->init(
-        $container,
-        $app,
-        $container->get(\Slim\Routing\RouteCollector::class)
+    $container,
+    $app,
+    $container->get(\Slim\Routing\RouteCollector::class)
 );
 $console->run();

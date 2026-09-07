@@ -2,12 +2,15 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->in([
+        __DIR__ . '/bin',
         __DIR__ . '/galette/lib',
         __DIR__ . '/galette/webroot',
         __DIR__ . '/galette/includes',
         __DIR__ . '/galette/install',
         __DIR__ . '/tests',
     ])
+    //the only PHP file of bin/ without a .php extension, which every tool filters on
+    ->append([__DIR__ . '/bin/console'])
 ;
 
 return (new PhpCsFixer\Config())

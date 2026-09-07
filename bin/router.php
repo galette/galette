@@ -44,12 +44,12 @@ if (!defined('GALETTE_CACHE_DIR')) {
     define('GALETTE_CACHE_DIR', $state_path . '/cache/'); //@phpstan-ignore theCodingMachineSafe.function
 }
 if (!is_dir(GALETTE_CACHE_DIR)) {
-    mkdir(GALETTE_CACHE_DIR, 0755, true); //@phpstan-ignore theCodingMachineSafe.function
+    mkdir(GALETTE_CACHE_DIR, 0o755, recursive: true); //@phpstan-ignore theCodingMachineSafe.function
 }
 
 $sessions_path = $state_path . '/sessions';
 if (!is_dir($sessions_path)) {
-    mkdir($sessions_path, 0700, true); //@phpstan-ignore theCodingMachineSafe.function
+    mkdir($sessions_path, 0o700, recursive: true); //@phpstan-ignore theCodingMachineSafe.function
 }
 ini_set('session.save_path', $sessions_path); //@phpstan-ignore theCodingMachineSafe.function
 

@@ -6,6 +6,9 @@ parameters:
     bootstrapFiles:
         - stubs/constants.php
     paths:
+        - bin/
+        # extensionless, so not picked up by the directory above
+        - bin/console
         - galette/lib/
         - galette/includes/
         - galette/install/
@@ -43,6 +46,7 @@ parameters:
         - GALETTE_TELEMETRY_URI
         - GALETTE_TPL_THEME_DIR
         - GALETTE_DOWNLOADS_URI
+        - GALETTE_ENV
         - GALETTE_CRON
         - GALETTE_INSTALLER
         - GALETTE_LOGGER_CHECKED

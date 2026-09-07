@@ -2,6 +2,9 @@
 <ruleset>
     <description>Coding standard based on PSR12 with comments from PEAR for Galette</description>
 
+    <file>bin/</file>
+    <!-- extensionless, so not picked up by the directory above -->
+    <file>bin/console</file>
     <file>galette/lib/</file>
     <file>galette/webroot/index.php</file>
     <file>galette/webroot/installer.php</file>
