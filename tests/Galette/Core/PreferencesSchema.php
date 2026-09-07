@@ -174,6 +174,36 @@ class PreferencesSchema extends GaletteTestCase
     }
 
     /**
+     * Preferences the mail transport is built from
+     *
+     * A test can run on those before they are stored, so the list must hold
+     * everything GaletteMail reads, and nothing else.
+     */
+    public function testMailer(): void
+    {
+        $expected = [
+            'pref_email_nom',
+            'pref_email',
+            'pref_email_newadh',
+            'pref_mail_method',
+            'pref_mail_smtp_host',
+            'pref_mail_smtp_auth',
+            'pref_mail_smtp_secure',
+            'pref_mail_smtp_port',
+            'pref_mail_smtp_user',
+            'pref_mail_smtp_password',
+            'pref_email_reply_to',
+            'pref_bool_wrap_mails',
+            'pref_mail_allow_unsecure',
+        ];
+
+        $mailer = Schema::getMailer();
+        sort($expected);
+        sort($mailer);
+        $this->assertSame($expected, $mailer);
+    }
+
+    /**
      * Legacy behaviour constants a preference supersedes
      */
     public function testConstants(): void

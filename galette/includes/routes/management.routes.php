@@ -43,10 +43,15 @@ $app->post(
     [GaletteController::class, 'storePreferences']
 )->setName('store-preferences')->add(Authenticate::class);
 
-$app->get(
+$app->post(
     '/test/email',
     [GaletteController::class, 'testEmail']
 )->setName('testEmail')->add(Authenticate::class);
+
+$app->post(
+    '/test/email-connection',
+    [GaletteController::class, 'testEmailConnection']
+)->setName('testEmailConnection')->add(Authenticate::class);
 
 //charts
 $app->get(

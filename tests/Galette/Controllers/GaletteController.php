@@ -266,7 +266,7 @@ class GaletteController extends GaletteRoutingTestCase
      */
     public function testTestEmail(): void
     {
-        $request = $this->createRequest('testEmail');
+        $request = $this->createRequest('testEmail', [], 'POST');
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
@@ -276,29 +276,51 @@ class GaletteController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['You asked Galette to send a test email, but email has been disabled in the preferences.']]);
 
-        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
+        //settings come from the form, so a method that is disabled in database
+        //no longer stands in the way
+        $smtp = [
+            'pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_SMTP,
+            'pref_mail_smtp_host' => '127.0.0.1',
+            'pref_mail_smtp_port' => '1'
+        ];
 
         //test invalid test email
-        $invalid_request = $request->withQueryParams(['adress' => 'invalidemail']);
+        $invalid_request = $request->withParsedBody($smtp + ['adress' => 'invalidemail']);
         $test_response = $this->app->handle($invalid_request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['Invalid email adress!']]);
 
         //standard working test email - no real email provider setup so gives an error
-        $test_response = $this->app->handle($request);
+        $smtp_request = $request->withParsedBody($smtp);
+        $test_response = $this->app->handle($smtp_request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
+        //failure is detailed with what the mailer had to say
+        $this->assertStringStartsWith(
+            "No email sent to mail@domain.com ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+
+        //testing does not store anything: neither the live instance nor the
+        //database know about the settings that have just been tried
+        $this->assertSame(
+            \Galette\Core\GaletteMail::METHOD_DISABLED,
+            $this->preferences->pref_mail_method
+        );
+        $stored = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(\Galette\Core\GaletteMail::METHOD_DISABLED, $stored->pref_mail_method);
+        $this->assertNotSame('127.0.0.1', $stored->pref_mail_smtp_host);
 
         //ajax test email - no real email provider setup so gives an error
-        $json_request = $request->withHeader('X-Requested-With', 'XMLHttpRequest');
+        $json_request = $smtp_request->withHeader('X-Requested-With', 'XMLHttpRequest');
         $test_response = $this->app->handle($json_request);
         $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
@@ -306,10 +328,70 @@ class GaletteController extends GaletteRoutingTestCase
 
         $body = (string)$test_response->getBody();
         $this->assertSame('{"sent":0}', $body);
-        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
+        $this->assertStringStartsWith(
+            "No email sent to mail@domain.com ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+    }
 
-        //Reset mail method to default
-        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+    /**
+     * Test email connection test route
+     */
+    public function testTestEmailConnection(): void
+    {
+        $request = $this->createRequest('testEmailConnection', [], 'POST');
+
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        $this->logSuperAdmin();
+
+        //nothing to connect to as long as emailing is disabled
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'error_detected' => [
+                'Those emailing settings do not work. '
+                . 'Emailing has been disabled in the preferences.'
+            ]
+        ]);
+
+        //PHP hands messages over on its own, there is nothing to reach
+        $php_request = $request->withParsedBody(
+            ['pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_PHPMAIL]
+        );
+        $test_response = $this->app->handle($php_request);
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'success_detected' => ['Those emailing settings work.']
+        ]);
+
+        //nothing listens on port 1; connection is refused right away
+        $smtp_request = $request->withParsedBody([
+            'pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_SMTP,
+            'pref_mail_smtp_host' => '127.0.0.1',
+            'pref_mail_smtp_port' => '1'
+        ]);
+        $test_response = $this->app->handle($smtp_request);
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->assertStringStartsWith(
+            "Those emailing settings do not work. ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+
+        //ajax variant
+        $json_request = $smtp_request->withHeader('X-Requested-With', 'XMLHttpRequest');
+        $test_response = $this->app->handle($json_request);
+        $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('{"connected":false}', (string)$test_response->getBody());
+        $this->flash_data = [];
     }
 
     /**

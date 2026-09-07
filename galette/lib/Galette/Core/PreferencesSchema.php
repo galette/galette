@@ -53,6 +53,7 @@ use Galette\Repository\Members;
  *     sensitive?: bool,
  *     readonly?: bool,
  *     demo_locked?: bool,
+ *     mailer?: bool,
  *     acl?: string,
  *     constant?: string,
  *     plugin?: string
@@ -330,16 +331,18 @@ final class PreferencesSchema
             'pref_cc_secondary' => ['type' => self::TYPE_COLOR, 'default' => '#ffda89'],
             'pref_cc_secondary_text' => ['type' => self::TYPE_COLOR, 'default' => '#1b1c1d'],
             /* Preferences for emails */
-            'pref_email_nom' => ['type' => self::TYPE_STRING, 'default' => 'Galette'],
+            'pref_email_nom' => ['type' => self::TYPE_STRING, 'default' => 'Galette', 'mailer' => true],
             'pref_email' => [
                 'type' => self::TYPE_EMAIL,
                 'default' => 'mail@domain.com',
                 'demo_locked' => true,
+                'mailer' => true,
             ],
             'pref_email_newadh' => [
                 'type' => self::TYPE_EMAILS,
                 'default' => 'mail@domain.com',
                 'demo_locked' => true,
+                'mailer' => true,
             ],
             'pref_bool_mailadh' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_bool_mailowner' => ['type' => self::TYPE_BOOL, 'default' => false],
@@ -348,17 +351,19 @@ final class PreferencesSchema
                 'type' => self::TYPE_INT,
                 'default' => GaletteMail::METHOD_DISABLED,
                 'demo_locked' => true,
+                'mailer' => true,
             ],
             'pref_mail_smtp' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_mail_smtp_host' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_mail_smtp_auth' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_mail_smtp_secure' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_mail_smtp_port' => ['type' => self::TYPE_INT, 'default' => ''],
-            'pref_mail_smtp_user' => ['type' => self::TYPE_STRING, 'default' => ''],
+            'pref_mail_smtp_host' => ['type' => self::TYPE_STRING, 'default' => '', 'mailer' => true],
+            'pref_mail_smtp_auth' => ['type' => self::TYPE_BOOL, 'default' => false, 'mailer' => true],
+            'pref_mail_smtp_secure' => ['type' => self::TYPE_BOOL, 'default' => false, 'mailer' => true],
+            'pref_mail_smtp_port' => ['type' => self::TYPE_INT, 'default' => '', 'mailer' => true],
+            'pref_mail_smtp_user' => ['type' => self::TYPE_STRING, 'default' => '', 'mailer' => true],
             'pref_mail_smtp_password' => [
                 'type' => self::TYPE_STRING,
                 'default' => '',
                 'sensitive' => true,
+                'mailer' => true,
             ],
             'pref_membership_ext' => [
                 'type' => self::TYPE_INT,
@@ -377,6 +382,7 @@ final class PreferencesSchema
                 'type' => self::TYPE_EMAIL,
                 'default' => '',
                 'demo_locked' => true,
+                'mailer' => true,
             ],
             'pref_website' => ['type' => self::TYPE_URL, 'default' => ''],
             /* Preferences for labels */
@@ -461,14 +467,14 @@ final class PreferencesSchema
             'pref_bool_empty_form_link' => ['type' => self::TYPE_BOOL, 'default' => false],
             /* New contribution script */
             'pref_new_contrib_script' => ['type' => self::TYPE_STRING, 'default' => ''],
-            'pref_bool_wrap_mails' => ['type' => self::TYPE_BOOL, 'default' => true],
+            'pref_bool_wrap_mails' => ['type' => self::TYPE_BOOL, 'default' => true, 'mailer' => true],
             'pref_rss_url' => ['type' => self::TYPE_STRING, 'default' => Galette::RSS_URL],
             'pref_adhesion_form' => [
                 'type' => self::TYPE_STRING,
                 'default' => \Galette\IO\PdfAdhesionForm::class,
                 'readonly' => true,
             ],
-            'pref_mail_allow_unsecure' => ['type' => self::TYPE_BOOL, 'default' => false],
+            'pref_mail_allow_unsecure' => ['type' => self::TYPE_BOOL, 'default' => false, 'mailer' => true],
             'pref_instance_uuid' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
             'pref_registration_uuid' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
             'pref_telemetry_date' => ['type' => self::TYPE_STRING, 'default' => '', 'readonly' => true],
@@ -641,6 +647,24 @@ final class PreferencesSchema
             array_filter(
                 self::getAll(),
                 static fn(array $entry): bool => $entry['demo_locked'] ?? false
+            )
+        );
+    }
+
+    /**
+     * Get every preference the mail transport is built from
+     *
+     * These are the ones a test may run on values that have not been stored
+     * yet: anything `GaletteMail` reads, and nothing else.
+     *
+     * @return array<string>
+     */
+    public static function getMailer(): array
+    {
+        return array_keys(
+            array_filter(
+                self::getAll(),
+                static fn(array $entry): bool => $entry['mailer'] ?? false
             )
         );
     }

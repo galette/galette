@@ -16,6 +16,7 @@ use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
+use function Safe\ini_get;
 use function Safe\preg_match;
 
 /**
@@ -38,6 +39,9 @@ class GaletteMail
     public const int SENDER_PREFS = 0;
     public const int SENDER_CURRENT = 1;
     public const int SENDER_OTHER = 2;
+
+    /** Timeout, in seconds, a connection test is given */
+    public const int CONNECTION_TIMEOUT = 10;
 
     private string $sender_name;
     private string $sender_address;
@@ -320,6 +324,141 @@ class GaletteMail
             unset($this->mail);
             return self::MAIL_ERROR;
         }
+    }
+
+    /**
+     * Check the configured transport can be reached, without sending anything
+     *
+     * Setting a mail server up takes several tries, and each one of them used
+     * to cost a real message. Errors, when there are any, are available from
+     * getErrors().
+     */
+    public function testConnection(): bool
+    {
+        $this->errors = [];
+
+        if ($this->preferences->pref_mail_method <= self::METHOD_DISABLED) {
+            $this->errors[] = _T("Emailing has been disabled in the preferences.");
+            return false;
+        }
+
+        $mailer = $this->getPhpMailer();
+        //someone is waiting in front of the page; do not hold it for the five
+        //minutes a real transfer is allowed to take
+        $mailer->Timeout = self::CONNECTION_TIMEOUT;
+
+        $connected = match ($this->preferences->pref_mail_method) {
+            self::METHOD_SMTP, self::METHOD_GMAIL => $this->connectSmtp($mailer),
+            self::METHOD_SENDMAIL, self::METHOD_QMAIL => $this->checkSendmailBinary($mailer),
+            self::METHOD_PHPMAIL => $this->checkPhpMail(),
+            default => $this->unknownMethod()
+        };
+
+        unset($this->mail);
+
+        return $connected;
+    }
+
+    /**
+     * Report a sending method this version knows nothing about
+     */
+    private function unknownMethod(): bool
+    {
+        $this->errors[] = sprintf(
+            _T("Unknown emailing method '%s'."),
+            (string)$this->preferences->pref_mail_method
+        );
+
+        return false;
+    }
+
+    /**
+     * Open then close an SMTP session
+     *
+     * smtpConnect() also authenticates when SMTPAuth is on, so credentials and
+     * TLS are really exercised, not just the socket.
+     *
+     * @param PHPMailer $mailer Mailer the transport has been set up on
+     */
+    private function connectSmtp(PHPMailer $mailer): bool
+    {
+        try {
+            if (!$mailer->smtpConnect()) {
+                //smtpConnect() does not fill ErrorInfo; the SMTP session holds
+                //the only account of what went wrong
+                $this->errors[] = $this->smtpErrorMessage($mailer->getSMTPInstance()->getError());
+                return false;
+            }
+        } catch (Throwable $e) {
+            $this->errors[] = $e->getMessage();
+            return false;
+        }
+
+        $mailer->smtpClose();
+        return true;
+    }
+
+    /**
+     * Turn an SMTP error into something an administrator can act on
+     *
+     * @param array<string, string> $error Error as reported by the SMTP session
+     */
+    private function smtpErrorMessage(array $error): string
+    {
+        $reason = $error['error'] ?? '';
+        if ($reason === '') {
+            return _T("Unable to reach the SMTP server.");
+        }
+
+        //what the server, or the socket, had to say about it
+        $details = array_filter([
+            $error['detail'] ?? '',
+            $error['smtp_code_ex'] ?? ''
+        ]);
+
+        if ($details === []) {
+            return $reason;
+        }
+
+        return $reason . ': ' . implode(' ', $details);
+    }
+
+    /**
+     * Check the sendmail (or qmail) binary can be run
+     *
+     * @param PHPMailer $mailer Mailer the transport has been set up on
+     */
+    private function checkSendmailBinary(PHPMailer $mailer): bool
+    {
+        //isSendmail() and isQmail() have already resolved the path and dropped
+        //the arguments it may carry
+        if (!is_executable($mailer->Sendmail)) {
+            $this->errors[] = sprintf(
+                _T("'%s' does not exist, or cannot be run."),
+                $mailer->Sendmail
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check PHP is able to hand a message over on its own
+     */
+    private function checkPhpMail(): bool
+    {
+        if (!function_exists('mail')) {
+            $this->errors[] = _T("The PHP mail() function is not available on this server.");
+            return false;
+        }
+
+        if (DIRECTORY_SEPARATOR !== '\\' && ini_get('sendmail_path') === '') {
+            $this->errors[] = _T("PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages to.");
+            return false;
+        }
+
+        return true;
     }
 
     /**

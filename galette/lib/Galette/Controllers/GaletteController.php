@@ -22,6 +22,8 @@ use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
 use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
+use Galette\Core\Preferences;
+use Galette\Core\PreferencesSchema;
 use Galette\Core\SysInfos;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
@@ -287,26 +289,61 @@ class GaletteController extends AbstractController
     }
 
     /**
+     * Build the preferences a mail test runs on
+     *
+     * Testing what is stored is of little help to someone who is precisely
+     * changing it: the settings displayed in the form win, so that a server can
+     * be tried out before it is saved. Nothing is written back, the live
+     * instance is left alone, and only the preferences the transport is built
+     * from are taken into account.
+     *
+     * @param Request $request PSR Request
+     */
+    private function mailerPreferences(Request $request): Preferences
+    {
+        $prefs = clone $this->preferences;
+        $posted = (array)$request->getParsedBody();
+
+        foreach (PreferencesSchema::getMailer() as $name) {
+            if (PreferencesSchema::getType($name) === PreferencesSchema::TYPE_BOOL) {
+                //an unchecked checkbox is not posted at all
+                $prefs->$name = isset($posted[$name]);
+            } elseif (array_key_exists($name, $posted)) {
+                $prefs->$name = $posted[$name];
+            }
+        }
+
+        return $prefs;
+    }
+
+    /**
      * Test mail parameters
      */
     #[Route(
         name: 'testEmail',
         pattern: '/test/email',
-        methods: ['GET']
+        methods: ['POST']
     )]
     public function testEmail(Request $request, Response $response): Response
     {
         $sent = false;
-        if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+        $prefs = $this->mailerPreferences($request);
+        $errors = $prefs->getErrors();
+
+        if ($errors !== []) {
+            foreach ($errors as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        } elseif ($prefs->pref_mail_method <= GaletteMail::METHOD_DISABLED) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You asked Galette to send a test email, but email has been disabled in the preferences.")
             );
         } else {
-            $get = $request->getQueryParams();
-            $dest = ($get['adress'] ?? $this->preferences->pref_email_newadh);
+            $post = (array)$request->getParsedBody();
+            $dest = ($post['adress'] ?? $prefs->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
-                $mail = new GaletteMail($this->preferences);
+                $mail = new GaletteMail($prefs);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
                     [
@@ -327,9 +364,12 @@ class GaletteController extends AbstractController
                 } else {
                     $this->flash->addMessage(
                         'error_detected',
-                        sprintf(
-                            _T('No email sent to %1$s'),
-                            $dest
+                        $this->detailedMailError(
+                            sprintf(
+                                _T('No email sent to %1$s'),
+                                $dest
+                            ),
+                            $mail
                         )
                     );
                 }
@@ -343,7 +383,7 @@ class GaletteController extends AbstractController
 
         if (!$this->isAjax($request)) {
             return $response
-                ->withStatus(301)
+                ->withStatus(302)
                 ->withHeader('Location', $this->routeparser->urlFor('preferences'));
         } else {
             return $this->withJson(
@@ -353,6 +393,78 @@ class GaletteController extends AbstractController
                 ]
             );
         }
+    }
+
+    /**
+     * Test mail parameters, without sending any message
+     */
+    #[Route(
+        name: 'testEmailConnection',
+        pattern: '/test/email-connection',
+        methods: ['POST']
+    )]
+    public function testEmailConnection(Request $request, Response $response): Response
+    {
+        $connected = false;
+        $prefs = $this->mailerPreferences($request);
+        $errors = $prefs->getErrors();
+
+        if ($errors !== []) {
+            foreach ($errors as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        } else {
+            $mail = new GaletteMail($prefs);
+            $connected = $mail->testConnection();
+
+            if ($connected) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Those emailing settings work.")
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $this->detailedMailError(
+                        _T("Those emailing settings do not work."),
+                        $mail
+                    )
+                );
+            }
+        }
+
+        if (!$this->isAjax($request)) {
+            return $response
+                ->withStatus(302)
+                ->withHeader('Location', $this->routeparser->urlFor('preferences'));
+        } else {
+            return $this->withJson(
+                $response,
+                [
+                    'connected' => $connected
+                ]
+            );
+        }
+    }
+
+    /**
+     * Append what the mailer has to say to a failure message
+     *
+     * A bare "no email sent" leaves nothing to act on, while PHPMailer usually
+     * knows exactly what went wrong.
+     *
+     * @param string      $message Message to complete
+     * @param GaletteMail $mail    Mailer the failure comes from
+     */
+    private function detailedMailError(string $message, GaletteMail $mail): string
+    {
+        $errors = array_filter($mail->getErrors());
+        if ($errors === []) {
+            return $message;
+        }
+
+        //a flash message is rendered as a single line of HTML; keep it one
+        return $message . ' ' . implode(' ', $errors);
     }
 
     /**

@@ -183,4 +183,51 @@ class GaletteMail extends GaletteTestCase
         $this->assertInstanceOf($mail::class, $mail->setTimeout(20)); //nothing testable
         $this->assertSame([], $mail->getErrors());
     }
+
+    /**
+     * Test connection check on a disabled emailing
+     */
+    public function testConnectionDisabled(): void
+    {
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertFalse($mail->testConnection());
+        $this->assertSame(['Emailing has been disabled in the preferences.'], $mail->getErrors());
+    }
+
+    /**
+     * Test connection check when PHP hands messages over on its own
+     */
+    public function testConnectionPhpMail(): void
+    {
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_PHPMAIL;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertTrue($mail->testConnection());
+        $this->assertSame([], $mail->getErrors());
+
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+    }
+
+    /**
+     * Test connection check against a server that is not there
+     */
+    public function testConnectionSmtpRefused(): void
+    {
+        //nothing ever listens on port 1; the connection is refused right away
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
+        $this->preferences->pref_mail_smtp_host = '127.0.0.1';
+        $this->preferences->pref_mail_smtp_port = 1;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertFalse($mail->testConnection());
+        $errors = $mail->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertStringContainsString('Failed to connect to server', $errors[0]);
+
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+        $this->preferences->pref_mail_smtp_host = '';
+        $this->preferences->pref_mail_smtp_port = 0;
+    }
 }

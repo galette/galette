@@ -25,6 +25,7 @@ $core_acls = [
     'advanced-search'                   => 'groupmanager',
     '/(.+)?search(.+)?/i'               => 'member',
     'testEmail'                         => 'admin',
+    'testEmailConnection'               => 'admin',
     'dashboard'                         => 'member',
     'sysinfos'                          => 'staff',
     'charts'                            => 'staff',
