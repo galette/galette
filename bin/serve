@@ -1,0 +1,243 @@
+#!/bin/bash
+
+#
+# This file is part of Galette (https://galette.eu).
+# SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# Serve this checkout - or this git worktree - as a throwaway, self-provisioned
+# instance: a database container of its own, an installed schema, seeded fixtures
+# and the PHP built-in server, in a single command.
+#
+# No database of the host is ever reached: the schema name, the credentials and
+# the port all belong to the container started for this checkout.
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: bin/serve [options]
+
+  --db=mysql|pgsql   Database engine (default: mysql)
+  --port=PORT        Web server port (default: derived from the checkout name)
+  --no-fixtures      Install an empty database, without the E2E fixtures
+  --fresh            Destroy the database and reinstall from scratch
+  --stop             Stop the database containers of this checkout and exit
+  -h, --help         Display this help
+
+Reachable on http://127.0.0.1:<port>/, administrator account admin/admin.
+Both engines may be installed side by side; switching back and forth with --db
+reuses each installation instead of wiping it.
+EOF
+}
+
+DB=mysql
+FIXTURES=1
+FRESH=
+STOP=
+PORT_OVERRIDE=
+
+for arg in "$@"; do
+    case "$arg" in
+        --db=*) DB="${arg#*=}" ;;
+        --port=*) PORT_OVERRIDE="${arg#*=}" ;;
+        --no-fixtures) FIXTURES=0 ;;
+        --fresh) FRESH=1 ;;
+        --stop) STOP=1 ;;
+        -h|--help) usage; exit 0 ;;
+        *) echo "Unknown option: $arg" >&2; echo >&2; usage >&2; exit 1 ;;
+    esac
+done
+
+if [[ "$DB" != "mysql" && "$DB" != "pgsql" ]]; then
+    echo "Unsupported database engine '$DB' (expected mysql or pgsql)." >&2
+    exit 1
+fi
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+PHP_BIN="${PHP_BIN:-php}"
+STATE="$ROOT/.serve"
+CONFIG="$ROOT/galette/config/config.inc.php"
+
+# A slug identifies this checkout: it names the containers, the volumes and the
+# schema. Distinct schema names are not cosmetic - galette/includes/main.inc.php
+# builds the session cookie name out of PREFIX_DB, NAME_DB and the version, and
+# cookies ignore the port number, so this is what keeps two worktrees served at
+# the same time from logging each other out.
+SLUG="$(basename "$ROOT" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '_' | sed 's/_*$//')"
+export COMPOSE_PROJECT_NAME="galette-$SLUG"
+export GALETTE_DB_NAME="galette_$SLUG"
+
+if [[ -n "$STOP" ]]; then
+    #any port does, `down` binds none
+    GALETTE_DB_PORT=33000 docker compose --profile mysql --profile pgsql down
+    echo "Databases of $SLUG stopped, their data kept. Use --fresh to discard it."
+    exit 0
+fi
+
+# --- prerequisites, reported up front rather than as broken pages -------------
+
+if [[ -L "$ROOT/galette/vendor" ]]; then
+    cat >&2 <<EOF
+galette/vendor is a symbolic link.
+
+Composer resolves its base directory from __DIR__, which follows the link, so
+this checkout would autoload and run the code of the checkout being pointed at,
+on whatever branch it happens to be. Replace the link with a copy:
+
+    cp -a <main checkout>/galette/vendor $ROOT/galette/
+EOF
+    exit 1
+fi
+
+if [[ ! -f "$ROOT/galette/vendor/autoload.php" ]]; then
+    echo "Dependencies are missing, run bin/install_deps first." >&2
+    exit 1
+fi
+
+if [[ ! -d "$ROOT/galette/webroot/themes" || ! -d "$ROOT/galette/webroot/assets" ]]; then
+    echo "Built assets are missing, run npm run build first." >&2
+    exit 1
+fi
+
+if ! docker compose version >/dev/null 2>&1; then
+    echo "Docker Compose is required: https://docs.docker.com/compose/install/" >&2
+    exit 1
+fi
+
+mkdir -p "$STATE"
+
+# --- ports, derived from the slug then remembered ------------------------------
+
+port_free() {
+    ! (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null
+}
+
+pick_port() {
+    local base="$1" span="$2" hash offset port i
+    hash="$(printf '%s' "$SLUG" | cksum | cut -d' ' -f1)"
+    offset=$((hash % span))
+    for ((i = 0; i < span; i++)); do
+        port=$((base + (offset + i) % span))
+        if port_free "$port"; then
+            echo "$port"
+            return 0
+        fi
+    done
+    echo "No port available in the $base-$((base + span - 1)) range." >&2
+    return 1
+}
+
+SERVE_WEB_PORT=
+SERVE_MYSQL_PORT=
+SERVE_PGSQL_PORT=
+PORTS_FILE="$STATE/ports.env"
+if [[ -f "$PORTS_FILE" ]]; then
+    # shellcheck source=/dev/null
+    source "$PORTS_FILE"
+fi
+
+# Ports are remembered so that the written configuration stays valid across
+# container recreations, and so that the URL of a worktree does not move.
+if [[ -n "$PORT_OVERRIDE" ]]; then
+    SERVE_WEB_PORT="$PORT_OVERRIDE"
+elif [[ -z "$SERVE_WEB_PORT" ]]; then
+    SERVE_WEB_PORT="$(pick_port 8100 50)"
+fi
+
+if [[ "$DB" == "mysql" ]]; then
+    if [[ -z "$SERVE_MYSQL_PORT" ]]; then
+        SERVE_MYSQL_PORT="$(pick_port 33000 50)"
+    fi
+    DB_PORT="$SERVE_MYSQL_PORT"
+else
+    if [[ -z "$SERVE_PGSQL_PORT" ]]; then
+        SERVE_PGSQL_PORT="$(pick_port 54000 50)"
+    fi
+    DB_PORT="$SERVE_PGSQL_PORT"
+fi
+
+cat > "$PORTS_FILE" <<EOF
+SERVE_WEB_PORT=$SERVE_WEB_PORT
+SERVE_MYSQL_PORT=$SERVE_MYSQL_PORT
+SERVE_PGSQL_PORT=$SERVE_PGSQL_PORT
+EOF
+
+export GALETTE_DB_PORT="$DB_PORT"
+
+# --- database -----------------------------------------------------------------
+
+SAVED_CONFIG="$STATE/config-$DB.inc.php"
+
+if [[ -n "$FRESH" ]]; then
+    docker compose --profile "$DB" down -v
+    rm -f "$SAVED_CONFIG"
+fi
+
+echo "==> Starting the $DB database of $SLUG on port $DB_PORT"
+docker compose --profile "$DB" up -d --wait
+
+# Keep whatever configuration the checkout had before bin/serve ever wrote one.
+if [[ -f "$CONFIG" && ! -f "$STATE/config.inc.php.orig" ]] \
+    && ! compgen -G "$STATE/config-*.inc.php" >/dev/null; then
+    cp "$CONFIG" "$STATE/config.inc.php.orig"
+    echo "==> Previous configuration saved as .serve/config.inc.php.orig"
+fi
+
+if [[ -f "$SAVED_CONFIG" ]]; then
+    echo "==> Reusing the existing $DB installation"
+    cp "$SAVED_CONFIG" "$CONFIG"
+    sed -i -E "s/^(define\('PORT_DB', ')[0-9]+('\);)$/\1$DB_PORT\2/" "$CONFIG"
+else
+    echo "==> Installing Galette into $GALETTE_DB_NAME"
+    # --ignore-config is a safety requirement, not a convenience: without it the
+    # installer reloads the configuration file already sitting in this checkout,
+    # and would run its schema scripts against whatever database that file names.
+    # -n skips the confirmation prompt that would otherwise guard exactly that.
+    "$PHP_BIN" bin/console galette:install -n --ignore-config --write-config \
+        --dbtype="$DB" \
+        --dbhost=127.0.0.1 \
+        --dbport="$DB_PORT" \
+        --dbname="$GALETTE_DB_NAME" \
+        --dbprefix=galette_ \
+        --dbuser=galette \
+        --dbpass=galette \
+        --admin=admin \
+        --password=admin
+    cp "$CONFIG" "$SAVED_CONFIG"
+
+    if [[ "$FIXTURES" == "1" ]]; then
+        echo "==> Seeding E2E fixtures"
+        "$PHP_BIN" bin/console galette:seed-fixtures
+    fi
+fi
+
+# --- web server ---------------------------------------------------------------
+
+# A checkout may also be served by a real web server, which reads the very same
+# configuration file: leaving ours behind would silently repoint that instance to
+# a container that is about to stop. Put back whatever was there once we are done.
+restore_config() {
+    if [[ -f "$STATE/config.inc.php.orig" ]]; then
+        cp "$STATE/config.inc.php.orig" "$CONFIG"
+        echo "Restored the configuration saved in .serve/config.inc.php.orig"
+    fi
+}
+
+cat <<EOF
+
+    Galette ($SLUG, $DB) is served on http://127.0.0.1:$SERVE_WEB_PORT/
+    Administrator: admin / admin
+
+    Database: $GALETTE_DB_NAME on 127.0.0.1:$DB_PORT, user galette, password galette
+    Stop the database with: bin/serve --stop
+
+EOF
+
+#no exec: the shell has to survive the server to run the trap
+trap restore_config EXIT
+PHP_CLI_SERVER_WORKERS=4 "$PHP_BIN" -S "127.0.0.1:$SERVE_WEB_PORT" \
+    -t galette/webroot bin/router.php

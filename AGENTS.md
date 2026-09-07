@@ -20,6 +20,9 @@ bin/console galette:install [options]
 # Build frontend assets
 npm run build
 
+# Serve this checkout on a throwaway instance (database included)
+bin/serve
+
 # Run tests (MySQL)
 DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
 
@@ -108,6 +111,45 @@ Minor PHP, MySQL, Postgres versions are defined in `galette/includes/sys_config/
    ```bash
    npm run build
    ```
+
+### Local Development Server
+
+`bin/serve` serves the current checkout - or the current git worktree - on a
+throwaway, self-provisioned instance, and requires no web server configuration
+of the machine:
+
+```bash
+bin/serve                 # MariaDB container, schema installed, fixtures seeded
+bin/serve --db=pgsql      # same, on PostgreSQL
+bin/serve --no-fixtures   # empty database
+bin/serve --fresh         # discard the database and reinstall
+bin/serve --stop          # stop the database containers, keep their data
+```
+
+It starts a database container of its own (`compose.yaml`), runs
+`galette:install` and `galette:seed-fixtures` on first use, then serves the
+application with the PHP built-in server through `bin/router.php`. It prints the
+URL it picked; the administrator account is `admin`/`admin`.
+
+**Requires Docker Compose.** No database of the host is ever reached: schema
+name, credentials and port all belong to the container. Ports and per-engine
+configurations are remembered under `.serve/`, so a given checkout keeps the
+same URL, and both engines can be installed side by side.
+
+Each checkout gets a schema named after its directory. That is what keeps two
+worktrees served at once from logging each other out, since
+`galette/includes/main.inc.php` derives the session cookie name from `PREFIX_DB`,
+`NAME_DB` and the version, and cookies ignore the port number.
+
+`bin/serve` writes `galette/config/config.inc.php` while it runs and puts the
+previous one back when it stops, so a checkout also served by Apache keeps
+working.
+
+**Not to be confused with the E2E server.** `bin/router.php` serves the real
+installation of the checkout: `galette/config/`, `galette/data/` and
+`galette/plugins/` are used as-is. `tests/router_e2e.php` serves the *test*
+environment instead, redirecting configuration, data and plugins to their
+counterparts under `tests/`, and must keep being used for E2E runs.
 
 ### Development Workflow
 

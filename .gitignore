@@ -108,3 +108,7 @@ dist/
 
 playwright-report/
 test-results/
+
+# bin/serve local state (ports, saved configurations, sessions)
+/.serve/
+/compose.override.yaml
