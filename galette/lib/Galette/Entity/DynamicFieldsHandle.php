@@ -21,6 +21,7 @@ use Galette\Core\Login;
 use Galette\Core\Authentication;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
+use Galette\Util\Html;
 
 /**
  * Dynamic fields handle, aggregating field descriptors and values
@@ -205,7 +206,8 @@ class DynamicFieldsHandle
             'item_id'       => $item,
             'field_form'    => $this->dynamic_fields[$field]->getForm(),
             'val_index'     => $index,
-            'field_val'     => $value,
+            //member forms and lists render the value with |raw
+            'field_val'     => is_string($value) ? Html::clean($value) : $value,
         ];
 
         if (!isset($this->current_values[$field][$idx])) {

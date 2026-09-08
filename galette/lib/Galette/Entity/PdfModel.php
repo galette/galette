@@ -18,6 +18,7 @@ use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
+use Galette\Util\Html;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 
@@ -405,9 +406,13 @@ abstract class PdfModel
                     }
                 }
 
-                $this->$name = $value;
+                //these three are markup, and reach TCPDF as such. Their ids
+                //are load-bearing: `styles` selects on them
+                $this->$name = $value === null ? null : Html::clean((string)$value, keep_ids: true);
                 break;
             case 'styles':
+                //CSS, not HTML: purifying it would turn a `>` selector into
+                //`&gt;`. It is never rendered outside a PDF
                 $this->styles = $value;
                 break;
             default:

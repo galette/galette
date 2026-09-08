@@ -151,6 +151,38 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * No submitted markup reaches storage as it came
+     */
+    public function testMarkupIsTakenOutOnWrite(): void
+    {
+        $this->preferences->load();
+        $originals = [
+            'pref_nom' => $this->preferences->pref_nom,
+            'pref_footer' => $this->preferences->pref_footer,
+            'pref_mail_smtp_password' => $this->preferences->pref_mail_smtp_password,
+        ];
+
+        //a text preference comes back as text: Twig escapes it on output, and
+        //escaping it here too would show the entity to the reader
+        $this->preferences->pref_nom = '<script>alert(1)</script>Amis & Compagnie';
+        $this->assertSame('Amis & Compagnie', $this->preferences->pref_nom);
+
+        //an HTML one keeps the markup it is allowed, and loses the rest
+        $this->preferences->pref_footer = '<p onclick="alert(1)">Footer<script>alert(2)</script></p>';
+        $this->assertSame('<p>Footer</p>', $this->preferences->pref_footer);
+
+        //a secret is stored as typed: taking a `<` out of an SMTP password
+        //would silently break the authentication
+        $password = 'p@ss<w>&"ord';
+        $this->preferences->pref_mail_smtp_password = $password;
+        $this->assertSame($password, $this->preferences->pref_mail_smtp_password);
+
+        foreach ($originals as $name => $value) {
+            $this->preferences->$name = $value;
+        }
+    }
+
+    /**
      * A single write goes through the per-field constraints of the schema
      */
     public function testSetValueChecksField(): void

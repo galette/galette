@@ -15,6 +15,7 @@ use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
 use Galette\IO\FileTrait;
+use Galette\Util\Html;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -561,7 +562,9 @@ class Mailing extends GaletteMail
                 $this->setSubject($value);
                 break;
             case 'message':
-                $this->setMessage($value);
+                //an HTML mailing is previewed with |raw: what is kept has to
+                //be safe to render
+                $this->setMessage(Html::clean((string)$value));
                 break;
             case 'html':
                 if (is_bool($value)) {

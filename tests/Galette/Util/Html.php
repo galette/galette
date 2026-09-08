@@ -42,6 +42,125 @@ class Html extends GaletteTestCase
     }
 
     /**
+     * A replacement pattern survives, wherever it sits
+     */
+    public function testCleanKeepsPatterns(): void
+    {
+        //HTMLPurifier percent-encodes an attribute value: `{ASSO_WEBSITE}`
+        //would come back as `%7BASSO_WEBSITE%7D` and never be substituted
+        $this->assertSame(
+            '<a href="{ASSO_WEBSITE}">{ASSO_NAME}</a>',
+            \Galette\Util\Html::clean('<a href="{ASSO_WEBSITE}">{ASSO_NAME}</a>')
+        );
+        $this->assertSame(
+            '{ASSO_NAME} - {ASSO_ADDRESS}',
+            \Galette\Util\Html::clean('{ASSO_NAME} - {ASSO_ADDRESS}')
+        );
+        //and the patterns do not buy markup back
+        $this->assertStringNotContainsString(
+            'onclick',
+            \Galette\Util\Html::clean('<a href="{ASSO_WEBSITE}" onclick="alert(1)">x</a>')
+        );
+    }
+
+    /**
+     * Line endings are not whitespace HTMLPurifier gets to rewrite
+     */
+    public function testCleanKeepsLineEndings(): void
+    {
+        $this->assertSame(
+            "<p>one</p>\r\n<p>two</p>",
+            \Galette\Util\Html::clean("<p>one</p>\r\n<p>two</p>")
+        );
+        $this->assertSame(
+            "<p>one</p>\n<p>two</p>",
+            \Galette\Util\Html::clean("<p>one</p>\n<p>two</p>")
+        );
+    }
+
+    /**
+     * A PDF model keeps its ids, and nothing else it should not
+     */
+    public function testCleanKeepsIds(): void
+    {
+        //the header of the "Main" model Galette ships. Its ids are what
+        //`model_styles` selects on, so they have to survive
+        $header = <<<'HTML'
+            <table>
+                <tr>
+                    <td id="pdf_assoname"><strong id="asso_name">{ASSO_NAME}</strong><br />{ASSO_SLOGAN}</td>
+                    <td id="pdf_logo">{ASSO_PRINT_LOGO}</td>
+                </tr>
+            </table>
+            HTML;
+
+        $this->assertSame($header, \Galette\Util\Html::clean($header, keep_ids: true));
+        //without the flag, HTMLPurifier drops every id
+        $this->assertStringNotContainsString(
+            'id="pdf_assoname"',
+            \Galette\Util\Html::clean($header)
+        );
+
+        //an id does not buy anything else back
+        $cleaned = \Galette\Util\Html::clean(
+            '<div id="x" onclick="alert(1)"><script>alert(2)</script></div>',
+            keep_ids: true
+        );
+        $this->assertStringContainsString('id="x"', $cleaned);
+        $this->assertStringNotContainsString('onclick', $cleaned);
+        $this->assertStringNotContainsString('alert(2)', $cleaned);
+    }
+
+    /**
+     * Data provider for testStrip
+     *
+     * @return array<int, array{input: string, expected: string}>
+     */
+    public static function stripProvider(): array
+    {
+        return [
+            //markup goes, and so does what it carried
+            ['input' => '<script>alert(1)</script>Nom', 'expected' => 'Nom'],
+            ['input' => '<b>bold</b> text', 'expected' => 'bold text'],
+            ['input' => '<img src=x onerror=alert(1)>Nom', 'expected' => 'Nom'],
+            //entities are decoded until stable first: an encoded tag cannot
+            //come back as markup once the tags are gone
+            ['input' => '&lt;script&gt;alert(1)&lt;/script&gt;Nom', 'expected' => 'Nom'],
+            ['input' => '&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;Nom', 'expected' => 'Nom'],
+            //what comes back is text, not entities: the caller escapes it
+            ['input' => 'Amis & Compagnie', 'expected' => 'Amis & Compagnie'],
+            ['input' => '3 < 5 and 5 > 3', 'expected' => '3 < 5 and 5 > 3'],
+            ['input' => 'https://galette.eu/rss?a=1&b=2', 'expected' => 'https://galette.eu/rss?a=1&b=2'],
+            //a mail text keeps its patterns and its line breaks
+            [
+                'input' => "Hello,{NEWLINE}A & B{BR}* Name: {NAME_ADH}",
+                'expected' => "Hello,{NEWLINE}A & B{BR}* Name: {NAME_ADH}",
+            ],
+            //line endings survive, where HTMLPurifier alone normalizes them
+            [
+                'input' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
+                'expected' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
+            ],
+            ['input' => "Line\nother line", 'expected' => "Line\nother line"],
+        ];
+    }
+
+    /**
+     * Markup never survives strip(), legitimate text always does
+     *
+     * @param string $input    Input text
+     * @param string $expected Expected result
+     */
+    #[DataProvider('stripProvider')]
+    public function testStrip(string $input, string $expected): void
+    {
+        $stripped = \Galette\Util\Html::strip($input);
+        $this->assertSame($expected, $stripped);
+        //storing a value twice must not change it
+        $this->assertSame($stripped, \Galette\Util\Html::strip($stripped));
+    }
+
+    /**
      * Data provider for testTextConversion
      *
      * @return array<int, array{input: string, expected: string}>

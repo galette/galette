@@ -795,7 +795,9 @@ class Preferences
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
-            } elseif ($name == 'pref_footer') {
+            } elseif (PreferencesSchema::getType($name) === PreferencesSchema::TYPE_HTML) {
+                //a value meant to be rendered as markup is purified again on
+                //the way out: it may predate the check on the way in
                 return Html::clean((string)$this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {

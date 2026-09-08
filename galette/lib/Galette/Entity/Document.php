@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
 use Galette\IO\FileTrait;
+use Galette\Util\Html;
 use Galette\Repository\Documents;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
@@ -265,7 +266,8 @@ class Document
      */
     public function setComment(?string $comment): self
     {
-        $this->comment = $comment;
+        //the public documents list renders it with |raw
+        $this->comment = $comment === null ? null : Html::clean($comment);
         return $this;
     }
 

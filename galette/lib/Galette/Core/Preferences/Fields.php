@@ -57,6 +57,10 @@ final class Fields
             return $value;
         }
 
+        //sanitizing comes first, so the checks judge the value that will be
+        //stored rather than the one that was typed
+        $value = $this->sanitizeMarkup($fieldname, $entry, $value);
+
         return match ($entry['type']) {
             PreferencesSchema::TYPE_EMAIL,
             PreferencesSchema::TYPE_EMAILS => $this->validateEmails($fieldname, $value),
@@ -67,9 +71,40 @@ final class Fields
             PreferencesSchema::TYPE_DATE_MD => $this->validateBegMembership($value),
             PreferencesSchema::TYPE_YEAR => $this->validateCardYear($value),
             PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
-            PreferencesSchema::TYPE_HTML => Html::clean((string)$value),
             default => $value,
         };
+    }
+
+    /**
+     * Make a submitted value safe wherever it is rendered
+     *
+     * A preference an administrator can type reaches a PDF, an e-mail or a
+     * page, so no submitted markup is stored as it came. Which policy applies
+     * follows the declared type: `TYPE_HTML` is the only one whose value is
+     * meant to be rendered as markup, so it is purified and kept; every other
+     * value is text and comes back as text, never as entities — Twig escapes
+     * it on output, and escaping it here too would show `&amp;` to the reader.
+     *
+     * A secret is the exception: taking a `<` out of an SMTP password would
+     * silently break the authentication it is there for.
+     *
+     * @param string               $fieldname Preference name
+     * @param array<string, mixed> $entry     Schema entry
+     * @param mixed                $value     Submitted value
+     */
+    private function sanitizeMarkup(string $fieldname, array $entry, mixed $value): mixed
+    {
+        if (
+            $entry['type'] === PreferencesSchema::TYPE_PASSWORD
+            || PreferencesSchema::isSensitive($fieldname)
+            || !is_string($value)
+        ) {
+            return $value;
+        }
+
+        return $entry['type'] === PreferencesSchema::TYPE_HTML
+            ? Html::clean($value)
+            : Html::strip($value);
     }
 
     /**

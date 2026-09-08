@@ -23,6 +23,7 @@ use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Password;
 use Galette\Core\Preferences;
+use Galette\Util\Html;
 
 /**
  * Texts class for galette
@@ -326,8 +327,9 @@ class Texts
     {
         try {
             $values = [
-                'tsubject' => $subject,
-                'tbody'    => $body,
+                //mails are sent as text: entities would travel as such
+                'tsubject' => Html::strip($subject),
+                'tbody'    => Html::strip($body),
             ];
 
             $update = $this->zdb->update(self::TABLE);

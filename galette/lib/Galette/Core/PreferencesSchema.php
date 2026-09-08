@@ -458,7 +458,9 @@ final class PreferencesSchema
             ],
             'pref_bool_groupsmanagers_are_staff' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_mail_sign' => [
-                'type' => self::TYPE_STRING,
+                //a signature may carry a link, and getMailSignature() hands
+                //back markup unless it is asked for text
+                'type' => self::TYPE_HTML,
                 'default' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
             ],
             /* Preferences for member/subscribe form */
