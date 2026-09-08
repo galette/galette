@@ -7,7 +7,8 @@ body.nojs .ui.message > .close.icon {
 }
 
 .ui.message > .password-lost:first-child:last-child,
-.column > .ui.message:first-child:last-child {
+.column > .ui.message:first-child:last-child,
+.spaced.buttons ~ .ui.message {
   margin-top: 0;
   margin-bottom: 0;
 }
