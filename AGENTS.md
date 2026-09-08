@@ -557,6 +557,35 @@ php -m | grep pcov
 - Keep PRs focused (one feature/fix per PR)
 - Squash small "fix" commits before merging
 
+### Storing renderable values
+
+Any value a user or an administrator types and that Galette later renders — a
+page, a PDF, an e-mail — is sanitized **on the way in**, not only at output.
+`Galette\Util\Html` has one method per nature of field:
+
+- **`Html::clean()`** when the value *may* contain HTML markup — a mailing
+  body, a document comment, a PDF model header, `pref_footer`,
+  `pref_mail_sign`. The markup is purified: what comes back is safe to render,
+  and the template may keep its `|raw`.
+- **`Html::strip()`** when the value must *not* contain HTML markup — a text
+  preference, a mail subject or body. The markup is removed and the text comes
+  back as text, never as entities: Twig escapes it on output, and escaping it
+  here too would show `&amp;` to the reader.
+
+Three things to know before picking a call site:
+
+- `clean()` drops every `id` attribute. Pass `keep_ids: true` where they are
+  load-bearing — a PDF model's CSS selects on them.
+- CSS is not HTML. Never purify a stylesheet: a `>` child selector comes back
+  as `&gt;`.
+- A secret is never sanitized. Taking a `<` out of an SMTP password would
+  silently break the authentication it is there for.
+
+Preferences do this declaratively rather than one call at a time:
+`PreferencesSchema` declares `TYPE_HTML` for a preference holding markup, and
+`Core\Preferences\Fields` applies the right method. Adding a preference means
+declaring its type, never adding a call.
+
 ### Database
 - Always use prepared statements
 - Never concatenate SQL strings
@@ -638,4 +667,6 @@ php -m | grep pcov
 
 12. **Work on develop branch.** Unless told otherwise, branch from and merge to `develop`.
 
-13. **Prefer LSP over Grep for code navigation.** Warn the user if you do not have access. Use LSP operations (`goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `incomingCalls`, `outgoingCalls`) for symbol navigation. Fall back to Grep only for non-symbol searches (string literals, comments, regex patterns) or when LSP is unavailable.
+13. **Sanitize renderable values before storing them.** `Html::clean()` when the value may contain HTML markup, `Html::strip()` when it must not. See *Storing renderable values* above.
+
+14. **Prefer LSP over Grep for code navigation.** Warn the user if you do not have access. Use LSP operations (`goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `incomingCalls`, `outgoingCalls`) for symbol navigation. Fall back to Grep only for non-symbol searches (string literals, comments, regex patterns) or when LSP is unavailable.
