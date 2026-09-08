@@ -721,34 +721,6 @@
                                 <input type="radio" name="pref_mail_method" id="qmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_QMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_QMAIL') %}checked="checked"{% endif %}/><label for="qmail">{{ _T("Using QMAIL server") }}</label>
                             </div>
                         </div>
-                        <br/>
-    {% set mail_off = pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
-                        <button
-                            type="button"
-                            data-href="{{ url_for('testEmailConnection') }}"
-                            id="btnmailconnect"
-                            class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
-                            {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
-                        >
-                            <i class="plug icon" aria-hidden="true"></i>
-                            {{ _T("Test connection") }}
-                        </button>
-                        <button
-                            type="button"
-                            data-href="{{ url_for('testEmail') }}"
-                            id="btnmail"
-                            class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
-                            {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
-                        >
-                            <i class="rocket icon" aria-hidden="true"></i>
-                            {{ _T("Send a test email") }}
-                        </button>
-                        <div id="mailtest_off" class="ui small yellow message{% if not mail_off %} displaynone{% endif %}">
-                            {{ _T("Emailing is disabled: pick a sending method to run a test.") }}
-                        </div>
-                        <div id="mailtest_hint" class="ui small blue message{% if mail_off %} displaynone{% endif %}">
-                            {{ _T("Tests run on the settings displayed above, even those not saved yet.") }}
-                        </div>
                     </div>
                     <div id="smtp_parameters" class="field">
                         <div class="field">
@@ -791,6 +763,37 @@
                         <div class="field">
                             <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
                             <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"/>
+                        </div>
+                    </div>
+        {% set mail_off = pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
+                    <div class="ui basic horizontally fitted segment">
+                        <div class="ui wrapping spaced buttons">
+                            <button
+                                type="button"
+                                data-href="{{ url_for('testEmailConnection') }}"
+                                id="btnmailconnect"
+                                class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
+                                {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
+                            >
+                                <i class="plug icon" aria-hidden="true"></i>
+                                {{ _T("Test connection") }}
+                            </button>
+                            <button
+                                type="button"
+                                data-href="{{ url_for('testEmail') }}"
+                                id="btnmail"
+                                class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
+                                {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
+                            >
+                                <i class="rocket icon" aria-hidden="true"></i>
+                                {{ _T("Send a test email") }}
+                            </button>
+                        </div>
+                        <div id="mailtest_off" class="ui small yellow message{% if not mail_off %} displaynone{% endif %}">
+                            {{ _T("Emailing is disabled: pick a sending method to run a test.") }}
+                        </div>
+                        <div id="mailtest_hint" class="ui small blue message{% if mail_off %} displaynone{% endif %}">
+                            {{ _T("Tests run on the settings displayed above, even those not saved yet.") }}
                         </div>
                     </div>
                 </div>{# /column #}
