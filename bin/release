@@ -426,7 +426,7 @@ def add_libs(rel_name, galette_archive):
     # set galette nightly version
     config_dir = os.path.join(src_dir, rel_name, 'galette', 'includes', 'sys_config')
     if nightly_version != None:
-        sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
+        sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', value: false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
         print(sed_cmd)
         run(sed_cmd, cwd=config_dir)
 
