@@ -48,7 +48,7 @@ class SavedSearchesController extends CrudController
         name: 'saveSearch',
         pattern: '/save-search',
         methods: ['GET', 'POST'],
-        requiresAuth: false
+        requiresAuth: true
     )]
     public function doAdd(Request $request, Response $response): Response
     {
@@ -121,7 +121,8 @@ class SavedSearchesController extends CrudController
     #[Route(
         name: 'searches',
         pattern: '/saved-searches[/{option:page|order}/{value:\d+}]',
-        methods: ['GET']
+        methods: ['GET'],
+        requiresAuth: true
     )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -275,7 +276,7 @@ class SavedSearchesController extends CrudController
         name: 'loadSearch',
         pattern: '/save-search/{id}',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: true
     )]
     public function load(Response $response, int $id): Response
     {
