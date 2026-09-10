@@ -263,4 +263,4 @@ $app->post(
 $app->get(
     '/save-search/{id}',
     [Crud\SavedSearchesController::class, 'load']
-)->setName('loadSearch');
+)->setName('loadSearch')->add(Authenticate::class);
