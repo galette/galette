@@ -238,7 +238,7 @@ $app->map(
     ['GET', 'POST'],
     '/save-search',
     [Crud\SavedSearchesController::class, 'doAdd']
-)->setName('saveSearch');
+)->setName('saveSearch')->add(Authenticate::class);
 
 $app->get(
     '/saved-searches[/{option:page|order}/{value:\d+}]',
