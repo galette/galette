@@ -15,6 +15,7 @@ use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
@@ -338,8 +339,10 @@ class Contributions
 
             if ($this->filters->max_amount !== null) {
                 $select->where(
-                    '(montant_cotis <= ' . $this->filters->max_amount
-                    . ' OR montant_cotis IS NULL)'
+                    new PredicateExpression(
+                        '(montant_cotis <= ? OR montant_cotis IS NULL)',
+                        [$this->filters->max_amount]
+                    )
                 );
             }
 

@@ -560,6 +560,156 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test advanced free search cannot inject SQL
+     *
+     * Field names are concatenated in the query as identifiers, and values
+     * used to be as well; both come from the request.
+     */
+    public function testFreeSearchInjection(): void
+    {
+        $this->logSuperAdmin();
+
+        //how many members an unfiltered list does return
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $members = new \Galette\Repository\Members($filters);
+        $expected = $members->getList()->count();
+        $this->assertGreaterThan(0, $expected);
+
+        //a crafted field name is discarded, and never reaches the query
+        $payload = 'nom_adh) OR (1=1) -- ';
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => $payload,
+            'type' => 0,
+            'search' => 'doe',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on unknown or forbidden field `' . $payload . '`'
+        );
+        $this->assertStringNotContainsString('1=1', $this->zdb->query_string);
+        //criteria has been discarded, so the whole list comes back
+        $this->assertSame($expected, $list->count());
+
+        //password is not searchable, it would make the list an oracle on the hash
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'mdp_adh',
+            'type' => 0,
+            'search' => '$2y$',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on unknown or forbidden field `mdp_adh`'
+        );
+        $this->assertStringNotContainsString('mdp_adh', $this->zdb->query_string);
+        $this->assertSame($expected, $list->count());
+
+        //a payload on a boolean column is not a boolean, so it is discarded
+        //before reaching the query at all
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'bool_admin_adh',
+            'type' => 0,
+            'search' => '1 OR 1=1',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on `bool_admin_adh` expects a boolean, `1 or 1=1` given'
+        );
+        $this->assertStringNotContainsString('1=1', $this->zdb->query_string);
+        $this->assertSame($expected, $list->count());
+
+        //a legitimate boolean criteria still works, and does split the list
+        $counts = [];
+        foreach (['0', '1'] as $bool) {
+            $filters = new \Galette\Filters\AdvancedMembersList();
+            $filters->free_search = [
+                'idx' => 1,
+                'field' => 'bool_admin_adh',
+                'type' => 0,
+                'search' => $bool,
+                'log_op' => $filters::OP_AND,
+                'qry_op' => $filters::OP_EQUALS
+            ];
+            $members = new \Galette\Repository\Members($filters);
+            $counts[$bool] = $members->getList()->count();
+        }
+        $this->assertGreaterThan(0, $counts['1']);
+        $this->assertSame($expected, $counts['0'] + $counts['1']);
+
+        //a payload in a text criteria stays a value
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'nom_adh',
+            'type' => 0,
+            'search' => "' OR SLEEP(3) -- ",
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        //quoting differs per engine (backslash on MySQL, doubled quote on
+        //PostgreSQL), so compare against what the platform itself produces
+        $this->assertStringContainsString(
+            $this->zdb->platform->quoteValue("%' or sleep(3) -- %"),
+            $this->zdb->query_string
+        );
+        $this->assertSame(0, $list->count());
+    }
+
+    /**
+     * Test a quote in a search criteria is searched, not interpreted
+     */
+    public function testFreeSearchOnQuotedValue(): void
+    {
+        $this->logSuperAdmin();
+
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $member->setDependencies($this->preferences, $this->members_fields, $this->history);
+        $data = array_merge(
+            $this->dataAdherentOne(),
+            [
+                'nom_adh' => "O'Brien",
+                'login_adh' => 'obrien',
+                'mail_adh' => 'obrien@galette.eu'
+            ]
+        );
+        $this->assertTrue($member->check($data, [], []));
+        $this->assertTrue($member->store());
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'nom_adh',
+            'type' => 0,
+            'search' => "O'Brien",
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+    }
+
+    /**
      * Test getList with contribution dynamic fields
      */
     public function testGetListContributionDynamics(): void

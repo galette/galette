@@ -776,7 +776,7 @@ class MembersController extends CrudController
                                     trim((string)$f) !== ''
                                     && trim((string)$post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = htmlspecialchars((string)$post['free_text'][$i], ENT_QUOTES);
+                                    $fs_search = (string)$post['free_text'][$i];
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op

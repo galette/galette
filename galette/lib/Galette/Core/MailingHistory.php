@@ -18,6 +18,7 @@ use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
 /**
  * Mailing features
@@ -256,13 +257,11 @@ class MailingHistory extends History
 
 
             if ($this->filters->subject_filter != '') {
-                $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower((string)$this->filters->subject_filter) . '%'
-                );
-
                 $select->where(
-                    'LOWER(mailing_subject) LIKE '
-                    . $token
+                    new PredicateExpression(
+                        'LOWER(mailing_subject) LIKE ?',
+                        ['%' . strtolower((string)$this->filters->subject_filter) . '%']
+                    )
                 );
             }
         } catch (Throwable $e) {

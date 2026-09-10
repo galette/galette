@@ -18,6 +18,8 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Predicate\IsNull;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\File;
+use Galette\DynamicFields\Separator;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
 use Laminas\Db\Sql\Predicate\Expression;
@@ -725,7 +727,7 @@ class Members
                     if (str_starts_with((string)$fs['field'], 'dyn_')) {
                         // simple dynamic fields
                         $hasDf = true;
-                        $dfs[] = str_replace('dyn_', '', $fs['field']);
+                        $dfs[] = (int)str_replace('dyn_', '', (string)$fs['field']);
                     }
                 }
             }
@@ -1016,9 +1018,7 @@ class Members
             }
 
             if ($this->filters->filter_str != '') {
-                $token = $zdb->platform->quoteValue(
-                    '%' . strtolower($this->filters->filter_str) . '%'
-                );
+                $token = '%' . strtolower($this->filters->filter_str) . '%';
                 switch ($this->filters->field_filter) {
                     case self::FILTER_NAME:
                         if ($zdb->isPostgres()) {
@@ -1032,60 +1032,70 @@ class Members
                         }
 
                         $select->where(
-                            '('
-                            . $pre . 'LOWER(a.nom_adh)' . $sep
-                            . 'LOWER(a.prenom_adh)' . $sep
-                            . 'LOWER(a.pseudo_adh)' . $post . ' LIKE '
-                            . $token
-                            . ' OR '
-                            . $pre . 'LOWER(a.prenom_adh)' . $sep
-                            . 'LOWER(a.nom_adh)' . $sep
-                            . 'LOWER(a.pseudo_adh)' . $post . ' LIKE '
-                            . $token
-                            . ')'
+                            new Expression(
+                                '('
+                                . $pre . 'LOWER(a.nom_adh)' . $sep
+                                . 'LOWER(a.prenom_adh)' . $sep
+                                . 'LOWER(a.pseudo_adh)' . $post . ' LIKE ?'
+                                . ' OR '
+                                . $pre . 'LOWER(a.prenom_adh)' . $sep
+                                . 'LOWER(a.nom_adh)' . $sep
+                                . 'LOWER(a.pseudo_adh)' . $post . ' LIKE ?'
+                                . ')',
+                                [$token, $token]
+                            )
                         );
                         break;
                     case self::FILTER_COMPANY_NAME:
                         $select->where(
-                            'LOWER(a.societe_adh) LIKE '
-                            . $token
+                            new Expression('LOWER(a.societe_adh) LIKE ?', [$token])
                         );
                         break;
                     case self::FILTER_ADDRESS:
                         $select->where(
-                            '('
-                            . 'LOWER(a.adresse_adh) LIKE ' . $token
-                            . ' OR '
-                            . 'a.cp_adh LIKE ' . $token
-                            . ' OR '
-                            . 'LOWER(a.ville_adh) LIKE ' . $token
-                            . ' OR '
-                            . 'LOWER(a.pays_adh) LIKE ' . $token
-                            . ')'
+                            new Expression(
+                                '('
+                                . 'LOWER(a.adresse_adh) LIKE ?'
+                                . ' OR '
+                                . 'a.cp_adh LIKE ?'
+                                . ' OR '
+                                . 'LOWER(a.ville_adh) LIKE ?'
+                                . ' OR '
+                                . 'LOWER(a.pays_adh) LIKE ?'
+                                . ')',
+                                [$token, $token, $token, $token]
+                            )
                         );
                         break;
                     case self::FILTER_MAIL:
                         $select->where(
-                            '('
-                            . 'LOWER(a.email_adh) LIKE ' . $token
-                            . ' OR '
-                            . 'LOWER(so.url) LIKE ' . $token
-                            . ')'
+                            new Expression(
+                                '('
+                                . 'LOWER(a.email_adh) LIKE ?'
+                                . ' OR '
+                                . 'LOWER(so.url) LIKE ?'
+                                . ')',
+                                [$token, $token]
+                            )
                         );
                         break;
                     case self::FILTER_JOB:
                         $select->where(
-                            'LOWER(a.prof_adh) LIKE ' . $token
+                            new Expression('LOWER(a.prof_adh) LIKE ?', [$token])
                         );
                         break;
                     case self::FILTER_INFOS:
                         $more = '';
+                        $params = [$token];
                         if ($login->isAdmin() || $login->isStaff()) {
-                            $more = ' OR LOWER(a.info_adh) LIKE ' . $token;
+                            $more = ' OR LOWER(a.info_adh) LIKE ?';
+                            $params[] = $token;
                         }
                         $select->where(
-                            '(LOWER(a.info_public_adh) LIKE '
-                            . $token . $more . ')'
+                            new Expression(
+                                '(LOWER(a.info_public_adh) LIKE ?' . $more . ')',
+                                $params
+                            )
                         );
                         break;
                     case self::FILTER_NUMBER:
@@ -1167,9 +1177,15 @@ class Members
                     columns: [],
                     type: $select::JOIN_LEFT
                 )->where(
-                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter)
-                    . ' OR gs.parent_group = NULL OR gs.parent_group = '
-                    . $this->filters->group_filter . ')'
+                    //the `gs.parent_group = NULL` term this clause used to
+                    //carry could never be true, and has been dropped
+                    new PredicateSet(
+                        [
+                            new Operator('g.' . Group::PK, '=', $this->filters->group_filter),
+                            new Operator('gs.parent_group', '=', $this->filters->group_filter)
+                        ],
+                        PredicateSet::OP_OR
+                    )
                 );
             }
 
@@ -1386,8 +1402,12 @@ class Members
                     } elseif ($dyn_field instanceof \Galette\DynamicFields\Date) {
                         $select->where->equalTo($prefix . $field, $cd);
                     } else {
-                        $qry = 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
-                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));
+                        $select->where(
+                            new Expression(
+                                'LOWER(' . $prefix . $field . ')' . $qop . '?',
+                                ['%' . strtolower((string)$cd) . '%']
+                            )
+                        );
                     }
                 }
             }
@@ -1397,6 +1417,8 @@ class Members
             count($this->filters->free_search) > 0
             && !isset($this->filters->free_search['empty'])
         ) {
+            $allowed = $this->getAllowedSearchFields();
+
             foreach ($this->filters->free_search as $fs) {
                 $fs['search'] = mb_strtolower((string)$fs['search']);
                 switch ($fs['qry_op']) {
@@ -1438,63 +1460,118 @@ class Members
                         break;
                 }
 
-                $qry = '';
-                $prefix = 'a.';
+                //resolve the requested field to the column to filter on.
+                //Whatever is not a real, searchable field gets discarded, so
+                //no field name from the request ever reaches the query as SQL.
                 $dyn_field = false;
+                $column = null;
                 if (str_starts_with((string)$fs['field'], 'dyn_')) {
                     // simple dynamic field spotted!
-                    $index = str_replace('dyn_', '', $fs['field']);
-                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
-                    $prefix = 'df' . $index . '.';
-                    $fs['field'] = 'val';
+                    $index = (int)str_replace('dyn_', '', (string)$fs['field']);
+                    $dyn_field = DynamicField::loadFieldType($zdb, $index);
+                    if (
+                        $dyn_field !== false
+                        && !$dyn_field instanceof Separator
+                        && !$dyn_field instanceof File
+                    ) {
+                        //field does exist and is searchable, alias is set in buildSelect()
+                        $column = 'df' . $index . '.val';
+                    }
+                } elseif (str_starts_with((string)$fs['field'], 'socials_')) {
+                    //social networks: type is filtered as a value, search runs on the URL
+                    $select->where(
+                        ['so.type' => str_replace('socials_', '', (string)$fs['field'])]
+                    );
+                    $column = 'so.url';
+                } else {
+                    $column = $allowed[(string)$fs['field']] ?? null;
                 }
 
-                //handle socials networks
-                if (str_starts_with((string)$fs['field'], 'socials_')) {
-                    //social networks
-                    $type = str_replace('socials_', '', $fs['field']);
-                    $prefix = 'so.';
-                    $fs['field'] = 'url';
-                    $select->where(['so.type' => $type]);
+                if ($column === null) {
+                    Analog::log(
+                        'Advanced search on unknown or forbidden field `'
+                        . $fs['field'] . '`, criteria has been discarded.',
+                        Analog::WARNING
+                    );
+                    continue;
                 }
 
-                if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                     if ($fs['search'] != 0) {
-                        if ($zdb->isPostgres()) {
-                            $sval = $fs['search'] == 1 ? $zdb->platform->quoteValue('true') : $zdb->platform->quoteValue('false');
-                        } else {
-                            $sval = $fs['search'];
-                        }
-                        $qry .= $prefix . $fs['field'] . $qop . ' '
-                            . $sval;
+                        $predicate = new Expression(
+                            $column . ' ' . $qop . ' ?',
+                            [$zdb->isPostgres() ? ($fs['search'] == 1 ? 'true' : 'false') : $fs['search']]
+                        );
                     } else {
-                        $qry .= $prefix . $fs['field'] . ' IS NULL';
+                        $predicate = new IsNull($column);
                     }
                 } elseif (!strncmp((string)$fs['field'], 'bool_', strlen('bool_'))) {
-                    $qry .= $prefix . $fs['field'] . $qop . ' '
-                        . $fs['search'];
+                    //a real boolean column: anything else than a boolean is
+                    //meaningless, and PostgreSQL rejects it outright
+                    $bool = filter_var($fs['search'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    if ($bool === null) {
+                        Analog::log(
+                            'Advanced search on `' . $fs['field'] . '` expects a boolean, `'
+                            . $fs['search'] . '` given, criteria has been discarded.',
+                            Analog::WARNING
+                        );
+                        continue;
+                    }
+                    $predicate = new Expression($column . ' ' . $qop . ' ?', [(int)$bool]);
                 } elseif (
                     $fs['qry_op'] === AdvancedMembersList::OP_BEFORE
                     || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
                 ) {
-                    $qry .= $prefix . $fs['field'] . $qop . ' '
-                        . $zdb->platform->quoteValue($fs['search']);
+                    $predicate = new Expression($column . ' ' . $qop . ' ?', [$fs['search']]);
                 } else {
-                    $field = $prefix . $fs['field'];
-                    if ($zdb->isPostgres()) {
-                        $field = 'CAST(' . $field . ' AS TEXT)';
-                    }
-                    $qry .= 'LOWER(' . $field . ') '
-                        . $qop . ' ' . $zdb->platform->quoteValue($fs['search']);
+                    $field = $zdb->isPostgres() ? 'CAST(' . $column . ' AS TEXT)' : $column;
+                    $predicate = new Expression(
+                        'LOWER(' . $field . ') ' . $qop . ' ?',
+                        [$fs['search']]
+                    );
                 }
 
                 if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
-                    $select->where($qry);
+                    $select->where($predicate);
                 } elseif ($fs['log_op'] === AdvancedMembersList::OP_OR) {
-                    $select->where($qry, PredicateSet::OP_OR);
+                    $select->where($predicate, PredicateSet::OP_OR);
                 }
             }
         }
+    }
+
+    /**
+     * Get the member fields advanced search is allowed to filter on
+     *
+     * Field names come from the request, so they must be checked against
+     * the real columns before they get anywhere.
+     * Dynamic fields and socials are resolved apart, see buildAdvancedWhereClause().
+     *
+     * This is a structural check only, not an ACL one, on purpose.
+     *
+     * @return array<string, string> Field name, as sent by the form, to the column to filter on
+     */
+    private function getAllowedSearchFields(): array
+    {
+        global $container;
+
+        /** @var array<string, array<string, mixed>> $fields */
+        $fields = $container->get('members_fields');
+
+        $allowed = [];
+        foreach ($fields as $name => $field) {
+            if ((int)$field['position'] === -1) {
+                //not a database column
+                continue;
+            }
+            if ($name === 'mdp_adh') {
+                //never let a search run on the password
+                continue;
+            }
+            $allowed[$name] = 'a.' . $name;
+        }
+
+        return $allowed;
     }
 
     /**

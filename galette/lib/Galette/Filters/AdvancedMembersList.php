@@ -632,15 +632,19 @@ class AdvancedMembersList extends MembersList
     /**
      * Validate free search internal array
      *
+     * Only the shape is checked here; the field name itself is checked against
+     * the fields the form does offer when the query gets built, see
+     * Galette\Repository\Members::getAllowedSearchFields().
+     *
      * @param array<string,mixed> $data Array to validate
      */
     public static function isValidFreeSearch(array $data): bool
     {
-        return isset($data['field'])
-            && isset($data['search'])
-            && isset($data['log_op'])
-            && isset($data['qry_op'])
-            && isset($data['idx'])
-            && isset($data['type']);
+        return isset($data['field']) && is_scalar($data['field'])
+            && isset($data['search']) && is_scalar($data['search'])
+            && isset($data['log_op']) && is_numeric($data['log_op'])
+            && isset($data['qry_op']) && is_numeric($data['qry_op'])
+            && isset($data['idx']) && is_numeric($data['idx'])
+            && isset($data['type']) && is_numeric($data['type']);
     }
 }
