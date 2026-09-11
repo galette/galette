@@ -58,7 +58,7 @@ jobs:
       - name: Mint a token for website and galettedoc
         id: app-token
         if: env.APP_ID != '' && steps.version.outputs.dry-run != 'true'
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
           private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
