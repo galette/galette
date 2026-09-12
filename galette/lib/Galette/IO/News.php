@@ -79,20 +79,29 @@ class News
      */
     protected function cacheLoaded(mixed $contents): bool
     {
-        if (Galette::isSerialized($contents)) {
-            //legacy cache format
-            $this->posts = unserialize($contents);
-        } else {
-            $this->posts = Galette::jsonDecode($contents);
+        $posts = [];
+
+        try {
+            if (Galette::isSerialized($contents)) {
+                //legacy cache format
+                $posts = unserialize($contents);
+            } else {
+                foreach (Galette::jsonDecode($contents) as $post) {
+                    $posts[] = Post::fromArray($post);
+                }
+            }
+        } catch (Throwable $e) {
+            //cache is unusable, it will be rebuilt from the feed
+            Analog::log(
+                'Unable to load news from cache :( | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            $posts = [];
         }
 
+        $this->posts = $posts;
         //check if posts were cached
-        if (count($this->posts) == 0) {
-            $this->parseFeed();
-            return false;
-        }
-
-        return true;
+        return count($this->posts) != 0;
     }
 
     /**
