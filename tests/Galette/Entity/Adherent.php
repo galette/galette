@@ -518,6 +518,49 @@ class Adherent extends GaletteTestCase
     }
 
     /**
+     * Test a group manager checking their own card
+     *
+     * @see https://bugs.galette.eu/issues/2032
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testCheckOwnCardAsGroupManager(): void
+    {
+        global $login;
+
+        $this->logSuperAdmin();
+        $member = $this->getMemberOne();
+
+        //the group our manager owns; they are not a member of it
+        $managed = new \Galette\Entity\Group();
+        $managed->setName('Managed group');
+        $this->assertTrue($managed->store());
+
+        $manager = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
+            ->getMock();
+        $manager->method('isGroupManager')->willReturnCallback(
+            fn($gid) => $gid === null || $gid == $managed->getId()
+        );
+        $login = $manager;
+
+        //someone else's card still has to be attached to a group they own
+        $expected = ['You have to select a group you own!'];
+        $this->assertSame($expected, $member->check([], [], []));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
+
+        //their own card does not
+        $manager->setId($member->id);
+        $this->assertTrue($member->check([], [], []));
+
+        //not even when the form posts back the groups they belong to,
+        //none of which they own
+        $this->assertTrue($member->check(['groups_adh' => ['0|Another group']], [], []));
+
+        $this->cleanMembers();
+    }
+
+    /**
      * Test picture
      */
     public function testPhoto(): void

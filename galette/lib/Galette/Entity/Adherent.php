@@ -1161,7 +1161,12 @@ class Adherent implements AccessManagementInterface
             $this->parent = null;
         }
 
-        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
+        //group managers must attach the members they create or edit to a group
+        //they own; their own card, and their children's, are not concerned.
+        $own_card = $this->id !== null && $this->id === $login->id;
+        $child_card = $this->parent_id === $login->id;
+
+        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && !$own_card && !$child_card) {
             if (!isset($values['groups_adh'])) {
                 $owned_group = false;
                 //when editing an existing member, check in his existing groups
