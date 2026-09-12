@@ -147,6 +147,86 @@ class MailingQueue extends GaletteTestCase
     }
 
     /**
+     * Test the rule that decides whether sending has to go through the queue.
+     * Batching alone stays synchronous; a quota is what spreads sending over
+     * time, and therefore requires the queue.
+     */
+    public function testMustQueue(): void
+    {
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+
+        $this->assertFalse($queue->mustQueue());
+
+        $this->preferences->pref_mail_batch_size = 10;
+        $this->preferences->pref_mail_batch_delay = 1;
+        $this->assertFalse($queue->mustQueue());
+
+        $this->preferences->pref_mail_hourly_limit = 5;
+        $this->assertTrue($queue->mustQueue());
+        $this->preferences->pref_mail_hourly_limit = 0;
+
+        $this->preferences->pref_mail_daily_limit = 5;
+        $this->assertTrue($queue->mustQueue());
+        $this->preferences->pref_mail_daily_limit = 0;
+
+        $this->assertFalse($queue->mustQueue());
+
+        //reset preferences for other tests
+        $this->preferences->pref_mail_batch_size = 0;
+        $this->preferences->pref_mail_batch_delay = 0;
+    }
+
+    /**
+     * Test the unattended drainer: it stops on an empty queue, and on a
+     * reached quota, without attempting to send anything.
+     */
+    public function testDrain(): void
+    {
+        $this->logSuperAdmin();
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+
+        //nothing queued, nothing to do
+        $result = $queue->drain();
+        $this->assertSame(0, $result['sent']);
+        $this->assertSame(0, $result['failed']);
+        $this->assertFalse($result['rate_limited']);
+        $this->assertTrue($result['progress']['done']);
+
+        $mailing = $this->buildStoredMailing();
+        $this->assertSame(2, $queue->enqueue((int)$mailing->id, $mailing->recipients));
+
+        //mark one queued recipient as already sent, now
+        $select = $this->zdb->select(\Galette\Core\MailingQueue::TABLE);
+        $select->columns(['mailing_queue_id'])->order('mailing_queue_id ASC')->limit(1);
+        $first_id = (int)$this->zdb->execute($select)->current()->mailing_queue_id;
+
+        $update = $this->zdb->update(\Galette\Core\MailingQueue::TABLE);
+        $update->set(
+            [
+                'status'  => \Galette\Core\MailingQueue::STATUS_SENT,
+                'sent_at' => date('Y-m-d H:i:s')
+            ]
+        );
+        $update->where(['mailing_queue_id' => $first_id]);
+        $this->zdb->execute($update);
+
+        //quota already exhausted: the drainer gives up for this run, and the
+        //pending recipient stays in queue for the next one
+        $this->preferences->pref_mail_daily_limit = 1;
+
+        $result = $queue->drain();
+        $this->assertTrue($result['rate_limited']);
+        $this->assertSame(0, $result['sent']);
+        $this->assertSame(0, $result['failed']);
+        $this->assertFalse($result['progress']['done']);
+        $this->assertSame(1, $result['progress']['remaining']);
+
+        //reset preference for other tests
+        $this->preferences->pref_mail_daily_limit = 0;
+    }
+
+    /**
      * Build a reminder for a member.
      */
     private function buildReminder(int $type, \Galette\Entity\Adherent $member): \Galette\Entity\Reminder

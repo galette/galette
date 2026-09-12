@@ -47,34 +47,16 @@ class ProcessMailingQueue extends AbstractCommand
             $container->get(History::class),
             $container->get(Login::class)
         );
-        $delay = (int)$preferences->pref_mail_batch_delay;
-
-        $sent = 0;
-        $failed = 0;
-        $rate_limited = false;
-
-        //drain the queue batch after batch until it is empty or rate-limited
-        do {
-            $progress = $queue->processBatch();
-            $sent += (int)$progress['batch_sent'];
-            $failed += (int)$progress['batch_failed'];
-
-            if ($progress['done'] === true) {
-                break;
-            }
-            if ($progress['rate_limited'] === true) {
-                $rate_limited = true;
-                break;
-            }
-            if ($delay > 0) {
-                sleep($delay);
-            }
-        } while (true);
+        $result = $queue->drain();
 
         $this->io->success(
-            sprintf('Mailing queue processed: %d sent, %d failed.', $sent, $failed)
+            sprintf(
+                'Mailing queue processed: %d sent, %d failed.',
+                $result['sent'],
+                $result['failed']
+            )
         );
-        if ($rate_limited) {
+        if ($result['rate_limited']) {
             $this->io->warning(
                 'Sending rate limit reached, remaining messages will be sent on next runs.'
             );

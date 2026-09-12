@@ -73,33 +73,16 @@ $queue->setReminderContext(
 );
 $queue->enqueueReminders($list_reminders);
 
-$delay = (int)$preferences->pref_mail_batch_delay;
-$total_sent = 0;
-$total_failed = 0;
-
-do {
-    $progress = $queue->processBatch(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
-    $total_sent += (int)$progress['batch_sent'];
-    $total_failed += (int)$progress['batch_failed'];
-
-    //stop when the queue is empty or the rate limit is reached (the remaining
-    //messages will be sent on the next runs)
-    if ($progress['done'] === true || $progress['rate_limited'] === true) {
-        break;
-    }
-    if ($delay > 0) {
-        sleep($delay);
-    }
-} while (true);
+$result = $queue->drain(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
 
 //called from a cron: successes and warnings have been stored into history and
 //logged. Stay completely silent unless something failed, otherwise cron would
 //notify the administrator on every (successful) run. A reached rate limit is
 //not an error: the remaining messages are sent on the next runs.
-if ($total_failed > 0) {
+if ($result['failed'] > 0) {
     echo str_replace(
         ['%sent', '%failed'],
-        [(string)$total_sent, (string)$total_failed],
+        [(string)$result['sent'], (string)$result['failed']],
         _T("Reminders processed: %sent sent, %failed failed.")
     ) . "\n";
     exit(1);

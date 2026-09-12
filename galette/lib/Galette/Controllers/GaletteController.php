@@ -736,17 +736,51 @@ class GaletteController extends AbstractController
                     $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
                 );
         } else {
-            //queue reminders and follow progress on the dedicated page; sending
-            //goes through the shared mailing queue (throttling, keepalive, quota)
             $queue = new MailingQueue($this->zdb, $this->preferences);
-            $queue->enqueueReminders($list_reminders);
+            if ($queue->mustQueue()) {
+                //sending has to be spread over time: queue the reminders and
+                //follow progress on the dedicated page
+                $queue->enqueueReminders($list_reminders);
 
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('remindersQueue')
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->routeparser->urlFor('remindersQueue')
+                    );
+            }
+
+            //no quota set: send right away, as a mass mailing would
+            $texts = new Texts($this->preferences, $this->routeparser);
+            foreach ($list_reminders as $reminder) {
+                $reminder
+                    ->setDb($this->zdb)
+                    ->setLogin($this->login)
+                    ->setPreferences($this->preferences)
+                    ->setRouteParser($this->routeparser)
+                ;
+                $sent = $reminder->send($texts, $this->history, $this->zdb);
+
+                if ($sent === true) {
+                    $success_detected[] = $reminder->getMessage();
+                } else {
+                    $error_detected[] = $reminder->getMessage();
+                }
+            }
+
+            if (count($error_detected) > 0) {
+                array_unshift(
+                    $error_detected,
+                    _T("Reminder has not been sent:")
                 );
+            }
+
+            if (count($success_detected) > 0) {
+                array_unshift(
+                    $success_detected,
+                    _T("Sent reminders:")
+                );
+            }
         }
 
         return $this->redirect(

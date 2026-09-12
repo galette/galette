@@ -309,10 +309,9 @@ class MailingsController extends CrudController
                 //when hourly/daily limits are set, sending must be spread over
                 //time: store the mailing and queue its recipients instead of
                 //sending synchronously
-                $use_queue = ((int)$this->preferences->pref_mail_hourly_limit > 0)
-                    || ((int)$this->preferences->pref_mail_daily_limit > 0);
+                $queue = new MailingQueue($this->zdb, $this->preferences);
 
-                if ($use_queue) {
+                if ($queue->mustQueue()) {
                     $mlh = new MailingHistory(
                         zdb: $this->zdb,
                         login: $this->login,
@@ -321,7 +320,6 @@ class MailingsController extends CrudController
                         mailing: $mailing
                     );
                     $mlh->storeMailing(sent: false);
-                    $queue = new MailingQueue($this->zdb, $this->preferences);
                     $nb = $queue->enqueue((int)$mailing->id, $mailing->recipients);
                     Analog::log(
                         '[Mailings] ' . $nb . ' recipient(s) queued for mailing #' . $mailing->id,

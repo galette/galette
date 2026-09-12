@@ -68,33 +68,14 @@ $queue->setReminderContext(
     $container->get(History::class),
     $container->get(Login::class)
 );
-$delay = (int)$preferences->pref_mail_batch_delay;
-
-$total_sent = 0;
-$total_failed = 0;
-
-//drain the queue batch after batch, respecting the configured delay, until it
-//is empty or the rate limit is reached (remaining messages go out on next runs)
-do {
-    $progress = $queue->processBatch();
-    $total_sent += (int)$progress['batch_sent'];
-    $total_failed += (int)$progress['batch_failed'];
-
-    if ($progress['done'] === true || $progress['rate_limited'] === true) {
-        break;
-    }
-
-    if ($delay > 0) {
-        sleep($delay);
-    }
-} while (true);
+$result = $queue->drain();
 
 //stay silent on success so cron does not notify the administrator on every run;
 //only report (and fail) when something actually failed
-if ($total_failed > 0) {
+if ($result['failed'] > 0) {
     echo str_replace(
         ['%sent', '%failed'],
-        [(string)$total_sent, (string)$total_failed],
+        [(string)$result['sent'], (string)$result['failed']],
         _T("Mailing queue processed: %sent sent, %failed failed.")
     ) . "\n";
     exit(1);

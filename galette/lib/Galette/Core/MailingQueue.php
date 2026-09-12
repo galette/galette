@@ -203,6 +203,81 @@ class MailingQueue
     }
 
     /**
+     * Does sending have to go through the queue?
+     *
+     * Splitting a mailing into several messages can still be done while the
+     * request runs; spreading it over hours or days cannot. An hourly or daily
+     * quota is therefore what turns sending into a queue, for mass mailings
+     * and reminders alike.
+     */
+    public function mustQueue(): bool
+    {
+        return (int)$this->preferences->pref_mail_hourly_limit > 0
+            || (int)$this->preferences->pref_mail_daily_limit > 0;
+    }
+
+    /**
+     * Drain the queue, batch after batch, until it is empty or the rate limit
+     * is reached. The configured delay is applied between two batches.
+     *
+     * Unattended callers (cron script, console command) want the whole queue,
+     * not a single batch: this is their entry point. The AJAX drainer keeps
+     * calling processBatch() instead, so the browser stays responsive and
+     * applies the delay client-side.
+     *
+     * @param ?int $only_mailing_id Restrict processing to this mailing
+     * @param ?int $kind            Restrict processing to this kind
+     *
+     * @return array{sent: int, failed: int, rate_limited: bool,
+     *     progress: array<string, int|bool>}
+     */
+    public function drain(?int $only_mailing_id = null, ?int $kind = null): array
+    {
+        $delay = (int)$this->preferences->pref_mail_batch_delay;
+        $sent = 0;
+        $failed = 0;
+        //a batch that moves no row at all is not an error: a failed send leaves
+        //its rows pending until MAX_ATTEMPTS. Counting those rounds still bounds
+        //the loop, so an unattended run cannot spin forever on a stuck queue.
+        $stalled = 0;
+
+        do {
+            $progress = $this->processBatch($only_mailing_id, $kind);
+            $sent += (int)$progress['batch_sent'];
+            $failed += (int)$progress['batch_failed'];
+
+            //stop when the queue is empty or the rate limit is reached: the
+            //remaining messages will be sent on the next runs
+            if ($progress['done'] === true || $progress['rate_limited'] === true) {
+                break;
+            }
+
+            $stalled = ($progress['batch_sent'] === 0 && $progress['batch_failed'] === 0)
+                ? $stalled + 1
+                : 0;
+            if ($stalled >= self::MAX_ATTEMPTS) {
+                Analog::log(
+                    'Mailing queue made no progress over ' . self::MAX_ATTEMPTS
+                    . ' batches, giving up for this run.',
+                    Analog::WARNING
+                );
+                break;
+            }
+
+            if ($delay > 0) {
+                sleep($delay);
+            }
+        } while (true);
+
+        return [
+            'sent'         => $sent,
+            'failed'       => $failed,
+            'rate_limited' => (bool)$progress['rate_limited'],
+            'progress'     => $progress
+        ];
+    }
+
+    /**
      * Process a single batch of the queue, respecting the configured limits.
      *
      * At most one message (a BCC group of up to the effective batch size) is
