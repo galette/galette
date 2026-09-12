@@ -20,6 +20,17 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Texts extends GaletteTestCase
 {
+    protected int $seed = 20260912203300;
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        $this->cleanMembers();
+        parent::tearDown();
+    }
+
     /**
      * Test getList
      */
@@ -65,5 +76,40 @@ class Texts extends GaletteTestCase
             $result = $results->current();
             $this->assertGreaterThanOrEqual(12, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
         }
+    }
+
+    /**
+     * Test the password recovery link is present in the mail
+     *
+     * @see https://bugs.galette.eu/issues/2033
+     */
+    public function testChangePasswordURI(): void
+    {
+        $member = $this->getMemberOne();
+
+        $password = new \Galette\Core\Password($this->zdb);
+        $this->assertTrue($password->generateNewPassword($member->id));
+
+        $texts = new \Galette\Entity\Texts(
+            $this->preferences,
+            $this->routeparser
+        );
+        $texts
+            ->setMember($member)
+            ->setNoContribution()
+            ->setLinkValidity()
+            ->setChangePasswordURI($password);
+
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+        $body = $texts->getBody();
+
+        $expected = $this->preferences->getURL() . $this->routeparser->urlFor(
+            'password-recovery',
+            ['hash' => $password->getToken()]
+        );
+
+        //the member has no way to set a new password without that link
+        $this->assertStringNotContainsString('{CHG_PWD_URI}', $body);
+        $this->assertStringContainsString($expected, $body);
     }
 }

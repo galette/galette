@@ -165,7 +165,7 @@ class Texts
      */
     public function setChangePasswordURI(Password $password): self
     {
-        if (isset($this->routeparser)) {
+        if (!isset($this->routeparser)) {
             return $this;
         }
         $this->setReplacements([
