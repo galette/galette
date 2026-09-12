@@ -22,6 +22,7 @@ use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
 use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
+use Galette\Core\MailingQueue;
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
 use Galette\Core\SysInfos;
@@ -702,7 +703,6 @@ class GaletteController extends AbstractController
         $success_detected = [];
 
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->routeparser);
         $selected = null;
         if (isset($post['reminders'])) {
             $selected = $post['reminders'];
@@ -710,7 +710,6 @@ class GaletteController extends AbstractController
         $reminders = new Reminders($selected);
 
         $labels = false;
-        $labels_members = [];
         if (isset($post['reminder_wo_mail'])) {
             $labels = true;
         }
@@ -718,41 +717,55 @@ class GaletteController extends AbstractController
         $list_reminders = $reminders->getList($this->zdb, $labels);
         if (count($list_reminders) == 0) {
             $warning_detected[] = _T("No reminder to send for now.");
-        } else {
+        } elseif ($labels === true) {
+            //generate labels for members without email address
+            $labels_members = [];
             foreach ($list_reminders as $reminder) {
-                if ($labels === false) {
-                    $reminder
-                        ->setDb($this->zdb)
-                        ->setLogin($this->login)
-                        ->setPreferences($this->preferences)
-                        ->setRouteParser($this->routeparser)
-                    ;
-                    //send reminders by email
-                    $sent = $reminder->send($texts, $this->history, $this->zdb);
-
-                    if ($sent === true) {
-                        $success_detected[] = $reminder->getMessage();
-                    } else {
-                        $error_detected[] = $reminder->getMessage();
-                    }
-                } else {
-                    //generate labels for members without email address
-                    $labels_members[] = $reminder->member_id;
-                }
+                $labels_members[] = $reminder->member_id;
             }
 
-            if ($labels === true) {
-                //at least one reminder has been found, labels members list cannot be empty
-                $session_var = $this->getFilterName('reminders_labels');
-                $labels_filters = new MembersList();
-                $labels_filters->selected = $labels_members;
-                $this->session->$session_var = $labels_filters;
+            //at least one reminder has been found, labels members list cannot be empty
+            $session_var = $this->getFilterName('reminders_labels');
+            $labels_filters = new MembersList();
+            $labels_filters->selected = $labels_members;
+            $this->session->$session_var = $labels_filters;
+            return $response
+                ->withStatus(307)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
+                );
+        } else {
+            $queue = new MailingQueue($this->zdb, $this->preferences);
+            if ($queue->mustQueue()) {
+                //sending has to be spread over time: queue the reminders and
+                //follow progress on the dedicated page
+                $queue->enqueueReminders($list_reminders);
+
                 return $response
-                    ->withStatus(307)
+                    ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
+                        $this->routeparser->urlFor('remindersQueue')
                     );
+            }
+
+            //no quota set: send right away, as a mass mailing would
+            $texts = new Texts($this->preferences, $this->routeparser);
+            foreach ($list_reminders as $reminder) {
+                $reminder
+                    ->setDb($this->zdb)
+                    ->setLogin($this->login)
+                    ->setPreferences($this->preferences)
+                    ->setRouteParser($this->routeparser)
+                ;
+                $sent = $reminder->send($texts, $this->history, $this->zdb);
+
+                if ($sent === true) {
+                    $success_detected[] = $reminder->getMessage();
+                } else {
+                    $error_detected[] = $reminder->getMessage();
+                }
             }
 
             if (count($error_detected) > 0) {

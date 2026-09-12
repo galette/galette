@@ -55,6 +55,7 @@ use Galette\Repository\Members;
  *     demo_locked?: bool,
  *     mailer?: bool,
  *     advanced?: bool,
+ *     alpha?: bool,
  *     acl?: string,
  *     constant?: string,
  *     plugin?: string
@@ -367,6 +368,46 @@ final class PreferencesSchema
                 'default' => '',
                 'sensitive' => true,
                 'mailer' => true,
+            ],
+            //mass mailing throttling is an alpha feature: the five settings
+            //below are flagged so the advanced page warns before they are used
+            'pref_mail_smtp_keepalive' => [
+                'type' => self::TYPE_BOOL,
+                'default' => true,
+                'advanced' => true,
+                'alpha' => true,
+            ],
+            'pref_mail_batch_size' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+                'alpha' => true,
+            ],
+            'pref_mail_batch_delay' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+                'alpha' => true,
+            ],
+            'pref_mail_hourly_limit' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+                'alpha' => true,
+            ],
+            'pref_mail_daily_limit' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'min' => 0,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+                'alpha' => true,
             ],
             'pref_membership_ext' => [
                 'type' => self::TYPE_INT,
@@ -766,6 +807,19 @@ final class PreferencesSchema
     public static function isAdvanced(string $name): bool
     {
         return self::getAll()[$name]['advanced'] ?? false;
+    }
+
+    /**
+     * Does that preference drive a feature that is still in alpha?
+     *
+     * Such a setting works, but the feature behind it has not been through a
+     * release yet: the advanced configuration page says so before it is set.
+     *
+     * @param string $name Preference name
+     */
+    public static function isAlpha(string $name): bool
+    {
+        return self::getAll()[$name]['alpha'] ?? false;
     }
 
     /**

@@ -280,6 +280,7 @@ class Reminder
     {
         return match ($name) {
             'member_id' => $this->dest->id,
+            'dest' => $this->dest,
             'type', 'date' => $this->$name,
             'comment' => $this->comment,
             default => throw new \RuntimeException(
@@ -301,7 +302,7 @@ class Reminder
     public function __isset(string $name): bool
     {
         return match ($name) {
-            'member_id', 'type', 'date', 'comment' => true,
+            'member_id', 'dest', 'type', 'date', 'comment' => true,
             default => false,
         };
     }

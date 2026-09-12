@@ -723,6 +723,33 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertCount(1, $lreminders->getList($this->zdb));
         $this->assertCount(1, $ireminders->getList($this->zdb));
 
+        //with a quota set, sending has to be spread over time: reminders are
+        //queued and the progress page takes over from there
+        $this->preferences->pref_mail_daily_limit = 10;
+        $test_response = $this->app->handle($request);
+        $this->expectNoLogEntry();
+        $this->expectFlashData([]);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('remindersQueue')]],
+            $test_response->getHeaders()
+        );
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $stats = $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(2, $stats['total']);
+        $this->assertSame(2, $stats['remaining']);
+        $this->assertSame(0, $stats['sent_total']);
+
+        //queuing records nothing in the reminders audit table: the very same
+        //reminders are still due once the queue is emptied
+        $this->zdb->execute(
+            $this->zdb->delete(\Galette\Core\MailingQueue::TABLE)
+        );
+        $this->preferences->pref_mail_daily_limit = 0;
+        $this->assertCount(2, $reminders->getList($this->zdb));
+
+        //without a quota, reminders are sent from the request, as before
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
         // no real email provider setup so gives an error
@@ -737,6 +764,11 @@ class GaletteController extends GaletteRoutingTestCase
         );
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('reminders')]], $test_response->getHeaders());
+        $this->assertSame(0, $queue->getStats(
+            mailing_id: null,
+            kind: \Galette\Core\MailingQueue::KIND_REMINDER
+        )['total']);
+
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
     }
 
