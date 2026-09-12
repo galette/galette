@@ -7,6 +7,14 @@
 {% extends "page.html.twig" %}
 
 {% block content %}
+        <div class="ui orange icon message">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Alpha feature") }}</div>
+                <p>{{ _T("Spreading a sending over time has not been through a release yet. It works, but it has seen little use: keep an eye on what actually reaches your members, and report anything odd.") }}</p>
+            </div>
+        </div>
+
         <div class="ui segment">
             <div id="mailing_progress" class="ui indicating progress" data-value="{{ stats.sent_total + stats.failed_total }}" data-total="{{ stats.total }}">
                 <div class="bar">

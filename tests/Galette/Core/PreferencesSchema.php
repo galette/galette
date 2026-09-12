@@ -177,6 +177,28 @@ class PreferencesSchema extends GaletteTestCase
     }
 
     /**
+     * Settings driving a feature that has not been released yet must say so,
+     * so the advanced configuration page can warn before they are set.
+     */
+    public function testAlpha(): void
+    {
+        $alpha = [
+            'pref_mail_smtp_keepalive',
+            'pref_mail_batch_size',
+            'pref_mail_batch_delay',
+            'pref_mail_hourly_limit',
+            'pref_mail_daily_limit'
+        ];
+        foreach ($alpha as $name) {
+            $this->assertTrue(Schema::isAlpha($name), $name . ' should be flagged as alpha');
+        }
+
+        $this->assertFalse(Schema::isAlpha('pref_mail_smtp_host'));
+        $this->assertFalse(Schema::isAlpha('pref_nom'));
+        $this->assertFalse(Schema::isAlpha('pref_does_not_exist'));
+    }
+
+    /**
      * Preferences the mail transport is built from
      *
      * A test can run on those before they are stored, so the list must hold

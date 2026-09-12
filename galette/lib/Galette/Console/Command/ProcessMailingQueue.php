@@ -18,6 +18,7 @@ use Galette\Core\Preferences;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -32,11 +33,48 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ProcessMailingQueue extends AbstractCommand
 {
     /**
+     * Configure command options
+     */
+    protected function configure(): void
+    {
+        $this
+            ->addOption(
+                name: 'force',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Send without asking for confirmation (required to run unattended)'
+            );
+    }
+
+    /**
      * Command execution
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $container;
+
+        //spreading a sending over time is still an alpha feature: nothing goes
+        //out of this command until somebody says so, or asks for it explicitly
+        if (!$input->getOption('force')) {
+            $this->io->warning(
+                'Spreading a sending over time is an alpha feature: it works, but it has'
+                . ' seen little use. Watch what actually reaches your members, and report'
+                . ' anything odd.'
+            );
+
+            if (!$input->isInteractive()) {
+                $this->io->error(
+                    'Run this command from an interactive terminal to confirm,'
+                    . ' or pass --force to run it unattended.'
+                );
+                return Command::FAILURE;
+            }
+
+            if (!$this->io->confirm('Process the pending queue now?', default: false)) {
+                $this->io->text('Nothing was sent.');
+                return Command::SUCCESS;
+            }
+        }
 
         $zdb = $container->get(Db::class);
         $preferences = $container->get(Preferences::class);
