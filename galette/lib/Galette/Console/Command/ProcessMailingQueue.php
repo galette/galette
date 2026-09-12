@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Galette\Console\Command;
 
 use Galette\Core\Db;
+use Galette\Core\History;
+use Galette\Core\Login;
 use Galette\Core\MailingQueue;
 use Galette\Core\Preferences;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,6 +41,12 @@ class ProcessMailingQueue extends AbstractCommand
         $zdb = $container->get(Db::class);
         $preferences = $container->get(Preferences::class);
         $queue = new MailingQueue($zdb, $preferences);
+        //the queue is shared: it may hold reminders, which need their own
+        //collaborators to be rendered and audited
+        $queue->setReminderContext(
+            $container->get(History::class),
+            $container->get(Login::class)
+        );
         $delay = (int)$preferences->pref_mail_batch_delay;
 
         $sent = 0;
