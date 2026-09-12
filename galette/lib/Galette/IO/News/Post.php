@@ -11,13 +11,14 @@ declare(strict_types=1);
 namespace Galette\IO\News;
 
 use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * News post
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Post
+class Post implements JsonSerializable
 {
     /**
      * Default constructor
@@ -37,6 +38,40 @@ class Post
             throw new InvalidArgumentException('Post title or URL must be provided.');
         }
         $this->title = $title;
+    }
+
+    /**
+     * Build a post from its cached representation
+     *
+     * @param array<string, ?string> $data Post data
+     */
+    public static function fromArray(array $data): self
+    {
+        if (!array_key_exists('title', $data)) {
+            throw new InvalidArgumentException('Missing post title.');
+        }
+
+        return new self(
+            (string)$data['title'],
+            $data['url'] ?? null,
+            $data['date'] ?? null
+        );
+    }
+
+    /**
+     * Get data to serialize
+     *
+     * Properties are private; without this, json_encode() would produce an empty object.
+     *
+     * @return array<string, ?string>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->title,
+            'url' => $this->url,
+            'date' => $this->date
+        ];
     }
 
     /**

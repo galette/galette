@@ -14,6 +14,7 @@ use Galette\Tests\BaseGaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Safe\Exceptions\InfoException;
 
+use function Safe\file_put_contents;
 use function Safe\filemtime;
 use function Safe\ini_get;
 use function Safe\ini_set;
@@ -106,6 +107,17 @@ class News extends BaseGaletteTestCase
         //ensure file does exists
         $this->assertTrue(file_exists($file));
 
+        //posts read back from cache must be complete
+        $cached = new \Galette\IO\News($this->local_url);
+        $cached_posts = $cached->getPosts();
+        $this->assertCount(count($posts), $cached_posts);
+        foreach ($posts as $key => $post) {
+            $this->assertInstanceOf(\Galette\IO\News\Post::class, $cached_posts[$key]);
+            $this->assertSame($post->getTitle(), $cached_posts[$key]->getTitle());
+            $this->assertSame($post->getUrl(), $cached_posts[$key]->getUrl());
+            $this->assertSame($post->getDate(), $cached_posts[$key]->getDate());
+        }
+
         $dformat = 'Y-m-d H:i:s';
         $mdate = \DateTime::createFromFormat(
             $dformat,
@@ -135,6 +147,38 @@ class News extends BaseGaletteTestCase
         unlink($file);
     }
 
+
+    /**
+     * Test an unusable cache is rebuilt from the feed
+     */
+    public function testUnusableCache(): void
+    {
+        $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+        $reference = (new \Galette\IO\News($this->local_url, nocache: true))->getPosts();
+        $this->assertGreaterThan(0, count($reference));
+
+        //cache written by a Galette version that did not serialize post properties
+        file_put_contents($file, \Galette\Core\Galette::jsonEncode(array_fill(0, count($reference), new \stdClass())));
+
+        $news = new \Galette\IO\News($this->local_url);
+        $posts = $news->getPosts();
+
+        $this->assertCount(count($reference), $posts);
+        $this->assertSame($reference[0]->getTitle(), $posts[0]->getTitle());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to load news from cache');
+
+        //and the broken cache has been replaced
+        $this->assertSame(
+            $reference[0]->getTitle(),
+            (new \Galette\IO\News($this->local_url))->getPosts()[0]->getTitle()
+        );
+
+        unlink($file);
+    }
 
     /**
      * Test news loading with allow_url_fopen off
