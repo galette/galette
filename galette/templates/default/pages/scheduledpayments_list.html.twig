@@ -334,7 +334,7 @@
 
 {% block legend %}
     {% if mode != 'ajax' %}
-        <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+        <div id="legende" class="ui modal">
             <div class="header">{{ _T("Legend") }}</div>
             <div class="content">
         {% if login.isAdmin() or login.isStaff() %}
