@@ -174,19 +174,14 @@ class Documents
         $list = $this->getList(type: null, filtered: false);
         $sys_types = $this->getSystemTypes(translated: false);
 
-        $typed_list = array_fill_keys($sys_types, []);
+        //initialize with system types, so they are always displayed in the same order
+        $typed_list = array_fill_keys(array_keys($sys_types), []);
         foreach ($list as $document) {
             $typed_list[$document->getType()][] = $document;
         }
 
         //cleanup: some system types may have no entries
-        foreach ($sys_types as $type) {
-            if (count($typed_list[$type]) == 0) {
-                unset($typed_list[$type]);
-            }
-        }
-
-        return $typed_list;
+        return array_filter($typed_list);
     }
 
     /**

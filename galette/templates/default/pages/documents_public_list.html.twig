@@ -7,8 +7,10 @@
 {% set is_public = not login.isLogged() %}
 {% extends is_public ? "public_page.html.twig" : "page.html.twig" %}
 
+{# Slugs are namespaced: bare ids such as "adhesion" are matched by
+ # cosmetic filters from ad blockers, that would hide the whole tab. #}
 {% macro getSlug(value) -%}
-    {{ value|lower|spaceless|slug|e('html_attr') }}
+    document-type-{{ value|lower|spaceless|slug|e('html_attr') }}
 {%- endmacro %}
 
 {% block content %}
