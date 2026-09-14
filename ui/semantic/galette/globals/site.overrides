@@ -41,6 +41,12 @@
 .exemple {
   color: lighten(@textColor, 8.5);
   font-style: italic;
+
+  & .error {
+    display: block;
+    color: @redTextColor;
+    font-weight: bold;
+  }
 }
 
 .inactive-account {
