@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-08-25 13:51+0200\n"
-"PO-Revision-Date: 2026-07-15 07:31+0000\n"
+"PO-Revision-Date: 2026-09-15 07:51+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -1479,7 +1479,7 @@ msgid "Unable to impersonate as %id"
 msgstr "Ni mogoče izdati imena %id"
 
 msgid "Attempt to unimpersonate from a non impersonated session"
-msgstr ""
+msgstr "Poskusite se ukiniti poosebljanja iz seje brez poosebljanja"
 
 msgid "Impersonating ended"
 msgstr "Končano lažno predstavljanje"
@@ -2039,15 +2039,15 @@ msgstr "Hvala za registracijo!"
 
 #, php-format
 msgid "Table %1$s has been converted to InnoDB/utf8mb4."
-msgstr ""
+msgstr "Tabela %1$s je bila pretvorjena v InnoDB/utf8mb4."
 
 #, php-format
 msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
-msgstr ""
+msgstr "Ni mogoče pretvoriti tabele %1$s v InnoDB/utf8mb4: %2$s"
 
 #, php-format
 msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
-msgstr ""
+msgstr "%1$s osirotelih vrstic (neznano %2$s) je bilo odstranjenih iz %3$s."
 
 #, fuzzy, php-format
 #| msgid "Title '%1$s' has not been added!"
@@ -2056,7 +2056,7 @@ msgstr "Naslov '%1$s' ni bil dodan!"
 
 #, php-format
 msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
-msgstr ""
+msgstr "Tujega ključa %1$s ni mogoče dodati. %2$s: %3$s"
 
 msgid "Member number"
 msgstr "Številka člana"
@@ -2329,7 +2329,7 @@ msgid "Page not found"
 msgstr "Strani ni bilo mogoče najti"
 
 msgid "Access denied"
-msgstr ""
+msgstr "Dostop zavrnjen"
 
 msgid "Missing required field name!"
 msgstr "Manjka ime obveznega polja!"
@@ -5384,7 +5384,7 @@ msgid "Use as a template for a new mailing"
 msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
 
 msgid "No sent"
-msgstr ""
+msgstr "Ni poslano"
 
 msgid "An error occurred displaying preview :("
 msgstr "Pri prikazu predogleda je prišlo do napake :("
