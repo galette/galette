@@ -62,6 +62,8 @@
                     {% if size is defined %} size="{{ size }}"{% endif %}
                     {% if checked is defined and checked == true %} checked{% endif %}
                     {% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}
+                    {% if error_message is defined %} aria-invalid="true"{% endif %}
+                    {% if example is defined or error_message is defined %} aria-describedby="{{ id }}-description"{% endif %}
                 />
     {% endblock %}
     {% if search_id is defined %}
@@ -90,8 +92,15 @@
     </div>
     {% endif %}
     {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular small basic question icon tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
-    {% if example is defined %}
-        <div class="exemple">{{ example|raw }}</div>
+    {% if example is defined or error_message is defined %}
+        <div class="exemple" id="{{ id }}-description">
+            {% if error_message is defined %}
+                <span class="error">{{ error_message }}</span>
+            {% endif %}
+            {% if example is defined %}
+                {{ example|raw }}
+            {% endif %}
+        </div>
     {% endif %}
 {% if notag is not defined %}
 </div>
