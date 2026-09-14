@@ -169,7 +169,7 @@
         {% endif %}
                         </label>
                         <br/>
-                        <span class="exemple">
+                        <span class="field-description">
         {% if member.id %}
                             {{ _T("Member will be notified by email his account has been modified.") }}
         {% else %}
@@ -196,7 +196,7 @@
                         {% set value = attribute(member, propname) %}
                     {% endif %}
                     {% set checked = null %}
-                    {% set example = null %}
+                    {% set description = null %}
 
                     {% if value != '' and entry.field_id != 'parent_id' %}
                         {% include "components/forms/hidden.html.twig" with {

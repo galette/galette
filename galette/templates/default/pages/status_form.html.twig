@@ -21,7 +21,7 @@
                 </label>
                 <input type="number" size="4" name="priorite_statut" id="priorite_statut" value="{{ entry.priorite_statut }}" />
             </div>
-            <p class="exemple">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</p>
+            <p class="field-description">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</p>
         </div>
 
         <input type="hidden" name="mod" id="mod" value="{{ entry.id_statut }}"/>

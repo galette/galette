@@ -27,7 +27,7 @@
                 </label>
             {% endif %}
             {% if field.getInformation() and field.hasInformationAbove() %}
-                <div class="exemple">{{ field.getInformation()|raw }}</div>
+                <div class="field-description">{{ field.getInformation()|raw }}</div>
             {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\Text' %}
                 <textarea name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
@@ -131,7 +131,7 @@
                 {% endif %}
             {% endif %}
             {% if field.getInformation() and not field.hasInformationAbove() %}
-                <div class="exemple">{{ field.getInformation()|raw }}</div>
+                <div class="field-description">{{ field.getInformation()|raw }}</div>
             {% endif %}
         {% endmacro %}
 
@@ -190,7 +190,7 @@
                             {% endif %}
                             {% if repeatable %}
                                 {% if field.getRepeat() == 0 %}
-                                    <p class="exemple repeat_msg" aria-live="polite">{{ _T("Enter as many occurrences you want.") }}</p>
+                                    <p class="field-description repeat_msg" aria-live="polite">{{ _T("Enter as many occurrences you want.") }}</p>
                                 {% else %}
                                     {% if values is iterable and values|length > 0 %}
                                         {% set current_count = values|length %}
@@ -198,7 +198,7 @@
                                         {% set current_count = 1 %}
                                     {% endif %}
                                     {% if current_count < field.getRepeat() %}
-                                        <p class="exemple repeat_msg" aria-live="polite">{{ _T("Enter up to %1$s more occurrences.")|format(field.getRepeat() - current_count) }}</p>
+                                        <p class="field-description repeat_msg" aria-live="polite">{{ _T("Enter up to %1$s more occurrences.")|format(field.getRepeat() - current_count) }}</p>
                                     {% endif %}
                                 {% endif %}
                                 {#

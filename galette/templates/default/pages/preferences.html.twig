@@ -649,7 +649,7 @@
                             </div>
                             <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref_email_newadh }}" maxlength="100" size="30"/>
                         </div>
-                        <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
+                        <span class="field-description">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
@@ -891,7 +891,7 @@
                                 <span class="visually-hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_abrev}) }}</span>
                             </a>
                         </div>
-                        <span class="exemple">{{ _T("(10 characters max)") }}</span>
+                        <span class="field-description">{{ _T("(10 characters max)") }}</span>
                     </div>
                     <div class="field">
                         <label for="pref_card_strip">{{ _T("Long Text (Bottom Line):") }}</label>
@@ -906,7 +906,7 @@
                                 <span class="visually-hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_strip}) }}</span>
                             </a>
                         </div>
-                        <span class="exemple">{{ _T("(65 characters max)") }}</span>
+                        <span class="field-description">{{ _T("(65 characters max)") }}</span>
                     </div>
                     <div class="grouped fields">
                         <div class="inline field">
@@ -983,7 +983,7 @@
                             <option value="7" {% if pref.pref_card_address == 7 %}selected="selected"{% endif %}>{{ _T("Profession") }}</option>
                             <option value="8" {% if pref.pref_card_address == 8 %}selected="selected"{% endif %}>{{ _T("Member number") }}</option>
                         </select>
-                        <span class="exemple">{{ _T("(Choose address printed below name)") }}</span>
+                        <span class="field-description">{{ _T("(Choose address printed below name)") }}</span>
                     </div>
                     <div class="field">
                         <label for="pref_card_year">{{ _T("Year:") }}</label>

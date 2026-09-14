@@ -53,7 +53,7 @@
                 <div class="inline field">
                     <label for="field_min_size">{{ _T("Min Size:") }}</label>
                     <input type="text" name="field_min_size" id="field_min_size" value="{{ df.getMinSize() }}" size="3"/>
-                    <span class="exemple">{{ _T("Minimum number of characters.") }}</span>
+                    <span class="field-description">{{ _T("Minimum number of characters.") }}</span>
                 </div>
     {% endif %}
     {% if df.hasSize() %}
@@ -61,9 +61,9 @@
                     <label for="field_size">{{ _T("Size:") }}</label>
                     <input type="text" name="field_size" id="field_size" value="{{ df.getSize() }}" size="3"/>
         {% if df.getType == 6 %}
-                    <span class="exemple">{{ _T("Maximum file size, in Ko.") }}</span>
+                    <span class="field-description">{{ _T("Maximum file size, in Ko.") }}</span>
         {% else %}
-                    <span class="exemple">{{ _T("Maximum number of characters.") }}</span>
+                    <span class="field-description">{{ _T("Maximum number of characters.") }}</span>
         {% endif %}
                 </div>
     {% endif %}
@@ -71,20 +71,20 @@
                 <div class="inline field">
                     <label for="field_repeat">{{ _T("Repeat:") }}</label>
                     <input type="text" name="field_repeat" id="field_repeat" value="{{ df.getRepeat() }}" size="3"/>
-                    <span class="exemple">{{ _T("Number of values or zero if infinite.") }}</span>
+                    <span class="field-description">{{ _T("Number of values or zero if infinite.") }}</span>
                 </div>
     {% endif %}
     {% if df.hasFixedValues() %}
                 <div class="inline field">
                     <label for="fixed_values">{{ _T("Values:") }}</label>
                     <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{{ df.getValues(true) }}</textarea>
-                    <br/><span class="exemple">{{ _T("Choice list (one entry per line).") }}</span>
+                    <br/><span class="field-description">{{ _T("Choice list (one entry per line).") }}</span>
                 </div>
     {% endif %}
                 <div class="field">
                     <label for="field_information">{{ _T("Information:") }}</label>
                     <textarea name="field_information" id="field_information" cols="20" rows="6">{{ df.getInformation() }}</textarea>
-                    <span class="tip">{{ _T("Extra information displayed along with dynamic field.") }}</span>
+                    <span class="field-description">{{ _T("Extra information displayed along with dynamic field.") }}</span>
                 </div>
                 <div class="inline field">
                     <label for="field_information_above">{{ _T("Display information above input") }}:</label>

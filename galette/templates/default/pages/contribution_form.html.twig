@@ -280,7 +280,7 @@
                 {% if preferences.pref_membership_ext != "" %}
                                 <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
                                 <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
-                                <span class="exemple">{{ _T("months") }}</span>
+                                <span class="field-description">{{ _T("months") }}</span>
                 {% else %}
                                 <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
                                 <div class="ui calendar" id="membership-rangeend">
@@ -313,7 +313,7 @@
                             {{ _T("Notify member") }}
                         </label>
                         <br/>
-                        <span class="exemple">
+                        <span class="field-description">
                             {{ _T("Member will receive a notification by email, if he has an address.") }}
                         </span>
                     </div>
