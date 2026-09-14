@@ -12,4 +12,8 @@ i.circular.basic.question.icon.tooltip {
   &:hover {
     background: @galetteHeaderBackground;
   }
+
+  .ui.form .field.error .corner.label & {
+    color: @textColor;
+  }
 }
