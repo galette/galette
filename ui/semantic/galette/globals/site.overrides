@@ -38,7 +38,7 @@
   color: @unselectedTextColor;
 }
 
-.exemple {
+.field-description {
   color: lighten(@textColor, 8.5);
   font-style: italic;
 
