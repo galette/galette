@@ -242,6 +242,8 @@ class AdvancedConfigController extends AbstractController
                 'known'  => false,
                 //nothing describes it any more, so nothing owns it either
                 'plugin' => null,
+                //nor does anything say it drives an alpha feature
+                'alpha'  => false,
                 'value'  => $this->preferences->$name,
             ];
         }
