@@ -81,11 +81,9 @@ class MailingsController extends CrudController
                 redirect_url: $this->routeparser->urlFor('slash')
             );
         } else {
-            if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-                $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
-            } else {
-                $filters = new MembersList();
-            }
+            //RKA\Session::__isset() reports whether the key exists, not
+            //whether it holds something: a null has to be caught here.
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())} ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
@@ -351,9 +349,11 @@ class MailingsController extends CrudController
                         Analog::INFO
                     );
                     //cleanup and redirect to the progress page
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-                    $this->session->mailing = null;
-                    $this->session->redirect_mailing = null;
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
                     return $response
                         ->withStatus(301)
                         ->withHeader(
@@ -396,9 +396,11 @@ class MailingsController extends CrudController
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-                    $this->session->mailing = null;
-                    $this->session->redirect_mailing = null;
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
                     $goto = $this->routeparser->urlFor('mailings');
                 } elseif ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
@@ -425,9 +427,11 @@ class MailingsController extends CrudController
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-                    $this->session->mailing = null;
-                    $this->session->redirect_mailing = null;
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
                     $success_detected[] = _T("Mailing has been successfully sent!");
                     $goto = $redirect_url;
                 }
