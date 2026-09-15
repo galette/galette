@@ -34,6 +34,8 @@ use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
+use function Safe\preg_replace;
+
 /**
  * Preferences for galette
  *
@@ -1107,7 +1109,12 @@ class Preferences
 
         $signature = $this->proceedReplacements($signature);
         if ($as_text) {
-            $signature = Html::convertToText($signature);
+            //replacements hand back markup - an address broken with <br>, a
+            //website as a link - while the signature itself is written as
+            //plain text. Its own line breaks have to become markup too, or
+            //the conversion reads them as insignificant HTML whitespace and
+            //collapses the whole signature onto a single line.
+            $signature = Html::convertToText(preg_replace('/\r\n|\n|\r/', '<br />', $signature));
         }
 
         return "\r\n-- \r\n" . $signature;

@@ -869,8 +869,9 @@ class Preferences extends GaletteTestCase
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail)
         );
+        //the line breaks the signature is written with survive the conversion
         $this->assertSame(
-            "\r\n-- \r\nGalette https://galette.eu",
+            "\r\n-- \r\nGalette\n\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail, as_text: true)
         );
 
@@ -924,7 +925,38 @@ class Preferences extends GaletteTestCase
             $this->preferences->getMailSignature($mail)
         );
         $this->assertSame(
-            "\r\n-- \r\nGalette (http:///logo) [our website](https://galette.eu)",
+            "\r\n-- \r\nGalette\n\n(http:///logo) [our website](https://galette.eu)",
+            $this->preferences->getMailSignature($mail, as_text: true)
+        );
+    }
+
+    /**
+     * Test a multiline signature is not collapsed in the text version
+     */
+    public function testGetMultilineMailSignature(): void
+    {
+        $mail = new PHPMailer();
+        $this->preferences->pref_slogan = 'Free your association management!';
+        $this->preferences->pref_website = 'https://galette.eu';
+        $this->preferences->pref_org_email = 'contact@galette.eu';
+        $this->preferences->pref_adresse = 'Somewhere';
+        $this->preferences->pref_cp = '00000';
+        $this->preferences->pref_ville = 'Anytown';
+        $this->preferences->pref_pays = 'FRANCE';
+        $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n{ASSO_SLOGAN}\r\n\r\n"
+            . "{ASSO_ADDRESS_MULTI}\r\n\r\n{ASSO_WEBSITE}\r\n{ASSO_EMAIL}";
+
+        $this->assertSame(
+            "\r\n-- \r\n"
+            . "Galette\n"
+            . "Free your association management!\n"
+            . "\n"
+            . "Galette\n"
+            . "Somewhere\n"
+            . "00000 Anytown - FRANCE\n"
+            . "\n"
+            . "https://galette.eu\n"
+            . "contact@galette.eu",
             $this->preferences->getMailSignature($mail, as_text: true)
         );
     }
