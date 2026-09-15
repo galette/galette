@@ -110,6 +110,7 @@ dist/
 
 playwright-report/
 test-results/
+.phpunit.result.cache
 
 # bin/serve local state (ports, saved configurations, sessions)
 /.serve/
