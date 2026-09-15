@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-08-25 13:51+0200\n"
-"PO-Revision-Date: 2026-09-15 07:51+0000\n"
+"PO-Revision-Date: 2026-09-15 13:56+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -2049,10 +2049,9 @@ msgstr "Ni mogoče pretvoriti tabele %1$s v InnoDB/utf8mb4: %2$s"
 msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
 msgstr "%1$s osirotelih vrstic (neznano %2$s) je bilo odstranjenih iz %3$s."
 
-#, fuzzy, php-format
-#| msgid "Title '%1$s' has not been added!"
+#, php-format
 msgid "Foreign key on %1$s.%2$s has been added."
-msgstr "Naslov '%1$s' ni bil dodan!"
+msgstr "Naslov %1$s ni bil dodan!"
 
 #, php-format
 msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
