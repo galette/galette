@@ -740,11 +740,17 @@ trait Replacements
                 $field_id    = (int)$match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
+                //an ordered list, so that two occurrences sharing a value both show up
                 $field_values = [];
                 if ($object !== null) {
                     $all_values = $object->getDynamicFields()->getValues($field_id);
                     foreach ($all_values as $field_value) {
-                        $field_values[$field_value['field_val']] = $field_value['text_val'] ?? $field_value['field_val'];
+                        $field_values[] = [
+                            'val_index' => (int)$field_value['val_index'],
+                            'field_val' => $field_value['field_val'],
+                            //a choice occurrence shows its label, not its index
+                            'display'   => $field_value['text_val'] ?? $field_value['field_val']
+                        ];
                     }
                 }
 
@@ -752,26 +758,26 @@ trait Replacements
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
                         if ($capacity === 'INPUT') {
+                            $selected = array_column($field_values, 'field_val');
                             foreach ($choice_values as $choice_idx => $choice_value) {
                                 $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
-                                if (isset($field_values[$choice_idx])) {
+                                if (in_array($choice_idx, $selected)) {
                                     $value .= ' checked="checked"';
                                 }
                                 $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
                             }
                         } else {
-                            $value .= implode('', $field_values);
+                            $value .= implode('', array_column($field_values, 'display'));
                         }
                         break;
                     case DynamicField::BOOLEAN:
                         foreach ($field_values as $field_value) {
-                            $value .= ($field_value ? _T("Yes") : _T("No"));
+                            $value .= ($field_value['field_val'] ? _T("Yes") : _T("No"));
                         }
                         break;
                     case DynamicField::FILE:
-                        $pos = 0;
                         foreach ($field_values as $field_value) {
-                            if (empty($field_value)) {
+                            if (empty($field_value['field_val'])) {
                                 continue;
                             }
                             $spattern = (
@@ -788,18 +794,19 @@ trait Replacements
                                         'form_name' => $form_name,
                                         'id' => (string)$object->id,
                                         'fid' => (string)$field_id,
-                                        'pos' => (string)++$pos,
-                                        'name' => (string)$field_value
+                                        //the file on disk is named after the value index
+                                        'pos' => (string)$field_value['val_index'],
+                                        'name' => (string)$field_value['field_val']
                                     ]
                                 ),
-                                $field_value
+                                $field_value['field_val']
                             );
                         }
                         break;
                     case DynamicField::TEXT:
                     case DynamicField::LINE:
                     case DynamicField::DATE:
-                        $value .= implode('<br/>', $field_values);
+                        $value .= implode('<br/>', array_column($field_values, 'display'));
                         break;
                 }
             }

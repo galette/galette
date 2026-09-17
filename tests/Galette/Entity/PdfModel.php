@@ -205,6 +205,64 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
+     * Test every occurrence of a repeatable field reaches the replacements
+     */
+    public function testRepeatedOccurrencesReplacements(): void
+    {
+        $adf = $this->createDynamicField([
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic repeatable line',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 3
+        ]);
+        $this->assertTrue($adf->isRepeatable());
+
+        //an invoice also carries contribution patterns, they all need a replacement
+        $cdf = $this->createDynamicField([
+            'form_name'         => 'contrib',
+            'field_form'        => 'contrib',
+            'field_name'        => 'Dynamic contribution date',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::DATE,
+            'field_required'    => 1,
+            'field_repeat'      => 1
+        ]);
+
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => 'Repeated occurrences',
+            'model_subtitle' => 'The subtitle',
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'dynvalue: {DYNFIELD_' . $adf->getId() . '_ADH}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+
+        //two occurrences share a value: both have to show up
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $adf->getId() . '_1' => 'Same value',
+            'info_field_' . $adf->getId() . '_2' => 'Another value',
+            'info_field_' . $adf->getId() . '_3' => 'Same value'
+        ];
+        $this->createMember($data);
+        $model->setMember($this->adh);
+
+        $this->createPdfContribution($cdf);
+        $model->setContribution($this->contrib);
+
+        $this->assertSame(
+            'dynvalue: Same value<br/>Another value<br/>Same value',
+            $model->hbody
+        );
+    }
+
+    /**
      * Test model replacements
      */
     public function testReplacements(): void
