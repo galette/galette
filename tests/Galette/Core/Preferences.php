@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function Safe\define;
 use function Safe\file_put_contents;
+use function Safe\preg_replace;
 
 /**
  * Preferences tests class
@@ -180,6 +181,33 @@ class Preferences extends GaletteTestCase
         foreach ($originals as $name => $value) {
             $this->preferences->$name = $value;
         }
+    }
+
+    /**
+     * The mail signature keeps the lines it was written with
+     */
+    public function testMailSignatureKeepsItsLines(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_mail_sign;
+
+        //the signature is written as text in a textarea, and the browser sends
+        //CRLF back. Saving the settings again must not move a line
+        $signature = "{ASSO_NAME}\r\n{ASSO_SLOGAN}\r\n\r\n{ASSO_ADDRESS_MULTI}\r\n\r\n{ASSO_WEBSITE}";
+        $this->preferences->pref_mail_sign = $signature;
+        for ($i = 0; $i < 3; $i++) {
+            $shown = $this->preferences->pref_mail_sign;
+            $this->assertSame($signature, $shown);
+            $this->preferences->pref_mail_sign = preg_replace('/\r\n|\r|\n/', "\r\n", $shown);
+        }
+        $this->assertSame($signature, $this->preferences->pref_mail_sign);
+
+        //a signature a release running on Windows has already doubled is
+        //repaired rather than carried over
+        $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\r\n{ASSO_WEBSITE}";
+        $this->assertSame("{ASSO_NAME}\r\n{ASSO_WEBSITE}", $this->preferences->pref_mail_sign);
+
+        $this->preferences->pref_mail_sign = $original;
     }
 
     /**
