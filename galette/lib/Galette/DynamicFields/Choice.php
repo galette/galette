@@ -31,6 +31,7 @@ class Choice extends DynamicField
         $this->specifications = new ChoiceSpecifications();
         $this->has_data = true;
         $this->fixed_values = true;
+        $this->multi_valued = true;
         parent::__construct($zdb, $id);
     }
 

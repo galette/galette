@@ -53,7 +53,7 @@ class File extends GaletteTestCase
     public function testBaseProperties(): void
     {
         $muliple = $this->file->isMultiValued();
-        $this->assertFalse($muliple);
+        $this->assertTrue($muliple);
 
         $required = $this->file->isRequired();
         $this->assertFalse($required);

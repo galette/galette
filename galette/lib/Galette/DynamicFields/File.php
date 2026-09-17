@@ -32,6 +32,7 @@ class File extends DynamicField
         parent::__construct($zdb, $id);
         $this->has_data = true;
         $this->has_size = true;
+        $this->multi_valued = true;
     }
 
     /**

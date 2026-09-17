@@ -53,7 +53,7 @@ class Choice extends GaletteTestCase
     public function testBaseProperties(): void
     {
         $muliple = $this->choice->isMultiValued();
-        $this->assertFalse($muliple);
+        $this->assertTrue($muliple);
 
         $required = $this->choice->isRequired();
         $this->assertFalse($required);

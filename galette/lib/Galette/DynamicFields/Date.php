@@ -34,6 +34,7 @@ class Date extends DynamicField
     {
         parent::__construct($zdb, $id);
         $this->has_data = true;
+        $this->multi_valued = true;
     }
 
     /**

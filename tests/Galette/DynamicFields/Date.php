@@ -53,7 +53,7 @@ class Date extends GaletteTestCase
     public function testBaseProperties(): void
     {
         $muliple = $this->date->isMultiValued();
-        $this->assertFalse($muliple);
+        $this->assertTrue($muliple);
 
         $required = $this->date->isRequired();
         $this->assertFalse($required);

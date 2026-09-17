@@ -108,12 +108,110 @@ class DynamicFieldsHandle extends GaletteTestCase
     }
 
     /**
+     * Test several occurrences of a repeatable field are stored and renumbered
+     */
+    public function testRepeatableOccurrences(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::DATE, 'Dynamic dates', 3);
+        $this->assertTrue($field->isRepeatable());
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $fid . '_1' => '2024-01-05',
+            'info_field_' . $fid . '_2' => '2024-06-12',
+            'info_field_' . $fid . '_3' => '2025-02-28'
+        ];
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame(
+            [
+                1 => '2024-01-05',
+                2 => '2024-06-12',
+                3 => '2025-02-28'
+            ],
+            $this->getStoredOccurrences($adh, $fid)
+        );
+
+        //the middle occurrence is dropped from the form; the last one takes its index
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $fid . '_1' => '2024-01-05',
+            'info_field_' . $fid . '_3' => '2025-02-28'
+        ];
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame(
+            [
+                1 => '2024-01-05',
+                2 => '2025-02-28'
+            ],
+            $this->getStoredOccurrences($adh, $fid)
+        );
+    }
+
+    /**
+     * Test a required repeatable field is satisfied by its first occurrence alone
+     */
+    public function testRequiredRepeatableField(): void
+    {
+        $this->logSuperAdmin();
+        $field = \Galette\DynamicFields\DynamicField::getFieldType(
+            $this->zdb,
+            \Galette\DynamicFields\DynamicField::DATE
+        );
+        $this->assertTrue($field->store([
+            'form_name'         => 'adh',
+            'field_name'        => 'Required dates',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::DATE,
+            'field_required'    => 1,
+            'field_repeat'      => 0
+        ]));
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        //an empty extra occurrence does not make the field missing
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $fid . '_1' => '2024-01-05',
+            'info_field_' . $fid . '_2' => ''
+        ];
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame([1 => '2024-01-05'], $this->getStoredOccurrences($adh, $fid));
+
+        //no occurrence at all is reported once, not once per occurrence
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $fid . '_1' => '',
+            'info_field_' . $fid . '_2' => ''
+        ];
+        $this->assertSame(['Missing required field Required dates'], $adh->check($data, [], []));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Some errors has been thew attempting to edit/store a member'
+        );
+    }
+
+    /**
      * Test files follow the occurrences they belong to
      */
     public function testRepeatableFileOccurrences(): void
     {
         $this->logSuperAdmin();
         $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Dynamic files', 2);
+        $this->assertTrue($field->isRepeatable());
 
         $this->getMemberOne();
         $fid = $field->getId();

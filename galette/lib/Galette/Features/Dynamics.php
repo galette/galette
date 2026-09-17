@@ -109,18 +109,56 @@ trait Dynamics
                 }
             }
 
+            //a repeatable field is required as a whole: one filled occurrence is enough,
+            //and a field that is missing it is reported once, not once per occurrence
+            $missing = [];
+            $posted_values = [];
+            foreach ($dynamic_fields as $dfield_values) {
+                $posted_values[(int)$dfield_values['field_id']][(int)$dfield_values['val_index']]
+                    = $dfield_values['value'];
+            }
+
+            //an occurrence removed from the form is no longer posted; drop what is gone.
+            //files are left out: they travel apart, and have their own delete control.
+            foreach ($posted_values as $field_id => $values) {
+                if ($fields[$field_id] instanceof File) {
+                    continue;
+                }
+                foreach ($this->dynamics->getValueIndexes($field_id) as $val_index) {
+                    if (!isset($values[$val_index])) {
+                        $this->dynamics->unsetValue($field_id, $val_index);
+                    }
+                }
+            }
+
+            foreach ($posted_values as $field_id => $values) {
+                if (!$fields[$field_id]->isRequired()) {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    if ($value !== null && trim((string)$value) !== '') {
+                        continue 2;
+                    }
+                }
+                $missing[$field_id] = true;
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is a field name
+                    _T('Missing required field %1$s'),
+                    $fields[$field_id]->getName(),
+                );
+            }
+
             foreach ($dynamic_fields as $dfield_values) {
                 $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
 
-                if ($fields[$field_id]->isRequired() && (trim((string)$value) === '' || $value == null)) {
-                    $this->errors[] = sprintf(
-                        //TRANS: parameter is a field name
-                        _T('Missing required field %1$s'),
-                        $fields[$field_id]->getName(),
-                    );
-                } elseif ($fields[$field_id] instanceof File) {
+                if (isset($missing[$field_id])) {
+                    //already reported, do not touch stored values
+                    continue;
+                }
+
+                if ($fields[$field_id] instanceof File) {
                     //the delete checkbox: the occurrence goes away entirely, and the file
                     //on disk goes with it once the values are stored
                     $this->dynamics->unsetValue($field_id, $val_index);

@@ -195,6 +195,26 @@ class DynamicFieldsHandle
     }
 
     /**
+     * Get the indexes of the occurrences currently held for a field
+     *
+     * Unlike getValues(), this does not create a pristine occurrence for a field
+     * that has none.
+     *
+     * @param int $field Field ID
+     *
+     * @return array<int>
+     */
+    public function getValueIndexes(int $field): array
+    {
+        $indexes = [];
+        foreach ($this->current_values[$field] ?? [] as $value) {
+            $indexes[] = (int)$value['val_index'];
+        }
+
+        return $indexes;
+    }
+
+    /**
      * Set field value
      *
      * @param ?int       $item  Item ID
