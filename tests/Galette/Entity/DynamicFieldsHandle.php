@@ -205,6 +205,46 @@ class DynamicFieldsHandle extends GaletteTestCase
     }
 
     /**
+     * Test any posted value on a file occurrence deletes it
+     *
+     * The delete checkbox posts `on`; the form also posts a plain marker when an
+     * occurrence holding a file is removed from the page, since a stored file is
+     * not posted back. Neither value is looked at, and both must delete.
+     */
+    public function testPostedFileOccurrenceIsDeleted(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Deletable files', 2);
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 1, value: 'first.txt');
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 2, value: 'second.txt');
+        $this->assertTrue($dynamics->storeValues($adh->id));
+
+        /** @var \Galette\DynamicFields\File $stored_field */
+        $stored_field = $dynamics->getFields()[$fid];
+        $first = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 1);
+        $second = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 2);
+        $this->files = [$first, $second];
+        file_put_contents($first, 'first');
+        file_put_contents($second, 'second');
+
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + ['info_field_' . $fid . '_1' => '1'];
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame([1 => 'second.txt'], $this->getStoredOccurrences($adh, $fid));
+        $this->assertSame('second', file_get_contents($first));
+        $this->assertFileDoesNotExist($second);
+    }
+
+    /**
      * Test files follow the occurrences they belong to
      */
     public function testRepeatableFileOccurrences(): void

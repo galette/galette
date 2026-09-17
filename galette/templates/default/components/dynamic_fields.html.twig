@@ -285,6 +285,18 @@
                             _field.append(_button);
                             _button.on('click', function(e) {
                                 e.preventDefault();
+
+                                {#
+                                 # A stored file is not posted back with the form, so dropping its
+                                 # occurrence from the page says nothing to the server. Leave the
+                                 # deletion behind, the way the delete checkbox states it.
+                                 #}
+                                if (_field.data('filled') && _field.find('input[type="file"]').length) {
+                                    $('<input type="hidden" value="1" />')
+                                        .attr('name', _getControl(_field).attr('name'))
+                                        .appendTo(_parent);
+                                }
+
                                 _field.remove();
                                 _refresh(_parent);
                             });
