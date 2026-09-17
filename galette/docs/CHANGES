@@ -11,8 +11,6 @@ Changes
 - Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
 - Session identifier is renewed on login, and when impersonating a member or coming back from it
 - Failed authentication attempts are now counted, and further attempts refused for a while: per account and address, per address, and per account as a backstop against attacks spread over many addresses. Thresholds and durations are in the advanced configuration
-- Session identifier is renewed on login, and when impersonating a member or coming back from it
-- Failed authentication attempts are now counted, and further attempts refused for a while: per account and address, per address, and per account as a backstop against attacks spread over many addresses. Thresholds and durations are in the advanced configuration
 - Password recovery requests are limited as well, per account asked about and per address asking
 - Self subscriptions are limited per address
 - Plugins can limit their own forms through the same mechanism, under a name of their own
