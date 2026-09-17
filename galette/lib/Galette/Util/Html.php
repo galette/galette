@@ -56,6 +56,10 @@ class Html
             }
         }
         $config->set('Cache.SerializerPath', $cache_dir);
+        //HTMLPurifier writes its output with the line endings of the host it
+        //runs on: `Output.Newline` defaults to PHP_EOL, CRLF on Windows. What
+        //comes out of a sanitizer must not depend on the operating system
+        $config->set('Output.Newline', "\n");
         $config->set('URI.AllowedSchemes', [
             'http' => true,
             'https' => true,
@@ -69,24 +73,51 @@ class Html
         }
         $purifier = new \HTMLPurifier($config);
 
+        $normalized = self::normalizeEndings($html);
+
         // Remove all dangerous schemes
         $stripped_schemes = preg_replace(
             '/\b(?:javascript|data|vbscript):\s*/i',
             '',
-            $html
+            $normalized
         );
 
         [$hidden, $tokens] = self::hidePatterns($stripped_schemes);
         $purified = strtr($purifier->purify($hidden), $tokens);
 
-        //HTMLPurifier normalizes every line ending to LF, and leaves no CR
-        //behind. Sanitizing markup is no reason to rewrite whitespace: a mail
+        //the endings the value comes back with are this method's business, not
+        //the purifier's: read them all as LF whatever it wrote, so pinning
+        //`Output.Newline` above is a statement of intent rather than the only
+        //thing standing between a Windows host and a doubled CR
+        $purified = preg_replace('/\r\n|\r/', "\n", $purified);
+
+        //Sanitizing markup is no reason to rewrite whitespace: a mail
         //signature and a mail text keep the endings they came with
-        if (str_contains($html, "\r\n")) {
+        if (str_contains($normalized, "\r\n")) {
             $purified = str_replace("\n", "\r\n", $purified);
         }
 
         return $purified;
+    }
+
+    /**
+     * Drop the CR that no line ending needs
+     *
+     * A form sends CRLF and a template hands back what it was given, so a CR
+     * sitting right before a CRLF cannot have been typed: it is what a release
+     * running on Windows left behind, having restored a CRLF the purifier had
+     * already written as one. Such a value grows by a line on every save, and
+     * dropping the stray CR here stops the growth and repairs the value the
+     * next time it is stored.
+     *
+     * The blank lines it has already gained cannot be told apart from the ones
+     * an administrator typed, and stay.
+     *
+     * @param string $html HTML to normalize the line endings of
+     */
+    private static function normalizeEndings(string $html): string
+    {
+        return preg_replace('/\r+(\r\n)/', '$1', $html);
     }
 
     /**

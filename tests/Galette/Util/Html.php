@@ -13,6 +13,8 @@ namespace Galette\Tests\Util;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function Safe\preg_replace;
+
 /**
  * Html tests class
  *
@@ -76,6 +78,40 @@ class Html extends GaletteTestCase
             "<p>one</p>\n<p>two</p>",
             \Galette\Util\Html::clean("<p>one</p>\n<p>two</p>")
         );
+    }
+
+    /**
+     * A value does not gain a line ending each time it is cleaned
+     */
+    public function testCleanDoesNotDoubleLineEndings(): void
+    {
+        //what a release running on Windows stored: the purifier had already
+        //written CRLF, and the restoration added a CR in front of each one
+        $this->assertSame(
+            "{ASSO_NAME}\r\n{ASSO_WEBSITE}",
+            \Galette\Util\Html::clean("{ASSO_NAME}\r\r\n{ASSO_WEBSITE}")
+        );
+        //however many saves it took to get there
+        $this->assertSame(
+            "one\r\ntwo",
+            \Galette\Util\Html::clean("one\r\r\r\ntwo")
+        );
+        //a blank line an administrator typed is not one of those, and stays
+        $this->assertSame(
+            "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
+            \Galette\Util\Html::clean("{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}")
+        );
+
+        //the browser normalizes the endings of a textarea and sends CRLF back:
+        //saving the settings again has to leave the value where it was
+        $signature = "{ASSO_NAME}\r\n{ASSO_SLOGAN}\r\n\r\n{ASSO_ADDRESS_MULTI}\r\n\r\n{ASSO_WEBSITE}";
+        $stored = $signature;
+        for ($i = 0; $i < 3; $i++) {
+            $shown = \Galette\Util\Html::clean($stored);
+            $posted = preg_replace('/\r\n|\r|\n/', "\r\n", $shown);
+            $stored = \Galette\Util\Html::clean($posted);
+            $this->assertSame($signature, $stored);
+        }
     }
 
     /**
