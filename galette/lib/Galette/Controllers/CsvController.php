@@ -45,6 +45,9 @@ use function Safe\rewind;
 
 class CsvController extends AbstractController
 {
+    /** Occurrences offered in the import model for a field with no repeat limit */
+    public const int UNLIMITED_IMPORT_OCCURRENCES = 10;
+
     #[Inject]
     protected CsvIn $csvin;
     #[Inject]
@@ -515,9 +518,24 @@ class CsvController extends AbstractController
         $dynamic_import_fields = [];
         $dfields = $fieldset->getList('adh');
         foreach ($dfields as $field) {
-            if ($field->hasData() && !$field instanceof \Galette\DynamicFields\File) {
+            if (!$field->hasData() || $field instanceof \Galette\DynamicFields\File) {
+                continue;
+            }
+
+            $label = __($field->getName());
+            if (!$field->isRepeatable()) {
                 $dynamic_import_fields['dynfield_' . $field->getId()] = [
-                    'label'     => __($field->getname())
+                    'label'     => $label
+                ];
+                continue;
+            }
+
+            //one column per occurrence; a field with no limit gets a workable default
+            $occurrences = $field->getRepeat() > 0 ? $field->getRepeat() : self::UNLIMITED_IMPORT_OCCURRENCES;
+            for ($i = 1; $i <= $occurrences; $i++) {
+                $dynamic_import_fields['dynfield_' . $field->getId() . '_' . $i] = [
+                    //TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+                    'label'     => sprintf(_T('%1$s (occurrence %2$s)'), $label, (string)$i)
                 ];
             }
         }

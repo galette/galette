@@ -167,29 +167,32 @@ class CsvIn extends GaletteTestCase
                             $this->assertEquals($created[$field], $member->$field);
                         }
                     } else {
-                        //manage dynamic fields
+                        //manage dynamic fields; a column may target an occurrence
                         $matches = [];
-                        if (preg_match('/^dynfield_(\d+)/', (string)$field, $matches)) {
+                        if (preg_match('/^dynfield_(\d+)(?:_(\d+))?$/', (string)$field, $matches)) {
                             $adh = new Adherent($this->zdb, (int)$member->id_adh, ['dynamics' => true]);
-                            $expected = [
-                                [
-                                    'item_id'       => $adh->id,
-                                    'field_form'    => 'adh',
-                                    'val_index'     => 1,
-                                    'field_val'     => $created[$field]
-                                ]
-                            ];
+                            $val_index = (int)($matches[2] ?? 1);
 
-                            $dfield = $adh->getDynamicFields()->getValues((int)$matches[1]);
-                            if (isset($dfield[0]['text_val'])) {
-                                //choice, add textual value
-                                $expected[0]['text_val'] = $values[$created[$field]];
+                            $stored = null;
+                            foreach ($adh->getDynamicFields()->getValues((int)$matches[1]) as $occurrence) {
+                                if ((int)$occurrence['val_index'] === $val_index) {
+                                    $stored = $occurrence;
+                                    break;
+                                }
                             }
 
-                            $this->assertEquals(
-                                $expected,
-                                $adh->getDynamicFields()->getValues((int)$matches[1])
-                            );
+                            $expected = [
+                                'item_id'       => $adh->id,
+                                'field_form'    => 'adh',
+                                'val_index'     => $val_index,
+                                'field_val'     => $created[$field]
+                            ];
+                            if (isset($stored['text_val'])) {
+                                //choice, add textual value
+                                $expected['text_val'] = $values[$created[$field]];
+                            }
+
+                            $this->assertEquals($expected, $stored);
                         } else {
                             throw new \RuntimeException("Unknown field $field");
                         }
@@ -877,6 +880,89 @@ class CsvIn extends GaletteTestCase
         $this->expectLogEntry(
             \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] - Wrong date format (Y-m-d) for Dynamic date field!'
+        );
+    }
+
+    /**
+     * Test import of several occurrences of a repeatable dynamic field
+     */
+    public function testImportDynamicOccurrences(): void
+    {
+        $field_data = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic repeatable dates',
+            'field_perm'        => FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::DATE,
+            'field_required'    => 0,
+            'field_repeat'      => 3
+        ];
+
+        $df = DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+        $this->assertTrue(
+            $df->store($field_data),
+            implode(' ', $df->getErrors() + $df->getWarnings())
+        );
+        $this->assertTrue($df->isRepeatable());
+        $this->checkDynamicTranslation($field_data['field_name']);
+
+        $fid = $df->getId();
+        $fields = ['nom_adh', 'ville_adh', 'dynfield_' . $fid . '_1', 'dynfield_' . $fid . '_2', 'fingerprint'];
+        $file_name = 'test-import-atoum-dyn-occurrences.csv';
+        $flash_messages = [
+            'success_detected' => ["File '$file_name' has been successfully imported :)"]
+        ];
+
+        $members_list = $this->getMemberData1();
+        foreach ($members_list as &$data) {
+            $data['dynfield_' . $fid . '_1'] = $data['date_crea_adh'];
+            $data['dynfield_' . $fid . '_2'] = '2024-06-12';
+        }
+        unset($data);
+
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: $flash_messages,
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 10
+        );
+
+        //both occurrences made it, and nothing else did
+        $this->logSuperAdmin();
+        $members = new \Galette\Repository\Members();
+        foreach ($members->getList() as $member) {
+            $adh = new Adherent($this->zdb, (int)$member->id_adh, ['dynamics' => true]);
+            $this->assertCount(2, $adh->getDynamicFields()->getValues($fid));
+        }
+        $this->login->logOut();
+
+        //cleanup members and dynamic fields values
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+
+        //a column with no occurrence number still targets the first one
+        $fields = ['nom_adh', 'ville_adh', 'dynfield_' . $fid, 'fingerprint'];
+        $file_name = 'test-import-atoum-dyn-occurrence-default.csv';
+        $flash_messages = [
+            'success_detected' => ["File '$file_name' has been successfully imported :)"]
+        ];
+
+        $members_list = $this->getMemberData1();
+        foreach ($members_list as &$data) {
+            $data['dynfield_' . $fid] = $data['date_crea_adh'];
+        }
+        unset($data);
+
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: $flash_messages,
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 10
         );
     }
 

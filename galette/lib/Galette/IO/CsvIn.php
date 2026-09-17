@@ -384,7 +384,7 @@ class CsvIn extends Csv
 
                     if (str_starts_with((string)$this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
-                        $dfields[$this->fields[$col] . '_1'] = $column;
+                        $dfields[$this->getDynamicFieldKey((string)$this->fields[$col])] = $column;
                     } else {
                         //standard field
                         $member->validate($this->fields[$col], $column, $this->fields);
@@ -427,6 +427,23 @@ class CsvIn extends Csv
     }
 
     /**
+     * Get the occurrence a dynamic field import column targets
+     *
+     * A column may name its occurrence (`dynfield_<id>_<n>`); one that does not
+     * targets the first occurrence, which keeps existing import models working.
+     *
+     * @param string $field Import model column name
+     */
+    private function getDynamicFieldKey(string $field): string
+    {
+        if (count(explode('_', $field)) < 3) {
+            $field .= '_1';
+        }
+
+        return $field;
+    }
+
+    /**
      * Store members in database
      *
      * @param string $filename CSV filename
@@ -454,7 +471,8 @@ class CsvIn extends Csv
                     foreach ($data as $column) {
                         if (str_starts_with($this->fields[$col], 'dynfield_')) {
                             //dynamic field, keep to check later
-                            $values[str_replace('dynfield_', 'info_field_', $this->fields[$col] . '_1')] = $column;
+                            $key = $this->getDynamicFieldKey($this->fields[$col]);
+                            $values[str_replace('dynfield_', 'info_field_', $key)] = $column;
                             $col++;
                             continue;
                         }
