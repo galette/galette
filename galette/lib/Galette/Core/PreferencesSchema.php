@@ -875,6 +875,7 @@ final class PreferencesSchema
             self::ERR_BEG_MEMBERSHIP_DATE => _T("- Invalid date for beginning of membership."),
             self::ERR_CARD_YEAR => _T("- Invalid year for cards."),
             self::ERR_WEBSITE => _T("- Invalid website URL."),
+            self::ERR_EMAIL => _T("- Invalid E-Mail address for '%field': %address"),
             self::ERR_POSITIVE_NUMBER => _T("- Value for '%field' must be a positive number!"),
             //throttling can be made as generous as wanted, but not turned off
             self::ERR_THROTTLE_ATTEMPTS => str_replace(

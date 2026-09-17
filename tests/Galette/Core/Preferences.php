@@ -1128,8 +1128,11 @@ class Preferences extends GaletteTestCase
 
         $post = array_merge($preferences, ['pref_email' => 'notvalid']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: notvalid'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid E-Mail address: notvalid');
+        $this->assertSame(
+            ["- Invalid E-Mail address for 'pref_email': notvalid"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address for 'pref_email': notvalid");
 
         $post = array_merge($preferences, ['pref_email' => 'email@address.com']);
         $this->assertTrue(
@@ -1158,14 +1161,23 @@ class Preferences extends GaletteTestCase
 
         $post = array_merge($preferences, ['pref_email' => 'email@localhost']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: email@localhost'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid E-Mail address: email@localhost');
+        $this->assertSame(
+            ["- Invalid E-Mail address for 'pref_email': email@localhost"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address for 'pref_email': email@localhost");
 
         //can be a coma separated value only for pref_email_newadh
         $post = array_merge($preferences, ['pref_email' => 'email@address.com,another@galette.eu']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: email@address.com,another@galette.eu'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid E-Mail address: email@address.com,another@galette.eu');
+        $this->assertSame(
+            ["- Invalid E-Mail address for 'pref_email': email@address.com,another@galette.eu"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address for 'pref_email': email@address.com,another@galette.eu"
+        );
 
 
         $post = array_merge($preferences, ['pref_email_newadh' => 'email@address.com,another@galette.eu']);
@@ -1283,6 +1295,77 @@ class Preferences extends GaletteTestCase
                 '- You must provide a password for SMTP authentication.'
             ],
             $this->preferences->getErrors()
+        );
+    }
+
+    /**
+     * Every preference is validated on every save, so the address standing in
+     * the way is often in a field the administrator did not touch. The message
+     * has to say which one -- the settings page carries four of them.
+     */
+    public function testInvalidEmailNamesItsPreference(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $fields = [
+            'pref_email',
+            'pref_email_reply_to',
+            'pref_email_newadh',
+            'pref_org_email',
+        ];
+
+        foreach ($fields as $field) {
+            $post = array_merge($preferences, [$field => 'admin']);
+            $this->assertFalse(
+                $this->preferences->check($post, $this->login),
+                $field . ' should not accept an address that is not one'
+            );
+            $this->assertSame(
+                ["- Invalid E-Mail address for '" . $field . "': admin"],
+                $this->preferences->getErrors()
+            );
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                "- Invalid E-Mail address for '" . $field . "': admin"
+            );
+        }
+
+        //the one that takes a list names itself as well, once per bad address
+        $post = array_merge(
+            $preferences,
+            ['pref_email_newadh' => 'good@galette.eu,admin,worse@localhost']
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                "- Invalid E-Mail address for 'pref_email_newadh': admin",
+                "- Invalid E-Mail address for 'pref_email_newadh': worse@localhost",
+            ],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address for 'pref_email_newadh': admin");
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address for 'pref_email_newadh': worse@localhost"
+        );
+
+        //and a change to something else is refused along with it, which is how
+        //this is met in practice
+        $post = array_merge(
+            $preferences,
+            ['pref_email_reply_to' => 'admin', 'pref_nom' => 'Some association']
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            ["- Invalid E-Mail address for 'pref_email_reply_to': admin"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address for 'pref_email_reply_to': admin"
         );
     }
 

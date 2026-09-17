@@ -137,7 +137,11 @@ final class Fields
 
         foreach ($addresses as $address) {
             if (!GaletteMail::isValidEmail($address)) {
-                $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                $msg = str_replace(
+                    '%address',
+                    (string)$address,
+                    PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_EMAIL, $fieldname)
+                );
                 Analog::log($msg, Analog::WARNING);
                 $this->errors[] = $msg;
             }
