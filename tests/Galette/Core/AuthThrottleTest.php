@@ -379,15 +379,23 @@ class AuthThrottleTest extends GaletteTestCase
             AuthThrottle::MIN_SECONDS,
             $this->getStoredDelay(AuthThrottle::SCOPE_ACCOUNT_IP, $login . '|127.0.0.1')
         );
-        $this->assertSame(AuthThrottle::MIN_SECONDS, $this->throttle->getRetryDelay($login));
+        $this->assertRemainingDelay(AuthThrottle::MIN_SECONDS, $this->throttle->getRetryDelay($login));
 
         //the public forms are held to the floor as well
         for ($i = 0; $i < AuthThrottle::MIN_ATTEMPTS; $i++) {
             $this->throttle->recordRecovery($login);
             $this->throttle->recordSubscribe();
         }
-        $this->assertSame(AuthThrottle::MIN_SECONDS, $this->throttle->getRecoveryDelay($login));
-        $this->assertSame(AuthThrottle::MIN_SECONDS, $this->throttle->getSubscribeDelay());
+        $this->assertSame(
+            AuthThrottle::MIN_SECONDS,
+            $this->getStoredDelay(AuthThrottle::SCOPE_RECOVERY_ACCOUNT, $login)
+        );
+        $this->assertSame(
+            AuthThrottle::MIN_SECONDS,
+            $this->getStoredDelay(AuthThrottle::SCOPE_SUBSCRIBE_IP, '127.0.0.1')
+        );
+        $this->assertRemainingDelay(AuthThrottle::MIN_SECONDS, $this->throttle->getRecoveryDelay($login));
+        $this->assertRemainingDelay(AuthThrottle::MIN_SECONDS, $this->throttle->getSubscribeDelay());
     }
 
     /**
@@ -565,6 +573,22 @@ class AuthThrottleTest extends GaletteTestCase
     {
         $row = $this->getRow($scope, $identifier);
         return $row === null ? 0 : (int)$row->failures;
+    }
+
+    /**
+     * Assert on a delay the getters compute rather than store
+     *
+     * They answer what is left of a lock, so the value drops by one as soon as
+     * a second ticks between the write and the read. Its exact duration is what
+     * getStoredDelay() is for; here, only the band matters.
+     *
+     * @param int $expected Duration the lock was given
+     * @param int $actual   Delay the getter came back with
+     */
+    private function assertRemainingDelay(int $expected, int $actual): void
+    {
+        $this->assertLessThanOrEqual($expected, $actual);
+        $this->assertGreaterThan($expected - 5, $actual);
     }
 
     /**
