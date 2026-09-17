@@ -46,7 +46,7 @@ class File extends DynamicField
      * Get file name on disk
      *
      * @param int         $id     Object (member, contribution, ...) ID
-     * @param int         $pos    Position in the list of values  (0-based)
+     * @param int         $pos    Value index in the list of values (1-based)
      * @param string|null $prefix Forced file prefix; if null (defaults) form_name wil be used verbatim
      */
     public function getFileName(int $id, int $pos, ?string $prefix = null): string

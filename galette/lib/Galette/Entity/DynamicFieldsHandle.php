@@ -496,6 +496,9 @@ class DynamicFieldsHandle
             $select->where->in('d.' . DynamicField::PK, $accessible_fields);
         }
 
+        //occurrences are numbered, they must come back in order
+        $select->order('val_index ASC');
+
         return $this->zdb->execute($select);
     }
 }
