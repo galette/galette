@@ -23,6 +23,9 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\Util\Html;
 
+use function Safe\rename;
+use function Safe\unlink;
+
 /**
  * Dynamic fields handle, aggregating field descriptors and values
  *
@@ -386,8 +389,13 @@ class DynamicFieldsHandle
                     $this->delete_stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
                 }
                 $this->delete_stmt->execute($entry);
-                //update val index
                 $field_id = $entry['field_id'];
+                $field = $this->dynamic_fields[$field_id] ?? null;
+                if ($field instanceof File) {
+                    //the file on disk is named after the value index
+                    $this->removeFile($field, (int)$entry['val_index']);
+                }
+                //update val index
                 if (
                     isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
@@ -398,11 +406,63 @@ class DynamicFieldsHandle
                             $current['val_index'] = $val_index;
                             ++$val_index;
                             $current['old_val_index'] = $val_index;
+                            if ($field instanceof File) {
+                                $this->moveFile($field, $val_index, $val_index - 1);
+                            }
                         }
                     }
                 }
             }
             $this->has_changed = true;
+        }
+    }
+
+    /**
+     * Get the path of the file stored for a dynamic file field occurrence
+     *
+     * Files uploaded before Galette 1.2 are all prefixed with `member`, whatever
+     * the form they belong to; fall back on that name, as other call sites do.
+     *
+     * @param File $field     Field descriptor
+     * @param int  $val_index Value index
+     */
+    private function getFilePath(File $field, int $val_index): ?string
+    {
+        $filename = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index);
+        if (file_exists($filename)) {
+            return $filename;
+        }
+
+        $legacy = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index, 'member');
+        return file_exists($legacy) ? $legacy : null;
+    }
+
+    /**
+     * Remove the file stored for a dynamic file field occurrence
+     *
+     * @param File $field     Field descriptor
+     * @param int  $val_index Value index
+     */
+    private function removeFile(File $field, int $val_index): void
+    {
+        $filename = $this->getFilePath($field, $val_index);
+        if ($filename !== null) {
+            unlink($filename);
+        }
+    }
+
+    /**
+     * Move the file stored for a dynamic file field occurrence to another index
+     *
+     * @param File $field Field descriptor
+     * @param int  $from  Current value index
+     * @param int  $to    New value index
+     */
+    private function moveFile(File $field, int $from, int $to): void
+    {
+        $filename = $this->getFilePath($field, $from);
+        if ($filename !== null) {
+            rename($filename, GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $to));
         }
     }
 

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Galette\Core\Login;
-use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
@@ -22,7 +21,6 @@ use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 
 use function Safe\preg_grep;
-use function Safe\unlink;
 
 /**
  * Dynamics fields trait
@@ -123,17 +121,9 @@ trait Dynamics
                         $fields[$field_id]->getName(),
                     );
                 } elseif ($fields[$field_id] instanceof File) {
-                    //delete checkbox
-                    $filename = $fields[$field_id]->getFileName($this->getID(), $val_index);
-                    if (file_exists(GALETTE_FILES_PATH . $filename)) {
-                        unlink(GALETTE_FILES_PATH . $filename);
-                    } elseif (!$this instanceof Adherent) {
-                        $test_filename = $fields[$field_id]->getFileName($this->getID(), $val_index, 'member');
-                        if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
-                            unlink(GALETTE_FILES_PATH . $test_filename);
-                        }
-                    }
-                    $this->dynamics->setValue(item: $this->getID(), field: $field_id, index: $val_index, value: '');
+                    //the delete checkbox: the occurrence goes away entirely, and the file
+                    //on disk goes with it once the values are stored
+                    $this->dynamics->unsetValue($field_id, $val_index);
                 } else {
                     if ($fields[$field_id] instanceof Date && !empty(trim((string)$value))) {
                         //check date format
@@ -237,9 +227,13 @@ trait Dynamics
                 continue;
             }
 
-            $max_size
-                = $fields[$field_id]->getSize()
-                ? $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
+            $field = $fields[(int)$field_id] ?? null;
+            if (!$field instanceof File) {
+                continue;
+            }
+
+            $max_size = $field->getSize()
+                ? $field->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
             if ($file->getSize() > $max_size) {
                 Analog::log(
                     "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
@@ -252,17 +246,7 @@ trait Dynamics
                 continue;
             }
 
-            $form_name = $this->getFormName();
-            if ($form_name === 'adh') {
-                $form_name = 'member'; //for compatibility with existing files
-            }
-            $new_filename = sprintf(
-                '%s_%d_field_%d_value_%d',
-                $form_name,
-                $this->getID(),
-                $field_id,
-                $val_index
-            );
+            $new_filename = $field->getFileName($this->getID(), (int)$val_index);
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
             $file->moveTo(GALETTE_FILES_PATH . $new_filename);
