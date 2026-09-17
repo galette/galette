@@ -469,9 +469,10 @@ msgstr "Za pridobitev naslova morate izbrati člana osebja"
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr "Za pridobitev telefonske številke morate izbrati člana osebja"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "Neveljaven e-poštni naslov: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Neveljaven e-poštni naslov %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Uporabniško ime mora biti sestavljeno iz vsaj 4 znakov!"

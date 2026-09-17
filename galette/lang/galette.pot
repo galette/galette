@@ -780,9 +780,10 @@ msgstr ""
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:729
+#. TRANS: first parameter is the address, second the setting holding it
+#: ../lib/Galette/Core/PreferencesSchema.php:879
 #, php-format
-msgid "Invalid E-Mail address: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:742

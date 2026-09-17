@@ -503,9 +503,10 @@ msgstr ""
 "Bisogna selezionare un elemento del personale per recuperarne il numero di "
 "telefono"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "Indirizzo e-mail non valido: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Indirizzo e-mail non valido %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Il nome utente deve essere composto da almeno 4 caratteri!"

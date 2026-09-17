@@ -477,9 +477,10 @@ msgstr "Avètz de seleccionar un membre dau burèu"
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr "Avètz de seleccionar un membre dau burèu"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "Adreiça electronica non valida: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Adreiça electronica non valida %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- L’IDentificant deu comptar aumens 4 caractèrs !"

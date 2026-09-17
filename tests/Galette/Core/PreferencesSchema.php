@@ -278,10 +278,33 @@ class PreferencesSchema extends GaletteTestCase
             Schema::getErrorMessage(Schema::ERR_POSITIVE_NUMBER, 'pref_something')
         );
 
-        //without a preference, the placeholder is left alone
+        //without a preference, the placeholders are left alone
         $this->assertStringContainsString(
-            '%field',
+            '%1$s',
             Schema::getErrorMessage(Schema::ERR_POSITIVE_NUMBER)
+        );
+        $this->assertStringContainsString(
+            '%2$s',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_ATTEMPTS)
+        );
+
+        //the floor comes from the message itself, the caller names the
+        //preference and nothing else
+        $this->assertSame(
+            "- Value for 'pref_throttle_ip_attempts' must be "
+            . \Galette\Core\AuthThrottle::MIN_ATTEMPTS . ' attempts or more!',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_ATTEMPTS, 'pref_throttle_ip_attempts')
+        );
+        $this->assertSame(
+            "- Value for 'pref_throttle_ip_window' must be "
+            . \Galette\Core\AuthThrottle::MIN_SECONDS . ' seconds or more!',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_SECONDS, 'pref_throttle_ip_window')
+        );
+
+        //and the address message takes both of its own
+        $this->assertSame(
+            '- Invalid E-Mail address admin (pref_email)',
+            Schema::getErrorMessage(Schema::ERR_EMAIL, 'admin', 'pref_email')
         );
 
         //a message with no placeholder is untouched

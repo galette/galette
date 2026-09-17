@@ -854,14 +854,17 @@ final class PreferencesSchema
      * Kept apart from the schema so `_T()` is only called once an error is
      * actually raised, and so the literals stay extractable by xgettext.
      *
-     * A message may carry `%field`, replaced by the preference name. A generic
-     * message reused across preferences therefore stays informative, and a new
-     * one of the same kind needs no new translatable string at all.
+     * A message may carry numbered placeholders, the first of which is the
+     * preference name. A generic message reused across preferences therefore
+     * stays informative, and a new one of the same kind needs no new
+     * translatable string at all. Arguments are numbered rather than named
+     * because a named one reads like a word, and comes back translated.
      *
-     * @param string  $id    Error identifier
-     * @param ?string $field Preference the message is about
+     * @param string $id      Error identifier
+     * @param string ...$args What the message's placeholders stand for, the
+     *                        preference name first
      */
-    public static function getErrorMessage(string $id, ?string $field = null): string
+    public static function getErrorMessage(string $id, string ...$args): string
     {
         $message = match ($id) {
             self::ERR_MEASURES => _T("- The numbers and measures have to be integers!"),
@@ -875,22 +878,32 @@ final class PreferencesSchema
             self::ERR_BEG_MEMBERSHIP_DATE => _T("- Invalid date for beginning of membership."),
             self::ERR_CARD_YEAR => _T("- Invalid year for cards."),
             self::ERR_WEBSITE => _T("- Invalid website URL."),
-            self::ERR_EMAIL => _T("- Invalid E-Mail address for '%field': %address"),
-            self::ERR_POSITIVE_NUMBER => _T("- Value for '%field' must be a positive number!"),
+            //TRANS: first parameter is the address, second the setting holding it
+            self::ERR_EMAIL => _T('- Invalid E-Mail address %1$s (%2$s)'),
+            //TRANS: parameter is the setting name
+            self::ERR_POSITIVE_NUMBER => _T('- Value for \'%1$s\' must be a positive number!'),
             //throttling can be made as generous as wanted, but not turned off
-            self::ERR_THROTTLE_ATTEMPTS => str_replace(
-                '%min',
-                (string)AuthThrottle::MIN_ATTEMPTS,
-                _T("- Value for '%field' must be %min attempts or more!")
-            ),
-            self::ERR_THROTTLE_SECONDS => str_replace(
-                '%min',
-                (string)AuthThrottle::MIN_SECONDS,
-                _T("- Value for '%field' must be %min seconds or more!")
-            ),
+            //TRANS: first parameter is the setting name, second the lowest value it takes
+            self::ERR_THROTTLE_ATTEMPTS => _T('- Value for \'%1$s\' must be %2$s attempts or more!'),
+            //TRANS: first parameter is the setting name, second the lowest value it takes
+            self::ERR_THROTTLE_SECONDS => _T('- Value for \'%1$s\' must be %2$s seconds or more!'),
             default => throw new \InvalidArgumentException(sprintf('Unknown error identifier "%s".', $id)),
         };
 
-        return $field === null ? $message : str_replace('%field', $field, $message);
+        //a message asked for on its own keeps its placeholders, which is how
+        //the settings pages show what a bound means
+        if ($args === []) {
+            return $message;
+        }
+
+        //the floor belongs to the message: no caller knows which of the two
+        //applies, and neither should it
+        $args = [...$args, ...match ($id) {
+            self::ERR_THROTTLE_ATTEMPTS => [(string)AuthThrottle::MIN_ATTEMPTS],
+            self::ERR_THROTTLE_SECONDS => [(string)AuthThrottle::MIN_SECONDS],
+            default => [],
+        }];
+
+        return vsprintf($message, $args);
     }
 }

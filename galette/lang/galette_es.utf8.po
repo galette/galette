@@ -514,9 +514,10 @@ msgid "You have to select a staff member to retrieve its phone number"
 msgstr ""
 "Debes seleccionar un miembro del personal para ver su número de teléfono"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "Dirección de correo electrónico inválida: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Dirección de correo electrónico inválida %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- ¡El nombre de usuario debe estar compuesto de al menos 4 caracteres!"

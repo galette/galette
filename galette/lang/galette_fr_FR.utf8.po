@@ -492,9 +492,10 @@ msgstr ""
 "Vous devez sélectionner un membre du bureau pour récupérer son numéro de "
 "téléphone"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "Adresse courriel non valide : %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Adresse courriel non valide %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- L’identifiant doit être composé d’au moins 4 caractères !"

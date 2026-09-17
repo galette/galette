@@ -472,9 +472,10 @@ msgstr "அதன் முகவரியை மீட்டெடுக்க 
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr "அதன் ஃபோன் எண்ணை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
 
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "Invalid E-Mail address: %s"
-msgstr "தவறான மின்னஞ்சல் முகவரி: %s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- தவறான மின்னஞ்சல் முகவரி %1$s (%2$s)"
 
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- பயனர்பெயர் குறைந்தது 4 எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
