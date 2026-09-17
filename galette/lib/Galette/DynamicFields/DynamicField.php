@@ -362,11 +362,14 @@ abstract class DynamicField
     }
 
     /**
-     * Is current field repeatable?
+     * Does current field take several occurrences?
+     *
+     * A repeat of zero means as many occurrences as wanted; a null or single
+     * one means the field takes a single occurrence.
      */
     public function isRepeatable(): bool
     {
-        return $this->repeat != null && $this->repeat >= 0;
+        return $this->isMultiValued() && ($this->repeat === 0 || $this->repeat > 1);
     }
 
     /**
@@ -573,8 +576,10 @@ abstract class DynamicField
             $this->errors[] = _T("- Min size must be lower than size!");
         }
 
-        if (isset($values['field_repeat'])) {
-            if (!is_numeric($values['field_repeat'])) {
+        if ($this->isMultiValued()) {
+            if (!isset($values['field_repeat']) || trim((string)$values['field_repeat']) === '') {
+                $this->repeat = null;
+            } elseif (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
             } else {
                 $this->repeat = (int)$values['field_repeat'];

@@ -86,10 +86,10 @@ class Text extends GaletteTestCase
         $this->assertNull($height);
 
         $repeat = $this->text->getRepeat();
-        $this->assertSame(1, $repeat);
+        $this->assertNull($repeat);
 
         $repeat = $this->text->isRepeatable();
-        $this->assertTrue($repeat);
+        $this->assertFalse($repeat);
 
         $size = $this->text->getSize();
         $this->assertNull($size);

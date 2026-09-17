@@ -389,6 +389,38 @@ class DynamicField extends GaletteTestCase
         $this->assertTrue($df->check($values));
         $this->assertSame([], $df->getErrors());
         $this->assertTrue($df->store($values));
+        $this->assertTrue($df->isRepeatable());
+
+        //a single occurrence is not a repetition, no occurrence at all neither
+        $values['field_repeat'] = 1;
+        $this->assertTrue($df->check($values));
+        $this->assertFalse($df->isRepeatable());
+
+        //zero means as many occurrences as wanted
+        $values['field_repeat'] = 0;
+        $this->assertTrue($df->check($values));
+        $this->assertTrue($df->isRepeatable());
+
+        unset($values['field_repeat']);
+        $this->assertTrue($df->check($values));
+        $this->assertNull($df->getRepeat());
+        $this->assertFalse($df->isRepeatable());
+
+        //a field that is not multi valued never takes a repeat
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'A text field that cannot repeat',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_required'    => false,
+            'field_repeat'      => 3
+        ];
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertFalse($df->isMultiValued());
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+        $this->assertNull($df->getRepeat());
+        $this->assertFalse($df->isRepeatable());
     }
 
     /**

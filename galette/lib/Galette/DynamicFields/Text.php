@@ -32,7 +32,6 @@ class Text extends DynamicField
         $this->has_data = true;
         $this->has_width = true;
         $this->has_height = true;
-        $this->repeat = 1;
     }
 
     /**
