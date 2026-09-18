@@ -44,7 +44,7 @@
             </div>
         </div>
 {% endif %}
-        <div class="sixteen wide{% if news|length > 0 %} tablet ten wide computer{% endif %} column">
+        <div id="dashboard-main" class="sixteen wide{% if has_news %} tablet ten wide computer{% endif %} column">
             {% set my_dashboard_entries = callstatic('\\Galette\\Core\\Galette', 'getMyDashboards') %}
             {% if my_dashboard_entries|length > 0 %}
             <div class="ui top attached yellow segment">
@@ -82,27 +82,13 @@
              </div>
             {% endif %}
         </div>
-{% if news|length > 0 %}
-    <div class="sixteen wide tablet six wide computer column">
-    {% for entry in news %}
-            <div class="ui top attached yellow segment">
-                <div class="ui medium header">{{ entry.title }}</div>
+{% if has_news %}
+        {# filled from the 'ajaxNews' route: feeds reach the network, the page must not wait for them #}
+        <div id="dashboard-news" class="sixteen wide tablet six wide computer column" aria-live="polite" aria-busy="true">
+            <div class="ui basic center aligned segment">
+                <div class="ui active centered inline text loader">{{ _T("Loading...") }}</div>
             </div>
-            <div class="ui bottom attached segment">
-                <div class="ui bulleted list">
-        {% for post in entry.getPosts() %}
-                    <div class="item tooltip"{% if post.getDate() %} title="{{ post.getDate() }}"{% endif %}>
-            {% if post.getUrl() %}
-                        <a href="{{ post.getURL() }}" target="_blank">{{ post.getTitle() }}</a>
-            {% else %}
-                        {{ post.getTitle() }}
-            {% endif %}
-                    </div>
-        {% endfor %}
-                </div>
-            </div>
-    {% endfor %}
-    </div>
+        </div>
 {% endif %}
         <div class="jsonly displaynone sixteen wide column">
             <div class="ui basic vertically fitted segment">
@@ -122,6 +108,33 @@
 {% block javascripts %}
     <script>
         $(function() {
+{% if has_news %}
+            $.ajax({
+                url: '{{ url_for('ajaxNews') }}',
+                method: 'GET',
+                success: function(data) {
+                    var _news = $.trim(data);
+                    if (_news.length === 0) {
+                        //no source provided anything after all, give the room back
+                        $('#dashboard-news').remove();
+                        $('#dashboard-main').attr('class', 'sixteen wide column');
+                        return;
+                    }
+                    $('#dashboard-news').html(_news);
+                    //news carry tooltips, they are not bound yet
+                    _bindFomanticComponents();
+                },
+                error: function() {
+                    $('#dashboard-news').html(
+                        '<div class="ui warning message">{{ _T("An error occurred displaying news :(")|e('js') }}</div>'
+                    );
+                },
+                complete: function() {
+                    $('#dashboard-news').attr('aria-busy', 'false');
+                }
+            });
+{% endif %}
+
             $('#show_dashboard').change(function(){
                 var _checked = $(this).is(':checked');
                 Cookies.set(

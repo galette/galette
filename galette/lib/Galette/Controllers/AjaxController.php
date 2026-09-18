@@ -12,6 +12,7 @@ namespace Galette\Controllers;
 
 use Analog\Analog;
 use Galette\Controllers\Attributes\Route;
+use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Filters\MembersList;
@@ -91,6 +92,30 @@ class AjaxController extends AbstractController
         }
 
         return $this->withJson($response, $messages);
+    }
+
+    /**
+     * News as an HTML fragment for the dashboard
+     *
+     * Feeds are loaded from the network; the dashboard asks for them once it has
+     * been displayed, so that an unreachable feed never delays the page itself.
+     * An empty response means there is nothing to display.
+     */
+    #[Route(
+        name: 'ajaxNews',
+        pattern: '/ajax/news',
+        methods: ['GET']
+    )]
+    public function news(Response $response): Response
+    {
+        $this->view->render(
+            $response,
+            'elements/news.html.twig',
+            [
+                'news' => Galette::getNews()
+            ]
+        );
+        return $response;
     }
 
     /**

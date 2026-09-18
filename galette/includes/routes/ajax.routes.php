@@ -22,6 +22,11 @@ $app->group('/ajax', function (RouteCollectorProxy $app): void {
         [AjaxController::class, 'messages']
     )->setName('ajaxMessages');
 
+    $app->get(
+        '/news',
+        [AjaxController::class, 'news']
+    )->setName('ajaxNews')->add(Authenticate::class);
+
     $app->post(
         '/suggest/towns/{term}',
         [AjaxController::class, 'suggestTowns']

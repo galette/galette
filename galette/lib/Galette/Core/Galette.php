@@ -1253,6 +1253,50 @@ class Galette
     }
 
     /**
+     * Are news to be expected?
+     *
+     * Tells whether a news source is configured, without loading any feed:
+     * getNews() reaches the network, this one must not. A plugin may still
+     * provide no entry at all, so the answer is optimistic.
+     */
+    public static function hasNews(): bool
+    {
+        global $container;
+
+        /**
+         * @var Login $login
+         * @var Preferences $preferences
+         * @var Plugins $plugins
+         */
+        global $login, $preferences, $plugins;
+
+        //Galette news are displayed for staff and admins
+        if ($login->isStaff() || $login->isAdmin()) {
+            return true;
+        }
+
+        //a custom RSS feed is displayed for everyone
+        if (!empty($preferences->pref_rss_url) && $preferences->pref_rss_url != self::RSS_URL) {
+            return true;
+        }
+
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\NewsProviderInterface
+                || method_exists($plugin, 'getNews')) //handle deprecated 1.2.2 case
+                && $plugin->isInstalled()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Is demonstration mode enabled
      */
     public static function isDemo(): bool

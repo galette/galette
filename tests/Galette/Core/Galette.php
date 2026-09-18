@@ -681,6 +681,75 @@ class Galette extends GaletteTestCase
     }
 
     /**
+     * Test Galette::hasNews() method
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testHasNews(): void
+    {
+        //not logged in, no custom feed, no plugin: nothing to expect
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //staff and admins get Galette news
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->assertTrue(\Galette\Core\Galette::hasNews());
+        $this->login->logOut();
+
+        //a simple member gets nothing...
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //...unless the association has its own feed
+        $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
+        $this->assertTrue($this->preferences->store());
+        $this->assertTrue(\Galette\Core\Galette::hasNews());
+
+        //reset
+        $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
+        $this->assertTrue($this->preferences->store());
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins->activateModule('plugin-news');
+
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+
+        global $plugins, $container;
+        $plugins = $this->plugins;
+
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', full: true);
+
+        //a plugin that is not installed provides nothing
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $container->set($plugin_class, $mock);
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //an installed one does
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(true);
+        $container->set($plugin_class, $mock);
+        $has_news = \Galette\Core\Galette::hasNews();
+
+        //reset
+        $this->plugins->deactivateModule('plugin-news');
+        $container->set($plugin_class, new $plugin_class());
+
+        $this->assertTrue($has_news);
+    }
+
+    /**
      * Test isNightly
      */
     public function testIsNightly(): void

@@ -211,8 +211,9 @@ class News
             return $url;
         }
 
-        if (defined('GALETTE_TESTS')) {
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
             // During tests, we use a local feed file to avoid depending on external resources, if URL is not explicitly set
+            // The environment variable covers e2e, where the constant cannot be defined (see tests/router_e2e.php)
             return 'file:///' . realpath(GALETTE_TESTS_PATH . '/feed.xml');
         }
 

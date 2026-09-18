@@ -29,6 +29,7 @@ $core_acls = [
     'testEmail'                         => 'admin',
     'testEmailConnection'               => 'admin',
     'dashboard'                         => 'member',
+    'ajaxNews'                          => 'member', //dashboard news, displayed to whoever the dashboard is
     'sysinfos'                          => 'staff',
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',

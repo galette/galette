@@ -1,0 +1,24 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% for entry in news %}
+    <div class="ui top attached yellow segment">
+        <div class="ui medium header">{{ entry.title }}</div>
+    </div>
+    <div class="ui bottom attached segment">
+        <div class="ui bulleted list">
+    {% for post in entry.getPosts() %}
+            <div class="item tooltip"{% if post.getDate() %} title="{{ post.getDate() }}"{% endif %}>
+        {% if post.getUrl() %}
+                <a href="{{ post.getURL() }}" target="_blank">{{ post.getTitle() }}</a>
+        {% else %}
+                {{ post.getTitle() }}
+        {% endif %}
+            </div>
+    {% endfor %}
+        </div>
+    </div>
+{% endfor %}

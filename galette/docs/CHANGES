@@ -56,6 +56,7 @@ Improvements
 - A missing asset now renders a proper error page instead of a blank one
 - Error messages name the setting that holds an invalid address
 - Reuse SMTP connection on several calls
+- Load news with ajax call to prevent dashboard hangs
 
 Fixes
 

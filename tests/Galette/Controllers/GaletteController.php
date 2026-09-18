@@ -110,6 +110,12 @@ class GaletteController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
+
+        //news are expected for a superadmin, but loaded from the 'ajaxNews' route:
+        //the page carries the placeholder, never a post
+        $this->assertStringContainsString('id="dashboard-news"', $body);
+        $this->assertStringContainsString($this->routeparser->urlFor('ajaxNews'), $body);
+        $this->assertStringNotContainsString('Galette 1.0.0rc1', $body);
     }
 
     /**

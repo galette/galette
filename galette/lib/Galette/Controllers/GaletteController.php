@@ -102,11 +102,11 @@ class GaletteController extends AbstractController
     )]
     public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
     {
-        $news = Galette::getNews();
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
-            'news'              => $news,
+            //news are loaded asynchronously, they reach the network
+            'has_news'          => Galette::hasNews(),
             'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
             'documentation'     => 'usermanual'
         ];
