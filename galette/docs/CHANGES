@@ -3,19 +3,114 @@ Changes
 
 1.2.1 -> 1.3.0
 
+Security
+
 - CSRF protection now relies on HTTP headers (Sec-Fetch-Site, with a fallback on Origin) rather than on per form tokens
 - Session cookie is now flagged SameSite=Lax
-- Global accessibility improvements
-- New galette:superadmin:password console command to change the super administrator password
-- Compatibility tests now check ctype, dom, fileinfo, filter and iconv PHP modules; gettext is no longer reported as optional
-- Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
 - Session identifier is renewed on login, and when impersonating a member or coming back from it
 - Failed authentication attempts are now counted, and further attempts refused for a while: per account and address, per address, and per account as a backstop against attacks spread over many addresses. Thresholds and durations are in the advanced configuration
 - Password recovery requests are limited as well, per account asked about and per address asking
 - Self subscriptions are limited per address
 - Plugins can limit their own forms through the same mechanism, under a name of their own
-- Password recovery no longer says whether an account exists, and being refused no longer says how long is left; both are in the history and the logs
+- Password recovery no longer says whether an account exists, but is still in the history and the logs
 - A new page under Configuration lists what is being refused, and lifts it
+- Everything that is typed in and later rendered as is - mailing preview, public document comment, dynamic fields values, PDF models, mails subjects and bodies - is now sanitized when it is stored
+- Password recovery relies on a dedicated token
+- The legacy md5 password fallback has been removed
+- Random strings are generated using a cryptographically secure generator
+- Coming back from impersonation is restricted to sessions that were really impersonating someone
+- A corrupted password strength setting no longer silently disables the check against personal information
+- The uniqueness check on the super administrator login could be skipped
+- Missing authentication checks on few routes
+- Demonstration mode freezes sender addresses, super administrator credentials and mail method, including from the advanced configuration page
+
+New features
+
+- Mailings can be sent in batches (**experimental**): a delay can be set between two messages, and hourly and daily quotas can be enforced. Sending goes through a queue that can be resumed; reminders use it as well. Default values keep the previous behavior
+- New advanced configuration page, listing every preference, including those the configuration forms do not show; each one tells whether it holds its default value, has been modified, is locked by a constant from behavior.inc.php or is unknown, and secret ones only tell whether they are set
+- Some settings moved from behavior.inc.php to the database: instance URL (GALETTE_URI), reverse proxy address index (GALETTE_X_FORWARDED_FOR_INDEX) and session duration (GALETTE_TIMEOUT). The constants still work and still take precedence; they are then reported as locked
+- Plugins now have their own database version, and are updated on their own; the plugins page has been reworked, and lists disabled, not installed and outdated plugins
+- Dynamic fields can be added on preferences
+- Filters and pagination on the documents list
+- Contribution types can carry a description
+- Emailing settings can be tested from the values in the form, without storing them first; a new button checks the connection without sending anything
+- The adaptative PDF member card is now the default; the former implementation has been removed
+- Install and update are guarded by a lock file, and the update no longer asks for the database configuration
+- New galette:superadmin:password console command to change the super administrator password
+- bin/console is now shipped with release archives
+- Language selector has been reworked: regionalised languages are handled, the current language is listed, and the installer offers the same list
+- Contributions and transactions shortcuts on the groups managers dashboard
+- Maintenance mode tells the super administrator it is enabled when they are logged in
+- The reminders cron script takes the instance URL from the settings
+- New feature flags mechanism, to ship features that are not production ready yet; flags are declared in behavior.inc.php, only apply in debug mode, and a galette:feature:status console command tells what is enabled
+
+Improvements
+
+- Global accessibility improvements
+- Dynamic choice fields values are now stored as JSON along the field, instead of one dedicated table per field
+- Repeatable dynamic fields: labels, one add button per field, per field counters, maximum number of repetitions, and fields that cannot be repeated
+- Groups addition form has been reworked and simplified
+- Mailings list and forms carry more information
+- Buttons have been reworked all over the application, and theme contrasts improved
+- Page titles have been improved throughout the application
+- A missing asset now renders a proper error page instead of a blank one
+- Error messages name the setting that holds an invalid address
+- Reuse SMTP connection on several calls
+
+Fixes
+
+- Line breaks were lost in the text version of the mail signature
+- A new mailing could not be created once a mailing had been sent
+- Groups managers could not edit their own member record
+- Groups managers could not get receipts and invoices of the members they manage
+- Members could not get their own vCard
+- Wrong count and sum on contributions and transactions lists
+- Wrong contribution end date when the previous contribution ends the day before the beginning of membership
+- A member renewing on the last valid day of their membership was considered expired; beginning of membership calculation is also leap year safe
+- Wrong beginning of membership calculation when a beginning of membership date is set
+- Wrong lines alignment on PDF models using a multiline address
+- Underscores were escaped in plain text emails
+- Payment types were not created at install; wrong scheduled payment type on update, and missing engine and relation on the scheduled payments table with MySQL
+- Group selection on member form was broken
+- Requests on robots.txt no longer raise a not found error
+- The news cache was written but never read back, so galette.eu was contacted on every displayed page, even for anonymous visitors
+- Members list could be ordered on a column that does not exist
+- Preferences values were limited to 255 characters
+- The association address could be read from an arbitrary member when the configured source is unreadable
+- A public page whose visibility cannot be read is now closed, rather than open to everyone
+- Documents tab could be hidden by ad blockers
+- Several fixes on the web installer, including Javascript errors
+
+L10n
+
+- New Slovenian translation, complete
+- New Brazilian Portuguese translation, started
+- Russian translation went from a quarter of the strings to almost complete
+- German and Tamil translations are complete again
+- Catalan, Portuguese and Turkish translations have progressed
+- Translatable strings are being reworked to only use positional parameters
+
+Removals and requirements
+
+- PHP 8.3 is now the minimum required version
+- The fileinfo PHP module is now required; compatibility tests now also check ctype, dom, filter and iconv, and gettext is no longer reported as optional
+- Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
+- Database version is now 1.300; new tables have been added for plugins, authentication attempts and the mailing queue
+- The QMAIL mail method has been removed; installations using it are switched to sendmail
+- GALETTE_DISPLAY_VERSION, GALETTE_HIDE_VERSION and GALETTE_ADAPTATIVE_CARDS constants have been removed
+- Updating from 0.6x releases is deprecated
+- Third party libraries have been updated
+
+Plugins and development
+
+- Plugins declare an install class implementing InstallableInterface; the former way still works, but is deprecated, and a plugin class is now mandatory
+- Plugins can declare their own preferences; they are stored along the others, and their values are kept while the plugin is disabled
+- Routes can be declared from controllers using the #[Route] attribute; this does not replace routes files yet, it is a first step
+- New AbstractEntity class and #[Column] attribute; Pdf is now abstract, and History members are protected
+- Preferences have been split behind a declarative schema, and a new Html utility class handles cleaning and stripping markup
+- Old deprecated routes, and Galette::showPublicPages() deprecated since 1.2.0, have been removed
+- The plugins directory can be set from the environment
+- New tools for developers: bin/serve, and galette:check-routes, galette:headers-check and galette:seed-fixtures console commands
 
 1.2.0.1 -> 1.2.1
 
