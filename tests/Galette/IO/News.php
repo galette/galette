@@ -12,8 +12,10 @@ namespace Galette\Tests\IO;
 
 use Galette\Tests\BaseGaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
 use Safe\Exceptions\InfoException;
 
+use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\filemtime;
 use function Safe\ini_get;
@@ -38,6 +40,18 @@ class News extends BaseGaletteTestCase
     {
         parent::setUp();
         $this->local_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
+    }
+
+    /**
+     * Cache file a feed is stored in
+     *
+     * @param string|null $url Feed URL, defaults to the local one
+     */
+    private function cacheFile(?string $url = null): string
+    {
+        global $i18n;
+
+        return GALETTE_CACHE_DIR . md5(($url ?? $this->local_url) . '|' . $i18n->getAbbrev()) . '.cache';
     }
 
     /**
@@ -92,8 +106,7 @@ class News extends BaseGaletteTestCase
      */
     public function testCacheNews(): void
     {
-        //will use default lang to build RSS URL
-        $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
+        $file = $this->cacheFile();
 
         //ensure file does not exist
         $this->assertFalse(file_exists($file));
@@ -153,7 +166,7 @@ class News extends BaseGaletteTestCase
      */
     public function testUnusableCache(): void
     {
-        $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
+        $file = $this->cacheFile();
         if (file_exists($file)) {
             unlink($file);
         }
@@ -178,6 +191,105 @@ class News extends BaseGaletteTestCase
         );
 
         unlink($file);
+    }
+
+    /**
+     * Test a warm cache resolves no feed URL
+     *
+     * Resolving one asks the Galette website for its languages, and that is a
+     * network call the dashboard used to pay on every single display.
+     */
+    public function testWarmCacheResolvesNothing(): void
+    {
+        $file = $this->cacheFile();
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+        $counting = new class ($this->local_url) extends \Galette\IO\News {
+            public int $resolved = 0;
+
+            /**
+             * Get feed url, counting how many times it was resolved
+             *
+             * @param string $url Requested URL
+             */
+            public function getFeedURL(string $url): string
+            {
+                ++$this->resolved;
+                return parent::getFeedURL($url);
+            }
+        };
+
+        //cold cache: the feed has to be resolved, then read
+        $this->assertSame(1, $counting->resolved);
+        $this->assertGreaterThan(0, count($counting->getPosts()));
+        $this->assertTrue(file_exists($file));
+
+        $counting = new class ($this->local_url) extends \Galette\IO\News {
+            public int $resolved = 0;
+
+            /**
+             * Get feed url, counting how many times it was resolved
+             *
+             * @param string $url Requested URL
+             */
+            public function getFeedURL(string $url): string
+            {
+                ++$this->resolved;
+                return parent::getFeedURL($url);
+            }
+        };
+
+        //warm cache: nothing is resolved, and the posts still come back
+        $this->assertSame(0, $counting->resolved);
+        $this->assertGreaterThan(0, count($counting->getPosts()));
+
+        unlink($file);
+    }
+
+    /**
+     * Test a feed that could not be read is cached, and retried before a full one
+     */
+    public function testUnreadableFeedIsCached(): void
+    {
+        $url = 'file:///' . GALETTE_TESTS_PATH . '/no-such-feed.xml';
+        $file = $this->cacheFile($url);
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+        $news = new \Galette\IO\News($url);
+        $this->assertCount(0, $news->getPosts());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to load feed from');
+
+        //the failure itself is cached...
+        $this->assertTrue(file_exists($file));
+        $this->assertSame('[]', file_get_contents($file));
+
+        //...so the next page does not ask the feed again - it would log anew
+        $cached = new \Galette\IO\News($url);
+        $this->assertCount(0, $cached->getPosts());
+        $this->expectNoLogEntry();
+
+        //but it is asked again well before the 24 hours a full cache lives
+        touch($file, (new DateTime('-2 hours'))->getTimestamp());
+        new \Galette\IO\News($url);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to load feed from');
+
+        unlink($file);
+    }
+
+    /**
+     * Test website languages cannot make the feed URL unusable
+     */
+    public function testWebsiteLangs(): void
+    {
+        $news = new \Galette\IO\News($this->local_url, nocache: true);
+
+        //an unreadable list is not fatal, the caller keeps the plain feed URL
+        $this->assertSame([], $news->getWebsiteLangs('file:///' . GALETTE_TESTS_PATH . '/no-such-place'));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to load feed languages');
     }
 
     /**
