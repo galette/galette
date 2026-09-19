@@ -60,6 +60,20 @@ if (php_sapi_name() !== 'cli-server' && !defined('GALETTE_TESTS')) { //@phpstan-
     define('GALETTE_TESTS', value: true); //@phpstan-ignore theCodingMachineSafe.function
 }
 
+//the mandatory second factor policies live behind a feature flag, and flags
+//only ever answer yes in debug mode. The end to end server can run in it, so it
+//exercises the real mechanism; PHPUnit cannot -- debug mode wires a Twig
+//extension onto a logger that only the web bootstrap sets -- and forces
+//availability instead, from TestsBootstrap.
+if (php_sapi_name() === 'cli-server') { //@phpstan-ignore theCodingMachineSafe.function
+    if (!defined('GALETTE_DEBUG')) {
+        define('GALETTE_DEBUG', value: true); //@phpstan-ignore theCodingMachineSafe.function
+    }
+    if (!defined('GALETTE_FEATURE_FLAGS')) {
+        define('GALETTE_FEATURE_FLAGS', ['two-factor-required']); //@phpstan-ignore theCodingMachineSafe.function
+    }
+}
+
 if (!defined('GALETTE_TESTS_PATH')) {
     define('GALETTE_TESTS_PATH', __DIR__); //@phpstan-ignore theCodingMachineSafe.function
 }

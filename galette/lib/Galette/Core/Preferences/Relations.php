@@ -36,14 +36,16 @@ final class Relations
      * @param array<string, mixed> $values        Submitted values
      * @param array<string, mixed> $insert_values Complete set, altered in place
      * @param array<string, int>   $required      Preferences that cannot be left empty
+     * @param array<string>        $held_secrets  Secrets already stored, whose
+     *                                            field comes back empty
      *
      * @return array<string> Errors, in the order they were found
      */
-    public function check(array $values, array &$insert_values, array $required): array
+    public function check(array $values, array &$insert_values, array $required, array $held_secrets = []): array
     {
         $this->errors = [];
 
-        $this->checkMail($insert_values);
+        $this->checkMail($insert_values, $held_secrets);
         $this->checkMembershipDates($insert_values);
         $this->checkOfferedMonths($insert_values);
         $this->checkRequiredValues($values, $required);
@@ -70,8 +72,9 @@ final class Relations
      * Check what sending emails requires, according to the chosen method
      *
      * @param array<string, mixed> $insert_values Complete set of values
+     * @param array<string>        $held_secrets  Secrets already stored
      */
-    private function checkMail(array $insert_values): void
+    private function checkMail(array $insert_values, array $held_secrets = []): void
     {
         if (
             Galette::isDemo()
@@ -117,9 +120,12 @@ final class Relations
             $this->errors[] = _T("- You must provide a login for SMTP authentication.");
         }
 
+        //the form never renders a stored password, so an empty field means
+        //"keep the one held", not "there is none"
         if (
-            !isset($insert_values['pref_mail_smtp_password'])
-            || ($insert_values['pref_mail_smtp_password']) == ''
+            (!isset($insert_values['pref_mail_smtp_password'])
+            || ($insert_values['pref_mail_smtp_password']) == '')
+            && !in_array('pref_mail_smtp_password', $held_secrets, strict: true)
         ) {
             $this->errors[] = _T("- You must provide a password for SMTP authentication.");
         }

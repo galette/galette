@@ -23,6 +23,11 @@ Security
 - The uniqueness check on the super administrator login could be skipped
 - Missing authentication checks on few routes
 - Demonstration mode freezes sender addresses, super administrator credentials and mail method, including from the advanced configuration page
+- Add optional two-factor authentication (**experimental**), using time based codes (TOTP) from any authenticator application (experimental, disabled by default):
+  - Two-factor authentication can be made mandatory for administrators and staff members, or for everyone, behind the 'two-factor-required' feature flag: under a mandatory policy, a wrong clock or a botched enrolment locks an association out of its own instance, and the way back is a SQL statement
+  - Members enrolling get ten single use recovery codes; administrators and staff can reset a member second factor
+  - Administrators and staff members without a second factor are invited to set one up when they log in, until they decline
+  - The super administrator can use a second factor as well; it is cleared from the preferences in database
 
 New features
 

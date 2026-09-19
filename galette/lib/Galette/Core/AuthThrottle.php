@@ -101,6 +101,15 @@ class AuthThrottle
 
     /** Separates the two parts of an account and address identifier */
     private const string IDENTIFIER_SEPARATOR = '|';
+    /**
+     * Failures counted for one account at the second factor stage.
+     *
+     * Kept apart from the password stage so that mistyping a password and
+     * mistyping a code do not add up: they are different stages, reached by
+     * different people, and a member's own typos must not bring on a lock meant
+     * for somebody who already holds their password.
+     */
+    public const string SCOPE_SECOND_FACTOR = 'second-factor';
 
     /**
      * Default constructor
@@ -129,6 +138,19 @@ class AuthThrottle
     public function getRetryDelay(string $login): int
     {
         return $this->delayFor($this->getScopes($login));
+    }
+
+    /**
+     * How long the caller must wait before another second factor code is
+     * accepted.
+     *
+     * @param string $login Login of the session owing a code
+     *
+     * @return int seconds to wait, 0 when nothing stands in the way
+     */
+    public function getSecondFactorDelay(string $login): int
+    {
+        return $this->delayFor($this->getSecondFactorScopes($login));
     }
 
     /**
@@ -252,6 +274,18 @@ class AuthThrottle
     }
 
     /**
+     * Record a wrong second factor code
+     *
+     * @param string $login Login of the session owing a code
+     */
+    public function recordSecondFactorFailure(string $login): void
+    {
+        foreach ($this->getSecondFactorScopes($login) as $scope => $identifier) {
+            $this->bump($scope, $identifier);
+        }
+    }
+
+    /**
      * Record a password recovery request.
      *
      * The request itself is counted, not its outcome: what is being limited is
@@ -284,6 +318,10 @@ class AuthThrottle
                 $this->remove($scope, $identifier);
             }
         }
+
+        //an authentication is only complete once the second factor has been
+        //produced, and that is where this is called from once one is in use
+        $this->remove(self::SCOPE_SECOND_FACTOR, $login);
     }
 
     /**
@@ -396,6 +434,7 @@ class AuthThrottle
                 $this->preferences->pref_throttle_ip_window,
                 $this->preferences->pref_throttle_recovery_window,
                 $this->preferences->pref_throttle_subscribe_window,
+                $this->preferences->pref_throttle_second_factor_window,
                 $this->preferences->pref_throttle_delay
             );
             $limit = new DateTime();
@@ -453,11 +492,7 @@ class AuthThrottle
     }
 
     /**
-     * Scopes a submitted login is counted on, as scope => identifier.
-     *
-     * An account counter is only opened for a login that exists, so that
-     * invented logins cannot be used to inflate the table; those are still
-     * caught by the address counter.
+     * Scopes a submitted login is counted on, as scope => identifier
      *
      * @param string $login Submitted login
      *
@@ -510,6 +545,32 @@ class AuthThrottle
         }
 
         return $scopes;
+    }
+
+    /**
+     * Scopes a second factor attempt is counted on, as scope => identifier.
+     *
+     * The account alone. Not the address: the account is named and its password
+     * already accepted, so the address adds nothing to identify who is trying
+     * -- and counting there would let members fumbling their codes from one
+     * shared address lock the password stage for everybody behind it, that
+     * counter being the one a plain login is refused on.
+     *
+     * A lock rather than a nuisance to fear here: whoever is answering a
+     * challenge has produced the password, so refusing that account protects it
+     * instead of standing in the way of its owner.
+     *
+     * @param string $login Login of the session owing a code
+     *
+     * @return array<string, string>
+     */
+    private function getSecondFactorScopes(string $login): array
+    {
+        if (trim($login) === '') {
+            return [];
+        }
+
+        return [self::SCOPE_SECOND_FACTOR => $login];
     }
 
     /**
@@ -664,6 +725,7 @@ class AuthThrottle
             self::SCOPE_RECOVERY_ACCOUNT,
             self::SCOPE_RECOVERY_IP => $this->preferences->pref_throttle_recovery_window,
             self::SCOPE_SUBSCRIBE_IP => $this->preferences->pref_throttle_subscribe_window,
+            self::SCOPE_SECOND_FACTOR => $this->preferences->pref_throttle_second_factor_window,
             default => $this->preferences->pref_throttle_account_ip_window,
         });
     }
@@ -687,6 +749,7 @@ class AuthThrottle
             self::SCOPE_RECOVERY_ACCOUNT,
             self::SCOPE_RECOVERY_IP => $this->preferences->pref_throttle_recovery_attempts,
             self::SCOPE_SUBSCRIBE_IP => $this->preferences->pref_throttle_subscribe_attempts,
+            self::SCOPE_SECOND_FACTOR => $this->preferences->pref_throttle_second_factor_attempts,
             default => $this->preferences->pref_throttle_account_ip_attempts,
         });
     }

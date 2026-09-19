@@ -47,11 +47,28 @@ class Login extends Authentication
      *
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
+     * @param bool        $challenge   Ask for a second factor, when one is set
      */
-    public function logAdmin(string $login, Preferences $preferences): bool
+    public function logAdmin(string $login, Preferences $preferences, bool $challenge = true): bool
     {
         parent::logAdmin($login, $preferences);
         $this->impersonated = false;
+
+        //logAdmin does not go through logUser(), so the gate has to be applied
+        //here too. Preferences are at hand, which is where this account keeps
+        //its second factor. Returning from impersonation is the exception: that
+        //session produced a code already, and it never stopped being the super
+        //administrator's.
+        if (
+            $challenge
+            && TwoFactorAuth::modeFrom($preferences) !== TwoFactorAuth::MODE_DISABLED
+        ) {
+            $secret = new TwoFactorSuperAdmin($preferences);
+            if ($secret->isEnabled()) {
+                $this->requireTwoFactor();
+            }
+        }
+
         return true;
     }
 
@@ -230,6 +247,71 @@ class Login extends Authentication
                 as_group: false
             );
         }
+
+        if ($this->needsTwoFactor()) {
+            $this->requireTwoFactor();
+        }
+    }
+
+    /**
+     * Does the member owe a second factor?
+     *
+     * Asked here rather than from the controller so that every caller is
+     * covered, including the ones outside the core that call logIn() then
+     * isLogged() on their own.
+     */
+    private function needsTwoFactor(): bool
+    {
+        //impersonating does not change who is at the keyboard: the operator has
+        //already produced their own second factor, and asking for the target's
+        //would hold the session at a challenge nobody can answer -- the way
+        //back sits behind the authentication middleware
+        if ($this->impersonated) {
+            return false;
+        }
+
+        if (!isset($this->id) || $this->getTwoFactorMode() === TwoFactorAuth::MODE_DISABLED) {
+            return false;
+        }
+
+        $secret = new TwoFactorSecret($this->zdb);
+        return $secret->load($this->id) && $secret->isEnabled();
+    }
+
+    /**
+     * Configured second factor policy.
+     *
+     * Preferences are not injected: this object is serialized into the session,
+     * and carrying the whole preference set in there would both bloat it and
+     * serve stale values.
+     */
+    private function getTwoFactorMode(): int
+    {
+        global $preferences;
+
+        if ($preferences instanceof Preferences) {
+            return TwoFactorAuth::modeFrom($preferences);
+        }
+
+        try {
+            $select = $this->zdb->select(Preferences::TABLE);
+            $select->columns(['val_pref'])->where(['nom_pref' => 'pref_2fa_mode'])->limit(1);
+            $results = $this->zdb->execute($select);
+            if ($results->count() > 0) {
+                //the one read that does not go through Preferences, and so the
+                //one the clamp has to be spelled out for
+                return TwoFactorAuth::clampMode((int)$results->current()->val_pref);
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot read second factor policy. ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+
+        //a member holding an enabled secret expects to be asked for it, so an
+        //unreadable policy must not silently skip the second factor
+        return TwoFactorAuth::MODE_OPTIONAL;
     }
 
     /**

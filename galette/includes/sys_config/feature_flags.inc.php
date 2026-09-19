@@ -84,6 +84,23 @@ $feature_flags_registry = [
     ],*/
 
     /**
+     * Mandatory two-factor authentication policies
+     *
+     * The second factor itself ships in 1.3.0, disabled by default and marked
+     * experimental. Making it compulsory -- for administrators and staff, or
+     * for everyone -- is held back one version: under a mandatory policy a
+     * clock that drifts or a botched enrolment puts a whole association outside
+     * its own instance, and the way back is a SQL statement. Without this flag
+     * both policies read as "optional", so a member already enrolled keeps
+     * being asked for their code.
+     *
+     * Status: In Development
+     * Added: 2026-09-06
+     * Target: 1.4.0
+     */
+    'two-factor-required' => 'Mandatory two-factor authentication policies (staff, everyone)',
+
+    /**
      * Add new feature flags below following this format:
      *
      * Simple flag without dependencies:

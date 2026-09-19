@@ -196,6 +196,30 @@ CREATE TABLE galette_tmppasswds (
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
+-- tables for two-factor authentication
+DROP TABLE IF EXISTS galette_twofactor_codes;
+DROP TABLE IF EXISTS galette_twofactor;
+CREATE TABLE galette_twofactor (
+    id_adh int unsigned NOT NULL,
+    secret varchar(64) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT 0,
+    date_crea datetime NOT NULL,
+    date_confirm datetime NULL DEFAULT NULL,
+    last_timeslice bigint NULL DEFAULT NULL,
+    PRIMARY KEY (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_twofactor_codes (
+    id_code int unsigned NOT NULL auto_increment,
+    id_adh int unsigned NOT NULL,
+    code varchar(255) NOT NULL,
+    date_used datetime NULL DEFAULT NULL,
+    PRIMARY KEY (id_code),
+    KEY galette_twofactor_codes_adh (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (

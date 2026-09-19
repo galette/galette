@@ -139,6 +139,20 @@
     </noscript>
 {% endif %}
 
+{# Invitation to hold a second factor #}
+{% if flash.getMessage('suggest_two_factor') %}
+    <noscript>
+        <div class="ui info icon message">
+            <i class="shield alternate icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Two-factor authentication is available") }}</div>
+                <p>{{ _T("A code from an application on your telephone, on top of your password, means a stolen password is not enough on its own to reach your account. Do you want to set it up?") }}</p>
+                <a href="{{ url_for('two-factor-manage') }}" class="ui large green button">{{ _T("Yes") }}</a>
+            </div>
+        </div>
+    </noscript>
+{% endif %}
+
 {# Renew telemetry #}
 {% if renew_telemetry is defined and renew_telemetry %}
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}

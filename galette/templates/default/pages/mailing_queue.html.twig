@@ -5,15 +5,10 @@
  #}
 
 {% extends "page.html.twig" %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
-        <div class="ui orange icon message">
-            <i class="exclamation triangle icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("Experimental") }}</div>
-                <p>{{ _T("Experimental feature. Be careful using it.") }}</p>
-            </div>
-        </div>
+        {{ macros.experimentalBanner() }}
 
         <div class="ui segment">
             <div role="status">

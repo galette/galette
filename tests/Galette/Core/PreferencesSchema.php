@@ -162,7 +162,17 @@ class PreferencesSchema extends GaletteTestCase
                 fn(array $entry): bool => ($entry['acl'] ?? Schema::ACL_ADMIN) === Schema::ACL_SUPERADMIN
             )
         );
-        $this->assertSame(['pref_admin_login', 'pref_admin_pass'], $superadmin);
+        $this->assertSame(
+            [
+                'pref_admin_login',
+                'pref_admin_pass',
+                //the second factor of that account, which nobody else may touch
+                'pref_2fa_superadmin_secret',
+                'pref_2fa_superadmin_enabled',
+                'pref_2fa_superadmin_timeslice',
+            ],
+            $superadmin
+        );
     }
 
     /**
@@ -186,13 +196,22 @@ class PreferencesSchema extends GaletteTestCase
             'pref_mail_batch_size',
             'pref_mail_batch_delay',
             'pref_mail_hourly_limit',
-            'pref_mail_daily_limit'
+            'pref_mail_daily_limit',
+            //the second factor, and everything that drives it
+            'pref_2fa_mode',
+            'pref_2fa_superadmin_secret',
+            'pref_2fa_superadmin_enabled',
+            'pref_2fa_superadmin_timeslice',
+            'pref_throttle_second_factor_attempts',
+            'pref_throttle_second_factor_window'
         ];
         foreach ($alpha as $name) {
             $this->assertTrue(Schema::isAlpha($name), $name . ' should be flagged as alpha');
         }
 
         $this->assertFalse(Schema::isAlpha('pref_mail_smtp_host'));
+        //the other throttling scopes are not tied to the second factor
+        $this->assertFalse(Schema::isAlpha('pref_throttle_account_ip_attempts'));
         $this->assertFalse(Schema::isAlpha('pref_nom'));
         $this->assertFalse(Schema::isAlpha('pref_does_not_exist'));
     }

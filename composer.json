@@ -76,7 +76,9 @@
         "league/html-to-markdown": "^5.1",
         "php-di/php-di": "^7.1",
         "psr/http-server-handler": "^1.0",
-        "thecodingmachine/safe": "^3.3"
+        "thecodingmachine/safe": "^3.3",
+        "spomky-labs/otphp": "^11.5",
+        "psr/clock": "^1.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",

@@ -170,6 +170,10 @@ use function Safe\preg_replace;
  * @property      int      $pref_upload_size_dynamic_files
  * @property      int      $pref_throttle_account_ip_attempts
  * @property      int      $pref_throttle_account_ip_window
+ * @property      int      $pref_2fa_mode
+ * @property      string   $pref_2fa_superadmin_secret
+ * @property      bool     $pref_2fa_superadmin_enabled
+ * @property      int      $pref_2fa_superadmin_timeslice
  * @property      int      $pref_throttle_ip_attempts
  * @property      int      $pref_throttle_ip_window
  * @property      int      $pref_throttle_account_attempts
@@ -179,6 +183,8 @@ use function Safe\preg_replace;
  * @property      int      $pref_throttle_recovery_window
  * @property      int      $pref_throttle_subscribe_attempts
  * @property      int      $pref_throttle_subscribe_window
+ * @property      int      $pref_throttle_second_factor_attempts
+ * @property      int      $pref_throttle_second_factor_window
  */
 class Preferences
 {
@@ -428,7 +434,12 @@ class Preferences
 
         $this->errors = array_merge(
             $this->errors,
-            $this->relations->check($values, $insert_values, $required)
+            $this->relations->check(
+                values: $values,
+                insert_values: $insert_values,
+                required: $required,
+                held_secrets: $this->heldSecrets()
+            )
         );
 
         $this->dynamicsCheck($values, [], []);
@@ -481,6 +492,28 @@ class Preferences
     }
 
     /**
+     * Secrets already stored.
+     *
+     * Their field is never rendered, so a form sends it back empty: a relation
+     * asking for one has to read that as "keep what is held", or saving the
+     * settings of an instance using SMTP authentication would fail on a
+     * password it is not allowed to show in the first place.
+     *
+     * @return array<string>
+     */
+    private function heldSecrets(): array
+    {
+        $held = [];
+        foreach (array_keys($this->prefs) as $name) {
+            if (PreferencesSchema::isSensitive($name) && !empty($this->prefs[$name])) {
+                $held[] = $name;
+            }
+        }
+
+        return $held;
+    }
+
+    /**
      * Assign checked values, honouring the access level each one requires
      *
      * @param array<string, mixed> $insert_values Complete set of values
@@ -520,8 +553,9 @@ class Preferences
                 continue;
             }
 
-            //an empty password must not overwrite the stored one
-            if ($champ === 'pref_admin_pass' && empty($_POST['pref_admin_pass'] ?? '')) {
+            //a secret is never rendered, so the form sends an empty field back
+            //unless it is being changed: that must not overwrite what is held
+            if (PreferencesSchema::isSensitive($champ) && empty($valeur)) {
                 continue;
             }
 
@@ -585,7 +619,12 @@ class Preferences
         $insert_values = $this->completeValues($values);
         $this->errors = array_merge(
             $this->errors,
-            $this->relations->check($values, $insert_values, $required)
+            $this->relations->check(
+                values: $values,
+                insert_values: $insert_values,
+                required: $required,
+                held_secrets: $this->heldSecrets()
+            )
         );
 
         if (count($this->errors) > 0) {

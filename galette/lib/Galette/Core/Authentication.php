@@ -48,6 +48,10 @@ abstract class Authentication
     /** @var array<int, Group|int> */
     protected array $managed_groups = [];
     protected bool $cron = false;
+    //a default value is required: this object is serialized into the session
+    //without __sleep, so a session written before this property existed must
+    //still unserialize
+    protected bool $tfa_pending = false;
 
     /**
      * Logs in user.
@@ -101,6 +105,7 @@ abstract class Authentication
     {
         unset($this->id);
         $this->logged = false;
+        $this->tfa_pending = false;
         unset($this->name);
         unset($this->login);
         $this->admin = false;
@@ -114,24 +119,68 @@ abstract class Authentication
 
     /**
      * Is user logged in?
+     *
+     * Credentials alone are not enough while a second factor is owed: every
+     * middleware and template goes through here, so code that logs a user in
+     * and then trusts isLogged() -- including code outside the core -- fails
+     * closed without having to know about the second factor.
      */
     public function isLogged(): bool
     {
-        return $this->logged;
+        return $this->logged && !$this->tfa_pending;
+    }
+
+    /**
+     * Are credentials accepted, but a second factor still owed?
+     */
+    public function isTwoFactorPending(): bool
+    {
+        return $this->logged && $this->tfa_pending;
+    }
+
+    /**
+     * Hold the session back until a second factor is produced
+     */
+    public function requireTwoFactor(): void
+    {
+        $this->tfa_pending = true;
+    }
+
+    /**
+     * Release the session, a second factor having been produced
+     */
+    public function validateTwoFactor(): void
+    {
+        $this->tfa_pending = false;
     }
 
     /**
      * Is user admin?
+     *
+     * A session owing a second factor holds none of its privileges: several
+     * routes carry no middleware and are gated on this predicate alone.
      */
     public function isAdmin(): bool
     {
-        return $this->admin;
+        return $this->admin && !$this->tfa_pending;
     }
 
     /**
      * Is user super admin?
      */
     public function isSuperAdmin(): bool
+    {
+        return $this->superadmin && !$this->tfa_pending;
+    }
+
+    /**
+     * Is this session the super administrator account, second factor owed or not?
+     *
+     * The super administrator is not a member and keeps its own second factor
+     * in the preferences: telling which store to read cannot depend on
+     * privileges the session does not hold yet.
+     */
+    public function isSuperAdminAccount(): bool
     {
         return $this->superadmin;
     }
@@ -149,7 +198,7 @@ abstract class Authentication
      */
     public function isStaff(): bool
     {
-        return $this->staff;
+        return $this->staff && !$this->tfa_pending;
     }
 
     /**
@@ -170,6 +219,10 @@ abstract class Authentication
     public function isGroupManager(array|int|null $id_group = null): bool
     {
         $manager = false;
+        if ($this->tfa_pending) {
+            return false;
+        }
+
         if ($this->isAdmin() || $this->isStaff()) {
             return true;
         }
@@ -222,7 +275,7 @@ abstract class Authentication
      */
     public function isUp2Date(): bool
     {
-        return $this->uptodate;
+        return $this->uptodate && !$this->tfa_pending;
     }
 
     /**
@@ -251,7 +304,7 @@ abstract class Authentication
      */
     public function __get(string $name): mixed
     {
-        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate', 'tfa_pending'];
         if (in_array($name, $forbidden)) {
             throw new \RuntimeException('Property ' . $name . ' is forbidden!');
         }
@@ -281,7 +334,7 @@ abstract class Authentication
      */
     public function __isset(string $name): bool
     {
-        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate', 'tfa_pending'];
         return isset($this->$name) && !in_array($name, $forbidden);
     }
 
