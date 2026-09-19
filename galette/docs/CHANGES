@@ -43,6 +43,7 @@ New features
 - Maintenance mode tells the super administrator it is enabled when they are logged in
 - The reminders cron script takes the instance URL from the settings
 - New feature flags mechanism, to ship features that are not production ready yet; flags are declared in behavior.inc.php, only apply in debug mode, and a galette:feature:status console command tells what is enabled
+- Improvements on dynamic fields: choice, date and file can now be repeated and you can now import up to 10 dynamic fields from CSV import.
 
 Improvements
 
