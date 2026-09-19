@@ -92,6 +92,7 @@ final class PreferencesSchema
     public const string ERR_WEBSITE = 'website';
     public const string ERR_EMAIL = 'email';
     public const string ERR_POSITIVE_NUMBER = 'positive_number';
+    public const string ERR_2FA_MODE = 'two_factor_mode';
     public const string ERR_THROTTLE_ATTEMPTS = 'throttle_attempts';
     public const string ERR_THROTTLE_SECONDS = 'throttle_seconds';
 
@@ -552,6 +553,51 @@ final class PreferencesSchema
             'pref_bool_groupsmanagers_see_contributions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_bool_groupsmanagers_see_transactions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_noindex' => ['type' => self::TYPE_BOOL, 'default' => false],
+            // === Two-factor authentication ===
+            // alpha feature
+            'pref_2fa_mode' => [
+                'type' => self::TYPE_INT,
+                'default' => TwoFactorAuth::MODE_DISABLED,
+                'min' => TwoFactorAuth::MODE_DISABLED,
+                'max' => TwoFactorAuth::MODE_REQUIRED_ALL,
+                'error' => self::ERR_2FA_MODE,
+                'alpha' => true,
+            ],
+            /*
+             * The second factor of the super administrator. That account is not
+             * a member, so it has nowhere else to keep one. Read by the
+             * challenge before anybody is logged in, written by the enrolment
+             * pages, and never by a form: read only here, and the secret never
+             * rendered. Locked on a demonstration instance, whose credentials
+             * are public: anybody could otherwise enrol a factor of their own
+             * on that account and close the demonstration.
+             */
+            'pref_2fa_superadmin_secret' => [
+                'type' => self::TYPE_STRING,
+                'default' => '',
+                'sensitive' => true,
+                'readonly' => true,
+                'demo_locked' => true,
+                'acl' => self::ACL_SUPERADMIN,
+                'alpha' => true,
+            ],
+            'pref_2fa_superadmin_enabled' => [
+                'type' => self::TYPE_BOOL,
+                'default' => false,
+                'readonly' => true,
+                'demo_locked' => true,
+                'acl' => self::ACL_SUPERADMIN,
+                'alpha' => true,
+            ],
+            'pref_2fa_superadmin_timeslice' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'readonly' => true,
+                'demo_locked' => true,
+                'acl' => self::ACL_SUPERADMIN,
+                'alpha' => true,
+            ],
+            // === /Two-factor authentication ===
             /* Throttling of failed authentication attempts */
             'pref_throttle_account_ip_attempts' => [
                 'type' => self::TYPE_INT,
@@ -629,6 +675,22 @@ final class PreferencesSchema
                 'min' => AuthThrottle::MIN_SECONDS,
                 'error' => self::ERR_THROTTLE_SECONDS,
                 'advanced' => true
+            ],
+            'pref_throttle_second_factor_attempts' => [
+                'type' => self::TYPE_INT,
+                'default' => 5,
+                'min' => AuthThrottle::MIN_ATTEMPTS,
+                'error' => self::ERR_THROTTLE_ATTEMPTS,
+                'advanced' => true,
+                'alpha' => true,
+            ],
+            'pref_throttle_second_factor_window' => [
+                'type' => self::TYPE_INT,
+                'default' => 900,
+                'min' => AuthThrottle::MIN_SECONDS,
+                'error' => self::ERR_THROTTLE_SECONDS,
+                'advanced' => true,
+                'alpha' => true,
             ],
             /* Settings that used to live in behavior.inc.php only */
             'pref_x_forwarded_for_index' => [
@@ -884,6 +946,7 @@ final class PreferencesSchema
             self::ERR_POSITIVE_NUMBER => _T('- Value for \'%1$s\' must be a positive number!'),
             //throttling can be made as generous as wanted, but not turned off
             //TRANS: first parameter is the setting name, second the lowest value it takes
+            self::ERR_2FA_MODE => _T("- Unknown two-factor authentication mode!"),
             self::ERR_THROTTLE_ATTEMPTS => _T('- Value for \'%1$s\' must be %2$s attempts or more!'),
             //TRANS: first parameter is the setting name, second the lowest value it takes
             self::ERR_THROTTLE_SECONDS => _T('- Value for \'%1$s\' must be %2$s seconds or more!'),

@@ -41,6 +41,22 @@
 }
 
 /*--------------------
+      Fieldsets
+---------------------*/
+fieldset {
+  border: 1px solid @internalBorderColor;
+  border-radius: @inputBorderRadius;
+
+  &:not(:last-child) {
+    margin-bottom: 1.5em;
+  }
+
+  legend.ui.dividing.header {
+    border-width: 0;
+  }
+}
+
+/*--------------------
       Fields
 ---------------------*/
 .ui .fields:first-child:last-child {

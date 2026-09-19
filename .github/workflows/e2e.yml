@@ -33,6 +33,7 @@ jobs:
             - { project: "a11y", browser: "chromium" }
             - { project: "chromium", browser: "chromium" }
             - { project: "mail-queue", browser: "chromium" }
+            - { project: "two-factor", browser: "chromium" }
 
     services:
       # Label used to access the service container

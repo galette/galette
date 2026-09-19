@@ -214,7 +214,9 @@ class Install extends BaseGaletteTestCase
                     'FOREIGN KEY-galette_searches-id_adh--' => 'FOREIGN KEY-galette_searches-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_socials-id_adh--' => 'FOREIGN KEY-galette_socials-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_tmppasswds-id_adh--' => 'FOREIGN KEY-galette_tmppasswds-id_adh-galette_adherents-id_adh',
-                    'FOREIGN KEY-galette_transactions-id_adh--' => 'FOREIGN KEY-galette_transactions-id_adh-galette_adherents-id_adh'
+                    'FOREIGN KEY-galette_transactions-id_adh--' => 'FOREIGN KEY-galette_transactions-id_adh-galette_adherents-id_adh',
+                    'FOREIGN KEY-galette_twofactor-id_adh--' => 'FOREIGN KEY-galette_twofactor-id_adh-galette_adherents-id_adh',
+                    'FOREIGN KEY-galette_twofactor_codes-id_adh--' => 'FOREIGN KEY-galette_twofactor_codes-id_adh-galette_adherents-id_adh'
                 ];
             }
             $rules_fails = [];

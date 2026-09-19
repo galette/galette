@@ -43,6 +43,10 @@ if (!defined('_CURRENT_THEME_PATH')) {
 }
 
 require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
+
+//the mandatory second factor policies are behind a feature flag; the suite
+//exercises them, and cannot turn debug mode on to declare the flag for real
+\Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
 //Globals... :(
 global $preferences, $emitter, $zdb;
 //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/

@@ -17,6 +17,7 @@ use Slim\Psr7\Response;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\AuthThrottle;
 use Galette\Core\Login;
+use Galette\Core\TwoFactorAuth;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
@@ -31,6 +32,15 @@ use Galette\Util\Release;
 
 class AuthController extends AbstractController
 {
+    /**
+     * Prefix of the cookie silencing the invitation to hold a second factor.
+     *
+     * The account identifier is appended to it: one cookie per account and not
+     * one per browser, or the first member to decline on a shared computer
+     * would answer for everybody logging in after them.
+     */
+    public const string TFA_SUGGESTION_COOKIE = 'hide_galette_2fa_suggestion';
+
     /**
      * Log in
      *
@@ -82,7 +92,8 @@ class AuthController extends AbstractController
         Response $response,
         \Galette\Util\Password $checkpass,
         Release $release,
-        AuthThrottle $throttle
+        AuthThrottle $throttle,
+        TwoFactorAuth $tfa
     ): Response {
         $post =  $request->getParsedBody();
         $nick = $post['login'] ?? '';
@@ -129,6 +140,16 @@ class AuthController extends AbstractController
             }
         } else {
             $this->login->logIn($nick, $password);
+        }
+
+        if ($this->login->isTwoFactorPending()) {
+            //credentials are accepted, the session is not logged in yet. Storing
+            //it is safe and avoids carrying the password over to the next
+            //request: isLogged() stays false, so Authenticate keeps refusing.
+            $this->session->login = $this->login;
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('two-factor'));
         }
 
         if ($this->login->isLogged()) {
@@ -194,6 +215,8 @@ class AuthController extends AbstractController
                 }
             }
 
+            $this->suggestSecondFactor($tfa);
+
             if (!$checkpass->isValid($password)) {
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
@@ -212,6 +235,53 @@ class AuthController extends AbstractController
             $this->history->add(_T("Authentication failed"), $nick);
             return $response->withStatus(301)->withHeader('Location', $this->routeparser->urlFor('login'));
         }
+    }
+
+    /**
+     * Invite an account that holds no second factor to enrol.
+     *
+     * The mandatory policies are held back, so nothing drives anybody to
+     * enrol: an instance that turned the second factor on would see it used by
+     * nobody. Offered to every account, and not only to the ones that read the
+     * whole membership, because a member's own file is their civil status,
+     * their address and their contributions. Told once at login rather than
+     * shown on every page, and silenced by a cookie, the way the telemetry
+     * reminder is.
+     *
+     * @param TwoFactorAuth $tfa Second factor service
+     */
+    private function suggestSecondFactor(TwoFactorAuth $tfa): void
+    {
+        $cookie = $this->suggestionCookie();
+        if (isset($_COOKIE[$cookie]) && $_COOKIE[$cookie]) {
+            return;
+        }
+
+        //nothing to suggest when the instance does not use it, and nothing to
+        //say when the policy already requires it: that is the middleware's job
+        if (!$tfa->isEnabled() || $tfa->isRequiredFor($this->login)) {
+            return;
+        }
+
+        if ($tfa->storeFor($this->login)->isEnabled()) {
+            return;
+        }
+
+        //the name travels with the invitation: the page that offers to silence
+        //it has no business knowing how it is built
+        $this->flash->addMessage('suggest_two_factor', $cookie);
+    }
+
+    /**
+     * Name of the cookie silencing the invitation for the account logging in.
+     *
+     * The super administrator is not a member and holds no identifier of its
+     * own: it is the only account carrying 0, which is enough to tell it from
+     * the others.
+     */
+    private function suggestionCookie(): string
+    {
+        return self::TFA_SUGGESTION_COOKIE . '_' . (int)$this->login->id;
     }
 
     /**
@@ -301,7 +371,9 @@ class AuthController extends AbstractController
         }
 
         $login = new Login($this->zdb, $this->i18n);
-        $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
+        //no second factor on the way back: this session produced one to become
+        //the super administrator in the first place, and it never lost that
+        $login->logAdmin($this->preferences->pref_admin_login, $this->preferences, challenge: false);
         $this->history->add(_T("Impersonating ended"));
         \RKA\Session::regenerate();
         $this->session->login = $login;

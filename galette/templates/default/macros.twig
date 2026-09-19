@@ -159,3 +159,43 @@
         <i class="{{ icon }} icon" aria-hidden="true"></i> {{ label }}
     </span>
 {% endmacro %}
+
+{#
+ # The mark an experimental feature carries, so that it reads the same wherever
+ # one shows up. The advanced configuration page shows the icon alone, in a
+ # status column its legend explains; anywhere else, pass the word to show
+ # along with it, since nothing on the page would say it otherwise.
+ #}
+{% macro experimentalMark(text) %}
+    {% set experimental_label = _T("Experimental feature. Be careful using it.") %}
+    {% if text is empty %}
+        <span
+            class="ui icon"
+            role="img"
+            title="{{ experimental_label|e('html_attr') }}"
+            aria-label="{{ experimental_label|e('html_attr') }}"
+        >
+            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+        </span>
+    {% else %}
+        <span class="ui orange text" title="{{ experimental_label|e('html_attr') }}">
+            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+            {{ text }}
+        </span>
+    {% endif %}
+{% endmacro %}
+
+{#
+ # The banner a page dedicated to an experimental feature carries, where a mark
+ # next to a single setting would not be enough: it is the whole page that has
+ # not been through a release yet.
+ #}
+{% macro experimentalBanner() %}
+    <div class="ui orange icon message">
+        <i class="exclamation triangle icon" aria-hidden="true"></i>
+        <div class="content">
+            <div class="header">{{ _T("Experimental") }}</div>
+            <p>{{ _T("Experimental feature. Be careful using it.") }}</p>
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,81 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+{% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
+
+{% block content %}
+    {{ macros.experimentalBanner() }}
+
+    {% if tfa_enabled %}
+        <div class="ui success message">
+            <div class="header">{{ _T("Two-factor authentication is enabled") }}</div>
+            <p>{{ _T("A code from your authentication application is asked for at every login.") }}</p>
+        </div>
+
+    {% if has_recovery_codes %}
+        <fieldset aria-describedby="tfa_codes_help">
+            <legend class="ui dividing header">{{ _T("Recovery codes") }}</legend>
+            <p id="tfa_codes_help" class="ui small text">
+                {{ _T("Recovery codes let you log in when you no longer have your device. Each one works once.") }}
+            </p>
+            <p>
+                {{ _Tn("You have %count recovery code left.", "You have %count recovery codes left.", remaining_codes)|replace({'%count': remaining_codes}) }}
+            </p>
+            <form action="{{ url_for('do-two-factor-codes') }}" method="post" class="ui form">
+                <div class="inline field">
+                    <label for="codes_code">{{ _T("Current code:") }}</label>
+                    <input type="text" name="code" id="codes_code" autocomplete="one-time-code" inputmode="numeric" required="required"/>
+                </div>
+                <button type="submit" class="ui button">
+                    <i class="sync icon" aria-hidden="true"></i>
+                    {{ _T("Renew recovery codes") }}
+                </button>
+            </form>
+        </fieldset>
+    {% else %}
+        <div class="ui info message">
+            <div class="header">{{ _T("No recovery codes for this account") }}</div>
+            <p>{{ _T("The super administrator is not a member: its second factor lives in the preferences, which is also where it is cleared from should you lose your device. Keep an access to the database at hand.") }}</p>
+        </div>
+    {% endif %}
+
+        <fieldset aria-describedby="tfa_disable_help">
+            <legend class="ui dividing header">{{ _T("Disable") }}</legend>
+            <p id="tfa_disable_help" class="ui small text">
+        {% if tfa_required %}
+                {{ _T("Two-factor authentication is required on this instance: disabling it will be asked for again at your next login.") }}
+        {% else %}
+                {{ _T("A code is required to disable it, so that nobody else can turn it off from your session.") }}
+        {% endif %}
+            </p>
+            <form action="{{ url_for('do-two-factor-disable') }}" method="post" class="ui form">
+                <div class="inline field">
+                    <label for="disable_code">{{ _T("Current code:") }}</label>
+                    <input type="text" name="code" id="disable_code" autocomplete="one-time-code" inputmode="numeric" required="required"/>
+                </div>
+                <button type="submit" class="ui red button">
+                    <i class="times icon" aria-hidden="true"></i>
+                    {{ _T("Disable two-factor authentication") }}
+                </button>
+            </form>
+        </fieldset>
+    {% else %}
+        <div class="ui{% if tfa_required %} warning{% else %} info{% endif %} message">
+            <div class="header">{{ _T("Two-factor authentication is not enabled") }}</div>
+            <p>
+        {% if tfa_required %}
+                {{ _T("It is required on this instance: you will be asked to enable it to keep using your account.") }}
+        {% else %}
+                {{ _T("Adding a code from an application on your phone makes a stolen password useless on its own.") }}
+        {% endif %}
+            </p>
+        </div>
+        <a href="{{ url_for('two-factor-enrol') }}" class="ui primary button">
+            <i class="mobile alternate icon" aria-hidden="true"></i>
+            {{ _T("Enable two-factor authentication") }}
+        </a>
+    {% endif %}
+{% endblock %}

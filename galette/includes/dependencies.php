@@ -162,6 +162,9 @@ $container->set(\Galette\Core\PrintLogo::class, DI\autowire());
 
 $container->set(\Galette\Core\History::class, \DI\autowire());
 
+//code depending on "now" takes a clock rather than calling time() itself
+$container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
+
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
     /** @var array<string, string> $core_acls */

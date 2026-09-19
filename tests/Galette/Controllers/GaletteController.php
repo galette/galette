@@ -27,6 +27,27 @@ class GaletteController extends GaletteRoutingTestCase
     protected int $seed = 20250802103040;
 
     /**
+     * What a full preferences form posts: every default, minus the secrets.
+     *
+     * A secret is never rendered, so the form sends its field back empty, and
+     * an empty one leaves what is stored alone.
+     *
+     * @return array<string, mixed>
+     */
+    private function postedDefaults(): array
+    {
+        $posted = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            if (\Galette\Core\PreferencesSchema::isSensitive($key)) {
+                continue;
+            }
+            $posted[$key] = $value;
+        }
+
+        return $posted;
+    }
+
+    /**
      * Set up tests
      */
     public function setUp(): void
@@ -148,6 +169,53 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * The second factor ships as experimental, and only the two policies that
+     * cannot lock an association out are offered
+     */
+    public function testPreferencesOfferTheSecondFactorPolicies(): void
+    {
+        global $preferences;
+
+        $request = $this->createRequest('preferences');
+        $this->logSuperAdmin();
+
+        //the flag is forced on for the suite, so all four are there
+        $body = (string)$this->app->handle($request)->getBody();
+        $this->assertStringContainsString('name="pref_2fa_mode"', $body);
+        //the setting carries the same experimental mark as the advanced page
+        $this->assertMatchesRegularExpression(
+            '/circular orange exclamation triangle icon.*Experimental/s',
+            $body
+        );
+        $this->assertStringContainsString('Required for administrators and staff', $body);
+        $this->assertStringContainsString('Required for everyone', $body);
+
+        try {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: false);
+
+            //as shipped: the setting is there, the two mandatory policies are not
+            $body = (string)$this->app->handle($request)->getBody();
+            $this->assertStringContainsString('name="pref_2fa_mode"', $body);
+            $this->assertStringNotContainsString('Required for administrators and staff', $body);
+            $this->assertStringNotContainsString('Required for everyone', $body);
+
+            //an instance carrying a mandatory policy keeps it stored, and the
+            //form re-posts what applies: rendering none of the options as
+            //selected would have the browser keep the first, and the next save
+            //would write "disabled" over a policy in force
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL;
+            $body = (string)$this->app->handle($request)->getBody();
+            $this->assertStringContainsString(
+                'value="' . \Galette\Core\TwoFactorAuth::MODE_OPTIONAL . '" selected="selected"',
+                $body
+            );
+        } finally {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+        }
+    }
+
+    /**
      * Test store preferences
      */
     public function testStorePreferences(): void
@@ -161,7 +229,7 @@ class GaletteController extends GaletteRoutingTestCase
         //superadmin can store preferences
         $this->logSuperAdmin();
 
-        $request = $request->withParsedBody(['pref_nom' => 'Name changed from test suite', 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['pref_nom' => 'Name changed from test suite', 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -173,7 +241,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame('Name changed from test suite', $preferences->pref_nom);
 
         //restore
-        $request = $request->withParsedBody(['pref_nom' => 'Galette', 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['pref_nom' => 'Galette', 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $preferences = new \Galette\Core\Preferences($this->zdb);
@@ -200,7 +268,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $request = $this->createRequest('store-preferences', [], 'POST');
         $request = $request->withUploadedFiles($uploaded_files);
-        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -212,7 +280,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //delete logo
         $request = $this->createRequest('store-preferences', [], 'POST');
-        $request = $request->withParsedBody(['del_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['del_logo' => 1, 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -243,7 +311,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $request = $this->createRequest('store-preferences', [], 'POST');
         $request = $request->withUploadedFiles($uploaded_files);
-        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -256,7 +324,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //delete logo
         $request = $this->createRequest('store-preferences', [], 'POST');
-        $request = $request->withParsedBody(['del_card_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['del_card_logo' => 1, 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());

@@ -4,6 +4,19 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
+{% set main_classes = [] %}
+{% if cur_route in ['login', 'password-lost', 'password-recovery', 'directlink', 'two-factor'] or ext_auth is defined %}
+    {% set main_classes = main_classes|merge(['text']) %}
+{% endif %}
+{% if not login.isLogged() or ext_auth is defined %}
+    {% set main_classes = main_classes|merge(['ui', 'container']) %}
+{% else %}
+    {% set main_classes = main_classes|merge(['full', 'height']) %}
+    {% if i18n.isRtl() %}
+        {% set main_classes = main_classes|merge(['rtl']) %}
+    {% endif %}
+{% endif %}
+
 <!DOCTYPE html>
 
 <html lang="{{ i18n.getWebID() }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additional_html_class is defined %} {{ additional_html_class }}{% endif %}">
@@ -15,7 +28,7 @@
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <main class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" or ext_auth is defined %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+            <div id="main" class="{{ main_classes|join(' ') }}">
 {% if login.isLogged() and ext_auth is not defined %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}

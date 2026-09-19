@@ -30,6 +30,13 @@ $core_acls = [
     'testEmailConnection'               => 'admin',
     'dashboard'                         => 'member',
     'ajaxNews'                          => 'member', //dashboard news, displayed to whoever the dashboard is
+    //every member manages their own second factor
+    'two-factor-manage'                 => 'member',
+    'two-factor-enrol'                  => 'member',
+    'do-two-factor-enrol'               => 'member',
+    'do-two-factor-disable'             => 'member',
+    'do-two-factor-codes'               => 'member',
+    'do-two-factor-reset'               => 'staff',
     'sysinfos'                          => 'staff',
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',

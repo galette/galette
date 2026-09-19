@@ -56,3 +56,25 @@ CREATE TABLE galette_mailing_queue (
 
 -- qmail method has been removed, fall back to sendmail (closest local MTA method)
 UPDATE galette_preferences SET val_pref = '5' WHERE nom_pref = 'pref_mail_method' AND val_pref = '3';
+
+-- tables for two-factor authentication
+CREATE TABLE galette_twofactor (
+    id_adh int unsigned NOT NULL,
+    secret varchar(64) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT 0,
+    date_crea datetime NOT NULL,
+    date_confirm datetime NULL DEFAULT NULL,
+    last_timeslice bigint NULL DEFAULT NULL,
+    PRIMARY KEY (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_twofactor_codes (
+    id_code int unsigned NOT NULL auto_increment,
+    id_adh int unsigned NOT NULL,
+    code varchar(255) NOT NULL,
+    date_used datetime NULL DEFAULT NULL,
+    PRIMARY KEY (id_code),
+    KEY galette_twofactor_codes_adh (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;

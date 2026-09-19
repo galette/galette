@@ -199,6 +199,20 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('management', $menus);
         $this->assertArrayHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
+
+        //the super administrator holds a second factor of its own, kept in
+        //preferences no form may write: without this entry, that account has
+        //no way to enrol from the interface
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $this->assertCount(6, $menus);
+        $this->assertArrayHasKey('myaccount', $menus);
+        $this->assertCount(1, $menus['myaccount']['items']);
+        $this->assertSame(
+            'two-factor-manage',
+            $menus['myaccount']['items'][0]['route']['name']
+        );
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
     }
 
     /**
