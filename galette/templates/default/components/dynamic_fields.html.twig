@@ -34,16 +34,18 @@
             {% if removable %}
                 {#
                  # The button sits on the label's line, so an occurrence does not take
-                 # a row more than a plain field. Javascript shows it once there are
-                 # several occurrences, and binds it.
+                 # a row more than a plain field. Javascript shows it once there is
+                 # something to remove, and binds it. A stored file goes away for good,
+                 # where an empty occurrence is only one row less.
                  #}
-                {% set remove_label = _T("Remove this occurrence of %1$s")|format(field.getName()) %}
+                {% set drops_file = get_class(field) == 'Galette\\DynamicFields\\File' and object.id and valuedata %}
+                {% set remove_label = (drops_file ? _T("Delete the file and remove this occurrence of %1$s") : _T("Remove this occurrence of %1$s"))|format(field.getName()) %}
                 <button
                     type="button"
                     class="jsonly displaynone ui tiny basic red icon button repeat_remove"
                     aria-label="{{ remove_label }}"
                     title="{{ remove_label }}"
-                ><i class="minus icon" aria-hidden="true"></i></button>
+                ><i class="{{ drops_file ? 'trash alternate' : 'minus' }} icon" aria-hidden="true"></i></button>
             {% endif %}
             {% if field.getInformation() and field.hasInformationAbove() %}
                 <div class="field-description">{{ field.getInformation()|raw }}</div>
@@ -118,21 +120,6 @@
                         </label>
                     </div>
                 </div>
-                {% if object.id and valuedata %}
-                <div class="extra ui basic fitted segment">
-                    <div class="ui toggle checkbox">
-                        <input
-                            type="checkbox"
-                            name="info_field_{{ field.getId() }}_{{ idx }}"
-                            id="info_field_{{ field.getId() }}_{{ idx }}_delete"
-                            onclick="this.form.info_field_{{ field.getId() }}_{{ idx }}_new.disabled = this.checked;"
-                        />
-                        <label class="labelalign" for="info_field_{{ field.getId() }}_{{ idx }}_delete">
-                            {{ _T("delete") }}
-                        </label>
-                    </div>
-                </div>
-                {% endif %}
             {% endif %}
             {% if field.getInformation() and not field.hasInformationAbove() %}
                 <div class="field-description">{{ field.getInformation()|raw }}</div>
@@ -160,28 +147,32 @@
                         {% if perm == constant('Galette\\Entity\\FieldsConfig::USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
                             {% set disabled = true %}
                         {% endif %}
+                        {% set is_file = get_class(field) == 'Galette\\DynamicFields\\File' %}
                         {% set values = object.getDynamicFields().getValues(field.getId()) %}
                         {# a field takes several occurrences when its repeat is greater than one, or zero (as many as wanted); a null or single repeat means it takes a single one #}
                         {% set repeatable = not masschange and field.isRepeatable() %}
-                        {% if get_class(field) == 'Galette\\DynamicFields\\File' or field.isRepeatable() %}
+                        {% if is_file or field.isRepeatable() %}
                           {% set columns = 'sixteen wide ' %}
                         {% elseif field.getWidthInForms() == 1 or (preferences.pref_member_form_grid == 'two' and field.getWidthInForms() == 3) %}
                           {% set columns = '' %}
                         {% else %}
                           {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
                         {% endif %}
-                        <div class="{% if repeatable %}repeatable {% endif %}{{ columns }}column"{% if repeatable %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}>
+                        {# a lone file field has no occurrence to add, but its stored file can be dropped #}
+                        <div class="{% if repeatable %}repeatable {% elseif is_file %}dynfiles {% endif %}{{ columns }}column"{% if repeatable %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}>
                             {% for field_data in values %}
                                 {# the occurrence is numbered after its stored index, which the form posts back and the file names carry #}
                                 {% set idx = field_data.val_index %}
                                 {% set required = field.isRequired() and (not repeatable or idx == 1) %}
-                                <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
-                                    {{ _self.draw_field(field, field_data, disabled, idx, object, masschange, required and not masschange, repeatable) }}
+                                {# a stored file is dropped from its own occurrence, repeatable or not #}
+                                {% set removable = repeatable or (is_file and object.id and field_data.field_val) %}
+                                <div class="field{% if removable %} removable{% endif %}{% if required %} required{% endif %}{% if is_file %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
+                                    {{ _self.draw_field(field, field_data, disabled, idx, object, masschange, required and not masschange, removable) }}
                                 </div>
                             {% endfor %}
                             {% if values is not iterable or values|length == 0 %}
                                 {% set required = field.isRequired() %}
-                                <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
+                                <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if is_file %} wide{% endif %}">
                                     {{ _self.draw_field(field, {'field_val': ''}, disabled, 1, object, masschange, required and not masschange, repeatable) }}
                                 </div>
                             {% endif %}
@@ -219,6 +210,8 @@
                     {% include "elements/js/calendar.js.twig" with {selector: '.repeat_no_calendar'} %}
 
                     var _repeatMsg = '{{ _T("Enter up to %1$s more occurrences.")|format("__COUNT__")|e('js') }}';
+                    {# once the stored file is gone, the upload control replaces nothing anymore #}
+                    var _chooseFile = '{{ _T("Choose a file")|e('js') }}';
 
                     var _addButton = function(_label) {
                         return $('<button type="button" class="ui tiny green labeled icon button repeat_add"><i class="plus icon" aria-hidden="true"></i> {{ _T("Add")|e('js') }}</button>')
@@ -227,6 +220,11 @@
 
                     var _getControl = function(_field) {
                         return _field.find('input, select, textarea').not('.mass_checkbox').first();
+                    };
+
+                    {# an occurrence holding a stored file: the file lives on the server, not in the form #}
+                    var _holdsFile = function(_field) {
+                        return _field.data('filled') && _field.find('input[type="file"]').length > 0;
                     };
 
                     {# every control of an occurrence is named after its index, files included #}
@@ -249,10 +247,15 @@
                         var _fields = _parent.children('.field');
                         var _max = parseInt(_parent.attr('data-maxrepeat'), 10);
 
-                        {# the buttons come hidden from the markup, for browsers without javascript #}
-                        _fields.children('.repeat_remove')
-                            .removeClass('displaynone')
-                            .toggle(_fields.length > 1);
+                        {#
+                         # The buttons come hidden from the markup, for browsers without javascript.
+                         # There is nothing to remove on a lone occurrence, unless it holds a file.
+                         #}
+                        _fields.children('.repeat_remove').removeClass('displaynone');
+                        _fields.each(function() {
+                            $(this).children('.repeat_remove')
+                                .toggle(_fields.length > 1 || _holdsFile($(this)));
+                        });
 
                         if (_max > 0) {
                             var _remaining = _max - _fields.length;
@@ -263,19 +266,10 @@
                         }
                     };
 
-                    $('.repeatable').each(function() {
+                    $('.repeatable, .dynfiles').each(function() {
                         var _parent = $(this);
+                        {# a file field that takes a single occurrence has none to add, and no template #}
                         var _template = _parent.children('template.repeat_template')[0];
-
-                        if (!_template) {
-                            return;
-                        }
-
-                        {# a missing maxrepeat means the field is not repeatable, a zero one means infinite #}
-                        var _max = parseInt(_parent.attr('data-maxrepeat'), 10);
-                        if (isNaN(_max)) {
-                            return;
-                        }
 
                         {# drop trailing empty occurrences, but always keep one to fill in #}
                         var _fields = _parent.children('.field');
@@ -297,17 +291,31 @@
                             {#
                              # A stored file is not posted back with the form, so dropping its
                              # occurrence from the page says nothing to the server. Leave the
-                             # deletion behind, the way the delete checkbox states it.
+                             # deletion behind, so the file goes away with its occurrence.
                              #}
-                            if (_field.data('filled') && _field.find('input[type="file"]').length) {
+                            if (_holdsFile(_field)) {
                                 $('<input type="hidden" value="1" />')
                                     .attr('name', _getControl(_field).attr('name'))
                                     .appendTo(_parent);
                             }
 
-                            _field.remove();
+                            if (_parent.children('.field').length > 1) {
+                                _field.remove();
+                            } else {
+                                {# the last occurrence stays, to upload a file in place of the deleted one #}
+                                _field.children('a').remove();
+                                _field.removeAttr('data-filled').removeData('filled');
+                                _field.find('.ui.file.input > label.ui.button')
+                                    .contents().last().replaceWith(' ' + _chooseFile);
+                            }
+
                             _refresh(_parent);
                         });
+
+                        if (!_template) {
+                            _refresh(_parent);
+                            return;
+                        }
 
                         var _add = _addButton($(_template).data('add-label'));
                         _parent.append(_add);
