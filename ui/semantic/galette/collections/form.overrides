@@ -57,6 +57,32 @@
   }
 }
 
+/*-----------------------------------
+      Repeatable fields occurrences
+------------------------------------*/
+/* The button that removes an occurrence shares the label's line,
+   so an occurrence does not take a row more than a plain field. */
+.ui.form .field.removable {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  & > * {
+    flex: 1 1 100%;
+  }
+
+  & > label {
+    flex: 1 1 auto;
+    width: auto;
+    margin-right: @labelDistance;
+  }
+
+  & > .repeat_remove {
+    flex: 0 0 auto;
+    margin: 0 0 @labelDistance;
+  }
+}
+
 /*-------------------------
       Filters' fields
 --------------------------*/

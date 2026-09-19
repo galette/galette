@@ -10,7 +10,7 @@
 
     {% if fields is not empty %}
 
-        {% macro draw_field(field, field_data, disabled, idx, object, masschange, required) %}
+        {% macro draw_field(field, field_data, disabled, idx, object, masschange, required, removable) %}
             {% set valuedata = field_data.field_val|escape %}
             {% if masschange %}
                 {# Add a checkbox for fields to change on mass edition #}
@@ -30,6 +30,20 @@
                     {# a loose comparison, so the __IDX__ placeholder of the pristine template keeps its number #}
                     {% if idx != 1 %}({{ idx }}){% endif %}
                 </label>
+            {% endif %}
+            {% if removable %}
+                {#
+                 # The button sits on the label's line, so an occurrence does not take
+                 # a row more than a plain field. Javascript shows it once there are
+                 # several occurrences, and binds it.
+                 #}
+                {% set remove_label = _T("Remove this occurrence of %1$s")|format(field.getName()) %}
+                <button
+                    type="button"
+                    class="jsonly displaynone ui tiny basic red icon button repeat_remove"
+                    aria-label="{{ remove_label }}"
+                    title="{{ remove_label }}"
+                ><i class="minus icon" aria-hidden="true"></i></button>
             {% endif %}
             {% if field.getInformation() and field.hasInformationAbove() %}
                 <div class="field-description">{{ field.getInformation()|raw }}</div>
@@ -161,14 +175,14 @@
                                 {# the occurrence is numbered after its stored index, which the form posts back and the file names carry #}
                                 {% set idx = field_data.val_index %}
                                 {% set required = field.isRequired() and (not repeatable or idx == 1) %}
-                                <div class="field{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
-                                    {{ _self.draw_field(field, field_data, disabled, idx, object, masschange, required and not masschange) }}
+                                <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
+                                    {{ _self.draw_field(field, field_data, disabled, idx, object, masschange, required and not masschange, repeatable) }}
                                 </div>
                             {% endfor %}
                             {% if values is not iterable or values|length == 0 %}
                                 {% set required = field.isRequired() %}
-                                <div class="field{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
-                                    {{ _self.draw_field(field, {'field_val': ''}, disabled, 1, object, masschange, required and not masschange) }}
+                                <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
+                                    {{ _self.draw_field(field, {'field_val': ''}, disabled, 1, object, masschange, required and not masschange, repeatable) }}
                                 </div>
                             {% endif %}
                             {% if repeatable %}
@@ -186,10 +200,9 @@
                                 <template
                                     class="repeat_template"
                                     data-add-label="{{ _T("Add an occurrence of %1$s")|format(field.getName())|escape }}"
-                                    data-remove-label="{{ _T("Remove this occurrence of %1$s")|format(field.getName())|escape }}"
                                 >
-                                    <div class="field">
-                                        {{ _self.draw_field(field, {'field_val': ''}, disabled, '__IDX__', object, masschange, false) }}
+                                    <div class="field removable">
+                                        {{ _self.draw_field(field, {'field_val': ''}, disabled, '__IDX__', object, masschange, false, true) }}
                                     </div>
                                 </template>
                             {% endif %}
@@ -210,13 +223,6 @@
                     var _addButton = function(_label) {
                         return $('<button type="button" class="ui tiny green labeled icon button repeat_add"><i class="plus icon" aria-hidden="true"></i> {{ _T("Add")|e('js') }}</button>')
                             .attr('aria-label', _label);
-                    };
-
-                    {# one per occurrence: an icon button, so a field with many of them stays readable #}
-                    var _removeButton = function(_label) {
-                        return $('<button type="button" class="ui tiny basic red icon button repeat_remove"><i class="minus icon" aria-hidden="true"></i></button>')
-                            .attr('aria-label', _label)
-                            .attr('title', _label);
                     };
 
                     var _getControl = function(_field) {
@@ -243,7 +249,10 @@
                         var _fields = _parent.children('.field');
                         var _max = parseInt(_parent.attr('data-maxrepeat'), 10);
 
-                        _fields.children('.repeat_remove').toggle(_fields.length > 1);
+                        {# the buttons come hidden from the markup, for browsers without javascript #}
+                        _fields.children('.repeat_remove')
+                            .removeClass('displaynone')
+                            .toggle(_fields.length > 1);
 
                         if (_max > 0) {
                             var _remaining = _max - _fields.length;
@@ -279,31 +288,25 @@
                             _fields = _parent.children('.field');
                         }
 
-                        var _removeLabel = $(_template).data('remove-label');
-                        var _bindRemove = function(_field) {
-                            var _button = _removeButton(_removeLabel);
-                            _field.append(_button);
-                            _button.on('click', function(e) {
-                                e.preventDefault();
+                        {# delegated, so an occurrence added later needs no binding of its own #}
+                        _parent.on('click', '.repeat_remove', function(e) {
+                            e.preventDefault();
 
-                                {#
-                                 # A stored file is not posted back with the form, so dropping its
-                                 # occurrence from the page says nothing to the server. Leave the
-                                 # deletion behind, the way the delete checkbox states it.
-                                 #}
-                                if (_field.data('filled') && _field.find('input[type="file"]').length) {
-                                    $('<input type="hidden" value="1" />')
-                                        .attr('name', _getControl(_field).attr('name'))
-                                        .appendTo(_parent);
-                                }
+                            var _field = $(this).closest('.field');
 
-                                _field.remove();
-                                _refresh(_parent);
-                            });
-                        };
+                            {#
+                             # A stored file is not posted back with the form, so dropping its
+                             # occurrence from the page says nothing to the server. Leave the
+                             # deletion behind, the way the delete checkbox states it.
+                             #}
+                            if (_field.data('filled') && _field.find('input[type="file"]').length) {
+                                $('<input type="hidden" value="1" />')
+                                    .attr('name', _getControl(_field).attr('name'))
+                                    .appendTo(_parent);
+                            }
 
-                        _parent.children('.field').each(function() {
-                            _bindRemove($(this));
+                            _field.remove();
+                            _refresh(_parent);
                         });
 
                         var _add = _addButton($(_template).data('add-label'));
@@ -322,7 +325,6 @@
                             _new.find('select').dropdown();
                             _new.find('.ui.checkbox').checkbox();
 
-                            _bindRemove(_new);
                             _getControl(_new).trigger('focus');
                             _refresh(_parent);
                         });
