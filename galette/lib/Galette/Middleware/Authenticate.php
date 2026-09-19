@@ -12,6 +12,7 @@ namespace Galette\Middleware;
 
 use DI\Attribute\Inject;
 use Galette\Core\Login;
+use Galette\Core\TwoFactorAuth;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -41,16 +42,18 @@ class Authenticate
     /**
      * Constructor
      *
-     * @param Login       $login       Login instance
-     * @param Session     $session     Session instance
-     * @param RouteParser $routeparser Route parser instance
-     * @param Messages    $flash       Flash messages instance
+     * @param Login         $login       Login instance
+     * @param Session       $session     Session instance
+     * @param RouteParser   $routeparser Route parser instance
+     * @param Messages      $flash       Flash messages instance
+     * @param TwoFactorAuth $tfa         Second factor instance
      */
     public function __construct(
         private readonly Login $login,
         private readonly Session $session,
         private readonly RouteParser $routeparser,
-        protected Messages $flash
+        protected Messages $flash,
+        private readonly TwoFactorAuth $tfa
     ) {
     }
 
@@ -85,6 +88,17 @@ class Authenticate
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
         $cur_route = $route->getName();
+
+        if ($this->mustEnrolSecondFactor((string)$cur_route)) {
+            $this->flash->addMessage(
+                'warning_detected',
+                _T("Two-factor authentication is required. Please enable it to keep using your account.")
+            );
+            return $response
+                ->withHeader('Location', $this->routeparser->urlFor('two-factor-enrol'))
+                ->withStatus(302);
+        }
+
         $acl = $this->getAclFor($cur_route);
 
         $go = false;
@@ -148,6 +162,33 @@ class Authenticate
         }
 
         return $handler->handle($request);
+    }
+
+    /**
+     * Must the current session enrol a second factor before going anywhere?
+     *
+     * @param string $cur_route Current route name
+     */
+    private function mustEnrolSecondFactor(string $cur_route): bool
+    {
+        //routes the member has to reach in order to comply, or to give up
+        $allowed = [
+            'two-factor-enrol',
+            'do-two-factor-enrol',
+            'two-factor-manage',
+            'do-two-factor-codes',
+            'logout'
+        ];
+
+        if (in_array($cur_route, $allowed, strict: true)) {
+            return false;
+        }
+
+        if (!$this->tfa->isRequiredFor($this->login)) {
+            return false;
+        }
+
+        return !$this->tfa->storeFor($this->login)->isEnabled();
     }
 
     /**

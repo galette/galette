@@ -75,6 +75,7 @@ export default defineConfig({
       testIgnore: [
         'tests/e2e/specs/a11y.spec.ts',
         'tests/e2e/specs/*-queue.spec.ts',
+        'tests/e2e/specs/two-factor.spec.ts',
       ],
       use: { ...devices['Desktop Chrome'] },
     },
@@ -88,6 +89,20 @@ export default defineConfig({
     {
       name: 'mail-queue',
       testMatch: 'tests/e2e/specs/*-queue.spec.ts',
+      fullyParallel: false,
+      workers: 1,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // ── Second factor tests ──
+    // Those specs drive an instance wide policy: while one of them holds a
+    // required policy, or leaves a shared account carrying a secret, every
+    // other spec logging in lands on the challenge or on enrolment instead of
+    // the dashboard. They get a project of their own, which CI runs as its own
+    // job against its own instance, and a single worker so they do not do it
+    // to each other either.
+    {
+      name: 'two-factor',
+      testMatch: 'tests/e2e/specs/two-factor.spec.ts',
       fullyParallel: false,
       workers: 1,
       use: { ...devices['Desktop Chrome'] },

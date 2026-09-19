@@ -5,6 +5,7 @@
  #}
 
 {% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
     {# labels that are used #}
@@ -66,14 +67,7 @@
                         <span class="ui teal label" title="{{ _T("Declared by the %s plugin, and only while it stays active.")|replace({'%s': entry.plugin}) }}">{{ entry.plugin }}</span>
     {% endif %}
     {% if entry.alpha %}
-                        <span
-                            class="ui icon"
-                            role="img"
-                            title="{{ alpha_label|e('html_attr') }}"
-                            aria-label="{{ alpha_label|e('html_attr') }}"
-                        >
-                            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
-                        </span>
+                        {{ macros.experimentalMark() }}
     {% endif %}
                     </td>
                     <td data-col-label="{{ _T("Value") }}">
@@ -220,14 +214,7 @@
                         </tr>
                         <tr>
                             <th scope="row">
-                                <span
-                                    class="ui icon"
-                                    role="img"
-                                    title="{{ alpha_label|e('html_attr') }}"
-                                    aria-label="{{ alpha_label|e('html_attr') }}"
-                                >
-                                    <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
-                                </span>
+                                {{ macros.experimentalMark() }}
                             </th>
                             <td class="back">{{ alpha_label }}</td>
                         </tr>

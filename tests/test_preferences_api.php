@@ -22,6 +22,9 @@ declare(strict_types=1);
  * - get_public_pages_config: Get current public pages configuration
  * - configure_mail: Configure SMTP mailing (used with a local mail catcher)
  * - reset_mail: Disable mailing and reset batching/throttling preferences
+ * - set_two_factor_mode: Set the second factor policy
+ * - reset_two_factor: Clear every second factor, so a run starts from a known
+ *   state even after a previous one failed halfway through
  */
 
 use Galette\Core\Db;
@@ -52,6 +55,12 @@ require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
 require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';
 require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 require_once GALETTE_ROOT . 'vendor/autoload.php';
+
+//this bootstrap skips includes/galette.inc.php, which is where the flag is
+//normally settled; Db::log() reads it on every query
+if (!defined('GALETTE_DEBUG')) {
+    define('GALETTE_DEBUG', value: false); //@phpstan-ignore theCodingMachineSafe.function
+}
 
 // Manually instantiate required objects
 $zdb = new Db();
@@ -111,6 +120,29 @@ try {
                 $preferences->pref_publicpages_visibility_documents = Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;
                 $preferences->store();
                 echo json_encode(['success' => true, 'message' => 'Default public pages configuration restored']);
+                break;
+
+            case 'set_two_factor_mode':
+                $preferences->pref_2fa_mode = (int)($input['mode'] ?? 0);
+                $preferences->store();
+                echo json_encode(['success' => true, 'message' => 'Second factor mode set']);
+                break;
+
+            case 'reset_two_factor':
+                //the super administrator keeps its own in the preferences
+                $preferences->pref_2fa_superadmin_secret = '';
+                $preferences->pref_2fa_superadmin_enabled = false;
+                $preferences->pref_2fa_superadmin_timeslice = 0;
+                $preferences->pref_2fa_mode = 0;
+                $preferences->store();
+
+                //members have rows, and so do the throttling counters: a run
+                //that locked an account out must not poison the next one
+                foreach (['twofactor_codes', 'twofactor', 'auth_attempts'] as $table) {
+                    $delete = $zdb->delete($table);
+                    $zdb->execute($delete);
+                }
+                echo json_encode(['success' => true, 'message' => 'Second factors cleared']);
                 break;
 
             case 'configure_mail':

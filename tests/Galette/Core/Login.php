@@ -296,6 +296,222 @@ class Login extends GaletteTestCase
     }
 
     /**
+     * A member holding an enabled second factor is not logged in on credentials
+     * alone. isLogged() is the gate every middleware and template goes through,
+     * so anything calling logIn() then isLogged() fails closed on its own.
+     */
+    public function testEnrolledMemberOwesASecondFactor(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+
+        //not confirmed yet: nothing is owed, enrolment must not lock anyone out
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+        $this->login->logOut();
+
+        $secret->enable();
+
+        //now credentials alone are not enough
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($this->login->isLogged());
+        $this->assertTrue($this->login->isTwoFactorPending());
+        //identity is known though, the challenge needs it
+        $this->assertSame($this->login_adh, $this->login->login);
+
+        $this->login->validateTwoFactor();
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+
+        //and logging out clears the state
+        $this->login->logOut();
+        $this->assertFalse($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+    }
+
+    /**
+     * A session owing a second factor must hold none of its privileges:
+     * several routes carry no middleware and are gated on those predicates
+     * alone -- public pages, and the public documents
+     */
+    public function testPendingSessionHoldsNoPrivilege(): void
+    {
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Pretend a fully privileged account has just given its password
+             */
+            public function grantEverything(): void
+            {
+                $this->logged = true;
+                $this->admin = true;
+                $this->superadmin = true;
+                $this->staff = true;
+                $this->uptodate = true;
+                $this->managed_groups = [1];
+            }
+        };
+
+        $login->grantEverything();
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_SUPERADMIN, $login->getAccessLevel());
+
+        $login->requireTwoFactor();
+
+        $this->assertFalse($login->isLogged());
+        $this->assertFalse($login->isAdmin());
+        $this->assertFalse($login->isSuperAdmin());
+        $this->assertFalse($login->isStaff());
+        $this->assertFalse($login->isUp2Date());
+        $this->assertFalse($login->isGroupManager());
+        $this->assertFalse($login->isGroupManager(1));
+        //which is what public pages and public documents rely on
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_PUBLIC, $login->getAccessLevel());
+
+        //the account is still known, so the second factor can be looked up
+        //where it is kept
+        $this->assertTrue($login->isSuperAdminAccount());
+
+        $login->validateTwoFactor();
+
+        $this->assertTrue($login->isLogged());
+        $this->assertTrue($login->isAdmin());
+        $this->assertTrue($login->isSuperAdmin());
+        $this->assertTrue($login->isStaff());
+        $this->assertTrue($login->isUp2Date());
+        $this->assertTrue($login->isGroupManager());
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_SUPERADMIN, $login->getAccessLevel());
+    }
+
+    /**
+     * A mandatory policy is held back by a flag, and reads as optional: the
+     * member enrolled while it applied is still asked for a code. Reading it as
+     * disabled would drop that protection without saying so.
+     */
+    public function testMandatoryPolicyStillChallengesWithoutTheFlag(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        try {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: false);
+
+            $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+            $this->assertFalse($this->login->isLogged());
+            $this->assertTrue($this->login->isTwoFactorPending());
+            $this->login->logOut();
+
+            //same answer when the policy has to be read from the table rather
+            //than from the global, which is the one read that bypasses
+            //Preferences entirely
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL])
+                ->where(['nom_pref' => 'pref_2fa_mode']);
+            $this->zdb->execute($update);
+
+            $kept = $preferences;
+            $preferences = null;
+            try {
+                $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+                $this->assertTrue($this->login->isTwoFactorPending());
+            } finally {
+                $preferences = $kept;
+                $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+                $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_DISABLED])
+                    ->where(['nom_pref' => 'pref_2fa_mode']);
+                $this->zdb->execute($update);
+            }
+        } finally {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
+            $this->login->logOut();
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+        }
+    }
+
+    /**
+     * Turning the feature off globally must let enrolled members back in: it is
+     * the escape hatch when something goes wrong instance wide
+     */
+    public function testDisabledPolicySkipsTheSecondFactor(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+    }
+
+    /**
+     * The pending state must survive the session round trip, and a session
+     * written before the property existed must still unserialize
+     */
+    public function testPendingStateSurvivesSerialization(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        $this->login->logIn($this->login_adh, $this->mdp_adh);
+        $this->assertTrue($this->login->isTwoFactorPending());
+
+        $revived = unserialize(serialize($this->login));
+        $this->assertInstanceOf(\Galette\Core\Login::class, $revived);
+        $this->assertFalse($revived->isLogged());
+        $this->assertTrue($revived->isTwoFactorPending());
+
+        //a session written before this property existed carries no value for
+        //it. PHP applies declared defaults to properties absent from a payload,
+        //so what has to hold is that a default is declared: without one the
+        //property would come back uninitialized and every read would throw.
+        $property = new \ReflectionProperty(\Galette\Core\Authentication::class, 'tfa_pending');
+        $this->assertTrue($property->hasDefaultValue(), 'tfa_pending must declare a default');
+        $this->assertFalse($property->getDefaultValue());
+    }
+
+    /**
      * Passwords hashed with md5 are no longer accepted. Such hashes may still
      * exist on instances upgraded from Galette older than 0.7.4, since nothing
      * ever re-hashed them.

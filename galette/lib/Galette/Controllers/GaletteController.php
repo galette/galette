@@ -26,6 +26,7 @@ use Galette\Core\MailingQueue;
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
 use Galette\Core\SysInfos;
+use Galette\Core\TwoFactorAuth;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
@@ -148,6 +149,13 @@ class GaletteController extends AbstractController
         // collect data
         $pref = [];
         foreach ($prefs_fields as $fieldname) {
+            //a secret has no business reaching a template, even one that does
+            //not print it: this collects *every* preference. Which ones are
+            //secret is the schema's answer, and the only one -- it is what the
+            //advanced settings page states about them
+            if (PreferencesSchema::isSensitive($fieldname)) {
+                continue;
+            }
             $pref[$fieldname] = $this->preferences->$fieldname;
         }
 
@@ -156,6 +164,13 @@ class GaletteController extends AbstractController
             $pref = array_merge($pref, $this->session->entered_preferences);
             $this->session->entered_preferences = null;
         }
+
+        //the mandatory second factor policies are held back by a flag. An
+        //instance that stored one keeps it, but the form must offer -- and
+        //re-post -- what actually applies: rendering a stored 3 with only two
+        //options selects none, the browser keeps the first, and the next save
+        //would silently write "disabled" over a policy in force.
+        $pref['pref_2fa_mode'] = TwoFactorAuth::clampMode((int)$pref['pref_2fa_mode']);
 
         //List available themes
         $themes = [];
@@ -185,6 +200,10 @@ class GaletteController extends AbstractController
             'pages/preferences.html.twig',
             [
                 'page_title'            => _T("Settings"),
+                //asked here rather than in the template: is_feature_enabled()
+                //goes straight to the flag manager, which knows nothing of the
+                //override the test suite needs
+                'tfa_required_available' => TwoFactorAuth::isRequiredAvailable(),
                 'staff_members'         => $m->getStaffMembersList(as_members: true),
                 'time'                  => time(),
                 'pref'                  => $pref,

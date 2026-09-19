@@ -441,6 +441,16 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->expectOK($test_response, $expected_headers);
         $body = (string)$test_response->getBody();
         $this->assertMatchesRegularExpression('/^%PDF-\d\.\d/', $body);
+
+        //this route carries no middleware and is gated on the access level
+        //alone: a session still owing a second factor must not get the file
+        $this->login->requireTwoFactor();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        $this->login->validateTwoFactor();
+
         $this->login->logout();
 
         $test_response = $this->app->handle($request);

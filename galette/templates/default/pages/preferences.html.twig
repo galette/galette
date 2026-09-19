@@ -5,6 +5,7 @@
  #}
 
 {% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
         <form action="{{ url_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
@@ -757,7 +758,7 @@
                         </div>
                         <div class="field">
                             <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
-                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"/>
+                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="" autocomplete="off" maxlength="100" size="30" placeholder="{{ _T("Leave empty to keep the current one") }}"/>
                         </div>
                     </div>
         {% set mail_off = pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
@@ -1060,6 +1061,18 @@
 
 {% if login.isAdmin() %}
         <div class="ui{{ tab == 'security' ? ' active' }} tab segment" data-tab="security">
+                <div class="inline field">
+                    <label for="pref_2fa_mode" title="{{ _T("Asks for a code from an application on the member's phone in addition to their password, so that a stolen password is not enough on its own. Members who have to hold one are sent to enrolment at their next login; switching back to disabled lets everyone in again without a code.") }}">{{ _T("Two-factor authentication:") }}</label>
+                    <select name="pref_2fa_mode" id="pref_2fa_mode" class="ui dropdown">
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') %} selected="selected"{% endif %}>{{ _T("Disabled (default)") }}</option>
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') %} selected="selected"{% endif %}>{{ _T("Optional, each member decides") }}</option>
+{% if tfa_required_available %}
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') %} selected="selected"{% endif %}>{{ _T("Required for administrators and staff") }}</option>
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') %} selected="selected"{% endif %}>{{ _T("Required for everyone") }}</option>
+{% endif %}
+                    </select>
+                    {{ macros.experimentalMark(_T('Experimental')) }}
+                </div>
                 <div class="inline field required">
                     <label for="pref_password_length">{{ _T("Password length:") }}</label>
                     <div class="ui right corner labeled input">

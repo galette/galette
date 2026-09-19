@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Galette\Controllers\AuthController;
+use Galette\Controllers\TwoFactorController;
 use Galette\Entity\Adherent;
 use Galette\Middleware\Authenticate;
 
@@ -27,6 +28,53 @@ $app->post(
     '/login',
     [AuthController::class, 'doLogin']
 )->setName('dologin');
+
+//second factor challenge; no Authenticate middleware on purpose, the session
+//holds accepted credentials but is not logged in until the factor is produced.
+//Kept out of /login: that route is a catch-all ('/login[/{r:.+}]') declared
+//above, and would swallow any sub path.
+$app->get(
+    '/two-factor',
+    [TwoFactorController::class, 'challenge']
+)->setName('two-factor');
+
+$app->post(
+    '/two-factor',
+    [TwoFactorController::class, 'doChallenge']
+)->setName('do-two-factor');
+
+//second factor management, from the member's own account
+$app->get(
+    '/two-factor/manage',
+    [TwoFactorController::class, 'manage']
+)->setName('two-factor-manage')->add(Authenticate::class);
+
+$app->get(
+    '/two-factor/enrol',
+    [TwoFactorController::class, 'enrol']
+)->setName('two-factor-enrol')->add(Authenticate::class);
+
+$app->post(
+    '/two-factor/enrol',
+    [TwoFactorController::class, 'doEnrol']
+)->setName('do-two-factor-enrol')->add(Authenticate::class);
+
+$app->post(
+    '/two-factor/disable',
+    [TwoFactorController::class, 'doDisable']
+)->setName('do-two-factor-disable')->add(Authenticate::class);
+
+$app->post(
+    '/two-factor/recovery-codes',
+    [TwoFactorController::class, 'doRenewCodes']
+)->setName('do-two-factor-codes')->add(Authenticate::class);
+
+//staff can clear a member's second factor, for the member who lost both their
+//device and their recovery codes
+$app->post(
+    '/two-factor/reset/{id:\d+}',
+    [TwoFactorController::class, 'doReset']
+)->setName('do-two-factor-reset')->add(Authenticate::class);
 
 //logout procedure
 $app->get(

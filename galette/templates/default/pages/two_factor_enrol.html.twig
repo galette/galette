@@ -1,0 +1,53 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+{% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
+
+{% block content %}
+    {{ macros.experimentalBanner() }}
+
+        <ol class="ui list">
+            <li>{{ _T("Install an authentication application, for instance FreeOTP, Aegis or KeePassXC.") }}</li>
+            <li>{{ _T("Scan the code below with it, or type the key in by hand.") }}</li>
+            <li>{{ _T("Enter the code it then shows, to confirm it works.") }}</li>
+        </ol>
+
+        <div class="ui stackable two column grid">
+            <div class="column">
+                <img src="{{ qrcode.getImage() }}" alt="{{ _T("QR code to register the key in an authentication application") }}" width="240" height="240"/>
+            </div>
+            <div class="column ui form">
+                <div class="field">
+                    <label for="tfa_secret">{{ _T("Key, to type in by hand:") }}</label>
+                    <input type="text" id="tfa_secret" value="{{ secret }}" readonly="readonly" size="40"/>
+                </div>
+                <br>
+                <form action="{{ url_for('do-two-factor-enrol') }}" method="post">
+                    <div class="field">
+                        <label for="code">{{ _T("Code shown by the application:") }}</label>
+                        <div class="ui left icon input">
+                            <i class="mobile alternate icon" aria-hidden="true"></i>
+                            <input
+                                type="text"
+                                name="code"
+                                id="code"
+                                autofocus
+                                autocomplete="one-time-code"
+                                inputmode="numeric"
+                                spellcheck="false"
+                                required="required"
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" class="ui primary button">
+                        <i class="check icon" aria-hidden="true"></i>
+                        {{ _T("Confirm and enable") }}
+                    </button>
+                    <a href="{{ url_for('two-factor-manage') }}" class="ui button">{{ _T("Cancel") }}</a>
+                </form>
+            </div>
+        </div>
+{% endblock %}

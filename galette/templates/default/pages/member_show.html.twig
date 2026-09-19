@@ -45,6 +45,19 @@
                                         {{ _T("New password") }}
                                     </a>
                 {% endif %}
+                {% if preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+                                    {# a POST, unlike the link above: this removes a protection from someone else's account #}
+                                    <form action="{{ url_for("do-two-factor-reset", {"id": member.id}) }}" method="post">
+                                        <button
+                                            type="submit"
+                                            class="ui item"
+                                            title="{{ _T("Clear this member's two-factor authentication, for instance after they lost both their device and their recovery codes.") }}"
+                                        >
+                                            <i class="mobile alternate icon" aria-hidden="true"></i>
+                                            {{ _T("Reset two-factor authentication") }}
+                                        </button>
+                                    </form>
+                {% endif %}
                 {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
                                     <a
                                         href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
