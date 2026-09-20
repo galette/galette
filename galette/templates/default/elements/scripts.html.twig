@@ -177,7 +177,11 @@
             {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
     {% endif %}
 
-            {% include "elements/js/messages.js.twig" %}
+            {% include "elements/js/two_factor_suggestion.js.twig" %}
+
+    {% if renew_telemetry is defined and renew_telemetry %}
+            {% include "modals/telemetry.html.twig" with {part: "jsrenew"} %}
+    {% endif %}
 
             });
         </script>

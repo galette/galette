@@ -196,6 +196,61 @@ var _bind_legend = function() {
     });
 }
 
+/* Turn the server side flash messages into Fomantic UI toasts.
+ * The messages are the only rendering browsers without javascript get, so
+ * they live in the markup; here they are replayed as toasts, then dropped.
+ */
+var _bind_messages = function() {
+    var $messages = $('#messages');
+
+    if (!$.fn.toast) {
+        /* Fomantic did not load: show the messages where they are rather than
+         * leaving the user without any feedback at all.
+         */
+        $messages.show();
+        return;
+    }
+
+    $messages.children('.ui.message').each(function() {
+        var $message = $(this),
+            $content = $message.children('.content').first(),
+            $header  = $content.children('.header').first(),
+            title    = $header.length ? $header.html().trim() : '',
+            options  = {
+                position: 'top attached',
+                closeIcon: true,
+                title: title,
+                showIcon: $message.data('toastIcon'),
+                class: $message.data('toastClass')
+            }
+        ;
+
+        $header.remove();
+        options.message = $content.html().trim();
+
+        if ($message.data('toastPersistent')) {
+            options.displayTime = 0;
+        } else {
+            options.displayTime = 'auto';
+            options.minDisplayTime = 5000;
+            options.wordsPerMinute = 80;
+            options.showProgress = 'bottom';
+        }
+
+        $('body').toast(options);
+    });
+
+    $messages.remove();
+
+    /* Enable dismissable messages */
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
+    });
+
+    /* Apply transitions on inline messages */
+    $('.message.with-transition').transition('flash');
+}
+
 $(function() {
     $('.nojs').removeClass('nojs').addClass('jsenabled');
     /* Display/enable elements required only when javascript is active */
@@ -203,6 +258,9 @@ $(function() {
     $('.jsenabled .jsonly.disabled').removeClass('disabled');
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
     $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search clearable selection dropdown');
+
+    /* First, so that a failure further down never costs the user a message. */
+    _bind_messages();
 
     _bindFomanticComponents();
 

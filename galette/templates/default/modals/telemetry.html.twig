@@ -36,7 +36,6 @@
                                         }
     {% endif %}
     {% if renew_telemetry is defined %}
-                                        $('#renewbox').remove();
                                         Cookies.set(
                                             'renew_telemetry',
                                             1,
@@ -96,30 +95,55 @@
 
                     });
                 });
-    {% if renew_telemetry is defined %}
-            $('#norenew').on('click', function() {
-                Cookies.set(
-                    'renew_telemetry',
-                    1,
-                    {
-                        expires: 365,
-                        path: '/'
-                    }
-                );
-                window.location.reload();
-            });
-            $('#renewlater').on('click', function() {
-                Cookies.set(
-                    'renew_telemetry',
-                    1,
-                    {
-                        expires: 182,
-                        path: '/'
-                    }
-                );
-                window.location.reload();
-            });
-    {% endif %}
+{% endif %}
+{% if part == "jsrenew" %}
+            $('body')
+              .toast({
+                displayTime: 0,
+                position: 'bottom right',
+                message: "{{ _T("Your telemetry data are more than one year old.")|e('js') }} {{ _T("Do you want to send it again?")|e('js') }}",
+                classActions: 'bottom attached',
+                actions:    [{
+                  text: "{{ _T("Yes")|e('js') }}",
+                  class: 'green',
+                  click: function() {
+                      $.ajax({
+                          url:  '{{ url_for('telemetryInfos') }}',
+                          success: function(data) {
+                              $('#telemetry_panel .tdata').append(data);
+                              $('#telemetry_panel').modal('show');
+                          }
+                      });
+                  }
+                },{
+                  text: "{{ _T("No")|e('js') }}",
+                  class: 'red',
+                  click: function() {
+                      Cookies.set(
+                          'renew_telemetry',
+                          1,
+                          {
+                              expires: 365,
+                              path: '/'
+                          }
+                      );
+                  }
+                },{
+                  text: "{{ _T("Later")|e('js') }}",
+                  class: 'blue',
+                  click: function() {
+                      Cookies.set(
+                          'renew_telemetry',
+                          1,
+                          {
+                              expires: 182,
+                              path: '/'
+                          }
+                      );
+                  }
+                }]
+              })
+            ;
 {% endif %}
 {% if part == "jsregister" %}
             $('#register').on('click', function(e) {

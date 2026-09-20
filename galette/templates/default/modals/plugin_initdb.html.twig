@@ -22,7 +22,7 @@
                 </ul>
             {% endif %}
             {% if mode == 'ajax' %}
-                {% include 'elements/messages_inline.html.twig' %}
+                {% include 'elements/messages_inline.html.twig' with {standalone: true} %}
             {% endif %}
     {% if step == 1 %}
             {% if update_scripts is defined and update_scripts|length > 0 %}<div class="ui two stackable cards">{% endif %}

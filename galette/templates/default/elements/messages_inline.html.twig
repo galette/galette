@@ -4,6 +4,15 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
+{# Flash messages, rendered once, server side. On a regular page they are
+ # hidden by the inline script below, and `common.js` turns each of them into a
+ # Fomantic toast; browsers without javascript get them as they are (see
+ # `elements/noscript.html.twig`).
+ # `standalone` skips the `messages` id and that script: the markup is then
+ # displayed as it is, which is what an ajax fragment needs.
+ #}
+{% set standalone = standalone ?? false %}
+
 {# Let's see if there are loginfault messages to show #}
 {% set loginfaults = flash.getMessage('loginfault') %}
 {% if loginfault_detected is defined and loginfault_detected is iterable %}
@@ -21,27 +30,6 @@
         {% set errors = errors|merge([e]) %}
     {% endfor %}
 {% endif %}
-{% if errors is iterable and errors|length > 0 %}
-    <noscript>
-        <div class="ui error icon message">
-            <i class="exclamation circle icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("- ERROR -") }}</div>
-                {% if errors|length > 1 %}
-                    <ul class="list">
-                    {% for error in errors %}
-                        <li>{{ error|raw }}</li>
-                    {% endfor %}
-                    </ul>
-                {% else %}
-                    {% for error in errors %}
-                        <p>{{ error|raw }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-    </noscript>
-{% endif %}
 
 {# Let's see if there are warning messages to show #}
 {% set warnings = flash.getMessage('warning_detected') ?? [] %}
@@ -50,27 +38,6 @@
     {% for w in warning_detected %}
         {% set warnings = warnings|merge([w]) %}
     {% endfor %}
-{% endif %}
-{% if warnings is iterable and warnings|length > 0 %}
-    <noscript>
-        <div class="ui warning icon message">
-            <i class="exclamation triangle icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("- WARNING -") }}</div>
-                {% if warnings|length > 1 %}
-                    <ul class="list">
-                    {% for warning in warnings %}
-                        <li>{{ warning|raw }}</li>
-                    {% endfor %}
-                    </ul>
-                {% else %}
-                    {% for warning in warnings %}
-                        <p>{{ warning|raw }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-    </noscript>
 {% endif %}
 
 {# Let's see if there are success messages to show #}
@@ -81,27 +48,6 @@
         {% set success = success|merge([entry]) %}
     {% endfor %}
 {% endif %}
-{% if success is iterable and success|length > 0 %}
-    <noscript>
-        <div class="ui success icon message">
-            <i class="check circle outline icon" aria-hidden="true"></i>
-            <i class="window close outline icon" aria-hidden="true"></i>
-            <div class="content">
-            {% if success|length > 1 %}
-                <ul class="list">
-                {% for entry in success %}
-                    <li>{{ entry|raw }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                {% for entry in success %}
-                    <p>{{ entry|raw }}</p>
-                {% endfor %}
-            {% endif %}
-            </div>
-        </div>
-    </noscript>
-{% endif %}
 
 {# Let's see if there are info messages to show #}
 {% set info = flash.getMessage('info_detected') ?? [] %}
@@ -111,61 +57,67 @@
         {% set info = info|merge([i]) %}
     {% endfor %}
 {% endif %}
-{% if info is iterable and info|length > 0 %}
-    <noscript>
-        <div class="ui info icon message">
+
+{% if errors|length > 0 or warnings|length > 0 or success|length > 0 or info|length > 0 %}
+    <div{% if not standalone %} id="messages"{% endif %} role="alert">
+    {% for error in errors %}
+        <div class="ui error icon message" data-toast-class="error" data-toast-icon="exclamation circle" data-toast-persistent="true">
+            <i class="exclamation circle icon" aria-hidden="true"></i>
+            <div class="content">{{ error|raw }}</div>
+        </div>
+    {% endfor %}
+    {% for warning in warnings %}
+        <div class="ui warning icon message" data-toast-class="warning" data-toast-icon="exclamation triangle" data-toast-persistent="true">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">{{ warning|raw }}</div>
+        </div>
+    {% endfor %}
+    {% for entry in success %}
+        <div class="ui success icon message" data-toast-class="success" data-toast-icon="check circle outline">
+            <i class="check circle outline icon" aria-hidden="true"></i>
+            <div class="content">{{ entry|raw }}</div>
+        </div>
+    {% endfor %}
+    {% for entry in info %}
+        <div class="ui info icon message" data-toast-class="info" data-toast-icon="info">
             <i class="info icon" aria-hidden="true"></i>
             <div class="content">
-                {% if info|length > 1 %}
-                    <ul class="list">
-                        {% for i in info %}
-                            <li>{{ i|raw }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    {% for entry in info %}
-                        {% set info_title = '' %}
-                        {% set info_message = entry %}
-                        {% if entry is iterable %}
-                            {% set info_title = entry.title %}
-                            <p class="header">{{ info_title }}</p>
-                            {% set info_message = entry.message %}
-                        {% endif %}
-                        <p>{{ info_message|raw }}</p>
-                    {% endfor %}
-                {% endif %}
+            {% if entry is iterable %}
+                <div class="header">{{ entry.title }}</div>
+                {{ entry.message|raw }}
+            {% else %}
+                {{ entry|raw }}
+            {% endif %}
             </div>
         </div>
-    </noscript>
-{% endif %}
+    {% endfor %}
+    </div>
+    {% if not standalone %}
+    <script>
+        (function () {
+            var _messages = document.getElementById('messages');
 
-{# Invitation to hold a second factor #}
-{% if flash.getMessage('suggest_two_factor') %}
-    <noscript>
-        <div class="ui info icon message">
-            <i class="shield alternate icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("Two-factor authentication is available") }}</div>
-                <p>{{ _T("A code from an application on your telephone, on top of your password, means a stolen password is not enough on its own to reach your account. Do you want to set it up?") }}</p>
-                <a href="{{ url_for('two-factor-manage') }}" class="ui large green button">{{ _T("Yes") }}</a>
-            </div>
-        </div>
-    </noscript>
+            {# Hidden from here rather than from the stylesheet: a rule in the
+             # CSS would still apply when the bundle fails to load, and would
+             # then cost the user every message without a trace. #}
+            _messages.style.display = 'none';
+
+            {# `common.js` turns them into toasts and drops the container. If it
+             # never ran, it is still there once everything else has loaded, and
+             # the messages are shown as they are. #}
+            window.addEventListener('load', function () {
+                window.setTimeout(function () {
+                    if (_messages.parentNode) {
+                        _messages.style.display = '';
+                    }
+                }, 0);
+            });
+        })();
+    </script>
+    {% endif %}
 {% endif %}
 
 {# Renew telemetry #}
 {% if renew_telemetry is defined and renew_telemetry %}
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
-    <noscript>
-        <div class="ui info icon message" id="renewbox">
-            <i class="info icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("Your telemetry data are more than one year old.") }}</div>
-                <p>{{ _T("Do you want to send it again?") }}</p>
-                <a href="#" id="telemetry" class="ui large green button">{{ _T("Yes") }}</a>
-                <a href="#" id="norenew" class="ui large red button">{{ _T("No") }}</a>
-                <a href="#" id="renewlater" class="ui large blue button">{{ _T("Later") }}</a>
-            </div>
-        </div>
-    </noscript>
 {% endif %}

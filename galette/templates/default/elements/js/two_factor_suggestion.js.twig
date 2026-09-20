@@ -1,0 +1,56 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{# Invitation to hold a second factor: shown at login, silenced by a cookie
+ # whose name the invitation carries, one per account #}
+{% if flash.getMessage('suggest_two_factor') %}
+    {% set tfa_suggestion_cookie = flash.getMessage('suggest_two_factor')|first %}
+    $('body')
+      .toast({
+        displayTime: 0,
+        position: 'bottom right',
+        showIcon: 'shield alternate',
+        title: "{{ _T("Two-factor authentication is available")|e('js') }}",
+        message: "{{ _T("A code from an application on your telephone, on top of your password, means a stolen password is not enough on its own to reach your account. Do you want to set it up?")|e('js') }}",
+        classActions: 'bottom attached',
+        actions:    [{
+          text: "{{ _T("Yes")|e('js') }}",
+          class: 'green',
+          click: function() {
+              window.location.assign('{{ url_for('two-factor-manage') }}');
+          }
+        },{
+          text: "{{ _T("No")|e('js') }}",
+          class: 'red',
+          click: function() {
+              Cookies.set(
+                  '{{ tfa_suggestion_cookie|e('js') }}',
+                  1,
+                  {
+                      expires: 365,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
+          }
+        },{
+          text: "{{ _T("Later")|e('js') }}",
+          class: 'blue',
+          click: function() {
+              Cookies.set(
+                  '{{ tfa_suggestion_cookie|e('js') }}',
+                  1,
+                  {
+                      expires: 182,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
+          }
+        }]
+      })
+    ;
+{% endif %}
