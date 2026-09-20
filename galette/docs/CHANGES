@@ -105,6 +105,7 @@ L10n
 
 Removals and requirements
 
+- Javascript is now required; a message says so when it is disabled, and the per feature warnings and the markup that was kept hidden for browsers without it have been dropped
 - PHP 8.3 is now the minimum required version
 - The fileinfo PHP module is now required; compatibility tests now also check ctype, dom, filter and iconv, and gettext is no longer reported as optional
 - Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed

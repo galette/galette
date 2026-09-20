@@ -64,6 +64,7 @@
                     </div>
 {% endif %}
                     <div class="main-content">
+                        {% include 'elements/noscript.html.twig' %}
                         {% include "elements/messages_inline.html.twig" %}
                         {% block content %}{{ _T("Public page content") }}{% endblock %}
                     </div>

@@ -320,6 +320,15 @@ foreach ($i18n->getList() as $langue) {
         </header>
         <main class="pusher">
             <section id="main" class="ui wide container">
+                <noscript>
+                    <div class="ui error icon message" role="alert">
+                        <i class="warning sign icon" aria-hidden="true"></i>
+                        <div class="content">
+                            <div class="header"><?php echo _T("Galette requires JavaScript"); ?></div>
+                            <p><?php echo _T("JavaScript is disabled in your browser, and Galette requires it to work correctly."); ?></p>
+                        </div>
+                    </div>
+                </noscript>
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
                         <img class="icon" width="200" alt="" src="./themes/default/images/galette.webp"/>

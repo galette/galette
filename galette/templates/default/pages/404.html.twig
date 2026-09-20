@@ -15,6 +15,7 @@
                 <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />
             </header>
             <main>
+                {% include 'elements/noscript.html.twig' %}
                 <div class="ui red message">
                     <h1 class="ui center aligned header">{{ _T("Page not found") }}</h1>
                 </div>

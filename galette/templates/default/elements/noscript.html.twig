@@ -1,0 +1,16 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{# Galette requires javascript; tell those who browse without it. #}
+        <noscript>
+            <div class="ui error icon message" role="alert">
+                <i class="warning sign icon" aria-hidden="true"></i>
+                <div class="content">
+                    <div class="header">{{ _T("Galette requires JavaScript") }}</div>
+                    <p>{{ _T("JavaScript is disabled in your browser, and Galette requires it to work correctly.") }}</p>
+                </div>
+            </div>
+        </noscript>
