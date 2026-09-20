@@ -46,7 +46,7 @@
                 {% set remove_label = (drops_file ? _T("Delete the file and remove this occurrence of %1$s") : _T("Remove this occurrence of %1$s"))|format(field.getName()) %}
                 <button
                     type="button"
-                    class="jsonly displaynone ui tiny basic red icon button repeat_remove"
+                    class="ui tiny basic red icon button repeat_remove"
                     aria-label="{{ remove_label }}"
                     title="{{ remove_label }}"
                 ><i class="trash alternate icon" aria-hidden="true"></i></button>
@@ -133,7 +133,7 @@
 
         <div class="ui styled fluid accordion field">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Additionnal fields:") }}
             </div>
             <div class="active content field">
@@ -252,11 +252,7 @@
                         var _fields = _parent.children('.field');
                         var _max = parseInt(_parent.attr('data-maxrepeat'), 10);
 
-                        {#
-                         # The buttons come hidden from the markup, for browsers without javascript.
-                         # There is nothing to remove on a lone occurrence, unless it holds a file.
-                         #}
-                        _fields.children('.repeat_remove').removeClass('displaynone');
+                        {# There is nothing to remove on a lone occurrence, unless it holds a file. #}
                         _fields.each(function() {
                             $(this).children('.repeat_remove')
                                 .toggle(_fields.length > 1 || _holdsFile($(this)));

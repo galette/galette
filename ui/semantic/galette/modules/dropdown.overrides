@@ -2,13 +2,6 @@
         Galette Overrides
 *******************************/
 
-/*-------------
-     No JS
---------------*/
-.nojs select[multiple].ui.dropdown {
-  height: 7rem;
-}
-
 /*------------------------------
      Compact menu dropdowns
 -------------------------------*/

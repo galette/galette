@@ -252,13 +252,6 @@ var _bind_messages = function() {
 }
 
 $(function() {
-    $('.nojs').removeClass('nojs').addClass('jsenabled');
-    /* Display/enable elements required only when javascript is active */
-    $('.jsenabled .jsonly.displaynone').removeClass('displaynone');
-    $('.jsenabled .jsonly.disabled').removeClass('disabled');
-    $('.jsenabled .jsonly.read-only').removeClass('read-only');
-    $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search clearable selection dropdown');
-
     /* First, so that a failure further down never costs the user a message. */
     _bind_messages();
 

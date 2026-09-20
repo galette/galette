@@ -11,7 +11,7 @@
     <form action="{% if transaction.id %}{{ url_for("doEditTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("doAddTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Transaction details") }}
             </div>
             <div class="active content">

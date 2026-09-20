@@ -10,7 +10,7 @@
     <form action="{% if scheduled.getId() is null %}{{ url_for('doAddScheduledPayment', {'id_cotis': scheduled.getContribution().id}) }}{% else %}{{ url_for('doEditScheduledPayment', {'id': scheduled.getId()}) }}{% endif %}" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Scheduled payment") }}
             </div>
             <div class="active content">

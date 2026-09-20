@@ -6,9 +6,6 @@
 
 <div id="groups_field" class="field">
     <label>{{ _T("Groups:") }}</label>
-    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-    <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
-    {% endif %}
     <span id="usergroups_form">
     {% if member.id %}
         {% for group in groups %}
@@ -48,13 +45,13 @@
     </div>
     {% endif %}
     {% if login.isGroupManager() %}
-    <button type="button" class="jsonly disabled ui icon button" id="btngroups">
+    <button type="button" class="ui icon button" id="btngroups">
         <i class="user tag icon" aria-hidden="true"></i>
         {{ _T("Manage user's groups") }}
     </button>
     {% endif %}
     {% if login.isAdmin() or login.isStaff() %}
-    <button type="button" class="jsonly disabled ui icon button" id="btnmanagedgroups">
+    <button type="button" class="ui icon button" id="btnmanagedgroups">
         <i class="user shield icon" aria-hidden="true"></i>
         {{ _T("Manage user's managed groups") }}
     </button>

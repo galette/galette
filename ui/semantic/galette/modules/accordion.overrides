@@ -50,10 +50,3 @@ details.ui.basic.styled.accordion .title {
         color: @black;
      }
 }
-
-/*-------------
-     No JS
---------------*/
-.nojs .ui.accordion.menu:not(.styled) .title ~ .content:not(.ui) {
-   display:block;
-}

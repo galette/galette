@@ -36,11 +36,11 @@
             </div>
             <div class="required field">
                 <label for="document_type_input">{{ _T("Document type") }}</label>
-                <div id="document_type" class="jsonly search-dropdown documents-dropdown ui input">
+                <div id="document_type" class="search clearable selection dropdown documents-dropdown ui input">
                     <input id="document_type_input" type="hidden" name="document_type" value="{{ document.getType() }}">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
-                    <div class="jsonly displaynone default text">{{ _T("Choose or enter your own...") }}</div>
-                    <div class="jsonly displaynone menu">
+                    <i class="dropdown icon" aria-hidden="true"></i>
+                    <div class="default text">{{ _T("Choose or enter your own...") }}</div>
+                    <div class="menu">
                         {% for doc_type, tdoc_type in types %}
                             <div class="item" data-value="{{ doc_type }}">{{ tdoc_type }}</div>
                         {% endfor %}

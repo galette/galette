@@ -81,10 +81,3 @@
       background-color: @cotisLastdayBackgroundColor;
   }
 }
-
-/*-------------
-     No JS
---------------*/
-.nojs .sortable-items .ui.segment {
-  cursor: auto;
-}

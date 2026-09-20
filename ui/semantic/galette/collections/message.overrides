@@ -2,10 +2,6 @@
          Galette Overrides
 *******************************/
 
-body.nojs .ui.message > .close.icon {
-  display: none;
-}
-
 .ui.message > .password-lost:first-child:last-child,
 .column > .ui.message:first-child:last-child,
 .spaced.buttons ~ .ui.message {

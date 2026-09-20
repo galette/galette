@@ -10,7 +10,7 @@
         <form action="{{ url_for('filter-memberslist') }}" method="post" class="ui form advanced-search">
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <i class="dropdown icon" aria-hidden="true"></i>
                     {{ _T('Simple search') }}
                 </div>
                 <div class="active content">
@@ -78,7 +78,7 @@
             </div>
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <i class="dropdown icon" aria-hidden="true"></i>
                     {{ _T('Advanced search') }}
                 </div>
                 <div class="active content">
@@ -214,10 +214,9 @@
                     </div>
                 </div>
             </div>
-            <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
-            <div class="jsonly disabled galetteform ui styled fluid accordion field">
+            <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <i class="dropdown icon" aria-hidden="true"></i>
                     {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
                     <button
                         type="button"
@@ -268,7 +267,7 @@
 
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <i class="dropdown icon" aria-hidden="true"></i>
                     {{ _T('Within contributions') }}
                 </div>
                 <div class="active content">
@@ -417,10 +416,9 @@
 {% endfor %}
                 </div>
             </div>
-                <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
-                <div class="jsonly disabled galetteform ui styled fluid accordion field">
+                <div class="galetteform ui styled fluid accordion field">
                     <div class="active ui title">
-                        <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                        <i class="dropdown icon" aria-hidden="true"></i>
                         {{ _T('Free search') }} ({{ _T('Experimental') }})
                         <button
                             type="button"

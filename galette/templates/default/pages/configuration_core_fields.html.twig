@@ -14,7 +14,7 @@
             {% set fs = category.id_field_category %}
             <a href="#{{ fs }}" class="item" data-tab="{{ fs }}">
                 <input type="hidden" name="categories[]" id="category{{ loop.index }}" value="{{ category.id_field_category }}"/>
-                <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
+                <i class="arrows alternate icon" aria-hidden="true"></i>
                 {{ catname }}
             </a>
     {% endfor %}

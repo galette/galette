@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="ui basic right aligned fitted segment jsonly displaynone">
+        <div class="ui basic right aligned fitted segment">
             <button type="button" class="show_legend ui blue tertiary button">{{ _T("Show legend") }}</button>
         </div>
 
@@ -227,7 +227,7 @@
 {% block javascripts %}
         <script type="text/javascript">
             // Filter rows on the setting name, so the page stays usable with
-            // more than a hundred of them. Without JS the whole list shows.
+            // more than a hundred of them.
             document.getElementById('config_filter').addEventListener('input', function () {
                 var needle = this.value.toLowerCase();
                 document.querySelectorAll('#advanced_config tbody tr').forEach(function (row) {
@@ -243,7 +243,7 @@
             });
 
             // A jump from the constants table must not land on a row the
-            // filter is hiding. Without JS there is no filter, so no guard.
+            // filter is hiding.
             var _revealTarget = function () {
                 if (!window.location.hash) {
                     return;

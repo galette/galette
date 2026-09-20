@@ -19,7 +19,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                        <i class="icon dropdown" aria-hidden="true"></i>
                         {{ _T("Mailing information") }}
                     </div>
                     <div class="active content field">
@@ -58,14 +58,11 @@
                                 <a
                                     id="btnusers"
                                     href="{{ path }}"
-                                    class="jsonly disabled ui labeled icon button"
+                                    class="ui labeled icon button"
                                 >
                                     <i class="blue users icon" aria-hidden="true"></i>
                                     {{ text }}
                                 </a>
-                                <noscript>
-                                    <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
-                                </noscript>
                             </div>
     {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_START') %}
                             <div class="field">
@@ -125,7 +122,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                        <i class="icon dropdown" aria-hidden="true"></i>
                         {{ _T("Write your mailing") }}
                     </div>
                     <div class="active content field">
@@ -145,7 +142,7 @@
                                     <label for="mailing_html">{{ _T("Interpret HTML") }}</label>
                                 </div>
                             </div>
-                            <div id="summernote_toggler" class="jsonly hidden ui basic fitted right aligned segment">
+                            <div id="summernote_toggler" class="ui basic fitted right aligned segment">
                                 <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{{ _T("Activate HTML editor") }}</a>
                             </div>
                         </div>
@@ -180,7 +177,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown" aria-hidden="true"></i>
+                        <i class="icon dropdown" aria-hidden="true"></i>
                         {{ _T("Preview your mailing") }}
                     </div>
                     <div class="active content field">

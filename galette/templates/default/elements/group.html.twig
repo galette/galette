@@ -13,7 +13,7 @@
     <div class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Information") }}{% if group.getId() %} <span style="float:right;">{{ _T("Creation date:") }} {{ group.getCreationDate() }}</span>{% endif %}
             </div>
             <div class="active content field">
@@ -69,13 +69,13 @@
     <div id="group_managers" class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Managers") }} ({{ managers|length }})
             </div>
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <button type="button" class="jsonly disabled ui labeled icon button" id="btnmanagers_small">
+                    <button type="button" class="ui labeled icon button" id="btnmanagers_small">
                         <i class="user shield icon" aria-hidden="true"></i>
                         {{ _T("Manage managers") }}
                     </button>
@@ -89,13 +89,13 @@
     <div id="group_members" class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Members") }} ({{ members|length }})
             </div>
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <button type="button" class="jsonly disabled ui labeled icon button" id="btnusers_small">
+                    <button type="button" class="ui labeled icon button" id="btnusers_small">
                         <i class="user icon" aria-hidden="true"></i>
                         {{ _T("Manage members") }}
                     </button>
