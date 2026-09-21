@@ -16,12 +16,10 @@ use Galette\Core\Install as GaletteInstall;
  * @var I18n $i18n
  */
 
-$enable_file = $install->getEnableInstallFilePath();
-//Data path can be moved out of Galette directory; in that case, only the file
-//name is displayed - this page is public, it must not disclose server paths.
-$in_galette_dir = str_starts_with($enable_file, GALETTE_ROOT);
+//Data path can be moved out of Galette directory; only the file name is
+//displayed - this page is public, it must not disclose server paths.
 $displayed_file = '<code>' . htmlentities(
-    $in_galette_dir ? 'galette/' . substr($enable_file, strlen(GALETTE_ROOT)) : basename($enable_file)
+    basename($install->getEnableInstallFilePath())
 ) . '</code>';
 
 ?>
@@ -32,14 +30,11 @@ $displayed_file = '<code>' . htmlentities(
         <p><?php echo _T("For security reasons, Galette installer is disabled by default."); ?></p>
         <p>
 <?php
-if ($in_galette_dir) {
-    echo sprintf(_T('To enable installer, create the empty %1$s file, then reload this page:'), $displayed_file);
-} else {
-    echo sprintf(
-        _T('To enable installer, create the empty %1$s file in Galette data directory, then reload this page:'),
-        $displayed_file
-    );
-}
+//TRANS: %1$s is the name of the file to create
+echo sprintf(
+    _T('To enable installer, create the empty %1$s file in Galette data directory, then reload this page:'),
+    $displayed_file
+);
 ?>
         </p>
     </div>
