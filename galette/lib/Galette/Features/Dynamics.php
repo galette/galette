@@ -275,7 +275,8 @@ trait Dynamics
             $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
             if ($file->getSize() > $max_size * 1024) {
                 Analog::log(
-                    "file too large: " . $file->getSize() . " bytes, vs $max_size Ko allowed",
+                    'file too large: ' . (int)round($file->getSize() / 1024)
+                    . " Ko, vs $max_size Ko allowed",
                     Analog::ERROR
                 );
                 $this->errors[] = sprintf(

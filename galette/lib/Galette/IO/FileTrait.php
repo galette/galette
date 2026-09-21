@@ -251,9 +251,8 @@ trait FileTrait
         //Second, let's check file size
         if ($file->getSize() > ($this->maxlength * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ($file->getSize() * 1024)
-                . 'Ko for maximum authorized ' . ($this->maxlength * 1024)
-                . 'Ko',
+                '[' . $class . '] File is too big (' . (int)round($file->getSize() / 1024)
+                . 'Ko for maximum authorized ' . $this->maxlength . 'Ko)',
                 Analog::ERROR
             );
             return self::FILE_TOO_BIG;
