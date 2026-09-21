@@ -111,6 +111,25 @@ class BehaviorConstantsTest extends GaletteTestCase
     }
 
     /**
+     * A boolean constant is listed with the value it holds
+     *
+     * GALETTE_SQL_DEBUG used to be reported as enabled as soon as it was
+     * declared; since its value counts, declaring it to false has to show.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testBooleanConstantShowsItsValue(): void
+    {
+        $this->assertFalse(defined('GALETTE_SQL_DEBUG'));
+
+        define('GALETTE_SQL_DEBUG', value: false);
+
+        $listed = array_column(BehaviorConstants::getStatus(), column_key: null, index_key: 'name');
+        $this->assertTrue($listed['GALETTE_SQL_DEBUG']['defined']);
+        $this->assertSame(_T("No"), $listed['GALETTE_SQL_DEBUG']['value']);
+    }
+
+    /**
      * Every constant Galette reads is documented in the shipped example
      *
      * Covers the deprecated ones too, which the page only lists once declared

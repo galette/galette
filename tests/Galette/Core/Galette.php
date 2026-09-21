@@ -12,7 +12,10 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
+use function Safe\define;
 use function Safe\mb_convert_encoding;
 use function Safe\preg_match;
 use function Safe\realpath;
@@ -755,6 +758,42 @@ class Galette extends GaletteTestCase
     public function testIsNightly(): void
     {
         $this->assertFalse(\Galette\Core\Galette::isNightly());
+    }
+
+    /**
+     * Test isSqlDebugEnabled
+     *
+     * Neither the constant nor debug mode: nothing to dump.
+     */
+    public function testIsSqlDebugEnabled(): void
+    {
+        $this->assertFalse(defined('GALETTE_SQL_DEBUG'));
+        $this->assertFalse(\Galette\Core\Galette::isDebugEnabled());
+        $this->assertFalse(\Galette\Core\Galette::isSqlDebugEnabled());
+    }
+
+    /**
+     * Declared to false, the dump stays off
+     *
+     * The value is what counts, not the mere existence of the constant.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testSqlDebugDeclaredFalse(): void
+    {
+        define('GALETTE_SQL_DEBUG', value: false);
+        $this->assertFalse(\Galette\Core\Galette::isSqlDebugEnabled());
+    }
+
+    /**
+     * Declared to true, every query is dumped
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testSqlDebugDeclaredTrue(): void
+    {
+        define('GALETTE_SQL_DEBUG', value: true);
+        $this->assertTrue(\Galette\Core\Galette::isSqlDebugEnabled());
     }
 
     /**

@@ -57,9 +57,6 @@
 
 /**
  * Dump every SQL query to data/logs/galette_sql.log
- *
- * Beware: the constant is tested for existence only, so defining it to false
- * still enables the dump.
  */
 //define('GALETTE_SQL_DEBUG', true);
 

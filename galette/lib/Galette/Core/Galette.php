@@ -1334,7 +1334,7 @@ class Galette
      */
     public static function isSqlDebugEnabled(): bool
     {
-        return defined('GALETTE_SQL_DEBUG') || static::isDebugEnabled();
+        return defined('GALETTE_SQL_DEBUG') && GALETTE_SQL_DEBUG || static::isDebugEnabled();
     }
 
     /**

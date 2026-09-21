@@ -28,8 +28,6 @@ final class BehaviorConstants
 {
     /** Value is what the constant holds */
     public const string TYPE_VALUE = 'value';
-    /** Only the existence of the constant counts, whatever its value */
-    public const string TYPE_FLAG = 'flag';
     /** Value is an array */
     public const string TYPE_LIST = 'list';
 
@@ -115,19 +113,19 @@ final class BehaviorConstants
         return [
             'GALETTE_DEBUG' => [
                 self::TYPE_VALUE,
-                _T("Enable debug mode: verbose logs, Twig strict variables and detailed errors. Feature flags only apply when it is on."),
+                _T("Enable debug mode: verbose logs, no cache, Twig strict variables and detailed errors."),
             ],
             'GALETTE_MODE' => [
                 self::TYPE_VALUE,
-                _T("PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin credentials and mail settings. DEV is deprecated, use debug mode."),
+                _T("PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin credentials and mail settings."),
             ],
             'GALETTE_LOG_LVL' => [
                 self::TYPE_VALUE,
                 _T("Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in debug mode."),
             ],
             'GALETTE_SQL_DEBUG' => [
-                self::TYPE_FLAG,
-                _T("Dump every SQL query to the logs. Only the existence of the constant counts, so setting it to false still enables the dump."),
+                self::TYPE_VALUE,
+                _T("Dump every SQL query to the logs."),
             ],
             'GALETTE_FEATURE_FLAGS' => [
                 self::TYPE_LIST,
@@ -148,10 +146,6 @@ final class BehaviorConstants
             return '';
         }
 
-        if ($type === self::TYPE_FLAG) {
-            return _T("enabled");
-        }
-
         return self::stringify(constant($name), $type);
     }
 
@@ -168,7 +162,7 @@ final class BehaviorConstants
         }
 
         if (is_bool($value)) {
-            return $value ? _T("yes") : _T("no");
+            return $value ? _T("Yes") : _T("No");
         }
 
         return (string)$value;

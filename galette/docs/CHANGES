@@ -82,6 +82,7 @@ Fixes
 - A public page whose visibility cannot be read is now closed, rather than open to everyone
 - Documents tab could be hidden by ad blockers
 - Several fixes on the web installer, including Javascript errors
+- GALETTE_SQL_DEBUG was tested for existence only, so declaring it to false still dumped every query
 
 L10n
 
