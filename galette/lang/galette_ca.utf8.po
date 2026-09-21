@@ -44,24 +44,29 @@ msgstr ""
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "El camp %1$s és obligatori però falta al fila %2$s"
 
+#. TRANS: parameter is the status
 #, php-format
-msgid "Status %status does not exists!"
-msgstr "L'estat %status no existeix!"
+msgid "Status %1$s does not exists!"
+msgstr "L'estat %1$s no existeix!"
 
-#, fuzzy
-msgid "Title %title does not exists!"
+#. TRANS: parameter is the title
+#, fuzzy, php-format
+msgid "Title %1$s does not exists!"
 msgstr "El títol de títol no existeix!"
 
 #, fuzzy
 msgid "from another member in import"
 msgstr "des d'un altre membre en importar"
 
-#, fuzzy
-msgid "from member %id_adh"
-msgstr "de membre %id_adh"
+#. TRANS: parameter is the member identifier
+#, fuzzy, php-format
+msgid "from member %1$s"
+msgstr "de membre %1$s"
 
-msgid "Email address %address is already used! (%extra)"
-msgstr "L'adreça de correu electrònic %address ja s'utilitza! (%extra)"
+#. TRANS: first parameter is the email address, second tells where it is already used
+#, php-format
+msgid "Email address %1$s is already used! (%2$s)"
+msgstr "L'adreça de correu electrònic %1$s ja s'utilitza! (%2$s)"
 
 #, php-format
 msgid "Unknown lang (%1$s)"
@@ -248,12 +253,14 @@ msgstr ""
 msgid "File extension is not allowed, only %s files are."
 msgstr "L'extensió del fitxer no està permesa només n'hi ha un 1%."
 
+#. TRANS: parameter is the maximum allowed size, in Ko
 #, fuzzy, php-format
-msgid "File is too big. Maximum allowed size is %dKo"
+msgid "File is too big. Maximum allowed size is %1$sKo"
 msgstr "El fitxer és massa gran. La mida màxima permesa és de percentKo"
 
+#. TRANS: parameter is the minimum size, in pixels
 #, php-format
-msgid "Image is too small. The minimum image side size allowed is %spx"
+msgid "Image is too small. The minimum image side size allowed is %1$spx"
 msgstr ""
 
 #, fuzzy
@@ -332,9 +339,10 @@ msgstr "D'acord"
 msgid "Delete mailing entries"
 msgstr "Suprimeix les entrades de correu"
 
+#. TRANS: parameter is the logged in user name
 #, php-format
-msgid "Logged in as:<br/>%login"
-msgstr "S'ha iniciat la sessió com a<br>%login"
+msgid "Logged in as:<br/>%1$s"
+msgstr "S'ha iniciat la sessió com a<br>%1$s"
 
 #, fuzzy
 msgid "No such module."
@@ -393,12 +401,14 @@ msgstr "Acaba!"
 msgid "Database type unknown"
 msgstr "Tipus de base de dades desconegut"
 
-#, fuzzy
-msgid "%version script has been successfully executed :)"
+#. TRANS: parameter is the update script version
+#, fuzzy, php-format
+msgid "%1$s script has been successfully executed :)"
 msgstr "s'ha executat amb èxit l'script de versió del 5% )"
 
-#, fuzzy
-msgid "Unable to run %version update script :("
+#. TRANS: parameter is the update script version
+#, fuzzy, php-format
+msgid "Unable to run %1$s update script :("
 msgstr "No s'ha pogut executar l'script d'actualització de la versió ("
 
 #, fuzzy
@@ -409,8 +419,10 @@ msgstr "Escriu el fitxer de configuració"
 msgid "Config file already exists and is up to date"
 msgstr "El fitxer Config ja existeix i està actualitzat"
 
-msgid "Unable to create configuration file (%path)"
-msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
+#. TRANS: parameter is the file path
+#, php-format
+msgid "Unable to create configuration file (%1$s)"
+msgstr "No s'ha pogut crear el fitxer de configuració (%1$s)"
 
 msgid "Settings"
 msgstr "Configuració"
@@ -947,20 +959,24 @@ msgstr "Pàgines públiques"
 msgid "Transactions"
 msgstr "Transaccions"
 
-#, fuzzy
-msgid "%membername: edit information"
-msgstr "%membername edita informació"
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s edita informació"
 
-#, fuzzy
-msgid "%membername: contributions"
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: contributions"
 msgstr "Contribucions del nom de membre"
 
-#, fuzzy
-msgid "%membername: remove from database"
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: remove from database"
 msgstr "Elimina de la base de dades el nom d'un membre de la base de dades"
 
-#, fuzzy
-msgid "Log in as %membername"
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "Log in as %1$s"
 msgstr "Inicia sessió com a nomdepermembre"
 
 #, fuzzy
@@ -1018,9 +1034,10 @@ msgstr "%1$s ha de tenir menys de %2$s caràcters."
 msgid "%1$s should not be empty!"
 msgstr "%1$s no ha de quedar buit!"
 
-#, fuzzy
-msgid "Unknown type %type!"
-msgstr "Tipus desconegut %type!"
+#. TRANS: parameter is the PDF model type
+#, fuzzy, php-format
+msgid "Unknown type %1$s!"
+msgstr "Tipus desconegut %1$s!"
 
 #, fuzzy
 msgid "Title"
@@ -1269,8 +1286,10 @@ msgstr "Heu de seleccionar un membre del personal!"
 msgid "- Birthdate must be set in the past!"
 msgstr "- La data de naixement s'ha d'establir en el passat!"
 
-msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- Els diputats han de tenir menys de 200 anys (actualment, %years)!"
+#. TRANS: parameter is the computed age
+#, php-format
+msgid "- Members must be less than 200 years old (currently %1$s)!"
+msgstr "- Els diputats han de tenir menys de 200 anys (actualment, %1$s)!"
 
 #. TRANS %1$s is the expected dat format, %2$s the field label
 #. TRANS: %1$s date format, %2$s is the field name
@@ -1292,8 +1311,9 @@ msgstr ""
 msgid "An error has occurred while looking if login already exists."
 msgstr "S'ha produït un error en cercar si l'inici de sessió ja existeix."
 
-#, fuzzy
-msgid "- The username must be composed of at least %i characters!"
+#. TRANS: parameter is the minimum number of characters
+#, fuzzy, php-format
+msgid "- The username must be composed of at least %1$s characters!"
 msgstr ""
 "- El nom d'usuari ha d'estar compost d'almenys caràcters de l'u per cent!"
 
@@ -1313,12 +1333,15 @@ msgstr "- Les contrasenyes no coincideixen!"
 msgid "Password misrepeated: "
 msgstr "Contrasenya repetida erròniament "
 
-msgid "Status #%id does not exists in database."
-msgstr "Estatus #%id no existeix a la base de dades."
-
+#. TRANS: parameter is the status identifier
 #, php-format
-msgid "Gender %gender does not exists!"
-msgstr "El gènere %gender no existeix!"
+msgid "Status #%1$s does not exists in database."
+msgstr "Estatus #%1$s no existeix a la base de dades."
+
+#. TRANS: parameter is the gender
+#, php-format
+msgid "Gender %1$s does not exists!"
+msgstr "El gènere %1$s no existeix!"
 
 #, fuzzy
 msgid "A member cannot be its own parent!"
@@ -1347,8 +1370,10 @@ msgstr "Actiu"
 msgid "Inactive"
 msgstr "Inactiu"
 
-msgid " (%age years old)"
-msgstr " (edat de %age anys)"
+#. TRANS: parameter is the age
+#, php-format
+msgid " (%1$s years old)"
+msgstr " (edat de %1$s anys)"
 
 #. TRANS: first parameter is member name, second his id
 #, php-format
@@ -1377,9 +1402,10 @@ msgstr ""
 msgid "Form is mandatory!"
 msgstr "La forma és obligatòria!"
 
+#. TRANS: parameter is the form name
 #, fuzzy, php-format
-msgid "Unknown form %form!"
-msgstr "Formulari desconegut %form!"
+msgid "Unknown form %1$s!"
+msgstr "Formulari desconegut %1$s!"
 
 #, fuzzy
 msgid "Name cannot be empty!"
@@ -1485,11 +1511,11 @@ msgstr ""
 "S'ha produït un problema en enviar un correu electrònic de pertinença "
 "imminent"
 
-#, fuzzy
-msgid "Unable to send %membership reminder (no email address)."
+#. TRANS: parameter is the membership type
+#, fuzzy, php-format
+msgid "Unable to send %1$s reminder (no email address)."
 msgstr ""
-"No s'ha pogut enviar el recordatori del %membership (sense adreça "
-"electrònica)."
+"No s'ha pogut enviar el recordatori del %1$s (sense adreça electrònica)."
 
 #. TRANS: first parameter is name, second the id, this days interval
 #, php-format
@@ -1603,8 +1629,10 @@ msgstr "Configuració del full d'assistència"
 msgid "No member selected to generate attendance sheet"
 msgstr "No s'ha seleccionat cap membre per generar el full d'assistència"
 
-msgid "Unable to load contribution #%id!"
-msgstr "No s'ha pogut carregar la contribució #%id!"
+#. TRANS: parameter is the contribution identifier
+#, php-format
+msgid "Unable to load contribution #%1$s!"
+msgstr "No s'ha pogut carregar la contribució #%1$s!"
 
 #, fuzzy
 msgid "Unable to get groups list."
@@ -1650,9 +1678,11 @@ msgstr "Els models PDF s'han reiniciat correctament."
 msgid "An error occurred reinitializing PDF models :("
 msgstr "S'ha produït un error en tornar a inicialitzar els models PDF ("
 
-msgid "Logins and passwords have been successfully filled (%i processed)."
+#. TRANS: parameter is the number of processed members
+#, php-format
+msgid "Logins and passwords have been successfully filled (%1$s processed)."
 msgstr ""
-"Els inicis de sessió i les contrasenyes s'han omplert correctament (%i "
+"Els inicis de sessió i les contrasenyes s'han omplert correctament (%1$s "
 "processat)."
 
 #, fuzzy
@@ -1798,12 +1828,14 @@ msgstr "Ha fallat l'autenticació"
 msgid "Log off"
 msgstr "Tanca la sessió"
 
+#. TRANS: parameter is the login
 #, php-format
-msgid "Impersonating as %login"
-msgstr "S'està suplantant com a %login"
+msgid "Impersonating as %1$s"
+msgstr "S'està suplantant com a %1$s"
 
-#, fuzzy
-msgid "Unable to impersonate as %id"
+#. TRANS: parameter is the member identifier
+#, fuzzy, php-format
+msgid "Unable to impersonate as %1$s"
 msgstr "No s'ha pogut suplantar com a percentid"
 
 msgid "Attempt to unimpersonate from a non impersonated session"
@@ -1900,21 +1932,24 @@ msgstr ""
 msgid "Labels has been successfully translated!"
 msgstr "Les etiquetes s'han traduït amb sucessió!"
 
-#, fuzzy
-msgid "Table %table is empty, and has not been exported."
-msgstr "La taula del %table està buida i no s'ha exportat."
+#. TRANS: parameter is the table name
+#, fuzzy, php-format
+msgid "Table %1$s is empty, and has not been exported."
+msgstr "La taula del %1$s està buida i no s'ha exportat."
 
+#. TRANS: parameter is the export name
 #, php-format
 msgid ""
-"Export file could not be write on disk for '%export'. Make sure web server "
-"can write in the exports directory."
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
 msgstr ""
-"El fitxer d'exportació no s'ha pogut escriure al disc per a «%export». "
+"El fitxer d'exportació no s'ha pogut escriure al disc per a «%1$s». "
 "Assegureu-vos que el servidor web pot escriure al directori d'exportacions."
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "An error occurred running parameted export '%export'."
-msgstr "S'ha produït un error en executar l'exportació parametada '%export'."
+msgid "An error occurred running parameted export '%1$s'."
+msgstr "S'ha produït un error en executar l'exportació parametada '%1$s'."
 
 #, fuzzy
 msgid "An error occurred importing the file :("
@@ -1936,13 +1971,15 @@ msgstr "El fitxer s'ha pujat correctament!"
 msgid "Remove %1$s file %2$s"
 msgstr "Elimina el %1$s fitxer %2$s"
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "'%export' file has been removed from disk."
-msgstr "El fitxer '%export' ha estat eliminat del disc."
+msgid "'%1$s' file has been removed from disk."
+msgstr "El fitxer '%1$s' ha estat eliminat del disc."
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "Cannot remove '%export' from disk :/"
-msgstr "No es pot eliminar '%export' del disc :/"
+msgid "Cannot remove '%1$s' from disk :/"
+msgstr "No es pot eliminar '%1$s' del disc :/"
 
 #, fuzzy
 msgid "CSV import model"
@@ -2189,25 +2226,28 @@ msgstr "Falta el nom de camp requerit!"
 msgid "Status has not been added :("
 msgstr "L'estat no s'ha afegit :("
 
-#, fuzzy
+#. TRANS: parameter is the status identifier
+#, fuzzy, php-format
 #| msgid "%type #%id has not been updated"
-msgid "Status #%id has not been updated"
-msgstr "%type #%id no s'ha actualitzat"
+msgid "Status #%1$s has not been updated"
+msgstr "%type #%1$s no s'ha actualitzat"
 
 #, fuzzy
 #| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
 msgstr "%type s'ha afegit amb èxit!"
 
-#, fuzzy
+#. TRANS: parameter is the status identifier
+#, fuzzy, php-format
 #| msgid "%type #%id has been successfully updated!"
-msgid "Status #%id has been successfully updated!"
-msgstr "%type #%id s'ha actualitzat correctament!"
+msgid "Status #%1$s has been successfully updated!"
+msgstr "%type #%1$s s'ha actualitzat correctament!"
 
-#, fuzzy
+#. TRANS: parameter is the status label
+#, fuzzy, php-format
 #| msgid "Remove %type '%label'"
-msgid "Remove status '%label'"
-msgstr "Elimina %type '%label'"
+msgid "Remove status '%1$s'"
+msgstr "Elimina %type '%1$s'"
 
 #, fuzzy
 msgid "New document"
@@ -2260,10 +2300,11 @@ msgstr "Elimina el mailing #%1$s"
 msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
 
-#, fuzzy
+#. TRANS: parameter is the transaction identifier
+#, fuzzy, php-format
 #| msgid "Unable to load contribution #%id!"
-msgid "Unable to load transaction #%id!"
-msgstr "No s'ha pogut carregar la contribució #%id!"
+msgid "Unable to load transaction #%1$s!"
+msgstr "No s'ha pogut carregar la contribució #%1$s!"
 
 msgid "Transaction"
 msgstr "Transacció"
@@ -2303,23 +2344,26 @@ msgstr "Falta el nom de camp requerit!"
 msgid "Contribution type has not been added :("
 msgstr "No s'ha afegit el tipus %type :("
 
-#, fuzzy
+#. TRANS: parameter is the contribution type identifier
+#, fuzzy, php-format
 #| msgid "%type #%id has not been updated"
-msgid "Contribution type #%id has not been updated"
-msgstr "%type #%id no s'ha actualitzat"
+msgid "Contribution type #%1$s has not been updated"
+msgstr "%type #%1$s no s'ha actualitzat"
 
 msgid "Contribution type has been successfully added!"
 msgstr "El tipus de contribució s'ha desat correctament!"
 
-#, fuzzy
+#. TRANS: parameter is the contribution type identifier
+#, fuzzy, php-format
 #| msgid "%type #%id has been successfully updated!"
-msgid "Contribution type #%id has been successfully updated!"
-msgstr "%type #%id s'ha actualitzat correctament!"
+msgid "Contribution type #%1$s has been successfully updated!"
+msgstr "%type #%1$s s'ha actualitzat correctament!"
 
-#, fuzzy
+#. TRANS: parameter is the contribution type label
+#, fuzzy, php-format
 #| msgid "Remove %type '%label'"
-msgid "Remove contribution type '%label'"
-msgstr "Elimina %type '%label'"
+msgid "Remove contribution type '%1$s'"
+msgstr "Elimina %type '%1$s'"
 
 #, fuzzy
 msgid "Payment type"
@@ -2433,8 +2477,10 @@ msgstr "Elimina el membre %1$s"
 msgid "You are about to remove %1$s members."
 msgstr "Esteu a punt d'eliminar %1$s membres."
 
-msgid "No member #%id."
-msgstr "Cap membre #%id."
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "No member #%1$s."
+msgstr "Cap membre #%1$s."
 
 #, fuzzy
 msgid "- ERROR -"
@@ -2795,8 +2841,10 @@ msgstr ""
 msgid "Unauthorized"
 msgstr "Sense autorització"
 
-msgid "Unknown ACL rule '%acl'!"
-msgstr "Regla ACL desconeguda '%acl'!"
+#. TRANS: parameter is the ACL rule name
+#, php-format
+msgid "Unknown ACL rule '%1$s'!"
+msgstr "Regla ACL desconeguda '%1$s'!"
 
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
@@ -2890,10 +2938,11 @@ msgstr "booleà"
 msgid "file"
 msgstr "fitxer"
 
-#, fuzzy
+#. TRANS: parameter is the list of deleted scheduled payments
+#, fuzzy, php-format
 #| msgid "Searches deleted (%list)"
-msgid "Scheduled payments deleted (%list)"
-msgstr "Cerca esborrada (%list)"
+msgid "Scheduled payments deleted (%1$s)"
+msgstr "Cerca esborrada (%1$s)"
 
 #, fuzzy
 msgid "Member Picture deleted"
@@ -2907,11 +2956,15 @@ msgstr "Suprimeix els socis targetes transaccions i quotes"
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 
-msgid "Searches deleted (%list)"
-msgstr "Cerca esborrada (%list)"
+#. TRANS: parameter is the list of deleted searches
+#, php-format
+msgid "Searches deleted (%1$s)"
+msgstr "Cerca esborrada (%1$s)"
 
-msgid "Contributions deleted (%list)"
-msgstr "Contribucions suprimides (%list)"
+#. TRANS: parameter is the list of deleted contributions
+#, php-format
+msgid "Contributions deleted (%1$s)"
+msgstr "Contribucions suprimides (%1$s)"
 
 #, fuzzy
 msgid "Y"
@@ -3673,28 +3726,34 @@ msgstr "a"
 msgid "Association"
 msgstr "Associació"
 
-msgid "Unable to create main datadir in %path!"
-msgstr "No s'ha pogut crear el directori de dades principal en %path!"
-
+#. TRANS: parameter is the path
 #, php-format
-msgid "Unable to create datadir in %dir!"
-msgstr "No s'ha pogut crear el directori de dades en %dir!"
+msgid "Unable to create main datadir in %1$s!"
+msgstr "No s'ha pogut crear el directori de dades principal en %1$s!"
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Unable to create datadir in %1$s!"
+msgstr "No s'ha pogut crear el directori de dades en %1$s!"
 
 #, fuzzy, php-format
 msgid "File %1$s has not been moved :-/"
 msgstr "El fitxer del 5% no s'ha mogut -/"
 
+#. TRANS: parameter is the directory
 #, fuzzy, php-format
-msgid "Directory %dir has been moved!"
+msgid "Directory %1$s has been moved!"
 msgstr "S'ha mogut el directori del 5%!"
 
+#. TRANS: parameter is the directory
 #, fuzzy, php-format
-msgid "Directory %dir has not been moved :("
+msgid "Directory %1$s has not been moved :("
 msgstr "El directori per centdir no s'ha mogut ("
 
+#. TRANS: parameter is the directory
 #, fuzzy, php-format
-msgid "Directory %dir is not in its original path and will not be moved."
-msgstr "El directori %dir no està en el seu camí original i no es mourà."
+msgid "Directory %1$s is not in its original path and will not be moved."
+msgstr "El directori %1$s no està en el seu camí original i no es mourà."
 
 #, php-format
 msgid "Choices for field %d have been migrated."
@@ -4057,9 +4116,10 @@ msgstr ""
 msgid "Your current Galette version is..."
 msgstr "La versió actual de Galette és..."
 
-#, fuzzy
-msgid "older than %version"
-msgstr "més antic que el %version"
+#. TRANS: parameter is the version
+#, fuzzy, php-format
+msgid "older than %1$s"
+msgstr "més antic que el %1$s"
 
 #, fuzzy
 msgid "comprised between"
@@ -4765,9 +4825,9 @@ msgstr ""
 msgid "Priority:"
 msgstr "Prioritat:"
 
-#, fuzzy
+#, fuzzy, php-format
 msgid ""
-"Note: members with a status priority lower than %priority are staff members."
+"Note: members with a status priority lower than %1$s are staff members."
 msgstr ""
 "Els membres amb una prioritat d'estat inferior a la de percentració són "
 "membres del personal."
@@ -4802,11 +4862,13 @@ msgstr "Visualitza les contribucions"
 msgid "Show only '%1$s' transactions"
 msgstr ""
 
-msgid "Edit transaction #%id"
-msgstr "Edita la transacció #%id"
+#, php-format
+msgid "Edit transaction #%1$s"
+msgstr "Edita la transacció #%1$s"
 
-msgid "Remove transaction #%id"
-msgstr "Elimina la transacció #%id"
+#, php-format
+msgid "Remove transaction #%1$s"
+msgstr "Elimina la transacció #%1$s"
 
 #, fuzzy
 msgid "no transaction"
@@ -5667,10 +5729,10 @@ msgstr "URL base de Galette"
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
-"parameter if the current page URL is not:<br/>%galette_url"
+"parameter if the current page URL is not:<br/>%1$s"
 msgstr ""
 "Introduïu l'URL base a la vostra instància de Galette. Només haureu de "
-"canviar aquest paràmetre si l'URL de la pàgina actual no és<br>%galette_url"
+"canviar aquest paràmetre si l'URL de la pàgina actual no és<br>%1$s"
 
 #, fuzzy
 msgid "Post new contribution script URI"
@@ -6040,8 +6102,8 @@ msgid "Card height from 40 to 55mm:"
 msgstr ""
 
 #, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Encara no hi ha cap camp dinàmic configurat per a '%formname'"
+msgid "There is not yet any dynamic field configured for '%1$s'"
+msgstr "Encara no hi ha cap camp dinàmic configurat per a '%1$s'"
 
 #, fuzzy
 msgid "Configure dynamic fields"
@@ -6696,9 +6758,9 @@ msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
 "El diputat rebrà una notificació per correu electrònic si té una adreça."
 
-#, fuzzy
-msgid "Contribution amount should not be greater than %max"
-msgstr "L'import de la contribució hauria de ser superior al màxim d'un %max"
+#, fuzzy, php-format
+msgid "Contribution amount should not be greater than %1$s"
+msgstr "L'import de la contribució hauria de ser superior al màxim d'un %1$s"
 
 #, fuzzy
 msgid "An error occurred displaying scheduled payments :("
@@ -7007,9 +7069,10 @@ msgstr ""
 msgid "Right"
 msgstr "Drets"
 
+#, php-format
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %ratio"
+"final ratio defined in the settings : %1$s"
 msgstr ""
 
 msgid "Additionnal fields:"
@@ -7066,8 +7129,8 @@ msgstr ""
 "administradors poden inhabilitar pàgines públiques aquest paràmetre no "
 "tindrà cap efecte en aquest cas."
 
-#, fuzzy
-msgid "(at least %i characters)"
+#, fuzzy, php-format
+msgid "(at least %1$s characters)"
 msgstr "(almenys caràcters de percentatge)"
 
 #, fuzzy
@@ -7244,8 +7307,9 @@ msgstr ""
 msgid "Disable social networks on member form"
 msgstr ""
 
-msgid "Remove %type"
-msgstr "Elimina %type"
+#, php-format
+msgid "Remove %1$s"
+msgstr "Elimina %1$s"
 
 #, fuzzy
 msgid "Add new social network"
@@ -7423,8 +7487,8 @@ msgstr "Gestiona els membres"
 msgid "Manager(s)"
 msgstr "Gestor/s"
 
-#, fuzzy
-msgid "%membercount members"
+#, fuzzy, php-format
+msgid "%1$s members"
 msgstr "membre del nombre de membres del grup"
 
 #, fuzzy

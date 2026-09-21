@@ -495,10 +495,10 @@ class Contributions
                 $this->zdb->commit();
             }
             $hist->add(
-                str_replace(
-                    '%list',
-                    print_r($list, return: true),
-                    _T("Contributions deleted (%list)")
+                sprintf(
+                    //TRANS: parameter is the list of deleted contributions
+                    _T('Contributions deleted (%1$s)'),
+                    print_r($list, return: true)
                 )
             );
             return true;

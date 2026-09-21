@@ -11,7 +11,7 @@
         <div class="ui icon info visible message">
             <i class="info circle blue icon" aria-hidden="true"></i>
             <div class="content">
-                {{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}
+                {{ _T('Note: members with a status priority lower than %1$s are staff members.')|format(non_staff_priority) }}
             </div>
         </div>
         <div class="ui basic fitted segment loader_selector">

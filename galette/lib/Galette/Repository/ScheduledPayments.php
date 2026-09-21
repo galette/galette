@@ -446,10 +446,10 @@ class ScheduledPayments
                 $this->zdb->commit();
             }
             $hist->add(
-                str_replace(
-                    '%list',
-                    print_r($list, return: true),
-                    _T("Scheduled payments deleted (%list)")
+                sprintf(
+                    //TRANS: parameter is the list of deleted scheduled payments
+                    _T('Scheduled payments deleted (%1$s)'),
+                    print_r($list, return: true)
                 )
             );
             return true;

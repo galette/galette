@@ -259,10 +259,10 @@ class Reminder
             }
         } else {
             $this->nomail = true;
-            $str = str_replace(
-                '%membership',
-                $type_name,
-                _T("Unable to send %membership reminder (no email address).")
+            $str = sprintf(
+                //TRANS: parameter is the membership type
+                _T('Unable to send %1$s reminder (no email address).'),
+                $type_name
             );
             $details = sprintf(
                 //TRANS: first parameter is name, second the id, this days interval

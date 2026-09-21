@@ -278,7 +278,7 @@ trait Dynamics
                     Analog::ERROR
                 );
                 $this->errors[] = sprintf(
-                    _T("File is too big. Maximum allowed size is %dKo"),
+                    _T('File is too big. Maximum allowed size is %1$sKo'),
                     $max_size
                 );
                 continue;

@@ -331,16 +331,12 @@ class Login extends GaletteTestCase
         /* Should get message in the right locale but doesn't... */
         $this->i18n->changeLanguage('en_US');
         $tstring = $translator->translate(
-            "Logged in as:<br/>%login",
+            'Logged in as:<br/>%1$s',
             'galette',
             $this->login->lang
         );
         $this->assertSame(
-            str_replace(
-                '%login',
-                'Barre Olivier (dumas.roger)',
-                $tstring
-            ),
+            sprintf($tstring, 'Barre Olivier (dumas.roger)'),
             $this->login->loggedInAs()
         );
         $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(only_name: true));

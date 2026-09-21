@@ -373,10 +373,10 @@ abstract class PdfModel
                     $this->$name = $value;
                 } else {
                     throw new \UnexpectedValueException(
-                        str_replace(
-                            '%type',
-                            $value,
-                            _T("Unknown type %type!")
+                        sprintf(
+                            //TRANS: parameter is the PDF model type
+                            _T('Unknown type %1$s!'),
+                            $value
                         )
                     );
                 }

@@ -233,7 +233,7 @@
                         class="action icon-only"
                     >
                         <i class="ui edit icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="visually-hidden">{{ _T('Edit transaction #%1$s')|format(transaction.id) }}</span>
                     </a>
                     {% if login.isAdmin() or login.isStaff() %}
                     <a
@@ -241,7 +241,7 @@
                         class="delete icon-only"
                     >
                         <i class="ui trash red icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="visually-hidden">{{ _T('Remove transaction #%1$s')|format(transaction.id) }}</span>
                     </a>
                     {% endif %}
                 </td>

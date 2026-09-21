@@ -84,10 +84,10 @@ if ($raw_current === GALETTE_DB_VERSION && !isset($_POST['force_select_version']
                 <span>
             <?php
             if ($last === '0.00') {
-                $label = str_replace(
-                    '%version',
-                    number_format($version, 2),
-                    _T("older than %version")
+                $label = sprintf(
+                    //TRANS: parameter is the version
+                    _T('older than %1$s'),
+                    number_format($version, 2)
                 );
                 $title = "< $version";
             } elseif ($i == count($versions) - 1) {

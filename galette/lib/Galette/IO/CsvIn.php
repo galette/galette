@@ -300,10 +300,10 @@ class CsvIn extends Csv
                             }
                             if (!isset($this->statuses[(int)$column])) {
                                 $this->addError(
-                                    str_replace(
-                                        '%status',
-                                        $column,
-                                        _T("Status %status does not exists!")
+                                    sprintf(
+                                        //TRANS: parameter is the status
+                                        _T('Status %1$s does not exists!'),
+                                        $column
                                     )
                                 );
                                 return false;
@@ -320,10 +320,10 @@ class CsvIn extends Csv
                         }
                         if (!isset($this->titles[$column])) {
                             $this->addError(
-                                str_replace(
-                                    '%title',
-                                    $column,
-                                    _T("Title %title does not exists!")
+                                sprintf(
+                                    //TRANS: parameter is the title
+                                    _T('Title %1$s does not exists!'),
+                                    $column
                                 )
                             );
                             return false;
@@ -340,13 +340,19 @@ class CsvIn extends Csv
                             $existing = $this->emails[$column];
                             $extra = (
                                 $existing == -1
-                                ? _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
+                                ? _T("from another member in import")
+                                : sprintf(
+                                    //TRANS: parameter is the member identifier
+                                    _T('from member %1$s'),
+                                    $existing
+                                )
                             );
                             $this->addError(
-                                str_replace(
-                                    ['%address', '%extra'],
-                                    [$column, $extra],
-                                    _T("Email address %address is already used! (%extra)")
+                                sprintf(
+                                    //TRANS: first parameter is the email address, second tells where it is already used
+                                    _T('Email address %1$s is already used! (%2$s)'),
+                                    $column,
+                                    $extra
                                 )
                             );
                             return false;

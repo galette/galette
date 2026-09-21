@@ -2104,7 +2104,11 @@ class MembersController extends CrudController
     {
         return $this->redirectWithErrors(
             response: $response,
-            errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+            errors: [sprintf(
+                //TRANS: parameter is the member identifier
+                _T('No member #%1$s.'),
+                $id
+            )],
             redirect_url: $this->routeparser->urlFor('slash')
         );
     }

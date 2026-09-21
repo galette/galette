@@ -930,15 +930,15 @@ class Galette
 
         if ($member->canEdit($login)) {
             $actions[] = [
-                'label' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("%membername: edit information")
+                'label' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('%1$s: edit information'),
+                    $member->sname
                 ),
-                'title' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("%membername: edit information")
+                'title' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('%1$s: edit information'),
+                    $member->sname
                 ),
                 'route' => [
                     'name' => 'editMember',
@@ -951,15 +951,15 @@ class Galette
         if ($login->isAdmin() || $login->isStaff()) {
             $actions = array_merge($actions, [
                 [
-                    'label' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: contributions")
+                    'label' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: contributions'),
+                        $member->sname
                     ),
-                    'title' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: contributions")
+                    'title' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: contributions'),
+                        $member->sname
                     ),
                     'route' => [
                         'name' => 'contributions',
@@ -972,15 +972,15 @@ class Galette
                     'icon' => 'receipt green'
                 ],
                 [
-                    'label' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: remove from database")
+                    'label' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: remove from database'),
+                        $member->sname
                     ),
-                    'title' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: remove from database")
+                    'title' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: remove from database'),
+                        $member->sname
                     ),
                     'route' => [
                         'name' => 'removeMember',
@@ -996,15 +996,15 @@ class Galette
 
         if ($login->isSuperAdmin()) {
             $actions[] = [
-                'label' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("Log in as %membername")
+                'label' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('Log in as %1$s'),
+                    $member->sname
                 ),
-                'title' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("Log in as %membername")
+                'title' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('Log in as %1$s'),
+                    $member->sname
                 ),
                 'route' => [
                     'name' => 'impersonate',

@@ -210,10 +210,10 @@ class SavedSearches
                     $this->zdb->commit();
                 }
                 $hist->add(
-                    str_replace(
-                        '%list',
-                        print_r($list, return: true),
-                        _T("Searches deleted (%list)")
+                    sprintf(
+                        //TRANS: parameter is the list of deleted searches
+                        _T('Searches deleted (%1$s)'),
+                        print_r($list, return: true)
                     )
                 );
                 return true;

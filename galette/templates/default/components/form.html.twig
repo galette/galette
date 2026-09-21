@@ -102,7 +102,7 @@
                             {% set checked = member.appearsInMembersList() %}
                         {% endif %}
                         {% if entry.field_id == 'login_adh' %}
-                            {% set description = _T("(at least %i characters)")|replace({"%i": 2}) %}
+                            {% set description = _T('(at least %1$s characters)')|format(2) %}
                         {% endif %}
 
                         {% if entry.field_id == 'bool_admin_adh' %}

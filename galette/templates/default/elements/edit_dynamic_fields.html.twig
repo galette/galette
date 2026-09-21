@@ -100,7 +100,7 @@
 {% else %}
                 <tr>
                     <td colspan="7">
-                        {{ _T("There is not yet any dynamic field configured for '%formname'")|replace({'%formname': form_title}) }}
+                        {{ _T("There is not yet any dynamic field configured for '%1$s'")|format(form_title) }}
                     </td>
                 </tr>
 {% endfor %}

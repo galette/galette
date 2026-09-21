@@ -78,7 +78,7 @@
                     <span>
                         <label for="upgrade-{{ val }}">
             {% if last == 0.00 %}
-                {{ _T("older than %version")|replace({'%version': val}) }}
+                {{ _T('older than %1$s')|format(val) }}
             {% elseif last != val %}
                 {{ _T("comprised between") }} {{ last }} {{ _T("and") }} {{ val }}
             {% else %}

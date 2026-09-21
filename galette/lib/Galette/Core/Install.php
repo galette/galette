@@ -618,10 +618,10 @@ class Install
                         );
                     }
 
-                    $ret['message'] = str_replace(
-                        '%version',
-                        $key,
-                        _T("%version script has been successfully executed :)")
+                    $ret['message'] = sprintf(
+                        //TRANS: parameter is the update script version
+                        _T('%1$s script has been successfully executed :)'),
+                        $key
                     );
                     $ret['res'] = true;
                     $this->report[] = $ret;
@@ -630,10 +630,10 @@ class Install
                         $e->getMessage(),
                         Analog::ERROR
                     );
-                    $ret['message'] = str_replace(
-                        '%version',
-                        $key,
-                        _T("Unable to run %version update script :(")
+                    $ret['message'] = sprintf(
+                        //TRANS: parameter is the update script version
+                        _T('Unable to run %1$s update script :('),
+                        $key
                     );
                     $fatal_error = true;
                     $this->report[] = $ret;
@@ -1069,10 +1069,10 @@ class Install
             $ret['res'] = true;
             Analog::log('Configuration file written on disk', Analog::INFO);
         } else {
-            $str = str_replace(
-                '%path',
-                $conffile,
-                _T("Unable to create configuration file (%path)")
+            $str = sprintf(
+                //TRANS: parameter is the file path
+                _T('Unable to create configuration file (%1$s)'),
+                $conffile
             );
             Analog::log($str, Analog::WARNING);
             $ret['error'] = $str;

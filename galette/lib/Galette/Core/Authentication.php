@@ -234,10 +234,10 @@ abstract class Authentication
     {
         $n = $this->name . ' ' . ($this->surname ?? '') . ' (' . $this->login . ')';
         if ($only_name === false) {
-            return str_replace(
-                '%login',
-                $n,
-                _T("Logged in as:<br/>%login")
+            return sprintf(
+                //TRANS: parameter is the logged in user name
+                _T('Logged in as:<br/>%1$s'),
+                $n
             );
         } else {
             return $n;

@@ -422,7 +422,7 @@
                     $('#transaction_related').show();
                 } else if (_current > _amount) {
                     {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
+                        modal_title_twig: _T('Contribution amount should not be greater than %1$s')|format(contribution.transaction.getMissingAmount())|e("js"),
                         modal_without_content: true,
                         modal_class: "mini",
                         modal_deny_only: true,

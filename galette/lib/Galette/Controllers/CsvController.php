@@ -161,10 +161,10 @@ class CsvController extends AbstractController
                 } else {
                     $this->flash->addMessage(
                         'warning_detected',
-                        str_replace(
-                            '%table',
-                            $table,
-                            _T("Table %table is empty, and has not been exported.")
+                        sprintf(
+                            //TRANS: parameter is the table name
+                            _T('Table %1$s is empty, and has not been exported.'),
+                            $table
                         )
                     );
                 }
@@ -179,20 +179,20 @@ class CsvController extends AbstractController
                     case Csv::FILE_NOT_WRITABLE:
                         $this->flash->addMessage(
                             'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory.")
+                            sprintf(
+                                //TRANS: parameter is the export name
+                                _T('Export file could not be write on disk for \'%1$s\'. Make sure web server can write in the exports directory.'),
+                                $pn
                             )
                         );
                         break;
                     case Csv::DB_ERROR:
                         $this->flash->addMessage(
                             'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'.")
+                            sprintf(
+                                //TRANS: parameter is the export name
+                                _T('An error occurred running parameted export \'%1$s\'.'),
+                                $pn
                             )
                         );
                         break;
@@ -452,19 +452,19 @@ class CsvController extends AbstractController
                 $success = true;
                 $this->flash->addMessage(
                     'success_detected',
-                    str_replace(
-                        '%export',
-                        $file,
-                        _T("'%export' file has been removed from disk.")
+                    sprintf(
+                        //TRANS: parameter is the export name
+                        _T('\'%1$s\' file has been removed from disk.'),
+                        $file
                     )
                 );
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    str_replace(
-                        '%export',
-                        $file,
-                        _T("Cannot remove '%export' from disk :/")
+                    sprintf(
+                        //TRANS: parameter is the export name
+                        _T('Cannot remove \'%1$s\' from disk :/'),
+                        $file
                     )
                 );
             }

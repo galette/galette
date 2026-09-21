@@ -202,21 +202,27 @@ class StatusController extends CrudController
 
         if ($ret !== true) {
             $error_detected[] = $action === 'add'
-                ? _T("Status has not been added :(") : _T("Status #%id has not been updated");
+                ? _T("Status has not been added :(")
+                : sprintf(
+                    //TRANS: parameter is the status identifier
+                    _T('Status #%1$s has not been updated'),
+                    $id
+                );
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editStatus', ['id' => (string)$id]);
             }
         } else {
             $msg = $action === 'add'
-                ? _T("Status has been successfully added!") : _T("Status #%id has been successfully updated!");
+                ? _T("Status has been successfully added!")
+                : sprintf(
+                    //TRANS: parameter is the status identifier
+                    _T('Status #%1$s has been successfully updated!'),
+                    $id
+                );
         }
 
         if (count($error_detected) === 0) {
-            $success_detected[] = str_replace(
-                ['%id'],
-                [(string)$id],
-                $msg
-            );
+            $success_detected[] = $msg;
         }
 
         return $this->redirect(
@@ -266,10 +272,10 @@ class StatusController extends CrudController
         $class = new Status($this->zdb);
         $label = $class->getLabel((int)$args['id']);
 
-        return str_replace(
-            ['%label'],
-            [$label],
-            _T("Remove status '%label'")
+        return sprintf(
+            //TRANS: parameter is the status label
+            _T('Remove status \'%1$s\''),
+            $label
         );
     }
 

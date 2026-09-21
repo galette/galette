@@ -118,10 +118,10 @@ class TransactionsController extends ContributionsController
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [
-                        str_replace(
-                            '%id',
-                            (string)$id,
-                            _T("Unable to load transaction #%id!")
+                        sprintf(
+                            //TRANS: parameter is the transaction identifier
+                            _T('Unable to load transaction #%1$s!'),
+                            $id
                         )
                     ],
                     redirect_url: $this->routeparser->urlFor(
@@ -233,10 +233,10 @@ class TransactionsController extends ContributionsController
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load transaction #%id!")
+                    sprintf(
+                        //TRANS: parameter is the transaction identifier
+                        _T('Unable to load transaction #%1$s!'),
+                        $id
                     )
                 ],
                 redirect_url: $this->routeparser->urlFor(

@@ -426,13 +426,13 @@ trait FileTrait
                 $this->getAllowedExts(),
                 _T("File extension is not allowed, only %s files are.")
             ),
-            self::FILE_TOO_BIG => str_replace(
-                '%d',
-                (string)$this->maxlength,
-                _T("File is too big. Maximum allowed size is %dKo")
+            self::FILE_TOO_BIG => sprintf(
+                //TRANS: parameter is the maximum allowed size, in Ko
+                _T('File is too big. Maximum allowed size is %1$sKo'),
+                $this->maxlength
             ),
             self::IMAGE_TOO_SMALL => sprintf(
-                _T("Image is too small. The minimum image side size allowed is %spx"),
+                _T('Image is too small. The minimum image side size allowed is %1$spx'),
                 $this->mincropsize
             ),
             self::MIME_NOT_ALLOWED => _T("Mime-Type not allowed"),

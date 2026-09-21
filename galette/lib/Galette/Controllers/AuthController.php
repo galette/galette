@@ -250,10 +250,10 @@ class AuthController extends AbstractController
         if ($success === true) {
             \RKA\Session::regenerate();
             $this->session->login = $this->login;
-            $msg = str_replace(
-                '%login',
-                $this->login->login,
-                _T("Impersonating as %login")
+            $msg = sprintf(
+                //TRANS: parameter is the login
+                _T('Impersonating as %1$s'),
+                $this->login->login
             );
 
             $this->history->add($msg);
@@ -262,10 +262,10 @@ class AuthController extends AbstractController
                 $msg
             );
         } else {
-            $msg = str_replace(
-                '%id',
-                (string)$id,
-                _T("Unable to impersonate as %id")
+            $msg = sprintf(
+                //TRANS: parameter is the member identifier
+                _T('Unable to impersonate as %1$s'),
+                $id
             );
             $this->flash->addMessage(
                 'error_detected',

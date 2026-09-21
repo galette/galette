@@ -54,21 +54,28 @@ msgstr ""
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "%1$s alanı zorunludur, ancak %2$s satırında eksiktir"
 
+#. TRANS: parameter is the status
 #, php-format
-msgid "Status %status does not exists!"
-msgstr "Durum %status mevcut değil!"
+msgid "Status %1$s does not exists!"
+msgstr "Durum %1$s mevcut değil!"
 
-msgid "Title %title does not exists!"
-msgstr "Başlık %title mevcut değil!"
+#. TRANS: parameter is the title
+#, php-format
+msgid "Title %1$s does not exists!"
+msgstr "Başlık %1$s mevcut değil!"
 
 msgid "from another member in import"
 msgstr "Başka bir üyeden aktar"
 
-msgid "from member %id_adh"
-msgstr "üye %id_adh'den"
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "from member %1$s"
+msgstr "üye %1$s'den"
 
-msgid "Email address %address is already used! (%extra)"
-msgstr "E-posta adresi %adres zaten kullanılıyor! (%ekstra)"
+#. TRANS: first parameter is the email address, second tells where it is already used
+#, php-format
+msgid "Email address %1$s is already used! (%2$s)"
+msgstr "E-posta adresi %1$s zaten kullanılıyor! (%2$s)"
 
 #, php-format
 msgid "Unknown lang (%1$s)"
@@ -221,13 +228,16 @@ msgstr ""
 "Dosya uzantısına izin verilmiyor, yalnızca %s uzantılı dosyalar kabul "
 "ediliyor."
 
+#. TRANS: parameter is the maximum allowed size, in Ko
 #, php-format
-msgid "File is too big. Maximum allowed size is %dKo"
-msgstr "Dosya çok büyük. İzin verilen maksimum boyut %dKB'dir"
+msgid "File is too big. Maximum allowed size is %1$sKo"
+msgstr "Dosya çok büyük. İzin verilen maksimum boyut %1$sKB'dir"
 
+#. TRANS: parameter is the minimum size, in pixels
 #, php-format
-msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr "Görüntü çok küçük. İzin verilen minimum görüntü kenar boyutu %spx'tir"
+msgid "Image is too small. The minimum image side size allowed is %1$spx"
+msgstr ""
+"Görüntü çok küçük. İzin verilen minimum görüntü kenar boyutu %1$spx'tir"
 
 msgid "Mime-Type not allowed"
 msgstr "MIME türüne izin verilmiyor"
@@ -286,8 +296,9 @@ msgstr "Tamam"
 msgid "Delete mailing entries"
 msgstr ""
 
+#. TRANS: parameter is the logged in user name
 #, php-format
-msgid "Logged in as:<br/>%login"
+msgid "Logged in as:<br/>%1$s"
 msgstr ""
 
 msgid "No such module."
@@ -338,10 +349,14 @@ msgstr "Son!"
 msgid "Database type unknown"
 msgstr "Veritabanı türü bilinmiyor"
 
-msgid "%version script has been successfully executed :)"
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "%1$s script has been successfully executed :)"
 msgstr ""
 
-msgid "Unable to run %version update script :("
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "Unable to run %1$s update script :("
 msgstr ""
 
 msgid "Write configuration file"
@@ -350,7 +365,9 @@ msgstr ""
 msgid "Config file already exists and is up to date"
 msgstr "Yapılandırma dosyası zaten var ve güncel"
 
-msgid "Unable to create configuration file (%path)"
+#. TRANS: parameter is the file path
+#, php-format
+msgid "Unable to create configuration file (%1$s)"
 msgstr ""
 
 msgid "Settings"
@@ -797,16 +814,24 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-msgid "%membername: edit information"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
 msgstr ""
 
-msgid "%membername: contributions"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
 msgstr ""
 
-msgid "%membername: remove from database"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
 msgstr ""
 
-msgid "Log in as %membername"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
 msgstr ""
 
 msgid "Mass change"
@@ -859,7 +884,9 @@ msgstr ""
 msgid "%1$s should not be empty!"
 msgstr ""
 
-msgid "Unknown type %type!"
+#. TRANS: parameter is the PDF model type
+#, php-format
+msgid "Unknown type %1$s!"
 msgstr ""
 
 msgid "Title"
@@ -1078,7 +1105,9 @@ msgstr ""
 msgid "- Birthdate must be set in the past!"
 msgstr ""
 
-msgid "- Members must be less than 200 years old (currently %years)!"
+#. TRANS: parameter is the computed age
+#, php-format
+msgid "- Members must be less than 200 years old (currently %1$s)!"
 msgstr ""
 
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -1097,7 +1126,9 @@ msgstr ""
 msgid "An error has occurred while looking if login already exists."
 msgstr ""
 
-msgid "- The username must be composed of at least %i characters!"
+#. TRANS: parameter is the minimum number of characters
+#, php-format
+msgid "- The username must be composed of at least %1$s characters!"
 msgstr ""
 
 msgid "- The username cannot contain the @ character"
@@ -1112,11 +1143,14 @@ msgstr "- Parolalar eşleşmiyor!"
 msgid "Password misrepeated: "
 msgstr ""
 
-msgid "Status #%id does not exists in database."
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s does not exists in database."
 msgstr ""
 
+#. TRANS: parameter is the gender
 #, php-format
-msgid "Gender %gender does not exists!"
+msgid "Gender %1$s does not exists!"
 msgstr ""
 
 msgid "A member cannot be its own parent!"
@@ -1140,7 +1174,9 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-msgid " (%age years old)"
+#. TRANS: parameter is the age
+#, php-format
+msgid " (%1$s years old)"
 msgstr ""
 
 #. TRANS: first parameter is member name, second his id
@@ -1168,8 +1204,9 @@ msgstr ""
 msgid "Form is mandatory!"
 msgstr ""
 
+#. TRANS: parameter is the form name
 #, php-format
-msgid "Unknown form %form!"
+msgid "Unknown form %1$s!"
 msgstr ""
 
 msgid "Name cannot be empty!"
@@ -1252,7 +1289,9 @@ msgstr ""
 msgid "A problem happened while sending impending membership email"
 msgstr ""
 
-msgid "Unable to send %membership reminder (no email address)."
+#. TRANS: parameter is the membership type
+#, php-format
+msgid "Unable to send %1$s reminder (no email address)."
 msgstr ""
 
 #. TRANS: first parameter is name, second the id, this days interval
@@ -1349,8 +1388,10 @@ msgstr "Yoklama belgesi ayarları"
 msgid "No member selected to generate attendance sheet"
 msgstr "Yoklama listesi için üye seçilmedi"
 
-msgid "Unable to load contribution #%id!"
-msgstr "#%id numaralı katılım yüklenemedi!"
+#. TRANS: parameter is the contribution identifier
+#, php-format
+msgid "Unable to load contribution #%1$s!"
+msgstr "#%1$s numaralı katılım yüklenemedi!"
 
 msgid "Unable to get groups list."
 msgstr "Grupların listeleri alınamadı."
@@ -1385,8 +1426,11 @@ msgstr "PDF modelleri başarıyla yeniden başlatıldı."
 msgid "An error occurred reinitializing PDF models :("
 msgstr "PDF modelleri yeniden başlatılırken hata meydana geldi :("
 
-msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr "Oturum açma bilgileri ve parolalar başarıyla dolduruldu (%i işlendi)."
+#. TRANS: parameter is the number of processed members
+#, php-format
+msgid "Logins and passwords have been successfully filled (%1$s processed)."
+msgstr ""
+"Oturum açma bilgileri ve parolalar başarıyla dolduruldu (%1$s işlendi)."
 
 #, fuzzy
 msgid "An error occurred filling empty logins and passwords :("
@@ -1514,12 +1558,15 @@ msgstr "Kimlik doğrulama başarısız"
 msgid "Log off"
 msgstr "Çıkış yap"
 
+#. TRANS: parameter is the login
 #, php-format
-msgid "Impersonating as %login"
-msgstr "%login olarak taklit ediliyor"
+msgid "Impersonating as %1$s"
+msgstr "%1$s olarak taklit ediliyor"
 
-msgid "Unable to impersonate as %id"
-msgstr "%id kimliği taklit edilemiyor"
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "Unable to impersonate as %1$s"
+msgstr "%1$s kimliği taklit edilemiyor"
 
 msgid "Attempt to unimpersonate from a non impersonated session"
 msgstr ""
@@ -1599,17 +1646,21 @@ msgstr ""
 msgid "Labels has been successfully translated!"
 msgstr ""
 
-msgid "Table %table is empty, and has not been exported."
+#. TRANS: parameter is the table name
+#, php-format
+msgid "Table %1$s is empty, and has not been exported."
 msgstr ""
 
+#. TRANS: parameter is the export name
 #, php-format
 msgid ""
-"Export file could not be write on disk for '%export'. Make sure web server "
-"can write in the exports directory."
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
 msgstr ""
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "An error occurred running parameted export '%export'."
+msgid "An error occurred running parameted export '%1$s'."
 msgstr ""
 
 msgid "An error occurred importing the file :("
@@ -1629,12 +1680,14 @@ msgstr "Dosyanız başarıyla yüklendi!"
 msgid "Remove %1$s file %2$s"
 msgstr ""
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "'%export' file has been removed from disk."
+msgid "'%1$s' file has been removed from disk."
 msgstr ""
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "Cannot remove '%export' from disk :/"
+msgid "Cannot remove '%1$s' from disk :/"
 msgstr ""
 
 msgid "CSV import model"
@@ -1859,21 +1912,25 @@ msgstr "Gerekli durum adı eksik!"
 msgid "Status has not been added :("
 msgstr "Status türü eklenemedi :("
 
-msgid "Status #%id has not been updated"
-msgstr "Status #%id güncellenemedi"
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s has not been updated"
+msgstr "Status #%1$s güncellenemedi"
 
 msgid "Status has been successfully added!"
 msgstr "Durum başarıyla eklendi!"
 
-#, fuzzy
+#. TRANS: parameter is the status identifier
+#, fuzzy, php-format
 #| msgid "%type #%id has been successfully updated!"
-msgid "Status #%id has been successfully updated!"
-msgstr "%type #%id başarıyla güncellendi!"
+msgid "Status #%1$s has been successfully updated!"
+msgstr "%type #%1$s başarıyla güncellendi!"
 
-#, fuzzy
+#. TRANS: parameter is the status label
+#, fuzzy, php-format
 #| msgid "Remove %type '%label'"
-msgid "Remove status '%label'"
-msgstr "%type türündeki '%label' başlığını çıkar"
+msgid "Remove status '%1$s'"
+msgstr "%type türündeki '%1$s' başlığını çıkar"
 
 #, fuzzy
 #| msgid "Download document"
@@ -1929,8 +1986,10 @@ msgstr "#%1$s postasını kaldır"
 msgid "Mailing preview"
 msgstr "Posta önizlemesi"
 
-msgid "Unable to load transaction #%id!"
-msgstr "#%id no'lu ödeme yüklenemedi!"
+#. TRANS: parameter is the transaction identifier
+#, php-format
+msgid "Unable to load transaction #%1$s!"
+msgstr "#%1$s no'lu ödeme yüklenemedi!"
 
 msgid "Transaction"
 msgstr "İşlem"
@@ -1967,17 +2026,23 @@ msgstr "Zorunlu olan katkı türü adı eksik!"
 msgid "Contribution type has not been added :("
 msgstr "Katkı türü eklenemedi :("
 
-msgid "Contribution type #%id has not been updated"
-msgstr "Katkı türü #%id güncellenemedi"
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has not been updated"
+msgstr "Katkı türü #%1$s güncellenemedi"
 
 msgid "Contribution type has been successfully added!"
 msgstr "Katkı türü başarıyla eklendi!"
 
-msgid "Contribution type #%id has been successfully updated!"
-msgstr "#%id başarıyla güncellendi!"
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has been successfully updated!"
+msgstr "#%1$s başarıyla güncellendi!"
 
-msgid "Remove contribution type '%label'"
-msgstr "type türündeki '%label' başlığını çıkar"
+#. TRANS: parameter is the contribution type label
+#, php-format
+msgid "Remove contribution type '%1$s'"
+msgstr "type türündeki '%1$s' başlığını çıkar"
 
 msgid "Payment type"
 msgstr ""
@@ -2087,8 +2152,10 @@ msgstr "%1$s üyeyi çıkar"
 msgid "You are about to remove %1$s members."
 msgstr "%1$s üyeyi çıkarmak üzeresiniz."
 
-msgid "No member #%id."
-msgstr "Üye numarası #%id bulunamadı."
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "No member #%1$s."
+msgstr "Üye numarası #%1$s bulunamadı."
 
 msgid "- ERROR -"
 msgstr ""
@@ -2380,7 +2447,9 @@ msgstr ""
 msgid "Unauthorized"
 msgstr ""
 
-msgid "Unknown ACL rule '%acl'!"
+#. TRANS: parameter is the ACL rule name
+#, php-format
+msgid "Unknown ACL rule '%1$s'!"
 msgstr ""
 
 #, php-format
@@ -2456,7 +2525,9 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-msgid "Scheduled payments deleted (%list)"
+#. TRANS: parameter is the list of deleted scheduled payments
+#, php-format
+msgid "Scheduled payments deleted (%1$s)"
 msgstr ""
 
 msgid "Member Picture deleted"
@@ -2468,10 +2539,14 @@ msgstr ""
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
-msgid "Searches deleted (%list)"
+#. TRANS: parameter is the list of deleted searches
+#, php-format
+msgid "Searches deleted (%1$s)"
 msgstr ""
 
-msgid "Contributions deleted (%list)"
+#. TRANS: parameter is the list of deleted contributions
+#, php-format
+msgid "Contributions deleted (%1$s)"
 msgstr ""
 
 msgid "Y"
@@ -3051,27 +3126,33 @@ msgstr ""
 msgid "Association"
 msgstr ""
 
-msgid "Unable to create main datadir in %path!"
+#. TRANS: parameter is the path
+#, php-format
+msgid "Unable to create main datadir in %1$s!"
 msgstr ""
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Unable to create datadir in %dir!"
+msgid "Unable to create datadir in %1$s!"
 msgstr ""
 
 #, php-format
 msgid "File %1$s has not been moved :-/"
 msgstr ""
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir has been moved!"
+msgid "Directory %1$s has been moved!"
 msgstr ""
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir has not been moved :("
+msgid "Directory %1$s has not been moved :("
 msgstr ""
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir is not in its original path and will not be moved."
+msgid "Directory %1$s is not in its original path and will not be moved."
 msgstr ""
 
 #, php-format
@@ -3348,7 +3429,9 @@ msgstr ""
 msgid "Your current Galette version is..."
 msgstr ""
 
-msgid "older than %version"
+#. TRANS: parameter is the version
+#, php-format
+msgid "older than %1$s"
 msgstr ""
 
 msgid "comprised between"
@@ -3931,8 +4014,9 @@ msgstr ""
 msgid "Priority:"
 msgstr ""
 
+#, php-format
 msgid ""
-"Note: members with a status priority lower than %priority are staff members."
+"Note: members with a status priority lower than %1$s are staff members."
 msgstr ""
 
 msgid "Originator"
@@ -3962,10 +4046,12 @@ msgstr ""
 msgid "Show only '%1$s' transactions"
 msgstr ""
 
-msgid "Edit transaction #%id"
+#, php-format
+msgid "Edit transaction #%1$s"
 msgstr ""
 
-msgid "Remove transaction #%id"
+#, php-format
+msgid "Remove transaction #%1$s"
 msgstr ""
 
 msgid "no transaction"
@@ -4661,7 +4747,7 @@ msgstr ""
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
-"parameter if the current page URL is not:<br/>%galette_url"
+"parameter if the current page URL is not:<br/>%1$s"
 msgstr ""
 
 msgid "Post new contribution script URI"
@@ -4934,7 +5020,7 @@ msgid "Card height from 40 to 55mm:"
 msgstr ""
 
 #, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
+msgid "There is not yet any dynamic field configured for '%1$s'"
 msgstr ""
 
 #, fuzzy
@@ -5466,7 +5552,8 @@ msgstr ""
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
 
-msgid "Contribution amount should not be greater than %max"
+#, php-format
+msgid "Contribution amount should not be greater than %1$s"
 msgstr ""
 
 #, fuzzy
@@ -5723,9 +5810,10 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
+#, php-format
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %ratio"
+"final ratio defined in the settings : %1$s"
 msgstr ""
 
 msgid "Additionnal fields:"
@@ -5761,7 +5849,8 @@ msgid ""
 "setting will have no effect in that case."
 msgstr ""
 
-msgid "(at least %i characters)"
+#, php-format
+msgid "(at least %1$s characters)"
 msgstr ""
 
 msgid "Ajax page content"
@@ -5917,8 +6006,9 @@ msgstr ""
 msgid "Disable social networks on member form"
 msgstr ""
 
-msgid "Remove %type"
-msgstr "%type tipini sil"
+#, php-format
+msgid "Remove %1$s"
+msgstr "%1$s tipini sil"
 
 msgid "Add new social network"
 msgstr ""
@@ -6061,7 +6151,8 @@ msgstr ""
 msgid "Manager(s)"
 msgstr ""
 
-msgid "%membercount members"
+#, php-format
+msgid "%1$s members"
 msgstr ""
 
 msgid "no group"

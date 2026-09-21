@@ -1292,10 +1292,10 @@ class Adherent implements AccessManagementInterface
 
                         $years = (int)$diff->format('%R%Y');
                         if ($years <= -200) {
-                            $this->errors[] = str_replace(
-                                '%years',
-                                (string)($years * -1),
-                                _T('- Members must be less than 200 years old (currently %years)!')
+                            $this->errors[] = sprintf(
+                                //TRANS: parameter is the computed age
+                                _T('- Members must be less than 200 years old (currently %1$s)!'),
+                                ($years * -1)
                             );
                         }
                     }
@@ -1361,10 +1361,10 @@ class Adherent implements AccessManagementInterface
                 $this->$prop = $value;
                 /** FIXME: add a preference for login length */
                 if (strlen((string)$value) < 2) {
-                    $this->errors[] = str_replace(
-                        '%i',
-                        '2',
-                        _T("- The username must be composed of at least %i characters!")
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the minimum number of characters
+                        _T('- The username must be composed of at least %1$s characters!'),
+                        '2'
                     );
                 } elseif (str_contains((string)$value, '@')) {
                     //check if login does not contain the @ character
@@ -1441,10 +1441,10 @@ class Adherent implements AccessManagementInterface
                     $results = $this->zdb->execute($select);
                     $result = $results->current();
                     if (!$result) {
-                        $this->errors[] = str_replace(
-                            '%id',
-                            (string)$value,
-                            _T("Status #%id does not exists in database.")
+                        $this->errors[] = sprintf(
+                            //TRANS: parameter is the status identifier
+                            _T('Status #%1$s does not exists in database.'),
+                            $value
                         );
                         break;
                     }
@@ -1478,7 +1478,11 @@ class Adherent implements AccessManagementInterface
                 if (in_array($value, [self::NC, self::MAN, self::WOMAN])) {
                     $this->$prop = (int)$value;
                 } else {
-                    $this->errors[] = _T("Gender %gender does not exists!");
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the gender
+                        _T('Gender %1$s does not exists!'),
+                        $value
+                    );
                 }
                 break;
             case 'parent_id':
@@ -2038,10 +2042,10 @@ class Adherent implements AccessManagementInterface
             return '';
         }
 
-        return str_replace(
-            '%age',
-            (string)$d->diff(new DateTime())->y,
-            _T(' (%age years old)')
+        return sprintf(
+            //TRANS: parameter is the age
+            _T(' (%1$s years old)'),
+            $d->diff(new DateTime())->y
         );
     }
 

@@ -51,10 +51,10 @@ class UpgradeTo08 extends AbstractUpdater
             $created = @mkdir(GALETTE_ROOT . 'data'); //@phpstan-ignore theCodingMachineSafe.function
             if (!$created) {
                 $this->addError(
-                    str_replace(
-                        '%path',
-                        GALETTE_ROOT . 'data',
-                        _T("Unable to create main datadir in %path!")
+                    sprintf(
+                        //TRANS: parameter is the path
+                        _T('Unable to create main datadir in %1$s!'),
+                        GALETTE_ROOT . 'data'
                     )
                 );
                 return false;
@@ -67,10 +67,10 @@ class UpgradeTo08 extends AbstractUpdater
                 $created = @mkdir($path); //@phpstan-ignore theCodingMachineSafe.function
                 if (!$created) {
                     $this->addError(
-                        str_replace(
-                            '%dir',
-                            $path,
-                            _T("Unable to create datadir in %dir!")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Unable to create datadir in %1$s!'),
+                            $path
                         )
                     );
                 }
@@ -155,10 +155,10 @@ class UpgradeTo08 extends AbstractUpdater
 
                 if ($moved) {
                     $this->addReportEntry(
-                        str_replace(
-                            '%dir',
-                            $dirname,
-                            _T("Directory %dir has been moved!")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Directory %1$s has been moved!'),
+                            $dirname
                         ),
                         self::REPORT_SUCCESS
                     );
@@ -167,19 +167,19 @@ class UpgradeTo08 extends AbstractUpdater
                     //maybe it would be done by the user
                 } else {
                     $this->addError(
-                        str_replace(
-                            '%dir',
-                            $dirname,
-                            _T("Directory %dir has not been moved :(")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Directory %1$s has not been moved :('),
+                            $dirname
                         )
                     );
                 }
             } else {
                 $this->addReportEntry(
-                    str_replace(
-                        '%dir',
-                        $dirname,
-                        _T("Directory %dir is not in its original path and will not be moved.")
+                    sprintf(
+                        //TRANS: parameter is the directory
+                        _T('Directory %1$s is not in its original path and will not be moved.'),
+                        $dirname
                     ),
                     self::REPORT_WARNING
                 );

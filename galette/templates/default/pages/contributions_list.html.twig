@@ -294,7 +294,7 @@
                         >
                             <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
                             <span class="visually-hidden">
-                                {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
+                                {{ _T('Edit transaction #%1$s')|format(contribution.transaction.id) }}
                                 {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
                         </a>
@@ -323,7 +323,7 @@
                                 <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
                                 <span class="visually-hidden">
                                     {% if preferences.pref_bool_groupsmanagers_create_transactions %}
-                                        {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
+                                        {{ _T('Edit transaction #%1$s')|format(contribution.transaction.id) }}
                                     {% else %}
                                         {{ _T("Is part of a transaction") }}
                                     {% endif %}

@@ -39,21 +39,28 @@ msgstr ""
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "புலம் %1$s தேவை, ஆனால் வரிசை %2$s காணவில்லை"
 
+#. TRANS: parameter is the status
 #, php-format
-msgid "Status %status does not exists!"
-msgstr "நிலை %status இல்லை!"
+msgid "Status %1$s does not exists!"
+msgstr "நிலை %1$s இல்லை!"
 
-msgid "Title %title does not exists!"
-msgstr "தலைப்பு %title இல்லை!"
+#. TRANS: parameter is the title
+#, php-format
+msgid "Title %1$s does not exists!"
+msgstr "தலைப்பு %1$s இல்லை!"
 
 msgid "from another member in import"
 msgstr "இறக்குமதியில் உள்ள மற்றொரு உறுப்பினரிடமிருந்து"
 
-msgid "from member %id_adh"
-msgstr "உறுப்பினரிடமிருந்து %id_adh"
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "from member %1$s"
+msgstr "உறுப்பினரிடமிருந்து %1$s"
 
-msgid "Email address %address is already used! (%extra)"
-msgstr "மின்னஞ்சல் முகவரி %address ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%extra)"
+#. TRANS: first parameter is the email address, second tells where it is already used
+#, php-format
+msgid "Email address %1$s is already used! (%2$s)"
+msgstr "மின்னஞ்சல் முகவரி %1$s ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%2$s)"
 
 #, php-format
 msgid "Unknown lang (%1$s)"
@@ -203,13 +210,15 @@ msgstr "கோப்பு பெயர் தவறானது, அதில�
 msgid "File extension is not allowed, only %s files are."
 msgstr "கோப்பு நீட்டிப்பு அனுமதிக்கப்படவில்லை, %s கோப்புகள் மட்டுமே."
 
+#. TRANS: parameter is the maximum allowed size, in Ko
 #, php-format
-msgid "File is too big. Maximum allowed size is %dKo"
-msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %dko ஆகும்"
+msgid "File is too big. Maximum allowed size is %1$sKo"
+msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %1$sko ஆகும்"
 
+#. TRANS: parameter is the minimum size, in pixels
 #, php-format
-msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr "படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %sபுள்ளி ஆகும்"
+msgid "Image is too small. The minimum image side size allowed is %1$spx"
+msgstr "படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %1$sபுள்ளி ஆகும்"
 
 msgid "Mime-Type not allowed"
 msgstr "மைம்-வகை அனுமதிக்கப்படவில்லை"
@@ -269,9 +278,10 @@ msgstr "சரி"
 msgid "Delete mailing entries"
 msgstr "அஞ்சல் உள்ளீடுகளை நீக்கு"
 
+#. TRANS: parameter is the logged in user name
 #, php-format
-msgid "Logged in as:<br/>%login"
-msgstr "உள்நுழைந்தது: <br>%login"
+msgid "Logged in as:<br/>%1$s"
+msgstr "உள்நுழைந்தது: <br>%1$s"
 
 msgid "No such module."
 msgstr "அத்தகைய தொகுதி இல்லை."
@@ -321,11 +331,15 @@ msgstr "முடிவு!"
 msgid "Database type unknown"
 msgstr "தரவுத்தள வகை தெரியவில்லை"
 
-msgid "%version script has been successfully executed :)"
-msgstr "%version ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "%1$s script has been successfully executed :)"
+msgstr "%1$s ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
 
-msgid "Unable to run %version update script :("
-msgstr "%version புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "Unable to run %1$s update script :("
+msgstr "%1$s புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
 
 msgid "Write configuration file"
 msgstr "உள்ளமைவு கோப்பை எழுதுங்கள்"
@@ -333,8 +347,10 @@ msgstr "உள்ளமைவு கோப்பை எழுதுங்கள�
 msgid "Config file already exists and is up to date"
 msgstr "கட்டமைப்பு கோப்பு ஏற்கனவே உள்ளது மற்றும் புதுப்பித்த நிலையில் உள்ளது"
 
-msgid "Unable to create configuration file (%path)"
-msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%path)"
+#. TRANS: parameter is the file path
+#, php-format
+msgid "Unable to create configuration file (%1$s)"
+msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%1$s)"
 
 msgid "Settings"
 msgstr "அமைப்புகள்"
@@ -779,17 +795,25 @@ msgstr "பொது பக்கங்கள்"
 msgid "Transactions"
 msgstr "பரிவர்த்தனைகள்"
 
-msgid "%membername: edit information"
-msgstr "%membername: தகவலைத் திருத்தவும்"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: தகவலைத் திருத்தவும்"
 
-msgid "%membername: contributions"
-msgstr "%membername: பங்களிப்புகள்"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: பங்களிப்புகள்"
 
-msgid "%membername: remove from database"
-msgstr "%membername: தரவுத்தளத்திலிருந்து அகற்று"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: தரவுத்தளத்திலிருந்து அகற்று"
 
-msgid "Log in as %membername"
-msgstr "%membername உள்நுழைக"
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
+msgstr "%1$s உள்நுழைக"
 
 msgid "Mass change"
 msgstr "வெகுசன மாற்றம்"
@@ -835,8 +859,10 @@ msgstr "%1$s %2$s எழுத்துகளை விட குறைவாக
 msgid "%1$s should not be empty!"
 msgstr "%1$s காலியாக இருக்கக்கூடாது!"
 
-msgid "Unknown type %type!"
-msgstr "தெரியாத வகை %வகை!"
+#. TRANS: parameter is the PDF model type
+#, php-format
+msgid "Unknown type %1$s!"
+msgstr "தெரியாத வகை %1$s!"
 
 msgid "Title"
 msgstr "தலைப்பு"
@@ -1043,8 +1069,10 @@ msgstr "உங்களுக்கு சொந்தமான ஒரு கு
 msgid "- Birthdate must be set in the past!"
 msgstr "- பிறந்த தேதி கடந்த காலத்தில் அமைக்கப்பட வேண்டும்!"
 
-msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %years)!"
+#. TRANS: parameter is the computed age
+#, php-format
+msgid "- Members must be less than 200 years old (currently %1$s)!"
+msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %1$s)!"
 
 #. TRANS %1$s is the expected dat format, %2$s the field label
 #. TRANS: %1$s date format, %2$s is the field name
@@ -1062,8 +1090,10 @@ msgstr "- இந்த மின்னஞ்சல் முகவரி ஏற�
 msgid "An error has occurred while looking if login already exists."
 msgstr "உள்நுழைவு ஏற்கனவே இருக்கிறதா என்று பார்க்கும்போது பிழை ஏற்பட்டது."
 
-msgid "- The username must be composed of at least %i characters!"
-msgstr "- பயனர்பெயர் குறைந்தது %i எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
+#. TRANS: parameter is the minimum number of characters
+#, php-format
+msgid "- The username must be composed of at least %1$s characters!"
+msgstr "- பயனர்பெயர் குறைந்தது %1$s எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
 
 msgid "- The username cannot contain the @ character"
 msgstr "- பயனர்பெயரில் @ எழுத்து இருக்க முடியாது"
@@ -1077,12 +1107,15 @@ msgstr "- கடவுச்சொற்கள் பொருந்தவில
 msgid "Password misrepeated: "
 msgstr "கடவுச்சொல் தவறாகப் பயன்படுத்தப்பட்டது: "
 
-msgid "Status #%id does not exists in database."
-msgstr "நிலை #%id தரவுத்தளத்தில் இல்லை."
-
+#. TRANS: parameter is the status identifier
 #, php-format
-msgid "Gender %gender does not exists!"
-msgstr "பாலினம் %gender இல்லை!"
+msgid "Status #%1$s does not exists in database."
+msgstr "நிலை #%1$s தரவுத்தளத்தில் இல்லை."
+
+#. TRANS: parameter is the gender
+#, php-format
+msgid "Gender %1$s does not exists!"
+msgstr "பாலினம் %1$s இல்லை!"
 
 msgid "A member cannot be its own parent!"
 msgstr "ஒரு உறுப்பினர் அதன் சொந்த பெற்றோராக இருக்க முடியாது!"
@@ -1105,8 +1138,10 @@ msgstr "செயலில்"
 msgid "Inactive"
 msgstr "செயலற்றது"
 
-msgid " (%age years old)"
-msgstr " (% அகவை ஆண்டுகள்)"
+#. TRANS: parameter is the age
+#, php-format
+msgid " (%1$s years old)"
+msgstr " (%1$s ஆண்டுகள்)"
 
 #. TRANS: first parameter is member name, second his id
 #, php-format
@@ -1131,9 +1166,10 @@ msgstr "வாக்குகள் முடிவுகள்"
 msgid "Form is mandatory!"
 msgstr "படிவம் கட்டாயமாகும்!"
 
+#. TRANS: parameter is the form name
 #, php-format
-msgid "Unknown form %form!"
-msgstr "அறியப்படாத வடிவம் %form!"
+msgid "Unknown form %1$s!"
+msgstr "அறியப்படாத வடிவம் %1$s!"
 
 msgid "Name cannot be empty!"
 msgstr "பெயர் காலியாக இருக்க முடியாது!"
@@ -1215,8 +1251,10 @@ msgstr "தாமதமாக உறுப்பினர் மின்னஞ�
 msgid "A problem happened while sending impending membership email"
 msgstr "வரவிருக்கும் உறுப்பினர் மின்னஞ்சலை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
 
-msgid "Unable to send %membership reminder (no email address)."
-msgstr "%membership நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
+#. TRANS: parameter is the membership type
+#, php-format
+msgid "Unable to send %1$s reminder (no email address)."
+msgstr "%1$s நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
 
 #. TRANS: first parameter is name, second the id, this days interval
 #, php-format
@@ -1312,8 +1350,10 @@ msgstr "வருகை தாள் உள்ளமைவு"
 msgid "No member selected to generate attendance sheet"
 msgstr "வருகை தாளை உருவாக்க எந்த உறுப்பினரும் தேர்ந்தெடுக்கப்படவில்லை"
 
-msgid "Unable to load contribution #%id!"
-msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%id!"
+#. TRANS: parameter is the contribution identifier
+#, php-format
+msgid "Unable to load contribution #%1$s!"
+msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%1$s!"
 
 msgid "Unable to get groups list."
 msgstr "குழுக்கள் பட்டியலைப் பெற முடியவில்லை."
@@ -1348,8 +1388,11 @@ msgstr "PDF மாதிரிகள் வெற்றிகரமாக மற
 msgid "An error occurred reinitializing PDF models :("
 msgstr "பிழையில் PDF மாதிரிகளை மறுசீரமைத்தல் :("
 
-msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr "உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%i செயலாக்கினேன்)."
+#. TRANS: parameter is the number of processed members
+#, php-format
+msgid "Logins and passwords have been successfully filled (%1$s processed)."
+msgstr ""
+"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%1$s செயலாக்கினேன்)."
 
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை நிரப்புவதில் பிழை ஏற்பட்டது :("
@@ -1472,12 +1515,15 @@ msgstr "ஏற்பு தோல்வியடைந்தது"
 msgid "Log off"
 msgstr "உள்நுழைக"
 
+#. TRANS: parameter is the login
 #, php-format
-msgid "Impersonating as %login"
-msgstr "%login ஆள்மாறாட்டம் செய்தல்"
+msgid "Impersonating as %1$s"
+msgstr "%1$s ஆள்மாறாட்டம் செய்தல்"
 
-msgid "Unable to impersonate as %id"
-msgstr "%idயாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "Unable to impersonate as %1$s"
+msgstr "%1$sயாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
 
 msgid "Attempt to unimpersonate from a non impersonated session"
 msgstr ""
@@ -1557,20 +1603,24 @@ msgstr "மொழி `%2$s` லேபிள் `%1$s` சேமிக்கு�
 msgid "Labels has been successfully translated!"
 msgstr "சிட்டை வெற்றிகரமாக மொழிபெயர்க்கப்பட்டுள்ளது!"
 
-msgid "Table %table is empty, and has not been exported."
-msgstr "அட்டவணை %table காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
+#. TRANS: parameter is the table name
+#, php-format
+msgid "Table %1$s is empty, and has not been exported."
+msgstr "அட்டவணை %1$s காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
 
+#. TRANS: parameter is the export name
 #, php-format
 msgid ""
-"Export file could not be write on disk for '%export'. Make sure web server "
-"can write in the exports directory."
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
 msgstr ""
-"ஏற்றுமதி கோப்பை '%export' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி "
-"கோப்பகத்தில் எழுத முடியும் என்பதை உறுதிப்படுத்தவும்."
+"ஏற்றுமதி கோப்பை '%1$s' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி கோப்பகத்தில் "
+"எழுத முடியும் என்பதை உறுதிப்படுத்தவும்."
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "An error occurred running parameted export '%export'."
-msgstr "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது."
+msgid "An error occurred running parameted export '%1$s'."
+msgstr "அளவுரு ஏற்றுமதி '%1$s' இயங்கும் பிழை ஏற்பட்டது."
 
 msgid "An error occurred importing the file :("
 msgstr "கோப்பை இறக்குமதி செய்வதில் பிழை ஏற்பட்டது :("
@@ -1589,13 +1639,15 @@ msgstr "உங்கள் கோப்பு வெற்றிகரமாக 
 msgid "Remove %1$s file %2$s"
 msgstr "%1$s கோப்பு %2$s ஐ அகற்று"
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "'%export' file has been removed from disk."
-msgstr "'%export' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
+msgid "'%1$s' file has been removed from disk."
+msgstr "'%1$s' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
 
+#. TRANS: parameter is the export name
 #, php-format
-msgid "Cannot remove '%export' from disk :/"
-msgstr "வட்டில் இருந்து '%export' அகற்ற முடியாது:/"
+msgid "Cannot remove '%1$s' from disk :/"
+msgstr "வட்டில் இருந்து '%1$s' அகற்ற முடியாது:/"
 
 msgid "CSV import model"
 msgstr "சி.எச்.வி இறக்குமதி மாதிரி"
@@ -1814,17 +1866,23 @@ msgstr "தேவையான நிலை பெயரைக் காணவி
 msgid "Status has not been added :("
 msgstr "நிலை சேர்க்கப்படவில்லை :("
 
-msgid "Status #%id has not been updated"
-msgstr "நிலை #%id புதுப்பிக்கப்படவில்லை"
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s has not been updated"
+msgstr "நிலை #%1$s புதுப்பிக்கப்படவில்லை"
 
 msgid "Status has been successfully added!"
 msgstr "நிலை வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது!"
 
-msgid "Status #%id has been successfully updated!"
-msgstr "நிலை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s has been successfully updated!"
+msgstr "நிலை #%1$s வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
-msgid "Remove status '%label'"
-msgstr "நிலையை அகற்று '%label'"
+#. TRANS: parameter is the status label
+#, php-format
+msgid "Remove status '%1$s'"
+msgstr "நிலையை அகற்று '%1$s'"
 
 msgid "New document"
 msgstr "புதிய ஆவணம்"
@@ -1869,8 +1927,10 @@ msgstr "அஞ்சல் #%1$s ஐ அகற்று"
 msgid "Mailing preview"
 msgstr "அஞ்சல் முன்னோட்டம்"
 
-msgid "Unable to load transaction #%id!"
-msgstr "பரிவர்த்தனை #%idஐ ஏற்ற முடியவில்லை!"
+#. TRANS: parameter is the transaction identifier
+#, php-format
+msgid "Unable to load transaction #%1$s!"
+msgstr "பரிவர்த்தனை #%1$sஐ ஏற்ற முடியவில்லை!"
 
 msgid "Transaction"
 msgstr "பரிவர்த்தனை"
@@ -1905,17 +1965,23 @@ msgstr "தேவையான பங்களிப்பு வகை பெய
 msgid "Contribution type has not been added :("
 msgstr "பங்களிப்பு வகை சேர்க்கப்படவில்லை :("
 
-msgid "Contribution type #%id has not been updated"
-msgstr "பங்களிப்பு வகை #%id புதுப்பிக்கப்படவில்லை"
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has not been updated"
+msgstr "பங்களிப்பு வகை #%1$s புதுப்பிக்கப்படவில்லை"
 
 msgid "Contribution type has been successfully added!"
 msgstr "பங்களிப்பு வகை வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது!"
 
-msgid "Contribution type #%id has been successfully updated!"
-msgstr "பங்களிப்பு வகை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has been successfully updated!"
+msgstr "பங்களிப்பு வகை #%1$s வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
-msgid "Remove contribution type '%label'"
-msgstr "பங்களிப்பு வகை '%label' வகையை அகற்று"
+#. TRANS: parameter is the contribution type label
+#, php-format
+msgid "Remove contribution type '%1$s'"
+msgstr "பங்களிப்பு வகை '%1$s' வகையை அகற்று"
 
 msgid "Payment type"
 msgstr "கட்டண வகை"
@@ -2019,8 +2085,10 @@ msgstr "உறுப்பினர் %1$s ஐ அகற்று"
 msgid "You are about to remove %1$s members."
 msgstr "நீங்கள் %1$s உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
 
-msgid "No member #%id."
-msgstr "உறுப்பினர் #%id இல்லை."
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "No member #%1$s."
+msgstr "உறுப்பினர் #%1$s இல்லை."
 
 msgid "- ERROR -"
 msgstr "- பிழை -"
@@ -2313,8 +2381,10 @@ msgstr ""
 msgid "Unauthorized"
 msgstr "அங்கீகரிக்கப்படாதது"
 
-msgid "Unknown ACL rule '%acl'!"
-msgstr "அறியப்படாத ACL விதி '%ACL'!"
+#. TRANS: parameter is the ACL rule name
+#, php-format
+msgid "Unknown ACL rule '%1$s'!"
+msgstr "அறியப்படாத ACL விதி '%1$s'!"
 
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
@@ -2389,8 +2459,10 @@ msgstr "பூலியன்"
 msgid "file"
 msgstr "கோப்பு"
 
-msgid "Scheduled payments deleted (%list)"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%list)"
+#. TRANS: parameter is the list of deleted scheduled payments
+#, php-format
+msgid "Scheduled payments deleted (%1$s)"
+msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%1$s)"
 
 msgid "Member Picture deleted"
 msgstr "உறுப்பினர் படம் நீக்கப்பட்டது"
@@ -2401,11 +2473,15 @@ msgstr "உறுப்பினர்களின் அட்டைகள், 
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "இன்னும் சார்புகளைக் கொண்ட ஒரு உறுப்பினரை அகற்ற முடியாது (அஞ்சல்கள், ...)"
 
-msgid "Searches deleted (%list)"
-msgstr "நீக்கப்பட்ட தேடல்கள் (%list)"
+#. TRANS: parameter is the list of deleted searches
+#, php-format
+msgid "Searches deleted (%1$s)"
+msgstr "நீக்கப்பட்ட தேடல்கள் (%1$s)"
 
-msgid "Contributions deleted (%list)"
-msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%list)"
+#. TRANS: parameter is the list of deleted contributions
+#, php-format
+msgid "Contributions deleted (%1$s)"
+msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%1$s)"
 
 msgid "Y"
 msgstr "ஒய்"
@@ -3030,28 +3106,34 @@ msgstr "பெறுநர்"
 msgid "Association"
 msgstr "தொடர்பு"
 
-msgid "Unable to create main datadir in %path!"
-msgstr "%பாதையில் முதன்மையான டேட்டாடரை உருவாக்க முடியவில்லை!"
-
+#. TRANS: parameter is the path
 #, php-format
-msgid "Unable to create datadir in %dir!"
-msgstr "%dir இல் டேட்டாடரை உருவாக்க முடியவில்லை!"
+msgid "Unable to create main datadir in %1$s!"
+msgstr "%1$sயில் முதன்மையான டேட்டாடரை உருவாக்க முடியவில்லை!"
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Unable to create datadir in %1$s!"
+msgstr "%1$s இல் டேட்டாடரை உருவாக்க முடியவில்லை!"
 
 #, php-format
 msgid "File %1$s has not been moved :-/"
 msgstr "%1$s கோப்பு நகர்த்தப்படவில்லை :-/"
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir has been moved!"
-msgstr "அடைவு %dir நகர்த்தப்பட்டது!"
+msgid "Directory %1$s has been moved!"
+msgstr "அடைவு %1$s நகர்த்தப்பட்டது!"
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir has not been moved :("
-msgstr "அடைவு %dir நகர்த்தப்படவில்லை :("
+msgid "Directory %1$s has not been moved :("
+msgstr "அடைவு %1$s நகர்த்தப்படவில்லை :("
 
+#. TRANS: parameter is the directory
 #, php-format
-msgid "Directory %dir is not in its original path and will not be moved."
-msgstr "அடைவு %dir அதன் அசல் பாதையில் இல்லை, நகர்த்தப்படாது."
+msgid "Directory %1$s is not in its original path and will not be moved."
+msgstr "அடைவு %1$s அதன் அசல் பாதையில் இல்லை, நகர்த்தப்படாது."
 
 #, php-format
 msgid "Choices for field %d have been migrated."
@@ -3343,8 +3425,10 @@ msgstr "உங்கள் முந்தைய பதிப்பைத் த
 msgid "Your current Galette version is..."
 msgstr "உங்கள் தற்போதைய கேலட் பதிப்பு ..."
 
-msgid "older than %version"
-msgstr "%பதிப்பை விட பழையது"
+#. TRANS: parameter is the version
+#, php-format
+msgid "older than %1$s"
+msgstr "%1$s விட பழையது"
 
 msgid "comprised between"
 msgstr "இடையில் உள்ளடக்கியது"
@@ -3909,10 +3993,11 @@ msgstr "தொடர்புடைய உறுப்பினரை வடி�
 msgid "Priority:"
 msgstr "முன்னுரிமை:"
 
+#, php-format
 msgid ""
-"Note: members with a status priority lower than %priority are staff members."
+"Note: members with a status priority lower than %1$s are staff members."
 msgstr ""
-"குறிப்பு: ஒரு நிலை முன்னுரிமையைக் கொண்ட உறுப்பினர்கள் %priority விடக் குறைவானவர்கள் "
+"குறிப்பு: ஒரு நிலை முன்னுரிமையைக் கொண்ட உறுப்பினர்கள் %1$s விடக் குறைவானவர்கள் "
 "ஊழியர்கள்."
 
 msgid "Originator"
@@ -3940,11 +4025,13 @@ msgstr "பங்களிப்புகளைக் காண்க"
 msgid "Show only '%1$s' transactions"
 msgstr "'%1$s' பரிவர்த்தனைகளை மட்டும் காட்டு"
 
-msgid "Edit transaction #%id"
-msgstr "பரிவர்த்தனை #%idயைத் திருத்தவும்"
+#, php-format
+msgid "Edit transaction #%1$s"
+msgstr "பரிவர்த்தனை #%1$sயைத் திருத்தவும்"
 
-msgid "Remove transaction #%id"
-msgstr "பரிவர்த்தனை #%idயை அகற்று"
+#, php-format
+msgid "Remove transaction #%1$s"
+msgstr "பரிவர்த்தனை #%1$sயை அகற்று"
 
 msgid "no transaction"
 msgstr "பரிவர்த்தனை இல்லை"
@@ -4659,10 +4746,10 @@ msgstr "கேலட் அடிப்படை முகவரி"
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
-"parameter if the current page URL is not:<br/>%galette_url"
+"parameter if the current page URL is not:<br/>%1$s"
 msgstr ""
-"உங்கள் கேலட் நிகழ்வுக்கு அடிப்படை முகவரி ஐ உள்ளிடவும். தற்போதைய பக்க முகவரி இல்லாவிட்டால் "
-"மட்டுமே இந்த அளவுருவை மாற்ற வேண்டும்: <br>%galette_url"
+"உங்கள் கேலட் நிகழ்வுக்கு அடிப்படை முகவரி ஐ உள்ளிடவும். தற்போதைய பக்க முகவரி "
+"இல்லாவிட்டால் மட்டுமே இந்த அளவுருவை மாற்ற வேண்டும்: <br>%1$s"
 
 msgid "Post new contribution script URI"
 msgstr "புதிய பங்களிப்பு ச்கிரிப்ட் யூரி ஐ இடுங்கள்"
@@ -4958,8 +5045,8 @@ msgid "Card height from 40 to 55mm:"
 msgstr "அட்டை உயரம் 40 முதல் 55 மிமீ வரை:"
 
 #, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "'%Formname' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
+msgid "There is not yet any dynamic field configured for '%1$s'"
+msgstr "'%1$s' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
 
 #, fuzzy
 #| msgid "New dynamic field"
@@ -5499,8 +5586,9 @@ msgstr "உறுப்பினருக்கு அறிவிக்கவ�
 msgid "Member will receive a notification by email, if he has an address."
 msgstr "உறுப்பினர் அவருக்கு முகவரி இருந்தால் மின்னஞ்சல் மூலம் அறிவிப்பைப் பெறுவார்."
 
-msgid "Contribution amount should not be greater than %max"
-msgstr "பங்களிப்பு தொகை %max விட அதிகமாக இருக்கக்கூடாது"
+#, php-format
+msgid "Contribution amount should not be greater than %1$s"
+msgstr "பங்களிப்பு தொகை %1$s விட அதிகமாக இருக்கக்கூடாது"
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளைக் காண்பிப்பதில் பிழை ஏற்பட்டது :("
@@ -5760,12 +5848,13 @@ msgstr "இடது"
 msgid "Right"
 msgstr "வலது"
 
+#, php-format
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %ratio"
+"final ratio defined in the settings : %1$s"
 msgstr ""
 "அமைப்புகளில் வரையறுக்கப்பட்ட இறுதி விகிதத்திற்கு பயிர் செய்த பின் பாதுகாக்க அசல் படத்தின் "
-"பகுதியைத் தேர்வுசெய்க: %ratio"
+"பகுதியைத் தேர்வுசெய்க: %1$s"
 
 msgid "Additionnal fields:"
 msgstr "கூடுதல் புலங்கள்:"
@@ -5805,8 +5894,9 @@ msgstr ""
 "டிராம்பினோச்கோப் பக்கம். <br> நிர்வாகிகள் பொது பக்கங்களை முடக்க முடியும் என்பதை நினைவில் "
 "கொள்க, இந்த அமைப்பு அந்த விசயத்தில் எந்த விளைவையும் ஏற்படுத்தாது."
 
-msgid "(at least %i characters)"
-msgstr "(குறைந்தது %i எழுத்துக்கள்)"
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(குறைந்தது %1$s எழுத்துக்கள்)"
 
 msgid "Ajax page content"
 msgstr "அசாக்ச் பக்க உள்ளடக்கம்"
@@ -5955,8 +6045,9 @@ msgstr "புல அகலத்தை வடிவங்களுடன் ம
 msgid "Disable social networks on member form"
 msgstr "உறுப்பினர் வடிவத்தில் சமூக வலைப்பின்னல்களை முடக்கு"
 
-msgid "Remove %type"
-msgstr "%type அகற்று"
+#, php-format
+msgid "Remove %1$s"
+msgstr "%1$s அகற்று"
 
 msgid "Add new social network"
 msgstr "புதிய சமூக வலைப்பின்னலைச் சேர்க்கவும்"
@@ -6099,8 +6190,9 @@ msgstr "உறுப்பினர்களை நிர்வகிக்க�
 msgid "Manager(s)"
 msgstr "மேலாளர் (கள்)"
 
-msgid "%membercount members"
-msgstr "%membercount உறுப்பினர்கள்"
+#, php-format
+msgid "%1$s members"
+msgstr "%1$s உறுப்பினர்கள்"
 
 msgid "no group"
 msgstr "குழு இல்லை"

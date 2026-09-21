@@ -37,26 +37,33 @@ msgstr ""
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "Field %1$s is required, but missing in row %2$s"
 
+#. TRANS: parameter is the status
 #: ../lib/Galette/IO/CsvIn.php:306
 #, php-format
-msgid "Status %status does not exists!"
-msgstr "Status %status does not exists!"
+msgid "Status %1$s does not exists!"
+msgstr "Status %1$s does not exists!"
 
+#. TRANS: parameter is the title
 #: ../lib/Galette/IO/CsvIn.php:326
-msgid "Title %title does not exists!"
-msgstr "Title %title does not exists!"
+#, php-format
+msgid "Title %1$s does not exists!"
+msgstr "Title %1$s does not exists!"
 
 #: ../lib/Galette/IO/CsvIn.php:343
 msgid "from another member in import"
 msgstr "from another member in import"
 
+#. TRANS: parameter is the member identifier
 #: ../lib/Galette/IO/CsvIn.php:343
-msgid "from member %id_adh"
-msgstr "from member %id_adh"
+#, php-format
+msgid "from member %1$s"
+msgstr "from member %1$s"
 
+#. TRANS: first parameter is the email address, second tells where it is already used
 #: ../lib/Galette/IO/CsvIn.php:349
-msgid "Email address %address is already used! (%extra)"
-msgstr "Email address %address is already used! (%extra)"
+#, php-format
+msgid "Email address %1$s is already used! (%2$s)"
+msgstr "Email address %1$s is already used! (%2$s)"
 
 #: ../lib/Galette/IO/CsvIn.php:372 ../lib/Galette/Core/I18n.php:189
 #, php-format
@@ -423,15 +430,18 @@ msgstr ""
 msgid "File extension is not allowed, only %s files are."
 msgstr "File extension is not allowed, only %s files are."
 
-#: ../lib/Galette/IO/FileTrait.php:561 ../lib/Galette/Features/Dynamics.php:249
+#. TRANS: parameter is the maximum allowed size, in Ko
+#: ../lib/Galette/IO/FileTrait.php:561
+#: ../lib/Galette/Features/Dynamics.php:249
 #, php-format
-msgid "File is too big. Maximum allowed size is %dKo"
-msgstr "File is too big. Maximum allowed size is %dKo"
+msgid "File is too big. Maximum allowed size is %1$sKo"
+msgstr "File is too big. Maximum allowed size is %1$sKo"
 
+#. TRANS: parameter is the minimum size, in pixels
 #: ../lib/Galette/IO/FileTrait.php:564
 #, php-format
-msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr "Image is too small. The minimum image side size allowed is %spx"
+msgid "Image is too small. The minimum image side size allowed is %1$spx"
+msgstr "Image is too small. The minimum image side size allowed is %1$spx"
 
 #: ../lib/Galette/IO/FileTrait.php:567
 msgid "Mime-Type not allowed"
@@ -510,10 +520,11 @@ msgstr "Ok"
 msgid "Delete mailing entries"
 msgstr "Delete mailing entries"
 
+#. TRANS: parameter is the logged in user name
 #: ../lib/Galette/Core/Authentication.php:240
 #, php-format
-msgid "Logged in as:<br/>%login"
-msgstr "Logged in as:<br/>%login"
+msgid "Logged in as:<br/>%1$s"
+msgstr "Logged in as:<br/>%1$s"
 
 #: ../lib/Galette/Core/Plugins.php:515 ../lib/Galette/Core/Plugins.php:580
 msgid "No such module."
@@ -583,13 +594,17 @@ msgstr "End!"
 msgid "Database type unknown"
 msgstr "Database type unknown"
 
+#. TRANS: parameter is the update script version
 #: ../lib/Galette/Core/Install.php:617
-msgid "%version script has been successfully executed :)"
-msgstr "%version script has been successfully executed :)"
+#, php-format
+msgid "%1$s script has been successfully executed :)"
+msgstr "%1$s script has been successfully executed :)"
 
+#. TRANS: parameter is the update script version
 #: ../lib/Galette/Core/Install.php:629
-msgid "Unable to run %version update script :("
-msgstr "Unable to run %version update script :("
+#, php-format
+msgid "Unable to run %1$s update script :("
+msgstr "Unable to run %1$s update script :("
 
 #: ../lib/Galette/Core/Install.php:971
 msgid "Write configuration file"
@@ -599,9 +614,11 @@ msgstr "Write configuration file"
 msgid "Config file already exists and is up to date"
 msgstr "Config file already exists and is up to date"
 
+#. TRANS: parameter is the file path
 #: ../lib/Galette/Core/Install.php:1021
-msgid "Unable to create configuration file (%path)"
-msgstr "Unable to create configuration file (%path)"
+#, php-format
+msgid "Unable to create configuration file (%1$s)"
+msgstr "Unable to create configuration file (%1$s)"
 
 #: ../lib/Galette/Core/Install.php:1085 ../lib/Galette/Core/Galette.php:396
 #: ../lib/Galette/Core/Galette.php:860
@@ -1257,23 +1274,31 @@ msgstr "Public pages"
 msgid "Transactions"
 msgstr "Transactions"
 
+#. TRANS: parameter is the member name
 #: ../lib/Galette/Core/Galette.php:922 ../lib/Galette/Core/Galette.php:927
-msgid "%membername: edit information"
-msgstr "%membername: edit information"
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: edit information"
 
+#. TRANS: parameter is the member name
 #: ../lib/Galette/Core/Galette.php:943 ../lib/Galette/Core/Galette.php:948
-msgid "%membername: contributions"
-msgstr "%membername: contributions"
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: contributions"
 
+#. TRANS: parameter is the member name
 #: ../lib/Galette/Core/Galette.php:964 ../lib/Galette/Core/Galette.php:969
-msgid "%membername: remove from database"
-msgstr "%membername: remove from database"
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: remove from database"
 
+#. TRANS: parameter is the member name
 #: ../lib/Galette/Core/Galette.php:988 ../lib/Galette/Core/Galette.php:993
 #: ../../tempcache/pages/members_list.html.twig:611
 #: ../../tempcache/elements/group_persons.html.twig:200
-msgid "Log in as %membername"
-msgstr "Log in as %membername"
+#, php-format
+msgid "Log in as %1$s"
+msgstr "Log in as %1$s"
 
 #: ../lib/Galette/Core/Galette.php:1088
 msgid "Mass change"
@@ -1345,9 +1370,11 @@ msgstr "%1$s should be less than %2$s characters long."
 msgid "%1$s should not be empty!"
 msgstr "%1$s should not be empty!"
 
+#. TRANS: parameter is the PDF model type
 #: ../lib/Galette/Entity/PdfModel.php:376
-msgid "Unknown type %type!"
-msgstr "Unknown type %type!"
+#, php-format
+msgid "Unknown type %1$s!"
+msgstr "Unknown type %1$s!"
 
 #: ../lib/Galette/Entity/PdfModel.php:387
 #: ../lib/Galette/Features/Replacements.php:232
@@ -1686,9 +1713,11 @@ msgstr "You have to select a group you own!"
 msgid "- Birthdate must be set in the past!"
 msgstr "- Birthdate must be set in the past!"
 
+#. TRANS: parameter is the computed age
 #: ../lib/Galette/Entity/Adherent.php:1283
-msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- Members must be less than 200 years old (currently %years)!"
+#, php-format
+msgid "- Members must be less than 200 years old (currently %1$s)!"
+msgstr "- Members must be less than 200 years old (currently %1$s)!"
 
 #. TRANS %1$s is the expected dat format, %2$s the field label
 #. TRANS: %1$s date format, %2$s is the field name
@@ -1714,9 +1743,11 @@ msgstr "- This E-Mail address is already used by another member!"
 msgid "An error has occurred while looking if login already exists."
 msgstr "An error has occurred while looking if login already exists."
 
+#. TRANS: parameter is the minimum number of characters
 #: ../lib/Galette/Entity/Adherent.php:1352
-msgid "- The username must be composed of at least %i characters!"
-msgstr "- The username must be composed of at least %i characters!"
+#, php-format
+msgid "- The username must be composed of at least %1$s characters!"
+msgstr "- The username must be composed of at least %1$s characters!"
 
 #: ../lib/Galette/Entity/Adherent.php:1356
 msgid "- The username cannot contain the @ character"
@@ -1735,14 +1766,17 @@ msgstr "- The passwords don't match!"
 msgid "Password misrepeated: "
 msgstr "Password misrepeated: "
 
+#. TRANS: parameter is the status identifier
 #: ../lib/Galette/Entity/Adherent.php:1432
-msgid "Status #%id does not exists in database."
-msgstr "Status #%id does not exists in database."
+#, php-format
+msgid "Status #%1$s does not exists in database."
+msgstr "Status #%1$s does not exists in database."
 
+#. TRANS: parameter is the gender
 #: ../lib/Galette/Entity/Adherent.php:1466
 #, php-format
-msgid "Gender %gender does not exists!"
-msgstr "Gender %gender does not exists!"
+msgid "Gender %1$s does not exists!"
+msgstr "Gender %1$s does not exists!"
 
 #: ../lib/Galette/Entity/Adherent.php:1472
 msgid "A member cannot be its own parent!"
@@ -1777,10 +1811,12 @@ msgstr "Active"
 msgid "Inactive"
 msgstr "Inactive"
 
+#. TRANS: parameter is the age
 #: ../lib/Galette/Entity/Adherent.php:2027
 #: ../../tempcache/pages/member_form.html.twig:950
-msgid " (%age years old)"
-msgstr " (%age years old)"
+#, php-format
+msgid " (%1$s years old)"
+msgstr " (%1$s years old)"
 
 #. TRANS: first parameter is member name, second his id
 #: ../lib/Galette/Entity/Adherent.php:2080
@@ -1814,10 +1850,11 @@ msgstr "Votes results"
 msgid "Form is mandatory!"
 msgstr "Form is mandatory!"
 
+#. TRANS: parameter is the form name
 #: ../lib/Galette/Entity/SavedSearch.php:322
 #, php-format
-msgid "Unknown form %form!"
-msgstr "Unknown form %form!"
+msgid "Unknown form %1$s!"
+msgstr "Unknown form %1$s!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:337
 msgid "Name cannot be empty!"
@@ -1932,9 +1969,11 @@ msgstr "A problem happened while sending late membership email"
 msgid "A problem happened while sending impending membership email"
 msgstr "A problem happened while sending impending membership email"
 
+#. TRANS: parameter is the membership type
 #: ../lib/Galette/Entity/Reminder.php:249
-msgid "Unable to send %membership reminder (no email address)."
-msgstr "Unable to send %membership reminder (no email address)."
+#, php-format
+msgid "Unable to send %1$s reminder (no email address)."
+msgstr "Unable to send %1$s reminder (no email address)."
 
 #. TRANS: first parameter is name, second the id, this days interval
 #: ../lib/Galette/Entity/Reminder.php:253
@@ -2072,11 +2111,13 @@ msgstr "Attendance sheet configuration"
 msgid "No member selected to generate attendance sheet"
 msgstr "No member selected to generate attendance sheet"
 
+#. TRANS: parameter is the contribution identifier
 #: ../lib/Galette/Controllers/PdfController.php:369
 #: ../lib/Galette/Controllers/PdfController.php:615
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:775
-msgid "Unable to load contribution #%id!"
-msgstr "Unable to load contribution #%id!"
+#, php-format
+msgid "Unable to load contribution #%1$s!"
+msgstr "Unable to load contribution #%1$s!"
 
 #: ../lib/Galette/Controllers/PdfController.php:405
 msgid "Unable to get groups list."
@@ -2122,9 +2163,11 @@ msgstr "PDF models has been successfully reinitialized."
 msgid "An error occurred reinitializing PDF models :("
 msgstr "An error occurred reinitializing PDF models :("
 
+#. TRANS: parameter is the number of processed members
 #: ../lib/Galette/Controllers/AdminToolsController.php:111
-msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr "Logins and passwords have been successfully filled (%i processed)."
+#, php-format
+msgid "Logins and passwords have been successfully filled (%1$s processed)."
+msgstr "Logins and passwords have been successfully filled (%1$s processed)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 msgid "An error occurred filling empty logins and passwords :("
@@ -2304,14 +2347,17 @@ msgstr "Authentication failed"
 msgid "Log off"
 msgstr "Log off"
 
+#. TRANS: parameter is the login
 #: ../lib/Galette/Controllers/AuthController.php:229
 #, php-format
-msgid "Impersonating as %login"
-msgstr "Impersonating as %login"
+msgid "Impersonating as %1$s"
+msgstr "Impersonating as %1$s"
 
+#. TRANS: parameter is the member identifier
 #: ../lib/Galette/Controllers/AuthController.php:241
-msgid "Unable to impersonate as %id"
-msgstr "Unable to impersonate as %id"
+#, php-format
+msgid "Unable to impersonate as %1$s"
+msgstr "Unable to impersonate as %1$s"
 
 #: ../lib/Galette/Controllers/AuthController.php:272
 msgid "Attempt to unimpersonate from a non impersonated session"
@@ -2416,23 +2462,27 @@ msgstr "An error occurred saving label `%1$s` for language `%2$s`"
 msgid "Labels has been successfully translated!"
 msgstr "Labels has been successfully translated!"
 
+#. TRANS: parameter is the table name
 #: ../lib/Galette/Controllers/CsvController.php:164
-msgid "Table %table is empty, and has not been exported."
-msgstr "Table %table is empty, and has not been exported."
+#, php-format
+msgid "Table %1$s is empty, and has not been exported."
+msgstr "Table %1$s is empty, and has not been exported."
 
+#. TRANS: parameter is the export name
 #: ../lib/Galette/Controllers/CsvController.php:182
 #, php-format
 msgid ""
-"Export file could not be write on disk for '%export'. Make sure web server "
-"can write in the exports directory."
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
 msgstr ""
-"Export file could not be write on disk for '%export'. Make sure web server "
-"can write in the exports directory."
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
 
+#. TRANS: parameter is the export name
 #: ../lib/Galette/Controllers/CsvController.php:192
 #, php-format
-msgid "An error occurred running parameted export '%export'."
-msgstr "An error occurred running parameted export '%export'."
+msgid "An error occurred running parameted export '%1$s'."
+msgstr "An error occurred running parameted export '%1$s'."
 
 #: ../lib/Galette/Controllers/CsvController.php:292
 msgid "An error occurred importing the file :("
@@ -2456,15 +2506,17 @@ msgstr "Your file has been successfully uploaded!"
 msgid "Remove %1$s file %2$s"
 msgstr "Remove %1$s file %2$s"
 
+#. TRANS: parameter is the export name
 #: ../lib/Galette/Controllers/CsvController.php:455
 #, php-format
-msgid "'%export' file has been removed from disk."
-msgstr "'%export' file has been removed from disk."
+msgid "'%1$s' file has been removed from disk."
+msgstr "'%1$s' file has been removed from disk."
 
+#. TRANS: parameter is the export name
 #: ../lib/Galette/Controllers/CsvController.php:464
 #, php-format
-msgid "Cannot remove '%export' from disk :/"
-msgstr "Cannot remove '%export' from disk :/"
+msgid "Cannot remove '%1$s' from disk :/"
+msgstr "Cannot remove '%1$s' from disk :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:536
 msgid "CSV import model"
@@ -2759,21 +2811,27 @@ msgstr "Missing required status name!"
 msgid "Status has not been added :("
 msgstr "Status has not been added :("
 
+#. TRANS: parameter is the status identifier
 #: ../lib/Galette/Controllers/Crud/StatusController.php:205
-msgid "Status #%id has not been updated"
-msgstr "Status #%id has not been updated"
+#, php-format
+msgid "Status #%1$s has not been updated"
+msgstr "Status #%1$s has not been updated"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:211
 msgid "Status has been successfully added!"
 msgstr "Status has been successfully added!"
 
+#. TRANS: parameter is the status identifier
 #: ../lib/Galette/Controllers/Crud/StatusController.php:211
-msgid "Status #%id has been successfully updated!"
-msgstr "Status #%id has been successfully updated!"
+#, php-format
+msgid "Status #%1$s has been successfully updated!"
+msgstr "Status #%1$s has been successfully updated!"
 
+#. TRANS: parameter is the status label
 #: ../lib/Galette/Controllers/Crud/StatusController.php:272
-msgid "Remove status '%label'"
-msgstr "Remove status '%label'"
+#, php-format
+msgid "Remove status '%1$s'"
+msgstr "Remove status '%1$s'"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:58
 msgid "New document"
@@ -2841,10 +2899,12 @@ msgstr "Remove mailing #%1$s"
 msgid "Mailing preview"
 msgstr "Mailing preview"
 
+#. TRANS: parameter is the transaction identifier
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:124
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:239
-msgid "Unable to load transaction #%id!"
-msgstr "Unable to load transaction #%id!"
+#, php-format
+msgid "Unable to load transaction #%1$s!"
+msgstr "Unable to load transaction #%1$s!"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:167
 msgid "Transaction"
@@ -2892,21 +2952,27 @@ msgstr "Missing required contribution type name!"
 msgid "Contribution type has not been added :("
 msgstr "Contribution type has not been added :("
 
+#. TRANS: parameter is the contribution type identifier
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:210
-msgid "Contribution type #%id has not been updated"
-msgstr "Contribution type #%id has not been updated"
+#, php-format
+msgid "Contribution type #%1$s has not been updated"
+msgstr "Contribution type #%1$s has not been updated"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
 msgid "Contribution type has been successfully added!"
 msgstr "Contribution type has been successfully added!"
 
+#. TRANS: parameter is the contribution type identifier
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
-msgid "Contribution type #%id has been successfully updated!"
-msgstr "Contribution type #%id has been successfully updated!"
+#, php-format
+msgid "Contribution type #%1$s has been successfully updated!"
+msgstr "Contribution type #%1$s has been successfully updated!"
 
+#. TRANS: parameter is the contribution type label
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:277
-msgid "Remove contribution type '%label'"
-msgstr "Remove contribution type '%label'"
+#, php-format
+msgid "Remove contribution type '%1$s'"
+msgstr "Remove contribution type '%1$s'"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:120
 #: ../lib/Galette/Features/Replacements.php:412
@@ -3057,9 +3123,11 @@ msgstr "Remove member %1$s"
 msgid "You are about to remove %1$s members."
 msgstr "You are about to remove %1$s members."
 
+#. TRANS: parameter is the member identifier
 #: ../lib/Galette/Controllers/Crud/MembersController.php:2078
-msgid "No member #%id."
-msgstr "No member #%id."
+#, php-format
+msgid "No member #%1$s."
+msgstr "No member #%1$s."
 
 #: ../lib/Galette/Controllers/AjaxController.php:54
 #: ../webroot/installer.php:250
@@ -3504,9 +3572,11 @@ msgstr "Please run install or upgrade procedure (check the documentation)"
 msgid "Unauthorized"
 msgstr "Unauthorized"
 
+#. TRANS: parameter is the ACL rule name
 #: ../lib/Galette/Middleware/Authenticate.php:132
-msgid "Unknown ACL rule '%acl'!"
-msgstr "Unknown ACL rule '%acl'!"
+#, php-format
+msgid "Unknown ACL rule '%1$s'!"
+msgstr "Unknown ACL rule '%1$s'!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:178
 #, php-format
@@ -3605,9 +3675,11 @@ msgstr "boolean"
 msgid "file"
 msgstr "file"
 
+#. TRANS: parameter is the list of deleted scheduled payments
 #: ../lib/Galette/Repository/ScheduledPayments.php:452
-msgid "Scheduled payments deleted (%list)"
-msgstr "Scheduled payments deleted (%list)"
+#, php-format
+msgid "Scheduled payments deleted (%1$s)"
+msgstr "Scheduled payments deleted (%1$s)"
 
 #: ../lib/Galette/Repository/Members.php:291
 msgid "Member Picture deleted"
@@ -3621,13 +3693,17 @@ msgstr "Delete members cards, transactions and dues"
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "Cannot remove a member who still have dependencies (mailings, ...)"
 
+#. TRANS: parameter is the list of deleted searches
 #: ../lib/Galette/Repository/SavedSearches.php:216
-msgid "Searches deleted (%list)"
-msgstr "Searches deleted (%list)"
+#, php-format
+msgid "Searches deleted (%1$s)"
+msgstr "Searches deleted (%1$s)"
 
+#. TRANS: parameter is the list of deleted contributions
 #: ../lib/Galette/Repository/Contributions.php:498
-msgid "Contributions deleted (%list)"
-msgstr "Contributions deleted (%list)"
+#, php-format
+msgid "Contributions deleted (%1$s)"
+msgstr "Contributions deleted (%1$s)"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:94
 #: ../lib/Galette/Helpers/DatesHelper.php:101
@@ -4463,34 +4539,40 @@ msgstr "to"
 msgid "Association"
 msgstr "Association"
 
+#. TRANS: parameter is the path
 #: ../install/scripts/upgrade-to-0.8.php:57
-msgid "Unable to create main datadir in %path!"
-msgstr "Unable to create main datadir in %path!"
+#, php-format
+msgid "Unable to create main datadir in %1$s!"
+msgstr "Unable to create main datadir in %1$s!"
 
+#. TRANS: parameter is the directory
 #: ../install/scripts/upgrade-to-0.8.php:73
 #, php-format
-msgid "Unable to create datadir in %dir!"
-msgstr "Unable to create datadir in %dir!"
+msgid "Unable to create datadir in %1$s!"
+msgstr "Unable to create datadir in %1$s!"
 
 #: ../install/scripts/upgrade-to-0.8.php:147
 #, php-format
 msgid "File %1$s has not been moved :-/"
 msgstr "File %1$s has not been moved :-/"
 
+#. TRANS: parameter is the directory
 #: ../install/scripts/upgrade-to-0.8.php:161
 #, php-format
-msgid "Directory %dir has been moved!"
-msgstr "Directory %dir has been moved!"
+msgid "Directory %1$s has been moved!"
+msgstr "Directory %1$s has been moved!"
 
+#. TRANS: parameter is the directory
 #: ../install/scripts/upgrade-to-0.8.php:173
 #, php-format
-msgid "Directory %dir has not been moved :("
-msgstr "Directory %dir has not been moved :("
+msgid "Directory %1$s has not been moved :("
+msgstr "Directory %1$s has not been moved :("
 
+#. TRANS: parameter is the directory
 #: ../install/scripts/upgrade-to-0.8.php:182
 #, php-format
-msgid "Directory %dir is not in its original path and will not be moved."
-msgstr "Directory %dir is not in its original path and will not be moved."
+msgid "Directory %1$s is not in its original path and will not be moved."
+msgstr "Directory %1$s is not in its original path and will not be moved."
 
 #: ../install/scripts/upgrade-to-1.30.php:97
 #, php-format
@@ -4923,10 +5005,12 @@ msgstr ""
 msgid "Your current Galette version is..."
 msgstr "Your current Galette version is..."
 
+#. TRANS: parameter is the version
 #: ../install/steps/db_select_version.php:90
 #: ../../tempcache/modals/plugin_initdb.html.twig:232
-msgid "older than %version"
-msgstr "older than %version"
+#, php-format
+msgid "older than %1$s"
+msgstr "older than %1$s"
 
 #: ../install/steps/db_select_version.php:97
 #: ../../tempcache/modals/plugin_initdb.html.twig:239
@@ -6075,10 +6159,11 @@ msgstr "Priority:"
 
 #: ../../tempcache/pages/status_form.html.twig:93
 #: ../../tempcache/pages/status_list.html.twig:68
+#, php-format
 msgid ""
-"Note: members with a status priority lower than %priority are staff members."
+"Note: members with a status priority lower than %1$s are staff members."
 msgstr ""
-"Note: members with a status priority lower than %priority are staff members."
+"Note: members with a status priority lower than %1$s are staff members."
 
 #: ../../tempcache/pages/transactions_list.html.twig:68
 msgid "Originator"
@@ -6117,12 +6202,14 @@ msgstr "Show only '%1$s' transactions"
 #: ../../tempcache/pages/transactions_list.html.twig:501
 #: ../../tempcache/pages/contributions_list.html.twig:606
 #: ../../tempcache/pages/contributions_list.html.twig:695
-msgid "Edit transaction #%id"
-msgstr "Edit transaction #%id"
+#, php-format
+msgid "Edit transaction #%1$s"
+msgstr "Edit transaction #%1$s"
 
 #: ../../tempcache/pages/transactions_list.html.twig:518
-msgid "Remove transaction #%id"
-msgstr "Remove transaction #%id"
+#, php-format
+msgid "Remove transaction #%1$s"
+msgstr "Remove transaction #%1$s"
 
 #: ../../tempcache/pages/transactions_list.html.twig:538
 msgid "no transaction"
@@ -7169,10 +7256,10 @@ msgstr "Galette base URL"
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
-"parameter if the current page URL is not:<br/>%galette_url"
+"parameter if the current page URL is not:<br/>%1$s"
 msgstr ""
 "Enter the base URL to your Galette instance. You should only change this "
-"parameter if the current page URL is not:<br/>%galette_url"
+"parameter if the current page URL is not:<br/>%1$s"
 
 #: ../../tempcache/pages/preferences.html.twig:1669
 msgid "Post new contribution script URI"
@@ -7560,8 +7647,8 @@ msgstr "Card height from 40 to 55mm:"
 #: ../../tempcache/pages/preferences.html.twig:2949
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:284
 #, php-format
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "There is not yet any dynamic field configured for '%formname'"
+msgid "There is not yet any dynamic field configured for '%1$s'"
+msgstr "There is not yet any dynamic field configured for '%1$s'"
 
 #: ../../tempcache/pages/preferences.html.twig:2975
 msgid "Configure dynamic fields"
@@ -8341,8 +8428,9 @@ msgid "Member will receive a notification by email, if he has an address."
 msgstr "Member will receive a notification by email, if he has an address."
 
 #: ../../tempcache/pages/contribution_form.html.twig:1013
-msgid "Contribution amount should not be greater than %max"
-msgstr "Contribution amount should not be greater than %max"
+#, php-format
+msgid "Contribution amount should not be greater than %1$s"
+msgstr "Contribution amount should not be greater than %1$s"
 
 #: ../../tempcache/pages/contribution_form.html.twig:1056
 #: ../../tempcache/pages/contribution_form.html.twig:1109
@@ -8705,12 +8793,13 @@ msgid "Right"
 msgstr "Right"
 
 #: ../../tempcache/components/forms/picture.html.twig:125
+#, php-format
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %ratio"
+"final ratio defined in the settings : %1$s"
 msgstr ""
 "Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %ratio"
+"final ratio defined in the settings : %1$s"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:68
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:54
@@ -8762,8 +8851,9 @@ msgstr ""
 "setting will have no effect in that case."
 
 #: ../../tempcache/components/form.html.twig:361
-msgid "(at least %i characters)"
-msgstr "(at least %i characters)"
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(at least %1$s characters)"
 
 #: ../../tempcache/ajax.html.twig:57
 msgid "Ajax page content"
@@ -8994,8 +9084,9 @@ msgstr "Disable social networks on member form"
 
 #: ../../tempcache/elements/edit_socials.html.twig:131
 #: ../../tempcache/elements/edit_socials.html.twig:136
-msgid "Remove %type"
-msgstr "Remove %type"
+#, php-format
+msgid "Remove %1$s"
+msgstr "Remove %1$s"
 
 #: ../../tempcache/elements/edit_socials.html.twig:158
 msgid "Add new social network"
@@ -9188,8 +9279,9 @@ msgid "Manager(s)"
 msgstr "Manager(s)"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:135
-msgid "%membercount members"
-msgstr "%membercount members"
+#, php-format
+msgid "%1$s members"
+msgstr "%1$s members"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:145
 msgid "no group"

@@ -439,7 +439,7 @@
                     if (! isNaN(_bdate.getTime())) {
                         var _today = new Date();
                         var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
-                        $('#member_age').html('{{ _T(" (%age years old)") }}'.replace(/%age/, _age))
+                        $('#member_age').html('{{ _T(' (%1$s years old)') }}'.replace(/%1\$s/, _age))
                     } else {
                         $('#member_age').html('');
                     }

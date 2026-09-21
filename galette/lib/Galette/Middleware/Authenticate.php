@@ -126,10 +126,10 @@ class Authenticate
                 break;
             default:
                 throw new RuntimeException(
-                    str_replace(
-                        '%acl',
-                        $acl,
-                        _T("Unknown ACL rule '%acl'!")
+                    sprintf(
+                        //TRANS: parameter is the ACL rule name
+                        _T('Unknown ACL rule \'%1$s\'!'),
+                        $acl
                     )
                 );
         }

@@ -207,21 +207,27 @@ class ContributionsTypesController extends CrudController
 
         if ($ret !== true) {
             $error_detected[] = $action === 'add'
-                ? _T("Contribution type has not been added :(") : _T("Contribution type #%id has not been updated");
+                ? _T("Contribution type has not been added :(")
+                : sprintf(
+                    //TRANS: parameter is the contribution type identifier
+                    _T('Contribution type #%1$s has not been updated'),
+                    $id
+                );
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editContributionType', ['id' => (string)$id]);
             }
         } else {
             $msg = $action === 'add'
-                ? _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
+                ? _T("Contribution type has been successfully added!")
+                : sprintf(
+                    //TRANS: parameter is the contribution type identifier
+                    _T('Contribution type #%1$s has been successfully updated!'),
+                    $id
+                );
         }
 
         if (count($error_detected) == 0) {
-            $success_detected[] = str_replace(
-                ['%id'],
-                [(string)$id],
-                $msg
-            );
+            $success_detected[] = $msg;
         }
 
         return $this->redirect(
@@ -271,10 +277,10 @@ class ContributionsTypesController extends CrudController
         $ctype = new ContributionsTypes($this->zdb);
         $label = $ctype->getLabel((int)$args['id']);
 
-        return str_replace(
-            ['%label'],
-            [$label],
-            _T("Remove contribution type '%label'")
+        return sprintf(
+            //TRANS: parameter is the contribution type label
+            _T('Remove contribution type \'%1$s\''),
+            $label
         );
     }
 

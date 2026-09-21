@@ -363,10 +363,10 @@ class PdfController extends AbstractController
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load contribution #%id!")
+                    sprintf(
+                        //TRANS: parameter is the contribution identifier
+                        _T('Unable to load contribution #%1$s!'),
+                        $id
                     )
                 ],
                 redirect_url: $this->routeparser->urlFor(
@@ -609,10 +609,10 @@ class PdfController extends AbstractController
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [
-                        str_replace(
-                            '%id',
-                            (string)$id,
-                            _T("Unable to load contribution #%id!")
+                        sprintf(
+                            //TRANS: parameter is the contribution identifier
+                            _T('Unable to load contribution #%1$s!'),
+                            $id
                         )
                     ],
                     redirect_url: $this->routeparser->urlFor('directlink', ['hash' => $hash])

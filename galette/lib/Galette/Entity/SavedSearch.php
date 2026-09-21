@@ -319,7 +319,11 @@ class SavedSearch
         switch ($name) {
             case 'form':
                 if (!in_array($value, $this->getKnownForms())) {
-                    $this->errors[] = str_replace('%form', $value, _T("Unknown form %form!"));
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the form name
+                        _T('Unknown form %1$s!'),
+                        $value
+                    );
                 }
                 $this->form = $value;
                 break;
