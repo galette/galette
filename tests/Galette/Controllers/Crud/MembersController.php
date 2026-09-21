@@ -2472,6 +2472,37 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_two->id), $body);
         $this->assertStringContainsString(sprintf('<input type="hidden" name="group_to_add" value="%1$s"/>', $g1->getId()), $body);
         $this->assertStringContainsString('Add to group ' . $g1->getName(), $body);
+
+        //removal from a group only, without any group to add
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_group_to_remove' => 'on',
+            'group_to_remove' => $g1->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="group_to_remove" value="%1$s"/>', $g1->getId()), $body);
+        $this->assertStringContainsString('Remove from group ' . $g1->getName(), $body);
+        $this->assertStringNotContainsString('name="group_to_add"', $body);
+
+        //no group selected in the lists
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_group_to_add' => 'on',
+            'group_to_add' => 0,
+            'mass_group_to_remove' => 'on',
+            'group_to_remove' => 0
+        ]);
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('No changes selected', $body);
     }
 
     /**
@@ -2671,6 +2702,42 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($g2->load($g2->getId()));
         $members = $g2->getMembers();
         $this->assertCount(3, $members);
+
+        //remove members from a group, without any group to add
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'group_to_remove' => $g2->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['3 members has been changed successfully!']]);
+
+        //load groups again, members are cached on the instances above
+        $reloaded_g2 = new \Galette\Entity\Group($g2->getId());
+        $this->assertCount(0, $reloaded_g2->getMembers());
+        //members are still in their other groups
+        $reloaded_g1 = new \Galette\Entity\Group($g1->getId());
+        $this->assertCount(2, $reloaded_g1->getMembers());
+
+        //no group selected in the lists, nothing to do
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'group_to_add' => 0,
+            'group_to_remove' => 0
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Nothing to do!']]);
 
         $this->login->logout();
     }

@@ -1366,7 +1366,7 @@ class MembersController extends CrudController
             }
 
             //handle groups to add
-            if (isset($post['mass_group_to_add'])) {
+            if (isset($post['mass_group_to_add']) && (int)($post['group_to_add'] ?? 0) > 0) {
                 $group = new Group((int)$post['group_to_add']);
                 $changes['group_to_add'] = [
                     'label' => _T('Add to group'),
@@ -1376,7 +1376,7 @@ class MembersController extends CrudController
             }
 
             //handle groups to remove
-            if (isset($post['mass_group_to_remove'])) {
+            if (isset($post['mass_group_to_remove']) && (int)($post['group_to_remove'] ?? 0) > 0) {
                 $group = new Group((int)$post['group_to_remove']);
                 $changes['group_to_remove'] = [
                     'label' => _T('Remove from group'),
@@ -1482,6 +1482,11 @@ class MembersController extends CrudController
                 if (!$found && ($key == 'group_to_add' || $key == 'group_to_remove')) {
                     //try to check group to add or remove
                     $post[$key] = (int)$post[$key];
+                    if ($post[$key] === 0) {
+                        //no group has been selected, nothing to do
+                        unset($post[$key]);
+                        continue;
+                    }
                     if ($this->login->isGroupManager($post[$key])) {
                         $found = true;
                     }
@@ -1563,7 +1568,10 @@ class MembersController extends CrudController
                                             !isset($post['group_to_remove'])
                                             || $group->getId() !== (int)$post['group_to_remove']
                                         )
-                                        && $group->getId() !== (int)$post['group_to_add']
+                                        && (
+                                            !isset($post['group_to_add'])
+                                            || $group->getId() !== (int)$post['group_to_add']
+                                        )
                                     ) {
                                         $groups_adh[] = $group->getId() . '|' . $group->getName();
                                     }
