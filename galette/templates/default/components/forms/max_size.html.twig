@@ -12,7 +12,7 @@
  # `icon` can be set to false where a tooltip already carries the information.
  #}
 {% include "components/forms/tip.html.twig" with {
-    tip: _T('Maximum allowed size is %1$sKo')|format(max_size),
+    tip: _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', max_size)),
     id: input_id,
     label: label ?? null,
     for: for ?? null,

@@ -154,7 +154,7 @@ class Mailing extends GaletteTestCase
 
         $message = new \ReflectionMethod($mailing, 'getErrorMessageFromCode');
         $this->assertSame(
-            'File is too big. Maximum allowed size is 42Ko',
+            'File is too big. Maximum allowed size is 42 Ko',
             $message->invoke($mailing, \Galette\Core\Mailing::FILE_TOO_BIG)
         );
     }

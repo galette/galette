@@ -217,9 +217,9 @@ msgstr ""
 msgid "File extension is not allowed, only %s files are."
 msgstr ""
 
-#. TRANS: parameter is the maximum allowed size, in Ko
+#. TRANS: parameter is the maximum allowed size, units included
 #, php-format
-msgid "File is too big. Maximum allowed size is %1$sKo"
+msgid "File is too big. Maximum allowed size is %1$s"
 msgstr ""
 
 #. TRANS: parameter is the minimum size, in pixels

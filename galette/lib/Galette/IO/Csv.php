@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Util\Filesize;
 
 use function Safe\filemtime;
 use function Safe\filesize;
@@ -88,16 +89,7 @@ abstract class Csv
             }
             $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
-            $raw_size = filesize($file);
-            if ($raw_size >= 1024 * 1024 * 1024) { // Go
-                $size = round(($raw_size / 1024) / 1024 / 1024, 2) . ' Go';
-            } elseif ($raw_size >= 1024 * 1024) { // Mo
-                $size = round(($raw_size / 1024) / 1024, 2) . ' Mo';
-            } elseif ($raw_size >= 1024) { // ko
-                $size = round(($raw_size / 1024), 2) . ' Ko';
-            } else { // octets
-                $size = $raw_size . ' octets';
-            }
+            $size = Filesize::fromBytes(filesize($file));
 
             $csv_files[] = [
                 'name'  => str_replace($this->default_directory, '', $file),

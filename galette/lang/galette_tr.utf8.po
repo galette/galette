@@ -228,10 +228,10 @@ msgstr ""
 "Dosya uzantısına izin verilmiyor, yalnızca %s uzantılı dosyalar kabul "
 "ediliyor."
 
-#. TRANS: parameter is the maximum allowed size, in Ko
+#. TRANS: parameter is the maximum allowed size, units included
 #, php-format
-msgid "File is too big. Maximum allowed size is %1$sKo"
-msgstr "Dosya çok büyük. İzin verilen maksimum boyut %1$sKB'dir"
+msgid "File is too big. Maximum allowed size is %1$s"
+msgstr "Dosya çok büyük. İzin verilen maksimum boyut %1$s'dir"
 
 #. TRANS: parameter is the minimum size, in pixels
 #, php-format

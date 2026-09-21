@@ -253,10 +253,10 @@ msgstr ""
 msgid "File extension is not allowed, only %s files are."
 msgstr "L'extensió del fitxer no està permesa només n'hi ha un 1%."
 
-#. TRANS: parameter is the maximum allowed size, in Ko
+#. TRANS: parameter is the maximum allowed size, units included
 #, fuzzy, php-format
-msgid "File is too big. Maximum allowed size is %1$sKo"
-msgstr "El fitxer és massa gran. La mida màxima permesa és de percentKo"
+msgid "File is too big. Maximum allowed size is %1$s"
+msgstr "El fitxer és massa gran. La mida màxima permesa és de %1$s"
 
 #. TRANS: parameter is the minimum size, in pixels
 #, php-format
