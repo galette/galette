@@ -20,6 +20,7 @@ use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\IO\UploadSize;
+use Galette\Util\Filesize;
 
 use function Safe\preg_grep;
 
@@ -275,13 +276,13 @@ trait Dynamics
             $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
             if ($file->getSize() > $max_size * 1024) {
                 Analog::log(
-                    'file too large: ' . (int)round($file->getSize() / 1024)
-                    . " Ko, vs $max_size Ko allowed",
+                    'file too large: ' . Filesize::fromBytes($file->getSize())
+                    . ', vs ' . Filesize::fromKilobytes($max_size) . ' allowed',
                     Analog::ERROR
                 );
                 $this->errors[] = sprintf(
-                    _T('File is too big. Maximum allowed size is %1$sKo'),
-                    $max_size
+                    _T('File is too big. Maximum allowed size is %1$s'),
+                    Filesize::fromKilobytes($max_size)
                 );
                 continue;
             }

@@ -210,10 +210,10 @@ msgstr "கோப்பு பெயர் தவறானது, அதில�
 msgid "File extension is not allowed, only %s files are."
 msgstr "கோப்பு நீட்டிப்பு அனுமதிக்கப்படவில்லை, %s கோப்புகள் மட்டுமே."
 
-#. TRANS: parameter is the maximum allowed size, in Ko
+#. TRANS: parameter is the maximum allowed size, units included
 #, php-format
-msgid "File is too big. Maximum allowed size is %1$sKo"
-msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %1$sko ஆகும்"
+msgid "File is too big. Maximum allowed size is %1$s"
+msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %1$s ஆகும்"
 
 #. TRANS: parameter is the minimum size, in pixels
 #, php-format

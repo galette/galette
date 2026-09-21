@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Util\Filesize;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\FilesystemException;
 
@@ -251,8 +252,8 @@ trait FileTrait
         //Second, let's check file size
         if ($file->getSize() > ($this->maxlength * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . (int)round($file->getSize() / 1024)
-                . 'Ko for maximum authorized ' . $this->maxlength . 'Ko)',
+                '[' . $class . '] File is too big (' . Filesize::fromBytes($file->getSize())
+                . ' for maximum authorized ' . Filesize::fromKilobytes($this->maxlength) . ')',
                 Analog::ERROR
             );
             return self::FILE_TOO_BIG;
@@ -434,9 +435,9 @@ trait FileTrait
                 _T("File extension is not allowed, only %s files are.")
             ),
             self::FILE_TOO_BIG => sprintf(
-                //TRANS: parameter is the maximum allowed size, in Ko
-                _T('File is too big. Maximum allowed size is %1$sKo'),
-                $this->maxlength
+                //TRANS: parameter is the maximum allowed size, units included
+                _T('File is too big. Maximum allowed size is %1$s'),
+                Filesize::fromKilobytes($this->maxlength)
             ),
             self::IMAGE_TOO_SMALL => sprintf(
                 _T('Image is too small. The minimum image side size allowed is %1$spx'),
