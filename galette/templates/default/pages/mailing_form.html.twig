@@ -100,18 +100,19 @@
                                     <div class="ui corner labeled input">
                                         <input type="file" name="attachment[]" id="attachment" multiple="multiple" aria-describedby="attachment-tip"/>
                                         <div class="ui corner label">
-                                            <i class="circular basic question icon tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}<br/>{{ _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', preferences.pref_upload_size_attachments)) }}" aria-hidden="true"></i>
+                                            {% set attachments_tip %}{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}<br/>{{ _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', preferences.pref_upload_size_attachments)) }}{% endset %}
+                                            {% include "components/forms/tip.html.twig" with {
+                                                tip: attachments_tip,
+                                                id: "attachment",
+                                                html: true,
+                                                small: false
+                                            } only %}
                                         </div>
                                     </div>
                                     <label for="attachment" class="ui button">
                                         <i class="blue upload icon" aria-hidden="true"></i>
                                         {{ _T("Add attachment") }}
                                     </label>
-                                    {% include "components/forms/max_size.html.twig" with {
-                                        max_size: preferences.pref_upload_size_attachments,
-                                        input_id: 'attachment',
-                                        icon: false
-                                    } %}
                                 </div>
                             </div>
     {% endif %}

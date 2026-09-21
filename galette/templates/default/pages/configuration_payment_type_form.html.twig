@@ -12,12 +12,17 @@
         <div class="ui segment" id="general">
     {% endif %}
             <div class="required field inline">
-                <label for="name" class="" title="{{ _T("Original string for name, that will be used for translations.") }}">{{ _T("Name:") }}</label>
+                <label for="name">{{ _T("Name:") }}</label>
                 <div class="ui right corner labeled input">
                     <div class="ui corner label">
-                        <i class="circular basic link question icon tooltip" title="{{ _T("Original string for name, that will be used for translations.") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Original string for name, that will be used for translations."),
+                            id: "name",
+                            small: false,
+                            link: true
+                        } only %}
                     </div>
-                    <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" required="required" />
+                    <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" required="required" aria-describedby="name-tip" />
                 </div>
             </div>
     {% if mode != 'ajax' %}

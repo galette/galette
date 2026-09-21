@@ -15,36 +15,46 @@
  # Give it `label` and it draws the label too, with the icon inside: a field
  # label is a block, so an icon after it would land on the line below. The span
  # stays out of the label, which names the field and must not repeat what only
- # describes it.
+ # describes it. A label with no tip is drawn all the same, so a caller needs no
+ # branch of its own.
  #
  # Takes:
  #  - `tip`: the text, which may hold markup - `html` then says so;
  #  - `id`: identifier of the control being described; the span takes `<id>-tip`,
- #    which that control names in its `aria-describedby`;
+ #    which that control names in its `aria-describedby`. A tip about a group,
+ #    or about a value no control holds, needs none: the span is then read where
+ #    it stands;
  #  - `label`: the field label, when the component draws it;
  #  - `for`: the control that label names, when it names one;
+ #  - `label_class`: class of that label;
  #  - `html`: true when the text holds markup;
  #  - `small`: false for the bigger icon, used inside a corner label;
+ #  - `link`: true for the pointer cursor of a clickable-looking icon;
  #  - `variation`: extra Fomantic popup variation, such as 'inverted very wide';
- #  - `icon`: false where something else already shows the text.
+ #  - `icon`: false where something else already shows the text;
+ #  - `text`: false where the span is drawn apart, out of a naming label.
  #}
 {% import _self as tips %}
 
-{% macro icon(tip, html, small, variation) %}
+{% macro icon(tip, html, small, link, variation) %}
     <i
-        class="circular{% if small %} small{% endif %} basic question icon tooltip"
+        class="circular{% if small %} small{% endif %} basic{% if link %} link{% endif %} question icon tooltip"
         {% if html %}data-html{% else %}title{% endif %}="{{ tip }}"
         {% if variation %} data-variation="{{ variation }}"{% endif %}
         aria-hidden="true"
     ></i>
 {% endmacro %}
 
+{% set draw_icon = (tip ?? null) and (icon ?? true) %}
+
 {% if label ?? null %}
-    <label{% if for ?? null %} for="{{ for }}"{% endif %}>
+    <label{% if for ?? null %} for="{{ for }}"{% endif %}{% if label_class ?? null %} class="{{ label_class }}"{% endif %}>
         {{ label }}
-        {% if icon ?? true %}{{ tips.icon(tip, html ?? false, small ?? true, variation ?? null) }}{% endif %}
+        {% if draw_icon %}{{ tips.icon(tip, html ?? false, small ?? true, link ?? false, variation ?? null) }}{% endif %}
     </label>
-{% elseif icon ?? true %}
-    {{ tips.icon(tip, html ?? false, small ?? true, variation ?? null) }}
+{% elseif draw_icon %}
+    {{ tips.icon(tip, html ?? false, small ?? true, link ?? false, variation ?? null) }}
 {% endif %}
-<span class="visually-hidden" id="{{ id }}-tip">{% if html ?? false %}{{ tip|raw }}{% else %}{{ tip }}{% endif %}</span>
+{% if (tip ?? null) and (text ?? true) %}
+    <span class="visually-hidden"{% if id ?? null %} id="{{ id }}-tip"{% endif %}>{% if html ?? false %}{{ tip|raw }}{% else %}{{ tip }}{% endif %}</span>
+{% endif %}

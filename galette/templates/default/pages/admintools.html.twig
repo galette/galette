@@ -21,50 +21,97 @@
             <div class="active content field">
                 <div class="field inline">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="inittexts" id="inittexts"/>
-                        <label for="inittexts" title="{{ _T('Reset all emails contents to their default values') }}">
+                        {% set reset_texts_tip = _T('Reset all emails contents to their default values') %}
+                        <input type="checkbox" name="inittexts" id="inittexts" aria-describedby="inittexts-tip"/>
+                        <label for="inittexts" title="{{ reset_texts_tip }}">
                             {{ _T('Reset emails contents') }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T('Reset all emails contents to their default values') }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: reset_texts_tip,
+                                text: false
+                            } only %}
                             <span class="field-description">{{ _T('(all existing values will be removed)') }}</span>
                         </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: reset_texts_tip,
+                            id: "inittexts",
+                            icon: false
+                        } only %}
                     </div>
                 </div>
                 <div class="field inline">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="initfields" id="initfields"/>
+                        {% set reset_fields_tip %}{{ _T('Reset all emails contents to their default values') }}<br/>{{ _T('This includes fields positions, order, visibility, access levels and mandatory marks.') }}{% endset %}
+                        <input type="checkbox" name="initfields" id="initfields" aria-describedby="initfields-tip"/>
                         <label for="initfields" title="{{ _T('Reset all emails contents to their default values') }}">
                             {{ _T('Reset fields configuration') }}
-                            <i class="circular small basic question icon tooltip" data-html="{{ _T('Reset all emails contents to their default values') }}<br/>{{ _T('This includes fields positions, order, visibility, access levels and mandatory marks.') }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: reset_fields_tip,
+                                html: true,
+                                text: false
+                            } only %}
                             <span class="field-description">{{ _T('(all existing values will be removed)') }}</span>
                         </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: reset_fields_tip,
+                            id: "initfields",
+                            html: true,
+                            icon: false
+                        } only %}
                     </div>
                 </div>
                 <div class="field inline">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="initpdfmodels" id="initpdfmodels"/>
-                        <label for="initpdfmodels" title="{{ _T('Reset all PDF models to their default values') }}">
+                        {% set reset_models_tip = _T('Reset all PDF models to their default values') %}
+                        <input type="checkbox" name="initpdfmodels" id="initpdfmodels" aria-describedby="initpdfmodels-tip"/>
+                        <label for="initpdfmodels" title="{{ reset_models_tip }}">
                             {{ _T('Reinitialize PDF models') }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T('Reset all PDF models to their default values') }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: reset_models_tip,
+                                text: false
+                            } only %}
                             <span class="field-description">{{ _T('(all existing values will be removed)') }}</span>
                         </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: reset_models_tip,
+                            id: "initpdfmodels",
+                            icon: false
+                        } only %}
                     </div>
                 </div>
                 <div class="field inline">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="emptylogins" id="emptylogins"/>
-                        <label for="emptylogins" title="{{ _T('Fill all empty login and passwords') }}">
+                        {% set empty_logins_tip = _T('Fill all empty login and passwords') %}
+                        <input type="checkbox" name="emptylogins" id="emptylogins" aria-describedby="emptylogins-tip"/>
+                        <label for="emptylogins" title="{{ empty_logins_tip }}">
                             {{ _T('Generate empty logins and passwords') }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T('Fill all empty login and passwords') }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: empty_logins_tip,
+                                text: false
+                            } only %}
                         </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: empty_logins_tip,
+                            id: "emptylogins",
+                            icon: false
+                        } only %}
                     </div>
                 </div>
                 <div class="field inline">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="dynamicdates" id="dynamicdates"/>
-                        <label for="dynamicdates" title="{{ _T('Fix dynamic fields dates format') }}">
+                        {% set dynamic_dates_tip = _T('Fix dynamic fields dates format') %}
+                        <input type="checkbox" name="dynamicdates" id="dynamicdates" aria-describedby="dynamicdates-tip"/>
+                        <label for="dynamicdates" title="{{ dynamic_dates_tip }}">
                             {{ _T('Fix dynamic fields dates format') }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T('Fix dynamic fields dates format') }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: dynamic_dates_tip,
+                                text: false
+                            } only %}
                         </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: dynamic_dates_tip,
+                            id: "dynamicdates",
+                            icon: false
+                        } only %}
                     </div>
                 </div>
 
