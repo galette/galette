@@ -1426,8 +1426,7 @@ msgstr "Une erreur est survenue lors de la réinitialisation des modèles PDF :(
 #, php-format
 msgid "Logins and passwords have been successfully filled (%1$s processed)."
 msgstr ""
-"Les identifiants et mots de passe ont été remplis avec succès (%1$s "
-"traités)."
+"Les identifiants et mots de passe ont été remplis avec succès (%1$s traités)."
 
 msgid "An error occurred filling empty logins and passwords :("
 msgstr ""
@@ -4098,11 +4097,10 @@ msgid "Priority:"
 msgstr "Priorité :"
 
 #, php-format
-msgid ""
-"Note: members with a status priority lower than %1$s are staff members."
+msgid "Note: members with a status priority lower than %1$s are staff members."
 msgstr ""
-"Note : les membres qui possèdent un statut dont la priorité est inférieure "
-"à %1$s sont membres du bureau."
+"Note : les membres qui possèdent un statut dont la priorité est inférieure à "
+"%1$s sont membres du bureau."
 
 msgid "Originator"
 msgstr "Emetteur"
