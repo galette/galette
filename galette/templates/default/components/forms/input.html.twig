@@ -8,6 +8,15 @@
     {% set tip = tip_html %}
 {% endif %}
 
+{# what the control points at: its tip, its description, or both #}
+{% set describedby = '' %}
+{% if tip is defined and tip != '' %}
+    {% set describedby = id ~ '-tip' %}
+{% endif %}
+{% if description is defined or error_message is defined %}
+    {% set describedby = (describedby ? describedby ~ ' ' : '') ~ id ~ '-description' %}
+{% endif %}
+
 {% block component %}
 {% if notag is not defined %}
 <div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'field' }}{% if required is defined and required == true %} required{% endif %}">
@@ -63,7 +72,7 @@
                     {% if checked is defined and checked == true %} checked{% endif %}
                     {% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}
                     {% if error_message is defined %} aria-invalid="true"{% endif %}
-                    {% if description is defined or error_message is defined %} aria-describedby="{{ id }}-description"{% endif %}
+                    {% if describedby != '' %} aria-describedby="{{ describedby }}"{% endif %}
                 />
     {% endblock %}
     {% if search_id is defined %}
@@ -77,7 +86,7 @@
         </div>
     {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
             <div class="ui corner label">
-                <i class="circular basic question icon tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
+                {% include "components/forms/tip.html.twig" with {tip: tip, id: id, html: tip_html is defined, small: false} only %}
             </div>
         </div>
     {% elseif (type is defined and type == 'password') or (withlegend is defined) %}
@@ -91,7 +100,9 @@
     {% endblock %}
     </div>
     {% endif %}
-    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular small basic question icon tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
+    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}
+        {% include "components/forms/tip.html.twig" with {tip: tip, id: id, html: tip_html is defined} only %}
+    {% endif %}
     {% if description is defined or error_message is defined %}
         <div class="field-description" id="{{ id }}-description">
             {% if error_message is defined %}

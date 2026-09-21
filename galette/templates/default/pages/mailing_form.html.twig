@@ -98,7 +98,7 @@
                             {% endif %}
                                 <div class="ui file action input">
                                     <div class="ui corner labeled input">
-                                        <input type="file" name="attachment[]" id="attachment" multiple="multiple" aria-describedby="attachment-max-size"/>
+                                        <input type="file" name="attachment[]" id="attachment" multiple="multiple" aria-describedby="attachment-tip"/>
                                         <div class="ui corner label">
                                             <i class="circular basic question icon tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}<br/>{{ _T('Maximum allowed size is %1$sKo')|format(preferences.pref_upload_size_attachments) }}" aria-hidden="true"></i>
                                         </div>

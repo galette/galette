@@ -22,7 +22,7 @@
     {% endif %}
                 <div class="extra ui basic fitted segment">
                     <div class="ui file action input">
-                        <input id="document_new" type="file" name="document_file" aria-describedby="document_new-max-size"/>
+                        <input id="document_new" type="file" name="document_file" aria-describedby="document_new-tip"/>
                         <label for="document_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                             <i class="blue upload icon" aria-hidden="true"></i>
                             {% if document.getId() != null %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
