@@ -10,7 +10,7 @@
   display: none !important;
 }
 
-.ui.corner.label .icon.btnlegend {
+.ui.corner.label .btnlegend {
     cursor: pointer;
 }
 
