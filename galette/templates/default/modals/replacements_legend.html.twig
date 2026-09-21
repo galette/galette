@@ -33,8 +33,20 @@
 </div>
 <script type="text/javascript">
 
+    /* The control opening the legend is a button: an <i> has no role, takes no
+     * focus and answers no key, so the icon it used to be was reachable with a
+     * mouse only. Built with jQuery rather than concatenated, so the label
+     * reaches the attribute and the text node whatever it holds.
+     */
     var _addLegendButton = function(selector) {
-        $(selector).append('<i class="btnlegend circular basic link question icon tooltip" aria-hidden="true"></i> <span class="ui special popup">{{ _T("Show existing variables")|e('js') }}</span>');
+        var label = '{{ _T("Show existing variables")|e('js') }}';
+
+        $(selector).append(
+            $('<button type="button" class="btnlegend ui question tooltip icon-only link button"/>')
+                .attr('title', label)
+                .append('<i class="circular basic question icon" aria-hidden="true"></i>')
+                .append($('<span class="visually-hidden"/>').text(label))
+        );
     };
 
     var _handleLegend = function(selector) {
