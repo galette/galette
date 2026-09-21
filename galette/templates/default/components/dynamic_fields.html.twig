@@ -19,12 +19,12 @@
                 </span>
             {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\File' %}
-                <label>
-                    {{ field.getName()|escape }}
-                    {# a loose comparison, so the __IDX__ placeholder of the pristine template keeps its number #}
-                    {% if idx != 1 %}({{ idx }}){% endif %}
-                </label>
+                {#
+                 # a loose comparison on the index, so the __IDX__ placeholder of
+                 # the pristine template keeps its number
+                 #}
                 {% include "components/forms/max_size.html.twig" with {
+                    label: field.getName() ~ (idx != 1 ? ' (' ~ idx ~ ')' : ''),
                     max_size: field.getSize() ?: preferences.pref_upload_size_dynamic_files,
                     input_id: 'info_field_' ~ field.getId() ~ '_' ~ idx ~ '_new'
                 } %}

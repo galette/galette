@@ -8,11 +8,13 @@
  # Tells how big the file to upload may be.
  #
  # Takes `max_size`, a number of Ko, and `input_id`, the identifier of the file
- # input it describes. `icon` can be set to false where a tooltip already
- # carries the information.
+ # input it describes. `label` (and `for`) draw the field label around the icon;
+ # `icon` can be set to false where a tooltip already carries the information.
  #}
 {% include "components/forms/tip.html.twig" with {
     tip: _T('Maximum allowed size is %1$sKo')|format(max_size),
     id: input_id,
+    label: label ?? null,
+    for: for ?? null,
     icon: icon ?? true
 } only %}
