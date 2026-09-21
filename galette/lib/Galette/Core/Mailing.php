@@ -15,6 +15,7 @@ use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
 use Galette\Util\Html;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -84,6 +85,9 @@ class Mailing extends GaletteMail
     public function __construct(Preferences $preferences, array $members = [], ?int $id = null)
     {
         parent::__construct($preferences);
+        //attachments are stored by File instances, but the errors they return
+        //are worded here: both need to know the limit
+        $this->init(maxlength: UploadSize::Attachments->get($preferences));
         $this->id = $id ?? $this->generateNewId();
 
         $this->current_step = self::STEP_START;
@@ -315,7 +319,7 @@ class Mailing extends GaletteMail
         }
 
         //store files
-        $attachment = new File($this->tmp_path);
+        $attachment = new File($this->tmp_path, maxlength: $this->maxlength);
         $res = $attachment->storeFile($file);
         if ($res < 0) {
             return $res;

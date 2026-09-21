@@ -380,6 +380,14 @@ trait FileTrait
     }
 
     /**
+     * Returns the maximum size a file may have, in Ko
+     */
+    public function getMaxLength(): int
+    {
+        return $this->maxlength;
+    }
+
+    /**
      * Return the array of allowed mime types
      *
      * @return array<string,string>

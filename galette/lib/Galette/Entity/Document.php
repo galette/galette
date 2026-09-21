@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
 use Galette\Util\Html;
 use Galette\Repository\Documents;
 use Psr\Http\Message\UploadedFileInterface;
@@ -60,7 +61,10 @@ class Document
     {
         $this->can_public = true;
 
-        $this->init($this->store_path);
+        $this->init(
+            dest: $this->store_path,
+            maxlength: UploadSize::Documents->get()
+        );
 
         if (is_int($args)) {
             $this->load($args);

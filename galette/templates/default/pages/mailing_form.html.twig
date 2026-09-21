@@ -98,15 +98,20 @@
                             {% endif %}
                                 <div class="ui file action input">
                                     <div class="ui corner labeled input">
-                                        <input type="file" name="attachment[]" id="attachment" multiple="multiple"/>
+                                        <input type="file" name="attachment[]" id="attachment" multiple="multiple" aria-describedby="attachment-max-size"/>
                                         <div class="ui corner label">
-                                            <i class="circular basic question icon tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}" aria-hidden="true"></i>
+                                            <i class="circular basic question icon tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}<br/>{{ _T('Maximum allowed size is %1$sKo')|format(preferences.pref_upload_size_attachments) }}" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                     <label for="attachment" class="ui button">
                                         <i class="blue upload icon" aria-hidden="true"></i>
                                         {{ _T("Add attachment") }}
                                     </label>
+                                    {% include "components/forms/max_size.html.twig" with {
+                                        max_size: preferences.pref_upload_size_attachments,
+                                        input_id: 'attachment',
+                                        icon: false
+                                    } %}
                                 </div>
                             </div>
     {% endif %}

@@ -19,6 +19,7 @@ use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\IO\UploadSize;
 
 use function Safe\preg_grep;
 
@@ -270,11 +271,11 @@ trait Dynamics
                 continue;
             }
 
-            $max_size = $field->getSize()
-                ? $field->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
-            if ($file->getSize() > $max_size) {
+            //a field declaring no size of its own follows the preference
+            $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
+            if ($file->getSize() > $max_size * 1024) {
                 Analog::log(
-                    "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
+                    "file too large: " . $file->getSize() . " bytes, vs $max_size Ko allowed",
                     Analog::ERROR
                 );
                 $this->errors[] = sprintf(

@@ -138,4 +138,24 @@ class Mailing extends GaletteTestCase
         $this->assertNotEmpty($mailing->tmp_path);
         $this->assertFalse($mailing->existsInHistory());
     }
+
+    /**
+     * An attachment over the limit is reported, not fatal
+     *
+     * Storage is delegated to a File instance, but the error it returns is
+     * worded by the mailing: both have to know the limit.
+     */
+    public function testTooBigAttachmentIsReported(): void
+    {
+        $this->preferences->pref_upload_size_attachments = 42;
+        $mailing = new \Galette\Core\Mailing($this->preferences);
+
+        $this->assertSame(42, $mailing->getMaxLength());
+
+        $message = new \ReflectionMethod($mailing, 'getErrorMessageFromCode');
+        $this->assertSame(
+            'File is too big. Maximum allowed size is 42Ko',
+            $message->invoke($mailing, \Galette\Core\Mailing::FILE_TOO_BIG)
+        );
+    }
 }
