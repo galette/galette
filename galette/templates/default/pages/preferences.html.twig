@@ -61,7 +61,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="logo" id="logo_picture" aria-describedby="logo_picture-max-size"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="logo" id="logo_picture" aria-describedby="logo_picture-tip"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="logo_picture" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
@@ -938,7 +938,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="card_logo" id="card_logo" aria-describedby="card_logo-max-size"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="card_logo" id="card_logo" aria-describedby="card_logo-tip"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="card_logo" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if print_logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}

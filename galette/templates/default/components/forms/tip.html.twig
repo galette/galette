@@ -1,0 +1,32 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{# A tip about a field: the icon carries it on screen, the span carries it for
+ # assistive technologies.
+ #
+ # Icons are hidden from them - the font character would be read out - and a
+ # tooltip only opens on hover or touch, so the text has to reach them another
+ # way. The span does, and the control it describes points at it with
+ # `aria-describedby="<id>-tip"`.
+ #
+ # Takes:
+ #  - `tip`: the text, which may hold markup - `html` then says so;
+ #  - `id`: identifier of the control being described; the span takes `<id>-tip`,
+ #    which that control names in its `aria-describedby`;
+ #  - `html`: true when the text holds markup;
+ #  - `small`: false for the bigger icon, used inside a corner label;
+ #  - `variation`: extra Fomantic popup variation, such as 'inverted very wide';
+ #  - `icon`: false where something else already shows the text.
+ #}
+{% if icon ?? true %}
+    <i
+        class="circular{% if small ?? true %} small{% endif %} basic question icon tooltip"
+        {% if html ?? false %}data-html{% else %}title{% endif %}="{{ tip }}"
+        {% if variation is defined %} data-variation="{{ variation }}"{% endif %}
+        aria-hidden="true"
+    ></i>
+{% endif %}
+<span class="visually-hidden" id="{{ id }}-tip">{% if html ?? false %}{{ tip|raw }}{% else %}{{ tip }}{% endif %}</span>
