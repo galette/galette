@@ -33,15 +33,20 @@
             {% set system_ratio = (preferences.pref_member_picture_ratio == 'square_ratio') ? _T("Square (1:1)") : (preferences.pref_member_picture_ratio == 'portrait_ratio') ? _T("Portrait (3:4)") : (preferences.pref_member_picture_ratio == 'landscape_ratio') ? _T("Landscape (4:3)") %}
             <div id="crop_focus_field" class="extra ui basic fitted segment displaynone">
                 <div class="inline field">
-                    <label for="crop_focus">{{ _T("Cropping focus") }}</label>
-                    <select name="crop_focus" id="crop_focus" class="ui dropdown">
+                    {% include "components/forms/tip.html.twig" with {
+                        label: _T("Cropping focus"),
+                        for: "crop_focus",
+                        tip: _T('Choose the area of the original image to preserve after cropping to the final ratio defined in the settings : %1$s')|format(system_ratio),
+                        id: "crop_focus",
+                        html: true
+                    } only %}
+                    <select name="crop_focus" id="crop_focus" class="ui dropdown" aria-describedby="crop_focus-tip">
                         <option value="center">{{ _T("Center") }}</option>
                         <option value="top">{{ _T("Top") }}</option>
                         <option value="bottom">{{ _T("Bottom") }}</option>
                         <option value="left">{{ _T("Left") }}</option>
                         <option value="right">{{ _T("Right") }}</option>
                     </select>
-                    <i class="circular small basic question icon tooltip" data-html="{{ _T('Choose the area of the original image to preserve after cropping to the final ratio defined in the settings : %1$s')|format(system_ratio) }}" aria-hidden="true"></i>
                 </div>
             </div>
     {% endif %}
