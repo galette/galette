@@ -93,12 +93,13 @@
                         <div class="active content field">
                             <div class="field wide">
                                 <div class="ui file action input">
-                                    <input type="file" name="new_file" accept="text/csv" id="new_file"/>
+                                    <input type="file" name="new_file" accept="text/csv" id="new_file" aria-describedby="new_file-max-size"/>
                                     <label for="new_file" class="ui button">
                                         <i class="blue file csv icon" aria-hidden="true"></i>
                                         {{ _T('Choose a file') }}
                                     </label>
                                 </div>
+                                {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_imports, input_id: "new_file"} %}
                             </div>
                         </div>
                     </div>

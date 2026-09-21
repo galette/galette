@@ -163,6 +163,11 @@ use function Safe\preg_replace;
  * @property      bool     $pref_noindex
  * @property      int      $pref_x_forwarded_for_index
  * @property      int      $pref_session_timeout
+ * @property      int      $pref_upload_size_images
+ * @property      int      $pref_upload_size_attachments
+ * @property      int      $pref_upload_size_documents
+ * @property      int      $pref_upload_size_imports
+ * @property      int      $pref_upload_size_dynamic_files
  * @property      int      $pref_throttle_account_ip_attempts
  * @property      int      $pref_throttle_account_ip_window
  * @property      int      $pref_throttle_ip_attempts

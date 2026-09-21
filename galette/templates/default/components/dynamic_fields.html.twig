@@ -24,6 +24,10 @@
                     {# a loose comparison, so the __IDX__ placeholder of the pristine template keeps its number #}
                     {% if idx != 1 %}({{ idx }}){% endif %}
                 </label>
+                {% include "components/forms/max_size.html.twig" with {
+                    max_size: field.getSize() ?: preferences.pref_upload_size_dynamic_files,
+                    input_id: 'info_field_' ~ field.getId() ~ '_' ~ idx ~ '_new'
+                } %}
             {% elseif get_class(field) != 'Galette\\DynamicFields\\Boolean' %}
                 <label for="info_field_{{ field.getId() }}_{{ idx }}">
                     {{ field.getName()|escape }}
@@ -111,6 +115,7 @@
                             type="file"
                             name="info_field_{{ field.getId() }}_{{ idx }}"
                             id="info_field_{{ field.getId() }}_{{ idx }}_new"
+                            aria-describedby="info_field_{{ field.getId() }}_{{ idx }}_new-max-size"
                             {% if required and valuedata == '' %} required="required"{% endif %}
                             {% if disabled %} disabled="disabled"{% endif %}
                         />

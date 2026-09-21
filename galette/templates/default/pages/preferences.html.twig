@@ -51,6 +51,7 @@
                 <div class="column">
                     <div class="field wide ui items">
                         <label>{{ _T("Logo:") }}</label>
+                        {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_images, input_id: "logo_picture"} %}
                         <div class="item">
         {% if logo.isCustom() %}
                             <div class="image">
@@ -60,7 +61,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="logo" id="logo_picture"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="logo" id="logo_picture" aria-describedby="logo_picture-max-size"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="logo_picture" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
@@ -927,6 +928,7 @@
                     </div>{# /group fields #}
                     <div class="field wide ui items">
                         <label>{{ _T("Logo:") }}</label>
+                        {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_images, input_id: "card_logo"} %}
                         <div class="item">
     {% if print_logo.isCustom() %}
                             <div class="image">
@@ -936,7 +938,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="card_logo" id="card_logo"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="card_logo" id="card_logo" aria-describedby="card_logo-max-size"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="card_logo" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if print_logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}

@@ -1,0 +1,20 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Tells how big the file to upload may be.
+ #
+ # The icon carries the tooltip, and is hidden from assistive technologies like
+ # every other icon; what they read is the span, which the file input points to
+ # with `aria-describedby`.
+ #
+ # Takes `max_size`, a number of Ko, and `input_id`, the identifier of the file
+ # input it describes. `icon` can be set to false where a tooltip already
+ # carries the information.
+ #}
+{% set max_size_text = _T('Maximum allowed size is %1$sKo')|format(max_size) %}
+{% if icon ?? true %}<i class="circular small basic question icon tooltip" title="{{ max_size_text }}" aria-hidden="true"></i>{% endif %}
+<span class="visually-hidden" id="{{ input_id }}-max-size">{{ max_size_text }}</span>

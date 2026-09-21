@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
+use Galette\DynamicFields\DynamicField;
 use Galette\Entity\Adherent;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Status;
+use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
@@ -645,6 +647,45 @@ final class PreferencesSchema
                 'min' => 0,
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'constant' => 'GALETTE_TIMEOUT',
+                'advanced' => true,
+            ],
+            /* Maximum size of an upload, in Ko, one setting per kind of upload.
+               PHP caps them all: whatever is set here, a file bigger than
+               upload_max_filesize or a request bigger than post_max_size never
+               reaches Galette. */
+            'pref_upload_size_images' => [
+                'type' => self::TYPE_INT,
+                'default' => File::MAX_FILE_SIZE,
+                'min' => 1,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+            ],
+            'pref_upload_size_attachments' => [
+                'type' => self::TYPE_INT,
+                'default' => File::MAX_FILE_SIZE,
+                'min' => 1,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+            ],
+            'pref_upload_size_documents' => [
+                'type' => self::TYPE_INT,
+                'default' => File::MAX_FILE_SIZE,
+                'min' => 1,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+            ],
+            'pref_upload_size_imports' => [
+                'type' => self::TYPE_INT,
+                'default' => File::MAX_FILE_SIZE,
+                'min' => 1,
+                'error' => self::ERR_POSITIVE_NUMBER,
+                'advanced' => true,
+            ],
+            'pref_upload_size_dynamic_files' => [
+                'type' => self::TYPE_INT,
+                'default' => DynamicField::DEFAULT_MAX_FILE_SIZE,
+                'min' => 1,
+                'error' => self::ERR_POSITIVE_NUMBER,
                 'advanced' => true,
             ],
         ];

@@ -104,7 +104,7 @@ class CsvIn extends Csv
                 'csv'    =>    'text/csv',
                 'txt'    =>    'text/plain'
             ],
-            maxlength: 2048
+            maxlength: UploadSize::Imports->get()
         );
 
         parent::__construct(self::DEFAULT_DIRECTORY);

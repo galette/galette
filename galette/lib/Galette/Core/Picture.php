@@ -23,6 +23,7 @@ use Galette\Entity\Adherent;
 use Galette\Exception\MissingAssetException;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
 use UnhandledMatchError;
 
 use function Safe\file_get_contents;
@@ -103,7 +104,8 @@ class Picture
                 'png'    =>    'image/png',
                 'gif'    =>    'image/gif',
                 'webp'   =>    'image/webp'
-            ]
+            ],
+            maxlength: UploadSize::Images->get()
         );
 
         // '!==' needed, otherwise ''==0
