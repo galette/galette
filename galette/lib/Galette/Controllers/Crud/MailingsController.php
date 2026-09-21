@@ -386,13 +386,11 @@ class MailingsController extends CrudController
                     foreach ($mailing->errors as $e) {
                         $error_detected[] = $e;
                     }
-                    $error_detected[] = str_replace(
-                        ['%sent', '%total'],
-                        [
-                            (string)count($mailing->getSentRecipients()),
-                            (string)count($mailing->recipients)
-                        ],
-                        _T("The mailing has only been sent to %sent recipient(s) out of %total. It has been stored, unsent, so you can check what has been delivered before sending it again.")
+                    $error_detected[] = sprintf(
+                        //TRANS: first parameter is the number of recipients reached, second the total
+                        _T('The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been stored, unsent, so you can check what has been delivered before sending it again.'),
+                        count($mailing->getSentRecipients()),
+                        count($mailing->recipients)
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup

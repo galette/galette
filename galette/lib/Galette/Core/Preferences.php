@@ -540,19 +540,19 @@ class Preferences
         $this->errors = [];
 
         if (!PreferencesSchema::has($name)) {
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("Unknown preference '%name'!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Unknown preference \'%1$s\'!'),
+                $name
             );
             return false;
         }
 
         if (PreferencesSchema::isReadOnly($name)) {
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("Preference '%name' is maintained by Galette and cannot be changed!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' is maintained by Galette and cannot be changed!'),
+                $name
             );
             return false;
         }
@@ -561,10 +561,10 @@ class Preferences
             PreferencesSchema::getAcl($name) === PreferencesSchema::ACL_SUPERADMIN
             && !$login->isSuperAdmin()
         ) {
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("You are not allowed to change preference '%name'!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('You are not allowed to change preference \'%1$s\'!'),
+                $name
             );
             return false;
         }
@@ -617,29 +617,29 @@ class Preferences
         $this->errors = [];
 
         if (!PreferencesSchema::has($name)) {
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("Unknown preference '%name'!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Unknown preference \'%1$s\'!'),
+                $name
             );
             return false;
         }
 
         if (PreferencesSchema::isReadOnly($name)) {
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("Preference '%name' is maintained by Galette and cannot be changed!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' is maintained by Galette and cannot be changed!'),
+                $name
             );
             return false;
         }
 
         if (PreferencesSchema::isSensitive($name)) {
             //resetting a secret would set a publicly known value
-            $this->errors[] = str_replace(
-                '%name',
-                $name,
-                _T("Preference '%name' holds a secret and cannot be reset to its default!")
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' holds a secret and cannot be reset to its default!'),
+                $name
             );
             return false;
         }

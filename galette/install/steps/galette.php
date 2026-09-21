@@ -31,7 +31,11 @@ if ($config_file_ok === true && $objects_ok === true) {
         . '<br/>' . _T("Data initialized.") . '</p>';
     if ($disable_ok !== true) {
         echo '<p class="ui orange message">'
-            . str_replace('%path', htmlentities($install->getEnableInstallFilePath()), _T("Unable to remove installer enable file (%path)"))
+            . sprintf(
+                //TRANS: parameter is the file path
+                _T('Unable to remove installer enable file (%1$s)'),
+                htmlentities($install->getEnableInstallFilePath())
+            )
             . '<br/>' . _T("Remember to remove it manually to re-secure the installer.") . '</p>';
     }
 } else {

@@ -153,7 +153,11 @@ class AdvancedConfigController extends AbstractController
         return $this->redirect(
             response: $response,
             redirect_url: $this->routeparser->urlFor('advancedConfig'),
-            successes: $stored ? [str_replace('%name', $name, _T("Preference '%name' has been stored."))] : [],
+            successes: $stored ? [sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' has been stored.'),
+                $name
+            )] : [],
             errors: $stored ? [] : $this->preferences->getErrors()
         );
     }
@@ -184,7 +188,11 @@ class AdvancedConfigController extends AbstractController
         return $this->redirect(
             response: $response,
             redirect_url: $this->routeparser->urlFor('advancedConfig'),
-            successes: $reset ? [str_replace('%name', $name, _T("Preference '%name' has been reset to its default."))] : [],
+            successes: $reset ? [sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' has been reset to its default.'),
+                $name
+            )] : [],
             errors: $reset ? [] : $this->preferences->getErrors()
         );
     }

@@ -57,10 +57,10 @@
 {% if mail_usage.hourly_limit > 0 or mail_usage.daily_limit > 0 %}
             <div class="ui small grey text" id="queue_quota">
     {% if mail_usage.hourly_limit > 0 %}
-                <div>{{ _T("Sent in the last hour: %sent of %limit")|replace({'%sent': mail_usage.sent_last_hour, '%limit': mail_usage.hourly_limit}) }}</div>
+                <div>{{ _T("Sent in the last hour: %1$s of %2$s")|format(mail_usage.sent_last_hour, mail_usage.hourly_limit) }}</div>
     {% endif %}
     {% if mail_usage.daily_limit > 0 %}
-                <div>{{ _T("Sent in the last day: %sent of %limit")|replace({'%sent': mail_usage.sent_last_day, '%limit': mail_usage.daily_limit}) }}</div>
+                <div>{{ _T("Sent in the last day: %1$s of %2$s")|format(mail_usage.sent_last_day, mail_usage.daily_limit) }}</div>
     {% endif %}
             </div>
 {% endif %}
@@ -124,7 +124,7 @@
                         if (data.done) {
                             if (data.failed_total > 0) {
                                 showEnd(
-                                    '{{ _T("Sending is over, but %count recipient(s) could not be reached.")|escape('js') }}'.replace('%count', data.failed_total),
+                                    '{{ _T("Sending is over, but %1$s recipient(s) could not be reached.")|escape('js') }}'.replace('%1$s', data.failed_total),
                                     'warning'
                                 );
                             } else {
