@@ -4021,8 +4021,7 @@ msgid "Priority:"
 msgstr "Prednost:"
 
 #, php-format
-msgid ""
-"Note: members with a status priority lower than %1$s are staff members."
+msgid "Note: members with a status priority lower than %1$s are staff members."
 msgstr "Opomba: člani s statusno prioriteto nižjo od %1$s so člani osebja."
 
 msgid "Originator"
