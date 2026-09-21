@@ -5,8 +5,11 @@
  #}
 
 <div class="field ui items">
-    <label>{{ _T("Picture:") }}</label>
-    {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_images, input_id: "photo_new"} %}
+    {% include "components/forms/max_size.html.twig" with {
+        label: _T("Picture:"),
+        max_size: preferences.pref_upload_size_images,
+        input_id: "photo_new"
+    } %}
     <div class="item">
         <div class="content">
     {% if member.hasPicture() == 1 %}

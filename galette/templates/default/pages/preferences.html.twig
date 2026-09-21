@@ -50,8 +50,11 @@
                 </div>
                 <div class="column">
                     <div class="field wide ui items">
-                        <label>{{ _T("Logo:") }}</label>
-                        {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_images, input_id: "logo_picture"} %}
+                        {% include "components/forms/max_size.html.twig" with {
+                            label: _T("Logo:"),
+                            max_size: preferences.pref_upload_size_images,
+                            input_id: "logo_picture"
+                        } %}
                         <div class="item">
         {% if logo.isCustom() %}
                             <div class="image">
@@ -927,8 +930,11 @@
                         </div>
                     </div>{# /group fields #}
                     <div class="field wide ui items">
-                        <label>{{ _T("Logo:") }}</label>
-                        {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_images, input_id: "card_logo"} %}
+                        {% include "components/forms/max_size.html.twig" with {
+                            label: _T("Logo:"),
+                            max_size: preferences.pref_upload_size_images,
+                            input_id: "card_logo"
+                        } %}
                         <div class="item">
     {% if print_logo.isCustom() %}
                             <div class="image">

@@ -12,8 +12,12 @@
         <div class="ui segment" id="general">
     {% endif %}
             <div class="field ui items">
-                <label for="document_new">{{ _T("File:") }}</label>
-                {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_documents, input_id: "document_new"} %}
+                {% include "components/forms/max_size.html.twig" with {
+                    label: _T("File:"),
+                    for: "document_new",
+                    max_size: preferences.pref_upload_size_documents,
+                    input_id: "document_new"
+                } %}
     {% if document.getID() is not null %}
                 <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
                     {{ document.getDocumentFilename() }}
