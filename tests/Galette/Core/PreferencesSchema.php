@@ -342,8 +342,10 @@ class PreferencesSchema extends GaletteTestCase
         );
 
         foreach (array_keys(Schema::getCore()) as $name) {
-            //a name is a prefix of longer ones, only a whole one counts
-            $on_form = preg_match('/' . $name . '(?![a-zA-Z0-9_])/', $form) === 1;
+            //what the payload carries is what a field is named after. A
+            //preference the form only reads - the upload limit a tooltip
+            //announces - is not submitted, and keeps its value all the same
+            $on_form = preg_match('/name="' . $name . '"/', $form) === 1;
 
             if ($on_form) {
                 $this->assertFalse(
