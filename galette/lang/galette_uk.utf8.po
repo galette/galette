@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 13:51+0200\n"
+"POT-Creation-Date: 2026-09-22 07:43+0200\n"
 "PO-Revision-Date: 2026-05-01 09:04+0000\n"
 "Last-Translator: Женя <prikhodkozheka2011@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -222,7 +222,6 @@ msgstr "Розширення файлів не дозволено, є лише %
 msgid "File is too big. Maximum allowed size is %1$s"
 msgstr "Файл завеликий. Найбільш допустимий розмір - %1$s"
 
-#. TRANS: parameter is the minimum size, in pixels
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %1$spx"
 msgstr ""
@@ -286,10 +285,70 @@ msgstr "Гаразд"
 msgid "Delete mailing entries"
 msgstr "Видалення записів розсилання"
 
+#, php-format
+msgid ""
+"You may want to set it from the \"%s\" setting listed above and remove "
+"declared constant."
+msgstr ""
+
+msgid ""
+"Enable debug mode: verbose logs, no cache, Twig strict variables and "
+"detailed errors."
+msgstr ""
+
+msgid ""
+"PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
+"credentials and mail settings."
+msgstr ""
+
+msgid ""
+"Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
+"debug mode."
+msgstr ""
+
+msgid "Dump every SQL query to the logs."
+msgstr ""
+
+msgid ""
+"Development features to activate, among those declared in the feature flags "
+"registry. They only apply in debug mode."
+msgstr ""
+
 #. TRANS: parameter is the logged in user name
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr "Вхід виконано як: <br>%1$s"
+
+#, fuzzy
+#| msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgid "Emailing has been disabled in the preferences."
+msgstr ""
+"Надісланий електронний лист у налаштуваннях вимкнено. Запитайте "
+"адміністратора Galette"
+
+#, fuzzy, php-format
+#| msgid "Emailing method:"
+msgid "Unknown emailing method '%s'."
+msgstr "Спосіб розсилання е-поштлю:"
+
+msgid "Unable to reach the SMTP server."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "The file does not exists or cannot be read :("
+msgid "'%s' does not exist, or cannot be run."
+msgstr "Файл не існує або його неможливо прочитати :("
+
+msgid "The PHP mail() function is not available on this server."
+msgstr ""
+
+msgid ""
+"PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
+"to."
+msgstr ""
+
+msgid "Sending quota has been reached, message has not been sent."
+msgstr ""
 
 msgid "No such module."
 msgstr "Такого модуля немає."
@@ -349,6 +408,14 @@ msgstr "Скрипт %1$s успішно виконано :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Неможливо запустити скрипт оновлення %1$s :("
 
+#, fuzzy
+#| msgid "Write configuration file"
+msgid "No configuration file found!"
+msgstr "Записати файл конфігурації"
+
+msgid "Existing configuration file is incomplete or unreadable!"
+msgstr ""
+
 msgid "Write configuration file"
 msgstr "Записати файл конфігурації"
 
@@ -389,6 +456,60 @@ msgstr "Налаштування оновлення"
 
 msgid "Update models"
 msgstr "Оновлення моделей"
+
+msgid "Dark mode CSS file has been reset."
+msgstr "Файл CSS темного режиму скинуто."
+
+msgid "You have to select a staff member to retrieve its address"
+msgstr "Ви повинні вибрати співробітника, щоб отримати його адресу"
+
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr "Ви повинні вибрати співробітника, щоб отримати його номер телефону"
+
+msgid "- You must indicate a sender name for emails!"
+msgstr "- Ви повинні вказати ім'я відправника для е-пошт!"
+
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+"- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
+"для надсилання електронних листів!"
+
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr "- Ви повинні вказати SMTP-сервер, який хочете використовувати!"
+
+msgid "- You must provide a login for SMTP authentication."
+msgstr "- Ви повинні вказати логін для SMTP-автентифікації."
+
+msgid "- You must provide a password for SMTP authentication."
+msgstr "- Ви повинні вказати пароль для SMTP-автентифікації."
+
+msgid ""
+"- You must indicate a membership extension or a beginning of membership."
+msgstr "- Ви повинні вказати продовження або початок членства."
+
+msgid ""
+"- Default membership extension and beginning of membership are mutually "
+"exclusive."
+msgstr "- Типове розширення членства та початок членства взаємозаперечні."
+
+msgid "- Offering months is only compatible with beginning of membership."
+msgstr "- Пропонування місяців сумісне лише з початком членства."
+
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is an hTML link to the field with its name
+#, php-format
+msgid "- Mandatory field %1$s empty."
+msgstr "- Обов’язкове поле %1$s порожнє."
+
+msgid "Passwords mismatch"
+msgstr "Невідповідність паролів"
+
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%1$s - %2$s товариства"
 
 msgid "First page"
 msgstr "Перша сторінка"
@@ -447,62 +568,40 @@ msgstr "Скільки дорівнюватиме %2$s вiднiмаючись в
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Я маю %1$s галетів, i дaю %2$s iз них. Скiльки галетів у мене є?"
 
-msgid "- You must indicate a sender name for emails!"
-msgstr "- Ви повинні вказати ім'я відправника для е-пошт!"
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Unknown type %1$s!"
+msgid "Unknown preference '%1$s'!"
+msgstr "Невідомий тип %1$s!"
 
-msgid "- You must indicate an email address Galette should use to send emails!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr ""
-"- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
-"для надсилання електронних листів!"
 
-msgid "- You must indicate the SMTP server you want to use!"
-msgstr "- Ви повинні вказати SMTP-сервер, який хочете використовувати!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "You are not allowed to change preference '%1$s'!"
+msgstr ""
 
-msgid "- You must provide a login for SMTP authentication."
-msgstr "- Ви повинні вказати логін для SMTP-автентифікації."
-
-msgid "- You must provide a password for SMTP authentication."
-msgstr "- Ви повинні вказати пароль для SMTP-автентифікації."
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
+msgstr ""
 
 msgid ""
-"- You must indicate a membership extension or a beginning of membership."
-msgstr "- Ви повинні вказати продовження або початок членства."
+"Please set your instance URL from the advanced configuration, or define the "
+"\"GALETTE_URI\" constant."
+msgstr ""
 
-msgid ""
-"- Default membership extension and beginning of membership are mutually "
-"exclusive."
-msgstr "- Типове розширення членства та початок членства взаємозаперечні."
+msgid "Never"
+msgstr "Ніколи"
 
-msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- Пропонування місяців сумісне лише з початком членства."
+msgid "Main information"
+msgstr "Контактні відомості"
 
-#. TRANS: parameter is a field name
-#. TRANS: parameter is an hTML link to the field with its name
-#. TRANS: parameter is an HTML link to the field with its name
-#. TRANS: parameter is an hTML link to the field with its name
-#, php-format
-msgid "- Mandatory field %1$s empty."
-msgstr "- Обов’язкове поле %1$s порожнє."
-
-msgid "Passwords mismatch"
-msgstr "Невідповідність паролів"
-
-msgid "You have to select a staff member to retrieve its address"
-msgstr "Ви повинні вибрати співробітника, щоб отримати його адресу"
-
-msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Ви повинні вибрати співробітника, щоб отримати його номер телефону"
-
-#. TRANS: first parameter is the address, second the setting holding it
-#, php-format
-msgid "- Invalid E-Mail address %1$s (%2$s)"
-msgstr "- Неприпустима адреса е-пошти %1$s (%2$s)"
-
-msgid "- The username must be composed of at least 4 characters!"
-msgstr "- Ім'я користувача повинно складатися щонайменше з 4 знаків!"
-
-msgid "- This username is already used by another member !"
-msgstr "- Це ім’я користувача вже використовується іншим членом!"
+msgid "Social networks"
+msgstr "Соціальні мережі"
 
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Числа та міри мають бути цілими числами!"
@@ -516,14 +615,20 @@ msgstr "- Ширина картки має бути цілим числом ві
 msgid "- Invalid number of months of membership extension."
 msgstr "- Неприпустима кількість місяців продовження членства."
 
+msgid "- Invalid number of offered months."
+msgstr "- Неприпустима кількість запропонованих місяців."
+
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- Ім'я користувача повинно складатися щонайменше з 4 знаків!"
+
+msgid "- This username is already used by another member !"
+msgstr "- Це ім’я користувача вже використовується іншим членом!"
+
 msgid "- Invalid format of beginning of membership."
 msgstr "- Неприпустимий формат початку членства."
 
 msgid "- Invalid date for beginning of membership."
 msgstr "- Неприпустима дата початку членства."
-
-msgid "- Invalid number of offered months."
-msgstr "- Неприпустима кількість запропонованих місяців."
 
 msgid "- Invalid year for cards."
 msgstr "- Неприпустимий рік для карток."
@@ -531,27 +636,26 @@ msgstr "- Неприпустимий рік для карток."
 msgid "- Invalid website URL."
 msgstr "- Недійсна URL-адреса веб-сайту."
 
-#. TRANS: first parameter is name, second is status
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "%1$s association's %2$s"
-msgstr "%1$s - %2$s товариства"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Неприпустима адреса е-пошти %1$s (%2$s)"
 
-msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Amount must be a positive number"
+msgid "- Value for '%1$s' must be a positive number!"
+msgstr "Сума має бути додатним числом"
+
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
-"Будь ласка, визначте константу \"GALETTE_URI\" зі шляхом до вашого "
-"екземпляра."
 
-msgid "Never"
-msgstr "Ніколи"
-
-msgid "Main information"
-msgstr "Контактні відомості"
-
-msgid "Social networks"
-msgstr "Соціальні мережі"
-
-msgid "Dark mode CSS file has been reset."
-msgstr "Файл CSS темного режиму скинуто."
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s seconds or more!"
+msgstr ""
 
 msgid "My Account"
 msgstr "Мій обліковий запис"
@@ -720,6 +824,14 @@ msgstr ""
 "Установити параметри застосунків (адреса, вебсайт, конфігурація карток "
 "членів, ...)"
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts"
+msgstr "Автентифікація не вдалася"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "Plugins"
 msgstr "Розширення"
 
@@ -777,6 +889,14 @@ msgstr "Засоби адміністрування"
 
 msgid "Various administrative tools"
 msgstr "Різні адміністративні засоби"
+
+#, fuzzy
+#| msgid "Attendance sheet configuration"
+msgid "Advanced configuration"
+msgstr "Конфігурація листа відвідуваності"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
 
 msgid "Gallery"
 msgstr "Дошка членів"
@@ -1154,21 +1274,6 @@ msgstr " (вік: %1$s)"
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Повторюється з %1$s (%2$s)"
 
-msgid "Association status"
-msgstr "Статус асоціації"
-
-msgid "Rules of procedure"
-msgstr "Правила процедури"
-
-msgid "Adhesion form"
-msgstr "Форма зчіпляння"
-
-msgid "Meeting minutes"
-msgstr "Протокол засідання"
-
-msgid "Votes results"
-msgstr "Результати голосування"
-
 msgid "Form is mandatory!"
 msgstr "Форма обов'язкова!"
 
@@ -1326,6 +1431,28 @@ msgstr "Е-пошта: \"%1$s\" не було змінено!"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Е-пошта: \"%1$s\" успішно змінено."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "Немає пароля"
+
+#, fuzzy
+#| msgid "Please confirm your email address:"
+msgid "Please confirm your password again."
+msgstr "Будь ласка, підтвердіть Вашу е-пошту:"
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been stored."
+msgstr "Налаштування збережено."
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been reset to its default."
+msgstr "Налаштування збережено."
+
 msgid "Removal has not been confirmed!"
 msgstr "Видалення не підтверджено!"
 
@@ -1466,6 +1593,16 @@ msgstr "На %1$s повідомлення не надіслано"
 msgid "Invalid email adress!"
 msgstr "Недійсна е-пошта!"
 
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings work."
+msgstr "Перевірка налаштувань е-пошти"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings do not work."
+msgstr "Перевірка налаштувань е-пошти"
+
 msgid "Fields configuration has been successfully stored"
 msgstr "Конфігурацію полів успішно збережено"
 
@@ -1503,6 +1640,14 @@ msgstr "Вхід"
 
 msgid "You must provide both login and password."
 msgstr "Ви повинні вказати як логін, так і пароль."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication throttled"
+msgstr "Автентифікація не вдалася"
 
 msgid "A new Galette release is available."
 msgstr "Доступний новий випуск Galette."
@@ -1547,16 +1692,17 @@ msgstr ""
 "Надісланий електронний лист у налаштуваннях вимкнено. Запитайте "
 "адміністратора Galette"
 
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Password recovery"
+msgid "Password recovery throttled"
+msgstr "Відновлення пароля"
+
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr "На е-пошту '%s' надіслано лист для відновлення пароля."
-
-msgid ""
-"An email has been sent to your address.<br/>Please check your inbox and "
-"follow the instructions."
-msgstr ""
-"На вашу е-пошту надіслано лист.<br>Перевірте свої вхідні та дотримуйтесь "
-"указівок."
 
 msgid "An email has been sent to the member."
 msgstr "Членові надіслано повідомлення на е-пошту."
@@ -1585,6 +1731,17 @@ msgstr "Адреси е-пошти %s не існує"
 msgid "Login %s does not exist"
 msgstr "Логін %s не існує"
 
+#, fuzzy
+#| msgid ""
+#| "An email has been sent to your address.<br/>Please check your inbox and "
+#| "follow the instructions."
+msgid ""
+"If an account matches, an email has been sent to its address.<br/>Please "
+"check your inbox and follow the instructions."
+msgstr ""
+"На вашу е-пошту надіслано лист.<br>Перевірте свої вхідні та дотримуйтесь "
+"указівок."
+
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
@@ -1605,6 +1762,22 @@ msgstr "Пароль для члена \"%s\" змінено."
 
 msgid "Your password has been changed!"
 msgstr "Ваш пароль було змінено!"
+
+msgid "All authentication counters have been lifted."
+msgstr ""
+
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "The counter has been lifted."
+msgstr "Обліковий запис члена змінено."
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication counters lifted"
+msgstr "Автентифікація не вдалася"
+
+msgid "Nothing to lift; it may have expired on its own."
+msgstr ""
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -1659,6 +1832,12 @@ msgstr "Файл '%1$s' видалено з диска."
 #, php-format
 msgid "Cannot remove '%1$s' from disk :/"
 msgstr "Не вдається видалити '%1$s' з диска :/"
+
+#. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+#, fuzzy, php-format
+#| msgid "New occurrence"
+msgid "%1$s (occurrence %2$s)"
+msgstr "Новий випадок"
 
 msgid "CSV import model"
 msgstr "Модель імпорту CSV"
@@ -1933,6 +2112,17 @@ msgstr "Уведіть об’єкт для повідомлення."
 msgid "Please enter a message."
 msgstr "Уведіть повідомлення."
 
+msgid "The mailing could not be queued, nothing has been sent."
+msgstr ""
+
+#. TRANS: first parameter is the number of recipients reached, second the total
+#, php-format
+msgid ""
+"The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
+"stored, unsent, so you can check what has been delivered before sending it "
+"again."
+msgstr ""
+
 msgid "Mailing has been successfully sent!"
 msgstr "Пошта успішно надіслана!"
 
@@ -1945,6 +2135,26 @@ msgstr "Видалити поштову розсилку #%1$s"
 
 msgid "Mailing preview"
 msgstr "Попередній перегляд розсилки"
+
+#, fuzzy
+#| msgid "Sent mailings:"
+msgid "Sending mailing"
+msgstr "Надіслані розсилання:"
+
+#, fuzzy
+#| msgid "Go back to members list"
+msgid "Back to members list"
+msgstr "Повернутися до списку членів"
+
+#, fuzzy
+#| msgid "Mailings"
+msgid "Mailings history"
+msgstr "Розсилки"
+
+#, fuzzy
+#| msgid "Sent reminders:"
+msgid "Sending reminders"
+msgstr "Надіслані нагадування:"
 
 #. TRANS: parameter is the transaction identifier
 #, php-format
@@ -2032,6 +2242,11 @@ msgstr "Вилучити вид оплати %1$s"
 
 msgid "Subscription"
 msgstr "Підписки"
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscription throttled"
+msgstr "Увімкнено самопідписку?"
 
 #, fuzzy
 #| msgid "file"
@@ -2512,6 +2727,21 @@ msgstr "Пошукові запити видалено (%1$s)"
 msgid "Contributions deleted (%1$s)"
 msgstr "Внески видалено (%1$s)"
 
+msgid "Association status"
+msgstr "Статус асоціації"
+
+msgid "Rules of procedure"
+msgstr "Правила процедури"
+
+msgid "Adhesion form"
+msgstr "Форма зчіпляння"
+
+msgid "Meeting minutes"
+msgstr "Протокол засідання"
+
+msgid "Votes results"
+msgstr "Результати голосування"
+
 msgid "Y"
 msgstr "РР"
 
@@ -2628,6 +2858,11 @@ msgstr "Немає імені користувача"
 msgid "No database name"
 msgstr "Немає назви бази даних"
 
+#, fuzzy
+#| msgid "Table prefix:"
+msgid "No table prefix"
+msgstr "Префікс таблиці:"
+
 msgid "The username cannot contain the @ character"
 msgstr "Ім'я користувача не може містити знак @"
 
@@ -2642,6 +2877,18 @@ msgstr "Установлення Galette"
 
 msgid "Read the manual"
 msgstr "Прочитайте посібник"
+
+msgid "Choose your language"
+msgstr "Виберіть свою мову"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Поточна сторінка (%1$s)"
+
+#, php-format
+msgid "Switch locale to '%1$s'"
+msgstr "Змінити мову на \"%1$s\""
 
 msgid "Version selection"
 msgstr "Вибір версії"
@@ -3193,32 +3440,6 @@ msgstr ""
 msgid "Unable to migrate choices for field %d: %s"
 msgstr ""
 
-msgid "New installation"
-msgstr "Нове встановлення"
-
-msgid "you're installing Galette for the first time"
-msgstr "ви встановлюєте Galette вперше"
-
-msgid "you wish to erase an older version of Galette without keeping your data"
-msgstr "ви хочете стерти стару версію Galette без збереження даних"
-
-msgid "Update"
-msgstr "Оновлення"
-
-msgid ""
-"you already have installed Galette, and you want to upgrade to the latest "
-"version"
-msgstr "ви вже встановили Galette, і ви хочете оновитися до останньої версії"
-
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Увага: не забудьте створити резервну копію поточної бази даних."
-
-msgid "Next step"
-msgstr "Наступний крок"
-
-msgid "Back"
-msgstr "Назад"
-
 msgid "Database has not been installed!"
 msgstr "Базу даних не встановлено!"
 
@@ -3233,6 +3454,12 @@ msgstr "Базу даних оновлено :)"
 
 msgid "Retry"
 msgstr "Повторити"
+
+msgid "Next step"
+msgstr "Наступний крок"
+
+msgid "Back"
+msgstr "Назад"
 
 msgid "Photos"
 msgstr "Світлини"
@@ -3356,6 +3583,15 @@ msgstr "Файл конфігурації створено!"
 msgid "Data initialized."
 msgstr "Дані започатковано."
 
+#. TRANS: parameter is the file path
+#, fuzzy, php-format
+#| msgid "Unable to create configuration file (%1$s)"
+msgid "Unable to remove installer enable file (%1$s)"
+msgstr "Неможливо створити файл конфігурації (%1$s)"
+
+msgid "Remember to remove it manually to re-secure the installer."
+msgstr ""
+
 msgid "An error occurred :("
 msgstr "Сталася помилка :("
 
@@ -3440,14 +3676,29 @@ msgid ""
 msgstr ""
 "Galette не має достатньо дозволів на базу даних для продовження оновлення."
 
+msgid "The installer is disabled."
+msgstr ""
+
+msgid "For security reasons, Galette installer is disabled by default."
+msgstr ""
+
+#, php-format
+msgid ""
+"To enable installer, create the empty %1$s file in Galette data directory, "
+"then reload this page:"
+msgstr ""
+
+msgid "I have created the file, reload"
+msgstr ""
+
+msgid "Homepage"
+msgstr "Домівка"
+
 msgid "Galette has been successfully installed!"
 msgstr "Galette успішно встановлено!"
 
 msgid "Galette has been successfully updated!"
 msgstr "Galette успішно оновлено!"
-
-msgid "Homepage"
-msgstr "Домівка"
 
 msgid "It seems you already use latest Galette version!"
 msgstr "Здається, ви вже використовуєте останню версію Galette!"
@@ -3457,6 +3708,9 @@ msgstr "Ви дійсно бажаєте виконати оновлення?"
 
 msgid "Home"
 msgstr "Домівка"
+
+msgid "Update"
+msgstr "Оновлення"
 
 msgid "Select your previous Galette version below, and then click next."
 msgstr "Виберіть попередню версію Galette нижче та натисніть кнопку \"Далі\"."
@@ -3507,13 +3761,6 @@ msgstr ""
 
 msgid "Enter connection data for the existing database."
 msgstr "Уведіть дані під'єднання для наявної бази даних."
-
-msgid ""
-"It seems that you have already installed Galette once.<br/>All existing data "
-"will be removed if you keep going on using existing database!"
-msgstr ""
-"Здається, ви вже встановили Galette один раз.<br>Усі наявні дані буде "
-"видалено, якщо ви продовжуватимете використовувати наявну базу даних!"
 
 msgid "Database type:"
 msgstr "Тип бази даних:"
@@ -3928,15 +4175,15 @@ msgstr "Скидання вмісту електронної пошти"
 msgid "(all existing values will be removed)"
 msgstr "(усі наявні значення буде видалено)"
 
-msgid "Reset fields configuration"
-msgstr "Скинути конфігурацію полів"
-
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
 "Сюди входять позиції полів, порядок, видимість, рівні доступу та обов'язкові "
 "позначки."
+
+msgid "Reset fields configuration"
+msgstr "Скинути конфігурацію полів"
 
 msgid "Reset all PDF models to their default values"
 msgstr "Скинути всі моделі PDF до типових значень"
@@ -4124,6 +4371,53 @@ msgstr "Не повністю надісланий переказ"
 
 msgid "View corresponding contributions"
 msgstr "Переглянути відповідні внески"
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
+
+msgid "Sending in progress…"
+msgstr ""
+
+msgid "Sent"
+msgstr "Надіслано"
+
+#, fuzzy
+#| msgid "Warning"
+msgid "Remaining"
+msgstr "Увага"
+
+msgid "Failed"
+msgstr ""
+
+msgid "Recipients"
+msgstr "Одержувачі"
+
+#, php-format
+msgid "Sent in the last hour: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sent in the last day: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sending is over, but %1$s recipient(s) could not be reached."
+msgstr ""
+
+#, fuzzy
+#| msgid "Mailing has been successfully sent!"
+msgid "Sending has been successfully completed!"
+msgstr "Пошта успішно надіслана!"
+
+msgid ""
+"Sending rate limit reached. Sending will resume later (reopen this page or "
+"drain the queue from a cron job)."
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred while saving the member."
+msgid "An error occurred while sending. You may retry."
+msgstr "Під час зберігання члена сталася помилка."
 
 #, php-format
 msgid "%1$s entry"
@@ -4396,6 +4690,9 @@ msgstr "Вибір груп, що управляються"
 msgid "Click on a row to select a group"
 msgstr "Натисніть рядок, щоб вибрати групу"
 
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Увага: не забудьте створити резервну копію поточної бази даних."
+
 msgid "Existing files"
 msgstr "Наявні файли"
 
@@ -4521,6 +4818,17 @@ msgstr "Ім'я користувача або е-пошта:"
 
 msgid "Recover password"
 msgstr "Відновити пароль"
+
+msgid "Confirm your super admin password"
+msgstr ""
+
+msgid "This page can break your installation, be very careful."
+msgstr ""
+
+#, fuzzy
+#| msgid "Confirmation:"
+msgid "Confirm"
+msgstr "Підтвердження:"
 
 msgid "IP"
 msgstr "IP"
@@ -4982,12 +5290,6 @@ msgstr "Використання GMAIL як SMTP-сервера (повільн�
 msgid "Using Sendmail server"
 msgstr "Використовувати сервер Sendmail"
 
-msgid "Using QMAIL server"
-msgstr "Використовувати сервер QMAIL"
-
-msgid "Test email settings"
-msgstr "Перевірка налаштувань е-пошти"
-
 msgid "SMTP server:"
 msgstr "SMTP-сервер:"
 
@@ -5031,6 +5333,22 @@ msgstr "Користувач SMTP (або GMail):"
 
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (або GMail) :"
+
+#, fuzzy
+#| msgid "Version selection"
+msgid "Test connection"
+msgstr "Вибір версії"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "Send a test email"
+msgstr "Надіслати повідомлення на е-пошту"
+
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
 
 msgid "Vertical margins:"
 msgstr "Вертикальні поля:"
@@ -5238,6 +5556,11 @@ msgid "An error occurred sending test email :("
 msgstr ""
 "Сталася помилка під час надсилання перевіркового повідомлення е-пошти :("
 
+#, fuzzy
+#| msgid "An error occurred while saving fields configuration :("
+msgid "An error occurred testing mail server connection :("
+msgstr "Під час зберігання конфігурації полів сталася помилка :("
+
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
@@ -5269,6 +5592,227 @@ msgstr "Керує:"
 
 msgid "New dynamic field"
 msgstr "Нове динамічне поле"
+
+#, fuzzy
+#| msgid "Date settings"
+msgid "Filter settings"
+msgstr "Налаштування дати"
+
+msgid "Search a setting..."
+msgstr ""
+
+msgid "Show legend"
+msgstr "Показати умовні позначення"
+
+msgid ""
+"This setting is not known by Galette. It may come from an older version or "
+"from a plugin."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unknown"
+msgid "unknown"
+msgstr "Невідомо"
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "Galette maintains this value itself; it is shown for information only."
+msgstr ""
+
+#, fuzzy
+#| msgid "Read only"
+msgid "read-only"
+msgstr "Лише читання"
+
+msgid ""
+"Held as a secret: its value is never displayed, and it is changed from the "
+"settings form."
+msgstr ""
+
+#, fuzzy
+#| msgid "Secretary"
+msgid "secret"
+msgstr "Секретар"
+
+#, fuzzy
+#| msgid "Default"
+msgid "default"
+msgstr "За замовчуванням"
+
+#, fuzzy
+#| msgid "Modified"
+msgid "modified"
+msgstr "Змінено"
+
+#, php-format
+msgid "Declared by the %s plugin, and only while it stays active."
+msgstr ""
+
+#, fuzzy
+#| msgid "Reset"
+msgid "set"
+msgstr "Скинути"
+
+#, fuzzy
+#| msgid "Not supplied"
+msgid "not set"
+msgstr "Не вказано"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#, fuzzy, php-format
+#| msgid "Save"
+msgid "Save '%s'"
+msgstr "Зберегти"
+
+#, fuzzy
+#| msgid "Reset all filters to defaults"
+msgid "Reset to default"
+msgstr "Скинути всі добірки до типових"
+
+#, fuzzy, php-format
+#| msgid "Reset all filters to defaults"
+msgid "Reset '%s' to its default"
+msgstr "Скинути всі добірки до типових"
+
+msgid "Constants behavior.inc.php understands"
+msgstr ""
+
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+
+#, php-format
+msgid "Replaced by the \"%s\" setting."
+msgstr ""
+
+msgid "deprecated"
+msgstr ""
+
+msgid "defined"
+msgstr ""
+
+#, php-format
+msgid "Go to %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "Statuses"
+msgstr "Стан"
+
+msgid "Never changed: the value Galette ships with."
+msgstr ""
+
+msgid ""
+"Changed from the default, here or from the settings form. It can be reset."
+msgstr ""
+
+msgid ""
+"Galette maintains this value itself, such as a generated identifier or a "
+"date it records. It is shown for information only."
+msgstr ""
+
+msgid ""
+"A password or a token. Its value is never displayed, only whether one is "
+"set, and it is changed from the settings form."
+msgstr ""
+
+msgid ""
+"A constant defined in behavior.inc.php takes precedence over the stored "
+"value. Remove it from that file to manage the setting from here."
+msgstr ""
+
+msgid ""
+"A row found in database that Galette does not describe. It may come from an "
+"older version, or from a plugin that is no longer active."
+msgstr ""
+
+#, fuzzy
+#| msgid "Company name"
+msgid "plugin name"
+msgstr "Назва компанії"
+
+msgid ""
+"Declared by that plugin rather than by Galette. Deactivate the plugin and "
+"the setting becomes unknown again, keeping its value until the plugin comes "
+"back."
+msgstr ""
+
+msgid ""
+"Repeated failures get further attempts refused for a while. What is refused "
+"right now is listed below; lifting a line lets whoever it stands for try "
+"again at once."
+msgstr ""
+
+msgid "Thresholds and durations are in the settings."
+msgstr ""
+
+msgid "Nothing is being refused"
+msgstr ""
+
+msgid ""
+"No account and no address is waiting; counters that can no longer refuse "
+"anyone are dropped on their own."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts currently refused"
+msgstr "Автентифікація не вдалася"
+
+#, fuzzy
+#| msgid "Emails content"
+msgid "What is counted"
+msgstr "Вміст е-пошти"
+
+#, fuzzy
+#| msgid "Account:"
+msgid "Account"
+msgstr "Обліковий запис:"
+
+msgid "Failures"
+msgstr ""
+
+msgid "Refused until"
+msgstr ""
+
+msgid "Failed attempts on one account, from one address"
+msgstr ""
+
+msgid "Failed attempts from one address, on any account"
+msgstr ""
+
+msgid "Failed attempts on one account, from anywhere"
+msgstr ""
+
+msgid "Password recovery requests for one account"
+msgstr ""
+
+msgid "Password recovery requests from one address"
+msgstr ""
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscriptions from one address"
+msgstr "Увімкнено самопідписку?"
+
+msgid "Lift"
+msgstr ""
+
+msgid "Lift them all"
+msgstr ""
 
 msgid "Please confirm your email address:"
 msgstr "Будь ласка, підтвердіть Вашу е-пошту:"
@@ -5471,17 +6015,11 @@ msgstr "У Вас нема дозволу на запитувану URL-адре
 msgid "Sender"
 msgstr "Відправник"
 
-msgid "Recipients"
-msgstr "Одержувачі"
-
 msgid "Subject"
 msgstr "Тема"
 
 msgid "Att."
 msgstr "Долучення"
-
-msgid "Sent"
-msgstr "Надіслано"
 
 msgid "Create new mailing"
 msgstr "Створити нове розсилання"
@@ -5496,6 +6034,9 @@ msgstr ""
 msgid "Sent mailings:"
 msgstr "Надіслані розсилання:"
 
+msgid "In progress"
+msgstr ""
+
 msgid "Superadmin"
 msgstr "Суперадміністратор"
 
@@ -5509,6 +6050,11 @@ msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
 "Відображувати відомості про поштове розсилання \"%1$s\" у вікні попереднього "
 "перегляду"
+
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Follow the sending of mailing '%1$s'"
+msgstr "Видалити розсилання '%1$s'"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
@@ -5533,6 +6079,11 @@ msgstr "Використовувати поштове розсилання '%1$s
 
 msgid "No sent"
 msgstr ""
+
+#, fuzzy
+#| msgid "For the selection:"
+msgid "Follow the sending"
+msgstr "Для вибору:"
 
 msgid "An error occurred displaying preview :("
 msgstr "Під час відображення попереднього перегляду сталася помилка :("
@@ -5611,6 +6162,9 @@ msgstr "Новий стан"
 
 msgid "Choose an entry"
 msgstr "Виберіть запис"
+
+msgid "Selecting an item from the list will automatically reload the page"
+msgstr ""
 
 msgid "Reference:"
 msgstr "Посилання:"
@@ -5719,6 +6273,11 @@ msgstr ""
 "Виберіть файли, які потрібно додати як долучення. <br> Вибір декількох "
 "файлів за допомогою клавіш \"Ctrl\" або \"Shift\" доступний лише у сумісних "
 "браузерах."
+
+#, fuzzy, php-format
+#| msgid "File is too big. Maximum allowed size is %1$s"
+msgid "Maximum allowed size is %1$s"
+msgstr "Файл завеликий. Найбільш допустимий розмір - %1$s"
 
 msgid "Add attachment"
 msgstr "Додати долучення"
@@ -5866,8 +6425,16 @@ msgstr "Моя діяльність"
 msgid "Activities"
 msgstr "Діяльності"
 
+msgid "Loading..."
+msgstr "Завантаження..."
+
 msgid "Show dashboard on login"
 msgstr "Показувати дошку даних під час входу"
+
+#, fuzzy
+#| msgid "An error occurred displaying preview :("
+msgid "An error occurred displaying news :("
+msgstr "Під час відображення попереднього перегляду сталася помилка :("
 
 msgid "For the selection:"
 msgstr "Для вибору:"
@@ -5934,6 +6501,14 @@ msgstr "Зображення:"
 msgid "Cropping focus"
 msgstr "Обрізання фокусу"
 
+#, php-format
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %1$s"
+msgstr ""
+"Виберіть область вихідного зображення, яку потрібно зберегти після обрізання "
+"до остаточного співвідношення, визначеного в налаштуваннях: %1$s"
+
 msgid "Center"
 msgstr "центр"
 
@@ -5949,14 +6524,6 @@ msgstr "Ліворуч"
 msgid "Right"
 msgstr "Праворуч"
 
-#, php-format
-msgid ""
-"Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %1$s"
-msgstr ""
-"Виберіть область вихідного зображення, яку потрібно зберегти після обрізання "
-"до остаточного співвідношення, визначеного в налаштуваннях: %1$s"
-
 msgid "Additionnal fields:"
 msgstr "Додаткові поля:"
 
@@ -5964,14 +6531,24 @@ msgid "Enter as many occurrences you want."
 msgstr "Уведіть скільки завгодно випадків."
 
 #, php-format
+msgid "Add an occurrence of %1$s"
+msgstr ""
+
+#, php-format
 msgid "Enter up to %1$s more occurrences."
 msgstr "Уведіть до %1$s зустрічей."
 
+#, php-format
+msgid "Delete the file and remove this occurrence of %1$s"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove title %1$s"
+msgid "Remove this occurrence of %1$s"
+msgstr "Вилучити заголовок %1$s"
+
 msgid "Select an option"
 msgstr "Виберіть опцію"
-
-msgid "delete"
-msgstr "видалити"
 
 msgid "This comment is only displayed for admins and staff members."
 msgstr "Цей коментар відображається лише для адміністраторів і співробітників."
@@ -6037,9 +6614,6 @@ msgstr "Надіслати їх знову?"
 
 msgid "Later"
 msgstr "Пізніше"
-
-msgid "Loading..."
-msgstr "Завантаження..."
 
 msgid "Password is valid :)"
 msgstr "Пароль дійсний :)"
@@ -6164,8 +6738,8 @@ msgstr "Сторінки:"
 msgid "Records per page:"
 msgstr "Записів на сторінці:"
 
-msgid "Show legend"
-msgstr "Показати умовні позначення"
+msgid "Selecting an item from the list will automatically reload the table"
+msgstr ""
 
 msgid "(Un)Check all"
 msgstr "Зняти/вибрати все"
@@ -6218,6 +6792,11 @@ msgstr "Поверніться на домашню сторінку Galette"
 
 msgid "Menu"
 msgstr "Меню"
+
+#, fuzzy
+#| msgid "Public pages"
+msgid "Public pages menu"
+msgstr "Загальнодоступні сторінки"
 
 msgid "Subscribe"
 msgstr "Підписатися"
@@ -6310,18 +6889,6 @@ msgstr "Вибрані групи"
 msgid "No groups has been selected yet."
 msgstr "Групи ще не вибрано."
 
-msgid "Choose your language"
-msgstr "Виберіть свою мову"
-
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
-msgid "Current locale '%1$s'"
-msgstr "Поточна сторінка (%1$s)"
-
-#, php-format
-msgid "Switch locale to '%1$s'"
-msgstr "Змінити мову на \"%1$s\""
-
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
@@ -6371,6 +6938,9 @@ msgstr "Ви впевнені, що хочете продовжити?"
 
 msgid "This can't be undone."
 msgstr "Цю дію не можна скасувати."
+
+msgid "New installation"
+msgstr "Нове встановлення"
 
 #, php-format
 msgid "you're installing %1$s for the first time"
@@ -6469,6 +7039,38 @@ msgstr ""
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
 
+#~ msgid ""
+#~ "Please define constant \"GALETTE_URI\" with the path to your instance."
+#~ msgstr ""
+#~ "Будь ласка, визначте константу \"GALETTE_URI\" зі шляхом до вашого "
+#~ "екземпляра."
+
+#~ msgid "you're installing Galette for the first time"
+#~ msgstr "ви встановлюєте Galette вперше"
+
+#~ msgid ""
+#~ "you wish to erase an older version of Galette without keeping your data"
+#~ msgstr "ви хочете стерти стару версію Galette без збереження даних"
+
+#~ msgid ""
+#~ "you already have installed Galette, and you want to upgrade to the latest "
+#~ "version"
+#~ msgstr ""
+#~ "ви вже встановили Galette, і ви хочете оновитися до останньої версії"
+
+#~ msgid ""
+#~ "It seems that you have already installed Galette once.<br/>All existing "
+#~ "data will be removed if you keep going on using existing database!"
+#~ msgstr ""
+#~ "Здається, ви вже встановили Galette один раз.<br>Усі наявні дані буде "
+#~ "видалено, якщо ви продовжуватимете використовувати наявну базу даних!"
+
+#~ msgid "Using QMAIL server"
+#~ msgstr "Використовувати сервер QMAIL"
+
+#~ msgid "delete"
+#~ msgstr "видалити"
+
 #~ msgid "There are no member to proceed."
 #~ msgstr "Немає члена для продовження."
 
@@ -6477,11 +7079,6 @@ msgstr "Під час надсилання відомостей про теле�
 
 #~ msgid "Cause"
 #~ msgstr "Причина"
-
-#, fuzzy
-#~| msgid "Enabled"
-#~ msgid "Enable"
-#~ msgstr "Увімкнено"
 
 #~ msgid "modification"
 #~ msgstr "модифікація"
@@ -6744,17 +7341,11 @@ msgstr "Під час надсилання відомостей про теле�
 #~ msgid "Comments"
 #~ msgstr "Коментарі:"
 
-#~ msgid "Reset"
-#~ msgstr "Скинути"
-
 #~ msgid "No member has been found"
 #~ msgstr "Члена не знайдено"
 
 #~ msgid "No member to show"
 #~ msgstr "Немає члена для показу"
-
-#~ msgid "Read only"
-#~ msgstr "Лише читання"
 
 #~ msgid "Read/Write"
 #~ msgstr "Читання й записування"
@@ -6893,9 +7484,6 @@ msgstr "Під час надсилання відомостей про теле�
 
 #~ msgid "No file to upload"
 #~ msgstr "Немає файлу для вивантаження"
-
-#~ msgid "New occurrence"
-#~ msgstr "Новий випадок"
 
 #~ msgid "new"
 #~ msgstr "новий"
