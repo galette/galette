@@ -29,6 +29,7 @@ New features
 - Mailings can be sent in batches (**experimental**): a delay can be set between two messages, and hourly and daily quotas can be enforced. Sending goes through a queue that can be resumed; reminders use it as well. Default values keep the previous behavior
 - New advanced configuration page, listing every preference, including those the configuration forms do not show; each one tells whether it holds its default value, has been modified, is locked by a constant from behavior.inc.php or is unknown, and secret ones only tell whether they are set
 - Some settings moved from behavior.inc.php to the database: instance URL (GALETTE_URI), reverse proxy address index (GALETTE_X_FORWARDED_FOR_INDEX) and session duration (GALETTE_TIMEOUT). The constants still work and still take precedence; they are then reported as locked
+- The maximum size of an upload is now a setting, one per kind of upload: pictures, mailing attachments, documents, CSV imports and dynamic fields files. They are in the advanced configuration, and default to the single value that was hard coded until now
 - Plugins now have their own database version, and are updated on their own; the plugins page has been reworked, and lists disabled, not installed and outdated plugins
 - Dynamic fields can be added on preferences
 - Filters and pagination on the documents list
@@ -56,11 +57,14 @@ Improvements
 - Page titles have been improved throughout the application
 - A missing asset now renders a proper error page instead of a blank one
 - Error messages name the setting that holds an invalid address
+- A file size is shown in the unit that fits - octets, Ko, Mo or Go - wherever it appears: the upload limits, the error a file too big raises, and the list of import files
 - Reuse SMTP connection on several calls
 - Load news with ajax call to prevent dashboard hangs
 
 Fixes
 
+- A mailing attachment over the maximum allowed size raised a fatal error instead of being reported
+- The maximum size allowed for a dynamic field file was announced in bytes, and called kilobytes
 - Line breaks were lost in the text version of the mail signature
 - A new mailing could not be created once a mailing had been sent
 - Groups managers could not edit their own member record
