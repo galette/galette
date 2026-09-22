@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 07:43+0200\n"
+"POT-Creation-Date: 2026-09-22 10:34+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -648,6 +648,11 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- La soma deu èstre un entier positiu !"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
+#, fuzzy
+#| msgid "- Unknown contribution type!"
+msgid "- Unknown two-factor authentication mode!"
+msgstr "- Mena de contribucion inconeguda"
+
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
@@ -683,6 +688,12 @@ msgstr "Meis informacions"
 
 msgid "View my member card"
 msgstr "Veire ma ficha de membre"
+
+msgid "Two-factor authentication"
+msgstr ""
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "Add a child member"
 msgstr "Ajustar un membre ligat (enfant)"
@@ -1526,6 +1537,87 @@ msgstr "Lo modèle es pas estat enregistrat :("
 msgid "Invalid link!"
 msgstr "Ligam invalide !"
 
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication failed."
+msgstr "L'autentificacion a fralhit"
+
+msgid "Second factor failed"
+msgstr ""
+
+msgid "Login"
+msgstr "Connexion"
+
+msgid ""
+"Two-factor authentication is already enabled. Disable it first to enrol "
+"again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to load contribution"
+msgid "Enable two-factor authentication"
+msgstr "Impossible de cargar la contribucion"
+
+msgid "That code does not match. Check your application clock, then try again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication enabled"
+msgstr "L'autentificacion a fralhit"
+
+msgid ""
+"Two-factor authentication is now enabled for the super administrator account."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication disabled"
+msgstr "L'autentificacion a fralhit"
+
+msgid "Two-factor authentication has been disabled."
+msgstr ""
+
+msgid "Two-factor recovery codes renewed"
+msgstr ""
+
+msgid "Use your own two-factor authentication page to disable it."
+msgstr ""
+
+msgid ""
+"Only the super administrator may reset an administrator's two-factor "
+"authentication."
+msgstr ""
+
+msgid ""
+"Only an administrator may reset a staff member's two-factor authentication."
+msgstr ""
+
+msgid "This member has no two-factor authentication to reset."
+msgstr ""
+
+msgid "Two-factor authentication reset for %member"
+msgstr ""
+
+#, fuzzy
+#| msgid "An email has been sent to the member."
+msgid "Two-factor authentication has been reset for this member."
+msgstr "Un corriel es estat mandat au membre."
+
+msgid "Two-factor authentication is not enabled on this instance."
+msgstr ""
+
+msgid "Two-factor authentication is not enabled."
+msgstr ""
+
+#, fuzzy
+#| msgid "Recover password"
+msgid "Recovery codes"
+msgstr "Recuperar lo senhau"
+
 msgid "Texts has been successfully reinitialized."
 msgstr "Lei tèxtes son estats actualizats tornar mai."
 
@@ -1656,14 +1748,8 @@ msgstr "L'ajuston %1$s es estat activat"
 msgid "Plugin %1$s has been disabled"
 msgstr "L'ajuston %1$s es estat desactivat"
 
-msgid "Login"
-msgstr "Connexion"
-
 msgid "You must provide both login and password."
 msgstr "Devètz donar l'identificant e lo senhau."
-
-msgid "Too many failed attempts. Please try again later."
-msgstr ""
 
 #, fuzzy
 #| msgid "Authentication failed"
@@ -2659,6 +2745,11 @@ msgstr ""
 
 msgid "Unauthorized"
 msgstr "Pas autorizat"
+
+msgid ""
+"Two-factor authentication is required. Please enable it to keep using your "
+"account."
+msgstr ""
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -4417,7 +4508,72 @@ msgstr "La transaccion es pas ventilada en plen"
 msgid "View corresponding contributions"
 msgstr "Consultar e filtrar lei contribucions"
 
-msgid "Experimental feature. Be careful using it."
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is enabled"
+msgstr "L'autentificacion a fralhit"
+
+msgid ""
+"A code from your authentication application is asked for at every login."
+msgstr ""
+
+msgid ""
+"Recovery codes let you log in when you no longer have your device. Each one "
+"works once."
+msgstr ""
+
+#, php-format
+msgid "You have %count recovery code left."
+msgid_plural "You have %count recovery codes left."
+msgstr[0] ""
+msgstr[1] ""
+
+#, fuzzy
+#| msgid "Current model"
+msgid "Current code:"
+msgstr "Modèle corrent"
+
+msgid "Renew recovery codes"
+msgstr ""
+
+msgid "No recovery codes for this account"
+msgstr ""
+
+msgid ""
+"The super administrator is not a member: its second factor lives in the "
+"preferences, which is also where it is cleared from should you lose your "
+"device. Keep an access to the database at hand."
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Desactivat"
+
+msgid ""
+"Two-factor authentication is required on this instance: disabling it will be "
+"asked for again at your next login."
+msgstr ""
+
+msgid ""
+"A code is required to disable it, so that nobody else can turn it off from "
+"your session."
+msgstr ""
+
+msgid "Disable two-factor authentication"
+msgstr ""
+
+msgid "Two-factor authentication is not enabled"
+msgstr ""
+
+msgid ""
+"It is required on this instance: you will be asked to enable it to keep "
+"using your account."
+msgstr ""
+
+msgid ""
+"Adding a code from an application on your phone makes a stolen password "
+"useless on its own."
 msgstr ""
 
 msgid "Sending in progress…"
@@ -4587,6 +4743,23 @@ msgstr ""
 
 msgid "No fields to translate."
 msgstr ""
+
+msgid "Enter the code shown by your authentication application."
+msgstr ""
+
+msgid "Code:"
+msgstr "Còdi :"
+
+msgid "Validate"
+msgstr "Validar"
+
+msgid "Lost your device? Enter one of your recovery codes above instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Cancel mailing"
+msgid "Cancel and log off"
+msgstr "Anullar lo mandadís"
 
 msgid "Filename"
 msgstr "Nom dau fichier"
@@ -4803,6 +4976,17 @@ msgstr "Regardatz ben de chausir un fichier d'importar."
 msgid "Please make sure to select one file to upload."
 msgstr "Regardatz de chausir au mens un fichier de mandar."
 
+msgid "Write these codes down now"
+msgstr ""
+
+msgid ""
+"They are shown this once and cannot be displayed again. Each one works a "
+"single time, and lets you log in when you no longer have your device."
+msgstr ""
+
+msgid "I have written them down"
+msgstr ""
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4812,6 +4996,14 @@ msgstr ""
 
 msgid "New password"
 msgstr "Senhal nòu"
+
+msgid ""
+"Clear this member's two-factor authentication, for instance after they lost "
+"both their device and their recovery codes."
+msgstr ""
+
+msgid "Reset two-factor authentication"
+msgstr ""
 
 msgid "Generate Member Card"
 msgstr "Generar la Carta de membre"
@@ -5367,6 +5559,9 @@ msgstr ""
 msgid "SMTP (or GMail) password:"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5490,6 +5685,32 @@ msgstr "I a encar ges de camp dinamic configurat per '%1$s'"
 #| msgid "New dynamic field"
 msgid "Configure dynamic fields"
 msgstr "Camp dinamic novèu"
+
+msgid ""
+"Asks for a code from an application on the member's phone in addition to "
+"their password, so that a stolen password is not enough on its own. Members "
+"who have to hold one are sent to enrolment at their next login; switching "
+"back to disabled lets everyone in again without a code."
+msgstr ""
+
+msgid "Two-factor authentication:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Disable dark mode"
+msgid "Disabled (default)"
+msgstr "Desactivar lo mòde sorn"
+
+msgid "Optional, each member decides"
+msgstr ""
+
+msgid "Required for administrators and staff"
+msgstr ""
+
+#, fuzzy
+#| msgid "Required field!"
+msgid "Required for everyone"
+msgstr "Camp obligatòri!"
 
 msgid "Password length:"
 msgstr "Longor dau senhau :"
@@ -5620,6 +5841,32 @@ msgstr "Gestionaris :"
 
 msgid "New dynamic field"
 msgstr "Camp dinamic novèu"
+
+msgid ""
+"Install an authentication application, for instance FreeOTP, Aegis or "
+"KeePassXC."
+msgstr ""
+
+msgid "Scan the code below with it, or type the key in by hand."
+msgstr ""
+
+msgid "Enter the code it then shows, to confirm it works."
+msgstr ""
+
+msgid "QR code to register the key in an authentication application"
+msgstr ""
+
+msgid "Key, to type in by hand:"
+msgstr ""
+
+msgid "Code shown by the application:"
+msgstr ""
+
+msgid "Confirm and enable"
+msgstr ""
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
 
 #, fuzzy
 #| msgid "Date settings"
@@ -6020,9 +6267,6 @@ msgstr "Per lo menut"
 
 msgid "Type:"
 msgstr "Tipe :"
-
-msgid "Code:"
-msgstr "Còdi :"
 
 msgid "File:"
 msgstr "Fichièr :"
@@ -6626,14 +6870,25 @@ msgstr "Pecaire ! Una error capitèt per ajustar lo membre au grop :("
 msgid "An error occurred retrieving dates :("
 msgstr ""
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is available"
+msgstr "L'autentificacion a fralhit"
+
+msgid ""
+"A code from an application on your telephone, on top of your password, means "
+"a stolen password is not enough on its own to reach your account. Do you "
+"want to set it up?"
+msgstr ""
+
+msgid "Later"
+msgstr "Pus tard"
+
 msgid "Your telemetry data are more than one year old."
 msgstr "Vòstreis informacions de telemetria datan de mai d'un an."
 
 msgid "Do you want to send it again?"
 msgstr "Lei volètz tornar mandar ?"
-
-msgid "Later"
-msgstr "Pus tard"
 
 msgid "Password is valid :)"
 msgstr "Senhau valide :)"
@@ -6867,9 +7122,6 @@ msgstr "Membres seleccionats"
 
 msgid "No members has been selected yet."
 msgstr "Ges de membre seleccionat."
-
-msgid "Validate"
-msgstr "Validar"
 
 #, php-format
 msgid "Translate '%s' field"
@@ -7281,9 +7533,6 @@ msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
 
 #~ msgid "Logging level:"
 #~ msgstr "Nivèu d'istoric :"
-
-#~ msgid "Disabled"
-#~ msgstr "Desactivat"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Inicializacion de Galeta"

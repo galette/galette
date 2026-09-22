@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 07:43+0200\n"
+"POT-Creation-Date: 2026-09-22 10:34+0200\n"
 "PO-Revision-Date: 2026-06-08 18:01+0000\n"
 "Last-Translator: Артур <atter192837@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -661,6 +661,11 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr "Сумма должна быть положительным числом"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
+#, fuzzy
+#| msgid "- Unknown contribution type!"
+msgid "- Unknown two-factor authentication mode!"
+msgstr "- Неизвестный способ вклада!"
+
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
@@ -696,6 +701,14 @@ msgstr "Моя информация"
 
 msgid "View my member card"
 msgstr "Открыть карту участника"
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication"
+msgstr "Использовать аутентификацию SMTP?"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "Add a child member"
 msgstr "Добавить дочернего участника"
@@ -1517,6 +1530,87 @@ msgstr "Модель не была сохранена :("
 msgid "Invalid link!"
 msgstr "Неправильная ссылка!"
 
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication failed."
+msgstr "Ошибка аутентификации"
+
+msgid "Second factor failed"
+msgstr ""
+
+msgid "Login"
+msgstr "Логин"
+
+msgid ""
+"Two-factor authentication is already enabled. Disable it first to enrol "
+"again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to load contribution"
+msgid "Enable two-factor authentication"
+msgstr "Не удалось загрузить взнос"
+
+msgid "That code does not match. Check your application clock, then try again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication enabled"
+msgstr "Ошибка аутентификации"
+
+msgid ""
+"Two-factor authentication is now enabled for the super administrator account."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication disabled"
+msgstr "Ошибка аутентификации"
+
+msgid "Two-factor authentication has been disabled."
+msgstr ""
+
+msgid "Two-factor recovery codes renewed"
+msgstr ""
+
+msgid "Use your own two-factor authentication page to disable it."
+msgstr ""
+
+msgid ""
+"Only the super administrator may reset an administrator's two-factor "
+"authentication."
+msgstr ""
+
+msgid ""
+"Only an administrator may reset a staff member's two-factor authentication."
+msgstr ""
+
+msgid "This member has no two-factor authentication to reset."
+msgstr ""
+
+msgid "Two-factor authentication reset for %member"
+msgstr ""
+
+#, fuzzy
+#| msgid "An email has been sent to the member."
+msgid "Two-factor authentication has been reset for this member."
+msgstr "Почта была отправлено участнику."
+
+msgid "Two-factor authentication is not enabled on this instance."
+msgstr ""
+
+msgid "Two-factor authentication is not enabled."
+msgstr ""
+
+#, fuzzy
+#| msgid "Recover password"
+msgid "Recovery codes"
+msgstr "Восстановить пароль"
+
 msgid "Texts has been successfully reinitialized."
 msgstr "Тексты успешно реинициализированы."
 
@@ -1646,14 +1740,8 @@ msgstr "Плагин %1$s был включён"
 msgid "Plugin %1$s has been disabled"
 msgstr "Плагин %1$s был отключён"
 
-msgid "Login"
-msgstr "Логин"
-
 msgid "You must provide both login and password."
 msgstr "Вы должны указать логин и пароль."
-
-msgid "Too many failed attempts. Please try again later."
-msgstr ""
 
 #, fuzzy
 #| msgid "Authentication failed"
@@ -2616,6 +2704,11 @@ msgstr ""
 
 msgid "Unauthorized"
 msgstr "Не авторизован"
+
+msgid ""
+"Two-factor authentication is required. Please enable it to keep using your "
+"account."
+msgstr ""
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -4342,7 +4435,73 @@ msgstr "Не полностью распределённая транзакци�
 msgid "View corresponding contributions"
 msgstr "Просмотреть соответствующие взносы"
 
-msgid "Experimental feature. Be careful using it."
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is enabled"
+msgstr "Ошибка аутентификации"
+
+msgid ""
+"A code from your authentication application is asked for at every login."
+msgstr ""
+
+msgid ""
+"Recovery codes let you log in when you no longer have your device. Each one "
+"works once."
+msgstr ""
+
+#, php-format
+msgid "You have %count recovery code left."
+msgid_plural "You have %count recovery codes left."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#, fuzzy
+#| msgid "Current model"
+msgid "Current code:"
+msgstr "Текущая модель"
+
+msgid "Renew recovery codes"
+msgstr ""
+
+msgid "No recovery codes for this account"
+msgstr ""
+
+msgid ""
+"The super administrator is not a member: its second factor lives in the "
+"preferences, which is also where it is cleared from should you lose your "
+"device. Keep an access to the database at hand."
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid ""
+"Two-factor authentication is required on this instance: disabling it will be "
+"asked for again at your next login."
+msgstr ""
+
+msgid ""
+"A code is required to disable it, so that nobody else can turn it off from "
+"your session."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Disable two-factor authentication"
+msgstr "Использовать аутентификацию SMTP?"
+
+msgid "Two-factor authentication is not enabled"
+msgstr ""
+
+msgid ""
+"It is required on this instance: you will be asked to enable it to keep "
+"using your account."
+msgstr ""
+
+msgid ""
+"Adding a code from an application on your phone makes a stolen password "
+"useless on its own."
 msgstr ""
 
 msgid "Sending in progress…"
@@ -4506,6 +4665,23 @@ msgstr "Выберите метку для перевода"
 
 msgid "No fields to translate."
 msgstr "Нет полей для перевода."
+
+msgid "Enter the code shown by your authentication application."
+msgstr ""
+
+msgid "Code:"
+msgstr "Код:"
+
+msgid "Validate"
+msgstr "Подтвердить"
+
+msgid "Lost your device? Enter one of your recovery codes above instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Cancel mailing"
+msgid "Cancel and log off"
+msgstr "Отменить рассылку"
 
 msgid "Filename"
 msgstr "Имя файла"
@@ -4723,6 +4899,17 @@ msgstr "Пожалуйста, выберите один файл для импо
 msgid "Please make sure to select one file to upload."
 msgstr "Пожалуйста, выберите один файл для загрузки."
 
+msgid "Write these codes down now"
+msgstr ""
+
+msgid ""
+"They are shown this once and cannot be displayed again. Each one works a "
+"single time, and lets you log in when you no longer have your device."
+msgstr ""
+
+msgid "I have written them down"
+msgstr ""
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4732,6 +4919,16 @@ msgstr ""
 
 msgid "New password"
 msgstr "Новый пароль"
+
+msgid ""
+"Clear this member's two-factor authentication, for instance after they lost "
+"both their device and their recovery codes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Reset two-factor authentication"
+msgstr "Использовать аутентификацию SMTP?"
 
 msgid "Generate Member Card"
 msgstr "Создать карточку участника"
@@ -5306,6 +5503,9 @@ msgstr "Пользователь SMTP (или GMail):"
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (или GMail):"
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5433,6 +5633,34 @@ msgstr "Для «%1$s» ещё не настроено ни одного дин�
 #| msgid "New dynamic field"
 msgid "Configure dynamic fields"
 msgstr "Новое динамическое поле"
+
+msgid ""
+"Asks for a code from an application on the member's phone in addition to "
+"their password, so that a stolen password is not enough on its own. Members "
+"who have to hold one are sent to enrolment at their next login; switching "
+"back to disabled lets everyone in again without a code."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication:"
+msgstr "Использовать аутентификацию SMTP?"
+
+#, fuzzy
+#| msgid "None (default)"
+msgid "Disabled (default)"
+msgstr "Нет (по умолчанию)"
+
+msgid "Optional, each member decides"
+msgstr ""
+
+msgid "Required for administrators and staff"
+msgstr ""
+
+#, fuzzy
+#| msgid "Required field!"
+msgid "Required for everyone"
+msgstr "Обязательное поле!"
 
 msgid "Password length:"
 msgstr "Длина пароля:"
@@ -5567,6 +5795,32 @@ msgstr "Управляет:"
 
 msgid "New dynamic field"
 msgstr "Новое динамическое поле"
+
+msgid ""
+"Install an authentication application, for instance FreeOTP, Aegis or "
+"KeePassXC."
+msgstr ""
+
+msgid "Scan the code below with it, or type the key in by hand."
+msgstr ""
+
+msgid "Enter the code it then shows, to confirm it works."
+msgstr ""
+
+msgid "QR code to register the key in an authentication application"
+msgstr ""
+
+msgid "Key, to type in by hand:"
+msgstr ""
+
+msgid "Code shown by the application:"
+msgstr ""
+
+msgid "Confirm and enable"
+msgstr ""
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
 
 #, fuzzy
 #| msgid "Date settings"
@@ -5969,9 +6223,6 @@ msgstr "Подробности"
 
 msgid "Type:"
 msgstr "Тип:"
-
-msgid "Code:"
-msgstr "Код:"
 
 msgid "File:"
 msgstr "Файл:"
@@ -6584,14 +6835,25 @@ msgstr "Произошла ошибка при получении участни
 msgid "An error occurred retrieving dates :("
 msgstr "Произошла ошибка при получении дат :("
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is available"
+msgstr "Ошибка аутентификации"
+
+msgid ""
+"A code from an application on your telephone, on top of your password, means "
+"a stolen password is not enough on its own to reach your account. Do you "
+"want to set it up?"
+msgstr ""
+
+msgid "Later"
+msgstr "Позже"
+
 msgid "Your telemetry data are more than one year old."
 msgstr "Ваши данные телеметрии старше одного года."
 
 msgid "Do you want to send it again?"
 msgstr "Хотите отправить их снова?"
-
-msgid "Later"
-msgstr "Позже"
 
 msgid "Password is valid :)"
 msgstr "Пароль действителен :)"
@@ -6817,9 +7079,6 @@ msgstr "Выбранные участники"
 
 msgid "No members has been selected yet."
 msgstr "Пока не выбрано ни одного участника."
-
-msgid "Validate"
-msgstr "Подтвердить"
 
 #, php-format
 msgid "Translate '%s' field"

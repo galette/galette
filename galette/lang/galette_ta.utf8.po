@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 07:43+0200\n"
+"POT-Creation-Date: 2026-09-22 10:34+0200\n"
 "PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -641,6 +641,11 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr "தொகை நேர்மறை எண்ணாக இருக்க வேண்டும்"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
+#, fuzzy
+#| msgid "- Unknown contribution type!"
+msgid "- Unknown two-factor authentication mode!"
+msgstr "- அறியப்படாத பங்களிப்பு வகை!"
+
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
@@ -676,6 +681,14 @@ msgstr "எனது செய்தி"
 
 msgid "View my member card"
 msgstr "எனது உறுப்பினர் அட்டையைக் காண்க"
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication"
+msgstr "SMTP அங்கீகாரத்தைப் பயன்படுத்தவா?"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "Add a child member"
 msgstr "ஒரு குழந்தை உறுப்பினரைச் சேர்க்கவும்"
@@ -1497,6 +1510,87 @@ msgstr "மாதிரி சேமிக்கப்படவில்லை :
 msgid "Invalid link!"
 msgstr "தவறான இணைப்பு!"
 
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication failed."
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid "Second factor failed"
+msgstr ""
+
+msgid "Login"
+msgstr "புகுபதிவு"
+
+msgid ""
+"Two-factor authentication is already enabled. Disable it first to enrol "
+"again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to load contribution"
+msgid "Enable two-factor authentication"
+msgstr "பங்களிப்பை ஏற்ற முடியவில்லை"
+
+msgid "That code does not match. Check your application clock, then try again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication enabled"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid ""
+"Two-factor authentication is now enabled for the super administrator account."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication disabled"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid "Two-factor authentication has been disabled."
+msgstr ""
+
+msgid "Two-factor recovery codes renewed"
+msgstr ""
+
+msgid "Use your own two-factor authentication page to disable it."
+msgstr ""
+
+msgid ""
+"Only the super administrator may reset an administrator's two-factor "
+"authentication."
+msgstr ""
+
+msgid ""
+"Only an administrator may reset a staff member's two-factor authentication."
+msgstr ""
+
+msgid "This member has no two-factor authentication to reset."
+msgstr ""
+
+msgid "Two-factor authentication reset for %member"
+msgstr ""
+
+#, fuzzy
+#| msgid "An email has been sent to the member."
+msgid "Two-factor authentication has been reset for this member."
+msgstr "உறுப்பினருக்கு ஒரு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது."
+
+msgid "Two-factor authentication is not enabled on this instance."
+msgstr ""
+
+msgid "Two-factor authentication is not enabled."
+msgstr ""
+
+#, fuzzy
+#| msgid "Recover password"
+msgid "Recovery codes"
+msgstr "கடவுச்சொல்லை மீட்டெடுக்கவும்"
+
 msgid "Texts has been successfully reinitialized."
 msgstr "நூல்கள் வெற்றிகரமாக மறுசீரமைக்கப்பட்டுள்ளன."
 
@@ -1627,14 +1721,8 @@ msgstr "சொருகி %1$s இயக்கப்பட்டது"
 msgid "Plugin %1$s has been disabled"
 msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
 
-msgid "Login"
-msgstr "புகுபதிவு"
-
 msgid "You must provide both login and password."
 msgstr "நீங்கள் உள்நுழைவு மற்றும் கடவுச்சொல் இரண்டையும் வழங்க வேண்டும்."
-
-msgid "Too many failed attempts. Please try again later."
-msgstr ""
 
 #, fuzzy
 #| msgid "Authentication failed"
@@ -2594,6 +2682,11 @@ msgstr ""
 
 msgid "Unauthorized"
 msgstr "அங்கீகரிக்கப்படாதது"
+
+msgid ""
+"Two-factor authentication is required. Please enable it to keep using your "
+"account."
+msgstr ""
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -4289,7 +4382,74 @@ msgstr "முழுமையான அனுப்பப்பட்ட பர�
 msgid "View corresponding contributions"
 msgstr "தொடர்புடைய பங்களிப்புகளைப் பார்க்கவும்"
 
-msgid "Experimental feature. Be careful using it."
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is enabled"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid ""
+"A code from your authentication application is asked for at every login."
+msgstr ""
+
+msgid ""
+"Recovery codes let you log in when you no longer have your device. Each one "
+"works once."
+msgstr ""
+
+#, php-format
+msgid "You have %count recovery code left."
+msgid_plural "You have %count recovery codes left."
+msgstr[0] ""
+msgstr[1] ""
+
+#, fuzzy
+#| msgid "Current model"
+msgid "Current code:"
+msgstr "தற்போதைய மாதிரி"
+
+msgid "Renew recovery codes"
+msgstr ""
+
+msgid "No recovery codes for this account"
+msgstr ""
+
+msgid ""
+"The super administrator is not a member: its second factor lives in the "
+"preferences, which is also where it is cleared from should you lose your "
+"device. Keep an access to the database at hand."
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "முடக்கப்பட்டது"
+
+msgid ""
+"Two-factor authentication is required on this instance: disabling it will be "
+"asked for again at your next login."
+msgstr ""
+
+msgid ""
+"A code is required to disable it, so that nobody else can turn it off from "
+"your session."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Disable two-factor authentication"
+msgstr "SMTP அங்கீகாரத்தைப் பயன்படுத்தவா?"
+
+msgid "Two-factor authentication is not enabled"
+msgstr ""
+
+msgid ""
+"It is required on this instance: you will be asked to enable it to keep "
+"using your account."
+msgstr ""
+
+msgid ""
+"Adding a code from an application on your phone makes a stolen password "
+"useless on its own."
 msgstr ""
 
 msgid "Sending in progress…"
@@ -4452,6 +4612,23 @@ msgstr "மொழிபெயர்க்க லேபிளைத் தேர�
 
 msgid "No fields to translate."
 msgstr "மொழிபெயர்க்க புலங்கள் இல்லை."
+
+msgid "Enter the code shown by your authentication application."
+msgstr ""
+
+msgid "Code:"
+msgstr "குறியீடு:"
+
+msgid "Validate"
+msgstr "சரிபார்க்கவும்"
+
+msgid "Lost your device? Enter one of your recovery codes above instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Cancel mailing"
+msgid "Cancel and log off"
+msgstr "அஞ்சல் ரத்துசெய்"
 
 msgid "Filename"
 msgstr "கோப்புப்பெயர்"
@@ -4663,6 +4840,17 @@ msgstr "இறக்குமதி செய்ய ஒரு கோப்பை
 msgid "Please make sure to select one file to upload."
 msgstr "பதிவேற்ற ஒரு கோப்பைத் தேர்ந்தெடுக்கவும்."
 
+msgid "Write these codes down now"
+msgstr ""
+
+msgid ""
+"They are shown this once and cannot be displayed again. Each one works a "
+"single time, and lets you log in when you no longer have your device."
+msgstr ""
+
+msgid "I have written them down"
+msgstr ""
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4672,6 +4860,16 @@ msgstr ""
 
 msgid "New password"
 msgstr "புதிய கடவுச்சொல்"
+
+msgid ""
+"Clear this member's two-factor authentication, for instance after they lost "
+"both their device and their recovery codes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Reset two-factor authentication"
+msgstr "SMTP அங்கீகாரத்தைப் பயன்படுத்தவா?"
 
 msgid "Generate Member Card"
 msgstr "உறுப்பினர் அட்டையை உருவாக்குங்கள்"
@@ -5239,6 +5437,9 @@ msgstr "SMTP (அல்லது சிமெயில்) பயனர்:"
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (அல்லது gmail) கடவுச்சொல்:"
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5364,6 +5565,34 @@ msgstr "'%1$s' க்கு இன்னும் எந்த மாறும�
 #| msgid "New dynamic field"
 msgid "Configure dynamic fields"
 msgstr "புதிய மாறும் புலம்"
+
+msgid ""
+"Asks for a code from an application on the member's phone in addition to "
+"their password, so that a stolen password is not enough on its own. Members "
+"who have to hold one are sent to enrolment at their next login; switching "
+"back to disabled lets everyone in again without a code."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication:"
+msgstr "SMTP அங்கீகாரத்தைப் பயன்படுத்தவா?"
+
+#, fuzzy
+#| msgid "None (default)"
+msgid "Disabled (default)"
+msgstr "எதுவுமில்லை (இயல்புநிலை)"
+
+msgid "Optional, each member decides"
+msgstr ""
+
+msgid "Required for administrators and staff"
+msgstr ""
+
+#, fuzzy
+#| msgid "Required field!"
+msgid "Required for everyone"
+msgstr "தேவையான புலம்!"
 
 msgid "Password length:"
 msgstr "கடவுச்சொல் நீளம்:"
@@ -5493,6 +5722,32 @@ msgstr "நிர்வகிக்கிறது:"
 
 msgid "New dynamic field"
 msgstr "புதிய மாறும் புலம்"
+
+msgid ""
+"Install an authentication application, for instance FreeOTP, Aegis or "
+"KeePassXC."
+msgstr ""
+
+msgid "Scan the code below with it, or type the key in by hand."
+msgstr ""
+
+msgid "Enter the code it then shows, to confirm it works."
+msgstr ""
+
+msgid "QR code to register the key in an authentication application"
+msgstr ""
+
+msgid "Key, to type in by hand:"
+msgstr ""
+
+msgid "Code shown by the application:"
+msgstr ""
+
+msgid "Confirm and enable"
+msgstr ""
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
 
 #, fuzzy
 #| msgid "Date settings"
@@ -5891,9 +6146,6 @@ msgstr "விவரங்கள்"
 
 msgid "Type:"
 msgstr "தட்டச்சு:"
-
-msgid "Code:"
-msgstr "குறியீடு:"
 
 msgid "File:"
 msgstr "கோப்பு:"
@@ -6499,14 +6751,25 @@ msgstr "உறுப்பினர்களை மீட்டெடுப்�
 msgid "An error occurred retrieving dates :("
 msgstr "தேதிகளை மீட்டெடுப்பதில் பிழை ஏற்பட்டது :("
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is available"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid ""
+"A code from an application on your telephone, on top of your password, means "
+"a stolen password is not enough on its own to reach your account. Do you "
+"want to set it up?"
+msgstr ""
+
+msgid "Later"
+msgstr "பின்னர்"
+
 msgid "Your telemetry data are more than one year old."
 msgstr "உங்கள் டெலிமெட்ரி தரவு ஒரு வயதுக்கு மேற்பட்டவை."
 
 msgid "Do you want to send it again?"
 msgstr "அதை மீண்டும் அனுப்ப விரும்புகிறீர்களா?"
-
-msgid "Later"
-msgstr "பின்னர்"
 
 msgid "Password is valid :)"
 msgstr "கடவுச்சொல் செல்லுபடியாகும் :)"
@@ -6732,9 +6995,6 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப�
 
 msgid "No members has been selected yet."
 msgstr "எந்த உறுப்பினர்களும் இதுவரை தேர்ந்தெடுக்கப்படவில்லை."
-
-msgid "Validate"
-msgstr "சரிபார்க்கவும்"
 
 #, php-format
 msgid "Translate '%s' field"
@@ -7214,6 +7474,3 @@ msgstr "டெலிமெட்ரி தகவல்களை அனுப்�
 
 #~ msgid "Logging level:"
 #~ msgstr "பதிவு நிலை:"
-
-#~ msgid "Disabled"
-#~ msgstr "முடக்கப்பட்டது"
