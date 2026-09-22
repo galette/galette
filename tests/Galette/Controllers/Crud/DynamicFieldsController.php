@@ -756,11 +756,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        //the value of a field the member cannot see is reported on load
-        $this->expectLogEntry(
-            \Analog\Analog::WARNING,
-            'Dynamic values found for Galette\\Core\\Preferences #0; but no dynamic field configured!'
-        );
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
         $this->login->logout();
 

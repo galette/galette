@@ -572,9 +572,12 @@ class DynamicFieldsHandle
             $accessible_fields[] = $field->getId();
         }
 
-        if (count($accessible_fields)) {
-            $select->where->in('d.' . DynamicField::PK, $accessible_fields);
+        if (!count($accessible_fields)) {
+            //no field to see: the values of hidden ones must not be loaded,
+            //nor removed on store as if they had been dropped from the form
+            return (new ResultSet())->initialize([]);
         }
+        $select->where->in('d.' . DynamicField::PK, $accessible_fields);
 
         //occurrences are numbered, they must come back in order
         $select->order('val_index ASC');

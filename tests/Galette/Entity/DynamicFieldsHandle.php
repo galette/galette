@@ -49,14 +49,19 @@ class DynamicFieldsHandle extends GaletteTestCase
      * @param int    $type   Field type
      * @param string $name   Field name
      * @param ?int   $repeat Number of occurrences
+     * @param int    $perm   Field permission
      */
-    private function createField(int $type, string $name, ?int $repeat): \Galette\DynamicFields\DynamicField
-    {
+    private function createField(
+        int $type,
+        string $name,
+        ?int $repeat,
+        int $perm = \Galette\Entity\FieldsConfig::USER_WRITE
+    ): \Galette\DynamicFields\DynamicField {
         $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
         $stored = $field->store([
             'form_name'         => 'adh',
             'field_name'        => $name,
-            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_perm'        => $perm,
             'field_type'        => $type,
             'field_required'    => 0,
             'field_repeat'      => $repeat
@@ -105,6 +110,43 @@ class DynamicFieldsHandle extends GaletteTestCase
         ksort($occurrences);
 
         return $occurrences;
+    }
+
+    /**
+     * Test values of fields a member cannot see survive their own edition
+     */
+    public function testHiddenFieldsValuesAreKept(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::LINE,
+            name: 'Staff only',
+            repeat: null,
+            perm: \Galette\Entity\FieldsConfig::STAFF
+        );
+        $fid = $field->getId();
+
+        $this->getMemberOne();
+        $adh = $this->getMemberWithDynamics();
+        $data = $this->dataAdherentOne() + ['info_field_' . $fid . '_1' => 'Staff note'];
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame([1 => 'Staff note'], $this->getStoredOccurrences($adh, $fid));
+        $this->login->logout();
+
+        //the member cannot see any dynamic field, and edits their own account
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame([], $adh->getDynamicFields()->getFields());
+        $this->assertTrue($adh->check($mdata, [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame([1 => 'Staff note'], $this->getStoredOccurrences($adh, $fid));
     }
 
     /**
