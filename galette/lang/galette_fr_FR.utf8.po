@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-22 10:34+0200\n"
-"PO-Revision-Date: 2026-09-22 09:34+0000\n"
+"PO-Revision-Date: 2026-09-22 19:54+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -296,29 +296,39 @@ msgid ""
 "You may want to set it from the \"%s\" setting listed above and remove "
 "declared constant."
 msgstr ""
+"Vous pourriez vouloir le configurer à partir du paramètre \"%s\" listé ci-"
+"dessus et supprimer la constante déclarée."
 
 msgid ""
 "Enable debug mode: verbose logs, no cache, Twig strict variables and "
 "detailed errors."
 msgstr ""
+"Activer le mode de débogage : journaux verbeux, pas de cache, variables Twig "
+"strictes et erreurs détaillées."
 
 msgid ""
 "PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
 "credentials and mail settings."
 msgstr ""
+"PROD, MAINT pour permettre au seul superadmin de se connecter, ou DEMO pour "
+"verrouiller les pouvoirs superadmin et les paramètres de courrier."
 
 msgid ""
 "Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
 "debug mode."
 msgstr ""
+"Verbosité des journaux, un niveau Analog. Défaut WARNING, ou DEBUG en mode "
+"déboguage."
 
 msgid "Dump every SQL query to the logs."
-msgstr ""
+msgstr "Écrit chaque requête SQL dans les journaux."
 
 msgid ""
 "Development features to activate, among those declared in the feature flags "
 "registry. They only apply in debug mode."
 msgstr ""
+"Fonctionnalités en développement à activer, parmi celles déclarées dans le "
+"registre des fonctionnalités. Ellsea paraissent uniquement en mode débogage."
 
 #. TRANS: parameter is the logged in user name
 #, php-format
@@ -346,6 +356,8 @@ msgid ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
 "to."
 msgstr ""
+"La directive PHP `sendmail_path` est vide, mail() n'a rien qui lui permet de "
+"gérer les messages."
 
 msgid "Sending quota has been reached, message has not been sent."
 msgstr "Le quota d'envoi a été atteint, le message n'a pas été envoyé."
@@ -659,19 +671,17 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- La valeur de '%1$s' doit être un nombre positif !"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#, fuzzy
-#| msgid "- Unknown contribution type!"
 msgid "- Unknown two-factor authentication mode!"
-msgstr "- Type de contribution inconnu !"
+msgstr "- Mode d'authentification deux facteurs inconnu !"
 
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
-msgstr ""
+msgstr "- La valeur de '%1$s' doit être de %2$s tentatives ou plus !"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
-msgstr ""
+msgstr "- La valeur de '%1$s' doit être de %2$s secondes ou plus !"
 
 msgid "My Account"
 msgstr "Mon compte"
@@ -700,13 +710,11 @@ msgstr "Mes informations"
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Two-factor authentication"
-msgstr "Utiliser l’authentification SMTP ?"
+msgstr "Authentification à deux facteurs"
 
 msgid "Manage my two-factor authentication"
-msgstr ""
+msgstr "Gérer mon authentification à deux facteurs"
 
 msgid "Add a child member"
 msgstr "Ajouter un enfant"
@@ -1532,13 +1540,11 @@ msgstr "Lien invalide !"
 msgid "Too many failed attempts. Please try again later."
 msgstr "Trop de tentatives infructueuses. Veuillez réessayer plus tard."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication failed."
-msgstr "Échec de l’authentification"
+msgstr "L'authentification à deux facteurs a échoué."
 
 msgid "Second factor failed"
-msgstr ""
+msgstr "Échec du second facteur"
 
 msgid "Login"
 msgstr "Identification"
@@ -1547,49 +1553,56 @@ msgid ""
 "Two-factor authentication is already enabled. Disable it first to enrol "
 "again."
 msgstr ""
+"L'authentification à deux facteurs est déjà activée. Désactivez là d'abord "
+"pour vous inscrire à nouveau."
 
-#, fuzzy
-#| msgid "Unable to load contribution"
 msgid "Enable two-factor authentication"
-msgstr "Impossible de charger la contribution"
+msgstr "Activer l'authentification à deux facteurs"
 
 msgid "That code does not match. Check your application clock, then try again."
 msgstr ""
+"Ce code ne correspond pas. Vérifiez votre horloge d'application, puis "
+"essayez à nouveau."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication enabled"
-msgstr "Échec de l’authentification"
+msgstr "Authentification à deux facteurs activée"
 
 msgid ""
 "Two-factor authentication is now enabled for the super administrator account."
 msgstr ""
+"L'authentification à deux facteurs est maintenant activée pour le compte "
+"super administrateur."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication disabled"
-msgstr "Échec de l’authentification"
+msgstr "Authentification à deux facteurs désactivée"
 
 msgid "Two-factor authentication has been disabled."
-msgstr ""
+msgstr "L'authentification à deux facteurs a été désactivée."
 
 msgid "Two-factor recovery codes renewed"
-msgstr ""
+msgstr "Codes de récupération à deux facteurs renouvelés"
 
 msgid "Use your own two-factor authentication page to disable it."
 msgstr ""
+"Utilisez votre propre page d'authentification à deux facteurs pour le "
+"désactiver."
 
 msgid ""
 "Only the super administrator may reset an administrator's two-factor "
 "authentication."
 msgstr ""
+"Seul le super administrateur peut réinitialiser l'authentification à deux "
+"facteurs d'un administrateur."
 
 msgid ""
 "Only an administrator may reset a staff member's two-factor authentication."
 msgstr ""
+"Seul un administrateur peut réinitialiser l'authentification à deux facteurs "
+"d'un membre du bureau."
 
 msgid "This member has no two-factor authentication to reset."
 msgstr ""
+"Cet adhérent n'a pas d'authentification à deux facteurs à réinitialiser."
 
 #. TRANS: %1$s is the member name
 #, php-format
