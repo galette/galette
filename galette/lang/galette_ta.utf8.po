@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 13:51+0200\n"
+"POT-Creation-Date: 2026-09-22 07:43+0200\n"
 "PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -215,7 +215,6 @@ msgstr "கோப்பு நீட்டிப்பு அனுமதிக�
 msgid "File is too big. Maximum allowed size is %1$s"
 msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %1$s ஆகும்"
 
-#. TRANS: parameter is the minimum size, in pixels
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %1$spx"
 msgstr "படம் மிகவும் சிறியது. அனுமதிக்கப்பட்ட குறைந்தபட்ச பட பக்க அளவு %1$sபுள்ளி ஆகும்"
@@ -278,10 +277,68 @@ msgstr "சரி"
 msgid "Delete mailing entries"
 msgstr "அஞ்சல் உள்ளீடுகளை நீக்கு"
 
+#, php-format
+msgid ""
+"You may want to set it from the \"%s\" setting listed above and remove "
+"declared constant."
+msgstr ""
+
+msgid ""
+"Enable debug mode: verbose logs, no cache, Twig strict variables and "
+"detailed errors."
+msgstr ""
+
+msgid ""
+"PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
+"credentials and mail settings."
+msgstr ""
+
+msgid ""
+"Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
+"debug mode."
+msgstr ""
+
+msgid "Dump every SQL query to the logs."
+msgstr ""
+
+msgid ""
+"Development features to activate, among those declared in the feature flags "
+"registry. They only apply in debug mode."
+msgstr ""
+
 #. TRANS: parameter is the logged in user name
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr "உள்நுழைந்தது: <br>%1$s"
+
+#, fuzzy
+#| msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgid "Emailing has been disabled in the preferences."
+msgstr "அனுப்பப்பட்ட மின்னஞ்சல் விருப்பங்களில் முடக்கப்பட்டுள்ளது. கேலட் நிர்வாகியைக் கேளுங்கள்"
+
+#, fuzzy, php-format
+#| msgid "Emailing method:"
+msgid "Unknown emailing method '%s'."
+msgstr "மின்னஞ்சல் முறை:"
+
+msgid "Unable to reach the SMTP server."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "The file does not exists or cannot be read :("
+msgid "'%s' does not exist, or cannot be run."
+msgstr "கோப்பு இல்லை அல்லது படிக்க முடியாது :("
+
+msgid "The PHP mail() function is not available on this server."
+msgstr ""
+
+msgid ""
+"PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
+"to."
+msgstr ""
+
+msgid "Sending quota has been reached, message has not been sent."
+msgstr ""
 
 msgid "No such module."
 msgstr "அத்தகைய தொகுதி இல்லை."
@@ -341,6 +398,14 @@ msgstr "%1$s ச்கிரிப்ட் வெற்றிகரமாக �
 msgid "Unable to run %1$s update script :("
 msgstr "%1$s புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
 
+#, fuzzy
+#| msgid "Write configuration file"
+msgid "No configuration file found!"
+msgstr "உள்ளமைவு கோப்பை எழுதுங்கள்"
+
+msgid "Existing configuration file is incomplete or unreadable!"
+msgstr ""
+
 msgid "Write configuration file"
 msgstr "உள்ளமைவு கோப்பை எழுதுங்கள்"
 
@@ -381,6 +446,60 @@ msgstr "விருப்பங்களை புதுப்பிக்க�
 
 msgid "Update models"
 msgstr "புதுப்பிப்பு மாதிரிகள்"
+
+msgid "Dark mode CSS file has been reset."
+msgstr "டார்க் மோட் சிஎச்எச் கோப்பு மீட்டமைக்கப்பட்டது."
+
+msgid "You have to select a staff member to retrieve its address"
+msgstr "அதன் முகவரியை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
+
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr "அதன் ஃபோன் எண்ணை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
+
+msgid "- You must indicate a sender name for emails!"
+msgstr "- மின்னஞ்சல்களுக்கு அனுப்புநரின் பெயரைக் குறிக்க வேண்டும்!"
+
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+"- மின்னஞ்சல்களை அனுப்ப கேலட் பயன்படுத்த வேண்டிய மின்னஞ்சல் முகவரியை நீங்கள் குறிப்பிட "
+"வேண்டும்!"
+
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr "- நீங்கள் பயன்படுத்த விரும்பும் SMTP சேவையகத்தை நீங்கள் குறிக்க வேண்டும்!"
+
+msgid "- You must provide a login for SMTP authentication."
+msgstr "- நீங்கள் SMTP அங்கீகாரத்திற்கு உள்நுழைவை வழங்க வேண்டும்."
+
+msgid "- You must provide a password for SMTP authentication."
+msgstr "- SMTP அங்கீகாரத்திற்கு நீங்கள் கடவுச்சொல்லை வழங்க வேண்டும்."
+
+msgid ""
+"- You must indicate a membership extension or a beginning of membership."
+msgstr "- நீங்கள் உறுப்பினர் நீட்டிப்பு அல்லது உறுப்பினரின் தொடக்கத்தைக் குறிக்க வேண்டும்."
+
+msgid ""
+"- Default membership extension and beginning of membership are mutually "
+"exclusive."
+msgstr "- இயல்புநிலை உறுப்பினர் நீட்டிப்பு மற்றும் உறுப்பினரின் துவக்கம் இருவழி."
+
+msgid "- Offering months is only compatible with beginning of membership."
+msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
+
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is an hTML link to the field with its name
+#, php-format
+msgid "- Mandatory field %1$s empty."
+msgstr "- கட்டாய புலம் %1$s காலியாக உள்ளது."
+
+msgid "Passwords mismatch"
+msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
+
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%1$s சங்கத்தின் %2$s"
 
 msgid "First page"
 msgstr "முதல் பக்கம்"
@@ -442,62 +561,40 @@ msgstr ""
 "என்னிடம் %1$s கேலட்டுகள் உள்ளன, அவற்றில் %2$s ஐ தருகிறேன். என்னிடம் எத்தனை கேலட்டுகள் "
 "உள்ளன?"
 
-msgid "- You must indicate a sender name for emails!"
-msgstr "- மின்னஞ்சல்களுக்கு அனுப்புநரின் பெயரைக் குறிக்க வேண்டும்!"
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Unknown type %1$s!"
+msgid "Unknown preference '%1$s'!"
+msgstr "தெரியாத வகை %1$s!"
 
-msgid "- You must indicate an email address Galette should use to send emails!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr ""
-"- மின்னஞ்சல்களை அனுப்ப கேலட் பயன்படுத்த வேண்டிய மின்னஞ்சல் முகவரியை நீங்கள் குறிப்பிட "
-"வேண்டும்!"
 
-msgid "- You must indicate the SMTP server you want to use!"
-msgstr "- நீங்கள் பயன்படுத்த விரும்பும் SMTP சேவையகத்தை நீங்கள் குறிக்க வேண்டும்!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "You are not allowed to change preference '%1$s'!"
+msgstr ""
 
-msgid "- You must provide a login for SMTP authentication."
-msgstr "- நீங்கள் SMTP அங்கீகாரத்திற்கு உள்நுழைவை வழங்க வேண்டும்."
-
-msgid "- You must provide a password for SMTP authentication."
-msgstr "- SMTP அங்கீகாரத்திற்கு நீங்கள் கடவுச்சொல்லை வழங்க வேண்டும்."
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
+msgstr ""
 
 msgid ""
-"- You must indicate a membership extension or a beginning of membership."
-msgstr "- நீங்கள் உறுப்பினர் நீட்டிப்பு அல்லது உறுப்பினரின் தொடக்கத்தைக் குறிக்க வேண்டும்."
+"Please set your instance URL from the advanced configuration, or define the "
+"\"GALETTE_URI\" constant."
+msgstr ""
 
-msgid ""
-"- Default membership extension and beginning of membership are mutually "
-"exclusive."
-msgstr "- இயல்புநிலை உறுப்பினர் நீட்டிப்பு மற்றும் உறுப்பினரின் துவக்கம் இருவழி."
+msgid "Never"
+msgstr "ஒருபோதும்"
 
-msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
+msgid "Main information"
+msgstr "முக்கிய செய்தி"
 
-#. TRANS: parameter is a field name
-#. TRANS: parameter is an hTML link to the field with its name
-#. TRANS: parameter is an HTML link to the field with its name
-#. TRANS: parameter is an hTML link to the field with its name
-#, php-format
-msgid "- Mandatory field %1$s empty."
-msgstr "- கட்டாய புலம் %1$s காலியாக உள்ளது."
-
-msgid "Passwords mismatch"
-msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
-
-msgid "You have to select a staff member to retrieve its address"
-msgstr "அதன் முகவரியை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
-
-msgid "You have to select a staff member to retrieve its phone number"
-msgstr "அதன் ஃபோன் எண்ணை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
-
-#. TRANS: first parameter is the address, second the setting holding it
-#, php-format
-msgid "- Invalid E-Mail address %1$s (%2$s)"
-msgstr "- தவறான மின்னஞ்சல் முகவரி %1$s (%2$s)"
-
-msgid "- The username must be composed of at least 4 characters!"
-msgstr "- பயனர்பெயர் குறைந்தது 4 எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
-
-msgid "- This username is already used by another member !"
-msgstr "- இந்த பயனர்பெயர் ஏற்கனவே மற்றொரு உறுப்பினரால் பயன்படுத்தப்படுகிறது!"
+msgid "Social networks"
+msgstr "சமூக வலைப்பின்னல்கள்"
 
 msgid "- The numbers and measures have to be integers!"
 msgstr "- எண்கள் மற்றும் நடவடிக்கைகள் முழு எண்களாக இருக்க வேண்டும்!"
@@ -511,14 +608,20 @@ msgstr "- அட்டை அகலம் 70 முதல் 95 வரை ஒர
 msgid "- Invalid number of months of membership extension."
 msgstr "- உறுப்பினர் நீட்டிப்பின் தவறான மாதங்களின் எண்ணிக்கை."
 
+msgid "- Invalid number of offered months."
+msgstr "- வழங்கப்பட்ட மாதங்களின் தவறான எண்ணிக்கை."
+
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- பயனர்பெயர் குறைந்தது 4 எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
+
+msgid "- This username is already used by another member !"
+msgstr "- இந்த பயனர்பெயர் ஏற்கனவே மற்றொரு உறுப்பினரால் பயன்படுத்தப்படுகிறது!"
+
 msgid "- Invalid format of beginning of membership."
 msgstr "- உறுப்பினரின் தொடக்கத்தின் தவறான வடிவம்."
 
 msgid "- Invalid date for beginning of membership."
 msgstr "- உறுப்பினர் தொடக்கத்திற்கான தவறான தேதி."
-
-msgid "- Invalid number of offered months."
-msgstr "- வழங்கப்பட்ட மாதங்களின் தவறான எண்ணிக்கை."
 
 msgid "- Invalid year for cards."
 msgstr "- அட்டைகளுக்கு தவறான ஆண்டு."
@@ -526,25 +629,26 @@ msgstr "- அட்டைகளுக்கு தவறான ஆண்டு."
 msgid "- Invalid website URL."
 msgstr "- தவறான வலைத்தள முகவரி."
 
-#. TRANS: first parameter is name, second is status
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "%1$s association's %2$s"
-msgstr "%1$s சங்கத்தின் %2$s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- தவறான மின்னஞ்சல் முகவரி %1$s (%2$s)"
 
-msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
-msgstr "உங்கள் நிகழ்வுக்கான பாதையுடன் நிலையான \"GALETTE_URI\" ஐ வரையறுக்கவும்."
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Amount must be a positive number"
+msgid "- Value for '%1$s' must be a positive number!"
+msgstr "தொகை நேர்மறை எண்ணாக இருக்க வேண்டும்"
 
-msgid "Never"
-msgstr "ஒருபோதும்"
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s attempts or more!"
+msgstr ""
 
-msgid "Main information"
-msgstr "முக்கிய செய்தி"
-
-msgid "Social networks"
-msgstr "சமூக வலைப்பின்னல்கள்"
-
-msgid "Dark mode CSS file has been reset."
-msgstr "டார்க் மோட் சிஎச்எச் கோப்பு மீட்டமைக்கப்பட்டது."
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s seconds or more!"
+msgstr ""
 
 msgid "My Account"
 msgstr "எனது கணக்கு"
@@ -711,6 +815,14 @@ msgstr ""
 "பயன்பாடுகளின் விருப்பங்களை அமைக்கவும் (முகவரி, வலைத்தளம், உறுப்பினரின் அட்டைகள் "
 "உள்ளமைவு, ...)"
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "Plugins"
 msgstr "செருகுநிரல்கள்"
 
@@ -770,6 +882,14 @@ msgstr "நிர்வாக கருவிகள்"
 
 msgid "Various administrative tools"
 msgstr "பல்வேறு நிர்வாக கருவிகள்"
+
+#, fuzzy
+#| msgid "Attendance sheet configuration"
+msgid "Advanced configuration"
+msgstr "வருகை தாள் உள்ளமைவு"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
 
 msgid "Gallery"
 msgstr "டிராம்பினோச்கோப்"
@@ -1148,21 +1268,6 @@ msgstr " (%1$s ஆண்டுகள்)"
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "%1$s (%2$s) இலிருந்து நகல் எடுக்கப்பட்டது"
 
-msgid "Association status"
-msgstr "சங்க நிலை"
-
-msgid "Rules of procedure"
-msgstr "நடைமுறை விதிகள்"
-
-msgid "Adhesion form"
-msgstr "ஒட்டுதல் வடிவம்"
-
-msgid "Meeting minutes"
-msgstr "சந்திப்பு நிமிடங்கள்"
-
-msgid "Votes results"
-msgstr "வாக்குகள் முடிவுகள்"
-
 msgid "Form is mandatory!"
 msgstr "படிவம் கட்டாயமாகும்!"
 
@@ -1315,6 +1420,28 @@ msgstr "மின்னஞ்சல்: '%1$s' மாற்றப்படவி
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "மின்னஞ்சல்: '%1$s' வெற்றிகரமாக மாற்றப்பட்டது."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "கடவுச்சொல் இல்லை"
+
+#, fuzzy
+#| msgid "Please confirm your email address:"
+msgid "Please confirm your password again."
+msgstr "உங்கள் மின்னஞ்சல் முகவரியை உறுதிப்படுத்தவும்:"
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been stored."
+msgstr "விருப்பத்தேர்வுகள் சேமிக்கப்பட்டுள்ளன."
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been reset to its default."
+msgstr "விருப்பத்தேர்வுகள் சேமிக்கப்பட்டுள்ளன."
+
 msgid "Removal has not been confirmed!"
 msgstr "அகற்றுதல் உறுதிப்படுத்தப்படவில்லை!"
 
@@ -1458,6 +1585,16 @@ msgstr "%1$s மின்னஞ்சல் அனுப்பப்படவி
 msgid "Invalid email adress!"
 msgstr "தவறான மின்னஞ்சல் முகவரி!"
 
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings work."
+msgstr "மின்னஞ்சல் அமைப்புகளை சோதிக்கவும்"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings do not work."
+msgstr "மின்னஞ்சல் அமைப்புகளை சோதிக்கவும்"
+
 msgid "Fields configuration has been successfully stored"
 msgstr "புலம் உள்ளமைவு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
@@ -1495,6 +1632,14 @@ msgstr "புகுபதிவு"
 
 msgid "You must provide both login and password."
 msgstr "நீங்கள் உள்நுழைவு மற்றும் கடவுச்சொல் இரண்டையும் வழங்க வேண்டும்."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication throttled"
+msgstr "ஏற்பு தோல்வியடைந்தது"
 
 msgid "A new Galette release is available."
 msgstr "புதிய கேலட் வெளியீடு கிடைக்கிறது."
@@ -1537,16 +1682,17 @@ msgstr "கடவுச்சொல் மீட்பு"
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr "அனுப்பப்பட்ட மின்னஞ்சல் விருப்பங்களில் முடக்கப்பட்டுள்ளது. கேலட் நிர்வாகியைக் கேளுங்கள்"
 
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Password recovery"
+msgid "Password recovery throttled"
+msgstr "கடவுச்சொல் மீட்பு"
+
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr "கடவுச்சொல் மீட்புக்காக '%s' க்கு மின்னஞ்சல் அனுப்பப்பட்டது."
-
-msgid ""
-"An email has been sent to your address.<br/>Please check your inbox and "
-"follow the instructions."
-msgstr ""
-"உங்கள் முகவரிக்கு ஒரு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது. <br> தயவுசெய்து உங்கள் இன்பாக்சை "
-"சரிபார்த்து வழிமுறைகளைப் பின்பற்றவும்."
 
 msgid "An email has been sent to the member."
 msgstr "உறுப்பினருக்கு ஒரு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது."
@@ -1573,6 +1719,17 @@ msgstr "%s மின்னஞ்சல் முகவரி இல்லை"
 msgid "Login %s does not exist"
 msgstr "உள்நுழைவு %s இல்லை"
 
+#, fuzzy
+#| msgid ""
+#| "An email has been sent to your address.<br/>Please check your inbox and "
+#| "follow the instructions."
+msgid ""
+"If an account matches, an email has been sent to its address.<br/>Please "
+"check your inbox and follow the instructions."
+msgstr ""
+"உங்கள் முகவரிக்கு ஒரு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது. <br> தயவுசெய்து உங்கள் இன்பாக்சை "
+"சரிபார்த்து வழிமுறைகளைப் பின்பற்றவும்."
+
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
@@ -1594,6 +1751,22 @@ msgstr "'%s' உறுப்பினர்களுக்கான கடவு
 
 msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
+
+msgid "All authentication counters have been lifted."
+msgstr ""
+
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "The counter has been lifted."
+msgstr "உறுப்பினர் கணக்கு மாற்றியமைக்கப்பட்டுள்ளது."
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication counters lifted"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+msgid "Nothing to lift; it may have expired on its own."
+msgstr ""
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -1648,6 +1821,11 @@ msgstr "'%1$s' கோப்பு வட்டில் இருந்து �
 #, php-format
 msgid "Cannot remove '%1$s' from disk :/"
 msgstr "வட்டில் இருந்து '%1$s' அகற்ற முடியாது:/"
+
+#. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+#, php-format
+msgid "%1$s (occurrence %2$s)"
+msgstr ""
 
 msgid "CSV import model"
 msgstr "சி.எச்.வி இறக்குமதி மாதிரி"
@@ -1914,6 +2092,17 @@ msgstr "செய்திக்கு ஒரு பொருளைத் தட
 msgid "Please enter a message."
 msgstr "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்."
 
+msgid "The mailing could not be queued, nothing has been sent."
+msgstr ""
+
+#. TRANS: first parameter is the number of recipients reached, second the total
+#, php-format
+msgid ""
+"The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
+"stored, unsent, so you can check what has been delivered before sending it "
+"again."
+msgstr ""
+
 msgid "Mailing has been successfully sent!"
 msgstr "அஞ்சல் வெற்றிகரமாக அனுப்பப்பட்டுள்ளது!"
 
@@ -1926,6 +2115,26 @@ msgstr "அஞ்சல் #%1$s ஐ அகற்று"
 
 msgid "Mailing preview"
 msgstr "அஞ்சல் முன்னோட்டம்"
+
+#, fuzzy
+#| msgid "Sent mailings:"
+msgid "Sending mailing"
+msgstr "அனுப்பப்பட்ட அஞ்சல்கள்:"
+
+#, fuzzy
+#| msgid "Go back to members list"
+msgid "Back to members list"
+msgstr "உறுப்பினர்கள் பட்டியலுக்குச் செல்லுங்கள்"
+
+#, fuzzy
+#| msgid "Mailings"
+msgid "Mailings history"
+msgstr "அஞ்சல்கள்"
+
+#, fuzzy
+#| msgid "Sent reminders:"
+msgid "Sending reminders"
+msgstr "நினைவூட்டல்களை அனுப்பியது:"
 
 #. TRANS: parameter is the transaction identifier
 #, php-format
@@ -2011,6 +2220,11 @@ msgstr "கட்டண வகை %1$s ஐ அகற்று"
 
 msgid "Subscription"
 msgstr "சந்தா"
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscription throttled"
+msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
 msgid "Profile"
 msgstr "சுயவிவரம்"
@@ -2483,6 +2697,21 @@ msgstr "நீக்கப்பட்ட தேடல்கள் (%1$s)"
 msgid "Contributions deleted (%1$s)"
 msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%1$s)"
 
+msgid "Association status"
+msgstr "சங்க நிலை"
+
+msgid "Rules of procedure"
+msgstr "நடைமுறை விதிகள்"
+
+msgid "Adhesion form"
+msgstr "ஒட்டுதல் வடிவம்"
+
+msgid "Meeting minutes"
+msgstr "சந்திப்பு நிமிடங்கள்"
+
+msgid "Votes results"
+msgstr "வாக்குகள் முடிவுகள்"
+
 msgid "Y"
 msgstr "ஒய்"
 
@@ -2586,6 +2815,11 @@ msgstr "பயனர் பெயர் இல்லை"
 msgid "No database name"
 msgstr "தரவுத்தள பெயர் இல்லை"
 
+#, fuzzy
+#| msgid "Table prefix:"
+msgid "No table prefix"
+msgstr "அட்டவணை முன்னொட்டு:"
+
 msgid "The username cannot contain the @ character"
 msgstr "பயனர்பெயரில் @ எழுத்துக்குறி இருக்க முடியாது"
 
@@ -2600,6 +2834,18 @@ msgstr "கேலட் நிறுவல்"
 
 msgid "Read the manual"
 msgstr "கையேட்டைப் படியுங்கள்"
+
+msgid "Choose your language"
+msgstr "உங்கள் மொழியைத் தேர்வுசெய்க"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "தற்போதைய பக்கம் (%1$s)"
+
+#, php-format
+msgid "Switch locale to '%1$s'"
+msgstr "இருப்பிடத்தை '%1$s' க்கு மாற்றவும்"
 
 msgid "Version selection"
 msgstr "பதிப்பு தேர்வு"
@@ -3143,34 +3389,6 @@ msgstr "%d புலத்திற்கான தேர்வுகள் ந�
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "%d: %s புலத்திற்கான தேர்வுகளை நகர்த்த முடியவில்லை"
 
-msgid "New installation"
-msgstr "புதிய நிறுவல்"
-
-msgid "you're installing Galette for the first time"
-msgstr "நீங்கள் முதல் முறையாக கேலட்டை நிறுவுகிறீர்கள்"
-
-msgid "you wish to erase an older version of Galette without keeping your data"
-msgstr "உங்கள் தரவை வைத்திருக்காமல் கேலட்டின் பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
-
-msgid "Update"
-msgstr "புதுப்பிப்பு"
-
-msgid ""
-"you already have installed Galette, and you want to upgrade to the latest "
-"version"
-msgstr ""
-"நீங்கள் ஏற்கனவே கேலட் நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
-"விரும்புகிறீர்கள்"
-
-msgid "Warning: Don't forget to backup your current database."
-msgstr "எச்சரிக்கை: உங்கள் தற்போதைய தரவுத்தளத்தை காப்புப் பிரதி எடுக்க மறக்காதீர்கள்."
-
-msgid "Next step"
-msgstr "அடுத்த அடி"
-
-msgid "Back"
-msgstr "பின்"
-
 msgid "Database has not been installed!"
 msgstr "தரவுத்தளம் நிறுவப்படவில்லை!"
 
@@ -3185,6 +3403,12 @@ msgstr "தரவுத்தளம் மேம்படுத்தப்ப�
 
 msgid "Retry"
 msgstr "மீண்டும் முயற்சிக்கவும்"
+
+msgid "Next step"
+msgstr "அடுத்த அடி"
+
+msgid "Back"
+msgstr "பின்"
 
 msgid "Photos"
 msgstr "புகைப்படங்கள்"
@@ -3305,6 +3529,15 @@ msgstr "உள்ளமைவு கோப்பு உருவாக்கப�
 msgid "Data initialized."
 msgstr "தரவு துவக்கப்பட்டது."
 
+#. TRANS: parameter is the file path
+#, fuzzy, php-format
+#| msgid "Unable to create configuration file (%1$s)"
+msgid "Unable to remove installer enable file (%1$s)"
+msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%1$s)"
+
+msgid "Remember to remove it manually to re-secure the installer."
+msgstr ""
+
 msgid "An error occurred :("
 msgstr "பிழை ஏற்பட்டது :("
 
@@ -3385,14 +3618,29 @@ msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr "புதுப்பிப்பைத் தொடர தரவுத்தளத்தில் கலெட் போதுமான அனுமதிகளைப் பெறவில்லை."
 
+msgid "The installer is disabled."
+msgstr ""
+
+msgid "For security reasons, Galette installer is disabled by default."
+msgstr ""
+
+#, php-format
+msgid ""
+"To enable installer, create the empty %1$s file in Galette data directory, "
+"then reload this page:"
+msgstr ""
+
+msgid "I have created the file, reload"
+msgstr ""
+
+msgid "Homepage"
+msgstr "முகப்புப்பக்கம்"
+
 msgid "Galette has been successfully installed!"
 msgstr "கலெட் வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
 
 msgid "Galette has been successfully updated!"
 msgstr "கலெட் வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
-
-msgid "Homepage"
-msgstr "முகப்புப்பக்கம்"
 
 msgid "It seems you already use latest Galette version!"
 msgstr "நீங்கள் ஏற்கனவே அண்மைக் கால கேலட் பதிப்பைப் பயன்படுத்துகிறீர்கள் என்று தெரிகிறது!"
@@ -3402,6 +3650,9 @@ msgstr "நீங்கள் மேம்படுத்த விரும்�
 
 msgid "Home"
 msgstr "வீடு"
+
+msgid "Update"
+msgstr "புதுப்பிப்பு"
 
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
@@ -3451,14 +3702,6 @@ msgstr ""
 
 msgid "Enter connection data for the existing database."
 msgstr "இருக்கும் தரவுத்தளத்திற்கான இணைப்பு தரவை உள்ளிடவும்."
-
-msgid ""
-"It seems that you have already installed Galette once.<br/>All existing data "
-"will be removed if you keep going on using existing database!"
-msgstr ""
-"நீங்கள் ஏற்கனவே ஒரு முறை கேலட்டை நிறுவியுள்ளீர்கள் என்று தெரிகிறது. <br> நீங்கள் ஏற்கனவே "
-"இருக்கும் தரவுத்தளத்தைப் பயன்படுத்தி தொடர்ந்து நடந்து கொண்டால் தற்போதுள்ள எல்லா தரவும் "
-"அகற்றப்படும்!"
 
 msgid "Database type:"
 msgstr "தரவுத்தள வகை:"
@@ -3853,15 +4096,15 @@ msgstr "மின்னஞ்சல்கள் உள்ளடக்கங்�
 msgid "(all existing values will be removed)"
 msgstr "(தற்போதுள்ள அனைத்து மதிப்புகளும் அகற்றப்படும்)"
 
-msgid "Reset fields configuration"
-msgstr "புலங்கள் உள்ளமைவை மீட்டமைக்கவும்"
-
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
 "இதில் புல நிலைகள், ஒழுங்கு, தெரிவுநிலை, அணுகல் நிலைகள் மற்றும் கட்டாய மதிப்பெண்கள் "
 "ஆகியவை அடங்கும்."
+
+msgid "Reset fields configuration"
+msgstr "புலங்கள் உள்ளமைவை மீட்டமைக்கவும்"
 
 msgid "Reset all PDF models to their default values"
 msgstr "அனைத்து PDF மாதிரிகளையும் அவற்றின் இயல்புநிலை மதிப்புகளுக்கு மீட்டமைக்கவும்"
@@ -4045,6 +4288,53 @@ msgstr "முழுமையான அனுப்பப்பட்ட பர�
 
 msgid "View corresponding contributions"
 msgstr "தொடர்புடைய பங்களிப்புகளைப் பார்க்கவும்"
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
+
+msgid "Sending in progress…"
+msgstr ""
+
+msgid "Sent"
+msgstr "அனுப்பப்பட்டது"
+
+#, fuzzy
+#| msgid "Warning"
+msgid "Remaining"
+msgstr "எச்சரிக்கை"
+
+msgid "Failed"
+msgstr ""
+
+msgid "Recipients"
+msgstr "பெறுநர்கள்"
+
+#, php-format
+msgid "Sent in the last hour: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sent in the last day: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sending is over, but %1$s recipient(s) could not be reached."
+msgstr ""
+
+#, fuzzy
+#| msgid "Mailing has been successfully sent!"
+msgid "Sending has been successfully completed!"
+msgstr "அஞ்சல் வெற்றிகரமாக அனுப்பப்பட்டுள்ளது!"
+
+msgid ""
+"Sending rate limit reached. Sending will resume later (reopen this page or "
+"drain the queue from a cron job)."
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred while saving the member."
+msgid "An error occurred while sending. You may retry."
+msgstr "உறுப்பினரை சேமிக்கும் போது பிழை ஏற்பட்டது."
 
 #, php-format
 msgid "%1$s entry"
@@ -4314,6 +4604,9 @@ msgstr "நிர்வகிக்கப்பட்ட குழுக்க�
 msgid "Click on a row to select a group"
 msgstr "ஒரு குழுவைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
 
+msgid "Warning: Don't forget to backup your current database."
+msgstr "எச்சரிக்கை: உங்கள் தற்போதைய தரவுத்தளத்தை காப்புப் பிரதி எடுக்க மறக்காதீர்கள்."
+
 msgid "Existing files"
 msgstr "தற்போதுள்ள கோப்புகள்"
 
@@ -4439,6 +4732,17 @@ msgstr "பயனர்பெயர் அல்லது மின்னஞ்�
 
 msgid "Recover password"
 msgstr "கடவுச்சொல்லை மீட்டெடுக்கவும்"
+
+msgid "Confirm your super admin password"
+msgstr ""
+
+msgid "This page can break your installation, be very careful."
+msgstr ""
+
+#, fuzzy
+#| msgid "Confirmation:"
+msgid "Confirm"
+msgstr "உறுதிப்படுத்தல்:"
 
 msgid "IP"
 msgstr "ஐபி"
@@ -4892,12 +5196,6 @@ msgstr "Gmail ஐ SMTP சேவையகமாகப் பயன்படு�
 msgid "Using Sendmail server"
 msgstr "SendMail சேவையகத்தைப் பயன்படுத்துதல்"
 
-msgid "Using QMAIL server"
-msgstr "QMail சேவையகத்தைப் பயன்படுத்துதல்"
-
-msgid "Test email settings"
-msgstr "மின்னஞ்சல் அமைப்புகளை சோதிக்கவும்"
-
 msgid "SMTP server:"
 msgstr "SMTP சேவையகம்:"
 
@@ -4940,6 +5238,22 @@ msgstr "SMTP (அல்லது சிமெயில்) பயனர்:"
 
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (அல்லது gmail) கடவுச்சொல்:"
+
+#, fuzzy
+#| msgid "Version selection"
+msgid "Test connection"
+msgstr "பதிப்பு தேர்வு"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "Send a test email"
+msgstr "மின்னஞ்சல் அனுப்புங்கள்"
+
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
 
 msgid "Vertical margins:"
 msgstr "செங்குத்து விளிம்புகள்:"
@@ -5144,6 +5458,11 @@ msgstr "மின்னஞ்சல் முகவரியை உள்ளி�
 msgid "An error occurred sending test email :("
 msgstr "சோதனை மின்னஞ்சலை அனுப்பும் பிழை ஏற்பட்டது :("
 
+#, fuzzy
+#| msgid "An error occurred while saving fields configuration :("
+msgid "An error occurred testing mail server connection :("
+msgstr "புலங்கள் உள்ளமைவை சேமிக்கும் போது பிழை ஏற்பட்டது :("
+
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
@@ -5174,6 +5493,227 @@ msgstr "நிர்வகிக்கிறது:"
 
 msgid "New dynamic field"
 msgstr "புதிய மாறும் புலம்"
+
+#, fuzzy
+#| msgid "Date settings"
+msgid "Filter settings"
+msgstr "தேதி அமைப்புகள்"
+
+msgid "Search a setting..."
+msgstr ""
+
+msgid "Show legend"
+msgstr "புராணக்கதை காட்டு"
+
+msgid ""
+"This setting is not known by Galette. It may come from an older version or "
+"from a plugin."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unknown"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "Galette maintains this value itself; it is shown for information only."
+msgstr ""
+
+#, fuzzy
+#| msgid "User, read only"
+msgid "read-only"
+msgstr "பயனர், மட்டும் படியுங்கள்"
+
+msgid ""
+"Held as a secret: its value is never displayed, and it is changed from the "
+"settings form."
+msgstr ""
+
+#, fuzzy
+#| msgid "Secretary"
+msgid "secret"
+msgstr "செயலாளர்"
+
+#, fuzzy
+#| msgid "Default"
+msgid "default"
+msgstr "இயல்புநிலை"
+
+#, fuzzy
+#| msgid "Modified"
+msgid "modified"
+msgstr "மாற்றியமைக்கப்பட்ட"
+
+#, php-format
+msgid "Declared by the %s plugin, and only while it stays active."
+msgstr ""
+
+#, fuzzy
+#| msgid "see"
+msgid "set"
+msgstr "பார்க்க"
+
+#, fuzzy
+#| msgid "Not supplied"
+msgid "not set"
+msgstr "வழங்கப்படவில்லை"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enabled"
+msgstr "இயக்கப்பட்டது"
+
+#, fuzzy, php-format
+#| msgid "Save"
+msgid "Save '%s'"
+msgstr "சேமி"
+
+#, fuzzy
+#| msgid "Reset all filters to defaults"
+msgid "Reset to default"
+msgstr "அனைத்து வடிப்பான்களையும் இயல்புநிலைக்கு மீட்டமைக்கவும்"
+
+#, fuzzy, php-format
+#| msgid "Reset all filters to defaults"
+msgid "Reset '%s' to its default"
+msgstr "அனைத்து வடிப்பான்களையும் இயல்புநிலைக்கு மீட்டமைக்கவும்"
+
+msgid "Constants behavior.inc.php understands"
+msgstr ""
+
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+
+#, php-format
+msgid "Replaced by the \"%s\" setting."
+msgstr ""
+
+msgid "deprecated"
+msgstr ""
+
+msgid "defined"
+msgstr ""
+
+#, php-format
+msgid "Go to %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "Statuses"
+msgstr "நிலை"
+
+msgid "Never changed: the value Galette ships with."
+msgstr ""
+
+msgid ""
+"Changed from the default, here or from the settings form. It can be reset."
+msgstr ""
+
+msgid ""
+"Galette maintains this value itself, such as a generated identifier or a "
+"date it records. It is shown for information only."
+msgstr ""
+
+msgid ""
+"A password or a token. Its value is never displayed, only whether one is "
+"set, and it is changed from the settings form."
+msgstr ""
+
+msgid ""
+"A constant defined in behavior.inc.php takes precedence over the stored "
+"value. Remove it from that file to manage the setting from here."
+msgstr ""
+
+msgid ""
+"A row found in database that Galette does not describe. It may come from an "
+"older version, or from a plugin that is no longer active."
+msgstr ""
+
+#, fuzzy
+#| msgid "Company name"
+msgid "plugin name"
+msgstr "நிறுவனத்தின் பெயர்"
+
+msgid ""
+"Declared by that plugin rather than by Galette. Deactivate the plugin and "
+"the setting becomes unknown again, keeping its value until the plugin comes "
+"back."
+msgstr ""
+
+msgid ""
+"Repeated failures get further attempts refused for a while. What is refused "
+"right now is listed below; lifting a line lets whoever it stands for try "
+"again at once."
+msgstr ""
+
+msgid "Thresholds and durations are in the settings."
+msgstr ""
+
+msgid "Nothing is being refused"
+msgstr ""
+
+msgid ""
+"No account and no address is waiting; counters that can no longer refuse "
+"anyone are dropped on their own."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts currently refused"
+msgstr "ஏற்பு தோல்வியடைந்தது"
+
+#, fuzzy
+#| msgid "Emails content"
+msgid "What is counted"
+msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
+
+#, fuzzy
+#| msgid "Account:"
+msgid "Account"
+msgstr "கணக்கு:"
+
+msgid "Failures"
+msgstr ""
+
+msgid "Refused until"
+msgstr ""
+
+msgid "Failed attempts on one account, from one address"
+msgstr ""
+
+msgid "Failed attempts from one address, on any account"
+msgstr ""
+
+msgid "Failed attempts on one account, from anywhere"
+msgstr ""
+
+msgid "Password recovery requests for one account"
+msgstr ""
+
+msgid "Password recovery requests from one address"
+msgstr ""
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscriptions from one address"
+msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
+
+msgid "Lift"
+msgstr ""
+
+msgid "Lift them all"
+msgstr ""
 
 msgid "Please confirm your email address:"
 msgstr "உங்கள் மின்னஞ்சல் முகவரியை உறுதிப்படுத்தவும்:"
@@ -5372,17 +5912,11 @@ msgstr "கோரப்பட்ட முகவரி க்கு உங்க
 msgid "Sender"
 msgstr "அனுப்புநர்"
 
-msgid "Recipients"
-msgstr "பெறுநர்கள்"
-
 msgid "Subject"
 msgstr "பொருள்"
 
 msgid "Att."
 msgstr "To."
-
-msgid "Sent"
-msgstr "அனுப்பப்பட்டது"
 
 msgid "Create new mailing"
 msgstr "புதிய அஞ்சலை உருவாக்கவும்"
@@ -5397,6 +5931,9 @@ msgstr ""
 msgid "Sent mailings:"
 msgstr "அனுப்பப்பட்ட அஞ்சல்கள்:"
 
+msgid "In progress"
+msgstr ""
+
 msgid "Superadmin"
 msgstr "சூப்பர்பாட்மின்"
 
@@ -5408,6 +5945,11 @@ msgstr "வழங்கப்படவில்லை"
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "முன்னோட்ட சாளரத்தில் அஞ்சல் '%1$s' விவரங்களைக் காண்பி"
+
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Follow the sending of mailing '%1$s'"
+msgstr "'%1$s' என்ற அஞ்சல் அனுப்பவும்"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
@@ -5432,6 +5974,11 @@ msgstr "புதிய ஒன்றிற்கான வார்ப்பு�
 
 msgid "No sent"
 msgstr ""
+
+#, fuzzy
+#| msgid "For the selection:"
+msgid "Follow the sending"
+msgstr "தேர்வுக்கு:"
 
 msgid "An error occurred displaying preview :("
 msgstr "முன்னோட்டத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
@@ -5511,6 +6058,9 @@ msgstr "புதிய நிலை"
 
 msgid "Choose an entry"
 msgstr "ஒரு நுழைவைத் தேர்வுசெய்க"
+
+msgid "Selecting an item from the list will automatically reload the page"
+msgstr ""
 
 msgid "Reference:"
 msgstr "குறிப்பு:"
@@ -5618,6 +6168,11 @@ msgid ""
 msgstr ""
 "இணைப்புகளாக சேர்க்க கோப்புகளைத் தேர்ந்தெடுக்கவும். <br> 'கட்டுப்பாடு' அல்லது 'உயர்த்து' "
 "விசைகளைப் பயன்படுத்தி பல கோப்புத் தேர்வு இணக்கமான உலாவிகளில் மட்டுமே கிடைக்கும்."
+
+#, fuzzy, php-format
+#| msgid "File is too big. Maximum allowed size is %1$s"
+msgid "Maximum allowed size is %1$s"
+msgstr "கோப்பு மிகப் பெரியது. அதிகபட்சமாக அனுமதிக்கப்பட்ட அளவு %1$s ஆகும்"
 
 msgid "Add attachment"
 msgstr "இணைப்பைச் சேர்க்கவும்"
@@ -5765,8 +6320,16 @@ msgstr "எனது நடவடிக்கைகள்"
 msgid "Activities"
 msgstr "செயல்பாடுகள்"
 
+msgid "Loading..."
+msgstr "ஏற்றுகிறது ..."
+
 msgid "Show dashboard on login"
 msgstr "உள்நுழைவில் டாச்போர்டைக் காட்டு"
+
+#, fuzzy
+#| msgid "An error occurred displaying preview :("
+msgid "An error occurred displaying news :("
+msgstr "முன்னோட்டத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
 msgid "For the selection:"
 msgstr "தேர்வுக்கு:"
@@ -5831,6 +6394,14 @@ msgstr "படம்:"
 msgid "Cropping focus"
 msgstr "பயிர் கவனம்"
 
+#, php-format
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %1$s"
+msgstr ""
+"அமைப்புகளில் வரையறுக்கப்பட்ட இறுதி விகிதத்திற்கு பயிர் செய்த பின் பாதுகாக்க அசல் படத்தின் "
+"பகுதியைத் தேர்வுசெய்க: %1$s"
+
 msgid "Center"
 msgstr "நடுவண்"
 
@@ -5846,14 +6417,6 @@ msgstr "இடது"
 msgid "Right"
 msgstr "வலது"
 
-#, php-format
-msgid ""
-"Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %1$s"
-msgstr ""
-"அமைப்புகளில் வரையறுக்கப்பட்ட இறுதி விகிதத்திற்கு பயிர் செய்த பின் பாதுகாக்க அசல் படத்தின் "
-"பகுதியைத் தேர்வுசெய்க: %1$s"
-
 msgid "Additionnal fields:"
 msgstr "கூடுதல் புலங்கள்:"
 
@@ -5861,14 +6424,24 @@ msgid "Enter as many occurrences you want."
 msgstr "நீங்கள் விரும்பும் பல நிகழ்வுகளை உள்ளிடவும்."
 
 #, php-format
+msgid "Add an occurrence of %1$s"
+msgstr ""
+
+#, php-format
 msgid "Enter up to %1$s more occurrences."
 msgstr "%1$s அதிக நிகழ்வுகளை உள்ளிடவும்."
 
+#, php-format
+msgid "Delete the file and remove this occurrence of %1$s"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove title %1$s"
+msgid "Remove this occurrence of %1$s"
+msgstr "தலைப்பு %1$s ஐ அகற்று"
+
 msgid "Select an option"
 msgstr "ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்"
-
-msgid "delete"
-msgstr "நீக்கு"
 
 msgid "This comment is only displayed for admins and staff members."
 msgstr "இந்த கருத்து நிர்வாகிகள் மற்றும் ஊழியர்களுக்கு மட்டுமே காட்டப்படும்."
@@ -5934,9 +6507,6 @@ msgstr "அதை மீண்டும் அனுப்ப விரும்
 
 msgid "Later"
 msgstr "பின்னர்"
-
-msgid "Loading..."
-msgstr "ஏற்றுகிறது ..."
 
 msgid "Password is valid :)"
 msgstr "கடவுச்சொல் செல்லுபடியாகும் :)"
@@ -6059,8 +6629,8 @@ msgstr "பக்கங்கள்:"
 msgid "Records per page:"
 msgstr "ஒரு பக்கத்திற்கு பதிவுகள்:"
 
-msgid "Show legend"
-msgstr "புராணக்கதை காட்டு"
+msgid "Selecting an item from the list will automatically reload the table"
+msgstr ""
 
 msgid "(Un)Check all"
 msgstr "(ஐ.நா) அனைத்தையும் சரிபார்க்கவும்"
@@ -6109,6 +6679,11 @@ msgstr "கேலட் முகப்புப்பக்கத்திற�
 
 msgid "Menu"
 msgstr "பட்டியல்"
+
+#, fuzzy
+#| msgid "Public pages"
+msgid "Public pages menu"
+msgstr "பொது பக்கங்கள்"
 
 msgid "Subscribe"
 msgstr "குழுசேர்"
@@ -6201,18 +6776,6 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட குழு�
 msgid "No groups has been selected yet."
 msgstr "இதுவரை எந்த குழுக்களும் தேர்ந்தெடுக்கப்படவில்லை."
 
-msgid "Choose your language"
-msgstr "உங்கள் மொழியைத் தேர்வுசெய்க"
-
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
-msgid "Current locale '%1$s'"
-msgstr "தற்போதைய பக்கம் (%1$s)"
-
-#, php-format
-msgid "Switch locale to '%1$s'"
-msgstr "இருப்பிடத்தை '%1$s' க்கு மாற்றவும்"
-
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
@@ -6260,6 +6823,9 @@ msgstr "நீங்கள் தொடர விரும்புகிறீ�
 
 msgid "This can't be undone."
 msgstr "இதை செயல்தவிர்க்க முடியாது."
+
+msgid "New installation"
+msgstr "புதிய நிறுவல்"
 
 #, php-format
 msgid "you're installing %1$s for the first time"
@@ -6356,6 +6922,38 @@ msgstr "'அனுப்பு' பொத்தானை அழுத்தி�
 msgid "An error occurred sending telemetry information :("
 msgstr "டெலிமெட்ரி தகவல்களை அனுப்புவதில் பிழை ஏற்பட்டது :("
 
+#~ msgid ""
+#~ "Please define constant \"GALETTE_URI\" with the path to your instance."
+#~ msgstr "உங்கள் நிகழ்வுக்கான பாதையுடன் நிலையான \"GALETTE_URI\" ஐ வரையறுக்கவும்."
+
+#~ msgid "you're installing Galette for the first time"
+#~ msgstr "நீங்கள் முதல் முறையாக கேலட்டை நிறுவுகிறீர்கள்"
+
+#~ msgid ""
+#~ "you wish to erase an older version of Galette without keeping your data"
+#~ msgstr "உங்கள் தரவை வைத்திருக்காமல் கேலட்டின் பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
+
+#~ msgid ""
+#~ "you already have installed Galette, and you want to upgrade to the latest "
+#~ "version"
+#~ msgstr ""
+#~ "நீங்கள் ஏற்கனவே கேலட் நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
+#~ "விரும்புகிறீர்கள்"
+
+#~ msgid ""
+#~ "It seems that you have already installed Galette once.<br/>All existing "
+#~ "data will be removed if you keep going on using existing database!"
+#~ msgstr ""
+#~ "நீங்கள் ஏற்கனவே ஒரு முறை கேலட்டை நிறுவியுள்ளீர்கள் என்று தெரிகிறது. <br> நீங்கள் "
+#~ "ஏற்கனவே இருக்கும் தரவுத்தளத்தைப் பயன்படுத்தி தொடர்ந்து நடந்து கொண்டால் தற்போதுள்ள எல்லா "
+#~ "தரவும் அகற்றப்படும்!"
+
+#~ msgid "Using QMAIL server"
+#~ msgstr "QMail சேவையகத்தைப் பயன்படுத்துதல்"
+
+#~ msgid "delete"
+#~ msgstr "நீக்கு"
+
 #~ msgid "There are no member to proceed."
 #~ msgstr "தொடர உறுப்பினர் இல்லை."
 
@@ -6364,11 +6962,6 @@ msgstr "டெலிமெட்ரி தகவல்களை அனுப்�
 
 #~ msgid "Cause"
 #~ msgstr "காரணம்"
-
-#, fuzzy
-#~| msgid "Enabled"
-#~ msgid "Enable"
-#~ msgstr "இயக்கப்பட்டது"
 
 #~ msgid "modification"
 #~ msgstr "மாற்றம்"

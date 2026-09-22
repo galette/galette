@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 13:51+0200\n"
+"POT-Creation-Date: 2026-09-22 07:43+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -258,7 +258,6 @@ msgstr "L'extensió del fitxer no està permesa només n'hi ha un 1%."
 msgid "File is too big. Maximum allowed size is %1$s"
 msgstr "El fitxer és massa gran. La mida màxima permesa és de %1$s"
 
-#. TRANS: parameter is the minimum size, in pixels
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %1$spx"
 msgstr ""
@@ -339,10 +338,68 @@ msgstr "D'acord"
 msgid "Delete mailing entries"
 msgstr "Suprimeix les entrades de correu"
 
+#, php-format
+msgid ""
+"You may want to set it from the \"%s\" setting listed above and remove "
+"declared constant."
+msgstr ""
+
+msgid ""
+"Enable debug mode: verbose logs, no cache, Twig strict variables and "
+"detailed errors."
+msgstr ""
+
+msgid ""
+"PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
+"credentials and mail settings."
+msgstr ""
+
+msgid ""
+"Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
+"debug mode."
+msgstr ""
+
+msgid "Dump every SQL query to the logs."
+msgstr ""
+
+msgid ""
+"Development features to activate, among those declared in the feature flags "
+"registry. They only apply in debug mode."
+msgstr ""
+
 #. TRANS: parameter is the logged in user name
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr "S'ha iniciat la sessió com a<br>%1$s"
+
+#, fuzzy
+msgid "Emailing has been disabled in the preferences."
+msgstr ""
+"El correu enviat està desactivat a les preferències. Pregunta-ho a "
+"l'administrador de galette"
+
+#, fuzzy, php-format
+msgid "Unknown emailing method '%s'."
+msgstr "Mètode de correu electrònic"
+
+msgid "Unable to reach the SMTP server."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "The file does not exists or cannot be read :("
+msgid "'%s' does not exist, or cannot be run."
+msgstr "El fitxer no existeix o no es pot llegir :("
+
+msgid "The PHP mail() function is not available on this server."
+msgstr ""
+
+msgid ""
+"PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
+"to."
+msgstr ""
+
+msgid "Sending quota has been reached, message has not been sent."
+msgstr ""
 
 #, fuzzy
 msgid "No such module."
@@ -412,6 +469,13 @@ msgid "Unable to run %1$s update script :("
 msgstr "No s'ha pogut executar l'script d'actualització de la versió ("
 
 #, fuzzy
+msgid "No configuration file found!"
+msgstr "Escriu el fitxer de configuració"
+
+msgid "Existing configuration file is incomplete or unreadable!"
+msgstr ""
+
+#, fuzzy
 msgid "Write configuration file"
 msgstr "Escriu el fitxer de configuració"
 
@@ -459,6 +523,76 @@ msgstr "Actualitza les preferències"
 #, fuzzy
 msgid "Update models"
 msgstr "Actualitza els models"
+
+msgid "Dark mode CSS file has been reset."
+msgstr ""
+
+#, fuzzy
+msgid "You have to select a staff member to retrieve its address"
+msgstr "Heu de seleccionar un membre del personal"
+
+#, fuzzy
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr "Heu de seleccionar un membre del personal"
+
+#, fuzzy
+msgid "- You must indicate a sender name for emails!"
+msgstr "- Heu d'indicar un nom de remitent per a correus electrònics!"
+
+#, fuzzy
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+"- Heu d'indicar una adreça de correu electrònic que Galette hauria "
+"d'utilitzar per enviar correus electrònics!"
+
+#, fuzzy
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr "- Heu d'indicar el servidor SMTP que voleu utilitzar!"
+
+#, fuzzy
+msgid "- You must provide a login for SMTP authentication."
+msgstr "- Heu de proporcionar un inici de sessió per a l'autenticació SMTP."
+
+#, fuzzy
+msgid "- You must provide a password for SMTP authentication."
+msgstr "- Heu de proporcionar una contrasenya per a l'autenticació SMTP."
+
+#, fuzzy
+msgid ""
+"- You must indicate a membership extension or a beginning of membership."
+msgstr ""
+"- L'extensió per defecte de la pertinença i el començament de la pertinença "
+"són mútuament excloents."
+
+#, fuzzy
+msgid ""
+"- Default membership extension and beginning of membership are mutually "
+"exclusive."
+msgstr ""
+"- L'extensió per defecte de la pertinença i el començament de la pertinença "
+"són mútuament excloents."
+
+#, fuzzy
+msgid "- Offering months is only compatible with beginning of membership."
+msgstr ""
+"- Oferir mesos només és compatible amb el començament de la pertinença."
+
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is an hTML link to the field with its name
+#, php-format
+msgid "- Mandatory field %1$s empty."
+msgstr "- El camp obligatori %1$s està buit."
+
+#, fuzzy
+msgid "Passwords mismatch"
+msgstr "Les contrasenyes no coincideixen"
+
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%1$s de l'associació %2$s"
 
 msgid "First page"
 msgstr "Primera pàgina"
@@ -517,80 +651,41 @@ msgstr "Quant és el preu de la retirada %2$s a %1$s?"
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Tinc %1$s Galettes que en dono %2$s. Quantes Galettes tinc?"
 
-#, fuzzy
-msgid "- You must indicate a sender name for emails!"
-msgstr "- Heu d'indicar un nom de remitent per a correus electrònics!"
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+msgid "Unknown preference '%1$s'!"
+msgstr "Tipus desconegut %1$s!"
 
-#, fuzzy
-msgid "- You must indicate an email address Galette should use to send emails!"
-msgstr ""
-"- Heu d'indicar una adreça de correu electrònic que Galette hauria "
-"d'utilitzar per enviar correus electrònics!"
-
-#, fuzzy
-msgid "- You must indicate the SMTP server you want to use!"
-msgstr "- Heu d'indicar el servidor SMTP que voleu utilitzar!"
-
-#, fuzzy
-msgid "- You must provide a login for SMTP authentication."
-msgstr "- Heu de proporcionar un inici de sessió per a l'autenticació SMTP."
-
-#, fuzzy
-msgid "- You must provide a password for SMTP authentication."
-msgstr "- Heu de proporcionar una contrasenya per a l'autenticació SMTP."
-
-#, fuzzy
-msgid ""
-"- You must indicate a membership extension or a beginning of membership."
-msgstr ""
-"- L'extensió per defecte de la pertinença i el començament de la pertinença "
-"són mútuament excloents."
-
-#, fuzzy
-msgid ""
-"- Default membership extension and beginning of membership are mutually "
-"exclusive."
-msgstr ""
-"- L'extensió per defecte de la pertinença i el començament de la pertinença "
-"són mútuament excloents."
-
-#, fuzzy
-msgid "- Offering months is only compatible with beginning of membership."
-msgstr ""
-"- Oferir mesos només és compatible amb el començament de la pertinença."
-
-#. TRANS: parameter is a field name
-#. TRANS: parameter is an hTML link to the field with its name
-#. TRANS: parameter is an HTML link to the field with its name
-#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is the preference name
 #, php-format
-msgid "- Mandatory field %1$s empty."
-msgstr "- El camp obligatori %1$s està buit."
+msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
+msgstr ""
 
-#, fuzzy
-msgid "Passwords mismatch"
-msgstr "Les contrasenyes no coincideixen"
-
-#, fuzzy
-msgid "You have to select a staff member to retrieve its address"
-msgstr "Heu de seleccionar un membre del personal"
-
-#, fuzzy
-msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Heu de seleccionar un membre del personal"
-
-#. TRANS: first parameter is the address, second the setting holding it
+#. TRANS: parameter is the preference name
 #, php-format
-msgid "- Invalid E-Mail address %1$s (%2$s)"
-msgstr "- Adreça de correu electrònic invàlida %1$s (%2$s)"
+msgid "You are not allowed to change preference '%1$s'!"
+msgstr ""
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
+msgstr ""
+
+msgid ""
+"Please set your instance URL from the advanced configuration, or define the "
+"\"GALETTE_URI\" constant."
+msgstr ""
 
 #, fuzzy
-msgid "- The username must be composed of at least 4 characters!"
-msgstr "- El nom d'usuari s'ha de compondre d'almenys 4 caràcters!"
+msgid "Never"
+msgstr "Mai"
 
 #, fuzzy
-msgid "- This username is already used by another member !"
-msgstr "- Aquest nom d'usuari ja l'utilitza un altre membre!"
+msgid "Main information"
+msgstr "Informació principal"
+
+msgid "Social networks"
+msgstr "Xarxes socials"
 
 #, fuzzy
 msgid "- The numbers and measures have to be integers!"
@@ -607,6 +702,18 @@ msgid "- Invalid number of months of membership extension."
 msgstr "- El nombre de mesos d'extensió de la pertinença no és vàlid."
 
 #, fuzzy
+msgid "- Invalid number of offered months."
+msgstr "- El nombre de mesos oferts no és vàlid."
+
+#, fuzzy
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- El nom d'usuari s'ha de compondre d'almenys 4 caràcters!"
+
+#, fuzzy
+msgid "- This username is already used by another member !"
+msgstr "- Aquest nom d'usuari ja l'utilitza un altre membre!"
+
+#, fuzzy
 msgid "- Invalid format of beginning of membership."
 msgstr "- Format no vàlid de l'inici de la pertinença."
 
@@ -615,36 +722,31 @@ msgid "- Invalid date for beginning of membership."
 msgstr "- Data no vàlida per començar la pertinença."
 
 #, fuzzy
-msgid "- Invalid number of offered months."
-msgstr "- El nombre de mesos oferts no és vàlid."
-
-#, fuzzy
 msgid "- Invalid year for cards."
 msgstr "- Any invàlid per a targetes."
 
 msgid "- Invalid website URL."
 msgstr ""
 
-#. TRANS: first parameter is name, second is status
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "%1$s association's %2$s"
-msgstr "%1$s de l'associació %2$s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Adreça de correu electrònic invàlida %1$s (%2$s)"
 
-msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Amount must be a positive number"
+msgid "- Value for '%1$s' must be a positive number!"
+msgstr "L'import ha de ser un nombre positiu"
+
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
 
-#, fuzzy
-msgid "Never"
-msgstr "Mai"
-
-#, fuzzy
-msgid "Main information"
-msgstr "Informació principal"
-
-msgid "Social networks"
-msgstr "Xarxes socials"
-
-msgid "Dark mode CSS file has been reset."
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
 #, fuzzy
@@ -856,6 +958,13 @@ msgstr ""
 "Estableix les preferències de les aplicacions (adreça del lloc web de "
 "configuració de targetes)"
 
+#, fuzzy
+msgid "Authentication attempts"
+msgstr "Ha fallat l'autenticació"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "Plugins"
 msgstr "Connectors"
 
@@ -928,6 +1037,13 @@ msgstr "Eines d'administració"
 #, fuzzy
 msgid "Various administrative tools"
 msgstr "Diverses eines administratives"
+
+#, fuzzy
+msgid "Advanced configuration"
+msgstr "Configuració del full d'assistència"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
 
 msgid "Gallery"
 msgstr "Trombinoscopi"
@@ -1381,24 +1497,6 @@ msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicat des del nom %1$s (%2$s)"
 
 #, fuzzy
-#| msgid "Association %s"
-msgid "Association status"
-msgstr "Associacion %s"
-
-msgid "Rules of procedure"
-msgstr ""
-
-#, fuzzy
-msgid "Adhesion form"
-msgstr "Forma d'adhesius"
-
-msgid "Meeting minutes"
-msgstr ""
-
-msgid "Votes results"
-msgstr ""
-
-#, fuzzy
 msgid "Form is mandatory!"
 msgstr "La forma és obligatòria!"
 
@@ -1588,6 +1686,26 @@ msgid "Email: '%1$s' has been successfully modified."
 msgstr "El correu electrònic '%1$s' s'ha modificat amb èxit."
 
 #, fuzzy
+msgid "Wrong password!"
+msgstr "Sense contrasenya"
+
+#, fuzzy
+msgid "Please confirm your password again."
+msgstr "Confirmeu la vostra adreça electrònica"
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been stored."
+msgstr "S'han desat les preferències."
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been reset to its default."
+msgstr "S'han desat les preferències."
+
+#, fuzzy
 msgid "Removal has not been confirmed!"
 msgstr "La supressió no s'ha confirmat!"
 
@@ -1762,6 +1880,16 @@ msgid "Invalid email adress!"
 msgstr "Correu electrònic invàlid!"
 
 #, fuzzy
+#| msgid "Reset emails contents"
+msgid "Those emailing settings work."
+msgstr "Reinicialitza els continguts dels missatges de correu"
+
+#, fuzzy
+#| msgid "Reset emails contents"
+msgid "Those emailing settings do not work."
+msgstr "Reinicialitza els continguts dels missatges de correu"
+
+#, fuzzy
 msgid "Fields configuration has been successfully stored"
 msgstr "La configuració dels camps s'ha desat correctament"
 
@@ -1804,6 +1932,13 @@ msgstr "Inici de sessió"
 #, fuzzy
 msgid "You must provide both login and password."
 msgstr "Heu de proporcionar tant l'inici de sessió com la contrasenya."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+msgid "Authentication throttled"
+msgstr "Ha fallat l'autenticació"
 
 msgid "A new Galette release is available."
 msgstr ""
@@ -1855,18 +1990,18 @@ msgstr ""
 "El correu enviat està desactivat a les preferències. Pregunta-ho a "
 "l'administrador de galette"
 
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#, fuzzy
+msgid "Password recovery throttled"
+msgstr "Recuperació de contrasenya"
+
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
 "S'ha enviat un correu electrònic a '%s' per a la recuperació de la "
 "contrasenya."
-
-msgid ""
-"An email has been sent to your address.<br/>Please check your inbox and "
-"follow the instructions."
-msgstr ""
-"S'ha enviat un correu electrònic a la vostra adreça.<br>Comproveu la vostra "
-"bústia d'entrada i seguiu les instruccions."
 
 #, fuzzy
 msgid "An email has been sent to the member."
@@ -1896,6 +2031,17 @@ msgid "Login %s does not exist"
 msgstr "Login %s no existeix"
 
 #, fuzzy
+#| msgid ""
+#| "An email has been sent to your address.<br/>Please check your inbox and "
+#| "follow the instructions."
+msgid ""
+"If an account matches, an email has been sent to its address.<br/>Please "
+"check your inbox and follow the instructions."
+msgstr ""
+"S'ha enviat un correu electrònic a la vostra adreça.<br>Comproveu la vostra "
+"bústia d'entrada i seguiu les instruccions."
+
+#, fuzzy
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
@@ -1921,6 +2067,21 @@ msgstr "S'ha canviat la contrasenya pel membre '%s'."
 #, fuzzy
 msgid "Your password has been changed!"
 msgstr "La contrasenya ha canviat!"
+
+msgid "All authentication counters have been lifted."
+msgstr ""
+
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "The counter has been lifted."
+msgstr "S'ha modificat el compte del membre."
+
+#, fuzzy
+msgid "Authentication counters lifted"
+msgstr "Ha fallat l'autenticació"
+
+msgid "Nothing to lift; it may have expired on its own."
+msgstr ""
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -1980,6 +2141,12 @@ msgstr "El fitxer '%1$s' ha estat eliminat del disc."
 #, php-format
 msgid "Cannot remove '%1$s' from disk :/"
 msgstr "No es pot eliminar '%1$s' del disc :/"
+
+#. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+#, fuzzy, php-format
+#| msgid "New occurrence"
+msgid "%1$s (occurrence %2$s)"
+msgstr "Nova aparició"
 
 #, fuzzy
 msgid "CSV import model"
@@ -2287,6 +2454,17 @@ msgstr "Escriviu un objecte per al missatge."
 msgid "Please enter a message."
 msgstr "Introduïu un missatge."
 
+msgid "The mailing could not be queued, nothing has been sent."
+msgstr ""
+
+#. TRANS: first parameter is the number of recipients reached, second the total
+#, php-format
+msgid ""
+"The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
+"stored, unsent, so you can check what has been delivered before sending it "
+"again."
+msgstr ""
+
 msgid "Mailing has been successfully sent!"
 msgstr "El correu s'ha enviat correctament!"
 
@@ -2299,6 +2477,24 @@ msgstr "Elimina el mailing #%1$s"
 
 msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
+
+#, fuzzy
+msgid "Sending mailing"
+msgstr "MAIlings enviats"
+
+#, fuzzy
+msgid "Back to members list"
+msgstr "Torna a la llista de membres"
+
+#, fuzzy
+#| msgid "Mailings"
+msgid "Mailings history"
+msgstr "Correus electrònics"
+
+#, fuzzy
+#| msgid "Sent reminders:"
+msgid "Sending reminders"
+msgstr "Recordatoris enviats:"
 
 #. TRANS: parameter is the transaction identifier
 #, fuzzy, php-format
@@ -2395,6 +2591,10 @@ msgstr "Elimina el tipus de pagament %1$s"
 
 msgid "Subscription"
 msgstr "Subscripció"
+
+#, fuzzy
+msgid "Self subscription throttled"
+msgstr "S'ha habilitat l'autosubscripció?"
 
 #, fuzzy
 msgid "Profile"
@@ -2967,6 +3167,24 @@ msgid "Contributions deleted (%1$s)"
 msgstr "Contribucions suprimides (%1$s)"
 
 #, fuzzy
+#| msgid "Association %s"
+msgid "Association status"
+msgstr "Associacion %s"
+
+msgid "Rules of procedure"
+msgstr ""
+
+#, fuzzy
+msgid "Adhesion form"
+msgstr "Forma d'adhesius"
+
+msgid "Meeting minutes"
+msgstr ""
+
+msgid "Votes results"
+msgstr ""
+
+#, fuzzy
 msgid "Y"
 msgstr "Y"
 
@@ -3097,6 +3315,11 @@ msgid "No database name"
 msgstr "Sense nom de base de dades"
 
 #, fuzzy
+#| msgid "Table prefix:"
+msgid "No table prefix"
+msgstr "Prefix de taula:"
+
+#, fuzzy
 msgid "The username cannot contain the @ character"
 msgstr "El nom d'usuari no pot contenir el caràcter @"
 
@@ -3115,6 +3338,19 @@ msgstr "Instal·lació de Galette"
 #, fuzzy
 msgid "Read the manual"
 msgstr "Llegint la llista"
+
+#, fuzzy
+msgid "Choose your language"
+msgstr "Canvia la llengua"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Pàgina actual (%1$s)"
+
+#, php-format
+msgid "Switch locale to '%1$s'"
+msgstr ""
 
 #, fuzzy
 msgid "Version selection"
@@ -3764,43 +4000,6 @@ msgid "Unable to migrate choices for field %d: %s"
 msgstr ""
 
 #, fuzzy
-msgid "New installation"
-msgstr "Instal·lació nova"
-
-#, fuzzy
-msgid "you're installing Galette for the first time"
-msgstr "instal·leu Galette per primera vegada"
-
-#, fuzzy
-msgid "you wish to erase an older version of Galette without keeping your data"
-msgstr ""
-"voleu esborrar una versió antiga de Galette sense mantenir les vostres dades"
-
-#, fuzzy
-msgid "Update"
-msgstr "Actualitza"
-
-#, fuzzy
-msgid ""
-"you already have installed Galette, and you want to upgrade to the latest "
-"version"
-msgstr ""
-"ja teniu instal·lada el Galette i voleu actualitzar a la darrera versió"
-
-#, fuzzy
-msgid "Warning: Don't forget to backup your current database."
-msgstr ""
-"Atenció No oblideu fer una còpia de seguretat de la base de dades actual."
-
-#, fuzzy
-msgid "Next step"
-msgstr "Pas següent"
-
-#, fuzzy
-msgid "Back"
-msgstr "Enrere"
-
-#, fuzzy
 msgid "Database has not been installed!"
 msgstr "No s'ha instal·lat la base de dades!"
 
@@ -3819,6 +4018,14 @@ msgstr "La base de dades ha estat actualitzada )"
 #, fuzzy
 msgid "Retry"
 msgstr "Reintenta"
+
+#, fuzzy
+msgid "Next step"
+msgstr "Pas següent"
+
+#, fuzzy
+msgid "Back"
+msgstr "Enrere"
 
 #, fuzzy
 msgid "Photos"
@@ -3972,6 +4179,15 @@ msgstr "S'ha creat el fitxer de configuració!"
 msgid "Data initialized."
 msgstr "Dades inicialitzades."
 
+#. TRANS: parameter is the file path
+#, fuzzy, php-format
+#| msgid "Unable to create configuration file (%1$s)"
+msgid "Unable to remove installer enable file (%1$s)"
+msgstr "No s'ha pogut crear el fitxer de configuració (%1$s)"
+
+msgid "Remember to remove it manually to re-secure the installer."
+msgstr ""
+
 #, fuzzy
 msgid "An error occurred :("
 msgstr "Hi ha hagut un error ("
@@ -4066,6 +4282,25 @@ msgid ""
 msgstr ""
 "GALETTE no té prou permisos a la base de dades per continuar l'actualització."
 
+msgid "The installer is disabled."
+msgstr ""
+
+msgid "For security reasons, Galette installer is disabled by default."
+msgstr ""
+
+#, php-format
+msgid ""
+"To enable installer, create the empty %1$s file in Galette data directory, "
+"then reload this page:"
+msgstr ""
+
+msgid "I have created the file, reload"
+msgstr ""
+
+#, fuzzy
+msgid "Homepage"
+msgstr "Pàgina d'inici"
+
 #, fuzzy
 msgid "Galette has been successfully installed!"
 msgstr "La Galette s'ha instal·lat correctament!"
@@ -4073,10 +4308,6 @@ msgstr "La Galette s'ha instal·lat correctament!"
 #, fuzzy
 msgid "Galette has been successfully updated!"
 msgstr "La Galette s'ha actualitzat correctament!"
-
-#, fuzzy
-msgid "Homepage"
-msgstr "Pàgina d'inici"
 
 msgid "It seems you already use latest Galette version!"
 msgstr "Sembla que ja utilitzeu l'última versió de Galette!"
@@ -4087,6 +4318,10 @@ msgstr "Segur que voleu actualitzar?"
 #, fuzzy
 msgid "Home"
 msgstr "Inici"
+
+#, fuzzy
+msgid "Update"
+msgstr "Actualitza"
 
 #, fuzzy
 msgid "Select your previous Galette version below, and then click next."
@@ -4146,13 +4381,6 @@ msgstr ""
 #, fuzzy
 msgid "Enter connection data for the existing database."
 msgstr "Introduïu les dades de connexió per a la base de dades existent."
-
-msgid ""
-"It seems that you have already installed Galette once.<br/>All existing data "
-"will be removed if you keep going on using existing database!"
-msgstr ""
-"Sembla que ja heu instal·lat Galette una vegada.<br>Totes les dades "
-"existents s'eliminaran si continueu utilitzant la base de dades existent!"
 
 msgid "Database type:"
 msgstr "Tipus de base de dades:"
@@ -4645,16 +4873,16 @@ msgid "(all existing values will be removed)"
 msgstr "(s'eliminaran tots els valors existents)"
 
 #, fuzzy
-msgid "Reset fields configuration"
-msgstr "Restableix la configuració dels camps"
-
-#, fuzzy
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
 "Això inclou camps posicions ordre nivells d'accés visibilitat i marques "
 "obligatòries."
+
+#, fuzzy
+msgid "Reset fields configuration"
+msgstr "Restableix la configuració dels camps"
 
 #, fuzzy
 msgid "Reset all PDF models to their default values"
@@ -4888,6 +5116,54 @@ msgstr "Operació enviada sense completar"
 #, fuzzy
 msgid "View corresponding contributions"
 msgstr "Visualitza i filtra contribucions"
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
+
+msgid "Sending in progress…"
+msgstr ""
+
+#, fuzzy
+msgid "Sent"
+msgstr "Enviat"
+
+#, fuzzy
+msgid "Remaining"
+msgstr "Advertència"
+
+msgid "Failed"
+msgstr ""
+
+#, fuzzy
+msgid "Recipients"
+msgstr "Destinataris"
+
+#, php-format
+msgid "Sent in the last hour: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sent in the last day: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sending is over, but %1$s recipient(s) could not be reached."
+msgstr ""
+
+#, fuzzy
+#| msgid "Mailing has been successfully sent!"
+msgid "Sending has been successfully completed!"
+msgstr "El correu s'ha enviat correctament!"
+
+msgid ""
+"Sending rate limit reached. Sending will resume later (reopen this page or "
+"drain the queue from a cron job)."
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred while saving the member."
+msgid "An error occurred while sending. You may retry."
+msgstr "S'ha produït un error en emmagatzemar el membre."
 
 #, php-format
 msgid "%1$s entry"
@@ -5222,6 +5498,11 @@ msgid "Click on a row to select a group"
 msgstr "Grups seleccionats"
 
 #, fuzzy
+msgid "Warning: Don't forget to backup your current database."
+msgstr ""
+"Atenció No oblideu fer una còpia de seguretat de la base de dades actual."
+
+#, fuzzy
 msgid "Existing files"
 msgstr "Fitxers existents"
 
@@ -5374,6 +5655,16 @@ msgstr "Nom d'usuari o correu electrònic"
 #, fuzzy
 msgid "Recover password"
 msgstr "Recupera la contrasenya"
+
+msgid "Confirm your super admin password"
+msgstr ""
+
+msgid "This page can break your installation, be very careful."
+msgstr ""
+
+#, fuzzy
+msgid "Confirm"
+msgstr "Confirmació"
 
 #, fuzzy
 msgid "IP"
@@ -5912,15 +6203,6 @@ msgid "Using Sendmail server"
 msgstr "Ús del servidor Sendmail"
 
 #, fuzzy
-msgid "Using QMAIL server"
-msgstr "Ús del servidor QMAIL"
-
-#, fuzzy
-#| msgid "Reset emails contents"
-msgid "Test email settings"
-msgstr "Reinicialitza els continguts dels missatges de correu"
-
-#, fuzzy
 msgid "SMTP server:"
 msgstr "Servidor SMTP"
 
@@ -5971,6 +6253,20 @@ msgstr "Usuari SMTP (o GMail)"
 #, fuzzy
 msgid "SMTP (or GMail) password:"
 msgstr "Contrasenya SMTP (o GMail)"
+
+#, fuzzy
+msgid "Test connection"
+msgstr "Selecció de versió"
+
+#, fuzzy
+msgid "Send a test email"
+msgstr "Envia un correu electrònic"
+
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
 
 #, fuzzy
 msgid "Vertical margins:"
@@ -6230,6 +6526,11 @@ msgstr "Introduïu el correu electrònic de correu electrònic"
 msgid "An error occurred sending test email :("
 msgstr "S'ha produït un error en enviar el correu electrònic de prova ("
 
+#, fuzzy
+#| msgid "An error occurred while saving fields configuration :("
+msgid "An error occurred testing mail server connection :("
+msgstr "S'ha produït un error en emmagatzemar la configuració dels camps :("
+
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
@@ -6265,6 +6566,212 @@ msgstr "Gestiona:"
 #, fuzzy
 msgid "New dynamic field"
 msgstr "Camp dinàmic nou"
+
+#, fuzzy
+msgid "Filter settings"
+msgstr "Paràmetres de data"
+
+msgid "Search a setting..."
+msgstr ""
+
+#, fuzzy
+msgid "Show legend"
+msgstr "Mostra la llegenda"
+
+msgid ""
+"This setting is not known by Galette. It may come from an older version or "
+"from a plugin."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "Desconegut"
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "Galette maintains this value itself; it is shown for information only."
+msgstr ""
+
+#, fuzzy
+msgid "read-only"
+msgstr "Només lectura"
+
+msgid ""
+"Held as a secret: its value is never displayed, and it is changed from the "
+"settings form."
+msgstr ""
+
+#, fuzzy
+msgid "secret"
+msgstr "Secretari"
+
+#, fuzzy
+msgid "default"
+msgstr "Camps per defecte"
+
+#, fuzzy
+msgid "modified"
+msgstr "Modificat"
+
+#, php-format
+msgid "Declared by the %s plugin, and only while it stays active."
+msgstr ""
+
+#, fuzzy
+msgid "set"
+msgstr "vegeu"
+
+#, fuzzy
+msgid "not set"
+msgstr "No subministrat"
+
+#, fuzzy
+msgid "Enabled"
+msgstr "Activat"
+
+#, fuzzy, php-format
+msgid "Save '%s'"
+msgstr "Desa"
+
+#, fuzzy
+msgid "Reset to default"
+msgstr "Restableix tots els filtres als valors predeterminats"
+
+#, fuzzy, php-format
+msgid "Reset '%s' to its default"
+msgstr "Restableix tots els filtres als valors predeterminats"
+
+msgid "Constants behavior.inc.php understands"
+msgstr ""
+
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+
+#, php-format
+msgid "Replaced by the \"%s\" setting."
+msgstr ""
+
+msgid "deprecated"
+msgstr ""
+
+msgid "defined"
+msgstr ""
+
+#, php-format
+msgid "Go to %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "Statuses"
+msgstr "Estat"
+
+msgid "Never changed: the value Galette ships with."
+msgstr ""
+
+msgid ""
+"Changed from the default, here or from the settings form. It can be reset."
+msgstr ""
+
+msgid ""
+"Galette maintains this value itself, such as a generated identifier or a "
+"date it records. It is shown for information only."
+msgstr ""
+
+msgid ""
+"A password or a token. Its value is never displayed, only whether one is "
+"set, and it is changed from the settings form."
+msgstr ""
+
+msgid ""
+"A constant defined in behavior.inc.php takes precedence over the stored "
+"value. Remove it from that file to manage the setting from here."
+msgstr ""
+
+msgid ""
+"A row found in database that Galette does not describe. It may come from an "
+"older version, or from a plugin that is no longer active."
+msgstr ""
+
+#, fuzzy
+msgid "plugin name"
+msgstr "Nom de l'empresa"
+
+msgid ""
+"Declared by that plugin rather than by Galette. Deactivate the plugin and "
+"the setting becomes unknown again, keeping its value until the plugin comes "
+"back."
+msgstr ""
+
+msgid ""
+"Repeated failures get further attempts refused for a while. What is refused "
+"right now is listed below; lifting a line lets whoever it stands for try "
+"again at once."
+msgstr ""
+
+msgid "Thresholds and durations are in the settings."
+msgstr ""
+
+msgid "Nothing is being refused"
+msgstr ""
+
+msgid ""
+"No account and no address is waiting; counters that can no longer refuse "
+"anyone are dropped on their own."
+msgstr ""
+
+#, fuzzy
+msgid "Authentication attempts currently refused"
+msgstr "Ha fallat l'autenticació"
+
+#, fuzzy
+msgid "What is counted"
+msgstr "Contingut dels correus electrònics"
+
+#, fuzzy
+#| msgid "Account:"
+msgid "Account"
+msgstr "Compte:"
+
+msgid "Failures"
+msgstr ""
+
+msgid "Refused until"
+msgstr ""
+
+msgid "Failed attempts on one account, from one address"
+msgstr ""
+
+msgid "Failed attempts from one address, on any account"
+msgstr ""
+
+msgid "Failed attempts on one account, from anywhere"
+msgstr ""
+
+msgid "Password recovery requests for one account"
+msgstr ""
+
+msgid "Password recovery requests from one address"
+msgstr ""
+
+#, fuzzy
+msgid "Self subscriptions from one address"
+msgstr "S'ha habilitat l'autosubscripció?"
+
+msgid "Lift"
+msgstr ""
+
+msgid "Lift them all"
+msgstr ""
 
 #, fuzzy
 msgid "Please confirm your email address:"
@@ -6510,20 +7017,12 @@ msgid "Sender"
 msgstr "Remitent"
 
 #, fuzzy
-msgid "Recipients"
-msgstr "Destinataris"
-
-#, fuzzy
 msgid "Subject"
 msgstr "Assumpte"
 
 #, fuzzy
 msgid "Att."
 msgstr "At."
-
-#, fuzzy
-msgid "Sent"
-msgstr "Enviat"
 
 #, fuzzy
 msgid "Create new mailing"
@@ -6541,6 +7040,9 @@ msgstr ""
 msgid "Sent mailings:"
 msgstr "MAIlings enviats"
 
+msgid "In progress"
+msgstr ""
+
 #, fuzzy
 msgid "Superadmin"
 msgstr "Superadministrador"
@@ -6552,6 +7054,11 @@ msgstr "No subministrat"
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mostra els detalls «%1$s» del mailing a la finestra de vista prèvia"
+
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Follow the sending of mailing '%1$s'"
+msgstr "Suprimeix el correu '%1$s'"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
@@ -6577,6 +7084,11 @@ msgstr "Usa «%1$s» del mailing com a plantilla per a un de nou"
 
 msgid "No sent"
 msgstr ""
+
+#, fuzzy
+#| msgid "For the selection:"
+msgid "Follow the sending"
+msgstr "Per a la selecció:"
 
 #, fuzzy
 msgid "An error occurred displaying preview :("
@@ -6675,6 +7187,9 @@ msgstr "Estat nou"
 #, fuzzy
 msgid "Choose an entry"
 msgstr "Trieu una entrada"
+
+msgid "Selecting an item from the list will automatically reload the page"
+msgstr ""
 
 msgid "Reference:"
 msgstr "Referència:"
@@ -6800,6 +7315,10 @@ msgstr ""
 "Seleccioneu els fitxers que voleu afegir com a adjunts. La selecció múltiple "
 "de fitxers<br>utilitzant les tecles «ctrl» o «shift» només estan disponibles "
 "en navegadors compatibles."
+
+#, fuzzy, php-format
+msgid "Maximum allowed size is %1$s"
+msgstr "El fitxer és massa gran. La mida màxima permesa és de %1$s"
 
 #, fuzzy
 msgid "Add attachment"
@@ -6974,9 +7493,16 @@ msgstr "Activitats"
 msgid "Activities"
 msgstr "Activitats"
 
+msgid "Loading..."
+msgstr "S'està carregant..."
+
 #, fuzzy
 msgid "Show dashboard on login"
 msgstr "Mostra el tauler d'inici de sessió"
+
+#, fuzzy
+msgid "An error occurred displaying news :("
+msgstr "S'ha produït un error en mostrar la vista prèvia ("
 
 msgid "For the selection:"
 msgstr "Per a la selecció:"
@@ -7050,6 +7576,12 @@ msgstr "Imatge:"
 msgid "Cropping focus"
 msgstr ""
 
+#, php-format
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %1$s"
+msgstr ""
+
 msgid "Center"
 msgstr ""
 
@@ -7068,12 +7600,6 @@ msgstr ""
 msgid "Right"
 msgstr "Drets"
 
-#, php-format
-msgid ""
-"Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %1$s"
-msgstr ""
-
 msgid "Additionnal fields:"
 msgstr "Camps addicionals:"
 
@@ -7081,17 +7607,26 @@ msgstr "Camps addicionals:"
 msgid "Enter as many occurrences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
+#, php-format
+msgid "Add an occurrence of %1$s"
+msgstr ""
+
 #, fuzzy, php-format
 msgid "Enter up to %1$s more occurrences."
 msgstr "Introduïu fins %1$s més d'aparició."
 
+#, php-format
+msgid "Delete the file and remove this occurrence of %1$s"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove title %1$s"
+msgid "Remove this occurrence of %1$s"
+msgstr "Elimina el títol %1$s"
+
 #, fuzzy
 msgid "Select an option"
 msgstr "Seleccioneu una opció"
-
-#, fuzzy
-msgid "delete"
-msgstr "suprimeix"
 
 #, fuzzy
 msgid "This comment is only displayed for admins and staff members."
@@ -7183,9 +7718,6 @@ msgstr "Vols tornar-ho a enviar?"
 #, fuzzy
 msgid "Later"
 msgstr "Més tard"
-
-msgid "Loading..."
-msgstr "S'està carregant..."
 
 #, fuzzy
 msgid "Password is valid :)"
@@ -7325,9 +7857,8 @@ msgstr "Pàgines:"
 msgid "Records per page:"
 msgstr "Registres per pàgina:"
 
-#, fuzzy
-msgid "Show legend"
-msgstr "Mostra la llegenda"
+msgid "Selecting an item from the list will automatically reload the table"
+msgstr ""
 
 #, fuzzy
 msgid "(Un)Check all"
@@ -7390,6 +7921,10 @@ msgstr "Torna a la pàgina d'importació"
 
 msgid "Menu"
 msgstr ""
+
+#, fuzzy
+msgid "Public pages menu"
+msgstr "Pàgines públiques"
 
 #, fuzzy
 msgid "Subscribe"
@@ -7502,19 +8037,6 @@ msgid "No groups has been selected yet."
 msgstr "Encara no s'ha seleccionat cap grup."
 
 #, fuzzy
-msgid "Choose your language"
-msgstr "Canvia la llengua"
-
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
-msgid "Current locale '%1$s'"
-msgstr "Pàgina actual (%1$s)"
-
-#, php-format
-msgid "Switch locale to '%1$s'"
-msgstr ""
-
-#, fuzzy
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
@@ -7574,6 +8096,10 @@ msgstr "Segur que voleu continuar?"
 #, fuzzy
 msgid "This can't be undone."
 msgstr "Això no es pot desfer."
+
+#, fuzzy
+msgid "New installation"
+msgstr "Instal·lació nova"
 
 #, fuzzy, php-format
 msgid "you're installing %1$s for the first time"
@@ -7695,6 +8221,39 @@ msgid "An error occurred sending telemetry information :("
 msgstr "S'ha produït un error en enviar la informació de telemetria ("
 
 #, fuzzy
+#~ msgid "you're installing Galette for the first time"
+#~ msgstr "instal·leu Galette per primera vegada"
+
+#, fuzzy
+#~ msgid ""
+#~ "you wish to erase an older version of Galette without keeping your data"
+#~ msgstr ""
+#~ "voleu esborrar una versió antiga de Galette sense mantenir les vostres "
+#~ "dades"
+
+#, fuzzy
+#~ msgid ""
+#~ "you already have installed Galette, and you want to upgrade to the latest "
+#~ "version"
+#~ msgstr ""
+#~ "ja teniu instal·lada el Galette i voleu actualitzar a la darrera versió"
+
+#~ msgid ""
+#~ "It seems that you have already installed Galette once.<br/>All existing "
+#~ "data will be removed if you keep going on using existing database!"
+#~ msgstr ""
+#~ "Sembla que ja heu instal·lat Galette una vegada.<br>Totes les dades "
+#~ "existents s'eliminaran si continueu utilitzant la base de dades existent!"
+
+#, fuzzy
+#~ msgid "Using QMAIL server"
+#~ msgstr "Ús del servidor QMAIL"
+
+#, fuzzy
+#~ msgid "delete"
+#~ msgstr "suprimeix"
+
+#, fuzzy
 #~ msgid "There are no member to proceed."
 #~ msgstr "No hi ha cap membre per continuar."
 
@@ -7705,10 +8264,6 @@ msgstr "S'ha produït un error en enviar la informació de telemetria ("
 #, fuzzy
 #~ msgid "Cause"
 #~ msgstr "Cau"
-
-#, fuzzy
-#~ msgid "Enable"
-#~ msgstr "Activat"
 
 #~ msgid "modification"
 #~ msgstr "modificació"
@@ -7999,10 +8554,6 @@ msgstr "S'ha produït un error en enviar la informació de telemetria ("
 #~ msgstr "No hi ha cap membre per mostrar"
 
 #, fuzzy
-#~ msgid "Read only"
-#~ msgstr "Només lectura"
-
-#, fuzzy
 #~ msgid "Read/Write"
 #~ msgstr "Llegir/escriure"
 
@@ -8168,9 +8719,6 @@ msgstr "S'ha produït un error en enviar la informació de telemetria ("
 #, fuzzy
 #~ msgid "No file to upload"
 #~ msgstr "No hi ha cap fitxer per pujar"
-
-#~ msgid "New occurrence"
-#~ msgstr "Nova aparició"
 
 #, fuzzy
 #~ msgid "new"

@@ -32,7 +32,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 13:51+0200\n"
+"POT-Creation-Date: 2026-09-22 07:43+0200\n"
 "PO-Revision-Date: 2026-04-26 21:09+0000\n"
 "Last-Translator: Pierfrancesco Passerini <p.passerini@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -239,7 +239,6 @@ msgstr "L'estensione file non è consentita, lo sono solo i file %s."
 msgid "File is too big. Maximum allowed size is %1$s"
 msgstr "Il file è troppo grande. La dimensione massima consentita è %1$s"
 
-#. TRANS: parameter is the minimum size, in pixels
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %1$spx"
 msgstr ""
@@ -305,10 +304,70 @@ msgstr "OK"
 msgid "Delete mailing entries"
 msgstr "Elimina le voci di posta"
 
+#, php-format
+msgid ""
+"You may want to set it from the \"%s\" setting listed above and remove "
+"declared constant."
+msgstr ""
+
+msgid ""
+"Enable debug mode: verbose logs, no cache, Twig strict variables and "
+"detailed errors."
+msgstr ""
+
+msgid ""
+"PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
+"credentials and mail settings."
+msgstr ""
+
+msgid ""
+"Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
+"debug mode."
+msgstr ""
+
+msgid "Dump every SQL query to the logs."
+msgstr ""
+
+msgid ""
+"Development features to activate, among those declared in the feature flags "
+"registry. They only apply in debug mode."
+msgstr ""
+
 #. TRANS: parameter is the logged in user name
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr "Accesso eseguito come: <br/>%1$s"
+
+#, fuzzy
+#| msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgid "Emailing has been disabled in the preferences."
+msgstr ""
+"Le e-mail iniviate sono disabilitate nelle preferenze. Chiedi "
+"all’amministratore Galette"
+
+#, fuzzy, php-format
+#| msgid "Emailing method:"
+msgid "Unknown emailing method '%s'."
+msgstr "Metodo di invio email:"
+
+msgid "Unable to reach the SMTP server."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "The file does not exists or cannot be read :("
+msgid "'%s' does not exist, or cannot be run."
+msgstr "Il file non esiste o non può essere letto :("
+
+msgid "The PHP mail() function is not available on this server."
+msgstr ""
+
+msgid ""
+"PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
+"to."
+msgstr ""
+
+msgid "Sending quota has been reached, message has not been sent."
+msgstr ""
 
 msgid "No such module."
 msgstr "Nessun modulo del genere."
@@ -368,6 +427,14 @@ msgstr "%1$s script è stato eseguito :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Impossibile caricare lo script di aggiornamento %1$s :("
 
+#, fuzzy
+#| msgid "Write configuration file"
+msgid "No configuration file found!"
+msgstr "Scrivi il file di configurazione"
+
+msgid "Existing configuration file is incomplete or unreadable!"
+msgstr ""
+
 msgid "Write configuration file"
 msgstr "Scrivi il file di configurazione"
 
@@ -408,6 +475,66 @@ msgstr "Preferenze di aggiornamento"
 
 msgid "Update models"
 msgstr "Aggiorna modelli"
+
+msgid "Dark mode CSS file has been reset."
+msgstr "Il file CSS in modalità scura è stato reimpostato."
+
+msgid "You have to select a staff member to retrieve its address"
+msgstr ""
+"Bisogna selezionare un elemento del personale per recuperarne l'indirizzo"
+
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr ""
+"Bisogna selezionare un elemento del personale per recuperarne il numero di "
+"telefono"
+
+msgid "- You must indicate a sender name for emails!"
+msgstr "- Devi indicare un mittente per le email!"
+
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+"- Devi indicare un indirizzo e-mail che Galette dovrebbe usare per inviare "
+"messagi!"
+
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr "- Devi indicare il server SMTP che vuoi usare!"
+
+msgid "- You must provide a login for SMTP authentication."
+msgstr "- È necessario eseguire il login per l'autenticazione SMTP."
+
+msgid "- You must provide a password for SMTP authentication."
+msgstr "- È necessario fornire una password per l'autenticazione SMTP."
+
+msgid ""
+"- You must indicate a membership extension or a beginning of membership."
+msgstr ""
+"- È necessario indicare un'estensione di iscrizione o un inizio di "
+"iscrizione."
+
+msgid ""
+"- Default membership extension and beginning of membership are mutually "
+"exclusive."
+msgstr ""
+"- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."
+
+msgid "- Offering months is only compatible with beginning of membership."
+msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
+
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is an hTML link to the field with its name
+#, php-format
+msgid "- Mandatory field %1$s empty."
+msgstr "- Il campo obbligatorio %1$s è vuoto."
+
+msgid "Passwords mismatch"
+msgstr "Password non corrispondenti"
+
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%2$s dell'associazione %1$s"
 
 msgid "First page"
 msgstr "Prima pagina"
@@ -467,68 +594,40 @@ msgstr "Quanto viene ritirato da %2$s a %1$s?"
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Ho %1$s Galettes, ne offro %2$s. Quante Galettes mi rimangono?"
 
-msgid "- You must indicate a sender name for emails!"
-msgstr "- Devi indicare un mittente per le email!"
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Unknown type %1$s!"
+msgid "Unknown preference '%1$s'!"
+msgstr "Tipo sconosciuto %1$s!"
 
-msgid "- You must indicate an email address Galette should use to send emails!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr ""
-"- Devi indicare un indirizzo e-mail che Galette dovrebbe usare per inviare "
-"messagi!"
 
-msgid "- You must indicate the SMTP server you want to use!"
-msgstr "- Devi indicare il server SMTP che vuoi usare!"
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "You are not allowed to change preference '%1$s'!"
+msgstr ""
 
-msgid "- You must provide a login for SMTP authentication."
-msgstr "- È necessario eseguire il login per l'autenticazione SMTP."
-
-msgid "- You must provide a password for SMTP authentication."
-msgstr "- È necessario fornire una password per l'autenticazione SMTP."
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
+msgstr ""
 
 msgid ""
-"- You must indicate a membership extension or a beginning of membership."
+"Please set your instance URL from the advanced configuration, or define the "
+"\"GALETTE_URI\" constant."
 msgstr ""
-"- È necessario indicare un'estensione di iscrizione o un inizio di "
-"iscrizione."
 
-msgid ""
-"- Default membership extension and beginning of membership are mutually "
-"exclusive."
-msgstr ""
-"- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."
+msgid "Never"
+msgstr "Mai"
 
-msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
+msgid "Main information"
+msgstr "Informazioni principali"
 
-#. TRANS: parameter is a field name
-#. TRANS: parameter is an hTML link to the field with its name
-#. TRANS: parameter is an HTML link to the field with its name
-#. TRANS: parameter is an hTML link to the field with its name
-#, php-format
-msgid "- Mandatory field %1$s empty."
-msgstr "- Il campo obbligatorio %1$s è vuoto."
-
-msgid "Passwords mismatch"
-msgstr "Password non corrispondenti"
-
-msgid "You have to select a staff member to retrieve its address"
-msgstr ""
-"Bisogna selezionare un elemento del personale per recuperarne l'indirizzo"
-
-msgid "You have to select a staff member to retrieve its phone number"
-msgstr ""
-"Bisogna selezionare un elemento del personale per recuperarne il numero di "
-"telefono"
-
-#. TRANS: first parameter is the address, second the setting holding it
-#, php-format
-msgid "- Invalid E-Mail address %1$s (%2$s)"
-msgstr "- Indirizzo e-mail non valido %1$s (%2$s)"
-
-msgid "- The username must be composed of at least 4 characters!"
-msgstr "- Il nome utente deve essere composto da almeno 4 caratteri!"
-
-msgid "- This username is already used by another member !"
-msgstr "- Questo nome utente è già utilizzato da un altro socio!"
+msgid "Social networks"
+msgstr "Social network"
 
 msgid "- The numbers and measures have to be integers!"
 msgstr "- I numeri e le misure devono essere interi!"
@@ -545,6 +644,15 @@ msgstr ""
 msgid "- Invalid number of months of membership extension."
 msgstr "- Numero di mesi non valido per l'estensione dell'affiliazione."
 
+msgid "- Invalid number of offered months."
+msgstr "- Numero di mesi offerti non valido."
+
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- Il nome utente deve essere composto da almeno 4 caratteri!"
+
+msgid "- This username is already used by another member !"
+msgstr "- Questo nome utente è già utilizzato da un altro socio!"
+
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 "- L'estensione predefinita e l'inizio dell'iscrizione si escludono una "
@@ -553,35 +661,32 @@ msgstr ""
 msgid "- Invalid date for beginning of membership."
 msgstr "- Data non valida per l'inizio dell'iscrizione."
 
-msgid "- Invalid number of offered months."
-msgstr "- Numero di mesi offerti non valido."
-
 msgid "- Invalid year for cards."
 msgstr "- Anno per le tessere non valido."
 
 msgid "- Invalid website URL."
 msgstr "- URL del sito web non valido."
 
-#. TRANS: first parameter is name, second is status
+#. TRANS: first parameter is the address, second the setting holding it
 #, php-format
-msgid "%1$s association's %2$s"
-msgstr "%2$s dell'associazione %1$s"
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Indirizzo e-mail non valido %1$s (%2$s)"
 
-msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Amount must be a positive number"
+msgid "- Value for '%1$s' must be a positive number!"
+msgstr "L'importo deve essere un numero positivo"
+
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
-"Definisci la costante \"GALETTE_URI\" con il percorso alla tua istanza."
 
-msgid "Never"
-msgstr "Mai"
-
-msgid "Main information"
-msgstr "Informazioni principali"
-
-msgid "Social networks"
-msgstr "Social network"
-
-msgid "Dark mode CSS file has been reset."
-msgstr "Il file CSS in modalità scura è stato reimpostato."
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s seconds or more!"
+msgstr ""
 
 msgid "My Account"
 msgstr "Il mio account"
@@ -750,6 +855,14 @@ msgstr ""
 "Imposta le preferenze delle applicazioni (indirizzo, sito web, "
 "configurazione tessere soci, ...)"
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts"
+msgstr "Autenticazione fallita"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "Plugins"
 msgstr "Plugin"
 
@@ -809,6 +922,14 @@ msgstr "Impostazioni amministratore"
 
 msgid "Various administrative tools"
 msgstr "Vari strumenti amministrativi"
+
+#, fuzzy
+#| msgid "Attendance sheet configuration"
+msgid "Advanced configuration"
+msgstr "Configurazione del registro di presenza"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
 
 msgid "Gallery"
 msgstr "Registro"
@@ -1192,21 +1313,6 @@ msgstr " (%1$s anni)"
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicato da %1$s (%2$s)"
 
-msgid "Association status"
-msgstr "Stato associazione"
-
-msgid "Rules of procedure"
-msgstr "Regole di procedura"
-
-msgid "Adhesion form"
-msgstr "Modulo di adesione"
-
-msgid "Meeting minutes"
-msgstr "Verbale della riunione"
-
-msgid "Votes results"
-msgstr "Risultati dei voti"
-
 msgid "Form is mandatory!"
 msgstr "Campo obbligatorio!"
 
@@ -1365,6 +1471,28 @@ msgstr "E-mail: «%1$s» è stato modificato!"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Email: « %1$s » è stato modificato con successo."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "Nessuna password"
+
+#, fuzzy
+#| msgid "Please confirm your email address:"
+msgid "Please confirm your password again."
+msgstr "Si prega di confermare l'indirizzo email:"
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been stored."
+msgstr "Le impostazioni sono state salvate."
+
+#. TRANS: parameter is the preference name
+#, fuzzy, php-format
+#| msgid "Preferences has been saved."
+msgid "Preference '%1$s' has been reset to its default."
+msgstr "Le impostazioni sono state salvate."
+
 msgid "Removal has not been confirmed!"
 msgstr "La rimozione non è stata confermata!"
 
@@ -1505,6 +1633,16 @@ msgstr "Nessun’e-mail inviata a %1$s"
 msgid "Invalid email adress!"
 msgstr "Indirizzo e-mail non valido!"
 
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings work."
+msgstr "Controllo impostazioni della posta"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "Those emailing settings do not work."
+msgstr "Controllo impostazioni della posta"
+
 msgid "Fields configuration has been successfully stored"
 msgstr "I campi di configurazione sono stati salvati con successo"
 
@@ -1543,6 +1681,14 @@ msgstr "Login"
 
 msgid "You must provide both login and password."
 msgstr "Devi inserire sia il login che la password."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication throttled"
+msgstr "Autenticazione fallita"
 
 msgid "A new Galette release is available."
 msgstr "È disponibile una nuova versione di Galette."
@@ -1588,16 +1734,17 @@ msgstr ""
 "Le e-mail iniviate sono disabilitate nelle preferenze. Chiedi "
 "all’amministratore Galette"
 
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Password recovery"
+msgid "Password recovery throttled"
+msgstr "Recupero password"
+
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr "Email inviata a '%s' per il recupero della password."
-
-msgid ""
-"An email has been sent to your address.<br/>Please check your inbox and "
-"follow the instructions."
-msgstr ""
-"Ti è stata inviata un’email al indirizzo registrato.<br/> Controllare la "
-"propria casella di posta elettronica e seguire le istruzioni."
 
 msgid "An email has been sent to the member."
 msgstr "È stata inviata un email al socio."
@@ -1625,6 +1772,17 @@ msgstr "Indirizzo email %s non esiste"
 msgid "Login %s does not exist"
 msgstr "Login %s non esiste"
 
+#, fuzzy
+#| msgid ""
+#| "An email has been sent to your address.<br/>Please check your inbox and "
+#| "follow the instructions."
+msgid ""
+"If an account matches, an email has been sent to its address.<br/>Please "
+"check your inbox and follow the instructions."
+msgstr ""
+"Ti è stata inviata un’email al indirizzo registrato.<br/> Controllare la "
+"propria casella di posta elettronica e seguire le istruzioni."
+
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
@@ -1645,6 +1803,22 @@ msgstr "Passowrd cambiata per il socio '%s'."
 
 msgid "Your password has been changed!"
 msgstr "La tua password è stata cambiata!"
+
+msgid "All authentication counters have been lifted."
+msgstr ""
+
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "The counter has been lifted."
+msgstr "L'account socio è stato modificato."
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication counters lifted"
+msgstr "Autenticazione fallita"
+
+msgid "Nothing to lift; it may have expired on its own."
+msgstr ""
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -1699,6 +1873,11 @@ msgstr "'%1$s' è stato rimosso dal disco."
 #, php-format
 msgid "Cannot remove '%1$s' from disk :/"
 msgstr "Impossibile rimuovere '%1$s' dal disco :/"
+
+#. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+#, php-format
+msgid "%1$s (occurrence %2$s)"
+msgstr ""
 
 msgid "CSV import model"
 msgstr "Importare modello CSV"
@@ -1973,6 +2152,17 @@ msgstr "Per favore, inserisci un oggetto per il messaggio."
 msgid "Please enter a message."
 msgstr "Per favore, inserisci il messaggio."
 
+msgid "The mailing could not be queued, nothing has been sent."
+msgstr ""
+
+#. TRANS: first parameter is the number of recipients reached, second the total
+#, php-format
+msgid ""
+"The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
+"stored, unsent, so you can check what has been delivered before sending it "
+"again."
+msgstr ""
+
 msgid "Mailing has been successfully sent!"
 msgstr "L' email è stata inviata con successo!"
 
@@ -1985,6 +2175,26 @@ msgstr "Rimuovi mailing #%1$s"
 
 msgid "Mailing preview"
 msgstr "Anteprima spedizione"
+
+#, fuzzy
+#| msgid "Sent mailings:"
+msgid "Sending mailing"
+msgstr "Invii postali effettuati:"
+
+#, fuzzy
+#| msgid "Go back to members list"
+msgid "Back to members list"
+msgstr "Torna alla lista dei soci"
+
+#, fuzzy
+#| msgid "Mailings"
+msgid "Mailings history"
+msgstr "L'invio di e-mail"
+
+#, fuzzy
+#| msgid "Sent reminders:"
+msgid "Sending reminders"
+msgstr "Invia promemoria:"
 
 #. TRANS: parameter is the transaction identifier
 #, php-format
@@ -2072,6 +2282,11 @@ msgstr "Rimuovi la tipologia di pagamento %1$s"
 
 msgid "Subscription"
 msgstr "Iscrizione"
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscription throttled"
+msgstr "Autoiscrizione abilitata?"
 
 #, fuzzy
 #| msgid "file"
@@ -2553,6 +2768,21 @@ msgstr "Ricerche eliminate (%1$s)"
 msgid "Contributions deleted (%1$s)"
 msgstr "Contributi cancellati (%1$s)"
 
+msgid "Association status"
+msgstr "Stato associazione"
+
+msgid "Rules of procedure"
+msgstr "Regole di procedura"
+
+msgid "Adhesion form"
+msgstr "Modulo di adesione"
+
+msgid "Meeting minutes"
+msgstr "Verbale della riunione"
+
+msgid "Votes results"
+msgstr "Risultati dei voti"
+
 msgid "Y"
 msgstr "Y"
 
@@ -2666,6 +2896,11 @@ msgstr "Nessun nome utente"
 msgid "No database name"
 msgstr "Nessun nome di banca dati"
 
+#, fuzzy
+#| msgid "Table prefix:"
+msgid "No table prefix"
+msgstr "Prefisso tabelle:"
+
 msgid "The username cannot contain the @ character"
 msgstr "Il nome utente non può contenere il carattere @"
 
@@ -2680,6 +2915,18 @@ msgstr "Installazione di Galette"
 
 msgid "Read the manual"
 msgstr "Leggi il manuale"
+
+msgid "Choose your language"
+msgstr "Scelta lingua"
+
+#, fuzzy, php-format
+#| msgid "Current page (%1$s)"
+msgid "Current locale '%1$s'"
+msgstr "Pagina attuale (%1$s)"
+
+#, php-format
+msgid "Switch locale to '%1$s'"
+msgstr "Passa alla localizzazione '%1$s '"
 
 msgid "Version selection"
 msgstr "Selezione versione"
@@ -3237,35 +3484,6 @@ msgstr "Le scelte per il campo %d sono state migrate."
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Non è stato possibile migrare le scelte per il campo %d: %s"
 
-msgid "New installation"
-msgstr "Nuova installazione"
-
-msgid "you're installing Galette for the first time"
-msgstr "si sta installando Galette per la prima volta"
-
-msgid "you wish to erase an older version of Galette without keeping your data"
-msgstr ""
-"si vuole cancellare la versione precedente di Galette senza mantenerne i dati"
-
-msgid "Update"
-msgstr "Aggiornamento"
-
-msgid ""
-"you already have installed Galette, and you want to upgrade to the latest "
-"version"
-msgstr ""
-"si ha già installato Galette, e si desidera aggiornare alla versione più "
-"recente"
-
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Attenzione: Effettuare il backup del database."
-
-msgid "Next step"
-msgstr "Passo successivo"
-
-msgid "Back"
-msgstr "Indietro"
-
 msgid "Database has not been installed!"
 msgstr "Database non è stato installato!"
 
@@ -3280,6 +3498,12 @@ msgstr "Il database è stato aggiornato :)"
 
 msgid "Retry"
 msgstr "Riprovare"
+
+msgid "Next step"
+msgstr "Passo successivo"
+
+msgid "Back"
+msgstr "Indietro"
 
 msgid "Photos"
 msgstr "Fotografie"
@@ -3405,6 +3629,15 @@ msgstr "Il file di configurazione è stato creato!"
 msgid "Data initialized."
 msgstr "Dati inizializzati."
 
+#. TRANS: parameter is the file path
+#, fuzzy, php-format
+#| msgid "Unable to create configuration file (%1$s)"
+msgid "Unable to remove installer enable file (%1$s)"
+msgstr "Impossibile creare il file di configurazione (%1$s)"
+
+msgid "Remember to remove it manually to re-secure the installer."
+msgstr ""
+
 msgid "An error occurred :("
 msgstr "Si è verificato un errore :("
 
@@ -3490,14 +3723,29 @@ msgstr ""
 "GALETTE non ha sufficienti permessi sul database per continuare "
 "l'aggiornamento."
 
+msgid "The installer is disabled."
+msgstr ""
+
+msgid "For security reasons, Galette installer is disabled by default."
+msgstr ""
+
+#, php-format
+msgid ""
+"To enable installer, create the empty %1$s file in Galette data directory, "
+"then reload this page:"
+msgstr ""
+
+msgid "I have created the file, reload"
+msgstr ""
+
+msgid "Homepage"
+msgstr "Pagina principale"
+
 msgid "Galette has been successfully installed!"
 msgstr "Galette è stato installato con successo!"
 
 msgid "Galette has been successfully updated!"
 msgstr "Galette è stato aggiornato con successo!"
-
-msgid "Homepage"
-msgstr "Pagina principale"
 
 msgid "It seems you already use latest Galette version!"
 msgstr "Sembra che tu utilizzi già l'ultima versione di Galette!"
@@ -3507,6 +3755,9 @@ msgstr "Sei sicuro di voler aggiornare?"
 
 msgid "Home"
 msgstr "Home"
+
+msgid "Update"
+msgstr "Aggiornamento"
 
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
@@ -3559,13 +3810,6 @@ msgstr ""
 
 msgid "Enter connection data for the existing database."
 msgstr "Inserire i parametri per la connessione al database."
-
-msgid ""
-"It seems that you have already installed Galette once.<br/>All existing data "
-"will be removed if you keep going on using existing database!"
-msgstr ""
-"Sembra che Galette sia già stato installato una volta!<br>Tutti i dati "
-"presenti verranno rimossi se si continua a utilizzare il database esistente!"
 
 msgid "Database type:"
 msgstr "Database tipo:"
@@ -3976,15 +4220,15 @@ msgstr "Reimposta contenuti email"
 msgid "(all existing values will be removed)"
 msgstr "(tutti i valori esistenti verranno rimossi)"
 
-msgid "Reset fields configuration"
-msgstr "Imposta configurazione campi"
-
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
 "Questo include posizioni dei campi, ordine, visibilità, livelli di accesso e "
 "marcature obbligatorie."
+
+msgid "Reset fields configuration"
+msgstr "Imposta configurazione campi"
 
 msgid "Reset all PDF models to their default values"
 msgstr "Reimposta tutti i modelli PDF sui valori predefiniti"
@@ -4171,6 +4415,53 @@ msgstr "Transazione non completata"
 
 msgid "View corresponding contributions"
 msgstr "Visualizza i contributi corrispondenti"
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
+
+msgid "Sending in progress…"
+msgstr ""
+
+msgid "Sent"
+msgstr "Inviato"
+
+#, fuzzy
+#| msgid "Warning"
+msgid "Remaining"
+msgstr "Avvertenza"
+
+msgid "Failed"
+msgstr ""
+
+msgid "Recipients"
+msgstr "Destinatari"
+
+#, php-format
+msgid "Sent in the last hour: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sent in the last day: %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Sending is over, but %1$s recipient(s) could not be reached."
+msgstr ""
+
+#, fuzzy
+#| msgid "Mailing has been successfully sent!"
+msgid "Sending has been successfully completed!"
+msgstr "L' email è stata inviata con successo!"
+
+msgid ""
+"Sending rate limit reached. Sending will resume later (reopen this page or "
+"drain the queue from a cron job)."
+msgstr ""
+
+#, fuzzy
+#| msgid "An error occurred while saving the member."
+msgid "An error occurred while sending. You may retry."
+msgstr "Si è verificato un errore nella memorizzazione del socio."
 
 #, php-format
 msgid "%1$s entry"
@@ -4446,6 +4737,9 @@ msgstr "Selezione dei gruppi gestiti"
 msgid "Click on a row to select a group"
 msgstr "Fare clic su una riga per selezionare un gruppo"
 
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Attenzione: Effettuare il backup del database."
+
 msgid "Existing files"
 msgstr "File esistenti"
 
@@ -4572,6 +4866,17 @@ msgstr "Nome utente o e-mail:"
 
 msgid "Recover password"
 msgstr "Recuperare password"
+
+msgid "Confirm your super admin password"
+msgstr ""
+
+msgid "This page can break your installation, be very careful."
+msgstr ""
+
+#, fuzzy
+#| msgid "Confirmation:"
+msgid "Confirm"
+msgstr "Conferma:"
 
 msgid "IP"
 msgstr "IP"
@@ -5032,12 +5337,6 @@ msgstr "Uso di GMAIL come server SMTP (più lento)"
 msgid "Using Sendmail server"
 msgstr "Uso del server Sendmail"
 
-msgid "Using QMAIL server"
-msgstr "Uso del server QMAIL"
-
-msgid "Test email settings"
-msgstr "Controllo impostazioni della posta"
-
 msgid "SMTP server:"
 msgstr "Server SMTP:"
 
@@ -5080,6 +5379,22 @@ msgstr "utente SMTP (o GMail):"
 
 msgid "SMTP (or GMail) password:"
 msgstr "password SMTP (o GMail):"
+
+#, fuzzy
+#| msgid "Version selection"
+msgid "Test connection"
+msgstr "Selezione versione"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "Send a test email"
+msgstr "Invia un'email"
+
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
 
 msgid "Vertical margins:"
 msgstr "Margini verticali:"
@@ -5291,6 +5606,11 @@ msgstr "Inserisci l’indirizzo e-mail"
 msgid "An error occurred sending test email :("
 msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
 
+#, fuzzy
+#| msgid "An error occurred while saving fields configuration :("
+msgid "An error occurred testing mail server connection :("
+msgstr "Si è verificato un errore nel salvare le configurazioni dei campi :("
+
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
@@ -5321,6 +5641,227 @@ msgstr "Gestisce:"
 
 msgid "New dynamic field"
 msgstr "Nuovo campo dinamico"
+
+#, fuzzy
+#| msgid "Date settings"
+msgid "Filter settings"
+msgstr "Impostazioni della data"
+
+msgid "Search a setting..."
+msgstr ""
+
+msgid "Show legend"
+msgstr "Mostra legenda"
+
+msgid ""
+"This setting is not known by Galette. It may come from an older version or "
+"from a plugin."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unknown"
+msgid "unknown"
+msgstr "Sconosciuto"
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "Galette maintains this value itself; it is shown for information only."
+msgstr ""
+
+#, fuzzy
+#| msgid "User, read only"
+msgid "read-only"
+msgstr "Utente, sola lettura"
+
+msgid ""
+"Held as a secret: its value is never displayed, and it is changed from the "
+"settings form."
+msgstr ""
+
+#, fuzzy
+#| msgid "Secretary"
+msgid "secret"
+msgstr "Segretario"
+
+#, fuzzy
+#| msgid "Default"
+msgid "default"
+msgstr "Predefinito"
+
+#, fuzzy
+#| msgid "Modified"
+msgid "modified"
+msgstr "Modificato"
+
+#, php-format
+msgid "Declared by the %s plugin, and only while it stays active."
+msgstr ""
+
+#, fuzzy
+#| msgid "see"
+msgid "set"
+msgstr "vedere"
+
+#, fuzzy
+#| msgid "Not supplied"
+msgid "not set"
+msgstr "Non fornito"
+
+#, fuzzy
+#| msgid "Enable"
+msgid "Enabled"
+msgstr "Abilita"
+
+#, fuzzy, php-format
+#| msgid "Save"
+msgid "Save '%s'"
+msgstr "Salva"
+
+#, fuzzy
+#| msgid "Reset all filters to defaults"
+msgid "Reset to default"
+msgstr "Reimposta tutti i filtri sui valori predefiniti"
+
+#, fuzzy, php-format
+#| msgid "Reset all filters to defaults"
+msgid "Reset '%s' to its default"
+msgstr "Reimposta tutti i filtri sui valori predefiniti"
+
+msgid "Constants behavior.inc.php understands"
+msgstr ""
+
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+
+#, php-format
+msgid "Replaced by the \"%s\" setting."
+msgstr ""
+
+msgid "deprecated"
+msgstr ""
+
+msgid "defined"
+msgstr ""
+
+#, php-format
+msgid "Go to %s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Status"
+msgid "Statuses"
+msgstr "Stato"
+
+msgid "Never changed: the value Galette ships with."
+msgstr ""
+
+msgid ""
+"Changed from the default, here or from the settings form. It can be reset."
+msgstr ""
+
+msgid ""
+"Galette maintains this value itself, such as a generated identifier or a "
+"date it records. It is shown for information only."
+msgstr ""
+
+msgid ""
+"A password or a token. Its value is never displayed, only whether one is "
+"set, and it is changed from the settings form."
+msgstr ""
+
+msgid ""
+"A constant defined in behavior.inc.php takes precedence over the stored "
+"value. Remove it from that file to manage the setting from here."
+msgstr ""
+
+msgid ""
+"A row found in database that Galette does not describe. It may come from an "
+"older version, or from a plugin that is no longer active."
+msgstr ""
+
+#, fuzzy
+#| msgid "Company name"
+msgid "plugin name"
+msgstr "Nome azienda"
+
+msgid ""
+"Declared by that plugin rather than by Galette. Deactivate the plugin and "
+"the setting becomes unknown again, keeping its value until the plugin comes "
+"back."
+msgstr ""
+
+msgid ""
+"Repeated failures get further attempts refused for a while. What is refused "
+"right now is listed below; lifting a line lets whoever it stands for try "
+"again at once."
+msgstr ""
+
+msgid "Thresholds and durations are in the settings."
+msgstr ""
+
+msgid "Nothing is being refused"
+msgstr ""
+
+msgid ""
+"No account and no address is waiting; counters that can no longer refuse "
+"anyone are dropped on their own."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Authentication attempts currently refused"
+msgstr "Autenticazione fallita"
+
+#, fuzzy
+#| msgid "Emails content"
+msgid "What is counted"
+msgstr "Contenuto delle email"
+
+#, fuzzy
+#| msgid "Account:"
+msgid "Account"
+msgstr "Conto:"
+
+msgid "Failures"
+msgstr ""
+
+msgid "Refused until"
+msgstr ""
+
+msgid "Failed attempts on one account, from one address"
+msgstr ""
+
+msgid "Failed attempts from one address, on any account"
+msgstr ""
+
+msgid "Failed attempts on one account, from anywhere"
+msgstr ""
+
+msgid "Password recovery requests for one account"
+msgstr ""
+
+msgid "Password recovery requests from one address"
+msgstr ""
+
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Self subscriptions from one address"
+msgstr "Autoiscrizione abilitata?"
+
+msgid "Lift"
+msgstr ""
+
+msgid "Lift them all"
+msgstr ""
 
 msgid "Please confirm your email address:"
 msgstr "Si prega di confermare l'indirizzo email:"
@@ -5520,17 +6061,11 @@ msgstr "Non hai i premessi per l'URL richiesto."
 msgid "Sender"
 msgstr "Mittente"
 
-msgid "Recipients"
-msgstr "Destinatari"
-
 msgid "Subject"
 msgstr "Oggetto"
 
 msgid "Att."
 msgstr "All."
-
-msgid "Sent"
-msgstr "Inviato"
 
 msgid "Create new mailing"
 msgstr "Crea nuovo invio postale"
@@ -5545,6 +6080,9 @@ msgstr ""
 msgid "Sent mailings:"
 msgstr "Invii postali effettuati:"
 
+msgid "In progress"
+msgstr ""
+
 msgid "Superadmin"
 msgstr "Superamministratore"
 
@@ -5556,6 +6094,11 @@ msgstr "Non fornito"
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Mostra invio postale '%1$s' nella finestra di anteprima"
+
+#, fuzzy, php-format
+#| msgid "Delete mailing '%1$s'"
+msgid "Follow the sending of mailing '%1$s'"
+msgstr "Elimina invio postale '%1$s'"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
@@ -5581,6 +6124,11 @@ msgstr "Usa invio postale '%1$s' come modello per uno nuovo"
 
 msgid "No sent"
 msgstr ""
+
+#, fuzzy
+#| msgid "For the selection:"
+msgid "Follow the sending"
+msgstr "Per la selezione:"
 
 msgid "An error occurred displaying preview :("
 msgstr "Errore durante la visualizzazione dell'anteprima :("
@@ -5660,6 +6208,9 @@ msgstr "Nuovo stato"
 
 msgid "Choose an entry"
 msgstr "Scegli una voce"
+
+msgid "Selecting an item from the list will automatically reload the page"
+msgstr ""
 
 msgid "Reference:"
 msgstr "Riferimento:"
@@ -5770,6 +6321,11 @@ msgstr ""
 "Selezionare i file da aggiungere come allegati.<br>La selezione multipla dei "
 "file tramite i tasti 'ctrl' o 'maiusc' è disponibile solo su browser "
 "compatibili."
+
+#, fuzzy, php-format
+#| msgid "File is too big. Maximum allowed size is %1$s"
+msgid "Maximum allowed size is %1$s"
+msgstr "Il file è troppo grande. La dimensione massima consentita è %1$s"
 
 msgid "Add attachment"
 msgstr "Aggiungi allegato"
@@ -5919,8 +6475,16 @@ msgstr "Mie attività"
 msgid "Activities"
 msgstr "Attività"
 
+msgid "Loading..."
+msgstr "Caricamento..."
+
 msgid "Show dashboard on login"
 msgstr "Mostra cruscotto al login"
+
+#, fuzzy
+#| msgid "An error occurred displaying preview :("
+msgid "An error occurred displaying news :("
+msgstr "Errore durante la visualizzazione dell'anteprima :("
 
 msgid "For the selection:"
 msgstr "Per la selezione:"
@@ -5987,6 +6551,14 @@ msgstr "Foto:"
 msgid "Cropping focus"
 msgstr "Focus ritaglio"
 
+#, php-format
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %1$s"
+msgstr ""
+"Scegliere l'area dell'immagine originale per preservare dopo aver ritagliato "
+"il rapporto finale definito nelle impostazioni: %1$s"
+
 msgid "Center"
 msgstr "Centro"
 
@@ -6002,14 +6574,6 @@ msgstr "Sinistra"
 msgid "Right"
 msgstr "Destra"
 
-#, php-format
-msgid ""
-"Choose the area of the original image to preserve after cropping to the "
-"final ratio defined in the settings : %1$s"
-msgstr ""
-"Scegliere l'area dell'immagine originale per preservare dopo aver ritagliato "
-"il rapporto finale definito nelle impostazioni: %1$s"
-
 msgid "Additionnal fields:"
 msgstr "Campi aggiuntivi:"
 
@@ -6017,14 +6581,24 @@ msgid "Enter as many occurrences you want."
 msgstr "Inserire quanti riscontri si desidera."
 
 #, php-format
+msgid "Add an occurrence of %1$s"
+msgstr ""
+
+#, php-format
 msgid "Enter up to %1$s more occurrences."
 msgstr "Immettere fino a %1$s ulteriori occorrenze."
 
+#, php-format
+msgid "Delete the file and remove this occurrence of %1$s"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove title %1$s"
+msgid "Remove this occurrence of %1$s"
+msgstr "Rimuovi titolo %1$s"
+
 msgid "Select an option"
 msgstr "Selezionare un'opzione"
-
-msgid "delete"
-msgstr "elimina"
 
 msgid "This comment is only displayed for admins and staff members."
 msgstr ""
@@ -6093,9 +6667,6 @@ msgstr "Inviarlo di nuovo?"
 
 msgid "Later"
 msgstr "Più tardi"
-
-msgid "Loading..."
-msgstr "Caricamento..."
 
 msgid "Password is valid :)"
 msgstr "La password è valida :)"
@@ -6218,8 +6789,8 @@ msgstr "Pagine:"
 msgid "Records per page:"
 msgstr "Registrazioni per pagina:"
 
-msgid "Show legend"
-msgstr "Mostra legenda"
+msgid "Selecting an item from the list will automatically reload the table"
+msgstr ""
 
 msgid "(Un)Check all"
 msgstr "Deselezionare tutti"
@@ -6272,6 +6843,11 @@ msgstr "Ritornare alla home di Galette"
 
 msgid "Menu"
 msgstr "Menu"
+
+#, fuzzy
+#| msgid "Public pages"
+msgid "Public pages menu"
+msgstr "Pagine pubbliche"
 
 msgid "Subscribe"
 msgstr "Iscriviti"
@@ -6364,18 +6940,6 @@ msgstr "Gruppi selezionati"
 msgid "No groups has been selected yet."
 msgstr "Nessun gruppo selezionato."
 
-msgid "Choose your language"
-msgstr "Scelta lingua"
-
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
-msgid "Current locale '%1$s'"
-msgstr "Pagina attuale (%1$s)"
-
-#, php-format
-msgid "Switch locale to '%1$s'"
-msgstr "Passa alla localizzazione '%1$s '"
-
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
@@ -6424,6 +6988,9 @@ msgstr "Sicuri di voler procedere?"
 
 msgid "This can't be undone."
 msgstr "L'operazione non può essere annullata."
+
+msgid "New installation"
+msgstr "Nuova installazione"
 
 #, php-format
 msgid "you're installing %1$s for the first time"
@@ -6530,6 +7097,41 @@ msgstr ""
 msgid "An error occurred sending telemetry information :("
 msgstr "Si è verificato un errore durante l’invio della telemetria :("
 
+#~ msgid ""
+#~ "Please define constant \"GALETTE_URI\" with the path to your instance."
+#~ msgstr ""
+#~ "Definisci la costante \"GALETTE_URI\" con il percorso alla tua istanza."
+
+#~ msgid "you're installing Galette for the first time"
+#~ msgstr "si sta installando Galette per la prima volta"
+
+#~ msgid ""
+#~ "you wish to erase an older version of Galette without keeping your data"
+#~ msgstr ""
+#~ "si vuole cancellare la versione precedente di Galette senza mantenerne i "
+#~ "dati"
+
+#~ msgid ""
+#~ "you already have installed Galette, and you want to upgrade to the latest "
+#~ "version"
+#~ msgstr ""
+#~ "si ha già installato Galette, e si desidera aggiornare alla versione più "
+#~ "recente"
+
+#~ msgid ""
+#~ "It seems that you have already installed Galette once.<br/>All existing "
+#~ "data will be removed if you keep going on using existing database!"
+#~ msgstr ""
+#~ "Sembra che Galette sia già stato installato una volta!<br>Tutti i dati "
+#~ "presenti verranno rimossi se si continua a utilizzare il database "
+#~ "esistente!"
+
+#~ msgid "Using QMAIL server"
+#~ msgstr "Uso del server QMAIL"
+
+#~ msgid "delete"
+#~ msgstr "elimina"
+
 #~ msgid "There are no member to proceed."
 #~ msgstr "Non ci sono membri per procedere."
 
@@ -6538,9 +7140,6 @@ msgstr "Si è verificato un errore durante l’invio della telemetria :("
 
 #~ msgid "Cause"
 #~ msgstr "Causa"
-
-#~ msgid "Enable"
-#~ msgstr "Abilita"
 
 #~ msgid "modification"
 #~ msgstr "modifica"
