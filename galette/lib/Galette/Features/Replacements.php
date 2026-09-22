@@ -792,7 +792,7 @@ trait Replacements
                                     'getDynamicFile',
                                     [
                                         'form_name' => $form_name,
-                                        'id' => (string)$object->id,
+                                        'id' => (string)$object->getID(),
                                         'fid' => (string)$field_id,
                                         //the file on disk is named after the value index
                                         'pos' => (string)$field_value['val_index'],

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Galette\Core\Galette;
+use Galette\Core\Preferences;
 use Galette\IO\File;
 use Galette\Controllers\Attributes\Route;
 use Galette\Repository\DynamicFieldsSet;
@@ -246,21 +247,29 @@ class DynamicFieldsController extends CrudController
         string $name
     ): Response {
         $object_class = DynamicFieldsSet::getClasses()[$form_name];
-        if ($object_class === \Galette\Entity\Adherent::class) {
-            $object = new $object_class($this->zdb);
+        if ($object_class === Preferences::class) {
+            //settings are a single object, nothing to load but its dynamic fields
+            $object = new Preferences($this->zdb, load: false);
         } else {
-            $object = new $object_class($this->zdb, $this->login);
-        }
+            if ($object_class === \Galette\Entity\Adherent::class) {
+                $object = new $object_class($this->zdb);
+            } else {
+                $object = new $object_class($this->zdb, $this->login);
+            }
 
-        $object
-            ->disableAllDeps()
-            ->enableDep('dynamics')
-            ->load($id);
+            $object
+                ->disableAllDeps()
+                ->enableDep('dynamics')
+                ->load($id);
+        }
         $fields = $object->getDynamicFields()->getFields();
         $field = $fields[$fid] ?? null;
 
         $denied = null;
-        if (!$object->canShow($this->login)) {
+        if ($object instanceof Preferences) {
+            //a settings file goes to whoever can see its field
+            $denied = $field === null;
+        } elseif (!$object->canShow($this->login)) {
             if (!isset($fields[$fid])) {
                 //field does not exist or access is forbidden
                 $denied = true;
@@ -270,12 +279,7 @@ class DynamicFieldsController extends CrudController
         }
 
         if ($denied === true) {
-            $route_name = 'member';
-            if ($form_name == 'contrib') {
-                $route_name = 'contribution';
-            } elseif ($form_name == 'trans') {
-                $route_name = 'transaction';
-            }
+            $route_name = $this->getDynamicFileRedirectRoute($form_name);
 
             return $this->redirectWithErrors(
                 response: $response,
@@ -322,12 +326,7 @@ class DynamicFieldsController extends CrudController
                 Analog::WARNING
             );
 
-            $route_name = 'member';
-            if ($form_name == 'contrib') {
-                $route_name = 'contribution';
-            } elseif ($form_name == 'trans') {
-                $route_name = 'transaction';
-            }
+            $route_name = $this->getDynamicFileRedirectRoute($form_name);
 
             return $this->redirectWithErrors(
                 response: $response,
@@ -335,6 +334,21 @@ class DynamicFieldsController extends CrudController
                 redirect_url: $this->routeparser->urlFor($route_name, ['id' => (string)$id])
             );
         }
+    }
+
+    /**
+     * Route to go back to when a dynamic file cannot be sent
+     *
+     * @param string $form_name Form name
+     */
+    private function getDynamicFileRedirectRoute(string $form_name): string
+    {
+        return match ($form_name) {
+            'contrib' => 'contribution',
+            'trans' => 'transaction',
+            'prefs' => $this->login->isAdmin() ? 'preferences' : 'slash',
+            default => 'member'
+        };
     }
 
     // /CRUD - Read

@@ -14,6 +14,7 @@ use Galette\Tests\GaletteRoutingTestCase;
 
 use function Safe\filesize;
 use function Safe\copy;
+use function Safe\unlink;
 
 /**
  * DynamicFields controller tests
@@ -687,16 +688,98 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test a dynamic file stored in the settings
+     */
+    public function testGetPreferencesDynamicFile(): void
+    {
+        $this->logSuperAdmin();
+        $field_id = $this->createDynamicField(
+            name: 'Settings file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            form_name: 'prefs'
+        );
+
+        //settings have no identifier of their own, their values are stored against 0
+        $dynamics = $this->preferences->getDynamicFields();
+        $dynamics->setValue(item: 0, field: $field_id, index: 1, value: 'galette_pro.png');
+        $this->assertTrue($dynamics->storeValues(0));
+        $filename = sprintf('prefs_0_field_%1$s_value_1', $field_id);
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', GALETTE_FILES_PATH . $filename);
+
+        $file_url = $this->routeparser->urlFor(
+            'getDynamicFile',
+            [
+                'form_name' => 'prefs',
+                'id' => '0',
+                'fid' => (string)$field_id,
+                'pos' => '1',
+                'name' => 'galette_pro.png'
+            ]
+        );
+
+        //the stored file is linked from the settings
+        $test_response = $this->app->handle($this->createRequest('preferences'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(sprintf('href="%1$s"', $file_url), $body);
+        $this->assertStringContainsString('Choose another file', $body);
+
+        $request = $this->createRequest(
+            'getDynamicFile',
+            [
+                'form_name' => 'prefs',
+                'id' => '0',
+                'fid' => (string)$field_id,
+                'pos' => '1',
+                'name' => 'galette_pro.png'
+            ]
+        );
+        $test_response = $this->app->handle($request);
+        $this->expectOK(
+            $test_response,
+            [
+                'Content-Description' => ['File Transfer'],
+                'Content-Type' => ['image/png'],
+                'Content-Disposition' => ['attachment;filename="galette_pro.png"'],
+                'Pragma' => ['public'],
+                'Content-Transfer-Encoding' => ['binary'],
+                'Expires' => ['0'],
+                'Cache-Control' => ['must-revalidate']
+            ]
+        );
+        $this->login->logout();
+
+        //the field is restricted to staff members
+        $mdata = $this->dataAdherentOne();
+        $this->getMemberOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        //the value of a field the member cannot see is reported on load
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Dynamic values found for Galette\\Core\\Preferences #0; but no dynamic field configured!'
+        );
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        $this->login->logout();
+
+        unlink(GALETTE_FILES_PATH . $filename);
+    }
+
+    /**
      * Create a dynamic field for tests
      *
-     * @param string $name Name of the field to create
-     * @param int    $type Type of the field to create (default to Line)
+     * @param string $name      Name of the field to create
+     * @param int    $type      Type of the field to create (default to Line)
+     * @param string $form_name Form the field belongs to (default to members)
      *
      * @return int The created field id
      */
     private function createDynamicField(
         string $name = 'Dynamic test field',
-        int $type = \Galette\DynamicFields\DynamicField::LINE
+        int $type = \Galette\DynamicFields\DynamicField::LINE,
+        string $form_name = 'adh'
     ): int {
         //create field
         $field_data = [
@@ -704,7 +787,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
             'field_perm' => (string)\Galette\Entity\FieldsConfig::STAFF,
             'field_type' => (string)$type,
             'field_required' => '0',
-            'form_name' => 'adh'
+            'form_name' => $form_name
         ];
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);

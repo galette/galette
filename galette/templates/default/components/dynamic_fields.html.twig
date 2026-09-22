@@ -42,7 +42,7 @@
                  # something to remove, and binds it. A stored file goes away for good,
                  # where an empty occurrence is only one row less.
                  #}
-                {% set drops_file = get_class(field) == 'Galette\\DynamicFields\\File' and object.id and valuedata %}
+                {% set drops_file = get_class(field) == 'Galette\\DynamicFields\\File' and object.getID() is not null and valuedata %}
                 {% set remove_label = (drops_file ? _T("Delete the file and remove this occurrence of %1$s") : _T("Remove this occurrence of %1$s"))|format(field.getName()) %}
                 <button
                     type="button"
@@ -103,8 +103,8 @@
                     </label>
                 </div>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
-                {% if object.id and valuedata %}
-                <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.id, "fid": field.getId(), "pos": idx, "name": valuedata}) }}">
+                {% if object.getID() is not null and valuedata %}
+                <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.getID(), "fid": field.getId(), "pos": idx, "name": valuedata}) }}">
                     {{ valuedata }}
                     <i class="external alternate icon" aria-hidden="true"></i>
                 </a>
@@ -121,7 +121,7 @@
                         />
                         <label for="info_field_{{ field.getId() }}_{{ idx }}_new" class="ui button">
                             <i class="blue upload icon" aria-hidden="true"></i>
-                            {% if object.id and valuedata %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                            {% if object.getID() is not null and valuedata %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                         </label>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                                 {% set idx = field_data.val_index %}
                                 {% set required = field.isRequired() and (not repeatable or idx == 1) %}
                                 {# a stored file is dropped from its own occurrence, repeatable or not #}
-                                {% set removable = repeatable or (is_file and object.id and field_data.field_val) %}
+                                {% set removable = repeatable or (is_file and object.getID() is not null and field_data.field_val) %}
                                 <div class="field{% if removable %} removable{% endif %}{% if required %} required{% endif %}{% if is_file %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
                                     {{ _self.draw_field(field, field_data, disabled, idx, object, masschange, required and not masschange, removable) }}
                                 </div>

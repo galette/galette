@@ -39,7 +39,6 @@ class Reminder
     public const string TABLE = 'reminders';
     public const string PK = 'reminder_id';
 
-    private int $id;
     private int $type;
     private Adherent $dest;
     private string $date;
@@ -103,8 +102,6 @@ class Reminder
         global $zdb;
 
         try {
-            $pk = self::PK;
-            $this->id = (int)$rs->$pk;
             $this->type = (int)$rs->reminder_type;
             $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->date = $rs->reminder_date;
