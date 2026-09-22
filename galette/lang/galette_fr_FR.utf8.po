@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-22 10:34+0200\n"
-"PO-Revision-Date: 2026-09-22 07:30+0000\n"
+"PO-Revision-Date: 2026-09-22 09:34+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -959,7 +959,7 @@ msgstr "%1$s : contributions"
 #. TRANS: parameter is the member name
 #, php-format
 msgid "%1$s: remove from database"
-msgstr "%1$s : supprimer de la base"
+msgstr "%1$s : supprimer de la base de données"
 
 #. TRANS: parameter is the member name
 #, php-format
@@ -1328,7 +1328,7 @@ msgid "Credit card"
 msgstr "Carte de crédit"
 
 msgid "Check"
-msgstr "Chèque"
+msgstr "Vérification"
 
 msgid "Transfer"
 msgstr "Virement"
@@ -1464,7 +1464,7 @@ msgid "Wrong password!"
 msgstr "Mauvais mot de passe !"
 
 msgid "Please confirm your password again."
-msgstr "Veuillez confirmer votre mot de passe :"
+msgstr "Veuillez confirmer votre mot de passe."
 
 #. TRANS: parameter is the preference name
 #, php-format
@@ -2248,10 +2248,8 @@ msgstr "Envois passés :"
 msgid "Back to members list"
 msgstr "Retour à la liste des membres"
 
-#, fuzzy
-#| msgid "Mailings"
 msgid "Mailings history"
-msgstr "Envois"
+msgstr "Historique des envois"
 
 #, fuzzy
 #| msgid "Sent reminders:"
@@ -3014,9 +3012,9 @@ msgstr ""
 "Bonjour,{NEWLINE}Vous venez d'adhérer à {ASSO_NAME}.{NEWLINE}Vous pouvez "
 "désormais suivre en temps réel l'état de vos souscriptions et mettre à jour "
 "vos coordonnées depuis l'interface web.{NEWLINE}Connectez vous à cette "
-"adresse pour valider le nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}"
-"Identifiant : {LOGIN}{BR}Le lien ci-dessus sera valide jusqu'au "
-"{LINK_VALIDITY}.{NEWLINE}A bientôt!{NEWLINE}(Ce courriel est un envoi "
+"adresse pour valider le nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}"
+"Identifiant : {LOGIN}{BR}Le lien ci-dessus sera valide jusqu'au "
+"{LINK_VALIDITY}.{NEWLINE}A bientôt !{NEWLINE}(Ce courriel est un envoi "
 "automatique)"
 
 msgid "New user registration"
@@ -3031,8 +3029,8 @@ msgid ""
 msgstr ""
 "Bonjour,{NEWLINE}Quelqu'un (probablement vous) a demandé la récupération de "
 "votre mot de passe.{NEWLINE}Connectez vous à cette adresse pour valider le "
-"nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}Identifiant : {LOGIN}{BR}Le "
-"lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.{NEWLINE}A Bientôt!"
+"nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}Identifiant : {LOGIN}{BR}Le "
+"lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.{NEWLINE}A Bientôt !"
 "{NEWLINE}(Ce courriel est un envoi automatique)"
 
 msgid "Lost password email"
@@ -3051,8 +3049,8 @@ msgstr ""
 "Bonjour,{NEWLINE}Votre cotisation a été enregistrée et validée par "
 "l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au {DEADLINE}"
 "{NEWLINE}Vous pouvez désormais accéder à vos données personnelles à l'aide "
-"de vos identifiants galette à l'adresse suivante :{BR}{LOGIN_URI}.{NEWLINE}"
-"{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce courriel est un envoi "
+"de vos identifiants galette à l'adresse suivante :{BR}{LOGIN_URI}.{NEWLINE}"
+"{CONTRIB_INFO}{NEWLINE}A Bientôt !{NEWLINE}(Ce courriel est un envoi "
 "automatique)"
 
 msgid "Receipt send for new contribution"
@@ -3131,8 +3129,8 @@ msgid ""
 "automatically)"
 msgstr ""
 "Bonjour,{NEWLINE}Votre adhésion à {ASSO_NAME} arrive à son terme dans "
-"{DAYS_REMAINING} jours.{NEWLINE}A bientôt!{NEWLINE}(ce courriel est un envoi "
-"automatique)"
+"{DAYS_REMAINING} jours.{NEWLINE}A bientôt !{NEWLINE}(ce courriel est un "
+"envoi automatique)"
 
 msgid "Impending due date"
 msgstr "Échéances proches"
@@ -3145,7 +3143,7 @@ msgid ""
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
 "Bonjour,{NEWLINE}Votre adhésion à {ASSO_NAME} a expiré depuis {DAYS_EXPIRED} "
-"jours.{NEWLINE}A bientôt!{NEWLINE}(ce courriel est un envoi automatique)"
+"jours.{NEWLINE}A bientôt !{NEWLINE}(ce courriel est un envoi automatique)"
 
 msgid "Late due date"
 msgstr "Échéance dépassée"
@@ -3256,7 +3254,7 @@ msgid "Phone:"
 msgstr "Téléphone :"
 
 msgid "Mobile phone:"
-msgstr "GSM :"
+msgstr "Téléphone mobile :"
 
 msgid "E-Mail:"
 msgstr "Courriel :"
