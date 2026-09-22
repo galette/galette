@@ -369,10 +369,10 @@ class TwoFactorController extends AbstractController
         } else {
             $secret->remove();
             $this->history->add(
-                str_replace(
-                    '%member',
-                    $member->sname,
-                    _T("Two-factor authentication reset for %member")
+                sprintf(
+                    //TRANS: %1$s is the member name
+                    _T('Two-factor authentication reset for %1$s'),
+                    $member->sname
                 )
             );
             $this->flash->addMessage(

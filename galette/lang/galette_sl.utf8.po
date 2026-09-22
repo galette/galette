@@ -1565,8 +1565,10 @@ msgstr "Samo skrbnik lahko ponastavi dvostopenjsko avtentikacijo člana osebja."
 msgid "This member has no two-factor authentication to reset."
 msgstr "Ta član nima dvostopenjske avtentikacije za ponastavitev."
 
-msgid "Two-factor authentication reset for %member"
-msgstr "Ponastavitev dvostopenjske avtentikacije za %member"
+#. TRANS: %1$s is the member name
+#, php-format
+msgid "Two-factor authentication reset for %1$s"
+msgstr "Ponastavitev dvostopenjske avtentikacije za %1$s"
 
 msgid "Two-factor authentication has been reset for this member."
 msgstr "Za tega člana je bila ponastavljena dvofaktorska avtentikacija."
@@ -4395,12 +4397,12 @@ msgstr ""
 "naprave. Vsak deluje enkrat."
 
 #, php-format
-msgid "You have %count recovery code left."
-msgid_plural "You have %count recovery codes left."
-msgstr[0] "Imate še %count obnovitveno kodo."
-msgstr[1] "Imate še %count obnovitveni kodi."
-msgstr[2] "Imate še %count obnovitvene kode."
-msgstr[3] "Imate še %count obnovitvenih kod."
+msgid "You have %1$s recovery code left."
+msgid_plural "You have %1$s recovery codes left."
+msgstr[0] "Imate še %1$s obnovitveno kodo."
+msgstr[1] "Imate še %1$s obnovitveni kodi."
+msgstr[2] "Imate še %1$s obnovitvene kode."
+msgstr[3] "Imate še %1$s obnovitvenih kod."
 
 msgid "Current code:"
 msgstr "Trenutna koda:"

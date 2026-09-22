@@ -2411,9 +2411,11 @@ msgstr ""
 msgid "This member has no two-factor authentication to reset."
 msgstr "This member has no two-factor authentication to reset."
 
+#. TRANS: %1$s is the member name
 #: ../lib/Galette/Controllers/TwoFactorController.php:375
-msgid "Two-factor authentication reset for %member"
-msgstr "Two-factor authentication reset for %member"
+#, php-format
+msgid "Two-factor authentication reset for %1$s"
+msgstr "Two-factor authentication reset for %1$s"
 
 #: ../lib/Galette/Controllers/TwoFactorController.php:380
 msgid "Two-factor authentication has been reset for this member."
@@ -6685,10 +6687,10 @@ msgstr ""
 
 #: ../../tempcache/pages/two_factor_manage.html.twig:99
 #, php-format
-msgid "You have %count recovery code left."
-msgid_plural "You have %count recovery codes left."
-msgstr[0] "You have %count recovery code left."
-msgstr[1] "You have %count recovery codes left."
+msgid "You have %1$s recovery code left."
+msgid_plural "You have %1$s recovery codes left."
+msgstr[0] "You have %1$s recovery code left."
+msgstr[1] "You have %1$s recovery codes left."
 
 #: ../../tempcache/pages/two_factor_manage.html.twig:109
 #: ../../tempcache/pages/two_factor_manage.html.twig:169
