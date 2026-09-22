@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-22 07:43+0200\n"
-"PO-Revision-Date: 2026-09-02 14:00+0000\n"
+"PO-Revision-Date: 2026-09-22 06:30+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -325,28 +325,22 @@ msgstr ""
 msgid "Logged in as:<br/>%1$s"
 msgstr "Connecté en tant que :<br/>%1$s"
 
-#, fuzzy
-#| msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgid "Emailing has been disabled in the preferences."
-msgstr ""
-"L’envoi de courriel est désactivé dans les préférences. Contactez votre "
-"administrateur Galette"
+msgstr "L’envoi de courriel est désactivé dans les préférences."
 
-#, fuzzy, php-format
-#| msgid "Emailing method:"
+#, php-format
 msgid "Unknown emailing method '%s'."
-msgstr "Méthode d’envoi des courriels :"
+msgstr "Méthode d'envoi inconnue '%s'."
 
 msgid "Unable to reach the SMTP server."
-msgstr ""
+msgstr "Impossible d'atteindre le serveur SMTP."
 
-#, fuzzy, php-format
-#| msgid "The file does not exists or cannot be read :("
+#, php-format
 msgid "'%s' does not exist, or cannot be run."
-msgstr "Le fichier n’existe pas ou ne peut être lu :("
+msgstr "'%s' n'existe pas ou ne peut pas être exécuté."
 
 msgid "The PHP mail() function is not available on this server."
-msgstr ""
+msgstr "La fonction PHP mail() n'est pas disponible sur ce serveur."
 
 msgid ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
@@ -354,7 +348,7 @@ msgid ""
 msgstr ""
 
 msgid "Sending quota has been reached, message has not been sent."
-msgstr ""
+msgstr "Le quota d'envoi a été atteint, le message n'a pas été envoyé."
 
 msgid "No such module."
 msgstr "Module inconnu."
@@ -414,13 +408,11 @@ msgstr "Le script %1$s a été exécuté avec succès :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Impossible de lancer le script de mise à jour %1$s :("
 
-#, fuzzy
-#| msgid "Write configuration file"
 msgid "No configuration file found!"
-msgstr "Écriture du fichier de configuration"
+msgstr "Le fichier de configuration n'a été trouvé !"
 
 msgid "Existing configuration file is incomplete or unreadable!"
-msgstr ""
+msgstr "Le fichier de configuration existant est incomplet ou ne peut être lu !"
 
 msgid "Write configuration file"
 msgstr "Écriture du fichier de configuration"
@@ -584,30 +576,34 @@ msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ai-je ?"
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Unknown type %1$s!"
+#, php-format
 msgid "Unknown preference '%1$s'!"
-msgstr "Type %1$s inconnu !"
+msgstr "Préférence inconnue '%1$s' !"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr ""
+"La préférence '%1$s' est maintenue par Galette et ne peut être changée !"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "You are not allowed to change preference '%1$s'!"
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à changer la préférence '%1$s' !"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
+"La préférence '%1$s' contient un secret et ne peut être réinitialisée à sa "
+"valeur par défaut !"
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
+"Veuillez définir l'URL de votre instance depuis la configuration avancée, ou "
+"définir la constante \"GALETTE_URI\"."
 
 msgid "Never"
 msgstr "Jamais"
@@ -657,10 +653,9 @@ msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr "- Adresse courriel non valide %1$s (%2$s)"
 
 #. TRANS: parameter is the setting name
-#, fuzzy, php-format
-#| msgid "Amount must be a positive number"
+#, php-format
 msgid "- Value for '%1$s' must be a positive number!"
-msgstr "Le montant doit être un chiffre positif"
+msgstr "- La valeur de '%1$s' doit être un nombre positif !"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
@@ -839,10 +834,8 @@ msgstr ""
 "Renseigner les préférences de l’application (adresse, cartes de membres, "
 "configuration, ...)"
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts"
-msgstr "Échec de l’authentification"
+msgstr "Tentatives d'authentification"
 
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
@@ -907,13 +900,13 @@ msgstr "Outils d'administration"
 msgid "Various administrative tools"
 msgstr "Outils d’administration variés"
 
-#, fuzzy
-#| msgid "Attendance sheet configuration"
 msgid "Advanced configuration"
-msgstr "Configuration de la liste d’émargement"
+msgstr "Configuration avancée"
 
 msgid "Edit every setting, including those the settings form does not show"
 msgstr ""
+"Modifier tous les réglages, y compris ceux que le formulaire de paramètres "
+"ne montre pas"
 
 msgid "Gallery"
 msgstr "Trombinoscope"
@@ -1453,27 +1446,21 @@ msgstr "Le courriel « %1$s » n’a pas été modifié !"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Le courriel « %1$s » a été modifié avec succès."
 
-#, fuzzy
-#| msgid "No password"
 msgid "Wrong password!"
-msgstr "Mot de passe vide"
+msgstr "Mauvais mot de passe !"
 
-#, fuzzy
-#| msgid "Please confirm your email address:"
 msgid "Please confirm your password again."
-msgstr "Veuillez confirmer votre adresse de courriel :"
+msgstr "Veuillez confirmer votre mot de passe :"
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been stored."
-msgstr "Les préférences ont été sauvegardées."
+msgstr "La préférence '%1$s' a été enregistrée."
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been reset to its default."
-msgstr "Les préférences ont été sauvegardées."
+msgstr "La préférence '%1$s' a été réinitialisée à sa valeur par défaut."
 
 msgid "Removal has not been confirmed!"
 msgstr "La suppression n’a pas été confirmée !"
@@ -1622,15 +1609,11 @@ msgstr "Aucun courriel envoyé à %1$s"
 msgid "Invalid email adress!"
 msgstr "Adresse courriel invalide !"
 
-#, fuzzy
-#| msgid "Test email settings"
 msgid "Those emailing settings work."
-msgstr "Test des paramètres courriel"
+msgstr "Ces paramètres de messagerie fonctionnent."
 
-#, fuzzy
-#| msgid "Test email settings"
 msgid "Those emailing settings do not work."
-msgstr "Test des paramètres courriel"
+msgstr "Ces paramètres de messagerie ne fonctionnent pas."
 
 msgid "Fields configuration has been successfully stored"
 msgstr "La configuration par défaut des champs a été sauvegardée avec succès"
@@ -1675,7 +1658,7 @@ msgid "You must provide both login and password."
 msgstr "Vous devez fournir un identifiant et un mot de passe."
 
 msgid "Too many failed attempts. Please try again later."
-msgstr ""
+msgstr "Trop de tentatives infructueuses. Veuillez réessayer plus tard."
 
 #, fuzzy
 #| msgid "Authentication failed"
@@ -1726,7 +1709,7 @@ msgstr ""
 "administrateur Galette"
 
 msgid "Too many requests. Please try again later."
-msgstr ""
+msgstr "Trop de tentatives. Veuillez réessayer plus tard."
 
 #, fuzzy
 #| msgid "Password recovery"
