@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 07:43+0200\n"
+"POT-Creation-Date: 2026-09-22 10:34+0200\n"
 "PO-Revision-Date: 2026-06-21 02:01+0000\n"
 "Last-Translator: Poly <robloxlucak@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -686,6 +686,11 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr "Der Betrag muss eine positive Zahl sein"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
+#, fuzzy
+#| msgid "- Unknown contribution type!"
+msgid "- Unknown two-factor authentication mode!"
+msgstr "- Unbekannter Beitragstyp!"
+
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
@@ -721,6 +726,14 @@ msgstr "Meine Informationen"
 
 msgid "View my member card"
 msgstr "Mitgliedskarte anschauen"
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication"
+msgstr "SMTP Anmeldung nutzen?"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "Add a child member"
 msgstr "Ein untergeordnetes Mitglied hinzufügen"
@@ -1550,6 +1563,87 @@ msgstr "Modell wurde nicht gespeichert :("
 msgid "Invalid link!"
 msgstr "Ungültiger Link!"
 
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication failed."
+msgstr "Anmeldung fehlgeschlagen"
+
+msgid "Second factor failed"
+msgstr ""
+
+msgid "Login"
+msgstr "Login"
+
+msgid ""
+"Two-factor authentication is already enabled. Disable it first to enrol "
+"again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Unable to load contribution"
+msgid "Enable two-factor authentication"
+msgstr "Der Beitrag konnte nicht geladen werden!"
+
+msgid "That code does not match. Check your application clock, then try again."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication enabled"
+msgstr "Anmeldung fehlgeschlagen"
+
+msgid ""
+"Two-factor authentication is now enabled for the super administrator account."
+msgstr ""
+
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication disabled"
+msgstr "Anmeldung fehlgeschlagen"
+
+msgid "Two-factor authentication has been disabled."
+msgstr ""
+
+msgid "Two-factor recovery codes renewed"
+msgstr ""
+
+msgid "Use your own two-factor authentication page to disable it."
+msgstr ""
+
+msgid ""
+"Only the super administrator may reset an administrator's two-factor "
+"authentication."
+msgstr ""
+
+msgid ""
+"Only an administrator may reset a staff member's two-factor authentication."
+msgstr ""
+
+msgid "This member has no two-factor authentication to reset."
+msgstr ""
+
+msgid "Two-factor authentication reset for %member"
+msgstr ""
+
+#, fuzzy
+#| msgid "An email has been sent to the member."
+msgid "Two-factor authentication has been reset for this member."
+msgstr "Die E-Mail an das Mitglied wurde gesendet."
+
+msgid "Two-factor authentication is not enabled on this instance."
+msgstr ""
+
+msgid "Two-factor authentication is not enabled."
+msgstr ""
+
+#, fuzzy
+#| msgid "Recover password"
+msgid "Recovery codes"
+msgstr "Passwort wiederherstellen"
+
 msgid "Texts has been successfully reinitialized."
 msgstr "Die Texte wurden auf den Standard zurückgesetzt."
 
@@ -1683,14 +1777,8 @@ msgstr "Das Plugin %1$s wurde aktiviert"
 msgid "Plugin %1$s has been disabled"
 msgstr "Das Plugin %1$s wurde deaktiviert"
 
-msgid "Login"
-msgstr "Login"
-
 msgid "You must provide both login and password."
 msgstr "Du must sowohl einen Benutzernamen als auch ein Passwort eingeben."
-
-msgid "Too many failed attempts. Please try again later."
-msgstr ""
 
 #, fuzzy
 #| msgid "Authentication failed"
@@ -2665,6 +2753,11 @@ msgstr ""
 
 msgid "Unauthorized"
 msgstr "Nicht autorisiert"
+
+msgid ""
+"Two-factor authentication is required. Please enable it to keep using your "
+"account."
+msgstr ""
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -4400,7 +4493,74 @@ msgstr "Unvollständige Transaktion"
 msgid "View corresponding contributions"
 msgstr "Entsprechende Beiträge anzeigen"
 
-msgid "Experimental feature. Be careful using it."
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is enabled"
+msgstr "Anmeldung fehlgeschlagen"
+
+msgid ""
+"A code from your authentication application is asked for at every login."
+msgstr ""
+
+msgid ""
+"Recovery codes let you log in when you no longer have your device. Each one "
+"works once."
+msgstr ""
+
+#, php-format
+msgid "You have %count recovery code left."
+msgid_plural "You have %count recovery codes left."
+msgstr[0] ""
+msgstr[1] ""
+
+#, fuzzy
+#| msgid "Current model"
+msgid "Current code:"
+msgstr "Aktuelles Modell"
+
+msgid "Renew recovery codes"
+msgstr ""
+
+msgid "No recovery codes for this account"
+msgstr ""
+
+msgid ""
+"The super administrator is not a member: its second factor lives in the "
+"preferences, which is also where it is cleared from should you lose your "
+"device. Keep an access to the database at hand."
+msgstr ""
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Deaktiviert"
+
+msgid ""
+"Two-factor authentication is required on this instance: disabling it will be "
+"asked for again at your next login."
+msgstr ""
+
+msgid ""
+"A code is required to disable it, so that nobody else can turn it off from "
+"your session."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Disable two-factor authentication"
+msgstr "SMTP Anmeldung nutzen?"
+
+msgid "Two-factor authentication is not enabled"
+msgstr ""
+
+msgid ""
+"It is required on this instance: you will be asked to enable it to keep "
+"using your account."
+msgstr ""
+
+msgid ""
+"Adding a code from an application on your phone makes a stolen password "
+"useless on its own."
 msgstr ""
 
 msgid "Sending in progress…"
@@ -4564,6 +4724,23 @@ msgstr "Beschreibungen zum Übersetzen auswählen"
 
 msgid "No fields to translate."
 msgstr "Keine Felder zum Übersetzen vorhanden."
+
+msgid "Enter the code shown by your authentication application."
+msgstr ""
+
+msgid "Code:"
+msgstr "Code:"
+
+msgid "Validate"
+msgstr "Validieren"
+
+msgid "Lost your device? Enter one of your recovery codes above instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Cancel mailing"
+msgid "Cancel and log off"
+msgstr "E-Mail-Versand abbrechen"
 
 msgid "Filename"
 msgstr "Dateiname"
@@ -4779,6 +4956,17 @@ msgstr "Bitte wählen Sie eine Datei für den Import."
 msgid "Please make sure to select one file to upload."
 msgstr "Bitte wählen Sie ein Datei zum Hochladen aus."
 
+msgid "Write these codes down now"
+msgstr ""
+
+msgid ""
+"They are shown this once and cannot be displayed again. Each one works a "
+"single time, and lets you log in when you no longer have your device."
+msgstr ""
+
+msgid "I have written them down"
+msgstr ""
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4786,6 +4974,16 @@ msgstr "Dem Mitglied einen Link zum Erstellen eines neuen Passworts schicken."
 
 msgid "New password"
 msgstr "Neues Passwort"
+
+msgid ""
+"Clear this member's two-factor authentication, for instance after they lost "
+"both their device and their recovery codes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Reset two-factor authentication"
+msgstr "SMTP Anmeldung nutzen?"
 
 msgid "Generate Member Card"
 msgstr "Mitgliedskarte erstellen"
@@ -5364,6 +5562,9 @@ msgstr "SMTP (oder GMail) Benutzer:"
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (oder GMail) Passwort:"
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5492,6 +5693,34 @@ msgstr "Für '%1$s' ist noch kein dynamisches Feld konfiguriert"
 #| msgid "New dynamic field"
 msgid "Configure dynamic fields"
 msgstr "Neues dynamisches Feld"
+
+msgid ""
+"Asks for a code from an application on the member's phone in addition to "
+"their password, so that a stolen password is not enough on its own. Members "
+"who have to hold one are sent to enrolment at their next login; switching "
+"back to disabled lets everyone in again without a code."
+msgstr ""
+
+#, fuzzy
+#| msgid "Use SMTP authentication?"
+msgid "Two-factor authentication:"
+msgstr "SMTP Anmeldung nutzen?"
+
+#, fuzzy
+#| msgid "None (default)"
+msgid "Disabled (default)"
+msgstr "Kein Level (Standard)"
+
+msgid "Optional, each member decides"
+msgstr ""
+
+msgid "Required for administrators and staff"
+msgstr ""
+
+#, fuzzy
+#| msgid "Required field!"
+msgid "Required for everyone"
+msgstr "Benötigt!"
 
 msgid "Password length:"
 msgstr "Passwortlänge:"
@@ -5626,6 +5855,32 @@ msgstr "Verwaltet:"
 
 msgid "New dynamic field"
 msgstr "Neues dynamisches Feld"
+
+msgid ""
+"Install an authentication application, for instance FreeOTP, Aegis or "
+"KeePassXC."
+msgstr ""
+
+msgid "Scan the code below with it, or type the key in by hand."
+msgstr ""
+
+msgid "Enter the code it then shows, to confirm it works."
+msgstr ""
+
+msgid "QR code to register the key in an authentication application"
+msgstr ""
+
+msgid "Key, to type in by hand:"
+msgstr ""
+
+msgid "Code shown by the application:"
+msgstr ""
+
+msgid "Confirm and enable"
+msgstr ""
+
+msgid "Experimental feature. Be careful using it."
+msgstr ""
 
 #, fuzzy
 #| msgid "Date settings"
@@ -6027,9 +6282,6 @@ msgstr "Details"
 
 msgid "Type:"
 msgstr "Typ:"
-
-msgid "Code:"
-msgstr "Code:"
 
 msgid "File:"
 msgstr "Datei:"
@@ -6648,14 +6900,25 @@ msgstr "Bei Abrufen der Mitglieder ist ein Fehler aufgetreten :("
 msgid "An error occurred retrieving dates :("
 msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
 
+#, fuzzy
+#| msgid "Authentication failed"
+msgid "Two-factor authentication is available"
+msgstr "Anmeldung fehlgeschlagen"
+
+msgid ""
+"A code from an application on your telephone, on top of your password, means "
+"a stolen password is not enough on its own to reach your account. Do you "
+"want to set it up?"
+msgstr ""
+
+msgid "Later"
+msgstr "Später"
+
 msgid "Your telemetry data are more than one year old."
 msgstr "Die Nutzungsdaten sind über ein Jahr alt."
 
 msgid "Do you want to send it again?"
 msgstr "Willst du es nochmal senden?"
-
-msgid "Later"
-msgstr "Später"
 
 msgid "Password is valid :)"
 msgstr "Passwort ist gültig :)"
@@ -6881,9 +7144,6 @@ msgstr "Ausgewählte Mitglieder"
 
 msgid "No members has been selected yet."
 msgstr "Es wurde noch kein Mitglied ausgewählt."
-
-msgid "Validate"
-msgstr "Validieren"
 
 #, php-format
 msgid "Translate '%s' field"
@@ -7340,9 +7600,6 @@ msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 
 #~ msgid "Logging level:"
 #~ msgstr "Protokollierungslevel:"
-
-#~ msgid "Disabled"
-#~ msgstr "Deaktiviert"
 
 #~ msgid "Galette initialisation"
 #~ msgstr "Galette-Initialisierung"
