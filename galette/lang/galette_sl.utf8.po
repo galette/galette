@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-22 10:34+0200\n"
-"PO-Revision-Date: 2026-09-15 13:56+0000\n"
+"PO-Revision-Date: 2026-09-22 17:09+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -282,64 +282,71 @@ msgid ""
 "You may want to set it from the \"%s\" setting listed above and remove "
 "declared constant."
 msgstr ""
+"Morda ga boste želeli nastaviti iz zgoraj navedene nastavitve »%s« in "
+"odstraniti deklarirano konstanto."
 
 msgid ""
 "Enable debug mode: verbose logs, no cache, Twig strict variables and "
 "detailed errors."
 msgstr ""
+"Omogoči način odpravljanja napak: podrobni dnevniki, brez predpomnilnika, "
+"stroge spremenljivke Twig in podrobne napake."
 
 msgid ""
 "PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
 "credentials and mail settings."
 msgstr ""
+"PROD, MAINT, da dovolite prijavo samo superskrbniku, ali DEMO, da zaklenete "
+"poverilnice superskrbnika in nastavitve pošte."
 
 msgid ""
 "Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
 "debug mode."
 msgstr ""
+"Podrobnost dnevnikov, kot analogna raven. Privzeto je OPOZORILO ali DEBUG v "
+"načinu za odpravljanje napak."
 
 msgid "Dump every SQL query to the logs."
-msgstr ""
+msgstr "Iznesite vsako poizvedbo SQL v dnevnike."
 
 msgid ""
 "Development features to activate, among those declared in the feature flags "
 "registry. They only apply in debug mode."
 msgstr ""
+"Razvojne funkcije za aktiviranje med tistimi, ki so navedene v registru "
+"zastavic funkcij. Uporabljajo se samo v načinu za odpravljanje napak."
 
 #. TRANS: parameter is the logged in user name
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr "Prijavljen kot:<br/>%1$s"
 
-#, fuzzy
-#| msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgid "Emailing has been disabled in the preferences."
-msgstr ""
-"Pošiljanje e-pošte je v nastavitvah onemogočeno. Vprašajte skrbnika galete"
+msgstr "Pošiljanje e-pošte je v nastavitvah onemogočeno."
 
-#, fuzzy, php-format
-#| msgid "Emailing method:"
+#, php-format
 msgid "Unknown emailing method '%s'."
-msgstr "Način pošiljanja po e-pošti:"
+msgstr "Neznan način pošiljanja e-pošte '%s'."
 
 msgid "Unable to reach the SMTP server."
-msgstr ""
+msgstr "Strežnika SMTP ni mogoče doseči."
 
-#, fuzzy, php-format
-#| msgid "The file does not exists or cannot be read :("
+#, php-format
 msgid "'%s' does not exist, or cannot be run."
-msgstr "Datoteka ne obstaja ali je ni mogoče prebrati :("
+msgstr "'%s' ne obstaja ali pa ga ni mogoče zagnati."
 
 msgid "The PHP mail() function is not available on this server."
-msgstr ""
+msgstr "Funkcija PHP mail() ni na voljo na tem strežniku."
 
 msgid ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
 "to."
 msgstr ""
+"PHP direktiva 'sendmail_path' je prazna; mail() nima ničesar za predati "
+"sporočila."
 
 msgid "Sending quota has been reached, message has not been sent."
-msgstr ""
+msgstr "Kvota pošiljanja je bila dosežena, sporočilo ni bilo poslano."
 
 msgid "No such module."
 msgstr "Takšnega modula ni."
@@ -399,13 +406,11 @@ msgstr "Skripta %1$s je bila uspešno izvedena :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Skripta za posodobitev %1$s ni mogoče zagnati :("
 
-#, fuzzy
-#| msgid "Write configuration file"
 msgid "No configuration file found!"
-msgstr "Zapiši konfiguracijsko datoteko"
+msgstr "Ni konfiguracijske datoteke!"
 
 msgid "Existing configuration file is incomplete or unreadable!"
-msgstr ""
+msgstr "Obstoječa konfiguracijska datoteka je nepopolna ali neberljiva!"
 
 msgid "Write configuration file"
 msgstr "Zapiši konfiguracijsko datoteko"
@@ -550,41 +555,43 @@ msgstr "Koliko je %1$s minus %2$s?"
 
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr "Koliko znaša %1$s, s katerim se upokojimo %2$s?"
+msgstr "Koliko stane %1$s, po katerem se upokojimo %2$s?"
 
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr "Koliko znaša %1$s, s katerim se upokojimo %2$s?"
+msgstr "Koliko je %2$s upokojen v %1$s?"
 
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Imam %1$s galet, dam jih %2$s. Koliko galet imam?"
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Unknown type %1$s!"
+#, php-format
 msgid "Unknown preference '%1$s'!"
-msgstr "Neznan tip %1$s!"
+msgstr "Neznana nastavitev '%1$s'!"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
-msgstr ""
+msgstr "Prednost '%1$s' vzdržuje Galette in je ni mogoče spremeniti!"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "You are not allowed to change preference '%1$s'!"
-msgstr ""
+msgstr "Nimate dovoljenja za spreminjanje nastavitve '%1$s'!"
 
 #. TRANS: parameter is the preference name
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
+"Nastavitev '%1$s' vsebuje skrivnost in je ni mogoče ponastaviti na privzeto!"
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
+"Nastavite URL svojega primerka iz napredne konfiguracije ali definirajte "
+"konstanto \"GALETTE_URI\"."
 
 msgid "Never"
 msgstr "Nikoli"
@@ -634,25 +641,22 @@ msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr "- Neveljaven e-poštni naslov %1$s (%2$s)"
 
 #. TRANS: parameter is the setting name
-#, fuzzy, php-format
-#| msgid "Amount must be a positive number"
+#, php-format
 msgid "- Value for '%1$s' must be a positive number!"
-msgstr "Znesek mora biti pozitivno število"
+msgstr "- Vrednost za '%1$s' mora biti pozitivno število!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#, fuzzy
-#| msgid "- Unknown contribution type!"
 msgid "- Unknown two-factor authentication mode!"
-msgstr "- Neznana vrsta prispevka!"
+msgstr "- Neznan način dvofaktorske avtentikacije!"
 
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
-msgstr ""
+msgstr "- Vrednost za '%1$s' mora biti %2$s poskusov ali več!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
-msgstr ""
+msgstr "- Vrednost za '%1$s' mora biti %2$s sekund ali več!"
 
 msgid "My Account"
 msgstr "Moj račun"
@@ -681,13 +685,11 @@ msgstr "Moji podatki"
 msgid "View my member card"
 msgstr "Ogled moje članske izkaznice"
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Two-factor authentication"
-msgstr "Uporabljam overjanje SMTP?"
+msgstr "Dvostopenjska avtentikacija"
 
 msgid "Manage my two-factor authentication"
-msgstr ""
+msgstr "Upravljaj mojo dvostopenjsko avtentikacijo"
 
 msgid "Add a child member"
 msgstr "Dodaj podrejenega člana"
@@ -829,13 +831,11 @@ msgstr ""
 "Nastavitev aplikacij (naslov, spletna stran, konfiguracija članskih "
 "kartic, ...)"
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Poskusi avtentikacije"
 
 msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
+msgstr "Poglejte, kaj je zavrnjeno po ponavljajočih se napakah, in to dvignite"
 
 msgid "Plugins"
 msgstr "Vtičniki"
@@ -896,13 +896,13 @@ msgstr "Orodja za upravljanje"
 msgid "Various administrative tools"
 msgstr "Različna skrbniška orodja"
 
-#, fuzzy
-#| msgid "Attendance sheet configuration"
 msgid "Advanced configuration"
-msgstr "Konfiguracija lista prisotnosti"
+msgstr "Napredna konfiguracija"
 
 msgid "Edit every setting, including those the settings form does not show"
 msgstr ""
+"Uredite vse nastavitve, vključno s tistimi, ki jih obrazec za nastavitve ne "
+"prikaže"
 
 msgid "Gallery"
 msgstr "Galerija"
@@ -941,7 +941,7 @@ msgstr "%1$s: prispevki"
 #. TRANS: parameter is the member name
 #, php-format
 msgid "%1$s: remove from database"
-msgstr "%1$s: odstrani iz baze podatkov"
+msgstr "%1$s: odstrani iz zbirke podatkov"
 
 #. TRANS: parameter is the member name
 #, php-format
@@ -1022,7 +1022,7 @@ msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr "Nazivov g. ali ga. ne morete izbrisati!"
 
 msgid "Contribution id"
-msgstr "ID prispevka"
+msgstr "Id prispevka"
 
 msgid "Contributor:"
 msgstr "Sodelavec:"
@@ -1133,7 +1133,7 @@ msgid "Scheduled payment ID"
 msgstr "ID načrtovanega plačila"
 
 msgid "Contribution ID"
-msgstr "ID prispevka"
+msgstr "Ident. prispevka"
 
 msgid "Record date:"
 msgstr "Datum zapisa:"
@@ -1435,27 +1435,21 @@ msgstr "E-pošta: '%1$s' ni bila spremenjena!"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "E-poštni naslov: '%1$s' je bil uspešno spremenjen."
 
-#, fuzzy
-#| msgid "No password"
 msgid "Wrong password!"
-msgstr "Brez gesla"
+msgstr "Napačno geslo!"
 
-#, fuzzy
-#| msgid "Please confirm your email address:"
 msgid "Please confirm your password again."
-msgstr "Prosimo, potrdite svoj e-poštni naslov:"
+msgstr "Ponovno potrdite geslo."
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been stored."
-msgstr "Nastavitve so bile shranjene."
+msgstr "Nastavitev '%1$s' je bila shranjena."
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been reset to its default."
-msgstr "Nastavitve so bile shranjene."
+msgstr "Nastavitev '%1$s' je bila ponastavljena na privzeto."
 
 msgid "Removal has not been confirmed!"
 msgstr "Odstranitev ni bila potrjena!"
@@ -1511,15 +1505,13 @@ msgid "Invalid link!"
 msgstr "Neveljavna povezava!"
 
 msgid "Too many failed attempts. Please try again later."
-msgstr ""
+msgstr "Preveč neuspelih poskusov. Poskusite znova pozneje."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication failed."
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Dvostopenjska avtentikacija ni uspela."
 
 msgid "Second factor failed"
-msgstr ""
+msgstr "Drugi dejavnik ni uspel"
 
 msgid "Login"
 msgstr "Prijava"
@@ -1528,68 +1520,65 @@ msgid ""
 "Two-factor authentication is already enabled. Disable it first to enrol "
 "again."
 msgstr ""
+"Dvostopenjska avtentikacija je že omogočena. Če se želite znova prijaviti, "
+"ga najprej onemogočite."
 
-#, fuzzy
-#| msgid "Unable to load contribution"
 msgid "Enable two-factor authentication"
-msgstr "Prispevka ni mogoče naložiti"
+msgstr "Omogoči dvostopenjsko avtentikacijo"
 
 msgid "That code does not match. Check your application clock, then try again."
-msgstr ""
+msgstr "Ta koda se ne ujema. Preverite uro aplikacije in poskusite znova."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication enabled"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Omogočena dvofaktorska avtentikacija"
 
 msgid ""
 "Two-factor authentication is now enabled for the super administrator account."
 msgstr ""
+"Dvostopenjsko preverjanje pristnosti je zdaj omogočeno za super skrbniški "
+"račun."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication disabled"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Dvostopenjska avtentikacija je onemogočena"
 
 msgid "Two-factor authentication has been disabled."
-msgstr ""
+msgstr "Dvostopenjska avtentikacija je onemogočena."
 
 msgid "Two-factor recovery codes renewed"
-msgstr ""
+msgstr "Dvofaktorske obnovitvene kode so obnovljene"
 
 msgid "Use your own two-factor authentication page to disable it."
 msgstr ""
+"Če ga želite onemogočiti, uporabite lastno stran za dvostopenjsko "
+"avtentikacijo."
 
 msgid ""
 "Only the super administrator may reset an administrator's two-factor "
 "authentication."
 msgstr ""
+"Samo superskrbnik lahko ponastavi skrbniško dvostopenjsko avtentikacijo."
 
 msgid ""
 "Only an administrator may reset a staff member's two-factor authentication."
-msgstr ""
+msgstr "Samo skrbnik lahko ponastavi dvostopenjsko avtentikacijo člana osebja."
 
 msgid "This member has no two-factor authentication to reset."
-msgstr ""
+msgstr "Ta član nima dvostopenjske avtentikacije za ponastavitev."
 
 msgid "Two-factor authentication reset for %member"
-msgstr ""
+msgstr "Ponastavitev dvostopenjske avtentikacije za %member"
 
-#, fuzzy
-#| msgid "An email has been sent to the member."
 msgid "Two-factor authentication has been reset for this member."
-msgstr "Članu je bilo poslano e-poštno sporočilo."
+msgstr "Za tega člana je bila ponastavljena dvofaktorska avtentikacija."
 
 msgid "Two-factor authentication is not enabled on this instance."
-msgstr ""
+msgstr "Dvostopenjska avtentikacija v tem primeru ni omogočena."
 
 msgid "Two-factor authentication is not enabled."
-msgstr ""
+msgstr "Dvostopenjska avtentikacija ni omogočena."
 
-#, fuzzy
-#| msgid "Recover password"
 msgid "Recovery codes"
-msgstr "Obnovi geslo"
+msgstr "Obnovitvene kode"
 
 msgid "Texts has been successfully reinitialized."
 msgstr "Aplikacija Besedila je bila uspešno ponovno inicializirana."
@@ -1679,15 +1668,11 @@ msgstr "Na %1$s ni bilo poslano nobeno e-poštno sporočilo"
 msgid "Invalid email adress!"
 msgstr "Neveljaven e-poštni naslov!"
 
-#, fuzzy
-#| msgid "Test email settings"
 msgid "Those emailing settings work."
-msgstr "Preizkusne nastavitve e-pošte"
+msgstr "Te nastavitve pošiljanja e-pošte delujejo."
 
-#, fuzzy
-#| msgid "Test email settings"
 msgid "Those emailing settings do not work."
-msgstr "Preizkusne nastavitve e-pošte"
+msgstr "Te nastavitve pošiljanja e-pošte ne delujejo."
 
 msgid "Fields configuration has been successfully stored"
 msgstr "Konfiguracija polj je bila uspešno shranjena"
@@ -1724,10 +1709,8 @@ msgstr "Vtičnik %1$s je bil onemogočen"
 msgid "You must provide both login and password."
 msgstr "Navesti morate tako prijavo kot geslo."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication throttled"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Preverjanje pristnosti zadušeno"
 
 msgid "A new Galette release is available."
 msgstr "Na voljo je nova izdaja Galette."
@@ -1772,12 +1755,10 @@ msgstr ""
 "Pošiljanje e-pošte je v nastavitvah onemogočeno. Vprašajte skrbnika galete"
 
 msgid "Too many requests. Please try again later."
-msgstr ""
+msgstr "Preveč zahtev. Poskusite znova pozneje."
 
-#, fuzzy
-#| msgid "Password recovery"
 msgid "Password recovery throttled"
-msgstr "Obnovitev gesla"
+msgstr "Obnovitev gesla je zavrnjena"
 
 #, php-format
 msgid "Email sent to '%s' for password recovery."
@@ -1809,16 +1790,12 @@ msgstr "Vaš račun (%s) ne vsebuje veljavnega e-poštnega naslova"
 msgid "Login %s does not exist"
 msgstr "Prijava %s ne obstaja"
 
-#, fuzzy
-#| msgid ""
-#| "An email has been sent to your address.<br/>Please check your inbox and "
-#| "follow the instructions."
 msgid ""
 "If an account matches, an email has been sent to its address.<br/>Please "
 "check your inbox and follow the instructions."
 msgstr ""
-"Na vaš naslov je bilo poslano e-poštno sporočilo.<br/>Preverite svoj "
-"nabiralnik in sledite navodilom."
+"Če se račun ujema, je bilo na njegov naslov poslano e-poštno sporočilo.<br>"
+"Preverite svoj nabiralnik in sledite navodilom."
 
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
@@ -1841,26 +1818,21 @@ msgid "Your password has been changed!"
 msgstr "Vaše geslo je bilo spremenjeno!"
 
 msgid "All authentication counters have been lifted."
-msgstr ""
+msgstr "Vsi števci za preverjanje pristnosti so bili odpravljeni."
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "The counter has been lifted."
-msgstr "Račun člana je bil spremenjen."
+msgstr "Števec je bil dvignjen."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication counters lifted"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Števci za preverjanje pristnosti so umaknjeni"
 
 msgid "Nothing to lift; it may have expired on its own."
-msgstr ""
+msgstr "Nič za dvig; morda je potekel sam od sebe."
 
 #. TRANS: first parameter is the label, second parameter is the language ID
-#, fuzzy, php-format
-#| msgid "An error occurred saving label `%1$s` for language `%2$s`"
+#, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
-msgstr "Pri shranjevanju oznake `%1$s` za jezik `%1$s` je prišlo do napake"
+msgstr "Pri shranjevanju oznake »%1$s« za jezik »%2$s« je prišlo do napake"
 
 msgid "Labels has been successfully translated!"
 msgstr "Oznake so bile uspešno prevedene!"
@@ -1914,7 +1886,7 @@ msgstr "Datoteke '%1$s' ni mogoče odstraniti z diska :/"
 #. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
 #, php-format
 msgid "%1$s (occurrence %2$s)"
-msgstr ""
+msgstr "%1$s (pojavi se %2$s)"
 
 msgid "CSV import model"
 msgstr "CSV import model"
@@ -2182,7 +2154,7 @@ msgid "Please enter a message."
 msgstr "Prosimo, vnesite sporočilo."
 
 msgid "The mailing could not be queued, nothing has been sent."
-msgstr ""
+msgstr "Pošiljke ni bilo mogoče postaviti v čakalno vrsto, nič ni bilo poslano."
 
 #. TRANS: first parameter is the number of recipients reached, second the total
 #, php-format
@@ -2191,6 +2163,9 @@ msgid ""
 "stored, unsent, so you can check what has been delivered before sending it "
 "again."
 msgstr ""
+"Sporočilo je bilo poslano samo prejemnikom %1$s od %2$s. Bilo je shranjeno, "
+"neposlano, tako da lahko preverite, kaj je bilo dostavljeno, preden ga znova "
+"pošljete."
 
 msgid "Mailing has been successfully sent!"
 msgstr "Pošiljka je bila uspešno poslana!"
@@ -2205,25 +2180,17 @@ msgstr "Odstrani poštni naslov št. %1$s"
 msgid "Mailing preview"
 msgstr "Predogled pošte"
 
-#, fuzzy
-#| msgid "Sent mailings:"
 msgid "Sending mailing"
-msgstr "Poslana poštna sporočila:"
+msgstr "Pošiljanje pošte"
 
-#, fuzzy
-#| msgid "Go back to members list"
 msgid "Back to members list"
-msgstr "Nazaj na seznam članov"
+msgstr "Nazaj v seznam članov"
 
-#, fuzzy
-#| msgid "Mailings"
 msgid "Mailings history"
-msgstr "Pošiljke"
+msgstr "Zgodovina pošiljanja"
 
-#, fuzzy
-#| msgid "Sent reminders:"
 msgid "Sending reminders"
-msgstr "Poslani opomniki:"
+msgstr "Pošiljanje opomnikov"
 
 #. TRANS: parameter is the transaction identifier
 #, php-format
@@ -2310,10 +2277,8 @@ msgstr "Odstrani vrsto plačila %1$s"
 msgid "Subscription"
 msgstr "Naročnina"
 
-#, fuzzy
-#| msgid "Self subscription enabled?"
 msgid "Self subscription throttled"
-msgstr "Je samonaročnina omogočena?"
+msgstr "Samonaročnina zavrnjena"
 
 msgid "Profile"
 msgstr "Profil"
@@ -2420,9 +2385,9 @@ msgstr "Ni mogoče pretvoriti tabele %1$s v InnoDB/utf8mb4: %2$s"
 msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
 msgstr "%1$s osirotelih vrstic (neznano %2$s) je bilo odstranjenih iz %3$s."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Foreign key on %1$s.%2$s has been added."
-msgstr "Naslov %1$s ni bil dodan!"
+msgstr "Tuji ključ na %1$s. %2$s je bil dodan."
 
 #, php-format
 msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
@@ -2689,6 +2654,8 @@ msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
 msgstr ""
+"Zahtevana je dvostopenjska avtentikacija. Če želite še naprej uporabljati "
+"svoj račun, ga omogočite."
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -2781,8 +2748,7 @@ msgstr "Izbriši članske kartice, transakcije in članarine"
 
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
-"Člana, ki ima še vedno odvisnosti (poštna sporočila, ...), ni mogoče "
-"odstraniti."
+"Ne morem odstraniti člana, ki ima še vedno odvisnosti (poštna sporočila, ...)"
 
 #. TRANS: parameter is the list of deleted searches
 #, php-format
@@ -2912,10 +2878,8 @@ msgstr "Brez uporabniškega imena"
 msgid "No database name"
 msgstr "Brez imena baze podatkov"
 
-#, fuzzy
-#| msgid "Table prefix:"
 msgid "No table prefix"
-msgstr "Predpona tabele:"
+msgstr "Brez predpone tabele"
 
 msgid "The username cannot contain the @ character"
 msgstr "Uporabniško ime ne sme vsebovati znaka @"
@@ -2935,10 +2899,9 @@ msgstr "Preberite priročnik"
 msgid "Choose your language"
 msgstr "Izberite svoj jezik"
 
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
+#, php-format
 msgid "Current locale '%1$s'"
-msgstr "Trenutna stran (%1$s)"
+msgstr "Trenutni jezik '%1$s'"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -3639,13 +3602,14 @@ msgid "Data initialized."
 msgstr "Podatki inicializirani."
 
 #. TRANS: parameter is the file path
-#, fuzzy, php-format
-#| msgid "Unable to create configuration file (%1$s)"
+#, php-format
 msgid "Unable to remove installer enable file (%1$s)"
-msgstr "Konfiguracijske datoteke (%1$s) ni mogoče ustvariti"
+msgstr ""
+"Ni mogoče odstraniti datoteke za omogočanje namestitvenega programa (%1$s)"
 
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
+"Ne pozabite ga odstraniti ročno, da ponovno zaščitite namestitveni program."
 
 msgid "An error occurred :("
 msgstr "Prišlo je do napake :("
@@ -3734,19 +3698,22 @@ msgstr ""
 "posodabljanja."
 
 msgid "The installer is disabled."
-msgstr ""
+msgstr "Namestitveni program je onemogočen."
 
 msgid "For security reasons, Galette installer is disabled by default."
 msgstr ""
+"Iz varnostnih razlogov je namestitveni program Galette privzeto onemogočen."
 
 #, php-format
 msgid ""
 "To enable installer, create the empty %1$s file in Galette data directory, "
 "then reload this page:"
 msgstr ""
+"Če želite omogočiti namestitveni program, ustvarite prazno datoteko %1$s v "
+"podatkovnem imeniku Galette, nato znova naložite to stran:"
 
 msgid "I have created the file, reload"
-msgstr ""
+msgstr "Ustvaril sem datoteko, znova naloži"
 
 msgid "Homepage"
 msgstr "Domača stran"
@@ -4411,119 +4378,125 @@ msgstr "Nedokončana odposlana transakcija"
 msgid "View corresponding contributions"
 msgstr "Oglejte si ustrezne prispevke"
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is enabled"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Omogočena je dvofaktorska avtentikacija"
 
 msgid ""
 "A code from your authentication application is asked for at every login."
 msgstr ""
+"Ob vsaki prijavi boste morali vnesti kodo iz aplikacije za preverjanje "
+"pristnosti."
 
 msgid ""
 "Recovery codes let you log in when you no longer have your device. Each one "
 "works once."
 msgstr ""
+"Obnovitvene kode vam omogočajo, da se prijavite, ko nimate več svoje "
+"naprave. Vsak deluje enkrat."
 
 #, php-format
 msgid "You have %count recovery code left."
 msgid_plural "You have %count recovery codes left."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Imate še %count obnovitveno kodo."
+msgstr[1] "Imate še %count obnovitveni kodi."
+msgstr[2] "Imate še %count obnovitvene kode."
+msgstr[3] "Imate še %count obnovitvenih kod."
 
-#, fuzzy
-#| msgid "Current model"
 msgid "Current code:"
-msgstr "Trenutni model"
+msgstr "Trenutna koda:"
 
 msgid "Renew recovery codes"
-msgstr ""
+msgstr "Obnovi obnovitvene kode"
 
 msgid "No recovery codes for this account"
-msgstr ""
+msgstr "Za ta račun ni obnovitvenih kod"
 
 msgid ""
 "The super administrator is not a member: its second factor lives in the "
 "preferences, which is also where it is cleared from should you lose your "
 "device. Keep an access to the database at hand."
 msgstr ""
+"Superskrbnik ni član: njegov drugi dejavnik je v nastavitvah, od koder se "
+"tudi izbriše, če izgubite svojo napravo. Imejte dostop do baze podatkov pri "
+"roki."
 
 msgid "Disable"
-msgstr ""
+msgstr "Onemogoči"
 
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
 msgstr ""
+"V tem primeru je zahtevana dvostopenjska avtentikacija: ob naslednji prijavi "
+"boste morali ponovno onemogočiti to preverjanje pristnosti."
 
 msgid ""
 "A code is required to disable it, so that nobody else can turn it off from "
 "your session."
 msgstr ""
+"Za onemogočanje je potrebna koda, tako da ga nihče drug ne more izklopiti iz "
+"vaše seje."
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Disable two-factor authentication"
-msgstr "Uporabljam overjanje SMTP?"
+msgstr "Onemogoči dvostopenjsko avtentikacijo"
 
 msgid "Two-factor authentication is not enabled"
-msgstr ""
+msgstr "Dvostopenjska avtentikacija ni omogočena"
 
 msgid ""
 "It is required on this instance: you will be asked to enable it to keep "
 "using your account."
 msgstr ""
+"V tem primeru je to obvezno: morali boste omogočiti, da lahko še naprej "
+"uporabljate svoj račun."
 
 msgid ""
 "Adding a code from an application on your phone makes a stolen password "
 "useless on its own."
 msgstr ""
+"Če dodate kodo iz aplikacije v telefonu, postane ukradeno geslo samo po sebi "
+"neuporabno."
 
 msgid "Sending in progress…"
-msgstr ""
+msgstr "Pošiljanje v teku …"
 
 msgid "Sent"
 msgstr "Poslano"
 
-#, fuzzy
-#| msgid "Warning"
 msgid "Remaining"
-msgstr "Opozorilo"
+msgstr "Preostalo"
 
 msgid "Failed"
-msgstr ""
+msgstr "Ni uspelo"
 
 msgid "Recipients"
 msgstr "Prejemniki"
 
 #, php-format
 msgid "Sent in the last hour: %1$s of %2$s"
-msgstr ""
+msgstr "Poslano v zadnji uri: %1$s od %2$s"
 
 #, php-format
 msgid "Sent in the last day: %1$s of %2$s"
-msgstr ""
+msgstr "Poslano v zadnjem dnevu: %1$s od %2$s"
 
 #, php-format
 msgid "Sending is over, but %1$s recipient(s) could not be reached."
-msgstr ""
+msgstr "Pošiljanje je končano, vendar %1$s prejemnikov ni bilo mogoče doseči."
 
-#, fuzzy
-#| msgid "Mailing has been successfully sent!"
 msgid "Sending has been successfully completed!"
-msgstr "Pošiljka je bila uspešno poslana!"
+msgstr "Pošiljanje je bilo uspešno zaključeno!"
 
 msgid ""
 "Sending rate limit reached. Sending will resume later (reopen this page or "
 "drain the queue from a cron job)."
 msgstr ""
+"Omejitev hitrosti pošiljanja je dosežena. Pošiljanje se bo nadaljevalo "
+"pozneje (ponovno odprite to stran ali izpraznite čakalno vrsto iz opravila "
+"cron)."
 
-#, fuzzy
-#| msgid "An error occurred while saving the member."
 msgid "An error occurred while sending. You may retry."
-msgstr "Pri shranjevanju člana je prišlo do napake."
+msgstr "Med pošiljanjem je prišlo do napake. Lahko poskusite znova."
 
 #, php-format
 msgid "%1$s entry"
@@ -4647,7 +4620,7 @@ msgid "No fields to translate."
 msgstr "Ni polj za prevajanje."
 
 msgid "Enter the code shown by your authentication application."
-msgstr ""
+msgstr "Vnesite kodo, ki jo prikaže vaša aplikacija za preverjanje pristnosti."
 
 msgid "Code:"
 msgstr "Koda:"
@@ -4657,11 +4630,10 @@ msgstr "Potrdi"
 
 msgid "Lost your device? Enter one of your recovery codes above instead."
 msgstr ""
+"Ste izgubili napravo? Namesto tega vnesite eno od zgornjih obnovitvenih kod."
 
-#, fuzzy
-#| msgid "Cancel mailing"
 msgid "Cancel and log off"
-msgstr "Prekliči pošiljanje po pošti"
+msgstr "Prekliči in se odjavi"
 
 msgid "Filename"
 msgstr "Ime datoteke"
@@ -4876,15 +4848,17 @@ msgid "Please make sure to select one file to upload."
 msgstr "Prosimo, izberite eno datoteko za nalaganje."
 
 msgid "Write these codes down now"
-msgstr ""
+msgstr "Zapišite te kode zdaj"
 
 msgid ""
 "They are shown this once and cannot be displayed again. Each one works a "
 "single time, and lets you log in when you no longer have your device."
 msgstr ""
+"To so prikazani enkrat in jih ni mogoče ponovno prikazati. Vsak deluje "
+"enkrat in vam omogoča prijavo, ko nimate več svoje naprave."
 
 msgid "I have written them down"
-msgstr ""
+msgstr "Zapisal sem jih"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4900,11 +4874,11 @@ msgid ""
 "Clear this member's two-factor authentication, for instance after they lost "
 "both their device and their recovery codes."
 msgstr ""
+"Počistite dvostopenjsko avtentikacijo tega člana, na primer po tem, ko je "
+"izgubil napravo in obnovitveno kodo."
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Reset two-factor authentication"
-msgstr "Uporabljam overjanje SMTP?"
+msgstr "Ponastavite dvostopenjsko avtentikacijo"
 
 msgid "Generate Member Card"
 msgstr "Ustvari člansko kartico"
@@ -4967,15 +4941,13 @@ msgid "Recover password"
 msgstr "Obnovi geslo"
 
 msgid "Confirm your super admin password"
-msgstr ""
+msgstr "Potrdite svoje superskrbniško geslo"
 
 msgid "This page can break your installation, be very careful."
-msgstr ""
+msgstr "Ta stran lahko prekine vašo namestitev, bodite zelo previdni."
 
-#, fuzzy
-#| msgid "Confirmation:"
 msgid "Confirm"
-msgstr "Potrditev:"
+msgstr "Potrdi"
 
 msgid "IP"
 msgstr "IP-naslov"
@@ -5475,23 +5447,23 @@ msgid "SMTP (or GMail) password:"
 msgstr "Geslo za SMTP (ali Gmail):"
 
 msgid "Leave empty to keep the current one"
-msgstr ""
+msgstr "Pustite prazno, da obdržite trenutno"
 
-#, fuzzy
-#| msgid "Version selection"
 msgid "Test connection"
-msgstr "Izbira različice"
+msgstr "Testna povezava"
 
-#, fuzzy
-#| msgid "Send an email"
 msgid "Send a test email"
-msgstr "Pošlji e-pošto"
+msgstr "Pošlji testno e-pošto"
 
 msgid "Emailing is disabled: pick a sending method to run a test."
 msgstr ""
+"Pošiljanje e-pošte je onemogočeno: izberite način pošiljanja, da izvedete "
+"preizkus."
 
 msgid "Tests run on the settings displayed above, even those not saved yet."
 msgstr ""
+"Preizkusi potekajo na zgoraj prikazanih nastavitvah, tudi na tistih, ki še "
+"niso shranjene."
 
 msgid "Vertical margins:"
 msgstr "Navpični robovi:"
@@ -5598,10 +5570,8 @@ msgstr "Višina kartice od 40 do 55 mm:"
 msgid "There is not yet any dynamic field configured for '%1$s'"
 msgstr "Za '%1$s' še ni konfigurirano nobeno dinamično polje"
 
-#, fuzzy
-#| msgid "New dynamic field"
 msgid "Configure dynamic fields"
-msgstr "Novo dinamično polje"
+msgstr "Konfigurirajte dinamična polja"
 
 msgid ""
 "Asks for a code from an application on the member's phone in addition to "
@@ -5609,27 +5579,25 @@ msgid ""
 "who have to hold one are sent to enrolment at their next login; switching "
 "back to disabled lets everyone in again without a code."
 msgstr ""
+"Poleg gesla zahteva še kodo iz aplikacije na telefonu člana, tako da "
+"ukradeno geslo samo po sebi ni dovolj. Člani, ki ga morajo imeti, so poslani "
+"na vpis ob naslednji prijavi; preklop nazaj na onemogočeno omogoči vsem spet "
+"vstop brez kode."
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Two-factor authentication:"
-msgstr "Uporabljam overjanje SMTP?"
+msgstr "Dvostopenjska avtentikacija:"
 
-#, fuzzy
-#| msgid "None (default)"
 msgid "Disabled (default)"
-msgstr "Brez (privzeto)"
+msgstr "Onemogočeno (privzeto)"
 
 msgid "Optional, each member decides"
-msgstr ""
+msgstr "Neobvezno, vsak član se odloči"
 
 msgid "Required for administrators and staff"
-msgstr ""
+msgstr "Obvezno za administratorje in osebje"
 
-#, fuzzy
-#| msgid "Required field!"
 msgid "Required for everyone"
-msgstr "Obvezno polje!"
+msgstr "Zahtevano za vse"
 
 msgid "Password length:"
 msgstr "Dolžina gesla:"
@@ -5723,10 +5691,8 @@ msgstr "Vnesite e-poštni naslov"
 msgid "An error occurred sending test email :("
 msgstr "Pri pošiljanju testnega e-poštnega sporočila je prišlo do napake :("
 
-#, fuzzy
-#| msgid "An error occurred while saving fields configuration :("
 msgid "An error occurred testing mail server connection :("
-msgstr "Pri shranjevanju konfiguracije polj je prišlo do napake :("
+msgstr "Pri testiranju povezave s poštnim strežnikom je prišlo do napake :("
 
 #, php-format
 msgid "%1$s member"
@@ -5765,35 +5731,35 @@ msgid ""
 "Install an authentication application, for instance FreeOTP, Aegis or "
 "KeePassXC."
 msgstr ""
+"Namestite aplikacijo za preverjanje pristnosti, na primer FreeOTP, Aegis ali "
+"KeePassXC."
 
 msgid "Scan the code below with it, or type the key in by hand."
-msgstr ""
+msgstr "Z njim skenirajte spodnjo kodo ali ročno vnesite ključ."
 
 msgid "Enter the code it then shows, to confirm it works."
-msgstr ""
+msgstr "Vnesite kodo, ki se prikaže, da potrdite, da deluje."
 
 msgid "QR code to register the key in an authentication application"
-msgstr ""
+msgstr "Koda QR za registracijo ključa v aplikaciji za preverjanje pristnosti"
 
 msgid "Key, to type in by hand:"
-msgstr ""
+msgstr "Ključ za ročno vnašanje:"
 
 msgid "Code shown by the application:"
-msgstr ""
+msgstr "Koda, ki jo prikaže aplikacija:"
 
 msgid "Confirm and enable"
-msgstr ""
+msgstr "Potrdite in omogočite"
 
 msgid "Experimental feature. Be careful using it."
-msgstr ""
+msgstr "Eksperimentalna funkcija. Bodite previdni pri uporabi."
 
-#, fuzzy
-#| msgid "Date settings"
 msgid "Filter settings"
-msgstr "Nastavitve datuma"
+msgstr "Nastavitve filtra"
 
 msgid "Search a setting..."
-msgstr ""
+msgstr "Iskanje nastavitve ..."
 
 msgid "Show legend"
 msgstr "Prikaži legendo"
@@ -5802,83 +5768,67 @@ msgid ""
 "This setting is not known by Galette. It may come from an older version or "
 "from a plugin."
 msgstr ""
+"Galette te nastavitve ne pozna. Morda prihaja iz starejše različice ali iz "
+"vtičnika."
 
-#, fuzzy
-#| msgid "Unknown"
 msgid "unknown"
-msgstr "Neznano"
+msgstr "neznano"
 
 #, php-format
 msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
-msgstr ""
+msgstr "Nastavljeno s konstanto %s v behavior.inc.php, ki ima prednost."
 
 msgid "locked"
-msgstr ""
+msgstr "zaklenjen"
 
 msgid "Galette maintains this value itself; it is shown for information only."
-msgstr ""
+msgstr "Galette sama ohranja to vrednost; prikazan je le informativno."
 
-#, fuzzy
-#| msgid "User, read only"
 msgid "read-only"
-msgstr "Uporabnik, samo za branje"
+msgstr "samo za branje"
 
 msgid ""
 "Held as a secret: its value is never displayed, and it is changed from the "
 "settings form."
 msgstr ""
+"Zaupno: njegova vrednost ni nikoli prikazana in se spremeni v obrazcu z "
+"nastavitvami."
 
-#, fuzzy
-#| msgid "Secretary"
 msgid "secret"
-msgstr "Tajnica"
+msgstr "skrivnost"
 
-#, fuzzy
-#| msgid "Default"
 msgid "default"
 msgstr "Privzeto"
 
-#, fuzzy
-#| msgid "Modified"
 msgid "modified"
-msgstr "Spremenjeno"
+msgstr "spremenjeno"
 
 #, php-format
 msgid "Declared by the %s plugin, and only while it stays active."
-msgstr ""
+msgstr "Razglasi vtičnik %s in samo, ko ostane aktiven."
 
-#, fuzzy
-#| msgid "see"
 msgid "set"
-msgstr "glej"
+msgstr "nastavi"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "not set"
-msgstr "Ni dobavljeno"
+msgstr "ni nastavljeno"
 
-#, fuzzy
-#| msgid "Enable dark mode"
 msgid "Enabled"
-msgstr "Omogoči temni način"
+msgstr "Omogočeno"
 
-#, fuzzy, php-format
-#| msgid "Save"
+#, php-format
 msgid "Save '%s'"
-msgstr "Shrani"
+msgstr "Shrani '%s'"
 
-#, fuzzy
-#| msgid "Reset all filters to defaults"
 msgid "Reset to default"
-msgstr "Ponastavi vse filtre na privzete vrednosti"
+msgstr "Ponastavi na privzeto"
 
-#, fuzzy, php-format
-#| msgid "Reset all filters to defaults"
+#, php-format
 msgid "Reset '%s' to its default"
-msgstr "Ponastavi vse filtre na privzete vrednosti"
+msgstr "Ponastavi '%s' na privzeto"
 
 msgid "Constants behavior.inc.php understands"
-msgstr ""
+msgstr "Konstante behavior.inc.php razume"
 
 #, php-format
 msgid ""
@@ -5886,127 +5836,136 @@ msgid ""
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
 msgstr ""
+"Galette jih bere iz %s, zato jih od tukaj ni mogoče urejati. Eden, ki je "
+"označen kot zastarel, je tam še vedno deklariran, čeprav ga nadomešča "
+"zgornja nastavitev in preglasi to nastavitev, dokler je ne odstranite."
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
-msgstr ""
+msgstr "Zamenjana z nastavitvijo »%s«."
 
 msgid "deprecated"
-msgstr ""
+msgstr "zastarel"
 
 msgid "defined"
-msgstr ""
+msgstr "definiran"
 
 #, php-format
 msgid "Go to %s"
-msgstr ""
+msgstr "Pojdi na %s"
 
-#, fuzzy
-#| msgid "Status"
 msgid "Statuses"
-msgstr "Stanje"
+msgstr "Statusi"
 
 msgid "Never changed: the value Galette ships with."
-msgstr ""
+msgstr "Nikoli spremenjeno: vrednost, ki jo pošilja Galette."
 
 msgid ""
 "Changed from the default, here or from the settings form. It can be reset."
 msgstr ""
+"Spremenjeno iz privzetega, tukaj ali iz obrazca za nastavitve. Lahko se "
+"ponastavi."
 
 msgid ""
 "Galette maintains this value itself, such as a generated identifier or a "
 "date it records. It is shown for information only."
 msgstr ""
+"Galette sama vzdržuje to vrednost, na primer ustvarjeni identifikator ali "
+"datum, ki ga zabeleži. Prikazan je samo informativno."
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
 "set, and it is changed from the settings form."
 msgstr ""
+"Geslo ali žeton. Njena vrednost ni nikoli prikazana, samo, ali je "
+"nastavljena, in se spremeni iz obrazca za nastavitve."
 
 msgid ""
 "A constant defined in behavior.inc.php takes precedence over the stored "
 "value. Remove it from that file to manage the setting from here."
 msgstr ""
+"Konstanta, definirana v behavior.inc.php, ima prednost pred shranjeno "
+"vrednostjo. Odstranite ga iz te datoteke, če želite od tu upravljati "
+"nastavitev."
 
 msgid ""
 "A row found in database that Galette does not describe. It may come from an "
 "older version, or from a plugin that is no longer active."
 msgstr ""
+"Vrstica, najdena v bazi podatkov, ki je Galette ne opisuje. Morda prihaja iz "
+"starejše različice ali iz vtičnika, ki ni več aktiven."
 
-#, fuzzy
-#| msgid "Company name"
 msgid "plugin name"
-msgstr "Ime podjetja"
+msgstr "ime vtičnika"
 
 msgid ""
 "Declared by that plugin rather than by Galette. Deactivate the plugin and "
 "the setting becomes unknown again, keeping its value until the plugin comes "
 "back."
 msgstr ""
+"Razglasil ta vtičnik in ne Galette. Deaktivirajte vtičnik in nastavitev spet "
+"postane neznana, njena vrednost pa ostane, dokler se vtičnik ne vrne."
 
 msgid ""
 "Repeated failures get further attempts refused for a while. What is refused "
 "right now is listed below; lifting a line lets whoever it stands for try "
 "again at once."
 msgstr ""
+"Zaradi ponavljajočih se napak so nadaljnji poskusi nekaj časa zavrnjeni. Kaj "
+"je trenutno zavrnjeno, je navedeno spodaj; dvig črte omogoča, da tisti, za "
+"katerim stoji, takoj poskusi znova."
 
 msgid "Thresholds and durations are in the settings."
-msgstr ""
+msgstr "Mejne vrednosti in trajanja so v nastavitvah."
 
 msgid "Nothing is being refused"
-msgstr ""
+msgstr "Nič se ne zavrača"
 
 msgid ""
 "No account and no address is waiting; counters that can no longer refuse "
 "anyone are dropped on their own."
 msgstr ""
+"Noben račun in noben naslov ne čakata; pulti, ki nikogar več ne morejo "
+"zavrniti, odpadejo sami od sebe."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts currently refused"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Poskusi avtentikacije trenutno zavrnjeni"
 
-#, fuzzy
-#| msgid "Emails content"
 msgid "What is counted"
-msgstr "Vsebina e-poštnih sporočil"
+msgstr "Kaj se šteje"
 
-#, fuzzy
-#| msgid "Account:"
 msgid "Account"
-msgstr "Račun:"
+msgstr "Račun"
 
 msgid "Failures"
-msgstr ""
+msgstr "Neuspehi"
 
 msgid "Refused until"
-msgstr ""
+msgstr "Zavrnjen do"
 
 msgid "Failed attempts on one account, from one address"
-msgstr ""
+msgstr "Neuspeli poskusi na enem računu z enega naslova"
 
 msgid "Failed attempts from one address, on any account"
-msgstr ""
+msgstr "Neuspeli poskusi z enega naslova na katerem koli računu"
 
 msgid "Failed attempts on one account, from anywhere"
-msgstr ""
+msgstr "Neuspeli poskusi na enem računu od koder koli"
 
 msgid "Password recovery requests for one account"
-msgstr ""
+msgstr "Zahteve za obnovitev gesla za en račun"
 
 msgid "Password recovery requests from one address"
-msgstr ""
+msgstr "Zahteve za obnovitev gesla z enega naslova"
 
-#, fuzzy
-#| msgid "Self subscription enabled?"
 msgid "Self subscriptions from one address"
-msgstr "Je samonaročnina omogočena?"
+msgstr "Samonaročnine z enega naslova"
 
 msgid "Lift"
-msgstr ""
+msgstr "Dvigalo"
 
 msgid "Lift them all"
-msgstr ""
+msgstr "Dvignite jih vse"
 
 msgid "Please confirm your email address:"
 msgstr "Prosimo, potrdite svoj e-poštni naslov:"
@@ -6195,10 +6154,8 @@ msgstr "Vrstica:"
 msgid "Trace"
 msgstr "Sled"
 
-#, fuzzy
-#| msgid "You do not have permission for requested URL."
 msgid "You don’t have permission to access this resource."
-msgstr "Nimate dovoljenja za zahtevani URL."
+msgstr "Nimate dovoljenja za dostop do tega vira."
 
 msgid "Sender"
 msgstr "Pošiljatelj"
@@ -6223,33 +6180,29 @@ msgid "Sent mailings:"
 msgstr "Poslana poštna sporočila:"
 
 msgid "In progress"
-msgstr ""
+msgstr "V teku"
 
 msgid "Superadmin"
 msgstr "Superadministrator"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "Not sent"
-msgstr "Ni dobavljeno"
+msgstr "Neodposlano"
 
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr "Prikaži podrobnosti poštnega sporočila '%1$s' v oknu za predogled"
 
-#, fuzzy, php-format
-#| msgid "Delete mailing '%1$s'"
+#, php-format
 msgid "Follow the sending of mailing '%1$s'"
-msgstr "Izbriši poštno sporočilo '%1$s'"
+msgstr "Spremljajte pošiljanje pošte '%1$s'"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
 
-#, fuzzy, php-format
-#| msgid "Delete mailing '%1$s'"
+#, php-format
 msgid "Edit mailing '%1$s'"
-msgstr "Izbriši poštno sporočilo '%1$s'"
+msgstr "Uredi e-poštno sporočilo '%1$s'"
 
 #, php-format
 msgid "Delete mailing '%1$s'"
@@ -6258,18 +6211,14 @@ msgstr "Izbriši poštno sporočilo '%1$s'"
 msgid "No sent mailing has been stored in the database yet."
 msgstr "V podatkovno bazo še ni shranjenih nobenih poslanih sporočil."
 
-#, fuzzy
-#| msgid "Use mailing '%1$s' as a template for a new one"
 msgid "Use as a template for a new mailing"
-msgstr "Uporabite poštno sporočilo '%1$s' kot predlogo za novo"
+msgstr "Uporabite kot predlogo za novo pošto"
 
 msgid "No sent"
-msgstr "Ni poslano"
+msgstr "Neposlano"
 
-#, fuzzy
-#| msgid "For the selection:"
 msgid "Follow the sending"
-msgstr "Za izbor:"
+msgstr "Sledite pošiljanju"
 
 msgid "An error occurred displaying preview :("
 msgstr "Pri prikazu predogleda je prišlo do napake :("
@@ -6349,7 +6298,7 @@ msgid "Choose an entry"
 msgstr "Izberite vnos"
 
 msgid "Selecting an item from the list will automatically reload the page"
-msgstr ""
+msgstr "Če izberete element s seznama, se stran samodejno znova naloži"
 
 msgid "Reference:"
 msgstr "Referenca:"
@@ -6458,10 +6407,9 @@ msgstr ""
 "Izberite datoteke, ki jih želite dodati kot priloge.<br/>Izbira več datotek "
 "s tipkama »ctrl« ali »shift« je na voljo samo v združljivih brskalnikih."
 
-#, fuzzy, php-format
-#| msgid "File is too big. Maximum allowed size is %1$s"
+#, php-format
 msgid "Maximum allowed size is %1$s"
-msgstr "Datoteka je prevelika. Največja dovoljena velikost je %1$s"
+msgstr "Največja dovoljena velikost je %1$s"
 
 msgid "Add attachment"
 msgstr "Dodaj prilogo"
@@ -6616,10 +6564,8 @@ msgstr "Nalaganje ..."
 msgid "Show dashboard on login"
 msgstr "Prikaži nadzorno ploščo ob prijavi"
 
-#, fuzzy
-#| msgid "An error occurred displaying preview :("
 msgid "An error occurred displaying news :("
-msgstr "Pri prikazu predogleda je prišlo do napake :("
+msgstr "Pri prikazovanju novic je prišlo do napake :("
 
 msgid "For the selection:"
 msgstr "Za izbor:"
@@ -6717,7 +6663,7 @@ msgstr "Vnesite poljubno število pojavitev."
 
 #, php-format
 msgid "Add an occurrence of %1$s"
-msgstr ""
+msgstr "Dodajte pojav %1$s"
 
 #, php-format
 msgid "Enter up to %1$s more occurrences."
@@ -6725,12 +6671,11 @@ msgstr "Vnesite še do %1$s pojavitev."
 
 #, php-format
 msgid "Delete the file and remove this occurrence of %1$s"
-msgstr ""
+msgstr "Izbrišite datoteko in odstranite ta pojav %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove title %1$s"
+#, php-format
 msgid "Remove this occurrence of %1$s"
-msgstr "Odstrani naslov %1$s"
+msgstr "Odstranite ta pojav %1$s"
 
 msgid "Select an option"
 msgstr "Izberite možnost"
@@ -6791,16 +6736,17 @@ msgstr "Pri pridobivanju članov je prišlo do napake :("
 msgid "An error occurred retrieving dates :("
 msgstr "Pri pridobivanju datumov je prišlo do napake :("
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is available"
-msgstr "Preverjanje pristnosti ni uspelo"
+msgstr "Na voljo je dvostopenjska avtentikacija"
 
 msgid ""
 "A code from an application on your telephone, on top of your password, means "
 "a stolen password is not enough on its own to reach your account. Do you "
 "want to set it up?"
 msgstr ""
+"Koda iz aplikacije na vašem telefonu poleg vašega gesla pomeni, da ukradeno "
+"geslo samo po sebi ni dovolj za dostop do vašega računa. Ali ga želite "
+"nastaviti?"
 
 msgid "Later"
 msgstr "Kasneje"
@@ -6933,7 +6879,7 @@ msgid "Records per page:"
 msgstr "Zapisov na stran:"
 
 msgid "Selecting an item from the list will automatically reload the table"
-msgstr ""
+msgstr "Če izberete element s seznama, se tabela samodejno znova naloži"
 
 msgid "(Un)Check all"
 msgstr "(Odznači) vse"
@@ -6983,10 +6929,8 @@ msgstr "Nazaj na domačo stran Galette"
 msgid "Menu"
 msgstr "Meni"
 
-#, fuzzy
-#| msgid "Public pages"
 msgid "Public pages menu"
-msgstr "Javne strani"
+msgstr "Meni javnih strani"
 
 msgid "Subscribe"
 msgstr "Naročite se"
