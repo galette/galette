@@ -176,11 +176,18 @@ class AuthThrottleTest extends GaletteTestCase
             $this->throttleFrom('192.0.2.11')->recordFailure($unknown);
         }
 
-        //same threshold, same refusal, same delay
+        //same threshold, same refusal, same delay -- the stored one, not what
+        //is left of it: two countdowns read a moment apart differ by a second
+        //without saying anything about how they were set
         $this->assertSame(
-            $this->throttleFrom('192.0.2.10')->getRetryDelay($known),
-            $this->throttleFrom('192.0.2.11')->getRetryDelay($unknown)
+            $this->preferences->pref_throttle_delay,
+            $this->getStoredDelay(AuthThrottle::SCOPE_ACCOUNT_IP, $known . '|192.0.2.10')
         );
+        $this->assertSame(
+            $this->preferences->pref_throttle_delay,
+            $this->getStoredDelay(AuthThrottle::SCOPE_ACCOUNT_IP, $unknown . '|192.0.2.11')
+        );
+        $this->assertGreaterThan(0, $this->throttleFrom('192.0.2.10')->getRetryDelay($known));
         $this->assertGreaterThan(0, $this->throttleFrom('192.0.2.11')->getRetryDelay($unknown));
         $this->assertSame($threshold, $this->getFailures(AuthThrottle::SCOPE_ACCOUNT_IP, $unknown . '|192.0.2.11'));
 
