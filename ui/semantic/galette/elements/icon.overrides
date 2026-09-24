@@ -17,3 +17,21 @@ i.circular.basic.question.icon.tooltip {
     color: @textColor;
   }
 }
+
+.experimental {
+  color: @orangeTextColor;
+
+  i.circular.basic.flask.icon.tooltip {
+    box-shadow: 0 0 0 .08em @orangeTextColor inset;
+    background: @white;
+    color: @warningColor;
+
+    &:hover {
+      background: @orangeBackground;
+    }
+
+    .ui.form .field.error .corner.label & {
+      color: @warningColor;
+    }
+  }
+}

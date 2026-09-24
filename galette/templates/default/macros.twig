@@ -170,16 +170,15 @@
     {% set experimental_label = _T("Experimental feature. Be careful using it.") %}
     {% if text is empty %}
         <span
-            class="ui icon"
+            class="experimental"
             role="img"
-            title="{{ experimental_label|e('html_attr') }}"
             aria-label="{{ experimental_label|e('html_attr') }}"
         >
-            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+            <i class="circular basic flask icon tooltip" aria-hidden="true" title="{{ experimental_label|e('html_attr') }}"></i>
         </span>
     {% else %}
-        <span class="ui orange text" title="{{ experimental_label|e('html_attr') }}">
-            <i class="bordered circular orange exclamation triangle icon" aria-hidden="true"></i>
+        <span class="experimental">
+            <i class="circular basic flask icon tooltip" aria-hidden="true" title="{{ experimental_label|e('html_attr') }}"></i>
             {{ text }}
         </span>
     {% endif %}
@@ -192,7 +191,7 @@
  #}
 {% macro experimentalBanner() %}
     <div class="ui orange icon message">
-        <i class="exclamation triangle icon" aria-hidden="true"></i>
+        <i class="flask icon" aria-hidden="true"></i>
         <div class="content">
             <div class="header">{{ _T("Experimental") }}</div>
             <p>{{ _T("Experimental feature. Be careful using it.") }}</p>
