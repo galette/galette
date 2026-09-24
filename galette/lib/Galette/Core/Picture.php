@@ -15,6 +15,7 @@ use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\DirException;
+use Safe\Exceptions\FilesystemException;
 use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
 use Throwable;
@@ -37,6 +38,7 @@ use function Safe\imagealphablending;
 use function Safe\imagecreatetruecolor;
 use function Safe\imagesavealpha;
 use function Safe\imagecopyresampled;
+use function Safe\mkdir;
 use function Safe\opendir;
 use function Safe\preg_match;
 use function Safe\readfile;
@@ -561,6 +563,9 @@ class Picture
     {
         global $zdb;
 
+        if (!$this->ensureStorePath()) {
+            return self::CANT_WRITE;
+        }
         $this->setDestDir($this->store_path);
         $current = getimagesize($file->getStream()->getMetadata('uri'));
 
@@ -599,6 +604,42 @@ class Picture
         }
 
         return $this->storeInDb(zdb: $zdb, id: $this->db_id, file: $this->buildDestPath(), ext: $this->extension);
+    }
+
+    /**
+     * Create storage directory if it does not exist yet
+     */
+    protected function ensureStorePath(): bool
+    {
+        if (is_dir($this->store_path)) {
+            return true;
+        }
+
+        if (file_exists($this->store_path)) {
+            Analog::log(
+                '[' . static::class . '] Unable to store pictures, `' . $this->store_path
+                . '` is not a directory.',
+                Analog::ERROR
+            );
+            return false;
+        }
+
+        try {
+            mkdir($this->store_path, 0o755, recursive: true);
+        } catch (FilesystemException $e) {
+            Analog::log(
+                '[' . static::class . '] Unable to create pictures directory `' . $this->store_path
+                . '` | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return false;
+        }
+
+        Analog::log(
+            '[' . static::class . '] Pictures directory `' . $this->store_path . '` has been created',
+            Analog::INFO
+        );
+        return true;
     }
 
     /**
@@ -756,14 +797,22 @@ class Picture
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string                $source   The source image
-     * @param string                $ext      File's extension
-     * @param ?string               $dest     The destination image.
-     *                                        If null, we'll use the source image. Defaults to null
-     * @param ?array<string, mixed> $cropping Cropping properties
+     * @param string                $source     The source image
+     * @param string                $ext        File's extension
+     * @param ?string               $dest       The destination image.
+     *                                          If null, we'll use the source image. Defaults to null
+     * @param ?array<string, mixed> $cropping   Cropping properties
+     * @param ?int                  $max_width  Maximum width, defaults to picture's one
+     * @param ?int                  $max_height Maximum height, defaults to picture's one
      */
-    private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
-    {
+    protected function resizeImage(
+        string $source,
+        string $ext,
+        ?string $dest = null,
+        ?array $cropping = null,
+        ?int $max_width = null,
+        ?int $max_height = null
+    ): bool {
         $class = static::class;
 
         if (!function_exists("gd_info")) {
@@ -776,8 +825,8 @@ class Picture
         }
 
         $gdinfo = gd_info();
-        $h = $this->max_height;
-        $w = $this->max_width;
+        $h = $max_height ?? $this->max_height;
+        $w = $max_width ?? $this->max_width;
         if ($dest == null) {
             $dest = $source;
         }

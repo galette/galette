@@ -10,9 +10,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Galette\Tests\Fixtures\ExposedPicture;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\file_put_contents;
+use function Safe\getimagesize;
+use function Safe\glob;
 use function Safe\realpath;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Picture tests class
@@ -22,6 +28,7 @@ use function Safe\realpath;
 class Picture extends GaletteTestCase
 {
     private \Galette\Core\Picture $picture;
+    private string $tmp_dir;
     /** @var string[] */
     private array $expected_badchars = [
         '.',
@@ -45,6 +52,103 @@ class Picture extends GaletteTestCase
     {
         parent::setUp();
         $this->picture = new \Galette\Core\Picture();
+        $this->tmp_dir = sys_get_temp_dir() . '/galette-picture-' . uniqid() . '/';
+    }
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        foreach (['sub/dir/', 'sub/', ''] as $dir) {
+            $path = $this->tmp_dir . $dir;
+            if (is_dir($path)) {
+                foreach (glob($path . '*') as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+                rmdir($path);
+            }
+        }
+        parent::tearDown();
+    }
+
+    /**
+     * Test storage directory creation
+     */
+    public function testEnsureStorePath(): void
+    {
+        $path = $this->tmp_dir . 'sub/dir/';
+        $picture = new ExposedPicture($path);
+
+        $this->assertFalse(is_dir($path));
+        $this->assertTrue($picture->publicEnsureStorePath());
+        $this->assertTrue(is_dir($path));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+
+        //already existing
+        $this->assertTrue($picture->publicEnsureStorePath());
+
+        //a file is in the way
+        $file = $this->tmp_dir . 'sub/dir/afile';
+        file_put_contents($file, 'content');
+        $picture = new ExposedPicture($file);
+        $this->assertFalse($picture->publicEnsureStorePath());
+        $this->expectLogEntry(\Analog\Analog::ERROR, '`' . $file . '` is not a directory.');
+    }
+
+    /**
+     * Test resizing to another path, with custom sizes
+     */
+    public function testResizeImage(): void
+    {
+        $picture = new ExposedPicture($this->tmp_dir);
+        $this->assertTrue($picture->publicEnsureStorePath());
+        $this->expectLogEntry(\Analog\Analog::INFO, 'has been created');
+
+        $sources = [
+            //landscape, 800x400
+            'jpg' => [GALETTE_ROOT . '../tests/fake_image.jpg', 100, 50],
+            //portrait, 350x450
+            'png' => [GALETTE_ROOT . '../galette/webroot/themes/default/images/default.png', 78, 100],
+            //landscape, 2208x1024
+            'webp' => [GALETTE_ROOT . '../galette/webroot/themes/default/images/galette.webp', 100, 46],
+        ];
+
+        foreach ($sources as $ext => [$source, $expected_width, $expected_height]) {
+            $source_size = getimagesize($source);
+            $dest = $this->tmp_dir . 'resized.' . $ext;
+            $this->assertTrue($picture->publicResizeImage(
+                source: $source,
+                ext: $ext,
+                dest: $dest,
+                max_width: 100,
+                max_height: 100
+            ));
+
+            [$width, $height] = getimagesize($dest);
+            $this->assertSame($expected_width, $width, $ext);
+            $this->assertSame($expected_height, $height, $ext);
+
+            //source is kept as is
+            $this->assertSame($source_size, getimagesize($source));
+        }
+
+        //picture's own sizes are used by default
+        $dest = $this->tmp_dir . 'default.jpg';
+        $this->assertTrue($picture->publicResizeImage($sources['jpg'][0], 'jpg', $dest));
+        [$width, $height] = getimagesize($dest);
+        $this->assertSame(200, $width);
+        $this->assertSame(100, $height);
+
+        $this->assertFalse($picture->publicResizeImage(
+            source: $sources['jpg'][0],
+            ext: 'bmp',
+            dest: $dest,
+            max_width: 100,
+            max_height: 100
+        ));
     }
 
     /**
