@@ -167,4 +167,17 @@ abstract class GalettePlugin implements Plugins\InstallableInterface
         );
         return true;
     }
+
+    /**
+     * Database version of an installation that predates plugins versions tracking
+     *
+     * Called when plugin tables exist, but no version has been stored for it
+     * yet: this is the case coming from Galette 1.2. Return the version
+     * existing tables are at so that pending update scripts are run, or null
+     * if they are up to date with the declared version.
+     */
+    public function getLegacyDbVersion(): ?float
+    {
+        return null;
+    }
 }

@@ -519,7 +519,7 @@ class Plugins
             );
             $this->markDbMissing();
         } elseif ($is_installed && $needs_database && !array_key_exists($this->id, $this->db_existing)) {
-            $this->autoMigratePluginVersion();
+            $this->autoMigratePluginVersion($plugin->getLegacyDbVersion());
         }
     }
 
@@ -946,16 +946,21 @@ class Plugins
     }
 
     /**
-     * Automatically migrate plugin version to core table; sets version to plugin version.
+     * Automatically migrate plugin version to core table
+     *
+     * Version is the plugin one, unless it reports its tables are older.
+     *
+     * @param ?float $legacy_version Version of existing tables, if older than the plugin one
      */
-    private function autoMigratePluginVersion(): void
+    private function autoMigratePluginVersion(?float $legacy_version): void
     {
         try {
             $module = $this->getModule($this->id);
+            $version = $legacy_version ?? $module['dbversion'];
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values([
                 'plugin_id' => $this->id,
-                'version' => $module['dbversion'],
+                'version' => $version,
             ]);
             $this->zdb->execute($insert);
             Analog::log(
@@ -965,7 +970,10 @@ class Plugins
                 ),
                 Analog::INFO
             );
-            $this->db_existing[$this->id] = $module['dbversion'];
+            $this->db_existing[$this->id] = $version;
+            if ($version != $module['dbversion']) {
+                $this->markToUpdate();
+            }
         } catch (Throwable $e) {
             if (!$this->zdb->isMissingTableException($e)) {
                 //plugins table may be missing while updating

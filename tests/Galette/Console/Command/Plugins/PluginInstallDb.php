@@ -66,6 +66,7 @@ class PluginInstallDb extends GaletteTestCase
         $delete = $this->zdb->delete(Plugins::TABLE);
         $delete->where->in('plugin_id', [self::PLUGIN_INSTALL_ID, self::PLUGIN_UPGRADE_ID]);
         $this->zdb->execute($delete);
+        \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$legacy_version = null;
 
         parent::tearDown();
     }
@@ -219,6 +220,27 @@ class PluginInstallDb extends GaletteTestCase
 
         // galette_plugins must now reflect version 0.2
         $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+    }
+
+    /**
+     * Tables that predate versions tracking are recorded with the version the
+     * plugin reports for them, so the plugin is marked to be updated.
+     */
+    public function testAutoMigrateLegacyVersion(): void
+    {
+        //plugins autoloader is not registered yet
+        require_once self::PLUGINS_PATH . self::PLUGIN_UPGRADE_ID
+            . '/lib/GaletteDbUpgradePlugin/PluginGalettePlugdbupgrade.php';
+        \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$legacy_version = 0.1;
+        $this->loadTestPlugins();
+
+        $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+        $this->assertTrue($this->plugins->isDisabled(self::PLUGIN_UPGRADE_ID));
+        $this->assertSame(
+            Plugins::DISABLED_NOT_UP2DATE,
+            $this->plugins->getDisabledCause(self::PLUGIN_UPGRADE_ID)
+        );
+        $this->assertSame('0.1', $this->plugins->getInstalledDbVersion(self::PLUGIN_UPGRADE_ID));
     }
 
     /**

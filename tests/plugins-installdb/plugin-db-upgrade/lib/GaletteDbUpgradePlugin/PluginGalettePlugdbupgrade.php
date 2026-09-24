@@ -25,8 +25,16 @@ use Galette\Core\GalettePlugin;
  */
 class PluginGalettePlugdbupgrade extends GalettePlugin
 {
+    /** Version reported for tables that predate versions tracking */
+    public static ?float $legacy_version = null;
+
     public function isInstalled(): bool
     {
         return true;
+    }
+
+    public function getLegacyDbVersion(): ?float
+    {
+        return self::$legacy_version;
     }
 }
