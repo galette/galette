@@ -299,6 +299,11 @@ class Members
                 $processed[] = $member;
             }
 
+            //let plugins handle their own dependencies, within the transaction
+            foreach ($processed as $p) {
+                $emitter->dispatch(new GaletteEvent('member.before_remove', $p));
+            }
+
             //delete contributions
             $del_qry = $zdb->delete(Contribution::TABLE);
             $del_qry->where->in(

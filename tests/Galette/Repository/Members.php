@@ -1372,4 +1372,60 @@ class Members extends GaletteTestCase
         $this->assertTrue($members->removeMembers($member->id));
         $this->login->logOut();
     }
+
+    /**
+     * Test member.before_remove is emitted before deletion, within the transaction
+     */
+    public function testRemoveMembersEmitsBeforeRemove(): void
+    {
+        $member = $this->getMemberTwo();
+        $id = (int)$member->id;
+
+        $seen = null;
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'member.before_remove',
+            function (\Galette\Events\GaletteEvent $event) use (&$seen): void {
+                $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+                $select->where([\Galette\Entity\Adherent::PK => $event->getObject()->id_adh]);
+                $seen = [
+                    'id'             => (int)$event->getObject()->id_adh,
+                    'exists'         => $this->zdb->execute($select)->count() === 1,
+                    'in_transaction' => $this->zdb->inTransaction()
+                ];
+            }
+        );
+
+        $members = new \Galette\Repository\Members();
+        $this->assertTrue($members->removeMembers($id));
+        $this->assertSame(['id' => $id, 'exists' => true, 'in_transaction' => true], $seen);
+    }
+
+    /**
+     * Test a failing member.before_remove listener cancels removal
+     */
+    public function testRemoveMembersBeforeRemoveFailure(): void
+    {
+        $member = $this->getMemberTwo();
+        $id = (int)$member->id;
+
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'member.before_remove',
+            function (): void {
+                throw new \RuntimeException('Plugin refuses');
+            }
+        );
+
+        $members = new \Galette\Repository\Members();
+        try {
+            $members->removeMembers($id);
+            $this->fail('Exception expected');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Plugin refuses', $e->getMessage());
+        }
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) |Plugin refuses');
+        //rollback also cancels the test transaction, member cannot be checked
+        $this->assertFalse($this->zdb->inTransaction());
+    }
 }
