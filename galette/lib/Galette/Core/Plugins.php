@@ -16,6 +16,7 @@ use Exception;
 use Analog\Analog;
 use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
+use League\Event\ListenerSubscriber;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Safe\Exceptions\DirException;
@@ -657,16 +658,19 @@ class Plugins
     /**
      * Loads event provider
      *
+     * Plugin may provide a PluginEventProvider class in its namespace,
+     * implementing League\Event\ListenerSubscriber. It is built from
+     * the container, so its dependencies are injected.
+     *
      * @param string $id Module ID
      */
     public function loadEventProviders(string $id): void
     {
         $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
-        if (
-            class_exists($providerClassName)
-            && method_exists($providerClassName, 'provideListeners')
-        ) {
-            $this->event_dispatcher->subscribeListenersFrom(new $providerClassName());
+        if (is_a($providerClassName, ListenerSubscriber::class, allow_string: true)) {
+            /** @var ListenerSubscriber $provider */
+            $provider = $this->container->get($providerClassName);
+            $this->event_dispatcher->subscribeListenersFrom($provider);
         }
     }
 

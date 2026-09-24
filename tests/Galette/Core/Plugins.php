@@ -309,4 +309,23 @@ class Plugins extends GaletteTestCase
             @unlink($marker);
         }
     }
+
+    /**
+     * Test plugin event provider is subscribed
+     */
+    public function testLoadEventProviders(): void
+    {
+        $dispatcher = new \League\Event\EventDispatcher();
+        $plugins = new \Galette\Core\Plugins();
+        $plugins
+            ->setContainer($this->container)
+            ->setEventDispatcher($dispatcher)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+
+        \GaletteTest2Plugin\PluginEventProvider::$received = [];
+        $object = new \stdClass();
+        $dispatcher->dispatch(new \Galette\Events\GaletteEvent('plugin2.test', $object));
+
+        $this->assertSame([$object], \GaletteTest2Plugin\PluginEventProvider::$received);
+    }
 }
