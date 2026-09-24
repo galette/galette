@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-22 10:34+0200\n"
-"PO-Revision-Date: 2026-09-22 19:54+0000\n"
+"PO-Revision-Date: 2026-09-24 19:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1607,23 +1607,21 @@ msgstr ""
 #. TRANS: %1$s is the member name
 #, php-format
 msgid "Two-factor authentication reset for %1$s"
-msgstr ""
+msgstr "Réinitialisation d'authentification à deux facteurs pour %1$s"
 
-#, fuzzy
-#| msgid "An email has been sent to the member."
 msgid "Two-factor authentication has been reset for this member."
-msgstr "Un courriel a été envoyé à l’adhérent."
+msgstr ""
+"L'authentification à deux facteurs a été réinitialisée pour cet adhérent."
 
 msgid "Two-factor authentication is not enabled on this instance."
 msgstr ""
+"L'authentification à deux facteurs n'est pas activée sur cette instance."
 
 msgid "Two-factor authentication is not enabled."
-msgstr ""
+msgstr "L'authentification à deux facteurs n'est pas activée."
 
-#, fuzzy
-#| msgid "Recover password"
 msgid "Recovery codes"
-msgstr "Récupérer le mot de passe"
+msgstr "Codes de recouvrement"
 
 msgid "Texts has been successfully reinitialized."
 msgstr "Les textes ont été réinitialisés avec succès."
@@ -1851,16 +1849,12 @@ msgstr "L’adresse courriel %s n’existe pas"
 msgid "Login %s does not exist"
 msgstr "L’identifiant %s n’existe pas"
 
-#, fuzzy
-#| msgid ""
-#| "An email has been sent to your address.<br/>Please check your inbox and "
-#| "follow the instructions."
 msgid ""
 "If an account matches, an email has been sent to its address.<br/>Please "
 "check your inbox and follow the instructions."
 msgstr ""
-"Un courriel a été envoyé à votre adresse.<br/>Vérifiez votre boite de "
-"réception et suivez les instructions."
+"Si un compte correspond, un e-mail a été envoyé à son adresse.<br>Veuillez "
+"vérifier votre boîte de réception et suivre les instructions."
 
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
@@ -2258,18 +2252,14 @@ msgstr "Prévisualisation de l'envoi"
 msgid "Sending mailing"
 msgstr "Envois passés :"
 
-#, fuzzy
-#| msgid "Go back to members list"
 msgid "Back to members list"
-msgstr "Retour à la liste des membres"
+msgstr "Retour à la liste des adhérents"
 
 msgid "Mailings history"
 msgstr "Historique des envois"
 
-#, fuzzy
-#| msgid "Sent reminders:"
 msgid "Sending reminders"
-msgstr "Rappels envoyés :"
+msgstr "Envoi de rappels"
 
 #. TRANS: parameter is the transaction identifier
 #, php-format
@@ -2735,6 +2725,8 @@ msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
 msgstr ""
+"Une authentification à deux facteurs est requise. Veuillez l'activer pour "
+"continuer à utiliser votre compte."
 
 #. TRANS: parameter is the ACL rule name
 #, php-format
@@ -3703,13 +3695,14 @@ msgid "Data initialized."
 msgstr "Les données ont été initialisées."
 
 #. TRANS: parameter is the file path
-#, fuzzy, php-format
-#| msgid "Unable to create configuration file (%1$s)"
+#, php-format
 msgid "Unable to remove installer enable file (%1$s)"
-msgstr "Impossible de créer le fichier de configuration (%1$s)"
+msgstr ""
+"Impossible de supprimer le fichier d'activation de l'installation (%1$s)"
 
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
+"Rappelez-vous de le supprimer manuellement pour sécuriser l'installateur."
 
 msgid "An error occurred :("
 msgstr "Une erreur est survenue :("
@@ -4483,42 +4476,45 @@ msgstr "La transaction n’est pas entièrement ventilée"
 msgid "View corresponding contributions"
 msgstr "Voir les contributions correspondantes"
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is enabled"
-msgstr "Échec de l’authentification"
+msgstr "L'authentification à deux facteurs est active"
 
 msgid ""
 "A code from your authentication application is asked for at every login."
 msgstr ""
+"Un code de votre application d'authentification est demandé à chaque "
+"connexion."
 
 msgid ""
 "Recovery codes let you log in when you no longer have your device. Each one "
 "works once."
 msgstr ""
+"Les codes de récupération vous permettent de vous connecter lorsque vous "
+"n'avez plus votre appareil. Chacun fonctionne une fois."
 
 #, php-format
 msgid "You have %1$s recovery code left."
 msgid_plural "You have %1$s recovery codes left."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il vous reste %1$s code de récupération."
+msgstr[1] "Il vous reste %1$s codes de récupération."
 
-#, fuzzy
-#| msgid "Current model"
 msgid "Current code:"
-msgstr "Modèle actuel"
+msgstr "Code actuel :"
 
 msgid "Renew recovery codes"
-msgstr ""
+msgstr "Renouvellement des codes de récupération"
 
 msgid "No recovery codes for this account"
-msgstr ""
+msgstr "Aucun code de récupération pour ce compte"
 
 msgid ""
 "The super administrator is not a member: its second factor lives in the "
 "preferences, which is also where it is cleared from should you lose your "
 "device. Keep an access to the database at hand."
 msgstr ""
+"Le super administrateur n'est pas un adhérent : son deuxième facteur est "
+"dans les préférences, qui est également d'où il est nettoyé de si vous "
+"perdez votre appareil. Gardez un accès à la base de données à portée de main."
 
 #, fuzzy
 #| msgid "Disabled"
@@ -4535,13 +4531,11 @@ msgid ""
 "your session."
 msgstr ""
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Disable two-factor authentication"
-msgstr "Utiliser l’authentification SMTP ?"
+msgstr "Désactiver l'authentification à deux facteurs"
 
 msgid "Two-factor authentication is not enabled"
-msgstr ""
+msgstr "L'authentification à deux facteurs n'est pas activée"
 
 msgid ""
 "It is required on this instance: you will be asked to enable it to keep "
@@ -7000,6 +6994,7 @@ msgstr "Enregistrements par page :"
 
 msgid "Selecting an item from the list will automatically reload the table"
 msgstr ""
+"Sélectionner une entrée dans la liste rechargera automatiquement le tableau"
 
 msgid "(Un)Check all"
 msgstr "Tout (dé)cocher"
