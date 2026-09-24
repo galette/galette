@@ -226,7 +226,7 @@ class Picture
             $results = $zdb->execute($select);
             $pic = $results->current();
 
-            if ($pic) {
+            if ($pic && $this->ensureStorePath()) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 file_put_contents(

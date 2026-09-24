@@ -23,11 +23,12 @@ class ExposedPicture extends Picture
      * Constructor
      *
      * @param string $store_path Storage path
+     * @param ?int   $id         Picture identifier
      */
-    public function __construct(string $store_path)
+    public function __construct(string $store_path, ?int $id = null)
     {
         $this->store_path = $store_path;
-        parent::__construct();
+        parent::__construct($id);
     }
 
     /**

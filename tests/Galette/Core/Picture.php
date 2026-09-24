@@ -13,7 +13,9 @@ namespace Galette\Tests\Core;
 use Galette\Tests\Fixtures\ExposedPicture;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\copy;
 use function Safe\file_put_contents;
+use function Safe\filesize;
 use function Safe\getimagesize;
 use function Safe\glob;
 use function Safe\realpath;
@@ -96,6 +98,42 @@ class Picture extends GaletteTestCase
         $picture = new ExposedPicture($file);
         $this->assertFalse($picture->publicEnsureStorePath());
         $this->expectLogEntry(\Analog\Analog::ERROR, '`' . $file . '` is not a directory.');
+    }
+
+    /**
+     * Test storage directory is created when writing a picture
+     */
+    public function testStoreDirectoryCreated(): void
+    {
+        $id = 999999;
+        $path = $this->tmp_dir . 'sub/dir/';
+        $source = sys_get_temp_dir() . '/galette-upload-' . uniqid() . '.jpg';
+        copy(GALETTE_ROOT . '../tests/fake_image.jpg', $source);
+
+        $picture = new ExposedPicture($path, $id);
+        $this->assertFalse($picture->hasPicture());
+        $this->assertFalse(is_dir($path));
+
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $source,
+            name: 'fake_image.jpg',
+            type: 'image/jpeg',
+            size: filesize($source),
+            error: UPLOAD_ERR_OK
+        );
+        $this->assertTrue($picture->storeFile($uploaded_file));
+        $this->assertTrue(is_file($path . $id . '.jpg'));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $id);
+
+        //picture is only in the database now: directory is created again to restore it
+        unlink($path . $id . '.jpg');
+        rmdir($path);
+        $picture = new ExposedPicture($path, $id);
+        $this->assertTrue($picture->hasPicture());
+        $this->assertTrue(is_file($path . $id . '.jpg'));
+        $this->assertSame(200, $picture->getWidth());
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
     }
 
     /**
