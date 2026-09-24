@@ -31,7 +31,6 @@ use SplFileInfo;
 
 use function Safe\mkdir;
 use function Safe\preg_replace;
-use function Safe\realpath;
 use function Safe\rmdir;
 use function Safe\unlink;
 
@@ -46,6 +45,8 @@ use function Safe\unlink;
 )]
 class MakeTwigCache extends AbstractCommand
 {
+    use TwigCacheDirectories;
+
     /**
      * Configure command
      */
@@ -61,43 +62,9 @@ class MakeTwigCache extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $directory_path = sprintf(
-            '%s/../../../../templates/default',
-            __DIR__,
-        );
-        $cache_dir_path = sprintf(
-            '%s/../../../../..',
-            __DIR__,
-        );
-
         $plugin = $input->getArgument('plugin');
-        if ($plugin) {
-            $directory_path = sprintf(
-                '%s/../../../../plugins/%s/templates/default',
-                __DIR__,
-                $plugin
-            );
-            $cache_dir_path = sprintf(
-                '%s/../../../../plugins/%s',
-                __DIR__,
-                $plugin
-            );
-        }
-
-        $directory = realpath($directory_path);
-        if (!is_dir($directory) || !is_readable($directory)) {
-            throw new InvalidOptionException(
-                sprintf('Unable to read templates directory "%s"', $directory_path)
-            );
-        }
-
-        $cache_dir = realpath($cache_dir_path);
-        if (!is_dir($cache_dir) || !is_readable($cache_dir)) {
-            throw new InvalidOptionException(
-                sprintf('Unable to read cache directory "%s"', $cache_dir_path)
-            );
-        }
-        $cache_dir .= '/tempcache';
+        $directory = $this->getTemplatesDirectory($plugin);
+        $cache_dir = $this->getCacheDirectory($plugin);
 
         if (file_exists($cache_dir)) {
             $this->rmdirRecursive($cache_dir);
