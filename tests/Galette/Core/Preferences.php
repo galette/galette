@@ -107,7 +107,7 @@ class Preferences extends GaletteTestCase
 
         //change password
         $new_pass = 'anoth3er_s3cr3t';
-        $prefs->pref_admin_pass = $new_pass;
+        $prefs->pref_admin_pass = password_hash((string)$new_pass, PASSWORD_BCRYPT);
         $pass = $prefs->pref_admin_pass;
         $pw_checked = password_verify($new_pass, $pass);
         $this->assertTrue($pw_checked);
@@ -1535,7 +1535,7 @@ class Preferences extends GaletteTestCase
         $count_required = 17;
         $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(['- Mandatory field pref_nom empty.'], $this->preferences->getErrors());
 
@@ -1546,25 +1546,16 @@ class Preferences extends GaletteTestCase
         );
 
         $this->logSuperAdmin();
-        $this->assertCount(++$count_required, $this->preferences->getRequiredFields($this->login));
+        $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(
-            [
-                '- Mandatory field pref_nom empty.',
-                '- Mandatory field pref_admin_login empty.'
-            ],
-            $this->preferences->getErrors()
-        );
+        $this->assertSame(['- Mandatory field pref_nom empty.'], $this->preferences->getErrors());
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => 'Galette']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(
-            [
-                '- Mandatory field pref_admin_login empty.'
-            ],
-            $this->preferences->getErrors()
+        $post = array_merge($preferences, ['pref_nom' => 'Galette']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
         );
     }
 

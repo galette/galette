@@ -21,9 +21,6 @@
 {% if login.isAdmin() %}
             <a href="{{ url_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
 {% endif %}
-{% if login.isSuperAdmin() %}
-            <a href="{{ url_for('preferences') }}?tab=admin" class="item{{ tab == 'admin' ? ' active' }}" data-tab="admin">{{ _T("Admin") }}</a>
-{% endif %}
         </div>
         <div class="ui{{ tab == 'general' ? ' active' }} tab segment" data-tab="general">
             <div class="ui stackable two column grid">
@@ -1261,33 +1258,6 @@
                 </div>
         </div>{# /tab segment #}
 {% endif %}
-{% if login.isSuperAdmin() %}
-        <div class="ui{{ tab == 'admin' ? ' active' }} tab red segment" data-tab="admin">
-    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
-                <div class="ui icon negative message">
-                    <i class="ban icon" aria-hidden="true"></i>
-                    <div class="content">
-                        {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
-                    </div>
-                </div>
-    {% else %}
-                <div class="inline field{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required{% endif %}">
-                    <label for="pref_admin_login">{{ _T("Username:") }}</label>
-                    <input type="text" name="pref_admin_login" id="pref_admin_login" value="{{ pref.pref_admin_login }}" maxlength="20"{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required="required"{% endif %}/>
-                </div>
-                <div id="pref_admin_pass_field" class="inline field">
-                    <label for="pref_admin_pass">{{ _T("Password:") }}</label>
-                    <div class="ui input">
-                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="new-password"/>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
-                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20" autocomplete="new-password"/>
-                </div>
-    {% endif %}
-        </div>{# /tab segment #}
-{% endif %}
         <div class="ui basic center aligned segment">
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="pref_theme" value="default"/>
@@ -1506,10 +1476,6 @@
                 _addLegendButton('#mail_sign');
                 _handleLegend();
 
-                {% include "elements/js/pwdcheck.js.twig" with {
-                        selector: "#pref_admin_pass",
-                        loader: "inline mini"
-                } %}
                 {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
                         loader: "inline mini",

@@ -313,6 +313,83 @@ class GaletteController extends AbstractController
     }
 
     /**
+     * Superadmin credentials form
+     */
+    #[Route(
+        name: 'adminCredentials',
+        pattern: '/admin-credentials',
+        methods: ['GET'],
+        description: 'Manage super admin login and password'
+    )]
+    public function adminCredentials(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
+    {
+        $login = $this->preferences->pref_admin_login;
+
+        //on error, login is stored into session
+        if ($this->session->entered_login) {
+            $login = $this->session->entered_login;
+            $this->session->entered_login = null;
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/admin_credentials.html.twig',
+            [
+                'page_title' => sprintf('%s - %s', _T("Administrator"), _T("Profile")),
+                'pref_admin_login' => $login
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Store superadmin credentials
+     */
+    #[Route(
+        name: 'storeAdminCredentials',
+        pattern: '/admin-credentials',
+        methods: ['POST']
+    )]
+    public function storeAdminCredentials(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+        $success_detected = [];
+
+        // Validation
+        if (isset($post['valid']) && $post['valid'] === '1') {
+            $login = trim($post['pref_admin_login'] ?? '');
+            $newPass = trim($post['pref_admin_pass'] ?? '');
+            $confirmation = trim($post['pref_admin_pass_check'] ?? '');
+
+            $this->preferences->pref_admin_login = $login;
+            $this->preferences->setValue('pref_admin_pass', $newPass, $this->login);
+
+            if ($newPass !== $confirmation) {
+                $error_detected[] = _T("Passwords mismatch");
+            } elseif ($this->preferences->getErrors() !== []) {
+                $error_detected = array_merge($error_detected, $this->preferences->getErrors());
+            } elseif (!$this->preferences->store()) {
+                $error_detected[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
+            } else {
+                $success_detected[] = _T("Your credentials have been saved.");
+            }
+
+            if ($error_detected !== []) {
+                $this->session->entered_login = $login;
+            }
+        }
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('adminCredentials'),
+            successes: $success_detected,
+            errors: $error_detected
+        );
+    }
+
+    /**
      * Build the preferences a mail test runs on
      *
      * Testing what is stored is of little help to someone who is precisely

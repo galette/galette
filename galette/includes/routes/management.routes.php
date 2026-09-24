@@ -53,6 +53,18 @@ $app->post(
     [GaletteController::class, 'testEmailConnection']
 )->setName('testEmailConnection')->add(Authenticate::class);
 
+//superadmin credentials page
+$app->get(
+    '/admin-credentials',
+    [GaletteController::class, 'adminCredentials']
+)->setName('adminCredentials')->add(Authenticate::class);
+
+//superadmin credentials procedure
+$app->post(
+    '/admin-credentials',
+    [GaletteController::class, 'storeAdminCredentials']
+)->setName('storeAdminCredentials')->add(Authenticate::class);
+
 //charts
 $app->get(
     '/charts',

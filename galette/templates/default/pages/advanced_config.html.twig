@@ -57,7 +57,7 @@
     {% elseif entry.readonly %}
                         <span class="ui grey label" title="{{ _T("Galette maintains this value itself; it is shown for information only.") }}">{{ _T("read-only") }}</span>
     {% elseif entry.sensitive %}
-                        <span class="ui grey label" title="{{ _T("Held as a secret: its value is never displayed, and it is changed from the settings form.") }}">{{ _T("secret") }}</span>
+                        <span class="ui grey label" title="{{ _T("Held as a secret: its value is never displayed, nor changed from this page.") }}">{{ _T("secret") }}</span>
     {% elseif entry.is_default %}
                         <span class="ui basic label">{{ _T("default") }}</span>
     {% else %}
@@ -198,7 +198,7 @@
                         </tr>
                         <tr>
                             <th scope="row"><span class="ui grey label">{{ _T("secret") }}</span></th>
-                            <td class="back">{{ _T("A password or a token. Its value is never displayed, only whether one is set, and it is changed from the settings form.") }}</td>
+                            <td class="back">{{ _T("A password or a token. Its value is never displayed, only whether one is set, and it is not changed from this page.") }}</td>
                         </tr>
                         <tr>
                             <th scope="row"><span class="ui red label">{{ _T("locked") }}</span></th>

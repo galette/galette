@@ -120,58 +120,63 @@ class Galette
         $menus = [];
 
         if ($login->isLogged()) {
+            $menus['myaccount'] = [
+                'title' => _T("My Account"),
+                'icon' => 'user',
+                'items' => []
+            ];
+
             if (!$login->isSuperAdmin()) {
                 //member menu
-                $menus['myaccount'] = [
-                    'title' => _T("My Account"),
-                    'icon' => 'user',
-                    'items' => [
-                        [
-                            'label' => _T('My contributions'),
-                            'title' => _T('View and filter all my contributions'),
-                            'route' => [
-                                'name' => 'myContributions',
-                                'args' => ['type' => 'contributions']
-                            ]
-                        ],
-                        [
-                            'label' => _T('My scheduled payments'),
-                            'title' => _T('View and filter all my scheduled payments'),
-                            'route' => [
-                                'name' => 'myScheduledPayments'
-                            ]
-                        ],
-                        [
-                            'label' => _T('My transactions'),
-                            'title' => _T('View and filter all my transactions'),
-                            'route' => [
-                                'name' => 'myContributions',
-                                'args' => ['type' => 'transactions']
-                            ]
-                        ],
-                        [
-                            'label' => _T('My information'),
-                            'title' => _T('View my member card'),
-                            'route' => [
-                                'name' => 'me',
-                                'args' => []
-                            ]
+                $menus['myaccount']['items'] = [
+                    [
+                        'label' => _T('My contributions'),
+                        'title' => _T('View and filter all my contributions'),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'contributions']
                         ]
+                    ],
+                    [
+                        'label' => _T('My scheduled payments'),
+                        'title' => _T('View and filter all my scheduled payments'),
+                        'route' => [
+                            'name' => 'myScheduledPayments'
+                        ]
+                    ],
+                    [
+                        'label' => _T('My transactions'),
+                        'title' => _T('View and filter all my transactions'),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'transactions']
+                        ]
+                    ],
+                    [
+                        'label' => _T('My information'),
+                        'title' => _T('View my member card'),
+                        'route' => [
+                            'name' => 'me',
+                            'args' => []
+                        ]
+                    ]
+                ];
+            } else {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('My information'),
+                    'title' => _T('Modify my login and password'),
+                    'route' => [
+                        'name' => 'adminCredentials',
+                        'args' => []
                     ]
                 ];
             }
 
-            //outside the block above: the super administrator is not a member
-            //and gets no account menu, but it does hold a second factor of its
-            //own. That one lives in the preferences, which are read only in the
-            //settings -- no form may write them -- so this entry is the only
-            //way in from the interface.
+            //outside the member menu block above: the super administrator is not a
+            //member, but it does hold a second factor of its own. That one lives in
+            //the preferences, which are read only in the settings -- no form may
+            //write them -- so this entry is the only way in from the interface.
             if (TwoFactorAuth::modeFrom($preferences) !== TwoFactorAuth::MODE_DISABLED) {
-                $menus['myaccount'] ??= [
-                    'title' => _T("My Account"),
-                    'icon' => 'user',
-                    'items' => []
-                ];
                 $menus['myaccount']['items'][] = [
                     'label' => _T('Two-factor authentication'),
                     'title' => _T('Manage my two-factor authentication'),

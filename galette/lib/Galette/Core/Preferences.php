@@ -611,6 +611,12 @@ class Preferences
             return false;
         }
 
+        //some values need to be changed (e.g., passwords)
+        if ($name == 'pref_admin_pass') {
+            $this->validateValue($name, $value);
+            $value = password_hash((string)$value, PASSWORD_BCRYPT);
+        }
+
         $required = $this->getRequiredFields($login);
 
         //merge the change into what is currently stored
@@ -703,6 +709,8 @@ class Preferences
      * @param string     $fieldname Field name
      * @param mixed      $value     Value to be set
      * @param Login|null $login     Logged in user, to tell an already taken superadmin login
+     *
+     * @phpstan-impure
      */
     public function validateValue(string $fieldname, mixed $value, ?Login $login = null): mixed
     {
@@ -1047,11 +1055,6 @@ class Preferences
             }
         }
 
-        //some values need to be changed (e.g., passwords)
-        if ($name == 'pref_admin_pass') {
-            $value = password_hash((string)$value, PASSWORD_BCRYPT);
-        }
-
         //okay, let's update value
         $this->prefs[$name] = $value;
     }
@@ -1317,9 +1320,6 @@ class Preferences
      */
     public function getRequiredFields(Login $login): array
     {
-        if ($login->isSuperAdmin() && !Galette::isDemo()) {
-            $this->required['pref_admin_login'] = 1;
-        }
         return $this->required;
     }
 
