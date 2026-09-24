@@ -184,7 +184,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertStringContainsString('name="pref_2fa_mode"', $body);
         //the setting carries the same experimental mark as the advanced page
         $this->assertMatchesRegularExpression(
-            '/circular orange exclamation triangle icon.*Experimental/s',
+            '/circular basic flask icon.*Experimental/s',
             $body
         );
         $this->assertStringContainsString('Required for administrators and staff', $body);
