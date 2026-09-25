@@ -20,6 +20,8 @@ use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
+use function Safe\preg_match;
+
 /**
  * Declarative schema of Galette preferences
  *
@@ -37,6 +39,12 @@ use Galette\Repository\Members;
  * `pref_<plugin route>_*` and carry the owning plugin in their `plugin` key.
  * Their entries only exist while the plugin is active: deactivate it and the
  * rows stay in database, unknown and read-only, until it comes back.
+ *
+ * Public pages visibilities are flagged `public_page`. A plugin declaring its
+ * public pages through `PublicPagesProviderInterface` gets one generated for
+ * each of them, named `pref_<plugin route>_publicpages_visibility_<page>`,
+ * which also lists the `routes` making the page; unlike its other
+ * preferences, the core settings form renders and saves it.
  *
  * Translated strings are deliberately kept out of the structural schema: it is
  * read on every `Preferences::__get()` call, and `_T()` must not run before the
@@ -61,7 +69,9 @@ use Galette\Repository\Members;
  *     alpha?: bool,
  *     acl?: string,
  *     constant?: string,
- *     plugin?: string
+ *     plugin?: string,
+ *     public_page?: bool,
+ *     routes?: list<string>
  * }
  */
 final class PreferencesSchema
@@ -125,6 +135,12 @@ final class PreferencesSchema
     /** @var array<string, array<string, Entry>> Plugin route => its entries */
     private static array $plugin_schema = [];
 
+    /** @var array<string, string>|null Route name => public page visibility */
+    private static ?array $public_routes = null;
+
+    /** @var array<int, string> Keys only the core sets on an entry */
+    private const array RESERVED_KEYS = ['plugin', 'public_page', 'routes'];
+
     /**
      * Get the whole schema
      *
@@ -167,10 +183,16 @@ final class PreferencesSchema
      * registration runs while modules are being loaded, where an exception
      * would take the whole instance down over one faulty third-party plugin.
      *
-     * @param string              $plugin  Plugin route name
-     * @param array<string,mixed> $entries Preference name => Entry
+     * Preferences and public pages are registered together: a registration
+     * replaces whatever the plugin declared before.
+     *
+     * @param string              $plugin       Plugin route name
+     * @param array<string,mixed> $entries      Preference name => Entry
+     * @param array<mixed>        $public_pages Page identifier => page, as
+     *                                          `PublicPagesProviderInterface::getPublicPages()`
+     *                                          returns them
      */
-    public static function register(string $plugin, array $entries): void
+    public static function register(string $plugin, array $entries, array $public_pages = []): void
     {
         $accepted = [];
         $prefix = 'pref_' . $plugin . '_';
@@ -185,12 +207,93 @@ final class PreferencesSchema
                 continue;
             }
             /** @var Entry $entry */
+            //what only the core decides on is not taken from a plugin: a
+            //preference flagged as a public page would join the core form
+            $entry = array_diff_key($entry, array_flip(self::RESERVED_KEYS));
             $entry['plugin'] = $plugin;
             $accepted[$name] = $entry;
         }
 
+        foreach ($public_pages as $id => $page) {
+            $error = self::rejectPublicPage(id: $id, page: $page);
+            if ($error !== null) {
+                Analog::log(
+                    sprintf('Plugin "%s" declares an invalid public page: %s', $plugin, $error),
+                    Analog::ERROR
+                );
+                continue;
+            }
+            /** @var string $id */
+            /** @var array{routes: list<string>, default?: int} $page */
+            $name = self::getPublicPageName(plugin: $plugin, id: $id);
+            if (isset($accepted[$name])) {
+                Analog::log(
+                    sprintf(
+                        'Plugin "%s" declares a preference "%s" that its public page "%s" replaces',
+                        $plugin,
+                        $name,
+                        $id
+                    ),
+                    Analog::ERROR
+                );
+            }
+            $accepted[$name] = [
+                'type' => self::TYPE_INT,
+                'default' => $page['default'] ?? PublicPageVisibility::Inherit->value,
+                'min' => min(array_column(PublicPageVisibility::cases(), 'value')),
+                'max' => max(array_column(PublicPageVisibility::cases(), 'value')),
+                'error' => self::ERR_PUBLIC_PAGE_VISIBILITY,
+                'public_page' => true,
+                'routes' => $page['routes'],
+                'plugin' => $plugin,
+            ];
+        }
+
         self::$plugin_schema[$plugin] = $accepted;
         self::invalidate();
+    }
+
+    /**
+     * Get the name of the visibility of a plugin public page
+     *
+     * @param string $plugin Plugin route name
+     * @param string $id     Page identifier
+     */
+    public static function getPublicPageName(string $plugin, string $id): string
+    {
+        return 'pref_' . $plugin . '_publicpages_visibility_' . $id;
+    }
+
+    /**
+     * Why a public page cannot be accepted, null when it can
+     *
+     * @param int|string $id   Page identifier
+     * @param mixed      $page Candidate page
+     */
+    private static function rejectPublicPage(int|string $id, mixed $page): ?string
+    {
+        if (!is_string($id) || preg_match('/^[a-z0-9_]+$/', $id) !== 1) {
+            return sprintf('"%s" is not a valid identifier', $id);
+        }
+
+        if (!is_array($page) || !isset($page['routes']) || !is_array($page['routes']) || $page['routes'] === []) {
+            return sprintf('"%s" has no routes', $id);
+        }
+
+        foreach ($page['routes'] as $route) {
+            if (!is_string($route) || $route === '') {
+                return sprintf('"%s" has an invalid route name', $id);
+            }
+        }
+
+        if (
+            isset($page['default'])
+            && (!is_int($page['default']) || PublicPageVisibility::tryFrom($page['default']) === null)
+        ) {
+            return sprintf('"%s" has an unknown default visibility', $id);
+        }
+
+        return null;
     }
 
     /**
@@ -263,11 +366,82 @@ final class PreferencesSchema
     }
 
     /**
+     * Is that preference the visibility of a public page?
+     *
+     * Such a preference is rendered by the core settings form, whether the core
+     * or a plugin declares it.
+     *
+     * @param string $name Preference name
+     */
+    public static function isPublicPage(string $name): bool
+    {
+        return self::getAll()[$name]['public_page'] ?? false;
+    }
+
+    /**
+     * Get the visibilities of the public pages plugins declare
+     *
+     * @return array<string, Entry> Preference name => entry
+     */
+    public static function getPluginPublicPages(): array
+    {
+        return array_filter(
+            self::getAll(),
+            static fn(array $entry): bool => isset($entry['plugin']) && ($entry['public_page'] ?? false)
+        );
+    }
+
+    /**
+     * Get the visibility governing a plugin route, if its plugin declared one
+     *
+     * Route names are shared by every plugin: when the pattern is given, the
+     * route must also live under the declaring plugin's own path, so that a
+     * plugin cannot put a route of another one behind its own visibility.
+     *
+     * @param string      $route_name Route name
+     * @param string|null $pattern    Route pattern
+     */
+    public static function getPublicPageRight(string $route_name, ?string $pattern = null): ?string
+    {
+        if (self::$public_routes === null) {
+            self::$public_routes = [];
+            foreach (self::getPluginPublicPages() as $name => $entry) {
+                foreach ($entry['routes'] ?? [] as $route) {
+                    if (isset(self::$public_routes[$route])) {
+                        Analog::log(
+                            sprintf(
+                                'Route "%s" is declared by several public pages, "%s" is ignored',
+                                $route,
+                                $name
+                            ),
+                            Analog::ERROR
+                        );
+                        continue;
+                    }
+                    self::$public_routes[$route] = $name;
+                }
+            }
+        }
+
+        $name = self::$public_routes[$route_name] ?? null;
+        if ($name === null) {
+            return null;
+        }
+
+        if ($pattern !== null && !str_starts_with($pattern, '/plugins/' . self::getOwner($name) . '/')) {
+            return null;
+        }
+
+        return $name;
+    }
+
+    /**
      * Forget the merged schema, and the defaults Preferences derives from it
      */
     private static function invalidate(): void
     {
         self::$schema = null;
+        self::$public_routes = null;
         Preferences::invalidateDefaults();
     }
 
@@ -291,6 +465,7 @@ final class PreferencesSchema
             'min' => min(array_column(PublicPageVisibility::cases(), 'value')),
             'max' => max(array_column(PublicPageVisibility::cases(), 'value')),
             'error' => self::ERR_PUBLIC_PAGE_VISIBILITY,
+            'public_page' => true,
         ];
 
         return [

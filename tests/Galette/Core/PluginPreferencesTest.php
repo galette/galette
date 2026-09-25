@@ -12,12 +12,13 @@ namespace Galette\Tests\Core;
 
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
+use Galette\Enums\PublicPageVisibility;
 use Galette\Tests\GaletteTestCase;
 
 /**
  * A plugin declaring preferences stores them among Galette's own, under a
- * prefixed name. The fixture plugin-test1 declares three, so loading plugins
- * is enough to exercise the whole path.
+ * prefixed name. The fixture plugin-test1 declares three, and a public page,
+ * so loading plugins is enough to exercise the whole path.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -162,6 +163,168 @@ class PluginPreferencesTest extends GaletteTestCase
         foreach (['unprefixed', 'pref_plugin1_untyped', 'pref_plugin1_nodefault', 'pref_nom'] as $rejected) {
             $this->assertStringContainsString(
                 sprintf('Plugin "plugin1" declares an invalid preference: "%s"', $rejected),
+                (string)$galette_log_var
+            );
+        }
+
+        //drained here, or they would surface as stray entries in the next test
+        $galette_log_var = null;
+        \Analog\Analog::handler(
+            \Analog\Handler\LevelName::init(\Analog\Handler\Variable::init($galette_log_var))
+        );
+    }
+
+    /**
+     * A declared public page gets a visibility, which the core recognises
+     */
+    public function testPublicPageJoinsTheSchema(): void
+    {
+        $name = 'pref_plugin1_publicpages_visibility_page';
+
+        $this->assertSame($name, PreferencesSchema::getPublicPageName('plugin1', 'page'));
+        $this->assertTrue(PreferencesSchema::has($name));
+        $this->assertSame('plugin1', PreferencesSchema::getOwner($name));
+        $this->assertTrue(PreferencesSchema::isPublicPage($name));
+        $this->assertSame(PublicPageVisibility::Inherit->value, PreferencesSchema::get($name)['default']);
+        $this->assertSame([$name], array_keys(PreferencesSchema::getPluginPublicPages()));
+
+        //ordinary plugin preferences are not public pages, core visibilities are
+        $this->assertFalse(PreferencesSchema::isPublicPage('pref_plugin1_label'));
+        $this->assertTrue(PreferencesSchema::isPublicPage('pref_publicpages_visibility_documents'));
+        $this->assertFalse(PreferencesSchema::isPublicPage('pref_nom'));
+
+        //routes lead to it, provided they live under the plugin path
+        $this->assertSame($name, PreferencesSchema::getPublicPageRight('plugin1_public_page'));
+        $this->assertSame(
+            $name,
+            PreferencesSchema::getPublicPageRight('plugin1_public_page', '/plugins/plugin1/public/page')
+        );
+        $this->assertNull(
+            PreferencesSchema::getPublicPageRight('plugin1_public_page', '/plugins/plugin2/public/page')
+        );
+        $this->assertNull(PreferencesSchema::getPublicPageRight('plugin1_public_other'));
+        $this->assertNull(PreferencesSchema::getPublicPageRight('publicMembersList'));
+
+        //and they go with the plugin
+        PreferencesSchema::unregister('plugin1');
+        $this->assertNull(PreferencesSchema::getPublicPageRight('plugin1_public_page'));
+    }
+
+    /**
+     * Its row is created, with the declared default
+     */
+    public function testPublicPageRowIsCreated(): void
+    {
+        $this->preferences->load();
+
+        $this->assertContains('pref_plugin1_publicpages_visibility_page', $this->preferences->getFieldsNames());
+        $this->assertSame(
+            PublicPageVisibility::Inherit->value,
+            $this->preferences->getPluginValue('pref_plugin1_publicpages_visibility_page')
+        );
+    }
+
+    /**
+     * Unlike other plugin preferences, the core settings form saves it
+     */
+    public function testCoreFormSavesPublicPage(): void
+    {
+        $name = 'pref_plugin1_publicpages_visibility_page';
+        $this->preferences->load();
+
+        //what the core settings form posts, the plugin page included
+        $values = array_map(
+            fn(array $entry): bool|int|string => $entry['default'],
+            PreferencesSchema::getCore()
+        );
+        $values[$name] = (string)PublicPageVisibility::Hidden->value;
+
+        $this->assertTrue(
+            $this->preferences->check($values, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame(PublicPageVisibility::Hidden->value, $this->preferences->getPluginValue($name));
+
+        //a form without it keeps what is stored: the plugin may have been off
+        //when the page was rendered
+        unset($values[$name]);
+        $this->assertTrue($this->preferences->check($values, $this->login));
+        $this->assertSame(PublicPageVisibility::Hidden->value, $this->preferences->getPluginValue($name));
+
+        //and its value is validated like the core ones
+        $values[$name] = '7';
+        $this->assertFalse($this->preferences->check($values, $this->login));
+        $this->assertContains(
+            "- Unknown visibility for '" . $name . "'!",
+            $this->preferences->getErrors()
+        );
+
+        $this->preferences->load();
+    }
+
+    /**
+     * A plugin cannot flag a preference of its own as a public page
+     *
+     * The core form would otherwise save it, and a declared route would lead to
+     * whatever it holds.
+     */
+    public function testReservedKeysAreDropped(): void
+    {
+        PreferencesSchema::register('plugin1', [
+            'pref_plugin1_sneaky' => [
+                'type' => PreferencesSchema::TYPE_INT,
+                'default' => 0,
+                'public_page' => true,
+                'routes' => ['publicMembersList'],
+                'plugin' => 'other',
+            ],
+        ]);
+
+        $this->assertTrue(PreferencesSchema::has('pref_plugin1_sneaky'));
+        $this->assertSame('plugin1', PreferencesSchema::getOwner('pref_plugin1_sneaky'));
+        $this->assertFalse(PreferencesSchema::isPublicPage('pref_plugin1_sneaky'));
+        $this->assertNull(PreferencesSchema::getPublicPageRight('publicMembersList'));
+    }
+
+    /**
+     * A malformed public page is dropped, reported, and not fatal
+     */
+    public function testMalformedPublicPagesAreDropped(): void
+    {
+        global $galette_log_var;
+
+        PreferencesSchema::register(
+            'plugin1',
+            [],
+            [
+                'ok' => ['routes' => ['plugin1_ok'], 'default' => PublicPageVisibility::StaffOnly->value],
+                'Bad-Id' => ['routes' => ['plugin1_bad']],
+                'noroutes' => [],
+                'emptyroutes' => ['routes' => []],
+                'badroute' => ['routes' => [42]],
+                'baddefault' => ['routes' => ['plugin1_baddefault'], 'default' => 9],
+            ]
+        );
+
+        $this->assertSame(
+            ['pref_plugin1_publicpages_visibility_ok'],
+            array_keys(PreferencesSchema::getPluginPublicPages())
+        );
+        $this->assertSame(
+            PublicPageVisibility::StaffOnly->value,
+            PreferencesSchema::get('pref_plugin1_publicpages_visibility_ok')['default']
+        );
+
+        $expected = [
+            '"Bad-Id" is not a valid identifier',
+            '"noroutes" has no routes',
+            '"emptyroutes" has no routes',
+            '"badroute" has an invalid route name',
+            '"baddefault" has an unknown default visibility',
+        ];
+        foreach ($expected as $rejected) {
+            $this->assertStringContainsString(
+                'Plugin "plugin1" declares an invalid public page: ' . $rejected,
                 (string)$galette_log_var
             );
         }
