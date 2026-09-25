@@ -466,6 +466,17 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
   margin-bottom: 0.75em;
 }
 
+/* Ensure consistent spacing at the top of every page */
+.main-content > noscript:first-child {
+  & + .ui.message,
+  & + .ui.table,
+  & + .ui.pointing.menu,
+  & + form .infoline:first-child .ui.horizontal.segments,
+  & + .ui.fitted.segment {
+    margin-top: 0;
+  }
+}
+
 /*-----------------------
     Sortable items
 ------------------------*/
