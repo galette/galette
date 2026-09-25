@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-25 04:07+0200\n"
-"PO-Revision-Date: 2026-09-23 14:10+0000\n"
+"PO-Revision-Date: 2026-09-25 22:08+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -2910,15 +2910,15 @@ msgstr "Trenutni jezik '%1$s'"
 msgid "Switch locale to '%1$s'"
 msgstr "Preklopi jezikovne nastavitve na '%1$s'"
 
-#, fuzzy
-#| msgid "This feature requires javascript."
 msgid "Galette requires JavaScript"
-msgstr "Ta funkcija zahteva javascript."
+msgstr "Ta funkcija zahteva javascript"
 
 msgid ""
 "JavaScript is disabled in your browser, and Galette requires it to work "
 "correctly."
 msgstr ""
+"JavaScript je v vašem brskalniku onemogočen, Galette pa ga potrebuje za "
+"pravilno delovanje."
 
 msgid "Version selection"
 msgstr "Izbira različice"
@@ -3209,7 +3209,7 @@ msgid "Password:"
 msgstr "Geslo:"
 
 msgid "Creation date:"
-msgstr "Datum nastanka:"
+msgstr "Datum vpisa:"
 
 msgid "Modification date:"
 msgstr "Datum spremembe:"
@@ -3835,7 +3835,7 @@ msgid "ID"
 msgstr "ID"
 
 msgid "Creation date"
-msgstr "Datum nastanka"
+msgstr "Datum vpisa"
 
 msgid "Parameters"
 msgstr "Parametri"
