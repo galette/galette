@@ -343,6 +343,15 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
         $totalRoutes = count($routes);
         $routeAttributes = $this->getRouteAttributesFromControllers();
 
+        // Routes a plugin declares in its own _routes.php are the plugin's
+        // business, not the core's: they live under /plugins/<plugin route>/.
+        // Core routes under /plugins/ start with a placeholder, never with an
+        // actual plugin route, so they are still checked.
+        $plugin_prefixes = array_map(
+            fn(array $module): string => '/plugins/' . $module['route'] . '/',
+            array_values($this->container->get(\Galette\Core\Plugins::class)->getActiveModules())
+        );
+
         // Drop routes that have no name (closures, debug/legacy redirects) —
         // they cannot be addressed by name and are out of scope.
         foreach ($routes as $key => $route) {
@@ -350,6 +359,12 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
             if ($name === null) {
                 unset($routes[$key]);
                 continue;
+            }
+            foreach ($plugin_prefixes as $prefix) {
+                if (str_starts_with($route->getPattern(), $prefix)) {
+                    unset($routes[$key]);
+                    continue 2;
+                }
             }
             foreach ($routeAttributes as $akey => $attrData) {
                 if ($name === $attrData['route']->name) {
