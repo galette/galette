@@ -479,6 +479,18 @@
                         </div>
                     </div>
                 </div>{# /column #}
+{% for page in plugin_public_pages %}
+                <div class="column">
+                    <div class="field">
+                        <label for="{{ page.name }}">{{ page.label }} ({{ page.plugin }})</label>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: page.name,
+                            value: pref[page.name],
+                            choices: visibility_choices
+                        } only %}
+                    </div>
+                </div>{# /column #}
+{% endfor %}
             </div>{# /column grid #}
             <div class="ui horizontal divider small header">
                 <i class="palette icon"></i>

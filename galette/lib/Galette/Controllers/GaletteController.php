@@ -210,6 +210,7 @@ class GaletteController extends AbstractController
                 'pref'                  => $pref,
                 'visibility_choices'    => PublicPageVisibility::choices(),
                 'default_visibility_choices' => PublicPageVisibility::choices(inherit: false),
+                'plugin_public_pages'   => $this->plugins->getPublicPages(),
                 'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',

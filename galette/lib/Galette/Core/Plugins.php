@@ -1005,6 +1005,44 @@ class Plugins
     }
 
     /**
+     * Get the public pages active plugins declare, as the settings page lists them
+     *
+     * Only the pages the schema accepted are listed. Labels are asked for
+     * here, once translations are loaded, rather than at registration time.
+     *
+     * @return list<array{name: string, label: string, plugin: string}>
+     */
+    public function getPublicPages(): array
+    {
+        $pages = [];
+        foreach ($this->getActiveModules() as $id => $module) {
+            $class = $this->getClassName($id, full: true);
+            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+                continue;
+            }
+
+            $plugin = $this->container->get($class);
+            if (!$plugin instanceof Plugins\PublicPagesProviderInterface) {
+                continue;
+            }
+
+            foreach (array_keys($plugin->getPublicPages()) as $page) {
+                $name = PreferencesSchema::getPublicPageName(plugin: $module['route'], id: (string)$page);
+                if (!PreferencesSchema::isPublicPage($name)) {
+                    continue;
+                }
+                $pages[] = [
+                    'name' => $name,
+                    'label' => $plugin->getPublicPageLabel((string)$page),
+                    'plugin' => $module['name'],
+                ];
+            }
+        }
+
+        return $pages;
+    }
+
+    /**
      * Retrieve a file that should be publicly exposed
      *
      * @param string $id   Module id
