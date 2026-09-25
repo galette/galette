@@ -13,14 +13,15 @@ namespace GaletteTest1Plugin;
 use Galette\Core\GalettePlugin;
 use Galette\Core\PreferencesSchema;
 use Galette\Core\Plugins\PreferencesProviderInterface;
+use Galette\Core\Plugins\PublicPagesProviderInterface;
 
 /**
- * This fixture also declares preferences, so that the registration path is
- * exercised by every test that loads plugins.
+ * This fixture also declares preferences and a public page, so that the
+ * registration path is exercised by every test that loads plugins.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderInterface
+class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderInterface, PublicPagesProviderInterface
 {
     /**
      * Get the preferences the plugin declares
@@ -46,6 +47,28 @@ class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderI
                 'default' => false,
             ],
         ];
+    }
+
+    /**
+     * Get the public pages the plugin declares
+     *
+     * @return array<string, array{routes: list<string>, default?: int}>
+     */
+    public function getPublicPages(): array
+    {
+        return [
+            'page' => ['routes' => ['plugin1_public_page']],
+        ];
+    }
+
+    /**
+     * Get the label of a declared public page
+     *
+     * @param string $id Page identifier
+     */
+    public function getPublicPageLabel(string $id): string
+    {
+        return 'Plugin one page';
     }
 
     /**

@@ -471,7 +471,8 @@ class Preferences
         $complete = [];
 
         foreach ($this->getFieldsNames() as $fieldname) {
-            if (PreferencesSchema::getOwner($fieldname) !== null) {
+            $public_page = PreferencesSchema::isPublicPage($fieldname);
+            if (PreferencesSchema::getOwner($fieldname) !== null && !$public_page) {
                 //declared by a plugin: it is never part of the core form, and
                 //taking it as missing would blank it on every save
                 continue;
@@ -479,7 +480,9 @@ class Preferences
 
             if (isset($values[$fieldname])) {
                 $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
-            } elseif (PreferencesSchema::isAdvanced($fieldname)) {
+            } elseif (PreferencesSchema::isAdvanced($fieldname) || $public_page) {
+                //a visibility has no empty value, and a plugin page is only on
+                //the form while its plugin is active
                 $value = $this->prefs[$fieldname];
             } else {
                 $value = "";

@@ -341,7 +341,7 @@ class Plugins
     }
 
     /**
-     * Register the preferences a module declares
+     * Register the preferences and public pages a module declares
      *
      * @param string $id Module ID
      *
@@ -355,11 +355,19 @@ class Plugins
         }
 
         $plugin = $this->container->get($class);
-        if (!$plugin instanceof Plugins\PreferencesProviderInterface) {
+        if (
+            !$plugin instanceof Plugins\PreferencesProviderInterface
+            && !$plugin instanceof Plugins\PublicPagesProviderInterface
+        ) {
             return false;
         }
 
-        PreferencesSchema::register($this->modules[$id]['route'], $plugin->getPreferences());
+        //a registration replaces the previous one: both go in a single call
+        PreferencesSchema::register(
+            $this->modules[$id]['route'],
+            $plugin instanceof Plugins\PreferencesProviderInterface ? $plugin->getPreferences() : [],
+            $plugin instanceof Plugins\PublicPagesProviderInterface ? $plugin->getPublicPages() : []
+        );
         return true;
     }
 
