@@ -16,6 +16,7 @@ use Safe\DateTime;
 
 use function Safe\copy;
 use function Safe\filesize;
+use function Safe\preg_match;
 
 /**
 * Galette controller tests
@@ -159,6 +160,18 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Galette"', $body);
 
+        //public pages visibilities: the default one has nothing to inherit from
+        $generic = $this->getSelect($body, 'pref_publicpages_visibility_generic');
+        $this->assertStringContainsString('aria-describedby="pref_publicpages_visibility_generic-tip"', $generic);
+        $this->assertStringNotContainsString('>Inherit<', $generic);
+        $this->assertStringContainsString(
+            'value="' . \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED . '" selected="selected"',
+            $generic
+        );
+        $documents = $this->getSelect($body, 'pref_publicpages_visibility_documents');
+        $this->assertSame(5, substr_count($documents, '<option '));
+        $this->assertStringContainsString('>Inherit<', $documents);
+
         //simulate error while saving, values are kept in session
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
@@ -166,6 +179,23 @@ class GaletteController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Name from test suite"', $body);
+    }
+
+    /**
+     * Get a select element out of a rendered page
+     *
+     * @param string $body Rendered page
+     * @param string $name Select name
+     */
+    private function getSelect(string $body, string $name): string
+    {
+        $matches = [];
+        $this->assertSame(
+            1,
+            preg_match('/<select name="' . $name . '".*?<\/select>/s', $body, $matches),
+            $name . ' is not rendered'
+        );
+        return $matches[0];
     }
 
     /**

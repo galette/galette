@@ -374,8 +374,10 @@ class PreferencesSchema extends GaletteTestCase
                 continue;
             }
 
+            //a visibility is rendered through a shared component, so its name
+            //is not spelt out here; completeValues() never blanks one either
             $this->assertTrue(
-                Schema::isAdvanced($name) || Schema::isReadOnly($name),
+                Schema::isAdvanced($name) || Schema::isReadOnly($name) || Schema::isPublicPage($name),
                 $name . ' is not on the settings form and is not flagged as advanced,'
                 . ' so saving the form would blank it'
             );
