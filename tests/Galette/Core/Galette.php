@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\MenuProviderInterface;
+use Galette\Core\Plugins\PublicPagesProviderInterface;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
@@ -260,6 +263,92 @@ class Galette extends GaletteTestCase
 
         $menus = \Galette\Core\Galette::getPublicMenus();
         $this->assertCount(1, $menus);
+    }
+
+    /**
+     * A plugin declaring its public pages shows each entry as its page allows
+     *
+     * The routes are the ones plugin-test1 declares or leaves undeclared.
+     */
+    public function testDeclaredPluginPublicMenus(): void
+    {
+        //the global preferences and login getPublicMenuItems() reads are the
+        //ones setUp() made
+        $page = 'pref_plugin1_publicpages_visibility_page';
+
+        $plugin = new class extends GalettePlugin implements MenuProviderInterface, PublicPagesProviderInterface {
+            /**
+             * Get plugins menus
+             *
+             * @return array<string, string|array<string,mixed>>
+             */
+            public function getMenus(): array
+            {
+                return [];
+            }
+
+            /**
+             * Get plugins public menus
+             *
+             * @return array<int, string|array<string,mixed>>
+             */
+            public function getPublicMenus(): array
+            {
+                return [
+                    ['label' => 'Declared', 'route' => ['name' => 'plugin1_public_page']],
+                    ['label' => 'Undeclared', 'route' => ['name' => 'plugin1_public_other']],
+                    [
+                        'label' => 'Parent',
+                        'children' => [
+                            ['label' => 'Child', 'route' => ['name' => 'plugin1_public_page']],
+                        ],
+                    ],
+                ];
+            }
+
+            /**
+             * Get the public pages the plugin declares
+             *
+             * @return array<string, array{routes: list<string>, default?: int}>
+             */
+            public function getPublicPages(): array
+            {
+                return [];
+            }
+
+            /**
+             * Get the label of a declared public page
+             *
+             * @param string $id Page identifier
+             */
+            public function getPublicPageLabel(string $id): string
+            {
+                return $id;
+            }
+        };
+
+        $labels = fn(): array => array_column($plugin->getPublicMenuItems(), 'label');
+
+        $this->preferences->pref_bool_publicpages = true;
+        $this->preferences->pref_publicpages_visibility_generic = \Galette\Enums\PublicPageVisibility::Hidden->value;
+        $this->assertTrue(
+            $this->preferences->setValue($page, \Galette\Enums\PublicPageVisibility::Everyone->value, $this->login)
+        );
+
+        try {
+            //the default visibility no longer hides everything
+            $this->assertSame(['Declared', 'Parent'], $labels());
+
+            //a parent left without children goes too
+            $this->preferences->setValue($page, \Galette\Enums\PublicPageVisibility::Hidden->value, $this->login);
+            $this->assertSame([], $labels());
+
+            $this->preferences->pref_publicpages_visibility_generic = \Galette\Enums\PublicPageVisibility::Everyone->value;
+            $this->assertSame(['Undeclared'], $labels());
+        } finally {
+            $this->preferences->resetValue($page, $this->login);
+            $this->preferences->load();
+        }
     }
 
     /**

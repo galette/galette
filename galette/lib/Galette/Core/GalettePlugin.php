@@ -55,21 +55,63 @@ abstract class GalettePlugin implements Plugins\InstallableInterface
     {
         global $preferences, $login;
 
-        $menus = [];
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_plugins')) {
-            if ($this instanceof Plugins\MenuProviderInterface) {
-                $menus = $this->getPublicMenus();
-            } elseif (method_exists($this, 'getPublicMenusItemsList')) {
-                Analog::log(
-                    static::class . '::getPublicMenusItemsList() is deprecated, please implement MenuProviderInterface',
-                    Analog::WARNING
-                );
-                /** @phpstan-ignore staticMethod.notFound */
-                $menus = static::getPublicMenusItemsList();
-            }
+        //a plugin declaring its pages gives each entry a visibility of its
+        //own; the others all follow the default one
+        $declares = $this instanceof Plugins\PublicPagesProviderInterface;
+        if (!$declares && !$preferences->showPublicPage($login, 'pref_publicpages_visibility_generic')) {
+            return [];
         }
 
-        return $menus;
+        $menus = [];
+        if ($this instanceof Plugins\MenuProviderInterface) {
+            $menus = $this->getPublicMenus();
+        } elseif (method_exists($this, 'getPublicMenusItemsList')) {
+            Analog::log(
+                static::class . '::getPublicMenusItemsList() is deprecated, please implement MenuProviderInterface',
+                Analog::WARNING
+            );
+            /** @phpstan-ignore staticMethod.notFound */
+            $menus = static::getPublicMenusItemsList();
+        }
+
+        return $declares ? $this->filterPublicMenuItems($menus, $preferences, $login) : $menus;
+    }
+
+    /**
+     * Keep the public menu entries the current user may see
+     *
+     * An entry with children is kept as long as one of them is.
+     *
+     * @param array<int|string, string|array<string,mixed>> $items       Menu entries
+     * @param Preferences                                   $preferences Preferences instance
+     * @param Authentication                                $login       Authentication instance
+     *
+     * @return array<int|string, string|array<string,mixed>>
+     */
+    private function filterPublicMenuItems(array $items, Preferences $preferences, Authentication $login): array
+    {
+        $visible = [];
+        foreach ($items as $key => $item) {
+            if (!is_array($item)) {
+                $visible[$key] = $item;
+                continue;
+            }
+
+            if (isset($item['children']) && is_array($item['children'])) {
+                $item['children'] = $this->filterPublicMenuItems($item['children'], $preferences, $login);
+                if ($item['children'] === []) {
+                    continue;
+                }
+            } elseif (
+                !$preferences->showPluginPublicPage($login, (string)($item['route']['name'] ?? ''))
+            ) {
+                continue;
+            }
+
+            $visible[$key] = $item;
+        }
+
+        return array_is_list($items) ? array_values($visible) : $visible;
     }
 
     /**
