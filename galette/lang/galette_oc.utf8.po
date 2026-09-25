@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 10:34+0200\n"
+"POT-Creation-Date: 2026-09-25 04:07+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -3011,6 +3011,16 @@ msgstr "Pagina correnta (%1$s)"
 msgid "Switch locale to '%1$s'"
 msgstr ""
 
+#, fuzzy
+#| msgid "Galette requirements are met :)"
+msgid "Galette requires JavaScript"
+msgstr "Lei preliminars de Galeta son valables :)"
+
+msgid ""
+"JavaScript is disabled in your browser, and Galette requires it to work "
+"correctly."
+msgstr ""
+
 msgid "Version selection"
 msgstr "Seleccion de la version"
 
@@ -4093,9 +4103,6 @@ msgstr "Data d'escasença"
 
 msgid "Show public infos"
 msgstr "Mostrar leis informacions publicas"
-
-msgid "This feature requires javascript."
-msgstr ""
 
 msgid "Advanced groups search"
 msgstr "Recèrca avançada sus lei gropes"
@@ -6886,12 +6893,6 @@ msgstr ""
 msgid "Later"
 msgstr "Pus tard"
 
-msgid "Your telemetry data are more than one year old."
-msgstr "Vòstreis informacions de telemetria datan de mai d'un an."
-
-msgid "Do you want to send it again?"
-msgstr "Lei volètz tornar mandar ?"
-
 msgid "Password is valid :)"
 msgstr "Senhau valide :)"
 
@@ -7313,6 +7314,12 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
+
+msgid "Your telemetry data are more than one year old."
+msgstr "Vòstreis informacions de telemetria datan de mai d'un an."
+
+msgid "Do you want to send it again?"
+msgstr "Lei volètz tornar mandar ?"
 
 #~ msgid ""
 #~ "Please define constant \"GALETTE_URI\" with the path to your instance."

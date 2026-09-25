@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 10:34+0200\n"
+"POT-Creation-Date: 2026-09-25 04:07+0200\n"
 "PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -2942,6 +2942,16 @@ msgstr "தற்போதைய பக்கம் (%1$s)"
 msgid "Switch locale to '%1$s'"
 msgstr "இருப்பிடத்தை '%1$s' க்கு மாற்றவும்"
 
+#, fuzzy
+#| msgid "This feature requires javascript."
+msgid "Galette requires JavaScript"
+msgstr "இந்த அம்சத்திற்கு சாவாச்கிரிப்ட் தேவைப்படுகிறது."
+
+msgid ""
+"JavaScript is disabled in your browser, and Galette requires it to work "
+"correctly."
+msgstr ""
+
 msgid "Version selection"
 msgstr "பதிப்பு தேர்வு"
 
@@ -3999,9 +4009,6 @@ msgstr "இரண்டு தேதிகள்"
 
 msgid "Show public infos"
 msgstr "பொது இன்போசைக் காட்டு"
-
-msgid "This feature requires javascript."
-msgstr "இந்த அம்சத்திற்கு சாவாச்கிரிப்ட் தேவைப்படுகிறது."
 
 msgid "Advanced groups search"
 msgstr "மேம்பட்ட குழுக்கள் தேடல்"
@@ -6767,12 +6774,6 @@ msgstr ""
 msgid "Later"
 msgstr "பின்னர்"
 
-msgid "Your telemetry data are more than one year old."
-msgstr "உங்கள் டெலிமெட்ரி தரவு ஒரு வயதுக்கு மேற்பட்டவை."
-
-msgid "Do you want to send it again?"
-msgstr "அதை மீண்டும் அனுப்ப விரும்புகிறீர்களா?"
-
 msgid "Password is valid :)"
 msgstr "கடவுச்சொல் செல்லுபடியாகும் :)"
 
@@ -7183,6 +7184,12 @@ msgstr "'அனுப்பு' பொத்தானை அழுத்தி�
 
 msgid "An error occurred sending telemetry information :("
 msgstr "டெலிமெட்ரி தகவல்களை அனுப்புவதில் பிழை ஏற்பட்டது :("
+
+msgid "Your telemetry data are more than one year old."
+msgstr "உங்கள் டெலிமெட்ரி தரவு ஒரு வயதுக்கு மேற்பட்டவை."
+
+msgid "Do you want to send it again?"
+msgstr "அதை மீண்டும் அனுப்ப விரும்புகிறீர்களா?"
 
 #~ msgid ""
 #~ "Please define constant \"GALETTE_URI\" with the path to your instance."
