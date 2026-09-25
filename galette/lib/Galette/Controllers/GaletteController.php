@@ -30,6 +30,7 @@ use Galette\Core\TwoFactorAuth;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
+use Galette\Enums\PublicPageVisibility;
 use Galette\Filters\MembersList;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
@@ -207,6 +208,8 @@ class GaletteController extends AbstractController
                 'staff_members'         => $m->getStaffMembersList(as_members: true),
                 'time'                  => time(),
                 'pref'                  => $pref,
+                'visibility_choices'    => PublicPageVisibility::choices(),
+                'default_visibility_choices' => PublicPageVisibility::choices(inherit: false),
                 'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',
