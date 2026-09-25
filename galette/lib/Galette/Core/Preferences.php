@@ -1018,7 +1018,12 @@ class Preferences
 
         // now, check validity
         if ($value != '') {
+            $errors_count = count($this->errors);
             $value = $this->validateValue($name, $value);
+            if (count($this->errors) > $errors_count) {
+                //a refused value must not be served for the rest of the request
+                return;
+            }
         }
 
         //some values need to be changed (e.g., passwords)

@@ -607,6 +607,23 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     }
 
     /**
+     * Put a value in memory the way a stored row would bring it
+     *
+     * Assigning a preference validates it, and a refused value is dropped:
+     * this is for values validation refuses but storage may still hold.
+     *
+     * @param string $name  Preference name
+     * @param mixed  $value Raw value
+     */
+    protected function setRawPreference(string $name, mixed $value): void
+    {
+        $prefs = new \ReflectionProperty(\Galette\Core\Preferences::class, 'prefs');
+        $values = $prefs->getValue($this->preferences);
+        $values[$name] = $value;
+        $prefs->setValue($this->preferences, $values);
+    }
+
+    /**
      * Log-in as super administrator
      */
     protected function logSuperAdmin(): void

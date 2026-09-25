@@ -366,17 +366,18 @@ class AuthThrottleTest extends GaletteTestCase
     {
         $login = $this->createMember($this->dataAdherentOne())->login;
 
-        $this->preferences->pref_throttle_account_ip_attempts = 0;
-        $this->preferences->pref_throttle_ip_attempts = 0;
-        $this->preferences->pref_throttle_account_attempts = 0;
-        $this->preferences->pref_throttle_account_ip_window = 0;
-        $this->preferences->pref_throttle_ip_window = 0;
-        $this->preferences->pref_throttle_account_window = 0;
-        $this->preferences->pref_throttle_recovery_attempts = 0;
-        $this->preferences->pref_throttle_recovery_window = 0;
-        $this->preferences->pref_throttle_subscribe_attempts = 0;
-        $this->preferences->pref_throttle_subscribe_window = 0;
-        $this->preferences->pref_throttle_delay = 0;
+        //the schema refuses them, a row edited by hand does not
+        $this->setRawPreference('pref_throttle_account_ip_attempts', 0);
+        $this->setRawPreference('pref_throttle_ip_attempts', 0);
+        $this->setRawPreference('pref_throttle_account_attempts', 0);
+        $this->setRawPreference('pref_throttle_account_ip_window', 0);
+        $this->setRawPreference('pref_throttle_ip_window', 0);
+        $this->setRawPreference('pref_throttle_account_window', 0);
+        $this->setRawPreference('pref_throttle_recovery_attempts', 0);
+        $this->setRawPreference('pref_throttle_recovery_window', 0);
+        $this->setRawPreference('pref_throttle_subscribe_attempts', 0);
+        $this->setRawPreference('pref_throttle_subscribe_window', 0);
+        $this->setRawPreference('pref_throttle_delay', 0);
 
         for ($i = 0; $i < AuthThrottle::MIN_ATTEMPTS; $i++) {
             $this->throttle->recordFailure($login);

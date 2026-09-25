@@ -1013,7 +1013,8 @@ class Contribution extends GaletteTestCase
 
         //unset pref_beg_membership and pref_membership_ext
         $preferences->pref_beg_membership = '';
-        $preferences->pref_membership_ext = 0;
+        //refused by the schema, which requires at least one month
+        $this->setRawPreference('pref_membership_ext', 0);
 
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
