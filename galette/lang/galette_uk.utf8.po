@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 10:34+0200\n"
+"POT-Creation-Date: 2026-09-25 04:07+0200\n"
 "PO-Revision-Date: 2026-05-01 09:04+0000\n"
 "Last-Translator: Женя <prikhodkozheka2011@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -2985,6 +2985,16 @@ msgstr "Поточна сторінка (%1$s)"
 msgid "Switch locale to '%1$s'"
 msgstr "Змінити мову на \"%1$s\""
 
+#, fuzzy
+#| msgid "This feature requires javascript."
+msgid "Galette requires JavaScript"
+msgstr "Для цієї функції потрібен javascript."
+
+msgid ""
+"JavaScript is disabled in your browser, and Galette requires it to work "
+"correctly."
+msgstr ""
+
 msgid "Version selection"
 msgstr "Вибір версії"
 
@@ -4060,9 +4070,6 @@ msgstr "Кінцева дата"
 
 msgid "Show public infos"
 msgstr "Показати загальнодоступні дані"
-
-msgid "This feature requires javascript."
-msgstr "Для цієї функції потрібен javascript."
 
 msgid "Advanced groups search"
 msgstr "Розширений пошук груп"
@@ -6875,12 +6882,6 @@ msgstr ""
 msgid "Later"
 msgstr "Пізніше"
 
-msgid "Your telemetry data are more than one year old."
-msgstr "Вашим телеметричним даним більше одного року."
-
-msgid "Do you want to send it again?"
-msgstr "Надіслати їх знову?"
-
 msgid "Password is valid :)"
 msgstr "Пароль дійсний :)"
 
@@ -7301,6 +7302,12 @@ msgstr ""
 
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
+
+msgid "Your telemetry data are more than one year old."
+msgstr "Вашим телеметричним даним більше одного року."
+
+msgid "Do you want to send it again?"
+msgstr "Надіслати їх знову?"
 
 #~ msgid ""
 #~ "Please define constant \"GALETTE_URI\" with the path to your instance."

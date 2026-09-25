@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 10:34+0200\n"
+"POT-Creation-Date: 2026-09-25 04:07+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
@@ -2913,6 +2913,14 @@ msgstr ""
 msgid "Switch locale to '%1$s'"
 msgstr ""
 
+msgid "Galette requires JavaScript"
+msgstr ""
+
+msgid ""
+"JavaScript is disabled in your browser, and Galette requires it to work "
+"correctly."
+msgstr ""
+
 msgid "Version selection"
 msgstr ""
 
@@ -3914,9 +3922,6 @@ msgid "Due date"
 msgstr ""
 
 msgid "Show public infos"
-msgstr ""
-
-msgid "This feature requires javascript."
 msgstr ""
 
 msgid "Advanced groups search"
@@ -6554,12 +6559,6 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
-msgid "Your telemetry data are more than one year old."
-msgstr ""
-
-msgid "Do you want to send it again?"
-msgstr ""
-
 msgid "Password is valid :)"
 msgstr ""
 
@@ -6962,6 +6961,12 @@ msgid ""
 msgstr ""
 
 msgid "An error occurred sending telemetry information :("
+msgstr ""
+
+msgid "Your telemetry data are more than one year old."
+msgstr ""
+
+msgid "Do you want to send it again?"
 msgstr ""
 
 #~ msgid "Edit payment type"
