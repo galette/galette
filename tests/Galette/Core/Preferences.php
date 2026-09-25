@@ -245,6 +245,9 @@ class Preferences extends GaletteTestCase
             $this->preferences->getErrors()
         );
 
+        //the refused value is not kept in memory either
+        $this->assertNotSame(12, $this->preferences->pref_card_vsize);
+
         //nothing was stored
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertNotSame(12, $prefs->pref_card_vsize);
