@@ -15,6 +15,7 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\Adherent;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Status;
+use Galette\Enums\PublicPageVisibility;
 use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
@@ -97,6 +98,7 @@ final class PreferencesSchema
     public const string ERR_2FA_MODE = 'two_factor_mode';
     public const string ERR_THROTTLE_ATTEMPTS = 'throttle_attempts';
     public const string ERR_THROTTLE_SECONDS = 'throttle_seconds';
+    public const string ERR_PUBLIC_PAGE_VISIBILITY = 'public_page_visibility';
 
     /** @var array<int, string> Every type an entry may declare */
     private const array TYPES = [
@@ -280,6 +282,15 @@ final class PreferencesSchema
             'type' => self::TYPE_INT,
             'min' => 0,
             'error' => self::ERR_MEASURES,
+        ];
+
+        //a value out of the enum cannot be told apart from a bug, and makes
+        //Preferences::showPublicPage() throw on every page load
+        $visibility = [
+            'type' => self::TYPE_INT,
+            'min' => min(array_column(PublicPageVisibility::cases(), 'value')),
+            'max' => max(array_column(PublicPageVisibility::cases(), 'value')),
+            'error' => self::ERR_PUBLIC_PAGE_VISIBILITY,
         ];
 
         return [
@@ -479,30 +490,26 @@ final class PreferencesSchema
             'pref_card_self' => ['type' => self::TYPE_BOOL, 'default' => 1],
             'pref_theme' => ['type' => self::TYPE_STRING, 'default' => 'default'],
             'pref_bool_publicpages' => ['type' => self::TYPE_BOOL, 'default' => true],
+            //the default right has nothing to inherit from
             'pref_publicpages_visibility_generic' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+                'max' => PublicPageVisibility::Hidden->value,
+            ] + $visibility,
             'pref_publicpages_visibility_documents' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+            ] + $visibility,
             'pref_publicpages_visibility_memberslist' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+            ] + $visibility,
             'pref_publicpages_visibility_membersgallery' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+            ] + $visibility,
             'pref_publicpages_visibility_stafflist' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+            ] + $visibility,
             'pref_publicpages_visibility_staffgallery' => [
-                'type' => self::TYPE_INT,
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            ],
+            ] + $visibility,
             'pref_bool_groupsmanagers_are_staff' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_mail_sign' => [
                 //a signature may carry a link, and getMailSignature() hands
@@ -991,6 +998,8 @@ final class PreferencesSchema
             self::ERR_THROTTLE_ATTEMPTS => _T('- Value for \'%1$s\' must be %2$s attempts or more!'),
             //TRANS: first parameter is the setting name, second the lowest value it takes
             self::ERR_THROTTLE_SECONDS => _T('- Value for \'%1$s\' must be %2$s seconds or more!'),
+            //TRANS: parameter is the setting name
+            self::ERR_PUBLIC_PAGE_VISIBILITY => _T('- Unknown visibility for \'%1$s\'!'),
             default => throw new \InvalidArgumentException(sprintf('Unknown error identifier "%s".', $id)),
         };
 

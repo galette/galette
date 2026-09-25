@@ -34,6 +34,31 @@ enum PublicPageVisibility: int
     case Inherit = 4;
 
     /**
+     * Get the choices offered on the settings form, value => label
+     *
+     * Order is the one the form has always shown.
+     *
+     * @param bool $inherit Whether inheriting is offered; the default right
+     *                      has nothing to inherit from
+     *
+     * @return array<int, string>
+     */
+    public static function choices(bool $inherit = true): array
+    {
+        $choices = [];
+        if ($inherit) {
+            $choices[self::Inherit->value] = _T("Inherit");
+        }
+
+        return $choices + [
+            self::Hidden->value => _T("Hidden"),
+            self::Everyone->value => _T("Everyone"),
+            self::UpToDateMembers->value => _T("Up to date members"),
+            self::StaffOnly->value => _T("Admin and staff only"),
+        ];
+    }
+
+    /**
      * Is the page visible to that user?
      *
      * Inheriting has no answer of its own, so the caller supplies the generic
