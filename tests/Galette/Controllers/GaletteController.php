@@ -172,6 +172,17 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame(5, substr_count($documents, '<option '));
         $this->assertStringContainsString('>Inherit<', $documents);
 
+        //plugin-test1 declares a public page: it is offered with the core ones
+        $plugin = $this->getSelect($body, 'pref_plugin1_publicpages_visibility_page');
+        $this->assertStringContainsString(
+            '<label for="pref_plugin1_publicpages_visibility_page">Plugin one page (Galette Test1 Plugin)</label>',
+            $body
+        );
+        $this->assertStringContainsString(
+            'value="' . \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT . '" selected="selected"',
+            $plugin
+        );
+
         //simulate error while saving, values are kept in session
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
@@ -276,6 +287,35 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertEquals(301, $test_response->getStatusCode());
         $preferences = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame('Galette', $preferences->pref_nom);
+    }
+
+    /**
+     * A plugin public page visibility is saved from the core settings form
+     */
+    public function testStorePluginPublicPage(): void
+    {
+        $name = 'pref_plugin1_publicpages_visibility_page';
+        $this->logSuperAdmin();
+
+        $request = $this->createRequest('store-preferences', [], 'POST')->withParsedBody(
+            [$name => (string)\Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN, 'valid' => 1]
+            + $this->postedDefaults()
+        );
+
+        try {
+            $test_response = $this->app->handle($request);
+            $this->assertEquals(301, $test_response->getStatusCode());
+            $this->expectNoLogEntry();
+            $this->expectFlashData(['success_detected' => ['Preferences has been saved.']]);
+
+            $preferences = new \Galette\Core\Preferences($this->zdb);
+            $this->assertSame(
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN,
+                $preferences->getPluginValue($name)
+            );
+        } finally {
+            $this->preferences->resetValue($name, $this->login);
+        }
     }
 
     /**
