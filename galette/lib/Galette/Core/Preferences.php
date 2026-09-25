@@ -841,6 +841,24 @@ class Preferences
     }
 
     /**
+     * Is a plugin public page visible?
+     *
+     * The page is found by the name of one of its routes; a route its plugin
+     * did not declare follows the default visibility, as any plugin page did
+     * before plugins could declare them.
+     *
+     * @param Authentication $login      Authentication instance
+     * @param string         $route_name Route name
+     */
+    public function showPluginPublicPage(Authentication $login, string $route_name): bool
+    {
+        return $this->showPublicPage(
+            login: $login,
+            right: PreferencesSchema::getPublicPageRight($route_name) ?? 'pref_publicpages_visibility_generic'
+        );
+    }
+
+    /**
      * Global getter method
      *
      * @param string $name name of the property we want to retrieve
