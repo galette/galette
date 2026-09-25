@@ -12,10 +12,13 @@ namespace Galette\Middleware;
 
 use Galette\Core\Login;
 use Galette\Core\Preferences;
+use Galette\Core\PreferencesSchema;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Flash\Messages;
+use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
 /**
@@ -51,6 +54,44 @@ class PublicPages
     {
         $response = new \Slim\Psr7\Response();
 
+        $right = $this->getDeclaredRight($request) ?? $this->getPathRight($request);
+
+        if (!$this->preferences->showPublicPage($this->login, $right)) {
+            $this->flash->addMessage('error_detected', _T("Unauthorized"));
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                )->withStatus(302);
+        }
+
+        return $handler->handle($request);
+    }
+
+    /**
+     * Get the visibility a plugin declared for the current route, if any
+     *
+     * @param Request $request PSR7 request
+     */
+    private function getDeclaredRight(Request $request): ?string
+    {
+        $route = $request->getAttribute(RouteContext::ROUTE);
+        if (!$route instanceof RouteInterface || $route->getName() === null) {
+            return null;
+        }
+
+        return PreferencesSchema::getPublicPageRight($route->getName(), $route->getPattern());
+    }
+
+    /**
+     * Guess the visibility of the current page from its path
+     *
+     * A right that does not exist falls back to the default one.
+     *
+     * @param Request $request PSR7 request
+     */
+    private function getPathRight(Request $request): string
+    {
         $right_pattern = 'pref_publicpages_visibility_%s%s';
         $current_path = trim($request->getUri()->getPath(), '/');
         $page = explode('/', $current_path);
@@ -70,15 +111,6 @@ class PublicPages
             );
         }
 
-        if (!$this->preferences->showPublicPage($this->login, $right)) {
-            $this->flash->addMessage('error_detected', _T("Unauthorized"));
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                )->withStatus(302);
-        }
-
-        return $handler->handle($request);
+        return $right;
     }
 }
