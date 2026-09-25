@@ -7,6 +7,7 @@
 {% if object.getDynamicFields() is not empty %}
     {% set fields = object.getDynamicFields().getFields() %}
     {% set masschange = masschange ?? false %}
+    {% set accordion = accordion ?? true %}
 
     {% if fields is not empty %}
 
@@ -131,12 +132,14 @@
             {% endif %}
         {% endmacro %}
 
+        {% if accordion %}
         <div class="ui styled fluid accordion field">
             <div class="active title">
                 <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Additionnal fields:") }}
             </div>
             <div class="active content field">
+        {% endif %}
                 <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                 {% set access_level = login.getAccessLevel() %}
                 {% for field in fields %}
@@ -206,8 +209,10 @@
                     {% endif %}
                 {% endfor %}
                 </div>
+        {% if accordion %}
             </div>
         </div>
+        {% endif %}
         {% if not masschange %}
             <script type="text/javascript">
                 $(function() {

@@ -1159,8 +1159,12 @@
                 </div>
             </div>
 {% else %}
-            {% include "components/dynamic_fields.html.twig" with {'object': preferences} %}
+            {% include "components/dynamic_fields.html.twig" with {
+                'object': preferences,
+                'accordion': false
+            } %}
 {% endif %}
+            <div class="ui divider"></div>
             <div class="ui basic fitted segment">
                 <a
                     href="{{ url_for('configureDynamicFields', {'form_name': 'prefs'}) }}"
