@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-25 04:07+0200\n"
-"PO-Revision-Date: 2026-09-24 19:17+0000\n"
+"PO-Revision-Date: 2026-09-25 22:08+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -860,7 +860,7 @@ msgid "Authentication attempts"
 msgstr "Tentatives d'authentification"
 
 msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
+msgstr "Voir ce qui serait refusé après les échecs répétés, et les lever"
 
 msgid "Plugins"
 msgstr "Plugins"
@@ -1762,10 +1762,8 @@ msgstr "Le plugin %1$s a été désactivé"
 msgid "You must provide both login and password."
 msgstr "Vous devez fournir un identifiant et un mot de passe."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication throttled"
-msgstr "Échec de l’authentification"
+msgstr "Limitation des tentatives d'authentification"
 
 msgid "A new Galette release is available."
 msgstr "Une nouvelle version de Galette est disponible."
@@ -1813,10 +1811,8 @@ msgstr ""
 msgid "Too many requests. Please try again later."
 msgstr "Trop de tentatives. Veuillez réessayer plus tard."
 
-#, fuzzy
-#| msgid "Password recovery"
 msgid "Password recovery throttled"
-msgstr "Récupération de mot de passe"
+msgstr "Limitation des tentatives de récupération de mot de passe"
 
 #, php-format
 msgid "Email sent to '%s' for password recovery."
@@ -1879,20 +1875,16 @@ msgid "Your password has been changed!"
 msgstr "Votre mot de passe a été changé !"
 
 msgid "All authentication counters have been lifted."
-msgstr ""
+msgstr "Tous les compteurs d'authentification ont été levés."
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "The counter has been lifted."
-msgstr "Le compte de l’adhérent a été modifié avec succès."
+msgstr "Le compteur a été levé."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication counters lifted"
-msgstr "Échec de l’authentification"
+msgstr "Les compteurs d'authentifications ont été levés"
 
 msgid "Nothing to lift; it may have expired on its own."
-msgstr ""
+msgstr "Rien à lever ; il est possible qu'ils aient expirés d'eux-mêmes."
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -1952,10 +1944,9 @@ msgid "Cannot remove '%1$s' from disk :/"
 msgstr "Impossible de supprimer « %1$s » du disque :/"
 
 #. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
-#, fuzzy, php-format
-#| msgid "New occurrence"
+#, php-format
 msgid "%1$s (occurrence %2$s)"
-msgstr "Nouvelle occurrence"
+msgstr "%1$s (occurrence %2$s)"
 
 msgid "CSV import model"
 msgstr "Modèle d’import CSV"
@@ -2224,7 +2215,7 @@ msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
 msgid "The mailing could not be queued, nothing has been sent."
-msgstr ""
+msgstr "L'envoi n'a pas pu être mis en queue, rien n'a été envoyé."
 
 #. TRANS: first parameter is the number of recipients reached, second the total
 #, php-format
@@ -2233,6 +2224,9 @@ msgid ""
 "stored, unsent, so you can check what has been delivered before sending it "
 "again."
 msgstr ""
+"L'envoi n'a été envoyé qu'à %1$s destinataire(s) sur %2$s. Il a été stocké, "
+"non envoyé, de sorte que vous puissiez vérifier ce qui a été délivré avant "
+"de l'envoyer à nouveau."
 
 msgid "Mailing has been successfully sent!"
 msgstr "L'envoi est parti avec succès !"
@@ -2247,10 +2241,8 @@ msgstr "Supprimer l'envoi %1$s"
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'envoi"
 
-#, fuzzy
-#| msgid "Sent mailings:"
 msgid "Sending mailing"
-msgstr "Envois passés :"
+msgstr "Lancer les envois"
 
 msgid "Back to members list"
 msgstr "Retour à la liste des adhérents"
@@ -2346,10 +2338,8 @@ msgstr "Supprimer le type de paiement %1$s"
 msgid "Subscription"
 msgstr "Inscription"
 
-#, fuzzy
-#| msgid "Self subscription enabled?"
 msgid "Self subscription throttled"
-msgstr "Auto-enregistrement actif ?"
+msgstr "Limitation des tentatives d'auto enregistrement"
 
 msgid "Profile"
 msgstr "Profil"
@@ -2991,15 +2981,15 @@ msgstr "Langue courante « %1$s »"
 msgid "Switch locale to '%1$s'"
 msgstr "Changer la langue pour « %1$s »"
 
-#, fuzzy
-#| msgid "This feature requires javascript."
 msgid "Galette requires JavaScript"
-msgstr "Cette fonctionnalité nécessite javascript."
+msgstr "Galette requiert javascript"
 
 msgid ""
 "JavaScript is disabled in your browser, and Galette requires it to work "
 "correctly."
 msgstr ""
+"JavaScript est désactivé dans votre navigateur Internet, et Galette en a "
+"besoin pour fonctionner correctement."
 
 msgid "Version selection"
 msgstr "Sélection de la version"
@@ -4523,20 +4513,22 @@ msgstr ""
 "dans les préférences, qui est également d'où il est nettoyé de si vous "
 "perdez votre appareil. Gardez un accès à la base de données à portée de main."
 
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable"
-msgstr "Désactivé"
+msgstr "Désactiver"
 
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
 msgstr ""
+"L'authentification à deux facteurs est requise sur cette instance : "
+"désactiver le demandera de nouveau à votre prochaine connexion."
 
 msgid ""
 "A code is required to disable it, so that nobody else can turn it off from "
 "your session."
 msgstr ""
+"Un code est nécessaire pour la désactiver, afin que personne d'autre ne "
+"puisse le faire depuis votre session."
 
 msgid "Disable two-factor authentication"
 msgstr "Désactiver l'authentification à deux facteurs"
@@ -4548,11 +4540,15 @@ msgid ""
 "It is required on this instance: you will be asked to enable it to keep "
 "using your account."
 msgstr ""
+"Elle est nécessaire sur cette instance : il vous sera demandé de l'activer "
+"pour continuer à utiliser votre compte."
 
 msgid ""
 "Adding a code from an application on your phone makes a stolen password "
 "useless on its own."
 msgstr ""
+"L'ajout d'un code depuis une application sur votre téléphone rend un mot de "
+"passe volé inutile."
 
 msgid "Sending in progress…"
 msgstr "Envoi en cours…"
@@ -4560,13 +4556,11 @@ msgstr "Envoi en cours…"
 msgid "Sent"
 msgstr "Envoyé"
 
-#, fuzzy
-#| msgid "Warning"
 msgid "Remaining"
-msgstr "Attention"
+msgstr "Restants"
 
 msgid "Failed"
-msgstr ""
+msgstr "Échoués"
 
 msgid "Recipients"
 msgstr "Destinataires"
@@ -4584,15 +4578,15 @@ msgid "Sending is over, but %1$s recipient(s) could not be reached."
 msgstr ""
 "L'envoi est terminé, mais %1$s destinataire(s) n'a pas pu être atteint."
 
-#, fuzzy
-#| msgid "Mailing has been successfully deleted!"
 msgid "Sending has been successfully completed!"
-msgstr "L'envoi a été supprimé avec succès !"
+msgstr "L'envoi a été complété avec succès !"
 
 msgid ""
 "Sending rate limit reached. Sending will resume later (reopen this page or "
 "drain the queue from a cron job)."
 msgstr ""
+"La limite d'envoi est atteinte. L'envoi reprendra plus tard (rouvrez cette "
+"page ou traitez la queue depuis un cron)."
 
 msgid "An error occurred while sending. You may retry."
 msgstr "Une erreur est survenue lors de l'envoi. Vous pouvez réessayer."
@@ -4717,7 +4711,7 @@ msgid "No fields to translate."
 msgstr "Aucun libellé à traduire."
 
 msgid "Enter the code shown by your authentication application."
-msgstr ""
+msgstr "Entrez le code indiqué par votre application d'authentification."
 
 msgid "Code:"
 msgstr "Code :"
@@ -4727,11 +4721,10 @@ msgstr "Valider"
 
 msgid "Lost your device? Enter one of your recovery codes above instead."
 msgstr ""
+"Appareil perdu ? Entrez un de vos codes de récupération ci-dessus à la place."
 
-#, fuzzy
-#| msgid "Cancel mailing"
 msgid "Cancel and log off"
-msgstr "Annuler l'envoi"
+msgstr "Annuler et déconnecter"
 
 msgid "Filename"
 msgstr "Nom du fichier"
@@ -4950,15 +4943,18 @@ msgid "Please make sure to select one file to upload."
 msgstr "Assurez-vous de sélectionner au moins un fichier à envoyer."
 
 msgid "Write these codes down now"
-msgstr ""
+msgstr "Écrivez ces codes maintenant"
 
 msgid ""
 "They are shown this once and cannot be displayed again. Each one works a "
 "single time, and lets you log in when you no longer have your device."
 msgstr ""
+"Ils ne sont affichés qu'une fois et ne peuvent plus être affichés ensuite. "
+"Chacun fonctionne une seule fois, et vous permet de vous connecter lorsque "
+"vous n'avez plus votre appareil."
 
 msgid "I have written them down"
-msgstr ""
+msgstr "Je les ai écrits"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4974,11 +4970,11 @@ msgid ""
 "Clear this member's two-factor authentication, for instance after they lost "
 "both their device and their recovery codes."
 msgstr ""
+"Effacer l'authentification à deux facteurs de cet adhérent, par exemple "
+"après qu'il ait perdu son appareil et ses codes de récupération."
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Reset two-factor authentication"
-msgstr "Utiliser l’authentification SMTP ?"
+msgstr "Réinitialiser l'authentification à deux facteurs"
 
 msgid "Generate Member Card"
 msgstr "Générer la carte de membre"
@@ -5551,7 +5547,7 @@ msgid "SMTP (or GMail) password:"
 msgstr "Mot de passe SMTP (ou GMail) :"
 
 msgid "Leave empty to keep the current one"
-msgstr ""
+msgstr "Laisser vide pour conserver l'actuel"
 
 msgid "Test connection"
 msgstr "Tester la connexion"
@@ -5684,27 +5680,26 @@ msgid ""
 "who have to hold one are sent to enrolment at their next login; switching "
 "back to disabled lets everyone in again without a code."
 msgstr ""
+"Demande un code d'une application sur le téléphone de l'adhérent en plus de "
+"son mot de passe, de sorte qu'un mot de passe volé ne suffise pas seul. Les "
+"adhérents qui doivent en entrer un sont redirigés à pour le configurer à "
+"leur prochaine connexion ; le passer à désactivé laisse à nouveau tout le "
+"monde sans code."
 
-#, fuzzy
-#| msgid "Use SMTP authentication?"
 msgid "Two-factor authentication:"
-msgstr "Utiliser l’authentification SMTP ?"
+msgstr "Authentification à deux facteurs :"
 
-#, fuzzy
-#| msgid "None (default)"
 msgid "Disabled (default)"
-msgstr "Aucun (défaut)"
+msgstr "Désactivée (défaut)"
 
 msgid "Optional, each member decides"
-msgstr ""
+msgstr "Optionnelle, chaque adhérent décide"
 
 msgid "Required for administrators and staff"
-msgstr ""
+msgstr "Requise pour les administrateurs et membres du bureau"
 
-#, fuzzy
-#| msgid "Required field!"
 msgid "Required for everyone"
-msgstr "Champ obligatoire !"
+msgstr "Requise pour tous"
 
 msgid "Password length:"
 msgstr "Longueur du mot de passe :"
@@ -5842,24 +5837,26 @@ msgid ""
 "Install an authentication application, for instance FreeOTP, Aegis or "
 "KeePassXC."
 msgstr ""
+"Installez une application d'authentification, par exemple FreeOTP, Aegis ou "
+"KeePassXC."
 
 msgid "Scan the code below with it, or type the key in by hand."
-msgstr ""
+msgstr "Scannez le code ci-dessous, ou entrez la clé à la main."
 
 msgid "Enter the code it then shows, to confirm it works."
-msgstr ""
+msgstr "Entrez le code affiché, pour confirmer que cela fonctionne."
 
 msgid "QR code to register the key in an authentication application"
-msgstr ""
+msgstr "Code QR pour enregistrer la clé dans une application d'authentification"
 
 msgid "Key, to type in by hand:"
-msgstr ""
+msgstr "Clé, à entrer à la main :"
 
 msgid "Code shown by the application:"
-msgstr ""
+msgstr "Code affiché par l'application :"
 
 msgid "Confirm and enable"
-msgstr ""
+msgstr "Confirmer et activer"
 
 msgid "Experimental feature. Be careful using it."
 msgstr "Fonctionnalité expérimentale. Soyez très prudent en l'utilisant."
@@ -5902,6 +5899,8 @@ msgid ""
 "Held as a secret: its value is never displayed, and it is changed from the "
 "settings form."
 msgstr ""
+"Enregistré comme secret : sa valeur n'est jamais affichée, et peut être "
+"changée à partir du formulaire de paramètres."
 
 msgid "secret"
 msgstr "secret"
@@ -5909,10 +5908,8 @@ msgstr "secret"
 msgid "default"
 msgstr "défaut"
 
-#, fuzzy
-#| msgid "Modified"
 msgid "modified"
-msgstr "modifié"
+msgstr "modifiée"
 
 #, php-format
 msgid "Declared by the %s plugin, and only while it stays active."
@@ -5947,6 +5944,9 @@ msgid ""
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
 msgstr ""
+"Galette les lit depuis %s, donc ils ne peuvent pas être modifiés d'ici. Le "
+"entrées dépréciées sont toujours déclarées ici bien qu'un réglage ci-dessus "
+"le remplace, et annule ce réglage jusqu'à ce que vous le supprimiez."
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
@@ -5971,6 +5971,8 @@ msgstr "Non changée : la valeur livrée avec Galette."
 msgid ""
 "Changed from the default, here or from the settings form. It can be reset."
 msgstr ""
+"Changée de sa valeur par défaut, ici ou depuis le formulaire des "
+"préférences. Peut être réinitialisée."
 
 msgid ""
 "Galette maintains this value itself, such as a generated identifier or a "
@@ -6008,33 +6010,36 @@ msgid ""
 "the setting becomes unknown again, keeping its value until the plugin comes "
 "back."
 msgstr ""
+"Déclarée par ce plugin plutôt que par Galette. Désactiver le plugin rend les "
+"paramètres de nouveau inconnus, conservant ses valeurs jusqu'à son retour."
 
 msgid ""
 "Repeated failures get further attempts refused for a while. What is refused "
 "right now is listed below; lifting a line lets whoever it stands for try "
 "again at once."
 msgstr ""
+"Les échecs répétés alimentent les tentatives refusées pour un moment. Ce qui "
+"est actuellement refusé est affiché ci-dessous ; lever une ligne permet à la "
+"cible une nouvelle tentative."
 
 msgid "Thresholds and durations are in the settings."
-msgstr ""
+msgstr "Les seuils et les durées sont dans les paramètres."
 
 msgid "Nothing is being refused"
-msgstr ""
+msgstr "Rien n'est refusé"
 
 msgid ""
 "No account and no address is waiting; counters that can no longer refuse "
 "anyone are dropped on their own."
 msgstr ""
+"Aucun compte ni adresse en attente ; les compteurs qui ne peuvent plus "
+"refuser quiconque se suppriment tout seuls."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts currently refused"
-msgstr "Échec de l’authentification"
+msgstr "Échecs d'authentification actuellement refusés"
 
-#, fuzzy
-#| msgid "Emails content"
 msgid "What is counted"
-msgstr "Contenu des courriels"
+msgstr "Ce qui est compté"
 
 msgid "Account"
 msgstr "Compte"
@@ -6043,33 +6048,31 @@ msgid "Failures"
 msgstr "Échecs"
 
 msgid "Refused until"
-msgstr ""
+msgstr "Refusée jusqu ' à"
 
 msgid "Failed attempts on one account, from one address"
-msgstr ""
+msgstr "Tentatives échouées sur un compte, depuis une adresse"
 
 msgid "Failed attempts from one address, on any account"
-msgstr ""
+msgstr "Tentatives échouées depuis one adresse, sur n'importe quel compte"
 
 msgid "Failed attempts on one account, from anywhere"
-msgstr ""
+msgstr "Tentatives échouées sur un compte, depuis n'importe où"
 
 msgid "Password recovery requests for one account"
-msgstr ""
+msgstr "Requêtes de récupération de mot de passe pour un compte"
 
 msgid "Password recovery requests from one address"
-msgstr ""
+msgstr "Requêtes de récupération de mot de passe depuis une adresse"
 
-#, fuzzy
-#| msgid "Self subscription enabled?"
 msgid "Self subscriptions from one address"
-msgstr "Auto-enregistrement actif ?"
+msgstr "Auto-enregistrement depuis une adresse"
 
 msgid "Lift"
-msgstr ""
+msgstr "Lever"
 
 msgid "Lift them all"
-msgstr ""
+msgstr "Les lever toutes"
 
 msgid "Please confirm your email address:"
 msgstr "Veuillez confirmer votre adresse de courriel :"
@@ -6300,10 +6303,9 @@ msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
 "Afficher les détails de l'envoi « %1$s » dans la fenêtre de prévisualisation"
 
-#, fuzzy, php-format
-#| msgid "Delete mailing '%1$s'"
+#, php-format
 msgid "Follow the sending of mailing '%1$s'"
-msgstr "Supprimer l'envoi « %1$s »"
+msgstr "Suivre l'état de l'envoi '%1$s '"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
@@ -6781,7 +6783,7 @@ msgstr "Entrez autant d’occurrences que souhaité."
 
 #, php-format
 msgid "Add an occurrence of %1$s"
-msgstr ""
+msgstr "Ajouter une occurrence de %1$s"
 
 #, php-format
 msgid "Enter up to %1$s more occurrences."
@@ -6789,12 +6791,11 @@ msgstr "Entrez encore jusque %1$s occurrences."
 
 #, php-format
 msgid "Delete the file and remove this occurrence of %1$s"
-msgstr ""
+msgstr "Supprimer le fichier et supprimer cette occurrence de %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove title %1$s"
+#, php-format
 msgid "Remove this occurrence of %1$s"
-msgstr "Supprimer le titre %1$s"
+msgstr "Supprimer cet occurrence de %1$s"
 
 msgid "Select an option"
 msgstr "Sélectionnez une option"
@@ -6858,16 +6859,17 @@ msgstr "Une erreur est survenue lors de la récupération des adhérents :("
 msgid "An error occurred retrieving dates :("
 msgstr "Une erreur est survenue lors de la récupération des dates :("
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is available"
-msgstr "Échec de l’authentification"
+msgstr "L'authentification à deux facteurs est disponible"
 
 msgid ""
 "A code from an application on your telephone, on top of your password, means "
 "a stolen password is not enough on its own to reach your account. Do you "
 "want to set it up?"
 msgstr ""
+"Un code depuis application sur votre téléphone, en plus de votre mot de "
+"passe, signifie qu'un mot de passe volé n'est pas suffisant pour atteindre "
+"votre compte. Voulez-vous le configurer ?"
 
 msgid "Later"
 msgstr "Plus tard"
