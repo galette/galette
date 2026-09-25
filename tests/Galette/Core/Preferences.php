@@ -662,6 +662,73 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * A visibility out of the enum is refused, rather than stored and thrown
+     * on at every page load
+     */
+    public function testPublicPagesVisibilityIsBounded(): void
+    {
+        $this->preferences->load();
+
+        foreach ([5, -1, 'abc'] as $value) {
+            $this->assertFalse(
+                $this->preferences->setValue('pref_publicpages_visibility_documents', $value, $this->login),
+                var_export($value, return: true) . ' was accepted'
+            );
+            $this->assertSame(
+                ["- Unknown visibility for 'pref_publicpages_visibility_documents'!"],
+                $this->preferences->getErrors()
+            );
+        }
+
+        //the default right has nothing to inherit from
+        $this->assertFalse(
+            $this->preferences->setValue(
+                'pref_publicpages_visibility_generic',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+                $this->login
+            )
+        );
+        $this->assertSame(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+            $this->preferences->pref_publicpages_visibility_generic
+        );
+
+        //any other page may
+        $this->assertTrue(
+            $this->preferences->setValue(
+                'pref_publicpages_visibility_documents',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+                $this->login
+            ),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertTrue($this->preferences->resetValue('pref_publicpages_visibility_documents', $this->login));
+    }
+
+    /**
+     * The settings form offers every visibility, inheriting where it makes sense
+     */
+    public function testPublicPagesVisibilityChoices(): void
+    {
+        $this->assertSame(
+            [
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT => 'Inherit',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN => 'Hidden',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC => 'Everyone',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED => 'Up to date members',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE => 'Admin and staff only',
+            ],
+            \Galette\Enums\PublicPageVisibility::choices()
+        );
+
+        $this->assertArrayNotHasKey(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+            \Galette\Enums\PublicPageVisibility::choices(inherit: false)
+        );
+        $this->assertCount(4, \Galette\Enums\PublicPageVisibility::choices(inherit: false));
+    }
+
+    /**
      * Test a stored visibility that is not a plain integer
      *
      * Casting it would read as zero, that is "visible by everyone": a row
