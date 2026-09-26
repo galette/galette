@@ -12,6 +12,7 @@ namespace Galette\Core;
 
 use Galette\IO\File;
 use Galette\Util\Html;
+use PHPMailer\PHPMailer\SMTP;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -110,7 +111,7 @@ class GaletteMail
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
                 if (Galette::isDebugEnabled()) {
-                    $this->mail->SMTPDebug = 4;
+                    $this->mail->SMTPDebug = SMTP::DEBUG_CONNECTION;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468
                     $this->mail->Debugoutput = 'error_log';
