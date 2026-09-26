@@ -235,6 +235,9 @@ class Preferences
     /** @deprecated 1.3.0 Use PasswordStrength::VeryStrong */
     public const int PWD_VERY_STRONG = PasswordStrength::VeryStrong->value;
 
+    /** Superadmin credentials, only changed through storeAdminCredentials() */
+    private const array ADMIN_CREDENTIALS = ['pref_admin_login', 'pref_admin_pass'];
+
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
     /**
@@ -549,6 +552,11 @@ class Preferences
                 continue;
             }
 
+            //they have their own page, which asks for the current password
+            if (in_array($champ, self::ADMIN_CREDENTIALS, strict: true)) {
+                continue;
+            }
+
             if (
                 PreferencesSchema::getAcl($champ) === PreferencesSchema::ACL_SUPERADMIN
                 && !$login->isSuperAdmin()
@@ -609,12 +617,6 @@ class Preferences
                 $name
             );
             return false;
-        }
-
-        //some values need to be changed (e.g., passwords)
-        if ($name == 'pref_admin_pass') {
-            $this->validateValue($name, $value);
-            $value = password_hash((string)$value, PASSWORD_BCRYPT);
         }
 
         $required = $this->getRequiredFields($login);
@@ -698,6 +700,68 @@ class Preferences
         }
 
         return $this->setValue($name, self::defaults()[$name], $login);
+    }
+
+    /**
+     * Store the superadmin credentials
+     *
+     * Both are validated before anything is written, then written together: a
+     * refused password must not leave a changed login behind, nor the other
+     * way round.
+     *
+     * @param string $admin_login New superadmin login
+     * @param string $password    New superadmin password, empty to keep the current one
+     * @param Login  $login       Logged in user
+     */
+    public function storeAdminCredentials(string $admin_login, string $password, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!$login->isSuperAdmin()) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('You are not allowed to change preference \'%1$s\'!'),
+                'pref_admin_login'
+            );
+            return false;
+        }
+
+        if (Galette::isDemo()) {
+            $this->errors[] = _T("Application runs under demo mode. This functionnality is not enabled, sorry.");
+            return false;
+        }
+
+        $admin_login = (string)$this->validateValue('pref_admin_login', $admin_login, $login);
+
+        if ($password !== '') {
+            //the password is checked against the login it will go with
+            $current_login = $this->prefs['pref_admin_login'];
+            $this->prefs['pref_admin_login'] = $admin_login;
+            try {
+                $this->validateValue('pref_admin_pass', $password, $login);
+            } finally {
+                $this->prefs['pref_admin_login'] = $current_login;
+            }
+        }
+
+        if ($this->errors !== []) {
+            return false;
+        }
+
+        $values = [
+            'pref_admin_login' => $admin_login,
+            'pref_admin_pass' => $password === ''
+                ? $this->prefs['pref_admin_pass']
+                : password_hash($password, PASSWORD_BCRYPT),
+        ];
+
+        if (!$this->storage->updateMany(values: $values)) {
+            $this->errors[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
+            return false;
+        }
+
+        $this->prefs = array_merge($this->prefs, $values);
+        return true;
     }
 
     /**
@@ -1053,6 +1117,11 @@ class Preferences
                 //a refused value must not be served for the rest of the request
                 return;
             }
+        }
+
+        //some values need to be changed (e.g., passwords)
+        if ($name == 'pref_admin_pass') {
+            $value = password_hash((string)$value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value

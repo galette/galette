@@ -49,7 +49,6 @@ final class Relations
         $this->checkMembershipDates($insert_values);
         $this->checkOfferedMonths($insert_values);
         $this->checkRequiredValues($values, $required);
-        $this->checkPasswordConfirmation($values, $insert_values);
         $this->checkStaffMemberSource(
             insert_values: $insert_values,
             source_field: 'pref_postal_address',
@@ -186,25 +185,6 @@ final class Relations
                     $val
                 );
             }
-        }
-    }
-
-    /**
-     * Check the superadmin password against its confirmation
-     *
-     * Hashing happens later, in Preferences::__set().
-     *
-     * @param array<string, mixed> $values        Submitted values
-     * @param array<string, mixed> $insert_values Complete set of values
-     */
-    private function checkPasswordConfirmation(array $values, array $insert_values): void
-    {
-        if (
-            !Galette::isDemo()
-            && isset($values['pref_admin_pass_check'])
-            && strcmp((string)$insert_values['pref_admin_pass'], (string)$values['pref_admin_pass_check']) != 0
-        ) {
-            $this->errors[] = _T("Passwords mismatch");
         }
     }
 

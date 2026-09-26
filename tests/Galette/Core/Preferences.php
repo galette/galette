@@ -107,7 +107,7 @@ class Preferences extends GaletteTestCase
 
         //change password
         $new_pass = 'anoth3er_s3cr3t';
-        $prefs->pref_admin_pass = password_hash((string)$new_pass, PASSWORD_BCRYPT);
+        $prefs->pref_admin_pass = $new_pass;
         $pass = $prefs->pref_admin_pass;
         $pw_checked = password_verify($new_pass, $pass);
         $this->assertTrue($pw_checked);
@@ -1560,21 +1560,62 @@ class Preferences extends GaletteTestCase
     }
 
     /**
-     * Test admin password check
+     * The settings form does not change the superadmin credentials anymore
+     *
+     * They have their own page, which asks for the current password: a payload
+     * carrying them must not get around it.
      */
-    public function testAdminPassCheck(): void
+    public function testSettingsFormIgnoresAdminCredentials(): void
     {
-        $preferences = $this->postedDefaults();
+        $this->logSuperAdmin();
+        $stored_pass = $this->preferences->pref_admin_pass;
 
-        $post = array_merge($preferences, ['pref_admin_pass' => 'one', 'pref_admin_pass_check' => 'another']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Passwords mismatch'], $this->preferences->getErrors());
-
-        $post = array_merge($preferences, ['pref_admin_pass' => 'G@L3tt3', 'pref_admin_pass_check' => 'G@L3tt3']);
+        $post = array_merge(
+            $this->postedDefaults(),
+            [
+                'pref_admin_login' => 'GSuperUser',
+                'pref_admin_pass' => 'G@L3tt3',
+                'pref_admin_pass_check' => 'another'
+            ]
+        );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
             print_r($this->preferences->getErrors(), return: true)
         );
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+        $this->assertSame($stored_pass, $this->preferences->pref_admin_pass);
+    }
+
+    /**
+     * Test superadmin password change
+     */
+    public function testStoreAdminPassword(): void
+    {
+        $this->logSuperAdmin();
+        $stored_pass = $this->preferences->pref_admin_pass;
+
+        //a refused password leaves the login alone, even a valid one
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', 'abc', $this->login));
+        $this->assertSame(['Too short (6 characters minimum, 3 found)'], $this->preferences->getErrors());
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('admin', $prefs->pref_admin_login);
+        $this->assertSame($stored_pass, $prefs->pref_admin_pass);
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+
+        //the password must not be the login it goes with
+        $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::Weak->value;
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', 'GSuperUser', $this->login));
+        $this->assertContains('Do not use any of your personal information as password!', $this->preferences->getErrors());
+        $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::None->value;
+
+        $this->assertTrue(
+            $this->preferences->storeAdminCredentials('GSuperUser', 'an0th3r_s3cr3t', $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('GSuperUser', $prefs->pref_admin_login);
+        $this->assertTrue(password_verify('an0th3r_s3cr3t', $prefs->pref_admin_pass));
+        $this->assertTrue(password_verify('an0th3r_s3cr3t', $this->preferences->pref_admin_pass));
     }
 
     /**
@@ -1683,38 +1724,45 @@ class Preferences extends GaletteTestCase
      */
     public function testAdminLogin(): void
     {
-        $preferences = $this->postedDefaults();
+        $stored_pass = $this->preferences->pref_admin_pass;
 
-        //not superadmin, cannot change admin login nor password - ignored
-        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
-        $this->assertTrue(
-            $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), return: true)
+        //not superadmin, cannot change admin login nor password
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', '', $this->login));
+        $this->assertSame(
+            ["You are not allowed to change preference 'pref_admin_login'!"],
+            $this->preferences->getErrors()
         );
         $this->assertSame('admin', $this->preferences->pref_admin_login);
 
         $this->logSuperAdmin();
-        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['- The username must be composed of at least 4 characters!'], $this->preferences->getErrors());
-
-        $post = array_merge($preferences, ['pref_admin_login' => 'GSuperUser']);
-        $this->assertTrue(
-            $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), return: true)
-        );
+        foreach (['abc', ''] as $admin_login) {
+            $this->assertFalse($this->preferences->storeAdminCredentials($admin_login, '', $this->login));
+            $this->assertSame(
+                ['- The username must be composed of at least 4 characters!'],
+                $this->preferences->getErrors()
+            );
+        }
 
         $memberOne = $this->getMemberOne();
-        $post = array_merge($preferences, ['pref_admin_login' => $memberOne->login]);
-        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertFalse($this->preferences->storeAdminCredentials($memberOne->login, '', $this->login));
         $this->assertSame(['- This username is already used by another member !'], $this->preferences->getErrors());
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+
+        //an empty password keeps the current one
+        $this->assertTrue(
+            $this->preferences->storeAdminCredentials('GSuperUser', '', $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('GSuperUser', $prefs->pref_admin_login);
+        $this->assertSame($stored_pass, $prefs->pref_admin_pass);
     }
 
     /**
      * Test the superadmin login check runs on the caller's login
      *
-     * An instance built by hand has none injected; check() is given one and
-     * has to use it, or an already taken login would go through.
+     * An instance built by hand has none injected; storeAdminCredentials() is
+     * given one and has to use it, or an already taken login would go through.
      */
     public function testAdminLoginCheckedWithoutInjection(): void
     {
@@ -1722,10 +1770,7 @@ class Preferences extends GaletteTestCase
         $memberOne = $this->getMemberOne();
 
         $preferences = new \Galette\Core\Preferences($this->zdb);
-        $post = $preferences->getDefaults();
-        $post['pref_admin_login'] = $memberOne->login;
-
-        $this->assertFalse($preferences->check($post, $this->login));
+        $this->assertFalse($preferences->storeAdminCredentials($memberOne->login, '', $this->login));
         $this->assertContains(
             '- This username is already used by another member !',
             $preferences->getErrors()
