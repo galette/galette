@@ -14,6 +14,8 @@ $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',
     'unimpersonate'                     => 'member',
+    'adminCredentials'                  => 'superadmin',
+    'storeAdminCredentials'             => 'superadmin',
     '/(.+)?admin(.+)?/i'                => 'superadmin',
     '/(.+)?[aA]dvancedConfig(.+)?/i'    => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'admin',
