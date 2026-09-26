@@ -5,16 +5,21 @@
 /*----------------------
      Tooltips icons
 -----------------------*/
-i.circular.basic.question.icon.tooltip {
-  box-shadow: 0 0 0 .1em @textColor inset;
-  background: @white;
-
-  &:hover {
-    background: @galetteHeaderBackground;
-  }
-
-  .ui.form .field.error .corner.label & {
+i.circular.basic.question.icon {
+  button.btnlegend.ui.icon-only.link.button &,
+  &.tooltip {
+    box-shadow: 0 0 0 .1em @textColor inset;
+    background: @white;
     color: @textColor;
+    opacity: 1;
+
+    &:hover {
+      background: @galetteHeaderBackground;
+    }
+
+    .ui.form .field.error .corner.label & {
+      color: @textColor;
+    }
   }
 }
 

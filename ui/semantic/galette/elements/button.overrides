@@ -65,10 +65,10 @@ button.ui.icon-only.link.button,
   margin: 0;
   padding: 0;
   font-size: inherit;
-  i.icon {
+  &:not(.btnlegend) i.icon {
     color: @linkColor;
   }
-  &:hover i.icon {
+  &:not(.btnlegend):hover i.icon {
     color: @linkHoverColor;
   }
 }
