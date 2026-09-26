@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
+use Galette\Core\AuthThrottle;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\I18n;
@@ -272,6 +274,44 @@ abstract class AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $redirect_url);
+    }
+
+    /**
+     * Check the superadmin password asked again by a sensitive page
+     *
+     * A wrong one counts as a failed login on the superadmin account: an open
+     * session must not offer a way around the login throttle.
+     *
+     * @param string       $password    Submitted password
+     * @param AuthThrottle $throttle    Authentication throttle
+     * @param string       $failure_log What to log when the password is wrong
+     *
+     * @return string|null Error to report, null when the password is right
+     */
+    protected function checkSuperAdminPassword(
+        string $password,
+        AuthThrottle $throttle,
+        string $failure_log
+    ): ?string {
+        $admin_login = (string)$this->preferences->pref_admin_login;
+
+        $delay = $throttle->getRetryDelay($admin_login);
+        if ($delay > 0) {
+            $this->history->add(_T("Authentication throttled"), $admin_login);
+            Analog::log(
+                'Superadmin password check throttled, ' . $delay . ' seconds left.',
+                Analog::INFO
+            );
+            return _T("Too many failed attempts. Please try again later.");
+        }
+
+        if (!password_verify($password, (string)$this->preferences->pref_admin_pass)) {
+            $throttle->recordFailure($admin_login);
+            Analog::log($failure_log, Analog::WARNING);
+            return _T("Wrong password!");
+        }
+
+        return null;
     }
 
     /**

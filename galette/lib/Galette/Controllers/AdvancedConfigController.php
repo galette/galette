@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Galette\Controllers\Attributes\Route;
-use Analog\Analog;
+use Galette\Core\AuthThrottle;
 use Galette\Core\BehaviorConstants;
 use Galette\Core\PreferencesSchema;
 use Slim\Psr7\Request;
@@ -70,25 +70,20 @@ class AdvancedConfigController extends AbstractController
         pattern: '/advanced-config/confirm',
         methods: ['POST']
     )]
-    public function confirmAdvancedConfig(Request $request, Response $response): Response
+    public function confirmAdvancedConfig(Request $request, Response $response, AuthThrottle $throttle): Response
     {
         $post = $request->getParsedBody();
 
-        if (
-            !password_verify(
-                (string)($post['password'] ?? ''),
-                (string)$this->preferences->pref_admin_pass
-            )
-        ) {
-            Analog::log(
-                'Wrong password given to reach the advanced configuration page.',
-                Analog::WARNING
-            );
-
+        $error = $this->checkSuperAdminPassword(
+            (string)($post['password'] ?? ''),
+            $throttle,
+            'Wrong password given to reach the advanced configuration page.'
+        );
+        if ($error !== null) {
             return $this->redirect(
                 response: $response,
                 redirect_url: $this->routeparser->urlFor('advancedConfig'),
-                errors: [_T("Wrong password!")]
+                errors: [$error]
             );
         }
 

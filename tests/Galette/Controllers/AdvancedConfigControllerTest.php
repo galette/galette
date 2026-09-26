@@ -208,6 +208,42 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
     }
 
     /**
+     * Wrong passwords count as failed logins, and lock the page out
+     */
+    public function testWrongPasswordsAreThrottled(): void
+    {
+        $this->logSuperAdmin();
+        $this->assertTrue(
+            $this->preferences->setValue('pref_admin_pass', self::PASSWORD, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+
+        for ($i = 0; $i < $this->preferences->pref_throttle_account_ip_attempts; $i++) {
+            $request = $this->createRequest('confirmAdvancedConfig', method: 'POST')
+                ->withParsedBody(['password' => 'not the one']);
+            $this->app->handle($request);
+            $this->expectFlashData(['error_detected' => ['Wrong password!']]);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Wrong password given to reach the advanced configuration page.'
+            );
+        }
+
+        $throttle = new \Galette\Core\AuthThrottle($this->zdb, $this->preferences, clean: false);
+        $this->assertGreaterThan(0, $throttle->getRetryDelay($this->preferences->pref_admin_login));
+
+        //the right one is refused as well, until the delay has passed
+        $request = $this->createRequest('confirmAdvancedConfig', method: 'POST')
+            ->withParsedBody(['password' => self::PASSWORD]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['Too many failed attempts. Please try again later.']]);
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString('name="password"', $body);
+    }
+
+    /**
      * The confirmation expires, and writing is refused once it has
      */
     public function testConfirmationExpires(): void

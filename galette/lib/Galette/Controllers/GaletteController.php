@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
-use Analog\Analog;
+use Galette\Core\AuthThrottle;
 use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
@@ -348,7 +348,7 @@ class GaletteController extends AbstractController
         pattern: '/admin-credentials',
         methods: ['POST']
     )]
-    public function storeAdminCredentials(Request $request, Response $response): Response
+    public function storeAdminCredentials(Request $request, Response $response, AuthThrottle $throttle): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -359,17 +359,13 @@ class GaletteController extends AbstractController
         $password = (string)($post['pref_admin_pass'] ?? '');
         $confirmation = (string)($post['pref_admin_pass_check'] ?? '');
 
-        if (
-            !password_verify(
-                (string)($post['current_password'] ?? ''),
-                (string)$this->preferences->pref_admin_pass
-            )
-        ) {
-            Analog::log(
-                'Wrong current password given to change the superadmin credentials.',
-                Analog::WARNING
-            );
-            $error_detected[] = _T("Wrong password!");
+        $password_error = $this->checkSuperAdminPassword(
+            (string)($post['current_password'] ?? ''),
+            $throttle,
+            'Wrong current password given to change the superadmin credentials.'
+        );
+        if ($password_error !== null) {
+            $error_detected[] = $password_error;
         } elseif ($password !== $confirmation) {
             $error_detected[] = _T("Passwords mismatch");
         } elseif (!$this->preferences->storeAdminCredentials($admin_login, $password, $this->login)) {

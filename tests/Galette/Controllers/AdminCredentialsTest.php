@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Analog\Analog;
+use Galette\Core\AuthThrottle;
 use Galette\Tests\GaletteRoutingTestCase;
 
 /**
@@ -118,6 +119,37 @@ class AdminCredentialsTest extends GaletteRoutingTestCase
         $test_response = $this->app->handle($this->createRequest('adminCredentials'));
         $this->expectOK($test_response);
         $this->assertStringContainsString('value="GSuperUser"', (string)$test_response->getBody());
+    }
+
+    /**
+     * Wrong current passwords count as failed logins, and lock the form out
+     */
+    public function testWrongCurrentPasswordsAreThrottled(): void
+    {
+        $this->logWithPassword();
+        $stored_pass = $this->preferences->pref_admin_pass;
+        $post = [
+            'pref_admin_login' => 'GSuperUser',
+            'pref_admin_pass' => 'an0th3r_s3cr3t',
+            'pref_admin_pass_check' => 'an0th3r_s3cr3t',
+        ];
+
+        for ($i = 0; $i < $this->preferences->pref_throttle_account_ip_attempts; $i++) {
+            $this->post($post + ['current_password' => 'wrong']);
+            $this->expectLogEntry(Analog::WARNING, 'Wrong current password given to change the superadmin credentials.');
+            $this->expectFlashData(['error_detected' => ['Wrong password!']]);
+        }
+
+        $throttle = new AuthThrottle($this->zdb, $this->preferences, clean: false);
+        $this->assertGreaterThan(0, $throttle->getRetryDelay('admin'));
+
+        //the right one is refused as well, until the delay has passed
+        $this->post($post);
+        $this->expectFlashData(['error_detected' => ['Too many failed attempts. Please try again later.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('admin', $prefs->pref_admin_login);
+        $this->assertSame($stored_pass, $prefs->pref_admin_pass);
     }
 
     /**
