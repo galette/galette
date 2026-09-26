@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
 use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
@@ -321,22 +322,18 @@ class GaletteController extends AbstractController
         methods: ['GET'],
         description: 'Manage super admin login and password'
     )]
-    public function adminCredentials(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
+    public function adminCredentials(Response $response): Response
     {
-        $login = $this->preferences->pref_admin_login;
-
-        //on error, login is stored into session
-        if ($this->session->entered_login) {
-            $login = $this->session->entered_login;
-            $this->session->entered_login = null;
-        }
+        //on error, the login that was typed is kept in session
+        $login = $this->session->entered_login ?? $this->preferences->pref_admin_login;
+        unset($this->session->entered_login);
 
         // display page
         $this->view->render(
             $response,
             'pages/admin_credentials.html.twig',
             [
-                'page_title' => sprintf('%s - %s', _T("Administrator"), _T("Profile")),
+                'page_title' => _T("My information"),
                 'pref_admin_login' => $login
             ]
         );
@@ -357,28 +354,37 @@ class GaletteController extends AbstractController
         $error_detected = [];
         $success_detected = [];
 
-        // Validation
-        if (isset($post['valid']) && $post['valid'] === '1') {
-            $login = trim($post['pref_admin_login'] ?? '');
-            $newPass = trim($post['pref_admin_pass'] ?? '');
-            $confirmation = trim($post['pref_admin_pass_check'] ?? '');
+        $admin_login = trim((string)($post['pref_admin_login'] ?? ''));
+        //passwords are taken as typed, as they are on login
+        $password = (string)($post['pref_admin_pass'] ?? '');
+        $confirmation = (string)($post['pref_admin_pass_check'] ?? '');
 
-            $this->preferences->pref_admin_login = $login;
-            $this->preferences->setValue('pref_admin_pass', $newPass, $this->login);
+        if (
+            !password_verify(
+                (string)($post['current_password'] ?? ''),
+                (string)$this->preferences->pref_admin_pass
+            )
+        ) {
+            Analog::log(
+                'Wrong current password given to change the superadmin credentials.',
+                Analog::WARNING
+            );
+            $error_detected[] = _T("Wrong password!");
+        } elseif ($password !== $confirmation) {
+            $error_detected[] = _T("Passwords mismatch");
+        } elseif (!$this->preferences->storeAdminCredentials($admin_login, $password, $this->login)) {
+            $error_detected = $this->preferences->getErrors();
+        } else {
+            $success_detected[] = _T("Your credentials have been saved.");
 
-            if ($newPass !== $confirmation) {
-                $error_detected[] = _T("Passwords mismatch");
-            } elseif ($this->preferences->getErrors() !== []) {
-                $error_detected = array_merge($error_detected, $this->preferences->getErrors());
-            } elseif (!$this->preferences->store()) {
-                $error_detected[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
-            } else {
-                $success_detected[] = _T("Your credentials have been saved.");
-            }
+            //the session still holds the login it was opened with
+            $this->login->logAdmin($this->preferences->pref_admin_login, $this->preferences, challenge: false);
+            \RKA\Session::regenerate();
+            $this->session->login = $this->login;
+        }
 
-            if ($error_detected !== []) {
-                $this->session->entered_login = $login;
-            }
+        if ($error_detected !== []) {
+            $this->session->entered_login = $admin_login;
         }
 
         return $this->redirect(
