@@ -21,7 +21,7 @@
             <p id="tfa_codes_help" class="ui small text">
                 {{ _T("Recovery codes let you log in when you no longer have your device. Each one works once.") }}
             </p>
-            <p>
+            <p id="tfa_remaining_codes">
                 {{ _Tn("You have %1$s recovery code left.", "You have %1$s recovery codes left.", remaining_codes)|format(remaining_codes) }}
             </p>
             <form action="{{ url_for('do-two-factor-codes') }}" method="post" class="ui form">

@@ -12,6 +12,11 @@ import { nextTotp, totp } from '../helpers/totp';
 
 const MEMBER = ROLE_CREDENTIALS.member;
 
+//the fixture members speak French: what the manage page says is read from its
+//markup rather than from its text, which translations change
+const ENABLED = 'form[action$="/two-factor/disable"]';
+const NOT_ENABLED = 'a.button[href$="/two-factor/enrol"]';
+
 /**
  * Send a login and a password, without expecting to land anywhere in
  * particular: with a second factor enabled, that lands on the challenge.
@@ -98,7 +103,7 @@ test.describe('Two-factor authentication', () => {
     await member.locator('button[type="submit"]').click();
     await expect(member.locator('.ui.error.message, .ui.toast.error')).toBeVisible({ timeout: 10000 });
     await member.goto('/two-factor/manage');
-    await expect(member.getByText('Two-factor authentication is not enabled')).toBeVisible();
+    await expect(member.locator(NOT_ENABLED)).toBeVisible();
 
     //a code computed from the key, here and not by Galette, turns it on: what
     //an authenticator application will do
@@ -113,9 +118,9 @@ test.describe('Two-factor authentication', () => {
 
     //and they are shown that once only
     await member.goto('/two-factor/manage');
-    await expect(member.getByText('Two-factor authentication is enabled')).toBeVisible();
+    await expect(member.locator(ENABLED)).toBeVisible();
     await expect(member.locator('#tfa_recovery_codes')).toHaveCount(0);
-    await expect(member.getByText(/10 recovery codes left/)).toBeVisible();
+    await expect(member.locator('#tfa_remaining_codes')).toHaveText(/\b10\b/);
   });
 
   test('2FA - A password alone no longer gets in', async ({ page, loggedInAs }) => {
@@ -173,7 +178,7 @@ test.describe('Two-factor authentication', () => {
 
     //that one is spent, and cannot serve twice
     await member.goto('/two-factor/manage');
-    await expect(member.getByText(/9 recovery codes left/)).toBeVisible();
+    await expect(member.locator('#tfa_remaining_codes')).toHaveText(/\b9\b/);
 
     await member.goto('/logout');
     await submitPassword(member, MEMBER.login, MEMBER.password);
