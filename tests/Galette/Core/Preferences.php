@@ -1533,7 +1533,7 @@ class Preferences extends GaletteTestCase
         $preferences = $this->postedDefaults();
 
         $count_required = 17;
-        $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
+        $this->assertCount($count_required, $this->preferences->getRequiredFields());
 
         $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
@@ -1546,7 +1546,7 @@ class Preferences extends GaletteTestCase
         );
 
         $this->logSuperAdmin();
-        $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
+        $this->assertCount($count_required, $this->preferences->getRequiredFields());
 
         $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));

@@ -145,7 +145,7 @@ class GaletteController extends AbstractController
     public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
     {
         // flagging required fields
-        $required = $this->preferences->getRequiredFields($this->login);
+        $required = $this->preferences->getRequiredFields();
 
         $prefs_fields = $this->preferences->getFieldsNames();
         // collect data

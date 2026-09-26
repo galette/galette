@@ -422,7 +422,7 @@ class Preferences
     public function check(array $values, Login $login): bool
     {
         $this->errors = [];
-        $required = $this->getRequiredFields($login);
+        $required = $this->getRequiredFields();
 
         $this->checkCssImpacted($values);
 
@@ -619,7 +619,7 @@ class Preferences
             return false;
         }
 
-        $required = $this->getRequiredFields($login);
+        $required = $this->getRequiredFields();
 
         //merge the change into what is currently stored
         $values = $this->prefs;
@@ -1383,11 +1383,9 @@ class Preferences
     /**
      * Get required fields
      *
-     * @param Login $login Logged in user
-     *
      * @return array<string, int>
      */
-    public function getRequiredFields(Login $login): array
+    public function getRequiredFields(): array
     {
         return $this->required;
     }
