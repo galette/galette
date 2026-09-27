@@ -29,19 +29,20 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 # Fuurio Williams <yellbilly@gmail.com>, 2026.
 # Pierfrancesco Passerini <p.passerini@gmail.com>, 2026.
+# Demis Palma <demis.palma@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-27 17:52+0200\n"
-"PO-Revision-Date: 2026-04-26 21:09+0000\n"
-"Last-Translator: Pierfrancesco Passerini <p.passerini@gmail.com>\n"
+"PO-Revision-Date: 2026-09-28 04:00+0000\n"
+"Last-Translator: Demis Palma <demis.palma@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -3081,7 +3082,7 @@ msgid "YYYY-MM-DD"
 msgstr "DD/MM/YYYY"
 
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr "[ASSO_NAME] I vostri identificatori"
+msgstr "[{ASSO_NAME}] I tuoi dati identificativi"
 
 msgid ""
 "Hello,{NEWLINE}You've just been subscribed on the members management system "
@@ -3120,7 +3121,7 @@ msgid "Lost password email"
 msgstr "E-mail password dimenticata"
 
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr "[ASSO_NAME] Il tuo contributo"
+msgstr "[{ASSO_NAME}] Il tuo contributo"
 
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
@@ -3140,7 +3141,7 @@ msgid "Receipt send for new contribution"
 msgstr "Ricevuta inoltrata per il nuovo contributo"
 
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr "[ASSO_NAME] Nuova registrazione da {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Nuova registrazione da {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
@@ -3202,7 +3203,7 @@ msgid "Informs user that his account has been modified"
 msgstr "Informa l'utente che il suo account è stato modificato"
 
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr "[ASSO_NAME] La tua iscrizione sta per scadere"
+msgstr "[{ASSO_NAME}] La tua iscrizione sta per scadere"
 
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
