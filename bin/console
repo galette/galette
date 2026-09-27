@@ -36,7 +36,8 @@ require_once $basepath . 'vendor/autoload.php';
 require_once $basepath . 'includes/sys_config/versions.inc.php';
 
 $args = $_SERVER['argv'] ?? [];
-$installer = is_array($args) && ($args[1] ?? null) === 'galette:install';
+// Compiling locales only works on files; boot without database, like the installer
+$installer = is_array($args) && in_array($args[1] ?? null, ['galette:install', 'galette:compile-locales'], true);
 
 // In test mode, GALETTE_CONFIG_PATH is already set to the test config directory,
 // so skip the production config file check to allow all commands to be registered.
