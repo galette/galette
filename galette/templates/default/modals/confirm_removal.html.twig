@@ -9,7 +9,8 @@
 {% block content %}
     <div id="confirm_removal"{% if mode == 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
     {% if mode == 'ajax' %}<div class="header">{{ page_title }}</div>{% endif %}
-    <form action="{{ form_url }}" method="post" class="ui form">
+    {# Fomantic hides warning messages of a form not in warning state #}
+    <form action="{{ form_url }}" method="post" class="ui form{% if mode != 'ajax' and message is defined %} warning{% endif %}">
     {% if mode != 'ajax' %}
         <div class="ui segment">
             <div class="content">
