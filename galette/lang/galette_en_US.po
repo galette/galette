@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
-"PO-Revision-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"PO-Revision-Date: 2026-09-27 17:52+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -104,7 +104,7 @@ msgstr "An error occurred while importing members"
 #: ../lib/Galette/Entity/Adherent.php:1313
 #: ../lib/Galette/Entity/Adherent.php:1864
 #: ../lib/Galette/Entity/SavedSearch.php:247
-#: ../lib/Galette/Entity/Group.php:619
+#: ../lib/Galette/Entity/Group.php:678
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:81
 #: ../lib/Galette/Util/Password.php:250
 #: ../lib/Galette/Features/Dynamics.php:171
@@ -187,7 +187,7 @@ msgstr "Name"
 #: ../lib/Galette/IO/PdfGroups.php:137
 #: ../lib/Galette/Features/Replacements.php:313
 #: ../lib/Galette/Features/Replacements.php:361
-#: ../templates/default/pages/preferences.html.twig:1083
+#: ../templates/default/pages/preferences.html.twig:1082
 #: ../templates/default/pages/public/staff_list.html.twig:25
 #: ../templates/default/pages/public/list.html.twig:64
 #: ../templates/default/pages/public/list.html.twig:49
@@ -212,8 +212,8 @@ msgstr "GSM"
 msgid "adherent_form"
 msgstr "adherent_form"
 
-#: ../lib/Galette/IO/Csv.php:90 ../lib/Galette/Core/Preferences.php:1074
-#: ../lib/Galette/Core/Preferences.php:1088 ../lib/Galette/Entity/Texts.php:188
+#: ../lib/Galette/IO/Csv.php:90 ../lib/Galette/Core/Preferences.php:1172
+#: ../lib/Galette/Core/Preferences.php:1186 ../lib/Galette/Entity/Texts.php:188
 #: ../lib/Galette/Entity/Document.php:313
 #: ../templates/default/pages/history.html.twig:127
 #: ../templates/default/pages/authentication_attempts.html.twig:10
@@ -226,7 +226,7 @@ msgid "attendance_sheet"
 msgstr "attendance_sheet"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:117
-#: ../lib/Galette/Core/Galette.php:1165
+#: ../lib/Galette/Core/Galette.php:1170
 #: ../lib/Galette/Controllers/PdfController.php:329
 #: ../templates/default/modals/members_attendance_sheet.html.twig:31
 msgid "Attendance sheet"
@@ -576,29 +576,29 @@ msgstr ""
 msgid "Logged in as:<br/>%1$s"
 msgstr "Logged in as:<br/>%1$s"
 
-#: ../lib/Galette/Core/GaletteMail.php:323
+#: ../lib/Galette/Core/GaletteMail.php:324
 msgid "Emailing has been disabled in the preferences."
 msgstr "Emailing has been disabled in the preferences."
 
-#: ../lib/Galette/Core/GaletteMail.php:350
+#: ../lib/Galette/Core/GaletteMail.php:351
 #, php-format
 msgid "Unknown emailing method '%s'."
 msgstr "Unknown emailing method '%s'."
 
-#: ../lib/Galette/Core/GaletteMail.php:392
+#: ../lib/Galette/Core/GaletteMail.php:393
 msgid "Unable to reach the SMTP server."
 msgstr "Unable to reach the SMTP server."
 
-#: ../lib/Galette/Core/GaletteMail.php:419
+#: ../lib/Galette/Core/GaletteMail.php:420
 #, php-format
 msgid "'%s' does not exist, or cannot be run."
 msgstr "'%s' does not exist, or cannot be run."
 
-#: ../lib/Galette/Core/GaletteMail.php:434
+#: ../lib/Galette/Core/GaletteMail.php:435
 msgid "The PHP mail() function is not available on this server."
 msgstr "The PHP mail() function is not available on this server."
 
-#: ../lib/Galette/Core/GaletteMail.php:439
+#: ../lib/Galette/Core/GaletteMail.php:440
 msgid ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
 "to."
@@ -606,23 +606,23 @@ msgstr ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
 "to."
 
-#: ../lib/Galette/Core/GaletteMail.php:663
+#: ../lib/Galette/Core/GaletteMail.php:664
 msgid "Sending quota has been reached, message has not been sent."
 msgstr "Sending quota has been reached, message has not been sent."
 
-#: ../lib/Galette/Core/Plugins.php:545 ../lib/Galette/Core/Plugins.php:612
+#: ../lib/Galette/Core/Plugins.php:553 ../lib/Galette/Core/Plugins.php:620
 msgid "No such module."
 msgstr "No such module."
 
-#: ../lib/Galette/Core/Plugins.php:551
+#: ../lib/Galette/Core/Plugins.php:559
 msgid "Cannot deactivate plugin."
 msgstr "Cannot deactivate plugin."
 
-#: ../lib/Galette/Core/Plugins.php:618
+#: ../lib/Galette/Core/Plugins.php:626
 msgid "Cannot activate plugin."
 msgstr "Cannot activate plugin."
 
-#: ../lib/Galette/Core/Plugins.php:1021
+#: ../lib/Galette/Core/Plugins.php:1067
 msgid "File not found!"
 msgstr "File not found!"
 
@@ -713,15 +713,15 @@ msgstr "Config file already exists and is up to date"
 msgid "Unable to create configuration file (%1$s)"
 msgstr "Unable to create configuration file (%1$s)"
 
-#: ../lib/Galette/Core/Install.php:1139 ../lib/Galette/Core/Galette.php:417
-#: ../lib/Galette/Core/Galette.php:895
-#: ../lib/Galette/Controllers/GaletteController.php:202
+#: ../lib/Galette/Core/Install.php:1139 ../lib/Galette/Core/Galette.php:422
+#: ../lib/Galette/Core/Galette.php:900
+#: ../lib/Galette/Controllers/GaletteController.php:204
 #: ../lib/Galette/DynamicFields/DynamicField.php:442
-#: ../templates/default/pages/preferences.html.twig:1156
+#: ../templates/default/pages/preferences.html.twig:1155
 msgid "Settings"
 msgstr "Settings"
 
-#: ../lib/Galette/Core/Install.php:1143 ../lib/Galette/Core/Galette.php:461
+#: ../lib/Galette/Core/Install.php:1143 ../lib/Galette/Core/Galette.php:466
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:77
 msgid "Contributions types"
 msgstr "Contributions types"
@@ -744,18 +744,18 @@ msgstr "Fields config and categories"
 msgid "Mails texts"
 msgstr "Mails texts"
 
-#: ../lib/Galette/Core/Install.php:1159 ../lib/Galette/Core/Galette.php:484
+#: ../lib/Galette/Core/Install.php:1159 ../lib/Galette/Core/Galette.php:489
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:75
 msgid "Titles"
 msgstr "Titles"
 
-#: ../lib/Galette/Core/Install.php:1163 ../lib/Galette/Core/Galette.php:492
+#: ../lib/Galette/Core/Install.php:1163 ../lib/Galette/Core/Galette.php:497
 #: ../lib/Galette/Controllers/PdfController.php:456
 msgid "PDF models"
 msgstr "PDF models"
 
 #: ../lib/Galette/Core/Install.php:1167 ../lib/Galette/Core/Install.php:1186
-#: ../lib/Galette/Core/Galette.php:469
+#: ../lib/Galette/Core/Galette.php:474
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:80
 msgid "Payment types"
 msgstr "Payment types"
@@ -772,42 +772,42 @@ msgstr "Update models"
 msgid "Dark mode CSS file has been reset."
 msgstr "Dark mode CSS file has been reset."
 
-#: ../lib/Galette/Core/Preferences/Relations.php:58
+#: ../lib/Galette/Core/Preferences/Relations.php:57
 msgid "You have to select a staff member to retrieve its address"
 msgstr "You have to select a staff member to retrieve its address"
 
-#: ../lib/Galette/Core/Preferences/Relations.php:65
+#: ../lib/Galette/Core/Preferences/Relations.php:64
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr "You have to select a staff member to retrieve its phone number"
 
-#: ../lib/Galette/Core/Preferences/Relations.php:91
+#: ../lib/Galette/Core/Preferences/Relations.php:90
 msgid "- You must indicate a sender name for emails!"
 msgstr "- You must indicate a sender name for emails!"
 
-#: ../lib/Galette/Core/Preferences/Relations.php:98
+#: ../lib/Galette/Core/Preferences/Relations.php:97
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- You must indicate an email address Galette should use to send emails!"
 
-#: ../lib/Galette/Core/Preferences/Relations.php:105
+#: ../lib/Galette/Core/Preferences/Relations.php:104
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- You must indicate the SMTP server you want to use!"
 
-#: ../lib/Galette/Core/Preferences/Relations.php:120
+#: ../lib/Galette/Core/Preferences/Relations.php:119
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- You must provide a login for SMTP authentication."
 
-#: ../lib/Galette/Core/Preferences/Relations.php:130
+#: ../lib/Galette/Core/Preferences/Relations.php:129
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- You must provide a password for SMTP authentication."
 
-#: ../lib/Galette/Core/Preferences/Relations.php:147
+#: ../lib/Galette/Core/Preferences/Relations.php:146
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
 msgstr ""
 "- You must indicate a membership extension or a beginning of membership."
 
-#: ../lib/Galette/Core/Preferences/Relations.php:149
+#: ../lib/Galette/Core/Preferences/Relations.php:148
 msgid ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
@@ -815,7 +815,7 @@ msgstr ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
 
-#: ../lib/Galette/Core/Preferences/Relations.php:166
+#: ../lib/Galette/Core/Preferences/Relations.php:165
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Offering months is only compatible with beginning of membership."
 
@@ -823,18 +823,13 @@ msgstr "- Offering months is only compatible with beginning of membership."
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
-#: ../lib/Galette/Core/Preferences/Relations.php:185
+#: ../lib/Galette/Core/Preferences/Relations.php:184
 #: ../lib/Galette/Entity/Contribution.php:624
 #: ../lib/Galette/Entity/Adherent.php:1153
 #: ../lib/Galette/Entity/Transaction.php:364
 #, php-format
 msgid "- Mandatory field %1$s empty."
 msgstr "- Mandatory field %1$s empty."
-
-#: ../lib/Galette/Core/Preferences/Relations.php:207
-#: ../webroot/installer.php:215
-msgid "Passwords mismatch"
-msgstr "Passwords mismatch"
 
 #. TRANS: first parameter is name, second is status
 #: ../lib/Galette/Core/Preferences/Identity.php:79
@@ -917,32 +912,51 @@ msgstr ""
 "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:584
-#: ../lib/Galette/Core/Preferences.php:666
+#: ../lib/Galette/Core/Preferences.php:595
+#: ../lib/Galette/Core/Preferences.php:677
 #, php-format
 msgid "Unknown preference '%1$s'!"
 msgstr "Unknown preference '%1$s'!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:593
-#: ../lib/Galette/Core/Preferences.php:675
+#: ../lib/Galette/Core/Preferences.php:604
+#: ../lib/Galette/Core/Preferences.php:686
 #, php-format
 msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr "Preference '%1$s' is maintained by Galette and cannot be changed!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:605
+#: ../lib/Galette/Core/Preferences.php:616
+#: ../lib/Galette/Core/Preferences.php:723
 #, php-format
 msgid "You are not allowed to change preference '%1$s'!"
 msgstr "You are not allowed to change preference '%1$s'!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:685
+#: ../lib/Galette/Core/Preferences.php:696
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr "Preference '%1$s' holds a secret and cannot be reset to its default!"
 
-#: ../lib/Galette/Core/Preferences.php:1055
+#: ../lib/Galette/Core/Preferences.php:730
+#: ../templates/default/pages/plugins.html.twig:141
+#: ../templates/default/pages/admin_credentials.html.twig:17
+#: ../templates/default/pages/preferences.html.twig:675
+msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+
+#: ../lib/Galette/Core/Preferences.php:759
+#: ../lib/Galette/Controllers/GaletteController.php:257
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+
+#: ../lib/Galette/Core/Preferences.php:1153
 #: ../lib/Galette/Console/Command/ProcessMailingQueue.php:85
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -951,298 +965,310 @@ msgstr ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 
-#: ../lib/Galette/Core/Preferences.php:1076
+#: ../lib/Galette/Core/Preferences.php:1174
 msgid "Never"
 msgstr "Never"
 
-#: ../lib/Galette/Core/Preferences.php:1114
+#: ../lib/Galette/Core/Preferences.php:1212
 #: ../lib/Galette/Features/Replacements.php:831
 msgid "Main information"
 msgstr "Main information"
 
-#: ../lib/Galette/Core/Preferences.php:1121
+#: ../lib/Galette/Core/Preferences.php:1219
 #: ../templates/default/pages/preferences.html.twig:14
 #: ../templates/default/elements/edit_socials.html.twig:66
 #: ../templates/default/elements/display_socials.html.twig:12
 msgid "Social networks"
 msgstr "Social networks"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:973
+#: ../lib/Galette/Core/PreferencesSchema.php:1157
 msgid "- The numbers and measures have to be integers!"
 msgstr "- The numbers and measures have to be integers!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:974
+#: ../lib/Galette/Core/PreferencesSchema.php:1158
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr "- The card height have to be an integer between 40 and 55!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:975
+#: ../lib/Galette/Core/PreferencesSchema.php:1159
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr "- The card width have to be an integer between 70 and 95!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:976
+#: ../lib/Galette/Core/PreferencesSchema.php:1160
 msgid "- Invalid number of months of membership extension."
 msgstr "- Invalid number of months of membership extension."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:977
+#: ../lib/Galette/Core/PreferencesSchema.php:1161
 msgid "- Invalid number of offered months."
 msgstr "- Invalid number of offered months."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:978
+#: ../lib/Galette/Core/PreferencesSchema.php:1162
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- The username must be composed of at least 4 characters!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:979
+#: ../lib/Galette/Core/PreferencesSchema.php:1163
 msgid "- This username is already used by another member !"
 msgstr "- This username is already used by another member !"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:980
+#: ../lib/Galette/Core/PreferencesSchema.php:1164
 msgid "- Invalid format of beginning of membership."
 msgstr "- Invalid format of beginning of membership."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:981
+#: ../lib/Galette/Core/PreferencesSchema.php:1165
 msgid "- Invalid date for beginning of membership."
 msgstr "- Invalid date for beginning of membership."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:982
+#: ../lib/Galette/Core/PreferencesSchema.php:1166
 msgid "- Invalid year for cards."
 msgstr "- Invalid year for cards."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:983
+#: ../lib/Galette/Core/PreferencesSchema.php:1167
 msgid "- Invalid website URL."
 msgstr "- Invalid website URL."
 
 #. TRANS: first parameter is the address, second the setting holding it
-#: ../lib/Galette/Core/PreferencesSchema.php:985
+#: ../lib/Galette/Core/PreferencesSchema.php:1169
 #, php-format
 msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr "- Invalid E-Mail address %1$s (%2$s)"
 
 #. TRANS: parameter is the setting name
-#: ../lib/Galette/Core/PreferencesSchema.php:987
+#: ../lib/Galette/Core/PreferencesSchema.php:1171
 #, php-format
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- Value for '%1$s' must be a positive number!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:990
+#: ../lib/Galette/Core/PreferencesSchema.php:1174
 msgid "- Unknown two-factor authentication mode!"
 msgstr "- Unknown two-factor authentication mode!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:991
+#: ../lib/Galette/Core/PreferencesSchema.php:1175
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr "- Value for '%1$s' must be %2$s attempts or more!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:993
+#: ../lib/Galette/Core/PreferencesSchema.php:1177
 #, php-format
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- Value for '%1$s' must be %2$s seconds or more!"
 
-#: ../lib/Galette/Core/Galette.php:126 ../lib/Galette/Core/Galette.php:171
+#. TRANS: parameter is the setting name
+#: ../lib/Galette/Core/PreferencesSchema.php:1179
+#, php-format
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "- Unknown visibility for '%1$s'!"
+
+#: ../lib/Galette/Core/Galette.php:124
 msgid "My Account"
 msgstr "My Account"
 
-#: ../lib/Galette/Core/Galette.php:130 ../lib/Galette/Core/Galette.php:722
+#: ../lib/Galette/Core/Galette.php:133 ../lib/Galette/Core/Galette.php:727
 msgid "My contributions"
 msgstr "My contributions"
 
-#: ../lib/Galette/Core/Galette.php:131 ../lib/Galette/Core/Galette.php:723
+#: ../lib/Galette/Core/Galette.php:134 ../lib/Galette/Core/Galette.php:728
 msgid "View and filter all my contributions"
 msgstr "View and filter all my contributions"
 
-#: ../lib/Galette/Core/Galette.php:138
+#: ../lib/Galette/Core/Galette.php:141
 msgid "My scheduled payments"
 msgstr "My scheduled payments"
 
-#: ../lib/Galette/Core/Galette.php:139
+#: ../lib/Galette/Core/Galette.php:142
 msgid "View and filter all my scheduled payments"
 msgstr "View and filter all my scheduled payments"
 
-#: ../lib/Galette/Core/Galette.php:145 ../lib/Galette/Core/Galette.php:731
+#: ../lib/Galette/Core/Galette.php:148 ../lib/Galette/Core/Galette.php:736
 msgid "My transactions"
 msgstr "My transactions"
 
-#: ../lib/Galette/Core/Galette.php:146 ../lib/Galette/Core/Galette.php:732
+#: ../lib/Galette/Core/Galette.php:149 ../lib/Galette/Core/Galette.php:737
 msgid "View and filter all my transactions"
 msgstr "View and filter all my transactions"
 
-#: ../lib/Galette/Core/Galette.php:153 ../lib/Galette/Core/Galette.php:714
+#: ../lib/Galette/Core/Galette.php:156 ../lib/Galette/Core/Galette.php:166
+#: ../lib/Galette/Core/Galette.php:719
+#: ../lib/Galette/Controllers/GaletteController.php:336
 msgid "My information"
 msgstr "My information"
 
-#: ../lib/Galette/Core/Galette.php:154 ../lib/Galette/Core/Galette.php:715
+#: ../lib/Galette/Core/Galette.php:157 ../lib/Galette/Core/Galette.php:720
 msgid "View my member card"
 msgstr "View my member card"
 
-#: ../lib/Galette/Core/Galette.php:176
+#: ../lib/Galette/Core/Galette.php:167
+msgid "Modify my login and password"
+msgstr "Modify my login and password"
+
+#: ../lib/Galette/Core/Galette.php:181
 #: ../lib/Galette/Controllers/TwoFactorController.php:53
 #: ../lib/Galette/Controllers/TwoFactorController.php:157
 msgid "Two-factor authentication"
 msgstr "Two-factor authentication"
 
-#: ../lib/Galette/Core/Galette.php:177
+#: ../lib/Galette/Core/Galette.php:182
 msgid "Manage my two-factor authentication"
 msgstr "Manage my two-factor authentication"
 
-#: ../lib/Galette/Core/Galette.php:187
+#: ../lib/Galette/Core/Galette.php:192
 msgid "Add a child member"
 msgstr "Add a child member"
 
-#: ../lib/Galette/Core/Galette.php:188
+#: ../lib/Galette/Core/Galette.php:193
 msgid "Add new child member in database"
 msgstr "Add new child member in database"
 
-#: ../lib/Galette/Core/Galette.php:197 ../lib/Galette/Core/Galette.php:594
-#: ../lib/Galette/Core/Galette.php:786
+#: ../lib/Galette/Core/Galette.php:202 ../lib/Galette/Core/Galette.php:599
+#: ../lib/Galette/Core/Galette.php:791
 #: ../lib/Galette/Controllers/Crud/MembersController.php:405
 #: ../lib/Galette/DynamicFields/DynamicField.php:439
 #: ../templates/default/elements/group.html.twig:93
 msgid "Members"
 msgstr "Members"
 
-#: ../lib/Galette/Core/Galette.php:205
+#: ../lib/Galette/Core/Galette.php:210
 #: ../lib/Galette/Controllers/Crud/MembersController.php:691
 msgid "List of members"
 msgstr "List of members"
 
-#: ../lib/Galette/Core/Galette.php:206 ../lib/Galette/Core/Galette.php:787
+#: ../lib/Galette/Core/Galette.php:211 ../lib/Galette/Core/Galette.php:792
 msgid "View, search into and filter member's list"
 msgstr "View, search into and filter member's list"
 
-#: ../lib/Galette/Core/Galette.php:213
+#: ../lib/Galette/Core/Galette.php:218
 #: ../lib/Galette/Controllers/Crud/MembersController.php:907
 #: ../templates/default/pages/advanced_search.html.twig:82
 msgid "Advanced search"
 msgstr "Advanced search"
 
-#: ../lib/Galette/Core/Galette.php:214
+#: ../lib/Galette/Core/Galette.php:219
 msgid "Perform advanced search into members list"
 msgstr "Perform advanced search into members list"
 
-#: ../lib/Galette/Core/Galette.php:220
+#: ../lib/Galette/Core/Galette.php:225
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:159
 msgid "Saved searches"
 msgstr "Saved searches"
 
-#: ../lib/Galette/Core/Galette.php:235
+#: ../lib/Galette/Core/Galette.php:240
 #: ../templates/default/pages/members_list.html.twig:50
 msgid "Add a member"
 msgstr "Add a member"
 
-#: ../lib/Galette/Core/Galette.php:236
+#: ../lib/Galette/Core/Galette.php:241
 msgid "Add new member in database"
 msgstr "Add new member in database"
 
-#: ../lib/Galette/Core/Galette.php:242
+#: ../lib/Galette/Core/Galette.php:247
 #: ../templates/default/pages/member_form.html.twig:121
 #: ../templates/default/elements/navigation/public_pages.html.twig:29
 msgid "Empty adhesion form"
 msgstr "Empty adhesion form"
 
-#: ../lib/Galette/Core/Galette.php:243
+#: ../lib/Galette/Core/Galette.php:248
 #: ../templates/default/pages/member_form.html.twig:118
 #: ../templates/default/elements/navigation/public_pages.html.twig:29
 msgid "Download empty adhesion form"
 msgstr "Download empty adhesion form"
 
-#: ../lib/Galette/Core/Galette.php:254 ../lib/Galette/Core/Galette.php:826
+#: ../lib/Galette/Core/Galette.php:259 ../lib/Galette/Core/Galette.php:831
 #: ../lib/Galette/DynamicFields/DynamicField.php:440
 #: ../templates/default/pages/members_list.html.twig:248
 msgid "Contributions"
 msgstr "Contributions"
 
-#: ../lib/Galette/Core/Galette.php:262
+#: ../lib/Galette/Core/Galette.php:267
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:534
 msgid "List of contributions"
 msgstr "List of contributions"
 
-#: ../lib/Galette/Core/Galette.php:263 ../lib/Galette/Core/Galette.php:827
+#: ../lib/Galette/Core/Galette.php:268 ../lib/Galette/Core/Galette.php:832
 msgid "View and filter contributions"
 msgstr "View and filter contributions"
 
-#: ../lib/Galette/Core/Galette.php:276
+#: ../lib/Galette/Core/Galette.php:281
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:166
 msgid "List of scheduled payments"
 msgstr "List of scheduled payments"
 
-#: ../lib/Galette/Core/Galette.php:277
+#: ../lib/Galette/Core/Galette.php:282
 msgid "View and filter scheduled payments"
 msgstr "View and filter scheduled payments"
 
-#: ../lib/Galette/Core/Galette.php:289
+#: ../lib/Galette/Core/Galette.php:294
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:534
 msgid "List of transactions"
 msgstr "List of transactions"
 
-#: ../lib/Galette/Core/Galette.php:290 ../lib/Galette/Core/Galette.php:844
+#: ../lib/Galette/Core/Galette.php:295 ../lib/Galette/Core/Galette.php:849
 msgid "View and filter transactions"
 msgstr "View and filter transactions"
 
-#: ../lib/Galette/Core/Galette.php:303
+#: ../lib/Galette/Core/Galette.php:308
 #: ../templates/default/pages/member_show.html.twig:92
 #: ../templates/default/pages/contributions_list.html.twig:189
 #: ../templates/default/pages/contributions_list.html.twig:238
 msgid "Add a membership fee"
 msgstr "Add a membership fee"
 
-#: ../lib/Galette/Core/Galette.php:304
+#: ../lib/Galette/Core/Galette.php:309
 msgid "Add new membership fee in database"
 msgstr "Add new membership fee in database"
 
-#: ../lib/Galette/Core/Galette.php:311
+#: ../lib/Galette/Core/Galette.php:316
 #: ../templates/default/pages/member_show.html.twig:99
 #: ../templates/default/pages/contributions_list.html.twig:195
 #: ../templates/default/pages/contributions_list.html.twig:245
 msgid "Add a donation"
 msgstr "Add a donation"
 
-#: ../lib/Galette/Core/Galette.php:312
+#: ../lib/Galette/Core/Galette.php:317
 msgid "Add new donation in database"
 msgstr "Add new donation in database"
 
-#: ../lib/Galette/Core/Galette.php:324
+#: ../lib/Galette/Core/Galette.php:329
 #: ../templates/default/pages/transactions_list.html.twig:135
 #: ../templates/default/pages/transactions_list.html.twig:165
 msgid "Add a transaction"
 msgstr "Add a transaction"
 
-#: ../lib/Galette/Core/Galette.php:325
+#: ../lib/Galette/Core/Galette.php:330
 msgid "Add new transaction in database"
 msgstr "Add new transaction in database"
 
-#: ../lib/Galette/Core/Galette.php:336 ../lib/Galette/Core/Galette.php:860
-#: ../lib/Galette/Controllers/GaletteController.php:698
+#: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:865
+#: ../lib/Galette/Controllers/GaletteController.php:781
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:922
 msgid "Reminders"
 msgstr "Reminders"
 
-#: ../lib/Galette/Core/Galette.php:337 ../lib/Galette/Core/Galette.php:861
+#: ../lib/Galette/Core/Galette.php:342 ../lib/Galette/Core/Galette.php:866
 msgid "Send reminders to late members"
 msgstr "Send reminders to late members"
 
-#: ../lib/Galette/Core/Galette.php:348
+#: ../lib/Galette/Core/Galette.php:353
 msgid "Management"
 msgstr "Management"
 
-#: ../lib/Galette/Core/Galette.php:352 ../lib/Galette/Core/Galette.php:794
+#: ../lib/Galette/Core/Galette.php:357 ../lib/Galette/Core/Galette.php:799
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:140
 msgid "Groups"
 msgstr "Groups"
 
-#: ../lib/Galette/Core/Galette.php:353 ../lib/Galette/Core/Galette.php:795
+#: ../lib/Galette/Core/Galette.php:358 ../lib/Galette/Core/Galette.php:800
 msgid "View and manage groups"
 msgstr "View and manage groups"
 
-#: ../lib/Galette/Core/Galette.php:365 ../lib/Galette/Core/Galette.php:656
-#: ../lib/Galette/Core/Galette.php:879
+#: ../lib/Galette/Core/Galette.php:370 ../lib/Galette/Core/Galette.php:661
+#: ../lib/Galette/Core/Galette.php:884
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:164
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:201
-#: ../templates/default/pages/preferences.html.twig:432
+#: ../templates/default/pages/preferences.html.twig:429
 msgid "Documents"
 msgstr "Documents"
 
-#: ../lib/Galette/Core/Galette.php:366
+#: ../lib/Galette/Core/Galette.php:371
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
@@ -1250,59 +1276,59 @@ msgstr ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 
-#: ../lib/Galette/Core/Galette.php:373 ../lib/Galette/Core/Galette.php:810
+#: ../lib/Galette/Core/Galette.php:378 ../lib/Galette/Core/Galette.php:815
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:546
 msgid "Mailings"
 msgstr "Mailings"
 
-#: ../lib/Galette/Core/Galette.php:374 ../lib/Galette/Core/Galette.php:811
+#: ../lib/Galette/Core/Galette.php:379 ../lib/Galette/Core/Galette.php:816
 msgid "Manage mailings that has been sent"
 msgstr "Manage mailings that has been sent"
 
-#: ../lib/Galette/Core/Galette.php:380
-#: ../lib/Galette/Controllers/GaletteController.php:515
+#: ../lib/Galette/Core/Galette.php:385
+#: ../lib/Galette/Controllers/GaletteController.php:598
 msgid "Charts"
 msgstr "Charts"
 
-#: ../lib/Galette/Core/Galette.php:381
+#: ../lib/Galette/Core/Galette.php:386
 msgid "Various charts"
 msgstr "Various charts"
 
-#: ../lib/Galette/Core/Galette.php:387
+#: ../lib/Galette/Core/Galette.php:392
 #: ../lib/Galette/Controllers/CsvController.php:112
 #: ../install/steps/check.php:47
 msgid "Exports"
 msgstr "Exports"
 
-#: ../lib/Galette/Core/Galette.php:388
+#: ../lib/Galette/Core/Galette.php:393
 msgid "Export some data in various formats"
 msgstr "Export some data in various formats"
 
-#: ../lib/Galette/Core/Galette.php:394
+#: ../lib/Galette/Core/Galette.php:399
 #: ../lib/Galette/Controllers/CsvController.php:242
 #: ../install/steps/check.php:48
 msgid "Imports"
 msgstr "Imports"
 
-#: ../lib/Galette/Core/Galette.php:395
+#: ../lib/Galette/Core/Galette.php:400
 msgid "Import members from CSV files"
 msgstr "Import members from CSV files"
 
-#: ../lib/Galette/Core/Galette.php:402
+#: ../lib/Galette/Core/Galette.php:407
 #: ../lib/Galette/Controllers/HistoryController.php:80
 #: ../install/steps/check.php:49
 msgid "Logs"
 msgstr "Logs"
 
-#: ../lib/Galette/Core/Galette.php:403
+#: ../lib/Galette/Core/Galette.php:408
 msgid "View application's logs"
 msgstr "View application's logs"
 
-#: ../lib/Galette/Core/Galette.php:413 ../install/steps/check.php:46
+#: ../lib/Galette/Core/Galette.php:418 ../install/steps/check.php:46
 msgid "Configuration"
 msgstr "Configuration"
 
-#: ../lib/Galette/Core/Galette.php:418 ../lib/Galette/Core/Galette.php:896
+#: ../lib/Galette/Core/Galette.php:423 ../lib/Galette/Core/Galette.php:901
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
@@ -1310,217 +1336,217 @@ msgstr ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 
-#: ../lib/Galette/Core/Galette.php:424
+#: ../lib/Galette/Core/Galette.php:429
 #: ../lib/Galette/Controllers/AuthController.php:723
 msgid "Authentication attempts"
 msgstr "Authentication attempts"
 
-#: ../lib/Galette/Core/Galette.php:425
+#: ../lib/Galette/Core/Galette.php:430
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr "See what is being refused after repeated failures, and lift it"
 
-#: ../lib/Galette/Core/Galette.php:431 ../lib/Galette/Core/Galette.php:903
+#: ../lib/Galette/Core/Galette.php:436 ../lib/Galette/Core/Galette.php:908
 #: ../lib/Galette/Controllers/PluginsController.php:58
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../lib/Galette/Core/Galette.php:432 ../lib/Galette/Core/Galette.php:904
+#: ../lib/Galette/Core/Galette.php:437 ../lib/Galette/Core/Galette.php:909
 msgid "Information about available plugins"
 msgstr "Information about available plugins"
 
-#: ../lib/Galette/Core/Galette.php:438
-#: ../lib/Galette/Controllers/GaletteController.php:622
+#: ../lib/Galette/Core/Galette.php:443
+#: ../lib/Galette/Controllers/GaletteController.php:705
 msgid "Core lists"
 msgstr "Core lists"
 
-#: ../lib/Galette/Core/Galette.php:439
+#: ../lib/Galette/Core/Galette.php:444
 msgid "Customize lists fields and order"
 msgstr "Customize lists fields and order"
 
-#: ../lib/Galette/Core/Galette.php:446
-#: ../lib/Galette/Controllers/GaletteController.php:536
+#: ../lib/Galette/Core/Galette.php:451
+#: ../lib/Galette/Controllers/GaletteController.php:619
 msgid "Core fields"
 msgstr "Core fields"
 
-#: ../lib/Galette/Core/Galette.php:447
+#: ../lib/Galette/Core/Galette.php:452
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
 "Customize fields order, set which are required, and for who they're visibles"
 
-#: ../lib/Galette/Core/Galette.php:453
+#: ../lib/Galette/Core/Galette.php:458
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:188
 #: ../templates/default/pages/preferences.html.twig:20
 msgid "Dynamic fields"
 msgstr "Dynamic fields"
 
-#: ../lib/Galette/Core/Galette.php:454
-#: ../templates/default/pages/preferences.html.twig:1166
+#: ../lib/Galette/Core/Galette.php:459
+#: ../templates/default/pages/preferences.html.twig:1169
 msgid "Manage additional fields for various forms"
 msgstr "Manage additional fields for various forms"
 
-#: ../lib/Galette/Core/Galette.php:462
+#: ../lib/Galette/Core/Galette.php:467
 msgid "Manage contributions types"
 msgstr "Manage contributions types"
 
-#: ../lib/Galette/Core/Galette.php:470
+#: ../lib/Galette/Core/Galette.php:475
 msgid "Manage payment types"
 msgstr "Manage payment types"
 
-#: ../lib/Galette/Core/Galette.php:477
+#: ../lib/Galette/Core/Galette.php:482
 #: ../lib/Galette/Controllers/Crud/StatusController.php:84
 msgid "User statuses"
 msgstr "User statuses"
 
-#: ../lib/Galette/Core/Galette.php:485
+#: ../lib/Galette/Core/Galette.php:490
 msgid "Manage titles"
 msgstr "Manage titles"
 
-#: ../lib/Galette/Core/Galette.php:493
+#: ../lib/Galette/Core/Galette.php:498
 msgid "Manage PDF models"
 msgstr "Manage PDF models"
 
-#: ../lib/Galette/Core/Galette.php:499
+#: ../lib/Galette/Core/Galette.php:504
 #: ../lib/Galette/Controllers/TextController.php:54
 msgid "Emails content"
 msgstr "Emails content"
 
-#: ../lib/Galette/Core/Galette.php:500
+#: ../lib/Galette/Core/Galette.php:505
 msgid "Manage emails texts and subjects"
 msgstr "Manage emails texts and subjects"
 
-#: ../lib/Galette/Core/Galette.php:506
+#: ../lib/Galette/Core/Galette.php:511
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:59
 msgid "Labels translation"
 msgstr "Labels translation"
 
-#: ../lib/Galette/Core/Galette.php:507
+#: ../lib/Galette/Core/Galette.php:512
 msgid "Manage translatable labels"
 msgstr "Manage translatable labels"
 
-#: ../lib/Galette/Core/Galette.php:518
+#: ../lib/Galette/Core/Galette.php:523
 #: ../lib/Galette/Controllers/AdminToolsController.php:40
 msgid "Administration tools"
 msgstr "Administration tools"
 
-#: ../lib/Galette/Core/Galette.php:519
+#: ../lib/Galette/Core/Galette.php:524
 msgid "Various administrative tools"
 msgstr "Various administrative tools"
 
-#: ../lib/Galette/Core/Galette.php:525
+#: ../lib/Galette/Core/Galette.php:530
 #: ../lib/Galette/Controllers/AdvancedConfigController.php:51
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:121
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:116
 msgid "Advanced configuration"
 msgstr "Advanced configuration"
 
-#: ../lib/Galette/Core/Galette.php:526
+#: ../lib/Galette/Core/Galette.php:531
 msgid "Edit every setting, including those the settings form does not show"
 msgstr "Edit every setting, including those the settings form does not show"
 
-#: ../lib/Galette/Core/Galette.php:604
+#: ../lib/Galette/Core/Galette.php:609
 #: ../lib/Galette/Controllers/Crud/MembersController.php:436
 msgid "Gallery"
 msgstr "Gallery"
 
-#: ../lib/Galette/Core/Galette.php:614
+#: ../lib/Galette/Core/Galette.php:619
 #: ../lib/Galette/Controllers/Crud/MembersController.php:471
 msgid "Staff"
 msgstr "Staff"
 
-#: ../lib/Galette/Core/Galette.php:624
+#: ../lib/Galette/Core/Galette.php:629
 #: ../lib/Galette/Controllers/Crud/MembersController.php:507
-#: ../templates/default/pages/preferences.html.twig:476
+#: ../templates/default/pages/preferences.html.twig:465
 msgid "Staff gallery"
 msgstr "Staff gallery"
 
-#: ../lib/Galette/Core/Galette.php:635
+#: ../lib/Galette/Core/Galette.php:640
 msgid "Directories"
 msgstr "Directories"
 
-#: ../lib/Galette/Core/Galette.php:646
+#: ../lib/Galette/Core/Galette.php:651
 msgid "Galleries"
 msgstr "Galleries"
 
-#: ../lib/Galette/Core/Galette.php:657 ../lib/Galette/Core/Galette.php:880
+#: ../lib/Galette/Core/Galette.php:662 ../lib/Galette/Core/Galette.php:885
 msgid "View documents related to your association"
 msgstr "View documents related to your association"
 
-#: ../lib/Galette/Core/Galette.php:684
-#: ../templates/default/pages/preferences.html.twig:385
+#: ../lib/Galette/Core/Galette.php:689
+#: ../templates/default/pages/preferences.html.twig:382
 msgid "Public pages"
 msgstr "Public pages"
 
-#: ../lib/Galette/Core/Galette.php:843
+#: ../lib/Galette/Core/Galette.php:848
 #: ../lib/Galette/DynamicFields/DynamicField.php:441
 msgid "Transactions"
 msgstr "Transactions"
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:956 ../lib/Galette/Core/Galette.php:961
+#: ../lib/Galette/Core/Galette.php:961 ../lib/Galette/Core/Galette.php:966
 #, php-format
 msgid "%1$s: edit information"
 msgstr "%1$s: edit information"
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:977 ../lib/Galette/Core/Galette.php:982
+#: ../lib/Galette/Core/Galette.php:982 ../lib/Galette/Core/Galette.php:987
 #, php-format
 msgid "%1$s: contributions"
 msgstr "%1$s: contributions"
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:998 ../lib/Galette/Core/Galette.php:1003
+#: ../lib/Galette/Core/Galette.php:1003 ../lib/Galette/Core/Galette.php:1008
 #, php-format
 msgid "%1$s: remove from database"
 msgstr "%1$s: remove from database"
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:1022 ../lib/Galette/Core/Galette.php:1027
+#: ../lib/Galette/Core/Galette.php:1027 ../lib/Galette/Core/Galette.php:1032
 #: ../templates/default/pages/members_list.html.twig:260
 #: ../templates/default/elements/group_persons.html.twig:75
 #, php-format
 msgid "Log in as %1$s"
 msgstr "Log in as %1$s"
 
-#: ../lib/Galette/Core/Galette.php:1123
+#: ../lib/Galette/Core/Galette.php:1128
 msgid "Mass change"
 msgstr "Mass change"
 
-#: ../lib/Galette/Core/Galette.php:1128
+#: ../lib/Galette/Core/Galette.php:1133
 msgid "Mass add contributions"
 msgstr "Mass add contributions"
 
-#: ../lib/Galette/Core/Galette.php:1133
+#: ../lib/Galette/Core/Galette.php:1138
 #: ../templates/default/pages/scheduledpayments_list.html.twig:28
 #: ../templates/default/pages/groups_list.html.twig:57
 #: ../templates/default/pages/contributions_list.html.twig:33
 msgid "Delete"
 msgstr "Delete"
 
-#: ../lib/Galette/Core/Galette.php:1149
+#: ../lib/Galette/Core/Galette.php:1154
 #: ../templates/default/pages/members_list.html.twig:341
 msgid "Mail"
 msgstr "Mail"
 
-#: ../lib/Galette/Core/Galette.php:1170
+#: ../lib/Galette/Core/Galette.php:1175
 #: ../templates/default/elements/mailing_recipients.html.twig:28
 msgid "Generate labels"
 msgstr "Generate labels"
 
-#: ../lib/Galette/Core/Galette.php:1175
+#: ../lib/Galette/Core/Galette.php:1180
 msgid "Generate Member Cards"
 msgstr "Generate Member Cards"
 
-#: ../lib/Galette/Core/Galette.php:1180
+#: ../lib/Galette/Core/Galette.php:1185
 #: ../templates/default/pages/scheduledpayments_list.html.twig:28
 #: ../templates/default/pages/contributions_list.html.twig:33
 msgid "Export as CSV"
 msgstr "Export as CSV"
 
-#: ../lib/Galette/Core/Galette.php:1228
+#: ../lib/Galette/Core/Galette.php:1233
 msgid "Galette news"
 msgstr "Galette news"
 
-#: ../lib/Galette/Core/Galette.php:1238
+#: ../lib/Galette/Core/Galette.php:1243
 msgid "Association news"
 msgstr "Association news"
 
@@ -1528,7 +1554,7 @@ msgstr "Association news"
 #: ../lib/Galette/Features/Replacements.php:653
 #: ../lib/Galette/Features/Replacements.php:654
 #: ../templates/default/pages/transaction_form.html.twig:48
-#: ../templates/default/pages/preferences.html.twig:1224
+#: ../templates/default/pages/preferences.html.twig:1227
 #: ../templates/default/elements/group.html.twig:43
 #: ../templates/default/elements/group.html.twig:58
 msgid "None"
@@ -2140,24 +2166,24 @@ msgstr "Unable to send %1$s reminder (no email address)."
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%1$s (#%2$s - %3$s days)"
 
-#: ../lib/Galette/Entity/Group.php:368
+#: ../lib/Galette/Entity/Group.php:427
 msgid "Group has been detached from its parent"
 msgstr "Group has been detached from its parent"
 
-#: ../lib/Galette/Entity/Group.php:432
+#: ../lib/Galette/Entity/Group.php:491
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:92
 msgid "Group added"
 msgstr "Group added"
 
-#: ../lib/Galette/Entity/Group.php:437
+#: ../lib/Galette/Entity/Group.php:496
 msgid "Fail to add new group."
 msgstr "Fail to add new group."
 
-#: ../lib/Galette/Entity/Group.php:456
+#: ../lib/Galette/Entity/Group.php:515
 msgid "Group updated"
 msgstr "Group updated"
 
-#: ../lib/Galette/Entity/Group.php:683
+#: ../lib/Galette/Entity/Group.php:742
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "Group `%1$s` cannot be set as parent!"
@@ -2212,23 +2238,19 @@ msgstr "Email: '%1$s' has not been modified!"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Email: '%1$s' has been successfully modified."
 
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:91
-msgid "Wrong password!"
-msgstr "Wrong password!"
-
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:140
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:179
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:135
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:174
 msgid "Please confirm your password again."
 msgstr "Please confirm your password again."
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:158
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:153
 #, php-format
 msgid "Preference '%1$s' has been stored."
 msgstr "Preference '%1$s' has been stored."
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:193
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:188
 #, php-format
 msgid "Preference '%1$s' has been reset to its default."
 msgstr "Preference '%1$s' has been reset to its default."
@@ -2322,6 +2344,7 @@ msgstr "Invalid link!"
 #: ../lib/Galette/Controllers/TwoFactorController.php:92
 #: ../lib/Galette/Controllers/TwoFactorController.php:469
 #: ../lib/Galette/Controllers/AuthController.php:121
+#: ../lib/Galette/Controllers/AbstractController.php:305
 msgid "Too many failed attempts. Please try again later."
 msgstr "Too many failed attempts. Please try again later."
 
@@ -2473,51 +2496,52 @@ msgstr "Dynamic dates has been fixed."
 msgid "An error occurred fixing dynamic dates :("
 msgstr "An error occurred fixing dynamic dates :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:88
+#: ../lib/Galette/Controllers/GaletteController.php:90
 #: ../templates/default/elements/footer.html.twig:34
 msgid "System information"
 msgstr "System information"
 
-#: ../lib/Galette/Controllers/GaletteController.php:107
+#: ../lib/Galette/Controllers/GaletteController.php:109
 #: ../templates/default/elements/navigation/navigation_items.html.twig:18
 #: ../templates/default/elements/navigation/navigation_items.html.twig:22
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: ../lib/Galette/Controllers/GaletteController.php:221
+#: ../lib/Galette/Controllers/GaletteController.php:226
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "All accounts"
 msgstr "All accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:222
+#: ../lib/Galette/Controllers/GaletteController.php:227
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Active accounts"
 msgstr "Active accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:223
+#: ../lib/Galette/Controllers/GaletteController.php:228
 #: ../lib/Galette/Filters/MembersList.php:275
 msgid "Inactive accounts"
 msgstr "Inactive accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:252
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-
-#: ../lib/Galette/Controllers/GaletteController.php:254
+#: ../lib/Galette/Controllers/GaletteController.php:259
 msgid "Preferences has been saved."
 msgstr "Preferences has been saved."
 
-#: ../lib/Galette/Controllers/GaletteController.php:267
-#: ../lib/Galette/Controllers/GaletteController.php:278
+#: ../lib/Galette/Controllers/GaletteController.php:272
+#: ../lib/Galette/Controllers/GaletteController.php:283
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1846
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: ../lib/Galette/Controllers/GaletteController.php:360
+#: ../lib/Galette/Controllers/GaletteController.php:370
+#: ../webroot/installer.php:215
+msgid "Passwords mismatch"
+msgstr "Passwords mismatch"
+
+#: ../lib/Galette/Controllers/GaletteController.php:374
+msgid "Your credentials have been saved."
+msgstr "Your credentials have been saved."
+
+#: ../lib/Galette/Controllers/GaletteController.php:443
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -2525,69 +2549,69 @@ msgstr ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 
-#: ../lib/Galette/Controllers/GaletteController.php:367
+#: ../lib/Galette/Controllers/GaletteController.php:450
 msgid "Test message"
 msgstr "Test message"
 
-#: ../lib/Galette/Controllers/GaletteController.php:370
+#: ../lib/Galette/Controllers/GaletteController.php:453
 msgid "Galette admin"
 msgstr "Galette admin"
 
-#: ../lib/Galette/Controllers/GaletteController.php:373
+#: ../lib/Galette/Controllers/GaletteController.php:456
 msgid "Test message."
 msgstr "Test message."
 
-#: ../lib/Galette/Controllers/GaletteController.php:380
+#: ../lib/Galette/Controllers/GaletteController.php:463
 #, php-format
 msgid "An email has been sent to %1$s"
 msgstr "An email has been sent to %1$s"
 
-#: ../lib/Galette/Controllers/GaletteController.php:389
+#: ../lib/Galette/Controllers/GaletteController.php:472
 #, php-format
 msgid "No email sent to %1$s"
 msgstr "No email sent to %1$s"
 
-#: ../lib/Galette/Controllers/GaletteController.php:399
+#: ../lib/Galette/Controllers/GaletteController.php:482
 msgid "Invalid email adress!"
 msgstr "Invalid email adress!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:443
+#: ../lib/Galette/Controllers/GaletteController.php:526
 msgid "Those emailing settings work."
 msgstr "Those emailing settings work."
 
-#: ../lib/Galette/Controllers/GaletteController.php:449
+#: ../lib/Galette/Controllers/GaletteController.php:532
 msgid "Those emailing settings do not work."
 msgstr "Those emailing settings do not work."
 
-#: ../lib/Galette/Controllers/GaletteController.php:593
+#: ../lib/Galette/Controllers/GaletteController.php:676
 msgid "Fields configuration has been successfully stored"
 msgstr "Fields configuration has been successfully stored"
 
-#: ../lib/Galette/Controllers/GaletteController.php:598
+#: ../lib/Galette/Controllers/GaletteController.php:681
 msgid "An error occurred while saving fields configuration :("
 msgstr "An error occurred while saving fields configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:662
+#: ../lib/Galette/Controllers/GaletteController.php:745
 msgid "List configuration has been successfully stored"
 msgstr "List configuration has been successfully stored"
 
-#: ../lib/Galette/Controllers/GaletteController.php:667
+#: ../lib/Galette/Controllers/GaletteController.php:750
 msgid "An error occurred while saving list configuration :("
 msgstr "An error occurred while saving list configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:738
+#: ../lib/Galette/Controllers/GaletteController.php:821
 msgid "No reminder to send for now."
 msgstr "No reminder to send for now."
 
-#: ../lib/Galette/Controllers/GaletteController.php:793
+#: ../lib/Galette/Controllers/GaletteController.php:876
 msgid "Reminder has not been sent:"
 msgstr "Reminder has not been sent:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:800
+#: ../lib/Galette/Controllers/GaletteController.php:883
 msgid "Sent reminders:"
 msgstr "Sent reminders:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:864
+#: ../lib/Galette/Controllers/GaletteController.php:947
 msgid "Download document"
 msgstr "Download document"
 
@@ -2606,6 +2630,7 @@ msgid "You must provide both login and password."
 msgstr "You must provide both login and password."
 
 #: ../lib/Galette/Controllers/AuthController.php:123
+#: ../lib/Galette/Controllers/AbstractController.php:300
 msgid "Authentication throttled"
 msgstr "Authentication throttled"
 
@@ -3081,7 +3106,7 @@ msgstr "An error occurred while saving the group."
 msgid "Remove group %1$s"
 msgstr "Remove group %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:534
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:539
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr "Group is not empty, it cannot be deleted. Use cascade delete instead."
 
@@ -3492,6 +3517,10 @@ msgstr "You are about to remove %1$s members."
 msgid "No member #%1$s."
 msgstr "No member #%1$s."
 
+#: ../lib/Galette/Controllers/AbstractController.php:311
+msgid "Wrong password!"
+msgstr "Wrong password!"
+
 #: ../lib/Galette/Controllers/AjaxController.php:55
 #: ../webroot/installer.php:344
 msgid "- ERROR -"
@@ -3537,7 +3566,7 @@ msgstr "Unable to add foreign key on %1$s.%2$s: %3$s"
 
 #: ../lib/Galette/Filters/MembersList.php:242
 #: ../lib/Galette/Features/Replacements.php:245
-#: ../templates/default/pages/preferences.html.twig:1087
+#: ../templates/default/pages/preferences.html.twig:1086
 msgid "Member number"
 msgstr "Member number"
 
@@ -3578,12 +3607,7 @@ msgid "All members"
 msgstr "All members"
 
 #: ../lib/Galette/Filters/MembersList.php:260
-#: ../templates/default/pages/preferences.html.twig:425
-#: ../templates/default/pages/preferences.html.twig:437
-#: ../templates/default/pages/preferences.html.twig:449
-#: ../templates/default/pages/preferences.html.twig:459
-#: ../templates/default/pages/preferences.html.twig:471
-#: ../templates/default/pages/preferences.html.twig:481
+#: ../lib/Galette/Enums/PublicPageVisibility.php:56
 msgid "Up to date members"
 msgstr "Up to date members"
 
@@ -3770,7 +3794,7 @@ msgid "Galette's login URI"
 msgstr "Galette's login URI"
 
 #: ../lib/Galette/Features/Replacements.php:221
-#: ../templates/default/pages/preferences.html.twig:203
+#: ../templates/default/pages/preferences.html.twig:200
 msgid "Footer text:"
 msgstr "Footer text:"
 
@@ -3789,7 +3813,7 @@ msgid "First name"
 msgstr "First name"
 
 #: ../lib/Galette/Features/Replacements.php:261
-#: ../templates/default/pages/preferences.html.twig:1085
+#: ../templates/default/pages/preferences.html.twig:1084
 #: ../templates/default/pages/public/staff_list.html.twig:19
 #: ../templates/default/pages/public/list.html.twig:58
 #: ../templates/default/pages/public/list.html.twig:47
@@ -3813,7 +3837,7 @@ msgid "Birth place"
 msgstr "Birth place"
 
 #: ../lib/Galette/Features/Replacements.php:277
-#: ../templates/default/pages/preferences.html.twig:1086
+#: ../templates/default/pages/preferences.html.twig:1085
 msgid "Profession"
 msgstr "Profession"
 
@@ -3932,7 +3956,7 @@ msgstr "Your Galette database is not present, or not up to date."
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr "Please run install or upgrade procedure (check the documentation)"
 
-#: ../lib/Galette/Middleware/PublicPages.php:74
+#: ../lib/Galette/Middleware/PublicPages.php:60
 msgid "Unauthorized"
 msgstr "Unauthorized"
 
@@ -3954,6 +3978,22 @@ msgstr "Unknown ACL rule '%1$s'!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "Route '%1$s' is not registered in ACLs!"
+
+#: ../lib/Galette/Enums/PublicPageVisibility.php:50
+msgid "Inherit"
+msgstr "Inherit"
+
+#: ../lib/Galette/Enums/PublicPageVisibility.php:54
+msgid "Hidden"
+msgstr "Hidden"
+
+#: ../lib/Galette/Enums/PublicPageVisibility.php:55
+msgid "Everyone"
+msgstr "Everyone"
+
+#: ../lib/Galette/Enums/PublicPageVisibility.php:57
+msgid "Admin and staff only"
+msgstr "Admin and staff only"
 
 #: ../lib/Galette/Renderers/Html.php:52
 msgid "Galette error"
@@ -4606,33 +4646,33 @@ msgid "Gender:"
 msgstr "Gender:"
 
 #: ../includes/fields_defs/members_fields.php:96
-#: ../templates/default/pages/preferences.html.twig:94
-#: ../templates/default/pages/preferences.html.twig:98
+#: ../templates/default/pages/preferences.html.twig:91
+#: ../templates/default/pages/preferences.html.twig:95
 msgid "Address:"
 msgstr "Address:"
 
 #: ../includes/fields_defs/members_fields.php:104
-#: ../templates/default/pages/preferences.html.twig:103
+#: ../templates/default/pages/preferences.html.twig:100
 msgid "Zip Code:"
 msgstr "Zip Code:"
 
 #: ../includes/fields_defs/members_fields.php:112
-#: ../templates/default/pages/preferences.html.twig:107
+#: ../templates/default/pages/preferences.html.twig:104
 msgid "City:"
 msgstr "City:"
 
 #: ../includes/fields_defs/members_fields.php:120
-#: ../templates/default/pages/preferences.html.twig:113
+#: ../templates/default/pages/preferences.html.twig:110
 msgid "Region:"
 msgstr "Region:"
 
 #: ../includes/fields_defs/members_fields.php:128
-#: ../templates/default/pages/preferences.html.twig:117
+#: ../templates/default/pages/preferences.html.twig:114
 msgid "Country:"
 msgstr "Country:"
 
 #: ../includes/fields_defs/members_fields.php:136
-#: ../templates/default/pages/preferences.html.twig:153
+#: ../templates/default/pages/preferences.html.twig:150
 msgid "Phone:"
 msgstr "Phone:"
 
@@ -4641,7 +4681,7 @@ msgid "Mobile phone:"
 msgstr "Mobile phone:"
 
 #: ../includes/fields_defs/members_fields.php:152
-#: ../templates/default/pages/preferences.html.twig:191
+#: ../templates/default/pages/preferences.html.twig:188
 msgid "E-Mail:"
 msgstr "E-Mail:"
 
@@ -4658,7 +4698,7 @@ msgid "Profession:"
 msgstr "Profession:"
 
 #: ../includes/fields_defs/members_fields.php:184 ../install/steps/admin.php:18
-#: ../templates/default/pages/preferences.html.twig:1269
+#: ../templates/default/pages/admin_credentials.html.twig:25
 #: ../templates/default/pages/index.html.twig:21
 #: ../templates/default/pages/index.html.twig:22
 msgid "Username:"
@@ -4666,8 +4706,8 @@ msgstr "Username:"
 
 #: ../includes/fields_defs/members_fields.php:192 ../install/steps/admin.php:22
 #: ../install/steps/db.php:61
+#: ../templates/default/pages/admin_credentials.html.twig:29
 #: ../templates/default/pages/advanced_config_confirm.html.twig:20
-#: ../templates/default/pages/preferences.html.twig:1273
 #: ../templates/default/pages/index.html.twig:27
 #: ../templates/default/pages/index.html.twig:28
 msgid "Password:"
@@ -4880,6 +4920,7 @@ msgid "Identity:"
 msgstr "Identity:"
 
 #: ../includes/i18n.inc.php:64
+#: ../templates/default/pages/admin_credentials.html.twig:23
 msgid "Galette-related data:"
 msgstr "Galette-related data:"
 
@@ -5167,7 +5208,7 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Please chose the parameters of the admin account on Galette"
 
 #: ../install/steps/admin.php:26
-#: ../templates/default/pages/preferences.html.twig:1279
+#: ../templates/default/pages/admin_credentials.html.twig:35
 msgid "Retype password:"
 msgstr "Retype password:"
 
@@ -5191,7 +5232,7 @@ msgid "Register your organization as a Galette user"
 msgstr "Register your organization as a Galette user"
 
 #: ../install/steps/telemetry.php:42
-#: ../templates/default/pages/preferences.html.twig:243
+#: ../templates/default/pages/preferences.html.twig:240
 #: ../templates/default/pages/desktop.html.twig:34
 msgid "Register"
 msgstr "Register"
@@ -5236,7 +5277,7 @@ msgstr "Remember to remove it manually to re-secure the installer."
 #: ../templates/default/pages/contributions_types_list.html.twig:188
 #: ../templates/default/pages/plugins.html.twig:256
 #: ../templates/default/pages/groups_list.html.twig:400
-#: ../templates/default/pages/preferences.html.twig:1553
+#: ../templates/default/pages/preferences.html.twig:1525
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
 #: ../templates/default/pages/members_list.html.twig:680
@@ -5474,7 +5515,7 @@ msgstr "and"
 #: ../install/steps/db_select_version.php:135
 #: ../templates/default/pages/configuration_title_form.html.twig:28
 #: ../templates/default/pages/status_form.html.twig:34
-#: ../templates/default/pages/preferences.html.twig:1467
+#: ../templates/default/pages/preferences.html.twig:1443
 #: ../templates/default/pages/two_factor_enrol.html.twig:49
 #: ../templates/default/pages/configuration_payment_type_form.html.twig:34
 #: ../templates/default/pages/members_list.html.twig:545
@@ -5662,7 +5703,7 @@ msgstr "Add title"
 #: ../templates/default/pages/configuration_core_lists.html.twig:49
 #: ../templates/default/pages/configuration_payment_types.html.twig:37
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:170
-#: ../templates/default/components/dynamic_fields.html.twig:222
+#: ../templates/default/components/dynamic_fields.html.twig:227
 #: ../templates/default/elements/edit_socials.html.twig:47
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:13
 msgid "Add"
@@ -5750,7 +5791,7 @@ msgstr "New contribution type"
 
 #: ../templates/default/pages/contributions_types_list.html.twig:50
 #: ../templates/default/pages/contributions_types_list.html.twig:99
-#: ../templates/default/pages/preferences.html.twig:416
+#: ../templates/default/pages/preferences.html.twig:413
 #: ../templates/default/pages/contribution_type_form.html.twig:27
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:100
 #: ../templates/default/elements/edit_core_fields.html.twig:76
@@ -5777,12 +5818,12 @@ msgid "Edit '%s' field"
 msgstr "Edit '%s' field"
 
 #: ../templates/default/pages/contributions_types_list.html.twig:120
+#: ../templates/default/pages/preferences.html.twig:44
 #: ../templates/default/pages/preferences.html.twig:47
-#: ../templates/default/pages/preferences.html.twig:50
-#: ../templates/default/pages/preferences.html.twig:972
-#: ../templates/default/pages/preferences.html.twig:975
-#: ../templates/default/pages/preferences.html.twig:987
-#: ../templates/default/pages/preferences.html.twig:990
+#: ../templates/default/pages/preferences.html.twig:971
+#: ../templates/default/pages/preferences.html.twig:974
+#: ../templates/default/pages/preferences.html.twig:986
+#: ../templates/default/pages/preferences.html.twig:989
 #: ../templates/default/pages/status_list.html.twig:88
 #: ../templates/default/pages/configuration_payment_types.html.twig:63
 #, php-format
@@ -5824,9 +5865,9 @@ msgstr "Delete '%s' field"
 #: ../templates/default/pages/member_show.html.twig:269
 #: ../templates/default/pages/reminder.html.twig:72
 #: ../templates/default/pages/reminder.html.twig:90
-#: ../templates/default/pages/preferences.html.twig:1451
-#: ../templates/default/pages/preferences.html.twig:1488
-#: ../templates/default/pages/preferences.html.twig:1553
+#: ../templates/default/pages/preferences.html.twig:1427
+#: ../templates/default/pages/preferences.html.twig:1464
+#: ../templates/default/pages/preferences.html.twig:1525
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:58
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
@@ -5880,7 +5921,7 @@ msgid "Close"
 msgstr "Close"
 
 #: ../templates/default/pages/contributions_types_list.html.twig:188
-#: ../templates/default/pages/preferences.html.twig:1553
+#: ../templates/default/pages/preferences.html.twig:1525
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
 #: ../templates/default/pages/status_list.html.twig:154
 #: ../templates/default/pages/configuration_payment_types.html.twig:132
@@ -5996,7 +6037,7 @@ msgstr "beetween"
 #: ../templates/default/pages/contribution_form.html.twig:275
 #: ../templates/default/pages/contribution_form.html.twig:290
 #: ../templates/default/components/forms/date.html.twig:11
-#: ../templates/default/components/dynamic_fields.html.twig:88
+#: ../templates/default/components/dynamic_fields.html.twig:89
 #: ../templates/default/modals/members_attendance_sheet.html.twig:49
 msgid "yyyy-mm-dd format"
 msgstr "yyyy-mm-dd format"
@@ -6019,7 +6060,7 @@ msgstr "Advanced groups search"
 
 #: ../templates/default/pages/advanced_search.html.twig:220
 #: ../templates/default/pages/advanced_search.html.twig:422
-#: ../templates/default/pages/preferences.html.twig:1186
+#: ../templates/default/pages/preferences.html.twig:1189
 #: ../templates/default/macros.twig:196
 msgid "Experimental"
 msgstr "Experimental"
@@ -6087,7 +6128,7 @@ msgid "Add new free search criteria"
 msgstr "Add new free search criteria"
 
 #: ../templates/default/pages/advanced_search.html.twig:444
-#: ../templates/default/pages/preferences.html.twig:358
+#: ../templates/default/pages/preferences.html.twig:355
 msgid "or"
 msgstr "or"
 
@@ -6213,14 +6254,6 @@ msgstr "Inactive plugins"
 #: ../templates/default/pages/plugins.html.twig:129
 msgid "No inactive plugin."
 msgstr "No inactive plugin."
-
-#: ../templates/default/pages/plugins.html.twig:141
-#: ../templates/default/pages/preferences.html.twig:676
-#: ../templates/default/pages/preferences.html.twig:1264
-msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
 
 #: ../templates/default/pages/plugins.html.twig:165
 msgid ""
@@ -6390,7 +6423,8 @@ msgstr "Long form:"
 #: ../templates/default/pages/transaction_form.html.twig:197
 #: ../templates/default/pages/member_form.html.twig:27
 #: ../templates/default/pages/member_form.html.twig:185
-#: ../templates/default/pages/preferences.html.twig:1294
+#: ../templates/default/pages/admin_credentials.html.twig:45
+#: ../templates/default/pages/preferences.html.twig:1270
 #: ../templates/default/pages/advanced_config.html.twig:101
 #: ../templates/default/pages/configuration_payment_type_form.html.twig:32
 #: ../templates/default/pages/members_list.html.twig:161
@@ -7188,37 +7222,37 @@ msgstr ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 
 #: ../templates/default/pages/member_form.html.twig:137
-#: ../templates/default/pages/preferences.html.twig:308
+#: ../templates/default/pages/preferences.html.twig:305
 msgid "After member creation:"
 msgstr "After member creation:"
 
 #: ../templates/default/pages/member_form.html.twig:140
-#: ../templates/default/pages/preferences.html.twig:310
+#: ../templates/default/pages/preferences.html.twig:307
 msgid "create a new contribution (default action)"
 msgstr "create a new contribution (default action)"
 
 #: ../templates/default/pages/member_form.html.twig:143
-#: ../templates/default/pages/preferences.html.twig:311
+#: ../templates/default/pages/preferences.html.twig:308
 msgid "create a new transaction"
 msgstr "create a new transaction"
 
 #: ../templates/default/pages/member_form.html.twig:145
-#: ../templates/default/pages/preferences.html.twig:312
+#: ../templates/default/pages/preferences.html.twig:309
 msgid "create another new member"
 msgstr "create another new member"
 
 #: ../templates/default/pages/member_form.html.twig:146
-#: ../templates/default/pages/preferences.html.twig:313
+#: ../templates/default/pages/preferences.html.twig:310
 msgid "show member"
 msgstr "show member"
 
 #: ../templates/default/pages/member_form.html.twig:147
-#: ../templates/default/pages/preferences.html.twig:314
+#: ../templates/default/pages/preferences.html.twig:311
 msgid "go to members list"
 msgstr "go to members list"
 
 #: ../templates/default/pages/member_form.html.twig:148
-#: ../templates/default/pages/preferences.html.twig:315
+#: ../templates/default/pages/preferences.html.twig:312
 msgid "go to main page"
 msgstr "go to main page"
 
@@ -7315,12 +7349,12 @@ msgid "Upload new file"
 msgstr "Upload new file"
 
 #: ../templates/default/pages/import.html.twig:99
-#: ../templates/default/pages/preferences.html.twig:74
-#: ../templates/default/pages/preferences.html.twig:1047
+#: ../templates/default/pages/preferences.html.twig:71
+#: ../templates/default/pages/preferences.html.twig:1046
 #: ../templates/default/pages/document_form.html.twig:32
 #: ../templates/default/components/forms/picture.html.twig:28
-#: ../templates/default/components/dynamic_fields.html.twig:219
-#: ../templates/default/components/dynamic_fields.html.twig:124
+#: ../templates/default/components/dynamic_fields.html.twig:224
+#: ../templates/default/components/dynamic_fields.html.twig:125
 msgid "Choose a file"
 msgstr "Choose a file"
 
@@ -7360,6 +7394,15 @@ msgstr ""
 #: ../templates/default/pages/two_factor_codes.html.twig:22
 msgid "I have written them down"
 msgstr "I have written them down"
+
+#: ../templates/default/pages/admin_credentials.html.twig:31
+#: ../templates/default/pages/preferences.html.twig:845
+msgid "Leave empty to keep the current one"
+msgstr "Leave empty to keep the current one"
+
+#: ../templates/default/pages/admin_credentials.html.twig:39
+msgid "Current password:"
+msgstr "Current password:"
 
 #: ../templates/default/pages/member_show.html.twig:41
 msgid ""
@@ -7442,7 +7485,7 @@ msgid "Generate labels for members without email address"
 msgstr "Generate labels for members without email address"
 
 #: ../templates/default/pages/reminder.html.twig:48
-#: ../templates/default/pages/preferences.html.twig:1463
+#: ../templates/default/pages/preferences.html.twig:1439
 #: ../templates/default/pages/mailing_form.html.twig:167
 #: ../templates/default/pages/mailing_form.html.twig:215
 #: ../templates/default/modals/telemetry.html.twig:76
@@ -7555,21 +7598,15 @@ msgstr "E-Mail"
 msgid "Security parameters"
 msgstr "Security parameters"
 
-#: ../templates/default/pages/preferences.html.twig:25
-#: ../templates/default/pages/members_list.html.twig:287
-#: ../templates/default/pages/members_list.html.twig:350
-msgid "Admin"
-msgstr "Admin"
-
-#: ../templates/default/pages/preferences.html.twig:32
+#: ../templates/default/pages/preferences.html.twig:29
 msgid "Name of the association:"
 msgstr "Name of the association:"
 
-#: ../templates/default/pages/preferences.html.twig:36
+#: ../templates/default/pages/preferences.html.twig:33
 msgid "Association's short description:"
 msgstr "Association's short description:"
 
-#: ../templates/default/pages/preferences.html.twig:36
+#: ../templates/default/pages/preferences.html.twig:33
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
@@ -7577,38 +7614,38 @@ msgstr ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 
-#: ../templates/default/pages/preferences.html.twig:57
-#: ../templates/default/pages/preferences.html.twig:1030
+#: ../templates/default/pages/preferences.html.twig:54
+#: ../templates/default/pages/preferences.html.twig:1029
 msgid "Logo:"
 msgstr "Logo:"
 
-#: ../templates/default/pages/preferences.html.twig:65
+#: ../templates/default/pages/preferences.html.twig:62
 msgid "Current logo"
 msgstr "Current logo"
 
-#: ../templates/default/pages/preferences.html.twig:74
-#: ../templates/default/pages/preferences.html.twig:1047
+#: ../templates/default/pages/preferences.html.twig:71
+#: ../templates/default/pages/preferences.html.twig:1046
 #: ../templates/default/pages/document_form.html.twig:32
 #: ../templates/default/components/forms/picture.html.twig:28
-#: ../templates/default/components/dynamic_fields.html.twig:124
+#: ../templates/default/components/dynamic_fields.html.twig:125
 msgid "Choose another file"
 msgstr "Choose another file"
 
-#: ../templates/default/pages/preferences.html.twig:82
-#: ../templates/default/pages/preferences.html.twig:1055
+#: ../templates/default/pages/preferences.html.twig:79
+#: ../templates/default/pages/preferences.html.twig:1054
 #: ../templates/default/components/forms/picture.html.twig:19
 msgid "Delete image"
 msgstr "Delete image"
 
-#: ../templates/default/pages/preferences.html.twig:98
+#: ../templates/default/pages/preferences.html.twig:95
 msgid " (continuation)"
 msgstr " (continuation)"
 
-#: ../templates/default/pages/preferences.html.twig:122
+#: ../templates/default/pages/preferences.html.twig:119
 msgid "Postal address:"
 msgstr "Postal address:"
 
-#: ../templates/default/pages/preferences.html.twig:122
+#: ../templates/default/pages/preferences.html.twig:119
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
@@ -7616,26 +7653,26 @@ msgstr ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 
-#: ../templates/default/pages/preferences.html.twig:129
-#: ../templates/default/pages/preferences.html.twig:164
+#: ../templates/default/pages/preferences.html.twig:126
+#: ../templates/default/pages/preferences.html.twig:161
 #: ../templates/default/pages/mailing_form.html.twig:30
 msgid "from preferences"
 msgstr "from preferences"
 
-#: ../templates/default/pages/preferences.html.twig:135
+#: ../templates/default/pages/preferences.html.twig:132
 msgid "from a staff user"
 msgstr "from a staff user"
 
-#: ../templates/default/pages/preferences.html.twig:141
+#: ../templates/default/pages/preferences.html.twig:138
 msgid "Staff member whose address needs to be retrieved"
 msgstr "Staff member whose address needs to be retrieved"
 
-#: ../templates/default/pages/preferences.html.twig:143
-#: ../templates/default/pages/preferences.html.twig:184
+#: ../templates/default/pages/preferences.html.twig:140
+#: ../templates/default/pages/preferences.html.twig:181
 msgid "-- Choose a staff member --"
 msgstr "-- Choose a staff member --"
 
-#: ../templates/default/pages/preferences.html.twig:153
+#: ../templates/default/pages/preferences.html.twig:150
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
@@ -7643,23 +7680,23 @@ msgstr ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 
-#: ../templates/default/pages/preferences.html.twig:170
+#: ../templates/default/pages/preferences.html.twig:167
 msgid "phone from a staff user"
 msgstr "phone from a staff user"
 
-#: ../templates/default/pages/preferences.html.twig:176
+#: ../templates/default/pages/preferences.html.twig:173
 msgid "mobile phone from a staff user"
 msgstr "mobile phone from a staff user"
 
-#: ../templates/default/pages/preferences.html.twig:182
+#: ../templates/default/pages/preferences.html.twig:179
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Staff member whose phone number needs to be retrieved"
 
-#: ../templates/default/pages/preferences.html.twig:195
+#: ../templates/default/pages/preferences.html.twig:192
 msgid "Website:"
 msgstr "Website:"
 
-#: ../templates/default/pages/preferences.html.twig:206
+#: ../templates/default/pages/preferences.html.twig:203
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
@@ -7667,67 +7704,67 @@ msgstr ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 
-#: ../templates/default/pages/preferences.html.twig:218
+#: ../templates/default/pages/preferences.html.twig:215
 msgid "Prevent search engines indexation"
 msgstr "Prevent search engines indexation"
 
-#: ../templates/default/pages/preferences.html.twig:224
+#: ../templates/default/pages/preferences.html.twig:221
 msgid "Telemetry date:"
 msgstr "Telemetry date:"
 
-#: ../templates/default/pages/preferences.html.twig:224
+#: ../templates/default/pages/preferences.html.twig:221
 msgid "Last telemetry sent date."
 msgstr "Last telemetry sent date."
 
-#: ../templates/default/pages/preferences.html.twig:230
+#: ../templates/default/pages/preferences.html.twig:227
 msgid "send"
 msgstr "send"
 
-#: ../templates/default/pages/preferences.html.twig:234
+#: ../templates/default/pages/preferences.html.twig:231
 msgid "Registration date:"
 msgstr "Registration date:"
 
-#: ../templates/default/pages/preferences.html.twig:234
+#: ../templates/default/pages/preferences.html.twig:231
 msgid "Date on which you registered your Galette instance."
 msgstr "Date on which you registered your Galette instance."
 
-#: ../templates/default/pages/preferences.html.twig:240
+#: ../templates/default/pages/preferences.html.twig:237
 msgid "Update your information"
 msgstr "Update your information"
 
-#: ../templates/default/pages/preferences.html.twig:244
+#: ../templates/default/pages/preferences.html.twig:241
 msgid "Not registered"
 msgstr "Not registered"
 
-#: ../templates/default/pages/preferences.html.twig:258
+#: ../templates/default/pages/preferences.html.twig:255
 msgid "Default language:"
 msgstr "Default language:"
 
-#: ../templates/default/pages/preferences.html.twig:266
+#: ../templates/default/pages/preferences.html.twig:263
 msgid "Default payment type:"
 msgstr "Default payment type:"
 
-#: ../templates/default/pages/preferences.html.twig:274
+#: ../templates/default/pages/preferences.html.twig:271
 msgid "Default account filter:"
 msgstr "Default account filter:"
 
-#: ../templates/default/pages/preferences.html.twig:282
+#: ../templates/default/pages/preferences.html.twig:279
 msgid "Number of columns on the member form"
 msgstr "Number of columns on the member form"
 
-#: ../templates/default/pages/preferences.html.twig:292
+#: ../templates/default/pages/preferences.html.twig:289
 msgid "Lines / Page:"
 msgstr "Lines / Page:"
 
-#: ../templates/default/pages/preferences.html.twig:300
+#: ../templates/default/pages/preferences.html.twig:297
 msgid "Default membership status:"
 msgstr "Default membership status:"
 
-#: ../templates/default/pages/preferences.html.twig:323
+#: ../templates/default/pages/preferences.html.twig:320
 msgid "Force member picture ratio"
 msgstr "Force member picture ratio"
 
-#: ../templates/default/pages/preferences.html.twig:325
+#: ../templates/default/pages/preferences.html.twig:322
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
@@ -7735,46 +7772,46 @@ msgstr ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 
-#: ../templates/default/pages/preferences.html.twig:333
+#: ../templates/default/pages/preferences.html.twig:330
 msgid "Select a ratio"
 msgstr "Select a ratio"
 
-#: ../templates/default/pages/preferences.html.twig:335
+#: ../templates/default/pages/preferences.html.twig:332
 #: ../templates/default/components/forms/picture.html.twig:33
 msgid "Square (1:1)"
 msgstr "Square (1:1)"
 
-#: ../templates/default/pages/preferences.html.twig:336
+#: ../templates/default/pages/preferences.html.twig:333
 #: ../templates/default/components/forms/picture.html.twig:33
 msgid "Portrait (3:4)"
 msgstr "Portrait (3:4)"
 
-#: ../templates/default/pages/preferences.html.twig:337
+#: ../templates/default/pages/preferences.html.twig:334
 #: ../templates/default/components/forms/picture.html.twig:33
 msgid "Landscape (4:3)"
 msgstr "Landscape (4:3)"
 
-#: ../templates/default/pages/preferences.html.twig:348
+#: ../templates/default/pages/preferences.html.twig:345
 msgid "Default membership extension:"
 msgstr "Default membership extension:"
 
-#: ../templates/default/pages/preferences.html.twig:352
+#: ../templates/default/pages/preferences.html.twig:349
 msgid "(Months)"
 msgstr "(Months)"
 
-#: ../templates/default/pages/preferences.html.twig:362
+#: ../templates/default/pages/preferences.html.twig:359
 msgid "Beginning of membership:"
 msgstr "Beginning of membership:"
 
-#: ../templates/default/pages/preferences.html.twig:363
+#: ../templates/default/pages/preferences.html.twig:360
 msgid "(dd/mm)"
 msgstr "(dd/mm)"
 
-#: ../templates/default/pages/preferences.html.twig:366
+#: ../templates/default/pages/preferences.html.twig:363
 msgid "Number of months offered:"
 msgstr "Number of months offered:"
 
-#: ../templates/default/pages/preferences.html.twig:369
+#: ../templates/default/pages/preferences.html.twig:366
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
@@ -7782,7 +7819,7 @@ msgstr ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 
-#: ../templates/default/pages/preferences.html.twig:369
+#: ../templates/default/pages/preferences.html.twig:366
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
 "All created contributions in current year will be valid until this date, but "
@@ -7792,19 +7829,19 @@ msgstr ""
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 
-#: ../templates/default/pages/preferences.html.twig:392
+#: ../templates/default/pages/preferences.html.twig:389
 msgid "Self subscription enabled?"
 msgstr "Self subscription enabled?"
 
-#: ../templates/default/pages/preferences.html.twig:400
+#: ../templates/default/pages/preferences.html.twig:397
 msgid "Display the link to download the empty adhesion form"
 msgstr "Display the link to download the empty adhesion form"
 
-#: ../templates/default/pages/preferences.html.twig:408
+#: ../templates/default/pages/preferences.html.twig:405
 msgid "Public pages enabled?"
 msgstr "Public pages enabled?"
 
-#: ../templates/default/pages/preferences.html.twig:416
+#: ../templates/default/pages/preferences.html.twig:413
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
@@ -7812,74 +7849,39 @@ msgstr ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 
-#: ../templates/default/pages/preferences.html.twig:423
-#: ../templates/default/pages/preferences.html.twig:435
-#: ../templates/default/pages/preferences.html.twig:447
-#: ../templates/default/pages/preferences.html.twig:457
-#: ../templates/default/pages/preferences.html.twig:469
-#: ../templates/default/pages/preferences.html.twig:479
-msgid "Hidden"
-msgstr "Hidden"
-
-#: ../templates/default/pages/preferences.html.twig:424
-#: ../templates/default/pages/preferences.html.twig:436
-#: ../templates/default/pages/preferences.html.twig:448
-#: ../templates/default/pages/preferences.html.twig:458
-#: ../templates/default/pages/preferences.html.twig:470
-#: ../templates/default/pages/preferences.html.twig:480
-msgid "Everyone"
-msgstr "Everyone"
-
-#: ../templates/default/pages/preferences.html.twig:426
-#: ../templates/default/pages/preferences.html.twig:438
-#: ../templates/default/pages/preferences.html.twig:450
-#: ../templates/default/pages/preferences.html.twig:460
-#: ../templates/default/pages/preferences.html.twig:472
-#: ../templates/default/pages/preferences.html.twig:482
-msgid "Admin and staff only"
-msgstr "Admin and staff only"
-
-#: ../templates/default/pages/preferences.html.twig:434
-#: ../templates/default/pages/preferences.html.twig:446
-#: ../templates/default/pages/preferences.html.twig:456
-#: ../templates/default/pages/preferences.html.twig:468
-#: ../templates/default/pages/preferences.html.twig:478
-msgid "Inherit"
-msgstr "Inherit"
-
-#: ../templates/default/pages/preferences.html.twig:444
+#: ../templates/default/pages/preferences.html.twig:439
 msgid "Members list"
 msgstr "Members list"
 
-#: ../templates/default/pages/preferences.html.twig:454
+#: ../templates/default/pages/preferences.html.twig:447
 msgid "Members gallery"
 msgstr "Members gallery"
 
-#: ../templates/default/pages/preferences.html.twig:466
+#: ../templates/default/pages/preferences.html.twig:457
 msgid "Staff list"
 msgstr "Staff list"
 
-#: ../templates/default/pages/preferences.html.twig:488
+#: ../templates/default/pages/preferences.html.twig:475
 msgid "Include groups managers with staff?"
 msgstr "Include groups managers with staff?"
 
-#: ../templates/default/pages/preferences.html.twig:495
+#: ../templates/default/pages/preferences.html.twig:494
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../templates/default/pages/preferences.html.twig:502
+#: ../templates/default/pages/preferences.html.twig:501
 msgid "Hide default background image"
 msgstr "Hide default background image"
 
-#: ../templates/default/pages/preferences.html.twig:508
+#: ../templates/default/pages/preferences.html.twig:507
 msgid "Apply custom colors"
 msgstr "Apply custom colors"
 
-#: ../templates/default/pages/preferences.html.twig:514
+#: ../templates/default/pages/preferences.html.twig:513
 msgid "Primary color"
 msgstr "Primary color"
 
-#: ../templates/default/pages/preferences.html.twig:516
+#: ../templates/default/pages/preferences.html.twig:515
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
@@ -7887,41 +7889,41 @@ msgstr ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 
-#: ../templates/default/pages/preferences.html.twig:522
+#: ../templates/default/pages/preferences.html.twig:521
 msgid "Text on primary color"
 msgstr "Text on primary color"
 
-#: ../templates/default/pages/preferences.html.twig:524
+#: ../templates/default/pages/preferences.html.twig:523
 msgid "Color applied to text displayed over the Primary color."
 msgstr "Color applied to text displayed over the Primary color."
 
-#: ../templates/default/pages/preferences.html.twig:532
+#: ../templates/default/pages/preferences.html.twig:531
 msgid "Secondary color"
 msgstr "Secondary color"
 
-#: ../templates/default/pages/preferences.html.twig:534
+#: ../templates/default/pages/preferences.html.twig:533
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
 "Color applied to active items in menus, paginations, and accordions views."
 
-#: ../templates/default/pages/preferences.html.twig:540
+#: ../templates/default/pages/preferences.html.twig:539
 msgid "Text on secondary color"
 msgstr "Text on secondary color"
 
-#: ../templates/default/pages/preferences.html.twig:542
+#: ../templates/default/pages/preferences.html.twig:541
 msgid "Color applied to text displayed over the Secondary color."
 msgstr "Color applied to text displayed over the Secondary color."
 
-#: ../templates/default/pages/preferences.html.twig:551
+#: ../templates/default/pages/preferences.html.twig:550
 msgid "Advanced parameters"
 msgstr "Advanced parameters"
 
-#: ../templates/default/pages/preferences.html.twig:556
+#: ../templates/default/pages/preferences.html.twig:555
 msgid "Galette base URL"
 msgstr "Galette base URL"
 
-#: ../templates/default/pages/preferences.html.twig:559
+#: ../templates/default/pages/preferences.html.twig:558
 #, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
@@ -7930,11 +7932,11 @@ msgstr ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%1$s"
 
-#: ../templates/default/pages/preferences.html.twig:570
+#: ../templates/default/pages/preferences.html.twig:569
 msgid "Post new contribution script URI"
 msgstr "Post new contribution script URI"
 
-#: ../templates/default/pages/preferences.html.twig:573
+#: ../templates/default/pages/preferences.html.twig:572
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -7948,41 +7950,41 @@ msgstr ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 
-#: ../templates/default/pages/preferences.html.twig:586
+#: ../templates/default/pages/preferences.html.twig:585
 msgid "RSS feed URL"
 msgstr "RSS feed URL"
 
-#: ../templates/default/pages/preferences.html.twig:589
+#: ../templates/default/pages/preferences.html.twig:588
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 
-#: ../templates/default/pages/preferences.html.twig:607
+#: ../templates/default/pages/preferences.html.twig:606
 msgid "Can members create child?"
 msgstr "Can members create child?"
 
-#: ../templates/default/pages/preferences.html.twig:613
+#: ../templates/default/pages/preferences.html.twig:612
 msgid "Can group managers edit their groups?"
 msgstr "Can group managers edit their groups?"
 
-#: ../templates/default/pages/preferences.html.twig:619
+#: ../templates/default/pages/preferences.html.twig:618
 msgid "Can group managers create members?"
 msgstr "Can group managers create members?"
 
-#: ../templates/default/pages/preferences.html.twig:625
+#: ../templates/default/pages/preferences.html.twig:624
 msgid "Can group managers edit members?"
 msgstr "Can group managers edit members?"
 
-#: ../templates/default/pages/preferences.html.twig:631
+#: ../templates/default/pages/preferences.html.twig:630
 msgid "Can group managers send mailings?"
 msgstr "Can group managers send mailings?"
 
-#: ../templates/default/pages/preferences.html.twig:637
+#: ../templates/default/pages/preferences.html.twig:636
 msgid "Can group managers do exports?"
 msgstr "Can group managers do exports?"
 
-#: ../templates/default/pages/preferences.html.twig:639
+#: ../templates/default/pages/preferences.html.twig:638
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
@@ -7990,47 +7992,47 @@ msgstr ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 
-#: ../templates/default/pages/preferences.html.twig:647
+#: ../templates/default/pages/preferences.html.twig:646
 msgid "Can group managers see contributions?"
 msgstr "Can group managers see contributions?"
 
-#: ../templates/default/pages/preferences.html.twig:653
+#: ../templates/default/pages/preferences.html.twig:652
 msgid "Can group managers create contributions?"
 msgstr "Can group managers create contributions?"
 
-#: ../templates/default/pages/preferences.html.twig:659
+#: ../templates/default/pages/preferences.html.twig:658
 msgid "Can group managers see transactions?"
 msgstr "Can group managers see transactions?"
 
-#: ../templates/default/pages/preferences.html.twig:665
+#: ../templates/default/pages/preferences.html.twig:664
 msgid "Can group managers create transactions?"
 msgstr "Can group managers create transactions?"
 
-#: ../templates/default/pages/preferences.html.twig:683
+#: ../templates/default/pages/preferences.html.twig:682
 msgid "Sender name:"
 msgstr "Sender name:"
 
-#: ../templates/default/pages/preferences.html.twig:687
+#: ../templates/default/pages/preferences.html.twig:686
 msgid "Sender Email:"
 msgstr "Sender Email:"
 
-#: ../templates/default/pages/preferences.html.twig:691
+#: ../templates/default/pages/preferences.html.twig:690
 msgid "Reply-To Email:"
 msgstr "Reply-To Email:"
 
-#: ../templates/default/pages/preferences.html.twig:694
+#: ../templates/default/pages/preferences.html.twig:693
 msgid "Leave empty to use Sender Email as reply address"
 msgstr "Leave empty to use Sender Email as reply address"
 
-#: ../templates/default/pages/preferences.html.twig:705
+#: ../templates/default/pages/preferences.html.twig:704
 msgid "Members administrator's Email:"
 msgstr "Members administrator's Email:"
 
-#: ../templates/default/pages/preferences.html.twig:708
+#: ../templates/default/pages/preferences.html.twig:707
 msgid "Recipient of new online registation and edition emails"
 msgstr "Recipient of new online registation and edition emails"
 
-#: ../templates/default/pages/preferences.html.twig:716
+#: ../templates/default/pages/preferences.html.twig:715
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
@@ -8038,11 +8040,11 @@ msgstr ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 
-#: ../templates/default/pages/preferences.html.twig:721
+#: ../templates/default/pages/preferences.html.twig:720
 msgid "Send email to administrators?"
 msgstr "Send email to administrators?"
 
-#: ../templates/default/pages/preferences.html.twig:723
+#: ../templates/default/pages/preferences.html.twig:722
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -8050,11 +8052,11 @@ msgstr ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 
-#: ../templates/default/pages/preferences.html.twig:731
+#: ../templates/default/pages/preferences.html.twig:730
 msgid "Wrap emails text?"
 msgstr "Wrap emails text?"
 
-#: ../templates/default/pages/preferences.html.twig:733
+#: ../templates/default/pages/preferences.html.twig:732
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -8064,11 +8066,11 @@ msgstr ""
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 
-#: ../templates/default/pages/preferences.html.twig:741
+#: ../templates/default/pages/preferences.html.twig:740
 msgid "Send email to members?"
 msgstr "Send email to members?"
 
-#: ../templates/default/pages/preferences.html.twig:743
+#: ../templates/default/pages/preferences.html.twig:742
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -8076,55 +8078,55 @@ msgstr ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 
-#: ../templates/default/pages/preferences.html.twig:751
+#: ../templates/default/pages/preferences.html.twig:750
 msgid "Activate HTML editor?"
 msgstr "Activate HTML editor?"
 
-#: ../templates/default/pages/preferences.html.twig:753
+#: ../templates/default/pages/preferences.html.twig:752
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Should HTML editor be activated on page load ?"
 
-#: ../templates/default/pages/preferences.html.twig:759
+#: ../templates/default/pages/preferences.html.twig:758
 msgid "Mail signature"
 msgstr "Mail signature"
 
-#: ../templates/default/pages/preferences.html.twig:769
+#: ../templates/default/pages/preferences.html.twig:768
 msgid "Emailing method:"
 msgstr "Emailing method:"
 
-#: ../templates/default/pages/preferences.html.twig:772
+#: ../templates/default/pages/preferences.html.twig:771
 msgid "Emailing disabled"
 msgstr "Emailing disabled"
 
-#: ../templates/default/pages/preferences.html.twig:777
+#: ../templates/default/pages/preferences.html.twig:776
 msgid "PHP mail() function"
 msgstr "PHP mail() function"
 
-#: ../templates/default/pages/preferences.html.twig:782
+#: ../templates/default/pages/preferences.html.twig:781
 msgid "Using a SMTP server (slower)"
 msgstr "Using a SMTP server (slower)"
 
-#: ../templates/default/pages/preferences.html.twig:787
+#: ../templates/default/pages/preferences.html.twig:786
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Using GMAIL as SMTP server (slower)"
 
-#: ../templates/default/pages/preferences.html.twig:792
+#: ../templates/default/pages/preferences.html.twig:791
 msgid "Using Sendmail server"
 msgstr "Using Sendmail server"
 
-#: ../templates/default/pages/preferences.html.twig:798
+#: ../templates/default/pages/preferences.html.twig:797
 msgid "SMTP server:"
 msgstr "SMTP server:"
 
-#: ../templates/default/pages/preferences.html.twig:802
+#: ../templates/default/pages/preferences.html.twig:801
 msgid "SMTP port:"
 msgstr "SMTP port:"
 
-#: ../templates/default/pages/preferences.html.twig:809
+#: ../templates/default/pages/preferences.html.twig:808
 msgid "Use SMTP authentication?"
 msgstr "Use SMTP authentication?"
 
-#: ../templates/default/pages/preferences.html.twig:811
+#: ../templates/default/pages/preferences.html.twig:810
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -8132,11 +8134,11 @@ msgstr ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 
-#: ../templates/default/pages/preferences.html.twig:819
+#: ../templates/default/pages/preferences.html.twig:818
 msgid "Use TLS for SMTP?"
 msgstr "Use TLS for SMTP?"
 
-#: ../templates/default/pages/preferences.html.twig:821
+#: ../templates/default/pages/preferences.html.twig:820
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -8144,11 +8146,11 @@ msgstr ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 
-#: ../templates/default/pages/preferences.html.twig:830
+#: ../templates/default/pages/preferences.html.twig:829
 msgid "Allow unsecure TLS?"
 msgstr "Allow unsecure TLS?"
 
-#: ../templates/default/pages/preferences.html.twig:832
+#: ../templates/default/pages/preferences.html.twig:831
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -8156,160 +8158,156 @@ msgstr ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 
-#: ../templates/default/pages/preferences.html.twig:841
+#: ../templates/default/pages/preferences.html.twig:840
 msgid "SMTP (or GMail) user:"
 msgstr "SMTP (or GMail) user:"
 
-#: ../templates/default/pages/preferences.html.twig:845
+#: ../templates/default/pages/preferences.html.twig:844
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (or GMail) password:"
 
-#: ../templates/default/pages/preferences.html.twig:846
-msgid "Leave empty to keep the current one"
-msgstr "Leave empty to keep the current one"
-
-#: ../templates/default/pages/preferences.html.twig:860
+#: ../templates/default/pages/preferences.html.twig:859
 msgid "Test connection"
 msgstr "Test connection"
 
-#: ../templates/default/pages/preferences.html.twig:870
+#: ../templates/default/pages/preferences.html.twig:869
 msgid "Send a test email"
 msgstr "Send a test email"
 
-#: ../templates/default/pages/preferences.html.twig:874
+#: ../templates/default/pages/preferences.html.twig:873
 msgid "Emailing is disabled: pick a sending method to run a test."
 msgstr "Emailing is disabled: pick a sending method to run a test."
 
-#: ../templates/default/pages/preferences.html.twig:877
+#: ../templates/default/pages/preferences.html.twig:876
 msgid "Tests run on the settings displayed above, even those not saved yet."
 msgstr "Tests run on the settings displayed above, even those not saved yet."
 
-#: ../templates/default/pages/preferences.html.twig:888
-#: ../templates/default/pages/preferences.html.twig:1106
+#: ../templates/default/pages/preferences.html.twig:887
+#: ../templates/default/pages/preferences.html.twig:1105
 msgid "Vertical margins:"
 msgstr "Vertical margins:"
 
-#: ../templates/default/pages/preferences.html.twig:895
-#: ../templates/default/pages/preferences.html.twig:1113
+#: ../templates/default/pages/preferences.html.twig:894
+#: ../templates/default/pages/preferences.html.twig:1112
 msgid "Horizontal margins:"
 msgstr "Horizontal margins:"
 
-#: ../templates/default/pages/preferences.html.twig:902
-#: ../templates/default/pages/preferences.html.twig:1127
+#: ../templates/default/pages/preferences.html.twig:901
+#: ../templates/default/pages/preferences.html.twig:1126
 msgid "Horizontal spacing:"
 msgstr "Horizontal spacing:"
 
-#: ../templates/default/pages/preferences.html.twig:909
-#: ../templates/default/pages/preferences.html.twig:1120
+#: ../templates/default/pages/preferences.html.twig:908
+#: ../templates/default/pages/preferences.html.twig:1119
 msgid "Vertical spacing:"
 msgstr "Vertical spacing:"
 
-#: ../templates/default/pages/preferences.html.twig:918
+#: ../templates/default/pages/preferences.html.twig:917
 msgid "Print border"
 msgstr "Print border"
 
-#: ../templates/default/pages/preferences.html.twig:920
+#: ../templates/default/pages/preferences.html.twig:919
 msgid "Check this box to print a grey border around each label."
 msgstr "Check this box to print a grey border around each label."
 
-#: ../templates/default/pages/preferences.html.twig:928
+#: ../templates/default/pages/preferences.html.twig:927
 msgid "Label width:"
 msgstr "Label width:"
 
-#: ../templates/default/pages/preferences.html.twig:935
+#: ../templates/default/pages/preferences.html.twig:934
 msgid "Label height:"
 msgstr "Label height:"
 
-#: ../templates/default/pages/preferences.html.twig:942
+#: ../templates/default/pages/preferences.html.twig:941
 msgid "Number of label columns:"
 msgstr "Number of label columns:"
 
-#: ../templates/default/pages/preferences.html.twig:946
+#: ../templates/default/pages/preferences.html.twig:945
 msgid "Number of label lines:"
 msgstr "Number of label lines:"
 
-#: ../templates/default/pages/preferences.html.twig:950
+#: ../templates/default/pages/preferences.html.twig:949
 msgid "Font size:"
 msgstr "Font size:"
 
-#: ../templates/default/pages/preferences.html.twig:960
+#: ../templates/default/pages/preferences.html.twig:959
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
 msgstr "Each page contains %1$s columns and  %2$s rows."
 
-#: ../templates/default/pages/preferences.html.twig:966
+#: ../templates/default/pages/preferences.html.twig:965
 msgid "Short Text (Card Center):"
 msgstr "Short Text (Card Center):"
 
-#: ../templates/default/pages/preferences.html.twig:978
+#: ../templates/default/pages/preferences.html.twig:977
 msgid "(10 characters max)"
 msgstr "(10 characters max)"
 
-#: ../templates/default/pages/preferences.html.twig:981
+#: ../templates/default/pages/preferences.html.twig:980
 msgid "Long Text (Bottom Line):"
 msgstr "Long Text (Bottom Line):"
 
-#: ../templates/default/pages/preferences.html.twig:993
+#: ../templates/default/pages/preferences.html.twig:992
 msgid "(65 characters max)"
 msgstr "(65 characters max)"
 
-#: ../templates/default/pages/preferences.html.twig:997
+#: ../templates/default/pages/preferences.html.twig:996
 msgid "Strip Text Color:"
 msgstr "Strip Text Color:"
 
-#: ../templates/default/pages/preferences.html.twig:999
-#: ../templates/default/pages/preferences.html.twig:1007
-#: ../templates/default/pages/preferences.html.twig:1015
-#: ../templates/default/pages/preferences.html.twig:1023
+#: ../templates/default/pages/preferences.html.twig:998
+#: ../templates/default/pages/preferences.html.twig:1006
+#: ../templates/default/pages/preferences.html.twig:1014
+#: ../templates/default/pages/preferences.html.twig:1022
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Hexadecimal color notation: #RRGGBB"
 
-#: ../templates/default/pages/preferences.html.twig:1005
+#: ../templates/default/pages/preferences.html.twig:1004
 msgid "Active Member Color:"
 msgstr "Active Member Color:"
 
-#: ../templates/default/pages/preferences.html.twig:1013
+#: ../templates/default/pages/preferences.html.twig:1012
 msgid "Board Members Color:"
 msgstr "Board Members Color:"
 
-#: ../templates/default/pages/preferences.html.twig:1021
+#: ../templates/default/pages/preferences.html.twig:1020
 msgid "Honor Members Color:"
 msgstr "Honor Members Color:"
 
-#: ../templates/default/pages/preferences.html.twig:1038
+#: ../templates/default/pages/preferences.html.twig:1037
 msgid "Current logo for printing"
 msgstr "Current logo for printing"
 
-#: ../templates/default/pages/preferences.html.twig:1067
+#: ../templates/default/pages/preferences.html.twig:1066
 msgid "Allow members to print card ?"
 msgstr "Allow members to print card ?"
 
-#: ../templates/default/pages/preferences.html.twig:1073
+#: ../templates/default/pages/preferences.html.twig:1072
 msgid "Show title ?"
 msgstr "Show title ?"
 
-#: ../templates/default/pages/preferences.html.twig:1075
+#: ../templates/default/pages/preferences.html.twig:1074
 msgid "(Show or not title in front of name)"
 msgstr "(Show or not title in front of name)"
 
-#: ../templates/default/pages/preferences.html.twig:1081
+#: ../templates/default/pages/preferences.html.twig:1080
 msgid "Address type:"
 msgstr "Address type:"
 
-#: ../templates/default/pages/preferences.html.twig:1084
+#: ../templates/default/pages/preferences.html.twig:1083
 #: ../templates/default/elements/ajax_members.html.twig:17
 msgid "Zip - Town"
 msgstr "Zip - Town"
 
-#: ../templates/default/pages/preferences.html.twig:1089
+#: ../templates/default/pages/preferences.html.twig:1088
 msgid "(Choose address printed below name)"
 msgstr "(Choose address printed below name)"
 
-#: ../templates/default/pages/preferences.html.twig:1092
+#: ../templates/default/pages/preferences.html.twig:1091
 msgid "Year:"
 msgstr "Year:"
 
-#: ../templates/default/pages/preferences.html.twig:1095
+#: ../templates/default/pages/preferences.html.twig:1094
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -8317,25 +8315,25 @@ msgstr ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 
-#: ../templates/default/pages/preferences.html.twig:1134
+#: ../templates/default/pages/preferences.html.twig:1133
 msgid "Card width from 70 to 95mm:"
 msgstr "Card width from 70 to 95mm:"
 
-#: ../templates/default/pages/preferences.html.twig:1141
+#: ../templates/default/pages/preferences.html.twig:1140
 msgid "Card height from 40 to 55mm:"
 msgstr "Card height from 40 to 55mm:"
 
-#: ../templates/default/pages/preferences.html.twig:1156
+#: ../templates/default/pages/preferences.html.twig:1155
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:103
 #, php-format
 msgid "There is not yet any dynamic field configured for '%1$s'"
 msgstr "There is not yet any dynamic field configured for '%1$s'"
 
-#: ../templates/default/pages/preferences.html.twig:1169
+#: ../templates/default/pages/preferences.html.twig:1172
 msgid "Configure dynamic fields"
 msgstr "Configure dynamic fields"
 
-#: ../templates/default/pages/preferences.html.twig:1177
+#: ../templates/default/pages/preferences.html.twig:1180
 msgid ""
 "Asks for a code from an application on the member's phone in addition to "
 "their password, so that a stolen password is not enough on its own. Members "
@@ -8347,43 +8345,43 @@ msgstr ""
 "who have to hold one are sent to enrolment at their next login; switching "
 "back to disabled lets everyone in again without a code."
 
-#: ../templates/default/pages/preferences.html.twig:1177
+#: ../templates/default/pages/preferences.html.twig:1180
 msgid "Two-factor authentication:"
 msgstr "Two-factor authentication:"
 
-#: ../templates/default/pages/preferences.html.twig:1179
+#: ../templates/default/pages/preferences.html.twig:1182
 msgid "Disabled (default)"
 msgstr "Disabled (default)"
 
-#: ../templates/default/pages/preferences.html.twig:1180
+#: ../templates/default/pages/preferences.html.twig:1183
 msgid "Optional, each member decides"
 msgstr "Optional, each member decides"
 
-#: ../templates/default/pages/preferences.html.twig:1182
+#: ../templates/default/pages/preferences.html.twig:1185
 msgid "Required for administrators and staff"
 msgstr "Required for administrators and staff"
 
-#: ../templates/default/pages/preferences.html.twig:1183
+#: ../templates/default/pages/preferences.html.twig:1186
 msgid "Required for everyone"
 msgstr "Required for everyone"
 
-#: ../templates/default/pages/preferences.html.twig:1189
+#: ../templates/default/pages/preferences.html.twig:1192
 msgid "Password length:"
 msgstr "Password length:"
 
-#: ../templates/default/pages/preferences.html.twig:1192
+#: ../templates/default/pages/preferences.html.twig:1195
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr "Minimum password length required for all accounts. Minimal size is 6."
 
-#: ../templates/default/pages/preferences.html.twig:1204
+#: ../templates/default/pages/preferences.html.twig:1207
 msgid "Enable password blacklists"
 msgstr "Enable password blacklists"
 
-#: ../templates/default/pages/preferences.html.twig:1204
+#: ../templates/default/pages/preferences.html.twig:1207
 msgid "Enable blacklists:"
 msgstr "Enable blacklists:"
 
-#: ../templates/default/pages/preferences.html.twig:1206
+#: ../templates/default/pages/preferences.html.twig:1209
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -8391,67 +8389,67 @@ msgstr ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 
-#: ../templates/default/pages/preferences.html.twig:1212
+#: ../templates/default/pages/preferences.html.twig:1215
 msgid "Enforce password strength"
 msgstr "Enforce password strength"
 
-#: ../templates/default/pages/preferences.html.twig:1212
+#: ../templates/default/pages/preferences.html.twig:1215
 msgid "Password strength:"
 msgstr "Password strength:"
 
-#: ../templates/default/pages/preferences.html.twig:1214
+#: ../templates/default/pages/preferences.html.twig:1217
 msgid "None (default)"
 msgstr "None (default)"
 
-#: ../templates/default/pages/preferences.html.twig:1215
-#: ../templates/default/pages/preferences.html.twig:1225
+#: ../templates/default/pages/preferences.html.twig:1218
+#: ../templates/default/pages/preferences.html.twig:1228
 msgid "Weak"
 msgstr "Weak"
 
-#: ../templates/default/pages/preferences.html.twig:1216
-#: ../templates/default/pages/preferences.html.twig:1226
+#: ../templates/default/pages/preferences.html.twig:1219
+#: ../templates/default/pages/preferences.html.twig:1229
 msgid "Medium"
 msgstr "Medium"
 
-#: ../templates/default/pages/preferences.html.twig:1217
-#: ../templates/default/pages/preferences.html.twig:1227
+#: ../templates/default/pages/preferences.html.twig:1220
+#: ../templates/default/pages/preferences.html.twig:1230
 msgid "Strong"
 msgstr "Strong"
 
-#: ../templates/default/pages/preferences.html.twig:1218
-#: ../templates/default/pages/preferences.html.twig:1228
+#: ../templates/default/pages/preferences.html.twig:1221
+#: ../templates/default/pages/preferences.html.twig:1231
 msgid "Very strong"
 msgstr "Very strong"
 
-#: ../templates/default/pages/preferences.html.twig:1221
+#: ../templates/default/pages/preferences.html.twig:1224
 msgid "Enforce minimal password strength for all password."
 msgstr "Enforce minimal password strength for all password."
 
-#: ../templates/default/pages/preferences.html.twig:1222
+#: ../templates/default/pages/preferences.html.twig:1225
 msgid "Levels are:"
 msgstr "Levels are:"
 
-#: ../templates/default/pages/preferences.html.twig:1224
+#: ../templates/default/pages/preferences.html.twig:1227
 msgid "for no strength enforcement"
 msgstr "for no strength enforcement"
 
-#: ../templates/default/pages/preferences.html.twig:1225
+#: ../templates/default/pages/preferences.html.twig:1228
 msgid "require at least one matched rule"
 msgstr "require at least one matched rule"
 
-#: ../templates/default/pages/preferences.html.twig:1226
+#: ../templates/default/pages/preferences.html.twig:1229
 msgid "require at least two matched rules"
 msgstr "require at least two matched rules"
 
-#: ../templates/default/pages/preferences.html.twig:1227
+#: ../templates/default/pages/preferences.html.twig:1230
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr "require at least three matched rules (recommended for most usages)"
 
-#: ../templates/default/pages/preferences.html.twig:1228
+#: ../templates/default/pages/preferences.html.twig:1231
 msgid "requires all rules."
 msgstr "requires all rules."
 
-#: ../templates/default/pages/preferences.html.twig:1230
+#: ../templates/default/pages/preferences.html.twig:1233
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
@@ -8459,7 +8457,7 @@ msgstr ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 
-#: ../templates/default/pages/preferences.html.twig:1231
+#: ../templates/default/pages/preferences.html.twig:1234
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -8467,29 +8465,29 @@ msgstr ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 
-#: ../templates/default/pages/preferences.html.twig:1241
+#: ../templates/default/pages/preferences.html.twig:1244
 msgid "Test a password:"
 msgstr "Test a password:"
 
-#: ../templates/default/pages/preferences.html.twig:1244
+#: ../templates/default/pages/preferences.html.twig:1247
 msgid "Test a password with current selected values."
 msgstr "Test a password with current selected values."
 
-#: ../templates/default/pages/preferences.html.twig:1244
+#: ../templates/default/pages/preferences.html.twig:1247
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 
-#: ../templates/default/pages/preferences.html.twig:1432
+#: ../templates/default/pages/preferences.html.twig:1408
 msgid "Enter the email adress"
 msgstr "Enter the email adress"
 
-#: ../templates/default/pages/preferences.html.twig:1451
+#: ../templates/default/pages/preferences.html.twig:1427
 msgid "An error occurred sending test email :("
 msgstr "An error occurred sending test email :("
 
-#: ../templates/default/pages/preferences.html.twig:1488
+#: ../templates/default/pages/preferences.html.twig:1464
 msgid "An error occurred testing mail server connection :("
 msgstr "An error occurred testing mail server connection :("
 
@@ -8640,11 +8638,9 @@ msgstr "read-only"
 
 #: ../templates/default/pages/advanced_config.html.twig:60
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 
 #: ../templates/default/pages/advanced_config.html.twig:60
 #: ../templates/default/pages/advanced_config.html.twig:200
@@ -8751,10 +8747,10 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:201
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 
 #: ../templates/default/pages/advanced_config.html.twig:205
 msgid ""
@@ -8954,6 +8950,11 @@ msgstr "Lateness in fee"
 #: ../templates/default/pages/members_list.html.twig:274
 msgid "Send an email"
 msgstr "Send an email"
+
+#: ../templates/default/pages/members_list.html.twig:287
+#: ../templates/default/pages/members_list.html.twig:350
+msgid "Admin"
+msgstr "Admin"
 
 #: ../templates/default/pages/members_list.html.twig:296
 #: ../templates/default/pages/members_list.html.twig:402
@@ -9850,36 +9851,36 @@ msgstr "Left"
 msgid "Right"
 msgstr "Right"
 
-#: ../templates/default/components/dynamic_fields.html.twig:137
+#: ../templates/default/components/dynamic_fields.html.twig:139
 #: ../templates/default/elements/display_dynamic_fields.html.twig:12
 msgid "Additionnal fields:"
 msgstr "Additionnal fields:"
 
-#: ../templates/default/components/dynamic_fields.html.twig:188
+#: ../templates/default/components/dynamic_fields.html.twig:191
 msgid "Enter as many occurrences you want."
 msgstr "Enter as many occurrences you want."
 
-#: ../templates/default/components/dynamic_fields.html.twig:198
+#: ../templates/default/components/dynamic_fields.html.twig:201
 #, php-format
 msgid "Add an occurrence of %1$s"
 msgstr "Add an occurrence of %1$s"
 
-#: ../templates/default/components/dynamic_fields.html.twig:217
+#: ../templates/default/components/dynamic_fields.html.twig:222
 #, php-format
 msgid "Enter up to %1$s more occurrences."
 msgstr "Enter up to %1$s more occurrences."
 
-#: ../templates/default/components/dynamic_fields.html.twig:46
+#: ../templates/default/components/dynamic_fields.html.twig:47
 #, php-format
 msgid "Delete the file and remove this occurrence of %1$s"
 msgstr "Delete the file and remove this occurrence of %1$s"
 
-#: ../templates/default/components/dynamic_fields.html.twig:46
+#: ../templates/default/components/dynamic_fields.html.twig:47
 #, php-format
 msgid "Remove this occurrence of %1$s"
 msgstr "Remove this occurrence of %1$s"
 
-#: ../templates/default/components/dynamic_fields.html.twig:78
+#: ../templates/default/components/dynamic_fields.html.twig:79
 msgid "Select an option"
 msgstr "Select an option"
 
