@@ -528,11 +528,17 @@ class GroupsController extends CrudController
         $cascade = isset($post['cascade']);
         $is_deleted = $group->remove($cascade);
 
-        if ($is_deleted !== true && $group->isEmpty() === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Group is not empty, it cannot be deleted. Use cascade delete instead.")
-            );
+        if ($is_deleted !== true) {
+            $blockers = $group->getRemovalBlockers();
+            foreach ($blockers as $blocker) {
+                $this->flash->addMessage('error_detected', $blocker);
+            }
+            if (count($blockers) === 0 && $group->isEmpty() === false) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Group is not empty, it cannot be deleted. Use cascade delete instead.")
+                );
+            }
         }
 
         return $is_deleted;

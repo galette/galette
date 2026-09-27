@@ -269,4 +269,89 @@ class Group extends GaletteTestCase
         $this->assertTrue($group->remove(cascade: true)); //cascade removal, all will be removed
         $this->assertFalse($group->load($parent_id));
     }
+
+    /**
+     * Test a group.before_remove listener prevents removal
+     */
+    public function testRemoveBlocked(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A used group');
+        $this->assertTrue($group->store());
+        $group_id = $group->getId();
+
+        $seen = null;
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'group.before_remove',
+            function (\Galette\Events\GaletteEvent $event) use (&$seen): void {
+                $seen = $event->getObject()->getId();
+                $event->getObject()->preventRemoval('Group is used by a plugin.');
+            }
+        );
+
+        $group = new \Galette\Entity\Group($group_id);
+        $this->assertFalse($group->remove());
+        $this->assertSame($group_id, $seen);
+        $this->assertSame(['Group is used by a plugin.'], $group->getRemovalBlockers());
+        $this->assertTrue($group->load($group_id));
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Group "A used group" cannot be removed: Group is used by a plugin.'
+        );
+
+        //listener is gone, blockers of a previous attempt are forgotten
+        $this->assertTrue($group->remove());
+        $this->assertSame([], $group->getRemovalBlockers());
+        $this->assertFalse($group->load($group_id));
+    }
+
+    /**
+     * Test a group.before_remove listener on a subgroup prevents cascade removal
+     */
+    public function testCascadeRemoveBlockedBySubgroup(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A parent group');
+        $this->assertTrue($group->store());
+        $parent_id = $group->getId();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A used child group');
+        $group->setParentGroup($parent_id);
+        $this->assertTrue($group->store());
+        $child_id = $group->getId();
+
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        //no way to unsubscribe: listener is switched off once done
+        $switch = new \ArrayObject(['on' => true]);
+        $listener = function (\Galette\Events\GaletteEvent $event) use ($child_id, $switch): void {
+            if ($switch['on'] && $event->getObject()->getId() === $child_id) {
+                $event->getObject()->preventRemoval('Child group is used by a plugin.');
+            }
+        };
+        $emitter->subscribeTo('group.before_remove', $listener);
+
+        try {
+            $group = new \Galette\Entity\Group($parent_id);
+            $this->logSuperAdmin();
+            $group->setLogin($this->login);
+            $this->assertFalse($group->remove(cascade: true));
+            $this->assertSame(['Child group is used by a plugin.'], $group->getRemovalBlockers());
+            $this->assertTrue($group->load($parent_id));
+            $this->assertTrue($group->load($child_id));
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Group "A parent group" cannot be removed: Child group is used by a plugin.'
+            );
+        } finally {
+            $switch['on'] = false;
+        }
+    }
 }

@@ -13,6 +13,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Safe\DateTime;
 use Exception;
+use Galette\Events\GaletteEvent;
 use Galette\Repository\Groups;
 use OverflowException;
 use RuntimeException;
@@ -49,6 +50,8 @@ class Group
     private string $creation_date;
     private int $count_members;
     private bool $isempty;
+    /** @var array<string> */
+    private array $removal_blockers = [];
     private Login $login;
 
     /**
@@ -263,6 +266,18 @@ class Group
         global $zdb;
         $transaction = false;
 
+        if ($this->hasRemovalBlockers($cascade)) {
+            Analog::log(
+                sprintf(
+                    'Group "%1$s" cannot be removed: %2$s',
+                    $this->group_name,
+                    implode(' ', $this->removal_blockers)
+                ),
+                Analog::WARNING
+            );
+            return false;
+        }
+
         try {
             if (!$zdb->inTransaction()) {
                 $zdb->beginTransaction();
@@ -333,6 +348,50 @@ class Group
             }
             return false;
         }
+    }
+
+    /**
+     * Ask group.before_remove listeners whether the group, and its subgroups
+     * on a cascade removal, can be removed
+     *
+     * @param bool $cascade Subgroups are removed as well
+     */
+    private function hasRemovalBlockers(bool $cascade): bool
+    {
+        global $emitter;
+
+        $this->removal_blockers = [];
+        $emitter->dispatch(new GaletteEvent('group.before_remove', $this));
+        if ($cascade) {
+            foreach ($this->getGroups() as $subgroup) {
+                $subgroup->hasRemovalBlockers(cascade: true);
+                array_push($this->removal_blockers, ...$subgroup->getRemovalBlockers());
+            }
+        }
+        $this->removal_blockers = array_values(array_unique($this->removal_blockers));
+
+        return count($this->removal_blockers) > 0;
+    }
+
+    /**
+     * Prevent group removal, from a group.before_remove listener
+     *
+     * @param string $reason Why the group cannot be removed, displayed as is
+     */
+    public function preventRemoval(string $reason): self
+    {
+        $this->removal_blockers[] = $reason;
+        return $this;
+    }
+
+    /**
+     * Why the group could not be removed, according to group.before_remove listeners
+     *
+     * @return array<string>
+     */
+    public function getRemovalBlockers(): array
+    {
+        return $this->removal_blockers;
     }
 
     /**
