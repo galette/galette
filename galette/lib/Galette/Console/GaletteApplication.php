@@ -68,5 +68,6 @@ class GaletteApplication extends Application
         }
         $this->addCommand(new Command\MakeTwigCache($this->basepath));
         $this->addCommand(new Command\TwigPotReferences($this->basepath));
+        $this->addCommand(new Command\CompileLocales($this->basepath));
     }
 }

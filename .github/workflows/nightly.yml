@@ -79,6 +79,12 @@ jobs:
       - name: Python dependencies for bin/release
         run: python3 -m pip install --user --quiet --disable-pip-version-check 'GitPython==3.1.61' 'termcolor==3.3.0'
 
+      # MO files are not versioned: bin/release compiles them with msgfmt.
+      - name: Gettext tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+
       # -l -d <dir> is what keeps the build off ssh.galette.eu: in local mode the
       # "does this release already exist?" check reads that directory and the
       # upload becomes a copy into it. Nightly mode also forces --force,
@@ -116,6 +122,12 @@ jobs:
           # Galette with no interface.
           if ! grep -qx "${prefix}/galette/webroot/themes/default/ui/semantic.min.css" <<< "$entries"; then
             echo "::error::the assets were not built: no semantic.min.css in ${name}"
+            exit 1
+          fi
+          # MO files are not versioned, bin/release builds them. Without them
+          # the archive would ship a Galette in English only.
+          if ! grep -qx "${prefix}/galette/lang/fr_FR.utf8/LC_MESSAGES/galette.mo" <<< "$entries"; then
+            echo "::error::translations were not compiled: no fr_FR.utf8 galette.mo in ${name}"
             exit 1
           fi
           # bin/release seds GALETTE_NIGHTLY to the commit and date it built. If

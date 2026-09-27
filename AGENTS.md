@@ -49,7 +49,7 @@ galette/
 │   ├── webroot/          # Public web root
 │   ├── config/           # Configuration files
 │   ├── data/             # Data storage (writable)
-│   └── lang/             # Translations (gettext .po/.mo)
+│   └── lang/             # Translations (gettext .po sources, .mo built)
 ├── tests/                # PHPUnit test suite
 ├── ui/                   # Frontend source files
 ├── patches/              # Database migrations
@@ -608,9 +608,14 @@ declaring its type, never adding a call.
 ## Translation & i18n
 
 - Translation files: `galette/lang/`
-- Format: gettext (.po/.mo files)
+- Format: gettext; only `.po` sources are versioned, `.mo` files are built and git-ignored
 - Managed via Weblate: https://hosted.weblate.org/projects/galette/
-- After updating translatable strings: `cd galette/lang && make mo`
+- Build MO files (core and plugins, only those older than their PO): `bin/console galette:compile-locales`
+  (`--force` to rebuild all, `plugin-name` argument for a single plugin; requires `msgfmt` from gettext tools)
+- Runs automatically after `composer install`/`composer update`, and from `bin/serve`; after a `git pull`, run it again,
+  or install a git hook: `printf '#!/bin/sh\nbin/console galette:compile-locales\n' > .git/hooks/post-merge && chmod +x .git/hooks/post-merge`
+- In debug mode, a missing or outdated MO file is logged as a warning
+- After updating translatable strings: `cd galette/lang && make extract`
 
 ## Key Configuration Files
 

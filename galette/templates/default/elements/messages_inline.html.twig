@@ -34,6 +34,10 @@
 {# Let's see if there are warning messages to show #}
 {% set warnings = flash.getMessage('warning_detected') ?? [] %}
 {% set warnings = warnings|merge(flash.getMessage('warning') ?? []) %}
+{# Debug mode only: core MO file of current language not compiled #}
+{% if not standalone and i18n is defined %}
+    {% set warnings = warnings|merge(i18n.getCompiledTranslationsWarnings()) %}
+{% endif %}
 {% if warning_detected is defined and warning_detected is iterable %}
     {% for w in warning_detected %}
         {% set warnings = warnings|merge([w]) %}

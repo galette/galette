@@ -110,6 +110,14 @@ jobs:
           enable-assets-cache: ${{ matrix.cache }}
           skip-checkout: true
 
+      # MO files are not versioned
+      - name: Compile locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+          # Test mode would boot on a database not installed yet
+          GALETTE_TESTS= bin/console galette:compile-locales
+
       - name: Install libfaketime
         # Allows date-sensitive tests to freeze "now" (see tests/lib/FakeTime.php).
         # LD_PRELOAD is only set on the unit test steps below, not globally.
@@ -259,6 +267,14 @@ jobs:
           php-version: ${{ matrix.php-version }}
           enable-assets-cache: true
           skip-checkout: true
+
+      # MO files are not versioned
+      - name: Compile locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+          # Test mode would boot on a database not installed yet
+          GALETTE_TESTS= bin/console galette:compile-locales
 
       - name: Fail database tests
         run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteDbFails/

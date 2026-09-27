@@ -110,6 +110,10 @@ fi
 
 mkdir -p "$STATE"
 
+#MO files are not versioned; only rebuilds those older than their PO
+"$PHP_BIN" bin/console galette:compile-locales \
+    || echo "Translations have not been compiled, see above." >&2
+
 # --- ports, derived from the slug then remembered ------------------------------
 
 port_free() {

@@ -76,6 +76,38 @@ class I18n extends GaletteTestCase
     }
 
     /**
+     * Test languages are guessed from PO sources, compiled MO files are not versioned
+     */
+    public function testGuessLangsFromSources(): void
+    {
+        $expected = [];
+        foreach (\Safe\glob(GALETTE_ROOT . 'lang/galette_*.po') as $po) {
+            $expected[] = substr(basename($po, '.po'), strlen('galette_'));
+        }
+        sort($expected);
+
+        $langs = $this->i18n->guessLangs();
+        $long_ids = array_column($langs, 'long');
+        sort($long_ids);
+
+        $this->assertSame($expected, $long_ids);
+        $this->assertSame('fr_FR.utf8', $langs['fr_FR']['long']);
+        $this->assertSame('en_US', $langs['en_US']['long']);
+    }
+
+    /**
+     * Test missing MO files are only reported in debug mode
+     */
+    public function testCompiledTranslationsWarnings(): void
+    {
+        $this->assertFalse(\Galette\Core\Galette::isDebugEnabled());
+        $this->assertSame([], $this->i18n->getCompiledTranslationsWarnings());
+        $this->assertNull(
+            \Galette\Core\I18n::findUncompiledTranslations(GALETTE_ROOT . 'lang/', 'galette', 'unknown_LANG')
+        );
+    }
+
+    /**
      * Test languages list as array
      */
     public function testGetArrayList(): void

@@ -13,6 +13,8 @@ namespace Galette\Core;
 use Analog\Analog;
 
 use function Safe\bindtextdomain;
+use function Safe\filemtime;
+use function Safe\preg_match;
 use function Safe\realpath;
 
 /**
@@ -122,6 +124,77 @@ class I18n
         if ($translator) {
             $translator->setLocale($this->getLongID());
         }
+
+        self::checkCompiledTranslations(GALETTE_ROOT . $this->dir, $domain, $this->getLongID());
+    }
+
+    /**
+     * Warn, in debug mode, when a MO file is missing or older than its PO source.
+     * MO files are not versioned, they are built with galette:compile-locales.
+     *
+     * @param string $lang_dir Lang directory
+     * @param string $domain   Translation domain
+     * @param string $locale   Locale (long ID)
+     */
+    public static function checkCompiledTranslations(string $lang_dir, string $domain, string $locale): void
+    {
+        $mo = self::findUncompiledTranslations($lang_dir, $domain, $locale);
+        if ($mo !== null) {
+            Analog::log(
+                sprintf(
+                    '%s is missing or outdated; run bin/console galette:compile-locales',
+                    $mo
+                ),
+                Analog::WARNING
+            );
+        }
+    }
+
+    /**
+     * Find, in debug mode, a MO file that is missing or older than its PO source
+     *
+     * @param string $lang_dir Lang directory
+     * @param string $domain   Translation domain
+     * @param string $locale   Locale (long ID)
+     *
+     * @return ?string Path to the MO file, null if it is up to date, or outside debug mode
+     */
+    public static function findUncompiledTranslations(string $lang_dir, string $domain, string $locale): ?string
+    {
+        if (!Galette::isDebugEnabled()) {
+            return null;
+        }
+
+        $po = sprintf('%s/%s_%s.po', rtrim($lang_dir, '/'), $domain, $locale);
+        $mo = sprintf('%s/%s/LC_MESSAGES/%s.mo', rtrim($lang_dir, '/'), $locale, $domain);
+        if (!file_exists($po)) {
+            return null;
+        }
+        if (!file_exists($mo) || filemtime($mo) < filemtime($po)) {
+            return $mo;
+        }
+        return null;
+    }
+
+    /**
+     * Warnings to display, in debug mode, when core translations of current language are not compiled
+     *
+     * @return array<int,string>
+     */
+    public function getCompiledTranslationsWarnings(): array
+    {
+        $mo = self::findUncompiledTranslations(GALETTE_ROOT . $this->dir, 'galette', $this->getLongID());
+        if ($mo === null) {
+            return [];
+        }
+
+        return [
+            sprintf(
+                //TRANS: %1$s is the path to a translation file
+                _T('Translation file %1$s is missing or outdated; run bin/console galette:compile-locales.'),
+                htmlspecialchars(str_replace(GALETTE_ROOT, '', $mo))
+            )
+        ];
     }
 
     /**
@@ -255,8 +328,11 @@ class I18n
     }
 
     /**
-     * Guess available languages from directories
-     * that are present in the lang directory.
+     * Guess available languages from translation sources
+     * (galette_<locale>.po) that are present in the lang directory.
+     *
+     * Compiled MO files are not versioned, a language is listed
+     * even if its MO file has not been built yet.
      *
      * Will store found langs in class langs variable and return it.
      *
@@ -267,8 +343,8 @@ class I18n
         $dir = new \DirectoryIterator($this->path);
         $langs = [];
         foreach ($dir as $fileinfo) {
-            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                $lang = $fileinfo->getFilename();
+            if ($fileinfo->isFile() && preg_match('/^galette_(.+)\.po$/', $fileinfo->getFilename(), $matches)) {
+                $lang = $matches[1];
                 $real_lang = str_replace('.utf8', '', $lang);
                 $parsed_lang = \Locale::parseLocale($lang);
 

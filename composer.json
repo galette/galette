@@ -104,7 +104,14 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch"
+            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch",
+            "@compile-locales"
+        ],
+        "post-update-cmd": [
+            "@compile-locales"
+        ],
+        "compile-locales": [
+            "bin/console galette:compile-locales || echo 'Translations have not been compiled, see above.'"
         ]
     }
 }

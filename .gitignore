@@ -115,3 +115,6 @@ test-results/
 # bin/serve local state (ports, saved configurations, sessions)
 /.serve/
 /compose.override.yaml
+
+# compiled translations, built by bin/console galette:compile-locales
+galette/lang/*/LC_MESSAGES/*.mo

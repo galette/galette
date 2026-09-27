@@ -660,6 +660,8 @@ class Plugins
                 pattern: $domain . '_%s_local_lang.php',
                 textDomain: $domain
             );
+
+            I18n::checkCompiledTranslations($this->modules[$id]['root'] . '/lang/', $domain, $language);
         }
     }
 

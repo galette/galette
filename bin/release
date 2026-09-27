@@ -460,6 +460,15 @@ def add_libs(rel_name, galette_archive):
     print(composer_dir)
     run(composer_cmd, cwd=composer_dir)
 
+    # compile translations: MO files are not versioned
+    run('bin/console galette:compile-locales --force', cwd=composer_dir)
+    lang_dir = os.path.join(composer_dir, 'galette', 'lang')
+    for po in fnmatch.filter(os.listdir(lang_dir), 'galette_*.po'):
+        mo = os.path.join(lang_dir, po[len('galette_'):-len('.po')], 'LC_MESSAGES', 'galette.mo')
+        if not os.path.exists(mo):
+            print_err('Missing compiled translation: %s' % mo)
+            exit(1)
+
     # cleaunp files not required in releases
     todrop = [
         '.travis.yml',

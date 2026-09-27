@@ -80,6 +80,14 @@ jobs:
           enable-assets-cache: true
           skip-checkout: true
 
+      # MO files are not versioned
+      - name: Compile locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+          # Test mode would boot on a database not installed yet
+          GALETTE_TESTS= bin/console galette:compile-locales
+
       - name: Initialize test data
         run: php tests/init_test_data.php
 
