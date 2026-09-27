@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -585,10 +585,6 @@ msgstr ""
 msgid "- Mandatory field %1$s empty."
 msgstr "- El camp obligatori %1$s està buit."
 
-#, fuzzy
-msgid "Passwords mismatch"
-msgstr "Les contrasenyes no coincideixen"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -670,6 +666,20 @@ msgstr ""
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
+
+#, fuzzy
+msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"L'aplicació s'executa sota el mode de demostració. Aquesta funciónalitat no "
+"està habilitada."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"S'ha produït un error SQL mentre es desaven les preferències. Torneu-ho a "
+"provar o contacteu amb l'administrador si el problema persisteix."
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -754,6 +764,11 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "Formulari desconegut %1$s!"
+
 #, fuzzy
 msgid "My Account"
 msgstr "Compte"
@@ -788,6 +803,10 @@ msgstr "La meva informació"
 #, fuzzy
 msgid "View my member card"
 msgstr "Visualitza la meva targeta de membre"
+
+#, fuzzy
+msgid "Modify my login and password"
+msgstr "Omple tots els inicis de sessió i contrasenyes buits"
 
 #, fuzzy
 msgid "Two-factor authentication"
@@ -1698,10 +1717,6 @@ msgid "Email: '%1$s' has been successfully modified."
 msgstr "El correu electrònic '%1$s' s'ha modificat amb èxit."
 
 #, fuzzy
-msgid "Wrong password!"
-msgstr "Sense contrasenya"
-
-#, fuzzy
 msgid "Please confirm your password again."
 msgstr "Confirmeu la vostra adreça electrònica"
 
@@ -1925,18 +1940,20 @@ msgstr "Comptes actius"
 msgid "Inactive accounts"
 msgstr "Comptes inactius"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"S'ha produït un error SQL mentre es desaven les preferències. Torneu-ho a "
-"provar o contacteu amb l'administrador si el problema persisteix."
-
 msgid "Preferences has been saved."
 msgstr "S'han desat les preferències."
 
 msgid "Delete failed"
 msgstr "Ha fallat la supressió"
+
+#, fuzzy
+msgid "Passwords mismatch"
+msgstr "Les contrasenyes no coincideixen"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "S'han desat les preferències."
 
 #, fuzzy
 msgid ""
@@ -2767,6 +2784,10 @@ msgid "No member #%1$s."
 msgstr "Cap membre #%1$s."
 
 #, fuzzy
+msgid "Wrong password!"
+msgstr "Sense contrasenya"
+
+#, fuzzy
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -3138,6 +3159,20 @@ msgstr "Regla ACL desconeguda '%1$s'!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "La ruta '%1$s' no està registrada a ACLs!"
+
+msgid "Inherit"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+#, fuzzy
+msgid "Everyone"
+msgstr "Tothom"
+
+#, fuzzy
+msgid "Admin and staff only"
+msgstr "Només administrador i personal"
 
 msgid "Galette error"
 msgstr "Error de Galette"
@@ -4855,13 +4890,6 @@ msgstr "No hi ha cap connector inactiu."
 
 #, fuzzy
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"L'aplicació s'executa sota el mode de demostració. Aquesta funciónalitat no "
-"està habilitada."
-
-#, fuzzy
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Hi ha hagut un error en mostrar la interfície d'inicialització de la base de "
@@ -5759,6 +5787,13 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+#, fuzzy
+msgid "Current password:"
+msgstr "Nova contrasenya"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -5913,9 +5948,6 @@ msgstr "Correu electrònic"
 #, fuzzy
 msgid "Security parameters"
 msgstr "Paràmetres de seguretat"
-
-msgid "Admin"
-msgstr "Administrador"
 
 #, fuzzy
 msgid "Name of the association:"
@@ -6136,20 +6168,6 @@ msgstr "Pàgines públiques activades?"
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
-msgstr ""
-
-msgid "Hidden"
-msgstr ""
-
-#, fuzzy
-msgid "Everyone"
-msgstr "Tothom"
-
-#, fuzzy
-msgid "Admin and staff only"
-msgstr "Només administrador i personal"
-
-msgid "Inherit"
 msgstr ""
 
 msgid "Members list"
@@ -6448,9 +6466,6 @@ msgstr "Usuari SMTP (o GMail)"
 #, fuzzy
 msgid "SMTP (or GMail) password:"
 msgstr "Contrasenya SMTP (o GMail)"
-
-msgid "Leave empty to keep the current one"
-msgstr ""
 
 #, fuzzy
 msgid "Test connection"
@@ -6852,8 +6867,7 @@ msgid "read-only"
 msgstr "Només lectura"
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 #, fuzzy
@@ -6939,7 +6953,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -7103,6 +7117,9 @@ msgstr "Tarifa"
 #, fuzzy
 msgid "Send an email"
 msgstr "Envia un correu electrònic"
+
+msgid "Admin"
+msgstr "Administrador"
 
 #, fuzzy
 msgid "Is a sponsor"

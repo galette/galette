@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-08-31 17:35+0000\n"
 "Last-Translator: TheMoon <pudimdebacon3@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -499,9 +499,6 @@ msgstr "Os meses oferecidos só são compatíveis com o início da associação.
 msgid "- Mandatory field %1$s empty."
 msgstr "- O campo obrigatório %1$s está vazio."
 
-msgid "Passwords mismatch"
-msgstr "As senhas não coincidem"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -589,6 +586,15 @@ msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -658,6 +664,12 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown lang (%1$s)"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "Linguagem desconhecida (%1$s)"
+
 msgid "My Account"
 msgstr "Minha conta"
 
@@ -683,6 +695,9 @@ msgid "My information"
 msgstr ""
 
 msgid "View my member card"
+msgstr ""
+
+msgid "Modify my login and password"
 msgstr ""
 
 msgid "Two-factor authentication"
@@ -1427,9 +1442,6 @@ msgstr ""
 msgid "Email: '%1$s' has been successfully modified."
 msgstr ""
 
-msgid "Wrong password!"
-msgstr ""
-
 msgid "Please confirm your password again."
 msgstr ""
 
@@ -1615,16 +1627,17 @@ msgstr ""
 msgid "Inactive accounts"
 msgstr ""
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-
 msgid "Preferences has been saved."
 msgstr ""
 
 msgid "Delete failed"
 msgstr "Falha ao excluir"
+
+msgid "Passwords mismatch"
+msgstr "As senhas não coincidem"
+
+msgid "Your credentials have been saved."
+msgstr ""
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2340,6 +2353,9 @@ msgstr ""
 msgid "No member #%1$s."
 msgstr ""
 
+msgid "Wrong password!"
+msgstr ""
+
 msgid "- ERROR -"
 msgstr ""
 
@@ -2640,6 +2656,18 @@ msgstr ""
 
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
+msgstr ""
+
+msgid "Inherit"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Everyone"
+msgstr ""
+
+msgid "Admin and staff only"
 msgstr ""
 
 msgid "Galette error"
@@ -3988,10 +4016,6 @@ msgid "No inactive plugin."
 msgstr ""
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
@@ -4706,6 +4730,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+#, fuzzy
+#| msgid "Current page (%1$s)"
+msgid "Current password:"
+msgstr "Página atual (%1$s)"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4832,9 +4864,6 @@ msgstr "E-mail"
 
 msgid "Security parameters"
 msgstr ""
-
-msgid "Admin"
-msgstr "Administrador"
 
 msgid "Name of the association:"
 msgstr ""
@@ -5004,18 +5033,6 @@ msgstr ""
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
-msgstr ""
-
-msgid "Hidden"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Admin and staff only"
-msgstr ""
-
-msgid "Inherit"
 msgstr ""
 
 msgid "Members list"
@@ -5240,9 +5257,6 @@ msgid "SMTP (or GMail) user:"
 msgstr ""
 
 msgid "SMTP (or GMail) password:"
-msgstr ""
-
-msgid "Leave empty to keep the current one"
 msgstr ""
 
 #, fuzzy
@@ -5569,8 +5583,7 @@ msgid "read-only"
 msgstr ""
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 msgid "secret"
@@ -5651,7 +5664,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -5792,6 +5805,9 @@ msgstr ""
 
 msgid "Send an email"
 msgstr ""
+
+msgid "Admin"
+msgstr "Administrador"
 
 msgid "Is a sponsor"
 msgstr ""

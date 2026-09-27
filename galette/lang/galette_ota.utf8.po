@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -479,9 +479,6 @@ msgstr ""
 msgid "- Mandatory field %1$s empty."
 msgstr ""
 
-msgid "Passwords mismatch"
-msgstr ""
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -564,6 +561,15 @@ msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -633,6 +639,11 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, php-format
+msgid "- Unknown visibility for '%1$s'!"
+msgstr ""
+
 msgid "My Account"
 msgstr ""
 
@@ -658,6 +669,9 @@ msgid "My information"
 msgstr ""
 
 msgid "View my member card"
+msgstr ""
+
+msgid "Modify my login and password"
 msgstr ""
 
 msgid "Two-factor authentication"
@@ -1400,9 +1414,6 @@ msgstr ""
 msgid "Email: '%1$s' has been successfully modified."
 msgstr ""
 
-msgid "Wrong password!"
-msgstr ""
-
 msgid "Please confirm your password again."
 msgstr ""
 
@@ -1587,15 +1598,16 @@ msgstr ""
 msgid "Inactive accounts"
 msgstr ""
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-
 msgid "Preferences has been saved."
 msgstr ""
 
 msgid "Delete failed"
+msgstr ""
+
+msgid "Passwords mismatch"
+msgstr ""
+
+msgid "Your credentials have been saved."
 msgstr ""
 
 msgid ""
@@ -2298,6 +2310,9 @@ msgstr ""
 msgid "No member #%1$s."
 msgstr ""
 
+msgid "Wrong password!"
+msgstr ""
+
 msgid "- ERROR -"
 msgstr ""
 
@@ -2597,6 +2612,18 @@ msgstr ""
 
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
+msgstr ""
+
+msgid "Inherit"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Everyone"
+msgstr ""
+
+msgid "Admin and staff only"
 msgstr ""
 
 msgid "Galette error"
@@ -3943,10 +3970,6 @@ msgid "No inactive plugin."
 msgstr ""
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
@@ -4653,6 +4676,12 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+msgid "Current password:"
+msgstr ""
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4778,9 +4807,6 @@ msgid "E-Mail"
 msgstr ""
 
 msgid "Security parameters"
-msgstr ""
-
-msgid "Admin"
 msgstr ""
 
 msgid "Name of the association:"
@@ -4951,18 +4977,6 @@ msgstr ""
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
-msgstr ""
-
-msgid "Hidden"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Admin and staff only"
-msgstr ""
-
-msgid "Inherit"
 msgstr ""
 
 msgid "Members list"
@@ -5187,9 +5201,6 @@ msgid "SMTP (or GMail) user:"
 msgstr ""
 
 msgid "SMTP (or GMail) password:"
-msgstr ""
-
-msgid "Leave empty to keep the current one"
 msgstr ""
 
 msgid "Test connection"
@@ -5508,8 +5519,7 @@ msgid "read-only"
 msgstr ""
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 msgid "secret"
@@ -5586,7 +5596,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -5724,6 +5734,9 @@ msgid "Lateness in fee"
 msgstr ""
 
 msgid "Send an email"
+msgstr ""
+
+msgid "Admin"
 msgstr ""
 
 msgid "Is a sponsor"

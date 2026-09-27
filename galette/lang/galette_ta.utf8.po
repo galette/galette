@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -493,9 +493,6 @@ msgstr "- மாதங்கள் வழங்குவது உறுப்�
 msgid "- Mandatory field %1$s empty."
 msgstr "- கட்டாய புலம் %1$s காலியாக உள்ளது."
 
-msgid "Passwords mismatch"
-msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -583,6 +580,18 @@ msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"பயன்பாடு டெமோ பயன்முறையின் கீழ் இயங்குகிறது. இந்த செயல்பாடு இயக்கப்படவில்லை, மன்னிக்கவும்."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"விருப்பங்களை சேமிக்கும் போது ஒரு கவிமொ பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் "
+"முயற்சிக்கவும், சிக்கல் தொடர்ந்தால் நிர்வாகியை தொடர்பு கொள்ளவும்."
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -655,6 +664,12 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown form %1$s!"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "அறியப்படாத வடிவம் %1$s!"
+
 msgid "My Account"
 msgstr "எனது கணக்கு"
 
@@ -681,6 +696,11 @@ msgstr "எனது செய்தி"
 
 msgid "View my member card"
 msgstr "எனது உறுப்பினர் அட்டையைக் காண்க"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "அனைத்து வெற்று உள்நுழைவு மற்றும் கடவுச்சொற்களையும் நிரப்பவும்"
 
 #, fuzzy
 #| msgid "Use SMTP authentication?"
@@ -1434,11 +1454,6 @@ msgid "Email: '%1$s' has been successfully modified."
 msgstr "மின்னஞ்சல்: '%1$s' வெற்றிகரமாக மாற்றப்பட்டது."
 
 #, fuzzy
-#| msgid "No password"
-msgid "Wrong password!"
-msgstr "கடவுச்சொல் இல்லை"
-
-#, fuzzy
 #| msgid "Please confirm your email address:"
 msgid "Please confirm your password again."
 msgstr "உங்கள் மின்னஞ்சல் முகவரியை உறுதிப்படுத்தவும்:"
@@ -1641,18 +1656,19 @@ msgstr "செயலில் உள்ள கணக்குகள்"
 msgid "Inactive accounts"
 msgstr "செயலற்ற கணக்குகள்"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"விருப்பங்களை சேமிக்கும் போது ஒரு கவிமொ பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் "
-"முயற்சிக்கவும், சிக்கல் தொடர்ந்தால் நிர்வாகியை தொடர்பு கொள்ளவும்."
-
 msgid "Preferences has been saved."
 msgstr "விருப்பத்தேர்வுகள் சேமிக்கப்பட்டுள்ளன."
 
 msgid "Delete failed"
 msgstr "நீக்கு தோல்வியுற்றது"
+
+msgid "Passwords mismatch"
+msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "விருப்பத்தேர்வுகள் சேமிக்கப்பட்டுள்ளன."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2394,6 +2410,11 @@ msgstr "நீங்கள் %1$s உறுப்பினர்களை அ�
 msgid "No member #%1$s."
 msgstr "உறுப்பினர் #%1$s இல்லை."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "கடவுச்சொல் இல்லை"
+
 msgid "- ERROR -"
 msgstr "- பிழை -"
 
@@ -2698,6 +2719,18 @@ msgstr "அறியப்படாத ACL விதி '%1$s'!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "பாதை '%1$s' ACLS இல் பதிவு செய்யப்படவில்லை!"
+
+msgid "Inherit"
+msgstr "மரபுரிமை"
+
+msgid "Hidden"
+msgstr "மறைக்கப்பட்டது"
+
+msgid "Everyone"
+msgstr "எல்லோரும்"
+
+msgid "Admin and staff only"
+msgstr "நிர்வாகி மற்றும் ஊழியர்கள் மட்டுமே"
 
 msgid "Galette error"
 msgstr "கேலட் பிழை"
@@ -4113,11 +4146,6 @@ msgid "No inactive plugin."
 msgstr "செயலற்ற சொருகி இல்லை."
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"பயன்பாடு டெமோ பயன்முறையின் கீழ் இயங்குகிறது. இந்த செயல்பாடு இயக்கப்படவில்லை, மன்னிக்கவும்."
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr "சொருகி தரவுத்தள துவக்க இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
@@ -4860,6 +4888,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+#, fuzzy
+#| msgid "New password:"
+msgid "Current password:"
+msgstr "புதிய கடவுச்சொல்:"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -4992,9 +5028,6 @@ msgstr "மின்னஞ்சல்"
 
 msgid "Security parameters"
 msgstr "பாதுகாப்பு அளவுருக்கள்"
-
-msgid "Admin"
-msgstr "நிர்வாகி"
 
 msgid "Name of the association:"
 msgstr "சங்கத்தின் பெயர்:"
@@ -5181,18 +5214,6 @@ msgid ""
 "ones."
 msgstr ""
 "செருகுநிரல்கள் உட்பட, இங்கே பட்டியலிடப்படாத அனைத்து பொதுப் பக்கங்களுக்கும் பொருந்தும்."
-
-msgid "Hidden"
-msgstr "மறைக்கப்பட்டது"
-
-msgid "Everyone"
-msgstr "எல்லோரும்"
-
-msgid "Admin and staff only"
-msgstr "நிர்வாகி மற்றும் ஊழியர்கள் மட்டுமே"
-
-msgid "Inherit"
-msgstr "மரபுரிமை"
 
 msgid "Members list"
 msgstr "உறுப்பினர்கள் பட்டியல்"
@@ -5445,9 +5466,6 @@ msgstr "SMTP (அல்லது சிமெயில்) பயனர்:"
 
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (அல்லது gmail) கடவுச்சொல்:"
-
-msgid "Leave empty to keep the current one"
-msgstr ""
 
 #, fuzzy
 #| msgid "Version selection"
@@ -5795,8 +5813,7 @@ msgid "read-only"
 msgstr "பயனர், மட்டும் படியுங்கள்"
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 #, fuzzy
@@ -5891,7 +5908,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -6041,6 +6058,9 @@ msgstr "கட்டணத்தில் தாமதங்கள்"
 
 msgid "Send an email"
 msgstr "மின்னஞ்சல் அனுப்புங்கள்"
+
+msgid "Admin"
+msgstr "நிர்வாகி"
 
 msgid "Is a sponsor"
 msgstr "ஒரு ஒப்புரவாளர்"

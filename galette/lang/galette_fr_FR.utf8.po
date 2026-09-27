@@ -15,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-09-27 15:52+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -522,9 +522,6 @@ msgstr ""
 msgid "- Mandatory field %1$s empty."
 msgstr "- Champ obligatoire %1$s vide."
 
-msgid "Passwords mismatch"
-msgstr "Les mots de passe ne correspondent pas"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -612,6 +609,20 @@ msgstr ""
 "valeur par défaut !"
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"L’application tourne en mode démonstration. Cette fonctionnalité n’est pas "
+"activée, désolés."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"Une erreur SQL est survenue lors de l'enregistrement des préférences. "
+"Veuillez essayer à nouveau, et contacter l'administrateur si le problème "
+"persiste."
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -683,6 +694,12 @@ msgstr "- La valeur de '%1$s' doit être de %2$s tentatives ou plus !"
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- La valeur de '%1$s' doit être de %2$s secondes ou plus !"
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown form %1$s!"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "Formulaire %1$s inconnu !"
+
 msgid "My Account"
 msgstr "Mon compte"
 
@@ -709,6 +726,11 @@ msgstr "Mes informations"
 
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Rempli tous les identifiants et mots de passe vides"
 
 msgid "Two-factor authentication"
 msgstr "Authentification à deux facteurs"
@@ -1468,9 +1490,6 @@ msgstr "Le courriel « %1$s » n’a pas été modifié !"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Le courriel « %1$s » a été modifié avec succès."
 
-msgid "Wrong password!"
-msgstr "Mauvais mot de passe !"
-
 msgid "Please confirm your password again."
 msgstr "Veuillez confirmer votre mot de passe."
 
@@ -1676,19 +1695,19 @@ msgstr "Comptes actifs"
 msgid "Inactive accounts"
 msgstr "Comptes désactivés"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"Une erreur SQL est survenue lors de l'enregistrement des préférences. "
-"Veuillez essayer à nouveau, et contacter l'administrateur si le problème "
-"persiste."
-
 msgid "Preferences has been saved."
 msgstr "Les préférences ont été sauvegardées."
 
 msgid "Delete failed"
 msgstr "La suppression a échoué"
+
+msgid "Passwords mismatch"
+msgstr "Les mots de passe ne correspondent pas"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "Les préférences ont été sauvegardées."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2420,6 +2439,9 @@ msgstr "Vous êtes sur le point de supprimer %1$s adhérents."
 msgid "No member #%1$s."
 msgstr "Pas d’adhérent #%1$s."
 
+msgid "Wrong password!"
+msgstr "Mauvais mot de passe !"
+
 msgid "- ERROR -"
 msgstr "- ERREUR -"
 
@@ -2726,6 +2748,18 @@ msgstr "Règle ACL « %1$s » inconnue !"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "La route %1$s n’est pas enregistrée dans les ACL !"
+
+msgid "Inherit"
+msgstr "Hérite"
+
+msgid "Hidden"
+msgstr "Caché"
+
+msgid "Everyone"
+msgstr "Tout le monde"
+
+msgid "Admin and staff only"
+msgstr "Administrateurs et membres du bureau uniquement"
 
 msgid "Galette error"
 msgstr "Erreur de Galette"
@@ -4187,12 +4221,6 @@ msgid "No inactive plugin."
 msgstr "Aucun plugin inactif."
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"L’application tourne en mode démonstration. Cette fonctionnalité n’est pas "
-"activée, désolés."
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface d'initialisation "
@@ -4956,6 +4984,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr "Je les ai écrits"
 
+msgid "Leave empty to keep the current one"
+msgstr "Laisser vide pour conserver l'actuel"
+
+#, fuzzy
+#| msgid "New password:"
+msgid "Current password:"
+msgstr "Nouveau mot de passe :"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -5086,9 +5122,6 @@ msgstr "Courriel"
 
 msgid "Security parameters"
 msgstr "Paramètres de sécurité"
-
-msgid "Admin"
-msgstr "Administrateur"
 
 msgid "Name of the association:"
 msgstr "Nom de l’association :"
@@ -5276,18 +5309,6 @@ msgid ""
 msgstr ""
 "S'appliquera à toutes les pages publiques qui ne sont pas listées ici, y-"
 "compris celles des plugins."
-
-msgid "Hidden"
-msgstr "Caché"
-
-msgid "Everyone"
-msgstr "Tout le monde"
-
-msgid "Admin and staff only"
-msgstr "Administrateurs et membres du bureau uniquement"
-
-msgid "Inherit"
-msgstr "Hérite"
 
 msgid "Members list"
 msgstr "Liste des membres"
@@ -5545,9 +5566,6 @@ msgstr "Utilisateur SMTP (ou GMail) :"
 
 msgid "SMTP (or GMail) password:"
 msgstr "Mot de passe SMTP (ou GMail) :"
-
-msgid "Leave empty to keep the current one"
-msgstr "Laisser vide pour conserver l'actuel"
 
 msgid "Test connection"
 msgstr "Tester la connexion"
@@ -5847,7 +5865,8 @@ msgid "Enter the code it then shows, to confirm it works."
 msgstr "Entrez le code affiché, pour confirmer que cela fonctionne."
 
 msgid "QR code to register the key in an authentication application"
-msgstr "Code QR pour enregistrer la clé dans une application d'authentification"
+msgstr ""
+"Code QR pour enregistrer la clé dans une application d'authentification"
 
 msgid "Key, to type in by hand:"
 msgstr "Clé, à entrer à la main :"
@@ -5895,9 +5914,12 @@ msgstr ""
 msgid "read-only"
 msgstr "lecture seule"
 
+#, fuzzy
+#| msgid ""
+#| "Held as a secret: its value is never displayed, and it is changed from "
+#| "the settings form."
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 "Enregistré comme secret : sa valeur n'est jamais affichée, et peut être "
 "changée à partir du formulaire de paramètres."
@@ -5981,9 +6003,13 @@ msgstr ""
 "Galette maintient cette valeur elle-même, comme un identifiant généré ou une "
 "date qu'elle enregistre. Il est indiqué pour information seulement."
 
+#, fuzzy
+#| msgid ""
+#| "A password or a token. Its value is never displayed, only whether one is "
+#| "set, and it is changed from the settings form."
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 "Un mot de passe ou jeton. Sa valeur n'est jamais affichée, juste le fait "
 "qu'elle soit définie, et est modifiée à partir du formulaire des préférences."
@@ -6137,6 +6163,9 @@ msgstr "Retard de cotisation"
 
 msgid "Send an email"
 msgstr "Envoyer un courriel"
+
+msgid "Admin"
+msgstr "Administrateur"
 
 msgid "Is a sponsor"
 msgstr "Est un donateur"

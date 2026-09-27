@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-09-25 22:08+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -501,9 +501,6 @@ msgstr "- Ponudba mesecev je združljiva le z začetkom članstva."
 msgid "- Mandatory field %1$s empty."
 msgstr "- Obvezno polje %1$s je prazno."
 
-msgid "Passwords mismatch"
-msgstr "Neujemanje gesel"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -587,6 +584,17 @@ msgstr ""
 "Nastavitev '%1$s' vsebuje skrivnost in je ni mogoče ponastaviti na privzeto!"
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr "Aplikacija deluje v demo načinu. Ta funkcionalnost žal ni omogočena."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"Med shranjevanjem nastavitev je prišlo do napake SQL. Poskusite znova in se "
+"obrnite na skrbnika, če težava ne izgine."
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -658,6 +666,12 @@ msgstr "- Vrednost za '%1$s' mora biti %2$s poskusov ali več!"
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- Vrednost za '%1$s' mora biti %2$s sekund ali več!"
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown form %1$s!"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "Neznana oblika %1$s!"
+
 msgid "My Account"
 msgstr "Moj račun"
 
@@ -684,6 +698,11 @@ msgstr "Moji podatki"
 
 msgid "View my member card"
 msgstr "Ogled moje članske izkaznice"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Izpolnite vsa prazna polja za prijavo in geslo"
 
 msgid "Two-factor authentication"
 msgstr "Dvostopenjska avtentikacija"
@@ -1435,9 +1454,6 @@ msgstr "E-pošta: '%1$s' ni bila spremenjena!"
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "E-poštni naslov: '%1$s' je bil uspešno spremenjen."
 
-msgid "Wrong password!"
-msgstr "Napačno geslo!"
-
 msgid "Please confirm your password again."
 msgstr "Ponovno potrdite geslo."
 
@@ -1630,18 +1646,19 @@ msgstr "Aktivni računi"
 msgid "Inactive accounts"
 msgstr "Neaktivni računi"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"Med shranjevanjem nastavitev je prišlo do napake SQL. Poskusite znova in se "
-"obrnite na skrbnika, če težava ne izgine."
-
 msgid "Preferences has been saved."
 msgstr "Nastavitve so bile shranjene."
 
 msgid "Delete failed"
 msgstr "Brisanje ni uspelo"
+
+msgid "Passwords mismatch"
+msgstr "Neujemanje gesel"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "Nastavitve so bile shranjene."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2364,6 +2381,9 @@ msgstr "Odstranili boste %1$s članov."
 msgid "No member #%1$s."
 msgstr "Ni člana #%1$s."
 
+msgid "Wrong password!"
+msgstr "Napačno geslo!"
+
 msgid "- ERROR -"
 msgstr "- NAPAKA -"
 
@@ -2668,6 +2688,18 @@ msgstr "Neznano pravilo ACL '%1$s'!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "Pot '%1$s' ni registrirana v ACL-jih!"
+
+msgid "Inherit"
+msgstr "Podedovanje"
+
+msgid "Hidden"
+msgstr "Skrito"
+
+msgid "Everyone"
+msgstr "Vsi"
+
+msgid "Admin and staff only"
+msgstr "Samo za administracijo in osebje"
 
 msgid "Galette error"
 msgstr "Galettejeva napaka"
@@ -4106,10 +4138,6 @@ msgid "No inactive plugin."
 msgstr "Ni neaktivnega vtičnika."
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr "Aplikacija deluje v demo načinu. Ta funkcionalnost žal ni omogočena."
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Pri prikazu vmesnika za inicializacijo baze podatkov vtičnika je prišlo do "
@@ -4870,6 +4898,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr "Zapisal sem jih"
 
+msgid "Leave empty to keep the current one"
+msgstr "Pustite prazno, da obdržite trenutno"
+
+#, fuzzy
+#| msgid "New password:"
+msgid "Current password:"
+msgstr "Novo geslo:"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -5000,9 +5036,6 @@ msgstr "E-pošta"
 
 msgid "Security parameters"
 msgstr "Varnostni parametri"
-
-msgid "Admin"
-msgstr "Urednik"
 
 msgid "Name of the association:"
 msgstr "Ime združenja:"
@@ -5188,18 +5221,6 @@ msgid ""
 msgstr ""
 "Veljalo bo za vse javne strani, ki niso navedene tukaj, vključno s tistimi z "
 "vtičniki."
-
-msgid "Hidden"
-msgstr "Skrito"
-
-msgid "Everyone"
-msgstr "Vsi"
-
-msgid "Admin and staff only"
-msgstr "Samo za administracijo in osebje"
-
-msgid "Inherit"
-msgstr "Podedovanje"
 
 msgid "Members list"
 msgstr "Seznam članov"
@@ -5455,9 +5476,6 @@ msgstr "Uporabnik SMTP (ali Gmail):"
 
 msgid "SMTP (or GMail) password:"
 msgstr "Geslo za SMTP (ali Gmail):"
-
-msgid "Leave empty to keep the current one"
-msgstr "Pustite prazno, da obdržite trenutno"
 
 msgid "Test connection"
 msgstr "Testna povezava"
@@ -5797,9 +5815,12 @@ msgstr "Galette sama ohranja to vrednost; prikazan je le informativno."
 msgid "read-only"
 msgstr "samo za branje"
 
+#, fuzzy
+#| msgid ""
+#| "Held as a secret: its value is never displayed, and it is changed from "
+#| "the settings form."
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 "Zaupno: njegova vrednost ni nikoli prikazana in se spremeni v obrazcu z "
 "nastavitvami."
@@ -5883,9 +5904,13 @@ msgstr ""
 "Galette sama vzdržuje to vrednost, na primer ustvarjeni identifikator ali "
 "datum, ki ga zabeleži. Prikazan je samo informativno."
 
+#, fuzzy
+#| msgid ""
+#| "A password or a token. Its value is never displayed, only whether one is "
+#| "set, and it is changed from the settings form."
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 "Geslo ali žeton. Njena vrednost ni nikoli prikazana, samo, ali je "
 "nastavljena, in se spremeni iz obrazca za nastavitve."
@@ -6038,6 +6063,9 @@ msgstr "Zamuda pri plačilu pristojbine"
 
 msgid "Send an email"
 msgstr "Pošlji e-pošto"
+
+msgid "Admin"
+msgstr "Urednik"
 
 msgid "Is a sponsor"
 msgstr "Je sponzor"
