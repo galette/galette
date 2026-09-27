@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-06-03 08:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -540,9 +540,6 @@ msgstr ""
 msgid "- Mandatory field %1$s empty."
 msgstr "- Campo obligatorio %1$s vacío."
 
-msgid "Passwords mismatch"
-msgstr "Las contraseñas no coinciden"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -627,6 +624,20 @@ msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"La aplicación se ejecuta en modo demo. Esta funcionalidad no está activada, "
+"lo sentimos."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"Se ha producido un error de SQL al almacenar las preferencias. Inténtelo de "
+"nuevo y, si el problema persiste, póngase en contacto con el personal "
+"administrativo."
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -699,6 +710,12 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown form %1$s!"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "¡Formulario %1$s desconocido!"
+
 msgid "My Account"
 msgstr "Mi cuenta"
 
@@ -725,6 +742,11 @@ msgstr "Mi información"
 
 msgid "View my member card"
 msgstr "Ver mi tarjeta de miembro"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Rellenar todos los datos de acceso y contraseñas vacíos"
 
 #, fuzzy
 #| msgid "Use SMTP authentication?"
@@ -1491,11 +1513,6 @@ msgid "Email: '%1$s' has been successfully modified."
 msgstr "Correo: '%1$s' ha sido modificado con éxito."
 
 #, fuzzy
-#| msgid "No password"
-msgid "Wrong password!"
-msgstr "Sin contraseña"
-
-#, fuzzy
 #| msgid "Please confirm your email address:"
 msgid "Please confirm your password again."
 msgstr "Confirme su dirección de correo electrónico:"
@@ -1702,19 +1719,19 @@ msgstr "Activar cuentas"
 msgid "Inactive accounts"
 msgstr "Cuentas inactivas"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"Se ha producido un error de SQL al almacenar las preferencias. Inténtelo de "
-"nuevo y, si el problema persiste, póngase en contacto con el personal "
-"administrativo."
-
 msgid "Preferences has been saved."
 msgstr "Las preferencias han sido guardadas."
 
 msgid "Delete failed"
 msgstr "Eliminación errónea"
+
+msgid "Passwords mismatch"
+msgstr "Las contraseñas no coinciden"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "Las preferencias han sido guardadas."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2470,6 +2487,11 @@ msgstr "Está por remover %1$s miembros."
 msgid "No member #%1$s."
 msgstr "Sin miembro n.º%1$s."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "Sin contraseña"
+
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -2775,6 +2797,18 @@ msgstr "¡Regla ACL desconocida '%1$s'!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "¡La ruta «%1$s» no está registrada con los ACL!"
+
+msgid "Inherit"
+msgstr "Heredado"
+
+msgid "Hidden"
+msgstr "Oculto"
+
+msgid "Everyone"
+msgstr "Todos"
+
+msgid "Admin and staff only"
+msgstr "Solo para el administrador y personal"
 
 msgid "Galette error"
 msgstr "Error de Galette"
@@ -4227,12 +4261,6 @@ msgid "No inactive plugin."
 msgstr "No hay ningún complemento inactivo."
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"La aplicación se ejecuta en modo demo. Esta funcionalidad no está activada, "
-"lo sentimos."
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Se ha producido un error al mostrar la interfaz de inicialización de la base "
@@ -4994,6 +5022,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+#, fuzzy
+#| msgid "New password:"
+msgid "Current password:"
+msgstr "Contraseña nueva:"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -5127,9 +5163,6 @@ msgstr "Correo electrónico"
 
 msgid "Security parameters"
 msgstr "Parámetros de seguridad"
-
-msgid "Admin"
-msgstr "Administrador"
 
 msgid "Name of the association:"
 msgstr "Nombre de la organización:"
@@ -5317,18 +5350,6 @@ msgid ""
 msgstr ""
 "Aplicará para todas las páginas públicas que no estén listadas aquí, "
 "incluyendo unos complementos."
-
-msgid "Hidden"
-msgstr "Oculto"
-
-msgid "Everyone"
-msgstr "Todos"
-
-msgid "Admin and staff only"
-msgstr "Solo para el administrador y personal"
-
-msgid "Inherit"
-msgstr "Heredado"
 
 msgid "Members list"
 msgstr "Lista de miembros"
@@ -5586,9 +5607,6 @@ msgstr "Usuario SMTP (o GMail):"
 
 msgid "SMTP (or GMail) password:"
 msgstr "Contraseña SMTP (o GMail):"
-
-msgid "Leave empty to keep the current one"
-msgstr ""
 
 #, fuzzy
 #| msgid "Version selection"
@@ -5940,8 +5958,7 @@ msgid "read-only"
 msgstr "Solo lectura"
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 #, fuzzy
@@ -6036,7 +6053,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -6188,6 +6205,9 @@ msgstr "Retraso en el pago"
 
 msgid "Send an email"
 msgstr "Enviar un correo electrónico"
+
+msgid "Admin"
+msgstr "Administrador"
 
 msgid "Is a sponsor"
 msgstr "Es un patrocinador"

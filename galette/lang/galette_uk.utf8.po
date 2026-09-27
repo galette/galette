@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:07+0200\n"
+"POT-Creation-Date: 2026-09-27 17:52+0200\n"
 "PO-Revision-Date: 2026-05-01 09:04+0000\n"
 "Last-Translator: Женя <prikhodkozheka2011@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -503,9 +503,6 @@ msgstr "- Пропонування місяців сумісне лише з п�
 msgid "- Mandatory field %1$s empty."
 msgstr "- Обов’язкове поле %1$s порожнє."
 
-msgid "Passwords mismatch"
-msgstr "Невідповідність паролів"
-
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
@@ -590,6 +587,19 @@ msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
 msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"Застосунок працює в показовому режимі. Цю функціональність не увімкнено, "
+"вибачте."
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"Під час зберігання налаштувань сталася помилка SQL. Повторіть спробу і, якщо "
+"проблема не зникне, зв’яжіться з управником."
+
+msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
 msgstr ""
@@ -662,6 +672,12 @@ msgstr ""
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
+#. TRANS: parameter is the setting name
+#, fuzzy, php-format
+#| msgid "Unknown form %1$s!"
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "Невідома форма %1$s!"
+
 msgid "My Account"
 msgstr "Мій обліковий запис"
 
@@ -688,6 +704,11 @@ msgstr "Мої відомості"
 
 msgid "View my member card"
 msgstr "Переглянути мою картку члена"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Заповніть всі порожні логіни та паролі"
 
 #, fuzzy
 #| msgid "Use SMTP authentication?"
@@ -1445,11 +1466,6 @@ msgid "Email: '%1$s' has been successfully modified."
 msgstr "Е-пошта: \"%1$s\" успішно змінено."
 
 #, fuzzy
-#| msgid "No password"
-msgid "Wrong password!"
-msgstr "Немає пароля"
-
-#, fuzzy
 #| msgid "Please confirm your email address:"
 msgid "Please confirm your password again."
 msgstr "Будь ласка, підтвердіть Вашу е-пошту:"
@@ -1649,18 +1665,19 @@ msgstr "Діяльні облікові записи"
 msgid "Inactive accounts"
 msgstr "Бездіяльні облікові записи"
 
-msgid ""
-"An SQL error has occurred while saving preferences. Please try again, and "
-"contact the administrator if the problem persists."
-msgstr ""
-"Під час зберігання налаштувань сталася помилка SQL. Повторіть спробу і, якщо "
-"проблема не зникне, зв’яжіться з управником."
-
 msgid "Preferences has been saved."
 msgstr "Налаштування збережено."
 
 msgid "Delete failed"
 msgstr "Не вдалося видалити"
+
+msgid "Passwords mismatch"
+msgstr "Невідповідність паролів"
+
+#, fuzzy
+#| msgid "Preferences has been saved."
+msgid "Your credentials have been saved."
+msgstr "Налаштування збережено."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -2423,6 +2440,11 @@ msgstr "Ви збираєтеся видалити %1$s членів."
 msgid "No member #%1$s."
 msgstr "Нема члена з ID #%1$s."
 
+#, fuzzy
+#| msgid "No password"
+msgid "Wrong password!"
+msgstr "Немає пароля"
+
 msgid "- ERROR -"
 msgstr "- ПОМИЛКА -"
 
@@ -2727,6 +2749,18 @@ msgstr "Невідоме правило ACL \"%1$s\"!"
 #, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "Маршрут '%1$s' не зареєстровано в ACL!"
+
+msgid "Inherit"
+msgstr "Успадкувати"
+
+msgid "Hidden"
+msgstr "Прихований"
+
+msgid "Everyone"
+msgstr "Кожен"
+
+msgid "Admin and staff only"
+msgstr "Лише адміністратори та співробітники"
 
 msgid "Galette error"
 msgstr "Помилка Galette"
@@ -4180,12 +4214,6 @@ msgid "No inactive plugin."
 msgstr "Немає незадіяних втулків."
 
 msgid ""
-"Application runs under demo mode. This functionnality is not enabled, sorry."
-msgstr ""
-"Застосунок працює в показовому режимі. Цю функціональність не увімкнено, "
-"вибачте."
-
-msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Сталася помилка під час відображення інтерфейсу ініціалізації бази даних :("
@@ -4947,6 +4975,14 @@ msgstr ""
 msgid "I have written them down"
 msgstr ""
 
+msgid "Leave empty to keep the current one"
+msgstr ""
+
+#, fuzzy
+#| msgid "New password:"
+msgid "Current password:"
+msgstr "Новий пароль:"
+
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -5079,9 +5115,6 @@ msgstr "Е-пошта"
 
 msgid "Security parameters"
 msgstr "Параметри безпеки"
-
-msgid "Admin"
-msgstr "Адміністратор"
 
 msgid "Name of the association:"
 msgstr "Назва товариства:"
@@ -5270,18 +5303,6 @@ msgid ""
 msgstr ""
 "Застосовуватиметься до всіх загальнодоступних сторінок, яких тут немає, "
 "включно з додатковими."
-
-msgid "Hidden"
-msgstr "Прихований"
-
-msgid "Everyone"
-msgstr "Кожен"
-
-msgid "Admin and staff only"
-msgstr "Лише адміністратори та співробітники"
-
-msgid "Inherit"
-msgstr "Успадкувати"
 
 msgid "Members list"
 msgstr "Список членів"
@@ -5541,9 +5562,6 @@ msgstr "Користувач SMTP (або GMail):"
 
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (або GMail) :"
-
-msgid "Leave empty to keep the current one"
-msgstr ""
 
 #, fuzzy
 #| msgid "Version selection"
@@ -5895,8 +5913,7 @@ msgid "read-only"
 msgstr "Лише читання"
 
 msgid ""
-"Held as a secret: its value is never displayed, and it is changed from the "
-"settings form."
+"Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
 #, fuzzy
@@ -5991,7 +6008,7 @@ msgstr ""
 
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
-"set, and it is changed from the settings form."
+"set, and it is not changed from this page."
 msgstr ""
 
 msgid ""
@@ -6143,6 +6160,9 @@ msgstr "Запізнення оплати"
 
 msgid "Send an email"
 msgstr "Надіслати повідомлення на е-пошту"
+
+msgid "Admin"
+msgstr "Адміністратор"
 
 msgid "Is a sponsor"
 msgstr "Є спонсором"
