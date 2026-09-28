@@ -783,11 +783,6 @@
                         </div>
                         <div class="field">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="pref_mail_method" id="gmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}checked="checked"{% endif %}/><label for="gmail">{{ _T("Using GMAIL as SMTP server (slower)") }}</label>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui radio checkbox">
                                 <input type="radio" name="pref_mail_method" id="sendmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_SENDMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_SENDMAIL') %}checked="checked"{% endif %}/><label for="sendmail">{{ _T("Using Sendmail server") }}</label>
                             </div>
                         </div>
@@ -808,7 +803,7 @@
                                     <label for="pref_mail_smtp_auth">{{ _T("Use SMTP authentication?") }}</label>
                                 </div>
                                 {% include "components/forms/tip.html.twig" with {
-                                    tip: _T("Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."),
+                                    tip: _T("Would emailing use any SMTP authentication? You'll have to provide username and password below."),
                                     id: "pref_mail_smtp_auth"
                                 } only %}
                             </div>
@@ -818,7 +813,7 @@
                                     <label for="pref_mail_smtp_secure">{{ _T("Use TLS for SMTP?") }}</label>
                                 </div>
                                 {% include "components/forms/tip.html.twig" with {
-                                    tip: _T("Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."),
+                                    tip: _T("Do you want to use server's TLS capabilities?"),
                                     id: "pref_mail_smtp_secure",
                                     html: true
                                 } only %}
@@ -837,11 +832,11 @@
                     </div>
                     <div id="smtp_auth" class="field">
                         <div class="field">
-                            <label for="pref_mail_smtp_user">{{ _T("SMTP (or GMail) user:") }}</label>
+                            <label for="pref_mail_smtp_user">{{ _T("SMTP user:") }}</label>
                             <input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{{ pref.pref_mail_smtp_user }}" maxlength="100" size="30"/>
                         </div>
                         <div class="field">
-                            <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
+                            <label for="pref_mail_smtp_password">{{ _T("SMTP password:") }}</label>
                             <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="" autocomplete="off" maxlength="100" size="30" placeholder="{{ _T("Leave empty to keep the current one") }}"/>
                         </div>
                     </div>
@@ -1282,8 +1277,6 @@
             $(function(){
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
                 $('#smtp_parameters').addClass('displaynone');
-    {% endif %}
-    {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}
                 $('#smtp_auth').addClass('displaynone');
     {% endif %}
                 $('#emailing_method .ui.radio.checkbox').checkbox({
@@ -1293,9 +1286,6 @@
                         var _smtp_auth = $('#smtp_auth');
                         if ( _checked == 'smtp' ) {
                             _smtp_parameters.removeClass('displaynone');
-                            _smtp_auth.removeClass('displaynone');
-                        } else if ( _checked == 'gmail' ) {
-                            _smtp_parameters.addClass('displaynone');
                             _smtp_auth.removeClass('displaynone');
                         } else {
                             _smtp_parameters.addClass('displaynone');

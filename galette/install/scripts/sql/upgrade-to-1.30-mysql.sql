@@ -57,6 +57,33 @@ CREATE TABLE galette_mailing_queue (
 -- qmail method has been removed, fall back to sendmail (closest local MTA method)
 UPDATE galette_preferences SET val_pref = '5' WHERE nom_pref = 'pref_mail_method' AND val_pref = '3';
 
+-- gmail method has been removed, fall back to smtp
+UPDATE galette_preferences gp
+JOIN (
+  SELECT 1 AS ok
+  FROM galette_preferences
+  WHERE nom_pref = 'pref_mail_method'
+    AND val_pref = '4'
+  LIMIT 1
+) chk ON chk.ok = 1
+SET gp.val_pref = CASE gp.nom_pref
+  WHEN 'pref_mail_smtp_host' THEN 'smtp.gmail.com'
+  WHEN 'pref_mail_smtp_auth' THEN '1'
+  WHEN 'pref_mail_smtp_secure' THEN '1'
+  WHEN 'pref_mail_smtp_port' THEN '587'
+  WHEN 'pref_mail_allow_unsecure' THEN '0'
+  WHEN 'pref_mail_method' THEN '2'
+  ELSE gp.val_pref
+END
+WHERE gp.nom_pref IN (
+  'pref_mail_smtp_host',
+  'pref_mail_smtp_auth',
+  'pref_mail_smtp_secure',
+  'pref_mail_smtp_port',
+  'pref_mail_allow_unsecure',
+  'pref_mail_method'
+);
+
 -- tables for two-factor authentication
 CREATE TABLE galette_twofactor (
     id_adh int unsigned NOT NULL,

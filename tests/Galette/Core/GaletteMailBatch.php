@@ -43,7 +43,7 @@ class GaletteMailBatch extends GaletteTestCase
      */
     public function testBatchedSendChunksRecipients(): void
     {
-        //keep-alive only applies to SMTP/GMAIL methods
+        //keep-alive only applies to SMTP methods
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
         $this->preferences->pref_mail_smtp_keepalive = true;
         $this->preferences->pref_mail_batch_size = 2;

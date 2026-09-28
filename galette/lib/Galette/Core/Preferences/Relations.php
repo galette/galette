@@ -104,9 +104,10 @@ final class Relations
             $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
         }
 
-        $needs_credentials = $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-            || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
-            && $insert_values['pref_mail_smtp_auth']);
+        $needs_credentials = (
+            $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            && $insert_values['pref_mail_smtp_auth']
+        );
 
         if (!$needs_credentials) {
             return;

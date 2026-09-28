@@ -1387,23 +1387,6 @@ class Preferences extends GaletteTestCase
             ],
             $this->preferences->getErrors()
         );
-
-        $post = array_merge(
-            $preferences,
-            [
-                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_GMAIL,
-                'pref_email_nom' => 'G@l3tt3',
-                'pref_email' => 'test@galette.eu',
-            ]
-        );
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(
-            [
-                '- You must provide a login for SMTP authentication.',
-                '- You must provide a password for SMTP authentication.'
-            ],
-            $this->preferences->getErrors()
-        );
     }
 
     /**

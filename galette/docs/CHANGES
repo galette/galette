@@ -113,6 +113,7 @@ Removals and requirements
 - Mime type detection now always relies on fileinfo; the extension based fallback and the FileTrait::$mime_types map it used have been removed
 - Database version is now 1.300; new tables have been added for plugins, authentication attempts and the mailing queue
 - The QMAIL mail method has been removed; installations using it are switched to sendmail
+- The GMAIL mail method has been removed; installations using it are switched to SMTP
 - GALETTE_DISPLAY_VERSION, GALETTE_HIDE_VERSION and GALETTE_ADAPTATIVE_CARDS constants have been removed
 - Updating from 0.6x releases is deprecated
 - Third party libraries have been updated

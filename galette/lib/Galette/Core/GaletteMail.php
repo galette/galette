@@ -36,7 +36,7 @@ class GaletteMail
     public const int METHOD_PHPMAIL = 1;
     public const int METHOD_SMTP = 2;
     //value 3 (former METHOD_QMAIL) is no longer used, do not reuse it
-    public const int METHOD_GMAIL = 4;
+    //value 4 (former METHOD_GMAIL) is no longer used, do not reuse it
     public const int METHOD_SENDMAIL = 5;
 
     public const int SENDER_PREFS = 0;
@@ -106,7 +106,6 @@ class GaletteMail
 
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
-            case self::METHOD_GMAIL:
                 //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
@@ -117,51 +116,40 @@ class GaletteMail
                     $this->mail->Debugoutput = 'error_log';
                 }
 
-                if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
-                    // sets GMAIL as the SMTP server
-                    $this->mail->Host = "smtp.gmail.com";
-                    // enable SMTP authentication
-                    $this->mail->SMTPAuth   = true;
-                    // sets the prefix to the servier
-                    $this->mail->SMTPSecure = "tls";
-                    // set the SMTP port for the GMAIL server
-                    $this->mail->Port = 587;
+                $this->mail->Host = $this->preferences->pref_mail_smtp_host;
+                $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
+
+                if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
+                    //Allow "unsecure" SMTP connections if user has asked fot it or
+                    //if user did not request TLS explicitly
+                    $this->mail->SMTPOptions = [
+                        'ssl' => [
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        ]
+                    ];
+                }
+
+                if ($this->preferences->pref_mail_smtp_port) {
+                    // set the SMTP port for the SMTP server
+                    $this->mail->Port = $this->preferences->pref_mail_smtp_port;
                 } else {
-                    $this->mail->Host = $this->preferences->pref_mail_smtp_host;
-                    $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
+                    $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
+                    Analog::log(
+                        sprintf(
+                            '[%1$s]No SMTP port provided. Switch to default (%2$s).',
+                            static::class,
+                            $this->mail->Port
+                        ),
+                        Analog::INFO
+                    );
+                }
 
-                    if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
-                        //Allow "unsecure" SMTP connections if user has asked fot it or
-                        //if user did not request TLS explicitly
-                        $this->mail->SMTPOptions = [
-                            'ssl' => [
-                                'verify_peer' => false,
-                                'verify_peer_name' => false,
-                                'allow_self_signed' => true
-                            ]
-                        ];
-                    }
-
-                    if ($this->preferences->pref_mail_smtp_port) {
-                        // set the SMTP port for the SMTP server
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_port;
-                    } else {
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
-                        Analog::log(
-                            sprintf(
-                                '[%1$s]No SMTP port provided. Switch to default (%2$s).',
-                                static::class,
-                                $this->mail->Port
-                            ),
-                            Analog::INFO
-                        );
-                    }
-
-                    if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
-                        $this->mail->SMTPSecure = "ssl";
-                    } elseif ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 587) {
-                        $this->mail->SMTPSecure = "tls";
-                    }
+                if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
+                    $this->mail->SMTPSecure = "ssl";
+                } elseif ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 587) {
+                    $this->mail->SMTPSecure = "tls";
                 }
 
                 // SMTP account username
@@ -331,7 +319,7 @@ class GaletteMail
         $mailer->Timeout = self::CONNECTION_TIMEOUT;
 
         $connected = match ($this->preferences->pref_mail_method) {
-            self::METHOD_SMTP, self::METHOD_GMAIL => $this->connectSmtp($mailer),
+            self::METHOD_SMTP => $this->connectSmtp($mailer),
             self::METHOD_SENDMAIL => $this->checkSendmailBinary($mailer),
             self::METHOD_PHPMAIL => $this->checkPhpMail(),
             default => $this->unknownMethod()
