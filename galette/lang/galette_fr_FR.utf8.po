@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-27 17:52+0200\n"
-"PO-Revision-Date: 2026-09-27 15:52+0000\n"
+"PO-Revision-Date: 2026-09-28 08:56+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -697,10 +697,9 @@ msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- La valeur de '%1$s' doit être de %2$s secondes ou plus !"
 
 #. TRANS: parameter is the setting name
-#, fuzzy, php-format
-#| msgid "Unknown form %1$s!"
+#, php-format
 msgid "- Unknown visibility for '%1$s'!"
-msgstr "Formulaire %1$s inconnu !"
+msgstr "- Visibilité inconnue pour « %1$s » !"
 
 msgid "My Account"
 msgstr "Mon compte"
@@ -729,10 +728,8 @@ msgstr "Mes informations"
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
-#, fuzzy
-#| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
-msgstr "Rempli tous les identifiants et mots de passe vides"
+msgstr "Modifier mon login et mot de passe"
 
 msgid "Two-factor authentication"
 msgstr "Authentification à deux facteurs"
@@ -1707,10 +1704,8 @@ msgstr "La suppression a échoué"
 msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas"
 
-#, fuzzy
-#| msgid "Preferences has been saved."
 msgid "Your credentials have been saved."
-msgstr "Les préférences ont été sauvegardées."
+msgstr "Vos identifiants ont été enregistrés."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -4990,10 +4985,8 @@ msgstr "Je les ai écrits"
 msgid "Leave empty to keep the current one"
 msgstr "Laisser vide pour conserver l'actuel"
 
-#, fuzzy
-#| msgid "New password:"
 msgid "Current password:"
-msgstr "Nouveau mot de passe :"
+msgstr "Mot de passe actuel :"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5917,15 +5910,11 @@ msgstr ""
 msgid "read-only"
 msgstr "lecture seule"
 
-#, fuzzy
-#| msgid ""
-#| "Held as a secret: its value is never displayed, and it is changed from "
-#| "the settings form."
 msgid ""
 "Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
-"Enregistré comme secret : sa valeur n'est jamais affichée, et peut être "
-"changée à partir du formulaire de paramètres."
+"Enregistré comme secret : sa valeur n'est jamais affichée, ni modifiée "
+"depuis cette page."
 
 msgid "secret"
 msgstr "secret"
@@ -6006,16 +5995,12 @@ msgstr ""
 "Galette maintient cette valeur elle-même, comme un identifiant généré ou une "
 "date qu'elle enregistre. Il est indiqué pour information seulement."
 
-#, fuzzy
-#| msgid ""
-#| "A password or a token. Its value is never displayed, only whether one is "
-#| "set, and it is changed from the settings form."
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
 "set, and it is not changed from this page."
 msgstr ""
 "Un mot de passe ou jeton. Sa valeur n'est jamais affichée, juste le fait "
-"qu'elle soit définie, et est modifiée à partir du formulaire des préférences."
+"qu'elle soit définie et non modifiée sur cette page."
 
 msgid ""
 "A constant defined in behavior.inc.php takes precedence over the stored "
