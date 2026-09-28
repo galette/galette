@@ -18,6 +18,7 @@ use Galette\Tests\GaletteTestCase;
 use function Safe\filesize;
 use function Safe\file_put_contents;
 use function Safe\preg_match;
+use function Safe\unlink;
 
 /**
  * CsvIn tests class
@@ -992,6 +993,50 @@ class CsvIn extends GaletteTestCase
             \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] File non-existing-file.csv cannot be open!'
         );
+    }
+
+    /**
+     * Test files outside the imports directory cannot be imported
+     */
+    public function testFileOutsideImportsDirectory(): void
+    {
+        $file_name = 'outside-imports.csv';
+        file_put_contents(GALETTE_EXPORTS_PATH . $file_name, "nom_adh\nOutside\n");
+
+        try {
+            $paths = [
+                '../exports/' . $file_name,
+                GALETTE_EXPORTS_PATH . $file_name,
+                '..',
+                '.'
+            ];
+            foreach ($paths as $path) {
+                $cin = $this->container->make(\Galette\IO\CsvIn::class);
+                $this->assertSame(
+                    $cin::INVALID_FILE,
+                    $cin->import(
+                        $this->zdb,
+                        $this->preferences,
+                        $this->history,
+                        $path,
+                        $this->members_fields,
+                        $this->members_fields_cats,
+                        true
+                    ),
+                    $path
+                );
+                $this->assertSame(
+                    [sprintf('File %1$s cannot be open!', $path)],
+                    $cin->getErrors()
+                );
+                $this->expectLogEntry(
+                    \Analog\Analog::ERROR,
+                    sprintf('[Galette\IO\CsvIn] File %1$s cannot be open!', $path)
+                );
+            }
+        } finally {
+            unlink(GALETTE_EXPORTS_PATH . $file_name);
+        }
     }
 
     /**

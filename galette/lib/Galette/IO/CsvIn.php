@@ -155,8 +155,10 @@ class CsvIn extends Csv
         array $members_fields_cats,
         bool $dryrun
     ): bool|int {
+        //only files from the imports directory can be imported
         if (
-            !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
+            $filename !== basename($filename)
+            || !is_file(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             $this->addError(

@@ -65,7 +65,7 @@ class CsvController extends AbstractController
      */
     protected function sendResponse(Request $request, Response $response, string $filepath, string $filename): Response
     {
-        if (!file_exists($filepath)) {
+        if (!is_file($filepath)) {
             Analog::log(
                 'A request has been made to get a CSV file named `'
                 . $filename . '` that does not exists (' . $filepath . ').',
@@ -361,7 +361,8 @@ class CsvController extends AbstractController
     )]
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
-        $filename = $file;
+        //let's ensure we do not have a path here
+        $filename = basename($file);
         $filepath = $type === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
         return $this->sendResponse(
