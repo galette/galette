@@ -442,7 +442,9 @@ class DocumentsController extends CrudController
         if (count($error_detected) > 0) {
             //something went wrong :'(
             $this->session->document = $document;
-            $redirect_url = $this->routeparser->urlFor('addDocument');
+            $redirect_url = $document->getId() === null
+                ? $this->routeparser->urlFor('addDocument')
+                : $this->routeparser->urlFor('editDocument', ['id' => (string)$document->getId()]);
         } else {
             $success_detected[] = _T('Document has been successfully stored!');
             $redirect_url = $this->routeparser->urlFor('documentsList');

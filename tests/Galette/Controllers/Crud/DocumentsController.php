@@ -323,6 +323,52 @@ class DocumentsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test add document with an empty form
+     */
+    public function testAddEmptyDocument(): void
+    {
+        $route_name = 'doAddDocument';
+
+        $request = $this->createRequest($route_name, [], 'POST');
+        $post = [
+            'document_type' => '',
+            'comment' => '',
+            'visible' => \Galette\Entity\FieldsConfig::ALL
+        ];
+        $request = $request->withParsedBody($post);
+        $request = $request->withUploadedFiles([
+            'document_file' => new UploadedFile(
+                fileNameOrStream: '',
+                name: '',
+                type: '',
+                size: 0,
+                error: UPLOAD_ERR_NO_FILE
+            )
+        ]);
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('addDocument')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'error_detected' => [
+                '- Mandatory field Document type empty.',
+                'No file was uploaded'
+            ]
+        ]);
+
+        //documents directory is still there, and nothing has been stored
+        $this->assertTrue(is_dir(GALETTE_DOCUMENTS_PATH));
+        $this->assertSame(0, $this->zdb->execute($this->zdb->select(\Galette\Entity\Document::TABLE))->count());
+
+        $this->login->logout();
+    }
+
+    /**
      * Test edit document
      */
     public function testEditDocument(): void
@@ -350,6 +396,21 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' => ['Document has been successfully stored!']]);
+
+        //type cannot be emptied
+        $post['document_type'] = '';
+        $request = $request->withParsedBody($post);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('editDocument', $route_arguments)]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['- Mandatory field Document type empty.']]);
+
+        //file is still there
+        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename));
         $this->login->logout();
     }
 

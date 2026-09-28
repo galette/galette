@@ -141,6 +141,7 @@ class Document
     {
         global $login;
 
+        $this->errors = [];
         $this->setType($post['document_type']);
         $this->setComment($post['comment']);
         $this->permission = (int)$post['visible'];
@@ -148,6 +149,20 @@ class Document
         $handled = $this->handleFiles($files);
         if ($handled !== true) {
             $this->errors = $handled;
+            return false;
+        }
+
+        if (trim($this->type) === '') {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is a field name
+                _T('- Mandatory field %1$s empty.'),
+                _T("Document type")
+            );
+        }
+        if ($this->getDocumentFilename() === '') {
+            $this->errors[] = _T("No file was uploaded");
+        }
+        if (count($this->errors) > 0) {
             return false;
         }
 
@@ -231,8 +246,13 @@ class Document
      */
     protected function removeFile(): bool
     {
+        if ($this->getDocumentFilename() === '') {
+            Analog::log('No file to remove for document', Analog::WARNING);
+            return false;
+        }
+
         $file = $this->getDestDir() . $this->getDocumentFilename();
-        if (file_exists($file)) {
+        if (is_file($file)) {
             return unlink($file); //@phpstan-ignore theCodingMachineSafe.function
         }
 
