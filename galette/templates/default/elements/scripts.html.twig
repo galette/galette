@@ -173,15 +173,16 @@
 
             {% include "elements/js/calendar.js.twig" %}
 
-    {% if renew_telemetry is defined %}
+    {% if is_current_url("preferences") or (renew_telemetry is defined and renew_telemetry) or (hide_telemetry is defined and not hide_telemetry and telemetry_sent is defined and not telemetry_sent)
+    %}
             {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
     {% endif %}
 
-            {% include "elements/js/two_factor_suggestion.js.twig" %}
-
-    {% if renew_telemetry is defined and renew_telemetry %}
+    {% if (renew_telemetry is defined and renew_telemetry) %}
             {% include "modals/telemetry.html.twig" with {part: "jsrenew"} %}
     {% endif %}
+
+            {% include "elements/js/two_factor_suggestion.js.twig" %}
 
             });
         </script>

@@ -99,10 +99,6 @@
             </div>
         </div>
     </div>
-
-    {% if not hide_telemetry and not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
-    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -165,10 +161,6 @@
                 var _url = '{{ url_for('dashboard') }}';
                 window.location.replace(_url);
             });
-
-    {% if not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with {part: "jsdialog", orig: "desktop"} %}
-    {% endif %}
     {% if not registered %}
         {% include "modals/telemetry.html.twig" with {part: "jsregister", orig: "desktop"} %}
     {% endif %}

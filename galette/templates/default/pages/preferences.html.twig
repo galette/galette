@@ -1272,7 +1272,6 @@
         </div>
         </form>
 
-        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
         {% include "modals/replacements_legend.html.twig" with {legends: preferences.getLegend(), cur_ref: 'prefs'} %}
 {% endblock %}
 
@@ -1482,7 +1481,6 @@
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                 } %}
 
-                {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
                 {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
 
                 {% set modal_onapprove = "

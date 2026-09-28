@@ -121,7 +121,7 @@
     {% endif %}
 {% endif %}
 
-{# Renew telemetry #}
-{% if renew_telemetry is defined and renew_telemetry %}
+{% if is_current_url("preferences") or (renew_telemetry is defined and renew_telemetry) or (hide_telemetry is defined and not hide_telemetry and telemetry_sent is defined and not telemetry_sent)
+%}
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
 {% endif %}
