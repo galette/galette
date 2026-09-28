@@ -467,12 +467,23 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
 }
 
 /* Ensure consistent spacing at the top of every page */
-.main-content > noscript:first-child {
-  & + .ui.message,
-  & + .ui.table,
-  & + .ui.pointing.menu,
-  & + form .infoline:first-child .ui.horizontal.segments,
-  & + .ui.fitted.segment {
+.main-content {
+  & > noscript:first-child,
+  & > noscript:first-child + div[role=alert] + script,
+  & > noscript:first-child + script,
+  & > noscript:first-child + .ui.modal,
+  & > noscript:first-child + div[role=alert] + script + .ui.modal,
+  & > noscript:first-child + script + .ui.modal {
+    & + .ui.message,
+    & + .ui.table,
+    & + .ui.pointing.menu,
+    & + form .infoline:first-child .ui.horizontal.segments,
+    & + .ui.fitted.segment {
+      margin-top: 0;
+    }
+  }
+  & > noscript:first-child > .ui.message:first-child,
+  & > noscript:first-child + div[role=alert] > .ui.message:first-child {
     margin-top: 0;
   }
 }
