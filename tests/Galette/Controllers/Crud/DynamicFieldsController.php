@@ -688,6 +688,117 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test a member cannot get files of objects they cannot see
+     */
+    public function testGetOtherObjectDynamicFile(): void
+    {
+        $this->logSuperAdmin();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $this->assertSame($member_two->id, $this->adh->id);
+        $this->createContribution();
+        $contrib_id = $this->contrib->id;
+        $this->login->logout();
+
+        //fields members can read, so only access to their object is checked
+        $adh_field_id = $this->createDynamicField(
+            name: 'Member file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            perm: \Galette\Entity\FieldsConfig::USER_READ
+        );
+        $contrib_field_id = $this->createDynamicField(
+            name: 'Contribution file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            form_name: 'contrib',
+            perm: \Galette\Entity\FieldsConfig::USER_READ
+        );
+
+        $files = [
+            sprintf('member_%1$s_field_%2$s_value_1', $member_one->id, $adh_field_id),
+            sprintf('member_%1$s_field_%2$s_value_1', $member_two->id, $adh_field_id),
+            sprintf('contrib_%1$s_field_%2$s_value_1', $contrib_id, $contrib_field_id)
+        ];
+        foreach ($files as $file) {
+            copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', GALETTE_FILES_PATH . $file);
+        }
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        try {
+            //own file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)$adh_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertSame(['image/png'], $test_response->getHeader('Content-Type'));
+
+            //another member file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_two->id,
+                    'fid' => (string)$adh_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_two->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            //another member contribution file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'contrib',
+                    'id' => (string)$contrib_id,
+                    'fid' => (string)$contrib_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            //contribution is not loaded for a member who does not own it
+            $this->expectLogEntry(\Analog\Analog::ERROR, sprintf('No contribution #%1$s', $contrib_id));
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'contributions'])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            //non-existing field
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)($contrib_field_id + 1000),
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        } finally {
+            $this->login->logout();
+            foreach ($files as $file) {
+                unlink(GALETTE_FILES_PATH . $file);
+            }
+        }
+    }
+
+    /**
      * Test a dynamic file stored in the settings
      */
     public function testGetPreferencesDynamicFile(): void
@@ -768,18 +879,20 @@ class DynamicFieldsController extends GaletteRoutingTestCase
      * @param string $name      Name of the field to create
      * @param int    $type      Type of the field to create (default to Line)
      * @param string $form_name Form the field belongs to (default to members)
+     * @param int    $perm      Field permission (default to staff)
      *
      * @return int The created field id
      */
     private function createDynamicField(
         string $name = 'Dynamic test field',
         int $type = \Galette\DynamicFields\DynamicField::LINE,
-        string $form_name = 'adh'
+        string $form_name = 'adh',
+        int $perm = \Galette\Entity\FieldsConfig::STAFF
     ): int {
         //create field
         $field_data = [
             'field_name' => $name,
-            'field_perm' => (string)\Galette\Entity\FieldsConfig::STAFF,
+            'field_perm' => (string)$perm,
             'field_type' => (string)$type,
             'field_required' => '0',
             'form_name' => $form_name

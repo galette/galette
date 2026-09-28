@@ -250,6 +250,7 @@ class DynamicFieldsController extends CrudController
         if ($object_class === Preferences::class) {
             //settings are a single object, nothing to load but its dynamic fields
             $object = new Preferences($this->zdb, load: false);
+            $loaded = true;
         } else {
             if ($object_class === \Galette\Entity\Adherent::class) {
                 $object = new $object_class($this->zdb);
@@ -257,7 +258,8 @@ class DynamicFieldsController extends CrudController
                 $object = new $object_class($this->zdb, $this->login);
             }
 
-            $object
+            //objects the current user cannot reach are not loaded
+            $loaded = $object
                 ->disableAllDeps()
                 ->enableDep('dynamics')
                 ->load($id);
@@ -265,29 +267,18 @@ class DynamicFieldsController extends CrudController
         $fields = $object->getDynamicFields()->getFields();
         $field = $fields[$fid] ?? null;
 
-        $denied = null;
-        if ($object instanceof Preferences) {
-            //a settings file goes to whoever can see its field
-            $denied = $field === null;
-        } elseif (!$object->canShow($this->login)) {
-            if (!isset($fields[$fid])) {
-                //field does not exist or access is forbidden
-                $denied = true;
-            } else {
-                $denied = false;
-            }
+        //field does not exist or access is forbidden
+        $denied = $field === null || !$loaded;
+        if (!$denied && !$object instanceof Preferences) {
+            //a settings file goes to whoever can see its field; other files also require access to their object
+            $denied = !$object->canShow($this->login);
         }
 
-        if ($denied === true) {
-            $route_name = $this->getDynamicFileRedirectRoute($form_name);
-
+        if ($denied) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
-                redirect_url: $this->routeparser->urlFor(
-                    $route_name,
-                    ['id' => (string)$id]
-                )
+                redirect_url: $this->getDynamicFileRedirectUrl($form_name, $id)
             );
         }
 
@@ -326,28 +317,28 @@ class DynamicFieldsController extends CrudController
                 Analog::WARNING
             );
 
-            $route_name = $this->getDynamicFileRedirectRoute($form_name);
-
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("The file does not exists or cannot be read :(")],
-                redirect_url: $this->routeparser->urlFor($route_name, ['id' => (string)$id])
+                redirect_url: $this->getDynamicFileRedirectUrl($form_name, $id)
             );
         }
     }
 
     /**
-     * Route to go back to when a dynamic file cannot be sent
+     * URL to go back to when a dynamic file cannot be sent
      *
      * @param string $form_name Form name
+     * @param int    $id        Object ID
      */
-    private function getDynamicFileRedirectRoute(string $form_name): string
+    private function getDynamicFileRedirectUrl(string $form_name, int $id): string
     {
         return match ($form_name) {
-            'contrib' => 'contribution',
-            'trans' => 'transaction',
-            'prefs' => $this->login->isAdmin() ? 'preferences' : 'slash',
-            default => 'member'
+            //contributions and transactions have no display page
+            'contrib' => $this->routeparser->urlFor('contributions', ['type' => 'contributions']),
+            'trans' => $this->routeparser->urlFor('contributions', ['type' => 'transactions']),
+            'prefs' => $this->routeparser->urlFor($this->login->isAdmin() ? 'preferences' : 'slash'),
+            default => $this->routeparser->urlFor('member', ['id' => (string)$id])
         };
     }
 
