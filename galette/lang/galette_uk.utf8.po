@@ -363,10 +363,9 @@ msgid "File not found!"
 msgstr "Файл не знайдено!"
 
 #. TRANS: installation step title, where the system requirements are verified
-#, fuzzy
 msgctxt "installation step"
 msgid "Checks"
-msgstr "Чеки"
+msgstr "Перевірки"
 
 msgid "Installation mode"
 msgstr "Режим установлення"
@@ -1335,9 +1334,8 @@ msgid "Credit card"
 msgstr "Кредитна картка"
 
 #. TRANS: payment method, a bank cheque
-#, fuzzy
 msgid "Check"
-msgstr "Перевірити"
+msgstr "Чек"
 
 msgid "Transfer"
 msgstr "Переказ"

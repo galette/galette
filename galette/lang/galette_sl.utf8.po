@@ -361,10 +361,9 @@ msgid "File not found!"
 msgstr "Datoteke ni bilo mogoče najti!"
 
 #. TRANS: installation step title, where the system requirements are verified
-#, fuzzy
 msgctxt "installation step"
 msgid "Checks"
-msgstr "Čeki"
+msgstr "Preverjanja"
 
 msgid "Installation mode"
 msgstr "Način namestitve"
@@ -1326,9 +1325,8 @@ msgid "Credit card"
 msgstr "Kreditna kartica"
 
 #. TRANS: payment method, a bank cheque
-#, fuzzy
 msgid "Check"
-msgstr "Preveri"
+msgstr "Ček"
 
 msgid "Transfer"
 msgstr "Prenos"
