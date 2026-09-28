@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-27 17:52+0200\n"
-"PO-Revision-Date: 2026-09-25 22:08+0000\n"
+"PO-Revision-Date: 2026-09-28 08:56+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -669,10 +669,9 @@ msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- Vrednost za '%1$s' mora biti %2$s sekund ali več!"
 
 #. TRANS: parameter is the setting name
-#, fuzzy, php-format
-#| msgid "Unknown form %1$s!"
+#, php-format
 msgid "- Unknown visibility for '%1$s'!"
-msgstr "Neznana oblika %1$s!"
+msgstr "- Neznana vidljivost za »%1$s«!"
 
 msgid "My Account"
 msgstr "Moj račun"
@@ -701,10 +700,8 @@ msgstr "Moji podatki"
 msgid "View my member card"
 msgstr "Ogled moje članske izkaznice"
 
-#, fuzzy
-#| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
-msgstr "Izpolnite vsa prazna polja za prijavo in geslo"
+msgstr "Spremeni moje uporabniško ime in geslo"
 
 msgid "Two-factor authentication"
 msgstr "Dvostopenjska avtentikacija"
@@ -1326,7 +1323,7 @@ msgstr "Kreditna kartica"
 
 #. TRANS: payment method, a bank cheque
 msgid "Check"
-msgstr "Ček"
+msgstr "Preveri"
 
 msgid "Transfer"
 msgstr "Prenos"
@@ -1658,10 +1655,8 @@ msgstr "Brisanje ni uspelo"
 msgid "Passwords mismatch"
 msgstr "Neujemanje gesel"
 
-#, fuzzy
-#| msgid "Preferences has been saved."
 msgid "Your credentials have been saved."
-msgstr "Nastavitve so bile shranjene."
+msgstr "Vaši podatki za prijavo so bili shranjeni."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -1948,7 +1943,7 @@ msgid "No contribution was selected, please check at least one."
 msgstr "Izbran ni bil noben prispevek, prosimo, označite vsaj enega."
 
 msgid "An error occurred while saving the contribution."
-msgstr "Pri shranjevanju prispevka je prišlo do napake."
+msgstr "Pri shranjevanju prispevka, je prišlo do napake."
 
 msgid "Contribution has been successfully stored"
 msgstr "Prispevek je bil uspešno shranjen"
@@ -4904,10 +4899,8 @@ msgstr "Zapisal sem jih"
 msgid "Leave empty to keep the current one"
 msgstr "Pustite prazno, da obdržite trenutno"
 
-#, fuzzy
-#| msgid "New password:"
 msgid "Current password:"
-msgstr "Novo geslo:"
+msgstr "Trenutno geslo:"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5818,15 +5811,11 @@ msgstr "Galette sama ohranja to vrednost; prikazan je le informativno."
 msgid "read-only"
 msgstr "samo za branje"
 
-#, fuzzy
-#| msgid ""
-#| "Held as a secret: its value is never displayed, and it is changed from "
-#| "the settings form."
 msgid ""
 "Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
-"Zaupno: njegova vrednost ni nikoli prikazana in se spremeni v obrazcu z "
-"nastavitvami."
+"Shranjeno kot skrivnost: njegova vrednost ni nikoli prikazana niti je na tej "
+"strani ni mogoče spremeniti."
 
 msgid "secret"
 msgstr "skrivnost"
@@ -5907,16 +5896,12 @@ msgstr ""
 "Galette sama vzdržuje to vrednost, na primer ustvarjeni identifikator ali "
 "datum, ki ga zabeleži. Prikazan je samo informativno."
 
-#, fuzzy
-#| msgid ""
-#| "A password or a token. Its value is never displayed, only whether one is "
-#| "set, and it is changed from the settings form."
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
 "set, and it is not changed from this page."
 msgstr ""
-"Geslo ali žeton. Njena vrednost ni nikoli prikazana, samo, ali je "
-"nastavljena, in se spremeni iz obrazca za nastavitve."
+"Geslo ali žeton. Njegova vrednost ni nikoli prikazana – vidi se le, ali je "
+"nastavljen –, prav tako pa se na tej strani ne spreminja."
 
 msgid ""
 "A constant defined in behavior.inc.php takes precedence over the stored "
