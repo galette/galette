@@ -350,6 +350,8 @@ msgstr ""
 msgid "File not found!"
 msgstr ""
 
+#. TRANS: installation step title, where the system requirements are verified
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Gwiriadennoù"
 
@@ -1322,6 +1324,7 @@ msgstr ""
 msgid "Credit card"
 msgstr ""
 
+#. TRANS: payment method, a bank cheque
 msgid "Check"
 msgstr ""
 

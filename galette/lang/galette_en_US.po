@@ -626,7 +626,9 @@ msgstr "Cannot activate plugin."
 msgid "File not found!"
 msgstr "File not found!"
 
+#. TRANS: installation step title, where the system requirements are verified
 #: ../lib/Galette/Core/Install.php:102 ../webroot/installer.php:369
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Checks"
 
@@ -2061,6 +2063,7 @@ msgstr "Cash"
 msgid "Credit card"
 msgstr "Credit card"
 
+#. TRANS: payment method, a bank cheque
 #: ../lib/Galette/Entity/PaymentType.php:253
 msgid "Check"
 msgstr "Check"

@@ -417,6 +417,9 @@ msgstr "No es pot activar el connector."
 msgid "File not found!"
 msgstr "No s'ha trobat el fitxer!"
 
+#. TRANS: installation step title, where the system requirements are verified
+#, fuzzy
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Xecs"
 
@@ -1555,6 +1558,7 @@ msgstr "Efectiu"
 msgid "Credit card"
 msgstr "Targeta de crèdit"
 
+#. TRANS: payment method, a bank cheque
 #, fuzzy
 msgid "Check"
 msgstr "Comprovació"

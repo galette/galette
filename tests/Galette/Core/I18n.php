@@ -108,6 +108,19 @@ class I18n extends GaletteTestCase
     }
 
     /**
+     * Test contextualized translations
+     */
+    public function testContextualizedTranslation(): void
+    {
+        $this->i18n->changeLanguage('fr_FR');
+        $this->assertSame('Vérifications', _Tx('installation step', 'Checks'));
+        //payment type names are stored in database, they must be found without context
+        $this->assertSame('Chèque', _T('Check'));
+        $this->assertSame('Checks', _Tx('unknown context', 'Checks', nt: false));
+        $this->i18n->changeLanguage('en_US');
+    }
+
+    /**
      * Test languages list as array
      */
     public function testGetArrayList(): void

@@ -375,6 +375,8 @@ msgstr "Не удалось активировать плагин."
 msgid "File not found!"
 msgstr "Файл не найден!"
 
+#. TRANS: installation step title, where the system requirements are verified
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Проверки"
 
@@ -1344,6 +1346,7 @@ msgstr "Наличные"
 msgid "Credit card"
 msgstr "Банковская карта"
 
+#. TRANS: payment method, a bank cheque
 msgid "Check"
 msgstr "Чек"
 

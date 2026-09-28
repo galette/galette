@@ -250,6 +250,7 @@ class PaymentType implements \Stringable
                 self::OTHER         => _T("Other"),
                 self::CASH          => _T("Cash"),
                 self::CREDITCARD    => _T("Credit card"),
+                //TRANS: payment method, a bank cheque
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
                 self::PAYPAL        => _T("Paypal"),

@@ -99,7 +99,8 @@ class Install
         $step_documentation = null;
         switch ($this->step) {
             case self::STEP_CHECK:
-                $step_title = _T("Checks");
+                //TRANS: installation step title, where the system requirements are verified
+                $step_title = _Tx("installation step", "Checks");
                 $step_documentation = 'installation/galette.html';
                 break;
             case self::STEP_TYPE:

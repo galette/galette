@@ -352,6 +352,9 @@ msgstr "சொருகி செயல்படுத்த முடியா�
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
 
+#. TRANS: installation step title, where the system requirements are verified
+#, fuzzy
+msgctxt "installation step"
 msgid "Checks"
 msgstr "காசோலைகள்"
 
@@ -1324,6 +1327,8 @@ msgstr "முழுத்தொகை"
 msgid "Credit card"
 msgstr "கடனட்டை"
 
+#. TRANS: payment method, a bank cheque
+#, fuzzy
 msgid "Check"
 msgstr "சரிபார்"
 

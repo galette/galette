@@ -382,6 +382,8 @@ msgstr "Non è possibile attivare il plugin."
 msgid "File not found!"
 msgstr "File non trovato!"
 
+#. TRANS: installation step title, where the system requirements are verified
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Controlli"
 
@@ -1371,6 +1373,7 @@ msgstr "Contanti"
 msgid "Credit card"
 msgstr "Carta di credito"
 
+#. TRANS: payment method, a bank cheque
 msgid "Check"
 msgstr "Assegno bancario"
 

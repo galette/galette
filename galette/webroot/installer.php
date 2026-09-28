@@ -366,7 +366,7 @@ if (count($error_detected) > 0) {
                                 >
                                     <i class="tasks icon<?php echo $install->isStepPassed(GaletteInstall::STEP_CHECK) ? ' green' : ''; ?>"></i>
                                     <div class="content">
-                                        <div class="title"><?php echo _T("Checks"); ?></div>
+                                        <div class="title"><?php /* TRANS: installation step title, where the system requirements are verified */ echo _Tx("installation step", "Checks"); ?></div>
                                     </div>
                                 </div>
                                 <div

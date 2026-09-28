@@ -352,6 +352,9 @@ msgstr "Impossible d'activar l'ajuston."
 msgid "File not found!"
 msgstr "Fichier non trobat !"
 
+#. TRANS: installation step title, where the system requirements are verified
+#, fuzzy
+msgctxt "installation step"
 msgid "Checks"
 msgstr "Chèc"
 
@@ -1351,6 +1354,7 @@ msgstr "Moneda"
 msgid "Credit card"
 msgstr "Carta de crèdit"
 
+#. TRANS: payment method, a bank cheque
 msgid "Check"
 msgstr "Chèc"
 

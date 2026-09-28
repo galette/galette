@@ -610,7 +610,9 @@ msgstr ""
 msgid "File not found!"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:102 ../webroot/installer.php:369
+#. TRANS: installation step title, where the system requirements are verified
+#: ../lib/Galette/Core/Install.php:103 ../webroot/installer.php:369
+msgctxt "installation step"
 msgid "Checks"
 msgstr ""
 
@@ -2028,7 +2030,8 @@ msgstr ""
 msgid "Credit card"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:253
+#. TRANS: payment method, a bank cheque
+#: ../lib/Galette/Entity/PaymentType.php:254
 msgid "Check"
 msgstr ""
 
