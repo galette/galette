@@ -846,7 +846,13 @@
                         </div>
                     </div>
         {% set mail_off = pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
-                    <div class="ui basic horizontally fitted segment">
+                    <div class="ui basic fitted segment">
+                        <div id="mailtest_off" class="ui small yellow message{% if not mail_off %} displaynone{% endif %}">
+                            {{ _T("Emailing is disabled: pick a sending method to run a test.") }}
+                        </div>
+                        <div id="mailtest_hint" class="ui small blue message{% if mail_off %} displaynone{% endif %}">
+                            {{ _T("Tests run on the settings displayed above, even those not saved yet.") }}
+                        </div>
                         <div class="ui wrapping spaced buttons">
                             <button
                                 type="button"
@@ -868,12 +874,6 @@
                                 <i class="rocket icon" aria-hidden="true"></i>
                                 {{ _T("Send a test email") }}
                             </button>
-                        </div>
-                        <div id="mailtest_off" class="ui small yellow message{% if not mail_off %} displaynone{% endif %}">
-                            {{ _T("Emailing is disabled: pick a sending method to run a test.") }}
-                        </div>
-                        <div id="mailtest_hint" class="ui small blue message{% if mail_off %} displaynone{% endif %}">
-                            {{ _T("Tests run on the settings displayed above, even those not saved yet.") }}
                         </div>
                     </div>
                 </div>{# /column #}
