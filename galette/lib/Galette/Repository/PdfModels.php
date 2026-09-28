@@ -13,7 +13,6 @@ namespace Galette\Repository;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
 
 /**
@@ -53,28 +52,16 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param bool $check_first Check first if it seems initialized
+     * @param bool $check_first Only add missing entries, existing ones are kept
      */
     public function installInit(bool $check_first = true): bool
     {
         try {
             $ent = $this->entity;
-            //first of all, let's check if data seem to have already
-            //been initialized
+            //already initialized (update): only add missing entries, keep existing ones
             if ($check_first === true) {
-                $select = $this->zdb->select(PdfModel::TABLE);
-                $select->columns(
-                    [
-                        'counter' => new Expression('COUNT(' . $ent::PK . ')')
-                    ]
-                );
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $count = $result->counter;
-                if ($count < count($this->defaults)) {
-                    return $this->checkUpdate();
-                }
+                $this->checkUpdate();
+                return true;
             }
 
             $this->zdb->beginTransaction();

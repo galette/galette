@@ -20,7 +20,6 @@ use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
 use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Galette\Util\Html;
@@ -386,7 +385,7 @@ class Texts
     /**
      * Initialize texts at install time
      *
-     * @param bool $check_first Check first if it seems initialized
+     * @param bool $check_first Only add missing entries, existing ones are kept
      *
      * @return bool false if no need to initialize, true if data has been initialized, Exception if error
      * @throws Throwable
@@ -394,23 +393,11 @@ class Texts
     public function installInit(bool $check_first = true): bool
     {
         try {
-            //first of all, let's check if data seem to have already
-            //been initialized
             $this->defaults = $this->getAllDefaults(); //load defaults
+            //already initialized (update): only add missing entries, keep existing ones
             if ($check_first === true) {
-                $select = $this->zdb->select(self::TABLE);
-                $select->columns(
-                    [
-                        'counter' => new Expression('COUNT(' . self::PK . ')')
-                    ]
-                );
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $count = $result->counter;
-                if ($count < count($this->defaults)) {
-                    return $this->checkUpdate();
-                }
+                $this->checkUpdate();
+                return true;
             }
 
             //first, we drop all values

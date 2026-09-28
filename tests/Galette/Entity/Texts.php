@@ -79,6 +79,36 @@ class Texts extends GaletteTestCase
     }
 
     /**
+     * Test existing texts are kept on update, and missing ones restored
+     */
+    public function testInstallInitKeepsExisting(): void
+    {
+        $texts = new \Galette\Entity\Texts($this->preferences);
+        $texts->installInit(check_first: false);
+        $count = count($texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG));
+
+        $where = ['tref' => 'sub', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG];
+        $update = $this->zdb->update($texts::TABLE);
+        $update->set(['tbody' => 'My own body'])->where($where);
+        $this->zdb->execute($update);
+
+        $delete = $this->zdb->delete($texts::TABLE);
+        $delete->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($delete);
+
+        $this->assertTrue($texts->installInit());
+        $this->assertCount($count, $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG));
+
+        $select = $this->zdb->select($texts::TABLE);
+        $select->where($where);
+        $this->assertSame('My own body', $this->zdb->execute($select)->current()->tbody);
+
+        //nothing missing
+        $this->assertTrue($texts->installInit());
+        $this->assertSame('My own body', $this->zdb->execute($select)->current()->tbody);
+    }
+
+    /**
      * Test the password recovery link is present in the mail
      *
      * @see https://bugs.galette.eu/issues/2033

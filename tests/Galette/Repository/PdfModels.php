@@ -77,4 +77,32 @@ class PdfModels extends GaletteTestCase
             );
         }
     }
+
+    /**
+     * Test existing models are kept on update, and missing ones restored
+     */
+    public function testInstallInitKeepsExisting(): void
+    {
+        $update = $this->zdb->update(\Galette\Entity\PdfModel::TABLE);
+        $update->set(['model_footer' => 'My own footer'])
+            ->where([\Galette\Entity\PdfModel::PK => \Galette\Entity\PdfModel::MAIN_MODEL]);
+        $this->zdb->execute($update);
+
+        $delete = $this->zdb->delete(\Galette\Entity\PdfModel::TABLE);
+        $delete->where([\Galette\Entity\PdfModel::PK => 4]);
+        $this->zdb->execute($delete);
+
+        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
+        $this->assertTrue($models->installInit());
+        $this->assertCount(4, $models->getList());
+
+        $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE);
+        $select->where([\Galette\Entity\PdfModel::PK => \Galette\Entity\PdfModel::MAIN_MODEL]);
+        $this->assertSame('My own footer', $this->zdb->execute($select)->current()->model_footer);
+
+        //nothing missing
+        $this->assertTrue($models->installInit());
+        $this->assertCount(4, $models->getList());
+        $this->assertSame('My own footer', $this->zdb->execute($select)->current()->model_footer);
+    }
 }
