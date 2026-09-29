@@ -160,7 +160,8 @@ class TwoFactorController extends AbstractController
                 //preferences, and its documented way back in is clearing them
                 'has_recovery_codes' => $secret instanceof TwoFactorSecret,
                 'remaining_codes' => $secret instanceof TwoFactorSecret ? $secret->countRemainingCodes() : 0,
-                'tfa_required' => $tfa->isRequiredFor($this->login)
+                'tfa_required' => $tfa->isRequiredFor($this->login),
+                'documentation' => 'usermanual/generalites.html#two-factor-authentication'
             ]
         );
         return $response;
@@ -209,7 +210,8 @@ class TwoFactorController extends AbstractController
             [
                 'page_title' => _T("Enable two-factor authentication"),
                 'secret' => $secret->getSecret(),
-                'qrcode' => $tfa->getQrCode($secret->getSecret(), (string)$this->login->login)
+                'qrcode' => $tfa->getQrCode($secret->getSecret(), (string)$this->login->login),
+                'documentation' => 'usermanual/generalites.html#two-factor-authentication'
             ]
         );
         return $response;
