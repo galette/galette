@@ -11,14 +11,14 @@
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020, 2025.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # Nathan <bonnemainsnathan@gmail.com>, 2020.
-# Guillaume AGNIERAY <dev@agnieray.net>, 2025.
+# Guillaume AGNIERAY <dev@agnieray.net>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-27 17:52+0200\n"
-"PO-Revision-Date: 2026-09-28 12:46+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-09-29 20:13+0000\n"
+"Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -5512,7 +5512,7 @@ msgid "PHP mail() function"
 msgstr "Fonction PHP mail()"
 
 msgid "Using a SMTP server (slower)"
-msgstr "Utilisation d’un SMTP (plus lent)"
+msgstr "Utilisation d’un serveur SMTP (plus lent)"
 
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Utilisation de Gmail comme serveur SMTP (plus lent)"
@@ -5549,8 +5549,8 @@ msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
-"Voulez-vous autoriser les connexion « non sécurisées » ? Cela peut être "
-"utile si votre serveur utilisé un certificat auto-signé, entre autres."
+"Voulez-vous autoriser les connexions « non sécurisées » ? Cela peut être "
+"utile si votre serveur utilise un certificat auto-signé, entre autres."
 
 msgid "SMTP user:"
 msgstr "Utilisateur SMTP :"
