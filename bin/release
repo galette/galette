@@ -500,8 +500,8 @@ def add_libs(rel_name, galette_archive):
     if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
         shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
-    # cleanup vendors
-    for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):
+    # cleanup vendors; composer files are at the root, vendor-dir is galette/vendor
+    for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'galette', 'vendor')):
         # remove git directories
         for dirname in fnmatch.filter(dirnames, '.git*'):
             remove_dir = os.path.join(composer_dir, root, dirname)
