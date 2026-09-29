@@ -6432,22 +6432,17 @@ msgstr "Voleu utilitzar l'autenticació SMTP?"
 #, fuzzy
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
-"and password below. For GMail, authentication will always be on."
+"and password below."
 msgstr ""
 "Voleu enviar correus electrònics utilitzar qualsevol autenticació SMTP? Heu "
-"de proporcionar el nom d'usuari i la contrasenya a continuació. Per a "
-"l'autenticació de GMail sempre estarà activada."
+"de proporcionar el nom d'usuari i la contrasenya a continuació."
 
 #, fuzzy
 msgid "Use TLS for SMTP?"
 msgstr "Voleu utilitzar TLS per SMTP?"
 
-msgid ""
-"Do you want to use server's TLS capabilities?<br/>For GMail, this will "
-"always be on."
-msgstr ""
-"Voleu utilitzar les capacitats TLS del servidor?<br>Per a GMail sempre "
-"estarà activat."
+msgid "Do you want to use server's TLS capabilities?"
+msgstr "Voleu utilitzar les capacitats TLS del servidor?"
 
 #, fuzzy
 msgid "Allow unsecure TLS?"
@@ -6462,12 +6457,12 @@ msgstr ""
 "servidor utilitza un certificat autosignat i en altres casos."
 
 #, fuzzy
-msgid "SMTP (or GMail) user:"
-msgstr "Usuari SMTP (o GMail)"
+msgid "SMTP user:"
+msgstr "Usuari SMTP"
 
 #, fuzzy
-msgid "SMTP (or GMail) password:"
-msgstr "Contrasenya SMTP (o GMail)"
+msgid "SMTP password:"
+msgstr "Contrasenya SMTP"
 
 #, fuzzy
 msgid "Test connection"
