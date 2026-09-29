@@ -41,9 +41,9 @@
         </label>
     {% endblock %}
     {% endif %}
-    {% if type is defined and type == 'password' %}
+    {% if type is defined and type == 'password' and tip is not defined %}
         <div class="ui input">
-    {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
+    {% elseif tip is defined and tip != '' and type is defined and type in ['text', 'password'] %}
         <div class="ui corner labeled input">
     {% elseif (withlegend is defined) %}
         <div class="ui corner labeled input">
@@ -84,12 +84,12 @@
                 {{ rightlabel }}
             </div>
         </div>
-    {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
+    {% elseif tip is defined and tip != '' and type is defined and type in ['text', 'password'] %}
             <div class="ui corner label">
                 {% include "components/forms/tip.html.twig" with {tip: tip, id: id, html: tip_html is defined, small: false} only %}
             </div>
         </div>
-    {% elseif (type is defined and type == 'password') or (withlegend is defined) %}
+    {% elseif (type is defined and type == 'password' and tip is not defined) or (withlegend is defined) %}
         </div>
     {% endif %}
     {% if type is defined and type == 'checkbox' %}
@@ -100,7 +100,7 @@
     {% endblock %}
     </div>
     {% endif %}
-    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}
+    {% if tip is defined and tip != '' and type is defined and type not in ['text', 'password'] %}
         {% include "components/forms/tip.html.twig" with {tip: tip, id: id, html: tip_html is defined} only %}
     {% endif %}
     {% if description is defined or error_message is defined %}
