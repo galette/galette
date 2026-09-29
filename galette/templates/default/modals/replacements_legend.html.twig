@@ -48,6 +48,9 @@
                 .append($('<span class="visually-hidden"/>').text(label))
         );
 
+        /* Because the legend buttons are created after FUI popups have already
+         * been initialized, the popups must be reinitialized for these buttons.
+         */
         $('.btnlegend.question.tooltip')
             .popup({
                 variation: 'inverted',
