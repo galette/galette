@@ -1505,7 +1505,7 @@ msgid "A member cannot be its own parent!"
 msgstr "El nom del fitxer del 5% no pot ser obert!"
 
 #, fuzzy
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr "Autodestinació com a membre"
 
 #, fuzzy
@@ -2704,11 +2704,11 @@ msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 msgid "Remove payment type %1$s"
 msgstr "Elimina el tipus de pagament %1$s"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr "Subscripció"
 
 #, fuzzy
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr "S'ha habilitat l'autosubscripció?"
 
 #, fuzzy
@@ -3520,9 +3520,9 @@ msgstr "[{ASSONAME}] Els vostres identificadors"
 
 #, fuzzy
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -4089,7 +4089,7 @@ msgstr "Pertinència requerida:"
 #, fuzzy
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "Completeu el formulari següent i envieu-lo amb els vostres fons per "
 "completar la vostra subscripció."
@@ -5646,7 +5646,7 @@ msgid "Parent of:"
 msgstr "Pare de"
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 
 #, fuzzy
@@ -6167,7 +6167,7 @@ msgstr ""
 "a aquesta data però a l'octubre seran vàlides durant tot l'any que ve."
 
 #, fuzzy
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr "S'ha habilitat l'autosubscripció?"
 
 #, fuzzy
@@ -7032,7 +7032,7 @@ msgid "Password recovery requests from one address"
 msgstr ""
 
 #, fuzzy
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr "S'ha habilitat l'autosubscripció?"
 
 msgid "Lift"
@@ -8193,7 +8193,8 @@ msgid "Public pages menu"
 msgstr "Pàgines públiques"
 
 #, fuzzy
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr "Subscriu-me"
 
 #, fuzzy

@@ -1337,7 +1337,7 @@ msgstr "Geschlecht %1$s existiert nicht!"
 msgid "A member cannot be its own parent!"
 msgstr "Ein Mitglied kann nicht sein eigener Elternteil sein!"
 
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr "Eigenabonnement als Mitglied: "
 
 msgid "Member card added"
@@ -2401,12 +2401,12 @@ msgstr "Zahlungsart „%1$s“ wurde erfolgreich geändert."
 msgid "Remove payment type %1$s"
 msgstr "Zahlungsart %1$s entfernen"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr "Mitgliedschaft"
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr "Selbstabonnement aktiviert?"
 
 msgid "Profile"
@@ -3097,9 +3097,9 @@ msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ihre Kennzeichnung"
 
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3581,7 +3581,7 @@ msgstr "Art der Mitgliedschaft:"
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "Füllen Sie das Formular aus und schicken Sie es zusammen mit ihrem Beitrag "
 "zurück um die Mitgliedschaft abzuschließen."
@@ -4893,7 +4893,7 @@ msgid "Parent of:"
 msgstr "Übergeordnetes Element von:"
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 "Wenn Sie sich lieber nicht online anmelden möchten, können Sie ein leeres "
 "Beitrittsformular herunterladen"
@@ -5329,7 +5329,7 @@ msgstr ""
 "diesem Datum gültig, aber ab Oktober sind sie für das gesamte nächste Jahr "
 "gültig."
 
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr "Selbstabonnement aktiviert?"
 
 msgid "Display the link to download the empty adhesion form"
@@ -6127,7 +6127,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr "Selbstabonnement aktiviert?"
 
 msgid "Lift"
@@ -7124,7 +7124,8 @@ msgstr "Menü"
 msgid "Public pages menu"
 msgstr "Öffentliche Seiten"
 
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr "Mitglied werden"
 
 msgid "Go to Galette's dashboard"

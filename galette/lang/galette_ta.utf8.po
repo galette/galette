@@ -1283,7 +1283,7 @@ msgstr "பாலினம் %1$s இல்லை!"
 msgid "A member cannot be its own parent!"
 msgstr "ஒரு உறுப்பினர் அதன் சொந்த பெற்றோராக இருக்க முடியாது!"
 
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr "உறுப்பினராக சுய_சப்ச்கிரிப்சன்:"
 
 msgid "Member card added"
@@ -2338,12 +2338,12 @@ msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக ம�
 msgid "Remove payment type %1$s"
 msgstr "கட்டண வகை %1$s ஐ அகற்று"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr "சந்தா"
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
 msgid "Profile"
@@ -3016,9 +3016,9 @@ msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] உங்கள் அடையாளங்காட்டிகள்"
 
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3488,7 +3488,7 @@ msgstr "தேவையான உறுப்பினர்:"
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "உங்கள் சந்தாவை முடிக்க பின்வரும் படிவத்தை நிறைவு செய்து உங்கள் நிதியுடன் அனுப்பவும்."
 
@@ -4779,7 +4779,7 @@ msgid "Parent of:"
 msgstr "பெற்றோர்:"
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 "நீங்கள் ஆன்லைனில் குழுசேர விரும்பவில்லை என்றால், வெற்று ஒட்டுதல் படிவத்தைப் பதிவிறக்கலாம்"
 
@@ -5214,7 +5214,7 @@ msgstr ""
 "புதுப்பித்தல் வேண்டும். நடப்பு ஆண்டில் உருவாக்கப்பட்ட அனைத்து பங்களிப்புகளும் இந்த தேதி வரை "
 "செல்லுபடியாகும், ஆனால் அக்டோபர் மாதத்தில், அவை அடுத்த ஆண்டு முழுவதிலும் செல்லுபடியாகும்."
 
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
 msgid "Display the link to download the empty adhesion form"
@@ -5994,7 +5994,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
 msgid "Lift"
@@ -6975,7 +6975,8 @@ msgstr "பட்டியல்"
 msgid "Public pages menu"
 msgstr "பொது பக்கங்கள்"
 
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr "குழுசேர்"
 
 msgid "Go to Galette's dashboard"

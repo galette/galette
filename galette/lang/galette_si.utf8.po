@@ -1261,7 +1261,7 @@ msgstr ""
 msgid "A member cannot be its own parent!"
 msgstr ""
 
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr ""
 
 msgid "Member card added"
@@ -2313,10 +2313,10 @@ msgstr "'%1$s' ගෙවීමේ ක්‍රමය සාර්ථක ව ව�
 msgid "Remove payment type %1$s"
 msgstr "%1$s ගෙවීමේ ක්‍රමය ඉවත් කරන්න"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr ""
 
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr ""
 
 msgid "Profile"
@@ -2979,9 +2979,9 @@ msgid "[{ASSO_NAME}] Your identifiers"
 msgstr ""
 
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3409,7 +3409,7 @@ msgstr ""
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 
 msgid "on"
@@ -4668,7 +4668,7 @@ msgid "Parent of:"
 msgstr ""
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 
 msgid "After member creation:"
@@ -5074,7 +5074,7 @@ msgid ""
 "as of October, they will be valid for the entire next year."
 msgstr ""
 
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr ""
 
 msgid "Display the link to download the empty adhesion form"
@@ -5775,7 +5775,7 @@ msgstr ""
 msgid "Password recovery requests from one address"
 msgstr ""
 
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr ""
 
 msgid "Lift"
@@ -6724,7 +6724,8 @@ msgstr ""
 msgid "Public pages menu"
 msgstr ""
 
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr ""
 
 msgid "Go to Galette's dashboard"

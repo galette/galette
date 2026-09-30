@@ -14,7 +14,7 @@ $texts_fields = [
     [
         'tref'      => 'sub',
         'tsubject'  => _T('[{ASSO_NAME}] Your identifiers'),
-        'tbody'     => _T("Hello,{NEWLINE}You've just been subscribed on the members management system of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
+        'tbody'     => _T("Hello,{NEWLINE}You've just been registered on the members management system of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state of your membership and to update your preferences from the web interface.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('New user registration')
     ],

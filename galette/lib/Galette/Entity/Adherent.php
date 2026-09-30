@@ -1636,7 +1636,7 @@ class Adherent implements AccessManagementInterface
                     // logging
                     if ($this->self_adh) {
                         $hist->add(
-                            _T("Self_subscription as a member: ")
+                            _T("Self registration as a member: ")
                             . static::getNameWithCase($this->name, $this->surname),
                             $this->sname
                         );

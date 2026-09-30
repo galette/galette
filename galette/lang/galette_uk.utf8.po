@@ -1290,7 +1290,7 @@ msgstr "Статі %1$s не існує!"
 msgid "A member cannot be its own parent!"
 msgstr "Учасник не може бути самостійним батьком!"
 
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr "Self_subscription як член:"
 
 msgid "Member card added"
@@ -2361,12 +2361,12 @@ msgstr "Вид оплати \"%1$s\" успішно змінено."
 msgid "Remove payment type %1$s"
 msgstr "Вилучити вид оплати %1$s"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr "Підписки"
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr "Увімкнено самопідписку?"
 
 #, fuzzy
@@ -3060,9 +3060,9 @@ msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ваші ідентифікатори"
 
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3539,7 +3539,7 @@ msgstr "Необхідне членство:"
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "Заповніть наступну форму та надішліть її своїми коштами, щоб завершити "
 "підписку."
@@ -4867,7 +4867,7 @@ msgid "Parent of:"
 msgstr "Є батьком:"
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 "Якщо ви не хочете підписуватися онлайн, ви можете завантажити порожню форму "
 "приєднання"
@@ -5302,7 +5302,7 @@ msgstr ""
 "цієї дати, але починаючи з жовтня, вони будуть дійсні протягом всього "
 "наступного року."
 
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr "Увімкнено самопідписку?"
 
 msgid "Display the link to download the empty adhesion form"
@@ -6093,7 +6093,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr "Увімкнено самопідписку?"
 
 msgid "Lift"
@@ -7088,7 +7088,8 @@ msgstr "Меню"
 msgid "Public pages menu"
 msgstr "Загальнодоступні сторінки"
 
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr "Підписатися"
 
 msgid "Go to Galette's dashboard"

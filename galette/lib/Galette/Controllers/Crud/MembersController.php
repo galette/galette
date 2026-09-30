@@ -147,7 +147,7 @@ class MembersController extends CrudController
             $response,
             'pages/member_form.html.twig',
             [
-                'page_title'           => _T("Subscription"),
+                'page_title'           => _T("Registration"),
                 'parent_tpl'           => 'public_page.html.twig',
                 'member'               => $member,
                 'self_adh'             => true,
@@ -227,7 +227,7 @@ class MembersController extends CrudController
                 'error_detected',
                 _T("Too many requests. Please try again later.")
             );
-            $this->history->add(_T("Self subscription throttled"));
+            $this->history->add(_T("Self registration throttled"));
             Analog::log(
                 'Self subscription throttled, ' . $delay . ' seconds left.',
                 Analog::INFO

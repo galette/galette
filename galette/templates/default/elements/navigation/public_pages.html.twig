@@ -20,7 +20,7 @@
     <div class="{% if sign_in_side is defined and sign_in_side is not empty %}right {% endif %}item">
     {% if preferences.pref_bool_selfsubscribe == true and not is_current_url("subscribe") and ext_auth is not defined %}
         {% set public_items = public_items|merge([{
-            'label': _T("Subscribe"),
+            'label': _Tx("self registration", "Register"),
             'route': {'name': 'subscribe'},
             'icon': 'add user',
             'class': 'ui basic button'

@@ -864,7 +864,7 @@ class MembersController extends GaletteRoutingTestCase
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
-        $this->assertStringContainsString('<title>Subscription', $body);
+        $this->assertStringContainsString('<title>Registration', $body);
         $this->assertStringContainsString('name="gaptcha"', $body);
     }
 

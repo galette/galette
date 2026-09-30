@@ -174,7 +174,7 @@ hr {
         'model_header'  => null,
         'model_footer'  => null,
         'model_body'    => '<hr/>
-<div class="infos">_T("Complete the following form and send it with your funds, in order to complete your subscription.")</div>
+<div class="infos">_T("Complete the following form and send it with your funds, in order to complete your membership.")</div>
 <table>
     <tr>
         <td width="50%"></td>

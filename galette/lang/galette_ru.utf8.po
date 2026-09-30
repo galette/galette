@@ -1303,7 +1303,7 @@ msgstr "Пол %1$s не существует!"
 msgid "A member cannot be its own parent!"
 msgstr "Участник не может быть своим собственным родителем!"
 
-msgid "Self_subscription as a member: "
+msgid "Self registration as a member: "
 msgstr "Самостоятельная регистрация в качестве участника: "
 
 msgid "Member card added"
@@ -2356,12 +2356,12 @@ msgstr "Тип платежа '%1$s' был успешно изменен."
 msgid "Remove payment type %1$s"
 msgstr "Удалить тип платежа %1$s"
 
-msgid "Subscription"
+msgid "Registration"
 msgstr "Подписка"
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscription throttled"
+msgid "Self registration throttled"
 msgstr "Самостоятельная подписка включена?"
 
 msgid "Profile"
@@ -3042,9 +3042,9 @@ msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] Ваши идентификаторы"
 
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3522,7 +3522,7 @@ msgstr "Требуемое членство:"
 
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "Заполните следующую форму и отправьте её вместе с вашими средствами, чтобы "
 "завершить подписку."
@@ -4834,7 +4834,7 @@ msgid "Parent of:"
 msgstr "Родитель для:"
 
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
 "Если вы предпочитаете не оформлять подписку онлайн, вы можете скачать пустую "
 "форму вступления"
@@ -5274,7 +5274,7 @@ msgstr ""
 "даты, но начиная с октября они будут действительны в течение всего "
 "следующего года."
 
-msgid "Self subscription enabled?"
+msgid "Self registration enabled?"
 msgstr "Самостоятельная подписка включена?"
 
 msgid "Display the link to download the empty adhesion form"
@@ -6066,7 +6066,7 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Self subscription enabled?"
-msgid "Self subscriptions from one address"
+msgid "Self registrations from one address"
 msgstr "Самостоятельная подписка включена?"
 
 msgid "Lift"
@@ -7058,7 +7058,8 @@ msgstr "Меню"
 msgid "Public pages menu"
 msgstr "Публичные страницы"
 
-msgid "Subscribe"
+msgctxt "self registration"
+msgid "Register"
 msgstr "Подписаться"
 
 msgid "Go to Galette's dashboard"

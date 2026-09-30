@@ -2004,8 +2004,8 @@ msgid "A member cannot be its own parent!"
 msgstr "A member cannot be its own parent!"
 
 #: ../lib/Galette/Entity/Adherent.php:1639
-msgid "Self_subscription as a member: "
-msgstr "Self_subscription as a member: "
+msgid "Self registration as a member: "
+msgstr "Self registration as a member: "
 
 #: ../lib/Galette/Entity/Adherent.php:1645
 msgid "Member card added"
@@ -3423,12 +3423,12 @@ msgid "Remove payment type %1$s"
 msgstr "Remove payment type %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:150
-msgid "Subscription"
-msgstr "Subscription"
+msgid "Registration"
+msgstr "Registration"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:230
-msgid "Self subscription throttled"
-msgstr "Self subscription throttled"
+msgid "Self registration throttled"
+msgstr "Self registration throttled"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:312
 msgid "Profile"
@@ -4381,17 +4381,17 @@ msgstr "[{ASSO_NAME}] Your identifiers"
 
 #: ../includes/fields_defs/texts_fields.php:17
 msgid ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
-"of your subscription and to update your preferences from the web interface."
+"of your membership and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
 "{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -5014,10 +5014,10 @@ msgstr "Required membership:"
 #: ../includes/i18n.inc.php:83
 msgid ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 msgstr ""
 "Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"complete your membership."
 
 #: ../includes/i18n.inc.php:84
 msgid "on"
@@ -7237,9 +7237,9 @@ msgstr "Parent of:"
 
 #: ../templates/default/pages/member_form.html.twig:114
 msgid ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 msgstr ""
-"If you'd rather not subscribe online, you can download an empty adhesion form"
+"If you'd rather not register online, you can download an empty adhesion form"
 
 #: ../templates/default/pages/member_form.html.twig:137
 #: ../templates/default/pages/preferences.html.twig:305
@@ -7850,8 +7850,8 @@ msgstr ""
 "as of October, they will be valid for the entire next year."
 
 #: ../templates/default/pages/preferences.html.twig:389
-msgid "Self subscription enabled?"
-msgstr "Self subscription enabled?"
+msgid "Self registration enabled?"
+msgstr "Self registration enabled?"
 
 #: ../templates/default/pages/preferences.html.twig:397
 msgid "Display the link to download the empty adhesion form"
@@ -8865,8 +8865,8 @@ msgid "Password recovery requests from one address"
 msgstr "Password recovery requests from one address"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:49
-msgid "Self subscriptions from one address"
-msgstr "Self subscriptions from one address"
+msgid "Self registrations from one address"
+msgstr "Self registrations from one address"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:62
 msgid "Lift"
@@ -10246,8 +10246,9 @@ msgid "Public pages menu"
 msgstr "Public pages menu"
 
 #: ../templates/default/elements/navigation/public_pages.html.twig:22
-msgid "Subscribe"
-msgstr "Subscribe"
+msgctxt "self registration"
+msgid "Register"
+msgstr "Register"
 
 #: ../templates/default/elements/navigation/navigation_items.html.twig:13
 msgid "Go to Galette's dashboard"
