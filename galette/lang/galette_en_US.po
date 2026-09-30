@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-09-30 08:31+0200\n"
-"PO-Revision-Date: 2026-09-30 08:31+0200\n"
+"POT-Creation-Date: 2026-09-30 22:27+0200\n"
+"PO-Revision-Date: 2026-09-30 22:27+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -8805,8 +8805,8 @@ msgstr ""
 "again at once."
 
 #: ../templates/default/pages/authentication_attempts.html.twig:13
-msgid "Thresholds and durations are in the settings."
-msgstr "Thresholds and durations are in the settings."
+msgid "Thresholds and durations are in the advanced configuration."
+msgstr "Thresholds and durations are in the advanced configuration."
 
 #: ../templates/default/pages/authentication_attempts.html.twig:17
 msgid "Nothing is being refused"
