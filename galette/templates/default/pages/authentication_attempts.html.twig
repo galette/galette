@@ -10,7 +10,7 @@
     {% set date_format = _T('Y-m-d H:i:s') %}
     <p>
         {{ _T("Repeated failures get further attempts refused for a while. What is refused right now is listed below; lifting a line lets whoever it stands for try again at once.") }}
-        <a href="{{ url_for('preferences') }}#security">{{ _T("Thresholds and durations are in the settings.") }}</a>
+        <a href="{{ url_for('advancedConfig') }}">{{ _T("Thresholds and durations are in the advanced configuration.") }}</a>
     </p>
     {% if locks|length == 0 %}
     <div class="ui info message">
