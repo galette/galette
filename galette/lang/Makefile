@@ -32,7 +32,7 @@ mo :
 	cd ../../ && bin/console galette:compile-locales
 
 extract : twig ${PHP_SOURCES} Makefile
-	xgettext ${PHP_SOURCES} --keyword=_T --keyword=__ --keyword=_Tn:1,2 --keyword=_Tx:1c,2 --keyword=_Tnx:1c,2,3  -L PHP --from-code=UTF-8 --add-comments=TRANS --force-po -o galette.pot;
+	xgettext ${PHP_SOURCES} --keyword=_T --keyword=__ --keyword=_Tn:1,2 --keyword=_Tx:1c,2 --keyword=_Tnx:1c,2,3  -L PHP --from-code=UTF-8 --add-comments=TRANS --msgid-bugs-address=translations@galette.eu --force-po -o galette.pot;
 	cd ../../ && bin/console galette:twig-pot-references galette/lang/galette.pot;
 	echo "Generating en_US:"
 	@for d in ${DOMAINS}; do \
