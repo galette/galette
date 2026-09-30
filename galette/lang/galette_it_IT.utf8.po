@@ -33,7 +33,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-09-30 08:31+0200\n"
+"POT-Creation-Date: 2026-09-30 22:27+0200\n"
 "PO-Revision-Date: 2026-09-28 04:00+0000\n"
 "Last-Translator: Demis Palma <demis.palma@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -6093,7 +6093,7 @@ msgid ""
 "again at once."
 msgstr ""
 
-msgid "Thresholds and durations are in the settings."
+msgid "Thresholds and durations are in the advanced configuration."
 msgstr ""
 
 msgid "Nothing is being refused"
