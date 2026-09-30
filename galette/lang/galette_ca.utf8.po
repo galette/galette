@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 08:31+0200\n"
-"PO-Revision-Date: 2026-09-02 16:09+0000\n"
+"PO-Revision-Date: 2026-09-30 20:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -4695,7 +4695,6 @@ msgstr "Tradueix '%s'"
 msgid "Delete '%s' field"
 msgstr "Suprimeix el camp '%s'"
 
-#, fuzzy
 msgid "Close"
 msgstr "Tanca"
 
