@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -342,6 +342,13 @@ msgstr ""
 msgid "File not found!"
 msgstr ""
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
 msgid "Checks"
@@ -476,6 +483,7 @@ msgstr ""
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1262,6 +1270,9 @@ msgstr ""
 #. TRANS: first parameter is member name, second his id
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
+msgstr ""
+
+msgid "Document type"
 msgstr ""
 
 msgid "Form is mandatory!"
@@ -5164,9 +5175,6 @@ msgstr ""
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
-
 msgid "Using Sendmail server"
 msgstr ""
 
@@ -5204,16 +5212,16 @@ msgstr ""
 msgid "SMTP password:"
 msgstr ""
 
-msgid "Test connection"
-msgstr ""
-
-msgid "Send a test email"
-msgstr ""
-
 msgid "Emailing is disabled: pick a sending method to run a test."
 msgstr ""
 
 msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
+msgid "Test connection"
+msgstr ""
+
+msgid "Send a test email"
 msgstr ""
 
 msgid "Vertical margins:"
@@ -5978,9 +5986,6 @@ msgid "Table name"
 msgstr ""
 
 msgid "Continue"
-msgstr ""
-
-msgid "Document type"
 msgstr ""
 
 msgid "Choose or enter your own..."

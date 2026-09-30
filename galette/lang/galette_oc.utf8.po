@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -352,6 +352,13 @@ msgstr "Impossible d'activar l'ajuston."
 msgid "File not found!"
 msgstr "Fichier non trobat !"
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 #, fuzzy
 msgctxt "installation step"
@@ -501,6 +508,7 @@ msgstr ""
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1330,6 +1338,9 @@ msgstr " (edat de %1$s ans)"
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicat dau nom %1$s (%2$s)"
+
+msgid "Document type"
+msgstr "Mena de document"
 
 msgid "Form is mandatory!"
 msgstr "Camp obligatòri !"
@@ -5551,9 +5562,6 @@ msgstr ""
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
-
 msgid "Using Sendmail server"
 msgstr ""
 
@@ -5591,6 +5599,12 @@ msgstr ""
 msgid "SMTP password:"
 msgstr ""
 
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5600,12 +5614,6 @@ msgstr "Seleccion de la version"
 #| msgid "Send an email"
 msgid "Send a test email"
 msgstr "Mandar un corriel"
-
-msgid "Emailing is disabled: pick a sending method to run a test."
-msgstr ""
-
-msgid "Tests run on the settings displayed above, even those not saved yet."
-msgstr ""
 
 msgid "Vertical margins:"
 msgstr ""
@@ -6437,9 +6445,6 @@ msgstr ""
 
 msgid "Continue"
 msgstr "Contunhar"
-
-msgid "Document type"
-msgstr "Mena de document"
 
 msgid "Choose or enter your own..."
 msgstr "Chausissètz ò intratz vòstra valor…"

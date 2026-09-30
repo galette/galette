@@ -24,8 +24,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2026-08-22 22:52+0000\n"
 "Last-Translator: Cahit OK <cahitok333@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -369,6 +369,13 @@ msgstr "Eklenti etkinleştirilemedi"
 msgid "File not found!"
 msgstr "Dosya bulunamadı!"
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
 msgid "Checks"
@@ -505,6 +512,7 @@ msgstr ""
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1329,6 +1337,11 @@ msgstr ""
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Default payment type:"
+msgid "Document type"
+msgstr "Varsayılan ödeme türü:"
 
 msgid "Form is mandatory!"
 msgstr ""
@@ -5373,9 +5386,6 @@ msgstr ""
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
-
 msgid "Using Sendmail server"
 msgstr ""
 
@@ -5413,6 +5423,12 @@ msgstr ""
 msgid "SMTP password:"
 msgstr ""
 
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
 msgid "Test connection"
 msgstr ""
 
@@ -5420,12 +5436,6 @@ msgstr ""
 #| msgid "end date filter"
 msgid "Send a test email"
 msgstr "bitiş tarihi filtresi"
-
-msgid "Emailing is disabled: pick a sending method to run a test."
-msgstr ""
-
-msgid "Tests run on the settings displayed above, even those not saved yet."
-msgstr ""
 
 msgid "Vertical margins:"
 msgstr ""
@@ -6222,11 +6232,6 @@ msgstr ""
 
 msgid "Continue"
 msgstr ""
-
-#, fuzzy
-#| msgid "Default payment type:"
-msgid "Document type"
-msgstr "Varsayılan ödeme türü:"
 
 msgid "Choose or enter your own..."
 msgstr ""

@@ -32,8 +32,8 @@
 # Demis Palma <demis.palma@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2026-09-28 04:00+0000\n"
 "Last-Translator: Demis Palma <demis.palma@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -382,6 +382,13 @@ msgstr "Non è possibile attivare il plugin."
 msgid "File not found!"
 msgstr "File non trovato!"
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
 msgid "Checks"
@@ -526,6 +533,7 @@ msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1349,6 +1357,9 @@ msgstr " (%1$s anni)"
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicato da %1$s (%2$s)"
+
+msgid "Document type"
+msgstr "Tipo di documento"
 
 msgid "Form is mandatory!"
 msgstr "Campo obbligatorio!"
@@ -5563,9 +5574,6 @@ msgstr "Funzione PHP mail()"
 msgid "Using a SMTP server (slower)"
 msgstr "Uso di un server SMTP (più lento)"
 
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr "Uso di GMAIL come server SMTP (più lento)"
-
 msgid "Using Sendmail server"
 msgstr "Uso del server Sendmail"
 
@@ -5607,6 +5615,12 @@ msgstr "utente SMTP:"
 msgid "SMTP password:"
 msgstr "password SMTP:"
 
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5616,12 +5630,6 @@ msgstr "Selezione versione"
 #| msgid "Send an email"
 msgid "Send a test email"
 msgstr "Invia un'email"
-
-msgid "Emailing is disabled: pick a sending method to run a test."
-msgstr ""
-
-msgid "Tests run on the settings displayed above, even those not saved yet."
-msgstr ""
 
 msgid "Vertical margins:"
 msgstr "Margini verticali:"
@@ -6467,9 +6475,6 @@ msgstr "Nome tabella"
 
 msgid "Continue"
 msgstr "Continua"
-
-msgid "Document type"
-msgstr "Tipo di documento"
 
 msgid "Choose or enter your own..."
 msgstr "Scegliere o inserire il proprio..."
@@ -7384,6 +7389,9 @@ msgstr "I dati di telemetria hanno più di un anno."
 
 msgid "Do you want to send it again?"
 msgstr "Inviarlo di nuovo?"
+
+#~ msgid "Using GMAIL as SMTP server (slower)"
+#~ msgstr "Uso di GMAIL come server SMTP (più lento)"
 
 #~ msgid ""
 #~ "Please define constant \"GALETTE_URI\" with the path to your instance."
