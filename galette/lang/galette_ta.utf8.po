@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2026-09-03 04:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -352,6 +352,13 @@ msgstr "சொருகி செயல்படுத்த முடியா�
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
 msgid "Checks"
@@ -490,6 +497,7 @@ msgstr "- மாதங்கள் வழங்குவது உறுப்�
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1302,6 +1310,9 @@ msgstr " (%1$s ஆண்டுகள்)"
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "%1$s (%2$s) இலிருந்து நகல் எடுக்கப்பட்டது"
+
+msgid "Document type"
+msgstr "ஆவண வகை"
 
 msgid "Form is mandatory!"
 msgstr "படிவம் கட்டாயமாகும்!"
@@ -5421,9 +5432,6 @@ msgstr "பிஎச்பி அஞ்சல் () செயல்பாடு"
 msgid "Using a SMTP server (slower)"
 msgstr "SMTP சேவையகத்தைப் பயன்படுத்துதல் (மெதுவாக)"
 
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr "Gmail ஐ SMTP சேவையகமாகப் பயன்படுத்துதல் (மெதுவாக)"
-
 msgid "Using Sendmail server"
 msgstr "SendMail சேவையகத்தைப் பயன்படுத்துதல்"
 
@@ -5466,6 +5474,12 @@ msgstr "SMTP பயனர்:"
 msgid "SMTP password:"
 msgstr "SMTP கடவுச்சொல்:"
 
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
 #, fuzzy
 #| msgid "Version selection"
 msgid "Test connection"
@@ -5475,12 +5489,6 @@ msgstr "பதிப்பு தேர்வு"
 #| msgid "Send an email"
 msgid "Send a test email"
 msgstr "மின்னஞ்சல் அனுப்புங்கள்"
-
-msgid "Emailing is disabled: pick a sending method to run a test."
-msgstr ""
-
-msgid "Tests run on the settings displayed above, even those not saved yet."
-msgstr ""
 
 msgid "Vertical margins:"
 msgstr "செங்குத்து விளிம்புகள்:"
@@ -6317,9 +6325,6 @@ msgstr "அட்டவணை பெயர்"
 
 msgid "Continue"
 msgstr "தொடரவும்"
-
-msgid "Document type"
-msgstr "ஆவண வகை"
 
 msgid "Choose or enter your own..."
 msgstr "உங்கள் சொந்த தேர்வு அல்லது உள்ளிடவும் ..."
@@ -7209,6 +7214,9 @@ msgstr "உங்கள் டெலிமெட்ரி தரவு ஒரு
 
 msgid "Do you want to send it again?"
 msgstr "அதை மீண்டும் அனுப்ப விரும்புகிறீர்களா?"
+
+#~ msgid "Using GMAIL as SMTP server (slower)"
+#~ msgstr "Gmail ஐ SMTP சேவையகமாகப் பயன்படுத்துதல் (மெதுவாக)"
 
 #~ msgid ""
 #~ "Please define constant \"GALETTE_URI\" with the path to your instance."

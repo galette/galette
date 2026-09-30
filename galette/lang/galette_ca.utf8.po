@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 17:52+0200\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-09-30 08:31+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -417,6 +417,13 @@ msgstr "No es pot activar el connector."
 msgid "File not found!"
 msgstr "No s'ha trobat el fitxer!"
 
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
 msgid "Checks"
@@ -582,6 +589,7 @@ msgstr ""
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1528,6 +1536,10 @@ msgstr " (edat de %1$s anys)"
 #, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicat des del nom %1$s (%2$s)"
+
+#, fuzzy
+msgid "Document type"
+msgstr "Tipus de pagament"
 
 #, fuzzy
 msgid "Form is mandatory!"
@@ -6410,10 +6422,6 @@ msgid "Using a SMTP server (slower)"
 msgstr "Ús d'un servidor SMTP (més lent)"
 
 #, fuzzy
-msgid "Using GMAIL as SMTP server (slower)"
-msgstr "Ús del GMAIL com a servidor SMTP (més lent)"
-
-#, fuzzy
 msgid "Using Sendmail server"
 msgstr "Ús del servidor Sendmail"
 
@@ -6464,6 +6472,12 @@ msgstr "Usuari SMTP"
 msgid "SMTP password:"
 msgstr "Contrasenya SMTP"
 
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+
 #, fuzzy
 msgid "Test connection"
 msgstr "Selecció de versió"
@@ -6471,12 +6485,6 @@ msgstr "Selecció de versió"
 #, fuzzy
 msgid "Send a test email"
 msgstr "Envia un correu electrònic"
-
-msgid "Emailing is disabled: pick a sending method to run a test."
-msgstr ""
-
-msgid "Tests run on the settings displayed above, even those not saved yet."
-msgstr ""
 
 #, fuzzy
 msgid "Vertical margins:"
@@ -7423,10 +7431,6 @@ msgstr "Nom de la taula"
 #, fuzzy
 msgid "Continue"
 msgstr "Continua"
-
-#, fuzzy
-msgid "Document type"
-msgstr "Tipus de pagament"
 
 msgid "Choose or enter your own..."
 msgstr "Trieu una entrada..."
@@ -8486,6 +8490,10 @@ msgstr "Les dades de telemetria tenen més d'un any."
 #, fuzzy
 msgid "Do you want to send it again?"
 msgstr "Vols tornar-ho a enviar?"
+
+#, fuzzy
+#~ msgid "Using GMAIL as SMTP server (slower)"
+#~ msgstr "Ús del GMAIL com a servidor SMTP (més lent)"
 
 #, fuzzy
 #~ msgid "you're installing Galette for the first time"
