@@ -536,6 +536,50 @@ class CsvController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test group managers cannot export members they do not manage
+     */
+    public function testMembersExportGroupManagerScope(): void
+    {
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $fc->installInit();
+        $controller = $this->container->get(\Galette\Controllers\CsvController::class);
+        $filter_name = $controller->getFilterName(\Galette\Controllers\Crud\MembersController::getDefaultFilterName());
+
+        $this->logGroupManager();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_one->id, $member_two->id];
+        $this->session->$filter_name = $filters;
+
+        $request = $this->createRequest('csv-memberslist', [], 'POST');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('"' . $member_one->id . '";', $body);
+        $this->assertStringNotContainsString('"' . $member_two->id . '";', $body);
+        $this->assertStringNotContainsString($member_two->email, $body);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
+
+        //exports disabled for group managers
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $test_response = $this->app->handle($request);
+        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->expectFlashData(
+            [
+                'error_detected' => [
+                    'You do not have permission for requested URL.'
+                ]
+            ]
+        );
+
+        unset($this->session->$filter_name);
+        $this->login->logOut();
+    }
+
+    /**
      * Test contributions CSV export
      */
     public function testContributionExport(): void

@@ -779,7 +779,8 @@ class Picture
             orderby: null,
             with_photos: false,
             as_members: false,
-            fields: [self::PK]
+            fields: [self::PK],
+            unscoped: true
         );
 
         foreach ($valids as $valid) {

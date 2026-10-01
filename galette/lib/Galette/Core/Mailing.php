@@ -16,6 +16,7 @@ use Galette\Entity\Adherent;
 use Galette\IO\File;
 use Galette\IO\FileTrait;
 use Galette\IO\UploadSize;
+use Galette\Repository\Members;
 use Galette\Util\Html;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -181,12 +182,14 @@ class Mailing extends GaletteMail
         }
 
         $_recipients = [];
-        $mdeps = ['parent' => true];
-        foreach (array_keys($orig_recipients) as $k) {
-            $m = new Adherent($zdb, $k, $mdeps);
-            $_recipients[] = $m;
+        if (count($orig_recipients) > 0) {
+            $members = new Members();
+            $_recipients = $members->getArrayList(
+                ids: array_keys($orig_recipients),
+                parent: true
+            );
         }
-        $this->setRecipients($_recipients);
+        $this->setRecipients($_recipients !== false ? $_recipients : []);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
         $this->html = $this->message != strip_tags($this->message);

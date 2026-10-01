@@ -304,6 +304,97 @@ class PdfController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test group managers cannot get PDF of members they do not manage
+     */
+    public function testMembersPdfGroupManagerScope(): void
+    {
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->logGroupManager();
+        $member_two = $this->getMemberTwo();
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_two->id];
+        $this->session->{$controller->getFilterName('members')} = $filters;
+
+        foreach (['pdf-members-cards', 'pdf-members-labels'] as $route_name) {
+            $request = $this->createRequest($route_name, []);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => ['/members']], $test_response->getHeaders(), $route_name);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(
+                [
+                    'error_detected' => [
+                        'Unable to get members list.'
+                    ]
+                ]
+            );
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get members list.');
+        }
+
+        //an arbitrary session entry is not used
+        $this->session->not_a_filter = 'whatever';
+        $request = $this->createRequest('pdf-members-labels', []);
+        $request = $request->withQueryParams(['session_var' => 'not_a_filter']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->expectFlashData(
+            [
+                'error_detected' => [
+                    'Unable to get members list.'
+                ]
+            ]
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Session entry "not_a_filter" is not a Galette\Filters\MembersList, ignored.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get members list.');
+        unset($this->session->not_a_filter);
+
+        //attendance sheet
+        $request = $this->createRequest(
+            route_name: 'attendance_sheet',
+            route_args: [],
+            method: 'POST',
+            content_type: 'application/json'
+        );
+        $request = $request->withParsedBody(['selection' => [$member_two->id]]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->expectFlashData(
+            [
+                'error_detected' => [
+                    'No member selected to generate attendance sheet'
+                ]
+            ]
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+
+        //exports disabled for group managers
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $requests = [
+            $this->createRequest('pdf-members-cards', []),
+            $this->createRequest('pdf-members-labels', []),
+            $this->createRequest(route_name: 'attendance_sheet', route_args: [], method: 'POST'),
+            $this->createRequest(route_name: 'attendance_sheet_details', route_args: [], method: 'POST'),
+        ];
+        foreach ($requests as $request) {
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+            $this->expectFlashData(
+                [
+                    'error_detected' => [
+                        'You do not have permission for requested URL.'
+                    ]
+                ]
+            );
+        }
+        $this->preferences->pref_bool_groupsmanagers_exports = true;
+
+        unset($this->session->{$controller->getFilterName('members')});
+        $this->login->logOut();
+    }
+
+    /**
      * Test adhesionForm
      */
     public function testadhesionForm(): void
