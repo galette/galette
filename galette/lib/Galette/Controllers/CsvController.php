@@ -648,11 +648,19 @@ class CsvController extends AbstractController
     )]
     public function membersExport(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
-        $filters = $this->session->$session_var ?? new MembersList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName(Crud\MembersController::getDefaultFilterName()),
+            MembersList::class
+        );
 
         $this->members_csv->exportMembers($filters);
         $filepath = $this->members_csv->getPath();
@@ -678,12 +686,11 @@ class CsvController extends AbstractController
     )]
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
-
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type, ['suffix' => 'csvexport']);
-
-        $filters = $this->session->$session_var ?? new ContributionsList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName($type, ['suffix' => 'csvexport']),
+            ContributionsList::class
+        );
 
         $csv = new ContributionsCsv(
             $this->zdb,
@@ -713,12 +720,11 @@ class CsvController extends AbstractController
     )]
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
-
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']);
-
-        $filters = $this->session->$session_var ?? new ScheduledPaymentsList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']),
+            ScheduledPaymentsList::class
+        );
 
         $this->scheduled_payments_csv->exportScheduledPayments($filters);
         $filepath = $this->scheduled_payments_csv->getPath();

@@ -422,6 +422,31 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     }
 
     /**
+     * Log in member one as manager of a group member two does not belong to
+     *
+     * @return \Galette\Entity\Group Managed group
+     */
+    protected function logGroupManager(): \Galette\Entity\Group
+    {
+        $member_one = $this->getMemberOne();
+        $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Managed by member one');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setManagers([$member_one]));
+        $this->login->logOut();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager());
+        $this->assertFalse($this->login->isStaff());
+
+        return $group;
+    }
+
+    /**
      * Get member one
      */
     protected function getMemberOne(): \Galette\Entity\Adherent

@@ -48,6 +48,14 @@ class MailingsController extends CrudController
     )]
     public function add(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $get = $request->getQueryParams();
 
         //We're done :-)
@@ -92,6 +100,13 @@ class MailingsController extends CrudController
             ) {
                 $mailing = $this->session->mailing;
             } elseif (isset($get['from']) && is_numeric($get['from'])) {
+                if (!MailingHistory::canAccess($this->zdb, (int)$get['from'], $this->login)) {
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        errors: [_T("You do not have permission for requested URL.")],
+                        redirect_url: $this->routeparser->urlFor('slash')
+                    );
+                }
                 $mailing = new Mailing($this->preferences, [], (int)$get['from']);
                 MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
             } elseif (isset($get['reminder'])) {
@@ -180,6 +195,14 @@ class MailingsController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
         $error_detected = [];
         $success_detected = [];
@@ -695,6 +718,14 @@ class MailingsController extends CrudController
     )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
         // check for ajax mode
         $ajax = false;
@@ -707,6 +738,13 @@ class MailingsController extends CrudController
         }
 
         if ($id !== null) {
+            if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T("You do not have permission for requested URL.")],
+                    redirect_url: $this->routeparser->urlFor('slash')
+                );
+            }
             $mailing = new Mailing($this->preferences);
             MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         } else {
@@ -770,6 +808,21 @@ class MailingsController extends CrudController
     )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
+        if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
         $mailing = new Mailing($this->preferences);
         MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         $attachments = $mailing->attachments;
@@ -793,6 +846,14 @@ class MailingsController extends CrudController
     )]
     public function setRecipients(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
+
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;
 
@@ -839,6 +900,22 @@ class MailingsController extends CrudController
     )]
     public function queue(Request $request, Response $response, int $id): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
+        if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $queue = new MailingQueue($this->zdb, $this->preferences);
 
         // display page
@@ -878,10 +955,30 @@ class MailingsController extends CrudController
     )]
     public function processQueue(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
+
         $post = $request->getParsedBody();
         $mailing_id = isset($post['id']) && is_numeric($post['id'])
             ? (int)$post['id']
             : null;
+
+        if (
+            !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && ($mailing_id === null || !MailingHistory::canAccess($this->zdb, $mailing_id, $this->login))
+        ) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
 
         $queue = new MailingQueue($this->zdb, $this->preferences);
         $progress = $queue->processBatch($mailing_id, MailingQueue::KIND_MAILING);
