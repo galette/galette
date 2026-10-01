@@ -572,18 +572,20 @@ class GroupsController extends CrudController
             return $m->getArrayList($ids);
         }
 
-        $current = array_map(
-            fn(Adherent $person): int => (int)$person->id,
-            $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers()
-        );
         $ids = array_map(intval(...), $ids);
-        $known = array_values(array_intersect($ids, $current));
-        $added = array_values(array_diff($ids, $current));
 
         $persons = [];
-        if (count($known) > 0) {
-            $persons = $m->getArrayList($known, unscoped: true) ?: [];
+        $current = $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers();
+        foreach ($current as $person) {
+            if (in_array((int)$person->id, $ids, strict: true)) {
+                $persons[] = $person;
+            }
         }
+
+        $added = array_values(array_diff($ids, array_map(
+            fn(Adherent $person): int => (int)$person->id,
+            $current
+        )));
         if (count($added) > 0) {
             $persons = array_merge($persons, $m->getArrayList($added) ?: []);
         }
