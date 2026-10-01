@@ -46,8 +46,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-06-03 08:01+0000\n"
-"Last-Translator: Libre <6n0n1m0s@proton.me>\n"
+"PO-Revision-Date: 2026-10-01 12:36+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -55,7 +55,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -2036,10 +2036,10 @@ msgid "Membership fee"
 msgstr "Cuota de afiliación"
 
 msgid "New membership fee"
-msgstr "Cuota nueva de afiliación"
+msgstr "Nueva tarifa de membresía"
 
 msgid "New donation"
-msgstr "Donación nueva"
+msgstr "Nueva donación"
 
 msgid "No related contribution type available, please create a new one."
 msgstr ""
@@ -2166,7 +2166,7 @@ msgid "Group name is missing!"
 msgstr "¡Falta el nombre del grupo!"
 
 msgid "Group name already exists!"
-msgstr "¡Ya existe un nombre de grupo!"
+msgstr "¡Ya existe un grupo con ese numbre!"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -2256,7 +2256,7 @@ msgid "Remove status '%1$s'"
 msgstr "Eliminar estado '%1$s'"
 
 msgid "New document"
-msgstr "Documento nuevo"
+msgstr "Nuevo documento"
 
 msgid "Edit document"
 msgstr "Editar documento"
@@ -2340,7 +2340,7 @@ msgid "Transaction"
 msgstr "Transacción"
 
 msgid "New transaction"
-msgstr "Transacción nueva"
+msgstr "Nueva transacción"
 
 msgid "An error occurred while saving the transaction."
 msgstr "Se ha producido un error al almacenar la transacción."
@@ -2428,7 +2428,7 @@ msgid "Edit profile"
 msgstr "Editar perfil"
 
 msgid "New member"
-msgstr "Miembro nuevo"
+msgstr "Nuevo miembro"
 
 #, php-format
 msgid "Mass change %1$s members"
