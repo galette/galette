@@ -215,6 +215,68 @@ abstract class AbstractController
     }
 
     /**
+     * Is a feature restricted by a group managers preference available to current user?
+     * Admin and staff always have access, group managers only when the preference is on.
+     *
+     * @param string $pref Preference name (one of pref_bool_groupsmanagers_*)
+     */
+    protected function isAllowedForGroupManagers(string $pref): bool
+    {
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            return true;
+        }
+
+        return $this->login->isGroupManager() && (bool)$this->preferences->$pref;
+    }
+
+    /**
+     * Get a filter from session, from its name sent in request (session_var)
+     *
+     * Requested session entry is used only when it holds an instance of expected class,
+     * default one is used otherwise.
+     *
+     * @template T of object
+     *
+     * @param Request         $request      PSR Request
+     * @param string          $default_name Default session entry name
+     * @param class-string<T> $class        Expected class
+     *
+     * @return T
+     */
+    protected function getRequestedSessionFilter(Request $request, string $default_name, string $class): object
+    {
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? $default_name;
+        if (!is_string($session_var) || $session_var === '') {
+            $session_var = $default_name;
+        }
+
+        $filters = $this->session->$session_var ?? null;
+        if ($filters instanceof $class) {
+            return $filters;
+        }
+
+        if ($session_var !== $default_name) {
+            Analog::log(
+                sprintf(
+                    'Session entry "%1$s" is not a %2$s, ignored.',
+                    $session_var,
+                    $class
+                ),
+                Analog::WARNING
+            );
+            $filters = $this->session->$default_name ?? null;
+            if ($filters instanceof $class) {
+                return $filters;
+            }
+        }
+
+        return new $class();
+    }
+
+    /**
      * Redirect with errors
      *
      * @param Response $response     PSR Response

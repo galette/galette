@@ -70,4 +70,49 @@ class GroupsController extends GaletteRoutingTestCase
         $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
         $this->assertFalse($group->load($group_id));
     }
+
+    /**
+     * Test group managers cannot add members out of their scope
+     */
+    public function testGroupManagerEditScope(): void
+    {
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        //member two is a co-manager, out of member one scope
+        $this->logSuperAdmin();
+        $this->assertTrue($group->setManagers([$member_one, $member_two]));
+        $this->login->logOut();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        $request = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST');
+        $request = $request->withParsedBody([
+            'group_name' => $group->getName(),
+            'parent_group' => '',
+            'managers' => [$member_one->id, $member_two->id],
+            'members' => [$member_two->id]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+        $this->login->logOut();
+
+        $group = new \Galette\Entity\Group($group->getId());
+        $managers = array_map(fn($m) => (int)$m->id, $group->getManagers());
+        sort($managers);
+        $expected = [(int)$member_one->id, (int)$member_two->id];
+        sort($expected);
+        //existing co-manager is kept...
+        $this->assertSame($expected, $managers);
+        //...but out of scope member has not been added
+        $this->assertCount(0, $group->getMembers());
+
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+    }
 }

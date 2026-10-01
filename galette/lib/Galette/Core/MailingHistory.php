@@ -307,6 +307,34 @@ class MailingHistory extends History
     }
 
     /**
+     * Can current user access a mailing from history?
+     * Admin and staff can access all mailings, others only the ones they sent.
+     *
+     * @param Db    $zdb   Database instance
+     * @param int   $id    Mailing identifier
+     * @param Login $login Login instance
+     */
+    public static function canAccess(Db $zdb, int $id, Login $login): bool
+    {
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        $select = $zdb->select(self::TABLE);
+        $select->columns([self::PK]);
+        $select->where([
+            self::PK => $id,
+            'mailing_sender' => $login->id
+        ]);
+
+        return $zdb->execute($select)->count() > 0;
+    }
+
+    /**
      * Load mailing from an existing one
      *
      * @param Db      $zdb     Database instance

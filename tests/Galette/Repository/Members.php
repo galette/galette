@@ -1265,6 +1265,7 @@ class Members extends GaletteTestCase
     public function testGetArrayList(): void
     {
         $members = new \Galette\Repository\Members();
+        $this->logSuperAdmin();
 
         $this->assertFalse($members->getArrayList($this->mids[0]));
 
@@ -1276,6 +1277,108 @@ class Members extends GaletteTestCase
         ];
         $list = $members->getArrayList($selected, ['nom_adh', 'prenom_adh']);
         $this->assertCount(4, $list);
+
+        //invalid and duplicated ids are dropped
+        $list = $members->getArrayList(['abc', -1, 0, $this->mids[0], (string)$this->mids[0]]);
+        $this->assertCount(1, $list);
+        $this->assertFalse($members->getArrayList(['abc', -1, 0]));
+
+        //anonymous users cannot get anything...
+        $this->login->logOut();
+        $this->assertFalse($members->getArrayList($selected));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to list members without being logged in.');
+
+        //...unless explicitly unscoped (internal use)
+        $list = $members->getArrayList($selected, unscoped: true);
+        $this->assertCount(4, $list);
+    }
+
+    /**
+     * Test getArrayList is restricted to members current user can see
+     */
+    public function testGetArrayListScope(): void
+    {
+        global $login;
+
+        $members = new \Galette\Repository\Members();
+        $this->logSuperAdmin();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Scoped');
+        $this->assertTrue($group->store());
+        $gid = $group->getId();
+        $this->assertTrue($group->setMembers([
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[0]),
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[1])
+        ]));
+        $this->assertTrue($group->setManagers([
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[2])
+        ]));
+
+        //mids[5] is a child of mids[4]
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['parent_id' => $this->mids[4]]);
+        $update->where([\Galette\Entity\Adherent::PK => $this->mids[5]]);
+        $this->zdb->execute($update);
+        $this->login->logOut();
+
+        $all = $this->mids;
+
+        //group manager: members of managed groups, and themselves
+        $login = $this->getFakeLogin($this->mids[2], [$gid]);
+        $ids = array_map(
+            fn($member) => (int)$member->id,
+            $members->getArrayList($all)
+        );
+        sort($ids);
+        $this->assertSame([$this->mids[0], $this->mids[1], $this->mids[2]], $ids);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 10 member(s), only 3 are accessible or exist.');
+
+        $this->assertCount(0, $members->getArrayList([$this->mids[3], $this->mids[9]]));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 0 are accessible or exist.');
+
+        //simple member: themselves and their children
+        $login = $this->getFakeLogin($this->mids[4]);
+        $ids = array_map(
+            fn($member) => (int)$member->id,
+            $members->getArrayList($all)
+        );
+        sort($ids);
+        $this->assertSame([$this->mids[4], $this->mids[5]], $ids);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 10 member(s), only 2 are accessible or exist.');
+
+        //unscoped
+        $this->assertCount(10, $members->getArrayList($all, unscoped: true));
+
+        $login = $this->login;
+    }
+
+    /**
+     * Get a logged in login instance, without going through authentication
+     *
+     * @param int        $id             Member id
+     * @param array<int> $managed_groups Managed groups ids
+     */
+    private function getFakeLogin(int $id, array $managed_groups = []): \Galette\Core\Login
+    {
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Log in as a regular member
+             *
+             * @param array<int> $managed_groups Managed groups ids
+             */
+            public function fakeLogin(array $managed_groups): void
+            {
+                $this->logged = true;
+                $this->managed_groups = $managed_groups;
+            }
+        };
+        $login->setId($id);
+        $login->fakeLogin($managed_groups);
+        $this->assertTrue($login->isLogged());
+        $this->assertFalse($login->isStaff());
+        $this->assertSame(count($managed_groups) > 0, $login->isGroupManager());
+        return $login;
     }
 
     /**

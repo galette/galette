@@ -15,6 +15,7 @@ use Galette\Core\Preferences;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
 use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Db\Sql\Predicate\In;
 use Laminas\Db\Sql\Predicate\IsNull;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
@@ -549,14 +550,16 @@ class Members
     /**
      * Get list of members that has been selected
      *
-     * @param int|array<int> $ids         an array of members id that has been selected
-     * @param ?array<string> $orderby     SQL order clause (optional)
-     * @param bool           $with_photos Should photos be loaded?
-     * @param bool           $as_members  Return Adherent[] or simple ResultSet
-     * @param ?array<string> $fields      Fields to use
-     * @param bool           $export      True if we are exporting
-     * @param bool           $dues        True if load dues as Adherent dependency
-     * @param bool           $parent      True if load parent as Adherent dependency
+     * @param int|array<int|string> $ids         an array of members id that has been selected
+     * @param ?array<string>        $orderby     SQL order clause (optional)
+     * @param bool                  $with_photos Should photos be loaded?
+     * @param bool                  $as_members  Return Adherent[] or simple ResultSet
+     * @param ?array<string>        $fields      Fields to use
+     * @param bool                  $export      True if we are exporting
+     * @param bool                  $dues        True if load dues as Adherent dependency
+     * @param bool                  $parent      True if load parent as Adherent dependency
+     * @param bool                  $unscoped    Do not restrict to members current user is allowed to see.
+     *                                           For internal use only, never with ids coming from a request.
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -568,12 +571,36 @@ class Members
         ?array $fields = null,
         bool $export = false,
         bool $dues = false,
-        bool $parent = false
+        bool $parent = false,
+        bool $unscoped = false
     ): array|false {
-        global $zdb;
+        /**
+         * @var Db $zdb
+         * @var ?Login $login
+         */
+        global $zdb, $login;
 
         if (!is_array($ids) || count($ids) < 1) {
             Analog::log('No member selected for labels.', Analog::INFO);
+            return false;
+        }
+
+        $ids = array_values(array_unique(array_filter(
+            array_map(intval(...), $ids),
+            fn(int $id): bool => $id > 0
+        )));
+        if (count($ids) < 1) {
+            Analog::log('No valid member selected.', Analog::INFO);
+            return false;
+        }
+
+        $scoped = $unscoped === false
+            && !(
+                $login instanceof Login
+                && ($login->isAdmin() || $login->isStaff() || $login->isCron())
+            );
+        if ($scoped && (!$login instanceof Login || !$login->isLogged())) {
+            Analog::log('Trying to list members without being logged in.', Analog::WARNING);
             return false;
         }
 
@@ -589,6 +616,9 @@ class Members
                 count: false
             );
             $select->where->in('a.' . self::PK, $ids);
+            if ($scoped) {
+                $select->where($this->getAccessibleMembersPredicate($login));
+            }
             if (is_array($orderby) && count($orderby) > 0) {
                 foreach ($orderby as $o) {
                     $select->order($o);
@@ -607,6 +637,19 @@ class Members
             foreach ($results as $o) {
                 $members[] = $as_members === true ? new Adherent($zdb, $o, $deps) : $o;
             }
+
+            if ($scoped && count($members) < count($ids)) {
+                Analog::log(
+                    sprintf(
+                        'User #%1$d (%2$s) requested %3$d member(s), only %4$d are accessible or exist.',
+                        $login->id,
+                        $login->login,
+                        count($ids),
+                        count($members)
+                    ),
+                    Analog::WARNING
+                );
+            }
             return $members;
         } catch (Throwable $e) {
             Analog::log(
@@ -615,6 +658,38 @@ class Members
             );
             throw $e;
         }
+    }
+
+    /**
+     * Restrict members to the ones current user is allowed to see:
+     * themselves, their children, and members of the groups they manage.
+     * This is the list equivalent of Adherent::canShow().
+     *
+     * @param Login $login Login instance
+     */
+    private function getAccessibleMembersPredicate(Login $login): PredicateSet
+    {
+        /** @var Db $zdb */
+        global $zdb;
+
+        $predicates = [
+            new Operator('a.' . self::PK, '=', $login->id),
+            new Operator('a.parent_id', '=', $login->id)
+        ];
+
+        if ($login->isGroupManager()) {
+            $managed = $zdb->select(Group::GROUPSUSERS_TABLE, 'gr');
+            $managed->columns([Adherent::PK]);
+            $managed->join(
+                ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
+                'gr.' . Group::PK . '=m.' . Group::PK,
+                []
+            );
+            $managed->where(['m.' . Adherent::PK => $login->id]);
+            $predicates[] = new In('a.' . self::PK, $managed);
+        }
+
+        return new PredicateSet($predicates, PredicateSet::OP_OR);
     }
 
     /**

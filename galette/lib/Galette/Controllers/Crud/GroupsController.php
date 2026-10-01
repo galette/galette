@@ -383,12 +383,9 @@ class GroupsController extends CrudController
                 $group->detach();
             }
 
-            $m = new Members();
-
             //handle group managers
             if (isset($post['managers'])) {
-                $managers_id = $post['managers'];
-                $managers = $m->getArrayList($managers_id);
+                $managers = $this->getPostedPersons($group, $post['managers'], Group::MANAGER_TYPE);
                 if (is_array($managers)) {
                     $group->setManagers($managers);
                 }
@@ -396,8 +393,7 @@ class GroupsController extends CrudController
 
             //handle group members
             if (isset($post['members'])) {
-                $members_id = $post['members'];
-                $members = $m->getArrayList($members_id);
+                $members = $this->getPostedPersons($group, $post['members'], Group::MEMBER_TYPE);
                 if (is_array($members)) {
                     $group->setMembers($members);
                 }
@@ -555,4 +551,43 @@ class GroupsController extends CrudController
     }
 
     // CRUD - Delete
+
+    /**
+     * Get persons posted for a group.
+     *
+     * Persons already attached to the group are kept as is; new ones must be
+     * accessible to current user, so a group manager cannot add members out
+     * of the groups they manage.
+     *
+     * @param Group        $group Group instance, before changes
+     * @param array<mixed> $ids   Posted persons ids
+     * @param int          $type  Either Group::MEMBER_TYPE or Group::MANAGER_TYPE
+     *
+     * @return array<int, Adherent>|false
+     */
+    private function getPostedPersons(Group $group, array $ids, int $type): array|false
+    {
+        $m = new Members();
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            return $m->getArrayList($ids);
+        }
+
+        $current = array_map(
+            fn(Adherent $person): int => (int)$person->id,
+            $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers()
+        );
+        $ids = array_map(intval(...), $ids);
+        $known = array_values(array_intersect($ids, $current));
+        $added = array_values(array_diff($ids, $current));
+
+        $persons = [];
+        if (count($known) > 0) {
+            $persons = $m->getArrayList($known, unscoped: true) ?: [];
+        }
+        if (count($added) > 0) {
+            $persons = array_merge($persons, $m->getArrayList($added) ?: []);
+        }
+
+        return count($persons) > 0 ? $persons : false;
+    }
 }
