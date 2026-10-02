@@ -1283,7 +1283,7 @@ msgstr "பாலினம் %1$s இல்லை!"
 msgid "A member cannot be its own parent!"
 msgstr "ஒரு உறுப்பினர் அதன் சொந்த பெற்றோராக இருக்க முடியாது!"
 
-msgid "Self registration as a member: "
+msgid "Self registration as a member:"
 msgstr "உறுப்பினராக சுய_சப்ச்கிரிப்சன்:"
 
 msgid "Member card added"

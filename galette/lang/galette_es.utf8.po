@@ -1333,8 +1333,8 @@ msgstr "¡El género %1$s no existe!"
 msgid "A member cannot be its own parent!"
 msgstr "¡Un miembro no puede ser su propio padre!"
 
-msgid "Self registration as a member: "
-msgstr "Suscripción como miembro: "
+msgid "Self registration as a member:"
+msgstr "Suscripción como miembro:"
 
 msgid "Member card added"
 msgstr "Tarjeta de miembro agregada"

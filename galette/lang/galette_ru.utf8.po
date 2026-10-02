@@ -1303,8 +1303,8 @@ msgstr "Пол %1$s не существует!"
 msgid "A member cannot be its own parent!"
 msgstr "Участник не может быть своим собственным родителем!"
 
-msgid "Self registration as a member: "
-msgstr "Самостоятельная регистрация в качестве участника: "
+msgid "Self registration as a member:"
+msgstr "Самостоятельная регистрация в качестве участника:"
 
 msgid "Member card added"
 msgstr "Карточка участника добавлена"

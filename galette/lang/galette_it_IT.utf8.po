@@ -1330,8 +1330,8 @@ msgstr "Il genere %1$s non esiste!"
 msgid "A member cannot be its own parent!"
 msgstr "Un socio non può essere il proprio genitore!"
 
-msgid "Self registration as a member: "
-msgstr "Auto_iscrizione come socio:"
+msgid "Self registration as a member:"
+msgstr "Auto iscrizione come membro:"
 
 msgid "Member card added"
 msgstr "Aggiunta tessera socio"

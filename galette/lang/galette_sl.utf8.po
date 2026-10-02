@@ -1278,8 +1278,8 @@ msgstr "Spol %1$s ne obstaja!"
 msgid "A member cannot be its own parent!"
 msgstr "Član ne more biti svoj lastni starš!"
 
-msgid "Self registration as a member: "
-msgstr "Samonaročnina kot član: "
+msgid "Self registration as a member:"
+msgstr "Samonaročnina kot član:"
 
 msgid "Member card added"
 msgstr "Dodana članska izkaznica"

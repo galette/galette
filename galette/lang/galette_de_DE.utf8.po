@@ -1337,8 +1337,8 @@ msgstr "Geschlecht %1$s existiert nicht!"
 msgid "A member cannot be its own parent!"
 msgstr "Ein Mitglied kann nicht sein eigener Elternteil sein!"
 
-msgid "Self registration as a member: "
-msgstr "Eigenabonnement als Mitglied: "
+msgid "Self registration as a member:"
+msgstr "Eigenabonnement als Mitglied:"
 
 msgid "Member card added"
 msgstr "Mitgliedskarte hinzugefügt"

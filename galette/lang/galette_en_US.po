@@ -2004,8 +2004,8 @@ msgid "A member cannot be its own parent!"
 msgstr "A member cannot be its own parent!"
 
 #: ../lib/Galette/Entity/Adherent.php:1639
-msgid "Self registration as a member: "
-msgstr "Self registration as a member: "
+msgid "Self registration as a member:"
+msgstr "Self registration as a member:"
 
 #: ../lib/Galette/Entity/Adherent.php:1645
 msgid "Member card added"

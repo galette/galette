@@ -1311,7 +1311,7 @@ msgstr "Lo genre %1$s existís pas !"
 msgid "A member cannot be its own parent!"
 msgstr "Un membre se pòt pas aparentar eu !"
 
-msgid "Self registration as a member: "
+msgid "Self registration as a member:"
 msgstr "Enregistrament en linha :"
 
 msgid "Member card added"

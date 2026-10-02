@@ -1969,7 +1969,7 @@ msgid "A member cannot be its own parent!"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1639
-msgid "Self registration as a member: "
+msgid "Self registration as a member:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1645

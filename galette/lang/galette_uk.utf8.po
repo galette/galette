@@ -1290,8 +1290,8 @@ msgstr "Статі %1$s не існує!"
 msgid "A member cannot be its own parent!"
 msgstr "Учасник не може бути самостійним батьком!"
 
-msgid "Self registration as a member: "
-msgstr "Self_subscription як член:"
+msgid "Self registration as a member:"
+msgstr "Self subscription як член:"
 
 msgid "Member card added"
 msgstr "Картку члена додано"

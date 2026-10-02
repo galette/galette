@@ -1286,7 +1286,7 @@ msgstr ""
 msgid "A member cannot be its own parent!"
 msgstr ""
 
-msgid "Self registration as a member: "
+msgid "Self registration as a member:"
 msgstr ""
 
 msgid "Member card added"

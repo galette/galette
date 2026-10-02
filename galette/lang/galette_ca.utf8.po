@@ -1505,7 +1505,7 @@ msgid "A member cannot be its own parent!"
 msgstr "El nom del fitxer del 5% no pot ser obert!"
 
 #, fuzzy
-msgid "Self registration as a member: "
+msgid "Self registration as a member:"
 msgstr "Autodestinació com a membre"
 
 #, fuzzy
