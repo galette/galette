@@ -18,7 +18,9 @@ if (!isset($basepath)) {
     } elseif (file_exists('galette/index.php')) {
         $basepath = 'galette/';
     } else {
-        die('Unable to define GALETTE_BASE_PATH :\'(');
+        //called from elsewhere, i.e. from a cron job or a script
+        \chdir(\dirname(__DIR__)); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
+        $basepath = 'galette/';
     }
 }
 
@@ -35,9 +37,13 @@ $logfile = 'galette_cli'; // phpcs:ignore SlevomatCodingStandard.Variables.Unuse
 require_once $basepath . 'vendor/autoload.php';
 require_once $basepath . 'includes/sys_config/versions.inc.php';
 
-$args = $_SERVER['argv'] ?? [];
-// Compiling locales only works on files; boot without database, like the installer
-$installer = is_array($args) && in_array($args[1] ?? null, ['galette:install', 'galette:compile-locales'], strict: true);
+// Compiling locales only works on files; boot without database, like the installer.
+// Options may come before the command name, look for it rather than at argv[1]
+$installer = in_array(
+    (new \Symfony\Component\Console\Input\ArgvInput())->getFirstArgument(),
+    ['galette:install', 'galette:compile-locales'],
+    strict: true
+);
 
 // In test mode, GALETTE_CONFIG_PATH is already set to the test config directory,
 // so skip the production config file check to allow all commands to be registered.
