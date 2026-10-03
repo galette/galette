@@ -37,6 +37,9 @@ class PluginInstallDb extends AbstractPlugins
         global $zdb;
 
         $io = new SymfonyStyle($input, $output);
+        if (!$this->validatePlugins($input, $io)) {
+            return Command::FAILURE;
+        }
         $selected = $input->getArgument('plugins');
         $selected = $selected === [self::ALL] ? $this->getRelevantPlugins($io) : $this->getSelectedModules($io, $selected);
 
