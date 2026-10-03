@@ -426,6 +426,16 @@ class Install extends BaseGaletteTestCase
     }
 
     /**
+     * Test reading existing database password alone
+     */
+    public function testGetExistingDbPass(): void
+    {
+        $errors = [];
+        $this->install->loadExistingConfigForUpdate($errors);
+        $this->assertSame($this->install->getDbPass(), $this->install->getExistingDbPass());
+    }
+
+    /**
      * Test database constants are defined only once (idempotent)
      */
     public function testInitDbConstantsIdempotent(): void
