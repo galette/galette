@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-01 18:51+0000\n"
+"PO-Revision-Date: 2026-10-03 12:35+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -366,6 +366,8 @@ msgid ""
 "Translation file %1$s is missing or outdated; run bin/console "
 "galette:compile-locales."
 msgstr ""
+"Prevajalska datoteka %1$s manjka ali je zastarela; zaženite bin/console "
+"galette:compile-locales."
 
 #. TRANS: installation step title, where the system requirements are verified
 msgctxt "installation step"
@@ -1002,7 +1004,7 @@ msgid "Association news"
 msgstr "Novice združenja"
 
 msgid "None"
-msgstr "Nobena"
+msgstr "Noben"
 
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
@@ -3870,7 +3872,7 @@ msgid "Back to top"
 msgstr "Nazaj na vrh"
 
 msgid "Page content"
-msgstr "Vsebina strani"
+msgstr "Vsebine strani"
 
 msgid "ID"
 msgstr "ID"
@@ -5941,10 +5943,8 @@ msgstr ""
 "je trenutno zavrnjeno, je navedeno spodaj; dvig črte omogoča, da tisti, za "
 "katerim stoji, takoj poskusi znova."
 
-#, fuzzy
-#| msgid "Thresholds and durations are in the settings."
 msgid "Thresholds and durations are in the advanced configuration."
-msgstr "Mejne vrednosti in trajanja so v nastavitvah."
+msgstr "Mejne vrednosti in trajanja so v napredni konfiguraciji."
 
 msgid "Nothing is being refused"
 msgstr "Nič se ne zavrača"
