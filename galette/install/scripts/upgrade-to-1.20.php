@@ -103,7 +103,7 @@ class UpgradeTo120 extends AbstractUpdater
                 PREFIX_DB . \Galette\Entity\Transaction::TABLE
             );
             $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-        } catch (\PDOException $e) {
+        } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive with PHP < 8.4)
             Analog::log(
                 $e->getMessage(),
                 Analog::INFO
@@ -160,7 +160,7 @@ class UpgradeTo120 extends AbstractUpdater
             );
             try {
                 $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-            } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive when ran with PHP 8.2)
+            } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive with PHP < 8.4)
                 if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
                     Analog::log(
                         $e->getMessage(),

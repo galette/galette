@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+use function Safe\file;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\glob;
@@ -65,16 +66,21 @@ class TwigPotReferences extends TestCase
      */
     public function testFixReferences(): void
     {
+        //compiled lines depend on Twig version
+        $id_line = $this->getCompiledLine('pages/saved_searches_list.html.twig', '_T("ID")');
+        $date_line = $this->getCompiledLine('pages/saved_searches_list.html.twig', '_T("Creation date")');
+        $next_date_line = $date_line + 1;
+
         $pot = $this->lang_dir . '/galette.pot';
         file_put_contents(
             $pot,
-            <<<'POT'
-                #: ../lib/Galette/IO/CsvIn.php:164 ../../tempcache/pages/saved_searches_list.html.twig:92
+            <<<POT
+                #: ../lib/Galette/IO/CsvIn.php:164 ../../tempcache/pages/saved_searches_list.html.twig:{$id_line}
                 msgid "ID"
                 msgstr ""
 
-                #: ../../tempcache/pages/saved_searches_list.html.twig:101
-                #: ../../tempcache/pages/saved_searches_list.html.twig:102
+                #: ../../tempcache/pages/saved_searches_list.html.twig:{$date_line}
+                #: ../../tempcache/pages/saved_searches_list.html.twig:{$next_date_line}
                 msgid "Creation date"
                 msgstr ""
 
@@ -98,5 +104,22 @@ class TwigPotReferences extends TestCase
                 POT,
             file_get_contents($pot)
         );
+    }
+
+    /**
+     * Get line of compiled template where a string is output
+     *
+     * @param string $template Template path, relative to the cache directory
+     * @param string $search   String to look for
+     */
+    private function getCompiledLine(string $template, string $search): int
+    {
+        $compiled = file(GALETTE_BASE_PATH . '../tempcache/' . $template);
+        foreach ($compiled as $index => $line) {
+            if (str_contains($line, 'yield') && str_contains($line, $search)) {
+                return $index + 1;
+            }
+        }
+        $this->fail(sprintf('"%s" not found in compiled template "%s"', $search, $template));
     }
 }
