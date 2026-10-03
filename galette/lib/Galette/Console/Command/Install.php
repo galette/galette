@@ -221,13 +221,22 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database user</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_user = USER_DB;
+                $db_user = (string)$install->getDbUser();
             } else {
                 $db_user = (string)$io->ask('Database user', 'galette');
             }
         }
 
         $db_pass = $input->getOption('dbpass');
+        if ($db_pass === null && $use_config && $config_exists) {
+            $db_pass = $install->getExistingDbPass();
+            if ($db_pass !== null) {
+                $io->writeln(
+                    '<comment>Using existing configuration for database password</comment>',
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+            }
+        }
         $db_pass ??= $io->askHidden('Database password');
 
         $displayed_db_pass = 'None';
