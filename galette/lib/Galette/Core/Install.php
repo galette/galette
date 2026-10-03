@@ -867,6 +867,14 @@ class Install
     }
 
     /**
+     * Get database password stored in existing config file, if any
+     */
+    public function getExistingDbPass(): ?string
+    {
+        return $this->loadExistingConfigFile([], pass: true)['pwd_db'] ?? null;
+    }
+
+    /**
      * Load existing config for an update, including the database password.
      *
      * Unlike loadExistingConfig(), this reads the stored password so that an
