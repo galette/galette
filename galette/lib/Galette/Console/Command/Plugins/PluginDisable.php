@@ -36,6 +36,9 @@ class PluginDisable extends AbstractPlugins
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        if (!$this->validatePlugins($input, $io)) {
+            return Command::FAILURE;
+        }
         $selected = $input->getArgument('plugins');
         if ($selected === [self::ALL]) {
             $selected = array_keys($this->getRelevantPlugins($io));

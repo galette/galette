@@ -64,13 +64,12 @@ abstract class AbstractPlugins extends AbstractCommand
     }
 
     /**
-     * Interacts to request missing arguments or options
+     * Initialize command, resolving --all
+     *
+     * Runs whether the command is interactive or not, unlike interact().
      */
-    protected function interact(InputInterface $input, OutputInterface $output): void
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $io = new SymfonyStyle($input, $output);
-        $io->title('Galette plugins management');
-
         $plugins = $input->getArgument('plugins');
         $all = $input->getOption('all');
 
@@ -80,36 +79,63 @@ abstract class AbstractPlugins extends AbstractCommand
 
         if ($all) {
             $input->setArgument('plugins', [self::ALL]);
-        } elseif (empty($plugins)) {
-            // Ask for plugin list if argument is empty
-            $choices = $this->getRelevantChoices($io);
+        }
+    }
 
-            if ($choices !== []) {
-                $choices = array_merge(
-                    [self::ALL => 'All plugins'],
-                    $choices
-                );
+    /**
+     * Interacts to request missing arguments or options
+     */
+    protected function interact(InputInterface $input, OutputInterface $output): void
+    {
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Galette plugins management');
 
-                /** @var \Symfony\Component\Console\Helper\QuestionHelper $question_helper */
-                $question_helper = $this->getHelper('question');
-                $question = new ChoiceQuestion(
-                    'Which plugins do you want to select?',
-                    $choices
-                );
-                $question->setAutocompleterValues(array_keys($choices));
-                $question->setMultiselect(multiselect: true);
-                $answer = $question_helper->ask(
-                    $input,
-                    $output,
-                    $question
-                );
-                $input->setArgument('plugins', $answer);
-            }
+        if (!empty($input->getArgument('plugins'))) {
+            return;
+        }
+
+        // Ask for plugin list if argument is empty
+        $choices = $this->getRelevantChoices($io);
+
+        if ($choices !== []) {
+            $choices = array_merge(
+                [self::ALL => 'All plugins'],
+                $choices
+            );
+
+            /** @var \Symfony\Component\Console\Helper\QuestionHelper $question_helper */
+            $question_helper = $this->getHelper('question');
+            $question = new ChoiceQuestion(
+                'Which plugins do you want to select?',
+                $choices
+            );
+            $question->setAutocompleterValues(array_keys($choices));
+            $question->setMultiselect(multiselect: true);
+            $answer = $question_helper->ask(
+                $input,
+                $output,
+                $question
+            );
+            $input->setArgument('plugins', in_array(self::ALL, $answer, strict: true) ? [self::ALL] : $answer);
+        }
+    }
+
+    /**
+     * Check selected plugins, whether they have been asked for or not
+     *
+     * @return bool False if there is nothing to work on
+     */
+    protected function validatePlugins(InputInterface $input, SymfonyStyle $io): bool
+    {
+        $plugins = $input->getArgument('plugins');
+
+        if ($plugins === [self::ALL]) {
+            return true;
         }
 
         $unknown_plugins = array_diff($plugins, $this->getPlugins());
         if (count($unknown_plugins)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Unknown plugin(s): %s',
                     implode(
@@ -122,7 +148,7 @@ abstract class AbstractPlugins extends AbstractCommand
 
         $irrelevant_plugins = array_diff($plugins, array_keys($this->getRelevantPlugins($io)));
         if (count($irrelevant_plugins)) {
-            $verbose = count($irrelevant_plugins) < count($input->getArgument('plugins')) ? OutputInterface::VERBOSITY_VERBOSE : OutputInterface::VERBOSITY_NORMAL;
+            $verbose = count($irrelevant_plugins) < count($plugins) ? OutputInterface::VERBOSITY_VERBOSE : OutputInterface::VERBOSITY_NORMAL;
             $io->writeln(
                 sprintf(
                     '<error>Irrelevant plugin(s): %s</error>',
@@ -135,10 +161,12 @@ abstract class AbstractPlugins extends AbstractCommand
             );
         }
 
-        if (!count($input->getArgument('plugins'))) {
+        if (!count($plugins)) {
             $io->error('No relevant plugin found.');
-            exit(1);
+            return false;
         }
+
+        return true;
     }
 
     /**
