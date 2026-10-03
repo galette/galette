@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -108,10 +95,10 @@ class Groups
             }
 
             $select->join(
-                ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                'ggroup.' . Group::PK . '=gusers.' . Group::PK,
-                ['members' => new Expression('count(gusers.' . Group::PK . ')')],
-                $select::JOIN_LEFT
+                name: ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
+                on: 'ggroup.' . Group::PK . '=gusers.' . Group::PK,
+                columns: ['members' => new Expression('count(gusers.' . Group::PK . ')')],
+                type: $select::JOIN_LEFT
             );
 
             if ($full !== true) {
@@ -167,7 +154,7 @@ class Groups
      */
     public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
-        return self::loadGroups($id, true, $as_group);
+        return self::loadGroups($id, managed: true, as_group: $as_group);
     }
 
     /**
@@ -223,8 +210,6 @@ class Groups
      * @param bool          $manager     Add member as manager, defaults to false
      * @param bool          $transaction Does a SQL transaction already exists? Defaults
      *                                   to false.
-     *
-     * @return bool
      */
     public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
     {
@@ -237,7 +222,7 @@ class Groups
 
         try {
             if ($transaction === false) {
-                $zdb->connection->beginTransaction();
+                $zdb->beginTransaction();
             }
 
             $table = $manager === true ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
@@ -312,16 +297,16 @@ class Groups
             }
             if ($transaction === false) {
                 //commit all changes
-                $zdb->connection->commit();
+                $zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             $te = $e;
             if ($transaction === false) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id
-                . ') to specified groups ' . print_r($groups, true);
+                . ') to specified groups ' . print_r($groups, return: true);
             if ($manager === true) {
                 $msg .= ' as a manager';
             }
@@ -340,8 +325,6 @@ class Groups
      * Remove members from all their groups
      *
      * @param array<int> $ids Members ids
-     *
-     * @return void
      */
     public static function removeMembersFromGroups(array $ids): void
     {
@@ -369,8 +352,6 @@ class Groups
      * Remove member from all his groups
      *
      * @param int $id Member's id
-     *
-     * @return void
      */
     public static function removeMemberFromGroups(int $id): void
     {
@@ -384,8 +365,6 @@ class Groups
      * @param string   $name    Requested name
      * @param int|null $parent  Parent group (defaults to null)
      * @param int|null $current Current ID to be excluded (defaults to null)
-     *
-     * @return bool
      */
     public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null): bool
     {
@@ -429,7 +408,7 @@ class Groups
             return false;
         }
         if (!count($groups)) {
-            $groups = self::loadManagedGroups($this->login->id, false);
+            $groups = self::loadManagedGroups($this->login->id, as_group: false);
         }
 
         $select = $this->zdb->select(Adherent::TABLE, 'adh');

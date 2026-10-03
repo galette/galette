@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -33,9 +20,9 @@ use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
 use Galette\Core\Password;
 use Galette\Core\Preferences;
+use Galette\Util\Html;
 
 /**
  * Texts class for galette
@@ -52,9 +39,9 @@ class Texts
 
     /** @var ArrayObject<string, int|string> */
     private ArrayObject $all_texts;
-    public const TABLE = "texts";
-    public const PK = 'tid';
-    public const DEFAULT_REF = 'sub';
+    public const string TABLE = "texts";
+    public const string PK = 'tid';
+    public const string DEFAULT_REF = 'sub';
 
     /** @var array<int, mixed> */
     private array $defaults;
@@ -70,23 +57,29 @@ class Texts
     {
         global $zdb, $login, $container;
         $this->preferences = $preferences;
-        if ($routeparser === null) {
+        if ($routeparser === null && $container !== null) {
             $routeparser = $container->get(RouteParser::class);
         }
-        if ($login === null) {
+        if ($login === null && $container !== null) {
             $login = $container->get(Login::class);
         }
-        $this->routeparser = $routeparser;
+        $login ??= new Login($zdb, new I18n());
+        if ($routeparser !== null) {
+            $this->routeparser = $routeparser;
+        }
         $this
             ->setDb($zdb)
-            ->setLogin($login);
+            ->setLogin($login)
+            ->setI18n($container?->get(I18n::class) ?? new I18n());
 
-        $this->setPatterns(
-            $this->getMainPatterns()
-            + $this->getMailPatterns()
-            + $this->getMemberPatterns()
-            + $this->getContributionPatterns()
-        );
+        $this
+            ->setLegacy()
+            ->setPatterns(
+                $this->getMainPatterns()
+                + $this->getMailPatterns()
+                + $this->getMemberPatterns()
+                + $this->getContributionPatterns()
+            );
 
         if (!defined('GALETTE_INSTALLER') || GALETTE_INSTALLER !== true) {
             $this
@@ -98,11 +91,9 @@ class Texts
     /**
      * Get patterns for mails
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string, array<string, list<string>|string>>
      */
-    protected function getMailPatterns(bool $legacy = true): array
+    protected function getMailPatterns(): array
     {
         $m_patterns = [
             'breakline'     => [
@@ -152,8 +143,6 @@ class Texts
 
     /**
      * Set emails replacements
-     *
-     * @return self
      */
     public function setMail(): self
     {
@@ -172,16 +161,17 @@ class Texts
      * Set change password URL
      *
      * @param Password $password Password instance
-     *
-     * @return self
      */
     public function setChangePasswordURI(Password $password): self
     {
+        if (!isset($this->routeparser)) {
+            return $this;
+        }
         $this->setReplacements([
             'change_pass_uri'   => $this->preferences->getURL()
                 . $this->routeparser->urlFor(
                     'password-recovery',
-                    ['hash' => base64_encode($password->getHash())]
+                    ['hash' => $password->getToken()]
                 )
         ]);
         return $this;
@@ -189,8 +179,6 @@ class Texts
 
     /**
      * Set validity link
-     *
-     * @return self
      */
     public function setLinkValidity(): self
     {
@@ -204,8 +192,6 @@ class Texts
      * Set member card PDF link
      *
      * @param string $link Link
-     *
-     * @return self
      */
     public function setMemberCardLink(string $link): self
     {
@@ -217,8 +203,6 @@ class Texts
      * Set contribution PDF link
      *
      * @param string $link Link
-     *
-     * @return self
      */
     public function setContribLink(string $link): self
     {
@@ -337,15 +321,14 @@ class Texts
      * @param string $lang    Texte language to locate
      * @param string $subject Subject to set
      * @param string $body    Body text to set
-     *
-     * @return bool
      */
     public function setTexts(string $ref, string $lang, string $subject, string $body): bool
     {
         try {
             $values = [
-                'tsubject' => $subject,
-                'tbody'    => $body,
+                //mails are sent as text: entities would travel as such
+                'tsubject' => Html::strip($subject),
+                'tbody'    => Html::strip($body),
             ];
 
             $update = $this->zdb->update(self::TABLE);
@@ -360,7 +343,7 @@ class Texts
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred while storing email text. | '
+                'An error has occurred while saving email text. | '
                 . $e->getMessage(),
                 Analog::ERROR
             );
@@ -402,7 +385,7 @@ class Texts
     /**
      * Initialize texts at install time
      *
-     * @param bool $check_first Check first if it seems initialized
+     * @param bool $check_first Only add missing entries, existing ones are kept
      *
      * @return bool false if no need to initialize, true if data has been initialized, Exception if error
      * @throws Throwable
@@ -410,23 +393,11 @@ class Texts
     public function installInit(bool $check_first = true): bool
     {
         try {
-            //first of all, let's check if data seem to have already
-            //been initialized
             $this->defaults = $this->getAllDefaults(); //load defaults
+            //already initialized (update): only add missing entries, keep existing ones
             if ($check_first === true) {
-                $select = $this->zdb->select(self::TABLE);
-                $select->columns(
-                    [
-                        'counter' => new Expression('COUNT(' . self::PK . ')')
-                    ]
-                );
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $count = $result->counter;
-                if ($count < count($this->defaults)) {
-                    return $this->checkUpdate();
-                }
+                $this->checkUpdate();
+                return true;
             }
 
             //first, we drop all values
@@ -457,8 +428,6 @@ class Texts
 
     /**
      * Checks for missing texts in the database
-     *
-     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -485,7 +454,7 @@ class Texts
                 }
 
                 if ($exists === false) {
-                    //text does not exists in database, insert it.
+                    //text does not exist in database, insert it.
                     $missing[] = $default;
                 }
             }
@@ -517,8 +486,6 @@ class Texts
 
     /**
      * Get the subject, with all replacements done
-     *
-     * @return string
      */
     public function getSubject(): string
     {
@@ -527,8 +494,6 @@ class Texts
 
     /**
      * Get the body, with all replacements done
-     *
-     * @return string
      */
     public function getBody(): string
     {
@@ -539,8 +504,6 @@ class Texts
      * Insert values in database
      *
      * @param array<int, mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(array $values): void
     {
@@ -623,14 +586,14 @@ class Texts
 
         $contribs = ['contrib', 'newcont', 'donation', 'newdonation'];
         if ($this->current !== null && in_array($this->current, $contribs)) {
-            $patterns = $this->getContributionPatterns(false);
+            $patterns = $this->getContributionPatterns();
             $legend['contribution'] = [
                 'title' => _T('Contribution information'),
                 'patterns' => $patterns
             ];
         }
 
-        $patterns = $this->getMailPatterns(false);
+        $patterns = $this->getMailPatterns();
         $legend['mail'] = [
             'title'     => _T('Mail specific'),
             'patterns'  => $patterns
@@ -643,15 +606,13 @@ class Texts
      * Set replacements
      *
      * @param array<string,?mixed> $replaces Replacements to add
-     *
-     * @return void
      */
     public function setReplacements(array $replaces): void
     {
         //some replacements may produce HTML code; while system texts are text only
         foreach ($replaces as &$replace) {
             if (is_string($replace)) {
-                $replace = \Galette\Util\Text::convertHtmlToText($replace);
+                $replace = \Galette\Util\Html::convertToText($replace);
             }
         }
         $this->trait_setReplacements($replaces);
@@ -661,8 +622,6 @@ class Texts
      * Set current text reference
      *
      * @param string $ref Reference
-     *
-     * @return self
      */
     public function setCurrent(string $ref): self
     {

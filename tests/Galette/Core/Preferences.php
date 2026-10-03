@@ -1,31 +1,25 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+
+use function Safe\define;
+use function Safe\file_put_contents;
+use function Safe\preg_replace;
 
 /**
  * Preferences tests class
@@ -37,21 +31,29 @@ class Preferences extends GaletteTestCase
     protected int $seed = 20240917074915;
 
     /**
-     * Tear down tests
+     * What a full preferences form posts: every default, minus the secrets.
      *
-     * @return void
+     * A secret is never rendered, so the form sends its field back empty, and
+     * an empty one leaves what is stored alone. Handing the stored value back
+     * is something no caller does.
+     *
+     * @return array<string, mixed>
      */
-    public function tearDown(): void
+    private function postedDefaults(): array
     {
-        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
-        $this->zdb->execute($delete);
-        parent::tearDown();
+        $posted = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            if (\Galette\Core\PreferencesSchema::isSensitive($key)) {
+                continue;
+            }
+            $posted[$key] = $value;
+        }
+
+        return $posted;
     }
 
     /**
      * Test preferences initialization
-     *
-     * @return void
      */
     public function testInstallInit(): void
     {
@@ -73,7 +75,7 @@ class Preferences extends GaletteTestCase
                     $this->assertSame('da_admin', $value);
                     break;
                 case 'pref_admin_pass':
-                    $pw_checked = password_verify('da_secret', (string) $value);
+                    $pw_checked = password_verify('da_secret', (string)$value);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'pref_lang':
@@ -88,10 +90,10 @@ class Preferences extends GaletteTestCase
             }
         }
 
-        //tru to set and get a non existent value
-        $prefs->doesnotexists = 'that *does* not exists.';
+        //try to set and get a non-existent value
+        $prefs->doesnotexists = 'that *does* not exists.'; // @phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set a preference value which does not seem to exist (doesnotexists)'
         );
         $false_result = $prefs->doesnotexists;
@@ -141,9 +143,321 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test writing a single preference
+     */
+    public function testSetValue(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_numrows;
+
+        $this->assertTrue(
+            $this->preferences->setValue('pref_numrows', 42, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame(42, $this->preferences->pref_numrows);
+
+        //value really reached database
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(42, $prefs->pref_numrows);
+
+        //reset to default
+        $this->assertTrue(
+            $this->preferences->resetValue('pref_numrows', $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame(
+            $this->preferences->getDefaults()['pref_numrows'],
+            $this->preferences->pref_numrows
+        );
+
+        $this->preferences->setValue('pref_numrows', $original, $this->login);
+    }
+
+    /**
+     * No submitted markup reaches storage as it came
+     */
+    public function testMarkupIsTakenOutOnWrite(): void
+    {
+        $this->preferences->load();
+        $originals = [
+            'pref_nom' => $this->preferences->pref_nom,
+            'pref_footer' => $this->preferences->pref_footer,
+            'pref_mail_smtp_password' => $this->preferences->pref_mail_smtp_password,
+        ];
+
+        //a text preference comes back as text: Twig escapes it on output, and
+        //escaping it here too would show the entity to the reader
+        $this->preferences->pref_nom = '<script>alert(1)</script>Amis & Compagnie';
+        $this->assertSame('Amis & Compagnie', $this->preferences->pref_nom);
+
+        //an HTML one keeps the markup it is allowed, and loses the rest
+        $this->preferences->pref_footer = '<p onclick="alert(1)">Footer<script>alert(2)</script></p>';
+        $this->assertSame('<p>Footer</p>', $this->preferences->pref_footer);
+
+        //a secret is stored as typed: taking a `<` out of an SMTP password
+        //would silently break the authentication
+        $password = 'p@ss<w>&"ord';
+        $this->preferences->pref_mail_smtp_password = $password;
+        $this->assertSame($password, $this->preferences->pref_mail_smtp_password);
+
+        foreach ($originals as $name => $value) {
+            $this->preferences->$name = $value;
+        }
+    }
+
+    /**
+     * The mail signature keeps the lines it was written with
+     */
+    public function testMailSignatureKeepsItsLines(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_mail_sign;
+
+        //the signature is written as text in a textarea, and the browser sends
+        //CRLF back. Saving the settings again must not move a line
+        $signature = "{ASSO_NAME}\r\n{ASSO_SLOGAN}\r\n\r\n{ASSO_ADDRESS_MULTI}\r\n\r\n{ASSO_WEBSITE}";
+        $this->preferences->pref_mail_sign = $signature;
+        for ($i = 0; $i < 3; $i++) {
+            $shown = $this->preferences->pref_mail_sign;
+            $this->assertSame($signature, $shown);
+            $this->preferences->pref_mail_sign = preg_replace('/\r\n|\r|\n/', "\r\n", $shown);
+        }
+        $this->assertSame($signature, $this->preferences->pref_mail_sign);
+
+        //a signature a release running on Windows has already doubled is
+        //repaired rather than carried over
+        $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\r\n{ASSO_WEBSITE}";
+        $this->assertSame("{ASSO_NAME}\r\n{ASSO_WEBSITE}", $this->preferences->pref_mail_sign);
+
+        $this->preferences->pref_mail_sign = $original;
+    }
+
+    /**
+     * A single write goes through the per-field constraints of the schema
+     */
+    public function testSetValueChecksField(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_card_vsize', 12, $this->login));
+        $this->assertSame(
+            ['- The card height have to be an integer between 40 and 55!'],
+            $this->preferences->getErrors()
+        );
+
+        //the refused value is not kept in memory either
+        $this->assertNotSame(12, $this->preferences->pref_card_vsize);
+
+        //nothing was stored
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertNotSame(12, $prefs->pref_card_vsize);
+    }
+
+    /**
+     * A single write cannot break a relation between preferences either
+     */
+    public function testSetValueChecksRelations(): void
+    {
+        $this->preferences->load();
+        $original = $this->preferences->pref_beg_membership;
+
+        //default has an extension set, so a beginning of membership conflicts
+        $this->assertNotSame('', $this->preferences->pref_membership_ext);
+        $this->assertFalse($this->preferences->setValue('pref_beg_membership', '01/06', $this->login));
+        $this->assertSame(
+            ['- Default membership extension and beginning of membership are mutually exclusive.'],
+            $this->preferences->getErrors()
+        );
+
+        $this->preferences->setValue('pref_beg_membership', $original, $this->login);
+    }
+
+    /**
+     * Unknown preferences are refused rather than silently created
+     */
+    public function testSetValueRefusesUnknown(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_nope', 'x', $this->login));
+        $this->assertSame(["Unknown preference 'pref_nope'!"], $this->preferences->getErrors());
+
+        $this->assertFalse($this->preferences->resetValue('pref_nope', $this->login));
+        $this->assertSame(["Unknown preference 'pref_nope'!"], $this->preferences->getErrors());
+    }
+
+    /**
+     * Superadmin credentials require the superadmin level
+     */
+    public function testSetValueHonoursAcl(): void
+    {
+        $this->preferences->load();
+
+        $this->assertFalse($this->preferences->setValue('pref_admin_login', 'someone', $this->login));
+        $this->assertSame(
+            ["You are not allowed to change preference 'pref_admin_login'!"],
+            $this->preferences->getErrors()
+        );
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertNotSame('someone', $prefs->pref_admin_login);
+    }
+
+    /**
+     * A secret must not be resettable to a publicly known default
+     */
+    public function testResetValueRefusesSecrets(): void
+    {
+        $this->preferences->load();
+        $stored = $this->preferences->pref_admin_pass;
+
+        $this->logSuperAdmin();
+        $this->assertFalse($this->preferences->resetValue('pref_admin_pass', $this->login));
+        $this->assertSame(
+            ["Preference 'pref_admin_pass' holds a secret and cannot be reset to its default!"],
+            $this->preferences->getErrors()
+        );
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame($stored, $prefs->pref_admin_pass);
+    }
+
+    /**
+     * A preference with no legacy constant reads straight from database
+     */
+    public function testGetConfigValue(): void
+    {
+        $this->preferences->load();
+
+        $this->assertNull(\Galette\Core\PreferencesSchema::getConstant('pref_numrows'));
+        $this->assertSame(
+            $this->preferences->pref_numrows,
+            $this->preferences->getConfigValue('pref_numrows')
+        );
+    }
+
+    /**
+     * A defined legacy constant wins over the stored value, and says so once
+     *
+     * Isolated: define() cannot be undone, and the constant would otherwise
+     * leak into every test running after this one in the same process.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testConstantOverridesPreference(): void
+    {
+        $this->preferences->load();
+
+        //pref_galette_url is the one superseding GALETTE_URI
+        $constant = \Galette\Core\PreferencesSchema::getConstant('pref_galette_url');
+        $this->assertSame('GALETTE_URI', $constant);
+
+        if (defined($constant)) {
+            $this->markTestSkipped($constant . ' is defined in this environment');
+        }
+
+        //not defined: the stored value is used, and nothing is logged
+        $this->preferences->setValue('pref_galette_url', 'https://example.com', $this->login);
+        $this->assertSame('https://example.com', $this->preferences->getConfigValue('pref_galette_url'));
+
+        define('GALETTE_URI', 'https://from-the-file.example.com');
+
+        $this->assertSame(
+            'https://from-the-file.example.com',
+            $this->preferences->getConfigValue('pref_galette_url')
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Constant GALETTE_URI is defined and takes precedence over preference pref_galette_url.'
+        );
+
+        //reported once only, so reading it in a loop does not flood the log
+        $this->preferences->getConfigValue('pref_galette_url');
+        $this->expectNoLogEntry();
+
+        $this->preferences->setValue('pref_galette_url', '', $this->login);
+    }
+
+    /**
+     * Values Galette maintains itself are never writable from a payload
+     */
+    public function testReadOnlyPreferences(): void
+    {
+        $this->preferences->load();
+        $this->logSuperAdmin();
+
+        $readonly = [
+            'pref_instance_uuid',
+            'pref_registration_uuid',
+            'pref_telemetry_date',
+            'pref_registration_date',
+            'pref_adhesion_form',
+        ];
+
+        foreach ($readonly as $name) {
+            $this->assertTrue(
+                \Galette\Core\PreferencesSchema::isReadOnly($name),
+                $name . ' should be read-only'
+            );
+
+            $this->assertFalse($this->preferences->setValue($name, 'tampered', $this->login));
+            $this->assertSame(
+                ["Preference '" . $name . "' is maintained by Galette and cannot be changed!"],
+                $this->preferences->getErrors()
+            );
+
+            $this->assertFalse($this->preferences->resetValue($name, $this->login));
+        }
+
+        //nor through the settings form
+        $uuid = $this->preferences->pref_instance_uuid;
+        $values = $this->preferences->getDefaults();
+        $values['pref_nom'] = 'Galette';
+        $values['pref_instance_uuid'] = 'tampered';
+        $this->preferences->check($values, $this->login);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+    }
+
+    /**
+     * Galette still writes those values itself
+     */
+    public function testReadOnlyPreferencesAreStillMaintained(): void
+    {
+        $this->preferences->load();
+
+        $uuid = $this->preferences->generateUUID('instance');
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{40}$/', $uuid);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+
+        $this->assertTrue($this->preferences->updateTelemetryDate());
+        $this->assertNotEmpty($this->preferences->pref_telemetry_date);
+    }
+
+    /**
+     * Galette must never define a constant superseded by a preference
+     *
+     * behavior.inc.php is skipped under GALETTE_TESTS, so anything defined
+     * here was defined by Galette's own bootstrap. That makes the setting look
+     * overridden by the file on every instance, hides it behind a read-only
+     * cell, and logs a bogus override warning on each read.
+     */
+    public function testGaletteDefinesNoSupersededConstant(): void
+    {
+        foreach (\Galette\Core\PreferencesSchema::getConstants() as $name => $constant) {
+            $this->assertFalse(
+                defined($constant),
+                $constant . ' is defined by Galette itself, ' . $name . ' would look locked everywhere'
+            );
+        }
+    }
+
+    /**
      * Test fields names
      *
-     * @return void
+     * Every declared preference must have a row. The converse does not hold:
+     * a plugin that has been deactivated, or an older version of Galette,
+     * leaves rows behind, and the advanced configuration page reports them as
+     * unknown rather than pretending they cannot exist.
      */
     public function testFieldsNames(): void
     {
@@ -151,23 +465,29 @@ class Preferences extends GaletteTestCase
         $fields_names = $this->preferences->getFieldsNames();
         $expected = array_keys($this->preferences->getDefaults());
 
-        sort($fields_names);
-        sort($expected);
+        $this->assertSame(
+            [],
+            array_values(array_diff($expected, $fields_names)),
+            'declared preferences missing from database'
+        );
 
-        $this->assertSame($expected, $fields_names);
+        foreach (array_diff($fields_names, $expected) as $name) {
+            $this->assertFalse(
+                \Galette\Core\PreferencesSchema::has($name),
+                $name . ' is declared but has no row'
+            );
+        }
     }
 
     /**
      * Test preferences updating when some are missing
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             [
-                \Galette\Core\Preferences::PK => 'pref_footer'
+                'nom_pref' => 'pref_footer'
             ]
         );
         $this->zdb->execute($delete);
@@ -175,7 +495,7 @@ class Preferences extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             [
-                \Galette\Core\Preferences::PK => 'pref_new_contrib_script'
+                'nom_pref' => 'pref_new_contrib_script'
             ]
         );
         $this->zdb->execute($delete);
@@ -197,9 +517,8 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test public pages visibility
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testPublicPagesVisibility(): void
     {
         $this->preferences->load();
@@ -343,79 +662,145 @@ class Preferences extends GaletteTestCase
     }
 
     /**
-     * Data provider for cards sizes tests
-     *
-     * @return array
+     * A visibility out of the enum is refused, rather than stored and thrown
+     * on at every page load
      */
-    public static function sizesProvider(): array
+    public function testPublicPagesVisibilityIsBounded(): void
     {
-        return [
-            [//defaults
-                15, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                10, //horizontal spacing
-                0   //expected number of warnings
-            ], [ //OK
-                0,  //vertical margin
-                20, //horizontal margin
-                11, //vertical spacing
-                10, //horizontal spacing
-                0   //expected number of warnings
-            ], [ //vertical overflow
-                0,  //vertical margin
-                20, //horizontal margin
-                12, //vertical spacing
-                10, //horizontal spacing
-                1   //expected number of warnings
-            ], [//horizontal overflow
-                15, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                61, //horizontal spacing
-                1   //expected number of warnings
-            ], [//vertical and horizontal overflow
-                0,  //vertical margin
-                20, //horizontal margin
-                12, //vertical spacing
-                61, //horizontal spacing
-                2   //expected number of warnings
-            ], [//vertical overflow
-                17, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                10, //horizontal spacing
-                1   //expected number of warnings
-            ]
-        ];
+        $this->preferences->load();
+
+        foreach ([5, -1, 'abc'] as $value) {
+            $this->assertFalse(
+                $this->preferences->setValue('pref_publicpages_visibility_documents', $value, $this->login),
+                var_export($value, return: true) . ' was accepted'
+            );
+            $this->assertSame(
+                ["- Unknown visibility for 'pref_publicpages_visibility_documents'!"],
+                $this->preferences->getErrors()
+            );
+        }
+
+        //the default right has nothing to inherit from
+        $this->assertFalse(
+            $this->preferences->setValue(
+                'pref_publicpages_visibility_generic',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+                $this->login
+            )
+        );
+        $this->assertSame(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+            $this->preferences->pref_publicpages_visibility_generic
+        );
+
+        //any other page may
+        $this->assertTrue(
+            $this->preferences->setValue(
+                'pref_publicpages_visibility_documents',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+                $this->login
+            ),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertTrue($this->preferences->resetValue('pref_publicpages_visibility_documents', $this->login));
     }
 
     /**
-     * Test checkCardsSizes
-     *
-     * @dataProvider sizesProvider
-     *
-     * @param int $vm    Vertical margin
-     * @param int $hm    Horizontal margin
-     * @param int $vs    Vertical spacing
-     * @param int $hs    Horizontal spacing
-     * @param int $count Number of expected errors
-     *
-     * @return void
+     * The settings form offers every visibility, inheriting where it makes sense
      */
-    public function testCheckCardsSizes(int $vm, int $hm, int $vs, int $hs, int $count): void
+    public function testPublicPagesVisibilityChoices(): void
     {
-        $this->preferences->pref_card_marges_v = $vm;
-        $this->preferences->pref_card_marges_h = $hm;
-        $this->preferences->pref_card_vspace = $vs;
-        $this->preferences->pref_card_hspace = $hs;
-        $this->assertCount($count, $this->preferences->checkCardsSizes());
+        $this->assertSame(
+            [
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT => 'Inherit',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN => 'Hidden',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC => 'Everyone',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED => 'Up to date members',
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE => 'Admin and staff only',
+            ],
+            \Galette\Enums\PublicPageVisibility::choices()
+        );
+
+        $this->assertArrayNotHasKey(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT,
+            \Galette\Enums\PublicPageVisibility::choices(inherit: false)
+        );
+        $this->assertCount(4, \Galette\Enums\PublicPageVisibility::choices(inherit: false));
+    }
+
+    /**
+     * Test a stored visibility that is not a plain integer
+     *
+     * Casting it would read as zero, that is "visible by everyone": a row
+     * Galette cannot make sense of has to close the page, not open it.
+     */
+    public function testCorruptedPublicPageVisibility(): void
+    {
+        $right = 'pref_publicpages_visibility_generic';
+        $default = \Galette\Core\PreferencesSchema::getDefaults()[$right];
+
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => 'garbage'])->where->equalTo('nom_pref', $right);
+        $this->zdb->execute($update);
+
+        $preferences = new \Galette\Core\Preferences($this->zdb);
+        $preferences->pref_bool_publicpages = true;
+
+        try {
+            $preferences->showPublicPage(
+                new \Galette\Core\Login($this->zdb, new \Galette\Core\I18n()),
+                $right
+            );
+            $this->fail('An unusable visibility must not let the page through.');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Unknown public pages right: garbage', $e->getMessage());
+        } finally {
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => $default])->where->equalTo('nom_pref', $right);
+            $this->zdb->execute($update);
+            $this->preferences->load();
+        }
+    }
+
+    /**
+     * Test the dark mode stylesheet reset survives a second check
+     *
+     * The flag is a latch: only resetDarkCss() acting on it clears it. A
+     * later check that leaves the colours alone must not drop a reset that
+     * is still pending, or a stale dark.css keeps being served.
+     */
+    public function testDarkCssResetLatches(): void
+    {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        file_put_contents($cssfile, '/* stale */');
+
+        $post = $this->preferences->getDefaults();
+        $post['pref_enable_custom_colors'] = true;
+        $post['pref_cc_primary'] = '#123456';
+
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+
+        //same payload again: the colours no longer differ from what is stored
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+
+        $flash_data = [];
+        $flash = new \Slim\Flash\Messages($flash_data);
+        $this->preferences->resetDarkCss($flash);
+
+        //the file only goes away when the flag survived the second check
+        $this->assertFileDoesNotExist($cssfile);
     }
 
     /**
      * Data provider for colors
      *
-     * @return array
+     * @return array<array{prop: string, color: string, expected: string}>
      */
     public static function colorsProvider(): array
     {
@@ -444,14 +829,11 @@ class Preferences extends GaletteTestCase
     /**
      * Test colors
      *
-     * @dataProvider colorsProvider
-     *
      * @param string $prop     Property to be set
      * @param string $color    Color to set
      * @param string $expected Expected color
-     *
-     * @return void
      */
+    #[DataProvider('colorsProvider')]
     public function testColors(string $prop, string $color, string $expected): void
     {
         $prop = 'pref_card_' . $prop;
@@ -461,15 +843,10 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test social networks
-     *
-     * @return void
      */
     public function testSocials(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $preferences = array_merge($preferences, [
             'pref_nom' => 'Galette',
@@ -496,28 +873,28 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(2, $socials);
 
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER)
         );
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK)
         );
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::BLOG)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::BLOG)
         );
 
         //create one new social network
@@ -535,24 +912,24 @@ class Preferences extends GaletteTestCase
 
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(3, $socials);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON);
         $this->assertCount(1, $search);
         $masto = array_pop($search);
         $this->assertSame('Galette mastodon URL', $masto->url);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER);
         $this->assertCount(1, $search);
         $jabber = array_pop($search);
         $this->assertSame('Galette jabber ID - modified', $jabber->url);
 
-        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK);
+        $search = \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK);
         $this->assertCount(1, $search);
         $facebook = array_pop($search);
         $this->assertSame('Galette does not have facebook', $facebook->url);
@@ -569,37 +946,35 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, $post);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
 
-        $socials = \Galette\Entity\Social::getListForMember(null);
+        $socials = \Galette\Entity\Social::getListForMember(id_adh: null);
         $this->assertCount(2, $socials);
 
         $this->assertCount(
             0,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::JABBER)
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::FACEBOOK)
         );
 
         $this->assertTrue(
             $this->preferences->check($preferences, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertTrue($this->preferences->store());
     }
 
     /**
      * Test email signature
-     *
-     * @return void
      */
     public function testGetMailSignature(): void
     {
@@ -611,9 +986,10 @@ class Preferences extends GaletteTestCase
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail)
         );
+        //the line breaks the signature is written with survive the conversion
         $this->assertSame(
-            "\r\n-- \r\nGalette https://galette.eu",
-            $this->preferences->getMailSignature($mail, true)
+            "\r\n-- \r\nGalette\n\nhttps://galette.eu",
+            $this->preferences->getMailSignature($mail, as_text: true)
         );
 
         //with legacy values
@@ -628,12 +1004,12 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('https://framapiaf.org/@galette')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
         $this->assertCount(
             1,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
 
         $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE} - {ASSO_SOCIAL_MASTODON}";
@@ -647,12 +1023,12 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Galette mastodon URL - the return')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
         $this->assertCount(
             2,
-            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+            \Galette\Entity\Social::getListForMember(id_adh: null, type: \Galette\Entity\Social::MASTODON)
         );
         $this->assertSame(
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return",
@@ -666,15 +1042,44 @@ class Preferences extends GaletteTestCase
             $this->preferences->getMailSignature($mail)
         );
         $this->assertSame(
-            "\r\n-- \r\nGalette (http:///logo) [our website](https://galette.eu)",
-            $this->preferences->getMailSignature($mail, true)
+            "\r\n-- \r\nGalette\n\n(http:///logo) [our website](https://galette.eu)",
+            $this->preferences->getMailSignature($mail, as_text: true)
+        );
+    }
+
+    /**
+     * Test a multiline signature is not collapsed in the text version
+     */
+    public function testGetMultilineMailSignature(): void
+    {
+        $mail = new PHPMailer();
+        $this->preferences->pref_slogan = 'Free your association management!';
+        $this->preferences->pref_website = 'https://galette.eu';
+        $this->preferences->pref_org_email = 'contact@galette.eu';
+        $this->preferences->pref_adresse = 'Somewhere';
+        $this->preferences->pref_cp = '00000';
+        $this->preferences->pref_ville = 'Anytown';
+        $this->preferences->pref_pays = 'FRANCE';
+        $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n{ASSO_SLOGAN}\r\n\r\n"
+            . "{ASSO_ADDRESS_MULTI}\r\n\r\n{ASSO_WEBSITE}\r\n{ASSO_EMAIL}";
+
+        $this->assertSame(
+            "\r\n-- \r\n"
+            . "Galette\n"
+            . "Free your association management!\n"
+            . "\n"
+            . "Galette\n"
+            . "Somewhere\n"
+            . "00000 Anytown - FRANCE\n"
+            . "\n"
+            . "https://galette.eu\n"
+            . "contact@galette.eu",
+            $this->preferences->getMailSignature($mail, as_text: true)
         );
     }
 
     /**
      * Test getLegend
-     *
-     * @return void
      */
     public function testGetLegend(): void
     {
@@ -684,8 +1089,8 @@ class Preferences extends GaletteTestCase
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
-            'title' => __('Mastodon'),
-            'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
+                'title' => __('Mastodon'),
+                'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
             ],
             $legend['socials']['patterns']['asso_social_mastodon']
         );
@@ -695,7 +1100,7 @@ class Preferences extends GaletteTestCase
             $social
                 ->setType('mynewtype')
                 ->setUrl('Galette specific social network URL')
-                ->setLinkedMember(null)
+                ->setLinkedMember(id: null)
                 ->store()
         );
 
@@ -714,34 +1119,27 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test website URL
-     *
-     * @return void
      */
     public function testWebsiteURL(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $post = array_merge($preferences, ['pref_website' => 'https://galette.eu']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_website' => 'galette.eu']);
         $this->assertFalse(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame(['- Invalid website URL.'], $this->preferences->getErrors());
     }
 
     /**
      * Test updateTelemetryDate
-     *
-     * @return void
      */
     public function testUpdateTelemetryDate(): void
     {
@@ -755,8 +1153,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test updateRegistrationDate
-     *
-     * @return void
      */
     public function testUpdateRegistrationDate(): void
     {
@@ -770,8 +1166,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test generateUUID
-     *
-     * @return void
      */
     public function testGenerateUUID(): void
     {
@@ -785,15 +1179,10 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test for required end of membership parameter(s) presence and values
-     *
-     * @return void
      */
     public function testRequiredEndOfMembership(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
@@ -810,7 +1199,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '10']);
@@ -820,7 +1209,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null, 'pref_membership_offermonths' => -1]);
@@ -834,68 +1223,75 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01', 'pref_membership_offermonths' => 2]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
     }
 
     /**
      * Test email related parameters
-     *
-     * @return void
      */
     public function testEmailParameters(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $post = array_merge($preferences, ['pref_email' => 'notvalid']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: notvalid'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: notvalid');
+        $this->assertSame(
+            ["- Invalid E-Mail address notvalid (pref_email)"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address notvalid (pref_email)");
 
         $post = array_merge($preferences, ['pref_email' => 'email@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame('email@address.com', $this->preferences->pref_email);
 
         $post = array_merge($preferences, ['pref_email' => 'email+me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email-me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email.me@address.com']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_email' => 'email@localhost']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: email@localhost'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: email@localhost');
+        $this->assertSame(
+            ["- Invalid E-Mail address email@localhost (pref_email)"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address email@localhost (pref_email)");
 
         //can be a coma separated value only for pref_email_newadh
         $post = array_merge($preferences, ['pref_email' => 'email@address.com,another@galette.eu']);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Invalid E-Mail address: email@address.com,another@galette.eu'], $this->preferences->getErrors());
-        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: email@address.com,another@galette.eu');
+        $this->assertSame(
+            ["- Invalid E-Mail address email@address.com,another@galette.eu (pref_email)"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address email@address.com,another@galette.eu (pref_email)"
+        );
 
 
         $post = array_merge($preferences, ['pref_email_newadh' => 'email@address.com,another@galette.eu']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->assertSame('email@address.com', $this->preferences->pref_email_newadh);
         $this->assertSame(['email@address.com', 'another@galette.eu'], $this->preferences->vpref_email_newadh);
@@ -910,7 +1306,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -940,7 +1336,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -970,7 +1366,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge(
@@ -991,112 +1387,231 @@ class Preferences extends GaletteTestCase
             ],
             $this->preferences->getErrors()
         );
+    }
+
+    /**
+     * A secret is never rendered, so the settings form sends its field back
+     * empty. That must neither blank what is held, nor be read as "there is
+     * none" by the relation that asks for one -- an instance using SMTP
+     * authentication could otherwise not save its settings at all.
+     */
+    public function testHeldSecretsSurviveASave(): void
+    {
+        $this->logSuperAdmin();
+        $stored_pass = $this->preferences->pref_admin_pass;
+        $this->assertNotEmpty($stored_pass);
 
         $post = array_merge(
-            $preferences,
+            $this->postedDefaults(),
             [
-                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_GMAIL,
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_SMTP,
                 'pref_email_nom' => 'G@l3tt3',
                 'pref_email' => 'test@galette.eu',
+                'pref_mail_smtp_host' => 'smtp.galette.eu',
+                'pref_mail_smtp_auth' => 1,
+                'pref_mail_smtp_user' => 'galette',
+                'pref_mail_smtp_password' => 'sekret',
             ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame('sekret', $this->preferences->pref_mail_smtp_password);
+
+        //the very same form as the browser sends it back, with every secret
+        //field empty
+        $post['pref_mail_smtp_password'] = '';
+        $post['pref_admin_pass'] = '';
+        $post['pref_admin_pass_check'] = '';
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame('sekret', $this->preferences->pref_mail_smtp_password);
+        $this->assertSame($stored_pass, $this->preferences->pref_admin_pass);
+
+        //a secret actually typed in does get through
+        $post['pref_mail_smtp_password'] = 'another';
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $this->assertSame('another', $this->preferences->pref_mail_smtp_password);
+    }
+
+    /**
+     * Every preference is validated on every save, so the address standing in
+     * the way is often in a field the administrator did not touch. The message
+     * has to say which one -- the settings page carries four of them.
+     */
+    public function testInvalidEmailNamesItsPreference(): void
+    {
+        $preferences = $this->postedDefaults();
+
+        $fields = [
+            'pref_email',
+            'pref_email_reply_to',
+            'pref_email_newadh',
+            'pref_org_email',
+        ];
+
+        foreach ($fields as $field) {
+            $post = array_merge($preferences, [$field => 'admin']);
+            $this->assertFalse(
+                $this->preferences->check($post, $this->login),
+                $field . ' should not accept an address that is not one'
+            );
+            $this->assertSame(
+                ['- Invalid E-Mail address admin (' . $field . ')'],
+                $this->preferences->getErrors()
+            );
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                '- Invalid E-Mail address admin (' . $field . ')'
+            );
+        }
+
+        //the one that takes a list names itself as well, once per bad address
+        $post = array_merge(
+            $preferences,
+            ['pref_email_newadh' => 'good@galette.eu,admin,worse@localhost']
         );
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(
             [
-                '- You must provide a login for SMTP authentication.',
-                '- You must provide a password for SMTP authentication.'
+                "- Invalid E-Mail address admin (pref_email_newadh)",
+                "- Invalid E-Mail address worse@localhost (pref_email_newadh)",
             ],
             $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, "- Invalid E-Mail address admin (pref_email_newadh)");
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address worse@localhost (pref_email_newadh)"
+        );
+
+        //and a change to something else is refused along with it, which is how
+        //this is met in practice
+        $post = array_merge(
+            $preferences,
+            ['pref_email_reply_to' => 'admin', 'pref_nom' => 'Some association']
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            ["- Invalid E-Mail address admin (pref_email_reply_to)"],
+            $this->preferences->getErrors()
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "- Invalid E-Mail address admin (pref_email_reply_to)"
         );
     }
 
     /**
      * Test for required fields
-     *
-     * @return void
      */
     public function testRequireds(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $count_required = 17;
-        $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
+        $this->assertCount($count_required, $this->preferences->getRequiredFields());
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(['- Mandatory field pref_nom empty.'], $this->preferences->getErrors());
 
         $post = array_merge($preferences, ['pref_nom' => 'Galette']);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $this->logSuperAdmin();
-        $this->assertCount(++$count_required, $this->preferences->getRequiredFields($this->login));
+        $this->assertCount($count_required, $this->preferences->getRequiredFields());
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $post = array_merge($preferences, ['pref_nom' => null]);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(
-            [
-                '- Mandatory field pref_nom empty.',
-                '- Mandatory field pref_admin_login empty.'
-            ],
-            $this->preferences->getErrors()
-        );
+        $this->assertSame(['- Mandatory field pref_nom empty.'], $this->preferences->getErrors());
 
-        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => 'Galette']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(
-            [
-                '- Mandatory field pref_admin_login empty.'
-            ],
-            $this->preferences->getErrors()
+        $post = array_merge($preferences, ['pref_nom' => 'Galette']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
         );
     }
 
     /**
-     * Test admin password check
+     * The settings form does not change the superadmin credentials anymore
      *
-     * @return void
+     * They have their own page, which asks for the current password: a payload
+     * carrying them must not get around it.
      */
-    public function testAdminPassCheck(): void
+    public function testSettingsFormIgnoresAdminCredentials(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $this->logSuperAdmin();
+        $stored_pass = $this->preferences->pref_admin_pass;
 
-        $post = array_merge($preferences, ['pref_admin_pass' => 'one', 'pref_admin_pass_check' => 'another']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['Passwords mismatch'], $this->preferences->getErrors());
-
-        $post = array_merge($preferences, ['pref_admin_pass' => 'G@L3tt3', 'pref_admin_pass_check' => 'G@L3tt3']);
+        $post = array_merge(
+            $this->postedDefaults(),
+            [
+                'pref_admin_login' => 'GSuperUser',
+                'pref_admin_pass' => 'G@L3tt3',
+                'pref_admin_pass_check' => 'another'
+            ]
+        );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+        $this->assertSame($stored_pass, $this->preferences->pref_admin_pass);
+    }
+
+    /**
+     * Test superadmin password change
+     */
+    public function testStoreAdminPassword(): void
+    {
+        $this->logSuperAdmin();
+        $stored_pass = $this->preferences->pref_admin_pass;
+
+        //a refused password leaves the login alone, even a valid one
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', 'abc', $this->login));
+        $this->assertSame(['Too short (6 characters minimum, 3 found)'], $this->preferences->getErrors());
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('admin', $prefs->pref_admin_login);
+        $this->assertSame($stored_pass, $prefs->pref_admin_pass);
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+
+        //the password must not be the login it goes with
+        $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::Weak->value;
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', 'GSuperUser', $this->login));
+        $this->assertContains('Do not use any of your personal information as password!', $this->preferences->getErrors());
+        $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::None->value;
+
+        $this->assertTrue(
+            $this->preferences->storeAdminCredentials('GSuperUser', 'an0th3r_s3cr3t', $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('GSuperUser', $prefs->pref_admin_login);
+        $this->assertTrue(password_verify('an0th3r_s3cr3t', $prefs->pref_admin_pass));
+        $this->assertTrue(password_verify('an0th3r_s3cr3t', $this->preferences->pref_admin_pass));
     }
 
     /**
      * Test postal address
-     *
-     * @return void
      */
     public function testPostalAddress(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF]);
@@ -1113,28 +1628,54 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $expected = "DURAND René\nGalette association's Non-member\n66, boulevard De Oliveira\n39 069 Martel - Antarctique";
         $this->assertSame($expected, $this->preferences->getPostalAddress());
     }
 
     /**
-     * Test phone number
+     * Test a stored contact source the enum cannot read
      *
-     * @return void
+     * Anything but a designated staff member has to fall back on the
+     * preferences: reading from a member nobody chose would hand out an
+     * arbitrary address.
+     */
+    public function testCorruptedPostalAddressSource(): void
+    {
+        $right = 'pref_postal_address';
+        $default = \Galette\Core\PreferencesSchema::getDefaults()[$right];
+
+        //what the preferences source yields, to compare against
+        $from_prefs = $this->preferences->getPostalAddress();
+
+        //99 is a plain integer, so it survives the cast, and no enum case
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => 99])->where->equalTo('nom_pref', $right);
+        $this->zdb->execute($update);
+
+        try {
+            $corrupted = (new \Galette\Core\Preferences($this->zdb))->getPostalAddress();
+            $this->assertSame($from_prefs, $corrupted);
+        } finally {
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => $default])->where->equalTo('nom_pref', $right);
+            $this->zdb->execute($update);
+            $this->preferences->load();
+        }
+    }
+
+    /**
+     * Test phone number
      */
     public function testOrgPhone(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $preferences = $this->postedDefaults();
 
         $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_PREFS]);
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
 
         $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_STAFF]);
@@ -1155,7 +1696,7 @@ class Preferences extends GaletteTestCase
         );
         $this->assertTrue(
             $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $expected = '0439153432';
         $this->assertSame($expected, $this->preferences->getPhoneNumber());
@@ -1163,52 +1704,104 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test for admin login
-     *
-     * @return void
      */
     public function testAdminLogin(): void
     {
-        $preferences = [];
-        foreach ($this->preferences->getDefaults() as $key => $value) {
-            $preferences[$key] = $value;
-        }
+        $stored_pass = $this->preferences->pref_admin_pass;
 
-        //not superadmin, cannot change admin login nor password - ignored
-        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
-        $this->assertTrue(
-            $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
+        //not superadmin, cannot change admin login nor password
+        $this->assertFalse($this->preferences->storeAdminCredentials('GSuperUser', '', $this->login));
+        $this->assertSame(
+            ["You are not allowed to change preference 'pref_admin_login'!"],
+            $this->preferences->getErrors()
         );
         $this->assertSame('admin', $this->preferences->pref_admin_login);
 
         $this->logSuperAdmin();
-        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
-        $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['- The username must be composed of at least 4 characters!'], $this->preferences->getErrors());
-
-        $post = array_merge($preferences, ['pref_admin_login' => 'GSuperUser']);
-        $this->assertTrue(
-            $this->preferences->check($post, $this->login),
-            print_r($this->preferences->getErrors(), true)
-        );
+        foreach (['abc', ''] as $admin_login) {
+            $this->assertFalse($this->preferences->storeAdminCredentials($admin_login, '', $this->login));
+            $this->assertSame(
+                ['- The username must be composed of at least 4 characters!'],
+                $this->preferences->getErrors()
+            );
+        }
 
         $memberOne = $this->getMemberOne();
-        $post = array_merge($preferences, ['pref_admin_login' => $memberOne->login]);
-        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertFalse($this->preferences->storeAdminCredentials($memberOne->login, '', $this->login));
         $this->assertSame(['- This username is already used by another member !'], $this->preferences->getErrors());
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+
+        //an empty password keeps the current one
+        $this->assertTrue(
+            $this->preferences->storeAdminCredentials('GSuperUser', '', $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame('GSuperUser', $prefs->pref_admin_login);
+        $this->assertSame($stored_pass, $prefs->pref_admin_pass);
+    }
+
+    /**
+     * Test the superadmin login check runs on the caller's login
+     *
+     * An instance built by hand has none injected; storeAdminCredentials() is
+     * given one and has to use it, or an already taken login would go through.
+     */
+    public function testAdminLoginCheckedWithoutInjection(): void
+    {
+        $this->logSuperAdmin();
+        $memberOne = $this->getMemberOne();
+
+        $preferences = new \Galette\Core\Preferences($this->zdb);
+        $this->assertFalse($preferences->storeAdminCredentials($memberOne->login, '', $this->login));
+        $this->assertContains(
+            '- This username is already used by another member !',
+            $preferences->getErrors()
+        );
     }
 
     /**
      * Test __isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
-        $this->assertFalse(isset($this->preferences->defaults));
+        $this->assertFalse(isset($this->preferences->defaults)); //@phpstan-ignore staticProperty.nonStaticAccess (expected to be false)
         $this->assertFalse(isset($this->preferences->pref_not_exists));
         $this->assertTrue(isset($this->preferences->pref_nom));
         $this->assertTrue(isset($this->preferences->vpref_email_newadh));
         $this->assertTrue(isset($this->preferences->socials));
+    }
+
+    /**
+     * Test that saving the settings form leaves advanced preferences alone
+     *
+     * They are not rendered by that form, so the payload never carries them.
+     * Blanking them, as any other missing field, would reset them on every
+     * save.
+     */
+    public function testFormSaveKeepsAdvancedPreferences(): void
+    {
+        $this->logSuperAdmin();
+
+        $this->preferences->pref_session_timeout = 42;
+        $this->preferences->pref_x_forwarded_for_index = 2;
+
+        //what the settings form submits: every preference it renders
+        $post = [];
+        foreach ($this->preferences->getFieldsNames() as $name) {
+            if (!\Galette\Core\PreferencesSchema::isAdvanced($name)) {
+                $post[$name] = $this->preferences->$name;
+            }
+        }
+        $post['pref_admin_pass'] = '';
+        $post['pref_admin_pass_bis'] = '';
+
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
+        );
+
+        $this->assertSame(42, $this->preferences->pref_session_timeout);
+        $this->assertSame(2, $this->preferences->pref_x_forwarded_for_index);
     }
 }

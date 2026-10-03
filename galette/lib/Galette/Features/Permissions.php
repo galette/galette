@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -34,13 +21,13 @@ trait Permissions
     protected ?int $permission = null;
     protected bool $can_public = false;
 
-    public const NOBODY = 0;
-    public const USER_WRITE = 1;
-    public const ADMIN = 2;
-    public const STAFF = 3;
-    public const MANAGER = 4;
-    public const USER_READ = 5;
-    public const ALL = 10;
+    public const int NOBODY = 0;
+    public const int USER_WRITE = 1;
+    public const int ADMIN = 2;
+    public const int STAFF = 3;
+    public const int MANAGER = 4;
+    public const int USER_READ = 5;
+    public const int ALL = 10;
 
     /**
      * Get permissions list
@@ -72,8 +59,6 @@ trait Permissions
 
     /**
      * Get permission name
-     *
-     * @return string
      */
     public function getPermissionName(): string
     {
@@ -83,8 +68,6 @@ trait Permissions
 
     /**
      * Get current permissions
-     *
-     * @return int|null
      */
     public function getPermission(): ?int
     {

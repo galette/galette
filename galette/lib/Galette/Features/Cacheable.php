@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -53,8 +40,6 @@ trait Cacheable
      * Handle cache
      *
      * @param bool $nocache Do not try to cache
-     *
-     * @return void
      */
     protected function handleCache(bool $nocache = false): void
     {
@@ -69,12 +54,10 @@ trait Cacheable
 
     /**
      * Check if cache is valid
-     *
-     * @return bool
      */
     private function checkCache(): bool
     {
-        $cfile = GALETTE_CACHE_DIR . $this->getCacheFilename();
+        $cfile = $this->getCacheFilename();
         if (file_exists($cfile)) {
             try {
                 $dformat = 'Y-m-d H:i:s';
@@ -106,22 +89,16 @@ trait Cacheable
 
     /**
      * Complete path to cache file
-     *
-     * @return string
      */
     abstract protected function getCacheFilename(): string;
 
     /**
      * Ensure data to cache are present
-     *
-     * @return void
      */
     abstract protected function prepareForCache(): void;
 
     /**
      * Creates/update the cache
-     *
-     * @return void
      */
     protected function makeCache(): void
     {
@@ -131,9 +108,9 @@ trait Cacheable
         }
         $this->prepareForCache();
         $cfile = $this->getCacheFilename();
-        $cdir = dirname((string) $cfile);
+        $cdir = dirname((string)$cfile);
         if (!file_exists($cdir)) {
-            mkdir($cdir, 0o755, true);
+            mkdir($cdir, 0o755, recursive: true);
         }
         $stream = fopen($cfile, 'w+');
         fwrite(
@@ -145,8 +122,6 @@ trait Cacheable
 
     /**
      * Get data to cache
-     *
-     * @return string
      */
     protected function getDataTocache(): string
     {
@@ -155,8 +130,6 @@ trait Cacheable
 
     /**
      * Loads entries from cache
-     *
-     * @return void
      */
     protected function loadCache(): void
     {
@@ -172,8 +145,6 @@ trait Cacheable
      * Called once cache has been loaded.
      *
      * @param mixed $content Content from cache
-     *
-     * @return bool
      */
     abstract protected function cacheLoaded(mixed $content): bool;
 }

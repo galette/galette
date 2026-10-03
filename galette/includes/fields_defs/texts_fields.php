@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -27,7 +14,7 @@ $texts_fields = [
     [
         'tref'      => 'sub',
         'tsubject'  => _T('[{ASSO_NAME}] Your identifiers'),
-        'tbody'     => _T("Hello,{NEWLINE}You've just been subscribed on the members management system of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
+        'tbody'     => _T("Hello,{NEWLINE}You've just been registered on the members management system of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state of your membership and to update your preferences from the web interface.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('New user registration')
     ],

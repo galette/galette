@@ -1,31 +1,23 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
+use Galette\Tests\GaletteRoutingTestCase;
+use Safe\DateTime;
+
+use function Safe\copy;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\json_encode;
+use function Safe\unlink;
 
 /**
  * CSV controller tests
@@ -38,8 +30,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -54,41 +44,7 @@ class CsvController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        $this->cleanHistory();
-
-        //remove model
-        $delete = $this->zdb->delete(\Galette\Entity\ImportModel::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test export page
-     *
-     * @return void
      */
     public function testExportPage(): void
     {
@@ -116,8 +72,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test do export (doExport, get file, remove file)
-     *
-     * @return void
      */
     public function testDoExport(): void
     {
@@ -153,12 +107,12 @@ class CsvController extends GaletteRoutingTestCase
         $group->setName('Group one' . $this->seed);
         $this->assertTrue($group->store());
         $group_one_id = $group->getId();
-        $group_one_creation_date = (new \DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
+        $group_one_creation_date = (new DateTime($group->getCreationDate(formatted: false)))->format('Y-m-d H:i:s');
         $group = new \Galette\Entity\Group();
         $group->setName('Group two' . $this->seed);
         $this->assertTrue($group->store());
         $group_two_id = $group->getId();
-        $group_two_creation_date = (new \DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
+        $group_two_creation_date = (new DateTime($group->getCreationDate(formatted: false)))->format('Y-m-d H:i:s');
 
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('export')]], $test_response->getHeaders());
@@ -243,8 +197,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test file removal routes
-     *
-     * @return void
      */
     public function testFileRemoval(): void
     {
@@ -314,7 +266,7 @@ class CsvController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->assertEquals(404, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
         $this->expectFlashData([]);
 
         //Call delete once again, should fail as file does not exist anymore (also test a JSON response
@@ -322,7 +274,7 @@ class CsvController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($do_request);
         $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, $filename . ' does not exists, no way to remove it!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, $filename . ' does not exists, no way to remove it!');
         $this->expectFlashData(['error_detected' => ['Cannot remove \'' . $filename . '\' from disk :/']]);
         $body = (string)$test_response->getBody();
         $this->assertSame(
@@ -337,8 +289,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import page
-     *
-     * @return void
      */
     public function testImportPage(): void
     {
@@ -366,8 +316,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test getFile route
-     *
-     * @return void
      */
     public function testGetFile(): void
     {
@@ -388,7 +336,7 @@ class CsvController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertEquals(404, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
         $this->expectFlashData([]);
         $this->login->logOut();
 
@@ -409,7 +357,7 @@ class CsvController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->resetStaffStatus($staff_member, $member_one);
         $this->assertEquals(404, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A request has been made to get a CSV file named `' . $filename . '` that does not exists');
         $this->expectFlashData([]);
         $this->login->logOut();
 
@@ -420,7 +368,7 @@ class CsvController extends GaletteRoutingTestCase
 
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
-        $this->assertTrue(unlink($filepath));
+        unlink($filepath);
         $expected_headers = [
             'Content-Description' => ['File Transfer'],
             'Content-Type' => ['text/csv'],
@@ -439,8 +387,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import model page
-     *
-     * @return void
      */
     public function testImportModelPage(): void
     {
@@ -468,8 +414,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import model routes (store, get)
-     *
-     * @return void
      */
     public function testImportModel(): void
     {
@@ -542,8 +486,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test members CSV export
-     *
-     * @return void
      */
     public function testMembersExport(): void
     {
@@ -586,17 +528,15 @@ class CsvController extends GaletteRoutingTestCase
             '"Member id";"Status";"Name";"First name";"Company";"Nickname";"Title";"Birth date";"Gender";"Address";"Zip Code";"City";"Region";"Country";"Phone";"Mobile phone";"E-Mail";"Other information (admin)";"Other information";"Profession";"Username";"Creation date";"Modification date";"Account";"Galette Admin";"Freed of dues";"Be visible on public pages";"Due date";"Language";"Birthplace";"Id GNUpg (GPG)";"fingerprint";"Parent";"Member number"',
             $body
         );
-        $now = new \DateTime();
+        $now = new DateTime();
         $this->assertStringContainsString(
-            '"' . $member_one->id . '";"Non-member";"Durand";"René";"";"ubertrand";"";"1942-12-26";"Unspecified";"66, boulevard De Oliveira";"39 069";"Martel";"Caribbean";"Antarctique";"0439153432";"";"meunier.josephine20250912171952@ledoux.com";"";"";"Chef de fabrication";"arthur.hamon20250912171952";"2020-06-10";"' . $now->format('Y-m-d') . '";"Yes";"No";"No";"Yes";"";"en_US";"Gonzalez-sur-Meunier";"";"FAKER20250912171952";"";""',
+            '"' . $member_one->id . '";"Non-member";"' . $member_one->name . '";"' . $member_one->surname . '";"";"' . $member_one->nickname . '";"";"' . $member_one->birthdate . '";"Unspecified";"' . $member_one->address . '";"' . $member_one->zipcode . '";"' . $member_one->town . '";"' . $member_one->region . '";"' . $member_one->country . '";"0439153432";"";"' . $member_one->email . '";"";"";"Chef de fabrication";"' . $member_one->login . '";"2020-06-10";"' . $now->format('Y-m-d') . '";"Yes";"No";"No";"Yes";"";"' . $member_one->language . '";"' . $member_one->birth_place . '";"";"' . $member_one->fingerprint . '";"";""',
             $body
         );
     }
 
     /**
      * Test contributions CSV export
-     *
-     * @return void
      */
     public function testContributionExport(): void
     {
@@ -646,8 +586,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment CSV export
-     *
-     * @return void
      */
     public function testScheduledPaymentExport(): void
     {
@@ -673,7 +611,7 @@ class CsvController extends GaletteRoutingTestCase
         $contrib_data[\Galette\Entity\Adherent::PK] = $member_one->id;
         $this->createContrib($contrib_data);
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
             'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
@@ -719,8 +657,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test upload and import CSV file
-     *
-     * @return void
      */
     public function testImportFile(): void
     {
@@ -741,7 +677,7 @@ class CsvController extends GaletteRoutingTestCase
         $this->expectNoLogEntry();
         $this->expectFlashData(['warning_detected' => ['No file has been uploaded!']]);
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/import_file.csv', sys_get_temp_dir() . '/uploaded_file.csv'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/import_file.csv', sys_get_temp_dir() . '/uploaded_file.csv');
         $uploaded_files = [
             'new_file' => new \Slim\Psr7\UploadedFile(
                 sys_get_temp_dir() . '/uploaded_file.csv',

@@ -1,36 +1,25 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Util;
+namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Release tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Release extends TestCase
+class Release extends GaletteTestCase
 {
     /**
      * Releases provider
@@ -54,10 +43,9 @@ class Release extends TestCase
      * @param string $current  Current release
      * @param string $latest   Latest release
      * @param bool   $expected Expected result
-     *
-     * @dataProvider releasesProvider
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('releasesProvider')]
     public function testNewRelease(string $current, string $latest, bool $expected): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
@@ -228,10 +216,9 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
      * @param string $latest   Latest release
      * @param bool   $expected Expected result
      * @param string $page     Page content
-     *
-     * @dataProvider releasesPageProvider
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('releasesPageProvider')]
     public function testFindLatestRelease(string $current, string $latest, bool $expected, string $page): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -43,20 +30,20 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $date
- * @property float $amount
+ * @property ?int    $id
+ * @property string  $date
+ * @property ?float  $amount
  * @property ?string $description
- * @property ?int $member
- * @property ?int $payment_type
+ * @property ?int    $member
+ * @property ?int    $payment_type
  */
 class Transaction implements AccessManagementInterface
 {
     use Dynamics;
     use EntityHelper;
 
-    public const TABLE = 'transactions';
-    public const PK = 'trans_id';
+    public const string TABLE = 'transactions';
+    public const string PK = 'trans_id';
 
     private int $id;
     private string $date;
@@ -102,8 +89,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     protected function setFields(): self
     {
@@ -205,8 +190,6 @@ class Transaction implements AccessManagementInterface
      *
      * @param History $hist        History
      * @param bool    $transaction Activate transaction mode (defaults to true)
-     *
-     * @return bool
      */
     public function remove(History $hist, bool $transaction = true): bool
     {
@@ -214,7 +197,7 @@ class Transaction implements AccessManagementInterface
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             //remove associated contributions if needed
@@ -225,7 +208,7 @@ class Transaction implements AccessManagementInterface
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
-                $c->remove($cids, $hist, false);
+                $c->remove($cids, $hist, transaction: false);
             }
 
             //remove transaction itself
@@ -233,7 +216,7 @@ class Transaction implements AccessManagementInterface
             $delete->where([self::PK => $this->id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
-                $this->dynamicsRemove(true);
+                $this->dynamicsRemove(transaction: true);
             } else {
                 Analog::log(
                     'Transaction has not been removed!',
@@ -243,14 +226,14 @@ class Transaction implements AccessManagementInterface
             }
 
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
 
             $emitter->dispatch(new GaletteEvent('transaction.remove', $this));
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove transaction #'
@@ -265,8 +248,6 @@ class Transaction implements AccessManagementInterface
      * Populate object from a resultset row
      *
      * @param ArrayObject<string,int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -325,7 +306,7 @@ class Transaction implements AccessManagementInterface
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $member = new Adherent($this->zdb, (int)$value, false);
+                            $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 !$this->login->isStaff()
                                 && !$this->login->isAdmin()
@@ -348,8 +329,8 @@ class Transaction implements AccessManagementInterface
                         break;
                     case 'trans_desc':
                         /** TODO: retrieve field length from database and check that */
-                        $this->description = strip_tags((string) $value);
-                        if (mb_strlen((string) $value) > 150) {
+                        $this->description = strip_tags((string)$value);
+                        if (mb_strlen((string)$value) > 150) {
                             $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                         }
                         break;
@@ -399,7 +380,7 @@ class Transaction implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction'
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -416,15 +397,13 @@ class Transaction implements AccessManagementInterface
      * Store the transaction
      *
      * @param History $hist History
-     *
-     * @return bool
      */
     public function store(History $hist): bool
     {
         global $emitter;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [];
             $fields = $this->getDbFields($this->zdb);
             foreach ($fields as $field) {
@@ -472,16 +451,16 @@ class Transaction implements AccessManagementInterface
             }
 
             //dynamic fields
-            $this->dynamicsStore(true);
+            $this->dynamicsStore(transaction: true);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             //send event at the end of process, once all has been stored
             $emitter->dispatch(new GaletteEvent($event, $this));
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n"
                 . $e->getTraceAsString(),
@@ -493,8 +472,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Retrieve amount that has already been dispatched into contributions
-     *
-     * @return double
      */
     public function getDispatchedAmount(): float
     {
@@ -526,8 +503,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Retrieve amount that has not yet been dispatched into contributions
-     *
-     * @return double
      */
     public function getMissingAmount(): float
     {
@@ -559,8 +534,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Get payment type label
-     *
-     * @return string
      */
     public function getPaymentType(): string
     {
@@ -656,7 +629,7 @@ class Transaction implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -669,8 +642,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user create a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -690,8 +661,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user display transactions?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -734,8 +703,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user edit a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -747,8 +714,6 @@ class Transaction implements AccessManagementInterface
      * Specific right for groups managers to attach/detach contributions from a transaction -_-
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canAttachAndDetach(Login $login): bool
     {
@@ -764,8 +729,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user delete a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canDelete(Login $login): bool
     {

@@ -1,57 +1,48 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Analog\Analog;
 use Galette\Entity\Adherent;
-use Galette\IO\News\Entry;
 
 /**
  * Galette plugins
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * Designed to be extended by plugins; which can implement the following interfaces:
+ * - MenuProviderInterface: if the plugin provides extra menu entries (public or private menus)
+ * - DashboardProviderInterface: if the plugin provides extra dashboard entries
+ * - MemberActionProviderInterface: if the plugin provides extra member actions
+ * - NewsProviderInterface: if the plugin provides news to be displayed in the dashboard
+ * - PreferencesProviderInterface: if the plugin stores settings in Galette preferences
+ *
+ * Note: a plugin can implement one or more of these interfaces, but it is not mandatory to implement all of them.
+ * Methods are kept in the base class for backward compatibility, they will throw a deprecation warning if used
  */
-abstract class GalettePlugin
+abstract class GalettePlugin implements Plugins\InstallableInterface
 {
-    /**
-     * Get all menus
-     *
-     * @return array<string, string|array<string,mixed>>
-     */
-    public static function getAllMenus(): array
-    {
-        return static::getMenus(true);
-    }
-
     /**
      * Get plugins menus
      *
-     * @param bool $public Include public menus. Defaults to false
-     *
      * @return array<string, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getMenus(bool $public = false): array
+    public function getMenus(): array
     {
+        Analog::log(
+            static::class . '::getMenusContents() is deprecated, please implement MenuProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getMenusContents();
     }
 
@@ -60,25 +51,82 @@ abstract class GalettePlugin
      *
      * @return array<int, string|array<string,mixed>>
      */
-    public static function getPublicMenuItems(): array
+    public function getPublicMenuItems(): array
     {
         global $preferences, $login;
 
+        //a plugin declaring its pages gives each entry a visibility of its
+        //own; the others all follow the default one
+        $declares = $this instanceof Plugins\PublicPagesProviderInterface;
+        if (!$declares && !$preferences->showPublicPage($login, 'pref_publicpages_visibility_generic')) {
+            return [];
+        }
+
         $menus = [];
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_plugins')) {
+        if ($this instanceof Plugins\MenuProviderInterface) {
+            $menus = $this->getPublicMenus();
+        } elseif (method_exists($this, 'getPublicMenusItemsList')) {
+            Analog::log(
+                static::class . '::getPublicMenusItemsList() is deprecated, please implement MenuProviderInterface',
+                Analog::WARNING
+            );
+            /** @phpstan-ignore staticMethod.notFound */
             $menus = static::getPublicMenusItemsList();
         }
 
-        return $menus;
+        return $declares ? $this->filterPublicMenuItems($menus, $preferences, $login) : $menus;
+    }
+
+    /**
+     * Keep the public menu entries the current user may see
+     *
+     * An entry with children is kept as long as one of them is.
+     *
+     * @param array<int|string, string|array<string,mixed>> $items       Menu entries
+     * @param Preferences                                   $preferences Preferences instance
+     * @param Authentication                                $login       Authentication instance
+     *
+     * @return array<int|string, string|array<string,mixed>>
+     */
+    private function filterPublicMenuItems(array $items, Preferences $preferences, Authentication $login): array
+    {
+        $visible = [];
+        foreach ($items as $key => $item) {
+            if (!is_array($item)) {
+                $visible[$key] = $item;
+                continue;
+            }
+
+            if (isset($item['children']) && is_array($item['children'])) {
+                $item['children'] = $this->filterPublicMenuItems($item['children'], $preferences, $login);
+                if ($item['children'] === []) {
+                    continue;
+                }
+            } elseif (
+                !$preferences->showPluginPublicPage($login, (string)($item['route']['name'] ?? ''))
+            ) {
+                continue;
+            }
+
+            $visible[$key] = $item;
+        }
+
+        return array_is_list($items) ? array_values($visible) : $visible;
     }
 
     /**
      * Get plugins dashboards
      *
      * @return array<int, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getDashboards(): array
+    public function getDashboards(): array
     {
+        Analog::log(
+            static::class . '::getDashboardsContents() is deprecated, please implement DashboardProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getDashboardsContents();
     }
 
@@ -86,39 +134,17 @@ abstract class GalettePlugin
      * Get current logged-in user plugins dashboards
      *
      * @return array<int, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getMyDashboards(): array
+    public function getMyDashboards(): array
     {
+        Analog::log(
+            static::class . '::getMyDashboardsContents() is deprecated, please implement DashboardProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getMyDashboardsContents();
     }
-
-    /**
-     * Extra menus entries
-     *
-     * @return array<string, string|array<string,mixed>>
-     */
-    abstract public static function getMenusContents(): array;
-
-    /**
-     * Extra public menus entries
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getPublicMenusItemsList(): array;
-
-    /**
-     * Get dashboards contents
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getDashboardsContents(): array;
-
-    /**
-     * Get current logged-in user dashboards contents
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getMyDashboardsContents(): array;
 
     /**
      * Get member actions
@@ -126,9 +152,15 @@ abstract class GalettePlugin
      * @param Adherent $member Current member
      *
      * @return array<int, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getListActions(Adherent $member): array
+    public function getListActions(Adherent $member): array
     {
+        Analog::log(
+            static::class . '::getListActionsContents() is deprecated, please implement MemberActionProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getListActionsContents($member);
     }
 
@@ -138,9 +170,15 @@ abstract class GalettePlugin
      * @param Adherent $member Current member
      *
      * @return array<int, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getDetailedActions(Adherent $member): array
+    public function getDetailedActions(Adherent $member): array
     {
+        Analog::log(
+            static::class . '::getDetailedActionsContents() is deprecated, please implement MemberActionProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getDetailedActionsContents($member);
     }
 
@@ -148,55 +186,40 @@ abstract class GalettePlugin
      * Get member batch actions
      *
      * @return array<int, string|array<string,mixed>>
+     * @deprecated 1.2.2
      */
-    public static function getBatchActions(): array
+    public function getBatchActions(): array
     {
+        Analog::log(
+            static::class . '::getBatchActionsContents() is deprecated, please implement MemberActionProviderInterface',
+            Analog::WARNING
+        );
+        /** @phpstan-ignore staticMethod.notFound */
         return static::getBatchActionsContents();
     }
 
     /**
-     * Get actions contents
-     *
-     * @param Adherent $member Current member
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getListActionsContents(Adherent $member): array;
-
-    /**
-     * Get batch actions contents
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getBatchActionsContents(): array;
-
-    /**
-     * Get detailed actions contents
-     *
-     * @param Adherent $member Current member
-     *
-     * @return array<int, string|array<string,mixed>>
-     */
-    abstract public static function getDetailedActionsContents(Adherent $member): array;
-
-    /**
-     * Get news for this plugin
-     *
-     * @return ?Entry
-     */
-    public function getNews(): ?Entry
-    {
-        //per default, plugins do not have news to display.
-        return null;
-    }
-
-    /**
-     * Is the plugin fully installed (including database, extra configuration, etc)?
-     *
-     * @return bool
+     * Is the plugin fully installed (including database, extra configuration, etc.)?
      */
     public function isInstalled(): bool
     {
+        Analog::log(
+            static::class . '::isInstalled() is deprecated, please implement InstallableInterface',
+            Analog::WARNING
+        );
         return true;
+    }
+
+    /**
+     * Database version of an installation that predates plugins versions tracking
+     *
+     * Called when plugin tables exist, but no version has been stored for it
+     * yet: this is the case coming from Galette 1.2. Return the version
+     * existing tables are at so that pending update scripts are run, or null
+     * if they are up to date with the declared version.
+     */
+    public function getLegacyDbVersion(): ?float
+    {
+        return null;
     }
 }

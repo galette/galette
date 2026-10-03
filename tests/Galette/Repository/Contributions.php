@@ -1,29 +1,18 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
 
 /**
  * Contributions repository tests
@@ -35,45 +24,15 @@ class Contributions extends GaletteTestCase
     protected int $seed = 20230327215258;
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test getList
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null);
+        $list = $contributions->getList(as_contrib: true, fields: null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());
@@ -82,7 +41,7 @@ class Contributions extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $this->assertSame(92.0, $contributions->getSum());
@@ -91,74 +50,74 @@ class Contributions extends GaletteTestCase
         $filters = new \Galette\Filters\ContributionsList();
         $filters->filtre_cotis_adh = $member2->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->filtre_cotis_adh = $this->adh->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->max_amount = 90;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->max_amount = 95;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->start_date_filter = $this->contrib->begin_date;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->start_date_filter = $this->contrib->end_date;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_END;
         $filters->end_date_filter = $this->contrib->end_date;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_RECORD;
         $filters->start_date_filter = $this->contrib->date;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_RECORD;
         $filters->start_date_filter = $this->contrib->end_date;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->payment_type_filter = $this->contrib->payment_type;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->contrib_type_filter = $this->contrib->type->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         //create a transaction
-        $date = new \DateTime();
+        $date = new DateTime();
         $data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -179,19 +138,19 @@ class Contributions extends GaletteTestCase
         $filters = new \Galette\Filters\ContributionsList();
         $filters->from_transaction = false;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->from_transaction = $transaction->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->contrib_type_filter = $this->contrib->type->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         //member with a contribution
@@ -206,14 +165,14 @@ class Contributions extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
         $login->setId($this->adh->id);
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_END;
         $filters->filtre_cotis_children = $this->adh->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         //member does not have any contribution
@@ -228,22 +187,110 @@ class Contributions extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
         $login->setId($member2->id);
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
 
         //cannot load another simple member's contribution
         $filters = new \Galette\Filters\ContributionsList();
         $filters->filtre_cotis_adh = $this->adh->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login, $filters);
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
-        $this->expectLogEntry(\Analog::WARNING, "Trying to display contributions for member #{$this->adh->id} without appropriate ACLs");
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "Trying to display contributions for member #{$this->adh->id} without appropriate ACLs"
+        );
+    }
+
+    /**
+     * Test getList as a group manager
+     */
+    public function testGetListAsGroupManager(): void
+    {
+        $this->logSuperAdmin();
+
+        //two contributions for first member
+        $member_one = $this->getMemberOne();
+        $this->createContribution();
+        $data = $this->getContribData();
+        $data['id_type_cotis'] = 4; //donation
+        $data['montant_cotis'] = 8;
+        $this->createContrib($data);
+
+        //one contribution for second member, that will manage groups
+        $member_two = $this->getMemberTwo();
+        $this->createContribution();
+
+        //as admin, all contributions are listed and counted
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(192.0, $contributions->getSum());
+
+        //second member manages two groups, first member is part of both of them
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $this->assertTrue($g2->store());
+        $this->assertTrue($g2->setManagers([$member_two]));
+        $this->assertTrue($g2->setMembers([$member_one]));
+
+        $this->login->logOut();
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager());
+
+        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_contributions;
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $this->assertTrue($this->preferences->store());
+
+        //group manager only sees its own contributions
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(1, $list);
+        $this->assertSame(1, $contributions->getCount());
+        $this->assertSame(92.0, $contributions->getSum());
+
+        //let groups managers see their groups members contributions
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $this->assertTrue($this->preferences->store());
+
+        //first member is part of two managed groups, its contributions are listed only once
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(192.0, $contributions->getSum());
+
+        //count is required for pagination to work
+        $filters = new \Galette\Filters\ContributionsList();
+        $filters->show = 2;
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(2, $list);
+        $this->assertSame(3, $contributions->getCount());
+        $this->assertSame(2, $filters->pages);
+
+        $filters->current_page = 2;
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(1, $list);
+        $this->assertSame(3, $contributions->getCount());
+
+        //reset
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = $orig_pref;
+        $this->assertTrue($this->preferences->store());
     }
 
     /**
      * Test getArrayList
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -253,14 +300,14 @@ class Contributions extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $list = $contributions->getArrayList([$this->contrib->id], true);
+        $list = $contributions->getArrayList([$this->contrib->id], as_contrib: true);
 
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $contrib = array_pop($list);
         $this->assertTrue($contrib instanceof \Galette\Entity\Contribution);
 
-        $list = $contributions->getArrayList([$this->contrib->id], false);
+        $list = $contributions->getArrayList([$this->contrib->id], as_contrib: false);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $contrib = array_pop($list);
@@ -271,8 +318,6 @@ class Contributions extends GaletteTestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -282,19 +327,18 @@ class Contributions extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(1, $list);
 
         $this->assertTrue($contributions->remove($this->contrib->id, $this->history));
 
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertCount(0, $list);
     }
 
     /**
      * Test order by
      *
-     * @return void
      * @throws \Throwable
      */
     public function testOrderBy(): void
@@ -302,7 +346,7 @@ class Contributions extends GaletteTestCase
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null);
+        $list = $contributions->getList(as_contrib: true, fields: null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());
@@ -310,7 +354,7 @@ class Contributions extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $list = $contributions->getList(true);
+        $list = $contributions->getList(as_contrib: true);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $this->assertSame(92.0, $contributions->getSum());
@@ -328,9 +372,9 @@ class Contributions extends GaletteTestCase
 
         foreach ($order_fields as $order_field) {
             $filters = new \Galette\Filters\ContributionsList();
-            $filters->orderby = $order_field;
+            $filters->orderby = $order_field; //@phpstan-ignore assign.propertyType (class handle that)
             $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
-            $list = $contributions->getList(true);
+            $list = $contributions->getList(as_contrib: true);
             $this->assertIsArray($list);
             $this->assertCount(1, $list);
             $this->assertSame(92.0, $contributions->getSum());

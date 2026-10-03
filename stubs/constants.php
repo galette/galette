@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 // Keep in sync with the dynamicConstantNames config option in the PHPStan config file
@@ -29,6 +16,7 @@
     // Directories constants
     define('GALETTE_BASE_PATH', dirname(__FILE__, 2) . '/galette');
     define('GALETTE_ROOT', $random_val(['./', './galette']));
+    define('GALETTE_TESTS_PATH', dirname(__FILE__, 2) . '/tests');
 
     define('GALETTE_CONFIG_PATH', dirname(__FILE__, 2) . '/galette/config');
     define('GALETTE_PLUGINS_PATH', dirname(__FILE__, 2) . '/galette/plugins');
@@ -46,18 +34,20 @@
     define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
     define('GALETTE_TPL_THEME_DIR', dirname(__FILE__, 2) . '/galette/templates/default/');
     define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
+    define('_CURRENT_THEME_PATH', GALETTE_THEMES_PATH . '/default/');
 
     // Optional constants
     if ($random_val([false, true]) === true) {
         define('GALETTE_CRON', $random_val([false, true]));
         define('GALETTE_INSTALLER', $random_val([false, true]));
         define('GALETTE_LOGGER_CHECKED', $random_val([false, true]));
+        define('GALETTE_TESTS', $random_val([false, true]));
+        define('GALETTE_FEATURE_FLAGS', [$random_val(['acls', 'oauth2']), $random_val(['api-v2', 'new-dashboard'])]);
     }
 
     // Other constants
     define('GALETTE_MODE', $random_val([\Galette\Core\Galette::MODE_PROD, \Galette\Core\Galette::MODE_DEV, \Galette\Core\Galette::MODE_MAINT, \Galette\Core\Galette::MODE_DEMO]));
-    define ('GALETTE_DEBUG', $random_val([false, true]));
-    define('GALETTE_ADAPTATIVE_CARDS', $random_val([false, true]));
+    define('GALETTE_DEBUG', $random_val([false, true]));
     define('GALETTE_LOG_LVL', $random_val([\Analog\Analog::URGENT, \Analog\Analog::ALERT, \Analog\Analog::CRITICAL, \Analog\Analog::ERROR, \Analog\Analog::WARNING, \Analog\Analog::NOTICE, \Analog\Analog::INFO, \Analog\Analog::DEBUG]));
     define('GALETTE_THEME', $random_val(['themes/default/', 'themes/alternative/']));
     define('GALETTE_TIMEOUT', $random_val([0, 5, 10]));

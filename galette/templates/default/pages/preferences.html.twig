@@ -1,24 +1,11 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
         <form action="{{ url_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
@@ -30,11 +17,9 @@
             <a href="{{ url_for('preferences') }}?tab=mail" class="item{{ tab == 'mail' ? ' active' }}" data-tab="mail">{{ _T("E-Mail") }}</a>
             <a href="{{ url_for('preferences') }}?tab=labels" class="item{{ tab == 'labels' ? ' active' }}" data-tab="labels">{{ _T("Labels") }}</a>
             <a href="{{ url_for('preferences') }}?tab=cards" class="item{{ tab == 'cards' ? ' active' }}" data-tab="cards">{{ _T("Cards") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=dyn_fields" class="item{{ tab == 'dyn_fields' ? ' active' }}" data-tab="dyn_fields">{{ _T("Dynamic fields") }}</a>
 {% if login.isAdmin() %}
             <a href="{{ url_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
-{% endif %}
-{% if login.isSuperAdmin() %}
-            <a href="{{ url_for('preferences') }}?tab=admin" class="item{{ tab == 'admin' ? ' active' }}" data-tab="admin">{{ _T("Admin") }}</a>
 {% endif %}
         </div>
         <div class="ui{{ tab == 'general' ? ' active' }} tab segment" data-tab="general">
@@ -45,11 +30,14 @@
                         <input type="text" name="pref_nom" id="pref_nom" value="{{ pref.pref_nom }}" maxlength="190"{% if required.pref_nom is defined and required.pref_nom == 1 %} required="required"{% endif %}/>
                     </div>
                     <div class="field">
-                        <label for="pref_slogan">{{ _T("Association's short description:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Enter here a short description for your association, it will be displayed on the index page and into pages' title.") }}" aria-hidden="true"></i>
-                        </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Association's short description:"),
+                            for: "pref_slogan",
+                            tip: _T("Enter here a short description for your association, it will be displayed on the index page and into pages' title."),
+                            id: "pref_slogan"
+                        } only %}
                         <div class="ui action input">
-                            <input type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
+                            <input type="text" name="pref_slogan" id="pref_slogan" aria-describedby="pref_slogan-tip" value="{{ pref.pref_slogan }}"/>
                             <a
                                 href="{{ url_for("dynamicTranslations", {}, {"text_orig": pref.pref_slogan}) }}"
                                 class="single-translate tooltip ui icon button{% if pref.pref_slogan is empty %} disabled{% endif %}"
@@ -63,7 +51,11 @@
                 </div>
                 <div class="column">
                     <div class="field wide ui items">
-                        <label>{{ _T("Logo:") }}</label>
+                        {% include "components/forms/max_size.html.twig" with {
+                            label: _T("Logo:"),
+                            max_size: preferences.pref_upload_size_images,
+                            input_id: "logo_picture"
+                        } %}
                         <div class="item">
         {% if logo.isCustom() %}
                             <div class="image">
@@ -73,7 +65,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="logo" id="logo_picture"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="logo" id="logo_picture" aria-describedby="logo_picture-tip"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="logo_picture" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
@@ -124,10 +116,10 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label>
-                            {{ _T("Postal address:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Use either the address set above or select a staff member to retrieve its address.") }}" aria-hidden="true"></i>
-                        </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Postal address:"),
+                            tip: _T("Use either the address set above or select a staff member to retrieve its address.")
+                        } only %}
                         <div id="postal_reference" class="inline fields">
                             <div class="field">
                                 <div class="ui radio checkbox">
@@ -155,11 +147,13 @@
                 </div>{# /column #}
                 <div class="column">
                     <div class="field">
-                        <label for="pref_org_phone_number">
-                            {{ _T("Phone:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Either use the phone number set below or select a staff member to retrieve its phone number.") }}" aria-hidden="true"></i>
-                        </label>
-                        <input type="text" name="pref_org_phone_number" id="pref_org_phone_number" value="{{ pref.pref_org_phone_number }}" maxlength="100"/>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Phone:"),
+                            for: "pref_org_phone_number",
+                            tip: _T("Either use the phone number set below or select a staff member to retrieve its phone number."),
+                            id: "pref_org_phone_number"
+                        } only %}
+                        <input type="text" name="pref_org_phone_number" id="pref_org_phone_number" aria-describedby="pref_org_phone_number-tip" value="{{ pref.pref_org_phone_number }}" maxlength="100"/>
                     </div>
                     <div id="phone_reference" class="inline fields">
                         <div class="field">
@@ -206,9 +200,13 @@
                         <label for="pref_footer">{{ _T("Footer text:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" title="{{ _T("Enter a text (HTML allowed) that will be displayed in the footer of every page") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Enter a text (HTML allowed) that will be displayed in the footer of every page"),
+                                    id: "pref_footer",
+                                    small: false
+                                } only %}
                             </div>
-                            <textarea name="pref_footer" id="pref_footer" rows="2">{{ pref.pref_footer }}</textarea>
+                            <textarea name="pref_footer" id="pref_footer" aria-describedby="pref_footer-tip" rows="2">{{ pref.pref_footer }}</textarea>
                         </div>
                     </div>
                     <div class="field inline">
@@ -220,20 +218,20 @@
                 </div>{# /column #}
                 <div class="column">
                     <div class="field">
-                        <label>
-                            {{ _T("Telemetry date:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Last telemetry sent date.") }}" aria-hidden="true"></i>
-                        </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Telemetry date:"),
+                            tip: _T("Last telemetry sent date.")
+                        } only %}
                         <span>
                             {{ preferences.getTelemetryDate() }}
-                           - <a href="#" id="telemetry" class="ui labeled icon button"><i class="chart bar icon" aria-hidden="true"></i> {{ _T("send") }}</a>
+                           - <button type="button" id="telemetry" class="ui labeled icon button"><i class="chart bar icon" aria-hidden="true"></i> {{ _T("send") }}</button>
                         </span>
                     </div>
                     <div class="field">
-                        <label>
-                            {{ _T("Registration date:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Date on which you registered your Galette instance.") }}" aria-hidden="true"></i>
-                        </label>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Registration date:"),
+                            tip: _T("Date on which you registered your Galette instance.")
+                        } only %}
                         <span>
                             {% if pref.pref_registration_date %}
                                 {% set regtxt = _T("Update your information") %}
@@ -318,10 +316,15 @@
                         <div class="two fields">
                             <div class="field inline">
                                 <div class="ui right aligned toggle checkbox">
-                                    <input type="checkbox" name="pref_force_picture_ratio" id="pref_force_picture_ratio" value="1" {% if pref.pref_force_picture_ratio == 1 %}checked="checked"{% endif %}/>
+                                    <input type="checkbox" name="pref_force_picture_ratio" id="pref_force_picture_ratio" aria-describedby="pref_force_picture_ratio-tip" value="1" {% if pref.pref_force_picture_ratio == 1 %}checked="checked"{% endif %}/>
                                     <label for="pref_force_picture_ratio">{{ _T("Force member picture ratio") }}</label>
                                 </div>
-                                <i class="circular small basic question icon tooltip" data-html="{{ _T("If checked, the members's picture will be resized and cropped to the ratio selected below.") }}" data-variation="inverted wide" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("If checked, the members's picture will be resized and cropped to the ratio selected below."),
+                                    id: "pref_force_picture_ratio",
+                                    html: true,
+                                    variation: "inverted wide"
+                                } only %}
                             </div>
                             <div id="pref_member_picture_ratio_field" class="inline right aligned field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
                                 <label for="pref_member_picture_ratio">{{ _T("Select a ratio") }}</label>
@@ -360,9 +363,15 @@
                             <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
                             <div class="ui right corner labeled input">
                                 <div class="ui corner label">
-                                    <i class="circular basic question icon tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}" aria-hidden="true"></i>
+                                    {% set offermonths_tip %}{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}{% endset %}
+                                    {% include "components/forms/tip.html.twig" with {
+                                        tip: offermonths_tip,
+                                        id: "pref_membership_offermonths",
+                                        html: true,
+                                        small: false
+                                    } only %}
                                 </div>
-                                <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
+                                <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" aria-describedby="pref_membership_offermonths-tip" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
                             </div>
                         </div>
                     </div>
@@ -377,7 +386,7 @@
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
                             <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
-                            <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
+                            <label for="pref_bool_selfsubscribe">{{ _T("Self registration enabled?") }}</label>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -401,72 +410,64 @@
             <div id="publicpages_visibility" class="ui stackable two column grid{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
                 <div class="column">
                     <div class="field">
-                        <label for="pref_publicpages_visibility_generic">
-                            {{ _T("Default") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Will apply for all public pages that are not listed here, including plugin ones.") }}" aria-hidden="true"></i>
-                        </label>
-                        <select name="pref_publicpages_visibility_generic" id="pref_publicpages_visibility_generic" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/tip.html.twig" with {
+                            label: _T("Default"),
+                            for: "pref_publicpages_visibility_generic",
+                            tip: _T("Will apply for all public pages that are not listed here, including plugin ones."),
+                            id: "pref_publicpages_visibility_generic"
+                        } only %}
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_generic",
+                            value: pref.pref_publicpages_visibility_generic,
+                            choices: default_visibility_choices,
+                            tip: true
+                        } only %}
                     </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="field">
                         <label for="pref_publicpages_visibility_documents">{{ _T("Documents") }}</label>
-                        <select name="pref_publicpages_visibility_documents" id="pref_publicpages_visibility_documents" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_documents",
+                            value: pref.pref_publicpages_visibility_documents,
+                            choices: visibility_choices
+                        } only %}
                     </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="field">
                         <label for="pref_publicpages_visibility_memberslist">{{ _T("Members list") }}</label>
-                        <select name="pref_publicpages_visibility_memberslist" id="pref_publicpages_visibility_memberslist" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_memberslist",
+                            value: pref.pref_publicpages_visibility_memberslist,
+                            choices: visibility_choices
+                        } only %}
                     </div>
                     <div class="field">
                         <label for="pref_publicpages_visibility_membersgallery">{{ _T("Members gallery") }}</label>
-                        <select name="pref_publicpages_visibility_membersgallery" id="pref_publicpages_visibility_membersgallery" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_membersgallery",
+                            value: pref.pref_publicpages_visibility_membersgallery,
+                            choices: visibility_choices
+                        } only %}
                     </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="field">
                         <label for="pref_publicpages_visibility_stafflist">{{ _T("Staff list") }}</label>
-                        <select name="pref_publicpages_visibility_stafflist" id="pref_publicpages_visibility_stafflist" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_stafflist",
+                            value: pref.pref_publicpages_visibility_stafflist,
+                            choices: visibility_choices
+                        } only %}
                     </div>
                     <div class="field">
                         <label for="pref_publicpages_visibility_staffgallery">{{ _T("Staff gallery") }}</label>
-                        <select name="pref_publicpages_visibility_staffgallery" id="pref_publicpages_visibility_staffgallery" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
-                        </select>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: "pref_publicpages_visibility_staffgallery",
+                            value: pref.pref_publicpages_visibility_staffgallery,
+                            choices: visibility_choices
+                        } only %}
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
@@ -475,6 +476,18 @@
                         </div>
                     </div>
                 </div>{# /column #}
+{% for page in plugin_public_pages %}
+                <div class="column">
+                    <div class="field">
+                        <label for="{{ page.name }}">{{ page.label }} ({{ page.plugin }})</label>
+                        {% include "components/forms/public_page_visibility.html.twig" with {
+                            name: page.name,
+                            value: pref[page.name],
+                            choices: visibility_choices
+                        } only %}
+                    </div>
+                </div>{# /column #}
+{% endfor %}
             </div>{# /column grid #}
             <div class="ui horizontal divider small header">
                 <i class="palette icon"></i>
@@ -498,25 +511,37 @@
                 <div class="column">
                     <div class="inline field">
                         <label for="pref_cc_primary">{{ _T("Primary color") }}</label>
-                        <input type="color" name="pref_cc_primary" id="pref_cc_primary" value="{{ pref.pref_cc_primary }}" size="7" maxlength="7"/>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to primary buttons, checkboxes, labels, headers, borders, and menus.") }}" aria-hidden="true"></i>
+                        <input type="color" name="pref_cc_primary" id="pref_cc_primary" aria-describedby="pref_cc_primary-tip" value="{{ pref.pref_cc_primary }}" size="7" maxlength="7"/>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Color applied to primary buttons, checkboxes, labels, headers, borders, and menus."),
+                            id: "pref_cc_primary"
+                        } only %}
                     </div>
                     <div class="inline field">
                         <label for="pref_cc_primary_text">{{ _T("Text on primary color") }}</label>
-                        <input type="color" name="pref_cc_primary_text" id="pref_cc_primary_text" value="{{ pref.pref_cc_primary_text }}" size="7" maxlength="7"/>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to text displayed over the Primary color.") }}" aria-hidden="true"></i>
+                        <input type="color" name="pref_cc_primary_text" id="pref_cc_primary_text" aria-describedby="pref_cc_primary_text-tip" value="{{ pref.pref_cc_primary_text }}" size="7" maxlength="7"/>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Color applied to text displayed over the Primary color."),
+                            id: "pref_cc_primary_text"
+                        } only %}
                     </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="inline field">
                         <label for="pref_cc_secondary">{{ _T("Secondary color") }}</label>
-                        <input type="color" name="pref_cc_secondary" id="pref_cc_secondary" value="{{ pref.pref_cc_secondary }}" size="7" maxlength="7"/>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to active items in menus, paginations, and accordions views.") }}" aria-hidden="true"></i>
+                        <input type="color" name="pref_cc_secondary" id="pref_cc_secondary" aria-describedby="pref_cc_secondary-tip" value="{{ pref.pref_cc_secondary }}" size="7" maxlength="7"/>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Color applied to active items in menus, paginations, and accordions views."),
+                            id: "pref_cc_secondary"
+                        } only %}
                     </div>
                     <div class="inline field">
                         <label for="pref_cc_secondary_text">{{ _T("Text on secondary color") }}</label>
-                        <input type="color" name="pref_cc_secondary_text" id="pref_cc_secondary_text" value="{{ pref.pref_cc_secondary_text }}" size="7" maxlength="7"/>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to text displayed over the Secondary color.") }}" aria-hidden="true"></i>
+                        <input type="color" name="pref_cc_secondary_text" id="pref_cc_secondary_text" aria-describedby="pref_cc_secondary_text-tip" value="{{ pref.pref_cc_secondary_text }}" size="7" maxlength="7"/>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Color applied to text displayed over the Secondary color."),
+                            id: "pref_cc_secondary_text"
+                        } only %}
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
@@ -530,18 +555,28 @@
                         <label for="pref_galette_url">{{ _T("Galette base URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ url_for('preferences')}) }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T('Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%1$s')|format(preferences.getDefaultURL() ~ url_for('preferences')),
+                                    id: "pref_galette_url",
+                                    html: true,
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"/>
+                            <input type="text" name="pref_galette_url" id="pref_galette_url" aria-describedby="pref_galette_url-tip" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"/>
                         </div>
                     </div>
                     <div class="field">
                         <label for="pref_new_contrib_script">{{ _T("Post new contribution script URI") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" data-html="{{ _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases).") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."),
+                                    id: "pref_new_contrib_script",
+                                    html: true,
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{{ pref.pref_new_contrib_script }}"/>
+                            <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" aria-describedby="pref_new_contrib_script-tip" value="{{ pref.pref_new_contrib_script }}"/>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -550,9 +585,13 @@
                         <label for="pref_rss_url">{{ _T("RSS feed URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" title="{{ _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop.") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop."),
+                                    id: "pref_rss_url",
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_rss_url" id="pref_rss_url" value="{{ pref.pref_rss_url }}"/>
+                            <input type="text" name="pref_rss_url" id="pref_rss_url" aria-describedby="pref_rss_url-tip" value="{{ pref.pref_rss_url }}"/>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -593,10 +632,13 @@
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" value="1" {% if pref.pref_bool_groupsmanagers_exports == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" aria-describedby="pref_bool_groupsmanagers_exports-tip" value="1" {% if pref.pref_bool_groupsmanagers_exports == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_bool_groupsmanagers_exports">{{ _T("Can group managers do exports?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf"),
+                            id: "pref_bool_groupsmanagers_exports"
+                        } only %}
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
@@ -648,9 +690,13 @@
                         <label for="pref_email_reply_to">{{ _T("Reply-To Email:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" title="{{ _T("Leave empty to use Sender Email as reply address") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Leave empty to use Sender Email as reply address"),
+                                    id: "pref_email_reply_to",
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{{ pref.pref_email_reply_to }}" maxlength="100" size="30"/>
+                            <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" aria-describedby="pref_email_reply_to-tip" value="{{ pref.pref_email_reply_to }}" maxlength="100" size="30"/>
                         </div>
                     </div>
                     <div class="field">
@@ -658,39 +704,55 @@
                         <label for="pref_email_newadh">{{ _T("Members administrator's Email:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" title="{{ _T("Recipient of new online registation and edition emails") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Recipient of new online registation and edition emails"),
+                                    id: "pref_email_newadh",
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref_email_newadh }}" maxlength="100" size="30"/>
+                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" aria-describedby="pref_email_newadh-tip" value="{{ pref_email_newadh }}" maxlength="100" size="30"/>
                         </div>
-                        <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
+                        <span class="field-description">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {% if pref.pref_bool_mailadh == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" aria-describedby="pref_bool_mailadh-tip" value="1" {% if pref.pref_bool_mailadh == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_bool_mailadh">{{ _T("Send email to administrators?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Sends an email each time a new member registers online or edit his/her account") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Sends an email each time a new member registers online or edit his/her account"),
+                            id: "pref_bool_mailadh"
+                        } only %}
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {% if pref.pref_bool_wrap_mails == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" aria-describedby="pref_bool_wrap_mails-tip" value="1" {% if pref.pref_bool_wrap_mails == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_bool_wrap_mails">{{ _T("Wrap emails text?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change.") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."),
+                            id: "pref_bool_wrap_mails"
+                        } only %}
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {% if pref.pref_bool_mailowner == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" aria-describedby="pref_bool_mailowner-tip" value="1" {% if pref.pref_bool_mailowner == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_bool_mailowner">{{ _T("Send email to members?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case.") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case."),
+                            id: "pref_bool_mailowner"
+                        } only %}
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {% if pref.pref_editor_enabled == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" aria-describedby="pref_editor_enabled-tip" value="1" {% if pref.pref_editor_enabled == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_editor_enabled">{{ _T("Activate HTML editor?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Should HTML editor be activated on page load ?") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Should HTML editor be activated on page load ?"),
+                            id: "pref_editor_enabled"
+                        } only %}
                     </div>
                     <div class="field mail_sign">
                         <label for="pref_mail_sign">{{ _T("Mail signature") }}</label>
@@ -721,28 +783,9 @@
                         </div>
                         <div class="field">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="pref_mail_method" id="gmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}checked="checked"{% endif %}/><label for="gmail">{{ _T("Using GMAIL as SMTP server (slower)") }}</label>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui radio checkbox">
                                 <input type="radio" name="pref_mail_method" id="sendmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_SENDMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_SENDMAIL') %}checked="checked"{% endif %}/><label for="sendmail">{{ _T("Using Sendmail server") }}</label>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="ui radio checkbox">
-                                <input type="radio" name="pref_mail_method" id="qmail" value="{{ constant('Galette\\Core\\GaletteMail::METHOD_QMAIL') }}" {% if pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_QMAIL') %}checked="checked"{% endif %}/><label for="qmail">{{ _T("Using QMAIL server") }}</label>
-                            </div>
-                        </div>
-                        <br/>
-                        <a
-                            href="{{ url_for('testEmail') }}"
-                            id="btnmail"
-                            class="ui labeled icon button"
-                        >
-                            <i class="rocket icon" aria-hidden="true"></i>
-                            {{ _T("Test email settings") }}
-                        </a>
                     </div>
                     <div id="smtp_parameters" class="field">
                         <div class="field">
@@ -756,35 +799,76 @@
                         <div class="grouped fields">
                             <div class="field inline">
                                 <div class="ui right aligned toggle checkbox">
-                                    <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {% if pref.pref_mail_smtp_auth == 1 %}checked="checked"{% endif %}/>
+                                    <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" aria-describedby="pref_mail_smtp_auth-tip" value="1" {% if pref.pref_mail_smtp_auth == 1 %}checked="checked"{% endif %}/>
                                     <label for="pref_mail_smtp_auth">{{ _T("Use SMTP authentication?") }}</label>
                                 </div>
-                                <i class="circular small basic question icon tooltip" title="{{ _T("Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on.") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Would emailing use any SMTP authentication? You'll have to provide username and password below."),
+                                    id: "pref_mail_smtp_auth"
+                                } only %}
                             </div>
                             <div class="field inline">
                                 <div class="ui right aligned toggle checkbox">
-                                    <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {% if pref.pref_mail_smtp_secure == 1 %}checked="checked"{% endif %}/>
+                                    <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" aria-describedby="pref_mail_smtp_secure-tip" value="1" {% if pref.pref_mail_smtp_secure == 1 %}checked="checked"{% endif %}/>
                                     <label for="pref_mail_smtp_secure">{{ _T("Use TLS for SMTP?") }}</label>
                                 </div>
-                                <i class="circular small basic question icon tooltip" data-html="{{ _T("Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on.") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Do you want to use server's TLS capabilities?"),
+                                    id: "pref_mail_smtp_secure",
+                                    html: true
+                                } only %}
                             </div>
                             <div class="field inline">
                                 <div class="ui right aligned toggle checkbox">
-                                    <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" value="1" {% if pref.pref_mail_allow_unsecure == 1 %}checked="checked"{% endif %}/>
+                                    <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" aria-describedby="pref_mail_allow_unsecure-tip" value="1" {% if pref.pref_mail_allow_unsecure == 1 %}checked="checked"{% endif %}/>
                                     <label for="pref_mail_allow_unsecure">{{ _T("Allow unsecure TLS?") }}</label>
                                 </div>
-                                <i class="circular small basic question icon tooltip" title="{{ _T("Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases.") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."),
+                                    id: "pref_mail_allow_unsecure"
+                                } only %}
                             </div>
                         </div>
                     </div>
                     <div id="smtp_auth" class="field">
                         <div class="field">
-                            <label for="pref_mail_smtp_user">{{ _T("SMTP (or GMail) user:") }}</label>
+                            <label for="pref_mail_smtp_user">{{ _T("SMTP user:") }}</label>
                             <input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{{ pref.pref_mail_smtp_user }}" maxlength="100" size="30"/>
                         </div>
                         <div class="field">
-                            <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
-                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"/>
+                            <label for="pref_mail_smtp_password">{{ _T("SMTP password:") }}</label>
+                            <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="" autocomplete="off" maxlength="100" size="30" placeholder="{{ _T("Leave empty to keep the current one") }}"/>
+                        </div>
+                    </div>
+        {% set mail_off = pref.pref_mail_method == constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
+                    <div class="ui basic fitted segment">
+                        <div id="mailtest_off" class="ui small yellow message{% if not mail_off %} displaynone{% endif %}">
+                            {{ _T("Emailing is disabled: pick a sending method to run a test.") }}
+                        </div>
+                        <div id="mailtest_hint" class="ui small blue message{% if mail_off %} displaynone{% endif %}">
+                            {{ _T("Tests run on the settings displayed above, even those not saved yet.") }}
+                        </div>
+                        <div class="ui wrapping spaced buttons">
+                            <button
+                                type="button"
+                                data-href="{{ url_for('testEmailConnection') }}"
+                                id="btnmailconnect"
+                                class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
+                                {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
+                            >
+                                <i class="plug icon" aria-hidden="true"></i>
+                                {{ _T("Test connection") }}
+                            </button>
+                            <button
+                                type="button"
+                                data-href="{{ url_for('testEmail') }}"
+                                id="btnmail"
+                                class="ui labeled icon button{% if mail_off %} disabled{% endif %}"
+                                {% if mail_off %}disabled="disabled" aria-disabled="true"{% endif %}
+                            >
+                                <i class="rocket icon" aria-hidden="true"></i>
+                                {{ _T("Send a test email") }}
+                            </button>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -824,10 +908,13 @@
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_etiq_border" id="pref_etiq_border" value="1" {% if pref.pref_etiq_border == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_etiq_border" id="pref_etiq_border" aria-describedby="pref_etiq_border-tip" value="1" {% if pref.pref_etiq_border == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_etiq_border">{{ _T("Print border") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Check this box to print a grey border around each label.") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("Check this box to print a grey border around each label."),
+                            id: "pref_etiq_border"
+                        } only %}
                     </div>
                 </div>{# /column #}
                 <div class="column">
@@ -864,7 +951,7 @@
             <div class="ui icon info visible message">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
-                    {{ _T("Each page contains %1$s columns and  %2$s rows.")|replace({"%1$s": pref.pref_card_cols, "%2$s": pref.pref_card_rows}) }}
+                    {{ _T("Each page contains %1$s columns and  %2$s rows.")|replace({"%1$s": callstatic('\\Galette\\IO\\PdfMembersCards', 'getCols'), "%2$s": callstatic('\\Galette\\IO\\PdfMembersCards', 'getRows')}) }}
                 </div>
             </div>
             <div class="ui stackable two column grid">
@@ -882,7 +969,7 @@
                                 <span class="visually-hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_abrev}) }}</span>
                             </a>
                         </div>
-                        <span class="exemple">{{ _T("(10 characters max)") }}</span>
+                        <span class="field-description">{{ _T("(10 characters max)") }}</span>
                     </div>
                     <div class="field">
                         <label for="pref_card_strip">{{ _T("Long Text (Bottom Line):") }}</label>
@@ -897,32 +984,48 @@
                                 <span class="visually-hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_strip}) }}</span>
                             </a>
                         </div>
-                        <span class="exemple">{{ _T("(65 characters max)") }}</span>
+                        <span class="field-description">{{ _T("(65 characters max)") }}</span>
                     </div>
                     <div class="grouped fields">
                         <div class="inline field">
                             <label for="pref_card_tcol">{{ _T("Strip Text Color:") }}</label>
-                            <input type="color" name="pref_card_tcol" id="pref_card_tcol" value="{{ pref.pref_card_tcol }}" size="7" maxlength="7"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}" aria-hidden="true"></i>
+                            <input type="color" name="pref_card_tcol" id="pref_card_tcol" aria-describedby="pref_card_tcol-tip" value="{{ pref.pref_card_tcol }}" size="7" maxlength="7"/>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: _T("Hexadecimal color notation: #RRGGBB"),
+                                id: "pref_card_tcol"
+                            } only %}
                         </div>
                         <div class="inline field">
                             <label for="pref_card_scol">{{ _T("Active Member Color:") }}</label>
-                            <input type="color" name="pref_card_scol" id="pref_card_scol" value="{{ pref.pref_card_scol }}" size="7" maxlength="7"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}" aria-hidden="true"></i>
+                            <input type="color" name="pref_card_scol" id="pref_card_scol" aria-describedby="pref_card_scol-tip" value="{{ pref.pref_card_scol }}" size="7" maxlength="7"/>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: _T("Hexadecimal color notation: #RRGGBB"),
+                                id: "pref_card_scol"
+                            } only %}
                         </div>
                         <div class="inline field">
                             <label for="pref_card_bcol">{{ _T("Board Members Color:") }}</label>
-                            <input type="color" name="pref_card_bcol" id="pref_card_bcol" value="{{ pref.pref_card_bcol }}" size="7" maxlength="7"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}" aria-hidden="true"></i>
+                            <input type="color" name="pref_card_bcol" id="pref_card_bcol" aria-describedby="pref_card_bcol-tip" value="{{ pref.pref_card_bcol }}" size="7" maxlength="7"/>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: _T("Hexadecimal color notation: #RRGGBB"),
+                                id: "pref_card_bcol"
+                            } only %}
                         </div>
                         <div class="inline field">
                             <label for="pref_card_hcol">{{ _T("Honor Members Color:") }}</label>
-                            <input type="color" name="pref_card_hcol" id="pref_card_hcol" value="{{ pref.pref_card_hcol }}" size="7" maxlength="7"/>
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}" aria-hidden="true"></i>
+                            <input type="color" name="pref_card_hcol" id="pref_card_hcol" aria-describedby="pref_card_hcol-tip" value="{{ pref.pref_card_hcol }}" size="7" maxlength="7"/>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: _T("Hexadecimal color notation: #RRGGBB"),
+                                id: "pref_card_hcol"
+                            } only %}
                         </div>
                     </div>{# /group fields #}
                     <div class="field wide ui items">
-                        <label>{{ _T("Logo:") }}</label>
+                        {% include "components/forms/max_size.html.twig" with {
+                            label: _T("Logo:"),
+                            max_size: preferences.pref_upload_size_images,
+                            input_id: "card_logo"
+                        } %}
                         <div class="item">
     {% if print_logo.isCustom() %}
                             <div class="image">
@@ -932,7 +1035,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="card_logo" id="card_logo"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <input type="file" name="card_logo" id="card_logo" aria-describedby="card_logo-tip"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
                                         <label for="card_logo" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if print_logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
@@ -960,10 +1063,13 @@
                     </div>
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {% if pref.pref_bool_display_title == 1 %}checked="checked"{% endif %}/>
+                            <input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" aria-describedby="pref_bool_display_title-tip" value="1" {% if pref.pref_bool_display_title == 1 %}checked="checked"{% endif %}/>
                             <label for="pref_bool_display_title">{{ _T("Show title ?") }}</label>
                         </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("(Show or not title in front of name)") }}" aria-hidden="true"></i>
+                        {% include "components/forms/tip.html.twig" with {
+                            tip: _T("(Show or not title in front of name)"),
+                            id: "pref_bool_display_title"
+                        } only %}
                     </div>
                     <div class="field">
                         <label for="pref_card_address">{{ _T("Address type:") }}</label>
@@ -974,15 +1080,20 @@
                             <option value="7" {% if pref.pref_card_address == 7 %}selected="selected"{% endif %}>{{ _T("Profession") }}</option>
                             <option value="8" {% if pref.pref_card_address == 8 %}selected="selected"{% endif %}>{{ _T("Member number") }}</option>
                         </select>
-                        <span class="exemple">{{ _T("(Choose address printed below name)") }}</span>
+                        <span class="field-description">{{ _T("(Choose address printed below name)") }}</span>
                     </div>
                     <div class="field">
                         <label for="pref_card_year">{{ _T("Year:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular basic question icon tooltip" data-html="{{ _T("You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline") }}" aria-hidden="true"></i>
+                                {% include "components/forms/tip.html.twig" with {
+                                    tip: _T("You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline"),
+                                    id: "pref_card_year",
+                                    html: true,
+                                    small: false
+                                } only %}
                             </div>
-                            <input type="text" name="pref_card_year" id="pref_card_year" value="{{ pref.pref_card_year }}" maxlength="9"/>
+                            <input type="text" name="pref_card_year" id="pref_card_year" aria-describedby="pref_card_year-tip" value="{{ pref.pref_card_year }}" maxlength="9"/>
                         </div>
                     </div>
                     <div class="{% if required.pref_card_marges_v is defined and required.pref_card_marges_v == 1 %}required {% endif %}field">
@@ -1013,7 +1124,6 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-{% if constant('GALETTE_ADAPTATIVE_CARDS') is same as true %}
                     <div class="{% if required.pref_card_hsize is defined and required.pref_card_hsize == 1 %}required {% endif %}field">
                         <label for="pref_card_hsize">{{ _T("Card width from 70 to 95mm:") }}</label>
                         <div class="ui right labeled input">
@@ -1028,39 +1138,84 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-{% endif %}
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
 
+        <div class="ui{{ tab == 'dyn_fields' ? ' active' }} tab segment" data-tab="dyn_fields">
+{% if preferences.getDynamicFields().getFields() is empty %}
+            <div class="ui icon info visible message">
+                <i class="info circle blue icon" aria-hidden="true"></i>
+                <div class="content">
+                    {{ _T("There is not yet any dynamic field configured for '%1$s'")|format(_T("Settings")) }}
+                </div>
+            </div>
+{% else %}
+            {% include "components/dynamic_fields.html.twig" with {
+                'object': preferences,
+                'accordion': false
+            } %}
+{% endif %}
+            <div class="ui divider"></div>
+            <div class="ui basic fitted segment">
+                <a
+                    href="{{ url_for('configureDynamicFields', {'form_name': 'prefs'}) }}"
+                    class="ui labeled icon button"
+                    title="{{ _T("Manage additional fields for various forms") }}"
+                >
+                    <i class="cogs grey icon" aria-hidden="true"></i>
+                    {{ _T("Configure dynamic fields") }}
+                </a>
+            </div>
+        </div>{# /tab segment #}
+
 {% if login.isAdmin() %}
         <div class="ui{{ tab == 'security' ? ' active' }} tab segment" data-tab="security">
+                <div class="inline field">
+                    <label for="pref_2fa_mode" title="{{ _T("Asks for a code from an application on the member's phone in addition to their password, so that a stolen password is not enough on its own. Members who have to hold one are sent to enrolment at their next login; switching back to disabled lets everyone in again without a code.") }}">{{ _T("Two-factor authentication:") }}</label>
+                    <select name="pref_2fa_mode" id="pref_2fa_mode" class="ui dropdown">
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') %} selected="selected"{% endif %}>{{ _T("Disabled (default)") }}</option>
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') %} selected="selected"{% endif %}>{{ _T("Optional, each member decides") }}</option>
+{% if tfa_required_available %}
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') %} selected="selected"{% endif %}>{{ _T("Required for administrators and staff") }}</option>
+                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') %} selected="selected"{% endif %}>{{ _T("Required for everyone") }}</option>
+{% endif %}
+                    </select>
+                    {{ macros.experimentalMark(_T('Experimental')) }}
+                </div>
                 <div class="inline field required">
                     <label for="pref_password_length">{{ _T("Password length:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
-                            <i class="circular basic question icon tooltip" title="{{ _T("Minimum password length required for all accounts. Minimal size is 6.") }}" aria-hidden="true"></i>
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: _T("Minimum password length required for all accounts. Minimal size is 6."),
+                                id: "pref_password_length",
+                                small: false
+                            } only %}
                         </div>
-                        <input type="number" name="pref_password_length" id="pref_password_length" value="{{ pref.pref_password_length }}" min="6" size="7" required="required"/>
+                        <input type="number" name="pref_password_length" id="pref_password_length" aria-describedby="pref_password_length-tip" value="{{ pref.pref_password_length }}" min="6" size="7" required="required"/>
                     </div>
                 </div>
                 <div class="inline field">
                     <div class="ui right aligned toggle checkbox">
-                        <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" value="1"{% if pref.pref_password_blacklist == 1 %} checked="checked"{% endif %}/>
+                        <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" aria-describedby="pref_password_blacklist-tip" value="1"{% if pref.pref_password_blacklist == 1 %} checked="checked"{% endif %}/>
                         <label for="pref_password_blacklist" title="{{ _T("Enable password blacklists") }}">{{ _T("Enable blacklists:") }}</label>
                     </div>
-                    <i class="circular small basic question icon tooltip" title="{{ _T("If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns.") }}" aria-hidden="true"></i>
+                    {% include "components/forms/tip.html.twig" with {
+                        tip: _T("If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns."),
+                        id: "pref_password_blacklist"
+                    } only %}
                 </div>
                 <div class="inline field">
                     <label for="pref_password_strength" title="{{ _T("Enforce password strength") }}">{{ _T("Password strength:") }}</label>
-                    <select name="pref_password_strength" id="pref_password_strength" class="ui dropdown">
+                    <select name="pref_password_strength" id="pref_password_strength" aria-describedby="pref_password_strength-tip" class="ui dropdown">
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_NONE') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_NONE') %} selected="selected"{% endif %}>{{ _T("None (default)") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_WEAK') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_WEAK') %} selected="selected"{% endif %}>{{ _T("Weak") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_MEDIUM') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_MEDIUM') %} selected="selected"{% endif %}>{{ _T("Medium") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_STRONG') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_STRONG') %} selected="selected"{% endif %}>{{ _T("Strong") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_VERY_STRONG') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_VERY_STRONG') %} selected="selected"{% endif %}>{{ _T("Very strong") }}</option>
                     </select>
-                    <i class="circular small basic question icon tooltip" data-html="
+                    {% set strength_tip %}
                         <p>{{ _T("Enforce minimal password strength for all password.") }}<br/>
                         {{ _T("Levels are:") }}</p>
                         <ul>
@@ -1072,46 +1227,30 @@
                         </ul>
                         <p>{{ _T("Rules include lower case characters, upper case characters, numbers, and special characters.") }}<br/>
                         {{ _T("Note that with any enforcement level, user cannot use his personal information (name, login, ...) as password.") }}</p>
-                    " data-variation="inverted very wide">
-                    </i>
+                    {% endset %}
+                    {% include "components/forms/tip.html.twig" with {
+                        tip: strength_tip,
+                        id: "pref_password_strength",
+                        html: true,
+                        variation: "inverted very wide"
+                    } only %}
                 </div>
                 <div id="test_password_strength_field" class="inline field">
                     <label for="test_password_strength">{{ _T("Test a password:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
-                            <i class="circular basic question icon tooltip" data-html="{{ _T("Test a password with current selected values.") }}<br/>{{ _T("Do not forget to save your preferences if you're happy with the result ;)") }}" aria-hidden="true"></i>
+                            {% set strength_test_tip %}{{ _T("Test a password with current selected values.") }}<br/>{{ _T("Do not forget to save your preferences if you're happy with the result ;)") }}{% endset %}
+                            {% include "components/forms/tip.html.twig" with {
+                                tip: strength_test_tip,
+                                id: "test_password_strength",
+                                html: true,
+                                small: false
+                            } only %}
                         </div>
-                        <input type="text" id="test_password_strength"/>
+                        <input type="text" id="test_password_strength" aria-describedby="test_password_strength-tip"/>
                     </div>
 
                 </div>
-        </div>{# /tab segment #}
-{% endif %}
-{% if login.isSuperAdmin() %}
-        <div class="ui{{ tab == 'admin' ? ' active' }} tab red segment" data-tab="admin">
-    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
-                <div class="ui icon negative message">
-                    <i class="ban icon" aria-hidden="true"></i>
-                    <div class="content">
-                        {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
-                    </div>
-                </div>
-    {% else %}
-                <div class="inline field{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required{% endif %}">
-                    <label for="pref_admin_login">{{ _T("Username:") }}</label>
-                    <input type="text" name="pref_admin_login" id="pref_admin_login" value="{{ pref.pref_admin_login }}" maxlength="20"{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required="required"{% endif %}/>
-                </div>
-                <div id="pref_admin_pass_field" class="inline field">
-                    <label for="pref_admin_pass">{{ _T("Password:") }}</label>
-                    <div class="ui input">
-                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"/>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
-                    <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
-                </div>
-    {% endif %}
         </div>{# /tab segment #}
 {% endif %}
         <div class="ui basic center aligned segment">
@@ -1126,10 +1265,8 @@
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
         </div>
-        {% include "components/forms/csrf.html.twig" %}
         </form>
 
-        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
         {% include "modals/replacements_legend.html.twig" with {legends: preferences.getLegend(), cur_ref: 'prefs'} %}
 {% endblock %}
 
@@ -1140,8 +1277,6 @@
             $(function(){
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
                 $('#smtp_parameters').addClass('displaynone');
-    {% endif %}
-    {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}
                 $('#smtp_auth').addClass('displaynone');
     {% endif %}
                 $('#emailing_method .ui.radio.checkbox').checkbox({
@@ -1152,13 +1287,19 @@
                         if ( _checked == 'smtp' ) {
                             _smtp_parameters.removeClass('displaynone');
                             _smtp_auth.removeClass('displaynone');
-                        } else if ( _checked == 'gmail' ) {
-                            _smtp_parameters.addClass('displaynone');
-                            _smtp_auth.removeClass('displaynone');
                         } else {
                             _smtp_parameters.addClass('displaynone');
                             _smtp_auth.addClass('displaynone');
                         }
+
+                        // Nothing to test as long as no sending method is picked
+                        var _off = ( _checked == 'no' );
+                        $('#btnmail, #btnmailconnect')
+                            .toggleClass('disabled', _off)
+                            .prop('disabled', _off)
+                            .attr('aria-disabled', _off);
+                        $('#mailtest_off').toggleClass('displaynone', !_off);
+                        $('#mailtest_hint').toggleClass('displaynone', _off);
                     }
                 });
 
@@ -1212,6 +1353,42 @@
                     return;
                 });
 
+                // Tests run on what is displayed, not on what is stored: the
+                // whole mail tab goes along, and the server keeps the settings
+                // the transport is actually built from.
+                function _mailerSettings() {
+                    return $('div[data-tab="mail"]').find(':input').serializeArray();
+                }
+
+                function _mailTestMessages() {
+                    $.ajax({
+                        url: '{{ url_for('ajaxMessages') }}',
+                        method: "GET",
+                        success: function (values) {
+                            for (var type in values) {
+                                var dtime = 0;
+                                if (type == 'success') {
+                                    dtime = 'auto';
+                                }
+                                $('body')
+                                    .toast({
+                                        displayTime: dtime,
+                                        minDisplayTime: 5000,
+                                        wordsPerMinute: 80,
+                                        showProgress: 'bottom',
+                                        closeIcon: true,
+                                        position: 'top attached',
+                                        title: values[type]['title'],
+                                        message: values[type]['messages'].join('<br/>'),
+                                        showIcon: values[type]['icon'],
+                                        class: type
+                                    })
+                                ;
+                            }
+                        }
+                    });
+                }
+
                 $('#btnmail').on('click', function(e) {
                     e.preventDefault();
                     var _this = $(this);
@@ -1222,43 +1399,18 @@
                         content: _input,
                         onApprove: function() {
                             $.ajax({
-                                url: _this.attr('href'),
-                                type: 'GET',
-                                data: {
-                                    adress: $('#email_adress').val()
-                                },
+                                url: _this.data('href'),
+                                type: 'POST',
+                                data: _mailerSettings().concat([{
+                                    name: 'adress',
+                                    value: $('#email_adress').val()
+                                }]),
                                 {% include "elements/js/loader.js.twig" with {
                                     selector: '#btnmail',
                                     loader: 'button'
                                 } %},
                                 success: function(res) {
-                                    //display message
-                                    $.ajax({
-                                        url: '{{ url_for('ajaxMessages') }}',
-                                        method: "GET",
-                                        success: function (values) {
-                                            for (var type in values) {
-                                                var dtime = 0;
-                                                if (type == 'success') {
-                                                    dtime = 'auto';
-                                                }
-                                                $('body')
-                                                    .toast({
-                                                        displayTime: dtime,
-                                                        minDisplayTime: 5000,
-                                                        wordsPerMinute: 80,
-                                                        showProgress: 'bottom',
-                                                        closeIcon: true,
-                                                        position: 'top attached',
-                                                        title: values[type]['title'],
-                                                        message: values[type]['messages'].join('<br/>'),
-                                                        showIcon: values[type]['icon'],
-                                                        class: type
-                                                    })
-                                                ;
-                                            }
-                                        }
-                                    });
+                                    _mailTestMessages();
                                 },
                                 error: function () {
                                     {% include "elements/js/modal.js.twig" with {
@@ -1284,20 +1436,41 @@
                     }).modal('show');
                 });
 
+                $('#btnmailconnect').on('click', function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: $(this).data('href'),
+                        type: 'POST',
+                        data: _mailerSettings(),
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#btnmailconnect',
+                            loader: 'button'
+                        } %},
+                        success: function(res) {
+                            _mailTestMessages();
+                        },
+                        error: function () {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred testing mail server connection :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                });
+
                 _addLegendButton('#mail_sign');
                 _handleLegend();
 
-                {% include "elements/js/pwdcheck.js.twig" with {
-                        selector: "#pref_admin_pass",
-                        loader: "inline mini"
-                } %}
                 {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
                         loader: "inline mini",
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                 } %}
 
-                {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
                 {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
 
                 {% set modal_onapprove = "

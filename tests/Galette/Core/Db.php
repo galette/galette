@@ -1,79 +1,28 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Database tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Db extends TestCase
+class Db extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $db;
-    private array $have_warnings = [];
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        $this->db = new \Galette\Core\Db();
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            foreach ($this->db->getWarnings() as $i => $dbwarning) {
-                $know_warning = $this->have_warnings[$i];
-                $this->assertSame($know_warning['Level'], $dbwarning['Level']);
-                $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
-                $this->assertStringContainsString(
-                    strtolower((string) $know_warning['Message']),
-                    strtolower($dbwarning['Message'])
-                );
-            }
-        }
-
-        $this->db = new \Galette\Core\Db();
-        $delete = $this->db->delete(\Galette\Entity\Title::TABLE);
-        $delete->where([\Galette\Entity\Title::PK => '150']);
-        $this->db->execute($delete);
-    }
-
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -105,37 +54,43 @@ class Db extends TestCase
                 break;
         }
 
-        $this->expectException(\Exception::class);
-        $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
-        new \Galette\Core\Db($dsn);
+        $exception_thrown = false;
+        try {
+            $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
+            new \Galette\Core\Db($dsn);
+        } catch (\Exception) {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown);
+        $this->expectLogEntry(
+            \Analog\Analog::ALERT,
+            '[Db] Error (0|Type DOES_NOT_EXISTS not known'
+        );
     }
 
     /**
      * Test database connectivity
-     *
-     * @return void
      */
     public function testConnectivity(): void
     {
-        $res = $this->db->testConnectivity(
-            TYPE_DB,
-            USER_DB,
-            PWD_DB,
-            HOST_DB,
-            PORT_DB,
-            NAME_DB
+        $res = $this->zdb->testConnectivity(
+            type: TYPE_DB,
+            user: USER_DB,
+            pass: PWD_DB,
+            host: HOST_DB,
+            port: PORT_DB,
+            db: NAME_DB
         );
         $this->assertTrue($res);
     }
 
     /**
      * Test database grants
-     *
-     * @return void
      */
     public function testGrant(): void
     {
-        $this->db->dropTestTable();
+        $db = new \Galette\Core\Db();
+        $db->dropTestTable();
 
         $expected = [
             'create' => true,
@@ -145,12 +100,12 @@ class Db extends TestCase
             'delete' => true,
             'drop'   => true
         ];
-        $result = $this->db->grantCheck();
+        $result = $db->grantCheck();
 
         $this->assertSame($expected, $result);
 
         //in update mode, we need alter
-        $result = $this->db->grantCheck('u');
+        $result = $db->grantCheck('u');
 
         $expected['alter'] = true;
         $this->assertSame($result, $expected);
@@ -158,17 +113,16 @@ class Db extends TestCase
 
     /**
      * Test database grants that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGrantWException(): void
     {
         //test insert failing
-        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->db->method('execute')
+        $this->zdb->method('execute')
             ->willReturnCallback(
                 function ($o): void {
                     if ($o instanceof \Laminas\Db\Sql\Insert) {
@@ -177,22 +131,26 @@ class Db extends TestCase
                 }
             );
 
-        $result = $this->db->grantCheck('u');
+        $result = $this->zdb->grantCheck('u');
 
         $this->assertTrue($result['create']);
         $this->assertTrue($result['alter']);
         $this->assertInstanceOf(\LogicException::class, $result['insert']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot INSERT records | Error executing query!'
+        );
         $this->assertFalse($result['update']);
         $this->assertFalse($result['select']);
         $this->assertFalse($result['delete']);
         $this->assertTrue($result['drop']);
 
         //test select failing
-        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->db->method('execute')
+        $this->zdb->method('execute')
             ->willReturnCallback(
                 function ($o) {
                     if ($o instanceof \Laminas\Db\Sql\Select) {
@@ -208,22 +166,26 @@ class Db extends TestCase
                 }
             );
 
-        $result = $this->db->grantCheck('u');
+        $result = $this->zdb->grantCheck('u');
 
         $this->assertTrue($result['create']);
         $this->assertTrue($result['alter']);
         $this->assertTrue($result['insert']);
         $this->assertTrue($result['update']);
         $this->assertInstanceOf(\LogicException::class, $result['select']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot SELECT records | Error executing query!'
+        );
         $this->assertTrue($result['delete']);
         $this->assertTrue($result['drop']);
 
         //test update failing
-        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->db->method('execute')
+        $this->zdb->method('execute')
             ->willReturnCallback(
                 function ($o) {
                     if ($o instanceof \Laminas\Db\Sql\Update) {
@@ -239,22 +201,26 @@ class Db extends TestCase
                 }
             );
 
-        $result = $this->db->grantCheck('u');
+        $result = $this->zdb->grantCheck('u');
 
         $this->assertTrue($result['create']);
         $this->assertTrue($result['alter']);
         $this->assertTrue($result['insert']);
         $this->assertInstanceOf(\LogicException::class, $result['update']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot UPDATE records | Error executing query!'
+        );
         $this->assertTrue($result['select']);
         $this->assertTrue($result['delete']);
         $this->assertTrue($result['drop']);
 
         //test delete failing
-        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->db->method('execute')
+        $this->zdb->method('execute')
             ->willReturnCallback(
                 function ($o) {
                     if ($o instanceof \Laminas\Db\Sql\Delete) {
@@ -270,7 +236,7 @@ class Db extends TestCase
                 }
             );
 
-        $result = $this->db->grantCheck('u');
+        $result = $this->zdb->grantCheck('u');
 
         $this->assertTrue($result['create']);
         $this->assertTrue($result['alter']);
@@ -278,86 +244,82 @@ class Db extends TestCase
         $this->assertTrue($result['update']);
         $this->assertTrue($result['select']);
         $this->assertInstanceOf(\LogicException::class, $result['delete']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot DELETE records | Error executing query!'
+        );
         $this->assertTrue($result['drop']);
     }
 
     /**
      * Is database Postgresql powered?
-     *
-     * @return void
      */
     public function testIsPostgres(): void
     {
-        $is_pg = $this->db->isPostgres();
+        $is_pg = $this->zdb->isPostgres();
 
         match (TYPE_DB) {
-            'pgsql' => $this->assertTrue($is_pg),
+            'pgsql' => $this->assertTrue($is_pg), // @phpstan-ignore match.alwaysTrue (TYPE_DB is a constant, not a variable)
             default => $this->assertFalse($is_pg),
         };
     }
 
     /**
      * Test getters
-     *
-     * @return void
      */
     public function testGetters(): void
     {
         switch (TYPE_DB) {
             case 'pgsql':
-                $type = $this->db->type_db;
+                $type = $this->zdb->type_db;
                 $this->assertSame('pgsql', $type);
                 break;
             case 'mysql':
-                $type = $this->db->type_db;
+                $type = $this->zdb->type_db;
                 $this->assertSame('mysql', $type);
                 break;
         }
 
-        $db = $this->db->db;
+        $db = $this->zdb->db;
         $this->assertInstanceOf(\Laminas\Db\Adapter\Adapter::class, $db);
 
-        $sql = $this->db->sql;
+        $sql = $this->zdb->sql;
         $this->assertInstanceOf(\Laminas\Db\Sql\Sql::class, $sql);
 
-        $connection = $this->db->connection;
+        $connection = $this->zdb->connection;
         $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Connection::class, $connection);
 
-        $driver = $this->db->driver;
+        $driver = $this->zdb->driver;
         $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Pdo::class, $driver);
     }
 
     /**
      * Test getters with exception
-     *
-     * @return void
      */
     public function testGetterWException(): void
     {
         $this->expectExceptionMessage('Unknown property non_existing');
-        $this->db->non_existing;
+        $this->zdb->non_existing; //@phpstan-ignore property.notFound,expr.resultUnused (we want to test that exception is thrown)
     }
 
     /**
      * Test select
-     *
-     * @return void
      */
     public function testSelect(): void
     {
-        $select = $this->db->select('preferences', 'p');
+        $select = $this->zdb->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'pref_nom']);
 
-        $this->db->execute($select);
+        $this->zdb->execute($select);
 
-        $query = $this->db->query_string;
+        $query = $this->zdb->query_string;
 
-        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
-            'WHERE "p"."nom_pref" = \'pref_nom\'';
+        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" '
+            . 'WHERE "p"."nom_pref" = \'pref_nom\'';
 
-        if (TYPE_DB === 'mysql') {
-            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
-                'WHERE `p`.`nom_pref` = \'pref_nom\'';
+        if (!$this->zdb->isPostgres()) {
+            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` '
+                . 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
 
         $this->assertSame($expected, $query);
@@ -365,79 +327,70 @@ class Db extends TestCase
 
     /**
      * Test selectAll
-     *
-     * @return void
      */
     public function testSelectAll(): void
     {
-        $all = $this->db->selectAll('preferences');
+        $all = $this->zdb->selectAll('preferences');
         $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $all);
     }
 
     /**
      * Test insert
-     *
-     * @return void
      */
     public function testInsert(): void
     {
-        $insert = $this->db->insert('titles');
+        $insert = $this->zdb->insert('titles');
         $data = [
-            'id_title'      => '150',
             'short_label'   => 'Dr',
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $this->db->execute($insert);
+        $this->zdb->execute($insert);
 
-        $select = $this->db->select('titles', 't');
-        $select->where(['t.id_title' => $data['id_title']]);
+        $select = $this->zdb->select('titles', 't');
+        $select->where(['t.short_label' => $data['short_label']]);
 
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        if (TYPE_DB === 'pgsql') {
-            $data['id_title'] = (int)$data['id_title'];
-        }
-        $this->assertEquals((array)$results->current(), $data);
+        $result = (array)$results->current();
+        $this->assertSame($data['short_label'], $result['short_label']);
+        $this->assertSame($data['long_label'], $result['long_label']);
     }
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
-        $insert = $this->db->insert('titles');
+        $insert = $this->zdb->insert('titles');
         $data = [
-            'id_title'      => '150',
             'short_label'   => 'Dr',
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $this->db->execute($insert);
+        $this->zdb->execute($insert);
 
-        $update = $this->db->update('titles');
+        $update = $this->zdb->update('titles');
         $data = [
             'long_label'    => 'DoctorS'
         ];
-        $where = ['id_title' => 150];
+        $where = ['short_label' => 'Dr'];
 
-        $select = $this->db->select('titles', 't');
+        $select = $this->zdb->select('titles', 't');
         $select->columns(['long_label']);
         $select->where($where);
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
 
         $long_label = $results->current()->long_label;
         $this->assertSame('Doctor', $long_label);
 
         $update->set($data);
         $update->where($where);
-        $res = $this->db->execute($update);
+        $res = $this->zdb->execute($update);
         $this->assertSame(1, $res->count());
 
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
         $long_label = $results->current()->long_label;
@@ -446,85 +399,81 @@ class Db extends TestCase
 
     /**
      * Test delete
-     *
-     * @return void
      */
     public function testDelete(): void
     {
-        $insert = $this->db->insert('titles');
+        $insert = $this->zdb->insert('titles');
         $data = [
-            'id_title'      => '150',
             'short_label'   => 'Dr',
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $this->db->execute($insert);
+        $this->zdb->execute($insert);
 
-        $delete = $this->db->delete('titles');
-        $where = ['id_title' => 150];
+        $delete = $this->zdb->delete('titles');
+        $where = ['short_label' => 'Dr'];
 
-        $select = $this->db->select('titles', 't');
+        $select = $this->zdb->select('titles', 't');
         $select->where($where);
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
         $delete->where($where);
-        $res = $this->db->execute($delete);
+        $res = $this->zdb->execute($delete);
         $this->assertSame(1, $res->count());
 
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
     }
 
     /**
      * Test database version
-     *
-     * @return void
      */
     public function testDbVersion(): void
     {
-        $db_version = $this->db->getDbVersion();
+        $db_version = $this->zdb->getDbVersion();
         $this->assertSame(GALETTE_DB_VERSION, $db_version);
 
-        $res = $this->db->checkDbVersion();
+        $res = $this->zdb->checkDbVersion();
         $this->assertTrue($res);
     }
 
     /**
      * Test database version that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDbVersionWException(): void
     {
-        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
-        $this->db->method('execute')
+        $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($table, $where): void {
+                function ($sql): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
         $exception_thrown = false;
         try {
-            $this->db->getDbVersion();
+            $this->zdb->getDbVersion();
         } catch (\LogicException) {
             $exception_thrown = true;
         }
         $this->assertTrue($exception_thrown);
-        $this->assertFalse($this->db->checkDbVersion());
+        $this->assertFalse($this->zdb->checkDbVersion());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Cannot check database version: Error executing query!'
+        );
     }
 
     /**
      * Test get columns method
-     *
-     * @return void
      */
     public function testGetColumns(): void
     {
-        $cols = $this->db->getColumns('preferences');
+        $cols = $this->zdb->getColumns('preferences');
 
         $this->assertCount(3, $cols);
 
@@ -539,7 +488,7 @@ class Db extends TestCase
                 'nom_pref',
                 'val_pref'
             ],
-            array_values($columns)
+            $columns
         );
     }
 
@@ -547,8 +496,6 @@ class Db extends TestCase
      * Test tables count
      *
      * this test will fail if some plugins tables are present
-     *
-     * @return void
      */
     public function testTables(): void
     {
@@ -577,15 +524,20 @@ class Db extends TestCase
             'galette_field_types',
             'galette_fields_categories',
             'galette_mailing_history',
+            'galette_mailing_queue',
             'galette_payments_schedules',
             'galette_pdfmodels',
+            'galette_plugins',
             'galette_preferences',
             'galette_searches',
             'galette_tmplinks',
-            'galette_documents'
+            'galette_documents',
+            'galette_auth_attempts',
+            'galette_twofactor',
+            'galette_twofactor_codes'
         ];
 
-        $tables = $this->db->getTables();
+        $tables = $this->zdb->getTables();
 
         //tables created in grantCheck are sometimes
         //present here... :(
@@ -601,90 +553,94 @@ class Db extends TestCase
 
     /**
      * Test table exists method
-     *
-     * @return void
      */
     public function testTableExists(): void
     {
-        $this->assertTrue($this->db->tableExists('preferences'));
-        $this->assertFalse($this->db->tableExists('does_not_exists'));
+        $this->assertTrue($this->zdb->tableExists('preferences'));
+        $this->assertFalse($this->zdb->tableExists('does_not_exists'));
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1146,
+            'Message' => "regex:/.*does_not_exists.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**
      * Test UTF conversion, for MySQL only
-     *
-     * @return void
      */
     public function testConvertToUtf(): void
     {
-        $convert = $this->db->convertToUTF();
-        $this->assertNull($convert);
+        $db = new \Galette\Core\Db();
+        $db->convertToUTF();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Upgrading from 0.6 will soon be discontinued.'
+        );
     }
 
     /**
      * Test get platform
-     *
-     * @return void
      */
     public function testGetPlatform(): void
     {
-        $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
+        $quoted = $this->zdb->platform->quoteValue('somethin\' to "quote"');
 
-        $expected = ($this->db->isPostgres()) ?
-            "'somethin'' to \"quote\"'" :
-            "'somethin\\' to \\\"quote\\\"'";
+        $expected = ($this->zdb->isPostgres())
+            ? "'somethin'' to \"quote\"'"
+            : "'somethin\\' to \\\"quote\\\"'";
 
         $this->assertSame($expected, $quoted);
     }
 
     /**
      * Test execute Method
-     *
-     * @return void
      */
     public function testExecute(): void
     {
-        $select = $this->db->select('preferences', 'p');
+        $select = $this->zdb->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'azerty']);
-        $results = $this->db->execute($select);
+        $results = $this->zdb->execute($select);
 
         $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $results);
     }
 
     /**
      * Test execute Method
-     *
-     * @return void
      */
     public function testExecuteWException(): void
     {
-        $this->have_warnings = [
-            new \ArrayObject(
-                [
-                    'Level' => 'Error',
-                    'Code' => 1054,
-                    'Message' => "Unknown column 'p.notknown' in 'where"
-                ]
-            )
-        ];
-        $select = $this->db->select('preferences', 'p');
+        $select = $this->zdb->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'azerty']);
         $select->where(['p.notknown' => 'azerty']);
 
-        $this->expectException('\PDOException');
-        $this->db->execute($select);
+        $exception_thrown = false;
+        try {
+            $this->zdb->execute($select);
+        } catch (\PDOException) {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown);
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            $this->zdb->isPostgres() ? 'Undefined column' : 'Unknown column'
+        );
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1054,
+            'Message' => "regex:/Unknown column 'p\.notknown'.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**
      * Test serialization
-     *
-     * @return void
      */
     public function testSerialization(): void
     {
-        $db = $this->db;
+        $db = $this->zdb;
         $serialized = serialize($db);
-        $this->assertNotNull($serialized);
+        $this->assertNotEmpty($serialized);
 
         $unserialized = unserialize($serialized);
         $this->assertInstanceOf(\Galette\Core\Db::class, $unserialized);
@@ -692,38 +648,33 @@ class Db extends TestCase
 
     /**
      * Test getSequenceName
-     *
-     * @return void
      */
     public function testSequenceName(): void
     {
-        $this->assertSame('adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent'));
-        $this->assertSame('galette_adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent', true));
-        $this->assertSame('adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent', false));
+        $this->assertSame('adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent'));
+        $this->assertSame('galette_adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', prefixed: true));
+        $this->assertSame('adherents_id_adherent_seq', $this->zdb->getSequenceName('adherents', 'id_adherent', prefixed: false));
     }
 
     /**
      * Test isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
-        $this->assertTrue(isset($this->db->sql));
-        $this->assertTrue(isset($this->db->query_string));
-        $this->assertTrue(isset($this->db->db));
-        $this->assertFalse(isset($this->db->non_existing));
+        $this->assertTrue(isset($this->zdb->sql));
+        $this->assertTrue(isset($this->zdb->query_string));
+        $this->assertTrue(isset($this->zdb->db)); // @phpstan-ignore isset.property,method.alreadyNarrowedType
+        $this->assertFalse(isset($this->zdb->non_existing));
     }
 
     /**
      * Test supported engine
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSupportedEngine(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(false);
@@ -736,7 +687,7 @@ class Db extends TestCase
         $this->assertTrue($zdb->isEngineSUpported());
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(false);
@@ -753,7 +704,7 @@ class Db extends TestCase
         );
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(true);
@@ -766,7 +717,7 @@ class Db extends TestCase
         $this->assertTrue($zdb->isEngineSUpported());
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(true);
@@ -781,6 +732,143 @@ class Db extends TestCase
         $this->assertSame(
             sprintf('Minimum version for PostgreSQL engine is %s, PostgreSQL 12 found!', GALETTE_PGSQL_MIN),
             $zdb->getUnsupportedMessage()
+        );
+    }
+
+    /**
+     * @return array<int,array{query: string, expected: bool}>
+     */
+    public static function implicitCommitProvider(): array
+    {
+        return [
+            [
+                'query' => 'ALTER TABLE galette_adherents ADD COLUMN test_column VARCHAR(255);',
+                'expected' => true
+            ],
+            [
+                'query' => 'CREATE INDEX idx_test ON galette_adherents (test_column);',
+                'expected' => true
+            ],
+            [
+                'query' => 'DROP TABLE galette_test;',
+                'expected' => true
+            ],
+            [
+                'query' => 'INSERT INTO galette_adherents (id_adherent, nom_adherent) VALUES (9999, \'Test\');',
+                'expected' => false
+            ],
+            [
+                'query' => 'UPDATE galette_adherents SET nom_adherent = \'Test2\' WHERE id_adherent = 9999;',
+                'expected' => false
+            ],
+            [
+                'query' => 'DELETE FROM galette_adherents WHERE id_adherent = 9999;',
+                'expected' => false
+            ],
+            [
+                'query' => 'SELECT * FROM galette_adherents;',
+                'expected' => false
+            ],
+            [
+                'query' => 'TRUNCATE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'CREATE TABLE galette_test (id INT);',
+                'expected' => true
+            ],
+            [
+                'query' => 'DROP INDEX idx_test ON galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'ANALYZE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'OPTIMIZE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'RENAME TABLE galette_adherents TO galette_adherents_old;',
+                'expected' => true
+            ],
+            [
+                'query' => 'SET autocommit = 1;',
+                'expected' => false // does cause implicit commit, but not handled: too complex and should really not happen.
+            ],
+            [
+                'query' => 'SET sql_mode = \'STRICT_ALL_TABLES\';',
+                'expected' => false
+            ],
+        ];
+    }
+
+    /**
+     * Test willMysqlImplicitCommit method
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('implicitCommitProvider')]
+    public function testWillMysqlImplicitCommit(string $query, bool $expected): void
+    {
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['isPostgres'])
+            ->getMock();
+        $zdb->method('isPostgres')->willReturn(true);
+        $this->assertFalse($zdb->willMysqlImplicitCommit($query));
+
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['isPostgres'])
+            ->getMock();
+        $zdb->method('isPostgres')->willReturn(false);
+        $this->assertSame($expected, $zdb->willMysqlImplicitCommit($query));
+    }
+
+    /**
+     * Test isMissingTableException method
+     */
+    public function testIsMissingTableException(): void
+    {
+        $exception_thrown = false;
+        try {
+            $this->zdb->execute($this->zdb->select('non_existing_table'));
+        } catch (\PDOException $e) {
+            $exception_thrown = true;
+            $this->assertTrue($this->zdb->isMissingTableException($e));
+        }
+        $this->assertTrue($exception_thrown);
+
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1146,
+            'Message' => "regex:/.*non_existing_table.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            "non_existing_table"
+        );
+
+        $exception_thrown = false;
+        try {
+            $select = $this->zdb->select(\Galette\Core\Preferences::TABLE);
+            $select->where(['does_not_exists' => 'does_not_exists']);
+            $this->zdb->execute($select);
+        } catch (\PDOException $e) {
+            $exception_thrown = true;
+            $this->assertFalse($this->zdb->isMissingTableException($e));
+        }
+        $this->assertTrue($exception_thrown);
+
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1054,
+            'Message' => "regex:/.*does_not_exists.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            "does_not_exists"
         );
     }
 }

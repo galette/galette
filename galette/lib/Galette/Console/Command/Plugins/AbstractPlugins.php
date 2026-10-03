@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Console\Command\Plugins;
 
 use Galette\Console\Command\AbstractCommand;
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,9 +27,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class AbstractPlugins extends AbstractCommand
 {
-    public const ALL = '*';
+    use DisplayCause;
 
-    protected \Galette\Core\Plugins $plugins;
+    public const string ALL = '*';
+
+
+    protected Plugins $plugins;
 
     /**
      * Default constructor
@@ -53,29 +44,27 @@ abstract class AbstractPlugins extends AbstractCommand
         global $container;
 
         parent::__construct($basepath);
-        $this->plugins = $container->get(\Galette\Core\Plugins::class);
+        $this->plugins = $container->get(Plugins::class);
     }
 
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
         $this
             ->addArgument('plugins', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Plugins names')
-            ->addOption('all', 'a', InputOption::VALUE_NONE, 'Enable plugin(s)')
+            ->addOption(
+                name: 'all',
+                shortcut: 'a',
+                mode: InputOption::VALUE_NONE,
+                description: 'Enable plugin(s)'
+            )
         ;
     }
 
     /**
      * Interacts to request missing arguments or options
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return void
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
@@ -108,7 +97,7 @@ abstract class AbstractPlugins extends AbstractCommand
                     $choices
                 );
                 $question->setAutocompleterValues(array_keys($choices));
-                $question->setMultiselect(true);
+                $question->setMultiselect(multiselect: true);
                 $answer = $question_helper->ask(
                     $input,
                     $output,
@@ -159,7 +148,7 @@ abstract class AbstractPlugins extends AbstractCommand
      */
     protected function getActivePlugins(): array
     {
-        return array_keys($this->plugins->getModules());
+        return array_keys($this->plugins->getActiveModules());
     }
 
     /**
@@ -185,8 +174,6 @@ abstract class AbstractPlugins extends AbstractCommand
     /**
      * Get relevant choices (getRelevantPlugins formatted) for the command
      *
-     * @param SymfonyStyle $io Output interface
-     *
      * @return array<string, string>
      */
     protected function getRelevantChoices(SymfonyStyle $io): array
@@ -203,8 +190,6 @@ abstract class AbstractPlugins extends AbstractCommand
 
     /**
      * Get relevant plugins for current command
-     *
-     * @param SymfonyStyle $io Output interface
      *
      * @return array<string, array<string, string>>
      */

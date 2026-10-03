@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- drop useless sequences, change columns to identity, fix nextval
 DROP SEQUENCE IF EXISTS galette_adherents_id_seq;
 DROP SEQUENCE IF EXISTS adherents_id_seq;

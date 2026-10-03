@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'elements/list.html.twig' %}
 
 {% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
@@ -54,21 +40,21 @@
         </td>
         <td class="center actions_row collapsing">
             {% if login.isGroupManager(group.getId()) and can_export %}
-                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}">
-                    <i class="file pdf green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Export as PDF") }}</span>
+                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="icon-only">
+                    <i class="file pdf green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Export as PDF") }}</span>
                 </a>
             {% endif %}
             {% if login.isGroupManager(group.getId()) %}
-                <a href="{{ url_for("editGroup", {"id": group.getId()}) }}">
-                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
+                <a href="{{ url_for("editGroup", {"id": group.getId()}) }}" class="icon-only">
+                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
                 </a>
             {% endif %}
             {% if login.isAdmin() or login.isStaff() %}
-                <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete">
+                <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete icon-only">
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Delete") }}</span>
+                    <span class="visually-hidden">{{ _T("Delete") }}</span>
                 </a>
             {% endif %}
         </td>
@@ -81,16 +67,6 @@
         {% endfor %}
     {% endif %}
 {% endmacro %}
-
-{% block content %}
-    <noscript>
-        <div class="ui basic fitted center aligned segment">
-            <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
-        </div>
-    </noscript>
-
-    {{ parent() }}
-{% endblock %}
 
 {% block infoline %}
     {% set infoline = {
@@ -108,10 +84,10 @@
             </a>
         {% endif %}
         {% if login.isAdmin() or login.isStaff() %}
-            <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui tiny labeled icon button tooltip" id="newgroup">
+            <button class="ui tiny labeled icon button tooltip" id="newgroup" type="button">
                 <i class="plus circle green icon" aria-hidden="true"></i>
                 {{ _T("New group") }}
-            </a>
+            </button>
         {% endif %}
     {% endif %}
 {% endblock %}
@@ -375,67 +351,16 @@
             {% if login.isAdmin() or login.isStaff() %}
                 {# New group #}
                 $('#newgroup').click(function(){
-                    var _href = $(this).attr('href');
-                    var _input = '<div class="ui labeled input"><div class="ui label">{{ _T("Name:") }}</div><input type="text" name="new_group_name" id="new_group_name" required/></div>';
+                    var _input = '<div class="ui labeled input"><label for="new_group_name" class="ui label">{{ _T("Name:") }}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>';
                     $('body').modal({
-                        title: '{{ _T("Add a new group") }}',
+                        title: '{{ _T("New group") }}',
                         class: 'tiny',
                         content: _input,
                         onApprove: function() {
-                            var _name = $('#new_group_name').val();
-                            if ( _name != '' ) {
-                                //check uniqueness
-                                $.ajax({
-                                    url: '{{ url_for("ajax_groupname_unique") }}',
-                                    type: "POST",
-                                    data: {
-                                        ajax: true,
-                                        gname: _name
-                                    },
-                                    {% include "elements/js/loader.js.twig" with {
-                                        selector: ".segment:not(.tab).loader_selector",
-                                        loader: "button"
-                                    } %},
-                                    success: function(res){
-                                        if ( res.success == false ) {
-                                            if (res.message) {
-                                                {% include "elements/js/modal.js.twig" with {
-                                                    modal_title_twig: _T("An error occurred :(")|e("js"),
-                                                    modal_content: "res.message",
-                                                    modal_class: "tiny",
-                                                    modal_content_class: "scrolling",
-                                                    modal_deny_only: true,
-                                                    modal_cancel_text: _T("Close")|e("js"),
-                                                    modal_classname: "redalert",
-                                                } %}
-                                            } else {
-                                                {% include "elements/js/modal.js.twig" with {
-                                                    modal_title_twig: _T("The group name you have requested already exists in the database.")|e("js"),
-                                                    modal_without_content: true,
-                                                    modal_class: "mini",
-                                                    modal_deny_only: true,
-                                                    modal_cancel_text: _T("Close")|e("js"),
-                                                    modal_classname: "redalert",
-                                                } %}
-                                            }
-                                        } else {
-                                            $(location).attr('href', _href.replace('NAME', _name));
-                                        }
-                                    },
-                                    error: function() {
-                                        {% include "elements/js/modal.js.twig" with {
-                                            modal_title_twig: _T("An error occurred checking name uniqueness :(")|e("js"),
-                                            modal_without_content: true,
-                                            modal_class: "mini",
-                                            modal_deny_only: true,
-                                            modal_cancel_text: _T("Close")|e("js"),
-                                            modal_classname: "redalert",
-                                        } %}
-                                    }
-                                });
-                            } else {
+                            const _name = $('#new_group_name').val();
+                            if ( _name === '' ) {
                                 {% include "elements/js/modal.js.twig" with {
-                                    modal_title_twig: _T("Please provide a group name")|e("js"),
+                                    modal_title_twig: _T("Group name is missing!")|e("js"),
                                     modal_without_content: true,
                                     modal_class: "mini",
                                     modal_deny_only: true,
@@ -444,6 +369,44 @@
                                 } %}
                                 return false;
                             }
+                            //add group (and check uniqueness)
+                            $.ajax({
+                                url: '{{ url_for("doAddGroup") }}',
+                                type: "POST",
+                                data: {
+                                    ajax: true,
+                                    gname: _name
+                                },
+                                {% include "elements/js/loader.js.twig" with {
+                                    selector: ".segment:not(.tab).loader_selector",
+                                    loader: "button"
+                                } %},
+                                success: function(res){
+                                //display message
+                                    if (res.success === true) {
+                                        window.location.href = res.redirect;
+                                    } else {
+                                        {% include "elements/js/modal.js.twig" with {
+                                            modal_title: "res.message",
+                                            modal_without_content: false,
+                                            modal_class: "mini",
+                                            modal_deny_only: true,
+                                            modal_cancel_text: _T("Close")|e("js"),
+                                            modal_classname: "redalert",
+                                        } %}
+                                    }
+                                },
+                                error: function() {
+                                    {% include "elements/js/modal.js.twig" with {
+                                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                                        modal_without_content: true,
+                                        modal_class: "mini",
+                                        modal_deny_only: true,
+                                        modal_cancel_text: _T("Close")|e("js"),
+                                        modal_classname: "redalert",
+                                    } %}
+                                }
+                            });
                         },
                         actions: [{
                             text    : '{{ _T("Create")|e('js') }}',

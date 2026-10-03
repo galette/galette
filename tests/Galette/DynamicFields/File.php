@@ -1,55 +1,37 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\DynamicFields;
+namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic file test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class File extends TestCase
+class File extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\File $file;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->file = new \Galette\DynamicFields\File($this->zdb);
     }
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -59,8 +41,6 @@ class File extends TestCase
 
     /**
      * Test get type name
-     *
-     * @return void
      */
     public function testGetTypeName(): void
     {
@@ -69,13 +49,11 @@ class File extends TestCase
 
     /**
      * Test if basic properties are ok
-     *
-     * @return void
      */
     public function testBaseProperties(): void
     {
         $muliple = $this->file->isMultiValued();
-        $this->assertFalse($muliple);
+        $this->assertTrue($muliple);
 
         $required = $this->file->isRequired();
         $this->assertFalse($required);
@@ -124,8 +102,6 @@ class File extends TestCase
 
     /**
      * Test displayed value
-     *
-     * @return void
      */
     public function testDisplayValue(): void
     {

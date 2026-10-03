@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends "page.html.twig" %}
 
 {% block content %}
@@ -25,7 +11,7 @@
     <form action="{% if transaction.id %}{{ url_for("doEditTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("doAddTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Transaction details") }}
             </div>
             <div class="active content">
@@ -72,18 +58,20 @@
                         {% if transaction.id == null %}
                         <div class="field">
                             <div class="inline fields">
-                                <label class="inline" for="contrib_type">
-                                    {{ _T("Dispatch type:") }}
-                                    <i class="circular small basic question icon tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
-                                </label>
+                                {% include "components/forms/tip.html.twig" with {
+                                    label: _T("Dispatch type:"),
+                                    label_class: "inline",
+                                    tip: _T("Select a contribution type to create for dispatch transaction"),
+                                    id: "contrib_type"
+                                } only %}
                                 <div class="field inline">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" aria-describedby="contrib_type-tip"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
                                     </div>
                                 </div>
                                 <div class="field inline">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}" aria-describedby="contrib_type-tip"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -96,29 +84,29 @@
                         <table class="listing ui very compact small celled yellow table">
                             <thead>
                                 <tr>
-                                    <th class="id_row collapsing">#</th>
-                                    <th class="left date_row collapsing">{{ _T("Date") }}</th>
-                                    <th class="left date_row collapsing">{{ _T("Begin") }}</th>
-                                    <th class="left date_row collapsing">{{ _T("End") }}</th>
-                                    <th class="left collapsing">{{ _T("Duration") }}</th>
+                                    <th scope="col" class="id_row collapsing">#</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("Date") }}</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("Begin") }}</th>
+                                    <th scope="col" class="left date_row collapsing">{{ _T("End") }}</th>
+                                    <th scope="col" class="left collapsing">{{ _T("Duration") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <th class="left">{{ _T("Member") }}</th>
+                                    <th scope="col" class="left">{{ _T("Member") }}</th>
             {% endif %}
-                                    <th class="left">{{ _T("Type") }}</th>
-                                    <th class="left collapsing">{{ _T("Amount") }}</th>
+                                    <th scope="col" class="left">{{ _T("Type") }}</th>
+                                    <th scope="col" class="left collapsing">{{ _T("Amount") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <th class="actions_row collapsing">{{ _T("Actions") }}</th>
+                                    <th scope="col" class="actions_row collapsing">{{ _T("Actions") }}</th>
             {% endif %}
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getDispatchedAmount() }}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getMissingAmount() }}</th>
                                     <td></td>
                                 </tr>
@@ -147,15 +135,15 @@
                                             </a>
                 {% endif %}
                 {% if login.isStaff() or login.isAdmin() or preferences.pref_bool_groupsmanagers_see_contributions %}
-                                            <a
-                                                href="#"
+                                            <button
+                                                type="button"
                                                 class="ui icon blue compact button tooltip"
                                                 title="{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}"
                                                 id="contribslist"
                                             >
                                                 <i class="receipt icon" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
-                                            </a>
+                                            </button>
                 {% endif %}
                                         </div>
                                     </th>
@@ -210,7 +198,6 @@
             </button>
             <input type="hidden" name="trans_id" value="{{ transaction.id }}"/>
             <input type="hidden" name="valid" value="1"/>
-            {% include "components/forms/csrf.html.twig" %}
         </div>
     {% endif %}
     </form>
@@ -320,8 +307,6 @@
                     });
                     return false;
                 });
-
-                _bindDropdownsAutosubmit();
 
                 //Bind pagination and ordering links
                 $('.contributions-selection .pagination a, .contributions-selection thead a').click(function() {

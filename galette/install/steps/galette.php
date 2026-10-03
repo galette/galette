@@ -1,38 +1,43 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+declare(strict_types=1);
 
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Galette\Core\Login;
 
-$results = [];
-$oks = [];
-$errs = [];
+/**
+ * @var GaletteInstall $install
+ * @var GaletteDb $zdb
+ * @var \Galette\Core\I18n $i18n
+ */
+
 $install->reinitReport();
 
 $config_file_ok = $install->writeConfFile();
 $objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n));
 
+$disable_ok = true;
 if ($config_file_ok === true && $objects_ok === true) {
-    echo '<p class="ui green message">' . _T("Configuration file created!") .
-        '<br/>' . _T("Data initialized.") . '</p>';
+    //re-secure the installer by removing the enable file
+    $disable_ok = $install->disableInstaller();
+    echo '<p class="ui green message">' . _T("Configuration file created!")
+        . '<br/>' . _T("Data initialized.") . '</p>';
+    if ($disable_ok !== true) {
+        echo '<p class="ui orange message">'
+            . sprintf(
+                //TRANS: parameter is the file path
+                _T('Unable to remove installer enable file (%1$s)'),
+                htmlentities($install->getEnableInstallFilePath())
+            )
+            . '<br/>' . _T("Remember to remove it manually to re-secure the installer.") . '</p>';
+    }
 } else {
     echo '<p class="ui red message">' . _T("An error occurred :(") . '</p>';
 }
@@ -57,17 +62,17 @@ foreach ($install->getInitializationReport() as $r) {
             <div class="right aligned column">
 <?php
 if (!$config_file_ok || !$objects_ok) {
-?>
+    ?>
                 <button type="submit" class="ui right labeled icon button"><i class="redo alternate double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
-<?php
+    <?php
 }
 ?>
-                <button type="submit" class="ui right labeled primary icon button"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"<?php echo (!$config_file_ok || !$objects_ok) ? ' disabled="disabled"' : ''; ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($config_file_ok && $objects_ok) {
-?>
+    ?>
                 <input type="hidden" name="install_prefs_ok" value="1"/>
-<?php
+    <?php
 }
 ?>
             </div>

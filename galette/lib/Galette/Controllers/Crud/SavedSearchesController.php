@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -46,11 +34,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -60,12 +43,13 @@ class SavedSearchesController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'saveSearch',
+        pattern: '/save-search',
+        methods: ['GET', 'POST'],
+        requiresAuth: true
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getMethod() === 'POST' ? $request->getParsedBody() : $request->getQueryParams();
@@ -131,13 +115,15 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'searches',
+        pattern: '/saved-searches[/{option:page|order}/{value:\d+}]',
+        methods: ['GET'],
+        requiresAuth: true
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
@@ -158,7 +144,7 @@ class SavedSearchesController extends CrudController
         }
 
         $searches = new SavedSearches($this->zdb, $this->login, $filters);
-        $list = $searches->getList(true);
+        $list = $searches->getList(as_search: true);
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
@@ -182,11 +168,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -200,11 +181,7 @@ class SavedSearchesController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -215,11 +192,7 @@ class SavedSearchesController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -234,8 +207,6 @@ class SavedSearchesController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -246,8 +217,6 @@ class SavedSearchesController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -261,8 +230,6 @@ class SavedSearchesController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -283,8 +250,6 @@ class SavedSearchesController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -305,13 +270,15 @@ class SavedSearchesController extends CrudController
     /**
      * Load saved search
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Saved search id
-     *
-     * @return Response
+     * @param int $id Saved search id
      */
-    public function load(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'loadSearch',
+        pattern: '/save-search/{id}',
+        methods: ['GET'],
+        requiresAuth: true
+    )]
+    public function load(Response $response, int $id): Response
     {
         try {
             $sco = new SavedSearch($this->zdb, $this->login, $id);
@@ -347,8 +314,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Get default filter name
-     *
-     * @return string
      */
     public static function getDefaultFilterName(): string
     {

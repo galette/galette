@@ -1,13 +1,19 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+
+#
+# This file is part of Galette (https://galette.eu).
+# SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 
 import os, sys, argparse, re, git, http.client, subprocess
-import urlgrabber.progress, tarfile, shutil, gitdb, time, fnmatch
+import tarfile, shutil, gitdb, time, fnmatch
 from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
 
 ssh_path = '/var/www/galette.eu/download/'
-ssh_host = 'galette.eu'
+ssh_host = 'ssh.galette.eu'
 galette_dl_repo = 'https://galette.eu/download/'
 is_local = False
 
@@ -36,6 +42,38 @@ def print_err(msg):
     Display colored error message
     """
     print(colored(msg, 'red', attrs=['bold']))
+
+
+def run(cmd, cwd=None):
+    """
+    Run a command, and stop the build if it failed.
+
+    Every subprocess here used to be started and waited for without its exit
+    code ever being looked at, so a failed composer install produced an archive
+    without vendor/ and the script still exited 0, announcing a release.
+    """
+    p1 = subprocess.Popen(cmd, shell=True, cwd=cwd)
+    p1.communicate()
+    if p1.returncode != 0:
+        print_err('Command failed with exit code %d: %s' % (p1.returncode, cmd))
+        exit(1)
+
+
+def remote_exists(url):
+    """
+    Check whether a URL exists, with a HEAD request.
+
+    The scheme is honoured. The download repository is served over HTTPS, and
+    asking for it on port 80 answers a 301 rather than a 200, so this check used
+    to report that nothing existed whatever the version being built.
+    """
+    parsed = urlparse(url)
+    if parsed.scheme == 'https':
+        connection = http.client.HTTPSConnection(parsed.netloc)
+    else:
+        connection = http.client.HTTPConnection(parsed.netloc)
+    connection.request('HEAD', parsed.path)
+    return connection.getresponse().status == 200
 
 
 def get_numeric_version(ver):
@@ -74,6 +112,9 @@ def propose_version():
 
     for tagref in tagrefs:
         tag = tagref.tag
+        if tag is None:
+            # lightweight tag, there is no tag object to read
+            continue
         if valid_version(tag.tag):
             # last minor version is always the last one :)
             if tag.tag > last_minor:
@@ -126,10 +167,16 @@ def is_existing_version(ver):
     """
     Look specified version exists
     """
+    global tag_commit
+
     for tagref in tagrefs:
         tag = tagref.tag
+        if tag is None:
+            # lightweight tag, there is no tag object to read
+            continue
         if valid_version(tag.tag):
             if tag.tag == ver:
+                tag_commit = tag.hexsha
                 return True
     return False
 
@@ -206,6 +253,9 @@ def _do_build(ver):
         archive_name
     )
 
+    if not os.path.exists(local_dl_repo):
+        os.makedirs(local_dl_repo)
+
     if not force:
         # first check if a version
         local = False
@@ -217,12 +267,7 @@ def _do_build(ver):
         if is_local:
             exists = os.path.isfile(url)
         else:
-            parsed = urlparse(url)
-
-            connection = http.client.HTTPConnection(parsed[1], 80)
-            connection.request('HEAD', parsed[2])
-            response = connection.getresponse()
-            exists = response.status == 200
+            exists = remote_exists(url)
 
         if not exists:
             # also check from local repo
@@ -233,11 +278,7 @@ def _do_build(ver):
         if is_local:
             ascexists = os.path.isfile(urlasc)
         else:
-            ascparsed = urlparse(urlasc)
-            connection = http.client.HTTPConnection(ascparsed[1], 80)
-            connection.request('HEAD', ascparsed[2])
-            response = connection.getresponse()
-            ascexists = response.status == 200
+            ascexists = remote_exists(urlasc)
 
         if not ascexists:
             # also check from local repo
@@ -265,7 +306,7 @@ def _do_build(ver):
             if msg is not None:
                 msg += ' and has been %ssigned!' % loctxt
             else:
-                msg += 'Release has been %ssigned!' % loctxt
+                msg = 'Release has been %ssigned!' % loctxt
 
         msg += '\n\nYou will *NOT* build another one :)'
         print_err(msg)
@@ -307,8 +348,7 @@ def _do_build(ver):
         else:
             print('Archiving GIT tag %s' % ver)
 
-        p1 = subprocess.Popen(archive_cmd, shell=True)
-        p1.communicate()
+        run(archive_cmd)
 
         print('Adding vendor libraries')
         add_libs(rel_name, galette_archive)
@@ -326,8 +366,7 @@ def _do_build(ver):
 
 def do_sign(archive):
     sign_cmd = 'gpg --detach-sign --armor %s' % archive
-    p1 = subprocess.Popen(sign_cmd, shell=True)
-    p1.communicate()
+    run(sign_cmd)
 
 
 def do_upload(galette_archive):
@@ -356,8 +395,7 @@ def do_scp(archive):
     else:
         scp_cmd = 'scp -r %s* %s:%s' % (archive, ssh_host, path)
     print(scp_cmd)
-    p1 = subprocess.Popen(scp_cmd, shell=True)
-    p1.communicate()
+    run(scp_cmd)
 
 
 def do_cp(archive):
@@ -388,22 +426,19 @@ def add_libs(rel_name, galette_archive):
     # set galette nightly version
     config_dir = os.path.join(src_dir, rel_name, 'galette', 'includes', 'sys_config')
     if nightly_version != None:
-        sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
+        sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', value: false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
         print(sed_cmd)
-        p1 = subprocess.Popen(sed_cmd, shell=True, cwd=config_dir)
-        p1.wait()
+        run(sed_cmd, cwd=config_dir)
 
     # install npm modules
     npm_dir = os.path.join(src_dir, rel_name)
     npm_cmd = 'npm install --prefix %s' % npm_dir
     print(npm_cmd)
-    p1 = subprocess.Popen(npm_cmd, shell=True, cwd=npm_dir)
-    p1.wait()
+    run(npm_cmd, cwd=npm_dir)
 
     # build the UI assets
     wp_cmd = 'npm run first-build'
-    p1 = subprocess.Popen(wp_cmd, shell=True, cwd=npm_dir)
-    p1.wait()
+    run(wp_cmd, cwd=npm_dir)
 
     # node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
@@ -421,10 +456,18 @@ def add_libs(rel_name, galette_archive):
 
     # install php dependencies
     composer_cmd = 'composer install --ignore-platform-reqs --no-dev'
-    composer_dir = os.path.join(src_dir, rel_name, 'galette')
+    composer_dir = os.path.join(src_dir, rel_name)
     print(composer_dir)
-    p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
-    p1.wait()
+    run(composer_cmd, cwd=composer_dir)
+
+    # compile translations: MO files are not versioned
+    run('bin/console galette:compile-locales --force', cwd=composer_dir)
+    lang_dir = os.path.join(composer_dir, 'galette', 'lang')
+    for po in fnmatch.filter(os.listdir(lang_dir), 'galette_*.po'):
+        mo = os.path.join(lang_dir, po[len('galette_'):-len('.po')], 'LC_MESSAGES', 'galette.mo')
+        if not os.path.exists(mo):
+            print_err('Missing compiled translation: %s' % mo)
+            exit(1)
 
     # cleaunp files not required in releases
     todrop = [
@@ -440,8 +483,8 @@ def add_libs(rel_name, galette_archive):
         'composer.lock',
         '.composer-require-checker.config.json',
         'semantic.json',
-        os.path.join('galette', 'composer.json'),
-        os.path.join('galette', 'composer.lock'),
+        'composer.json',
+        'composer.lock',
         os.path.join('galette', 'post_contribution_test.php')
     ]
     for td in todrop:
@@ -457,8 +500,8 @@ def add_libs(rel_name, galette_archive):
     if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
         shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
-    # cleanup vendors
-    for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):
+    # cleanup vendors; composer files are at the root, vendor-dir is galette/vendor
+    for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'galette', 'vendor')):
         # remove git directories
         for dirname in fnmatch.filter(dirnames, '.git*'):
             remove_dir = os.path.join(composer_dir, root, dirname)
@@ -607,6 +650,11 @@ def main():
         action="store_true"
     )
     parser.add_argument(
+        '--no-sign',
+        help='Do not sign the archive',
+        action='store_true'
+    )
+    parser.add_argument(
         '-n',
         '--nightly',
         help='Build nightly',
@@ -650,11 +698,15 @@ def main():
     repo = git.Repo(galette_repo)
     tagrefs = repo.tags
 
+    assume_yes = args.assume_yes
+
     if args.f == True:
         force = ask_user_confirm(
             'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
         )
-    assume_yes = args.assume_yes
+
+    if args.no_sign:
+        sign = False
 
     if args.local:
         if not args.download_url:

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,13 +11,14 @@ declare(strict_types=1);
 namespace Galette\IO\News;
 
 use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * News post
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Post
+class Post implements JsonSerializable
 {
     /**
      * Default constructor
@@ -53,9 +41,41 @@ class Post
     }
 
     /**
-     * Get post title
+     * Build a post from its cached representation
      *
-     * @return string
+     * @param array<string, ?string> $data Post data
+     */
+    public static function fromArray(array $data): self
+    {
+        if (!array_key_exists('title', $data)) {
+            throw new InvalidArgumentException('Missing post title.');
+        }
+
+        return new self(
+            (string)$data['title'],
+            $data['url'] ?? null,
+            $data['date'] ?? null
+        );
+    }
+
+    /**
+     * Get data to serialize
+     *
+     * Properties are private; without this, json_encode() would produce an empty object.
+     *
+     * @return array<string, ?string>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->title,
+            'url' => $this->url,
+            'date' => $this->date
+        ];
+    }
+
+    /**
+     * Get post title
      */
     public function getTitle(): string
     {
@@ -64,8 +84,6 @@ class Post
 
     /**
      * Get post URL
-     *
-     * @return ?string
      */
     public function getUrl(): ?string
     {
@@ -74,8 +92,6 @@ class Post
 
     /**
      * Get post date
-     *
-     * @return ?string
      */
     public function getDate(): ?string
     {

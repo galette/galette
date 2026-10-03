@@ -3,8 +3,33 @@
 *******************************/
 
 .ui.toast {
+  &.sucess,
+  &.error {
+    color: @white;
+  }
+
+  &.warning {
+    background-color: saturate(lighten(@orange, 8), 12);
+    color: @darkGrey;
+  }
+
   .content a {
     color: inherit;
     text-decoration: underline;
+  }
+}
+
+/*-----------------------------------
+    Bigger top attached toasts
+------------------------------------*/
+.ui.toast-container.ui.top.attached .toast-box {
+  & > .ui.toast {
+    padding: 1.5em 1em;
+  }
+
+  .ui.toast .close.icon {
+    top: .5em;
+    right: .5em;
+    font-size: 1.5em;
   }
 }

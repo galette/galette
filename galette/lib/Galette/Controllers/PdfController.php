@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -38,7 +26,6 @@ use Galette\IO\PdfAttendanceSheet;
 use Galette\IO\PdfContribution;
 use Galette\IO\PdfGroups;
 use Galette\IO\PdfMembersCards;
-use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\IO\PdfMembersLabels;
 use Galette\Repository\Members;
 use Galette\Repository\Groups;
@@ -54,11 +41,6 @@ class PdfController extends AbstractController
 {
     /**
      * Send response
-     *
-     * @param Response $response PSR Response
-     * @param Pdf      $pdf      PDF to output
-     *
-     * @return Response
      */
     protected function sendResponse(Response $response, Pdf $pdf): Response
     {
@@ -72,13 +54,14 @@ class PdfController extends AbstractController
     /**
      * Members PDF card
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
-     *
-     * @return Response
+     * @param ?int $id_adh Member id
      */
-    public function membersCards(Request $request, Response $response, ?int $id_adh = null): Response
+    #[Route(
+        name: 'pdf-members-cards',
+        pattern: '/members/cards[/{' . Adherent::PK . ':\d+}]',
+        methods: ['GET']
+    )]
+    public function membersCards(Response $response, ?int $id_adh = null): Response
     {
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
             $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
@@ -136,7 +119,7 @@ class PdfController extends AbstractController
         $members = $m->getArrayList(
             $selected,
             ['nom_adh', 'prenom_adh'],
-            true
+            with_photos: true
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -153,9 +136,6 @@ class PdfController extends AbstractController
         }
 
         $class = PdfMembersCards::class;
-        if (GALETTE_ADAPTATIVE_CARDS === true) {
-            $class = PdfMembersCardsAdaptative::class;
-        }
         $pdf = new $class($this->preferences);
         $pdf->drawCards($members);
 
@@ -164,12 +144,12 @@ class PdfController extends AbstractController
 
     /**
      * Members PDF label
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'pdf-members-labels',
+        pattern: '/members/labels',
+        methods: ['GET', 'POST']
+    )]
     public function membersLabels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -184,7 +164,7 @@ class PdfController extends AbstractController
             && $get['from'] === 'mailing'
         ) {
             //if we're from mailing, we have to retrieve
-            //its unreachables members for labels
+            //its unreachable members for labels
             $mailing = $this->session->mailing;
             $members = $mailing->unreachables;
         } else {
@@ -226,13 +206,20 @@ class PdfController extends AbstractController
     /**
      * PDF adhesion form
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
-     *
-     * @return Response
+     * @param ?int $id_adh Member id
      */
-    public function adhesionForm(Request $request, Response $response, ?int $id_adh = null): Response
+    #[Route(
+        name: 'adhesionForm',
+        pattern: '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'emptyAdhesionForm',
+        pattern: '/members/empty-adhesion-form',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function adhesionForm(Response $response, ?int $id_adh = null): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
@@ -252,12 +239,12 @@ class PdfController extends AbstractController
 
     /**
      * PDF attendance sheet configuration page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'attendance_sheet_details',
+        pattern: '/attendance-sheet/details',
+        methods: ['GET', 'POST']
+    )]
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -271,7 +258,7 @@ class PdfController extends AbstractController
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || (isset($post['mode'])
             && $post['mode'] == 'ajax')
         ) {
@@ -301,12 +288,12 @@ class PdfController extends AbstractController
 
     /**
      * PDF attendance sheet
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'attendance_sheet',
+        pattern: '/attendance-sheet',
+        methods: ['POST']
+    )]
     public function attendanceSheet(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -327,7 +314,7 @@ class PdfController extends AbstractController
         $members = $m->getArrayList(
             $filters->selected,
             ['nom_adh', 'prenom_adh'],
-            true
+            with_photos: true
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -362,25 +349,24 @@ class PdfController extends AbstractController
 
     /**
      * Contribution PDF
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Contribution id
-     *
-     * @return Response
+     * @param int $id Contribution id
      */
-    public function contribution(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'printContribution',
+        pattern: '/contribution/print/{id:\d+}',
+        methods: ['GET']
+    )]
+    public function contribution(Response $response, int $id, Contribution $contribution): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login);
         if (!$contribution->load($id)) {
             //not possible to load contribution, exit
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load contribution #%id!")
+                    sprintf(
+                        //TRANS: parameter is the contribution identifier
+                        _T('Unable to load contribution #%1$s!'),
+                        $id
                     )
                 ],
                 redirect_url: $this->routeparser->urlFor(
@@ -397,17 +383,16 @@ class PdfController extends AbstractController
     /**
      * Groups PDF
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Group id
-     *
-     * @return Response
+     * @param ?int $id Group id
      */
-    public function group(Request $request, Response $response, ?int $id = null): Response
+    #[Route(
+        name: 'pdf_groups',
+        pattern: '/pdf/groups[/{id:\d+}]',
+        methods: ['GET']
+    )]
+    public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
-        $groups = new Groups($this->zdb, $this->login);
-
-        $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
+        $groups_list = $id !== null ? $groups->getList(full: true, id: $id) : $groups->getList();
 
         if (count($groups_list) < 1) {
             Analog::log(
@@ -422,22 +407,21 @@ class PdfController extends AbstractController
             );
         }
 
-        $pdf = new PdfGroups($this->preferences);
-        $pdf->draw($groups_list, $this->login);
-
+        $pdf->draw($groups_list);
         return $this->sendResponse($response, $pdf);
     }
 
     /**
      * PDF models list
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Model id
-     *
-     * @return Response
+     * @param ?int $id Model id
      */
-    public function models(Request $request, Response $response, ?int $id = null): Response
+    #[Route(
+        name: 'pdfModels',
+        pattern: '/models/pdf[/{id:\d+}]',
+        methods: ['GET']
+    )]
+    public function models(Request $request, Response $response, PdfModels $ms, ?int $id = null): Response
     {
         $mid = 1;
         if (isset($_POST[PdfModel::PK])) {
@@ -446,8 +430,6 @@ class PdfController extends AbstractController
             $mid = $id;
         }
 
-
-        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
         $models = $ms->getList();
 
         $model = null;
@@ -463,7 +445,7 @@ class PdfController extends AbstractController
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || (isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true')
         ) {
@@ -489,12 +471,12 @@ class PdfController extends AbstractController
 
     /**
      * Store PDF models
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'storePdfModels',
+        pattern: '/models/pdf',
+        methods: ['POST']
+    )]
     public function storeModels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -555,19 +537,23 @@ class PdfController extends AbstractController
 
     /**
      * Get direct document
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
-     *
-     * @return Response
      */
-    public function directlinkDocument(Request $request, Response $response, string $hash): Response
-    {
+    #[Route(
+        name: 'get-directlink',
+        pattern: '/document/download/{hash}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function directlinkDocument(
+        Request $request,
+        Response $response,
+        string $hash,
+        Links $links,
+        Members $m
+    ): Response {
         $post = $request->getParsedBody();
         $email = $post['email'];
 
-        $links = new Links($this->zdb);
         $valid = $links->isHashValid($hash, $email);
 
         if ($valid === false) {
@@ -596,11 +582,10 @@ class PdfController extends AbstractController
         $login->setId((int)$row['id_adh']);
 
         if ($target === Links::TARGET_MEMBERCARD) {
-            $m = new Members();
             $members = $m->getArrayList(
                 [$id],
                 ['nom_adh', 'prenom_adh'],
-                true
+                with_photos: true
             );
 
             if (!is_array($members) || count($members) < 1) {
@@ -624,10 +609,10 @@ class PdfController extends AbstractController
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [
-                        str_replace(
-                            '%id',
-                            (string)$id,
-                            _T("Unable to load contribution #%id!")
+                        sprintf(
+                            //TRANS: parameter is the contribution identifier
+                            _T('Unable to load contribution #%1$s!'),
+                            $id
                         )
                     ],
                     redirect_url: $this->routeparser->urlFor('directlink', ['hash' => $hash])

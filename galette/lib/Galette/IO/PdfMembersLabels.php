@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -47,15 +34,13 @@ class PdfMembersLabels extends Pdf
      */
     public function __construct(Preferences $prefs)
     {
-        $this->setRTL(false);
+        $this->setRTL(enable: false);
         $this->filename = __('labels_print_filename') . '.pdf';
         parent::__construct($prefs);
     }
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -72,7 +57,7 @@ class PdfMembersLabels extends Pdf
         $this->SetDisplayMode('fullpage');
 
         // Disable Auto Page breaks
-        $this->SetAutoPageBreak(false, 0);
+        $this->SetAutoPageBreak(auto: false, margin: 0);
 
         // Set colors
         $this->SetDrawColor(160, 160, 160);
@@ -104,8 +89,6 @@ class PdfMembersLabels extends Pdf
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawLabels(array $members): void
     {
@@ -137,14 +120,14 @@ class PdfMembersLabels extends Pdf
             );
             // Draw a frame around the label
             if ($this->preferences->pref_etiq_border) {
-                $this->Rect($x, $y, $this->lw, $this->lh);
+                $this->Rect(x: $x, y: $y, w: $this->lw, h: $this->lh);
             }
 
             // Prepare full address
             $full_address_array = [];
             $full_address_array[] = $member->sfullname;
             // Transform member's address in array and merge it with $full_address_array
-            $address_array = explode(PHP_EOL, (string) $member->address);
+            $address_array = explode(PHP_EOL, (string)$member->address);
             $full_address_array = array_merge($full_address_array, $address_array);
             $full_address_array[] = $member->zipcode . ' ' . $member->town;
             $full_address_array[] = $member->country;
@@ -160,7 +143,19 @@ class PdfMembersLabels extends Pdf
                 $this->preferences->pref_etiq_corps
             );
             // Print full address
-            $this->writeHTMLCell($this->lw, $this->line_h, $x, $y, nl2br($full_address), 0, 0, false, true, 'L', true);
+            $this->writeHTMLCell(
+                w: $this->lw,
+                h: $this->line_h,
+                x: $x,
+                y: $y,
+                html: nl2br($full_address),
+                border: 0,
+                ln: 0,
+                fill: false,
+                reseth: true,
+                align: 'L',
+                autopadding: true
+            );
 
             // Next label
             $nb_etiq++;

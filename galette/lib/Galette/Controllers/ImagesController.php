@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
-use Slim\Psr7\Request;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Response;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
@@ -43,11 +30,6 @@ class ImagesController extends AbstractController
 {
     /**
      * Send response
-     *
-     * @param Response $response PSR Response
-     * @param Picture  $picture  Picture to output
-     *
-     * @return Response
      */
     protected function sendResponse(Response $response, Picture $picture): Response
     {
@@ -66,26 +48,28 @@ class ImagesController extends AbstractController
 
     /**
      * Logo route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function logo(Request $request, Response $response): Response
+    #[Route(
+        name: 'logo',
+        pattern: '/logo',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function logo(Response $response): Response
     {
         return $this->sendResponse($response, $this->logo);
     }
 
     /**
      * Print logo route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function printLogo(Request $request, Response $response): Response
+    #[Route(
+        name: 'printLogo',
+        pattern: '/print-logo',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function printLogo(Response $response): Response
     {
         return $this->sendResponse($response, $this->print_logo);
     }
@@ -93,15 +77,16 @@ class ImagesController extends AbstractController
     /**
      * Photos
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member id
-     *
-     * @return Response
+     * @param int $id Member id
      */
-    public function photo(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'photo',
+        pattern: '/photo/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function photo(Response $response, int $id, Adherent $adh, Picture $picture): Response
     {
-        $adh = new Adherent($this->zdb);
         $adh->disableDep('dues');
         if (!$this->login->isGroupManager()) {
             //if logged-in user is a group manager, we have to check
@@ -110,7 +95,6 @@ class ImagesController extends AbstractController
         }
         $adh->load($id);
 
-        $picture = new Picture();
         if (
             $adh->canEdit($this->login)
             || ($this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_membersgallery')

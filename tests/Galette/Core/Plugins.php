@@ -1,41 +1,33 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+use function Safe\touch;
+use function Safe\unlink;
 
 /**
  * Plugins tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Plugins extends TestCase
+class Plugins extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-    private \Galette\Core\Plugins $plugins;
+    private int $count_modules = 9;
+    private int $active_modules = 3;
 
+    /** @var array<string, mixed> */
     private array $plugin2 = [
         'root'          => 'plugin-test2',
         'name'          => 'Galette Test2 Plugin',
@@ -48,61 +40,71 @@ class Plugins extends TestCase
         ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'route'         => 'plugin2'
+        'route'         => 'plugin2',
+        'dbversion'     => null
     ];
 
     /**
      * Get instantiated plugins instance
-     *
-     * @return \Galette\Core\Plugins
      */
     private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
-        $plugins->autoload(GALETTE_PLUGINS_PATH);
-        $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         return $plugins;
     }
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-
+        parent::setUp();
         $this->plugins = $this->getPlugins();
-
-        $this->plugin2['root'] = GALETTE_PLUGINS_PATH .
-            $this->plugin2['root'];
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        $this->plugin2['root'] = GALETTE_PLUGINS_PATH
+            . $this->plugin2['root'];
     }
 
     /**
      * Tests plugins load
-     *
-     * @return void
      */
     public function testLoadModules(): void
     {
         $this->getPlugins();
-        $this->assertCount(3, $this->plugins->getModules());
+        $modules = $this->plugins->getModules();
+        $this->assertCount($this->count_modules, $modules);
 
-        $loaded_plugin = $this->plugins->getModules('plugin-test2');
+        //all plugins are present, but only 3 are active
+        $this->assertEquals(
+            [
+                'plugin-db-noversion',
+                'plugin-db',
+                'plugin-disabled',
+                'plugin-news',
+                'plugin-noclass',
+                'plugin-oldversion',
+                'plugin-test1',
+                'plugin-test2',
+                'plugin-unversionned'
+            ],
+            array_keys($modules)
+        );
+
+        $active_modules = $this->plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+
+        $this->assertEquals(
+            [
+                'plugin-db',
+                'plugin-test1',
+                'plugin-test2'
+            ],
+            array_keys($active_modules)
+        );
+
+        $loaded_plugin = $this->plugins->getModule('plugin-test2');
         $loaded_plugin['date'] = $this->plugin2['date'];
 
         $this->assertSame($this->plugin2, $loaded_plugin);
@@ -110,32 +112,62 @@ class Plugins extends TestCase
 
     /**
      * Test module existence
-     *
-     * @return void
      */
     public function testModuleExists(): void
     {
         $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
-        $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertTrue($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertFalse($this->plugins->moduleExists('plugin-notaplugin'));
+    }
+
+    /**
+     * Data provider for disabled modules test
+     *
+     * @return array<int, array{module: string, cause: int}>
+     */
+    public static function disabledModulesProvider(): array
+    {
+        return [
+            [
+                'module' => 'plugin-disabled',
+                'cause' => \Galette\Core\Plugins::DISABLED_EXPLICIT],
+            [
+                'module' => 'plugin-unversionned',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_COMPAT
+            ],
+            [
+                'module' => 'plugin-oldversion',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_COMPAT
+            ],
+            [
+                'module' => 'plugin-news',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_EXPLICIT
+            ],
+            [
+                'module' => 'plugin-noclass',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_MISS
+            ],
+            [
+                'module' => 'plugin-db-noversion',
+                'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
+            ]
+        ];
     }
 
     /**
      * Test disabled plugin
-     *
-     * @return void
      */
-    public function testDisabledModules(): void
+    #[DataProvider('disabledModulesProvider')]
+    public function testDisabledModules(string $module, int $cause): void
     {
         $disabled_modules = $this->plugins->getDisabledModules();
-        $this->assertTrue(isset($disabled_modules['plugin-disabled']));
-        $this->assertTrue(isset($disabled_modules['plugin-unversionned']));
-        $this->assertTrue(isset($disabled_modules['plugin-oldversion']));
+        $this->assertTrue(isset($disabled_modules[$module]));
+        $this->assertSame($cause, $this->plugins->getDisabledCause($module));
+        $this->assertTrue(isset($disabled_modules['plugin-db-noversion']));
     }
 
     /**
      * Test module root
-     *
-     * @return void
      */
     public function testModuleRoot(): void
     {
@@ -144,8 +176,6 @@ class Plugins extends TestCase
 
     /**
      * Test reset modules list
-     *
-     * @return void
      */
     public function testResetModulesList(): void
     {
@@ -156,33 +186,28 @@ class Plugins extends TestCase
 
     /**
      * Test plugin (des)activation
-     *
-     * @return void
      */
     public function testModuleActivation(): void
     {
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertTrue(isset($active_modules['plugin-test2']));
         $plugins->deactivateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(2, $modules);
-        $this->assertFalse(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules - 1, $plugins->getActiveModules());
+        $this->assertFalse(isset($active_modules['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+        $this->assertTrue(isset($active_modules['plugin-test2']));
     }
 
     /**
      * Test non-existant module activation
-     *
-     * @return void
      */
     public function testNonExistantModuleActivation(): void
     {
@@ -193,8 +218,6 @@ class Plugins extends TestCase
 
     /**
      * Test non-existant module de-activation
-     *
-     * @return void
      */
     public function testNonExistantModuleDeactivation(): void
     {
@@ -205,16 +228,104 @@ class Plugins extends TestCase
 
     /**
      * Test if plugin needs database
-     *
-     * @return void
      */
-    public function testNeedDatabse(): void
+    public function testNeedDatabase(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
 
         $plugins = $this->getPlugins();
-        $this->expectExceptionMessage(_T('Module does not exists!'));
+        $this->expectExceptionMessage('Module "nonexistant" does not exist!');
         $plugins->needsDatabase('nonexistant');
+    }
+
+    /**
+     * Test getInstalledDbVersion() for a module that is active and whose version
+     * was auto-migrated into galette_plugins when loadModules() ran.
+     */
+    public function testGetInstalledDbVersionActivePlugin(): void
+    {
+        // plugin-db has dbver 0.1 and isInstalled()=true → auto-migrated on load
+        $version = $this->plugins->getInstalledDbVersion('plugin-db');
+        $this->assertSame('0.1', $version);
+    }
+
+    /**
+     * Test getInstalledDbVersion() for a module that does not use a database.
+     * It is never inserted into galette_plugins, so null is expected.
+     */
+    public function testGetInstalledDbVersionPluginWithoutDb(): void
+    {
+        $this->assertNull($this->plugins->getInstalledDbVersion('plugin-test2'));
+    }
+
+    /**
+     * Test getInstalledDbVersion() throws for an unknown plugin identifier.
+     */
+    public function testGetInstalledDbVersionUnknownPlugin(): void
+    {
+        $this->expectException(\Galette\Exception\MissingPluginException::class);
+        $this->plugins->getInstalledDbVersion('plugin-nonexistant');
+    }
+
+    /**
+     * A plugin without a scripts/ directory whose isInstalled() returns false
+     * must remain active. Marking such a plugin DISABLED_NOT_INSTALLED would
+     * leave it unrecoverable through the UI: the init-db wizard rejects
+     * plugins that do not need a database.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testCheckKeepsNonDbPluginActiveWhenIsInstalledFalse(): void
+    {
+        $plugin_class = \GaletteTest1Plugin\PluginGalettePlugin1::class;
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $this->container->set($plugin_class, $mock);
+
+        $plugins = $this->getPlugins();
+
+        $this->assertFalse($plugins->isDisabled('plugin-test1'));
+        $this->assertArrayHasKey('plugin-test1', $plugins->getActiveModules());
+    }
+
+    /**
+     * A plugin disabled by register() (e.g. for an incompatible compver) must
+     * keep that original cause even when an explicit-disabled marker also
+     * exists on disk — otherwise the surfaced cause hides the real problem.
+     */
+    public function testDisabledCompatNotOverwrittenByExplicit(): void
+    {
+        $marker = GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-oldversion_disabled';
+        touch($marker);
+        try {
+            $plugins = $this->getPlugins();
+            $this->assertSame(
+                \Galette\Core\Plugins::DISABLED_COMPAT,
+                $plugins->getDisabledCause('plugin-oldversion')
+            );
+        } finally {
+            @unlink($marker);
+        }
+    }
+
+    /**
+     * Test plugin event provider is subscribed
+     */
+    public function testLoadEventProviders(): void
+    {
+        $dispatcher = new \League\Event\EventDispatcher();
+        $plugins = new \Galette\Core\Plugins();
+        $plugins
+            ->setContainer($this->container)
+            ->setEventDispatcher($dispatcher)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+
+        \GaletteTest2Plugin\PluginEventProvider::$received = [];
+        $object = new \stdClass();
+        $dispatcher->dispatch(new \Galette\Events\GaletteEvent('plugin2.test', $object));
+
+        $this->assertSame([$object], \GaletteTest2Plugin\PluginEventProvider::$received);
     }
 }

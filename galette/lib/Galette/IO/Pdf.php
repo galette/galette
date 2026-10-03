@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -31,7 +18,9 @@ use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
 
+use function Safe\preg_match;
 use function Safe\preg_replace;
+use function Safe\preg_split;
 
 /*
  * TCPDF configuration file for Galette
@@ -45,10 +34,10 @@ require_once GALETTE_SYSCONFIG_PATH . 'galette_tcpdf_config.php';
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Pdf extends TCPDF
+abstract class Pdf extends TCPDF
 {
-    public const FONT = 'DejaVuSans';
-    public const FONT_SIZE = 10;
+    public const string FONT = 'DejaVuSans';
+    public const int FONT_SIZE = 10;
 
     protected I18n $i18n;
     private bool $paginated = false;
@@ -64,33 +53,31 @@ class Pdf extends TCPDF
      */
     public function __construct(
         protected Preferences $preferences,
-        private ?PdfModel $model = null
+        private readonly ?PdfModel $model = null
     ) {
         global $i18n;
 
         $this->i18n = $i18n;
-        parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
+        parent::__construct(orientation: 'P', unit: 'mm', format: 'A4', unicode: true, encoding: 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
         //add helvetica, hard-called from lib
         $this->SetFont('helvetica');
         //and then, set real font
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
-        $name = preg_replace(
-            '/%s/',
-            $this->preferences->pref_nom,
-            _T("Association %s")
+        $name = sprintf(
+            _T("Association %s"),
+            $this->preferences->pref_nom
         );
         $this->SetAuthor(
             $name . ' (using Galette ' . GALETTE_VERSION . ')'
         );
 
         if ($this->i18n->isRTL()) {
-            $this->setRTL(true);
+            $this->setRTL(enable: true);
         }
 
         if ($model !== null) {
-            $this->model = $model;
             $this->SetTitle($this->model->htitle);
         }
 
@@ -102,8 +89,6 @@ class Pdf extends TCPDF
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -113,31 +98,25 @@ class Pdf extends TCPDF
 
     /**
      * No header
-     *
-     * @return void
      */
     protected function setNoHeader(): void
     {
-        $this->SetPrintHeader(false);
+        $this->SetPrintHeader(val: false);
         $this->setHeaderMargin(0);
     }
 
     /**
      * No footer
-     *
-     * @return void
      */
     protected function setNoFooter(): void
     {
-        $this->SetPrintFooter(false);
+        $this->SetPrintFooter(val: false);
         $this->setFooterMargin(0);
         $this->has_footer = false;
     }
 
     /**
      * Calculate footer height
-     *
-     * @return void
      */
     private function calculateFooterHeight(): void
     {
@@ -150,8 +129,6 @@ class Pdf extends TCPDF
 
     /**
      * Set show pagination
-     *
-     * @return void
      */
     public function showPagination(): void
     {
@@ -169,10 +146,6 @@ class Pdf extends TCPDF
      * 2017-02-14 :: Johan Cwiklinski : use slim's flash message; do not rely on session for redirect
      *
      * @param string $msg The error message
-     *
-     * @return void
-     * @access public
-     * @since 1.0
      */
     public function Error(mixed $msg): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -197,7 +170,7 @@ class Pdf extends TCPDF
      * Converts color from HTML format #RRVVBB
      * to RGB 3 colors array.
      *
-     *  @param string $hex6 7 chars string #RRVVBB
+     * @param string $hex6 7 chars string #RRVVBB
      *
      * @return array<string,float|int>
      */
@@ -212,8 +185,6 @@ class Pdf extends TCPDF
 
     /**
      * Draws PDF page Header
-     *
-     * @return void
      */
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -224,8 +195,6 @@ class Pdf extends TCPDF
      * Draws PDF page footer
      *
      * @param ?TCPDF $pdf PDF instance
-     *
-     * @return void
      */
     public function Footer(?TCPDF $pdf = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -251,13 +220,13 @@ class Pdf extends TCPDF
             $pdf->SetFont(self::FONT, '', self::FONT_SIZE - 3);
             $pdf->Ln();
             $pdf->Cell(
-                0,
-                4,
-                $this->getAliasRightShift() . $this->PageNo()
+                w: 0,
+                h: 4,
+                txt: $this->getAliasRightShift() . $this->PageNo()
                 . '/' . $this->getAliasNbPages(),
-                0,
-                1,
-                ($this->i18n->isRTL() ? 'L' : 'R')
+                border: 0,
+                ln: 1,
+                align: $this->i18n->isRTL() ? 'L' : 'R'
             );
         }
     }
@@ -266,8 +235,6 @@ class Pdf extends TCPDF
      * Draws PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     public function PageHeader(?string $title = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -282,8 +249,6 @@ class Pdf extends TCPDF
      * Draws models PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     protected function modelPageHeader(?string $title = null): void
     {
@@ -292,7 +257,7 @@ class Pdf extends TCPDF
             $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
         }
         $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
-        $this->writeHtml($html, true, false, true, false, '');
+        $this->writeHtml(html: $html, ln: true, fill: false, reseth: true, cell: false, align: '');
 
         if ($title !== null) {
             $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
@@ -329,8 +294,6 @@ class Pdf extends TCPDF
      * Draws standard PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     protected function standardPageHeader(?string $title = null): void
     {
@@ -355,16 +318,24 @@ class Pdf extends TCPDF
         $ystart = $this->GetY();
 
         $this->MultiCell(
-            180 - $wlogo,
-            6,
-            $this->preferences->pref_nom,
-            0,
-            ($this->i18n->isRTL() ? 'R' : 'L')
+            w: 180 - $wlogo,
+            h: 6,
+            txt: $this->preferences->pref_nom,
+            border: 0,
+            align: $this->i18n->isRTL() ? 'R' : 'L'
         );
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         if ($title !== null) {
-            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), false);
+            $this->Cell(
+                w: 0,
+                h: 6,
+                txt: $title,
+                border: 0,
+                ln: 1,
+                align: $this->i18n->isRTL() ? 'R' : 'L',
+                fill: false
+            );
         }
         $yend = $this->getY(); //store position at the end of the text
 
@@ -374,7 +345,7 @@ class Pdf extends TCPDF
         } else {
             $x = 190 - $wlogo; //right align
         }
-        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+        $this->Image(file: $logofile, x: $x, y: $this->GetY(), w: $wlogo, h: $hlogo);
         $this->y += $hlogo + 3;
         //if position after logo is < than position after text,
         //we have to change y
@@ -385,8 +356,6 @@ class Pdf extends TCPDF
 
     /**
      * Draws body from model
-     *
-     * @return void
      */
     public function PageBody(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -399,6 +368,60 @@ class Pdf extends TCPDF
     }
 
     /**
+     * Output HTML content
+     *
+     * @param string $html   HTML content
+     * @param bool   $ln     Add a new line after content
+     * @param bool   $fill   Paint the background
+     * @param bool   $reseth Reset last cell height
+     * @param bool   $cell   Add current padding to each write
+     * @param string $align  Content alignment
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function writeHTML($html, $ln = true, $fill = false, $reseth = false, $cell = false, $align = ''): void
+    {
+        parent::writeHTML(
+            html: self::normalizeHtml((string)$html),
+            ln: $ln,
+            fill: $fill,
+            reseth: $reseth,
+            cell: $cell,
+            align: $align
+        );
+    }
+
+    /**
+     * Drop HTML insignificant whitespace
+     *
+     * Web browsers ignore the whitespace that follows a line break or a block opening
+     * tag; TCPDF renders it as a leading space instead. As PDF models are stored
+     * indented, each indented line would then be shifted from the others.
+     *
+     * @param string $html HTML content
+     */
+    public static function normalizeHtml(string $html): string
+    {
+        //do not alter <pre> contents, whitespace is significant there
+        $parts = preg_split(
+            pattern: '#(<pre\b.*?</pre>)#si',
+            subject: $html,
+            limit: -1,
+            flags: PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+        );
+
+        $blocks = 'br|div|p|table|thead|tbody|tr|td|th|ul|ol|li|dl|dt|dd|blockquote|h[1-6]';
+        foreach ($parts as &$part) {
+            if (preg_match('#^<pre\b#i', $part)) {
+                continue;
+            }
+            $part = preg_replace('#(<(?:' . $blocks . ')\b[^>]*>)\s+#i', '$1', $part);
+        }
+
+        return implode('', $parts);
+    }
+
+    /**
      * Fix text size
      *
      * @param string  $text      Text content
@@ -406,8 +429,6 @@ class Pdf extends TCPDF
      * @param int     $fontsize  Font size
      * @param string  $fontstyle Font style (defaults to '')
      * @param ?string $fontname  Font name (defaults to static::FONT)
-     *
-     * @return void
      */
     protected function fixSize(
         string $text,
@@ -416,11 +437,9 @@ class Pdf extends TCPDF
         string $fontstyle = '',
         ?string $fontname = null
     ): void {
-        if ($fontname === null) {
-            $fontname = static::FONT;
-        }
+        $fontname ??= static::FONT;
         $this->SetFontSize($fontsize);
-        while ((int)$this->GetStringWidth($text, $fontname, $fontstyle, $fontsize) > $maxsize) {
+        while ((int)$this->GetStringWidth(s: $text, fontname: $fontname, fontstyle: $fontstyle, fontsize: $fontsize) > $maxsize) {
             $fontsize--;
             $this->SetFontSize($fontsize);
         }
@@ -431,15 +450,13 @@ class Pdf extends TCPDF
      *
      * @param string $str    Original string
      * @param int    $length Max length
-     *
-     * @return string
      */
     protected function cut(string $str, int $length): string
     {
         $length -= 2; //keep a margin
         if ((int)$this->GetStringWidth($str) > $length) {
             while ((int)$this->GetStringWidth($str . '...') > $length) {
-                $str = mb_substr($str, 0, -1, 'UTF-8');
+                $str = mb_substr(string: $str, start: 0, length: -1, encoding: 'UTF-8');
             }
             $str .= '...';
         }
@@ -451,8 +468,6 @@ class Pdf extends TCPDF
      *
      * @param string $str    Original string
      * @param int    $length Max length
-     *
-     * @return string
      */
     protected function stretchHead(string $str, int $length): string
     {
@@ -468,8 +483,6 @@ class Pdf extends TCPDF
 
     /**
      * Get filename
-     *
-     * @return string
      */
     public function getFilename(): string
     {
@@ -478,8 +491,6 @@ class Pdf extends TCPDF
 
     /**
      * Download PDF from browser
-     *
-     * @return string
      */
     public function download(): string
     {

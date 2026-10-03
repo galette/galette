@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -30,22 +17,22 @@ use Galette\Entity\Group;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property  ?string $login
- * @property  ?string $name
- * @property  ?string $surname
- * @property  ?int $id
- * @property  string $lang
- * @property  array<int, Group|int> $managed_groups
+ * @property ?string               $login
+ * @property ?string               $name
+ * @property ?string               $surname
+ * @property ?int                  $id
+ * @property string                $lang
+ * @property array<int, Group|int> $managed_groups
  */
 
 abstract class Authentication
 {
-    public const ACCESS_PUBLIC = -1;
-    public const ACCESS_USER = 0;
-    public const ACCESS_MANAGER = 1;
-    public const ACCESS_STAFF = 2;
-    public const ACCESS_ADMIN = 3;
-    public const ACCESS_SUPERADMIN = 4;
+    public const int ACCESS_PUBLIC = -1;
+    public const int ACCESS_USER = 0;
+    public const int ACCESS_MANAGER = 1;
+    public const int ACCESS_STAFF = 2;
+    public const int ACCESS_ADMIN = 3;
+    public const int ACCESS_SUPERADMIN = 4;
 
     protected string $login;
     protected string $name;
@@ -61,14 +48,16 @@ abstract class Authentication
     /** @var array<int, Group|int> */
     protected array $managed_groups = [];
     protected bool $cron = false;
+    //a default value is required: this object is serialized into the session
+    //without __sleep, so a session written before this property existed must
+    //still unserialize
+    protected bool $tfa_pending = false;
 
     /**
      * Logs in user.
      *
      * @param string $user  user's login
      * @param string $passe user's password
-     *
-     * @return bool
      */
     abstract public function logIn(string $user, string $passe): bool;
 
@@ -76,8 +65,6 @@ abstract class Authentication
      * Does this login already exist?
      *
      * @param string $user the username
-     *
-     * @return bool
      */
     abstract public function loginExists(string $user): bool;
 
@@ -86,8 +73,6 @@ abstract class Authentication
      *
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -110,20 +95,17 @@ abstract class Authentication
      *
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     abstract public function logCron(string $name, Preferences $preferences): bool;
 
     /**
      * Log out user and unset variables
-     *
-     * @return bool
      */
     public function logOut(): bool
     {
         unset($this->id);
         $this->logged = false;
+        $this->tfa_pending = false;
         unset($this->name);
         unset($this->login);
         $this->admin = false;
@@ -138,37 +120,73 @@ abstract class Authentication
     /**
      * Is user logged in?
      *
-     * @return bool
+     * Credentials alone are not enough while a second factor is owed: every
+     * middleware and template goes through here, so code that logs a user in
+     * and then trusts isLogged() -- including code outside the core -- fails
+     * closed without having to know about the second factor.
      */
     public function isLogged(): bool
     {
-        return $this->logged;
+        return $this->logged && !$this->tfa_pending;
+    }
+
+    /**
+     * Are credentials accepted, but a second factor still owed?
+     */
+    public function isTwoFactorPending(): bool
+    {
+        return $this->logged && $this->tfa_pending;
+    }
+
+    /**
+     * Hold the session back until a second factor is produced
+     */
+    public function requireTwoFactor(): void
+    {
+        $this->tfa_pending = true;
+    }
+
+    /**
+     * Release the session, a second factor having been produced
+     */
+    public function validateTwoFactor(): void
+    {
+        $this->tfa_pending = false;
     }
 
     /**
      * Is user admin?
      *
-     * @return bool
+     * A session owing a second factor holds none of its privileges: several
+     * routes carry no middleware and are gated on this predicate alone.
      */
     public function isAdmin(): bool
     {
-        return $this->admin;
+        return $this->admin && !$this->tfa_pending;
     }
 
     /**
      * Is user super admin?
-     *
-     * @return bool
      */
     public function isSuperAdmin(): bool
+    {
+        return $this->superadmin && !$this->tfa_pending;
+    }
+
+    /**
+     * Is this session the super administrator account, second factor owed or not?
+     *
+     * The super administrator is not a member and keeps its own second factor
+     * in the preferences: telling which store to read cannot depend on
+     * privileges the session does not hold yet.
+     */
+    public function isSuperAdminAccount(): bool
     {
         return $this->superadmin;
     }
 
     /**
      * Is user active?
-     *
-     * @return bool
      */
     public function isActive(): bool
     {
@@ -177,18 +195,14 @@ abstract class Authentication
 
     /**
      * Is user member of staff?
-     *
-     * @return bool
      */
     public function isStaff(): bool
     {
-        return $this->staff;
+        return $this->staff && !$this->tfa_pending;
     }
 
     /**
      * is user a crontab?
-     *
-     * @return bool
      */
     public function isCron(): bool
     {
@@ -201,12 +215,14 @@ abstract class Authentication
      * least one group.
      *
      * @param array<int>|int $id_group Group(s) identifier(s)
-     *
-     * @return bool
      */
     public function isGroupManager(array|int|null $id_group = null): bool
     {
         $manager = false;
+        if ($this->tfa_pending) {
+            return false;
+        }
+
         if ($this->isAdmin() || $this->isStaff()) {
             return true;
         }
@@ -238,8 +254,6 @@ abstract class Authentication
 
     /**
      * Get compact menu mode
-     *
-     * @return bool
      */
     public function getCompactMenu(): bool
     {
@@ -248,8 +262,6 @@ abstract class Authentication
 
     /**
      * Is dark mode enabled?
-     *
-     * @return bool
      */
     public function isDarkModeEnabled(): bool
     {
@@ -260,29 +272,25 @@ abstract class Authentication
      * Is user currently up to date?
      * An up-to-date member is active and either due free, or with up-to-date
      * subscription
-     *
-     * @return bool
      */
     public function isUp2Date(): bool
     {
-        return $this->uptodate;
+        return $this->uptodate && !$this->tfa_pending;
     }
 
     /**
      * Display logged in member name
      *
      * @param bool $only_name If we want only the name without any additional text
-     *
-     * @return string
      */
     public function loggedInAs(bool $only_name = false): string
     {
         $n = $this->name . ' ' . ($this->surname ?? '') . ' (' . $this->login . ')';
         if ($only_name === false) {
-            return str_replace(
-                '%login',
-                $n,
-                _T("Logged in as:<br/>%login")
+            return sprintf(
+                //TRANS: parameter is the logged in user name
+                _T('Logged in as:<br/>%1$s'),
+                $n
             );
         } else {
             return $n;
@@ -293,12 +301,10 @@ abstract class Authentication
      * Global getter method
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
-        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate', 'tfa_pending'];
         if (in_array($name, $forbidden)) {
             throw new \RuntimeException('Property ' . $name . ' is forbidden!');
         }
@@ -325,20 +331,16 @@ abstract class Authentication
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
-        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate', 'tfa_pending'];
         return isset($this->$name) && !in_array($name, $forbidden);
     }
 
 
     /**
      * get user access level
-     *
-     * @return int
      */
     public function getAccessLevel(): int
     {

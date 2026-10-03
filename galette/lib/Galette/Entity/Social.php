@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -36,28 +23,30 @@ use Analog\Analog;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $url
- * @property string $type
- * @property int $id
+ * @property string    $url
+ * @property string    $type
+ * @property int       $id
+ * @property ?int      $id_adh
+ * @property ?Adherent $member
  */
 
 class Social
 {
     use I18n;
 
-    public const TABLE = 'socials';
-    public const PK = 'id_social';
+    public const string TABLE = 'socials';
+    public const string PK = 'id_social';
 
-    public const MASTODON = 'mastodon';
-    public const TWITTER = 'twitter';
-    public const FACEBOOK = 'facebook';
-    public const LINKEDIN = 'linkedin';
-    public const VIADEO = 'viadeo';
-    public const JABBER = 'jabber';
-    public const ICQ = 'icq';
-    public const WEBSITE = 'website';
-    public const BLOG = 'blog';
-    public const DISCORD = 'discord';
+    public const string MASTODON = 'mastodon';
+    public const string TWITTER = 'twitter';
+    public const string FACEBOOK = 'facebook';
+    public const string LINKEDIN = 'linkedin';
+    public const string VIADEO = 'viadeo';
+    public const string JABBER = 'jabber';
+    public const string ICQ = 'icq';
+    public const string WEBSITE = 'website';
+    public const string BLOG = 'blog';
+    public const string DISCORD = 'discord';
 
     private int $id;
     private string $type;
@@ -86,8 +75,6 @@ class Social
      * Load a social from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -157,8 +144,6 @@ class Social
      * Load social from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -170,8 +155,6 @@ class Social
 
     /**
      * Store social in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -197,7 +180,7 @@ class Social
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-                if (!in_array($this->type, $this->getSystemTypes(false))) {
+                if (!in_array($this->type, $this->getSystemTypes(translated: false))) {
                     $this->addTranslation($this->type);
                 }
             }
@@ -215,8 +198,6 @@ class Social
      * Remove current social
      *
      * @param array<int>|null $ids IDs to remove, default to current id
-     *
-     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -246,8 +227,6 @@ class Social
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -259,8 +238,6 @@ class Social
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -269,8 +246,6 @@ class Social
 
     /**
      * Display URL the best way
-     *
-     * @return string
      */
     public function displayUrl(): string
     {
@@ -289,8 +264,6 @@ class Social
      * Set type
      *
      * @param string $type Type
-     *
-     * @return self
      */
     public function setType(string $type): self
     {
@@ -302,8 +275,6 @@ class Social
      * Set linked member
      *
      * @param int|null $id Member id
-     *
-     * @return self
      */
     public function setLinkedMember(?int $id = null): self
     {
@@ -318,8 +289,6 @@ class Social
      * Set URL
      *
      * @param string $url Value to set
-     *
-     * @return self
      */
     public function setUrl(string $url): self
     {
@@ -371,8 +340,6 @@ class Social
      *
      * @param string $type       Social type
      * @param bool   $translated Return translated types (default) or not
-     *
-     * @return string
      */
     public function getSystemType(string $type, bool $translated = true): string
     {

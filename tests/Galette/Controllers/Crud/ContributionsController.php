@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
 
 /**
  * Contributions controller tests
@@ -36,8 +23,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,34 +37,7 @@ class ContributionsController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test contributions list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -199,9 +157,9 @@ class ContributionsController extends GaletteRoutingTestCase
         );
 
         //cannot show contributions of another member
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $member_two->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$member_two->id]);
         $test_response = $this->app->handle($request);
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $member_two->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $member_two->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
@@ -221,7 +179,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
 
         //can show contributions of children
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $child->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$child->id]);
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -250,7 +208,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         //FIXME: should not happen
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $child->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $child->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is not listed
@@ -285,17 +243,17 @@ class ContributionsController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_one->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_one->id),
             $body
         );
         //member child contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $child_contrib->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $child_contrib->id),
             $body
         );
         //second member contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_two->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_two->id),
             $body
         );
         $this->login->logout();
@@ -318,17 +276,17 @@ class ContributionsController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_one->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_one->id),
             $body
         );
         //member child contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $child_contrib->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $child_contrib->id),
             $body
         );
         //second member contribution is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_two->id),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="entry_sel_%1$s" value="%1$s"/>', $contrib_two->id),
             $body
         );
 
@@ -398,8 +356,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test contributions filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -478,8 +434,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test contributions add page
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testAddPage(string $type): void
@@ -565,7 +519,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
         $this->expectFlashData([]);
 
         //change preferences so managers can create contributions
@@ -594,7 +548,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $member_three = $this->createMember($member_three_data);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $cdata = $this->getContribData();
         $cdata['id_type_cotis'] = 5; //donation
         $cdata['id_adh'] = $member_three->id; //member not part of "Group 1"
@@ -615,7 +569,7 @@ class ContributionsController extends GaletteRoutingTestCase
             ],
             $check
         );
-        $this->expectLogEntry(\Analog::ERROR, 'Please select a member from a group you manage');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Please select a member from a group you manage');
         $this->session->contribution = $contrib;
 
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
@@ -633,26 +587,26 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         $body = (string)$test_response->getBody();
-        $this->assertStringContainsString('(creation)', $body);
+        $this->assertStringContainsString('New ', $body);
         //member_one is listed
         $this->assertStringContainsString(
             $member_one->getNameWithCase(
-                $member_one->name,
-                $member_one->surname,
-                false,
-                (int)$member_one->id,
-                $member_one->nickname
+                name: $member_one->name,
+                surname: $member_one->surname,
+                title: false,
+                id: (int)$member_one->id,
+                nick: $member_one->nickname
             ),
             $body
         );
         //member_two is listed
         $this->assertStringContainsString(
             $member_two->getNameWithCase(
-                $member_two->name,
-                $member_two->surname,
-                false,
-                (int)$member_two->id,
-                $member_two->nickname
+                name: $member_two->name,
+                surname: $member_two->surname,
+                title: false,
+                id: (int)$member_two->id,
+                nick: $member_two->nickname
             ),
             $body
         );
@@ -666,8 +620,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test contributions edit page
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testEditPage(string $type): void
@@ -694,11 +646,11 @@ class ContributionsController extends GaletteRoutingTestCase
                 'type' => \Galette\Entity\Contribution::TYPE_DONATION
             ];
         }
-        $this->checkContribExpected(null, $expected);
+        $this->checkContribExpected(contrib: null, new_expecteds: $expected);
         $this->login->logout();
 
         $route_name = 'editContribution';
-        $route_arguments = ['type' => $type, 'id' => $this->contrib->id];
+        $route_arguments = ['type' => $type, 'id' => (string)$this->contrib->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -712,11 +664,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         //contribution that does not exists
-        $request = $this->createRequest($route_name, ['id' => 999999] + $route_arguments);
+        $request = $this->createRequest($route_name, ['id' => '999999'] + $route_arguments);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'contributions'])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No contribution #999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No contribution #999999');
         $this->expectFlashData(['error_detected' => ['Unable to load contribution #999999!']]);
 
         $this->login->logout();
@@ -799,8 +751,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test add contributions
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testAddContribution(string $type): void
@@ -938,7 +888,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
         $this->expectFlashData([]);
 
         $result = $this->zdb->execute($count_select);
@@ -987,7 +937,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Please select a member from a group you manage.'
         );
         $this->expectFlashData(
@@ -1009,8 +959,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test edit contributions
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testEditContribution(string $type): void
@@ -1029,7 +977,7 @@ class ContributionsController extends GaletteRoutingTestCase
                 'type' => \Galette\Entity\Contribution::TYPE_DONATION
             ];
         }
-        $this->checkContribExpected(null, $expected);
+        $this->checkContribExpected(contrib: null, new_expecteds: $expected);
         $this->login->logout();
 
         $member_two = $this->getMemberTwo();
@@ -1042,7 +990,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'doEditContribution';
-        $route_arguments = ['type' => $type, 'id' => $this->contrib->id];
+        $route_arguments = ['type' => $type, 'id' => (string)$this->contrib->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
@@ -1146,8 +1094,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test remove contribution page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -1169,7 +1115,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'removeContribution';
-        $route_arguments = ['type' => 'contributions', 'id' => $contrib_one->id];
+        $route_arguments = ['type' => 'contributions', 'id' => (string)$contrib_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -1255,8 +1201,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test delete contribution
-     *
-     * @return void
      */
     public function testDeleteContribution(): void
     {

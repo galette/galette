@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'elements/list.html.twig' %}
 
 {% import "macros.twig" as macros %}
@@ -116,8 +102,8 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label for="filter_str">{{ _T('among:') }}</label>
-                    <select name="membership_filter" class="ui search dropdown">
+                    <label for="membership_filter">{{ _T('among:') }}</label>
+                    <select name="membership_filter" id="membership_filter"  class="ui search dropdown">
                         {% for key, value in membership_filter_options %}
                             <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -125,7 +111,7 @@
                 </div>
                 <div class="flexend field">
                     <label for="filter_account" class="visually-hidden">{{ _T('among:') }}</label>
-                    <select name="filter_account" class="ui search dropdown">
+                    <select name="filter_account" id="filter_account" class="ui search dropdown">
                         {% for key, value in filter_accounts_options %}
                             <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -207,7 +193,6 @@
                 </div>
             </div>
 {% endif %}
-            {% include "components/forms/csrf.html.twig" %}
         </div>
     </form>
 {% endblock %}
@@ -272,7 +257,7 @@
                             <th scope="row"  class="delete">
                                 <i class="ui user secret grey icon" aria-hidden="true"></i>
                             </th>
-                            <td class="back">{{ _T('Log in as %membername')|replace({'%membername': _T('Member')}) }}</td>
+                            <td class="back">{{ _T('Log in as %1$s')|format(_T('Member')) }}</td>
         {% endif %}
                         </tr>
                     </tbody>
@@ -326,9 +311,9 @@
         {% if column.field_id == 'id_adh' %}
                         <td class="right collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                             <span class="ui checkbox">
-                                <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+                                <input type="checkbox" name="entries_sel[]" id="member_checkbox_{{ member.__get('id') }}" value="{{ member.__get('id') }}"/>
+                                <label for="member_checkbox_{{ member.__get('id') }}">{{ member.id }}</label>
                             </span>
-                            {{ member.id }}
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="username_row" data-scope="row" data-col-label="{{ column.label }}">
@@ -351,9 +336,9 @@
                             <i class="ui icon" aria-hidden="true"></i>
             {% endif %}
             {% if member.email != '' %}
-                            <a href="mailto:{{ member.email }}">
+                            <a href="mailto:{{ member.email }}" class="icon-only">
                                 <i class="ui envelope outline teal icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T('Mail') }}</span>
+                                <span class="visually-hidden">{{ _T('Mail') }}</span>
                             </a>
 
             {% else %}

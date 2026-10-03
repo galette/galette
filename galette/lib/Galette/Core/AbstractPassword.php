@@ -1,24 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -35,57 +20,75 @@ namespace Galette\Core;
 
 abstract class AbstractPassword
 {
-    /** Default password size */
-    public const DEFAULT_SIZE = 8;
+    /** Characters a generated login is drawn from: no '@', no ambiguous glyph */
+    public const string LOGIN_CHARS = 'abcdefghjkmnpqrstuvwxyz0123456789';
 
-    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected ?string $hash = null;
-    protected string $new_password;
+    protected string $token = '';
 
     /**
-     * Generates a random password based on default salt
+     * Generates a login, to fill up an account that has none - for instance a
+     * member imported from a file that does not carry logins.
      *
-     * @param int|null $size Password size (optional)
+     * @param int $size Login size
      *
-     * @return string random password
+     * @return string random login
      */
-    public function makeRandomPassword(?int $size = null): string
+    public function makeRandomLogin(int $size = 15): string
     {
-        $size ??= static::DEFAULT_SIZE;
-        $pass = '';
-        $i = 0;
-        while ($i <= $size - 1) {
-            $num = mt_rand(0, strlen($this->chars) - 1) % strlen($this->chars);
-            $pass .= substr($this->chars, $num, 1);
-            $i++;
+        return $this->makeRandomString(self::LOGIN_CHARS, $size);
+    }
+
+    /**
+     * Generates a hash no password can match, to fill up an account that has no
+     * password. The cleartext value is discarded on purpose: such an account
+     * stays unusable until a password is set for it, its owner recovering it
+     * through the lost password procedure.
+     *
+     * @return string password hash
+     */
+    public function makeUnusablePasswordHash(): string
+    {
+        return password_hash(base64_encode(random_bytes(32)), PASSWORD_BCRYPT);
+    }
+
+    /**
+     * Draws a random string from a character set
+     *
+     * @param string $chars Characters to draw from
+     * @param int    $size  Expected size
+     *
+     * @return string random string
+     */
+    private function makeRandomString(string $chars, int $size): string
+    {
+        $string = '';
+        for ($i = 0; $i < $size; $i++) {
+            $string .= $chars[random_int(0, strlen($chars) - 1)];
         }
-        return $pass;
+        return $string;
     }
 
     /**
      * Generates a new password for specified member
      *
      * @param int $id_adh Member identifier
-     *
-     * @return bool
      */
     abstract public function generateNewPassword(int $id_adh): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)
-     *
-     * @return bool
      */
     abstract protected function cleanExpired(): bool;
 
     /**
-     * Retrieve new password for sending it to the user
+     * Retrieve the token to send to the user
      *
-     * @return string the new password
+     * @return string the token
      */
-    public function getNewPassword(): string
+    public function getToken(): string
     {
-        return $this->new_password;
+        return $this->token;
     }
 
     /**
@@ -99,15 +102,13 @@ abstract class AbstractPassword
     }
 
     /**
-     * Set password
+     * Set token
      *
-     * @param string $password Password
-     *
-     * @return self
+     * @param string $token Token
      */
-    protected function setPassword(string $password): self
+    protected function setToken(string $token): self
     {
-        $this->new_password = $password;
+        $this->token = $token;
         return $this;
     }
 
@@ -115,8 +116,6 @@ abstract class AbstractPassword
      * Set hash
      *
      * @param string $hash Hash
-     *
-     * @return self
      */
     protected function setHash(string $hash): self
     {

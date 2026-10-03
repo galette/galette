@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -51,8 +38,8 @@ class CsvIn extends Csv
 {
     use FileTrait;
 
-    public const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
-    public const DATA_IMPORT_ERROR = -10;
+    public const string DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
+    public const int DATA_IMPORT_ERROR = -10;
 
     /** @var array<string> */
     protected array $extensions = ['csv', 'txt'];
@@ -111,13 +98,13 @@ class CsvIn extends Csv
         private readonly Status $status
     ) {
         $this->init(
-            self::DEFAULT_DIRECTORY,
-            $this->extensions,
-            [
+            dest: self::DEFAULT_DIRECTORY,
+            extensions: $this->extensions,
+            mimes: [
                 'csv'    =>    'text/csv',
                 'txt'    =>    'text/plain'
             ],
-            2048
+            maxlength: UploadSize::Imports->get()
         );
 
         parent::__construct(self::DEFAULT_DIRECTORY);
@@ -125,8 +112,6 @@ class CsvIn extends Csv
 
     /**
      * Load fields list from database or from default values
-     *
-     * @return void
      */
     private function loadFields(): void
     {
@@ -160,8 +145,6 @@ class CsvIn extends Csv
      * @param array<string,mixed> $members_fields      Members fields
      * @param array<string,mixed> $members_fields_cats Members fields categories
      * @param bool                $dryrun              Run in dry run mode (do not store in database)
-     *
-     * @return bool|int
      */
     public function import(
         Db $zdb,
@@ -172,8 +155,10 @@ class CsvIn extends Csv
         array $members_fields_cats,
         bool $dryrun
     ): bool|int {
+        //only files from the imports directory can be imported
         if (
-            !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
+            $filename !== basename($filename)
+            || !is_file(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             $this->addError(
@@ -212,8 +197,6 @@ class CsvIn extends Csv
      * Check if input file meet requirements
      *
      * @param string $filename File name
-     *
-     * @return bool
      */
     private function check(string $filename): bool
     {
@@ -239,10 +222,10 @@ class CsvIn extends Csv
 
         //check required fields
         $fc = new FieldsConfig(
-            $this->zdb,
-            Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
         $config_required = $fc->getRequired();
         $this->required = [];
@@ -264,11 +247,11 @@ class CsvIn extends Csv
         $row = 0;
         while (
             ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
-                $handle,
-                1000,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE,
-                self::DEFAULT_ESCAPE
+                stream: $handle,
+                length: 1000,
+                separator: self::DEFAULT_SEPARATOR,
+                enclosure: self::DEFAULT_QUOTE,
+                escape: self::DEFAULT_ESCAPE
             )) !== false
         ) {
             //check fields count
@@ -289,7 +272,7 @@ class CsvIn extends Csv
                 //header line is the first one. Here comes data
                 $col = 0;
                 foreach ($data as $column) {
-                    $column = trim((string) $column);
+                    $column = trim((string)$column);
 
                     //check required fields
                     if (
@@ -319,10 +302,10 @@ class CsvIn extends Csv
                             }
                             if (!isset($this->statuses[(int)$column])) {
                                 $this->addError(
-                                    str_replace(
-                                        '%status',
-                                        $column,
-                                        _T("Status %status does not exists!")
+                                    sprintf(
+                                        //TRANS: parameter is the status
+                                        _T('Status %1$s does not exists!'),
+                                        $column
                                     )
                                 );
                                 return false;
@@ -339,10 +322,10 @@ class CsvIn extends Csv
                         }
                         if (!isset($this->titles[$column])) {
                             $this->addError(
-                                str_replace(
-                                    '%title',
-                                    $column,
-                                    _T("Title %title does not exists!")
+                                sprintf(
+                                    //TRANS: parameter is the title
+                                    _T('Title %1$s does not exists!'),
+                                    $column
                                 )
                             );
                             return false;
@@ -359,13 +342,19 @@ class CsvIn extends Csv
                             $existing = $this->emails[$column];
                             $extra = (
                                 $existing == -1
-                                ? _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
+                                ? _T("from another member in import")
+                                : sprintf(
+                                    //TRANS: parameter is the member identifier
+                                    _T('from member %1$s'),
+                                    $existing
+                                )
                             );
                             $this->addError(
-                                str_replace(
-                                    ['%address', '%extra'],
-                                    [$column, $extra],
-                                    _T("Email address %address is already used! (%extra)")
+                                sprintf(
+                                    //TRANS: first parameter is the email address, second tells where it is already used
+                                    _T('Email address %1$s is already used! (%2$s)'),
+                                    $column,
+                                    $extra
                                 )
                             );
                             return false;
@@ -387,10 +376,9 @@ class CsvIn extends Csv
                             $column = $this->preferences->pref_lang;
                         } elseif (!isset($this->langs[$column])) {
                             $this->addError(
-                                str_replace(
-                                    '%lang',
-                                    $column,
-                                    _T("Lang %lang does not exists!")
+                                sprintf(
+                                    _T('Unknown lang (%1$s)'),
+                                    $column
                                 )
                             );
                             return false;
@@ -402,9 +390,9 @@ class CsvIn extends Csv
                         $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (str_starts_with((string) $this->fields[$col], 'dynfield_')) {
+                    if (str_starts_with((string)$this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
-                        $dfields[$this->fields[$col] . '_1'] = $column;
+                        $dfields[$this->getDynamicFieldKey((string)$this->fields[$col])] = $column;
                     } else {
                         //standard field
                         $member->validate($this->fields[$col], $column, $this->fields);
@@ -447,11 +435,26 @@ class CsvIn extends Csv
     }
 
     /**
+     * Get the occurrence a dynamic field import column targets
+     *
+     * A column may name its occurrence (`dynfield_<id>_<n>`); one that does not
+     * targets the first occurrence, which keeps existing import models working.
+     *
+     * @param string $field Import model column name
+     */
+    private function getDynamicFieldKey(string $field): string
+    {
+        if (count(explode('_', $field)) < 3) {
+            $field .= '_1';
+        }
+
+        return $field;
+    }
+
+    /**
      * Store members in database
      *
      * @param string $filename CSV filename
-     *
-     * @return bool
      */
     private function storeMembers(string $filename): bool
     {
@@ -460,14 +463,14 @@ class CsvIn extends Csv
         $row = 0;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             while (
                 ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
-                    $handle,
-                    1000,
-                    self::DEFAULT_SEPARATOR,
-                    self::DEFAULT_QUOTE,
-                    self::DEFAULT_ESCAPE
+                    stream: $handle,
+                    length: 1000,
+                    separator: self::DEFAULT_SEPARATOR,
+                    enclosure: self::DEFAULT_QUOTE,
+                    escape: self::DEFAULT_ESCAPE
                 )) !== false
             ) {
                 if ($row > 0) {
@@ -476,7 +479,8 @@ class CsvIn extends Csv
                     foreach ($data as $column) {
                         if (str_starts_with($this->fields[$col], 'dynfield_')) {
                             //dynamic field, keep to check later
-                            $values[str_replace('dynfield_', 'info_field_', $this->fields[$col] . '_1')] = $column;
+                            $key = $this->getDynamicFieldKey($this->fields[$col]);
+                            $values[str_replace('dynfield_', 'info_field_', $key)] = $column;
                             $col++;
                             continue;
                         }
@@ -496,11 +500,11 @@ class CsvIn extends Csv
                             $values[$this->fields[$col]] = 0; //defaults to 0 as in Adherent
                         }
 
-                        if ($this->fields[$col] == Status::PK && empty(trim((string) $column))) {
+                        if ($this->fields[$col] == Status::PK && empty(trim((string)$column))) {
                             $values[Status::PK] = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
                         }
 
-                        if ($this->fields[$col] == 'pref_lang' && empty(trim((string) $column))) {
+                        if ($this->fields[$col] == 'pref_lang' && empty(trim((string)$column))) {
                             $values[$this->fields[$col]] = $this->preferences->pref_lang;
                         }
 
@@ -554,10 +558,10 @@ class CsvIn extends Csv
                 }
                 $row++;
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             $this->addError($e->getMessage());
         }
 
@@ -580,9 +584,7 @@ class CsvIn extends Csv
                 break;
         }
 
-        if ($error === null) {
-            $error = $this->getErrorMessageFromCode($code);
-        }
+        $error ??= $this->getErrorMessageFromCode($code);
 
         return $error;
     }

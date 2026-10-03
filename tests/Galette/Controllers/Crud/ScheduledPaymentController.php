@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
 
 /**
  * Contributions controller tests
@@ -36,8 +23,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,38 +37,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test scheduled payments list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -146,7 +100,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         ];
         $scheduled_one = new \Galette\Entity\ScheduledPayment($this->zdb);
         $check = $scheduled_one->check($data);
-        $this->assertTrue($check, print_r($scheduled_one->getErrors(), true));
+        $this->assertTrue($check, print_r($scheduled_one->getErrors(), return: true));
         $store = $scheduled_one->store();
         $this->assertTrue($store);
 
@@ -158,7 +112,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         ];
         $scheduled_two = new \Galette\Entity\ScheduledPayment($this->zdb);
         $check = $scheduled_two->check($data);
-        $this->assertTrue($check, print_r($scheduled_two->getErrors(), true));
+        $this->assertTrue($check, print_r($scheduled_two->getErrors(), return: true));
         $store = $scheduled_two->store();
         $this->assertTrue($store);
         $this->login->logOut();
@@ -171,13 +125,13 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
 
         //member two scheduled payment is not listed
         $this->assertStringNotContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
         $this->login->logOut();
@@ -190,12 +144,12 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
         //member two scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
 
@@ -210,12 +164,12 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         //member one scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_one->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_one->getId()),
             $body
         );
         //member two scheduled payment is listed
         $this->assertStringContainsString(
-            sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $scheduled_two->getId()),
+            sprintf('<input type="checkbox" name="entries_sel[]" id="scheduled_checkbox_%1$s" value="%1$s"/>', $scheduled_two->getId()),
             $body
         );
 
@@ -239,8 +193,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -313,8 +265,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -338,7 +288,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'addScheduledPayment';
-        $route_arguments = [\Galette\Entity\Contribution::PK => $contrib_one->id];
+        $route_arguments = [\Galette\Entity\Contribution::PK => (string)$contrib_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);

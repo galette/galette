@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -30,15 +17,13 @@ const NOT_TRANSLATED = ' (not translated)';
  * Check URL validity
  *
  * @param string $url The URL to check
- *
- * @return bool
  */
 function isValidWebUrl(string $url): bool
 {
-    return (preg_match(
+    return preg_match( // @phpstan-ignore theCodingMachineSafe.function
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
         $url
-    ) === 1);
+    ) === 1;
 }
 
 /**
@@ -47,11 +32,15 @@ function isValidWebUrl(string $url): bool
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to galette
  * @param bool   $nt     Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $translator, $l10n;
 
     if (
@@ -66,7 +55,7 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             $string,
             $language
@@ -91,11 +80,15 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
  * @param int    $count    Number for count
  * @param string $domain   Translation domain. Default to galette
  * @param bool   $nt       Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $translator, $l10n;
 
     if (empty($singular) || empty($plural)) {
@@ -111,21 +104,22 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
         && $translator->translationExists($plural, $domain)
     ) {
         return $translator->translatePlural(
-            $singular,
-            $plural,
-            $count,
-            $domain
+            singular: $singular,
+            plural: $plural,
+            number: $count,
+            textDomain: $domain
         );
     }
 
-    if (!isset($installer) || $installer !== true) {
+    $trans = '';
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             ($count > 1 ? $plural : $singular),
             $language
         );
     }
 
-    if (!$trans) {
+    if (empty($trans)) {
         $trans = ($count > 1 ? $plural : $singular);
 
         if (Galette::isDebugEnabled() && $nt === true) {
@@ -142,11 +136,15 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
  * @param string $string  The string to translate
  * @param string $domain  Translation domain (defaults to galette)
  * @param bool   $nt      Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $l10n, $translator;
 
     $cstring = contextualizedString($string, $context);
@@ -156,7 +154,7 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             $cstring,
             $language
@@ -182,20 +180,23 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
  * @param int    $count    Number for count
  * @param string $domain   Translation domain. Default to galette
  * @param bool   $nt       Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
-    global $language, $installer, $translator, $l10n;
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\L10n $l10n
+     */
+    global $language, $installer, $l10n;
 
     $csingular = contextualizedString($singular, $context);
     $cplural = contextualizedString($plural, $context);
     $ret = _Tn(
-        $csingular,
-        $cplural,
-        $count,
-        $domain
+        singular: $csingular,
+        plural: $cplural,
+        count: $count,
+        domain: $domain
     );
 
     if ($ret == $csingular) {
@@ -209,7 +210,7 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             ($count > 1 ? $cplural : $csingular),
             $language
@@ -232,8 +233,6 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
  *
  * @param string $string  The string to translate
  * @param string $context The context
- *
- * @return string
  */
 function contextualizedString(string $string, string $context): string
 {
@@ -245,10 +244,8 @@ function contextualizedString(string $string, string $context): string
  *
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to false (will take default domain)
- *
- * @return string
  */
 function __(string $string, string $domain = 'galette'): string
 {
-    return _T($string, $domain, false);
+    return _T($string, $domain, nt: false);
 }

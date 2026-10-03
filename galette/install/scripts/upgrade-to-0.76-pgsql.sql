@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- sequence for import model
 DROP SEQUENCE IF EXISTS galette_import_model_id_seq;
 CREATE SEQUENCE galette_import_model_id_seq

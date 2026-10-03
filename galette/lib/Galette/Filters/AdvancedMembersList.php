@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -37,45 +24,45 @@ use Galette\Repository\PaymentTypes;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?string $creation_date_begin
- * @property ?string $creation_date_end
- * @property ?string $modif_date_begin
- * @property ?string $modif_date_end
- * @property ?string $due_date_begin
- * @property ?string $due_date_end
- * @property ?string $birth_date_begin
- * @property ?string $birth_date_end
- * @property int $show_public_infos
- * @property int[]|int $status
- * @property ?string $contrib_creation_date_begin
- * @property ?string $contrib_creation_date_end
- * @property ?string $contrib_begin_date_begin
- * @property ?string $contrib_begin_date_end
- * @property ?string $contrib_end_date_begin
- * @property ?string $contrib_end_date_end
- * @property int[] $contributions_types
- * @property int[] $payments_types
- * @property ?float $contrib_min_amount
- * @property ?float $contrib_max_amount
- * @property array<int, mixed> $contrib_dynamic
+ * @property ?string             $creation_date_begin
+ * @property ?string             $creation_date_end
+ * @property ?string             $modif_date_begin
+ * @property ?string             $modif_date_end
+ * @property ?string             $due_date_begin
+ * @property ?string             $due_date_end
+ * @property ?string             $birth_date_begin
+ * @property ?string             $birth_date_end
+ * @property int                 $show_public_infos
+ * @property int[]|int           $status
+ * @property ?string             $contrib_creation_date_begin
+ * @property ?string             $contrib_creation_date_end
+ * @property ?string             $contrib_begin_date_begin
+ * @property ?string             $contrib_begin_date_end
+ * @property ?string             $contrib_end_date_begin
+ * @property ?string             $contrib_end_date_end
+ * @property int[]               $contributions_types
+ * @property int[]               $payments_types
+ * @property ?float              $contrib_min_amount
+ * @property ?float              $contrib_max_amount
+ * @property array<int, mixed>   $contrib_dynamic
  * @property array<mixed, mixed> $free_search
  * @property array<mixed, mixed> $groups_search
- * @property int $groups_search_log_op
+ * @property int                 $groups_search_log_op
  *
- * @property-read ?string $rcreation_date_begin
- * @property-read ?string $rcreation_date_end
- * @property-read ?string $rmodif_date_begin
- * @property-read ?string $rmodif_date_end
- * @property-read ?string $rdue_date_begin
- * @property-read ?string $rdue_date_end
- * @property-read ?string $rbirth_date_begin
- * @property-read ?string $rbirth_date_end
- * @property-read ?string $rcontrib_creation_date_begin
- * @property-read ?string $rcontrib_creation_date_end
- * @property-read ?string $rcontrib_begin_date_begin
- * @property-read ?string $rcontrib_begin_date_end
- * @property-read ?string $rcontrib_end_date_begin
- * @property-read ?string $rcontrib_end_date_end
+ * @property-read ?string  $rcreation_date_begin
+ * @property-read ?string  $rcreation_date_end
+ * @property-read ?string  $rmodif_date_begin
+ * @property-read ?string  $rmodif_date_end
+ * @property-read ?string  $rdue_date_begin
+ * @property-read ?string  $rdue_date_end
+ * @property-read ?string  $rbirth_date_begin
+ * @property-read ?string  $rbirth_date_end
+ * @property-read ?string  $rcontrib_creation_date_begin
+ * @property-read ?string  $rcontrib_creation_date_end
+ * @property-read ?string  $rcontrib_begin_date_begin
+ * @property-read ?string  $rcontrib_begin_date_end
+ * @property-read ?string  $rcontrib_end_date_begin
+ * @property-read ?string  $rcontrib_end_date_end
  * @property-read string[] $search_fields
  */
 
@@ -83,17 +70,17 @@ class AdvancedMembersList extends MembersList
 {
     use DatesHelper;
 
-    public const OP_AND = 0;
-    public const OP_OR = 1;
+    public const int OP_AND = 0;
+    public const int OP_OR = 1;
 
-    public const OP_EQUALS = 0;
-    public const OP_CONTAINS = 1;
-    public const OP_NOT_EQUALS = 2;
-    public const OP_NOT_CONTAINS = 3;
-    public const OP_STARTS_WITH = 4;
-    public const OP_ENDS_WITH = 5;
-    public const OP_BEFORE = 6;
-    public const OP_AFTER = 7;
+    public const int OP_EQUALS = 0;
+    public const int OP_CONTAINS = 1;
+    public const int OP_NOT_EQUALS = 2;
+    public const int OP_NOT_CONTAINS = 3;
+    public const int OP_STARTS_WITH = 4;
+    public const int OP_ENDS_WITH = 5;
+    public const int OP_BEFORE = 6;
+    public const int OP_AFTER = 7;
 
     private ?string $creation_date_begin = null;
     private ?string $creation_date_end = null;
@@ -211,7 +198,14 @@ class AdvancedMembersList extends MembersList
         parent::__construct();
         if ($simple instanceof MembersList) {
             foreach ($this->pagination_fields as $pf) {
-                $this->$pf = $simple->$pf;
+                switch ($pf) {
+                    case 'ordered':
+                        $this->setDirection($simple->getDirection());
+                        break;
+                    default:
+                        $this->$pf = $simple->$pf;
+                        break;
+                }
             }
             foreach ($this->memberslist_fields as $mlf) {
                 $this->$mlf = $simple->$mlf;
@@ -221,12 +215,10 @@ class AdvancedMembersList extends MembersList
 
     /**
      * Do we want to filter within contributions?
-     *
-     * @return bool
      */
     public function withinContributions(): bool
     {
-        if (
+        return
             $this->contrib_creation_date_begin != null
             || $this->contrib_creation_date_end != null
             || $this->contrib_begin_date_begin != null
@@ -238,17 +230,11 @@ class AdvancedMembersList extends MembersList
             || count($this->contrib_dynamic) > 0
             || count($this->contributions_types) > 0
             || count($this->payments_types) > 0
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        ;
     }
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -343,7 +329,7 @@ class AdvancedMembersList extends MembersList
                 case 'rcontrib_end_date_begin':
                 case 'rcontrib_end_date_end':
                     $rname = substr($name, 1);
-                    return $this->getDate($rname, true, false);
+                    return $this->getDate($rname, formatted: true, translated: false);
                 case 'search_fields':
                     $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
                     $key = array_search('selected', $search_fields);
@@ -371,8 +357,6 @@ class AdvancedMembersList extends MembersList
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -388,8 +372,6 @@ class AdvancedMembersList extends MembersList
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -551,7 +533,7 @@ class AdvancedMembersList extends MembersList
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
-                                    if ($value['search'] !== null && trim((string) $value['search']) !== '') {
+                                    if ($value['search'] !== null && trim((string)$value['search']) !== '') {
                                         try {
                                             $value['search'] = $this->buildDate($value['search']);
                                         } catch (Throwable) {
@@ -627,7 +609,7 @@ class AdvancedMembersList extends MembersList
                         str_starts_with($name, 'cds_')
                         || str_starts_with($name, 'cdsc_')
                     ) {
-                        if (is_array($value) || trim((string) $value) !== '') {
+                        if (is_array($value) || trim((string)$value) !== '') {
                             $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
@@ -650,17 +632,19 @@ class AdvancedMembersList extends MembersList
     /**
      * Validate free search internal array
      *
-     * @param array<string,mixed> $data Array to validate
+     * Only the shape is checked here; the field name itself is checked against
+     * the fields the form does offer when the query gets built, see
+     * Galette\Repository\Members::getAllowedSearchFields().
      *
-     * @return bool
+     * @param array<string,mixed> $data Array to validate
      */
     public static function isValidFreeSearch(array $data): bool
     {
-        return isset($data['field'])
-            && isset($data['search'])
-            && isset($data['log_op'])
-            && isset($data['qry_op'])
-            && isset($data['idx'])
-            && isset($data['type']);
+        return isset($data['field']) && is_scalar($data['field'])
+            && isset($data['search']) && is_scalar($data['search'])
+            && isset($data['log_op']) && is_numeric($data['log_op'])
+            && isset($data['qry_op']) && is_numeric($data['qry_op'])
+            && isset($data['idx']) && is_numeric($data['idx'])
+            && isset($data['type']) && is_numeric($data['type']);
     }
 }

@@ -1,77 +1,27 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\DynamicFields;
+namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Dynamic fields test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class DynamicField extends TestCase
+class DynamicField extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-
-        $tables = $this->zdb->getTables();
-        foreach ($tables as $table) {
-            if (str_starts_with($table, 'galette_field_contents_')) {
-                $this->zdb->db->query(
-                    'DROP TABLE ' . $table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            }
-        }
-    }
-
     /**
      * Test loadFieldType
-     *
-     * @return void
      */
     public function testLoadFieldType(): void
     {
@@ -112,7 +62,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -128,14 +77,13 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertSame($field_data['field_name'], $df->getName());
     }
 
     /**
      * Permissions names provider
      *
-     * @return array
+     * @return array<array{perm: int, name: string}>
      */
     public static function permsProvider(): array
     {
@@ -152,8 +100,6 @@ class DynamicField extends TestCase
 
     /**
      * Test getPermissionsList
-     *
-     * @return void
      */
     public function testGetPermissionsList(): void
     {
@@ -175,11 +121,8 @@ class DynamicField extends TestCase
      *
      * @param int    $perm Permission
      * @param string $name Name
-     *
-     * @dataProvider permsProvider
-     *
-     * @return void
      */
+    #[DataProvider('permsProvider')]
     public function testGetPermissionName(int $perm, string $name): void
     {
         $field_data = [
@@ -200,14 +143,11 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertSame($name, $df->getPermissionName());
     }
 
     /**
      * Test getFormsNames
-     *
-     * @return void
      */
     public function testGetFormsNames(): void
     {
@@ -221,7 +161,7 @@ class DynamicField extends TestCase
     /**
      * Form names provider
      *
-     * @return \string[][]
+     * @return array<array{form: string, expected: string}>
      */
     public static function formNamesProvider(): array
     {
@@ -237,6 +177,10 @@ class DynamicField extends TestCase
             [
                 'form' => 'trans',
                 'expected' => "Transactions"
+            ],
+            [
+                'form' => 'prefs',
+                'expected' => "Settings"
             ]
         ];
     }
@@ -246,32 +190,15 @@ class DynamicField extends TestCase
      *
      * @param string $form     Form name
      * @param string $expected Expected name
-     *
-     * @dataProvider formNamesProvider
-     *
-     * @return void
      */
+    #[DataProvider('formNamesProvider')]
     public function testGetFormTitle(string $form, string $expected): void
     {
         $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormTitle($form));
     }
 
     /**
-     * Test getFixedValuesTableName
-     *
-     * @return void
-     */
-    public function testGetFixedValuesTableName(): void
-    {
-        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10));
-        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false));
-        $this->assertSame('galette_field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, true));
-    }
-
-    /**
      * Test getValues
-     *
-     * @return void
      */
     public function testGetValues(): void
     {
@@ -298,18 +225,15 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
 
         $df->load($df->getId());
         $this->assertSame(['One', 'Two', 'Three'], $df->getValues());
-        $this->assertSame("One\nTwo\nThree", $df->getValues(true));
+        $this->assertSame("One\nTwo\nThree", $df->getValues(imploded: true));
         $this->assertSame(1, $df->getIndex());
     }
 
     /**
      * Test check
-     *
-     * @return void
      */
     public function testCheck(): void
     {
@@ -465,12 +389,42 @@ class DynamicField extends TestCase
         $this->assertTrue($df->check($values));
         $this->assertSame([], $df->getErrors());
         $this->assertTrue($df->store($values));
+        $this->assertTrue($df->isRepeatable());
+
+        //a single occurrence is not a repetition, no occurrence at all neither
+        $values['field_repeat'] = 1;
+        $this->assertTrue($df->check($values));
+        $this->assertFalse($df->isRepeatable());
+
+        //zero means as many occurrences as wanted
+        $values['field_repeat'] = 0;
+        $this->assertTrue($df->check($values));
+        $this->assertTrue($df->isRepeatable());
+
+        unset($values['field_repeat']);
+        $this->assertTrue($df->check($values));
+        $this->assertNull($df->getRepeat());
+        $this->assertFalse($df->isRepeatable());
+
+        //a field that is not multi valued never takes a repeat
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'A text field that cannot repeat',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_required'    => false,
+            'field_repeat'      => 3
+        ];
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertFalse($df->isMultiValued());
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+        $this->assertNull($df->getRepeat());
+        $this->assertFalse($df->isRepeatable());
     }
 
     /**
      * Test move
-     *
-     * @return void
      */
     public function testMove(): void
     {
@@ -492,7 +446,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -510,7 +463,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -528,7 +480,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -560,8 +511,6 @@ class DynamicField extends TestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -587,26 +536,16 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $df_id = $df->getId();
 
-        //check if table has been created
-        $select = $this->zdb->select($df::getFixedValuesTableName($df->getId()));
-        $results = $this->zdb->execute($select);
-        $this->assertSame(3, $results->count());
 
         $this->assertTrue($df->remove());
 
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
-
-        $this->expectException('\PDOException');
-        $this->zdb->execute($select);
     }
 
     /**
      * Test information
-     *
-     * @return void
      */
     public function testInformation(): void
     {
@@ -627,7 +566,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())

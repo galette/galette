@@ -12,6 +12,11 @@
     }
 }
 
+.ui.card .meta,
+.ui.cards > .card .meta {
+  color: lighten(@textColor, 8.5);
+}
+
 @media only screen and (max-width: 768px) {
     .ui.segment .ui.stackable.cards .card:first-child {
         margin-top: 1em !important;
@@ -24,20 +29,26 @@
 .ui.card > .extra {
   &.cotis-ok {
       background-color: @cotisOkBackgroundColor;
+      color: darken(@cotisOkBackgroundColor, 80);
   }
   &.cotis-never {
       background-color: @cotisNeverBackgroundColor;
+      color: @textColor;
   }
   &.cotis-exempt {
       background-color: @cotisExemptBackgroundColor;
+      color: darken(@cotisExemptBackgroundColor, 80);
   }
   &.cotis-soon {
       background-color: @cotisSoonBackgroundColor;
+      color: darken(@cotisSoonBackgroundColor, 70);
   }
   &.cotis-late {
       background-color: @cotisLateBackgroundColor;
+      color: darken(@cotisLateBackgroundColor, 75);
   }
   &.cotis-lastday {
       background-color: @cotisLastdayBackgroundColor;
+      color: darken(@cotisLastdayBackgroundColor, 75);
   }
 }

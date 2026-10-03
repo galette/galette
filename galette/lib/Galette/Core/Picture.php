@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -28,13 +15,16 @@ use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\DirException;
+use Safe\Exceptions\FilesystemException;
 use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Exception\MissingAssetException;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
 use UnhandledMatchError;
 
 use function Safe\file_get_contents;
@@ -48,6 +38,7 @@ use function Safe\imagealphablending;
 use function Safe\imagecreatetruecolor;
 use function Safe\imagesavealpha;
 use function Safe\imagecopyresampled;
+use function Safe\mkdir;
 use function Safe\opendir;
 use function Safe\preg_match;
 use function Safe\readfile;
@@ -70,12 +61,12 @@ class Picture
     }
 
     //constants that will not be overridden
-    public const SQL_ERROR = -10;
-    public const SQL_BLOB_ERROR = -11;
+    public const int SQL_ERROR = -10;
+    public const int SQL_BLOB_ERROR = -11;
     //constants that can be overridden
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    public const TABLE = 'pictures';
-    public const PK = Adherent::PK;
+    public const string TABLE = 'pictures';
+    public const string PK = Adherent::PK;
 
     protected string $tbl_prefix = '';
 
@@ -89,6 +80,10 @@ class Picture
     protected string $format;
     protected string $mime;
     protected bool $has_picture = false;
+    /** Path of the default picture, when it could not be found on disk */
+    protected ?string $missing_asset = null;
+    /** Whether file_path comes from the default picture */
+    private bool $on_default_path = false;
     protected string $store_path = GALETTE_PHOTOS_PATH;
     protected int $max_width = 200;
     protected int $max_height = 200;
@@ -104,14 +99,15 @@ class Picture
     public function __construct(string|int|null $id_adh = null)
     {
         $this->init(
-            null,
-            ['jpeg', 'jpg', 'png', 'gif', 'webp'],
-            [
+            dest: null,
+            extensions: ['jpeg', 'jpg', 'png', 'gif', 'webp'],
+            mimes: [
                 'jpg'    =>    'image/jpeg',
                 'png'    =>    'image/png',
                 'gif'    =>    'image/gif',
                 'webp'   =>    'image/webp'
-            ]
+            ],
+            maxlength: UploadSize::Images->get()
         );
 
         // '!==' needed, otherwise ''==0
@@ -137,8 +133,13 @@ class Picture
         }
 
         //we should not have an empty file_path, but...
-        if (!empty($this->file_path)) {
-            $this->setSizes();
+        if (!empty($this->file_path) && !$this->setSizes() && !$this->on_default_path) {
+            //picture could not be read; fall back to the default one
+            $this->has_picture = false;
+            $this->getDefaultPicture();
+            if (!empty($this->file_path)) {
+                $this->setSizes();
+            }
         }
     }
 
@@ -146,8 +147,6 @@ class Picture
      * "Magic" function called on unserialize
      *
      * @param array<string, mixed> $data Data to unserialize
-     *
-     * @return void
      */
     public function __unserialize(array $data): void
     {
@@ -170,8 +169,13 @@ class Picture
         }
 
         //we should not have an empty file_path, but...
-        if (!empty($this->file_path)) {
-            $this->setSizes();
+        if (!empty($this->file_path) && !$this->setSizes() && !$this->on_default_path) {
+            //picture could not be read; fall back to the default one
+            $this->has_picture = false;
+            $this->getDefaultPicture();
+            if (!empty($this->file_path)) {
+                $this->setSizes();
+            }
         }
     }
 
@@ -222,7 +226,7 @@ class Picture
             $results = $zdb->execute($select);
             $pic = $results->current();
 
-            if ($pic) {
+            if ($pic && $this->ensureStorePath()) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 file_put_contents(
@@ -277,25 +281,80 @@ class Picture
 
     /**
      * Gets the default picture to show, anyway
-     *
-     * @return void
      */
     protected function getDefaultPicture(): void
     {
-        $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/default.png');
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->has_picture = false;
+        $this->setDefaultPath(_CURRENT_THEME_PATH . 'images/default.png');
+    }
+
+    /**
+     * Set path to the default picture, if it can be found.
+     *
+     * A missing default picture means assets have not been built. Rather than
+     * failing here - pictures are built from the dependency container, long
+     * before any error page can be rendered - the failure is recorded and
+     * reported when the picture is actually used.
+     *
+     * @param string $path Path to the default picture
+     */
+    protected function setDefaultPath(string $path): void
+    {
+        $this->on_default_path = true;
+
+        //realpath() cannot be trusted here: its cache outlives the request
+        //(realpath_cache_ttl, 120s by default), so it keeps resolving paths
+        //removed meanwhile by another process - a build, or a branch switch.
+        if (!file_exists($path)) {
+            $this->missing_asset = $path;
+            return;
+        }
+
+        $this->file_path = realpath($path);
+        $this->missing_asset = null;
+    }
+
+    /**
+     * Intended path of the picture file, whether it exists or not.
+     *
+     * Unlike getPath(), this does not throw on a missing file; it is meant for
+     * subclasses that build upon another picture.
+     */
+    protected function getDefaultPath(): ?string
+    {
+        return $this->missing_asset ?? ($this->file_path ?? null);
+    }
+
+    /**
+     * Throw if the picture file is not available.
+     *
+     * @throws MissingAssetException
+     */
+    protected function checkAvailable(): void
+    {
+        if ($this->missing_asset !== null) {
+            throw new MissingAssetException($this->missing_asset);
+        }
     }
 
     /**
      * Set picture sizes
-     *
-     * @return void
      */
-    private function setSizes(): void
+    private function setSizes(): bool
     {
-        [$width, $height] = getimagesize($this->file_path);
+        try {
+            [$width, $height] = getimagesize($this->file_path);
+        } catch (Throwable) {
+            //file went away since its path was resolved; never fail here,
+            //pictures are built long before an error page can be rendered.
+            //Falling back to the default picture clears this again.
+            $this->missing_asset = $this->file_path;
+            unset($this->file_path);
+            return false;
+        }
+
         $this->height = $height;
         $this->width = $width;
         $this->optimal_height = $height;
@@ -312,15 +371,16 @@ class Picture
             $this->optimal_width = $this->max_width;
             $this->optimal_height = (int)($this->height * $ratio);
         }
+
+        return true;
     }
 
     /**
      * Get image file contents in stdOut
-     *
-     * @return void
      */
     public function getContents(): void
     {
+        $this->checkAvailable();
         readfile($this->file_path);
     }
 
@@ -333,6 +393,7 @@ class Picture
      */
     public function display(Response $response): Response
     {
+        $this->checkAvailable();
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
             ->withHeader('Expires', '0')
@@ -360,7 +421,7 @@ class Picture
 
         try {
             if ($transaction === true) {
-                $zdb->connection->beginTransaction();
+                $zdb->beginTransaction();
             }
 
             $delete = $zdb->delete($this->tbl_prefix . $class::TABLE);
@@ -386,19 +447,15 @@ class Picture
             $success = false;
             $_file = null;
             if (file_exists($file_wo_ext . '.jpg')) {
-                //return unlink($file_wo_ext . '.jpg');
                 $_file = $file_wo_ext . '.jpg';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.png')) {
-                //return unlink($file_wo_ext . '.png');
                 $_file = $file_wo_ext . '.png';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.gif')) {
-                //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.webp')) {
-                //return unlink($file_wo_ext . '.webp');
                 $_file = $file_wo_ext . '.webp';
                 $success = unlink($_file); // @phpstan-ignore theCodingMachineSafe.function
             }
@@ -406,7 +463,7 @@ class Picture
             if ($_file !== null && $success !== true) {
                 //unable to remove file that exists!
                 if ($transaction === true) {
-                    $zdb->connection->rollBack();
+                    $zdb->rollback();
                 }
                 Analog::log(
                     'The file ' . $_file
@@ -416,14 +473,14 @@ class Picture
                 return false;
             } else {
                 if ($transaction === true) {
-                    $zdb->connection->commit();
+                    $zdb->commit();
                 }
                 $this->has_picture = false;
                 return true;
             }
         } catch (Throwable $e) {
             if ($transaction === true) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             Analog::log(
                 'An error occurred attempting to delete picture ' . $this->db_id
@@ -441,8 +498,6 @@ class Picture
      * @param string                  $key           Key to look for in uploaded files
      * @param callable|null           $callback      Callback to use for storing the file. If null, will use $this->storeFile()
      * @param ?array<string,mixed>    $cropping      Cropping properties
-     *
-     * @return bool
      */
     public function upload(array $request_files, string $key, ?callable $callback = null, ?array $cropping = null): bool
     {
@@ -475,8 +530,6 @@ class Picture
 
     /**
      * Build destination path
-     *
-     * @return string
      */
     protected function buildDestPath(): string
     {
@@ -487,8 +540,6 @@ class Picture
      * Get file mime type
      *
      * @param string $file File
-     *
-     * @return string
      */
     public static function getMimeType(string $file): string
     {
@@ -512,6 +563,9 @@ class Picture
     {
         global $zdb;
 
+        if (!$this->ensureStorePath()) {
+            return self::CANT_WRITE;
+        }
         $this->setDestDir($this->store_path);
         $current = getimagesize($file->getStream()->getMetadata('uri'));
 
@@ -541,10 +595,51 @@ class Picture
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
             Shouldn't we want to stop the process here? */
-            $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
+            $this->resizeImage(
+                source: $this->buildDestPath(),
+                ext: $this->extension,
+                dest: null,
+                cropping: $this->cropping
+            );
         }
 
-        return $this->storeInDb($zdb, $this->db_id, $this->buildDestPath(), $this->extension);
+        return $this->storeInDb(zdb: $zdb, id: $this->db_id, file: $this->buildDestPath(), ext: $this->extension);
+    }
+
+    /**
+     * Create storage directory if it does not exist yet
+     */
+    protected function ensureStorePath(): bool
+    {
+        if (is_dir($this->store_path)) {
+            return true;
+        }
+
+        if (file_exists($this->store_path)) {
+            Analog::log(
+                '[' . static::class . '] Unable to store pictures, `' . $this->store_path
+                . '` is not a directory.',
+                Analog::ERROR
+            );
+            return false;
+        }
+
+        try {
+            mkdir($this->store_path, 0o755, recursive: true);
+        } catch (FilesystemException $e) {
+            Analog::log(
+                '[' . static::class . '] Unable to create pictures directory `' . $this->store_path
+                . '` | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return false;
+        }
+
+        Analog::log(
+            '[' . static::class . '] Pictures directory `' . $this->store_path . '` has been created',
+            Analog::INFO
+        );
+        return true;
     }
 
     /**
@@ -569,7 +664,7 @@ class Picture
         $class = static::class;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             if (isset($this->insert_stmt)) {
                 $stmt = $this->insert_stmt;
@@ -600,10 +695,10 @@ class Picture
                     'format'    => $ext
                 ]
             );
-            $zdb->connection->commit();
+            $zdb->commit();
             $this->has_picture = true;
         } catch (Throwable $e) {
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             Analog::log(
                 'An error occurred storing picture in database: '
                 . $e->getMessage(),
@@ -619,8 +714,6 @@ class Picture
      * Check for missing images in database
      *
      * @param Db $zdb Database instance
-     *
-     * @return void
      */
     public function missingInDb(Db $zdb): void
     {
@@ -682,21 +775,21 @@ class Picture
         //retrieve valid members ids
         $members = new Members();
         $valids = $members->getArrayList(
-            array_map(intval(...), $existing_diff),
-            null,
-            false,
-            false,
-            [self::PK]
+            ids: array_map(intval(...), $existing_diff),
+            orderby: null,
+            with_photos: false,
+            as_members: false,
+            fields: [self::PK]
         );
 
         foreach ($valids as $valid) {
             /** @var ArrayObject<string,mixed> $valid */
             $file = $existing_disk[$valid->id_adh];
             $this->storeInDb(
-                $zdb,
-                (int)$file['id'],
-                $this->store_path . $file['id'] . '.' . $file['ext'],
-                $file['ext']
+                zdb: $zdb,
+                id: (int)$file['id'],
+                file: $this->store_path . $file['id'] . '.' . $file['ext'],
+                ext: $file['ext']
             );
         }
     }
@@ -704,16 +797,22 @@ class Picture
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string                $source   The source image
-     * @param string                $ext      File's extension
-     * @param ?string               $dest     The destination image.
-     *                                        If null, we'll use the source image. Defaults to null
-     * @param ?array<string, mixed> $cropping Cropping properties
-     *
-     * @return bool
+     * @param string                $source     The source image
+     * @param string                $ext        File's extension
+     * @param ?string               $dest       The destination image.
+     *                                          If null, we'll use the source image. Defaults to null
+     * @param ?array<string, mixed> $cropping   Cropping properties
+     * @param ?int                  $max_width  Maximum width, defaults to picture's one
+     * @param ?int                  $max_height Maximum height, defaults to picture's one
      */
-    private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
-    {
+    protected function resizeImage(
+        string $source,
+        string $ext,
+        ?string $dest = null,
+        ?array $cropping = null,
+        ?int $max_width = null,
+        ?int $max_height = null
+    ): bool {
         $class = static::class;
 
         if (!function_exists("gd_info")) {
@@ -726,8 +825,8 @@ class Picture
         }
 
         $gdinfo = gd_info();
-        $h = $this->max_height;
-        $w = $this->max_width;
+        $h = $max_height ?? $this->max_height;
+        $w = $max_width ?? $this->max_width;
         if ($dest == null) {
             $dest = $source;
         }
@@ -872,26 +971,59 @@ class Picture
 
         // Turn off alpha blending and set alpha flag. That prevent alpha
         // transparency to be saved as an arbitrary color (black in my tests)
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-        imagealphablending($thumb, false);
-        imagesavealpha($thumb, true);
+        imagealphablending($image, enable: false);
+        imagesavealpha($image, enable: true);
+        imagealphablending($thumb, enable: false);
+        imagesavealpha($thumb, enable: true);
         if ($thumb_cropped !== false) { // Crop
-            imagealphablending($thumb_cropped, false);
-            imagesavealpha($thumb_cropped, true);
+            imagealphablending($thumb_cropped, enable: false);
+            imagesavealpha($thumb_cropped, enable: true);
             // First, crop.
-            imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+            imagecopyresampled(
+                dst_image: $thumb_cropped,
+                src_image: $image,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: $crop_x,
+                src_y: $crop_y,
+                dst_width: $cur_width,
+                dst_height: $cur_height,
+                src_width: $cur_width,
+                src_height: $cur_height
+            );
             // Then, resize.
-            imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+            imagecopyresampled(
+                dst_image: $thumb,
+                src_image: $thumb_cropped,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: 0,
+                src_y: 0,
+                dst_width: $w,
+                dst_height: $h,
+                src_width: $crop_width,
+                src_height: $crop_height
+            );
         } else { // Resize
-            imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+            imagecopyresampled(
+                dst_image: $thumb,
+                src_image: $image,
+                dst_x: 0,
+                dst_y: 0,
+                src_x: 0,
+                src_y: 0,
+                dst_width: $w,
+                dst_height: $h,
+                src_width: $cur_width,
+                src_height: $cur_height
+            );
         }
 
         return match ($ext) {
             'jpg' => imagejpeg($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
             'png' => imagepng($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
             'gif' => imagegif($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
-            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function, match.alwaysTrue
             default => false
         };
     }
@@ -903,6 +1035,7 @@ class Picture
      */
     public function getOptimalHeight(): int
     {
+        $this->checkAvailable();
         return (int)round($this->optimal_height, 1);
     }
 
@@ -913,6 +1046,7 @@ class Picture
      */
     public function getHeight(): int
     {
+        $this->checkAvailable();
         return $this->height;
     }
 
@@ -923,6 +1057,7 @@ class Picture
      */
     public function getOptimalWidth(): int
     {
+        $this->checkAvailable();
         return (int)round($this->optimal_width, 1);
     }
 
@@ -933,13 +1068,12 @@ class Picture
      */
     public function getWidth(): int
     {
+        $this->checkAvailable();
         return $this->width;
     }
 
     /**
      * Returns current file format
-     *
-     * @return string
      */
     public function getFormat(): string
     {
@@ -963,13 +1097,12 @@ class Picture
      */
     public function getPath(): string
     {
+        $this->checkAvailable();
         return $this->file_path;
     }
 
     /**
      * Returns current mime type
-     *
-     * @return string
      */
     public function getMime(): string
     {
@@ -993,9 +1126,7 @@ class Picture
                 break;
         }
 
-        if ($error === null) {
-            $error = $this->getErrorMessageFromCode($code);
-        }
+        $error ??= $this->getErrorMessageFromCode($code);
 
         return $error;
     }

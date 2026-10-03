@@ -6,6 +6,6 @@
 @styledTitleBackground: @textColor;
 @styledTitleColor: @white;
 @styledActiveTitleBackground: @lightPrimaryColor;
-@styledActiveTitleColor: darken(@textColor, 15);
+@styledActiveTitleColor: @primaryTextColor;
 @styledTitleHoverBackground: @primaryColor;
-@styledTitleHoverColor: darken(@textColor, 15);
+@styledTitleHoverColor: @primaryTextColor;

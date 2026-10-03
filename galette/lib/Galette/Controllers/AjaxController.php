@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,8 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
+use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Filters\MembersList;
@@ -46,13 +35,14 @@ class AjaxController extends AbstractController
 {
     /**
      * Messages as JSON array
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function messages(Request $request, Response $response): Response
+    #[Route(
+        name: 'ajaxMessages',
+        pattern: '/ajax/messages',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function messages(Response $response): Response
     {
         $messages = [];
 
@@ -105,15 +95,41 @@ class AjaxController extends AbstractController
     }
 
     /**
+     * News as an HTML fragment for the dashboard
+     *
+     * Feeds are loaded from the network; the dashboard asks for them once it has
+     * been displayed, so that an unreachable feed never delays the page itself.
+     * An empty response means there is nothing to display.
+     */
+    #[Route(
+        name: 'ajaxNews',
+        pattern: '/ajax/news',
+        methods: ['GET']
+    )]
+    public function news(Response $response): Response
+    {
+        $this->view->render(
+            $response,
+            'elements/news.html.twig',
+            [
+                'news' => Galette::getNews()
+            ]
+        );
+        return $response;
+    }
+
+    /**
      * Ajax town suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
-     *
-     * @return Response
+     * @param string $term Search term
      */
-    public function suggestTowns(Request $request, Response $response, string $term): Response
+    #[Route(
+        name: 'suggestTown',
+        pattern: '/ajax/suggest/towns/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function suggestTowns(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -156,13 +172,15 @@ class AjaxController extends AbstractController
     /**
      * Ajax countries suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
-     *
-     * @return Response
+     * @param string $term Search term
      */
-    public function suggestCountries(Request $request, Response $response, string $term): Response
+    #[Route(
+        name: 'suggestCountry',
+        pattern: '/ajax/suggest/countries/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function suggestCountries(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -196,13 +214,15 @@ class AjaxController extends AbstractController
     /**
      * Ajax regions suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
-     *
-     * @return Response
+     * @param string $term Search term
      */
-    public function suggestRegions(Request $request, Response $response, string $term): Response
+    #[Route(
+        name: 'suggestRegion',
+        pattern: '/ajax/suggest/regions/{term}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function suggestRegions(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -235,13 +255,13 @@ class AjaxController extends AbstractController
 
     /**
      * Telemetry info preview
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function telemetryInfos(Request $request, Response $response): Response
+    #[Route(
+        name: 'telemetryInfos',
+        pattern: '/ajax/telemetry/infos',
+        methods: ['GET']
+    )]
+    public function telemetryInfos(Response $response): Response
     {
         $telemetry = new Telemetry(
             $this->zdb,
@@ -255,13 +275,13 @@ class AjaxController extends AbstractController
 
     /**
      * Send telemetry info
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function telemetrySend(Request $request, Response $response): Response
+    #[Route(
+        name: 'telemetrySend',
+        pattern: '/ajax/telemetry/send',
+        methods: ['POST']
+    )]
+    public function telemetrySend(Response $response): Response
     {
         $telemetry = new Telemetry(
             $this->zdb,
@@ -286,13 +306,13 @@ class AjaxController extends AbstractController
 
     /**
      * Successful telemetry registration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function telemetryRegistered(Request $request, Response $response): Response
+    #[Route(
+        name: 'setRegistered',
+        pattern: '/ajax/telemetry/registered',
+        methods: ['GET']
+    )]
+    public function telemetryRegistered(Response $response): Response
     {
         $this->preferences->updateRegistrationDate();
         return $this->withJson($response, ['message' => _T('Thank you for registering!')]);
@@ -300,12 +320,12 @@ class AjaxController extends AbstractController
 
     /**
      * Contributions dates
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'contributionDates',
+        pattern: '/ajax/contribution/dates',
+        methods: ['POST']
+    )]
     public function contributionDates(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -331,13 +351,14 @@ class AjaxController extends AbstractController
     /**
      * Contributions dates
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param int|null    $page     Page number
-     * @param string|null $search   Search string
-     *
-     * @return Response
+     * @param int|null    $page   Page number
+     * @param string|null $search Search string
      */
+    #[Route(
+        name: 'contributionMembers',
+        pattern: '/ajax/contribution/members[/{page:\d+}[/{search}]]',
+        methods: ['POST']
+    )]
     public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
         $post = $request->getParsedBody();
@@ -381,12 +402,13 @@ class AjaxController extends AbstractController
 
     /**
      * Password strength
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'checkPassword',
+        pattern: '/ajax/password/strength',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function passwordStrength(Request $request, Response $response): Response
     {
         //post params may be passed from security tab test password

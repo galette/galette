@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -36,12 +23,12 @@ use function Safe\preg_match;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $current_page
- * @property string $orderby
- * @property SQLOrder $ordered
- * @property int $show
- * @property int $pages
- * @property int $counter
+ * @property int        $current_page
+ * @property int|string $orderby
+ * @property SQLOrder   $ordered
+ * @property int        $show
+ * @property int        $pages
+ * @property int        $counter
  */
 
 abstract class Pagination
@@ -77,15 +64,11 @@ abstract class Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     abstract protected function getDefaultOrder(): int|string;
 
     /**
      * Return the default direction for ordering
-     *
-     * @return SQLOrder
      */
     protected function getDefaultDirection(): SQLOrder
     {
@@ -94,8 +77,6 @@ abstract class Pagination
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -109,8 +90,6 @@ abstract class Pagination
 
     /**
      * Invert sort order
-     *
-     * @return void
      */
     public function invertorder(): void
     {
@@ -125,8 +104,6 @@ abstract class Pagination
 
     /**
      * Get current sort direction
-     *
-     * @return string
      */
     public function getDirection(): string
     {
@@ -137,8 +114,6 @@ abstract class Pagination
      * Set sort direction
      *
      * @param SQLOrder|string|null $direction Order direction
-     *
-     * @return self
      */
     public function setDirection(SQLOrder|string|null $direction): self
     {
@@ -165,8 +140,6 @@ abstract class Pagination
      * Add limits so we retrieve only relavant rows
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     public function setLimits(Select $select): void
     {
@@ -182,8 +155,6 @@ abstract class Pagination
      * Set counter
      *
      * @param int $c Count
-     *
-     * @return void
      */
     public function setCounter(int $c): void
     {
@@ -193,8 +164,6 @@ abstract class Pagination
 
     /**
      * Update or set pages count
-     *
-     * @return void
      */
     protected function countPages(): void
     {
@@ -221,8 +190,6 @@ abstract class Pagination
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
      * @param bool        $restricted  Do not permit displaying all
-     *
-     * @return void
      */
     public function setViewPagination(RouteParser $routeparser, Twig $view, bool $restricted = true): void
     {
@@ -255,10 +222,10 @@ abstract class Pagination
         for ($i = $idepart; $i <= $ifin; $i++) {
             if ($i == $this->current_page) {
                 $paginate .= $this->getLink(
-                    "$i",
-                    $this->getHref($this->current_page),
-                    sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
-                    true
+                    content: "$i",
+                    url: $this->getHref($this->current_page),
+                    title: sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
+                    current: true
                 );
             } else {
                 $paginate .= $this->getLink(
@@ -317,8 +284,6 @@ abstract class Pagination
      * @param string $url     URL the link to point on
      * @param string $title   Link's title
      * @param bool   $current Is current page
-     *
-     * @return string
      */
     private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
@@ -332,8 +297,6 @@ abstract class Pagination
      * Build href
      *
      * @param int $page Page
-     *
-     * @return string
      */
     protected function getHref(int $page): string
     {
@@ -389,8 +352,6 @@ abstract class Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -405,8 +366,6 @@ abstract class Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,12 +11,12 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Util\Filesize;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\FilesystemException;
 
 use function Safe\copy;
 use function Safe\finfo_open;
-use function Safe\mime_content_type;
 use function Safe\preg_match;
 
 /**
@@ -40,16 +27,16 @@ use function Safe\preg_match;
 
 trait FileTrait
 {
-    public const INVALID_FILENAME = -1;
-    public const INVALID_EXTENSION = -2;
-    public const FILE_TOO_BIG = -3;
-    public const IMAGE_TOO_SMALL = -4;
-    public const MIME_NOT_ALLOWED = -5;
-    public const NEW_FILE_EXISTS = -6;
-    public const INVALID_FILE = -7;
-    public const CANT_WRITE = -8;
-    public const MAX_FILE_SIZE = 2048;
-    public const MIN_CROP_SIZE = 267;
+    public const int INVALID_FILENAME = -1;
+    public const int INVALID_EXTENSION = -2;
+    public const int FILE_TOO_BIG = -3;
+    public const int IMAGE_TOO_SMALL = -4;
+    public const int MIME_NOT_ALLOWED = -5;
+    public const int NEW_FILE_EXISTS = -6;
+    public const int INVALID_FILE = -7;
+    public const int CANT_WRITE = -8;
+    public const int MAX_FILE_SIZE = 2048;
+    public const int MIN_CROP_SIZE = 267;
 
     //array keys contain literal value of each forbidden character
     //(to be used when showing an error).
@@ -84,108 +71,6 @@ trait FileTrait
     /** @var string[] */
     protected array $upload_errors = [];
 
-    /** @var array<string,string> */
-    public static array $mime_types = [
-        'txt'       => 'text/plain',
-        'htm'       => 'text/html',
-        'html'      => 'text/html',
-        'xhtml'     => 'application/xhtml+xml',
-        'xht'       => 'application/xhtml+xml',
-        'php'       => 'text/html',
-        'css'       => 'text/css',
-        'js'        => 'application/javascript',
-        'json'      => 'application/json',
-        'xml'       => 'application/xml',
-        'xslt'      => 'application/xslt+xml',
-        'xsl'       => 'application/xml',
-        'dtd'       => 'application/xml-dtd',
-        'atom'      => 'application/atom+xml',
-        'mathml'    => 'application/mathml+xml',
-        'rdf'       => 'application/rdf+xml',
-        'smi'       => 'application/smil',
-        'smil'      => 'application/smil',
-        'vxml'      => 'application/voicexml+xml',
-        'latex'     => 'application/x-latex',
-        'tcl'       => 'application/x-tcl',
-        'tex'       => 'application/x-tex',
-        'texinfo'   => 'application/x-texinfo',
-        'wrl'       => 'model/vrml',
-        'wrml'      => 'model/vrml',
-        'ics'       => 'text/calendar',
-        'ifb'       => 'text/calendar',
-        'sgml'      => 'text/sgml',
-        'htc'       => 'text/x-component',
-        'pgp'       => 'application/pgp-signature',
-        'rtf'       => 'application/rtf',
-        // images
-        'png'       => 'image/png',
-        'jpeg'      => 'image/jpeg',
-        'jpg'       => 'image/jpeg',
-        'gif'       => 'image/gif',
-        'bmp'       => 'image/bmp',
-        'ico'       => 'image/x-icon',
-        'tiff'      => 'image/tiff',
-        'tif'       => 'image/tiff',
-        'svg'       => 'image/svg+xml',
-        'svgz'      => 'image/svg+xml',
-        'djvu'      => 'image/vnd.djvu',
-        'djv'       => 'image/vnd.djvu',
-        // archives
-        'zip'       => 'application/zip',
-        'rar'       => 'application/x-rar-compressed',
-        'tar'       => 'application/x-tar',
-        'gz'        => 'application/x-gzip',
-        'tgz'       => 'application/x-gzip',
-        'bz2'       => 'application/x-bzip2',
-        // audio/video
-        'mp2'       => 'audio/mpeg',
-        'mp3'       => 'audio/mpeg',
-        'qt'        => 'video/quicktime',
-        'mov'       => 'video/quicktime',
-        'mpeg'      => 'video/mpeg',
-        'mpg'       => 'video/mpeg',
-        'mpe'       => 'video/mpeg',
-        'wav'       => 'audio/wav',
-        'aiff'      => 'audio/aiff',
-        'aif'       => 'audio/aiff',
-        'avi'       => 'video/msvideo',
-        'wmv'       => 'video/x-ms-wmv',
-        'ogg'       => 'application/ogg',
-        'flv'       => 'video/x-flv',
-        'dvi'       => 'application/x-dvi',
-        'au'        => 'audio/basic',
-        'snd'       => 'audio/basic',
-        'mid'       => 'audio/midi',
-        'midi'      => 'audio/midi',
-        'm3u'       => 'audio/x-mpegurl',
-        'm4u'       => 'video/vnd.mpegurl',
-        'ram'       => 'audio/x-pn-realaudio',
-        'ra'        => 'audio/x-pn-realaudio',
-        'rm'        => 'application/vnd.rn-realmedia',
-        // adobe
-        'pdf'       => 'application/pdf',
-        'psd'       => 'image/vnd.adobe.photoshop',
-        'ai'        => 'application/postscript',
-        'eps'       => 'application/postscript',
-        'ps'        => 'application/postscript',
-        'swf'       => 'application/x-shockwave-flash',
-        // ms office
-        'doc'       => 'application/msword',
-        'docx'      => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'xls'       => 'application/vnd.ms-excel',
-        'xlsx'      => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'ppt'       => 'application/vnd.ms-powerpoint',
-        'pptx'      => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'pps'       => 'application/vnd.ms-powerpoint',
-        // open office
-        'odt'       => 'application/vnd.oasis.opendocument.text',
-        'ods'       => 'application/vnd.oasis.opendocument.spreadsheet',
-        'odc'       => 'application/vnd.oasis.opendocument.chart',
-        'odb'       => 'application/vnd.oasis.opendocument.database',
-        'odg'       => 'application/vnd.oasis.opendocument.graphics',
-        'odp'       => 'application/vnd.oasis.opendocument.presentation',
-    ];
-
     /**
      * Initialization
      *
@@ -194,8 +79,6 @@ trait FileTrait
      * @param ?array<string,string> $mimes       Array of permitted mime types
      * @param ?int                  $maxlength   Maximum length for each file
      * @param ?int                  $mincropsize Minimum image side size required for cropping
-     *
-     * @return void
      */
     protected function init(
         ?string $dest = null,
@@ -223,8 +106,6 @@ trait FileTrait
      * Copy existing file to new Location
      *
      * @param string $dest Destination directory
-     *
-     * @return bool
      */
     public function copyTo(string $dest): bool
     {
@@ -246,18 +127,14 @@ trait FileTrait
      * @param UploadedFileInterface[]|array<string, UploadedFileInterface []> $request_files Array of uploaded files (typically from PSR7 request)
      * @param string                                                          $key           Key to look for in uploaded files
      * @param callable|null                                                   $callback      Callback to use for storing the file. If null, will use $this->storeFile()
-     *
-     * @return bool
      */
     public function upload(array $request_files, string $key, ?callable $callback = null): bool
     {
         $this->upload_errors = []; //Reset errors
 
-        if ($callback === null) {
-            $callback = [$this, 'storeFile'];
-        }
+        $callback ??= [$this, 'storeFile'];
 
-        if (!isset($request_files[$key]) || count($request_files) === 0) {
+        if (!isset($request_files[$key]) || count($request_files) === 0) { // @phpstan-ignore identical.alwaysFalse
             return true;
         }
 
@@ -281,8 +158,6 @@ trait FileTrait
      *
      * @param UploadedFileInterface[] $uploaded_files Array of uploaded files
      * @param callable                $callback       Callback to use for storing the file
-     *
-     * @return void
      */
     private function handleUpload(array $uploaded_files, callable $callback): void
     {
@@ -336,7 +211,7 @@ trait FileTrait
             $reg .= "(.*)";
         }
         $reg .= "$/i";
-        if (preg_match($reg, (string) $this->name, $matches)) {
+        if (preg_match($reg, (string)$this->name, $matches)) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
@@ -350,7 +225,7 @@ trait FileTrait
             }
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
-            $m = preg_match($erreg, (string) $this->name, $errmatches);
+            $m = preg_match($erreg, (string)$this->name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
             if ($m == 1) {
@@ -377,9 +252,8 @@ trait FileTrait
         //Second, let's check file size
         if ($file->getSize() > ($this->maxlength * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ($file->getSize() * 1024)
-                . 'Ko for maximum authorized ' . ($this->maxlength * 1024)
-                . 'Ko',
+                '[' . $class . '] File is too big (' . Filesize::fromBytes($file->getSize())
+                . ' for maximum authorized ' . Filesize::fromKilobytes($this->maxlength) . ')',
                 Analog::ERROR
             );
             return self::FILE_TOO_BIG;
@@ -410,8 +284,6 @@ trait FileTrait
 
     /**
      * Build destination path
-     *
-     * @return string
      */
     protected function buildDestPath(): string
     {
@@ -453,8 +325,6 @@ trait FileTrait
 
     /**
      * Get destination dir
-     *
-     * @return ?string
      */
     public function getDestDir(): ?string
     {
@@ -465,8 +335,6 @@ trait FileTrait
      * Set destination directory
      *
      * @param string $dir Directory
-     *
-     * @return void
      */
     public function setDestDir(string $dir): void
     {
@@ -475,8 +343,6 @@ trait FileTrait
 
     /**
      * Get file name
-     *
-     * @return ?string
      */
     public function getFileName(): ?string
     {
@@ -487,8 +353,6 @@ trait FileTrait
      * Set file name
      *
      * @param string $name file name
-     *
-     * @return void
      */
     public function setFileName(string $name): void
     {
@@ -516,6 +380,14 @@ trait FileTrait
     }
 
     /**
+     * Returns the maximum size a file may have, in Ko
+     */
+    public function getMaxLength(): int
+    {
+        return $this->maxlength;
+    }
+
+    /**
      * Return the array of allowed mime types
      *
      * @return array<string,string>
@@ -529,39 +401,13 @@ trait FileTrait
      * Get file mime type
      *
      * @param string $file File
-     *
-     * @return string
      */
     public static function getMimeType(string $file): string
     {
         $class = static::class;
 
-        if (function_exists('finfo_open')) {
-            Analog::log(
-                '[' . $class . '] Function File Info exist ',
-                Analog::DEBUG
-            );
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $file);
-        } elseif (function_exists('mime_content_type')) {
-            Analog::log(
-                '[' . $class . '] Function mime_content_type exist ',
-                Analog::DEBUG
-            );
-            $mime = mime_content_type($file);
-        } else {
-            Analog::log(
-                '[' . $class . '] Search from extension ',
-                Analog::DEBUG
-            );
-            $exploded = explode('.', $file);
-            $ext = strtolower(array_pop($exploded));
-            Analog::log(
-                '[' . $class . '] Extension : ' . $ext,
-                Analog::DEBUG
-            );
-            $mime = array_key_exists($ext, self::$mime_types) ? self::$mime_types[$ext] : 'application/octet-stream';
-        }
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $file);
 
         Analog::log(
             '[' . $class . '] Found mimetype : ' . $mime . ' for file ' . $file,
@@ -588,13 +434,13 @@ trait FileTrait
                 $this->getAllowedExts(),
                 _T("File extension is not allowed, only %s files are.")
             ),
-            self::FILE_TOO_BIG => str_replace(
-                '%d',
-                (string)$this->maxlength,
-                _T("File is too big. Maximum allowed size is %dKo")
+            self::FILE_TOO_BIG => sprintf(
+                //TRANS: parameter is the maximum allowed size, units included
+                _T('File is too big. Maximum allowed size is %1$s'),
+                Filesize::fromKilobytes($this->maxlength)
             ),
             self::IMAGE_TOO_SMALL => sprintf(
-                _T("Image is too small. The minimum image side size allowed is %spx"),
+                _T('Image is too small. The minimum image side size allowed is %1$spx'),
                 $this->mincropsize
             ),
             self::MIME_NOT_ALLOWED => _T("Mime-Type not allowed"),

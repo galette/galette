@@ -1,0 +1,386 @@
+<?php
+
+/**
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+declare(strict_types=1);
+
+namespace Galette\Tests\Core;
+
+use Galette\Core\PreferencesSchema as Schema;
+use Galette\Tests\GaletteTestCase;
+
+use function Safe\file_get_contents;
+use function Safe\preg_match;
+
+/**
+ * Preferences schema tests class
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+class PreferencesSchema extends GaletteTestCase
+{
+    //getErrorMessage() goes through _T(), which needs $translator and $l10n.
+    //BaseGaletteTestCase::tearDown() nulls both, so a plain TestCase would
+    //pass alone and fail whenever it runs after any GaletteTestCase.
+
+    /**
+     * Every entry must declare a known type and a scalar default
+     */
+    public function testEntriesAreWellFormed(): void
+    {
+        $known_types = [
+            Schema::TYPE_STRING,
+            Schema::TYPE_INT,
+            Schema::TYPE_BOOL,
+            Schema::TYPE_EMAIL,
+            Schema::TYPE_EMAILS,
+            Schema::TYPE_URL,
+            Schema::TYPE_COLOR,
+            Schema::TYPE_HTML,
+            Schema::TYPE_PASSWORD,
+            Schema::TYPE_LOGIN,
+            Schema::TYPE_DATE_MD,
+            Schema::TYPE_YEAR,
+        ];
+
+        $schema = Schema::getAll();
+        $this->assertNotEmpty($schema);
+
+        foreach ($schema as $name => $entry) {
+            $this->assertStringStartsWith('pref_', $name, $name . ' is not a preference name');
+            $this->assertArrayHasKey('type', $entry, $name . ' has no type');
+            $this->assertContains($entry['type'], $known_types, $name . ' has an unknown type');
+            $this->assertArrayHasKey('default', $entry, $name . ' has no default');
+        }
+    }
+
+    /**
+     * Defaults are exposed as the flat map Preferences expects
+     */
+    public function testDefaults(): void
+    {
+        $defaults = Schema::getDefaults();
+
+        $this->assertSame(array_keys(Schema::getAll()), array_keys($defaults));
+        $this->assertSame('Galette', $defaults['pref_nom']);
+        $this->assertSame(30, $defaults['pref_numrows']);
+        $this->assertFalse($defaults['pref_noindex']);
+    }
+
+    /**
+     * Required preferences are derived from the schema
+     */
+    public function testRequired(): void
+    {
+        $required = Schema::getRequired();
+
+        $this->assertArrayHasKey('pref_nom', $required);
+        $this->assertArrayNotHasKey('pref_slogan', $required);
+
+        foreach ($required as $name => $flag) {
+            $this->assertSame(1, $flag);
+            $this->assertTrue(Schema::has($name));
+        }
+
+        //the superadmin login is added at runtime, not declared as required
+        $this->assertArrayNotHasKey('pref_admin_login', $required);
+    }
+
+    /**
+     * Types drive the casts done on read
+     */
+    public function testGetType(): void
+    {
+        $this->assertSame(Schema::TYPE_INT, Schema::getType('pref_numrows'));
+        $this->assertSame(Schema::TYPE_BOOL, Schema::getType('pref_noindex'));
+        $this->assertSame(Schema::TYPE_EMAIL, Schema::getType('pref_email'));
+        $this->assertSame(Schema::TYPE_EMAILS, Schema::getType('pref_email_newadh'));
+        $this->assertSame(Schema::TYPE_COLOR, Schema::getType('pref_card_tcol'));
+        $this->assertSame(Schema::TYPE_HTML, Schema::getType('pref_footer'));
+
+        //a row left over by an old version or a plugin reads as a plain string
+        $this->assertFalse(Schema::has('pref_does_not_exist'));
+        $this->assertSame(Schema::TYPE_STRING, Schema::getType('pref_does_not_exist'));
+        $this->assertNull(Schema::get('pref_does_not_exist'));
+    }
+
+    /**
+     * Every colour is typed as one
+     *
+     * The settings form already renders them all with an <input type="color">,
+     * so the schema has to agree, otherwise the advanced page offers a plain
+     * text field for half of them.
+     */
+    public function testColoursAreTypedAsColours(): void
+    {
+        $colours = [
+            'pref_cc_primary',
+            'pref_cc_primary_text',
+            'pref_cc_secondary',
+            'pref_cc_secondary_text',
+            'pref_card_tcol',
+            'pref_card_scol',
+            'pref_card_bcol',
+            'pref_card_hcol',
+        ];
+
+        foreach ($colours as $name) {
+            $this->assertSame(Schema::TYPE_COLOR, Schema::getType($name), $name);
+            $this->assertMatchesRegularExpression(
+                '/^#[0-9A-Fa-f]{6}$/',
+                (string)Schema::getDefaults()[$name],
+                $name . ' default is not a colour'
+            );
+        }
+
+        //and nothing else claims to be one
+        $typed = array_keys(
+            array_filter(Schema::getAll(), fn(array $e): bool => $e['type'] === Schema::TYPE_COLOR)
+        );
+        sort($colours);
+        sort($typed);
+        $this->assertSame($colours, $typed);
+    }
+
+    /**
+     * Only the superadmin credentials require the superadmin level
+     */
+    public function testAcl(): void
+    {
+        $this->assertSame(Schema::ACL_SUPERADMIN, Schema::getAcl('pref_admin_login'));
+        $this->assertSame(Schema::ACL_SUPERADMIN, Schema::getAcl('pref_admin_pass'));
+        $this->assertSame(Schema::ACL_ADMIN, Schema::getAcl('pref_nom'));
+        $this->assertSame(Schema::ACL_ADMIN, Schema::getAcl('pref_does_not_exist'));
+
+        $superadmin = array_keys(
+            array_filter(
+                Schema::getAll(),
+                fn(array $entry): bool => ($entry['acl'] ?? Schema::ACL_ADMIN) === Schema::ACL_SUPERADMIN
+            )
+        );
+        $this->assertSame(
+            [
+                'pref_admin_login',
+                'pref_admin_pass',
+                //the second factor of that account, which nobody else may touch
+                'pref_2fa_superadmin_secret',
+                'pref_2fa_superadmin_enabled',
+                'pref_2fa_superadmin_timeslice',
+            ],
+            $superadmin
+        );
+    }
+
+    /**
+     * Secrets must never be rendered
+     */
+    public function testSensitive(): void
+    {
+        $this->assertTrue(Schema::isSensitive('pref_admin_pass'));
+        $this->assertTrue(Schema::isSensitive('pref_mail_smtp_password'));
+        $this->assertFalse(Schema::isSensitive('pref_nom'));
+        $this->assertFalse(Schema::isSensitive('pref_does_not_exist'));
+    }
+
+    /**
+     * Settings driving a feature that has not been released yet must say so,
+     * so the advanced configuration page can warn before they are set.
+     */
+    public function testAlpha(): void
+    {
+        $alpha = [
+            'pref_mail_batch_size',
+            'pref_mail_batch_delay',
+            'pref_mail_hourly_limit',
+            'pref_mail_daily_limit',
+            //the second factor, and everything that drives it
+            'pref_2fa_mode',
+            'pref_2fa_superadmin_secret',
+            'pref_2fa_superadmin_enabled',
+            'pref_2fa_superadmin_timeslice',
+            'pref_throttle_second_factor_attempts',
+            'pref_throttle_second_factor_window'
+        ];
+        foreach ($alpha as $name) {
+            $this->assertTrue(Schema::isAlpha($name), $name . ' should be flagged as alpha');
+        }
+
+        $this->assertFalse(Schema::isAlpha('pref_mail_smtp_host'));
+        //the other throttling scopes are not tied to the second factor
+        $this->assertFalse(Schema::isAlpha('pref_throttle_account_ip_attempts'));
+        $this->assertFalse(Schema::isAlpha('pref_nom'));
+        $this->assertFalse(Schema::isAlpha('pref_does_not_exist'));
+    }
+
+    /**
+     * Preferences the mail transport is built from
+     *
+     * A test can run on those before they are stored, so the list must hold
+     * everything GaletteMail reads, and nothing else.
+     */
+    public function testMailer(): void
+    {
+        $expected = [
+            'pref_email_nom',
+            'pref_email',
+            'pref_email_newadh',
+            'pref_mail_method',
+            'pref_mail_smtp_host',
+            'pref_mail_smtp_auth',
+            'pref_mail_smtp_secure',
+            'pref_mail_smtp_port',
+            'pref_mail_smtp_user',
+            'pref_mail_smtp_password',
+            'pref_email_reply_to',
+            'pref_bool_wrap_mails',
+            'pref_mail_allow_unsecure',
+        ];
+
+        $mailer = Schema::getMailer();
+        sort($expected);
+        sort($mailer);
+        $this->assertSame($expected, $mailer);
+    }
+
+    /**
+     * Legacy behaviour constants a preference supersedes
+     */
+    public function testConstants(): void
+    {
+        $constants = Schema::getConstants();
+
+        $this->assertNotEmpty($constants);
+        $this->assertSame('GALETTE_URI', $constants['pref_galette_url'] ?? null);
+        $this->assertSame('GALETTE_URI', Schema::getConstant('pref_galette_url'));
+        $this->assertNull(Schema::getConstant('pref_nom'));
+
+        foreach ($constants as $name => $constant) {
+            $this->assertTrue(Schema::has($name));
+            $this->assertStringStartsWith('GALETTE_', $constant);
+        }
+    }
+
+    /**
+     * Any bounded entry must carry a resolvable error message
+     */
+    public function testBoundedEntriesCarryAMessage(): void
+    {
+        $bounded = 0;
+        foreach (Schema::getAll() as $name => $entry) {
+            if (!isset($entry['min']) && !isset($entry['max']) && !isset($entry['minlength'])) {
+                continue;
+            }
+            ++$bounded;
+            $this->assertArrayHasKey('error', $entry, $name . ' is bounded but has no message');
+            $this->assertNotEmpty(
+                Schema::getErrorMessage($entry['error']),
+                $name . ' message does not resolve'
+            );
+        }
+        $this->assertGreaterThan(0, $bounded);
+    }
+
+    /**
+     * A reusable message names the preference it is about
+     *
+     * This is what lets a new numeric preference be declared with a schema
+     * entry only, and no new translatable string.
+     */
+    public function testMessagesNameTheirPreference(): void
+    {
+        $this->assertSame(
+            "- Value for 'pref_something' must be a positive number!",
+            Schema::getErrorMessage(Schema::ERR_POSITIVE_NUMBER, 'pref_something')
+        );
+
+        //without a preference, the placeholders are left alone
+        $this->assertStringContainsString(
+            '%1$s',
+            Schema::getErrorMessage(Schema::ERR_POSITIVE_NUMBER)
+        );
+        $this->assertStringContainsString(
+            '%2$s',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_ATTEMPTS)
+        );
+
+        //the floor comes from the message itself, the caller names the
+        //preference and nothing else
+        $this->assertSame(
+            "- Value for 'pref_throttle_ip_attempts' must be "
+            . \Galette\Core\AuthThrottle::MIN_ATTEMPTS . ' attempts or more!',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_ATTEMPTS, 'pref_throttle_ip_attempts')
+        );
+        $this->assertSame(
+            "- Value for 'pref_throttle_ip_window' must be "
+            . \Galette\Core\AuthThrottle::MIN_SECONDS . ' seconds or more!',
+            Schema::getErrorMessage(Schema::ERR_THROTTLE_SECONDS, 'pref_throttle_ip_window')
+        );
+
+        //and the address message takes both of its own
+        $this->assertSame(
+            '- Invalid E-Mail address admin (pref_email)',
+            Schema::getErrorMessage(Schema::ERR_EMAIL, 'admin', 'pref_email')
+        );
+
+        //a message with no placeholder is untouched
+        $this->assertSame(
+            Schema::getErrorMessage(Schema::ERR_CARD_HEIGHT),
+            Schema::getErrorMessage(Schema::ERR_CARD_HEIGHT, 'pref_card_vsize')
+        );
+    }
+
+    /**
+     * An unknown error identifier is a programming error
+     */
+    public function testUnknownErrorMessage(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown error identifier "nope".');
+        Schema::getErrorMessage('nope');
+    }
+
+    /**
+     * A preference is either on the settings form, or flagged as advanced
+     *
+     * Preferences::completeValues() blanks whatever the payload does not
+     * carry, so a preference the form does not render has to say so: without
+     * the flag, saving the settings form would reset it every time. Keeping
+     * both in step is what makes that safe.
+     *
+     * Only core preferences are concerned: a plugin's are never rendered by
+     * the core form, and completeValues() leaves them alone on their own.
+     */
+    public function testOffFormPreferencesAreFlagged(): void
+    {
+        $form = file_get_contents(
+            GALETTE_ROOT . 'templates/default/pages/preferences.html.twig'
+        );
+
+        foreach (array_keys(Schema::getCore()) as $name) {
+            //what the payload carries is what a field is named after. A
+            //preference the form only reads - the upload limit a tooltip
+            //announces - is not submitted, and keeps its value all the same
+            $on_form = preg_match('/name="' . $name . '"/', $form) === 1;
+
+            if ($on_form) {
+                $this->assertFalse(
+                    Schema::isAdvanced($name),
+                    $name . ' is flagged as advanced but the settings form renders it'
+                );
+                continue;
+            }
+
+            //a visibility is rendered through a shared component, so its name
+            //is not spelt out here; completeValues() never blanks one either
+            $this->assertTrue(
+                Schema::isAdvanced($name) || Schema::isReadOnly($name) || Schema::isPublicPage($name),
+                $name . ' is not on the settings form and is not flagged as advanced,'
+                . ' so saving the form would blank it'
+            );
+        }
+    }
+}

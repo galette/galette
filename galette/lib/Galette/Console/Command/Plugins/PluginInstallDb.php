@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins database install console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-import-type Modules from Plugins
  */
 #[AsCommand(
     name: 'galette:plugins:install-db',
@@ -42,11 +31,6 @@ class PluginInstallDb extends AbstractPlugins
 {
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -57,44 +41,83 @@ class PluginInstallDb extends AbstractPlugins
         $selected = $selected === [self::ALL] ? $this->getRelevantPlugins($io) : $this->getSelectedModules($io, $selected);
 
         $errors = [];
-        $install = new \Galette\Core\PluginInstall();
-        $install
-            ->setMode($install::INSTALL)
-            ->setDbType(TYPE_DB, $errors)
-            ->setDsn(HOST_DB, PORT_DB, NAME_DB, USER_DB, PWD_DB)
-            ->setTablesPrefix(PREFIX_DB)
-        ;
 
         foreach ($selected as $module_id => $module) {
-            //$install->setInstalledVersion($post['previous_version'] ?? null);
-            $install->executeScripts($zdb, $module['root']);
-            $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+            $install = new \Galette\Core\PluginInstall();
+            $install
+                ->setDbType(TYPE_DB, $errors)
+                ->setDsn(
+                    host: HOST_DB,
+                    port: PORT_DB,
+                    name: NAME_DB,
+                    user: USER_DB,
+                    pass: PWD_DB
+                )
+                ->setTablesPrefix(PREFIX_DB)
+            ;
+
+            $disabled_cause = $this->plugins->getDisabledCause($module_id);
+
+            if ($disabled_cause === Plugins::DISABLED_NOT_UP2DATE) {
+                $installed_version = $this->plugins->getInstalledDbVersion($module_id);
+                $install
+                    ->setMode($install::UPDATE)
+                    ->setInstalledVersion($installed_version)
+                ;
+                $install->executeScripts($zdb, $module['root']);
+                $install->setPluginInstalled($zdb, $this->plugins, $module_id);
+                $io->success(sprintf('Database for plugin "%s" upgraded', $module_id));
+            } else {
+                $install->setMode($install::INSTALL);
+                $install->executeScripts($zdb, $module['root']);
+                $install->setPluginInstalled($zdb, $this->plugins, $module_id);
+                $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+            }
         }
 
         return Command::SUCCESS;
     }
 
     /**
-     * Get relevant plugins (actives, with database) for current command
+     * Get relevant plugins (inactives that require a database) for current command
      *
-     * @param SymfonyStyle $io Output interface
-     *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
-        $enabled_plugins = $this->plugins->getModules();
+        $plugins = $this->plugins->getDisabledModules();
 
         $relevant_plugins = [];
-        foreach ($enabled_plugins as $module_id => $module) {
-            if ($this->plugins->needsDatabase($module_id)) {
-                $relevant_plugins[$module_id] = $module;
-            } else {
+        foreach ($plugins as $module_id => $module) {
+            if (!$this->plugins->needsDatabase($module_id)) {
                 $io->writeln(
                     sprintf('Plugin "%s" does not use a database', $module_id),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
+                continue;
             }
+
+            // Only consider plugins that are disabled because they are not installed
+            // or not up to date. Other disabled causes are not suitable for running installation scripts.
+            $disabled_cause = $this->plugins->getDisabledCause($module_id);
+            $allowed_causes = [
+                Plugins::DISABLED_NOT_INSTALLED,
+                Plugins::DISABLED_NOT_UP2DATE,
+            ];
+
+            if (!in_array($disabled_cause, $allowed_causes, strict: true)) {
+                $io->writeln(
+                    sprintf(
+                        'Plugin "%s" is disabled (%s); skipping database installation',
+                        $module_id,
+                        $this->getDisplayCause($disabled_cause)
+                    ),
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+                continue;
+            }
+
+            $relevant_plugins[$module_id] = $module;
         }
 
         return $relevant_plugins;
@@ -106,20 +129,14 @@ class PluginInstallDb extends AbstractPlugins
      * @param SymfonyStyle $io        Output interface
      * @param string[]     $requested Requested modules
      *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getSelectedModules(SymfonyStyle $io, array $requested): array
     {
         $relevant = $this->getRelevantPlugins($io);
-        $selected = [];
-        foreach ($requested as $module_id) {
-            if (isset($relevant[$module_id]) && $this->plugins->needsDatabase($module_id)) {
-                $selected[$module_id] = $relevant[$module_id];
-            } else {
-                $io->warning(sprintf('Plugin "%s" is not relevant for this command', $module_id));
-            }
+        foreach (array_diff($requested, array_keys($relevant)) as $module_id) {
+            $io->warning(sprintf('Invalid command for plugin "%s". Check its state.', $module_id));
         }
-
-        return $selected;
+        return array_intersect_key($relevant, array_flip($requested));
     }
 }

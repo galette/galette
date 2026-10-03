@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,12 +28,12 @@ use function Safe\base64_decode;
 
 class Links
 {
-    public const TABLE = 'tmplinks';
-    public const PK = 'hash';
+    public const string TABLE = 'tmplinks';
+    public const string PK = 'hash';
 
-    public const TARGET_MEMBERCARD = 1;
-    public const TARGET_INVOICE    = 2;
-    public const TARGET_RECEIPT    = 3;
+    public const int TARGET_MEMBERCARD = 1;
+    public const int TARGET_INVOICE    = 2;
+    public const int TARGET_RECEIPT    = 3;
 
     /**
      * Default constructor
@@ -66,8 +53,6 @@ class Links
      *
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
-     *
-     * @return bool
      */
     private function removeOldEntry(int $target, int $id): bool
     {
@@ -99,8 +84,6 @@ class Links
      *
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
-     *
-     * @return string
      */
     public function generateNewLink(int $target, int $id): string
     {
@@ -127,7 +110,7 @@ class Links
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $code = $result->email_adh;
-            $hash = password_hash((string) $code, PASSWORD_BCRYPT);
+            $hash = password_hash((string)$code, PASSWORD_BCRYPT);
 
             $values = [
                 'target'        => $target,
@@ -157,8 +140,6 @@ class Links
 
     /**
      * Get expiration date
-     *
-     * @return DateTime
      */
     private function getExpirationDate(): DateTime
     {
@@ -169,8 +150,6 @@ class Links
 
     /**
      * Remove expired links queries (older than 1 week)
-     *
-     * @return bool
      */
     protected function cleanExpired(): bool
     {
@@ -222,7 +201,7 @@ class Links
 
             if ($results->count() > 0) {
                 $result = $results->current();
-                if (password_verify($code, (string) $result->hash)) {
+                if (password_verify($code, (string)$result->hash)) {
                     return [(int)$result->target, (int)$result->id];
                 }
             }

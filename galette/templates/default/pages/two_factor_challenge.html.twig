@@ -1,0 +1,41 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+{% extends 'public_page.html.twig' %}
+
+{% set body_class = "front_page" %}
+
+{% block content %}
+                <form action="{{ url_for('do-two-factor') }}" method="post" class="ui form">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <p>{{ _T("Enter the code shown by your authentication application.") }}</p>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="mobile alternate icon" aria-hidden="true"></i>
+                                    <label for="code" class="visually-hidden">{{ _T("Code:") }}</label>
+                                    <input
+                                        type="text"
+                                        name="code"
+                                        id="code"
+                                        autofocus
+                                        autocomplete="one-time-code"
+                                        spellcheck="false"
+                                        placeholder="{{ _T("Code:") }}"
+                                    />
+                                </div>
+                            </div>
+                            <input type="submit" class="ui fluid large primary submit button" value="{{ _T("Validate") }}"/>
+                        </div>
+                        <div class="ui center aligned secondary segment">
+                            <p class="ui small text">{{ _T("Lost your device? Enter one of your recovery codes above instead.") }}</p>
+                            <a href="{{ url_for('logout') }}">
+                                <i class="icon sign out alt" aria-hidden="true"></i>
+                                {{ _T("Cancel and log off") }}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+{% endblock %}

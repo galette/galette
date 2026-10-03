@@ -1,0 +1,163 @@
+name: Galette E2E Tests
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    tags:
+      - '*'
+  pull_request:
+  # Enable manual run
+  workflow_dispatch:
+  # Run once a month
+  schedule:
+    - cron: '0 0 1 * *'
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  playwright-tests:
+    runs-on: ubuntu-latest
+    name: Playwright — ${{ matrix.project }}
+    env:
+      DB: pgsql
+      GALETTE_TESTS: 1
+
+    strategy:
+        fail-fast: false
+        matrix:
+          include:
+            - { project: "a11y", browser: "chromium" }
+            - { project: "chromium", browser: "chromium" }
+            - { project: "mail-queue", browser: "chromium" }
+            - { project: "two-factor", browser: "chromium" }
+
+    services:
+      # Label used to access the service container
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_USER: galette_tests
+          POSTGRES_PASSWORD: g@l3tte
+          POSTGRES_DB: galette_tests
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+      # Local SMTP catcher: captures mail without ever delivering it
+      mailpit:
+        image: axllent/mailpit:latest
+        ports:
+          - 1025:1025
+          - 8025:8025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer, pecl
+          coverage: none
+          extensions: apcu, pdo_pgsql
+          ini-values: apc.enable_cli=1
+
+      - name: Build Galette
+        uses: galette/.github/actions/build-galette@main
+        with:
+          php-version: "8.5"
+          enable-assets-cache: true
+          skip-checkout: true
+
+      # MO files are not versioned
+      - name: Compile locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+          # Test mode would boot on a database not installed yet
+          GALETTE_TESTS= bin/console galette:compile-locales
+
+      - name: Initialize test data
+        run: php tests/init_test_data.php
+
+      - name: Initialize Galette database (PostgreSQL)
+        run: |
+          bin/console galette:install -v \
+            --dbtype=pgsql \
+            --dbhost=localhost \
+            --dbname=galette_tests \
+            --dbuser=galette_tests \
+            --dbpass=g@l3tte \
+            --admin=${{ secrets.E2E_ADMIN_USER || 'admin' }} \
+            --password=${{ secrets.E2E_ADMIN_PASS || 'admin' }} \
+            --no-interaction
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
+      - name: Seed E2E fixtures
+        run: bin/console galette:seed-fixtures -v
+
+      - name: Start PHP built-in server
+        run: |
+          php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php &
+          # Wait for service being up
+          timeout 15 bash -c 'until curl -sf http://127.0.0.1:8090/login > /dev/null; do sleep 1; done'
+          echo "PHP server started"
+
+      - name: Wait for Mailpit
+        run: |
+          timeout 30 bash -c 'until curl -sf http://127.0.0.1:8025/readyz > /dev/null; do sleep 1; done'
+          echo "Mailpit is ready"
+
+
+      - name: Install Playwright browsers
+        run: |
+          npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run E2E tests
+        run: |
+          npx playwright test --project ${{ matrix.project }}
+        env:
+          E2E_BASE_URL: http://127.0.0.1:8090
+          E2E_ADMIN_USER: ${{ secrets.E2E_ADMIN_USER || 'admin' }}
+          E2E_ADMIN_PASS: ${{ secrets.E2E_ADMIN_PASS || 'admin' }}
+          E2E_MAILPIT_URL: http://127.0.0.1:8025
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload test data (logs, photos, etc.)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-data
+          path: |
+            tests/tests-data/
+            galette/data/logs/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './ctrf/*.json'
+          github-report: true
+          summary-report: true
+        if: always()

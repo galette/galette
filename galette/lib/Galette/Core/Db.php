@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Core;
 
+use ArrayObject;
 use Exception;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\Metadata\Object\ColumnObject;
@@ -52,13 +40,13 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property Adapter $db
- * @property Sql $sql
- * @property DriverInterface $driver
+ * @property Adapter            $db
+ * @property Sql                $sql
+ * @property DriverInterface    $driver
  * @property AbstractConnection $connection
- * @property PlatformInterface $platform
- * @property string $query_string
- * @property string $type_db
+ * @property PlatformInterface  $platform
+ * @property string             $query_string
+ * @property string             $type_db
  */
 class Db
 {
@@ -68,12 +56,14 @@ class Db
     /** @var array<string, array<int, bool>|string> */
     private array $options;
     private string $last_query;
+    private bool $no_commit = false;
 
-    public const MYSQL = 'mysql';
-    public const PGSQL = 'pgsql';
+    public const string MYSQL = 'mysql';
+    public const string PGSQL = 'pgsql';
 
-    public const MYSQL_DEFAULT_PORT = 3306;
-    public const PGSQL_DEFAULT_PORT = 5432;
+    public const int MYSQL_DEFAULT_PORT = 3306;
+    public const int PGSQL_DEFAULT_PORT = 5432;
+    private bool $log_execute = true;
 
     /**
      * Main constructor
@@ -141,8 +131,6 @@ class Db
 
     /**
      * Do database connection
-     *
-     * @return void
      */
     private function doConnection(): void
     {
@@ -172,8 +160,6 @@ class Db
      * Connect again to the database on wakeup
      *
      * @param array<string, mixed> $data Date to unserialize
-     *
-     * @return void
      */
     public function __unserialize(array $data): void
     {
@@ -187,9 +173,7 @@ class Db
      *
      * @param bool $check_table Check if table exists, defaults to false
      *
-     * @return string
-     *
-     * @throw LogicException
+     * @throws LogicException
      */
     public function getDbVersion(bool $check_table = false): string
     {
@@ -205,10 +189,10 @@ class Db
                 $results = $this->execute($select);
                 $result = $results->current();
                 return number_format(
-                    (float)$result->version,
-                    3,
-                    '.',
-                    ''
+                    num: (float)$result->version,
+                    decimals: 3,
+                    decimal_separator: '.',
+                    thousands_separator: ''
                 );
             } else {
                 return '0.63';
@@ -224,8 +208,6 @@ class Db
 
     /**
      * Check if database version suits our needs
-     *
-     * @return bool
      */
     public function checkDbVersion(): bool
     {
@@ -248,8 +230,6 @@ class Db
      * Perform a select query on the whole table
      *
      * @param string $table Table name
-     *
-     * @return ResultSet
      */
     public function selectAll(string $table): ResultSet
     {
@@ -268,8 +248,6 @@ class Db
      * @param ?string $host which host we want to connect to
      * @param ?string $port which tcp port we want to connect to
      * @param ?string $db   database name
-     *
-     * @return bool
      *
      * @throws Exception|Throwable
      */
@@ -316,8 +294,6 @@ class Db
 
     /**
      * Drop test table if it exists, so we can make all checks.
-     *
-     * @return void
      */
     public function dropTestTable(): void
     {
@@ -510,9 +486,7 @@ class Db
         $metadata = Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
-        if ($prefix === null) {
-            $prefix = PREFIX_DB;
-        }
+        $prefix ??= PREFIX_DB;
 
         $tables_list = [];
         //filter table_list: we only want PREFIX_DB tables
@@ -525,25 +499,24 @@ class Db
     }
 
     /**
-     * Does a given table exists?
+     * Does a given table exist?
      *
      * @param string $name Table name
-     *
-     * @return bool
      */
     public function tableExists(string $name): bool
     {
-        $metadata = Factory::createSourceFromAdapter($this->db);
+        $this->log_execute = false;
         try {
-            $metadata->getTable(PREFIX_DB . $name);
+            $this->execute($this->select($name)->limit(1));
             return true;
-        } catch (Throwable) {
-            Analog::log(
-                'Table "' . $name . '" does not exist',
-                Analog::INFO
-            );
-            return false;
+        } catch (\Throwable $e) {
+            if (!$this->isMissingTableException($e)) {
+                throw $e;
+            }
+        } finally {
+            $this->log_execute = true;
         }
+        return false;
     }
 
     /**
@@ -563,13 +536,19 @@ class Db
     /**
      * Converts recursively database to UTF-8
      *
-     * @param ?string $prefix       Specified table prefix
-     * @param bool    $content_only Proceed only content (no table conversion)
+     * The per-table `CONVERT TO CHARACTER SET` statement transcodes both the
+     * column definitions *and* their stored content (latin1 data is rewritten
+     * as UTF-8 in place), so no extra row-by-row pass is needed.
      *
-     * @return void
+     * @param ?string $prefix Specified table prefix
+     * @deprecated 1.2.2 upgrading from 0.6 will be discontinued.
      */
-    public function convertToUTF(?string $prefix = null, bool $content_only = false): void
+    public function convertToUTF(?string $prefix = null): void
     {
+        Analog::log(
+            'Upgrading from 0.6 will soon be discontinued.',
+            Analog::WARNING
+        );
         if ($this->isPostgres()) {
             Analog::log(
                 'Cannot change encoding on PostgreSQL database',
@@ -577,37 +556,25 @@ class Db
             );
             return;
         }
-        if ($prefix === null) {
-            $prefix = PREFIX_DB;
-        }
+        $prefix ??= PREFIX_DB;
 
         $table = '';
         try {
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
-                if ($content_only === false) {
-                    //Change whole table charset
-                    //CONVERT TO instruction will take care of each fields,
-                    //but converting data stay our problem.
-                    $query = 'ALTER TABLE ' . $table
-                        . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                $query = 'ALTER TABLE ' . $table
+                    . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
-                    $this->db->query(
-                        $query,
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
+                $this->db->query(
+                    $query,
+                    Adapter::QUERY_MODE_EXECUTE
+                );
 
-                    Analog::log(
-                        'Charset successfully changed for table `' . $table . '`',
-                        Analog::DEBUG
-                    );
-                }
-
-                //Data conversion
-                if ($table != $prefix . 'pictures') {
-                    $this->convertContentToUTF($prefix, $table);
-                }
+                Analog::log(
+                    'Charset successfully changed for table `' . $table . '`',
+                    Analog::DEBUG
+                );
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -620,104 +587,7 @@ class Db
     }
 
     /**
-     * Converts database content to UTF-8
-     *
-     * @param string $prefix Specified table prefix
-     * @param string $table  the table we want to convert datas from
-     *
-     * @return void
-     */
-    private function convertContentToUTF(string $prefix, string $table): void
-    {
-
-        try {
-            $query = 'SET NAMES latin1';
-            $this->db->query(
-                $query,
-                Adapter::QUERY_MODE_EXECUTE
-            );
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot SET NAMES on table `' . $table . '`. '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-        }
-
-        try {
-            $metadata = Factory::createSourceFromAdapter($this->db);
-            $tbl = $metadata->getTable($table);
-            $constraints = $tbl->getConstraints();
-            $pkeys = [];
-
-            foreach ($constraints as $constraint) {
-                if ($constraint->getType() === 'PRIMARY KEY') {
-                    $pkeys = $constraint->getColumns();
-                }
-            }
-
-            if (count($pkeys) == 0) {
-                //no primary key! How to do an update without that?
-                //Prior to 0.7, l10n and dynamic_fields tables does not
-                //contain any primary key. Since encoding conversion is done
-                //_before_ the SQL upgrade, we'll have to manually
-                //check these ones
-                if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {
-                    $pkeys = [
-                        'item_id',
-                        'field_id',
-                        'field_form',
-                        'val_index'
-                    ];
-                } elseif (preg_match('/' . $prefix . 'l10n/', $table) !== 0) {
-                    $pkeys = [
-                        'text_orig',
-                        'text_locale'
-                    ];
-                } else {
-                    //not a know case, we do not perform any update.
-                    throw new Exception(
-                        'Cannot define primary key for table `' . $table
-                        . '`, aborting'
-                    );
-                }
-            }
-
-            $select = $this->sql->select($table);
-            $results = $this->execute($select);
-
-            foreach ($results as $row) {
-                $data = [];
-                $where = [];
-
-                //build where
-                foreach ($pkeys as $k) {
-                    $where[$k] = $row->$k;
-                }
-
-                //build data
-                foreach ($row as $key => $value) {
-                    $data[$key] = $value;
-                }
-
-                //finally, update data!
-                $update = $this->sql->update($table);
-                $update->set($data)->where($where);
-                $this->execute($update);
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred while converting contents to UTF-8 for table '
-                . $table . ' (' . $e->getMessage() . ')',
-                Analog::ERROR
-            );
-        }
-    }
-
-    /**
      * Is current database using Postgresql?
-     *
-     * @return bool
      */
     public function isPostgres(): bool
     {
@@ -729,8 +599,6 @@ class Db
      *
      * @param string  $table Table name, without prefix
      * @param ?string $alias Tables alias, optional
-     *
-     * @return Select
      */
     public function select(string $table, ?string $alias = null): Select
     {
@@ -740,7 +608,7 @@ class Db
             );
         } else {
             return $this->sql->select(
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore argument.type (laminas docs are wrong)
                 [
                     $alias => PREFIX_DB . $table
                 ]
@@ -752,8 +620,6 @@ class Db
      * Instanciate an insert query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Insert
      */
     public function insert(string $table): Insert
     {
@@ -766,8 +632,6 @@ class Db
      * Instanciate an update query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Update
      */
     public function update(string $table): Update
     {
@@ -780,8 +644,6 @@ class Db
      * Instanciate a delete query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Delete
      */
     public function delete(string $table): Delete
     {
@@ -791,11 +653,46 @@ class Db
     }
 
     /**
+     * Start a transaction
+     */
+    public function beginTransaction(): void
+    {
+        $this->db->getDriver()->getConnection()->beginTransaction();
+    }
+
+    /**
+     * Commit current transaction
+     */
+    public function commit(): void
+    {
+        if ($this->no_commit) {
+            //never commit from tests
+            return;
+        }
+        $this->db->getDriver()->getConnection()->commit();
+    }
+
+    /**
+     * Rollback current transaction
+     */
+    public function rollback(): void
+    {
+        $this->db->getDriver()->getConnection()->rollback();
+    }
+
+    /**
+     * Is a transaction actually running?
+     */
+    public function inTransaction(): bool
+    {
+        return $this->db->getDriver()->getConnection()->inTransaction(); //@phpstan-ignore method.notFound (inTransaction is part of the abstract class, not the interface -- thanks Laminas!)
+    }
+
+    /**
      * Execute query string
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return ResultSet|Result
      * @throws Throwable
      */
     public function execute(SqlInterface $sql): ResultSet|Result
@@ -809,14 +706,16 @@ class Db
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch (Throwable $e) {
-            $msg = 'Query error: ';
-            if (isset($query_string)) {
-                $msg .= $query_string;
+            if ($this->log_execute) {
+                $msg = 'Query error: ';
+                if (isset($query_string)) {
+                    $msg .= $query_string;
+                }
+                Analog::log(
+                    $msg . ' ' . $e->__toString(),
+                    Analog::ERROR
+                );
             }
-            Analog::log(
-                $msg . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             if ($this->isDuplicateException($sql, $e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);
             }
@@ -829,7 +728,6 @@ class Db
      *
      * @param string $name name of the variable we want to retrieve
      *
-     * @return mixed
      * @throws RuntimeException
      */
     public function __get(string $name): mixed
@@ -851,8 +749,6 @@ class Db
      * Required for twig to access properties via __get
      *
      * @param string $name name of the variable we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -860,6 +756,17 @@ class Db
             'db', 'sql', 'driver', 'connection', 'platform', 'query_string', 'type_db' => true,
             default => property_exists($this, $name),
         };
+    }
+
+    /**
+     * Get the name of the database we are connected to
+     *
+     * Read from the connection options rather than from NAME_DB, so it stays
+     * correct when the adapter has been built from an explicit DSN.
+     */
+    public function getDatabase(): string
+    {
+        return (string)$this->options['database'];
     }
 
     /**
@@ -921,8 +828,6 @@ class Db
      * @param string $table    Table name
      * @param string $pkcol    Primary key column name
      * @param int    $expected Expected sequence value
-     *
-     * @return void
      */
     public function handleSequence(string $table, string $pkcol, int $expected): void
     {
@@ -951,8 +856,6 @@ class Db
      * @param string $table    Table name
      * @param string $pkcol    Primary key column name
      * @param bool   $prefixed Whether to prefix the sequence name
-     *
-     * @return string
      */
     public function getSequenceName(string $table, string $pkcol, bool $prefixed = false): string
     {
@@ -969,8 +872,6 @@ class Db
      *
      * @param SqlInterface $sql       SQL object
      * @param Throwable    $exception Exception to check
-     *
-     * @return bool
      */
     public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
     {
@@ -986,15 +887,28 @@ class Db
      * Check if current exception is related to a remaining foreign key
      *
      * @param Throwable $exception Exception to check
-     *
-     * @return bool
      */
     public function isForeignKeyException(Throwable $exception): bool
     {
         return $exception instanceof \PDOException
             && (
                 (!$this->isPostgres() && in_array($exception->errorInfo[1], [1217, 1451]))
-                || ($this->isPostgres() && $exception->getCode() == 23503)
+                || ($this->isPostgres() && in_array($exception->getCode(), [23503, 23001]))
+            )
+        ;
+    }
+
+    /**
+     * Check if current exception is related to a missing table or view
+     *
+     * @param Throwable $exception Exception to check
+     */
+    public function isMissingTableException(Throwable $exception): bool
+    {
+        return $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->errorInfo[1] === 1146)
+                || ($this->isPostgres() && $exception->getCode() == '42P01')
             )
         ;
     }
@@ -1004,8 +918,6 @@ class Db
      *
      * @param string $table   Table name, without prefix
      * @param bool   $maymiss Whether the table can be missing, defaults to false
-     *
-     * @return void
      */
     public function drop(string $table, bool $maymiss = false): void
     {
@@ -1024,8 +936,6 @@ class Db
      * Log queries in specific file
      *
      * @param string $query Query to add in logs
-     *
-     * @return void
      */
     protected function log(string $query): void
     {
@@ -1039,15 +949,13 @@ class Db
      * Get last generated value
      *
      * @param object $entity Entity instance
-     *
-     * @return int
      */
     public function getLastGeneratedValue(object $entity): int
     {
         // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres()
-                ? $this->getSequenceName($entity::TABLE, $entity::PK, true)
+                ? $this->getSequenceName($entity::TABLE, $entity::PK, prefixed: true)
                 : null
         );
     }
@@ -1055,7 +963,7 @@ class Db
     /**
      * Get MySQL warnings
      *
-     * @return array<array<string, string>>
+     * @return array<ArrayObject<string, string|int>>
      */
     public function getWarnings(): array
     {
@@ -1071,8 +979,6 @@ class Db
 
     /**
      * Is current database engine supported?
-     *
-     * @return bool
      */
     public function isEngineSUpported(): bool
     {
@@ -1081,17 +987,15 @@ class Db
         if ($this->isPostgres()) {
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $min_version = str_contains((string)$version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string)$version);
         return version_compare($version, $min_version, '>=');
     }
 
     /**
      * Get not supported database version message
-     *
-     * @return string
      */
     public function getUnsupportedMessage(): string
     {
@@ -1101,11 +1005,11 @@ class Db
             $engine = 'PostgreSQL';
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $engine = str_contains((string) $version, '-MariaDB') ? 'MariaDB' : 'MySQL';
-            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $engine = str_contains((string)$version, '-MariaDB') ? 'MariaDB' : 'MySQL';
+            $min_version = str_contains((string)$version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string)$version);
 
         return sprintf(
             _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),
@@ -1113,5 +1017,45 @@ class Db
             $min_version,
             $version
         );
+    }
+
+    /**
+     * Check if a query will cause an implicit commit in MySQL
+     */
+    public function willMysqlImplicitCommit(string $query): bool
+    {
+        if ($this->isPostgres()) {
+            return false;
+        }
+
+        //note: "SET autocommit=1" also causes an implicit commit,
+        //but we won't check for that here - that would be a terrible idea to use it anyway
+        $implicit_commit_statements = [
+            'ALTER',
+            'CREATE',
+            'DROP',
+            'RENAME',
+            'TRUNCATE',
+            'ANALYZE',
+            'OPTIMIZE',
+            'REPAIR'
+        ];
+
+        foreach ($implicit_commit_statements as $implicit_commit_statement) {
+            if (preg_match('/^\s*' . preg_quote($implicit_commit_statement, '/') . '\b/i', trim($query)) === 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Set no commit mode (for tests)
+     */
+    public function setNoCommit(bool $no_commit = true): self
+    {
+        $this->no_commit = $no_commit;
+        return $this;
     }
 }

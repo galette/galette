@@ -1,52 +1,31 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
-use Laminas\Db\Adapter\Adapter;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Saved search tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class SavedSearch extends TestCase
+class SavedSearch extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\I18n $i18n;
-    private \Galette\Core\Login $login;
-
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n();
-
+        parent::setUp();
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
             ->onlyMethods(['isLogged', 'isSuperAdmin', '__get'])
@@ -57,36 +36,9 @@ class SavedSearch extends TestCase
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-        $this->deleteCreated();
-    }
-
-    /**
-     * Delete status
-     *
-     * @return void
-     */
-    private function deleteCreated(): void
-    {
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
-    /**
      * Test saved search
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSave(): void
     {
         global $i18n, $translator; // globals :(
@@ -118,9 +70,9 @@ class SavedSearch extends TestCase
         //store search
         $this->assertTrue($saved->check($post));
         $this->assertTrue($saved->store());
-        $this->assertCount(1, $searches->getList(true));
+        $this->assertCount(1, $searches->getList(as_search: true));
         //store again, got a duplicate
         $this->assertTrue($saved->store());
-        $this->assertCount(2, $searches->getList(true));
+        $this->assertCount(2, $searches->getList(as_search: true));
     }
 }

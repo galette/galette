@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
@@ -57,8 +43,8 @@
     {% endif %}
             <table class="ui striped definition table">
     {% for k, text in trans %}
-                <tr>
-                    <th class="collapsing"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></th>
+                <tr lang="{{ text.lang }}"{% if text.rtl %} class="rtl"{% endif %}>
+                    <th scope="row" class="collapsing"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></th>
                     <td>
                         <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
                     </td>
@@ -76,7 +62,6 @@
             <input type="hidden" name="trans" id="trans" value="true"/>
             <input type="hidden" name="redirect_uri" id="redirect_uri" value=""/>
     {% endif %}
-                {% include "components/forms/csrf.html.twig" %}
         </form>
 {% else %}
         <p>{{ _T("No fields to translate.") }}</p>

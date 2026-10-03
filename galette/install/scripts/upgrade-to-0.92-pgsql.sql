@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 --change account creation email
 UPDATE galette_texts SET tbody = 'Hello,\r\n\r\nYou''ve just been subscribed on the members management system of {ASSO_NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)' WHERE tref = 'sub' AND tlang = 'en_US';
 

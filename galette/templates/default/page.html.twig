@@ -1,32 +1,16 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
+<html lang="{{ i18n.getWebID() }}"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
     <head>
-        {% include 'elements/header.html.twig' with {
-            galette_lang: galette_lang
-        } %}
+        {% include 'elements/header.html.twig' %}
     </head>
-    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
+    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }}">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
@@ -88,6 +72,7 @@
                     </div>
 {% endif %}
                     <div class="main-content">
+                        {% include 'elements/noscript.html.twig' %}
                         {% include "elements/messages_inline.html.twig" %}
                         {% block content %}{{ _T('Page content') }}{% endblock %}
                     </div>
@@ -97,6 +82,7 @@
         {% include "elements/footer.html.twig" %}
         <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
             <i class="arrow up icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("Back to top") }}</span>
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}

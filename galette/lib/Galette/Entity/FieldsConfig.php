@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -45,18 +32,18 @@ class FieldsConfig
 {
     use Permissions;
 
-    public const TYPE_STR = 0;
-    public const TYPE_HIDDEN = 1;
-    public const TYPE_BOOL = 2;
-    public const TYPE_INT = 3;
-    public const TYPE_DEC = 4;
-    public const TYPE_DATE = 5;
-    public const TYPE_TXT = 6;
-    public const TYPE_PASS = 7;
-    public const TYPE_EMAIL = 8;
-    public const TYPE_URL = 9;
-    public const TYPE_RADIO = 10;
-    public const TYPE_SELECT = 11;
+    public const int TYPE_STR = 0;
+    public const int TYPE_HIDDEN = 1;
+    public const int TYPE_BOOL = 2;
+    public const int TYPE_INT = 3;
+    public const int TYPE_DEC = 4;
+    public const int TYPE_DATE = 5;
+    public const int TYPE_TXT = 6;
+    public const int TYPE_PASS = 7;
+    public const int TYPE_EMAIL = 8;
+    public const int TYPE_URL = 9;
+    public const int TYPE_RADIO = 10;
+    public const int TYPE_SELECT = 11;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -79,7 +66,7 @@ class FieldsConfig
         'bool_admin_adh'
     ];
 
-    public const TABLE = 'fields_config';
+    public const string TABLE = 'fields_config';
 
     /**
      * Fields that are not visible in the
@@ -144,8 +131,6 @@ class FieldsConfig
 
     /**
      * Load current fields configuration from database.
-     *
-     * @return bool
      */
     public function load(): bool
     {
@@ -201,7 +186,7 @@ class FieldsConfig
     protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
-        $f = [
+        return [
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
@@ -212,14 +197,11 @@ class FieldsConfig
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
         ];
-        return $f;
     }
 
     /**
      * Create field array configuration,
      * Several lists of fields are kept (visible, requireds, etc), build them.
-     *
-     * @return void
      */
     protected function buildLists(): void
     {
@@ -236,8 +218,6 @@ class FieldsConfig
      * Adds a field to lists
      *
      * @param array<string,mixed> $field Field values
-     *
-     * @return void
      */
     protected function addToLists(array $field): void
     {
@@ -258,8 +238,6 @@ class FieldsConfig
      * Is a field set as required?
      *
      * @param string $field Field name
-     *
-     * @return bool
      */
     public function isRequired(string $field): bool
     {
@@ -271,8 +249,6 @@ class FieldsConfig
      * (password for existing members for example)
      *
      * @param string $field Field name
-     *
-     * @return void
      */
     public function setNotRequired(string $field): void
     {
@@ -294,8 +270,6 @@ class FieldsConfig
      * Checks if all fields are present in the database.
      *
      * For now, this function only checks if count matches.
-     *
-     * @return void
      */
     private function checkUpdate(): void
     {
@@ -372,7 +346,6 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -461,9 +434,7 @@ class FieldsConfig
                         break;
                     }
                 }
-                if ($cat_label === null) {
-                    $cat_label = $c->category;
-                }
+                $cat_label ??= $c->category;
                 $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
@@ -523,9 +494,9 @@ class FieldsConfig
                             continue;
                         }
 
-                        if (preg_match('/date/', (string) $o->field_id)) {
+                        if (preg_match('/date/', (string)$o->field_id)) {
                             $o->type = self::TYPE_DATE;
-                        } elseif (preg_match('/bool/', (string) $o->field_id)) {
+                        } elseif (preg_match('/bool/', (string)$o->field_id)) {
                             $o->type = self::TYPE_BOOL;
                         } elseif (
                             $o->field_id == 'titre_adh'
@@ -598,7 +569,7 @@ class FieldsConfig
      */
     public function getAllowedFields(Login $login): array
     {
-        $form_elements = $this->getFormElements($login, false);
+        $form_elements = $this->getFormElements($login, new: false);
         $to_check = [];
         foreach ($form_elements['fieldsets'] as $fieldset) {
             $to_check = array_merge($to_check, array_keys($fieldset->elements));
@@ -630,9 +601,7 @@ class FieldsConfig
                         break;
                     }
                 }
-                if ($cat_label === null) {
-                    $cat_label = $c->category;
-                }
+                $cat_label ??= $c->category;
                 $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
@@ -714,8 +683,6 @@ class FieldsConfig
      * Get visibility for specified field
      *
      * @param string $field The requested field
-     *
-     * @return int
      */
     public function getVisibility(string $field): int
     {
@@ -736,8 +703,6 @@ class FieldsConfig
      * Set fields
      *
      * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
-     *
-     * @return bool
      */
     public function setFields(array $fields): bool
     {
@@ -747,15 +712,13 @@ class FieldsConfig
 
     /**
      * Store config in database
-     *
-     * @return bool
      */
     private function store(): bool
     {
         $class = static::class;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -811,12 +774,12 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return $this->load();
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
-                '[' . $class . '] An error occurred while storing fields '
+                '[' . $class . '] An error occurred while saving fields '
                 . 'configuration for table `' . $this->table . '`.'
                 . $e->getMessage(),
                 Analog::ERROR
@@ -829,8 +792,6 @@ class FieldsConfig
      * Migrate old required fields configuration
      * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
-     *
-     * @return bool
      */
     public function migrateRequired(): bool
     {
@@ -849,7 +810,7 @@ class FieldsConfig
             return true;
         }
 
-        $this->zdb->connection->beginTransaction();
+        $this->zdb->beginTransaction();
         try {
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -891,10 +852,10 @@ class FieldsConfig
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'An error occurred migrating old required fields. | '
                 . $e->getMessage(),
@@ -908,8 +869,6 @@ class FieldsConfig
      * Insert values in database
      *
      * @param array<int,mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(array $values): void
     {
@@ -959,8 +918,6 @@ class FieldsConfig
      * Does field should be displayed in self subscription page
      *
      * @param string $name Field name
-     *
-     * @return bool
      */
     public function isSelfExcluded(string $name): bool
     {
@@ -978,8 +935,6 @@ class FieldsConfig
      *
      * @param Login               $login  Login instance
      * @param array<string,mixed> $fields Fields list
-     *
-     * @return void
      */
     public function filterVisible(Login $login, array &$fields): void
     {
@@ -1035,7 +990,7 @@ class FieldsConfig
         foreach ($mass_fields as $mass_field) {
             $this->setNotRequired($mass_field);
         }
-        $form_elements = $this->getFormElements($login, false);
+        $form_elements = $this->getFormElements($login, new: false);
         unset($form_elements['hiddens']);
 
         foreach ($form_elements['fieldsets'] as &$form_element) {

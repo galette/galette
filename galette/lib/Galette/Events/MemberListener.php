@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -68,8 +55,6 @@ class MemberListener implements ListenerSubscriber
      * Set up member listeners
      *
      * @param ListenerRegistry $acceptor Listener
-     *
-     * @return void
      */
     public function subscribeListeners(ListenerRegistry $acceptor): void
     {
@@ -92,8 +77,6 @@ class MemberListener implements ListenerSubscriber
      * Member added listener
      *
      * @param Adherent $member Added member
-     *
-     * @return void
      */
     public function memberAdded(Adherent $member): void
     {
@@ -103,18 +86,16 @@ class MemberListener implements ListenerSubscriber
         );
 
         if ($member->sendEMail()) {
-            $this->sendMemberEmail($member, true);
+            $this->sendMemberEmail($member, new: true);
         }
 
-        $this->sendAdminEmail($member, true);
+        $this->sendAdminEmail($member, new: true);
     }
 
     /**
      * Member edited listener
      *
      * @param Adherent $member Added member
-     *
-     * @return void
      */
     public function memberEdited(Adherent $member): void
     {
@@ -124,10 +105,10 @@ class MemberListener implements ListenerSubscriber
         );
 
         if ($member->sendEMail()) {
-            $this->sendMemberEmail($member, false);
+            $this->sendMemberEmail($member, new: false);
         }
 
-        $this->sendAdminEmail($member, false);
+        $this->sendAdminEmail($member, new: false);
     }
 
     /**
@@ -135,8 +116,6 @@ class MemberListener implements ListenerSubscriber
      *
      * @param Adherent $member Member
      * @param bool     $new    New member or editing existing one
-     *
-     * @return void
      */
     private function sendMemberEmail(Adherent $member, bool $new): void
     {
@@ -229,8 +208,6 @@ class MemberListener implements ListenerSubscriber
      *
      * @param Adherent $member Member
      * @param bool     $new    New member or editing existing one
-     *
-     * @return void
      */
     private function sendAdminEmail(Adherent $member, bool $new): void
     {

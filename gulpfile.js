@@ -1,3 +1,9 @@
+/**
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 /*
  * Set the URL of your local instance of Galette here.
  * Then run "gulp serve".
@@ -56,6 +62,8 @@ var paths = {
     logo: './ui/images/galette.webp',
     halloween_logo: './ui/images/galette_halloween.webp',
     xmas_logo: './ui/images/galette_xmas.webp',
+    background:'./ui/images/bg.png',
+    background_rtl:'./ui/images/bg-rtl.png',
     photo:'./ui/images/default.png',
     emojis: './node_modules/twemoji-emojis/vendor/svg/*'
   },
@@ -74,6 +82,7 @@ var paths = {
   scripts: {
     main: [
       './node_modules/js-cookie/dist/js.cookie.js',
+      './ui/js/dropdown-a11y.js',
       './ui/js/common.js'
     ],
     masschanges: [
@@ -106,7 +115,8 @@ var paths = {
   extras: [
     {
       src: './node_modules/summernote/dist/font/*',
-      dest: 'webfonts/'
+      dest: 'webfonts/',
+      encoding: false
     }, {
       src: './node_modules/summernote/dist/lang/*.min.js',
       dest: 'js/lang/'
@@ -118,23 +128,23 @@ var paths = {
 };
 
 function galette() {
-  favicon = gulp.src(paths.src.favicon)
+  favicon = gulp.src(paths.src.favicon, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  logo =  gulp.src(paths.src.logo)
+  logo = gulp.src(paths.src.logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  halloween_logo =  gulp.src(paths.src.halloween_logo)
+  halloween_logo = gulp.src(paths.src.halloween_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  xmas_logo =  gulp.src(paths.src.xmas_logo)
+  xmas_logo = gulp.src(paths.src.xmas_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  photo =  gulp.src(paths.src.photo)
+  photo = gulp.src(paths.src.photo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
@@ -148,6 +158,14 @@ function theme() {
 
   theme =  gulp.src(paths.src.files)
     .pipe(gulp.dest(paths.semantic.theme))
+    .pipe(browserSync.stream());
+
+  background = gulp.src(paths.src.background, {encoding: false})
+    .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
+    .pipe(browserSync.stream());
+
+  background_rtl = gulp.src(paths.src.background_rtl, {encoding: false})
+    .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
     .pipe(browserSync.stream());
 
   emojis = gulp.src(paths.src.emojis)
@@ -242,7 +260,9 @@ function scripts() {
 
 function movefiles() {
   extras = paths.extras.map(function (extra) {
-    return gulp.src(extra.src)
+    const srcOptions = extra.encoding === false ? { encoding: false } : {};
+
+    return gulp.src(extra.src, srcOptions)
       .pipe(gulp.dest(paths.assets.public + extra.dest))
       .pipe(browserSync.stream());
     }

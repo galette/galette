@@ -1,53 +1,42 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends "page.html.twig" %}
 
 {% block content %}
+{% set impending_disabled = count_impending == 0 and count_impending_nomail == 0 %}
+{% set late_disabled = count_late == 0 and count_late_nomail == 0 %}
+{% set labels_disabled = count_impending_nomail == 0 and count_late_nomail == 0 %}
         <form id="send_reminders" action="{{ url_for("doReminders") }}" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui top attached accordion-styled header">
                 {{ _T("Choose wich reminder(s) you want to send:") }}
             </div>
             <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
-                    <div class="inline field{% if count_impending == 0 and count_impending_nomail == 0 %} disabled{% endif %}">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{{ constant("Galette\\Entity\\Reminder::IMPENDING") }}"{% if count_impending == 0 and count_impending_nomail == 0 %} disabled="disabled"{% endif %}/>
+                    <div class="inline field">
+                        <div class="ui toggle checkbox{% if impending_disabled %} disabled{% endif %}">
+                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{{ constant("Galette\\Entity\\Reminder::IMPENDING") }}"{% if impending_disabled %} disabled="disabled"{% endif %}/>
                             <label for="reminder_impending">{{ _T("Impending due date") }}</label>
                         </div>
                         <a class="show_previews" id="impending" href="#impending_preview">({{ _T("preview") }})</a> -
                         <a href="{{ url_for("reminders-filter", {"membership": "nearly", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_impending}) }}</a>
                         <a href="{{ url_for("reminders-filter", {"membership": "nearly", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_impending_nomail}) }}</a>
                     </div>
-                    <div class="inline field{% if count_late == 0 and count_late_nomail == 0 %} disabled{% endif %}">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{{ constant("Galette\\Entity\\Reminder::LATE") }}"{% if count_late == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>
+                    <div class="inline field">
+                        <div class="ui toggle checkbox{% if late_disabled %} disabled{% endif %}">
+                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{{ constant("Galette\\Entity\\Reminder::LATE") }}"{% if late_disabled %} disabled="disabled"{% endif %}/>
                             <label for="reminder_late">{{ _T("Late") }}</label>
                         </div>
-                        <a class="show_previews" id="late" href="#impending_preview">({{ _T("preview") }})</a> -
+                        <a class="show_previews" id="late" href="#late_preview">({{ _T("preview") }})</a> -
                         <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_late}) }}</a>
                         <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_late_nomail}) }}</a>
                     </div>
-                    <div class="inline field{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled{% endif %}">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>
+                    <div class="inline field">
+                        <div class="ui toggle checkbox{% if labels_disabled %} disabled{% endif %}">
+                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{% if labels_disabled %} disabled="disabled"{% endif %}/>
                             <label for="reminder_wo_mail">{{ _T("Generate labels for members without email address") }}</label>
                         </div>
                     </div>
@@ -58,7 +47,6 @@
                     <i class="rocket icon" aria-hidden="true"></i>
                     {{ _T("Send") }}
                 </button>
-                {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>
 {% for key, preview in previews %}

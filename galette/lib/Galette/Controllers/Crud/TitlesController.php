@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -41,11 +29,6 @@ class TitlesController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -55,15 +38,15 @@ class TitlesController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'storeTitle',
+        pattern: '/titles',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null);
+        return $this->store($request, $response, id: null);
     }
 
     // /CRUD - Create
@@ -72,13 +55,14 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'titles',
+        pattern: '/titles',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $titles = new Titles($this->zdb);
@@ -97,11 +81,6 @@ class TitlesController extends CrudController
 
     /**
      * Titles filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -115,16 +94,17 @@ class TitlesController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Title id
-     *
-     * @return Response
+     * @param int $id Title id
      */
+    #[Route(
+        name: 'editTitle',
+        pattern: '/titles/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $title = new Title($id);
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(
@@ -142,12 +122,13 @@ class TitlesController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Title id
-     *
-     * @return Response
+     * @param int $id Title id
      */
+    #[Route(
+        name: 'doEditTitle',
+        pattern: '/titles/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -156,11 +137,7 @@ class TitlesController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Title id
-     *
-     * @return Response
+     * @param ?int $id Title id
      */
     public function store(Request $request, Response $response, ?int $id = null): Response
     {
@@ -233,8 +210,6 @@ class TitlesController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -245,8 +220,6 @@ class TitlesController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -260,8 +233,6 @@ class TitlesController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -277,8 +248,6 @@ class TitlesController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

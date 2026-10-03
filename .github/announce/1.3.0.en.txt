@@ -1,0 +1,13 @@
+Galette 1.3.0 is out! 🎉
+
+🔐 Two-factor authentication (experimental) and throttling of failed logins
+📨 Mailings sent in batches, with hourly and daily quotas (experimental)
+⚙️ A new advanced configuration page
+🧩 Reworked plugins management
+♿ A big accessibility effort
+
+All plugins have been updated as well. PHP 8.3 minimum.
+
+https://galette.eu/site/post/2026/10/03/galette-1-3-0/
+
+#Galette #FreeSoftware #OpenSource #NonProfit

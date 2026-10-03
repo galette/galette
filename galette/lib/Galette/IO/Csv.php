@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Util\Filesize;
 
 use function Safe\filemtime;
 use function Safe\filesize;
@@ -37,15 +25,15 @@ use function Safe\glob;
 
 abstract class Csv
 {
-    public const NEWLINE = "\r\n";
-    public const BUFLINES = 100;
+    public const string NEWLINE = "\r\n";
+    public const int BUFLINES = 100;
 
-    public const DEFAULT_SEPARATOR = ';';
-    public const DEFAULT_QUOTE = '"';
-    public const DEFAULT_ESCAPE = '\\';
+    public const string DEFAULT_SEPARATOR = ';';
+    public const string DEFAULT_QUOTE = '"';
+    public const string DEFAULT_ESCAPE = '\\';
 
-    public const FILE_NOT_WRITABLE = -1;
-    public const DB_ERROR = -2;
+    public const int FILE_NOT_WRITABLE = -1;
+    public const int DB_ERROR = -2;
 
     protected string $separator;
     protected string $quote;
@@ -101,16 +89,7 @@ abstract class Csv
             }
             $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
-            $raw_size = filesize($file);
-            if ($raw_size >= 1024 * 1024 * 1024) { // Go
-                $size = round(($raw_size / 1024) / 1024 / 1024, 2) . ' Go';
-            } elseif ($raw_size >= 1024 * 1024) { // Mo
-                $size = round(($raw_size / 1024) / 1024, 2) . ' Mo';
-            } elseif ($raw_size >= 1024) { // ko
-                $size = round(($raw_size / 1024), 2) . ' Ko';
-            } else { // octets
-                $size = $raw_size . ' octets';
-            }
+            $size = Filesize::fromBytes(filesize($file));
 
             $csv_files[] = [
                 'name'  => str_replace($this->default_directory, '', $file),
@@ -125,8 +104,6 @@ abstract class Csv
      * Remove existing CSV file
      *
      * @param string $name File name
-     *
-     * @return bool
      */
     public function remove(string $name): bool
     {
@@ -171,8 +148,6 @@ abstract class Csv
      * Add an error
      *
      * @param string $msg Error message
-     *
-     * @return void
      */
     public function addError(string $msg): void
     {
@@ -196,8 +171,6 @@ abstract class Csv
 
     /**
      * Reset errors
-     *
-     * @return void
      */
     protected function resetErrors(): void
     {

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -54,33 +41,81 @@ class Install extends AbstractCommand
 
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
         $this
-            ->addoption('dbtype', null, InputOption::VALUE_REQUIRED, 'Database type (' . implode(', ', $this->db_types) . ')')
-            ->addOption('dbhost', null, InputOption::VALUE_REQUIRED, 'Database hostname or IP address')
-            ->addOption('dbport', null, InputOption::VALUE_REQUIRED, 'Database port')
-            ->addOption('dbname', null, InputOption::VALUE_REQUIRED, 'Database schema name')
-            ->addOption('dbprefix', null, InputOption::VALUE_OPTIONAL, 'Database table prefix')
-            ->addOption('dbuser', null, InputOption::VALUE_REQUIRED, 'Database user')
-            ->addOption('dbpass', null, InputOption::VALUE_OPTIONAL, 'Database password')
-            ->addOption('admin', null, InputOption::VALUE_REQUIRED, 'Administrator username')
-            ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Administrator password')
-            ->addOption('ignore-config', null, InputOption::VALUE_NONE, 'Ignore existing configuration file')
-            ->addOption('write-config', 'w', InputOption::VALUE_NONE, 'Write configuration file (incompatible with --ignore-config)')
+            ->addoption(
+                name: 'dbtype',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database type (' . implode(', ', $this->db_types) . ')'
+            )
+            ->addOption(
+                name: 'dbhost',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database hostname or IP address'
+            )
+            ->addOption(
+                name: 'dbport',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database port'
+            )
+            ->addOption(
+                name: 'dbname',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database schema name'
+            )
+            ->addOption(
+                name: 'dbprefix',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Database table prefix'
+            )
+            ->addOption(
+                name: 'dbuser',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Database user'
+            )
+            ->addOption(
+                name: 'dbpass',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Database password'
+            )
+            ->addOption(
+                name: 'admin',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Administrator username'
+            )
+            ->addOption(
+                name: 'password',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Administrator password'
+            )
+            ->addOption(
+                name: 'ignore-config',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Ignore existing configuration file'
+            )
+            ->addOption(
+                name: 'write-config',
+                shortcut: 'w',
+                mode: InputOption::VALUE_NONE,
+                description: 'Write configuration file (incompatible with --ignore-config)'
+            )
         ;
     }
 
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -149,6 +184,10 @@ class Install extends AbstractCommand
             }
         }
 
+        if ($db_prefix === '') {
+            throw new \RuntimeException('Database table prefix cannot be empty.');
+        }
+
         $db_host = $input->getOption('dbhost');
         if ($db_host === null) {
             if ($use_config && $install->getDbHost() !== null) {
@@ -189,9 +228,7 @@ class Install extends AbstractCommand
         }
 
         $db_pass = $input->getOption('dbpass');
-        if ($db_pass === null) {
-            $db_pass = $io->askHidden('Database password');
-        }
+        $db_pass ??= $io->askHidden('Database password');
 
         $displayed_db_pass = 'None';
         if ($db_pass !== null) {
@@ -199,9 +236,7 @@ class Install extends AbstractCommand
         }
 
         $galette_sa = $input->getOption('admin');
-        if ($galette_sa === null) {
-            $galette_sa = $io->ask('Superadmin name', 'admin');
-        }
+        $galette_sa ??= $io->ask('Superadmin name', 'admin');
 
         $galette_sa_pass = $input->getOption('password');
         if ($galette_sa_pass === null) {
@@ -244,7 +279,7 @@ class Install extends AbstractCommand
             && !$input->getOption('no-interaction')
         ) {
             $io->warning("Configuration file already exists and matches the provided database information.\nAll existing data will be lost if you continue.");
-            if (!$io->confirm('Do you want to continue?', false)) {
+            if (!$io->confirm('Do you want to continue?', default: false)) {
                 $io->writeln('Aborted.');
                 return Command::FAILURE;
             }
@@ -253,7 +288,13 @@ class Install extends AbstractCommand
         $install
             ->setMode(\Galette\Core\Install::INSTALL)
             ->setDbType($db_type, $errors)
-            ->setDsn($db_host, $db_port, $db_name, $db_user, $db_pass)
+            ->setDsn(
+                host: $db_host,
+                port: $db_port,
+                name: $db_name,
+                user: $db_user,
+                pass: $db_pass
+            )
             ->setTablesPrefix($db_prefix)
         ;
 
@@ -336,6 +377,14 @@ class Install extends AbstractCommand
         $io->info('Installing database, please wait...');
         $installed = $install->executeScripts($zdb);
         if (!$installed) {
+            $report = $install->getDbInstallReport();
+            $install_messages = [];
+            foreach ($report as $entry) {
+                if ($entry['res'] !== true) {
+                    $install_messages[] = '<error>❌ ' . $entry['debug'] . ' (' . $entry['message'] . ')' . '</error>';
+                }
+            }
+            $io->listing($install_messages);
             $io->error('Database has not been installed');
             return Command::FAILURE;
         }
@@ -356,7 +405,7 @@ class Install extends AbstractCommand
 
         $io->info('Initializing data, please wait...');
         if (!defined('GALETTE_INSTALLER')) {
-            define('GALETTE_INSTALLER', true);
+            define('GALETTE_INSTALLER', value: true);
         }
         $i18n = new \Galette\Core\I18n();
         $init_ok = $install->initObjects(
@@ -366,6 +415,12 @@ class Install extends AbstractCommand
         );
         if (!$init_ok) {
             $io->warning('Data initialization has failed :(');
+        }
+
+        //re-secure the web installer by removing the enable file if present
+        //(no-op if absent). CLI access already implies filesystem access.
+        if ($init_ok && !$install->disableInstaller()) {
+            $io->warning('Could not remove the installer enable file (' . $install->getEnableInstallFilePath() . ').');
         }
 
         $io->success('Galette installation is complete!');

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -25,6 +12,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Core\Db;
+use Galette\Entity\Attributes\Column;
 use Throwable;
 use Analog\Analog;
 
@@ -33,25 +21,29 @@ use Analog\Analog;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $short
- * @property ?string $long
- * @property-read string $tshort
- * @property-read string $tlong
+ * @property      int     $id
+ * @property      string  $short
+ * @property      ?string $long
+ * @property-read string  $tshort
+ * @property-read string  $tlong
  */
 
-class Title
+class Title extends AbstractEntity
 {
-    public const TABLE = 'titles';
-    public const PK = 'id_title';
+    public const string TABLE = 'titles';
+    public const string PK = 'id_title';
 
-    private int $id;
+    #[Column(self::PK)]
+    protected int $id;
+
+    #[Column('short_label')]
     private string $short;
+    #[Column('long_label')]
     private ?string $long = null;
 
-    public const MR = 1;
-    public const MRS = 2;
-    public const MISS = 3;
+    public const int MR = 1;
+    public const int MRS = 2;
+    public const int MISS = 3;
 
     /**
      * Main constructor
@@ -68,105 +60,35 @@ class Title
     }
 
     /**
-     * Load a title from its identifier
-     *
-     * @param int $id Identifier
-     *
-     * @return void
+     * Instructions to be processed before insert
      */
-    private function load(int $id): void
+    protected function preInsert(): bool
     {
-        global $zdb;
-        try {
-            $select = $zdb->select(self::TABLE);
-            $select->limit(1)->where([self::PK => $id]);
-
-            $results = $zdb->execute($select);
-            $res = $results->current();
-
-            $this->id = $id;
-            $this->short = $res->short_label;
-            $this->long = $res->long_label;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading title #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
+        $this->short = strip_tags($this->short);
+        $this->long = strip_tags((string)$this->long);
+        return true;
     }
 
     /**
-     * Load title from a db ResultSet
-     *
-     * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
+     * Instructions to be processed before delete
      */
-    private function loadFromRS(ArrayObject $rs): void
+    protected function preDelete(): bool
     {
-        $pk = self::PK;
-        $this->id = (int)$rs->$pk;
-        $this->short = $rs->short_label;
-        if ($rs->long_label === 'NULL') {
-            //mysql's null...
-            $this->long = null;
-        } else {
-            $this->long = $rs->long_label;
+        $id = $this->id;
+        if ($id === self::MR || $id === self::MRS) {
+            throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
         }
-    }
-
-    /**
-     * Store title in database
-     *
-     * @param Db $zdb Database instance
-     *
-     * @return bool
-     */
-    public function store(Db $zdb): bool
-    {
-        $data = [
-            'short_label'   => strip_tags($this->short),
-            'long_label'    => strip_tags((string) $this->long)
-        ];
-        try {
-            if (isset($this->id) && $this->id > 0) {
-                $update = $zdb->update(self::TABLE);
-                $update->set($data)->where([self::PK => $this->id]);
-                $zdb->execute($update);
-            } else {
-                $insert = $zdb->insert(self::TABLE);
-                $insert->values($data);
-                $add = $zdb->execute($insert);
-                if (!$add->count() > 0) {
-                    Analog::log('Not stored!', Analog::ERROR);
-                    return false;
-                }
-
-                $this->id = $zdb->getLastGeneratedValue($this);
-            }
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing title: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
-                Analog::ERROR
-            );
-            throw $e;
-        }
+        return true;
     }
 
     /**
      * Remove current title
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public function remove(Db $zdb): bool
     {
-        $id = (int)$this->id;
+        $id = $this->id;
         if ($id === self::MR || $id === self::MRS) {
             throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
         }
@@ -196,8 +118,6 @@ class Title
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -205,7 +125,7 @@ class Title
 
         switch ($name) {
             case 'id':
-                return $this->$name;
+                return $this->getId();
             case 'short':
             case 'long':
                 if (
@@ -247,8 +167,6 @@ class Title
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -263,15 +181,12 @@ class Title
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'short':
-            case 'long':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     Analog::log(
                         'Trying to set empty value for title' . $name,
                         Analog::WARNING
@@ -279,6 +194,9 @@ class Title
                 } else {
                     $this->$name = $value;
                 }
+                break;
+            case 'long':
+                $this->$name = $value;
                 break;
             default:
                 Analog::log(

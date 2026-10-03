@@ -1,29 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use Galette\GaletteTestCase;
+use Safe\DateTime;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Scheduled payment tests
@@ -35,40 +23,7 @@ class ScheduledPayment extends GaletteTestCase
     protected int $seed = 20240321210526;
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteScheduledPayments();
-    }
-
-    /**
-     * Delete scheduled payments
-     *
-     * @return void
-     */
-    private function deleteScheduledPayments(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $delete->where(['comment' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test add
-     *
-     * @return void
      */
     public function testAdd(): void
     {
@@ -80,7 +35,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertFalse($this->contrib->hasSchedule());
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
         $this->assertFalse($scheduledPayment->isContributionHandled($this->contrib->id));
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -93,7 +48,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertTrue($this->contrib->store());
 
         $check = $scheduledPayment->check($data);
-        if (count($scheduledPayment->getErrors())) {
+        if ($scheduledPayment->getErrors() !== []) {
             var_dump($scheduledPayment->getErrors());
         }
         $this->assertTrue($check);
@@ -107,15 +62,13 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($data['amount'], $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
     }
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -125,7 +78,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -150,7 +103,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($this->contrib->amount, $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
 
@@ -166,15 +119,13 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
         $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
         $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate());
-        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(false)->format('Y-m-d'));
+        $this->assertSame($data['scheduled_date'], $scheduledPayment->getScheduledDate(formatted: false)->format('Y-m-d'));
         $this->assertSame($data['amount'], $scheduledPayment->getAmount());
         $this->assertSame($data['comment'], $scheduledPayment->getComment());
     }
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testCheck(): void
     {
@@ -184,7 +135,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [];
         $check = $scheduledPayment->check($data);
@@ -295,8 +246,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test delete
-     *
-     * @return void
      */
     public function testDelete(): void
     {
@@ -306,7 +255,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -334,8 +283,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test restrictions on contributions with a scheduled payment
-     *
-     * @return void
      */
     public function testContributionRestriction(): void
     {
@@ -345,7 +292,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -382,8 +329,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test getNotFullyAllocated
-     *
-     * @return void
      */
     public function testGetNotFullyAllocated(): void
     {
@@ -394,7 +339,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $nonfulls = $scheduledPayment->getNotFullyAllocated();
         $this->assertCount(0, $nonfulls); //no contributiopn with SCHEDULED payment type
@@ -466,8 +411,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test getAllocation
-     *
-     * @return void
      */
     public function testGetAllocation(): void
     {
@@ -477,7 +420,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -511,8 +454,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test isFullyAllocated
-     *
-     * @return void
      */
     public function testIsFullyAllocated(): void
     {
@@ -522,7 +463,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -564,7 +505,7 @@ class ScheduledPayment extends GaletteTestCase
 
         $data['amount'] = 92 - 35;
         $check = $scheduledPayment->check($data);
-        if (count($scheduledPayment->getErrors())) {
+        if ($check !== true) {
             var_dump($scheduledPayment->getErrors());
         }
         $this->assertTrue($check);
@@ -578,8 +519,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test isDue
-     *
-     * @return void
      */
     public function testIsDue(): void
     {
@@ -589,7 +528,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,

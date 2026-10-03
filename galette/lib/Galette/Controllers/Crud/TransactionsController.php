@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -45,26 +33,28 @@ class TransactionsController extends ContributionsController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $type     Contribution type
-     *
-     * @return Response
+     * @param ?string $type Contribution type
      */
+    #[Route(
+        name: 'addTransaction',
+        pattern: '/transaction/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
      * Add action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $type     Contribution type
-     *
-     * @return Response
+     * @param ?string $type Contribution type
      */
+    #[Route(
+        name: 'doAddTransaction',
+        pattern: '/transaction/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);
@@ -81,7 +71,7 @@ class TransactionsController extends ContributionsController
                 );
         }
 
-        return $this->storeTransaction($request, $response, 'add', $trans);
+        return $this->storeTransaction(request: $request, response: $response, action: 'add', trans: $trans);
     }
 
     // /CRUD - Create
@@ -95,13 +85,14 @@ class TransactionsController extends ContributionsController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Transaction id
-     * @param ?string  $action   Action
-     *
-     * @return Response
+     * @param ?int    $id     Transaction id
+     * @param ?string $action Action
      */
+    #[Route(
+        name: 'editTransaction',
+        pattern: '/transaction/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
@@ -127,10 +118,10 @@ class TransactionsController extends ContributionsController
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [
-                        str_replace(
-                            '%id',
-                            (string)$id,
-                            _T("Unable to load transaction #%id!")
+                        sprintf(
+                            //TRANS: parameter is the transaction identifier
+                            _T('Unable to load transaction #%1$s!'),
+                            $id
                         )
                     ],
                     redirect_url: $this->routeparser->urlFor(
@@ -165,11 +156,21 @@ class TransactionsController extends ContributionsController
         }
 
         // template variable declaration
-        $title = _T("Transaction");
-        if ($action === 'edit') {
-            $title .= ' (' . _T("modification") . ')';
+        if ($trans->id) {
+            $member = new Adherent($this->zdb);
+            $member
+                ->disableAllDeps()
+                ->load($trans->member);
+
+            $title = sprintf(
+                "%s %s (%s, %s)",
+                _T("Transaction"),
+                $member->sname,
+                $trans->getDate('date'),
+                $trans->amount
+            );
         } else {
-            $title .= ' (' . _T("creation") . ')';
+            $title = _T("New transaction");
         }
 
         $params = [
@@ -197,7 +198,6 @@ class TransactionsController extends ContributionsController
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-        $params['autocomplete'] = true;
 
         if (count($members)) {
             $params['members']['list'] = $members;
@@ -215,13 +215,14 @@ class TransactionsController extends ContributionsController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param ?string  $type     Transaction type
-     *
-     * @return Response
+     * @param int     $id   Transaction id
+     * @param ?string $type Transaction type
      */
+    #[Route(
+        name: 'doEditTransaction',
+        pattern: '/transaction/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);
@@ -232,10 +233,10 @@ class TransactionsController extends ContributionsController
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load transaction #%id!")
+                    sprintf(
+                        //TRANS: parameter is the transaction identifier
+                        _T('Unable to load transaction #%1$s!'),
+                        $id
                     )
                 ],
                 redirect_url: $this->routeparser->urlFor(
@@ -257,19 +258,21 @@ class TransactionsController extends ContributionsController
                 );
         }
 
-        return $this->storeTransaction($request, $response, 'edit', $trans, $id);
+        return $this->storeTransaction(
+            request: $request,
+            response: $response,
+            action: 'edit',
+            trans: $trans,
+            id: $id
+        );
     }
 
     /**
      * Store contribution (new or existing)
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string      $action   Action ('edit' or 'add')
-     * @param Transaction $trans    Transaction instance
-     * @param ?int        $id       Contribution id
-     *
-     * @return Response
+     * @param string      $action Action ('edit' or 'add')
+     * @param Transaction $trans  Transaction instance
+     * @param ?int        $id     Contribution id
      */
     public function storeTransaction(Request $request, Response $response, string $action, Transaction $trans, ?int $id = null): Response
     {
@@ -310,7 +313,7 @@ class TransactionsController extends ContributionsController
             //something went wrong :'(
             return $this->redirectWithErrors(
                 $response,
-                [_T("An error occurred while storing the transaction.")],
+                [_T("An error occurred while saving the transaction.")],
                 $redirect_url
             );
         }
@@ -362,14 +365,15 @@ class TransactionsController extends ContributionsController
     /**
      * Attach action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param int      $cid      Contribution id
-     *
-     * @return Response
+     * @param int $id  Transaction id
+     * @param int $cid Contribution id
      */
-    public function attach(Request $request, Response $response, int $id, int $cid): Response
+    #[Route(
+        name: 'attach_contribution',
+        pattern: '/transaction/{id}/attach/{cid}',
+        methods: ['GET']
+    )]
+    public function attach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);
         $done = false;
@@ -405,16 +409,17 @@ class TransactionsController extends ContributionsController
     }
 
     /**
-     * Attach action
+     * Detach action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param int      $cid      Contribution id
-     *
-     * @return Response
+     * @param int $id  Transaction id
+     * @param int $cid Contribution id
      */
-    public function detach(Request $request, Response $response, int $id, int $cid): Response
+    #[Route(
+        name: 'detach_contribution',
+        pattern: '/transaction/{id}/detach/{cid}',
+        methods: ['GET']
+    )]
+    public function detach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);
         $done = false;

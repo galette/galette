@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Galette\Core\Db;
+use Galette\Core\I18n;
 use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
@@ -72,17 +60,27 @@ trait Replacements
     #[Inject]
     protected Preferences $preferences;
 
+    //Cannot be injected: Preferences hosts this trait, GaletteMail holds a
+    //Preferences, and MailingsController keeps a Mailing in session. Injecting
+    //the route parser would drag the whole Slim application into that session
+    //write and fail with "Serialization of
+    //'Psr\Http\Server\RequestHandlerInterface@anonymous' is not allowed".
+    //Hosts set it themselves through setRouteparser().
     protected RouteParser $routeparser;
+
+    #[Inject]
+    protected I18n $i18n;
+
+    private bool $legacy = false;
 
     /**
      * Get dynamic patterns
      *
      * @param string $form_name Dynamic form name
-     * @param bool   $legacy    Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
-    public function getDynamicPatterns(string $form_name, bool $legacy = true): array
+    public function getDynamicPatterns(string $form_name): array
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList($form_name);
@@ -98,7 +96,7 @@ trait Replacements
                 'LABEL',
                 ''
             ];
-            if (!($this instanceof Texts) && ($legacy === true || $dynamic_field instanceof Choice)) {
+            if (!($this instanceof Texts) && ($this->legacy === true || $dynamic_field instanceof Choice)) {
                 $capabilities[] = 'INPUT';
             }
             foreach ($capabilities as $capability) {
@@ -135,8 +133,6 @@ trait Replacements
      * Set patterns
      *
      * @param array<string,array<string,string>> $patterns Patterns to add
-     *
-     * @return self
      */
     protected function setPatterns(array $patterns): self
     {
@@ -157,8 +153,6 @@ trait Replacements
      * Set replacements
      *
      * @param array<string,?mixed> $replaces Replacements to add
-     *
-     * @return void
      */
     public function setReplacements(array $replaces): void
     {
@@ -175,6 +169,8 @@ trait Replacements
      */
     protected function getMainPatterns(): array
     {
+        $dynamic_patterns = $this->getDynamicPatterns('prefs');
+
         return [
             'asso_name'             => [
                 'title' => _T('Your organisation name'),
@@ -225,19 +221,17 @@ trait Replacements
                 'title'     => trim(trim(_T("Footer text:"), ':')),
                 'pattern'   => '/{ASSO_FOOTER}/'
             ]
-        ];
+        ] + $dynamic_patterns;
     }
 
     /**
      * Get patterns for a member
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string,array<string,string>>
      */
-    protected function getMemberPatterns(bool $legacy = true): array
+    protected function getMemberPatterns(): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('adh', $legacy);
+        $dynamic_patterns = $this->getDynamicPatterns('adh');
         $m_patterns = [
             'adh_title'         => [
                 'title'     => _('Title'),
@@ -345,7 +339,7 @@ trait Replacements
             ]
         ];
 
-        if ($legacy === true) {
+        if ($this->legacy === true) {
             $m_patterns += [
                 '_adh_company' => [
                     'title'     => _T("Company name"),
@@ -376,13 +370,11 @@ trait Replacements
     /**
      * Get patterns for a contribution
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string,array<string,string>>
      */
-    protected function getContributionPatterns(bool $legacy = true): array
+    protected function getContributionPatterns(): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('contrib', $legacy);
+        $dynamic_patterns = $this->getDynamicPatterns('contrib');
 
         $c_patterns = [
             'contrib_label'     => [
@@ -431,7 +423,7 @@ trait Replacements
             ]
         ];
 
-        if ($legacy === true) {
+        if ($this->legacy === true) {
             foreach ($c_patterns as $key => $pattern) {
                 $nkey = '_' . $key;
                 $pattern['pattern'] = str_replace(
@@ -461,8 +453,6 @@ trait Replacements
      * Set mail instance
      *
      * @param PHPMailer $mail PHPMailer instance
-     *
-     * @return self
      */
     public function setMail(PHPMailer $mail): self
     {
@@ -471,14 +461,25 @@ trait Replacements
     }
 
     /**
-     * Set main replacements
+     * Convert address line breaks to HTML ones
      *
-     * @return self
+     * Unlike nl2br(), original line breaks are dropped; kept ones would be
+     * rendered as an extra leading space by TCPDF.
+     *
+     * @param string $address Postal address
+     */
+    private static function addressToHtml(string $address): string
+    {
+        return preg_replace('/\R/', '<br/>', $address);
+    }
+
+    /**
+     * Set main replacements
      */
     public function setMain(): self
     {
         $address = $this->preferences->getPostalAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
+        $address_multi = self::addressToHtml($address);
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
@@ -530,18 +531,23 @@ trait Replacements
             ]
         );
 
+        /** the list of all dynamic fields */
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
+        $dynamic_fields = $fields->getList('prefs');
+        $this->setDynamicFields(
+            form_name: 'prefs',
+            dynamic_fields: $dynamic_fields,
+            object: $this->preferences
+        );
+
         return $this;
     }
 
     /**
      * Set contribution and proceed related replacements
-     *
-     * @return self
      */
     public function setNoContribution(): self
     {
-        global $login;
-
         $c_replacements = [
             'contrib_label'     => null,
             'contrib_amount'    => null,
@@ -568,9 +574,13 @@ trait Replacements
         $this->setReplacements($c_replacements);
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('contrib');
-        $this->setDynamicFields('contrib', $dynamic_fields, null);
+        $this->setDynamicFields(
+            form_name: 'contrib',
+            dynamic_fields: $dynamic_fields,
+            object: null
+        );
 
         return $this;
     }
@@ -579,14 +589,10 @@ trait Replacements
      * Set contribution and proceed related replacements
      *
      * @param Contribution $contrib Contribution
-     *
-     * @return self
      */
     public function setContribution(Contribution $contrib): self
     {
-        global $login, $i18n;
-
-        $formatter = new NumberFormatter($i18n->getID(), NumberFormatter::SPELLOUT);
+        $formatter = new NumberFormatter($this->i18n->getID(), NumberFormatter::SPELLOUT);
 
         $c_replacements = [
             'contrib_label'     => $contrib->type->libelle,
@@ -614,9 +620,13 @@ trait Replacements
         $this->setReplacements($c_replacements);
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('contrib');
-        $this->setDynamicFields('contrib', $dynamic_fields, $contrib);
+        $this->setDynamicFields(
+            form_name: 'contrib',
+            dynamic_fields: $dynamic_fields,
+            object: $contrib
+        );
 
         return $this;
     }
@@ -625,15 +635,11 @@ trait Replacements
      * Set member and proceed related replacements
      *
      * @param Adherent $member Member
-     *
-     * @return self
      */
     public function setMember(Adherent $member): self
     {
-        global $login;
-
         $address = $member->getAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
+        $address_multi = self::addressToHtml($address);
 
         if ($member->isMan()) {
             $gender = _T("Man");
@@ -695,9 +701,13 @@ trait Replacements
         );
 
         /** the list of all dynamic fields */
-        $fields = new DynamicFieldsSet($this->zdb, $login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList('adh');
-        $this->setDynamicFields('adh', $dynamic_fields, $member);
+        $this->setDynamicFields(
+            form_name: 'adh',
+            dynamic_fields: $dynamic_fields,
+            object: $member
+        );
 
         return $this;
     }
@@ -708,16 +718,14 @@ trait Replacements
      * @param string                  $form_name      Form name
      * @param array<string|int,mixed> $dynamic_fields Dynamic fields
      * @param ?object                 $object         Related object (Adherent, Contribution, ...)
-     *
-     * @return self
      */
-    public function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
+    private function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
     {
         $uform_name = strtoupper($form_name);
 
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
-            $pattern = trim((string) $dynamic_pattern['pattern'], '/');
+            $pattern = trim((string)$dynamic_pattern['pattern'], '/');
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
@@ -732,42 +740,44 @@ trait Replacements
                 $field_id    = (int)$match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
+                //an ordered list, so that two occurrences sharing a value both show up
                 $field_values = [];
                 if ($object !== null) {
                     $all_values = $object->getDynamicFields()->getValues($field_id);
                     foreach ($all_values as $field_value) {
-                        $field_values[$field_value['field_val']] = $field_value['text_val'] ?? $field_value['field_val'];
+                        $field_values[] = [
+                            'val_index' => (int)$field_value['val_index'],
+                            'field_val' => $field_value['field_val'],
+                            //a choice occurrence shows its label, not its index
+                            'display'   => $field_value['text_val'] ?? $field_value['field_val']
+                        ];
                     }
-                } else {
-                    $field_values = [];
                 }
 
                 switch ($field_type) {
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
-                        if ($capacity == 'INPUT') {
+                        if ($capacity === 'INPUT') {
+                            $selected = array_column($field_values, 'field_val');
                             foreach ($choice_values as $choice_idx => $choice_value) {
                                 $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
-                                if (isset($field_values[$choice_idx])) {
+                                if (in_array($choice_idx, $selected)) {
                                     $value .= ' checked="checked"';
                                 }
                                 $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
                             }
                         } else {
-                            foreach ($field_values as $field_value) {
-                                $value .= $field_value;
-                            }
+                            $value .= implode('', array_column($field_values, 'display'));
                         }
                         break;
                     case DynamicField::BOOLEAN:
                         foreach ($field_values as $field_value) {
-                            $value .= ($field_value ? _T("Yes") : _T("No"));
+                            $value .= ($field_value['field_val'] ? _T("Yes") : _T("No"));
                         }
                         break;
                     case DynamicField::FILE:
-                        $pos = 0;
                         foreach ($field_values as $field_value) {
-                            if (empty($field_value)) {
+                            if (empty($field_value['field_val'])) {
                                 continue;
                             }
                             $spattern = (
@@ -782,20 +792,21 @@ trait Replacements
                                     'getDynamicFile',
                                     [
                                         'form_name' => $form_name,
-                                        'id' => (string)$object->id,
+                                        'id' => (string)$object->getID(),
                                         'fid' => (string)$field_id,
-                                        'pos' => (string)++$pos,
-                                        'name' => (string)$field_value
+                                        //the file on disk is named after the value index
+                                        'pos' => (string)$field_value['val_index'],
+                                        'name' => (string)$field_value['field_val']
                                     ]
                                 ),
-                                $field_value
+                                $field_value['field_val']
                             );
                         }
                         break;
                     case DynamicField::TEXT:
                     case DynamicField::LINE:
                     case DynamicField::DATE:
-                        $value .= implode('<br/>', $field_values);
+                        $value .= implode('<br/>', array_column($field_values, 'display'));
                         break;
                 }
             }
@@ -823,7 +834,7 @@ trait Replacements
 
         $legend['member'] = [
             'title'     => _T('Member information'),
-            'patterns'  => $this->getMemberPatterns(false)
+            'patterns'  => $this->getMemberPatterns()
         ];
 
         return $legend;
@@ -843,8 +854,6 @@ trait Replacements
      * Set Db dependency
      *
      * @param Db $db Db instance
-     *
-     * @return self
      */
     public function setDb(Db $db): self
     {
@@ -856,8 +865,6 @@ trait Replacements
      * Set Login dependency
      *
      * @param Login $login Login instance
-     *
-     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -869,8 +876,6 @@ trait Replacements
      * Set Preferences dependency
      *
      * @param Preferences $preferences Preferences instance
-     *
-     * @return self
      */
     public function setPreferences(Preferences $preferences): self
     {
@@ -882,8 +887,6 @@ trait Replacements
      * Set RouteParser dependency
      *
      * @param RouteParser $routeparser RouteParser instance
-     *
-     * @return self
      */
     public function setRouteparser(RouteParser $routeparser): self
     {
@@ -892,11 +895,20 @@ trait Replacements
     }
 
     /**
+     * Set I18n dependency
+     *
+     * @param I18n $i18n I18n instance
+     */
+    public function setI18n(I18n $i18n): self
+    {
+        $this->i18n = $i18n;
+        return $this;
+    }
+
+    /**
      * Proceed replacement on given entry
      *
      * @param string $source Source string
-     *
-     * @return string
      */
     protected function proceedReplacements(string $source): string
     {
@@ -920,7 +932,7 @@ trait Replacements
         $replaced = preg_replace(
             $this->patterns,
             $this->replaces,
-            (string) $replaced
+            (string)$replaced
         );
 
         //handle translations with replacements
@@ -932,10 +944,10 @@ trait Replacements
         $replaced = preg_replace_callback(
             '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
             $repl_callback,
-            (string) $replaced
+            (string)$replaced
         );
 
-        return trim((string) $replaced);
+        return trim((string)$replaced);
     }
 
     /**
@@ -946,5 +958,14 @@ trait Replacements
     public function getPatterns(): array
     {
         return $this->patterns;
+    }
+
+    /**
+     * Set legacy mode
+     */
+    protected function setLegacy(): self
+    {
+        $this->legacy = true;
+        return $this;
     }
 }

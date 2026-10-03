@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -39,8 +26,8 @@ use Throwable;
 
 class Reminders
 {
-    public const TABLE = 'reminders';
-    public const PK = 'reminder_id';
+    public const string TABLE = 'reminders';
+    public const string PK = 'reminder_id';
 
     private Db $zdb;
 
@@ -68,8 +55,6 @@ class Reminders
      * Load late members
      *
      * @param bool $nomail Get reminders for members who do not have email address
-     *
-     * @return void
      */
     private function loadLate(bool $nomail = false): void
     {
@@ -80,7 +65,7 @@ class Reminders
         $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
 
         $members = new Members($filters);
-        $members_list = $members->getList(true);
+        $members_list = $members->getList(as_members: true);
 
         if (!count($members_list)) {
             return;
@@ -109,9 +94,7 @@ class Reminders
                 //a reminder of this type already exists in period
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-                if ($now >= $second && $second > $last_reminder) {
-                    $toremind = true;
-                } elseif ($now > $first && $first > $last_reminder) {
+                if ($now >= $second && $second > $last_reminder || $now > $first && $first > $last_reminder) {
                     $toremind = true;
                 }
             } elseif ($now >= $first) {
@@ -129,8 +112,6 @@ class Reminders
      * Load late members
      *
      * @param bool $nomail Get reminders for members who do not have email address
-     *
-     * @return void
      */
     private function loadImpendings(bool $nomail = false): void
     {
@@ -141,7 +122,7 @@ class Reminders
         $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
 
         $members = new Members($filters);
-        $members_list = $members->getList(true);
+        $members_list = $members->getList(as_members: true);
 
         if (!count($members_list)) {
             return;
@@ -171,11 +152,8 @@ class Reminders
                 $toremind = false;
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-                if ($now >= $second && $second > $last_reminder) {
-                    //current date is after second reminder
-                    $toremind = true;
-                } elseif ($now >= $first && $first > $last_reminder) {
-                    //current date is after first reminder
+                if ($now >= $second && $second > $last_reminder || $now >= $first && $first > $last_reminder) {
+                    //current date is after first or second reminder
                     $toremind = true;
                 }
             } elseif ($now >= $first) {
@@ -192,7 +170,6 @@ class Reminders
     /**
      * Get limit date calculated from preferences
      *
-     * @return DateTime
      * @throws Throwable
      */
     private function getLimitDate(): DateTime
@@ -203,7 +180,7 @@ class Reminders
         $limit_now->setTime(23, 59, 59);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
             $limit_date = new DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
             while ($limit_now <= $limit_date) {
                 $limit_date->sub(new DateInterval('P1Y'));

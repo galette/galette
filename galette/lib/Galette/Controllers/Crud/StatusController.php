@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -34,7 +22,7 @@ use Galette\Repository\Members;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $label
  * @property string $libelle
  * @property string $priority
@@ -46,12 +34,12 @@ class StatusController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'addStatus',
+        pattern: '/status/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -60,15 +48,15 @@ class StatusController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doAddStatus',
+        pattern: '/status/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null, 'add');
+        return $this->store(request: $request, response: $response, id: null, action: 'add');
     }
 
     // /CRUD - Create
@@ -77,13 +65,14 @@ class StatusController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'status',
+        pattern: '/status',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -118,11 +107,6 @@ class StatusController extends CrudController
 
     /**
      * Mailings filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -136,12 +120,13 @@ class StatusController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Status id
-     *
-     * @return Response
+     * @param int $id Status id
      */
+    #[Route(
+        name: 'editStatus',
+        pattern: '/status/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $status = new Status($this->zdb);
@@ -152,7 +137,7 @@ class StatusController extends CrudController
         $entry = $status->get($id);
         $params['entry'] = $entry;
 
-        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(
@@ -166,12 +151,13 @@ class StatusController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Status id
-     *
-     * @return Response
+     * @param int $id Status id
      */
+    #[Route(
+        name: 'doEditStatus',
+        pattern: '/status/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -180,12 +166,8 @@ class StatusController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Status id
-     * @param string   $action   Action
-     *
-     * @return Response
+     * @param ?int   $id     Status id
+     * @param string $action Action
      */
     public function store(
         Request $request,
@@ -207,7 +189,7 @@ class StatusController extends CrudController
         $msg = null;
         $status = new Status($this->zdb);
 
-        $label = trim((string) $post['libelle_statut']);
+        $label = trim((string)$post['libelle_statut']);
         $field = (int)trim($post['priorite_statut'] ?? 0);
 
         if ($label != '') {
@@ -220,21 +202,27 @@ class StatusController extends CrudController
 
         if ($ret !== true) {
             $error_detected[] = $action === 'add'
-                ? _T("Status has not been added :(") : _T("Status #%id has not been updated");
+                ? _T("Status has not been added :(")
+                : sprintf(
+                    //TRANS: parameter is the status identifier
+                    _T('Status #%1$s has not been updated'),
+                    $id
+                );
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editStatus', ['id' => (string)$id]);
             }
         } else {
             $msg = $action === 'add'
-                ? _T("Status has been successfully added!") : _T("Status #%id has been successfully updated!");
+                ? _T("Status has been successfully added!")
+                : sprintf(
+                    //TRANS: parameter is the status identifier
+                    _T('Status #%1$s has been successfully updated!'),
+                    $id
+                );
         }
 
         if (count($error_detected) === 0) {
-            $success_detected[] = str_replace(
-                ['%id'],
-                [(string)$id],
-                $msg
-            );
+            $success_detected[] = $msg;
         }
 
         return $this->redirect(
@@ -253,8 +241,6 @@ class StatusController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -265,8 +251,6 @@ class StatusController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -282,18 +266,16 @@ class StatusController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
         $class = new Status($this->zdb);
         $label = $class->getLabel((int)$args['id']);
 
-        return str_replace(
-            ['%label'],
-            [$label],
-            _T("Remove status '%label'")
+        return sprintf(
+            //TRANS: parameter is the status label
+            _T('Remove status \'%1$s\''),
+            $label
         );
     }
 
@@ -302,8 +284,6 @@ class StatusController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

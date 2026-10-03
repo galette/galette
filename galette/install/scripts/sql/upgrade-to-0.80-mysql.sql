@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- Change IP size to handle ipv6 address
 ALTER TABLE galette_logs CHANGE ip_log ip_log varchar(46) NOT NULL DEFAULT '';
 -- Change labels and translations sizes

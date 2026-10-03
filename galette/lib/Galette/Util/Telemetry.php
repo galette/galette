@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -49,7 +36,7 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2025 The Galette Team
+ * @copyright 2017-2026 The Galette Team
  */
 class Telemetry
 {
@@ -74,7 +61,7 @@ class Telemetry
      */
     public function getTelemetryInfos(): array
     {
-        $data = [
+        return [
             'galette'  => $this->grabGaletteInfos(),
             'system'   => [
                 'db'           => $this->grabDbInfos(),
@@ -83,7 +70,6 @@ class Telemetry
                 'os'           => $this->grabOsInfos()
             ]
         ];
-        return $data;
     }
 
     /**
@@ -119,12 +105,11 @@ class Telemetry
     /**
      * Grab DB part information
      *
-     * @return array<string, string>
+     * @return array<string, ?string>
      */
     public function grabDbInfos(): array
     {
-        $dbinfos = $this->zdb->getInfos();
-        return $dbinfos;
+        return $this->zdb->getInfos();
     }
 
     /**
@@ -147,12 +132,12 @@ class Telemetry
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->prefs->getURL());
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, value: true);
+        curl_setopt($ch, CURLOPT_HEADER, value: true);
 
         // disable SSL certificate validation (wildcard, self-signed)
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, value: false);
 
         if ($response = curl_exec($ch)) {
             $headers = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
@@ -173,7 +158,7 @@ class Telemetry
      */
     public function grabPhpInfos(): array
     {
-        $php = [
+        return [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
             'modules'   => get_loaded_extensions(),
             'setup'     => [
@@ -185,8 +170,6 @@ class Telemetry
                 'max_input_vars'        => ini_get('max_input_vars'),
             ]
         ];
-
-        return $php;
     }
 
     /**
@@ -204,21 +187,17 @@ class Telemetry
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
         }
 
-        $os = [
+        return [
             'family'       => php_uname('s'),
             'distribution' => ($distro ?: ''),
             'version'      => php_uname('r')
         ];
-
-        return $os;
     }
 
     /**
      * Count
      *
      * @param string $table Table to query
-     *
-     * @return int
      */
     public function getCount(string $table): int
     {
@@ -237,8 +216,6 @@ class Telemetry
      * Calculate average parts
      *
      * @param string $table Table to query
-     *
-     * @return string
      */
     private function getAverage(string $table): string
     {
@@ -260,8 +237,6 @@ class Telemetry
 
     /**
      * Send telemetry information
-     *
-     * @return void
      */
     public function send(): void
     {
@@ -279,7 +254,7 @@ class Telemetry
         ];
 
         curl_setopt_array($ch, $opts);
-        $content = json_decode(curl_exec($ch), null, 512, JSON_THROW_ON_ERROR);
+        $content = json_decode(json: curl_exec($ch), associative: null, depth: 512, flags: JSON_THROW_ON_ERROR);
         $errstr = curl_error($ch);
 
         if ($content && property_exists($content, 'message')) {
@@ -309,23 +284,19 @@ class Telemetry
      * Get UUID
      *
      * @param string $type UUID type (either instance or registration)
-     *
-     * @return string
      */
     private function getUuid(string $type): string
     {
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
         if (empty($uuid)) {
-            $uuid = $this->prefs->generateUuid($type);
+            $uuid = $this->prefs->generateUUID($type);
         }
         return $uuid;
     }
 
     /**
      * Get instance UUID
-     *
-     * @return string
      */
     private function getInstanceUuid(): string
     {
@@ -334,8 +305,6 @@ class Telemetry
 
     /**
      * Get registration UUID
-     *
-     * @return string
      */
     final public function getRegistrationUuid(): string
     {
@@ -344,8 +313,6 @@ class Telemetry
 
     /**
      * Get date telemetry has been sent
-     *
-     * @return string
      */
     public function getSentDate(): string
     {
@@ -354,8 +321,6 @@ class Telemetry
 
     /**
      * Get date of registration
-     *
-     * @return string
      */
     public function getRegistrationDate(): string
     {
@@ -364,8 +329,6 @@ class Telemetry
 
     /**
      * Does telemetry infos has been sent already?
-     *
-     * @return bool
      */
     public function isSent(): bool
     {
@@ -374,8 +337,6 @@ class Telemetry
 
     /**
      * Is instance registered?
-     *
-     * @return bool
      */
     public function isRegistered(): bool
     {
@@ -385,7 +346,6 @@ class Telemetry
     /**
      * Should telemetry information sent again?
      *
-     * @return bool
      * @throws Exception
      */
     public function shouldRenew(): bool

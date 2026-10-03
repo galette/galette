@@ -1,36 +1,25 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', '../');
+    define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 }
 
-define('GALETTE_ROOT', __DIR__ . '/../');
+if (!defined('GALETTE_ROOT')) {
+    define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
+}
 
 // check PHP version
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) { //@phpstan-ignore if.alwaysFalse
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
     die(1);
 }
@@ -38,8 +27,8 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 
-$cm = new Galette\Core\CheckModules(false);
-$cm->doCheck(false); //do not load with translations!
+$cm = new Galette\Core\CheckModules(do: false);
+$cm->doCheck(translated: false); //do not load with translations!
 
 if (!$cm->isValid()) {
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');

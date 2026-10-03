@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -38,8 +25,8 @@ use Safe\DateTimeImmutable;
 
 class PdfAttendanceSheet extends Pdf
 {
-    public const SHEET_FONT = self::FONT_SIZE - 2;
-    public const ATT_SHEET_MODEL = 100;
+    public const int SHEET_FONT = self::FONT_SIZE - 2;
+    public const int ATT_SHEET_MODEL = 100;
 
     public ?string $doc_title = null;
     public ?string $sheet_title = null;
@@ -49,8 +36,6 @@ class PdfAttendanceSheet extends Pdf
 
     /**
      * Page header
-     *
-     * @return void
      */
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -62,14 +47,24 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_title !== null) {
                 $head_title .= ' - ' . $this->sheet_title;
             }
-            /* Removed to prevent long lines */
-            /*if ($this->sheet_sub_title !== null) {
-                $head_title .= ' - ' . $this->sheet_sub_title;
-            }*/
+            // No "sheet_sub_title" to prevent long lines
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }
-            $this->Cell(0, 10, $head_title, 0, 0, 'C', false, '', 0, false, 'M', 'M');
+            $this->Cell(
+                w: 0,
+                h: 10,
+                txt: $head_title,
+                border: 0,
+                ln: 0,
+                align: 'C',
+                fill: false,
+                link: '',
+                stretch: 0,
+                ignore_min_height: false,
+                calign: 'M',
+                valign: 'M'
+            );
         }
     }
 
@@ -90,15 +85,15 @@ class PdfAttendanceSheet extends Pdf
         $this->doc_title = $data['doc_title'];
         $this->SetTitle($data['doc_title']);
 
-        if (isset($data['title']) && trim((string) $data['title']) != '') {
+        if (isset($data['title']) && trim((string)$data['title']) != '') {
             $this->sheet_title = $data['title'];
             $model->title = $this->sheet_title;
         }
-        if (isset($data['subtitle']) && trim((string) $data['subtitle']) != '') {
+        if (isset($data['subtitle']) && trim((string)$data['subtitle']) != '') {
             $this->sheet_sub_title = $data['subtitle'];
             $model->subtitle = $this->sheet_sub_title;
         }
-        if (isset($data['sheet_date']) && trim((string) $data['sheet_date']) != '') {
+        if (isset($data['sheet_date']) && trim((string)$data['sheet_date']) != '') {
             $dformat = __("Y-m-d");
             $date = DateTime::createFromFormat(
                 $dformat,
@@ -109,13 +104,11 @@ class PdfAttendanceSheet extends Pdf
 
         parent::__construct($prefs, $model);
         // Enable Auto Page breaks
-        $this->SetAutoPageBreak(true, $this->footer_height + $this->getMargins()['bottom']);
+        $this->SetAutoPageBreak(auto: true, margin: $this->footer_height + $this->getMargins()['bottom']);
     }
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -140,8 +133,6 @@ class PdfAttendanceSheet extends Pdf
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawSheet(array $members): void
     {
@@ -150,31 +141,38 @@ class PdfAttendanceSheet extends Pdf
         if ($this->sheet_date) {
             $format = __("MMMM, EEEE d y");
             $formatter = new \IntlDateFormatter(
-                $this->i18n->getLongID(),
-                \IntlDateFormatter::FULL,
-                \IntlDateFormatter::NONE,
-                \date_default_timezone_get(),
-                \IntlDateFormatter::GREGORIAN,
-                $format
+                locale: $this->i18n->getLongID(),
+                dateType: \IntlDateFormatter::FULL,
+                timeType: \IntlDateFormatter::NONE,
+                timezone: \date_default_timezone_get(),
+                calendar: \IntlDateFormatter::GREGORIAN,
+                pattern: $format
             );
             $datetime = new DateTimeImmutable($this->sheet_date->format('Y-m-d'));
             $date = DateTime::createFromImmutable($datetime);
             $date_fmt = mb_convert_case($formatter->format($date), MB_CASE_TITLE);
-            $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
+            $this->Cell(w: 190, h: 7, txt: $date_fmt, border: 0, ln: 1, align: 'C');
         }
 
         // Header
         $this->SetFont('', 'B');
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(110, 7, _T("Name"), 1, 0, 'C', true);
-        $this->Cell(80, 7, _T("Signature"), 1, 1, 'C', true);
+        $this->Cell(w: 110, h: 7, txt: _T("Name"), border: 1, ln: 0, align: 'C', fill: true);
+        $this->Cell(w: 80, h: 7, txt: _T("Signature"), border: 1, ln: 1, align: 'C', fill: true);
 
         // Data
         $this->SetFont('');
         $mcount = 0;
         foreach ($members as $m) {
             $mcount++;
-            $this->Cell(10, 16, (string)$mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
+            $this->Cell(
+                w: 10,
+                h: 16,
+                txt: (string)$mcount,
+                border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB',
+                ln: 0,
+                align: 'R'
+            );
 
             if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();
@@ -195,24 +193,29 @@ class PdfAttendanceSheet extends Pdf
                 if ($this->i18n->isRTL()) {
                     $ximg = $this->getPageWidth() - $x - $wlogo;
                 }
-                $this->Cell($wlogo + 2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
-                $this->Image($p, $ximg, $y, $wlogo, $hlogo);
+                $this->Cell(w: $wlogo + 2, h: 16, txt: '', border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', ln: 0);
+                $this->Image(file: $p, x: $ximg, y: $y, w: $wlogo, h: $hlogo);
             } else {
                 $x = $this->getX() + 1;
-                $this->Cell(1, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
+                $this->Cell(w: 1, h: 16, txt: '', border: ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', ln: 0);
             }
 
             $xs = $this->getX() - $x + 1;
-            $this->Cell(100 - $xs, 16, $m->sname, ($this->i18n->isRTL() ? 'L' : 'R') . 'TB', 0, ($this->i18n->isRTL() ? 'R' : 'L'));
-            $this->Cell(80, 16, '', 1, 1, ($this->i18n->isRTL() ? 'R' : 'L'));
+            $this->Cell(
+                w: 100 - $xs,
+                h: 16,
+                txt: $m->sname,
+                border: ($this->i18n->isRTL() ? 'L' : 'R') . 'TB',
+                ln: 0,
+                align: $this->i18n->isRTL() ? 'R' : 'L'
+            );
+            $this->Cell(w: 80, h: 16, txt: '', border: 1, ln: 1, align: $this->i18n->isRTL() ? 'R' : 'L');
         }
-        $this->Cell(190, 0, '', 'T');
+        $this->Cell(w: 190, h: 0, txt: '', border: 'T');
     }
 
     /**
      * Add images to file
-     *
-     * @return self
      */
     public function withImages(): self
     {

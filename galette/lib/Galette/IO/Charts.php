@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -42,12 +29,12 @@ use function Safe\json_encode;
  */
 class Charts
 {
-    public const DEFAULT_CHART = 'MembersStatusPie';
-    public const MEMBERS_STATUS_PIE = 'MembersStatusPie';
-    public const MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
-    public const CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
-    public const COMPANIES_OR_NOT = 'CompaniesOrNot';
-    public const CONTRIBS_ALLTIME = 'ContribsAllTime';
+    public const string DEFAULT_CHART = 'MembersStatusPie';
+    public const string MEMBERS_STATUS_PIE = 'MembersStatusPie';
+    public const string MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
+    public const string CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
+    public const string COMPANIES_OR_NOT = 'CompaniesOrNot';
+    public const string CONTRIBS_ALLTIME = 'ContribsAllTime';
 
     /** @var array<string>  */
     private readonly array $types;
@@ -61,17 +48,13 @@ class Charts
      */
     public function __construct(?array $types = null)
     {
-        if ($types === null) {
-            $types = [self::DEFAULT_CHART];
-        }
+        $types ??= [self::DEFAULT_CHART];
         $this->types = $types;
         $this->load();
     }
 
     /**
      * Loads charts data
-     *
-     * @return void
      */
     private function load(): void
     {
@@ -93,8 +76,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on members status
-     *
-     * @return void
      */
     private function getChartMembersStatusPie(): void
     {
@@ -138,8 +119,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on members state of dues
-     *
-     * @return void
      */
     private function getChartMembersStateDuePie(): void
     {
@@ -238,8 +217,6 @@ class Charts
 
     /**
      * Loads data to produce a pie chart based on company/not company members
-     *
-     * @return void
      */
     private function getChartCompaniesOrNot(): void
     {
@@ -297,8 +274,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on contributions types
-     *
-     * @return void
      */
     private function getChartContribsTypesPie(): void
     {
@@ -333,8 +308,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on contributions types
-     *
-     * @return void
      */
     private function getChartContribsAllTime(): void
     {

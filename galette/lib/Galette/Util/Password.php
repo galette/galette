@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Galette\Core\Preferences;
+use Galette\Enums\PasswordStrength;
 use Galette\Entity\Adherent;
 
 use function Safe\file_get_contents;
@@ -72,8 +60,6 @@ class Password
      * Does password suits requirements?
      *
      * @param string $password Password to test
-     *
-     * @return bool
      */
     public function isValid(string $password): bool
     {
@@ -99,8 +85,10 @@ class Password
             $this->errors = array_merge($this->errors, $this->strength_errors);
         }
 
-        //check also against personal information
-        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE && in_array(mb_strtolower($password), $this->personal_infos)) {
+        //check also against personal information. Only an explicit None turns
+        //it off: a stored value the enum cannot read must not disable a check
+        $strength = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength);
+        if ($strength !== PasswordStrength::None && in_array(mb_strtolower($password), $this->personal_infos)) {
             $this->errors[] = _T('Do not use any of your personal information as password!');
         }
 
@@ -111,8 +99,6 @@ class Password
      * Is password blacklisted?
      *
      * @param string $password Password to check
-     *
-     * @return bool
      */
     public function isBlacklisted(string $password): bool
     {
@@ -130,8 +116,6 @@ class Password
      * Calculate password strength
      *
      * @param string $password Password to check
-     *
-     * @return int
      */
     public function calculateStrength(string $password): int
     {
@@ -168,8 +152,6 @@ class Password
 
     /**
      * Get current strength
-     *
-     * @return int
      */
     public function getStrenght(): int
     {
@@ -220,9 +202,9 @@ class Password
     /**
      * Add personal information to check against
      *
-     * @param array<int, string> $infos Personal information
+     * @param array<int, ?string> $infos Personal information
      *
-     * @return array<int, string>
+     * @return array<int, ?string>
      */
     public function addPersonalInformation(array $infos): array
     {
@@ -245,8 +227,6 @@ class Password
      * Set member and calculate personal information to blacklist
      *
      * @param Adherent $adh Adherent instance
-     *
-     * @return self
      */
     public function setAdherent(Adherent $adh): self
     {
@@ -289,7 +269,7 @@ class Password
             if (count($parts) > 1) {
                 $letters = '';
                 foreach ($parts as $part) {
-                    $letters .= mb_substr((string) $part, 0, 1);
+                    $letters .= mb_substr((string)$part, 0, 1);
                 }
                 $infos[] = $letters . $adh->name;
                 $infos[] = $adh->name . $letters;

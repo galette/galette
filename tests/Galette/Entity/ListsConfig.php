@@ -1,41 +1,27 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * ListsConfig tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class ListsConfig extends TestCase
+class ListsConfig extends GaletteTestCase
 {
     private ?\Galette\Entity\ListsConfig $lists_config = null;
-    private \Galette\Core\Db $zdb;
-    private array $members_fields;
-    private array $members_fields_cats;
+    /** @var string[]  */
     private array $default_lists = [
         'id_adh',
         'list_adh_name',
@@ -47,61 +33,21 @@ class ListsConfig extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        $this->members_fields_cats = $members_fields_cats;
-
+        parent::setUp();
         $this->lists_config = new \Galette\Entity\ListsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-        $this->resetListsConfig();
-        $this->lists_config->installInit();
-    }
-
-    /**
-     * Resets lists configuration to defaults
-     *
-     * @return void
-     */
-    private function resetListsConfig(): void
-    {
-        $new_list = [];
-        foreach ($this->default_lists as $key) {
-            $new_list[] = $this->lists_config->getField($key);
-        }
-
-        $this->assertTrue($this->lists_config->setListFields($new_list));
-    }
-
-    /**
      * Test getVisibility
-     *
-     * @return void
      */
     public function testGetVisibility(): void
     {
@@ -124,8 +70,6 @@ class ListsConfig extends TestCase
 
     /**
      * Test setFields and storage
-     *
-     * @return void
      */
     public function testSetFields(): void
     {
@@ -209,9 +153,8 @@ class ListsConfig extends TestCase
 
     /**
      * Test get display elements
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDisplayElements(): void
     {
         $lists_config = $this->lists_config;

@@ -1,29 +1,16 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
     <div id="confirm_removal"{% if mode == 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
     {% if mode == 'ajax' %}<div class="header">{{ page_title }}</div>{% endif %}
-    <form action="{{ form_url }}" method="post" class="ui form">
+    {# Fomantic hides warning messages of a form not in warning state #}
+    <form action="{{ form_url }}" method="post" class="ui form{% if mode != 'ajax' and message is defined %} warning{% endif %}">
     {% if mode != 'ajax' %}
         <div class="ui segment">
             <div class="content">
@@ -74,7 +61,6 @@
                 <input type="hidden" name="{{ key }}" value="{{ value }}"/>
                 {% endif %}
             {% endfor %}
-            {% include 'components/forms/csrf.html.twig' %}
     {% if mode != 'ajax' %}
         </div>
     {% endif %}

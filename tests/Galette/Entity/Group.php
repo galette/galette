@@ -1,31 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
-use Galette\GaletteTestCase;
-use Laminas\Db\Adapter\Adapter;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Group tests
@@ -34,44 +19,8 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Group extends GaletteTestCase
 {
-    protected array $excluded_after_methods = ['testUnicity'];
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->deleteGroups();
-        parent::tearDown();
-    }
-
-    /**
-     * Delete groups
-     *
-     * @return void
-     */
-    private function deleteGroups(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $delete->where('parent_group IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
     /**
      * Test empty group
-     *
-     * @return void
      */
     public function testGroup(): void
     {
@@ -91,8 +40,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test single group
-     *
-     * @return void
      */
     public function testSingleGroup(): void
     {
@@ -132,8 +79,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test group name uniqueness when adding
-     *
-     * @return void
      */
     public function testAddUnicity(): void
     {
@@ -145,7 +90,6 @@ class Group extends GaletteTestCase
 
         $group->setName('A group');
         $this->assertTrue($group->store());
-        $group->getId();
 
         //Adding another group with same name throws an exception
         $group = new \Galette\Entity\Group();
@@ -158,8 +102,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test group name uniqueness when editing
-     *
-     * @return void
      */
     public function testEditUnicity(): void
     {
@@ -194,8 +136,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test sub groups
-     *
-     * @return void
      */
     public function testSubGroup(): void
     {
@@ -263,8 +203,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -286,16 +224,134 @@ class Group extends GaletteTestCase
         $this->logSuperAdmin();
         $group->setLogin($this->login);
         $this->assertFalse($group->remove()); //still have children, not removed
+
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Group "A parent group" still have members!'
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_groups"' : '`galette_groups`')
         );
-        $this->assertTrue($group->load($parent_id));
-        $this->assertTrue($group->remove(true)); //cascade removal, all will be removed
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1451',
+            'Message' => sprintf(
+                "Cannot delete or update a parent row: a foreign key constraint fails (`%s`.`galette_groups`, CONSTRAINT `galette_groups_ibfk_1` FOREIGN KEY (`parent_group`) REFERENCES `galette_groups` (`id_group`) ON UPDATE CASCADE)",
+                $this->zdb->getDatabase()
+            )
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+    }
+
+    /**
+     * Test cascade removal
+     */
+    public function testCascadeRemove(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A parent group');
+        $this->assertTrue($group->store());
+        $parent_id = $group->getId();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A child group');
+        $group->setParentGroup($parent_id);
+        $this->assertTrue($group->store());
+        $this->assertSame($parent_id, $group->getParentGroup()->getId());
+
+        $group = new \Galette\Entity\Group($parent_id);
+        $this->logSuperAdmin();
+        $group->setLogin($this->login);
+        $this->assertTrue($group->remove(cascade: true)); //cascade removal, all will be removed
         $this->assertFalse($group->load($parent_id));
+    }
+
+    /**
+     * Test a group.before_remove listener prevents removal
+     */
+    public function testRemoveBlocked(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A used group');
+        $this->assertTrue($group->store());
+        $group_id = $group->getId();
+
+        $seen = null;
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'group.before_remove',
+            function (\Galette\Events\GaletteEvent $event) use (&$seen): void {
+                $seen = $event->getObject()->getId();
+                $event->getObject()->preventRemoval('Group is used by a plugin.');
+            }
+        );
+
+        $group = new \Galette\Entity\Group($group_id);
+        $this->assertFalse($group->remove());
+        $this->assertSame($group_id, $seen);
+        $this->assertSame(['Group is used by a plugin.'], $group->getRemovalBlockers());
+        $this->assertTrue($group->load($group_id));
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Group "A used group" cannot be removed: Group is used by a plugin.'
+        );
+
+        //listener is gone, blockers of a previous attempt are forgotten
+        $this->assertTrue($group->remove());
+        $this->assertSame([], $group->getRemovalBlockers());
+        $this->assertFalse($group->load($group_id));
+    }
+
+    /**
+     * Test a group.before_remove listener on a subgroup prevents cascade removal
+     */
+    public function testCascadeRemoveBlockedBySubgroup(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A parent group');
+        $this->assertTrue($group->store());
+        $parent_id = $group->getId();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A used child group');
+        $group->setParentGroup($parent_id);
+        $this->assertTrue($group->store());
+        $child_id = $group->getId();
+
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        //no way to unsubscribe: listener is switched off once done
+        $switch = new \ArrayObject(['on' => true]);
+        $listener = function (\Galette\Events\GaletteEvent $event) use ($child_id, $switch): void {
+            if ($switch['on'] && $event->getObject()->getId() === $child_id) {
+                $event->getObject()->preventRemoval('Child group is used by a plugin.');
+            }
+        };
+        $emitter->subscribeTo('group.before_remove', $listener);
+
+        try {
+            $group = new \Galette\Entity\Group($parent_id);
+            $this->logSuperAdmin();
+            $group->setLogin($this->login);
+            $this->assertFalse($group->remove(cascade: true));
+            $this->assertSame(['Child group is used by a plugin.'], $group->getRemovalBlockers());
+            $this->assertTrue($group->load($parent_id));
+            $this->assertTrue($group->load($child_id));
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Group "A parent group" cannot be removed: Child group is used by a plugin.'
+            );
+        } finally {
+            $switch['on'] = false;
+        }
     }
 }

@@ -1,0 +1,12 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{# Who gets to see a public page: `name` is the preference, `value` what it holds #}
+<select name="{{ name }}" id="{{ name }}"{% if tip ?? false %} aria-describedby="{{ name }}-tip"{% endif %} class="ui search dropdown">
+{% for option_value, option_label in choices %}
+    <option value="{{ option_value }}"{% if value == option_value %} selected="selected"{% endif %}>{{ option_label }}</option>
+{% endfor %}
+</select>

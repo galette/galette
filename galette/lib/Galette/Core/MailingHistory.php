@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -31,6 +18,7 @@ use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
 /**
  * Mailing features
@@ -41,12 +29,14 @@ use Laminas\Db\Sql\Expression;
  */
 class MailingHistory extends History
 {
-    public const TABLE = 'mailing_history';
-    public const PK = 'mailing_id';
+    public const string TABLE = 'mailing_history';
+    public const string PK = 'mailing_id';
 
-    public const FILTER_DC_SENT = 0;
-    public const FILTER_SENT = 1;
-    public const FILTER_NOT_SENT = 2;
+    public const int FILTER_DC_SENT = 0;
+    public const int FILTER_SENT = 1;
+    public const int FILTER_NOT_SENT = 2;
+    /** Stored unsent, but with a queue still draining */
+    public const int FILTER_SENDING = 3;
 
     private int $id;
     private string $date;
@@ -75,11 +65,9 @@ class MailingHistory extends History
         ?MailingsList $filters = null,
         private readonly ?Mailing $mailing = null
     ) {
-        if ($filters === null) {
-            $filters = new MailingsList();
-        }
+        $filters ??= new MailingsList();
 
-        parent::__construct($zdb, $login, $preferences, $filters);
+        parent::__construct(zdb: $zdb, login: $login, preferences: $preferences, filters: $filters);
     }
 
     /**
@@ -92,10 +80,10 @@ class MailingHistory extends History
         try {
             $select = $this->zdb->select($this->getTableName(), 'a');
             $select->join(
-                ['b' => PREFIX_DB . Adherent::TABLE],
-                'a.mailing_sender=b.' . Adherent::PK,
-                ['nom_adh', 'prenom_adh'],
-                $select::JOIN_LEFT
+                name: ['b' => PREFIX_DB . Adherent::TABLE],
+                on: 'a.mailing_sender=b.' . Adherent::PK,
+                columns: ['nom_adh', 'prenom_adh'],
+                type: $select::JOIN_LEFT
             );
             $this->buildWhereClause($select);
             $select->order($this->buildOrderClause());
@@ -132,6 +120,9 @@ class MailingHistory extends History
                 $r['attachments'] = $attachments; //@phpstan-ignore offsetAssign.valueType (ArrayObject<string, string> does not accept int<0, max>. seems wrong guess)
                 $ret[] = $r;
             }
+
+            $this->flagSendings($ret);
+
             return $ret;
         } catch (Throwable $e) {
             Analog::log(
@@ -140,6 +131,46 @@ class MailingHistory extends History
             );
             throw $e;
         }
+    }
+
+    /**
+     * Tell apart the mailings that are still being sent.
+     *
+     * A mailing whose queue has yet to drain is stored unsent, just like a
+     * draft or one that failed. Asking the queue is what separates them, in a
+     * single query for the whole page.
+     *
+     * @param array<int, object> $logs History rows, flagged in place
+     */
+    private function flagSendings(array $logs): void
+    {
+        $ids = [];
+        foreach ($logs as $log) {
+            if (empty($log[self::PK]) || !empty($log['mailing_sent'])) {
+                continue;
+            }
+            $ids[] = (int)$log[self::PK];
+        }
+
+        $sending = count($ids) > 0
+            ? (new MailingQueue($this->zdb, $this->preferences))->getSendingMailingIds($ids)
+            : [];
+
+        foreach ($logs as $log) {
+            $log['mailing_sending'] = in_array((int)$log[self::PK], $sending, strict: true);
+        }
+    }
+
+    /**
+     * The mailings whose queue still holds recipients, as a subquery.
+     *
+     * Kept as a subquery rather than a list of ids: an empty set would have to
+     * be turned into an impossible condition, and this clause is carried by
+     * the count query as well as by the page itself.
+     */
+    private function getSendingMailings(): Select
+    {
+        return (new MailingQueue($this->zdb, $this->preferences))->getSendingSelect();
     }
 
     /**
@@ -173,10 +204,8 @@ class MailingHistory extends History
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
-    private function buildWhereClause(Select $select): void
+    protected function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -211,8 +240,15 @@ class MailingHistory extends History
                 case self::FILTER_SENT:
                     $select->where('mailing_sent = true');
                     break;
-                case self::FILTER_NOT_SENT:
+                case self::FILTER_SENDING:
                     $select->where('mailing_sent = false');
+                    $select->where->in(self::PK, $this->getSendingMailings());
+                    break;
+                case self::FILTER_NOT_SENT:
+                    //a mailing on its way is not a mailing that never left:
+                    //it has a filter of its own, and stays out of this one
+                    $select->where('mailing_sent = false');
+                    $select->where->notIn(self::PK, $this->getSendingMailings());
                     break;
                 case self::FILTER_DC_SENT:
                     //nothing to do here.
@@ -221,13 +257,11 @@ class MailingHistory extends History
 
 
             if ($this->filters->subject_filter != '') {
-                $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower((string) $this->filters->subject_filter) . '%'
-                );
-
                 $select->where(
-                    'LOWER(mailing_subject) LIKE '
-                    . $token
+                    new PredicateExpression(
+                        'LOWER(mailing_subject) LIKE ?',
+                        ['%' . strtolower((string)$this->filters->subject_filter) . '%']
+                    )
                 );
             }
         } catch (Throwable $e) {
@@ -243,8 +277,6 @@ class MailingHistory extends History
      * Count history entries from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -283,8 +315,6 @@ class MailingHistory extends History
      * @param bool    $new     True if we create a 'new' mailing,
      *                         false otherwise (from preview for
      *                         example)
-     *
-     * @return bool
      */
     public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
@@ -311,8 +341,6 @@ class MailingHistory extends History
      * Store a mailing in the history
      *
      * @param bool $sent Defaults to false
-     *
-     * @return bool
      */
     public function storeMailing(bool $sent = false): bool
     {
@@ -385,8 +413,6 @@ class MailingHistory extends History
 
     /**
      * Update in the database
-     *
-     * @return bool
      */
     public function update(): bool
     {
@@ -407,8 +433,6 @@ class MailingHistory extends History
 
     /**
      * Store in the database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -433,8 +457,6 @@ class MailingHistory extends History
      *
      * @param int|array<int> $ids  Mailing history entries identifiers
      * @param History        $hist History instance
-     *
-     * @return bool
      */
     public function removeEntries(int|array $ids, History $hist): bool
     {
@@ -446,7 +468,7 @@ class MailingHistory extends History
                 $mailing->removeAttachments();
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             //delete members
             $delete = $this->zdb->delete(self::TABLE);
@@ -454,7 +476,7 @@ class MailingHistory extends History
             $this->zdb->execute($delete);
 
             //commit all changes
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             //add an history entry
             $hist->add(
@@ -463,7 +485,7 @@ class MailingHistory extends History
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete selected mailing history entries |'
                 . $e->getMessage(),
@@ -477,8 +499,6 @@ class MailingHistory extends History
      * Get table's name
      *
      * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
      */
     protected function getTableName(bool $prefixed = false): string
     {
@@ -491,8 +511,6 @@ class MailingHistory extends History
 
     /**
      * Get table's PK
-     *
-     * @return string
      */
     protected function getPk(): string
     {
@@ -501,8 +519,6 @@ class MailingHistory extends History
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -513,7 +529,6 @@ class MailingHistory extends History
      * Handle mailing recipients
      *
      * @param ArrayObject<string, string> $row ResultSet row
-     * @return void
      */
     private function handleRecipients(ArrayObject &$row): void
     {

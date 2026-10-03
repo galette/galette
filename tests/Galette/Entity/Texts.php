@@ -1,30 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -34,10 +20,19 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Texts extends GaletteTestCase
 {
+    protected int $seed = 20260912203300;
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        $this->cleanMembers();
+        parent::tearDown();
+    }
+
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -63,13 +58,13 @@ class Texts extends GaletteTestCase
             $this->assertGreaterThanOrEqual($count_texts, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . $this->zdb->getSequenceName($texts::TABLE, $texts::PK, true) . '\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($texts::TABLE, $texts::PK, prefixed: true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
 
         //reinstall texts
-        $texts->installInit(false);
+        $texts->installInit(check_first: false);
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
         $this->assertCount($count_texts, $list);
@@ -81,5 +76,70 @@ class Texts extends GaletteTestCase
             $result = $results->current();
             $this->assertGreaterThanOrEqual(12, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
         }
+    }
+
+    /**
+     * Test existing texts are kept on update, and missing ones restored
+     */
+    public function testInstallInitKeepsExisting(): void
+    {
+        $texts = new \Galette\Entity\Texts($this->preferences);
+        $texts->installInit(check_first: false);
+        $count = count($texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG));
+
+        $where = ['tref' => 'sub', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG];
+        $update = $this->zdb->update($texts::TABLE);
+        $update->set(['tbody' => 'My own body'])->where($where);
+        $this->zdb->execute($update);
+
+        $delete = $this->zdb->delete($texts::TABLE);
+        $delete->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($delete);
+
+        $this->assertTrue($texts->installInit());
+        $this->assertCount($count, $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG));
+
+        $select = $this->zdb->select($texts::TABLE);
+        $select->where($where);
+        $this->assertSame('My own body', $this->zdb->execute($select)->current()->tbody);
+
+        //nothing missing
+        $this->assertTrue($texts->installInit());
+        $this->assertSame('My own body', $this->zdb->execute($select)->current()->tbody);
+    }
+
+    /**
+     * Test the password recovery link is present in the mail
+     *
+     * @see https://bugs.galette.eu/issues/2033
+     */
+    public function testChangePasswordURI(): void
+    {
+        $member = $this->getMemberOne();
+
+        $password = new \Galette\Core\Password($this->zdb);
+        $this->assertTrue($password->generateNewPassword($member->id));
+
+        $texts = new \Galette\Entity\Texts(
+            $this->preferences,
+            $this->routeparser
+        );
+        $texts
+            ->setMember($member)
+            ->setNoContribution()
+            ->setLinkValidity()
+            ->setChangePasswordURI($password);
+
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+        $body = $texts->getBody();
+
+        $expected = $this->preferences->getURL() . $this->routeparser->urlFor(
+            'password-recovery',
+            ['hash' => $password->getToken()]
+        );
+
+        //the member has no way to set a new password without that link
+        $this->assertStringNotContainsString('{CHG_PWD_URI}', $body);
+        $this->assertStringContainsString($expected, $body);
     }
 }

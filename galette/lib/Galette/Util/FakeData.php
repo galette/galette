@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -50,8 +37,6 @@ class FakeData
      * Add photo to a member
      *
      * @param Adherent $member Member instance
-     *
-     * @return bool
      */
     public function addPhoto(Adherent $member): bool
     {
@@ -61,11 +46,11 @@ class FakeData
         try {
             copy($url, $file);
             $uploaded_file = new UploadedFile(
-                $file,
-                'fakephoto.jpg',
-                'image/jpeg',
-                filesize($file),
-                UPLOAD_ERR_OK
+                fileNameOrStream: $file,
+                name: 'fakephoto.jpg',
+                type: 'image/jpeg',
+                size: filesize($file),
+                error: UPLOAD_ERR_OK
             );
             $res = $member->picture->storeFile($uploaded_file);
             if ($res < 0) {
@@ -87,8 +72,6 @@ class FakeData
      * Add success message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addSuccess(string $msg): void
     {
@@ -99,8 +82,6 @@ class FakeData
      * Add error message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addError(string $msg): void
     {
@@ -111,8 +92,6 @@ class FakeData
      * Add warning message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addWarning(string $msg): void
     {

@@ -1,32 +1,19 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\DynamicFields\Date;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\CheckModules;
 use Galette\Entity\Texts;
 use Galette\Repository\Members;
 use Galette\Repository\PdfModels;
@@ -41,27 +28,18 @@ class AdminToolsController extends AbstractController
 {
     /**
      * Administration tools page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function adminTools(Request $request, Response $response): Response
+    #[Route(
+        name: 'adminTools',
+        pattern: '/admin-tools',
+        methods: ['GET']
+    )]
+    public function adminTools(Response $response): Response
     {
         $params = [
             'page_title'        => _T('Administration tools'),
             'documentation'     => 'usermanual/avancee.html#administration-tools'
         ];
-
-        $cm = new CheckModules();
-        $modules_ok = $cm->isValid();
-        if (!$modules_ok) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")
-            );
-        }
 
         // display page
         $this->view->render(
@@ -74,14 +52,19 @@ class AdminToolsController extends AbstractController
 
     /**
      * Process Administration tools
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function process(Request $request, Response $response): Response
-    {
+    #[Route(
+        name: 'doAdminTools',
+        pattern: '/admin-tools',
+        methods: ['POST']
+    )]
+    public function process(
+        Request $request,
+        Response $response,
+        Texts $texts,
+        PdfModels $models,
+        Members $members,
+    ): Response {
         $post = $request->getParsedBody();
 
         $error_detected = [];
@@ -89,8 +72,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['inittexts'])) {
             //proceed emails texts reinitialization
-            $texts = new Texts($this->preferences);
-            $res = $texts->installInit(false);
+            $res = $texts->installInit(check_first: false);
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");
             } else {
@@ -100,8 +82,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['initfields'])) {
             //proceed fields configuration reinitialization
-            $fc = $this->fields_config;
-            $res = $fc->installInit();
+            $res = $this->fields_config->installInit();
             if ($res === true) {
                 $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
             } else {
@@ -111,8 +92,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['initpdfmodels'])) {
             //proceed emails texts reinitialization
-            $models = new PdfModels($this->zdb, $this->preferences, $this->login);
-            $res = $models->installInit(false);
+            $res = $models->installInit(check_first: false);
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
             } else {
@@ -123,13 +103,12 @@ class AdminToolsController extends AbstractController
         if (isset($post['emptylogins'])) {
             //proceed empty logins and passwords
             //those cannot be null
-            $members = new Members();
             $res = $members->emptylogins();
             if ($res === true) {
-                $success_detected[] = str_replace(
-                    '%i',
-                    (string)$members->getCount(),
-                    _T("Logins and passwords have been successfully filled (%i processed).")
+                $success_detected[] = sprintf(
+                    //TRANS: parameter is the number of processed members
+                    _T('Logins and passwords have been successfully filled (%1$s processed).'),
+                    $members->getCount()
                 );
             } else {
                 $error_detected[] = _T("An error occurred filling empty logins and passwords :(");

@@ -1,29 +1,18 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
 
 /**
  * Transactions repository tests
@@ -36,38 +25,7 @@ class Transactions extends GaletteTestCase
     private \Galette\Entity\Transaction $transaction;
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //then, remove transactions
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -86,12 +44,10 @@ class Transactions extends GaletteTestCase
 
     /**
      * Create test transactions in database
-     *
-     * @return void
      */
     private function createTransaction(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -112,14 +68,13 @@ class Transactions extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
-        $list = $transactions->getList(true, null);
+        $list = $transactions->getList(as_trans: true, fields: null);
 
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
@@ -129,48 +84,48 @@ class Transactions extends GaletteTestCase
         $this->getMemberOne();
         $this->createTransaction();
 
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
         $filters->filtre_cotis_adh = $member2->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
         $filters->filtre_cotis_adh = $this->adh->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
         $filters->start_date_filter = $this->transaction->date;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
-        $odate = new \DateTime($this->transaction->date);
+        $odate = new DateTime($this->transaction->date);
         $odate->modify('+10 day');
         $filters = new \Galette\Filters\TransactionsList();
         $filters->start_date_filter = $odate->format('Y-m-d');
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
         $filters->end_date_filter = $this->transaction->date;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
-        $odate = new \DateTime($this->transaction->date);
+        $odate = new DateTime($this->transaction->date);
         $odate->modify('-10 day');
         $filters = new \Galette\Filters\TransactionsList();
         $filters->end_date_filter = $odate->format('Y-m-d');
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
 
         //member with a transaction
@@ -185,13 +140,13 @@ class Transactions extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
         $login->setId($this->adh->id);
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
         $filters->filtre_cotis_children = $this->adh->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
         //member does not have any transaction
@@ -206,22 +161,101 @@ class Transactions extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
         $login->setId($member2->id);
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
 
         //cannot load another simple member's transactions
         $filters = new \Galette\Filters\TransactionsList();
         $filters->filtre_cotis_adh = $this->adh->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
-        $this->expectLogEntry(\Analog::WARNING, "Trying to display transactions for member #{$this->adh->id} without appropriate ACLs");
+        $this->expectLogEntry(\Analog\Analog::WARNING, "Trying to display transactions for member #{$this->adh->id} without appropriate ACLs");
+    }
+
+    /**
+     * Test getList as a group manager
+     */
+    public function testGetListAsGroupManager(): void
+    {
+        $this->logSuperAdmin();
+
+        //two transactions for first member
+        $member_one = $this->getMemberOne();
+        $this->createTransaction();
+        $this->createTransaction();
+
+        //one transaction for second member, that will manage groups
+        $member_two = $this->getMemberTwo();
+        $this->createTransaction();
+
+        //as admin, all transactions are listed and counted
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //second member manages two groups, first member is part of both of them
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $this->assertTrue($g2->store());
+        $this->assertTrue($g2->setManagers([$member_two]));
+        $this->assertTrue($g2->setMembers([$member_one]));
+
+        $this->login->logOut();
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager());
+
+        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_transactions;
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->assertTrue($this->preferences->store());
+
+        //group manager only sees its own transactions
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(1, $list);
+        $this->assertSame(1, $transactions->getCount());
+
+        //let groups managers see their groups members transactions
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
+        $this->assertTrue($this->preferences->store());
+
+        //first member is part of two managed groups, its transactions are listed only once
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(3, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //count is required for pagination to work
+        $filters = new \Galette\Filters\TransactionsList();
+        $filters->show = 2;
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(2, $list);
+        $this->assertSame(3, $transactions->getCount());
+        $this->assertSame(2, $filters->pages);
+
+        $filters->current_page = 2;
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login, $filters);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(1, $list);
+        $this->assertSame(3, $transactions->getCount());
+
+        //reset
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = $orig_pref;
+        $this->assertTrue($this->preferences->store());
     }
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -231,12 +265,12 @@ class Transactions extends GaletteTestCase
         $this->getMemberOne();
         $this->createTransaction();
 
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(1, $list);
 
         $this->assertTrue($transactions->remove($this->transaction->id, $this->history));
 
-        $list = $transactions->getList(true);
+        $list = $transactions->getList(as_trans: true);
         $this->assertCount(0, $list);
     }
 }

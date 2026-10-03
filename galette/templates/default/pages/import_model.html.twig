@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% block content %}
@@ -36,7 +22,7 @@
         </div>
         <thead>
             <tr>
-                <th>{{ _T('Field') }}</th>
+                <th scope="col">{{ _T('Field') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +49,7 @@
                 href="{{ url_for('importModel') }}?remove=true"
                 title="{{ _T('Remove model and back to defaults') }}"
             >
-                <i class="trash icon" aria-hiden="true"></i>
+                <i class="trash icon" aria-hidden="true"></i>
                 {{ _T('Remove model') }}
             </a>
             {% endif %}
@@ -75,8 +61,10 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="collapsing"></th>
-                    <th>{{ _T('Field') }}</th>
+                    <th scope="col" class="collapsing">
+                        <span class="visually-hidden">{{ _T('Selection') }}</span>
+                    </th>
+                    <th scope="col">{{ _T('Field') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,7 +86,6 @@
                 <i class="save icon" aria-hidden="true"></i>
                 {{ _T('Store new model') }}
             </button>
-            {% include "components/forms/csrf.html.twig" %}
         </div>
     </form>
 </div>

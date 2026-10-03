@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends parent_tpl %}
 
 {% block content %}
@@ -125,7 +111,7 @@
             <div class="ui icon info visible message">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
-                    {{ _T("If you'd rather not subscribe online, you can download an empty adhesion form") }}
+                    {{ _T("If you'd rather not register online, you can download an empty adhesion form") }}
                     <a
                         href="{{ url_for("emptyAdhesionForm") }}"
                         class="ui right floated labeled icon button"
@@ -183,7 +169,7 @@
         {% endif %}
                         </label>
                         <br/>
-                        <span class="exemple">
+                        <span class="field-description">
         {% if member.id %}
                             {{ _T("Member will be notified by email his account has been modified.") }}
         {% else %}
@@ -210,7 +196,7 @@
                         {% set value = attribute(member, propname) %}
                     {% endif %}
                     {% set checked = null %}
-                    {% set example = null %}
+                    {% set description = null %}
 
                     {% if value != '' and entry.field_id != 'parent_id' %}
                         {% include "components/forms/hidden.html.twig" with {
@@ -221,7 +207,6 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            {% include "components/forms/csrf.html.twig" %}
             </div>
 
     {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
@@ -454,7 +439,7 @@
                     if (! isNaN(_bdate.getTime())) {
                         var _today = new Date();
                         var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
-                        $('#member_age').html('{{ _T(" (%age years old)") }}'.replace(/%age/, _age))
+                        $('#member_age').html('{{ _T(' (%1$s years old)') }}'.replace(/%1\$s/, _age))
                     } else {
                         $('#member_age').html('');
                     }

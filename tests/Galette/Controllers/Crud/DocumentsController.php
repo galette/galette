@@ -1,29 +1,22 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Slim\Psr7\UploadedFile;
+
+use function Safe\copy;
+use function Safe\filesize;
+use function Safe\unlink;
 
 /**
  * Documents controller tests
@@ -33,61 +26,79 @@ use Galette\GaletteRoutingTestCase;
 class DocumentsController extends GaletteRoutingTestCase
 {
     protected int $seed = 20250916084243;
+    private string $pdf_filename = 'status.pdf';
+    private int $pdf_filesize = 2048;
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
+     * Tear down tests
      */
     public function tearDown(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Document::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
+        try {
+            unlink(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename);
+        } catch (\Throwable) {
+            //ignore
+        }
 
         parent::tearDown();
+    }
+
+    /**
+     * Copy fixture file to temp dir
+     */
+    private function copyFixture(): void
+    {
+        copy(GALETTE_TESTS_PATH . '/fixtures/' . $this->pdf_filename, sys_get_temp_dir() . '/' . $this->pdf_filename);
+    }
+
+    /**
+     * Returns an array of uploaded file for document tests
+     *
+     * @param bool $useFakeFile Use fake/predefined path and size if true, real file if false
+     *
+     * @return array{document_file: UploadedFile}
+     */
+    private function getUploadedDocument(bool $useFakeFile = true): array
+    {
+        $filename = $useFakeFile ? '/tmp/' . $this->pdf_filename : sys_get_temp_dir() . '/' . $this->pdf_filename;
+        $filesize = $useFakeFile ? $this->pdf_filesize : filesize(sys_get_temp_dir() . '/' . $this->pdf_filename);
+
+        return [
+            'document_file' => new UploadedFile(
+                fileNameOrStream: $filename,
+                name: $this->pdf_filename,
+                type: 'application/pdf',
+                size: $filesize,
+                error: UPLOAD_ERR_OK
+            )
+        ];
     }
 
     /**
      * Returns a fresh document instance (PDF status of the association)
      *
      * @param int $visibility Visibility of the document
-     *
-     * @return \Galette\Entity\Document
      */
     private function createStatusDocument(int $visibility = \Galette\Entity\FieldsConfig::ALL): \Galette\Entity\Document
     {
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/status.pdf', sys_get_temp_dir() . '/status.pdf'));
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                filesize(sys_get_temp_dir() . '/status.pdf'),
-                UPLOAD_ERR_OK
-            )
-        ];
+        $this->copyFixture();
+        $uploaded_files = $this->getUploadedDocument(useFakeFile: false);
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => $visibility
         ];
         $document = new \Galette\Entity\Document($this->zdb);
         $this->assertTrue($document->store($post, $uploaded_files));
-        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/status.pdf'));
+        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename));
 
         return $document;
     }
 
     /**
      * Test documents list
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testList(): void
     {
         $this->logSuperAdmin();
@@ -121,17 +132,9 @@ class DocumentsController extends GaletteRoutingTestCase
 
         //create one document
         $document = $this->getDocumentInstance();
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                2048,
-                UPLOAD_ERR_OK
-            )
-        ];
+        $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -192,8 +195,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents list
-     *
-     * @return void
      */
     public function testPublicList(): void
     {
@@ -227,8 +228,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -250,31 +249,22 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents edit page
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testEditPage(): void
     {
         //create one document
         $document = $this->getDocumentInstance();
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                2048,
-                UPLOAD_ERR_OK
-            )
-        ];
+        $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'editDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
 
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
@@ -298,8 +288,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test add document
-     *
-     * @return void
      */
     public function testAddDocument(): void
     {
@@ -308,18 +296,10 @@ class DocumentsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, [], 'POST');
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/status.pdf', sys_get_temp_dir() . '/status.pdf'));
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                filesize(sys_get_temp_dir() . '/status.pdf'),
-                UPLOAD_ERR_OK
-            )
-        ];
+        $this->copyFixture();
+        $uploaded_files = $this->getUploadedDocument(useFakeFile: false);
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
@@ -337,16 +317,59 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->expectFlashData(['success_detected' => ['Document has been successfully stored!']]);
 
         //check document file is present
-        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/status.pdf'));
-        unlink(GALETTE_DOCUMENTS_PATH . '/status.pdf');
+        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename));
+
+        $this->login->logout();
+    }
+
+    /**
+     * Test add document with an empty form
+     */
+    public function testAddEmptyDocument(): void
+    {
+        $route_name = 'doAddDocument';
+
+        $request = $this->createRequest($route_name, [], 'POST');
+        $post = [
+            'document_type' => '',
+            'comment' => '',
+            'visible' => \Galette\Entity\FieldsConfig::ALL
+        ];
+        $request = $request->withParsedBody($post);
+        $request = $request->withUploadedFiles([
+            'document_file' => new UploadedFile(
+                fileNameOrStream: '',
+                name: '',
+                type: '',
+                size: 0,
+                error: UPLOAD_ERR_NO_FILE
+            )
+        ]);
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('addDocument')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'error_detected' => [
+                '- Mandatory field Document type empty.',
+                'No file was uploaded'
+            ]
+        ]);
+
+        //documents directory is still there, and nothing has been stored
+        $this->assertTrue(is_dir(GALETTE_DOCUMENTS_PATH));
+        $this->assertSame(0, $this->zdb->execute($this->zdb->select(\Galette\Entity\Document::TABLE))->count());
 
         $this->login->logout();
     }
 
     /**
      * Test edit document
-     *
-     * @return void
      */
     public function testEditDocument(): void
     {
@@ -355,7 +378,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->createStatusDocument();
 
         $route_name = 'doEditDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $post = [
             'document_type' => $document->getType(),
@@ -373,37 +396,43 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' => ['Document has been successfully stored!']]);
+
+        //type cannot be emptied
+        $post['document_type'] = '';
+        $request = $request->withParsedBody($post);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('editDocument', $route_arguments)]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['- Mandatory field Document type empty.']]);
+
+        //file is still there
+        $this->assertTrue(file_exists(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename));
         $this->login->logout();
     }
 
     /**
      * Test remove document page
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testRemovePage(): void
     {
         $this->logSuperAdmin();
 
         $document = $this->getDocumentInstance();
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                2048,
-                UPLOAD_ERR_OK
-            )
-        ];
+        $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'removeDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
@@ -414,8 +443,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test delete document
-     *
-     * @return void
      */
     public function testDeleteDocument(): void
     {
@@ -424,7 +451,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->createStatusDocument();
         $route_name = 'doRemoveDocument';
 
-        $request = $this->createRequest($route_name, ['id' => $document->getID()], 'POST');
+        $request = $this->createRequest($route_name, ['id' => (string)$document->getID()], 'POST');
         $request = $request->withParsedBody(['id' => $document->getID()]);
 
         $test_response = $this->app->handle($request);
@@ -446,13 +473,11 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
-        $this->assertFalse(file_exists(GALETTE_DOCUMENTS_PATH . '/status.pdf'));
+        $this->assertFalse(file_exists(GALETTE_DOCUMENTS_PATH . '/' . $this->pdf_filename));
     }
 
     /**
      * Test get document file
-     *
-     * @return void
      */
     public function testGetDocument(): void
     {
@@ -461,14 +486,14 @@ class DocumentsController extends GaletteRoutingTestCase
 
         $this->logSuperAdmin();
         $route_name = 'getDocumentFile';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
         $expected_headers = [
             'Content-Description' => ['File Transfer'],
             'Content-Type' => ['application/pdf'],
-            'Content-Disposition' => ['attachment;filename="status.pdf"'],
+            'Content-Disposition' => ['attachment;filename="' . $this->pdf_filename . '"'],
             'Pragma' => ['public'],
             'Content-Transfer-Encoding' => ['binary'],
             'Expires' => ['0'],
@@ -477,6 +502,16 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->expectOK($test_response, $expected_headers);
         $body = (string)$test_response->getBody();
         $this->assertMatchesRegularExpression('/^%PDF-\d\.\d/', $body);
+
+        //this route carries no middleware and is gated on the access level
+        //alone: a session still owing a second factor must not get the file
+        $this->login->requireTwoFactor();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        $this->login->validateTwoFactor();
+
         $this->login->logout();
 
         $test_response = $this->app->handle($request);
@@ -488,38 +523,29 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test get document file
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetMissingDocument(): void
     {
         $this->logSuperAdmin();
 
         $document = $this->getDocumentInstance();
-        $uploaded_files = [
-            'document_file' => new \Slim\Psr7\UploadedFile(
-                '/tmp/status.pdf',
-                'status.pdf',
-                'application/pdf',
-                2048,
-                UPLOAD_ERR_OK
-            )
-        ];
+        $uploaded_files = $this->getUploadedDocument();
         $post = [
-            'document_type' => \Galette\Entity\Document::STATUS,
+            'document_type' => \Galette\Repository\Documents::STATUS,
             'comment' => 'Status of the association',
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'getDocumentFile';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'A request has been made to get a document file named `status.pdf` that does not exists.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A request has been made to get a document file named `' . $this->pdf_filename . '` that does not exists.');
         $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
         $this->login->logout();
     }

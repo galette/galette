@@ -1,77 +1,36 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Util;
+namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+use function Safe\file_get_contents;
+use function Safe\ini_get;
+use function Safe\preg_replace;
 
 /**
  * Telemetry tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Telemetry extends TestCase
+class Telemetry extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-    private \Galette\Core\Plugins $plugins;
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-
-        $this->preferences->pref_instance_uuid = '';
-        $this->preferences->pref_registration_uuid = '';
-        $this->preferences->store();
-    }
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-
-        $this->plugins = new \Galette\Core\Plugins();
-    }
-
     /**
      * Test Galette infos
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGrabGaletteInfos(): void
     {
+        $this->plugins = new \Galette\Core\Plugins();
         $expected = [
             'uuid'               => 'TO BE SET',
             'version'            => GALETTE_VERSION,
@@ -95,7 +54,9 @@ class Telemetry extends TestCase
         $expected['uuid'] = $result['uuid'];
         $this->assertSame($expected, $result);
 
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
             $this->preferences,
@@ -136,8 +97,6 @@ class Telemetry extends TestCase
 
     /**
      * Test DB infos
-     *
-     * @return void
      */
     public function testGrabDbInfos(): void
     {
@@ -160,8 +119,6 @@ class Telemetry extends TestCase
 
     /**
      * Test web server infos
-     *
-     * @return void
      */
     public function testGrabWebserverInfos(): void
     {
@@ -180,8 +137,6 @@ class Telemetry extends TestCase
 
     /**
      * Test PHP infos
-     *
-     * @return void
      */
     public function testGrabPhpInfos(): void
     {
@@ -209,8 +164,6 @@ class Telemetry extends TestCase
 
     /**
      * Test OS infos
-     *
-     * @return void
      */
     public function testGrabOsInfos(): void
     {
@@ -239,9 +192,8 @@ class Telemetry extends TestCase
 
     /**
      * Test whole Telemetry infos
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetTelemetryInfos(): void
     {
         $this->plugins = $this->getMockBuilder(\Galette\Core\Plugins::class)

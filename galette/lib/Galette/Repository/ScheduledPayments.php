@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -44,8 +31,8 @@ use Safe\DateTime;
  */
 class ScheduledPayments
 {
-    public const TABLE = ScheduledPayment::TABLE;
-    public const PK = ScheduledPayment::PK;
+    public const string TABLE = ScheduledPayment::TABLE;
+    public const string PK = ScheduledPayment::PK;
 
     private int $count = 0;
     private float $sum = 0;
@@ -77,7 +64,7 @@ class ScheduledPayments
     public function getListFromContribution(int $contrib_id): array
     {
         $this->filters->from_contribution = $contrib_id;
-        return $this->getList(true);
+        return $this->getList(as_object: true);
     }
 
     /**
@@ -193,8 +180,6 @@ class ScheduledPayments
      * Count scheduled payments from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -227,8 +212,6 @@ class ScheduledPayments
      * Calculate sum of all selected scheduled payments
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function calculateSum(Select $select): void
     {
@@ -303,8 +286,6 @@ class ScheduledPayments
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -377,8 +358,6 @@ class ScheduledPayments
      * Builds where clause for filtering on member
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildMemberWhereClause(Select $select): void
     {
@@ -424,8 +403,6 @@ class ScheduledPayments
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -434,8 +411,6 @@ class ScheduledPayments
 
     /**
      * Get sum
-     *
-     * @return float
      */
     public function getSum(): float
     {
@@ -448,8 +423,6 @@ class ScheduledPayments
      * @param int|array<int> $ids         Scheduled payments identifiers to delete
      * @param History        $hist        History
      * @param bool           $transaction True to begin a database transaction
-     *
-     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
@@ -457,7 +430,7 @@ class ScheduledPayments
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
@@ -470,19 +443,19 @@ class ScheduledPayments
                 }
             }
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             $hist->add(
-                str_replace(
-                    '%list',
-                    print_r($list, true),
-                    _T("Scheduled payments deleted (%list)")
+                sprintf(
+                    //TRANS: parameter is the list of deleted scheduled payments
+                    _T('Scheduled payments deleted (%1$s)'),
+                    print_r($list, return: true)
                 )
             );
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove scheduled payments | '

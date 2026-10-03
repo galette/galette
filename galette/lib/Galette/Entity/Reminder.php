@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -39,30 +26,30 @@ use UnexpectedValueException;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property-read int $member_id
- * @property int $type
- * @property Adherent $dest
- * @property string $date
+ * @property-read int      $member_id
+ * @property      int      $type
+ * @property      Adherent $dest
+ * @property      string   $date
  */
 
 class Reminder
 {
     use Replacements;
 
-    public const TABLE = 'reminders';
-    public const PK = 'reminder_id';
+    public const string TABLE = 'reminders';
+    public const string PK = 'reminder_id';
 
-    private int $id;
     private int $type;
     private Adherent $dest;
     private string $date;
     private bool $success = false;
+    private bool $quota_managed = false;
     private bool $nomail;
     private string $comment;
     private string $msg;
 
-    public const IMPENDING = 1;
-    public const LATE = 2;
+    public const int IMPENDING = 1;
+    public const int LATE = 2;
 
     /**
      * Main constructor
@@ -84,8 +71,6 @@ class Reminder
      * Load a reminder from its id
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -111,16 +96,12 @@ class Reminder
      * Load reminder from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
         global $zdb;
 
         try {
-            $pk = self::PK;
-            $this->id = (int)$rs->$pk;
             $this->type = (int)$rs->reminder_type;
             $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->date = $rs->reminder_date;
@@ -140,8 +121,6 @@ class Reminder
      * Store reminder in database and history
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     private function store(Db $zdb): bool
     {
@@ -170,7 +149,7 @@ class Reminder
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing reminder: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -179,8 +158,6 @@ class Reminder
 
     /**
      * Was reminder sent successfully?
-     *
-     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -189,12 +166,24 @@ class Reminder
 
     /**
      * Did member had an email when reminder was sent?
-     *
-     * @return bool
      */
     public function hasMail(): bool
     {
         return !$this->nomail;
+    }
+
+    /**
+     * Tell the reminder its sending is already accounted for.
+     *
+     * Set by the mailing queue, which has checked the quota before draining
+     * the reminder rows it is about to send.
+     *
+     * @param bool $managed Whether the caller handles the quota
+     */
+    public function setQuotaManaged(bool $managed = true): self
+    {
+        $this->quota_managed = $managed;
+        return $this;
     }
 
     /**
@@ -203,8 +192,6 @@ class Reminder
      * @param Texts   $texts Text object
      * @param History $hist  History
      * @param Db      $zdb   Database instance
-     *
-     * @return bool
      */
     public function send(Texts $texts, History $hist, Db $zdb): bool
     {
@@ -230,6 +217,7 @@ class Reminder
             );
 
             $mail = new GaletteMail($preferences);
+            $mail->setQuotaManaged($this->quota_managed);
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
                 [
@@ -268,10 +256,10 @@ class Reminder
             }
         } else {
             $this->nomail = true;
-            $str = str_replace(
-                '%membership',
-                $type_name,
-                _T("Unable to send %membership reminder (no email address).")
+            $str = sprintf(
+                //TRANS: parameter is the membership type
+                _T('Unable to send %1$s reminder (no email address).'),
+                $type_name
             );
             $details = sprintf(
                 //TRANS: first parameter is name, second the id, this days interval
@@ -290,8 +278,6 @@ class Reminder
 
     /**
      * Retrieve message
-     *
-     * @return string
      */
     public function getMessage(): string
     {
@@ -302,13 +288,12 @@ class Reminder
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
         return match ($name) {
             'member_id' => $this->dest->id,
+            'dest' => $this->dest,
             'type', 'date' => $this->$name,
             'comment' => $this->comment,
             default => throw new \RuntimeException(
@@ -326,13 +311,11 @@ class Reminder
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
         return match ($name) {
-            'member_id', 'type', 'date', 'comment' => true,
+            'member_id', 'dest', 'type', 'date', 'comment' => true,
             default => false,
         };
     }
@@ -342,8 +325,6 @@ class Reminder
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

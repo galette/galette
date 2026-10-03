@@ -1,53 +1,51 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% if ui is defined %}
     {% if ui == 'item'%}
-        {% set component_classes = "tooltip focus-visible language item" %}
+        {% set component_classes = "focus-visible language item" %}
         {% set content_classes = "content" %}
         {% set header = true %}
     {% elseif ui == 'dropdown' %}
-        {% set component_classes = "tooltip focus-visible language ui dropdown navigation right-aligned item" %}
+        {% set component_classes = "focus-visible language ui dropdown navigation right-aligned item" %}
         {% set content_classes = "menu" %}
         {% set header = false %}
     {% endif %}
 {% endif %}
 
-<div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}" title="{{ _T("Choose your language") }}">
+<div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}">
 {% if header == true %}
     <div class="image header title"{% if ui == 'item'%} data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
-        <span>{{ galette_lang }}</span>
+        <span class="visually-hidden">{{ _T("Choose your language") }}</span>
+        <span>{{ i18n.getName() }}</span>
         <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
     </div>
 {% endif %}
     <div class="{{ content_classes }}">
-{% for langue in languages %}
-    {% if langue.getAbbrev() != galette_lang %}
-        <a href="?ui_pref_lang={{ langue.getID() }}"
-           title="{{ _T("Switch locale to '%locale'")|replace({"%locale": langue.getName()}) }}"
-           class="item"
+{% for glang in languages %}
+    {% set html_lang -%}
+        <span{% if glang.isRtl() %} dir="rtl"{% endif %} lang="{{ glang.getWebID() }}">{{ glang.getName() }}</span>
+    {%- endset %}
+    {% if glang.getID() == i18n.getID() %}
+        <a href="?ui_pref_lang={{ glang.getID() }}"
+           class="item tooltip"
+           data-html="{{ _T("Current locale '%1$s'")|replace({"%1$s": html_lang})|e }}"
+           aria-current="true"
         >
-            {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>
+            {{ html_lang }}
+        </a>
+    {% else %}
+        <a href="?ui_pref_lang={{ glang.getID() }}"
+           class="item tooltip"
+           data-html="{{ _T("Switch locale to '%1$s'")|replace({"%1$s": html_lang})|e }}"
+        >
+            {{ html_lang }}
         </a>
     {% endif %}
 {% endfor %}

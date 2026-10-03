@@ -1,0 +1,677 @@
+# AI Coding Agent Instructions for Galette
+
+## Quick Reference
+
+**Project:** Galette - Membership management web application for non-profit organizations  
+**License:** GPL-3.0
+**Main Branch:** `develop` (development), `master` (stable releases)
+**Language:** PHP 8.3+ with Twig templates, JavaScript/CSS frontend
+**Documentation:** https://doc.galette.eu/
+
+## Essential Commands
+
+```bash
+# Install all dependencies (PHP + JavaScript)
+bin/install_deps
+
+# Set up database for testing
+bin/console galette:install [options]
+
+# Build frontend assets
+npm run build
+
+# Serve this checkout on a throwaway instance (database included)
+bin/serve
+
+# Run tests (MySQL)
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+
+# Run tests (PostgreSQL)
+DB=pgsql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+
+# Check code quality
+vendor/bin/php-cs-fixer fix --dry-run
+vendor/bin/phpcs
+vendor/bin/phpstan analyse
+```
+
+## Project Structure
+
+```
+galette/
+├── .github/workflows/    # CI/CD pipelines
+├── bin/
+│   ├── install_deps      # Install all dependencies (USE THIS)
+│   └── console           # CLI tool (includes galette:install)
+├── galette/              # Main application
+│   ├── lib/              # Core PHP code
+│   ├── templates/        # Twig templates
+│   ├── webroot/          # Public web root
+│   ├── config/           # Configuration files
+│   ├── data/             # Data storage (writable)
+│   └── lang/             # Translations (gettext .po sources, .mo built)
+├── tests/                # PHPUnit test suite
+├── ui/                   # Frontend source files
+├── patches/              # Database migrations
+├── stubs/                # IDE helper stubs
+├── composer.json         # PHP dependencies
+├── package.json          # JavaScript dependencies
+├── phpunit.xml.dist      # Test configuration
+├── phpstan.neon          # Static analysis config
+├── .php-cs-fixer.dist.php # Code style config
+└── .phpcs.xml            # CodeSniffer config
+```
+
+## Versions
+
+Minor PHP, MySQL, Postgres versions are defined in `galette/includes/sys_config/versions.inc.php` (see `GALETTE_PHP_MIN`, `GALETTE_MYSQL_MIN`, `GALETTE_PGSQL_MIN`).
+
+## Technology Stack
+
+- **Backend:** PHP with Slim Framework
+- **Frontend:** JavaScript, Gulp build system, Semantic UI
+- **Templates:** Twig
+- **Databases:** MySQL/MariaDB or PostgreSQL (required)
+- **Testing:** PHPUnit with pcov for coverage
+- **Quality Tools:** PHPStan, PHP-CS-Fixer, PHPCS, Rector
+
+## Setup & Build Process
+
+### Prerequisites
+
+- **PHP:** (see versions)
+- **PHP Extensions:** ctype, dom, fileinfo, filter, gd, gettext, iconv, intl, mbstring, pdo (pdo_mysql or pdo_pgsql), session, SimpleXML (optional: curl, openssl)
+- **pcov** (for coverage — not Xdebug): `pecl install pcov`
+- **Node.js** (LTS), **Composer** 2.x
+- **Database:** MySQL/MariaDB or PostgreSQL (see versions)
+
+### First-Time Setup
+
+1. **Install dependencies:**
+   ```bash
+   bin/install_deps
+   ```
+   This script handles both `composer install` and `npm install`.
+   **Note:** If you encounter permission errors, do NOT use `sudo`. Check directory permissions for `vendor/` and `node_modules/`.
+
+2. **Set up database (required for tests):**
+   ```bash
+   bin/console galette:install \
+     --db-type mysql \
+     --db-host localhost \
+     --db-name galette_test \
+     --db-user galette \
+     --db-pass password \
+     --admin-user admin \
+     --admin-pass admin
+   ```
+   Check `.github/workflows/ci-linux.yml` for reference parameters.
+
+3. **Build frontend assets:**
+   ```bash
+   npm run build
+   ```
+
+### Local Development Server
+
+`bin/serve` serves the current checkout - or the current git worktree - on a
+throwaway, self-provisioned instance, and requires no web server configuration
+of the machine:
+
+```bash
+bin/serve                 # MariaDB container, schema installed, fixtures seeded
+bin/serve --db=pgsql      # same, on PostgreSQL
+bin/serve --no-fixtures   # empty database
+bin/serve --fresh         # discard the database and reinstall
+bin/serve --stop          # stop the database containers, keep their data
+```
+
+It starts a database container of its own (`compose.yaml`), runs
+`galette:install` and `galette:seed-fixtures` on first use, then serves the
+application with the PHP built-in server through `bin/router.php`. It prints the
+URL it picked; the administrator account is `admin`/`admin`.
+
+**Requires Docker Compose.** No database of the host is ever reached: schema
+name, credentials and port all belong to the container. Ports and per-engine
+configurations are remembered under `.serve/`, so a given checkout keeps the
+same URL, and both engines can be installed side by side.
+
+Each checkout gets a schema named after its directory. That is what keeps two
+worktrees served at once from logging each other out, since
+`galette/includes/main.inc.php` derives the session cookie name from `PREFIX_DB`,
+`NAME_DB` and the version, and cookies ignore the port number.
+
+`bin/serve` writes `galette/config/config.inc.php` while it runs and puts the
+previous one back when it stops, so a checkout also served by Apache keeps
+working.
+
+**Not to be confused with the E2E server.** `bin/router.php` serves the real
+installation of the checkout: `galette/config/`, `galette/data/` and
+`galette/plugins/` are used as-is. `tests/router_e2e.php` serves the *test*
+environment instead, redirecting configuration, data and plugins to their
+counterparts under `tests/`, and must keep being used for E2E runs.
+
+### Development Workflow
+
+**When you start working:**
+1. Pull latest changes
+2. Run `bin/install_deps` to update dependencies
+3. Run `npm run build` if frontend files changed
+
+**Before committing:**
+1. Fix code style: `vendor/bin/php-cs-fixer fix`
+2. Check standards: `vendor/bin/phpcs`
+3. Run static analysis: `vendor/bin/phpstan analyse`
+4. Run tests: `DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/`
+5. Build assets: `npm run build` (if you modified `ui/` directory)
+
+## Testing
+
+### Running Tests
+
+**CRITICAL:** Tests require a database. The `DB` environment variable is mandatory.
+
+```bash
+# Run all tests on MySQL/MariaDB
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+
+# Run all tests on PostgreSQL  
+DB=pgsql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+
+# Run specific test file
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/Core/SpecificTest.php
+
+# Run with HTML coverage report (requires pcov)
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php \
+  --coverage-filter galette/lib \
+  --coverage-html tests/coverage \
+  tests/Galette/
+
+# Run with clover XML for CI tools
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php \
+  --coverage-filter galette/lib \
+  --coverage-clover tests/clover.xml \
+  tests/Galette/
+```
+
+### Date-sensitive tests (freezing "now")
+
+Galette reads the current date/time directly through `new DateTime()` and
+`date()`, so some tests (membership periods, due dates, ...) can behave
+differently depending on the day the suite runs - typically failing on the last
+day of a month and passing the next day.
+
+To make such cases deterministic, the `Galette\Tests\FakeTime` trait
+(`tests/lib/FakeTime.php`) freezes "now" to an arbitrary instant. It relies on
+[libfaketime](https://github.com/wolfcw/libfaketime), which must be preloaded
+when running PHPUnit:
+
+```bash
+# Debian/Ubuntu: apt-get install libfaketime  (lib in /usr/lib/x86_64-linux-gnu/faketime/)
+# Fedora:        dnf install libfaketime      (lib in /usr/lib64/)
+LD_PRELOAD=/usr/lib64/libfaketime.so.1 FAKETIME_NO_CACHE=1 \
+  DB=pgsql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+```
+
+`FAKETIME_NO_CACHE=1` is required so the faked time can change from one test to
+the next within the same PHPUnit process. When libfaketime is **not** preloaded,
+tests using the trait are skipped (never run against the real clock). CI
+(`.github/workflows/ci-linux.yml`) installs and preloads it automatically.
+
+In a test, use the trait like this:
+
+```php
+use Galette\Tests\FakeTime;
+
+class MyTest extends GaletteTestCase
+{
+    use FakeTime;
+
+    public function tearDown(): void
+    {
+        $this->restoreRealTime();
+        parent::tearDown();
+    }
+
+    public function testSomething(): void
+    {
+        $this->setFakeTime('2026-07-31 12:00:00');
+        // ... "now" is now frozen to July 31st, 2026
+    }
+}
+```
+
+### E2E Testing (Playwright)
+
+**📚 Detailed E2E documentation:** [`tests/e2e/README.md`](tests/e2e/README.md)
+
+E2E tests use Playwright and require a running PHP built-in server.
+
+```bash
+# 1. Initialize test data
+php tests/init_test_data.php
+
+# 2. Set up test database (once)
+GALETTE_TESTS=1 DB=mysql bin/console galette:install ...
+
+# 3. Seed fixture data (for *.fixture.spec.ts tests)
+GALETTE_TESTS=1 DB=mysql bin/console galette:seed-fixtures
+
+# 4. Start the server (in a separate terminal or background)
+DB=mysql php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php
+
+# 4. Run Galette tests (choose your browser)
+npm run test:chromium    # Test with Chromium only
+npm run test:firefox     # Test with Firefox only
+npm run test:full        # Test with all configured browsers
+npm run test:headed      # Run tests in headed mode (see browser)
+npm run test:debug       # Run tests in debug mode (step through)
+
+# 5. Run all tests (Galette + installed plugins)
+npm run test:all                  # All browsers
+npm run test:all:chromium         # Chromium only
+
+# 6. Run a specific plugin's tests
+npx playwright test galette/plugins/plugin-oauth2/tests/e2e/specs/
+
+# 7. View test results
+npm run report           # Open HTML test report
+```
+
+**Test Structure:**
+- **Test specs:** `tests/e2e/specs/*.spec.ts` (isolated tests) and `*.fixture.spec.ts` (tests using seeded fixtures)
+- Plugin test specs: `galette/plugins/*/tests/e2e/specs/*.spec.ts`
+- **Page Objects:** `tests/e2e/pages/` (reusable page interactions)
+- **Configuration:** `playwright.config.ts`
+- **Reports:** `playwright-report/index.html`
+
+**Test Organization:**
+- `*.spec.ts` - Tests that create their own data (CRUD operations)
+- `*.fixture.spec.ts` - Tests using pre-seeded fixture data (100+ members from Star Wars, Harry Potter, etc.)
+- See `tests/e2e/TEST_CREDENTIALS.md` for fixture user credentials
+
+**Plugin E2E tests:** Plugins can place their Playwright specs under
+`galette/plugins/<name>/tests/e2e/specs/`. They are automatically discovered
+by the root `playwright.config.ts` via `testDir: './galette/plugins'` and the
+`testMatch` glob `*/tests/e2e/specs/**/*.spec.ts`.
+
+**Shared fixtures for plugins:** The `tsconfig.json` alias `@e2e/*` maps to
+`tests/e2e/*`, so plugin specs can import Galette fixtures with:
+```typescript
+import { test } from '@e2e/fixtures/auth.fixture';
+```
+
+**CRITICAL:** Always use the `tests/router_e2e.php` router with `php -S` to ensure the correct test environment is loaded (session path, data path, etc.).
+
+### Test Requirements
+
+- Database must be installed via `bin/console galette:install`
+- Database user needs full privileges: CREATE, DROP, INSERT, UPDATE, DELETE, SELECT
+- Always use `--test-suffix=.php` flag
+- Always set `DB` environment variable (mysql or pgsql)
+- Coverage requires pcov extension: `pecl install pcov`
+
+## Code Quality Standards
+
+### PHP-CS-Fixer (Code Style)
+
+```bash
+# Check what would be fixed
+vendor/bin/php-cs-fixer fix --dry-run --diff
+
+# Fix code style automatically
+vendor/bin/php-cs-fixer fix
+
+# Fix specific directory
+vendor/bin/php-cs-fixer fix galette/lib/
+```
+
+**Config:** `.php-cs-fixer.dist.php` (PSR-12 based)  
+**Rule:** ALWAYS run before committing PHP changes.
+
+### PHPCS (Code Standards)
+
+There are some changes done with rector/php-cs-fixer that cause PHPCS issues. Run `phpcbf` as last step.
+
+```bash
+# Check code standards
+vendor/bin/phpcs
+
+# Auto-fix where possible
+vendor/bin/phpcbf
+
+# Check specific directory
+vendor/bin/phpcs galette/lib/
+```
+
+**Config:** `.phpcs.xml`
+
+### PHPStan (Static Analysis)
+
+```bash
+# Run analysis
+vendor/bin/phpstan analyse
+
+# Run with maximum strictness
+vendor/bin/phpstan analyse --level=max
+
+# Generate baseline for existing issues
+vendor/bin/phpstan analyse --generate-baseline
+```
+
+**Config:** `phpstan.neon`  
+**Rule:** Fix errors, don't ignore them (unless adding to baseline for legacy code).
+
+### Rector (Automated Refactoring)
+
+```bash
+# Preview changes
+vendor/bin/rector process --dry-run
+
+# Apply changes
+vendor/bin/rector process
+
+# Process specific directory
+vendor/bin/rector process galette/lib/
+```
+
+**Config:** `rector.php`  
+**Warning:** Review changes before committing. Run tests after applying.
+
+### Twig CS (Template Linting)
+
+```bash
+# Check Twig templates for errors
+vendor/bin/twigcs galette/templates/default --severity error --display blocking
+```
+
+**Note:** This runs in CI. Fix Twig syntax errors before committing template changes.
+
+### License Header Check
+
+```bash
+# Check license headers in PHP files
+./bin/console galette:headers:check
+
+# Fix license headers
+./bin/console galette:headers:check --fix
+```
+
+**Note:** Ensures all PHP files have correct license headers.
+
+### Composer Dependency Analyser
+
+```bash
+# Check for unused, shadowed or misplaced dependencies
+vendor/bin/composer-dependency-analyser --composer-json composer.json
+```
+
+**Note:** Useful to ensure `composer.json` is accurately reflecting the code usage.
+
+## Composer run
+
+If possible, especially when updating dependencies or adding new ones, composer commands must be run with the correct version. `php --version` will give you the information. You can also check for the presence of the `php82`, `php83`, `php84` etc commands.
+
+composer files are as usual at the root of the project, but vendor directory is located at galette/vendor.
+
+## CI/CD Pipeline
+
+### What CI Checks
+
+The `.github/workflows/ci-linux.yml` workflow runs on every push/PR:
+
+1. Tests on multiple PHP versions (8.3 => 8.5)
+2. Tests on both MySQL and PostgreSQL
+3. Code style check (PHP-CS-Fixer)
+4. Code standards check (PHPCS)
+5. Static analysis (PHPStan)
+6. Frontend build verification
+7. Twig template linting (TwigCS)
+8. Rector refactoring check
+9. License header check (`galette:headers:check`)
+10. Dependency analysis (`composer-dependency-analyser`)
+
+### Replicate CI Locally
+
+```bash
+# Full CI check sequence
+bin/install_deps
+bin/console galette:install [options]
+npm run build
+DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+vendor/bin/php-cs-fixer fix --dry-run
+vendor/bin/phpcs
+vendor/bin/phpstan analyse
+```
+
+**If any of these fail locally, CI will fail.**
+
+## Common Tasks
+
+### Adding a New Feature
+
+1. Branch from `develop`: `git checkout -b feature/feature-name develop`
+2. Install dependencies: `bin/install_deps`
+3. Set up test database if needed: `bin/console galette:install [options]`
+4. Write code in `galette/lib/` or `galette/templates/`
+5. Add tests in `tests/`
+6. If frontend changes: modify `ui/` and run `npm run build`
+7. Run quality checks (PHP-CS-Fixer, PHPCS, PHPStan)
+8. Run tests: `DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/`
+9. Commit with clear message
+10. Push and create PR
+
+### Fixing a Bug
+
+1. Branch from appropriate base (`develop` or `master`)
+2. Write failing test that reproduces bug
+3. Fix the bug
+4. Verify test passes: `DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/[TestFile].php`
+5. Run full test suite and quality checks
+6. Commit and create PR
+
+### Modifying Frontend
+
+1. Edit files in `ui/` directory (NOT in `galette/webroot/`)
+2. Build: `npm run build`
+3. Test in browser
+4. For development, use watch mode: `npm run watch`
+
+**Build Artifacts:** Built assets are output to `galette/webroot/themes/default/ui/`.
+
+### Database Changes
+
+1. Create migration in `patches/` following naming: `YYYY-MM-DD_description.sql`
+2. Test on clean database
+3. Test on existing database with data
+4. Update model classes in `galette/lib/`
+5. Add tests for schema changes
+6. Test on both MySQL and PostgreSQL if possible
+
+## File Permissions
+
+**Writable directories (production):**
+- `galette/config/` - Only during installation
+- `galette/data/` - Always writable (attachments, cache, logs, photos, exports, imports, files, tempimages)
+
+**Security:** Only expose `galette/webroot/` to the web server.
+
+## Common Issues & Solutions
+
+### "composer install" fails with memory error
+```bash
+php -d memory_limit=512M $(which composer) install
+```
+
+### "npm run build" fails
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npm run build
+```
+
+### Tests fail: "Connection refused"
+1. Verify database server is running
+2. Run: `bin/console galette:install [options]`
+3. Check database credentials
+4. Ensure `DB` environment variable is set
+
+### Tests fail: "Class not found"
+```bash
+composer dump-autoload
+```
+
+### PHP-CS-Fixer changes many files
+This is expected when switching branches. Run and commit:
+```bash
+vendor/bin/php-cs-fixer fix
+```
+
+### Coverage doesn't work
+```bash
+# Install pcov (not xdebug)
+pecl install pcov
+
+# Verify it's enabled
+php -m | grep pcov
+```
+
+## Development Best Practices
+
+### Code Style
+- Follow PSR-12
+- Use type declarations (parameters and return types)
+- Document public methods with PHPDoc
+- Keep methods under 50 lines when possible
+
+### Testing
+- Write tests for all new features
+- Test names should be descriptive: `testMethodNameDoesExpectedBehaviorWhenCondition()`
+- Mock external dependencies in unit tests
+- Aim for high coverage on business logic
+
+### Git
+- Branch from `develop` for features
+- Use descriptive names: `feature/add-export`, `fix/email-validation`
+- Write clear commit messages (what and why)
+- Keep PRs focused (one feature/fix per PR)
+- Squash small "fix" commits before merging
+
+### Storing renderable values
+
+Any value a user or an administrator types and that Galette later renders — a
+page, a PDF, an e-mail — is sanitized **on the way in**, not only at output.
+`Galette\Util\Html` has one method per nature of field:
+
+- **`Html::clean()`** when the value *may* contain HTML markup — a mailing
+  body, a document comment, a PDF model header, `pref_footer`,
+  `pref_mail_sign`. The markup is purified: what comes back is safe to render,
+  and the template may keep its `|raw`.
+- **`Html::strip()`** when the value must *not* contain HTML markup — a text
+  preference, a mail subject or body. The markup is removed and the text comes
+  back as text, never as entities: Twig escapes it on output, and escaping it
+  here too would show `&amp;` to the reader.
+
+Three things to know before picking a call site:
+
+- `clean()` drops every `id` attribute. Pass `keep_ids: true` where they are
+  load-bearing — a PDF model's CSS selects on them.
+- CSS is not HTML. Never purify a stylesheet: a `>` child selector comes back
+  as `&gt;`.
+- A secret is never sanitized. Taking a `<` out of an SMTP password would
+  silently break the authentication it is there for.
+
+Preferences do this declaratively rather than one call at a time:
+`PreferencesSchema` declares `TYPE_HTML` for a preference holding markup, and
+`Core\Preferences\Fields` applies the right method. Adding a preference means
+declaring its type, never adding a call.
+
+### Database
+- Always use prepared statements
+- Never concatenate SQL strings
+- Test migrations on both empty and populated databases
+- Include rollback capability when possible
+
+### Frontend
+- Edit source files in `ui/`, not built files
+- Always run `npm run build` after changes
+- Test in multiple browsers if possible
+
+## Performance Considerations
+
+- Galette is used by organizations with thousands of members
+- Optimize database queries (use EXPLAIN on complex queries)
+- Avoid N+1 query problems (use eager loading)
+- Consider pagination for large datasets
+- Cache expensive operations when appropriate
+
+## Translation & i18n
+
+- Translation files: `galette/lang/`
+- Format: gettext; only `.po` sources are versioned, `.mo` files are built and git-ignored
+- Managed via Weblate: https://hosted.weblate.org/projects/galette/
+- Build MO files (core and plugins, only those older than their PO): `bin/console galette:compile-locales`
+  (`--force` to rebuild all, `plugin-name` argument for a single plugin; requires `msgfmt` from gettext tools)
+- Runs automatically after `composer install`/`composer update`, and from `bin/serve`; after a `git pull`, run it again,
+  or install a git hook: `printf '#!/bin/sh\nbin/console galette:compile-locales\n' > .git/hooks/post-merge && chmod +x .git/hooks/post-merge`
+- In debug mode, a missing or outdated MO file is logged as a warning
+- After updating translatable strings: `cd galette/lang && make extract`
+
+## Key Configuration Files
+
+### PHP Configuration
+- **galette/config/behavior.inc.php** - Application behavior customization
+- **galette/config/config.inc.php** - Main application configuration (generated during install)
+
+### Frontend Configuration
+- **gulpfile.js** - Build task definitions
+- **semantic.json** - Semantic UI theme configuration
+- **ui/semantic/src/theme.config** - Theme selection
+
+### Quality Tools Configuration
+- **.php-cs-fixer.dist.php** - Code style rules (PSR-12 based)
+- **.phpcs.xml** - CodeSniffer rules
+- **phpstan.neon** - Static analysis level and rules
+- **rector.php** - Automated refactoring rules
+- **phpunit.xml.dist** - Test suite configuration
+- **playwright.config.ts** - E2E test configuration
+
+## Additional Resources
+
+- **Bug Tracker:** https://bugs.galette.eu/projects/galette
+- **Official Website:** https://galette.eu
+- **Documentation:** https://doc.galette.eu/
+- **Documentation Repo:** https://github.com/galette/galettedoc (reStructuredText, built with Sphinx, hosted on ReadTheDocs)
+
+## Instructions for AI Agents
+
+1. **Follow these instructions first.** Only search for additional information if these instructions are incomplete or contradictory.
+
+2. **Use provided scripts.** Always use `bin/install_deps` for dependencies (it's what CI uses).
+
+3. **Database is required for tests.** Set it up with `bin/console galette:install` before testing.
+
+4. **Use correct test command.** Always include `DB=mysql` (or `pgsql`) and `--test-suffix=.php`:
+   ```bash
+   DB=mysql galette/vendor/bin/phpunit --test-suffix=.php tests/Galette/
+   ```
+
+5. **Code quality is mandatory.** Run PHP-CS-Fixer, PHPCS, and PHPStan before every commit.
+
+6. **Build frontend when needed.** If you modify `ui/`, run `npm run build`.
+
+7. **Check CI workflows for examples.** Look at `.github/workflows/ci-linux.yml` for reference commands.
+
+8. **Test on appropriate database.** Use the database type relevant to the task (MySQL or PostgreSQL).
+
+9. **Read error messages carefully.** They usually explain what's wrong.
+
+10. **Consider performance.** Galette handles thousands of members; optimize accordingly.
+
+11. **Create migrations for schema changes.** Never modify database structure without a migration file in `patches/`.
+
+12. **Work on develop branch.** Unless told otherwise, branch from and merge to `develop`.
+
+13. **Sanitize renderable values before storing them.** `Html::clean()` when the value may contain HTML markup, `Html::strip()` when it must not. See *Storing renderable values* above.
+
+14. **Prefer LSP over Grep for code navigation.** Warn the user if you do not have access. Use LSP operations (`goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `incomingCalls`, `outgoingCalls`) for symbol navigation. Fall back to Grep only for non-symbol searches (string literals, comments, regex patterns) or when LSP is unavailable.

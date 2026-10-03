@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Entity;
 
+use Galette\Util\Html;
 use Analog\Analog;
 use Galette\Core\Db;
 use ArrayObject;
@@ -30,47 +18,51 @@ use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Throwable;
 
+use function Safe\preg_replace;
+
 /**
  * Contributions types handling
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $label
+ * @property string $description
  * @property string $libelle
  * @property ?float $amount
- * @property int $extension
+ * @property int    $extension
  */
 
 class ContributionsTypes
 {
     use I18n;
 
-    public const DEFAULT_TYPE = -1;
-    public const DONATION_TYPE = 0;
+    public const int DEFAULT_TYPE = -1;
+    public const int DONATION_TYPE = 0;
 
-    public const TABLE = 'types_cotisation';
-    public const PK = 'id_type_cotis';
+    public const string TABLE = 'types_cotisation';
+    public const string PK = 'id_type_cotis';
 
     private int $id;
     private string $label;
+    private string $description;
     private ?float $amount = null;
     private int $extension;
 
-    public const ID_NOT_EXITS = -1;
+    public const int ID_NOT_EXITS = -1;
 
     /** @var array<string> */
     private array $errors = [];
 
     /** @var array<int, array<string, mixed>> */
     protected static array $defaults = [
-        ['id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE],
-        ['id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE],
-        ['id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE],
-        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE]
+        ['id' => 1, 'libelle' => 'annual fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 2, 'libelle' => 'reduced annual fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 3, 'libelle' => 'company fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 4, 'libelle' => 'donation in kind', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 5, 'libelle' => 'donation in money', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 6, 'libelle' => 'partnership', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'description' => '', 'extension' => self::DEFAULT_TYPE]
     ];
 
     /**
@@ -132,13 +124,12 @@ class ContributionsTypes
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
         $this->id = (int)$r->{self::PK};
         $this->label = $r->libelle_type_cotis;
+        $this->description = $r->description;
         if ($r->amount !== null) {
             $this->amount = (float)$r->amount;
         }
@@ -147,8 +138,6 @@ class ContributionsTypes
 
     /**
      * Does current type give membership extension?
-     *
-     * @return bool
      */
     public function isExtension(): bool
     {
@@ -157,8 +146,6 @@ class ContributionsTypes
 
     /**
      * Get the amount
-     *
-     * @return float
      */
     public function getAmount(): float
     {
@@ -168,7 +155,6 @@ class ContributionsTypes
     /**
      * Set defaults at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -181,6 +167,7 @@ class ContributionsTypes
             $values = [
                 self::PK => ':id',
                 'libelle_type_cotis' => ':libelle',
+                'description' => ':description',
                 'cotis_extension' => ':extension'
             ];
 
@@ -200,7 +187,8 @@ class ContributionsTypes
                     [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
-                        $fnames[2]  => $d['extension']
+                        $fnames[2]  => $d['description'],
+                        $fnames[3]  => $d['extension']
                     ]
                 );
             }
@@ -235,7 +223,7 @@ class ContributionsTypes
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = [self::PK, 'libelle_type_cotis', 'amount', 'cotis_extension'];
+            $fields = [self::PK, 'libelle_type_cotis', 'description', 'amount', 'cotis_extension'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -251,6 +239,7 @@ class ContributionsTypes
             foreach ($results as $r) {
                 $list[$r->{self::PK}] = [
                     'label' => _T($r->libelle_type_cotis),
+                    'description' => $r->description,
                     'amount' => $r->amount,
                     'extension' => $r->cotis_extension
                 ];
@@ -290,6 +279,7 @@ class ContributionsTypes
                     $list[$r->{self::PK}] = [
                         'text_orig' => $r->libelle_type_cotis,
                         'name' => _T($r->libelle_type_cotis),
+                        'description' => $r->description,
                         'amount' => $r->amount,
                         'extra' => $r->cotis_extension
                     ];
@@ -343,8 +333,6 @@ class ContributionsTypes
      * @param int  $id         Id
      * @param bool $translated Do we want translated or original label?
      *                         Defaults to true.
-     *
-     * @return string|int
      */
     public function getLabel(int $id, bool $translated = true): string|int
     {
@@ -352,7 +340,7 @@ class ContributionsTypes
         if ($res === false) {
             //get() already logged
             return self::ID_NOT_EXITS;
-        };
+        }
         return ($translated) ? _T($res->libelle_type_cotis) : $res->libelle_type_cotis;
     }
 
@@ -390,16 +378,18 @@ class ContributionsTypes
     /**
      * Add a new entry
      *
-     * @param string $label     The label
-     * @param ?float $amount    The amount
-     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param string $label       The label
+     * @param string $description The description
+     * @param ?float $amount      The amount
+     * @param int    $extension   Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return bool|int  -2 : label already exists
      */
-    public function add(string $label, ?float $amount, int $extension): bool|int
+    public function add(string $label, string $description, ?float $amount, int $extension): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
+        $description = $this->formatDescription($description);
         $ret = $this->getIdByLabel($label);
 
         if ($ret !== false) {
@@ -411,9 +401,10 @@ class ContributionsTypes
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
+                'description' => $description,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
             ];
@@ -436,10 +427,10 @@ class ContributionsTypes
             } else {
                 throw new \Exception('New contribution type not added.');
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to add new contribution type `' . $label . '` | '
                 . $e->getMessage(),
@@ -452,16 +443,18 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param int    $id        Entry ID
-     * @param string $label     The label
-     * @param ?float $amount    The amount
-     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param int    $id          Entry ID
+     * @param string $label       The label
+     * @param string $description The description
+     * @param ?float $amount      The amount
+     * @param int    $extension   Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return self::ID_NOT_EXITS|bool
      */
-    public function update(int $id, string $label, ?float $amount, int $extension): int|bool
+    public function update(int $id, string $label, string $description, ?float $amount, int $extension): int|bool
     {
         $label = strip_tags($label);
+        $description = $this->formatDescription($description);
         $ret = $this->get($id);
         if (!$ret) {
             /* get() already logged and set $this->error. */
@@ -470,9 +463,10 @@ class ContributionsTypes
 
         try {
             $oldlabel = $ret->libelle_type_cotis;
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
+                'description' => $description,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
             ];
@@ -492,10 +486,10 @@ class ContributionsTypes
                 'Contribution type #' . $id . ' updated successfully.',
                 Analog::INFO
             );
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to update contribution type #' . $id . ' | '
                 . $e->getMessage(),
@@ -526,7 +520,7 @@ class ContributionsTypes
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
 
@@ -538,10 +532,10 @@ class ContributionsTypes
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete contribution type #' . $id
                 . ' | ' . $e->getMessage(),
@@ -555,8 +549,6 @@ class ContributionsTypes
      * Check if this entry is used.
      *
      * @param int $id Entry ID
-     *
-     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -567,11 +559,7 @@ class ContributionsTypes
             $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ($result !== null) {
-                return true;
-            } else {
-                return false;
-            }
+            return $result !== null;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to check if contribution type #' . $id
@@ -613,8 +601,6 @@ class ContributionsTypes
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -631,5 +617,32 @@ class ContributionsTypes
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * Format description to remove empty tags
+     */
+    private function formatDescription(string $description): string
+    {
+        //If we just have empty tags, we consider that description is empty
+        if (trim(strip_tags($description)) === '') {
+            return '';
+        }
+
+        // Remove leading and trailing empty paragraphs (<p><br></p>) added by WYSIWYG editors,
+        // but preserve intentional <br> tags inside non-empty content.
+        $cleaned = preg_replace(
+            [
+                '/^(?:\s*<br\s*\/?>\s*)+/i',
+                '/(?:\s*<br\s*\/?>\s*)+$/i',
+                '/^(?:\s*<p>\s*<br\s*\/?>\s*<\/p>\s*)+/i',
+                '/(?:\s*<p>\s*<br\s*\/?>\s*<\/p>\s*)+$/i',
+                '/<p>\s*<br\s*\/?>\s*<\/p>/i'
+            ],
+            '',
+            $description
+        );
+        $cleaned = Html::clean((string)$cleaned);
+        return trim((string)$cleaned);
     }
 }

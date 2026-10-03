@@ -1,29 +1,20 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
+
+use function Safe\preg_replace;
 
 /**
  * Password tests class
@@ -36,43 +27,66 @@ class Password extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
-        $this->pass = new \Galette\Core\Password($this->zdb, false);
+        $this->pass = new \Galette\Core\Password($this->zdb, clean: false);
     }
 
     /**
-     * Test unique password generator
-     *
-     * @return void
+     * Test generated logins
      */
-    public function testRandom(): void
+    public function testMakeRandomLogin(): void
     {
-        $results = [];
+        $logins = [];
 
         for ($i = 0; $i < 200; $i++) {
-            $random = $this->pass->makeRandomPassword(15);
-            $this->assertSame(15, strlen($random));
-
-            $exists = in_array($random, $results);
-            $this->assertFalse($exists);
-
-            $results[] = $random;
-            $this->assertCount($i + 1, $results);
+            $login = $this->pass->makeRandomLogin();
+            $this->assertSame(15, strlen($login));
+            //a login must never carry '@', which Adherent::validate() rejects
+            //since it identifies an email address
+            $this->assertStringNotContainsString('@', $login);
+            $this->assertNotContains($login, $logins);
+            $logins[] = $login;
         }
 
-        $random = $this->pass->makeRandomPassword();
-        $this->assertSame(\Galette\Core\Password::DEFAULT_SIZE, strlen($random));
+        $this->assertSame(10, strlen($this->pass->makeRandomLogin(10)));
+
+        //generated logins must stay inside the character set, and must be able
+        //to reach both of its ends
+        $chars = \Galette\Core\AbstractPassword::LOGIN_CHARS;
+        $generated = implode('', $logins);
+        $this->assertSame(
+            '',
+            preg_replace('/[' . preg_quote($chars, '/') . ']/', '', $generated),
+            'Generated login contains characters outside the character set'
+        );
+        $this->assertStringContainsString($chars[0], $generated);
+        $this->assertStringContainsString($chars[strlen($chars) - 1], $generated);
+    }
+
+    /**
+     * Test hash generated for accounts left without a password
+     */
+    public function testMakeUnusablePasswordHash(): void
+    {
+        $hash = $this->pass->makeUnusablePasswordHash();
+
+        //a real hash, not a cleartext value stored in the password column
+        $this->assertSame('$2y$', substr($hash, 0, 4));
+        $this->assertSame(60, strlen($hash));
+
+        //nothing guessable may match it
+        foreach (['', '*', 'password', 'NULL', $hash] as $candidate) {
+            $this->assertFalse(password_verify($candidate, $hash), 'matched with ' . $candidate);
+        }
+
+        $this->assertNotSame($hash, $this->pass->makeUnusablePasswordHash());
     }
 
     /**
      * Create member and get its id
-     *
-     * @return int
      */
     private function localCreateMember(): int
     {
@@ -102,8 +116,9 @@ class Password extends GaletteTestCase
         $this->zdb->execute($insert);
 
         if ($this->zdb->isPostgres()) {
+            // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
             return (int)$this->zdb->driver->getLastGeneratedValue(
-                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, true)
+                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, prefixed: true)
             );
         } else {
             return (int)$this->zdb->driver->getLastGeneratedValue();
@@ -112,8 +127,6 @@ class Password extends GaletteTestCase
 
     /**
      * Delete member
-     *
-     * @return void
      */
     private function deleteMember(): void
     {
@@ -124,8 +137,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test new Password generation
-     *
-     * @return void
      */
     public function testGenerateNewPassword(): void
     {
@@ -133,19 +144,37 @@ class Password extends GaletteTestCase
         $pass = $this->pass;
         $res = $pass->generateNewPassword($id_adh);
         $this->assertTrue($res);
-        $new_pass = $pass->getNewPassword();
-        $this->assertSame($pass::DEFAULT_SIZE, strlen($new_pass));
-        $hash = $pass->getHash();
-        $this->assertSame(60, strlen($hash));
 
-        $is_valid = $pass->isHashValid($hash);
-        $this->assertNotNull($is_valid);
+        //the token travels by email, 32 random bytes rendered as hexadecimal
+        $token = $pass->getToken();
+        $this->assertSame(64, strlen($token));
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $token);
+
+        //what is stored must NOT be the token: a read access to the table must
+        //not hand over working recovery links
+        $hash = $pass->getHash();
+        $this->assertNotSame($token, $hash);
+        $this->assertSame(hash('sha256', $token), $hash);
 
         $select = $this->zdb->select(\Galette\Core\Password::TABLE);
+        $stored = $this->zdb->execute($select)->current();
+        $this->assertSame($hash, $stored->tmp_passwd);
+        $this->assertStringNotContainsString($token, $stored->tmp_passwd);
+
+        //only the token opens the door, its stored hash does not
+        $this->assertNotFalse($pass->isTokenValid($token));
+        $this->assertFalse($pass->isTokenValid($hash));
+        //a token differing by a single character must not be accepted. Mutate
+        //to a character the last one is not, or one time in sixteen the "mutated"
+        //token would be the token itself
+        $mutated = substr($token, 0, -1) . ($token[-1] === '0' ? '1' : '0');
+        $this->assertNotSame($token, $mutated);
+        $this->assertFalse($pass->isTokenValid($mutated));
+
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        $removed = $pass->removeHash($hash);
+        $removed = $pass->removeToken($token);
         $this->assertTrue($removed);
 
         $results = $this->zdb->execute($select);
@@ -156,14 +185,12 @@ class Password extends GaletteTestCase
 
     /**
      * Test cleanExpired
-     *
-     * @return void
      */
     public function testCleanExpired(): void
     {
         $id_adh = $this->localCreateMember();
 
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('PT48H'));
 
         $insert = $this->zdb->insert(\Galette\Core\Password::TABLE);
@@ -180,7 +207,7 @@ class Password extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        new \Galette\Core\Password($this->zdb, true);
+        new \Galette\Core\Password($this->zdb, clean: true);
 
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
@@ -190,96 +217,92 @@ class Password extends GaletteTestCase
 
     /**
      * Generate new password that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGenerateNewPasswordWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $res = $pass->generateNewPassword(12);
-        $this->expectLogEntry(\Analog::ERROR, 'Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query!');
         $this->assertFalse($res);
     }
 
     /**
      * Test cleanExpired that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCleanExpiredWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, clean: false);
         $this->assertFalse($pass->cleanExpired());
-        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
     }
 
     /**
      * Test hash validity that throws an exception
-     *
-     * @return void
      */
-    public function testIsHashValidWException(): void
+    #[AllowMockObjectsWithoutExpectations]
+    public function testIsTokenValidWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
-        $res = $pass->isHashValid('thehash');
-        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
+        $pass = new \Galette\Core\Password($zdb, clean: false);
+        $res = $pass->isTokenValid('thetoken');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }
 
     /**
      * Test hash removal that throws an exception
-     *
-     * @return void
      */
-    public function testRemoveHashWException(): void
+    #[AllowMockObjectsWithoutExpectations]
+    public function testRemoveTokenWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
-        $res = $pass->removeHash('thehash');
-        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
+        $pass = new \Galette\Core\Password($zdb, clean: false);
+        $res = $pass->removeToken('thetoken');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }
 }

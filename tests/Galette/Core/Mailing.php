@@ -1,30 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Mailing tests class
@@ -35,9 +22,8 @@ class Mailing extends GaletteTestCase
 {
     /**
      * Test setRecipients
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSetRecipients(): void
     {
         $mailing = new \Galette\Core\Mailing($this->preferences);
@@ -65,8 +51,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test cleanHTML
-     *
-     * @return void
      */
     public function testCleanHTML(): void
     {
@@ -79,8 +63,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test getPhpMailer
-     *
-     * @return void
      */
     public function testGetPhpMailer(): void
     {
@@ -90,8 +72,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test __isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
@@ -100,14 +80,12 @@ class Mailing extends GaletteTestCase
         $this->assertFalse(isset($mailing->ordered)); //explicitly forbidden
         $this->assertTrue(isset($mailing->alt_message)); //explicitly allowed
         $this->assertTrue(isset($mailing->mail)); //explicitly allowed
-        $this->assertTrue(isset($mailing->current_step));
-        $this->assertFalse(isset($mailing->history_id)); //private
+        $this->assertTrue(isset($mailing->current_step)); //@phpstan-ignore isset.property,method.alreadyNarrowedType
+        $this->assertFalse(isset($mailing->history_id)); //@phpstan-ignore isset.property,method.impossibleType (private)
     }
 
     /**
      * Test getters and setters
-     *
-     * @return void
      */
     public function testGetterSetters(): void
     {
@@ -129,16 +107,16 @@ class Mailing extends GaletteTestCase
         );
 
         $this->assertFalse($mailing->html);
-        $mailing->html = 'true';
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `html` should be boolean - (string)true given');
+        $mailing->html = 'true'; // @phpstan-ignore assign.propertyType
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `html` should be boolean - (string)true given');
         $mailing->html = true;
         $this->assertTrue($mailing->html);
 
         $this->assertSame(\Galette\Core\Mailing::STEP_START, $mailing->current_step);
-        $mailing->current_step = 'invalid_step';
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (string)invalid_step given');
+        $mailing->current_step = 'invalid_step'; // @phpstan-ignore assign.propertyType (explicitly forbidden)
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (string)invalid_step given');
         $mailing->current_step = 42;
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (integer)42 given');
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (integer)42 given');
         $mailing->current_step = \Galette\Core\Mailing::STEP_PREVIEW;
         $this->assertSame(\Galette\Core\Mailing::STEP_PREVIEW, $mailing->current_step);
         $this->assertSame(\Galette\Core\Mailing::STEP_PREVIEW, $mailing->step);
@@ -147,8 +125,8 @@ class Mailing extends GaletteTestCase
         $mailing->id = 42;
         $this->assertSame(42, $mailing->id);
 
-        $this->assertFalse($mailing->ordered); //explicitly forbidden
-        $this->expectLogEntry(\Analog::ERROR, '[Galette\Core\Mailing] Unable to get ordered');
+        $this->assertFalse($mailing->ordered); // @phpstan-ignore property.notFound (explicitly forbidden)
+        $this->expectLogEntry(\Analog\Analog::ERROR, '[Galette\Core\Mailing] Unable to get ordered');
 
         $this->assertSame([], $mailing->errors);
         $this->assertSame([], $mailing->recipients);
@@ -159,5 +137,25 @@ class Mailing extends GaletteTestCase
 
         $this->assertNotEmpty($mailing->tmp_path);
         $this->assertFalse($mailing->existsInHistory());
+    }
+
+    /**
+     * An attachment over the limit is reported, not fatal
+     *
+     * Storage is delegated to a File instance, but the error it returns is
+     * worded by the mailing: both have to know the limit.
+     */
+    public function testTooBigAttachmentIsReported(): void
+    {
+        $this->preferences->pref_upload_size_attachments = 42;
+        $mailing = new \Galette\Core\Mailing($this->preferences);
+
+        $this->assertSame(42, $mailing->getMaxLength());
+
+        $message = new \ReflectionMethod($mailing, 'getErrorMessageFromCode');
+        $this->assertSame(
+            'File is too big. Maximum allowed size is 42 Ko',
+            $message->invoke($mailing, \Galette\Core\Mailing::FILE_TOO_BIG)
+        );
     }
 }

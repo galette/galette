@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -47,12 +34,11 @@ class Date extends DynamicField
     {
         parent::__construct($zdb, $id);
         $this->has_data = true;
+        $this->multi_valued = true;
     }
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -64,8 +50,6 @@ class Date extends DynamicField
      * This method *tries* to fix that.
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public static function resetLocalizedFormats(Db $zdb): bool
     {
@@ -133,7 +117,7 @@ class Date extends DynamicField
             return true;
         }
 
-        $zdb->connection->beginTransaction();
+        $zdb->beginTransaction();
         $update = $zdb->update(DynamicFieldsHandle::TABLE);
         $update->set(
             [
@@ -156,13 +140,13 @@ class Date extends DynamicField
                 ]
             );
         }
-        $zdb->connection->commit();
+        $zdb->commit();
         Analog::log(
             sprintf(
                 "Dynamic dates updated, %1\$s row(s) affected on %2\$s found.\n%3\$s",
                 count($updates),
                 $results->count(),
-                print_r($debug_dates, true)
+                print_r($debug_dates, return: true)
             ),
             Analog::INFO
         );
@@ -174,8 +158,6 @@ class Date extends DynamicField
      * Get value to display for a field
      *
      * @param mixed $value Raw value to get displayed
-     *
-     * @return string
      */
     public function getDisplayValue(mixed $value): string
     {

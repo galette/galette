@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -44,7 +31,6 @@ use SplFileInfo;
 
 use function Safe\mkdir;
 use function Safe\preg_replace;
-use function Safe\realpath;
 use function Safe\rmdir;
 use function Safe\unlink;
 
@@ -59,10 +45,10 @@ use function Safe\unlink;
 )]
 class MakeTwigCache extends AbstractCommand
 {
+    use TwigCacheDirectories;
+
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
@@ -73,51 +59,12 @@ class MakeTwigCache extends AbstractCommand
 
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $directory_path = sprintf(
-            '%s/../../../../templates/default',
-            __DIR__,
-        );
-        $cache_dir_path = sprintf(
-            '%s/../../../../..',
-            __DIR__,
-        );
-
         $plugin = $input->getArgument('plugin');
-        if ($plugin) {
-            $directory_path = sprintf(
-                '%s/../../../../plugins/%s/templates/default',
-                __DIR__,
-                $plugin
-            );
-            $cache_dir_path = sprintf(
-                '%s/../../../../plugins/%s',
-                __DIR__,
-                $plugin
-            );
-        }
-
-        $directory = realpath($directory_path);
-        if (!is_dir($directory) || !is_readable($directory)) {
-            throw new InvalidOptionException(
-                sprintf('Unable to read templates directory "%s"', $directory_path)
-            );
-        }
-
-        $cache_dir = realpath($cache_dir_path);
-        if (!is_dir($cache_dir) || !is_readable($cache_dir)) {
-            throw new InvalidOptionException(
-                sprintf('Unable to read cache directory "%s"', $cache_dir_path)
-            );
-        }
-        $cache_dir .= '/tempcache';
+        $directory = $this->getTemplatesDirectory($plugin);
+        $cache_dir = $this->getCacheDirectory($plugin);
 
         if (file_exists($cache_dir)) {
             $this->rmdirRecursive($cache_dir);
@@ -144,8 +91,6 @@ class MakeTwigCache extends AbstractCommand
      * Remove a directory and its content recursively.
      *
      * @param string $path Path to remove
-     *
-     * @return bool
      */
     private function rmdirRecursive(string $path): bool
     {
@@ -211,8 +156,6 @@ class MakeTwigCache extends AbstractCommand
      * Return a mocked Twig environment, with custom functions, filters and tests.
      *
      * @param LoaderInterface $loader Twig loader
-     *
-     * @return Environment
      */
     private function getMockedTwigEnvironment(LoaderInterface $loader): Environment
     {
@@ -221,8 +164,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom functions
              *
              * @param string $name Function name
-             *
-             * @return TwigFunction
              */
             public function getFunction(string $name): TwigFunction
             {
@@ -233,7 +174,7 @@ class MakeTwigCache extends AbstractCommand
                     '_Tx',
                     '_Tnx',
                 ];
-                if (in_array($name, $translation_functions, true)) {
+                if (in_array($name, $translation_functions, strict: true)) {
                     // Return a function that has its own name as callback
                     // for translation functions, so Twig will generate code following this pattern:
                     // $name($parameter, ...)`, e.g. `_T('str')` or `_Tn('str', 'strs', 5)`.
@@ -247,8 +188,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom filters
              *
              * @param string $name Filter name
-             *
-             * @return TwigFilter
              */
             public function getFilter(string $name): TwigFilter
             {
@@ -260,8 +199,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom tests
              *
              * @param string $name Test name
-             *
-             * @return ?TwigTest
              */
             public function getTest(string $name): ?TwigTest
             {
@@ -282,8 +219,6 @@ class MakeTwigCache extends AbstractCommand
      * This handler is useful to be able to preserve filenames of compiled files.
      *
      * @param string $directory Directory to store cache
-     *
-     * @return CacheInterface
      */
     private function getTwigCacheHandler(string $directory): CacheInterface
     {
@@ -307,8 +242,6 @@ class MakeTwigCache extends AbstractCommand
              *
              * @param string $name      The template name
              * @param string $className The template class name
-             *
-             * @return string
              */
             public function generateKey(string $name, string $className): string
             {

@@ -1,35 +1,21 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <form action="{{ url_for('titles') }}" method="post" enctype="multipart/form-data" class="ui form">
+    <form action="{{ url_for('storeTitle') }}" method="post" enctype="multipart/form-data" class="ui form">
         <div class="ui basic fitted segment loader_selector">
             <table class="listing ui celled striped table">
                 <thead>
                     <tr>
-                        <th class="id_row collapsing">#</th>
-                        <th>{{ _T("Short form") }}</th>
-                        <th>{{ _T("Long form") }}</th>
-                        <th class="collapsing">{{ _T("Actions") }}</th>
+                        <th scope="col" class="id_row collapsing">#</th>
+                        <th scope="col">{{ _T("Short form") }}</th>
+                        <th scope="col">{{ _T("Long form") }}</th>
+                        <th scope="col" class="collapsing">{{ _T("Actions") }}</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -42,13 +28,13 @@
                         <td class="left" data-col-label="{{ _T("Short form") }}">
                             <div class="required field">
                                 <label for="short_label" class="visually-hidden">{{ _T("Short form") }}</label>
-                                <input size="20" type="text" name="short_label" required="required"/>
+                                <input size="20" type="text" name="short_label" id="short_label" required="required"/>
                             </div>
                         </td>
                         <td class="left" data-col-label="{{ _T("Long form") }}">
                             <div class="required field">
                                 <label for="long_label" class="visually-hidden">{{ _T("Long form") }}</label>
-                                <input size="20" type="text" name="long_label" required="required"/>
+                                <input size="20" type="text" name="long_label" id="long_label"  required="required"/>
                             </div>
                         </td>
                         <td class="center actions_row collapsing">
@@ -71,20 +57,20 @@
                         <td class="center actions_row collapsing">
                             <a
                                 href="{{ url_for('editTitle', {'id': title.id}) }}"
-                                class="action single-edit"
+                                class="action single-edit icon-only"
                             >
                                 <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="visually-hidden">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% if title.id == 1 or title.id == 2 %}
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
                                 href="{{ url_for('removeTitle', {'id': title.id}) }}"
-                                class="delete "
+                                class="delete icon-only"
                             >
                                 <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="visually-hidden">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% endif %}
                         </td>
@@ -93,7 +79,6 @@
                 </tbody>
             </table>
         </div>
-        {% include 'components/forms/csrf.html.twig' %}
     </form>
 {% endblock %}
 

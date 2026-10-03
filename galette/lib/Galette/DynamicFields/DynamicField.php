@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -25,6 +12,7 @@ namespace Galette\DynamicFields;
 
 use ArrayObject;
 use Galette\Features\Permissions;
+use Galette\Util\Html;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -33,6 +21,8 @@ use Galette\Features\Translatable;
 use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
+
+use function Safe\json_encode;
 
 /**
  * Abstract dynamic field
@@ -46,29 +36,29 @@ abstract class DynamicField
     use I18n;
     use Permissions;
 
-    public const TABLE = 'field_types';
-    public const PK = 'field_id';
+    public const string TABLE = 'field_types';
+    public const string PK = 'field_id';
 
     /** Separator field */
-    public const SEPARATOR = 0;
+    public const int SEPARATOR = 0;
     /** Simple text field */
-    public const TEXT = 1;
+    public const int TEXT = 1;
     /** Line field */
-    public const LINE = 2;
+    public const int LINE = 2;
     /** Choice field (listbox) */
-    public const CHOICE = 3;
+    public const int CHOICE = 3;
     /** Date field */
-    public const DATE = 4;
+    public const int DATE = 4;
     /** Boolean field (checkbox) */
-    public const BOOLEAN = 5;
+    public const int BOOLEAN = 5;
     /** File field (upload) */
-    public const FILE = 6;
+    public const int FILE = 6;
 
-    public const MOVE_UP = 'up';
-    public const MOVE_DOWN = 'down';
+    public const string MOVE_UP = 'up';
+    public const string MOVE_DOWN = 'down';
 
-    public const DEFAULT_MAX_FILE_SIZE = 1024;
-    public const VALUES_FIELD_LENGTH = 100;
+    public const int DEFAULT_MAX_FILE_SIZE = 1024;
+    public const int VALUES_FIELD_LENGTH = 100;
 
     protected bool $has_data = false;
     protected bool $has_width = false;
@@ -100,6 +90,8 @@ abstract class DynamicField
     /** @var array<string> */
     protected array $errors = [];
 
+    protected FieldSpecifications $specifications;
+
     /**
      * Default constructor
      *
@@ -120,8 +112,6 @@ abstract class DynamicField
      *
      * @param Db  $zdb Database instance
      * @param int $id  Field id
-     *
-     * @return DynamicField|false
      */
     public static function loadFieldType(Db $zdb, int $id): DynamicField|false
     {
@@ -155,8 +145,6 @@ abstract class DynamicField
      * @param Db       $zdb Database instance
      * @param int      $t   Field type
      * @param int|null $id  Optional dynamic field id (to load data)
-     *
-     * @return DynamicField
      */
     public static function getFieldType(Db $zdb, int $t, ?int $id = null): DynamicField
     {
@@ -176,8 +164,6 @@ abstract class DynamicField
      * Load field
      *
      * @param int $id Id
-     *
-     * @return void
      */
     public function load(int $id): void
     {
@@ -206,8 +192,6 @@ abstract class DynamicField
      *
      * @param ArrayObject<string, int|string> $rs     ResultSet
      * @param bool                            $values Whether to load values. Defaults to true
-     *
-     * @return void
      */
     public function loadFromRS(ArrayObject $rs, bool $values = true): void
     {
@@ -235,72 +219,31 @@ abstract class DynamicField
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
         $this->information_above = $rs->field_information_above == 1;
-        if ($values && $this->hasFixedValues()) {
-            $this->loadFixedValues();
+        if (isset($this->specifications)) {
+            $this->specifications->fromJson($rs->field_specifications ?? null);
+            if ($values && $this->hasFixedValues()) {
+                $this->loadFixedValues();
+            }
         }
     }
 
     /**
-     * Retrieve fixed values table name
-     *
-     * @param int  $id       Field ID
-     * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
-     */
-    public static function getFixedValuesTableName(int $id, bool $prefixed = false): string
-    {
-        $name = 'field_contents_' . $id;
-        if ($prefixed === true) {
-            $name = PREFIX_DB . $name;
-        }
-        return $name;
-    }
-
-    /**
-     * Returns an array of fixed valued for a field of type 'choice'.
-     *
-     * @return void
+     * Load an array of fixed valued for a field of type 'choice'.
      */
     private function loadFixedValues(): void
     {
-        try {
-            $val_select = $this->zdb->select(
-                self::getFixedValuesTableName($this->id)
-            );
-
-            $val_select->columns(
-                [
-                    'val'
-                ]
-            )->order('id');
-
-            $results = $this->zdb->execute($val_select);
-            $this->values = [];
-            if ($results->count() > 0) {
-                foreach ($results as $val) {
-                    $this->values[] = $val->val;
-                }
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+        if ($this->specifications instanceof ChoiceSpecifications) {
+            $this->values = $this->specifications->getChoices();
         }
     }
 
     /**
      * Get field type
-     *
-     * @return int
      */
     abstract public function getType(): int;
 
     /**
      * Get field type name
-     *
-     * @return String
      */
     public function getTypeName(): string
     {
@@ -316,8 +259,6 @@ abstract class DynamicField
 
     /**
      * Does the field handle data?
-     *
-     * @return bool
      */
     public function hasData(): bool
     {
@@ -326,8 +267,6 @@ abstract class DynamicField
 
     /**
      * Does the field has width?
-     *
-     * @return bool
      */
     public function hasWidth(): bool
     {
@@ -336,8 +275,6 @@ abstract class DynamicField
 
     /**
      * Does the field has height?
-     *
-     * @return bool
      */
     public function hasHeight(): bool
     {
@@ -346,8 +283,6 @@ abstract class DynamicField
 
     /**
      * Does the field has min size?
-     *
-     * @return bool
      */
     public function hasMinSize(): bool
     {
@@ -356,8 +291,6 @@ abstract class DynamicField
 
     /**
      * Does the field has a size?
-     *
-     * @return bool
      */
     public function hasSize(): bool
     {
@@ -366,8 +299,6 @@ abstract class DynamicField
 
     /**
      * Is the field multivalued?
-     *
-     * @return bool
      */
     public function isMultiValued(): bool
     {
@@ -376,8 +307,6 @@ abstract class DynamicField
 
     /**
      * Does the field has fixed values?
-     *
-     * @return bool
      */
     public function hasFixedValues(): bool
     {
@@ -386,8 +315,6 @@ abstract class DynamicField
 
     /**
      * Does the field require permissions?
-     *
-     * @return bool
      */
     public function hasPermissions(): bool
     {
@@ -396,8 +323,6 @@ abstract class DynamicField
 
     /**
      * Get field id
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -406,8 +331,6 @@ abstract class DynamicField
 
     /**
      * Is field required?
-     *
-     * @return bool
      */
     public function isRequired(): bool
     {
@@ -416,8 +339,6 @@ abstract class DynamicField
 
     /**
      * Get field's width in forms
-     *
-     * @return int|null
      */
     public function getWidthInForms(): ?int
     {
@@ -426,8 +347,6 @@ abstract class DynamicField
 
     /**
      * Get field width
-     *
-     * @return int|null
      */
     public function getWidth(): ?int
     {
@@ -436,8 +355,6 @@ abstract class DynamicField
 
     /**
      * Get field height
-     *
-     * @return int|null
      */
     public function getHeight(): ?int
     {
@@ -445,19 +362,18 @@ abstract class DynamicField
     }
 
     /**
-     * Is current field repeatable?
+     * Does current field take several occurrences?
      *
-     * @return bool
+     * A repeat of zero means as many occurrences as wanted; a null or single
+     * one means the field takes a single occurrence.
      */
     public function isRepeatable(): bool
     {
-        return $this->repeat != null && $this->repeat >= 0;
+        return $this->isMultiValued() && ($this->repeat === 0 || $this->repeat > 1);
     }
 
     /**
      * Get fields repetitions
-     *
-     * @return int|null
      */
     public function getRepeat(): ?int
     {
@@ -466,8 +382,6 @@ abstract class DynamicField
 
     /**
      * Get field min size
-     *
-     * @return int|null
      */
     public function getMinSize(): ?int
     {
@@ -476,8 +390,6 @@ abstract class DynamicField
 
     /**
      * Get field size
-     *
-     * @return int|null
      */
     public function getSize(): ?int
     {
@@ -485,9 +397,15 @@ abstract class DynamicField
     }
 
     /**
+     * Get field specifications
+     */
+    public function getSpecifications(): FieldSpecifications
+    {
+        return $this->specifications;
+    }
+
+    /**
      * Get field index
-     *
-     * @return int|null
      */
     public function getIndex(): ?int
     {
@@ -496,8 +414,6 @@ abstract class DynamicField
 
     /**
      * Get field information
-     *
-     * @return string
      */
     public function getInformation(): string
     {
@@ -506,8 +422,6 @@ abstract class DynamicField
 
     /**
      * Does the field information have to be displayed above input?
-     *
-     * @return bool
      */
     public function hasInformationAbove(): bool
     {
@@ -524,7 +438,8 @@ abstract class DynamicField
         return [
             'adh'       => _T("Members"),
             'contrib'   => _T("Contributions"),
-            'trans'     => _T("Transactions")
+            'trans'     => _T("Transactions"),
+            'prefs'     => _T("Settings")
         ];
     }
 
@@ -532,8 +447,6 @@ abstract class DynamicField
      * Retrieve form name
      *
      * @param string $form_name Form name
-     *
-     * @return string
      */
     public static function getFormTitle(string $form_name): string
     {
@@ -543,8 +456,6 @@ abstract class DynamicField
 
     /**
      * Get form
-     *
-     * @return string
      */
     public function getForm(): string
     {
@@ -575,8 +486,6 @@ abstract class DynamicField
      *
      * @param array<string,mixed> $values All values to check, basically the $_POST array
      *                                    after sending the form
-     *
-     * @return bool
      */
     public function check(array $values): bool
     {
@@ -667,49 +576,47 @@ abstract class DynamicField
             $this->errors[] = _T("- Min size must be lower than size!");
         }
 
-        if (isset($values['field_repeat'])) {
-            if (!is_numeric($values['field_repeat'])) {
+        if ($this->isMultiValued()) {
+            if (!isset($values['field_repeat']) || trim((string)$values['field_repeat']) === '') {
+                $this->repeat = null;
+            } elseif (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
             } else {
                 $this->repeat = (int)$values['field_repeat'];
             }
         }
 
-        if (isset($values['field_information']) && trim((string) $values['field_information']) != '') {
-            global $preferences;
-            $this->information = $preferences->cleanHtmlValue($values['field_information']);
+        if (isset($values['field_information']) && trim((string)$values['field_information']) != '') {
+            $this->information = Html::clean((string)$values['field_information']);
         }
 
         $this->information_above = (bool)($values['field_information_above'] ?? false);
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
-            foreach (explode("\n", (string) $values['fixed_values']) as $val) {
+            foreach (explode("\n", (string)$values['fixed_values']) as $val) {
                 $val = trim($val);
                 $len = mb_strlen($val);
                 if ($len > 0) {
                     $fixed_values[] = $val;
                     if ($len > $this->size) {
-                        if ($this->old_size === null) {
-                            $this->old_size = $this->size;
-                        }
+                        $this->old_size ??= $this->size;
                         $this->size = $len;
                     }
                 }
             }
 
             $this->values = $fixed_values;
+            if ($this->specifications instanceof ChoiceSpecifications) {
+                $this->specifications->setChoices($fixed_values);
+            }
         }
 
         if (!isset($this->id)) {
             $this->index = $this->getNewIndex();
         }
 
-        if (count($this->errors) === 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return count($this->errors) === 0;
     }
 
     /**
@@ -717,8 +624,6 @@ abstract class DynamicField
      *
      * @param array<string,mixed> $values All values to check, basically the $_POST array
      *                                    after sending the form
-     *
-     * @return bool
      */
     public function store(array $values): bool
     {
@@ -733,8 +638,9 @@ abstract class DynamicField
         }
 
         try {
+            $specifications = (isset($this->specifications)) ? json_encode($this->specifications) : new Expression('NULL');
             $values = [
-                'field_name'              => strip_tags((string) $this->name),
+                'field_name'              => strip_tags((string)$this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,
@@ -747,6 +653,7 @@ abstract class DynamicField
                 'field_index'             => $this->index,
                 'field_information'       => $this->information ?? new Expression('NULL'),
                 'field_information_above' => $this->information_above,
+                'field_specifications'    => $specifications
             ];
 
             if ($this->required === false) {
@@ -783,74 +690,11 @@ abstract class DynamicField
             $this->errors[] = _T("An error occurred storing the field.");
         }
 
-        if (count($this->errors) === 0 && $this->hasFixedValues()) {
-            $contents_table = self::getFixedValuesTableName($this->id, true);
-
-            try {
-                $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
-                $field_size = ((int)$this->size > 0) ? $this->size : 1;
-                $this->zdb->db->query(
-                    'CREATE TABLE ' . $contents_table
-                    . ' (id INTEGER NOT NULL,val varchar(' . $field_size
-                    . ') NOT NULL)',
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Unable to manage fields values table '
-                    . $contents_table . ' | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
-                $this->errors[] = _T("An error occurred creating field values table");
-            }
-
-            if (count($this->errors) == 0 && is_array($this->values)) {
-                $contents_table = self::getFixedValuesTableName($this->id);
-                try {
-                    $this->zdb->connection->beginTransaction();
-
-                    $insert = $this->zdb->insert($contents_table);
-                    $insert->values(
-                        [
-                            'id'    => ':id',
-                            'val'   => ':val'
-                        ]
-                    );
-                    $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-                    $cnt_values = count($this->values);
-                    for ($i = 0; $i < $cnt_values; $i++) {
-                        $stmt->execute(
-                            [
-                                'id'    => $i,
-                                'val'   => $this->values[$i]
-                            ]
-                        );
-                    }
-                    $this->zdb->connection->commit();
-                } catch (Throwable $e) {
-                    $this->zdb->connection->rollBack();
-                    Analog::log(
-                        'Unable to store field ' . $this->id . ' values ('
-                        . $e->getMessage() . ')',
-                        Analog::ERROR
-                    );
-                    $this->warnings[] = _T('An error occurred storing dynamic field values :(');
-                }
-            }
-        }
-
-        if (count($this->errors) === 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return count($this->errors) === 0;
     }
 
     /**
      * Get new index
-     *
-     * @return int
      */
     protected function getNewIndex(): int
     {
@@ -869,8 +713,6 @@ abstract class DynamicField
 
     /**
      * Is field duplicated?
-     *
-     * @return bool
      */
     public function isDuplicate(): bool
     {
@@ -918,8 +760,6 @@ abstract class DynamicField
      * Move a dynamic field
      *
      * @param string $action What to do (one of self::MOVE_*)
-     *
-     * @return bool
      */
     public function move(string $action): bool
     {
@@ -928,7 +768,7 @@ abstract class DynamicField
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $old_rank = $this->index;
 
@@ -954,11 +794,11 @@ abstract class DynamicField
                 ]
             );
             $this->zdb->execute($update);
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to change field ' . $this->id . ' rank | '
                 . $e->getMessage(),
@@ -970,18 +810,11 @@ abstract class DynamicField
 
     /**
      * Delete a dynamic field
-     *
-     * @return bool
      */
     public function remove(): bool
     {
         try {
-            if ($this->hasFixedValues()) {
-                $contents_table = self::getFixedValuesTableName($this->id);
-                $this->zdb->drop($contents_table);
-            }
-
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $old_rank = $this->index;
 
             $update = $this->zdb->update(self::TABLE);
@@ -1024,13 +857,13 @@ abstract class DynamicField
 
             $this->deleteTranslation($this->name);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
+            if ($this->zdb->inTransaction()) {
                 //because of DROP autocommit on mysql...
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred deleting field | ' . $e->getMessage(),
@@ -1082,8 +915,6 @@ abstract class DynamicField
      * Get value to display for a field
      *
      * @param mixed $value Raw value to get displayed
-     *
-     * @return string
      */
     public function getDisplayValue(mixed $value): string
     {

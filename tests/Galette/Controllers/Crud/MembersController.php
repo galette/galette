@@ -1,29 +1,20 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+use function Safe\copy;
+use function Safe\filesize;
 
 /**
  * Members controller tests
@@ -36,8 +27,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,37 +41,7 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test members list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -124,7 +83,7 @@ class MembersController extends GaletteRoutingTestCase
             $body
         );
         $this->assertStringContainsString(
-            $this->routeparser->urlFor('impersonate', ['id' => $member_one->id]),
+            $this->routeparser->urlFor('impersonate', ['id' => (string)$member_one->id]),
             $body
         );
 
@@ -134,7 +93,7 @@ class MembersController extends GaletteRoutingTestCase
             $body
         );
         $this->assertStringContainsString(
-            $this->routeparser->urlFor('impersonate', ['id' => $child->id]),
+            $this->routeparser->urlFor('impersonate', ['id' => (string)$child->id]),
             $body
         );
 
@@ -144,7 +103,7 @@ class MembersController extends GaletteRoutingTestCase
             $body
         );
         $this->assertStringContainsString(
-            $this->routeparser->urlFor('impersonate', ['id' => $member_two->id]),
+            $this->routeparser->urlFor('impersonate', ['id' => (string)$member_two->id]),
             $body
         );
 
@@ -189,7 +148,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         //no impersonate
         $this->assertStringNotContainsString(
-            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => $member_one->id])),
+            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => (string)$member_one->id])),
             $body
         );
 
@@ -228,7 +187,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         //no impersonate
         $this->assertStringNotContainsString(
-            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => $member_one->id])),
+            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => (string)$member_one->id])),
             $body
         );
 
@@ -267,15 +226,13 @@ class MembersController extends GaletteRoutingTestCase
         );
         //no impersonate
         $this->assertStringNotContainsString(
-            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => $member_one->id])),
+            str_replace((string)$member_one->id, '', $this->routeparser->urlFor('impersonate', ['id' => (string)$member_one->id])),
             $body
         );
     }
 
     /**
      * Test public members list
-     *
-     * @return void
      */
     public function testPublicMembersList(): void
     {
@@ -321,7 +278,7 @@ class MembersController extends GaletteRoutingTestCase
         //$this->expectOK($test_response); //FIXME: Adherent::website direct call is deprecated
         $this->assertSame([], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "website" directly is deprecated.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "website" directly is deprecated.');
         $this->expectFlashData([]);
 
         $body = (string)$test_response->getBody();
@@ -339,8 +296,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members gallery
-     *
-     * @return void
      */
     public function testPublicMembersGallery(): void
     {
@@ -398,8 +353,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public staff list
-     *
-     * @return void
      */
     public function testPublicStaffList(): void
     {
@@ -446,7 +399,7 @@ class MembersController extends GaletteRoutingTestCase
         //$this->expectOK($test_response); //FIXME: Adherent::website direct call is deprecated
         $this->assertSame([], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "website" directly is deprecated.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "website" directly is deprecated.');
         $this->expectFlashData([]);
 
         $body = (string)$test_response->getBody();
@@ -464,8 +417,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public staff gallery
-     *
-     * @return void
      */
     public function testPublicStaffGallery(): void
     {
@@ -524,8 +475,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -674,8 +623,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members list filters
-     *
-     * @return void
      */
     public function testPublicMembersListFilter(): void
     {
@@ -703,8 +650,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members gallery filters
-     *
-     * @return void
      */
     public function testPublicMembersGalleryFilter(): void
     {
@@ -732,8 +677,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -847,7 +790,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $this->logSuperAdmin();
         $mdata = $this->dataAdherentOne();
         $mdata['login_adh'] = 'login_4_test';
@@ -867,7 +810,7 @@ class MembersController extends GaletteRoutingTestCase
             ],
             $check
         );
-        $this->expectLogEntry(\Analog::ERROR, 'Mandatory field <a href="#nom_adh">Name</a> empty');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Mandatory field <a href="#nom_adh">Name</a> empty');
         $this->session->member = $member;
 
         $request = $this->createRequest($route_name);
@@ -882,8 +825,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members self subscription page
-     *
-     * @return void
      */
     public function testSelfSubscriptionPage(): void
     {
@@ -923,14 +864,12 @@ class MembersController extends GaletteRoutingTestCase
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
-        $this->assertStringContainsString('<title>Subscription', $body);
+        $this->assertStringContainsString('<title>Registration', $body);
         $this->assertStringContainsString('name="gaptcha"', $body);
     }
 
     /**
      * Test members add child page
-     *
-     * @return void
      */
     public function testAddChildPage(): void
     {
@@ -1050,8 +989,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members edit page
-     *
-     * @return void
      */
     public function testEditPage(): void
     {
@@ -1066,7 +1003,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'editMember';
-        $route_arguments = ['id' => $member_one->id];
+        $route_arguments = ['id' => (string)$member_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -1083,11 +1020,11 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertStringContainsString($member_one->name, $body);
 
         //member that does not exists
-        $request = $this->createRequest($route_name, ['id' => 999999]);
+        $request = $this->createRequest($route_name, ['id' => '999999']);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No member #999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No member #999999');
         $this->expectFlashData(['error_detected' => ['No member #999999.']]);
 
         $this->login->logout();
@@ -1216,8 +1153,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members show page
-     *
-     * @return void
      */
     public function testShowPage(): void
     {
@@ -1232,7 +1167,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'member';
-        $route_arguments = ['id' => $member_one->id];
+        $route_arguments = ['id' => (string)$member_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -1249,11 +1184,11 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertStringContainsString($member_one->getEmail(), $body);
 
         //member that does not exists
-        $request = $this->createRequest($route_name, ['id' => 999999]);
+        $request = $this->createRequest($route_name, ['id' => '999999']);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No member #999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No member #999999');
         $this->expectFlashData(['error_detected' => ['No member #999999.']]);
 
         $this->login->logout();
@@ -1349,8 +1284,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test "my" page
-     *
-     * @return void
      */
     public function testShowMePage(): void
     {
@@ -1413,8 +1346,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test add members
-     *
-     * @return void
      */
     public function testAddMember(): void
     {
@@ -1502,14 +1433,8 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertFalse($this->login->isStaff());
         $this->assertFalse($this->login->isGroupManager());
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store new member!', $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
         $this->login->logout();
 
         $result = $this->zdb->execute($count_select);
@@ -1580,15 +1505,9 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
 
-        //with default preferences, groups manager cannot add member (will throw an exception)
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store new member!', $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        //with default preferences, groups manager cannot add member (access denied)
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no member added
@@ -1605,7 +1524,7 @@ class MembersController extends GaletteRoutingTestCase
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('addMember')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'You have to select a group you own!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'You have to select a group you own!');
         $this->expectFlashData(['error_detected' => ['You have to select a group you own!']]);
 
         //test with group set
@@ -1639,8 +1558,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members adding their own children
-     *
-     * @return void
      */
     public function testMemberAddChild(): void
     {
@@ -1790,8 +1707,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members self subscription
-     *
-     * @return void
      */
     public function testMemberSelfSubscription(): void
     {
@@ -1802,7 +1717,10 @@ class MembersController extends GaletteRoutingTestCase
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result);
 
-        //preference is required to access this page - disabled per default
+        //preference is required to access this page
+        $this->preferences->pref_bool_selfsubscribe = false;
+        $this->assertTrue($this->preferences->store());
+
         $request = $this->createRequest($route_name, [], 'POST');
         $request = $request->withParsedBody($member_data);
         $test_response = $this->app->handle($request);
@@ -1849,16 +1767,62 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Subscribing is limited: the form is public, and each subscription
+     * creates rows and sends mail
+     */
+    public function testSelfSubscriptionIsThrottled(): void
+    {
+        $this->preferences->pref_bool_selfsubscribe = true;
+        $this->assertTrue($this->preferences->store());
+
+        $throttle = new \Galette\Core\AuthThrottle($this->zdb, $this->preferences, clean: false);
+        for ($i = 0; $i < $this->preferences->pref_throttle_subscribe_attempts; $i++) {
+            $throttle->recordSubscribe();
+        }
+        $this->assertGreaterThan(0, $throttle->getSubscribeDelay());
+
+        $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
+        $rgaptcha = new \ReflectionClass($gaptcha);
+        $rgaptcha->getProperty('gaptcha')->setValue($gaptcha, 8);
+        $this->session->gaptcha = $gaptcha;
+
+        $member_data = $this->dataAdherentOne();
+        unset($member_data['mdp_adh'], $member_data['mdp_adh2']);
+        $member_data['gaptcha'] = 8;
+
+        $request = $this->createRequest('storeselfmembers', [], 'POST')->withParsedBody($member_data);
+        $test_response = $this->app->handle($request);
+
+        $this->preferences->pref_bool_selfsubscribe = false;
+        $this->assertTrue($this->preferences->store());
+
+        //sent back to the form, and nothing created
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('subscribe')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertCount(0, $this->zdb->execute($this->zdb->select(\Galette\Entity\Adherent::TABLE)));
+
+        $flash = $this->flash_data['slimFlash']['error_detected'][0] ?? '';
+        $this->assertStringContainsString('Too many requests', $flash);
+        $this->flash_data = [];
+        $this->expectNoLogEntry();
+
+        //the counter is lifted, and it goes through
+        $this->assertTrue($throttle->releaseAll());
+        $this->assertSame(0, $throttle->getSubscribeDelay());
+    }
+
+    /**
      * Test member duplication route
-     *
-     * @return void
      */
     public function testMemberDuplicate(): void
     {
         $member_one = $this->getMemberOne();
 
         $route_name = 'duplicateMember';
-        $route_arguments = ['id_adh' => $member_one->id];
+        $route_arguments = ['id_adh' => (string)$member_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -1884,9 +1848,8 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test edit members
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testEditMember(): void
     {
         $member_one = $this->getMemberOne();
@@ -1916,7 +1879,7 @@ class MembersController extends GaletteRoutingTestCase
         $m2data = $this->dataAdherentTwo();
 
         $route_name = 'doEditMember';
-        $route_arguments = ['id' => $member_one->id];
+        $route_arguments = ['id' => (string)$member_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
@@ -1928,7 +1891,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1950,7 +1913,7 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata);
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1971,14 +1934,8 @@ class MembersController extends GaletteRoutingTestCase
         $mdata['nom_adh'] = 'Another changed name';
         $request = $request->withParsedBody($mdata);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -1999,7 +1956,7 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata);
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -2026,7 +1983,7 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata);
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -2057,14 +2014,8 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
 
         //groups manager: no right by default
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -2080,7 +2031,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->preferences->store());
 
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -2104,11 +2055,11 @@ class MembersController extends GaletteRoutingTestCase
         $child_data['id_adh'] = $child->id;
         $child_data['nom_adh'] = 'Parent changed name';
 
-        $child_request = $this->createRequest($route_name, ['id' => $child->id], 'POST');
+        $child_request = $this->createRequest($route_name, ['id' => (string)$child->id], 'POST');
         $child_request = $child_request->withParsedBody($child_data);
         $test_response = $this->app->handle($child_request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $child->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$child->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -2129,14 +2080,8 @@ class MembersController extends GaletteRoutingTestCase
         $child_data['nom_adh'] = 'Another changed name';
         $child_request = $child_request->withParsedBody($child_data);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($child_request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $child->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($child_request);
+        $this->assertSame(403, $test_response->getStatusCode());
 
         $this->expectNoLogEntry();
         $this->expectFlashData([]);
@@ -2175,17 +2120,11 @@ class MembersController extends GaletteRoutingTestCase
         $mdata['bool_admin_adh'] = true;
         $request = $request->withParsedBody($mdata);
 
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
 
         $this->expectLogEntry(
-            \Analog::CRITICAL,
+            \Analog\Analog::CRITICAL,
             sprintf(
                 'Non allowed user %1$s attempting to change member %1$s admin flag',
                 $member_one->id,
@@ -2210,16 +2149,10 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata);
 
         //no right for staff member to set admin flag
-        $exception_thrown = false;
-        try {
-            $this->app->handle($request);
-        } catch (\RuntimeException $e) {
-            $exception_thrown = true;
-            $this->assertSame('No right to store member #' . $member_one->id, $e->getMessage());
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::CRITICAL,
+            \Analog\Analog::CRITICAL,
             sprintf(
                 'Non allowed user %1$s attempting to change member %1$s admin flag',
                 $member_one->id,
@@ -2231,8 +2164,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test member photo
-     *
-     * @return void
      */
     public function testMemberPhoto(): void
     {
@@ -2241,18 +2172,18 @@ class MembersController extends GaletteRoutingTestCase
         $mdata['id_adh'] = $member_one->id;
 
         $route_name = 'doEditMember';
-        $route_arguments = ['id' => $member_one->id];
+        $route_arguments = ['id' => (string)$member_one->id];
 
         $this->logSuperAdmin();
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'photo' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
 
@@ -2262,11 +2193,11 @@ class MembersController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
         $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
 
         //check photo is present
@@ -2277,7 +2208,7 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($mdata + ['del_photo' => '1']);
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -2291,8 +2222,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test mass change page
-     *
-     * @return void
      */
     public function testMassChangePage(): void
     {
@@ -2389,8 +2318,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test mass change validation page
-     *
-     * @return void
      */
     public function testValidateMassChange(): void
     {
@@ -2545,12 +2472,41 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_two->id), $body);
         $this->assertStringContainsString(sprintf('<input type="hidden" name="group_to_add" value="%1$s"/>', $g1->getId()), $body);
         $this->assertStringContainsString('Add to group ' . $g1->getName(), $body);
+
+        //removal from a group only, without any group to add
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_group_to_remove' => 'on',
+            'group_to_remove' => $g1->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="group_to_remove" value="%1$s"/>', $g1->getId()), $body);
+        $this->assertStringContainsString('Remove from group ' . $g1->getName(), $body);
+        $this->assertStringNotContainsString('name="group_to_add"', $body);
+
+        //no group selected in the lists
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_group_to_add' => 'on',
+            'group_to_add' => 0,
+            'mass_group_to_remove' => 'on',
+            'group_to_remove' => 0
+        ]);
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('No changes selected', $body);
     }
 
     /**
      * Test mass change action
-     *
-     * @return void
      */
     public function testDoMassChanges(): void
     {
@@ -2747,13 +2703,47 @@ class MembersController extends GaletteRoutingTestCase
         $members = $g2->getMembers();
         $this->assertCount(3, $members);
 
+        //remove members from a group, without any group to add
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'group_to_remove' => $g2->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['3 members has been changed successfully!']]);
+
+        //load groups again, members are cached on the instances above
+        $reloaded_g2 = new \Galette\Entity\Group($g2->getId());
+        $this->assertCount(0, $reloaded_g2->getMembers());
+        //members are still in their other groups
+        $reloaded_g1 = new \Galette\Entity\Group($g1->getId());
+        $this->assertCount(2, $reloaded_g1->getMembers());
+
+        //no group selected in the lists, nothing to do
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'group_to_add' => 0,
+            'group_to_remove' => 0
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Nothing to do!']]);
+
         $this->login->logout();
     }
 
     /**
      * Test remove member page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -2768,7 +2758,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'removeMember';
-        $route_arguments = ['id' => $member_one->id];
+        $route_arguments = ['id' => (string)$member_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -2862,8 +2852,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test delete member
-     *
-     * @return void
      */
     public function testDeleteMember(): void
     {
@@ -3015,8 +3003,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members advanced search page
-     *
-     * @return void
      */
     public function testAvancedSearchPage(): void
     {
@@ -3068,8 +3054,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test disabled fields are well handled
-     *
-     * @return void
      */
     public function testDisabledFields(): void
     {
@@ -3153,7 +3137,7 @@ class MembersController extends GaletteRoutingTestCase
                     $this->assertSame($expected_defaults[$propname], $adh->$propname, 'Disabled field ' . $field);
                     if (in_array($propname, array_keys($adh->getDeprecatedProperties()))) {
                         $this->expectLogEntry(
-                            \Analog::WARNING,
+                            \Analog\Analog::WARNING,
                             sprintf(
                                 'Calling property "%1$s" directly is discouraged.',
                                 $propname,

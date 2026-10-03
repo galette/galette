@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,10 +11,13 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use DI\Attribute\Inject;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Galette\Core\AuthThrottle;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
 use Galette\Entity\Adherent;
@@ -66,25 +56,25 @@ class MembersController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'addMember',
+        pattern: '/member/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
      * Add child page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'addMemberChild',
+        pattern: '/member/add/child',
+        methods: ['GET']
+    )]
     public function addChild(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
@@ -93,18 +83,19 @@ class MembersController extends CrudController
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
         $this->setAddChild();
-        return $this->edit($request, $response, null, 'add');
+        return $this->edit(request: $request, response: $response, id: null, action: 'add');
     }
 
     /**
      * Self subscription page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function selfSubscribe(Request $request, Response $response): Response
+    #[Route(
+        name: 'subscribe',
+        pattern: '/subscribe',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function selfSubscribe(Response $response): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -125,7 +116,7 @@ class MembersController extends CrudController
 
         // flagging required fields
         $fc = $this->fields_config;
-        $form_elements = $fc->getFormElements($this->login, true, true);
+        $form_elements = $fc->getFormElements($this->login, new: true, selfs: true);
 
         // members
         $m = new Members();
@@ -156,19 +147,19 @@ class MembersController extends CrudController
             $response,
             'pages/member_form.html.twig',
             [
-                'page_title'        => _T("Subscription"),
-                'parent_tpl'        => 'public_page.html.twig',
-                'member'            => $member,
-                'self_adh'          => true,
-                'autocomplete'      => true,
-                'osocials'          => new Social($this->zdb),
+                'page_title'           => _T("Registration"),
+                'parent_tpl'           => 'public_page.html.twig',
+                'member'               => $member,
+                'self_adh'             => true,
+                'autocomplete_options' => true,
+                'osocials'             => new Social($this->zdb),
                 // pseudo random int
-                'time'              => time(),
-                'titles_list'       => $titles->getList(),
-                'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens'],
+                'time'                 => time(),
+                'titles_list'          => $titles->getList(),
+                'fieldsets'            => $form_elements['fieldsets'],
+                'hidden_elements'      => $form_elements['hiddens'],
                 //self_adh specific
-                'gaptcha'           => $gaptcha
+                'gaptcha'              => $gaptcha
             ] + $params
         );
         return $response;
@@ -176,12 +167,14 @@ class MembersController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doAddMember',
+        pattern: '/member/store',
+        methods: 'POST',
+        description: 'Process member creation',
+        requiresAuth: false
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response);
@@ -189,12 +182,13 @@ class MembersController extends CrudController
 
     /**
      * Add child action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doAddMemberChild',
+        pattern: '/member/store/child',
+        methods: 'POST',
+        description: 'Process child member creation'
+    )]
     public function doAddChild(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
@@ -208,19 +202,41 @@ class MembersController extends CrudController
 
     /**
      * Self subscription add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function doSelfSubscribe(Request $request, Response $response): Response
+    #[Route(
+        name: 'storeselfmembers',
+        pattern: '/subscribe/store',
+        methods: 'POST',
+        description: 'Process self-subscription form',
+        requiresAuth: false
+    )]
+    public function doSelfSubscribe(Request $request, Response $response, AuthThrottle $throttle): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
+
+        //anybody can subscribe, and every subscription creates rows and sends
+        //mail. The arithmetic question of the form stops a careless robot, not
+        //one written for this form.
+        $delay = $throttle->getSubscribeDelay();
+        if ($delay > 0) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Too many requests. Please try again later.")
+            );
+            $this->history->add(_T("Self registration throttled"));
+            Analog::log(
+                'Self subscription throttled, ' . $delay . ' seconds left.',
+                Analog::INFO
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('subscribe'));
+        }
+        $throttle->recordSubscribe();
 
         $this->setSelfMembership();
         return $this->doAdd($request, $response);
@@ -230,13 +246,14 @@ class MembersController extends CrudController
     /**
      * Duplicate action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id_adh   Member ID to duplicate
-     *
-     * @return Response
+     * @param int $id_adh Member ID to duplicate
      */
-    public function duplicate(Request $request, Response $response, int $id_adh): Response
+    #[Route(
+        name: 'duplicateMember',
+        pattern: '/members/duplicate/{' . Adherent::PK . ':\d+}',
+        methods: ['GET']
+    )]
+    public function duplicate(Response $response, int $id_adh): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
@@ -255,13 +272,15 @@ class MembersController extends CrudController
     /**
      * Display member card
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member ID
-     *
-     * @return Response
+     * @param int $id Member ID
      */
-    public function show(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'member',
+        pattern: '/member/{id:\d+}',
+        methods: 'GET',
+        description: 'Display member details card'
+    )]
+    public function show(Response $response, int $id): Response
     {
         $member = new Adherent($this->zdb);
         $member
@@ -290,7 +309,7 @@ class MembersController extends CrudController
             $response,
             'pages/member_show.html.twig',
             [
-                'page_title'        => _T("Member Profile"),
+                'page_title'        => sprintf('%s - %s', $member->sfullname, _T("Profile")),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -307,13 +326,15 @@ class MembersController extends CrudController
     /**
      * Get member VCard
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member ID
-     *
-     * @return Response
+     * @param int $id Member ID
      */
-    public function vcard(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'memberVCard',
+        pattern: '/member/vcard/{id:\d+}',
+        methods: 'GET',
+        description: 'Export member as vCard'
+    )]
+    public function vcard(Response $response, int $id): Response
     {
         $member = new Adherent($this->zdb);
         $member
@@ -342,96 +363,98 @@ class MembersController extends CrudController
 
     /**
      * Own card show
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function showMe(Request $request, Response $response): Response
+    #[Route(
+        name: 'me',
+        pattern: '/member/me',
+        methods: 'GET',
+        description: 'Display current logged-in member card'
+    )]
+    public function showMe(Response $response): Response
     {
         if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
-        return $this->show($request, $response, $this->login->id);
+        return $this->show($response, $this->login->id);
     }
 
     /**
      * Public members list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'publicMembersList',
+        pattern: '/public/members/list[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function publicMembersList(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $request,
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
                 'page_title' => _T("Members"),
                 'template' => 'pages/public/members_list.html.twig',
                 'html_class' => '',
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
     /**
      * Public members gallery
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'publicMembersGallery',
+        pattern: '/public/members/gallery[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function publicMembersGallery(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $request,
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
                 'page_title' => _T("Gallery"),
                 'template' => 'pages/public/members_gallery.html.twig',
                 'html_class' => 'gallery',
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
     /**
-     * Public members list
+     * Public staff list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'publicStaffList',
+        pattern: '/public/staff/list[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function publicStaffList(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
@@ -441,9 +464,8 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $request,
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $filter_name,
                 'with_photos' => false,
                 'page_title' => _T("Staff"),
@@ -451,23 +473,24 @@ class MembersController extends CrudController
                 'html_class' => '',
                 'staff' => true,
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
     /**
      * Public staff gallery
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'publicStaffGallery',
+        pattern: '/public/staff/gallery[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function publicStaffGallery(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
@@ -477,9 +500,8 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $request,
-            $response,
-            [
+            response: $response,
+            args: [
                 'filter_name' => $filter_name,
                 'with_photos' => true,
                 'page_title' => _T("Staff gallery"),
@@ -487,24 +509,19 @@ class MembersController extends CrudController
                 'html_class' => 'gallery',
                 'staff' => true,
             ],
-            $option,
-            $value
+            option: $option,
+            value: $value
         );
     }
 
     /**
      * Public pages (gallery, list)
      *
-     * @param Request              $request  PSR Request
-     * @param Response             $response PSR Response
-     * @param array<string, mixed> $args     Route arguments
-     * @param string|null          $option   One of 'page' or 'order'
-     * @param string|int|null      $value    Value of the option
-     *
-     * @return Response
+     * @param array<string, mixed> $args   Route arguments
+     * @param string|null          $option One of 'page' or 'order'
+     * @param string|int|null      $value  Value of the option
      */
     private function publicList(
-        Request $request,
         Response $response,
         array $args,
         ?string $option = null,
@@ -554,40 +571,48 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public members list
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Filter public members list
      */
+    #[Route(
+        name: 'filterPublicMembersList',
+        pattern: '/public/members/list/filter[/{from}]',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function filterPublicMembersList(Request $request, Response $response): Response
     {
-        return $this->filterPublicList($request, $response, 'list', 'publicMembersList');
+        return $this->filterPublicList(
+            request: $request,
+            response: $response,
+            type: 'list',
+            route: 'publicMembersList'
+        );
     }
 
     /**
-     * Public members list
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Filter public members gallery
      */
+    #[Route(
+        name: 'filterPublicMembersGallery',
+        pattern: '/public/members/gallery/filter[/{from}]',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function filterPublicMembersGallery(Request $request, Response $response): Response
     {
-        return $this->filterPublicList($request, $response, 'trombi', 'publicMembersGallery');
+        return $this->filterPublicList(
+            request: $request,
+            response: $response,
+            type: 'trombi',
+            route: 'publicMembersGallery'
+        );
     }
 
     /**
      * Public pages filtering (gallery, list)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     Type
-     * @param string   $route    Filter route
-     *
-     * @return Response
+     * @param string $type  Type
+     * @param string $route Filter route
      */
     private function filterPublicList(Request $request, Response $response, string $type, string $route): Response
     {
@@ -614,13 +639,14 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'members',
+        pattern: '/members[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
@@ -643,9 +669,9 @@ class MembersController extends CrudController
         $members = new Members($filters);
 
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(true);
+            $members_list = $members->getMembersList(as_members: true);
         } else {
-            $members_list = $members->getManagedMembersList(true);
+            $members_list = $members->getManagedMembersList(as_members: true);
         }
 
         $groups = new Groups($this->zdb, $this->login);
@@ -678,12 +704,12 @@ class MembersController extends CrudController
 
     /**
      * Members filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'filter-memberslist',
+        pattern: '/members/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -747,10 +773,10 @@ class MembersController extends CrudController
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
                                 if (
-                                    trim((string) $f) !== ''
-                                    && trim((string) $post['free_text'][$i]) !== ''
+                                    trim((string)$f) !== ''
+                                    && trim((string)$post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = htmlspecialchars((string) $post['free_text'][$i], ENT_QUOTES);
+                                    $fs_search = (string)$post['free_text'][$i];
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -774,7 +800,7 @@ class MembersController extends CrudController
                         $i = 0;
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
-                            if (trim((string) $g) !== '') {
+                            if (trim((string)$g) !== '') {
                                 $gs = [
                                     'idx'       => $i,
                                     'group'     => $g
@@ -817,13 +843,13 @@ class MembersController extends CrudController
 
     /**
      * Advanced search page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function advancedSearch(Request $request, Response $response): Response
+    #[Route(
+        name: 'advanced-search',
+        pattern: '/advanced-search',
+        methods: ['GET']
+    )]
+    public function advancedSearch(Response $response): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
             $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
@@ -897,13 +923,14 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
+    #[Route(
+        name: 'ajaxMembers',
+        pattern: '/ajax/members[/{option:page|order}/{value:\d+}]',
+        methods: ['POST']
+    )]
     public function ajaxList(Request $request, Response $response, ?string $option = null, string|int|null $value = null): Response
     {
         $post = $request->getParsedBody();
@@ -922,7 +949,7 @@ class MembersController extends CrudController
         $members = new Members($filters);
         if (!$this->login->isAdmin() && !$this->login->isStaff()) {
             if ($this->login->isGroupManager()) {
-                $members_list = $members->getManagedMembersList(true);
+                $members_list = $members->getManagedMembersList(as_members: true);
             } else {
                 Analog::log(
                     str_replace(
@@ -935,7 +962,7 @@ class MembersController extends CrudController
                 throw new \Exception('Access denied.');
             }
         } else {
-            $members_list = $members->getMembersList(true);
+            $members_list = $members->getMembersList(as_members: true);
         }
 
         //assign pagination variables to the template and add pagination links
@@ -1029,12 +1056,12 @@ class MembersController extends CrudController
 
     /**
      * Batch actions handler
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'batch-memberslist',
+        pattern: '/members/batch',
+        methods: ['POST']
+    )]
     public function handleBatch(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -1087,13 +1114,14 @@ class MembersController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Member id/array of members id
-     * @param string   $action   null or 'add'
-     *
-     * @return Response
+     * @param ?int   $id     Member id/array of members id
+     * @param string $action null or 'add'
      */
+    #[Route(
+        name: 'editMember',
+        pattern: '/member/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(
         Request $request,
         Response $response,
@@ -1162,19 +1190,16 @@ class MembersController extends CrudController
         }
 
         // template variable declaration
-        $title = _T("Member Profile");
-        if ($member->id != '') {
-            $title .= ' (' . _T("modification") . ')';
-        } else {
-            $title .= ' (' . _T("creation") . ')';
-        }
+        $title = $member->id != ''
+            ? sprintf('%s - %s', $member->sfullname, _T("Edit profile"))
+            : _T("New member");
 
         //Titles
         $titles = new Titles($this->zdb);
 
         //Groups
         $groups = new Groups($this->zdb, $this->login);
-        $groups_list = $groups->getSimpleList(true);
+        $groups_list = $groups->getSimpleList(as_groups: true);
 
         $form_elements = $fc->getFormElements(
             $this->login,
@@ -1212,7 +1237,7 @@ class MembersController extends CrudController
             'pages/member_form.html.twig',
             [
                 'parent_tpl'        => 'page.html.twig',
-                'autocomplete'      => true,
+                'autocomplete_options'      => true,
                 'page_title'        => $title,
                 'member'            => $member,
                 'self_adh'          => false,
@@ -1235,12 +1260,14 @@ class MembersController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member id
-     *
-     * @return Response
+     * @param int $id Member id
      */
+    #[Route(
+        name: 'doEditMember',
+        pattern: '/member/store/{id:\d+}',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response);
@@ -1248,12 +1275,12 @@ class MembersController extends CrudController
 
     /**
      * Massive change page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'masschangeMembers',
+        pattern: '/members/mass-change',
+        methods: ['GET']
+    )]
     public function massChange(Request $request, Response $response): Response
     {
         $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'masschange'])} ?? new MembersList();
@@ -1282,7 +1309,7 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass change %1$s members'),
                     (string)count($data['id'])
@@ -1303,12 +1330,12 @@ class MembersController extends CrudController
 
     /**
      * Massive changes validation page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'masschangeMembersReview',
+        pattern: '/members/mass-change/validate',
+        methods: ['POST']
+    )]
     public function validateMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -1339,7 +1366,7 @@ class MembersController extends CrudController
             }
 
             //handle groups to add
-            if (isset($post['mass_group_to_add'])) {
+            if (isset($post['mass_group_to_add']) && (int)($post['group_to_add'] ?? 0) > 0) {
                 $group = new Group((int)$post['group_to_add']);
                 $changes['group_to_add'] = [
                     'label' => _T('Add to group'),
@@ -1349,7 +1376,7 @@ class MembersController extends CrudController
             }
 
             //handle groups to remove
-            if (isset($post['mass_group_to_remove'])) {
+            if (isset($post['mass_group_to_remove']) && (int)($post['group_to_remove'] ?? 0) > 0) {
                 $group = new Group((int)$post['group_to_remove']);
                 $changes['group_to_remove'] = [
                     'label' => _T('Remove from group'),
@@ -1399,7 +1426,7 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Review mass change %1$s members'),
                     (string)count($data['id'])
@@ -1418,12 +1445,12 @@ class MembersController extends CrudController
 
     /**
      * Do massive changes
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'massstoremembers',
+        pattern: '/members/mass-change',
+        methods: ['POST']
+    )]
     public function doMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -1455,6 +1482,11 @@ class MembersController extends CrudController
                 if (!$found && ($key == 'group_to_add' || $key == 'group_to_remove')) {
                     //try to check group to add or remove
                     $post[$key] = (int)$post[$key];
+                    if ($post[$key] === 0) {
+                        //no group has been selected, nothing to do
+                        unset($post[$key]);
+                        continue;
+                    }
                     if ($this->login->isGroupManager($post[$key])) {
                         $found = true;
                     }
@@ -1520,7 +1552,7 @@ class MembersController extends CrudController
                     if ($valid === true) {
                         $done = $member->store();
                         if (!$done) {
-                            $error_detected[] = _T("An error occurred while storing the member.");
+                            $error_detected[] = _T("An error occurred while saving the member.");
                         } else {
                             if (
                                 isset($post['group_to_add'])
@@ -1536,7 +1568,10 @@ class MembersController extends CrudController
                                             !isset($post['group_to_remove'])
                                             || $group->getId() !== (int)$post['group_to_remove']
                                         )
-                                        && $group->getId() !== (int)$post['group_to_add']
+                                        && (
+                                            !isset($post['group_to_add'])
+                                            || $group->getId() !== (int)$post['group_to_add']
+                                        )
                                     ) {
                                         $groups_adh[] = $group->getId() . '|' . $group->getName();
                                     }
@@ -1590,7 +1625,7 @@ class MembersController extends CrudController
             }
         }
 
-        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
+        if (!$this->isAjax($request)) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);
@@ -1606,11 +1641,6 @@ class MembersController extends CrudController
 
     /**
      * Store
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function store(Request $request, Response $response): Response
     {
@@ -1655,8 +1685,9 @@ class MembersController extends CrudController
         if (isset($post['id_adh'])) {
             $member->load((int)$post['id_adh']);
             if (!$member->canEdit($this->login)) {
-                //redirection should have been done before. Just throw an Exception.
-                throw new \RuntimeException(
+                //redirection should have been done before. Just deny access.
+                throw new HttpForbiddenException(
+                    $request,
                     str_replace(
                         '%id',
                         (string)$member->id,
@@ -1667,8 +1698,8 @@ class MembersController extends CrudController
         } elseif ($member->id != '') {
             $member->load($this->login->id);
         } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
-            //redirection should have been done before. Just throw an Exception.
-            throw new \RuntimeException('No right to store new member!');
+            //redirection should have been done before. Just deny access.
+            throw new HttpForbiddenException($request, 'No right to store new member!');
         }
 
         // flagging required fields
@@ -1785,7 +1816,7 @@ class MembersController extends CrudController
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $managed_groups_adh,
-                        true
+                        manager: true
                     );
                     $member->loadGroups();
 
@@ -1795,7 +1826,7 @@ class MembersController extends CrudController
                 }
             } else {
                 //something went wrong :'(
-                $error_detected[] = _T("An error occurred while storing the member.");
+                $error_detected[] = _T("An error occurred while saving the member.");
             }
         }
 
@@ -1899,8 +1930,6 @@ class MembersController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -1911,8 +1940,6 @@ class MembersController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -1926,8 +1953,6 @@ class MembersController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -1955,8 +1980,6 @@ class MembersController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -1976,8 +1999,6 @@ class MembersController extends CrudController
 
     /**
      * Set self memebrship flag
-     *
-     * @return MembersController
      */
     private function setSelfMembership(): MembersController
     {
@@ -1987,8 +2008,6 @@ class MembersController extends CrudController
 
     /**
      * Is self membership?
-     *
-     * @return bool
      */
     private function isSelfMembership(): bool
     {
@@ -1997,8 +2016,6 @@ class MembersController extends CrudController
 
     /**
      * Set add child flag
-     *
-     * @return MembersController
      */
     private function setAddChild(): MembersController
     {
@@ -2008,8 +2025,6 @@ class MembersController extends CrudController
 
     /**
      * Is adding child?
-     *
-     * @return bool
      */
     private function isAddChild(): bool
     {
@@ -2044,9 +2059,9 @@ class MembersController extends CrudController
 
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
-                $ids = $m->getMembersList(false, $fields);
+                $ids = $m->getMembersList(as_members: false, fields: $fields);
             } else {
-                $ids = $m->getManagedMembersList(false, $fields);
+                $ids = $m->getManagedMembersList(as_members: false, fields: $fields);
             }
 
             $ids = $ids->toArray();
@@ -2073,8 +2088,6 @@ class MembersController extends CrudController
 
     /**
      * Get default filter name
-     *
-     * @return string
      */
     public static function getDefaultFilterName(): string
     {
@@ -2086,14 +2099,16 @@ class MembersController extends CrudController
      *
      * @param Response $response PSR Response
      * @param int      $id       Requested member id
-     *
-     * @return Response
      */
     private function redirectNoMember(Response $response, int $id): Response
     {
         return $this->redirectWithErrors(
             response: $response,
-            errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+            errors: [sprintf(
+                //TRANS: parameter is the member identifier
+                _T('No member #%1$s.'),
+                $id
+            )],
             redirect_url: $this->routeparser->urlFor('slash')
         );
     }

@@ -1,28 +1,15 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Updates;
 
-use Analog\Analog;
 use Galette\Updater\AbstractUpdater;
 
 /**
@@ -45,8 +32,6 @@ class UpgradeTo08 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -66,10 +51,10 @@ class UpgradeTo08 extends AbstractUpdater
             $created = @mkdir(GALETTE_ROOT . 'data'); //@phpstan-ignore theCodingMachineSafe.function
             if (!$created) {
                 $this->addError(
-                    str_replace(
-                        '%path',
-                        GALETTE_ROOT . 'data',
-                        _T("Unable to create main datadir in %path!")
+                    sprintf(
+                        //TRANS: parameter is the path
+                        _T('Unable to create main datadir in %1$s!'),
+                        GALETTE_ROOT . 'data'
                     )
                 );
                 return false;
@@ -82,10 +67,10 @@ class UpgradeTo08 extends AbstractUpdater
                 $created = @mkdir($path); //@phpstan-ignore theCodingMachineSafe.function
                 if (!$created) {
                     $this->addError(
-                        str_replace(
-                            '%dir',
-                            $path,
-                            _T("Unable to create datadir in %dir!")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Unable to create datadir in %1$s!'),
+                            $path
                         )
                     );
                 }
@@ -100,8 +85,6 @@ class UpgradeTo08 extends AbstractUpdater
      * Move data directory
      *
      * @param string $dirname Directory name to move
-     *
-     * @return void
      */
     private function moveDataDir(string $dirname): void
     {
@@ -172,10 +155,10 @@ class UpgradeTo08 extends AbstractUpdater
 
                 if ($moved) {
                     $this->addReportEntry(
-                        str_replace(
-                            '%dir',
-                            $dirname,
-                            _T("Directory %dir has been moved!")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Directory %1$s has been moved!'),
+                            $dirname
                         ),
                         self::REPORT_SUCCESS
                     );
@@ -184,19 +167,19 @@ class UpgradeTo08 extends AbstractUpdater
                     //maybe it would be done by the user
                 } else {
                     $this->addError(
-                        str_replace(
-                            '%dir',
-                            $dirname,
-                            _T("Directory %dir has not been moved :(")
+                        sprintf(
+                            //TRANS: parameter is the directory
+                            _T('Directory %1$s has not been moved :('),
+                            $dirname
                         )
                     );
                 }
             } else {
                 $this->addReportEntry(
-                    str_replace(
-                        '%dir',
-                        $dirname,
-                        _T("Directory %dir is not in its original path and will not be moved.")
+                    sprintf(
+                        //TRANS: parameter is the directory
+                        _T('Directory %1$s is not in its original path and will not be moved.'),
+                        $dirname
                     ),
                     self::REPORT_WARNING
                 );

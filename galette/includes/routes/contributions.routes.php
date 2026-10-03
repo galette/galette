@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -26,105 +13,110 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\PdfController;
 use Galette\Entity\Contribution;
+use Galette\Middleware\Authenticate;
+
+/**
+ * @var \Slim\App<\DI\Container> $app
+ */
 
 $app->get(
     '/{type:transactions|contributions}/mine',
     [Crud\ContributionsController::class, 'myList']
-)->setName('myContributions')->add($authenticate);
+)->setName('myContributions')->add(Authenticate::class);
 
 $app->get(
     '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
     [Crud\ContributionsController::class, 'list']
-)->setName('contributions')->add($authenticate);
+)->setName('contributions')->add(Authenticate::class);
 
 $app->post(
     '/{type:contributions|transactions}/filter',
     [Crud\ContributionsController::class, 'filter']
-)->setName('filterContributions')->add($authenticate);
+)->setName('filterContributions')->add(Authenticate::class);
 
 $app->get(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
     [Crud\ContributionsController::class, 'add']
-)->setName('addContribution')->add($authenticate);
+)->setName('addContribution')->add(Authenticate::class);
 
 $app->get(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
     [Crud\ContributionsController::class, 'edit']
-)->setName('editContribution')->add($authenticate);
+)->setName('editContribution')->add(Authenticate::class);
 
 $app->post(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
     [Crud\ContributionsController::class, 'doAdd']
-)->setName('doAddContribution')->add($authenticate);
+)->setName('doAddContribution')->add(Authenticate::class);
 
 $app->post(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
     [Crud\ContributionsController::class, 'doEdit']
-)->setName('doEditContribution')->add($authenticate);
+)->setName('doEditContribution')->add(Authenticate::class);
 
 //Batch actions on contributions list
 $app->post(
     '/{type:contributions|transactions}/batch',
     [Crud\ContributionsController::class, 'handleBatch']
-)->setName('batch-contributionslist')->add($authenticate);
+)->setName('batch-contributionslist')->add(Authenticate::class);
 
 //contributions list CSV export
 $app->map(
     ['GET', 'POST'],
     '/{type:contributions|transactions}/export/csv',
     [CsvController::class, 'contributionsExport']
-)->setName('csv-contributionslist')->add($authenticate);
+)->setName('csv-contributionslist')->add(Authenticate::class);
 
 $app->get(
     '/transaction/add',
     [Crud\TransactionsController::class, 'add']
-)->setName('addTransaction')->add($authenticate);
+)->setName('addTransaction')->add(Authenticate::class);
 
 $app->get(
     '/transaction/edit/{id:\d+}',
     [Crud\TransactionsController::class, 'edit']
-)->setName('editTransaction')->add($authenticate);
+)->setName('editTransaction')->add(Authenticate::class);
 
 $app->get(
     '/transaction/{id}/attach/{cid}',
     [Crud\TransactionsController::class, 'attach']
-)->setName('attach_contribution')->add($authenticate);
+)->setName('attach_contribution')->add(Authenticate::class);
 
 $app->get(
     '/transaction/{id}/detach/{cid}',
     [Crud\TransactionsController::class, 'detach']
-)->setName('detach_contribution')->add($authenticate);
+)->setName('detach_contribution')->add(Authenticate::class);
 
 $app->post(
     '/transaction/add',
     [Crud\TransactionsController::class, 'doAdd']
-)->setName('doAddTransaction')->add($authenticate);
+)->setName('doAddTransaction')->add(Authenticate::class);
 
 $app->post(
     '/transaction/edit/{id:\d+}',
     [Crud\TransactionsController::class, 'doEdit']
-)->setName('doEditTransaction')->add($authenticate);
+)->setName('doEditTransaction')->add(Authenticate::class);
 
 $app->get(
     '/{type:contributions|transactions}/remove' . '/{id:\d+}',
     [Crud\ContributionsController::class, 'confirmDelete']
-)->setName('removeContribution')->add($authenticate);
+)->setName('removeContribution')->add(Authenticate::class);
 
 $app->get(
     '/{type:contributions|transactions}/batch/remove',
     [Crud\ContributionsController::class, 'confirmDelete']
-)->setName('removeContributions')->add($authenticate);
+)->setName('removeContributions')->add(Authenticate::class);
 
 $app->post(
     '/{type:contributions|transactions}/remove[/{id}]',
     [Crud\ContributionsController::class, 'delete']
-)->setName('doRemoveContribution')->add($authenticate);
+)->setName('doRemoveContribution')->add(Authenticate::class);
 
 //Contribution PDF
 $app->get(
     '/contribution/print/{id:\d+}',
     [PdfController::class, 'contribution']
-)->setName('printContribution')->add($authenticate);
+)->setName('printContribution')->add(Authenticate::class);
 
 $app->get(
     '/document/download/{hash}',
@@ -139,82 +131,82 @@ $app->post(
 $app->get(
     '/contribution/mass-add/choose-type',
     [Crud\ContributionsController::class, 'massAddChooseType']
-)->setName('massAddContributionsChooseType')->add($authenticate);
+)->setName('massAddContributionsChooseType')->add(Authenticate::class);
 
 $app->post(
     '/contribution/mass-add',
     [Crud\ContributionsController::class, 'massAddContributions']
-)->setName('massAddContributions')->add($authenticate);
+)->setName('massAddContributions')->add(Authenticate::class);
 
 $app->post(
     '/contribution/do-mass-add',
     [Crud\ContributionsController::class, 'doMassAddContributions']
-)->setName('doMassAddContributions')->add($authenticate);
+)->setName('doMassAddContributions')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payments/mine',
     [Crud\ScheduledPaymentController::class, 'myList']
-)->setName('myScheduledPayments')->add($authenticate);
+)->setName('myScheduledPayments')->add(Authenticate::class);
 
 $app->post(
     '/scheduled-payments/mine/filter',
     [Crud\ScheduledPaymentController::class, 'myFilter']
-)->setName('filterMyScheduledPayments')->add($authenticate);
+)->setName('filterMyScheduledPayments')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',
     [Crud\ScheduledPaymentController::class, 'list']
-)->setName('scheduledPayments')->add($authenticate);
+)->setName('scheduledPayments')->add(Authenticate::class);
 
 $app->post(
     '/scheduled-payments/filter',
     [Crud\ScheduledPaymentController::class, 'filter']
-)->setName('filterScheduledPayments')->add($authenticate);
+)->setName('filterScheduledPayments')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payment/{id_cotis:\d+}/add',
     [Crud\ScheduledPaymentController::class, 'add']
-)->setName('addScheduledPayment')->add($authenticate);
+)->setName('addScheduledPayment')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payment/edit/{id:\d+}',
     [Crud\ScheduledPaymentController::class, 'edit']
-)->setName('editScheduledPayment')->add($authenticate);
+)->setName('editScheduledPayment')->add(Authenticate::class);
 
 $app->post(
     '/scheduled-payments/{id_cotis:\d+}/add',
     [Crud\ScheduledPaymentController::class, 'doAdd']
-)->setName('doAddScheduledPayment')->add($authenticate);
+)->setName('doAddScheduledPayment')->add(Authenticate::class);
 
 $app->post(
     '/scheduled-payments/edit/{id:\d+}',
     [Crud\ScheduledPaymentController::class, 'doEdit']
-)->setName('doEditScheduledPayment')->add($authenticate);
+)->setName('doEditScheduledPayment')->add(Authenticate::class);
 
 //Batch actions on scheduled payments list
 $app->post(
     '/scheduled-payments/batch',
     [Crud\ScheduledPaymentController::class, 'handleBatch']
-)->setName('batch-scheduledPaymentslist')->add($authenticate);
+)->setName('batch-scheduledPaymentslist')->add(Authenticate::class);
 
 //scheduled payments list CSV export
 $app->map(
     ['GET', 'POST'],
     '/scheduled-payments/export/csv',
     [CsvController::class, 'scheduledPaymentsExport']
-)->setName('csv-scheduledPaymentslist')->add($authenticate);
+)->setName('csv-scheduledPaymentslist')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payment/remove' . '/{id:\d+}',
     [Crud\ScheduledPaymentController::class, 'confirmDelete']
-)->setName('removeScheduledPayment')->add($authenticate);
+)->setName('removeScheduledPayment')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payment/batch/remove',
     [Crud\ScheduledPaymentController::class, 'confirmDelete']
-)->setName('removeScheduledPayments')->add($authenticate);
+)->setName('removeScheduledPayments')->add(Authenticate::class);
 
 $app->post(
     '/scheduled-payment/remove[/{id}]',
     [Crud\ScheduledPaymentController::class, 'delete']
-)->setName('doRemoveScheduledPayment')->add($authenticate);
+)->setName('doRemoveScheduledPayment')->add(Authenticate::class);

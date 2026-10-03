@@ -1,21 +1,9 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -52,8 +40,6 @@ class UpgradeTo120 extends AbstractUpdater
     /**
      * Pre stuff, if any.
      * Will be executed first.
-     *
-     * @return boolean
      */
     protected function preUpdate(): bool
     {
@@ -70,7 +56,7 @@ class UpgradeTo120 extends AbstractUpdater
             foreach ($metadata->getConstraints($table) as $constraint) {
                 if (
                     $constraint->isForeignKey()
-                    && in_array($constraint->getReferencedTableName(), $fkeys_tables, true)
+                    && in_array($constraint->getReferencedTableName(), $fkeys_tables, strict: true)
                 ) {
                     $this->reworked_fkeys[] = $constraint;
                 }
@@ -82,8 +68,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -110,8 +94,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Handle PostgreSQL possible missing foreign keys
-     *
-     * @return void
      */
     private function deletePsqlFkeys(): void
     {
@@ -121,7 +103,7 @@ class UpgradeTo120 extends AbstractUpdater
                 PREFIX_DB . \Galette\Entity\Transaction::TABLE
             );
             $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-        } catch (\PDOException $e) {
+        } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive with PHP < 8.4)
             Analog::log(
                 $e->getMessage(),
                 Analog::INFO
@@ -131,8 +113,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Handle PostgreSQL possible missing foreign keys
-     *
-     * @return void
      */
     private function createMissingPsqlFkeys(): void
     {
@@ -178,13 +158,9 @@ class UpgradeTo120 extends AbstractUpdater
                 PREFIX_DB . $params['fktable'],
                 $params['fkcolumn']
             );
-            Analog::log(
-                'Adding missing foreign key ' . $query,
-                Analog::WARNING
-            );
             try {
                 $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-            } catch (\PDOException $e) {
+            } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive with PHP < 8.4)
                 if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
                     Analog::log(
                         $e->getMessage(),
@@ -200,8 +176,6 @@ class UpgradeTo120 extends AbstractUpdater
     /**
      * Post stuff, if any.
      * Will be executed at the end.
-     *
-     * @return boolean
      */
     protected function postUpdate(): bool
     {

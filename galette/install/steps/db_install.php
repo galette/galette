@@ -1,25 +1,18 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use Galette\Core\Install as GaletteInstall;
-use Galette\Core\Db as GaletteDb;
+declare(strict_types=1);
+
+/**
+ * @var \Galette\Core\Install $install
+ * @var \Galette\Core\Db $zdb
+ * @var \Galette\Core\I18n $i18n
+ */
 
 //ok, let's run the scripts!
 $db_installed = $install->executeScripts($zdb);
@@ -58,17 +51,17 @@ foreach ($install->getDbInstallReport() as $r) {
             <div class="right aligned column">
 <?php
 if (!$db_installed) {
-?>
+    ?>
                 <button type="submit" class="ui right labeled icon button"><i class="redo alternate double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
-<?php
+    <?php
 }
 ?>
-                <button type="submit" class="ui right labeled primary icon button"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"<?php echo !$db_installed ? ' disabled="disabled"' : ''; ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($db_installed) {
-?>
+    ?>
                 <input type="hidden" name="install_dbwrite_ok" value="1"/>
-<?php
+    <?php
 }
 ?>
             </div>

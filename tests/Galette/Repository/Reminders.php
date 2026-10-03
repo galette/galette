@@ -1,29 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Reminders repository tests
@@ -36,8 +24,6 @@ class Reminders extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -54,45 +40,28 @@ class Reminders extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Reminder::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
-        $this->assertSame([], $ireminders->getList($this->zdb));
+        $this->assertEmpty($ireminders->getList($this->zdb));
 
         //lates
         $lreminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::LATE]);
-        $this->assertSame([], $lreminders->getList($this->zdb));
+        $this->assertEmpty($lreminders->getList($this->zdb));
 
         //all
         $reminders = new \Galette\Repository\Reminders();
-        $this->assertSame([], $reminders->getList($this->zdb));
+        $this->assertEmpty($reminders->getList($this->zdb));
 
         //create member
         $this->getMemberTwo();
         $id = $this->adh->id;
 
         //create a contribution, just before being a close to be expired contribution
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->add(new \DateInterval('P30D'));
         $due_date->add(new \DateInterval('P1D'));
@@ -214,7 +183,7 @@ class Reminders extends GaletteTestCase
         $this->assertSame(\Galette\Entity\Reminder::IMPENDING, $reminder->type);
 
         //add a first close to be expired contribution reminder
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P30D'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -240,7 +209,7 @@ class Reminders extends GaletteTestCase
         $this->assertSame(\Galette\Entity\Reminder::IMPENDING, $reminder->type);
 
         //add a second close to be expired contribution reminder, yesterday
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P1D'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -434,32 +403,30 @@ class Reminders extends GaletteTestCase
 
     /**
      * Test getList with reminders from previous period already present
-     *
-     * @return void
      */
     public function testGetListNextYear(): void
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
-        $this->assertSame([], $ireminders->getList($this->zdb));
+        $this->assertEmpty($ireminders->getList($this->zdb));
 
         //lates
         $lreminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::LATE]);
-        $this->assertSame([], $lreminders->getList($this->zdb));
+        $this->assertEmpty($lreminders->getList($this->zdb));
 
         //all
         $reminders = new \Galette\Repository\Reminders();
-        $this->assertSame([], $reminders->getList($this->zdb));
+        $this->assertEmpty($reminders->getList($this->zdb));
 
         //create member
         $this->getMemberTwo();
         $id = $this->adh->id;
 
         //create a contribution, just before being a close to be expired contribution
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //add a first close to be expired contribution reminder - last year
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P90D'))->sub(new \DateInterval('P1Y'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -476,7 +443,7 @@ class Reminders extends GaletteTestCase
         $this->assertGreaterThan(0, $add->count());
 
         //add a second close to be expired contribution reminder - last year
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P67D'))->sub(new \DateInterval('P1Y'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,

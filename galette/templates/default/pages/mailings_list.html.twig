@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'elements/list.html.twig' %}
 
 {% set nb = history.getCount() %}
@@ -50,7 +36,8 @@
         'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
     {
         'label': _T('Att.'),
-        'collapse': true
+        'collapse': true,
+        'abbr_title': _T('Attachments')
     },
     {
         'label': _T("Sent"),
@@ -147,6 +134,12 @@
                                 <label for="filter_not_sent" >{{ _T('No') }}</label>
                             </div>
                         </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="sent_filter" id="filter_sending" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_SENDING") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_SENDING") %} checked="checked"{% endif %}>
+                                <label for="filter_sending" >{{ _T('In progress') }}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -162,7 +155,6 @@
                 </div>
             </div>
         </div>
-        {% include "components/forms/csrf.html.twig" %}
     </form>
 {% endblock %}
 
@@ -177,34 +169,58 @@
             <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
             <td class="collapsing" data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
             <td data-col-label="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
-            <td class="center collapsing" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
-            <td class="center collapsing{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+            <td class="collapsing" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
+            <td class="collapsing{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+                <span class="icon-only">
                 {% if log.mailing_sent == 1 %}
-                    <i class="ui thumbs up green icon" aria-hidden="true"></i>
+                    <i class="ui paper plane green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Sent') }}</span>
+                {% elseif log.mailing_sending %}
+                    <i class="ui paper plane outline orange icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Sending in progress…') }}</span>
                 {% else %}
-                    <i class="ui thumbs down red icon" aria-hidden="true"></i>
+                    <i class="ui pencil ruler red icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T('Not sent') }}</span>
                 {% endif %}
+                </span>
             </td>
             <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
-                        class="showdetails"
+                        class="showdetails icon-only"
                 >
-                    <i class="ui eye green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
+                    <i class="ui eye green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
                 </a>
+                {% if log.mailing_sending %}
+                <a
+                        href="{{ url_for('mailingQueue', {'id': log.mailing_id}) }}"
+                        class="icon-only"
+                >
+                    <i class="ui hourglass half orange icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Follow the sending of mailing '%1$s'")|format(log.mailing_subject) }}</span>
+                </a>
+                {% else %}
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
+                        class="icon-only"
                 >
-                    <i class="ui clone blue icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}</span>
+                    <i class="ui {% if log.mailing_sent == 1 %}clone{% else %}edit{% endif %} blue icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">
+                        {% if log.mailing_sent == 1 %}
+                            {{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}
+                        {% else %}
+                            {{ _T("Edit mailing '%1$s'")|format(log.mailing_subject) }}
+                        {% endif %}
+                    </span>
                 </a>
+                {% endif %}
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
-                        class="delete"
+                        class="delete icon-only"
                 >
-                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Delete mailing '%1$s'")|format(log.mailing_subject) }}</span>
+                    <i class="ui trash red icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Delete mailing '%1$s'")|format(log.mailing_subject) }}</span>
                 </a>
             </td>
         </tr>
@@ -213,7 +229,75 @@
     {% endfor %}
 {% endblock %}
 
+{% block legend %}
+    <div id="legende" class="ui modal">
+        <div class="header">{{ _T("Legend") }}</div>
+        <div class="content">
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th scope="colgroup" colspan="4">{{ _T("Actions") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui eye green icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Mailing preview') }}</td>
+                        <th scope="row">
+                            <i class="ui edit icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Modification") }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui clone blue icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Use as a template for a new mailing") }}</td>
+                        <th scope="row">
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Deletion") }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th scope="colgroup" colspan="4">{{ _T('Statuses and interactions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui pencil ruler red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('No sent') }}</td>
+                        <th scope="row">
+                            <i class="ui paper plane green icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Sent') }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <i class="ui paper plane outline orange icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Sending in progress…') }}</td>
+                        <th scope="row">
+                            <i class="ui hourglass half orange icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T('Follow the sending') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         {% include "elements/js/removal.js.twig" with {
             single_action: "true"

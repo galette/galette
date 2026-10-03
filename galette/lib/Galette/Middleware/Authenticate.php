@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -25,11 +12,14 @@ namespace Galette\Middleware;
 
 use DI\Attribute\Inject;
 use Galette\Core\Login;
+use Galette\Core\TwoFactorAuth;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
 use RKA\Session;
+use RuntimeException;
+use Safe\Exceptions\PcreException;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
@@ -52,16 +42,18 @@ class Authenticate
     /**
      * Constructor
      *
-     * @param Login       $login       Login instance
-     * @param Session     $session     Session instance
-     * @param RouteParser $routeparser Route parser instance
-     * @param Messages    $flash       Flash messages instance
+     * @param Login         $login       Login instance
+     * @param Session       $session     Session instance
+     * @param RouteParser   $routeparser Route parser instance
+     * @param Messages      $flash       Flash messages instance
+     * @param TwoFactorAuth $tfa         Second factor instance
      */
     public function __construct(
         private readonly Login $login,
         private readonly Session $session,
         private readonly RouteParser $routeparser,
-        protected Messages $flash
+        protected Messages $flash,
+        private readonly TwoFactorAuth $tfa
     ) {
     }
 
@@ -70,8 +62,6 @@ class Authenticate
      *
      * @param Request        $request PSR7 request
      * @param RequestHandler $handler PSR7 request handler
-     *
-     * @return Response
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
@@ -98,6 +88,17 @@ class Authenticate
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
         $cur_route = $route->getName();
+
+        if ($this->mustEnrolSecondFactor((string)$cur_route)) {
+            $this->flash->addMessage(
+                'warning_detected',
+                _T("Two-factor authentication is required. Please enable it to keep using your account.")
+            );
+            return $response
+                ->withHeader('Location', $this->routeparser->urlFor('two-factor-enrol'))
+                ->withStatus(302);
+        }
+
         $acl = $this->getAclFor($cur_route);
 
         $go = false;
@@ -138,11 +139,11 @@ class Authenticate
                 $go = true;
                 break;
             default:
-                throw new \RuntimeException(
-                    str_replace(
-                        '%acl',
-                        $acl,
-                        _T("Unknown ACL rule '%acl'!")
+                throw new RuntimeException(
+                    sprintf(
+                        //TRANS: parameter is the ACL rule name
+                        _T('Unknown ACL rule \'%1$s\'!'),
+                        $acl
                     )
                 );
         }
@@ -164,29 +165,56 @@ class Authenticate
     }
 
     /**
+     * Must the current session enrol a second factor before going anywhere?
+     *
+     * @param string $cur_route Current route name
+     */
+    private function mustEnrolSecondFactor(string $cur_route): bool
+    {
+        //routes the member has to reach in order to comply, or to give up
+        $allowed = [
+            'two-factor-enrol',
+            'do-two-factor-enrol',
+            'two-factor-manage',
+            'do-two-factor-codes',
+            'logout'
+        ];
+
+        if (in_array($cur_route, $allowed, strict: true)) {
+            return false;
+        }
+
+        if (!$this->tfa->isRequiredFor($this->login)) {
+            return false;
+        }
+
+        return !$this->tfa->storeFor($this->login)->isEnabled();
+    }
+
+    /**
      * Get ACL for route name
      *
      * @param string $name Route name
      *
-     * @return string
-     * @throw RuntimeException
+     * @throws RuntimeException
+     * @throws PcreException
      */
     public function getAclFor(string $name): string
     {
         //first, check for exact match
         if (isset($this->acls[$name])) {
             return $this->acls[$name];
-        } else {
-            //handle routes regexps
-            foreach ($this->acls as $regex => $route_acl) {
-                //looks like a regular expression, go
-                if (preg_match('@/(.+)/[imsxADU]?@', $regex) && preg_match($regex, $name)) {
-                    return $route_acl;
-                }
+        }
+
+        //handle routes regexps
+        foreach ($this->acls as $regex => $route_acl) {
+            //looks like a regular expression, go
+            if (preg_match('@/(.+)/[imsxADU]?@', $regex) && preg_match($regex, $name)) {
+                return $route_acl;
             }
         }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             sprintf(
                 _T('Route \'%1$s\' is not registered in ACLs!'),
                 $name,

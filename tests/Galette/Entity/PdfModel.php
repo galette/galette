@@ -1,31 +1,19 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use Galette\Entity\Adherent;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTime;
 use Galette\DynamicFields\DynamicField;
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * PDF model tests
@@ -38,15 +26,13 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $models->installInit(false);
+        $res = $models->installInit(check_first: false);
         $this->assertTrue($res);
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -59,39 +45,7 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete->where([
-            'text_orig' => [
-                'Dynamic choice field',
-                'Dynamic date field',
-                'Dynamic text field'
-            ]
-        ]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test expected patterns
-     *
-     * @return void
      */
     public function testExpectedPatterns(): void
     {
@@ -189,7 +143,7 @@ class PdfModel extends GaletteTestCase
     /**
      * Types provider
      *
-     * @return array
+     * @return array<int, array{type: int, expected: string}> Types and expected classes
      */
     public static function typesProvider(): array
     {
@@ -214,36 +168,24 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
-     * Tets getTypeClass
-     * @dataProvider typesProvider
+     * Test getTypeClass
      *
      * @param int    $type     Requested type
      * @param string $expected Expected class name
-     *
-     * @return void
      */
-    public function testGetypeClass(int $type, string $expected): void
+    #[DataProvider('typesProvider')]
+    public function testGetTypeClass(int $type, string $expected): void
     {
         $this->assertSame($expected, \Galette\Entity\PdfModel::getTypeClass($type));
     }
 
     /**
-     * Test model replacements
+     * Create dynamic field
      *
-     * @return void
+     * @param array<string, string|int> $field_data Field data
      */
-    public function testReplacements(): void
+    private function createDynamicField(array $field_data): DynamicField
     {
-        //create dynamic fields
-        $field_data = [
-            'form_name'        => 'adh',
-            'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
-            'field_type'        => DynamicField::TEXT,
-            'field_required'    => 1,
-            'field_repeat'      => 1
-        ];
-
         $adf = DynamicField::getFieldType($this->zdb, $field_data['field_type']);
 
         $stored = $adf->store($field_data);
@@ -259,6 +201,83 @@ class PdfModel extends GaletteTestCase
         $this->assertEmpty($error_detected, implode(' ', $adf->getErrors()));
         $this->assertEmpty($warning_detected, implode(' ', $adf->getWarnings()));
 
+        return $adf;
+    }
+
+    /**
+     * Test every occurrence of a repeatable field reaches the replacements
+     */
+    public function testRepeatedOccurrencesReplacements(): void
+    {
+        $adf = $this->createDynamicField([
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic repeatable line',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 3
+        ]);
+        $this->assertTrue($adf->isRepeatable());
+
+        //an invoice also carries contribution patterns, they all need a replacement
+        $cdf = $this->createDynamicField([
+            'form_name'         => 'contrib',
+            'field_form'        => 'contrib',
+            'field_name'        => 'Dynamic contribution date',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::DATE,
+            'field_required'    => 1,
+            'field_repeat'      => 1
+        ]);
+
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => 'Repeated occurrences',
+            'model_subtitle' => 'The subtitle',
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'dynvalue: {DYNFIELD_' . $adf->getId() . '_ADH}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+
+        //two occurrences share a value: both have to show up
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $adf->getId() . '_1' => 'Same value',
+            'info_field_' . $adf->getId() . '_2' => 'Another value',
+            'info_field_' . $adf->getId() . '_3' => 'Same value'
+        ];
+        $this->createMember($data);
+        $model->setMember($this->adh);
+
+        $this->createPdfContribution($cdf);
+        $model->setContribution($this->contrib);
+
+        $this->assertSame(
+            'dynvalue: Same value<br/>Another value<br/>Same value',
+            $model->hbody
+        );
+    }
+
+    /**
+     * Test model replacements
+     */
+    public function testReplacements(): void
+    {
+        //create dynamic fields
+        $field_data = [
+            'form_name'        => 'adh',
+            'field_name'        => 'Dynamic text field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::TEXT,
+            'field_required'    => 1,
+            'field_repeat'      => 1
+        ];
+        $adf = $this->createDynamicField($field_data);
+
         $field_data = [
             'form_name'         => 'contrib',
             'field_form'        => 'contrib',
@@ -268,21 +287,35 @@ class PdfModel extends GaletteTestCase
             'field_required'    => 1,
             'field_repeat'      => 1
         ];
+        $cdf = $this->createDynamicField($field_data);
 
-        $cdf = DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+        $field_data = [
+            'form_name'        => 'prefs',
+            'field_name'        => 'Settings line field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_READ,
+            'field_type'        => DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+        $pdf = $this->createDynamicField($field_data);
 
-        $stored = $cdf->store($field_data);
-        $error_detected = $cdf->getErrors();
-        $warning_detected = $cdf->getWarnings();
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        //create a value for the dynamic field
+        $post = [
+            'info_field_' . $pdf->getId() . '_1' => 'A dynamic value in settings \o/',
+        ];
+
+        $post = array_merge($preferences, $post);
+
         $this->assertTrue(
-            $stored,
-            implode(
-                ' ',
-                $cdf->getErrors() + $cdf->getWarnings()
-            )
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), return: true)
         );
-        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
-        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
+        $this->assertTrue($this->preferences->store());
 
         //prepare model
         $pk = \Galette\Entity\PdfModel::PK;
@@ -293,14 +326,15 @@ class PdfModel extends GaletteTestCase
             'model_subtitle' => 'The subtitle',
             'model_header' => null,
             'model_footer' => null,
-            'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_' .
-            $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} ' .
-            '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: ' .
-            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}',
+            'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_'
+            . $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} '
+            . '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: '
+            . '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}'
+            . ' pref dynlabel: {LABEL_DYNFIELD_' . $pdf->getId() . '_PREFS} pref dynvalue: {DYNFIELD_' . $pdf->getId() . '_PREFS}',
             'model_styles' => null,
             'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
         ], \ArrayObject::ARRAY_AS_PROPS);
-        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs);
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
 
         $data = $this->dataAdherentOne() + [
             'info_field_' . $adf->getId() . '_1' => 'My value (:'
@@ -324,19 +358,18 @@ class PdfModel extends GaletteTestCase
         $this->assertSame(
             '<div id="pdf_footer">
     Association Galette - Galette
-Palais des Papes
-Au milieu
-84000 Avignon - France<br/>
+-
+  <br/>
     
 </div>',
             $model->hfooter
         );
 
         $this->assertSame(
-            'name: DURAND René login: arthur.hamon' .  $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: ' .
-            'My value (: ' .
-            '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
-            'dynvalue: 2020-12-03',
+            'name: DURAND René login: arthur.hamon' . $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: '
+            . 'My value (: '
+            . '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field '
+            . 'dynvalue: 2020-12-03 pref dynlabel: Settings line field pref dynvalue: A dynamic value in settings \o/',
             $model->hbody
         );
 
@@ -346,30 +379,69 @@ Au milieu
         $this->assertArrayHasKey('member', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
-        $this->assertCount(12, $legend['main']['patterns']);
-        $this->assertCount(28, $legend['member']['patterns']);
+        $this->assertCount(15, $legend['main']['patterns']);
+        $this->assertCount(34, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
-        $this->assertCount(14, $legend['contribution']['patterns']);
+        $this->assertCount(27, $legend['contribution']['patterns']);
         $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
+    }
+
+    /**
+     * Test multiline address replacements
+     */
+    public function testMultilineAddressReplacements(): void
+    {
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => null,
+            'model_subtitle' => null,
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'asso: {ASSO_ADDRESS_MULTI} adh: {ADDRESS_ADH_MULTI}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+
+        $data = $this->dataAdherentOne();
+        $data['adresse_adh'] = "66, boulevard De Oliveira\nBâtiment B, 3rd floor";
+        $this->createMember($data);
+        $model->setMember($this->adh);
+
+        $asso_address = $this->preferences->getPostalAddress();
+        //make sure the tested addresses are relevant
+        $this->assertStringContainsString("\n", $asso_address);
+        $this->assertStringContainsString("\n", $this->adh->getAddress());
+
+        $this->assertSame(
+            sprintf(
+                'asso: %s adh: 66, boulevard De Oliveira<br/>Bâtiment B, 3rd floor',
+                str_replace("\n", '<br/>', $asso_address)
+            ),
+            $model->hbody
+        );
+
+        //no leftover newline, it would be rendered as an extra leading space
+        $this->assertStringNotContainsString("\n", $model->hbody);
     }
 
     /**
      * Create test contribution in database
      *
      * @param DynamicField $cdf Contribution dynamic field
-     *
-     * @return void
      */
     protected function createPdfContribution(DynamicField $cdf): void
     {
-        $bdate = new \DateTime(); // 2020-11-07
+        $bdate = new DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
         $bdate->add(new \DateInterval('P3D')); // 2020-06-10
 
         $edate = clone $bdate;
         $edate->add(new \DateInterval('P1Y'));
 
-        $dyndate = new \DateTime('2020-12-03 22:56:53');
+        $dyndate = new DateTime('2020-12-03 22:56:53');
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -389,8 +461,6 @@ Au milieu
 
     /**
      * Test model storage in db
-     *
-     * @return void
      */
     public function testStorage(): void
     {

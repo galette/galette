@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -36,7 +23,7 @@ class GaletteMail extends GaletteTestCase
     /**
      * Data provider for testIsURL
      *
-     * @return array<string, bool>
+     * @return array<array{string, bool}>
      */
     public static function urlProvider(): array
     {
@@ -65,8 +52,6 @@ class GaletteMail extends GaletteTestCase
      *
      * @param string $url      URL to test
      * @param bool   $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('urlProvider')]
     public function testIsURL(string $url, bool $expected): void
@@ -77,7 +62,7 @@ class GaletteMail extends GaletteTestCase
     /**
      * Data provider for testIsValidEmail
      *
-     * @return array<string, bool>
+     * @return array<array{string, bool}>
      */
     public static function emailProvider(): array
     {
@@ -110,8 +95,6 @@ class GaletteMail extends GaletteTestCase
      *
      * @param string $email    Email to test
      * @param bool   $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('emailProvider')]
     public function testIsValidEmail(string $email, bool $expected): void
@@ -121,8 +104,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test setRecipients
-     *
-     * @return void
      */
     public function testSetRecipients(): void
     {
@@ -134,13 +115,11 @@ class GaletteMail extends GaletteTestCase
         $this->expectNoLogEntry();
 
         $mail->setRecipients(['contact.galette.eu' => 'Contact']); //just an invalid email
-        $this->expectLogEntry(\Analog::INFO, '[Galette\Core\GaletteMail] One of recipients address is not valid.');
+        $this->expectLogEntry(\Analog\Analog::INFO, '[Galette\Core\GaletteMail] One of recipients address is not valid.');
     }
 
     /**
      * Test sender information getters
-     *
-     * @return void
      */
     public function testGetSender(): void
     {
@@ -151,8 +130,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test subject setter and getter
-     *
-     * @return void
      */
     public function testSubject(): void
     {
@@ -164,8 +141,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test mail body
-     *
-     * @return void
      */
     public function testMessage(): void
     {
@@ -188,28 +163,71 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test isHtml
-     *
-     * @return void
      */
     public function testIsHtml(): void
     {
         $mail = new \Galette\Core\GaletteMail($this->preferences);
         $this->assertFalse($mail->isHtml());
-        $this->assertTrue($mail->isHTML(true));
+        $this->assertTrue($mail->isHTML(set: true));
         $this->assertTrue($mail->isHTML());
-        $this->assertFalse($mail->isHtml(false));
+        $this->assertFalse($mail->isHtml(set: false));
         $this->assertFalse($mail->isHTML());
     }
 
     /**
      * Test various getters and setters
-     *
-     * @return void
      */
     public function testGettersSetters(): void
     {
         $mail = new \Galette\Core\GaletteMail($this->preferences);
         $this->assertInstanceOf($mail::class, $mail->setTimeout(20)); //nothing testable
         $this->assertSame([], $mail->getErrors());
+    }
+
+    /**
+     * Test connection check on a disabled emailing
+     */
+    public function testConnectionDisabled(): void
+    {
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertFalse($mail->testConnection());
+        $this->assertSame(['Emailing has been disabled in the preferences.'], $mail->getErrors());
+    }
+
+    /**
+     * Test connection check when PHP hands messages over on its own
+     */
+    public function testConnectionPhpMail(): void
+    {
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_PHPMAIL;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertTrue($mail->testConnection());
+        $this->assertSame([], $mail->getErrors());
+
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+    }
+
+    /**
+     * Test connection check against a server that is not there
+     */
+    public function testConnectionSmtpRefused(): void
+    {
+        //nothing ever listens on port 1; the connection is refused right away
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
+        $this->preferences->pref_mail_smtp_host = '127.0.0.1';
+        $this->preferences->pref_mail_smtp_port = 1;
+        $mail = new \Galette\Core\GaletteMail($this->preferences);
+
+        $this->assertFalse($mail->testConnection());
+        $errors = $mail->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertStringContainsString('Failed to connect to server', $errors[0]);
+
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+        $this->preferences->pref_mail_smtp_host = '';
+        $this->preferences->pref_mail_smtp_port = 0;
     }
 }

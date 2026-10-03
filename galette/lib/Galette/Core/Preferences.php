@@ -1,176 +1,196 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Features\Dynamics;
 use Safe\DateTime;
-use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
-use Galette\IO\PdfMembersCardsAdaptative;
+use Galette\Util\Html;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
-use Galette\Entity\Adherent;
 use Galette\Entity\Status;
+use Galette\Enums\ContactSource;
+use Galette\Enums\PasswordStrength;
+use Galette\Core\Preferences\Assets;
+use Galette\Core\Preferences\Fields;
+use Galette\Core\Preferences\Identity;
+use Galette\Core\Preferences\Relations;
+use Galette\Core\Preferences\Signature;
+use Galette\Core\Preferences\Storage;
+use Galette\Enums\PublicPageVisibility;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
-use function Safe\mkdir;
-use function Safe\preg_match;
 use function Safe\preg_replace;
-use function Safe\unlink;
 
 /**
  * Preferences for galette
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $pref_admin_login Super admin login
- * @property string $pref_admin_pass Super admin password
- * @property string $pref_nom Association name
- * @property string $pref_slogan Association slogan
- * @property string $pref_adresse Address
- * @property string $pref_adresse2 Address continuation
- * @property string $pref_cp Association zipcode
- * @property string $pref_ville Association
- * @property string $pref_region Region
- * @property string $pref_pays Country
- * @property int $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
- * @property int $pref_postal_staff_member Staff member ID from which retrieve postal address
- * @property string $pref_org_phone_number Phone number
- * @property int $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
- * @property int $pref_org_phone_staff_member Staff member ID from which retrieve phone number
- * @property string $pref_org_email Email address
- * @property bool $pref_disable_members_socials Disable social networks for members
- * @property string $pref_lang Default instance language
- * @property int $pref_numrows Default number of rows in lists
- * @property int $pref_statut Default status for new members
- * @property string $pref_email_nom
- * @property string $pref_email
- * @property string $pref_email_newadh
- * @property bool $pref_bool_mailadh
- * @property bool $pref_bool_mailowner
- * @property bool $pref_editor_enabled
- * @property int $pref_mail_method Mail method, see GaletteMail::METHOD_*
- * @property string $pref_mail_smtp
- * @property string $pref_mail_smtp_host
- * @property bool $pref_mail_smtp_auth
- * @property bool $pref_mail_smtp_secure
- * @property int $pref_mail_smtp_port
- * @property string $pref_mail_smtp_user
- * @property string $pref_mail_smtp_password
- * @property int $pref_membership_ext
- * @property string $pref_beg_membership
- * @property int $pref_membership_offermonths
- * @property string $pref_email_reply_to
- * @property string $pref_website
- * @property int $pref_etiq_marges_v
- * @property int $pref_etiq_marges_h
- * @property int $pref_etiq_hspace
- * @property int $pref_etiq_vspace
- * @property int $pref_etiq_hsize
- * @property int $pref_etiq_vsize
- * @property int $pref_etiq_cols
- * @property int $pref_etiq_rows
- * @property int $pref_etiq_corps
- * @property bool $pref_etiq_border
- * @property bool $pref_force_picture_ratio
- * @property string $pref_member_picture_ratio
- * @property string $pref_card_abrev
- * @property string $pref_card_strip
- * @property string $pref_card_tcol
- * @property string $pref_card_scol
- * @property string $pref_card_bcol
- * @property string $pref_card_hcol
- * @property string $pref_bool_display_title
- * @property int $pref_card_address
- * @property string $pref_card_year
- * @property int $pref_card_marges_v
- * @property int $pref_card_marges_h
- * @property int $pref_card_vspace
- * @property int $pref_card_hspace
- * @property string $pref_card_self
- * @property int $pref_card_hsize
- * @property int $pref_card_vsize
- * @property int $pref_card_cols
- * @property int $pref_card_rows
- * @property string $pref_theme Preferred theme
- * @property bool $pref_hide_bg_image
- * @property bool $pref_enable_custom_colors
- * @property string $pref_cc_primary
- * @property string $pref_cc_primary_text
- * @property string $pref_cc_secondary
- * @property string $pref_cc_secondary_text
- * @property bool $pref_bool_publicpages
- * @property int $pref_publicpages_visibility_generic
- * @property int $pref_publicpages_visibility_documents
- * @property int $pref_publicpages_visibility_memberslist
- * @property int $pref_publicpages_visibility_membersgallery
- * @property int $pref_publicpages_visibility_stafflist
- * @property int $pref_publicpages_visibility_staffgallery
- * @property bool $pref_bool_groupsmanagers_are_staff
- * @property bool $pref_bool_selfsubscribe
- * @property bool $pref_bool_empty_form_link
- * @property string $pref_member_form_grid
- * @property string $pref_mail_sign
- * @property string $pref_new_contrib_script
- * @property bool $pref_bool_wrap_mails
- * @property string $pref_rss_url
- * @property string $pref_adhesion_form
- * @property bool $pref_mail_allow_unsecure
- * @property string $pref_instance_uuid
- * @property string $pref_registration_uuid
- * @property string $pref_telemetry_date
- * @property string $pref_registration_date
- * @property string $pref_footer
- * @property int $pref_filter_account
- * @property string $pref_galette_url
- * @property int $pref_redirect_on_create
- * @property int $pref_password_length
- * @property bool $pref_password_blacklist
- * @property int $pref_password_strength
- * @property int $pref_default_paymenttype
- * @property bool $pref_bool_create_member
- * @property bool $pref_bool_groupsmanagers_create_member
- * @property bool $pref_bool_groupsmanagers_edit_member
- * @property bool $pref_bool_groupsmanagers_edit_groups
- * @property bool $pref_bool_groupsmanagers_mailings
- * @property bool $pref_bool_groupsmanagers_exports
- * @property bool $pref_bool_groupsmanagers_create_contributions
- * @property bool $pref_bool_groupsmanagers_create_transactions
- * @property bool $pref_bool_groupsmanagers_see_contributions
- * @property bool $pref_bool_groupsmanagers_see_transactions
- * @property-read string[] $vpref_email_newadh list of mail senders
- * @property bool $pref_noindex
+ * @property      string   $pref_admin_login                              Super admin login
+ * @property      string   $pref_admin_pass                               Super admin password
+ * @property      string   $pref_nom                                      Association name
+ * @property      string   $pref_slogan                                   Association slogan
+ * @property      string   $pref_adresse                                  Address
+ * @property      string   $pref_adresse2                                 Address continuation
+ * @property      string   $pref_cp                                       Association zipcode
+ * @property      string   $pref_ville                                    Association
+ * @property      string   $pref_region                                   Region
+ * @property      string   $pref_pays                                     Country
+ * @property      int      $pref_postal_address                           Postal address to use, one of self::POSTAL_ADDRESS*
+ * @property      int      $pref_postal_staff_member                      Staff member ID from which retrieve postal address
+ * @property      string   $pref_org_phone_number                         Phone number
+ * @property      int      $pref_org_phone                                Phone number to use, one of self::PHONE_NUMBER*
+ * @property      int      $pref_org_phone_staff_member                   Staff member ID from which retrieve phone number
+ * @property      string   $pref_org_email                                Email address
+ * @property      bool     $pref_disable_members_socials                  Disable social networks for members
+ * @property      string   $pref_lang                                     Default instance language
+ * @property      int      $pref_numrows                                  Default number of rows in lists
+ * @property      int      $pref_statut                                   Default status for new members
+ * @property      string   $pref_email_nom
+ * @property      string   $pref_email
+ * @property      string   $pref_email_newadh
+ * @property      bool     $pref_bool_mailadh
+ * @property      bool     $pref_bool_mailowner
+ * @property      bool     $pref_editor_enabled
+ * @property      int      $pref_mail_method                              Mail method, see GaletteMail::METHOD_*
+ * @property      string   $pref_mail_smtp
+ * @property      string   $pref_mail_smtp_host
+ * @property      bool     $pref_mail_smtp_auth
+ * @property      bool     $pref_mail_smtp_secure
+ * @property      int      $pref_mail_smtp_port
+ * @property      string   $pref_mail_smtp_user
+ * @property      string   $pref_mail_smtp_password
+ * @property      bool     $pref_mail_smtp_keepalive                      Reuse SMTP connection across messages (SMTP only)
+ * @property      int      $pref_mail_batch_size                          Max recipients (BCC) per message, 0 = single message
+ * @property      int      $pref_mail_batch_delay                         Delay (seconds) between messages
+ * @property      int      $pref_mail_hourly_limit                        Max emails sent per hour, 0 = unlimited
+ * @property      int      $pref_mail_daily_limit                         Max emails sent per day, 0 = unlimited
+ * @property      int      $pref_membership_ext
+ * @property      string   $pref_beg_membership
+ * @property      int      $pref_membership_offermonths
+ * @property      string   $pref_email_reply_to
+ * @property      string   $pref_website
+ * @property      int      $pref_etiq_marges_v
+ * @property      int      $pref_etiq_marges_h
+ * @property      int      $pref_etiq_hspace
+ * @property      int      $pref_etiq_vspace
+ * @property      int      $pref_etiq_hsize
+ * @property      int      $pref_etiq_vsize
+ * @property      int      $pref_etiq_cols
+ * @property      int      $pref_etiq_rows
+ * @property      int      $pref_etiq_corps
+ * @property      bool     $pref_etiq_border
+ * @property      bool     $pref_force_picture_ratio
+ * @property      string   $pref_member_picture_ratio
+ * @property      string   $pref_card_abrev
+ * @property      string   $pref_card_strip
+ * @property      string   $pref_card_tcol
+ * @property      string   $pref_card_scol
+ * @property      string   $pref_card_bcol
+ * @property      string   $pref_card_hcol
+ * @property      bool     $pref_bool_display_title
+ * @property      int      $pref_card_address
+ * @property      string   $pref_card_year
+ * @property      int      $pref_card_marges_v
+ * @property      int      $pref_card_marges_h
+ * @property      int      $pref_card_vspace
+ * @property      int      $pref_card_hspace
+ * @property      bool     $pref_card_self
+ * @property      int      $pref_card_hsize
+ * @property      int      $pref_card_vsize
+ * @property      string   $pref_theme                                    Preferred theme
+ * @property      bool     $pref_hide_bg_image
+ * @property      bool     $pref_enable_custom_colors
+ * @property      string   $pref_cc_primary
+ * @property      string   $pref_cc_primary_text
+ * @property      string   $pref_cc_secondary
+ * @property      string   $pref_cc_secondary_text
+ * @property      bool     $pref_bool_publicpages
+ * @property      int      $pref_publicpages_visibility_generic
+ * @property      int      $pref_publicpages_visibility_documents
+ * @property      int      $pref_publicpages_visibility_memberslist
+ * @property      int      $pref_publicpages_visibility_membersgallery
+ * @property      int      $pref_publicpages_visibility_stafflist
+ * @property      int      $pref_publicpages_visibility_staffgallery
+ * @property      bool     $pref_bool_groupsmanagers_are_staff
+ * @property      bool     $pref_bool_selfsubscribe
+ * @property      bool     $pref_bool_empty_form_link
+ * @property      string   $pref_member_form_grid
+ * @property      string   $pref_mail_sign
+ * @property      string   $pref_new_contrib_script
+ * @property      bool     $pref_bool_wrap_mails
+ * @property      string   $pref_rss_url
+ * @property      string   $pref_adhesion_form
+ * @property      bool     $pref_mail_allow_unsecure
+ * @property      string   $pref_instance_uuid
+ * @property      string   $pref_registration_uuid
+ * @property      string   $pref_telemetry_date
+ * @property      string   $pref_registration_date
+ * @property      string   $pref_footer
+ * @property      int      $pref_filter_account
+ * @property      string   $pref_galette_url
+ * @property      int      $pref_redirect_on_create
+ * @property      int      $pref_password_length
+ * @property      bool     $pref_password_blacklist
+ * @property      int      $pref_password_strength
+ * @property      int      $pref_default_paymenttype
+ * @property      bool     $pref_bool_create_member
+ * @property      bool     $pref_bool_groupsmanagers_create_member
+ * @property      bool     $pref_bool_groupsmanagers_edit_member
+ * @property      bool     $pref_bool_groupsmanagers_edit_groups
+ * @property      bool     $pref_bool_groupsmanagers_mailings
+ * @property      bool     $pref_bool_groupsmanagers_exports
+ * @property      bool     $pref_bool_groupsmanagers_create_contributions
+ * @property      bool     $pref_bool_groupsmanagers_create_transactions
+ * @property      bool     $pref_bool_groupsmanagers_see_contributions
+ * @property      bool     $pref_bool_groupsmanagers_see_transactions
+ * @property-read string[] $vpref_email_newadh                            list of mail senders
+ * @property      bool     $pref_noindex
+ * @property      int      $pref_x_forwarded_for_index
+ * @property      int      $pref_session_timeout
+ * @property      int      $pref_upload_size_images
+ * @property      int      $pref_upload_size_attachments
+ * @property      int      $pref_upload_size_documents
+ * @property      int      $pref_upload_size_imports
+ * @property      int      $pref_upload_size_dynamic_files
+ * @property      int      $pref_throttle_account_ip_attempts
+ * @property      int      $pref_throttle_account_ip_window
+ * @property      int      $pref_2fa_mode
+ * @property      string   $pref_2fa_superadmin_secret
+ * @property      bool     $pref_2fa_superadmin_enabled
+ * @property      int      $pref_2fa_superadmin_timeslice
+ * @property      int      $pref_throttle_ip_attempts
+ * @property      int      $pref_throttle_ip_window
+ * @property      int      $pref_throttle_account_attempts
+ * @property      int      $pref_throttle_account_window
+ * @property      int      $pref_throttle_delay
+ * @property      int      $pref_throttle_recovery_attempts
+ * @property      int      $pref_throttle_recovery_window
+ * @property      int      $pref_throttle_subscribe_attempts
+ * @property      int      $pref_throttle_subscribe_window
+ * @property      int      $pref_throttle_second_factor_attempts
+ * @property      int      $pref_throttle_second_factor_window
  */
 class Preferences
 {
     use Replacements;
     use Socials;
+    use Dynamics;
 
     protected Preferences $preferences; //redefined from Replacements feature - avoid circular dependency
     /** @var array<string, bool|int|string> */
@@ -178,200 +198,73 @@ class Preferences
     /** @var array<string> */
     private array $errors = [];
 
-    public const TABLE = 'preferences';
-    public const PK = 'nom_pref';
+    public const string TABLE = Storage::TABLE;
+    public const string PK = Storage::PK;
 
-    /** Postal address will be the one given in the preferences */
-    public const POSTAL_ADDRESS_FROM_PREFS = 0;
-    /** Postal address will be the one of the selected staff member */
-    public const POSTAL_ADDRESS_FROM_STAFF = 1;
+    /** @deprecated 1.3.0 Use ContactSource::Preferences */
+    public const int POSTAL_ADDRESS_FROM_PREFS = ContactSource::Preferences->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMember */
+    public const int POSTAL_ADDRESS_FROM_STAFF = ContactSource::StaffMember->value;
 
-    /** Phone number will be the one given in the preferences */
-    public const PHONE_NUMBER_FROM_PREFS = 0;
-    /** Phone number will be the one of the selected staff member */
-    public const PHONE_NUMBER_FROM_STAFF = 1;
-    /** Phone number will be the GSM of the selected staff member */
-    public const PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
+    /** @deprecated 1.3.0 Use ContactSource::Preferences */
+    public const int PHONE_NUMBER_FROM_PREFS = ContactSource::Preferences->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMember */
+    public const int PHONE_NUMBER_FROM_STAFF = ContactSource::StaffMember->value;
+    /** @deprecated 1.3.0 Use ContactSource::StaffMemberMobile */
+    public const int PHONE_NUMBER_MOBILE_FROM_STAFF = ContactSource::StaffMemberMobile->value;
 
-    /** Public pages stuff */
-    /** Public pages are publicly visibles */
-    public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
-    /** Public pages are visibles for up-to-date members only */
-    public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
-    /** Public pages are visibles for admin and staff members only */
-    public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
-    /** Public pages are hidden */
-    public const PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
-    public const PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Everyone */
+    public const int PUBLIC_PAGES_VISIBILITY_PUBLIC = PublicPageVisibility::Everyone->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::UpToDateMembers */
+    public const int PUBLIC_PAGES_VISIBILITY_RESTRICTED = PublicPageVisibility::UpToDateMembers->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::StaffOnly */
+    public const int PUBLIC_PAGES_VISIBILITY_PRIVATE = PublicPageVisibility::StaffOnly->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Hidden */
+    public const int PUBLIC_PAGES_VISIBILITY_HIDDEN = PublicPageVisibility::Hidden->value;
+    /** @deprecated 1.3.0 Use PublicPageVisibility::Inherit */
+    public const int PUBLIC_PAGES_VISIBILITY_INHERIT = PublicPageVisibility::Inherit->value;
 
-    /** No password strength */
-    public const PWD_NONE = 0;
-    /** Weak password strength */
-    public const PWD_WEAK = 1;
-    /** Medium password strength */
-    public const PWD_MEDIUM = 2;
-    /** Strong password strength */
-    public const PWD_STRONG = 3;
-    /** Very strong password strength */
-    public const PWD_VERY_STRONG = 4;
+    /** @deprecated 1.3.0 Use PasswordStrength::None */
+    public const int PWD_NONE = PasswordStrength::None->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Weak */
+    public const int PWD_WEAK = PasswordStrength::Weak->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Medium */
+    public const int PWD_MEDIUM = PasswordStrength::Medium->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::Strong */
+    public const int PWD_STRONG = PasswordStrength::Strong->value;
+    /** @deprecated 1.3.0 Use PasswordStrength::VeryStrong */
+    public const int PWD_VERY_STRONG = PasswordStrength::VeryStrong->value;
+
+    /** Superadmin credentials, only changed through storeAdminCredentials() */
+    private const array ADMIN_CREDENTIALS = ['pref_admin_login', 'pref_admin_pass'];
 
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
-    /** @var array<string> */
-    private static array $fields = [
-        'nom_pref',
-        'val_pref'
-    ];
-
-    /** @var array<string, bool|int|string> */
-    private static array $defaults = [
-        'pref_admin_login'    =>    'admin',
-        'pref_admin_pass'    =>    'admin',
-        'pref_nom'        =>    'Galette',
-        'pref_slogan'        =>    '',
-        'pref_adresse'        =>    '-',
-        'pref_adresse2'        =>    '',
-        'pref_cp'        =>    '',
-        'pref_ville'        =>    '',
-        'pref_region'        =>    '',
-        'pref_pays'        =>    '',
-        'pref_postal_address'  => self::POSTAL_ADDRESS_FROM_PREFS,
-        'pref_postal_staff_member' => '',
-        'pref_org_phone_number' => '',
-        'pref_org_phone' => self::PHONE_NUMBER_FROM_PREFS,
-        'pref_org_phone_staff_member' => '',
-        'pref_org_email' => '',
-        'pref_disable_members_socials' => false,
-        'pref_lang'        =>    I18n::DEFAULT_LANG,
-        'pref_numrows'        =>    30,
-        'pref_statut'        =>    Status::DEFAULT_STATUS,
-        /* Appearance */
-        'pref_hide_bg_image'    =>    false,
-        'pref_enable_custom_colors'    =>    false,
-        'pref_cc_primary'    =>    '#ffb619',
-        'pref_cc_primary_text'    =>    '#000000',
-        'pref_cc_secondary'    =>    '#ffda89',
-        'pref_cc_secondary_text'    =>    '#1b1c1d',
-        /* Preferences for emails */
-        'pref_email_nom'    =>    'Galette',
-        'pref_email'        =>    'mail@domain.com',
-        'pref_email_newadh'    =>    'mail@domain.com',
-        'pref_bool_mailadh'    =>    false,
-        'pref_bool_mailowner' => false,
-        'pref_editor_enabled'    =>    false,
-        'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
-        'pref_mail_smtp'    =>    '',
-        'pref_mail_smtp_host'   => '',
-        'pref_mail_smtp_auth'   => false,
-        'pref_mail_smtp_secure' => false,
-        'pref_mail_smtp_port'   => '',
-        'pref_mail_smtp_user'   => '',
-        'pref_mail_smtp_password'   => '',
-        'pref_membership_ext'    =>    12,
-        'pref_beg_membership'    =>    '',
-        'pref_membership_offermonths' => 0,
-        'pref_email_reply_to'    =>    '',
-        'pref_website'        =>    '',
-        /* Preferences for labels */
-        'pref_etiq_marges_v'    =>    10,
-        'pref_etiq_marges_h'    =>    10,
-        'pref_etiq_hspace'    =>    10,
-        'pref_etiq_vspace'    =>    5,
-        'pref_etiq_hsize'    =>    90,
-        'pref_etiq_vsize'    =>    35,
-        'pref_etiq_cols'    =>    2,
-        'pref_etiq_rows'    =>    7,
-        'pref_etiq_corps'    =>    12,
-        'pref_etiq_border'    =>    true,
-        /* Preferences for members cards */
-        'pref_force_picture_ratio'    =>    false,
-        'pref_member_picture_ratio'    =>    'square_ratio',
-        'pref_card_abrev'    =>    'GALETTE',
-        'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
-        'pref_card_tcol'    =>    '#FFFFFF',
-        'pref_card_scol'    =>    '#8C2453',
-        'pref_card_bcol'    =>    '#53248C',
-        'pref_card_hcol'    =>    '#248C53',
-        'pref_bool_display_title'    =>    false,
-        'pref_card_hsize'    =>    PdfMembersCards::WIDTH,
-        'pref_card_vsize'    =>    PdfMembersCards::HEIGHT,
-        'pref_card_address'    =>    1,
-        'pref_card_year'    =>    '',
-        'pref_card_marges_v'    =>    15,
-        'pref_card_marges_h'    =>    20,
-        'pref_card_vspace'    =>    5,
-        'pref_card_hspace'    =>    10,
-        'pref_card_self'    =>    1,
-        'pref_theme'        =>    'default',
-        'pref_bool_publicpages' => true,
-        'pref_publicpages_visibility_generic' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_documents' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_memberslist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_publicpages_visibility_staffgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_bool_groupsmanagers_are_staff' => false,
-        'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
-        /* Preferences for member/subscribe form */
-        'pref_bool_selfsubscribe' => true,
-        'pref_member_form_grid' => 'one',
-        'pref_bool_empty_form_link' => false,
-        /* New contribution script */
-        'pref_new_contrib_script' => '',
-        'pref_bool_wrap_mails' => true,
-        'pref_rss_url' => Galette::RSS_URL,
-        'pref_adhesion_form' => \Galette\IO\PdfAdhesionForm::class,
-        'pref_mail_allow_unsecure' => false,
-        'pref_instance_uuid' => '',
-        'pref_registration_uuid' => '',
-        'pref_telemetry_date' => '',
-        'pref_registration_date' => '',
-        'pref_footer' => '',
-        'pref_filter_account' => Members::ALL_ACCOUNTS,
-        'pref_galette_url' => '',
-        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT,
-        /* Security related */
-        'pref_password_length' => 6,
-        'pref_password_blacklist' => false,
-        'pref_password_strength' => self::PWD_NONE,
-        'pref_default_paymenttype' => PaymentType::CHECK,
-        'pref_bool_create_member' => false,
-        'pref_bool_groupsmanagers_create_member' => false,
-        'pref_bool_groupsmanagers_edit_member' => false,
-        'pref_bool_groupsmanagers_edit_groups' => false,
-        'pref_bool_groupsmanagers_mailings' => false,
-        'pref_bool_groupsmanagers_exports' => true,
-        'pref_bool_groupsmanagers_create_contributions' => false,
-        'pref_bool_groupsmanagers_create_transactions' => false,
-        'pref_bool_groupsmanagers_see_contributions' => false,
-        'pref_bool_groupsmanagers_see_transactions' => false,
-        'pref_noindex' => false
-    ];
+    /**
+     * Preferences defaults, lazily derived from PreferencesSchema
+     *
+     * @var array<string, bool|int|string>|null
+     */
+    private static ?array $defaults = null;
 
     /** @var Social[] */
     private array $socials;
 
-    // flagging required fields
+    private Assets $assets;
+    private Fields $fields;
+    private Identity $identity;
+    /** Login the assignment currently under way runs on behalf of */
+    private ?Login $acting_login = null;
+    private Relations $relations;
+    private Signature $signature;
+    private Storage $storage;
+
+    /** @var array<string, bool> Constants already reported as overriding a preference */
+    private array $reported_overrides = [];
+
+    // flagging required fields, derived from PreferencesSchema
     /** @var array<string,int> */
-    private array $required = [
-        'pref_nom' => 1,
-        'pref_lang' => 1,
-        'pref_numrows' => 1,
-        'pref_statut' => 1,
-        'pref_etiq_marges_v' => 1,
-        'pref_etiq_marges_h' => 1,
-        'pref_etiq_hspace' => 1,
-        'pref_etiq_vspace' => 1,
-        'pref_etiq_hsize' => 1,
-        'pref_etiq_vsize' => 1,
-        'pref_etiq_cols' => 1,
-        'pref_etiq_rows' => 1,
-        'pref_etiq_corps' => 1,
-        'pref_card_marges_v' => 1,
-        'pref_card_marges_h' => 1,
-        'pref_card_hspace' => 1,
-        'pref_card_vspace' => 1
-    ];
+    private array $required = [];
 
     /**
      * Default constructor
@@ -384,6 +277,13 @@ class Preferences
     public function __construct(Db $zdb, bool $load = true)
     {
         $this->zdb = $zdb;
+        $this->assets = new Assets();
+        $this->fields = new Fields();
+        $this->identity = new Identity(zdb: $zdb);
+        $this->relations = new Relations();
+        $this->signature = new Signature(zdb: $zdb);
+        $this->storage = new Storage(zdb: $zdb);
+        $this->required = PreferencesSchema::getRequired();
         if ($load) {
             $this->load();
             $this->checkUpdate();
@@ -391,84 +291,85 @@ class Preferences
     }
 
     /**
+     * Take into account preferences declared after this instance was built
+     *
+     * Preferences are constructed before plugins are even listed, so a plugin
+     * declaring its own arrives too late for the constructor. This picks the
+     * new entries up and creates their missing rows.
+     */
+    public function refreshSchema(): void
+    {
+        $this->required = PreferencesSchema::getRequired();
+        $this->checkUpdate();
+    }
+
+    /**
+     * Forget the defaults derived from the schema
+     *
+     * Called by PreferencesSchema whenever a plugin registration changes what
+     * the schema holds.
+     */
+    public static function invalidateDefaults(): void
+    {
+        self::$defaults = null;
+    }
+
+    /**
+     * Get the value of a preference declared by a plugin
+     *
+     * Those are deliberately not annotated on this class: naming them here
+     * would have core depend on its plugins. Static analysis therefore cannot
+     * follow `$preferences->pref_myplugin_thing`, and this is the way in.
+     *
+     * @param string $name Preference name
+     */
+    public function getPluginValue(string $name): mixed
+    {
+        return $this->__get($name);
+    }
+
+    /**
      * Check if all fields referenced in the default array do exist,
      * create them if not
-     *
-     * @return bool
      */
     private function checkUpdate(): bool
     {
-        $proceed = false;
-        $params = [];
-        foreach (self::$defaults as $k => $v) {
+        $missing = [];
+        foreach (self::defaults() as $k => $v) {
             if (!isset($this->prefs[$k])) {
                 if ($k == 'pref_admin_pass' && $v == 'admin') {
                     $v = password_hash($v, PASSWORD_BCRYPT);
                 }
                 $this->prefs[$k] = $v;
                 Analog::log(
-                    'The field `' . $k . '` does not exists, Galette will attempt to create it.',
+                    'The field `' . $k . '` does not exist, Galette will attempt to create it.',
                     Analog::INFO
                 );
-                $proceed = true;
-                $params[] = [
-                    'nom_pref'  => $k,
-                    'val_pref'  => $v
-                ];
+                $missing[$k] = $v;
             }
         }
-        if ($proceed !== false) {
-            try {
-                $insert = $this->zdb->insert(self::TABLE);
-                $insert->values(
-                    [
-                        'nom_pref'  => ':nom_pref',
-                        'val_pref'  => ':val_pref'
-                    ]
-                );
-                $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-                foreach ($params as $p) {
-                    $stmt->execute(
-                        [
-                            'nom_pref' => $p['nom_pref'],
-                            'val_pref' => $p['val_pref']
-                        ]
-                    );
-                }
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Unable to add missing preferences.' . $e->getMessage(),
-                    Analog::WARNING
-                );
-                return false;
-            }
-
-            Analog::log(
-                'Missing preferences were successfully stored into database.',
-                Analog::INFO
-            );
-        }
-
-        return true;
+        return $this->storage->insertMissing(values: $missing);
     }
 
     /**
      * Load current preferences from database.
-     *
-     * @return bool
      */
     public function load(): bool
     {
         $this->prefs = [];
+        $values = $this->storage->readAll();
+
+        if ($values === null) {
+            return false;
+        }
+
+        //values are kept even when the socials fail: checkUpdate() would
+        //otherwise take every preference for missing and insert them again
+        $this->prefs = $values;
 
         try {
-            $result = $this->zdb->selectAll(self::TABLE);
-            foreach ($result as $pref) {
-                $this->prefs[$pref->nom_pref] = $pref->val_pref;
-            }
-            $this->socials = Social::getListForMember(null);
-            return true;
+            $this->socials = Social::getListForMember(id_adh: null);
         } catch (Throwable) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without '
@@ -477,6 +378,8 @@ class Preferences
             );
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -486,53 +389,18 @@ class Preferences
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(string $lang, string $adm_login, string $adm_pass): bool
     {
-        try {
-            //first, we drop all values
-            $delete = $this->zdb->delete(self::TABLE);
-            $this->zdb->execute($delete);
+        //replace default values with the ones user has selected
+        $values = self::defaults();
+        $values['pref_lang'] = $lang;
+        $values['pref_admin_login'] = $adm_login;
+        $values['pref_admin_pass'] = $adm_pass;
+        $values['pref_card_year'] = date('Y');
 
-            //we then replace default values with the ones user has selected
-            $values = self::$defaults;
-            $values['pref_lang'] = $lang;
-            $values['pref_admin_login'] = $adm_login;
-            $values['pref_admin_pass'] = $adm_pass;
-            $values['pref_card_year'] = date('Y');
-
-            $insert = $this->zdb->insert(self::TABLE);
-            $insert->values(
-                [
-                    'nom_pref'  => ':nom_pref',
-                    'val_pref'  => ':val_pref'
-                ]
-            );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-            foreach ($values as $k => $v) {
-                $stmt->execute(
-                    [
-                        'nom_pref' => $k,
-                        'val_pref' => $v
-                    ]
-                );
-            }
-
-            Analog::log(
-                'Default preferences were successfully stored into database.',
-                Analog::INFO
-            );
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default preferences.' . $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
-        }
+        return $this->storage->replaceAll(values: $values);
     }
 
     /**
@@ -550,158 +418,36 @@ class Preferences
      *
      * @param array<string, mixed> $values Values
      * @param Login                $login  Logged in user
-     *
-     * @return bool
      */
     public function check(array $values, Login $login): bool
     {
         $this->errors = [];
-        $insert_values = [];
-        $this->getRequiredFields($login); //make sure required are all set
+        $required = $this->getRequiredFields();
 
         $this->checkCssImpacted($values);
 
-        // obtain fields
-        foreach ($this->getFieldsNames() as $fieldname) {
-            if (isset($values[$fieldname])) {
-                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
-            } else {
-                $value = "";
-            }
-
-            $insert_values[$fieldname] = $value;
-        }
+        $insert_values = $this->completeValues($values);
 
         //cleanup fields for demo
         if (Galette::isDemo()) {
-            unset(
-                $insert_values['pref_admin_login'],
-                $insert_values['pref_admin_pass'],
-                $insert_values['pref_mail_method']
-            );
-        }
-
-        // missing relations
-        if (
-            !Galette::isDemo()
-            && isset($insert_values['pref_mail_method'])
-            && $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED
-        ) {
-            if (
-                !isset($insert_values['pref_email_nom'])
-                || $insert_values['pref_email_nom'] == ''
-            ) {
-                $this->errors[] = _T("- You must indicate a sender name for emails!");
-            }
-            if (
-                !isset($insert_values['pref_email'])
-                || $insert_values['pref_email'] == ''
-            ) {
-                $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
-            }
-            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP && (!isset($insert_values['pref_mail_smtp_host']) || $insert_values['pref_mail_smtp_host'] == '')) {
-                $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
-            }
-            if (
-                $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
-                && $insert_values['pref_mail_smtp_auth'])
-            ) {
-                if (
-                    !isset($insert_values['pref_mail_smtp_user'])
-                    || trim((string) $insert_values['pref_mail_smtp_user']) == ''
-                ) {
-                    $this->errors[] = _T("- You must provide a login for SMTP authentication.");
-                }
-                if (
-                    !isset($insert_values['pref_mail_smtp_password'])
-                    || ($insert_values['pref_mail_smtp_password']) == ''
-                ) {
-                    $this->errors[] = _T("- You must provide a password for SMTP authentication.");
-                }
+            foreach (PreferencesSchema::getDemoLocked() as $locked) {
+                unset($insert_values[$locked]);
             }
         }
 
-        if (
-            (!isset($insert_values['pref_beg_membership']) || $insert_values['pref_beg_membership'] == '')
-            && (!isset($insert_values['pref_membership_ext']) || $insert_values['pref_membership_ext'] == '')
-        ) {
-            $this->errors[] = _T("- You must indicate a membership extension or a beginning of membership.");
-        } elseif (
-            $insert_values['pref_beg_membership'] != ''
-            && $insert_values['pref_membership_ext'] != ''
-        ) {
-            $this->errors[] = _T("- Default membership extension and beginning of membership are mutually exclusive.");
-        }
+        $this->errors = array_merge(
+            $this->errors,
+            $this->relations->check(
+                values: $values,
+                insert_values: $insert_values,
+                required: $required,
+                held_secrets: $this->heldSecrets()
+            )
+        );
 
-        if (
-            isset($insert_values['pref_membership_offermonths'])
-            && (int)$insert_values['pref_membership_offermonths'] > 0
-            && isset($insert_values['pref_membership_ext'])
-            && $insert_values['pref_membership_ext'] != ''
-        ) {
-            $this->errors[] = _T("- Offering months is only compatible with beginning of membership.");
-        }
+        $this->dynamicsCheck($values, [], []);
 
-        // missing required fields?
-        foreach (array_keys($this->required) as $val) {
-            if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
-                $this->errors[] = sprintf(
-                    //TRANS: parameter is a field name
-                    _T('- Mandatory field %1$s empty.'),
-                    $val
-                );
-            }
-        }
-
-        // Check passwords. Hash will be done into the Preferences class
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], (string) $values['pref_admin_pass_check']) != 0) {
-            $this->errors[] = _T("Passwords mismatch");
-        }
-
-        //postal address
-        if (isset($insert_values['pref_postal_address'])) {
-            $value = $insert_values['pref_postal_address'];
-            if ($value == Preferences::POSTAL_ADDRESS_FROM_PREFS) {
-                if (isset($insert_values['pref_postal_staff_member'])) {
-                    unset($insert_values['pref_postal_staff_member']);
-                }
-            } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
-                if (!isset($insert_values['pref_postal_staff_member']) || $insert_values['pref_postal_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member to retrieve its address");
-                }
-            }
-        }
-
-        //phone number
-        if (isset($insert_values['pref_org_phone'])) {
-            $value = $insert_values['pref_org_phone'];
-            if ($value == Preferences::PHONE_NUMBER_FROM_PREFS) {
-                if (isset($insert_values['pref_org_phone_staff_member'])) {
-                    unset($insert_values['pref_org_phone_staff_member']);
-                }
-            } elseif ($value == Preferences::PHONE_NUMBER_FROM_STAFF || $value == Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF) {
-                if (!isset($insert_values['pref_org_phone_staff_member']) || $insert_values['pref_org_phone_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member to retrieve its phone number");
-                }
-            }
-        }
-
-        // update preferences
-        foreach ($insert_values as $champ => $valeur) {
-            $checked = $login->isSuperAdmin();
-            if (!$checked) {
-                if ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login') {
-                    $checked = true;
-                }
-            } elseif ($champ == "pref_admin_pass" && empty($_POST['pref_admin_pass'] ?? '')) {
-                $checked = false;
-            }
-
-            if ($checked) {
-                $this->$champ = $valeur;
-            }
-        }
+        $this->assignValues($insert_values, $login);
 
         $this->checkSocials($values);
 
@@ -709,220 +455,397 @@ class Preferences
     }
 
     /**
-     * Validate value of a field
+     * Build a complete set of values out of a submitted payload
      *
-     * @param string $fieldname Field name
-     * @param mixed  $value     Value to be set
+     * Every known preference gets an entry: a field missing from the payload
+     * is blanked, which is what lets an unchecked checkbox turn its preference
+     * off.
      *
-     * @return mixed
+     * A preference the settings form does not render is the exception: the
+     * payload never carries it, so blanking it would reset it every time the
+     * form is saved. It keeps what is stored instead.
+     *
+     * @param array<string, mixed> $values Submitted values
+     *
+     * @return array<string, mixed>
      */
-    public function validateValue(string $fieldname, mixed $value): mixed
+    private function completeValues(array $values): array
     {
-        global $login;
+        $complete = [];
 
-        switch ($fieldname) {
-            case 'pref_email':
-            case 'pref_email_newadh':
-            case 'pref_email_reply_to':
-            case 'pref_org_email':
-                //check emails validity
-                //may be a comma-separated list of valid emails:
-                //"mail@domain.com,other@mail.com" only for pref_email_newadh.
-                $addresses = [];
-                if (trim((string) $value) != '') {
-                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', (string) $value) : [$value];
-                }
-                foreach ($addresses as $address) {
-                    if (!GaletteMail::isValidEmail($address)) {
-                        $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
-                        Analog::log($msg, Analog::WARNING);
-                        $this->errors[] = $msg;
-                    }
-                }
-                break;
-            case 'pref_admin_login':
-                if (Galette::isDemo()) {
-                    Analog::log(
-                        'Trying to set superadmin login while in DEMO.',
-                        Analog::WARNING
-                    );
-                } elseif (strlen((string) $value) < 4) {
-                    $this->errors[] = _T("- The username must be composed of at least 4 characters!");
-                } elseif ($login->loginExists($value)) {
-                    //check if login is already taken
-                    $this->errors[] = _T("- This username is already used by another member !");
-                }
-                break;
-            case 'pref_numrows':
-            case 'pref_etiq_marges_h':
-            case 'pref_etiq_marges_v':
-            case 'pref_etiq_hspace':
-            case 'pref_etiq_vspace':
-            case 'pref_etiq_hsize':
-            case 'pref_etiq_vsize':
-            case 'pref_etiq_cols':
-            case 'pref_etiq_rows':
-            case 'pref_etiq_corps':
-            case 'pref_card_marges_v':
-            case 'pref_card_marges_h':
-            case 'pref_card_hspace':
-            case 'pref_card_vspace':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- The numbers and measures have to be integers!");
-                }
-                break;
-            case 'pref_card_vsize':
-                if (!is_numeric($value) || $value < 40 || $value > 55) {
-                    $this->errors[] = _T("- The card height have to be an integer between 40 and 55!");
-                }
-                break;
-            case 'pref_card_hsize':
-                if (!is_numeric($value) || $value < 70 || $value > 95) {
-                    $this->errors[] = _T("- The card width have to be an integer between 70 and 95!");
-                }
-                break;
-            case 'pref_card_tcol':
-            case 'pref_card_scol':
-            case 'pref_card_bcol':
-            case 'pref_card_hcol':
-                $matches = [];
-                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string) $value, $matches)) {
-                    // Set strip background colors to black or white (for tcol)
-                    $value = ($fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000');
-                } else {
-                    $value = '#' . $matches[2];
-                }
-                break;
-            case 'pref_admin_pass':
-                if (Galette::isDemo()) {
-                    Analog::log(
-                        'Trying to set superadmin pass while in DEMO.',
-                        Analog::WARNING
-                    );
-                } else {
-                    $pwcheck = new \Galette\Util\Password($this);
-                    $pwcheck->addPersonalInformation([$this->pref_admin_login]);
-                    if (!$pwcheck->isValid($value)) {
-                        $this->errors = array_merge(
-                            $this->errors,
-                            $pwcheck->getErrors()
-                        );
-                    }
-                }
-                break;
-            case 'pref_membership_ext':
-                if (!is_numeric($value) || $value <= 0) {
-                    $this->errors[] = _T("- Invalid number of months of membership extension.");
-                }
-                break;
-            case 'pref_beg_membership':
-                $beg_membership = explode("/", (string) $value);
-                if (count($beg_membership) != 2) {
-                    $this->errors[] = _T("- Invalid format of beginning of membership.");
-                } else {
-                    $now = getdate();
-                    if (!checkdate((int)$beg_membership[1], (int)$beg_membership[0], $now['year'])) {
-                        $this->errors[] = _T("- Invalid date for beginning of membership.");
-                    }
-                }
-                break;
-            case 'pref_membership_offermonths':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- Invalid number of offered months.");
-                }
-                break;
-            case 'pref_card_year':
-                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string) $value)) {
-                    $this->errors[] = _T("- Invalid year for cards.");
-                }
-                break;
-            case 'pref_footer':
-                $value = $this->cleanHtmlValue($value);
-                break;
-            case 'pref_website':
-                if (!isValidWebUrl($value)) {
-                    $this->errors[] = _T("- Invalid website URL.");
-                }
-                break;
+        foreach ($this->getFieldsNames() as $fieldname) {
+            $public_page = PreferencesSchema::isPublicPage($fieldname);
+            if (PreferencesSchema::getOwner($fieldname) !== null && !$public_page) {
+                //declared by a plugin: it is never part of the core form, and
+                //taking it as missing would blank it on every save
+                continue;
+            }
+
+            if (isset($values[$fieldname])) {
+                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
+            } elseif (PreferencesSchema::isAdvanced($fieldname) || $public_page) {
+                //a visibility has no empty value, and a plugin page is only on
+                //the form while its plugin is active
+                $value = $this->prefs[$fieldname];
+            } else {
+                $value = "";
+            }
+
+            $complete[$fieldname] = $value;
         }
 
+        return $complete;
+    }
+
+    /**
+     * Secrets already stored.
+     *
+     * Their field is never rendered, so a form sends it back empty: a relation
+     * asking for one has to read that as "keep what is held", or saving the
+     * settings of an instance using SMTP authentication would fail on a
+     * password it is not allowed to show in the first place.
+     *
+     * @return array<string>
+     */
+    private function heldSecrets(): array
+    {
+        $held = [];
+        foreach (array_keys($this->prefs) as $name) {
+            if (PreferencesSchema::isSensitive($name) && !empty($this->prefs[$name])) {
+                $held[] = $name;
+            }
+        }
+
+        return $held;
+    }
+
+    /**
+     * Assign checked values, honouring the access level each one requires
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     * @param Login                $login         Logged in user
+     */
+    private function assignValues(array $insert_values, Login $login): void
+    {
+        //__set() has no room for a Login, and the superadmin login check needs
+        //one; hold the caller's for as long as the assignments run
+        $this->acting_login = $login;
+
+        try {
+            $this->assignChecked($insert_values, $login);
+        } finally {
+            $this->acting_login = null;
+        }
+    }
+
+    /**
+     * Assign the values the given user is allowed to change
+     *
+     * @param array<string, mixed> $insert_values Complete set of values
+     * @param Login                $login         Logged in user
+     */
+    private function assignChecked(array $insert_values, Login $login): void
+    {
+        foreach ($insert_values as $champ => $valeur) {
+            //values Galette maintains itself are never taken from a payload
+            if (PreferencesSchema::isReadOnly($champ)) {
+                continue;
+            }
+
+            //they have their own page, which asks for the current password
+            if (in_array($champ, self::ADMIN_CREDENTIALS, strict: true)) {
+                continue;
+            }
+
+            if (
+                PreferencesSchema::getAcl($champ) === PreferencesSchema::ACL_SUPERADMIN
+                && !$login->isSuperAdmin()
+            ) {
+                continue;
+            }
+
+            //a secret is never rendered, so the form sends an empty field back
+            //unless it is being changed: that must not overwrite what is held
+            if (PreferencesSchema::isSensitive($champ) && empty($valeur)) {
+                continue;
+            }
+
+            $this->$champ = $valeur;
+        }
+    }
+
+    /**
+     * Store a single preference
+     *
+     * The change is merged into the current complete set and run through the
+     * very same rules as a whole form submission, so a value breaking a
+     * relation between preferences is refused here too.
+     *
+     * @param string $name  Preference name
+     * @param mixed  $value Value to store
+     * @param Login  $login Logged in user
+     */
+    public function setValue(string $name, mixed $value, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!PreferencesSchema::has($name)) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Unknown preference \'%1$s\'!'),
+                $name
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' is maintained by Galette and cannot be changed!'),
+                $name
+            );
+            return false;
+        }
+
+        if (
+            PreferencesSchema::getAcl($name) === PreferencesSchema::ACL_SUPERADMIN
+            && !$login->isSuperAdmin()
+        ) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('You are not allowed to change preference \'%1$s\'!'),
+                $name
+            );
+            return false;
+        }
+
+        $required = $this->getRequiredFields();
+
+        //merge the change into what is currently stored
+        $values = $this->prefs;
+        $values[$name] = $value;
+
+        $this->checkCssImpacted($values);
+
+        $insert_values = $this->completeValues($values);
+        $this->errors = array_merge(
+            $this->errors,
+            $this->relations->check(
+                values: $values,
+                insert_values: $insert_values,
+                required: $required,
+                held_secrets: $this->heldSecrets()
+            )
+        );
+
+        if (count($this->errors) > 0) {
+            return false;
+        }
+
+        //a relation may have dropped the key as not applicable
+        $checked = $insert_values[$name] ?? $values[$name];
+
+        //validation and normalisation happen in __set(), which reports through
+        //the error channel rather than a return value
+        $this->acting_login = $login;
+        try {
+            $this->$name = $checked;
+        } finally {
+            $this->acting_login = null;
+        }
+
+        if ($this->getErrors() !== []) {
+            return false;
+        }
+
+        return $this->persistValue($name, $this->prefs[$name]);
+    }
+
+    /**
+     * Reset a single preference to its default
+     *
+     * @param string $name  Preference name
+     * @param Login  $login Logged in user
+     */
+    public function resetValue(string $name, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!PreferencesSchema::has($name)) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Unknown preference \'%1$s\'!'),
+                $name
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isReadOnly($name)) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' is maintained by Galette and cannot be changed!'),
+                $name
+            );
+            return false;
+        }
+
+        if (PreferencesSchema::isSensitive($name)) {
+            //resetting a secret would set a publicly known value
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('Preference \'%1$s\' holds a secret and cannot be reset to its default!'),
+                $name
+            );
+            return false;
+        }
+
+        return $this->setValue($name, self::defaults()[$name], $login);
+    }
+
+    /**
+     * Store the superadmin credentials
+     *
+     * Both are validated before anything is written, then written together: a
+     * refused password must not leave a changed login behind, nor the other
+     * way round.
+     *
+     * @param string $admin_login New superadmin login
+     * @param string $password    New superadmin password, empty to keep the current one
+     * @param Login  $login       Logged in user
+     */
+    public function storeAdminCredentials(string $admin_login, string $password, Login $login): bool
+    {
+        $this->errors = [];
+
+        if (!$login->isSuperAdmin()) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is the preference name
+                _T('You are not allowed to change preference \'%1$s\'!'),
+                'pref_admin_login'
+            );
+            return false;
+        }
+
+        if (Galette::isDemo()) {
+            $this->errors[] = _T("Application runs under demo mode. This functionnality is not enabled, sorry.");
+            return false;
+        }
+
+        $admin_login = (string)$this->validateValue('pref_admin_login', $admin_login, $login);
+
+        if ($password !== '') {
+            //the password is checked against the login it will go with
+            $current_login = $this->prefs['pref_admin_login'];
+            $this->prefs['pref_admin_login'] = $admin_login;
+            try {
+                $this->validateValue('pref_admin_pass', $password, $login);
+            } finally {
+                $this->prefs['pref_admin_login'] = $current_login;
+            }
+        }
+
+        if ($this->errors !== []) {
+            return false;
+        }
+
+        $values = [
+            'pref_admin_login' => $admin_login,
+            'pref_admin_pass' => $password === ''
+                ? $this->prefs['pref_admin_pass']
+                : password_hash($password, PASSWORD_BCRYPT),
+        ];
+
+        if (!$this->storage->updateMany(values: $values)) {
+            $this->errors[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
+            return false;
+        }
+
+        $this->prefs = array_merge($this->prefs, $values);
+        return true;
+    }
+
+    /**
+     * Validate value of a field
+     *
+     * Errors are appended to the preferences error bag rather than returned:
+     * the caller is __set(), which has no other channel.
+     *
+     * @param string     $fieldname Field name
+     * @param mixed      $value     Value to be set
+     * @param Login|null $login     Logged in user, to tell an already taken superadmin login
+     *
+     * @phpstan-impure
+     */
+    public function validateValue(string $fieldname, mixed $value, ?Login $login = null): mixed
+    {
+        $value = $this->fields->validate(
+            fieldname: $fieldname,
+            value: $value,
+            preferences: $this,
+            login: $login ?? $this->currentLogin()
+        );
+
+        $this->errors = array_merge($this->errors, $this->fields->getErrors());
+
         return $value;
+    }
+
+    /**
+     * Who is connected, as far as the validators are concerned
+     *
+     * Nothing hands a Login down to __set(), and the superadmin login check
+     * needs one. The Replacements trait has php-di inject it, so it is there
+     * on any instance the container built; one built with new has none, and
+     * the check that needs it is simply skipped.
+     */
+    private function currentLogin(): ?Login
+    {
+        return $this->acting_login ?? $this->login ?? null;
     }
 
     /**
      * Will store all preferences in the database
      *
      * @param bool $updating True if we're updating instance
-     *
-     * @return bool
      */
     public function store(bool $updating = false): bool
     {
+        $values = [];
+        foreach (self::defaults() as $k => $v) {
+            if (Galette::isDemo() && PreferencesSchema::isDemoLocked($k)) {
+                continue;
+            }
+
+            //do not store pref_adhesion_form, it's designed to be overridden by plugin
+            if ($k === 'pref_adhesion_form') {
+                //cannot be empty, reset to default
+                $values[$k] = trim($v) == '' ? self::defaults()['pref_adhesion_form'] : $v;
+                continue;
+            }
+
+            $values[$k] = $this->prefs[$k];
+        }
+
+        if (!$this->storage->updateMany(values: $values)) {
+            return false;
+        }
+
         try {
-            $this->zdb->connection->beginTransaction();
-            $update = $this->zdb->update(self::TABLE);
-            $update->set(
-                [
-                    'val_pref'  => ':val_pref'
-                ]
-            )->where->equalTo('nom_pref', ':nom_pref');
-
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
-
-            foreach (self::$defaults as $k => $v) {
-                if (
-                    Galette::isDemo()
-                    && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
-                ) {
-                    continue;
-                }
-                Analog::log('Storing ' . $k, Analog::DEBUG);
-
-                $value = $this->prefs[$k];
-                //do not store pdf_adhesion_form, it's designed to be overridden by plugin
-                if ($k === 'pref_adhesion_form') {
-                    if (trim($v) == '') {
-                        //Reset to default, should not be empty
-                        $v = self::$defaults['pref_adhesion_form'];
-                    }
-                    $value = $v;
-                }
-
-                $stmt->execute(
-                    [
-                        'val_pref'  => $value,
-                        'nom_pref'  => $k
-                    ]
-                );
-            }
-            $this->zdb->connection->commit();
-            Analog::log(
-                'Preferences were successfully stored into database.',
-                Analog::INFO
-            );
-
-            //prevent socials removal; see https://bugs.galette.eu/issues/1912
             if ($updating === false) {
-                $this->storeSocials(null);
+                //prevent socials removal; see https://bugs.galette.eu/issues/1912
+                $this->storeSocials(id: null);
+                //dynamic fields
+                $this->dynamicsStore(transaction: true);
             }
-
-            return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
-            }
-
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
             Analog::log(
-                'Unable to store preferences | ' . print_r($messages, true),
+                'Unable to store preferences related data | ' . $e->getMessage(),
                 Analog::WARNING
             );
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -932,57 +855,7 @@ class Preferences
      */
     public function getPostalAddress(): string
     {
-        $regs = [
-            '/%name/',
-            '/%complement/',
-            '/%address/',
-            '/%zip/',
-            '/%town/',
-            '/%country/',
-        ];
-
-
-        if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
-            $_address = $this->prefs['pref_adresse'];
-            if ($this->prefs['pref_adresse2']) {
-                $_address .= "\n" . $this->prefs['pref_adresse2'];
-            }
-            $_country = $this->prefs['pref_pays'] != '' ? '- ' . $this->prefs['pref_pays'] : '';
-            $replacements = [
-                $this->prefs['pref_nom'],
-                "\n",
-                $_address,
-                $this->prefs['pref_cp'],
-                $this->prefs['pref_ville'],
-                $_country
-            ];
-        } else {
-            //get selected staff member address
-            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
-            $_complement = sprintf(
-                //TRANS: first parameter is name, second is status
-                _T('%1$s association\'s %2$s'),
-                $this->prefs['pref_nom'],
-                $adh->sstatus,
-            ) . "\n";
-            $_address = $adh->address;
-            $_country = $adh->country != '' ? '- ' . $adh->country : '';
-
-            $replacements = [
-                $adh->sfullname . "\n",
-                $_complement,
-                $_address,
-                $adh->zipcode,
-                $adh->town,
-                $_country
-            ];
-        }
-
-        return preg_replace(
-            $regs,
-            $replacements,
-            "%name%complement%address\n%zip %town %country"
-        );
+        return $this->identity->getPostalAddress(prefs: $this->prefs);
     }
 
     /**
@@ -992,21 +865,11 @@ class Preferences
      */
     public function getPhoneNumber(): string
     {
-        if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
-            $_phone = $this->prefs['pref_org_phone_number'];
-        } else {
-            //get selected staff phone number
-            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_MOBILE_FROM_STAFF ? $adh->gsm : $adh->phone;
-        }
-
-        return $_phone ?? '';
+        return $this->identity->getPhoneNumber(prefs: $this->prefs);
     }
 
     /**
      * Are public pages visible?
-     *
-     * @return bool
      */
     public function arePublicPagesEnabled(): bool
     {
@@ -1017,28 +880,7 @@ class Preferences
      * Are public pages visible?
      *
      * @param Authentication $login Authentication instance
-     *
-     * @return bool
-     *
-     * @deprecated 1.2.0
-     */
-    public function showPublicPages(Authentication $login): bool
-    {
-        Analog::log(
-            'Preferences::showPublicPages() is deprecated, use Preferences::showPublicPage() instead.',
-            Analog::WARNING
-        );
-        return $this->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
-            || $this->showPublicPage($login, 'pref_publicpages_visibility_membersgallery');
-    }
-
-    /**
-     * Are public pages visible?
-     *
-     * @param Authentication $login Authentication instance
      * @param string         $right Right to check
-     *
-     * @return bool
      */
     public function showPublicPage(Authentication $login, string $right): bool
     {
@@ -1052,28 +894,40 @@ class Preferences
             //Core does not handle plugins permission, just a global right.
             $right = 'pref_publicpages_visibility_generic';
         }
-        switch ($this->prefs[$right]) {
-            case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
-                //inherit from generic right
-                return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
-            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                //pages are publicly visibles
-                return true;
-            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                //pages should be displayed only for up-to-date members
-                return
-                    $login->isUp2Date()
-                    || $login->isAdmin()
-                    || $login->isStaff()
-                ;
-            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
-                //pages should be displayed only for staff and admins
-                return $login->isAdmin() || $login->isStaff();
-            case self::PUBLIC_PAGES_VISIBILITY_HIDDEN:
-                return false;
-            default:
-                throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
+
+        //a stored value that is not a plain integer must not be coerced:
+        //(int)'garbage' is 0, which would read as "visible by everyone"
+        $stored = filter_var($this->prefs[$right], FILTER_VALIDATE_INT);
+        $visibility = $stored === false ? null : PublicPageVisibility::tryFrom($stored);
+        if ($visibility === null) {
+            throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
         }
+
+        return $visibility->isVisibleFor(
+            login: $login,
+            inherit: fn(): bool => $this->showPublicPage(
+                login: $login,
+                right: 'pref_publicpages_visibility_generic'
+            )
+        );
+    }
+
+    /**
+     * Is a plugin public page visible?
+     *
+     * The page is found by the name of one of its routes; a route its plugin
+     * did not declare follows the default visibility, as any plugin page did
+     * before plugins could declare them.
+     *
+     * @param Authentication $login      Authentication instance
+     * @param string         $route_name Route name
+     */
+    public function showPluginPublicPage(Authentication $login, string $route_name): bool
+    {
+        return $this->showPublicPage(
+            login: $login,
+            right: PreferencesSchema::getPublicPageRight($route_name) ?? 'pref_publicpages_visibility_generic'
+        );
     }
 
     /**
@@ -1087,81 +941,6 @@ class Preferences
     {
         $forbidden = ['defaults'];
         $virtuals = ['vpref_email_newadh'];
-        $types = [
-            'int' => [
-                'pref_card_address',
-                'pref_card_hsize',
-                'pref_card_hspace',
-                'pref_card_marges_h',
-                'pref_card_marges_v',
-                'pref_card_vsize',
-                'pref_card_vspace',
-                'pref_default_paymenttype',
-                'pref_etiq_marges_v',
-                'pref_etiq_marges_h',
-                'pref_etiq_hspace',
-                'pref_etiq_vspace',
-                'pref_etiq_hsize',
-                'pref_etiq_vsize',
-                'pref_etiq_cols',
-                'pref_etiq_rows',
-                'pref_etiq_corps',
-                'pref_filter_account',
-                'pref_mail_method',
-                'pref_membership_ext',
-                'pref_numrows',
-                'pref_postal_address',
-                'pref_postal_staff_member',
-                'pref_org_phone',
-                'pref_org_phone_staff',
-                'pref_password_length',
-                'pref_password_strength',
-                'pref_publicpages_visibility_generic',
-                'pref_publicpages_visibility_documents',
-                'pref_publicpages_visibility_memberslist',
-                'pref_publicpages_visibility_membersgallery',
-                'pref_publicpages_visibility_stafflist',
-                'pref_publicpages_visibility_staffgallery',
-                'pref_redirect_on_create',
-                'pref_statut'
-            ],
-            'bool' => [
-                'pref_bool_create_member',
-                'pref_bool_groupsmanagers_create_member',
-                'pref_bool_groupsmanagers_edit_member',
-                'pref_bool_groupsmanagers_edit_groups',
-                'pref_bool_groupsmanagers_exports',
-                'pref_bool_groupsmanagers_mailings',
-                'pref_bool_groupsmanagers_create_contributions',
-                'pref_bool_groupsmanagers_create_transactions',
-                'pref_bool_groupsmanagers_see_contributions',
-                'pref_bool_groupsmanagers_see_transactions',
-                'pref_bool_mailadh',
-                'pref_bool_mailowner',
-                'pref_bool_publicpages',
-                'pref_bool_selfsubscribe',
-                'pref_bool_empty_form_link',
-                'pref_bool_wrap_mails',
-                'pref_disable_members_socials',
-                'pref_editor_enabled',
-                'pref_etiq_border',
-                'pref_force_picture_ratio',
-                'pref_mail_smtp_auth',
-                'pref_mail_smtp_secure',
-                'pref_mail_allow_unsecure',
-                'pref_password_blacklist',
-                'pref_hide_bg_image',
-                'pref_enable_custom_colors'
-            ]
-        ];
-
-        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. Code will be simplified once PdfMembersCardsAdaptative will be the only one
-        if ($name === 'pref_card_cols') {
-            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
-        }
-        if ($name === 'pref_card_rows') {
-            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getRows() : PdfMembersCards::getRows();
-        }
 
         if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
             return PdfMembersCards::HEIGHT;
@@ -1177,11 +956,13 @@ class Preferences
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
-            } elseif ($name == 'pref_footer') {
-                return $this->cleanHtmlValue($this->prefs[$name]);
+            } elseif (PreferencesSchema::getType($name) === PreferencesSchema::TYPE_HTML) {
+                //a value meant to be rendered as markup is purified again on
+                //the way out: it may predate the check on the way in
+                return Html::clean((string)$this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
-                    $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
+                    $this->prefs[$name] = self::defaults()['pref_adhesion_form'];
                 }
                 $value = $this->prefs[$name];
                 if ($this->zdb->isPostgres() && $value === 'f') {
@@ -1193,12 +974,12 @@ class Preferences
                     $value = $values[0]; //take first as default
                 }
 
-                if (in_array($name, $types['int']) && $value !== '') {
-                    $value = (int)$value;
-                }
-
-                if (in_array($name, $types['bool']) && $value !== '') {
-                    $value = (bool)$value;
+                if ($value !== '') {
+                    $value = match (PreferencesSchema::getType($name)) {
+                        PreferencesSchema::TYPE_INT => (int)$value,
+                        PreferencesSchema::TYPE_BOOL => (bool)$value,
+                        default => $value,
+                    };
                 }
 
                 return $value;
@@ -1222,8 +1003,6 @@ class Preferences
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -1246,13 +1025,62 @@ class Preferences
     }
 
     /**
+     * Get a preference, letting the legacy constant win if it is defined
+     *
+     * Some settings used to live in behavior.inc.php only. They are now stored
+     * like any other preference, but an instance still carrying the constant
+     * must keep behaving as before, so the constant takes precedence and its
+     * use is reported once.
+     *
+     * @param string $name Preference name
+     */
+    public function getConfigValue(string $name): mixed
+    {
+        $constant = PreferencesSchema::getConstant($name);
+
+        if ($constant === null || !defined($constant)) {
+            return $this->$name;
+        }
+
+        if (!isset($this->reported_overrides[$name])) {
+            $this->reported_overrides[$name] = true;
+            Analog::log(
+                sprintf(
+                    'Constant %1$s is defined and takes precedence over preference %2$s. '
+                    . 'Remove it from behavior.inc.php to manage that setting from the '
+                    . 'advanced configuration page.',
+                    $constant,
+                    $name
+                ),
+                Analog::WARNING
+            );
+        }
+
+        return constant($constant);
+    }
+
+    /**
+     * Get preferences defaults
+     *
+     * Derived from the schema on first access: a static property initializer
+     * cannot call a method.
+     *
+     * @return array<string, bool|int|string>
+     */
+    private static function defaults(): array
+    {
+        self::$defaults ??= PreferencesSchema::getDefaults();
+        return self::$defaults;
+    }
+
+    /**
      * Get default preferences
      *
      * @return array<string, mixed>
      */
     public function getDefaults(): array
     {
-        return self::$defaults;
+        return self::defaults();
     }
 
     /**
@@ -1260,13 +1088,11 @@ class Preferences
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
         //does this pref exist?
-        if (!array_key_exists($name, self::$defaults)) {
+        if (!array_key_exists($name, self::defaults())) {
             Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
                 . $name . ')',
@@ -1275,9 +1101,9 @@ class Preferences
             return;
         }
 
-        if (($name == 'pref_email' || $name == 'pref_email_newadh' || $name == 'pref_email_reply_to') && Galette::isDemo()) {
+        if (Galette::isDemo() && PreferencesSchema::isDemoLocked($name)) {
             Analog::log(
-                'Trying to set pref_email while in DEMO.',
+                sprintf('Trying to set %s while in DEMO.', $name),
                 Analog::WARNING
             );
             return;
@@ -1285,12 +1111,17 @@ class Preferences
 
         // now, check validity
         if ($value != '') {
+            $errors_count = count($this->errors);
             $value = $this->validateValue($name, $value);
+            if (count($this->errors) > $errors_count) {
+                //a refused value must not be served for the rest of the request
+                return;
+            }
         }
 
         //some values need to be changed (e.g., passwords)
         if ($name == 'pref_admin_pass') {
-            $value = password_hash((string) $value, PASSWORD_BCRYPT);
+            $value = password_hash((string)$value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value
@@ -1299,32 +1130,28 @@ class Preferences
 
     /**
      * Get instance URL from configuration (if set) or guessed if not
-     *
-     * @return string
      */
     public function getURL(): string
     {
-        if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
-            $url = $this->prefs['pref_galette_url'];
-        } else {
-            $url = $this->getDefaultURL();
+        //GALETTE_URI, when defined, wins over the stored value
+        $url = $this->getConfigValue('pref_galette_url');
+        if (!empty($url)) {
+            return (string)$url;
         }
-        return $url;
+
+        return $this->getDefaultURL();
     }
 
     /**
-     * Get default URL (when not set by user in preferences)
-     *
-     * @return string
+     * Get default URL (when neither preference nor constant is set)
      */
     public function getDefaultURL(): string
     {
         if (defined('GALETTE_CRON')) {
-            if (defined('GALETTE_URI')) {
-                return GALETTE_URI;
-            } else {
-                throw new \RuntimeException(_T('Please define constant "GALETTE_URI" with the path to your instance.'));
-            }
+            //no incoming request to guess the instance URL from
+            throw new \RuntimeException(
+                _T('Please set your instance URL from the advanced configuration, or define the "GALETTE_URI" constant.')
+            );
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
@@ -1336,8 +1163,6 @@ class Preferences
 
     /**
      * Get last telemetry date
-     *
-     * @return string
      */
     public function getTelemetryDate(): string
     {
@@ -1352,8 +1177,6 @@ class Preferences
 
     /**
      * Get last telemetry registration date
-     *
-     * @return string|null
      */
     public function getRegistrationDate(): ?string
     {
@@ -1364,41 +1187,6 @@ class Preferences
         }
 
         return null;
-    }
-
-    /**
-     * Check member cards sizes
-     * Always a A4/portrait
-     *
-     * @return array<string>
-     */
-    public function checkCardsSizes(): array
-    {
-        $warning_detected = [];
-        //check page width
-        $max = PdfMembersCards::PAGE_WIDTH;
-        //margins
-        $size = $this->pref_card_marges_h * 2;
-        //cards
-        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
-        //spacing
-        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page width!');
-        }
-
-        $max = PdfMembersCards::PAGE_HEIGHT;
-        //margins
-        $size = $this->pref_card_marges_v * 2;
-        //cards
-        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
-        //spacing
-        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page height!');
-        }
-
-        return $warning_detected;
     }
 
     /**
@@ -1425,11 +1213,11 @@ class Preferences
             'patterns'  => $this->getMainPatterns()
         ];
 
-        $s_patterns = $this->getSignaturePatterns(false);
+        $s_patterns = $this->getSignaturePatterns(legacy: false);
         if (count($s_patterns)) {
             $legend['socials'] = [
                 'title' => _T('Social networks'),
-                'patterns' => $this->getSignaturePatterns(false)
+                'patterns' => $this->getSignaturePatterns(legacy: false)
             ];
         }
 
@@ -1441,8 +1229,6 @@ class Preferences
      *
      * @param PHPMailer $mail    PHPMailer instance
      * @param bool      $as_text Whether to return signature as text or HTML (default)
-     *
-     * @return string
      */
     public function getMailSignature(PHPMailer $mail, bool $as_text = false): string
     {
@@ -1465,7 +1251,12 @@ class Preferences
 
         $signature = $this->proceedReplacements($signature);
         if ($as_text) {
-            $signature = Text::convertHtmlToText($signature);
+            //replacements hand back markup - an address broken with <br>, a
+            //website as a link - while the signature itself is written as
+            //plain text. Its own line breaks have to become markup too, or
+            //the conversion reads them as insignificant HTML whitespace and
+            //collapses the whole signature onto a single line.
+            $signature = Html::convertToText(preg_replace('/\r\n|\n|\r/', '<br />', $signature));
         }
 
         return "\r\n-- \r\n" . $signature;
@@ -1480,39 +1271,11 @@ class Preferences
      */
     protected function getSignaturePatterns(bool $legacy = true): array
     {
-        $s_patterns = [];
-        $social = new Social($this->zdb);
-
-        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
-
-        foreach ($types as $type) {
-            $s_patterns['asso_social_' . strtolower($type)] = [
-                'title' => $social->getSystemType($type),
-                'pattern' => '/{ASSO_SOCIAL_' . strtoupper($type) . '}/'
-            ];
-        }
-
-        if ($legacy === true) {
-            $main = $this->getMainPatterns();
-            $s_patterns['_asso_name'] = [
-                'title'     => $main['asso_name']['title'],
-                'pattern'   => '/{NAME}/'
-            ];
-
-            $s_patterns['_asso_website'] = [
-                'title'     => $main['asso_website']['title'],
-                'pattern'   => '/{WEBSITE}/'
-            ];
-
-            foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
-                $s_patterns['_asso_social_' . $legacy_type] = [
-                    'title' => $s_patterns['asso_social_' . $legacy_type]['title'],
-                    'pattern' => '/{' . strtoupper($legacy_type) . '}/'
-                ];
-            }
-        }
-
-        return $s_patterns;
+        return $this->signature->getPatterns(
+            core_types: $this->getCoreRegisteredTypes(),
+            main_patterns: $legacy ? $this->getMainPatterns() : [],
+            legacy: $legacy
+        );
     }
 
     /**
@@ -1522,37 +1285,13 @@ class Preferences
      */
     public function setSocialReplacements(): self
     {
-        $replacements = [];
-
-        $done_replacements = $this->getReplacements();
-        $replacements['_asso_name'] = $done_replacements['asso_name'];
-        $replacements['asso_website'] = $this->pref_website;
-        $replacements['_asso_website'] = $replacements['asso_website'];
-
-        $social = new Social($this->zdb);
-        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
-
-        foreach ($types as $type) {
-            $replace_value = null;
-            $socials = Social::getListForMember(null, $type);
-            if (count($socials)) {
-                $replace_value = '';
-                foreach ($socials as $social) {
-                    if ($replace_value != '') {
-                        $replace_value .= ', ';
-                    }
-                    $replace_value .= $social->url;
-                }
-            }
-            $replacements['asso_social_' . strtolower($type)] = $replace_value;
-        }
-
-
-        foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
-            $replacements['_asso_social_' . $legacy_type] = $replacements['asso_social_' . $legacy_type];
-        }
-
-        $this->setReplacements($replacements);
+        $this->setReplacements(
+            $this->signature->getSocialReplacements(
+                core_types: $this->getCoreRegisteredTypes(),
+                done_replacements: $this->getReplacements(),
+                website: $this->pref_website
+            )
+        );
 
         return $this;
     }
@@ -1562,18 +1301,11 @@ class Preferences
      *
      * @param string $value Value to clean
      *
-     * @return string
+     * @deprecated 1.3.0 Use Galette\Util\Html::clean()
      */
     public function cleanHtmlValue(string $value): string
     {
-        $config = \HTMLPurifier_Config::createDefault();
-        $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
-        if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0o755, true);
-        }
-        $config->set('Cache.SerializerPath', $cache_dir);
-        $purifier = new \HTMLPurifier($config);
-        return $purifier->purify($value);
+        return Html::clean($value);
     }
 
     /**
@@ -1581,43 +1313,36 @@ class Preferences
      *
      * @param string $field Field name
      * @param mixed  $value Field value
-     *
-     * @return bool
      */
     protected function updateOneField(
         string $field,
         mixed $value,
     ): bool {
-        try {
-            $update = $this->zdb->update(self::TABLE);
-            $update
-                ->set(['val_pref'  => $value])
-                ->where->equalTo('nom_pref', $field);
-            $this->zdb->execute($update);
-            $this->$field = $value;
-            Analog::log(
-                sprintf('%s updated.', $field),
-                Analog::INFO
-            );
-            return true;
-        } catch (Throwable $e) {
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
-            Analog::log(
-                sprintf('Unable to store update field %s | %s', $field, print_r($messages, true)),
-                Analog::WARNING
-            );
+        if (!$this->persistValue($field, $value)) {
             return false;
         }
+
+        $this->$field = $value;
+        return true;
+    }
+
+    /**
+     * Write one preference to database, without touching the loaded value
+     *
+     * Assigning goes through __set(), which validates and, for the superadmin
+     * password, hashes. A caller holding an already normalised value must not
+     * go through it again.
+     *
+     * @param string $field Field name
+     * @param mixed  $value Field value
+     */
+    private function persistValue(string $field, mixed $value): bool
+    {
+        return $this->storage->updateOne(name: $field, value: $value);
     }
 
     /**
      * Update telemetry date only
-     *
-     * @return bool
      */
     public function updateTelemetryDate(): bool
     {
@@ -1629,8 +1354,6 @@ class Preferences
 
     /**
      * Update registration date only
-     *
-     * @return bool
      */
     public function updateRegistrationDate(): bool
     {
@@ -1644,8 +1367,6 @@ class Preferences
      * Generate and store UUID of specified type
      *
      * @param string $type UUID type to generate
-     *
-     * @return string
      */
     public function generateUUID(string $type): string
     {
@@ -1662,15 +1383,10 @@ class Preferences
     /**
      * Get required fields
      *
-     * @param Login $login Logged in user
-     *
      * @return array<string, int>
      */
-    public function getRequiredFields(Login $login): array
+    public function getRequiredFields(): array
     {
-        if ($login->isSuperAdmin() && !Galette::isDemo()) {
-            $this->required['pref_admin_login'] = 1;
-        }
         return $this->required;
     }
 
@@ -1678,26 +1394,27 @@ class Preferences
      * Check if CSS is impacted when storing preferences
      *
      * @param array<string, mixed> $values Values to check
-     *
-     * @return void
      */
     protected function checkCssImpacted(array $values): void
     {
-        //check if custom CSS is enabled
-        if (($values['pref_enable_custom_colors'] ?? '') != $this->pref_enable_custom_colors) {
-            $this->delete_dark_css = true;
-            return;
+        $watched = ['pref_enable_custom_colors'];
+        foreach (array_keys($this->prefs) as $field) {
+            if (str_starts_with((string)$field, 'pref_cc_')) {
+                $watched[] = $field;
+            }
         }
 
-        $css_fields = array_filter(
-            array_keys($this->prefs),
-            fn($field) => str_starts_with($field, 'pref_cc_')
-        );
-        foreach ($css_fields as $css_field) {
-            if ($values[$css_field] != $this->$css_field) {
-                $this->delete_dark_css = true;
-                return;
-            }
+        $current = [];
+        foreach ($watched as $field) {
+            //read through __get: a boolean stored as an empty string does not
+            //compare to a submitted one the way the raw value would
+            $current[$field] = $this->$field;
+        }
+
+        //the flag latches: it is cleared by resetDarkCss() acting on it, not by
+        //a later check that happens to leave the colours alone
+        if ($this->assets->isCssImpacted(submitted: $values, current: $current)) {
+            $this->delete_dark_css = true;
         }
     }
 
@@ -1705,8 +1422,6 @@ class Preferences
      * Reset dark mode CSS file
      *
      * @param \Slim\Flash\Messages $flash Flash messages instance
-     *
-     * @return void
      */
     public function resetDarkCss(\Slim\Flash\Messages $flash): void
     {
@@ -1714,15 +1429,7 @@ class Preferences
             return;
         }
 
-        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
-        if (file_exists($cssfile)) {
-            unlink($cssfile);
-            // Inform user when the dark mode CSS file has been reset
-            $flash->addMessage(
-                'info_detected',
-                _T("Dark mode CSS file has been reset.")
-            );
-        }
+        $this->assets->resetDarkCss(flash: $flash);
     }
 
     /**
@@ -1735,27 +1442,41 @@ class Preferences
      */
     public function handleLogo(Logo|PrintLogo $logo, UploadedFileInterface $uploaded_file): array|bool
     {
+        $this->errors = $this->assets->storeLogo(logo: $logo, uploaded_file: $uploaded_file);
+
+        return $this->errors === [] ? true : $this->errors;
+    }
+
+    /**
+     * Handle files (dynamics files)
+     *
+     * @param array<UploadedFileInterface> $files Files sent
+     *
+     * @return array<string>|true
+     */
+    public function handleFiles(array $files): bool|array
+    {
         $this->errors = [];
-        if ($uploaded_file->getError() === UPLOAD_ERR_OK) {
-            $res = $logo->storeFile($uploaded_file);
-            if ($res !== true) {
-                $this->errors[] = $logo->getErrorMessage($res);
-            }
-        } elseif ($uploaded_file->getError() !== UPLOAD_ERR_NO_FILE) {
-            $this->errors[] = $logo->getPhpErrorMessage(
-                $uploaded_file->getError()
-            );
-        }
+
+        $this->dynamicsFiles($files);
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store logo' . "\n"
-                . print_r($this->errors, true),
-                Analog::WARNING
+                'Some errors has been threw attempting to edit/store preferences files' . "\n"
+                . print_r($this->errors, return: true),
+                Analog::ERROR
             );
             return $this->errors;
         } else {
             return true;
         }
+    }
+
+    /**
+     * Get ID
+     */
+    public function getID(): ?int
+    {
+        return 0;
     }
 }

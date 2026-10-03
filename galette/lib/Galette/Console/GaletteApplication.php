@@ -1,32 +1,23 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Console;
 
+use Galette\Core\Galette;
+use Psr\Container\ContainerInterface;
+use Slim\App;
+use Slim\Interfaces\RouteCollectorInterface;
 use Symfony\Component\Console\Application;
 
 /**
- * Galetet console application
+ * Galette console application
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -45,19 +36,38 @@ class GaletteApplication extends Application
     /**
      * Initialize application
      *
-     * @return void
+     * @param App<ContainerInterface> $app
      */
-    public function init(): void
+    public function init(ContainerInterface $container, App $app, RouteCollectorInterface $routeCollector): void
     {
-        $this->add(new Command\Checks($this->basepath));
-        $this->add(new Command\Install($this->basepath));
+        Galette::loadRoutes($app);
+
+        $pluginRoutes = array_column(
+            $container->get(\Galette\Core\Plugins::class)->getModules(),
+            'route'
+        );
+
+        $this->addCommands([
+            new Command\Checks($this->basepath),
+            new Command\Install($this->basepath),
+            new Command\FeatureStatus($this->basepath),
+            new Command\HeadersCheck($this->basepath),
+            new Command\CheckRoutes($routeCollector, $this->basepath, $pluginRoutes)
+        ]);
         if (!defined('GALETTE_INSTALLER')) {
             //cannot be added until Galette has been properly installed
-            $this->add(new Command\Plugins\PluginsList($this->basepath));
-            $this->add(new Command\Plugins\PluginEnable($this->basepath));
-            $this->add(new Command\Plugins\PluginDisable($this->basepath));
-            $this->add(new Command\Plugins\PluginInstallDb($this->basepath));
+            $this->addCommands([
+                new Command\Plugins\PluginsList($this->basepath),
+                new Command\Plugins\PluginEnable($this->basepath),
+                new Command\Plugins\PluginDisable($this->basepath),
+                new Command\Plugins\PluginInstallDb($this->basepath),
+                new Command\SeedFixtures($this->basepath),
+                new Command\SuperAdminPassword($this->basepath),
+                new Command\ProcessMailingQueue($this->basepath)
+            ]);
         }
-        $this->add(new Command\MakeTwigCache($this->basepath));
+        $this->addCommand(new Command\MakeTwigCache($this->basepath));
+        $this->addCommand(new Command\TwigPotReferences($this->basepath));
+        $this->addCommand(new Command\CompileLocales($this->basepath));
     }
 }

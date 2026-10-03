@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -39,18 +26,18 @@ use function Safe\json_encode;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $name
+ * @property int                  $id
+ * @property string               $name
  * @property array<string, mixed> $parameters
- * @property int $author_id
- * @property string $creation_date
- * @property string $form
+ * @property int                  $author_id
+ * @property string               $creation_date
+ * @property string               $form
  */
 
 class SavedSearch
 {
-    public const TABLE = 'searches';
-    public const PK = 'search_id';
+    public const string TABLE = 'searches';
+    public const string PK = 'search_id';
 
     private int $id;
     private string $name;
@@ -88,8 +75,6 @@ class SavedSearch
      * Load a saved search from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -121,8 +106,6 @@ class SavedSearch
      * Load a saved search from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -150,8 +133,6 @@ class SavedSearch
      * Check and set values
      *
      * @param array<string, mixed> $values Values to set
-     *
-     * @return bool
      */
     public function check(array $values): bool
     {
@@ -185,8 +166,6 @@ class SavedSearch
 
     /**
      * Store saved search in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -212,7 +191,7 @@ class SavedSearch
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing saved search: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -221,8 +200,6 @@ class SavedSearch
 
     /**
      * Remove current saved search
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -252,8 +229,6 @@ class SavedSearch
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -315,8 +290,6 @@ class SavedSearch
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -340,15 +313,17 @@ class SavedSearch
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'form':
                 if (!in_array($value, $this->getKnownForms())) {
-                    $this->errors[] = str_replace('%form', $value, _T("Unknown form %form!"));
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the form name
+                        _T('Unknown form %1$s!'),
+                        $value
+                    );
                 }
                 $this->form = $value;
                 break;
@@ -362,7 +337,7 @@ class SavedSearch
                 $this->parameters = $value;
                 break;
             case 'name':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     $this->errors[] = _T("Name cannot be empty!");
                 }
                 $this->name = $value;

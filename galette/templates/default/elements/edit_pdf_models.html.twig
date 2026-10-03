@@ -1,24 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
-        <form action="{{ url_for('pdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+        <form action="{{ url_for('storePdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
             <div class="ui basic fitted segment">
 {% if model.id != 1 %}
                     <div class="field">
@@ -91,7 +76,6 @@
                 <button type="submit" class="ui labeled icon primary button action">
                     <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
                 </button>
-                {% include 'components/forms/csrf.html.twig' %}
             </div>
         </form>
         {% include 'modals/replacements_legend.html.twig' with {'legends': model.getLegend(), 'cur_ref': model.id} %}

@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -40,12 +28,12 @@ class ContributionsTypesController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'addContributionType',
+        pattern: '/contributions-types/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -54,15 +42,15 @@ class ContributionsTypesController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doAddContributionType',
+        pattern: '/contributions-types/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null, 'add');
+        return $this->store(request: $request, response: $response, id: null, action: 'add');
     }
 
     // /CRUD - Create
@@ -71,13 +59,14 @@ class ContributionsTypesController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'contributionsTypes',
+        pattern: '/contributions-types',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -90,6 +79,7 @@ class ContributionsTypesController extends CrudController
         $list = $ctypes->getCompleteList();
         $params['entries'] = $list;
 
+        $params['html_editor'] = true;
         $params['documentation'] = 'usermanual/contributions.html#contributions-types';
 
         if (count($ctypes->getErrors()) > 0) {
@@ -112,11 +102,6 @@ class ContributionsTypesController extends CrudController
 
     /**
      * Contributions types filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -130,21 +115,23 @@ class ContributionsTypesController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Contribution type id
-     *
-     * @return Response
+     * @param int $id Contribution type id
      */
+    #[Route(
+        name: 'editContributionType',
+        pattern: '/contributions-types/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ctype = new ContributionsTypes($this->zdb);
-        $params['page_title'] = _T("Edit contribution type");
+        $params['page_title'] = sprintf('%1$s - %2$s', _T('Contribution type'), $ctype->getLabel($id));
 
         $entry = $ctype->get($id);
         $params['entry'] = $entry;
 
-        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $params['html_editor'] = true;
+        $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(
@@ -158,12 +145,13 @@ class ContributionsTypesController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Contribution type id
-     *
-     * @return Response
+     * @param int $id Contribution type id
      */
+    #[Route(
+        name: 'doEditContributionType',
+        pattern: '/contributions-types/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -172,12 +160,8 @@ class ContributionsTypesController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Contribution type id
-     * @param string   $action   Action
-     *
-     * @return Response
+     * @param ?int   $id     Contribution type id
+     * @param string $action Action
      */
     public function store(
         Request $request,
@@ -199,7 +183,8 @@ class ContributionsTypesController extends CrudController
         $msg = null;
         $ctype = new ContributionsTypes($this->zdb);
 
-        $label = trim((string) $post['libelle_type_cotis']);
+        $label = trim((string)$post['libelle_type_cotis']);
+        $description = (string)($post['description'] ?? '');
         $field = (int)trim($post['cotis_extension'] ?? 0);
         $amount = null;
         if (isset($post['amount']) && $post['amount'] !== '') {
@@ -207,7 +192,13 @@ class ContributionsTypesController extends CrudController
         }
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $ctype->add($label, $amount, $field) : $ctype->update($id, $label, $amount, $field));
+            $ret = ($action === 'add' ? $ctype->add(label: $label, description: $description, amount: $amount, extension: $field) : $ctype->update(
+                id: $id,
+                label: $label,
+                description: $description,
+                amount: $amount,
+                extension: $field
+            ));
         } else {
             $ret = false;
             $error_detected[] = _T('Missing required contribution type name!');
@@ -216,21 +207,27 @@ class ContributionsTypesController extends CrudController
 
         if ($ret !== true) {
             $error_detected[] = $action === 'add'
-                ? _T("Contribution type has not been added :(") : _T("Contribution type #%id has not been updated");
+                ? _T("Contribution type has not been added :(")
+                : sprintf(
+                    //TRANS: parameter is the contribution type identifier
+                    _T('Contribution type #%1$s has not been updated'),
+                    $id
+                );
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editContributionType', ['id' => (string)$id]);
             }
         } else {
             $msg = $action === 'add'
-                ? _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
+                ? _T("Contribution type has been successfully added!")
+                : sprintf(
+                    //TRANS: parameter is the contribution type identifier
+                    _T('Contribution type #%1$s has been successfully updated!'),
+                    $id
+                );
         }
 
         if (count($error_detected) == 0) {
-            $success_detected[] = str_replace(
-                ['%id'],
-                [(string)$id],
-                $msg
-            );
+            $success_detected[] = $msg;
         }
 
         return $this->redirect(
@@ -249,8 +246,6 @@ class ContributionsTypesController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -261,8 +256,6 @@ class ContributionsTypesController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -278,18 +271,16 @@ class ContributionsTypesController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
         $ctype = new ContributionsTypes($this->zdb);
         $label = $ctype->getLabel((int)$args['id']);
 
-        return str_replace(
-            ['%label'],
-            [$label],
-            _T("Remove contribution type '%label'")
+        return sprintf(
+            //TRANS: parameter is the contribution type label
+            _T('Remove contribution type \'%1$s\''),
+            $label
         );
     }
 
@@ -298,8 +289,6 @@ class ContributionsTypesController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

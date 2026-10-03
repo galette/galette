@@ -1,85 +1,72 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
+use Galette\Middleware\Authenticate;
+
+/**
+ * @var \Slim\App<\DI\Container> $app
+ */
 
 $app->get(
     '/groups',
     [Crud\GroupsController::class, 'list']
-)->setName('groups')->add($authenticate);
+)->setName('groups')->add(Authenticate::class);
 
 $app->post(
     '/groups/reorder',
     [Crud\GroupsController::class, 'reorderList']
-)->setName('reorderGroups')->add($authenticate);
+)->setName('reorderGroups')->add(Authenticate::class);
 
-$app->get(
-    '/group/add/{name}',
+$app->post(
+    '/group/add',
     [Crud\GroupsController::class, 'doAdd']
-)->setName('add_group')->add($authenticate);
+)->setName('doAddGroup')->add(Authenticate::class);
 
 $app->get(
     '/group/edit/{id:\d+}',
     [Crud\GroupsController::class, 'edit']
-)->setName('editGroup')->add($authenticate);
+)->setName('editGroup')->add(Authenticate::class);
 
 $app->post(
     '/group/edit/{id:\d+}',
     [Crud\GroupsController::class, 'doEdit']
-)->setName('doEditGroup')->add($authenticate);
+)->setName('doEditGroup')->add(Authenticate::class);
 
 $app->get(
     '/group/remove/{id:\d+}',
     [Crud\GroupsController::class, 'confirmDelete']
-)->setName('removeGroup')->add($authenticate);
+)->setName('removeGroup')->add(Authenticate::class);
 
 $app->post(
     '/group/remove/{id:\d+}',
     [Crud\GroupsController::class, 'delete']
-)->setName('doRemoveGroup')->add($authenticate);
+)->setName('doRemoveGroup')->add(Authenticate::class);
 
 $app->get(
     '/pdf/groups[/{id:\d+}]',
     [PdfController::class, 'group']
-)->setName('pdf_groups')->add($authenticate);
+)->setName('pdf_groups')->add(Authenticate::class);
 
 $app->post(
     '/ajax/group',
     [Crud\GroupsController::class, 'getGroup']
-)->setName('ajax_group')->add($authenticate);
-
-$app->post(
-    '/ajax/unique-groupname',
-    [Crud\GroupsController::class, 'checkUniqueness']
-)->setName('ajax_groupname_unique')->add($authenticate);
+)->setName('ajax_group')->add(Authenticate::class);
 
 $app->post(
     '/ajax/groups',
     [Crud\GroupsController::class, 'simpleList']
-)->setName('ajax_groups')->add($authenticate);
+)->setName('ajax_groups')->add(Authenticate::class);
 
 $app->post(
     '/ajax/groups/reorder',
     [Crud\GroupsController::class, 'reorder']
-)->setName('ajax_groups_reorder')->add($authenticate);
+)->setName('ajax_groups_reorder')->add(Authenticate::class);

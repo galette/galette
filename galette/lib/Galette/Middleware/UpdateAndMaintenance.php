@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,8 +28,8 @@ use Slim\Routing\RouteParser;
  */
 class UpdateAndMaintenance
 {
-    public const MAINTENANCE = 0;
-    public const NEED_UPDATE = 1;
+    public const int MAINTENANCE = 0;
+    public const int NEED_UPDATE = 1;
 
     /**
      * @var callable
@@ -62,9 +49,9 @@ class UpdateAndMaintenance
         callable|int $callback = self::MAINTENANCE
     ) {
         if ($callback === self::MAINTENANCE) {
-            $this->callback = [$this, 'maintenancePage'];
+            $this->callback = $this->maintenancePage(...);
         } elseif ($callback === self::NEED_UPDATE) {
-            $this->callback = [$this, 'needsUpdatePage'];
+            $this->callback = $this->needsUpdatePage(...);
         } elseif (!is_callable($callback)) {
             throw new \InvalidArgumentException('argument callback must be callable');
         } else {
@@ -77,8 +64,6 @@ class UpdateAndMaintenance
      *
      * @param Request        $request PSR7 request
      * @param RequestHandler $handler PSR7 request handler
-     *
-     * @return Response
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
@@ -95,8 +80,6 @@ class UpdateAndMaintenance
      *
      * @param Request              $request  PSR7 request
      * @param array<string, mixed> $contents HTML page contents
-     *
-     * @return string
      */
     private function renderPage(Request $request, array $contents): string
     {
@@ -113,8 +96,8 @@ class UpdateAndMaintenance
 
         $theme_path = $path . GALETTE_THEME;
 
-        $body = "<!DOCTYPE html>
-<html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
+        return "<!DOCTYPE html>
+<html class=\"public_page\" lang=\"" . $this->i18n->getWebID() . "\"" . ($this->i18n->isRTL() ? " dir=\"rtl\"" : "") . ">
     <head>
         <title>" . $contents['title'] . "</title>
         <meta charset=\"UTF-8\"/>
@@ -126,7 +109,7 @@ class UpdateAndMaintenance
             <div id=\"main\" class=\"ui container\">
                 <div class=\"ui basic segment\">
                     <div class=\"ui basic center aligned fitted segment\">
-                        <img width=\"200\" src=\"" . $theme_path . "images/galette.webp\" alt=\"[ Galette ]\"/>
+                        <img width=\"200\" src=\"" . $theme_path . "images/galette.webp\" alt=\"\"/>
                     </div>
                     <div class=\"ui center aligned message\">" . $contents['body'] . "</div>
                 </div>
@@ -134,15 +117,12 @@ class UpdateAndMaintenance
         </div>
     </body>
 </html>";
-        return $body;
     }
 
     /**
      * Displays maintenance page
      *
      * @param Request $request PSR7 request
-     *
-     * @return string
      */
     private function maintenancePage(Request $request): string
     {
@@ -157,8 +137,6 @@ class UpdateAndMaintenance
      * Displays needs update page
      *
      * @param Request $request PSR7 request
-     *
-     * @return string
      */
     private function needsUpdatePage(Request $request): string
     {

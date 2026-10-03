@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 CREATE TABLE galette_socials (
      id_social int(10) unsigned NOT NULL auto_increment,
      id_adh int(10) unsigned NULL,

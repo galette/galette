@@ -8,11 +8,11 @@
     <created>2004-02-09</created>
 
     <shortdesc xml:lang="en">
-        Online tool for nonprofit oragnizations to manage membership and fees
+        Free your association management!
     </shortdesc>
 
     <shortdesc xml:lang="fr">
-        Outil de gestion d'adhérents et de cotisations en ligne pour les associations
+        Libérez la gestion de votre association !
     </shortdesc>
 
     <description xml:lang="en">
@@ -46,14 +46,6 @@
             <foaf:name>Johan Cwiklinski</foaf:name>
         </foaf:Person>
     </maintainer>
-
-    <release>
-        <Version>
-            <name>0.7.5.1</name>
-            <created>2013-08-26</created>
-            <revision>0.7.5.1</revision>
-        </Version>
-    </release>
 
     <license rdf:resource="http://spdx.org/licenses/GPL-3.0+" />
 

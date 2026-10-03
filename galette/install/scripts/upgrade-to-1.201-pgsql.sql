@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 SELECT setval((SELECT pg_get_serial_sequence('galette_adherents', 'id_adh')), (SELECT max(id_adh) FROM galette_adherents));
 SELECT setval((SELECT pg_get_serial_sequence('galette_cotisations', 'id_cotis')), (SELECT max(id_cotis) FROM galette_cotisations));
 SELECT setval((SELECT pg_get_serial_sequence('galette_statuts', 'id_statut')), (SELECT max(id_statut) FROM galette_statuts));

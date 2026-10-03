@@ -1,39 +1,37 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\Fixtures\ExposedPicture;
+use Galette\Tests\GaletteTestCase;
+
+use function Safe\copy;
+use function Safe\file_put_contents;
+use function Safe\filesize;
+use function Safe\getimagesize;
+use function Safe\glob;
+use function Safe\realpath;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Picture tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Picture extends TestCase
+class Picture extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\Core\Picture $picture;
+    private string $tmp_dir;
+    /** @var string[] */
     private array $expected_badchars = [
         '.',
         '\\',
@@ -51,31 +49,148 @@ class Picture extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->picture = new \Galette\Core\Picture();
+        $this->tmp_dir = sys_get_temp_dir() . '/galette-picture-' . uniqid() . '/';
     }
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
+        foreach (['sub/dir/', 'sub/', ''] as $dir) {
+            $path = $this->tmp_dir . $dir;
+            if (is_dir($path)) {
+                foreach (glob($path . '*') as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+                rmdir($path);
+            }
         }
+        parent::tearDown();
+    }
+
+    /**
+     * Test storage directory creation
+     */
+    public function testEnsureStorePath(): void
+    {
+        $path = $this->tmp_dir . 'sub/dir/';
+        $picture = new ExposedPicture($path);
+
+        $this->assertFalse(is_dir($path));
+        $this->assertTrue($picture->publicEnsureStorePath());
+        $this->assertTrue(is_dir($path));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+
+        //already existing
+        $this->assertTrue($picture->publicEnsureStorePath());
+
+        //a file is in the way
+        $file = $this->tmp_dir . 'sub/dir/afile';
+        file_put_contents($file, 'content');
+        $picture = new ExposedPicture($file);
+        $this->assertFalse($picture->publicEnsureStorePath());
+        $this->expectLogEntry(\Analog\Analog::ERROR, '`' . $file . '` is not a directory.');
+    }
+
+    /**
+     * Test storage directory is created when writing a picture
+     */
+    public function testStoreDirectoryCreated(): void
+    {
+        $id = 999999;
+        $path = $this->tmp_dir . 'sub/dir/';
+        $source = sys_get_temp_dir() . '/galette-upload-' . uniqid() . '.jpg';
+        copy(GALETTE_ROOT . '../tests/fake_image.jpg', $source);
+
+        $picture = new ExposedPicture($path, $id);
+        $this->assertFalse($picture->hasPicture());
+        $this->assertFalse(is_dir($path));
+
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $source,
+            name: 'fake_image.jpg',
+            type: 'image/jpeg',
+            size: filesize($source),
+            error: UPLOAD_ERR_OK
+        );
+        $this->assertTrue($picture->storeFile($uploaded_file));
+        $this->assertTrue(is_file($path . $id . '.jpg'));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $id);
+
+        //picture is only in the database now: directory is created again to restore it
+        unlink($path . $id . '.jpg');
+        rmdir($path);
+        $picture = new ExposedPicture($path, $id);
+        $this->assertTrue($picture->hasPicture());
+        $this->assertTrue(is_file($path . $id . '.jpg'));
+        $this->assertSame(200, $picture->getWidth());
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+    }
+
+    /**
+     * Test resizing to another path, with custom sizes
+     */
+    public function testResizeImage(): void
+    {
+        $picture = new ExposedPicture($this->tmp_dir);
+        $this->assertTrue($picture->publicEnsureStorePath());
+        $this->expectLogEntry(\Analog\Analog::INFO, 'has been created');
+
+        $sources = [
+            //landscape, 800x400
+            'jpg' => [GALETTE_ROOT . '../tests/fake_image.jpg', 100, 50],
+            //portrait, 350x450
+            'png' => [GALETTE_ROOT . '../galette/webroot/themes/default/images/default.png', 78, 100],
+            //landscape, 2208x1024
+            'webp' => [GALETTE_ROOT . '../galette/webroot/themes/default/images/galette.webp', 100, 46],
+        ];
+
+        foreach ($sources as $ext => [$source, $expected_width, $expected_height]) {
+            $source_size = getimagesize($source);
+            $dest = $this->tmp_dir . 'resized.' . $ext;
+            $this->assertTrue($picture->publicResizeImage(
+                source: $source,
+                ext: $ext,
+                dest: $dest,
+                max_width: 100,
+                max_height: 100
+            ));
+
+            [$width, $height] = getimagesize($dest);
+            $this->assertSame($expected_width, $width, $ext);
+            $this->assertSame($expected_height, $height, $ext);
+
+            //source is kept as is
+            $this->assertSame($source_size, getimagesize($source));
+        }
+
+        //picture's own sizes are used by default
+        $dest = $this->tmp_dir . 'default.jpg';
+        $this->assertTrue($picture->publicResizeImage($sources['jpg'][0], 'jpg', $dest));
+        [$width, $height] = getimagesize($dest);
+        $this->assertSame(200, $width);
+        $this->assertSame(100, $height);
+
+        $this->assertFalse($picture->publicResizeImage(
+            source: $sources['jpg'][0],
+            ext: 'bmp',
+            dest: $dest,
+            max_width: 100,
+            max_height: 100
+        ));
     }
 
     /**
      * Test defaults after initialization
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -102,8 +217,6 @@ class Picture extends TestCase
 
     /**
      * Test setters
-     *
-     * @return void
      */
     public function testSetters(): void
     {
@@ -120,8 +233,6 @@ class Picture extends TestCase
     /**
      * Test mimetype guess
      * FileInfo installed.
-     *
-     * @return void
      */
     public function testFileInfoMimeType(): void
     {
@@ -146,8 +257,6 @@ class Picture extends TestCase
 
     /**
      * Test storage
-     *
-     * @return void
      */
     public function testStore(): void
     {
@@ -162,6 +271,12 @@ class Picture extends TestCase
                 'file-with-' . $badchar . '-char.jpg'
             );
             $this->assertSame($expected, $this->picture->storeFile($uploaded_file));
+            if ($badchar == '.') {
+                // `.` badchar will fail on extension check
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'Invalid extension for file file-with-.-char.jpg');
+            } else {
+                $this->expectLogEntry(\Analog\Analog::ERROR, sprintf('Invalid filename `file-with-%s-char.jpg`', $badchar));
+            }
         }
 
         $files = [
@@ -175,21 +290,20 @@ class Picture extends TestCase
 
         foreach ($files as $file) {
             $uploaded_file = new \Slim\Psr7\UploadedFile(
-                'none',
-                $file,
-                'image/jpeg',
-                \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100,
-                UPLOAD_ERR_OK
+                fileNameOrStream: 'none',
+                name: $file,
+                type: 'image/jpeg',
+                size: \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100,
+                error: UPLOAD_ERR_OK
             );
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
             $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->storeFile($uploaded_file));
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'File is too big ');
         }
     }
 
     /**
      * Test error messages
-     *
-     * @return void
      */
     public function testErrorMessages(): void
     {
@@ -202,7 +316,7 @@ class Picture extends TestCase
             $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION)
         );
         $this->assertSame(
-            'File is too big. Maximum allowed size is 2048Ko',
+            'File is too big. Maximum allowed size is 2 Mo',
             $this->picture->getErrorMessage(\Galette\Core\Picture::FILE_TOO_BIG)
         );
         $this->assertSame(

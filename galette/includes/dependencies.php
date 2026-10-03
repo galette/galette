@@ -1,35 +1,23 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
+use Analog\Analog;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
 use Twig\Extra\String\StringExtension;
 use Twig\Extra\Intl\IntlExtension;
 
+/**
+ * @var \Slim\App<DI\Container> $app
+ */
 $container = $app->getContainer();
 
 $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -41,14 +29,14 @@ $container->set(RouteParser::class, $routeParser);
 
 $container->set(
     \Slim\Routing\RouteCollector::class,
-    fn() => $app->getRouteCollector()
+    $app->getRouteCollector(...)
 );
 
 // Register View helper
 $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $module_id => $module) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $module_id => $module) {
         $dir = $module['root'] . '/templates/' . $c->get(\Galette\Core\Preferences::class)->pref_theme;
         if (!is_dir($dir)) {
             continue;
@@ -66,7 +54,9 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     );
 
     //Twig extensions
-    $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
@@ -78,76 +68,26 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     }
     //End Twig extensions
 
-    //Twig functions
-    $function = new \Twig\TwigFunction('__', fn($string, $domain = 'galette') => __($string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_T', fn($string, $domain = 'galette') => _T($string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tn', fn($singular, $plural, $count, $domain = 'galette') => _Tn($singular, $plural, (int)$count, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tx', fn($context, $string, $domain = 'galette') => _Tx($context, $string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tnx', fn($context, $singular, $plural, $count, $domain = 'galette') => _Tnx($context, $singular, $plural, (int)$count, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('file_exists', file_exists(...));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('get_class', get_class(...));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
-        extract($params[0]);
-        return Galette\Entity\Adherent::getSName($c->get(\Galette\Core\Db::class), $id);
-    });
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('statusLabel', function (...$params) {
-        extract($params);
-        global $statuses_list;
-        return $statuses_list[$id];
-    });
-    $view->getEnvironment()->addFunction($function);
-
-    $view->getEnvironment()->addFunction(
-        new \Twig\TwigFunction('callstatic', function ($class, $method, ...$args) {
-            if (!class_exists($class)) {
-                throw new \Exception("Cannot call static method $method on Class $class: Invalid Class");
-            }
-
-            if (!method_exists($class, $method)) {
-                throw new \Exception("Cannot call static method $method on Class $class: Invalid method");
-            }
-
-            return forward_static_call_array([$class, $method], $args);
-        })
-    );
-    //End Twig functions
-
     //Twig globals
     $view->getEnvironment()->addGlobal('flash', $c->get(\Slim\Flash\Messages::class));
     $view->getEnvironment()->addGlobal('login', $c->get(\Galette\Core\Login::class));
     $view->getEnvironment()->addGlobal('logo', $c->get(\Galette\Core\Logo::class));
 
-    $view->getEnvironment()->addGlobal('plugin_headers', $c->get(\Galette\Core\Plugins::class)->getTplHeaders());
-    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get(\Galette\Core\Plugins::class)->getTplScripts());
+    /** @var \Galette\Core\Plugins $plugins */
+    $plugins = $c->get(\Galette\Core\Plugins::class);
+    $view->getEnvironment()->addGlobal('plugin_headers', $plugins->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $plugins->getTplScripts());
 
-    // galette_lang should be removed and languages used instead
-    $view->getEnvironment()->addGlobal('galette_lang', $c->get(\Galette\Core\I18n::class)->getAbbrev());
-    $view->getEnvironment()->addGlobal('galette_lang_name', $c->get(\Galette\Core\I18n::class)->getName());
+    $view->getEnvironment()->addGlobal('display_version', \Galette\Core\Galette::gitVersion(time: false));
     $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
-    $view->getEnvironment()->addGlobal('plugins', $c->get(\Galette\Core\Plugins::class));
+    $view->getEnvironment()->addGlobal('plugins', $plugins);
     $view->getEnvironment()->addGlobal('preferences', $c->get(\Galette\Core\Preferences::class));
     $view->getEnvironment()->addGlobal('existing_mailing', $c->get(\RKA\Session::class)->mailing !== null);
-    $view->getEnvironment()->addGlobal('html_editor', false);
-    $view->getEnvironment()->addGlobal('require_charts', false);
-    $view->getEnvironment()->addGlobal('require_mass', false);
-    $view->getEnvironment()->addGlobal('autocomplete', false);
+    $view->getEnvironment()->addGlobal('html_editor', value: false);
+    $view->getEnvironment()->addGlobal('require_charts', value: false);
+    $view->getEnvironment()->addGlobal('require_mass', value: false);
+    $view->getEnvironment()->addGlobal('autocomplete', value: false);
     if ($c->get(\Galette\Core\Login::class)->isAdmin() && $c->get(\Galette\Core\Preferences::class)->pref_telemetry_date) {
         $telemetry = new \Galette\Util\Telemetry(
             $c->get(\Galette\Core\Db::class),
@@ -155,13 +95,13 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
             $c->get(\Galette\Core\Plugins::class)
         );
         if ($telemetry->shouldRenew()) {
-            $view->getEnvironment()->addGlobal('renew_telemetry', true);
+            $view->getEnvironment()->addGlobal('renew_telemetry', value: true);
         }
     }
 
-    $view->getEnvironment()->addGlobal('cur_route', null);
-    $view->getEnvironment()->addGlobal('cur_subroute', null);
-    $view->getEnvironment()->addGlobal('navigate', null);
+    $view->getEnvironment()->addGlobal('cur_route', value: null);
+    $view->getEnvironment()->addGlobal('cur_subroute', value: null);
+    $view->getEnvironment()->addGlobal('navigate', value: null);
 
     //TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
     $view->getEnvironment()->addGlobal('fui_dateformatter', __("YYYY-MM-DD"));
@@ -173,9 +113,22 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 // Flash messages
 $container->set(\Slim\Flash\Messages::class, DI\autowire());
 
+/** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
-    $i18n = $c->get(\Galette\Core\I18n::class);
-    $plugins->loadModules($c->get(\Galette\Core\Preferences::class), GALETTE_PLUGINS_PATH, $i18n->getLongID());
+    if (
+        !$c->has('galette.mode')
+        || ($c->get('galette.mode') !== 'NEED_UPDATE'
+        && $c->get('galette.mode') !== 'INSTALL'
+        && !defined('GALETTE_INSTALLER'))
+    ) {
+        $plugins
+            ->setContainer($c)
+            ->loadModules(
+                $c->get(\Galette\Core\Preferences::class),
+                GALETTE_PLUGINS_PATH,
+                $c->get(\Galette\Core\I18n::class)->getLongID()
+            );
+    }
     return $plugins;
 });
 
@@ -209,11 +162,15 @@ $container->set(\Galette\Core\PrintLogo::class, DI\autowire());
 
 $container->set(\Galette\Core\History::class, \DI\autowire());
 
+//code depending on "now" takes a clock rather than calling time() itself
+$container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
+
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
+    /** @var array<string, string> $core_acls */
     $acls = $core_acls;
 
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $plugin) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $plugin) {
         $acls[$plugin['route'] . 'Info'] = 'member';
     }
 
@@ -223,6 +180,7 @@ $container->set('acls', function (ContainerInterface $c) {
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
         //use array_merge here, we want $local_acls to override core ones.
+        /** @var array<string, string> $local_acls */
         $acls = array_merge($acls, $local_acls);
     }
 
@@ -231,11 +189,13 @@ $container->set('acls', function (ContainerInterface $c) {
 
 $container->set('texts_fields', function () {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    /** @var array<array<string,string>> $texts_fields */
     return $texts_fields;
 });
 
 $container->set('members_fields', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+    /** @var array<array<string,string|bool|int>> $members_fields */
     return $members_fields;
 });
 
@@ -251,34 +211,36 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
 
 $container->set('members_fields_cats', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+    /** @var array<array<string,string|int>> $members_fields_cats */
     return $members_fields_cats;
 });
+
+// -----------------------------------------------------------------------------
+// Feature Flags
+// -----------------------------------------------------------------------------
+
+$container->set(\Galette\Core\FeatureFlagManager::class, DI\autowire());
+
+$container->set(\Galette\Twig\FeatureFlagExtension::class, fn(ContainerInterface $c) => new \Galette\Twig\FeatureFlagExtension(
+    $c->get(\Galette\Core\FeatureFlagManager::class)
+));
 
 // -----------------------------------------------------------------------------
 // Service factories
 // -----------------------------------------------------------------------------
 
-// monolog
-$container->set('logger', function (ContainerInterface $c) {
-    $settings = $c->get('settings');
-    $logger = new \Monolog\Logger($settings['logger']['name']);
-    $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
-    return $logger;
-});
-
 $container->set(\Galette\Entity\FieldsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\FieldsConfig(
-    $c->get(\Galette\Core\Db::class),
-    Galette\Entity\Adherent::TABLE,
-    $c->get('members_fields'),
-    $c->get('members_fields_cats')
+    zdb: $c->get(\Galette\Core\Db::class),
+    table: Galette\Entity\Adherent::TABLE,
+    defaults: $c->get('members_fields'),
+    cats_defaults: $c->get('members_fields_cats')
 ));
 
 $container->set(\Galette\Entity\ListsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\ListsConfig(
-    $c->get(\Galette\Core\Db::class),
-    Galette\Entity\Adherent::TABLE,
-    $c->get('members_fields'),
-    $c->get('members_fields_cats')
+    zdb: $c->get(\Galette\Core\Db::class),
+    table: Galette\Entity\Adherent::TABLE,
+    defaults: $c->get('members_fields'),
+    cats_defaults: $c->get('members_fields_cats')
 ));
 
 $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c) {
@@ -288,18 +250,18 @@ $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c
     foreach ($domains as $domain) {
         //load translation file for domain
         $translator->addTranslationFilePattern(
-            'gettext',
-            GALETTE_ROOT . '/lang/',
-            '/%s/LC_MESSAGES/' . $domain . '.mo',
-            $domain
+            type: 'gettext',
+            baseDir: GALETTE_ROOT . '/lang/',
+            pattern: '/%s/LC_MESSAGES/' . $domain . '.mo',
+            textDomain: $domain
         );
 
         //check if a local lang file exists and load it
         $translator->addTranslationFilePattern(
-            'phparray',
-            GALETTE_ROOT . '/lang/',
-            $domain . '_%s_local_lang.php',
-            $domain
+            type: 'phparray',
+            baseDir: GALETTE_ROOT . '/lang/',
+            pattern: $domain . '_%s_local_lang.php',
+            textDomain: $domain
         );
     }
 
@@ -309,7 +271,7 @@ $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c
 
 // Add Event manager to dependency.
 $container->set(
-    'event_manager',
+    \League\Event\EventDispatcher::class,
     DI\create(\League\Event\EventDispatcher::class)
         ->method(
             'subscribeListenersFrom',
@@ -327,41 +289,10 @@ $container->set(
 );
 
 $container->set(
-    'csrf',
-    function (ContainerInterface $c) use ($app) {
-        $responseFactory = $app->getResponseFactory();
-        $storage = null;
-        $guard = new \Slim\Csrf\Guard(
-            $responseFactory,
-            'csrf',
-            $storage,
-            null,
-            200,
-            16,
-            true
-        );
-
-        $exclusions = $c->get('CsrfExclusions');
-        $guard->setFailureHandler(function (ServerRequestInterface $request, RequestHandler $handler) use ($exclusions) {
-            $response = $handler->handle($request);
-            $routeContext = RouteContext::fromRequest($request);
-            $route = $routeContext->getRoute();
-
-            foreach ($exclusions as $exclusion) {
-                if (preg_match($exclusion, (string)$route->getname())) {
-                    //route is excluded form CSRF checks
-                    return $response;
-                }
-            }
-            Analog::log(
-                'CSRF check has failed',
-                Analog::CRITICAL
-            );
-            throw new \RuntimeException(_T('Failed CSRF check!'));
-        });
-
-        return $guard;
-    }
+    \Galette\Middleware\Csrf::class,
+    fn(ContainerInterface $c): \Galette\Middleware\Csrf => new \Galette\Middleware\Csrf(
+        $c->get('CsrfExclusions')
+    )
 );
 
 /**
@@ -382,6 +313,7 @@ $deprecateds = [
     'fields_config' => \Galette\Entity\FieldsConfig::class,
     'lists_config' => \Galette\Entity\ListsConfig::class,
     'translator' => \Galette\Core\Translator::class,
+    'event_manager' => \League\Event\EventDispatcher::class,
 ];
 
 foreach ($deprecateds as $deprecated => $class) {
@@ -417,7 +349,7 @@ if (
     $login = $container->get(\Galette\Core\Login::class);
     $hist = $container->get(\Galette\Core\History::class);
     $l10n = $container->get(\Galette\Core\L10n::class);
-    $emitter = $container->get('event_manager');
+    $emitter = $container->get(\League\Event\EventDispatcher::class);
     $routeparser = $container->get(RouteParser::class);
     //phpcs:enable
 }

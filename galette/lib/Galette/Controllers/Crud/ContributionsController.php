@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -26,6 +13,7 @@ namespace Galette\Controllers\Crud;
 use Galette\Entity\PaymentType;
 use Galette\Entity\ScheduledPayment;
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Filters\ContributionsList;
 use Galette\Filters\TransactionsList;
@@ -54,12 +42,8 @@ class ContributionsController extends CrudController
      * Only a few things change in add and edit pages,
      * both methods will use this common one.
      *
-     * @param Request      $request  PSR Request
-     * @param Response     $response PSR Response
-     * @param string       $type     Contribution type
-     * @param Contribution $contrib  Contribution instance
-     *
-     * @return Response
+     * @param string       $type    Contribution type
+     * @param Contribution $contrib Contribution instance
      */
     public function addEditPage(
         Request $request,
@@ -72,7 +56,7 @@ class ContributionsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -84,12 +68,24 @@ class ContributionsController extends CrudController
         $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // template variable declaration
-        $title = $type === Contribution::TYPE_FEE ? _T("Membership fee") : _T("Donation");
-
         if ($contrib->id) {
-            $title .= ' (' . _T("modification") . ')';
+            $member = new Adherent($this->zdb);
+            $member
+                ->disableAllDeps()
+                ->load($contrib->member);
+
+            $title = sprintf(
+                "%s %s (%s)",
+                $type === Contribution::TYPE_FEE ? _T("Membership fee") : _T("Donation"),
+                $member->sname,
+                $contrib->raw_date->format(_T('Y-m-d'))
+            );
         } else {
-            $title .= ' (' . _T("creation") . ')';
+            $title = $type === Contribution::TYPE_FEE ? _T("New membership fee") : _T("New donation");
+        }
+
+
+        if (!$contrib->id) {
             $type_amount = $contributions_types[array_key_first($contributions_types)]['amount'];
             if ($contrib->amount === null && $type_amount !== null) {
                 $contrib->amount = $type_amount;
@@ -134,7 +130,7 @@ class ContributionsController extends CrudController
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
-        $params['autocomplete'] = true;
+        $params['autocomplete_options'] = true;
         $params['mode'] = ($ajax ? 'ajax' : '');
 
         // display page
@@ -149,12 +145,13 @@ class ContributionsController extends CrudController
     /**
      * Add page
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     Contribution type
-     *
-     * @return Response
+     * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'addContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -209,18 +206,19 @@ class ContributionsController extends CrudController
                 );
         }
 
-        return $this->addEditPage($request, $response, $type, $contrib);
+        return $this->addEditPage(request: $request, response: $response, type: $type, contrib: $contrib);
     }
 
     /**
      * Add action
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     Contribution type
-     *
-     * @return Response
+     * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'doAddContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
@@ -243,17 +241,17 @@ class ContributionsController extends CrudController
                 );
         }
 
-        return $this->store($request, $response, 'add', $type, $contrib);
+        return $this->store(request: $request, response: $response, action: 'add', type: $type, contrib: $contrib);
     }
 
     /**
      * Choose contribution type to mass add contribution
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'massAddContributionsChooseType',
+        pattern: '/contribution/mass-add/choose-type',
+        methods: ['GET']
+    )]
     public function massAddChooseType(Request $request, Response $response): Response
     {
         $filters = $this->session->{$this->getFilterName('members')};
@@ -267,7 +265,7 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_choose_contributions_type.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'   => sprintf(
                     _T('Mass add contribution on %1$s members'),
                     (string)count($data['id'])
@@ -282,12 +280,12 @@ class ContributionsController extends CrudController
 
     /**
      * Massive change page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'massAddContributions',
+        pattern: '/contribution/mass-add',
+        methods: ['POST']
+    )]
     public function massAddContributions(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -314,7 +312,7 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_add_contributions.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass add contribution on %1$s members'),
                     (string)count($data['id'])
@@ -334,12 +332,12 @@ class ContributionsController extends CrudController
 
     /**
      * Do massive contribution add
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doMassAddContributions',
+        pattern: '/contribution/do-mass-add',
+        methods: ['POST']
+    )]
     public function doMassAddContributions(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -394,14 +392,15 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page', 'order' or 'member'
-     * @param int|string|null $value    Value of the option
-     * @param ?string         $type     One of 'transactions' or 'contributions'
-     *
-     * @return Response
+     * @param string|null     $option One of 'page', 'order' or 'member'
+     * @param int|string|null $value  Value of the option
+     * @param ?string         $type   One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'contributions',
+        pattern: '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -426,7 +425,7 @@ class ContributionsController extends CrudController
 
         $filter_args = [];
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
@@ -584,41 +583,43 @@ class ContributionsController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
-     *
-     * @return Response
+     * @param string|null $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'myContributions',
+        pattern: '/{type:transactions|contributions}/mine',
+        methods: ['GET']
+    )]
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
-            $request->withQueryParams(
+            request: $request->withQueryParams(
                 $request->getQueryParams() + [
                     Adherent::PK => $this->login->id
                 ]
             ),
-            $response,
-            null,
-            null,
-            $type
+            response: $response,
+            option: null,
+            value: null,
+            type: $type
         );
     }
 
     /**
      * Filtering
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
-     *
-     * @return Response
+     * @param string|null $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'filterContributions',
+        pattern: '/{type:contributions|transactions}/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response, ?string $type = null): Response
     {
         $ajax = false;
         $filter_args = [];
-        if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
+        if ($this->isAjax($request)) {
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }
@@ -630,7 +631,7 @@ class ContributionsController extends CrudController
         if ($this->session->$filter_name !== null) {
             $filters = $this->session->$filter_name;
         } else {
-            $filter_class = '\\Galette\\Filters\\' . ucwords((string) $type) . 'List';
+            $filter_class = '\\Galette\\Filters\\' . ucwords((string)$type) . 'List';
             $filters = new $filter_class();
         }
 
@@ -701,12 +702,13 @@ class ContributionsController extends CrudController
     /**
      * Batch actions handler
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'transactions' or 'contributions'
-     *
-     * @return Response
+     * @param string $type One of 'transactions' or 'contributions'
      */
+    #[Route(
+        name: 'batch-contributionslist',
+        pattern: '/{type:contributions|transactions}/batch',
+        methods: ['POST']
+    )]
     public function handleBatch(Request $request, Response $response, string $type): Response
     {
         $filter_name = $this->getFilterName($type);
@@ -747,13 +749,14 @@ class ContributionsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param ?int        $id       Contribution id
-     * @param string|null $type     Contribution type
-     *
-     * @return Response
+     * @param ?int        $id   Contribution id
+     * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'editContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, ?int $id, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -766,10 +769,10 @@ class ContributionsController extends CrudController
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [
-                        str_replace(
-                            '%id',
-                            (string)$id,
-                            _T("Unable to load contribution #%id!")
+                        sprintf(
+                            //TRANS: parameter is the contribution identifier
+                            _T('Unable to load contribution #%1$s!'),
+                            $id
                         )
                     ],
                     redirect_url: $this->routeparser->urlFor('contributions', ['type' => 'contributions'])
@@ -788,19 +791,20 @@ class ContributionsController extends CrudController
             );
         }
 
-        return $this->addEditPage($request, $response, $type, $contrib);
+        return $this->addEditPage(request: $request, response: $response, type: $type, contrib: $contrib);
     }
 
     /**
      * Edit action
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param int         $id       Contribution id
-     * @param string|null $type     Contribution type
-     *
-     * @return Response
+     * @param int         $id   Contribution id
+     * @param string|null $type Contribution type
      */
+    #[Route(
+        name: 'doEditContribution',
+        pattern: '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $contrib = new Contribution($this->zdb, $this->login, $id);
@@ -815,20 +819,23 @@ class ContributionsController extends CrudController
             );
         }
 
-        return $this->store($request, $response, 'edit', $type, $contrib, $id);
+        return $this->store(
+            request: $request,
+            response: $response,
+            action: 'edit',
+            type: $type,
+            contrib: $contrib,
+            id: $id
+        );
     }
 
     /**
      * Store contribution (new or existing)
      *
-     * @param Request      $request  PSR Request
-     * @param Response     $response PSR Response
-     * @param string       $action   Action ('edit' or 'add')
-     * @param string       $type     Contribution type
-     * @param Contribution $contrib  Contribution instance
-     * @param ?int         $id       Contribution id
-     *
-     * @return Response
+     * @param string       $action  Action ('edit' or 'add')
+     * @param string       $type    Contribution type
+     * @param Contribution $contrib Contribution instance
+     * @param ?int         $id      Contribution id
      */
     public function store(Request $request, Response $response, string $action, string $type, Contribution $contrib, ?int $id = null): Response
     {
@@ -868,7 +875,7 @@ class ContributionsController extends CrudController
             //something went wrong :'(
             return $this->redirectWithErrors(
                 $response,
-                [_T("An error occurred while storing the contribution.")],
+                [_T("An error occurred while saving the contribution.")],
                 $redirect_url
             );
         }
@@ -927,8 +934,6 @@ class ContributionsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -939,8 +944,6 @@ class ContributionsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -954,8 +957,6 @@ class ContributionsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -990,8 +991,6 @@ class ContributionsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -1003,8 +1002,7 @@ class ContributionsController extends CrudController
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
-        $rm = $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
-        return $rm;
+        return $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
     }
 
     // /CRUD - Delete

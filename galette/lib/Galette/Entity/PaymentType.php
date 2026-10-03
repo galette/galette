@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -35,7 +22,7 @@ use Galette\Features\Translatable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $name
  */
 
@@ -44,20 +31,20 @@ class PaymentType implements \Stringable
     use Translatable;
     use I18n;
 
-    public const TABLE = 'paymenttypes';
-    public const PK = 'type_id';
+    public const string TABLE = 'paymenttypes';
+    public const string PK = 'type_id';
 
     private int $id;
 
-    public const SCHEDULED = 7;
-    public const OTHER = 6;
-    public const CASH = 1;
-    public const CREDITCARD = 2;
-    public const CHECK = 3;
-    public const TRANSFER = 4;
-    public const PAYPAL = 5;
-    public const STRIPE = 8;
-    public const HELLOASSO = 9;
+    public const int SCHEDULED = 7;
+    public const int OTHER = 6;
+    public const int CASH = 1;
+    public const int CREDITCARD = 2;
+    public const int CHECK = 3;
+    public const int TRANSFER = 4;
+    public const int PAYPAL = 5;
+    public const int STRIPE = 8;
+    public const int HELLOASSO = 9;
 
     /**
      * Main constructor
@@ -80,8 +67,6 @@ class PaymentType implements \Stringable
      * Load a payment type from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return bool
      */
     public function load(int $id): bool
     {
@@ -109,8 +94,6 @@ class PaymentType implements \Stringable
      * Load payment type from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -121,8 +104,6 @@ class PaymentType implements \Stringable
 
     /**
      * Store payment type in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -156,7 +137,7 @@ class PaymentType implements \Stringable
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing payment type: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -165,8 +146,6 @@ class PaymentType implements \Stringable
 
     /**
      * Remove current title
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -199,8 +178,6 @@ class PaymentType implements \Stringable
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -221,8 +198,6 @@ class PaymentType implements \Stringable
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -237,14 +212,12 @@ class PaymentType implements \Stringable
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'name':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     Analog::log(
                         'Name cannot be empty',
                         Analog::WARNING
@@ -277,6 +250,7 @@ class PaymentType implements \Stringable
                 self::OTHER         => _T("Other"),
                 self::CASH          => _T("Cash"),
                 self::CREDITCARD    => _T("Credit card"),
+                //TRANS: payment method, a bank cheque
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
                 self::PAYPAL        => _T("Paypal"),
@@ -302,9 +276,6 @@ class PaymentType implements \Stringable
 
     /**
      * Is current payment a system one
-     *
-     * @return bool
-     *
      */
     public function isSystemType(): bool
     {
@@ -313,8 +284,6 @@ class PaymentType implements \Stringable
 
     /**
      * Simple text representation
-     *
-     * @return string
      */
     public function __toString(): string
     {

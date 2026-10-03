@@ -1,30 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Filters;
+namespace Galette\Tests\Filters;
 
-use Galette\Enums\SQLOrder;
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * History filters tests class
@@ -37,8 +24,6 @@ class HistoryList extends GaletteTestCase
      * Test filter defaults values
      *
      * @param \Galette\Filters\HistoryList $filters Filters instance
-     *
-     * @return void
      */
     protected function testDefaults(\Galette\Filters\HistoryList $filters): void
     {
@@ -52,8 +37,6 @@ class HistoryList extends GaletteTestCase
 
     /**
      * Test creation
-     *
-     * @return void
      */
     public function testCreate(): void
     {
@@ -76,10 +59,10 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             sprintf(
                 '[Galette\Filters\HistoryList|Pagination] "abcde" is not a valid backing value for enum %1$s',
-                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : \Galette\Enums\SQLOrder::class
+                \Galette\Enums\SQLOrder::class
             )
         );
 
@@ -91,13 +74,13 @@ class HistoryList extends GaletteTestCase
         //change direction only - deprecated way
         $filters->ordered = \Galette\Enums\SQLOrder::DESC;
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use setDirection() instead'
         );
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use getDirection() instead'
         );
 
@@ -112,8 +95,6 @@ class HistoryList extends GaletteTestCase
 
     /**
      * Test localized date in filter
-     *
-     * @return void
      */
     public function testLocalizedDates(): void
     {
@@ -124,7 +105,7 @@ class HistoryList extends GaletteTestCase
             \Galette\Core\I18n::DEFAULT_LANG
         );
         $langs = $i18n->getList();
-        $filter_date = new \DateTime('2000-01-01'); //day of the bug :D
+        $filter_date = new DateTime('2000-01-01'); //day of the bug :D
 
         foreach ($langs as $lang) {
             $this->assertInstanceOf(\Galette\Core\I18n::class, $lang);

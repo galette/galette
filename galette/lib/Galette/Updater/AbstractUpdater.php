@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,9 +28,9 @@ use function Safe\preg_match;
  */
 abstract class AbstractUpdater
 {
-    public const REPORT_SUCCESS = 0;
-    public const REPORT_ERROR = 1;
-    public const REPORT_WARNING = 2;
+    public const int REPORT_SUCCESS = 0;
+    public const int REPORT_ERROR = 1;
+    public const int REPORT_WARNING = 2;
 
     /**
      * SQL scripts to run
@@ -66,7 +53,7 @@ abstract class AbstractUpdater
     /**
      * Report
      *
-     * @var array<string,array<int|string>>
+     * @var array<int, array{message: string, type: int, res: bool}>
      */
     private array $report = [];
 
@@ -86,8 +73,6 @@ abstract class AbstractUpdater
 
     /**
      * Does upgrade have a SQL script to run
-     *
-     * @return bool
      */
     private function hasSql(): bool
     {
@@ -107,8 +92,6 @@ abstract class AbstractUpdater
      *
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
-     *
-     * @return void
      */
     final public function run(Db $zdb, Install $installer): void
     {
@@ -150,16 +133,12 @@ abstract class AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return bool
      */
     abstract protected function update(): bool;
 
     /**
      * Pre stuff, if any.
      * Will be executed first.
-     *
-     * @return bool
      */
     protected function preUpdate(): bool
     {
@@ -171,8 +150,6 @@ abstract class AbstractUpdater
      *
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
-     *
-     * @return bool
      */
     private function sql(Db $zdb, Install $installer): bool
     {
@@ -193,8 +170,6 @@ abstract class AbstractUpdater
     /**
      * Post stuff, if any.
      * Will be executed at the end.
-     *
-     * @return bool
      */
     protected function postUpdate(): bool
     {
@@ -205,8 +180,6 @@ abstract class AbstractUpdater
      * Set SQL files instructions for all supported databases
      *
      * @param string $version Version for scripts
-     *
-     * @return bool
      */
     protected function setSqlScripts(string $version): bool
     {
@@ -269,8 +242,6 @@ abstract class AbstractUpdater
      *
      * @param string $msg  Report message
      * @param int    $type Entry type
-     *
-     * @return void
      */
     public function addReportEntry(string $msg, int $type): void
     {
@@ -289,8 +260,6 @@ abstract class AbstractUpdater
      * Add an error in array
      *
      * @param string $msg Error message
-     *
-     * @return void
      */
     public function addError(string $msg): void
     {
@@ -299,8 +268,6 @@ abstract class AbstractUpdater
 
     /**
      * Has current update errors?
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {
@@ -315,7 +282,7 @@ abstract class AbstractUpdater
     /**
      * Get upgrade report
      *
-     * @return array<string, array<int|string>>
+     * @return array<int, array{message: string, type: int, res: bool}>
      */
     public function getReport(): array
     {
@@ -324,8 +291,6 @@ abstract class AbstractUpdater
 
     /**
      * Update database version
-     *
-     * @return void
      */
     private function updateDbVersion(): void
     {

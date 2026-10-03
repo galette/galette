@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% import "macros.twig" as macros %}
@@ -37,10 +23,10 @@
                     <div class="sixteen wide column">
                         <div class="ui wrapping spaced buttons">
             {% if not telemetry_sent %}
-                            <a id="telemetry" class="large ui blue button" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
+                            <button type="button" id="telemetry" class="large ui blue button" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
                                 <i class="chart bar icon" aria-hidden="true"></i>
                                 {{ _T("Telemetry") }}
-                            </a>
+                            </button>
             {% endif %}
             {% if not registered %}
                             <a class="large ui blue button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
@@ -49,7 +35,7 @@
                             </a>
             {% endif %}
                         </div>
-                        <div class="tooltip jsonly displaynone ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
+                        <div class="tooltip ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
                             <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1" {% if hide_telemetry %} checked="checked"{% endif %} />
                             <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
                         </div>
@@ -58,7 +44,7 @@
             </div>
         </div>
 {% endif %}
-        <div class="sixteen wide{% if news|length > 0 %} tablet ten wide computer{% endif %} column">
+        <div id="dashboard-main" class="sixteen wide{% if has_news %} tablet ten wide computer{% endif %} column">
             {% set my_dashboard_entries = callstatic('\\Galette\\Core\\Galette', 'getMyDashboards') %}
             {% if my_dashboard_entries|length > 0 %}
             <div class="ui top attached yellow segment">
@@ -96,29 +82,15 @@
              </div>
             {% endif %}
         </div>
-{% if news|length > 0 %}
-    <div class="sixteen wide tablet six wide computer column">
-    {% for entry in news %}
-            <div class="ui top attached yellow segment">
-                <div class="ui medium header">{{ entry.title }}</div>
+{% if has_news %}
+        {# filled from the 'ajaxNews' route: feeds reach the network, the page must not wait for them #}
+        <div id="dashboard-news" class="sixteen wide tablet six wide computer column" aria-live="polite" aria-busy="true">
+            <div class="ui basic center aligned segment">
+                <div class="ui active centered inline text loader">{{ _T("Loading...") }}</div>
             </div>
-            <div class="ui bottom attached segment">
-                <div class="ui bulleted list">
-        {% for post in entry.getPosts() %}
-                    <div class="item tooltip"{% if post.getDate() %} title="{{ post.getDate() }}"{% endif %}>
-            {% if post.getUrl() %}
-                        <a href="{{ post.getURL() }}" target="_blank">{{ post.getTitle() }}</a>
-            {% else %}
-                        {{ post.getTitle() }}
-            {% endif %}
-                    </div>
-        {% endfor %}
-                </div>
-            </div>
-    {% endfor %}
-    </div>
+        </div>
 {% endif %}
-        <div class="jsonly displaynone sixteen wide column">
+        <div class="sixteen wide column">
             <div class="ui basic vertically fitted segment">
                 <div class="ui toggle checkbox">
                     <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{% if show_dashboard %} checked="checked"{% endif %}/>
@@ -127,15 +99,38 @@
             </div>
         </div>
     </div>
-
-    {% if not hide_telemetry and not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
-    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     <script>
         $(function() {
+{% if has_news %}
+            $.ajax({
+                url: '{{ url_for('ajaxNews') }}',
+                method: 'GET',
+                success: function(data) {
+                    var _news = $.trim(data);
+                    if (_news.length === 0) {
+                        //no source provided anything after all, give the room back
+                        $('#dashboard-news').remove();
+                        $('#dashboard-main').attr('class', 'sixteen wide column');
+                        return;
+                    }
+                    $('#dashboard-news').html(_news);
+                    //news carry tooltips, they are not bound yet
+                    _bindFomanticComponents();
+                },
+                error: function() {
+                    $('#dashboard-news').html(
+                        '<div class="ui warning message">{{ _T("An error occurred displaying news :(")|e('js') }}</div>'
+                    );
+                },
+                complete: function() {
+                    $('#dashboard-news').attr('aria-busy', 'false');
+                }
+            });
+{% endif %}
+
             $('#show_dashboard').change(function(){
                 var _checked = $(this).is(':checked');
                 Cookies.set(
@@ -166,10 +161,6 @@
                 var _url = '{{ url_for('dashboard') }}';
                 window.location.replace(_url);
             });
-
-    {% if not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with {part: "jsdialog", orig: "desktop"} %}
-    {% endif %}
     {% if not registered %}
         {% include "modals/telemetry.html.twig" with {part: "jsregister", orig: "desktop"} %}
     {% endif %}

@@ -1,29 +1,27 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\MenuProviderInterface;
+use Galette\Core\Plugins\PublicPagesProviderInterface;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+
+use function Safe\define;
+use function Safe\mb_convert_encoding;
+use function Safe\preg_match;
+use function Safe\realpath;
 
 /**
  * Galette tests class
@@ -33,11 +31,10 @@ use Galette\GaletteTestCase;
 class Galette extends GaletteTestCase
 {
     protected int $seed = 20230324120838;
+    protected bool $load_plugins = true;
 
     /**
      * Test gitVersion
-     *
-     * @return void
      */
     public function testGitVersion(): void
     {
@@ -54,8 +51,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test storing into session of various objects to detect serialization issues
-     *
-     * @return void
      */
     public function testSerialization(): void
     {
@@ -129,9 +124,8 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getMenus
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetMenus(): void
     {
         global $preferences, $login, $plugins;
@@ -146,11 +140,9 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(0, $menus);
 
-        $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
+        $menus = \Galette\Core\Galette::getMenus(public: true);
         $this->assertCount(1, $menus);
         $this->assertArrayHasKey('public', $menus);
 
@@ -164,8 +156,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
+        $menus = \Galette\Core\Galette::getMenus(public: true);
         $this->assertCount(6, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -185,8 +176,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
+        $menus = \Galette\Core\Galette::getMenus(public: true);
         $this->assertCount(5, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -206,23 +196,37 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(true);
 
-        $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
-        $this->assertCount(5, $menus);
+        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $this->assertCount(6, $menus);
 
-        $this->assertArrayNotHasKey('myaccount', $menus);
+        $this->assertArrayHasKey('myaccount', $menus);
         $this->assertArrayHasKey('members', $menus);
         $this->assertArrayHasKey('contributions', $menus);
         $this->assertArrayHasKey('management', $menus);
         $this->assertArrayHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
+
+        //the super administrator holds a second factor of its own, kept in
+        //preferences no form may write: without this entry, that account has
+        //no way to enrol from the interface
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $this->assertCount(2, $menus['myaccount']['items']);
+        $this->assertSame(
+            'adminCredentials',
+            $menus['myaccount']['items'][0]['route']['name']
+        );
+        $this->assertSame(
+            'two-factor-manage',
+            $menus['myaccount']['items'][1]['route']['name']
+        );
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
     }
 
     /**
      * Test getPublicMenus
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetPublicMenus(): void
     {
         global $preferences;
@@ -238,8 +242,7 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true); //should not matter.
 
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
-        $this->assertCount(0, $menus, print_r($menus, true));
+        $this->assertCount(0, $menus, print_r($menus, return: true));
 
         //public pages are enabled but not shown
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
@@ -251,8 +254,7 @@ class Galette extends GaletteTestCase
 
         //public pages are enabled and shown
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
-        $this->assertCount(0, $menus, print_r($menus, true));
+        $this->assertCount(0, $menus, print_r($menus, return: true));
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs([$db])
@@ -262,15 +264,99 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(1, $menus);
     }
 
     /**
-     * Test getDashboards
+     * A plugin declaring its public pages shows each entry as its page allows
      *
-     * @return void
+     * The routes are the ones plugin-test1 declares or leaves undeclared.
      */
+    public function testDeclaredPluginPublicMenus(): void
+    {
+        //the global preferences and login getPublicMenuItems() reads are the
+        //ones setUp() made
+        $page = 'pref_plugin1_publicpages_visibility_page';
+
+        $plugin = new class extends GalettePlugin implements MenuProviderInterface, PublicPagesProviderInterface {
+            /**
+             * Get plugins menus
+             *
+             * @return array<string, string|array<string,mixed>>
+             */
+            public function getMenus(): array
+            {
+                return [];
+            }
+
+            /**
+             * Get plugins public menus
+             *
+             * @return array<int, string|array<string,mixed>>
+             */
+            public function getPublicMenus(): array
+            {
+                return [
+                    ['label' => 'Declared', 'route' => ['name' => 'plugin1_public_page']],
+                    ['label' => 'Undeclared', 'route' => ['name' => 'plugin1_public_other']],
+                    [
+                        'label' => 'Parent',
+                        'children' => [
+                            ['label' => 'Child', 'route' => ['name' => 'plugin1_public_page']],
+                        ],
+                    ],
+                ];
+            }
+
+            /**
+             * Get the public pages the plugin declares
+             *
+             * @return array<string, array{routes: list<string>, default?: int}>
+             */
+            public function getPublicPages(): array
+            {
+                return [];
+            }
+
+            /**
+             * Get the label of a declared public page
+             *
+             * @param string $id Page identifier
+             */
+            public function getPublicPageLabel(string $id): string
+            {
+                return $id;
+            }
+        };
+
+        $labels = fn(): array => array_column($plugin->getPublicMenuItems(), 'label');
+
+        $this->preferences->pref_bool_publicpages = true;
+        $this->preferences->pref_publicpages_visibility_generic = \Galette\Enums\PublicPageVisibility::Hidden->value;
+        $this->assertTrue(
+            $this->preferences->setValue($page, \Galette\Enums\PublicPageVisibility::Everyone->value, $this->login)
+        );
+
+        try {
+            //the default visibility no longer hides everything
+            $this->assertSame(['Declared', 'Parent'], $labels());
+
+            //a parent left without children goes too
+            $this->preferences->setValue($page, \Galette\Enums\PublicPageVisibility::Hidden->value, $this->login);
+            $this->assertSame([], $labels());
+
+            $this->preferences->pref_publicpages_visibility_generic = \Galette\Enums\PublicPageVisibility::Everyone->value;
+            $this->assertSame(['Undeclared'], $labels());
+        } finally {
+            $this->preferences->resetValue($page, $this->login);
+            $this->preferences->load();
+        }
+    }
+
+    /**
+     * Test getDashboards
+     */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDashboards(): void
     {
         global $login;
@@ -344,10 +430,99 @@ class Galette extends GaletteTestCase
     }
 
     /**
-     * Test getListActions
+     * Test getDashboards for groups managers
      *
-     * @return void
+     * Contributions and transactions entries depend on dedicated preferences.
      */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testGetGroupManagerDashboards(): void
+    {
+        global $login, $preferences;
+
+        $db = new \Galette\Core\Db();
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+        $login->method('isGroupManager')->willReturn(true);
+
+        //groups managers cannot see contributions nor transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups'],
+            array_column($dashboards, 'label')
+        );
+        $this->assertCount(3, \Galette\Core\Galette::getMyDashboards());
+
+        //groups managers can see contributions
+        $preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Contributions'],
+            array_column($dashboards, 'label')
+        );
+
+        //groups managers can see transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Transactions'],
+            array_column($dashboards, 'label')
+        );
+
+        //groups managers can see both contributions and transactions
+        $preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Contributions', 'Transactions'],
+            array_column($dashboards, 'label')
+        );
+
+        //mailings and reminders are never proposed to groups managers
+        $this->assertNotContains('Mailings', array_column($dashboards, 'label'));
+        $this->assertNotContains('Reminders', array_column($dashboards, 'label'));
+
+        //staff members get all entries, whatever groups managers preferences are
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+        $login->method('isGroupManager')->willReturn(true);
+
+        $preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertSame(
+            ['Members', 'Groups', 'Mailings', 'Contributions', 'Transactions', 'Reminders'],
+            array_column($dashboards, 'label')
+        );
+    }
+
+    /**
+     * Test getListActions
+     */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetListActions(): void
     {
         global $login;
@@ -413,8 +588,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getDetailledActions
-     *
-     * @return void
      */
     public function testGetDetailledActions(): void
     {
@@ -427,9 +600,8 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getBatchActions
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetBatchActions(): void
     {
         global $login;
@@ -495,9 +667,8 @@ class Galette extends GaletteTestCase
 
     /**
      * Test Galette::getNews() method
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetNews(): void
     {
         $entries = \Galette\Core\Galette::getNews();
@@ -558,18 +729,29 @@ class Galette extends GaletteTestCase
 
         $this->assertCount(1, $entries);
 
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->plugins->activateModule('plugin-news');
 
         $this->plugins = new \Galette\Core\Plugins();
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());
 
         global $plugins, $container;
         $plugins = $this->plugins;
+
+        //mock plugin to mark as not installed
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', full: true);
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $container->set($plugin_class, $mock);
 
         //we got asso and plugin news
         $entries = \Galette\Core\Galette::getNews();
@@ -578,7 +760,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $entries);
 
         //mock plugin to mark as installed
-        $plugin_class = $plugins->getClassName('plugin-news', true);
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', full: true);
         $mock = $this->getMockBuilder($plugin_class)
             ->onlyMethods(['isInstalled'])
             ->getMock();
@@ -606,9 +789,76 @@ class Galette extends GaletteTestCase
     }
 
     /**
+     * Test Galette::hasNews() method
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testHasNews(): void
+    {
+        //not logged in, no custom feed, no plugin: nothing to expect
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //staff and admins get Galette news
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->assertTrue(\Galette\Core\Galette::hasNews());
+        $this->login->logOut();
+
+        //a simple member gets nothing...
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //...unless the association has its own feed
+        $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
+        $this->assertTrue($this->preferences->store());
+        $this->assertTrue(\Galette\Core\Galette::hasNews());
+
+        //reset
+        $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
+        $this->assertTrue($this->preferences->store());
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins->activateModule('plugin-news');
+
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+
+        global $plugins, $container;
+        $plugins = $this->plugins;
+
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', full: true);
+
+        //a plugin that is not installed provides nothing
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $container->set($plugin_class, $mock);
+        $this->assertFalse(\Galette\Core\Galette::hasNews());
+
+        //an installed one does
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(true);
+        $container->set($plugin_class, $mock);
+        $has_news = \Galette\Core\Galette::hasNews();
+
+        //reset
+        $this->plugins->deactivateModule('plugin-news');
+        $container->set($plugin_class, new $plugin_class());
+
+        $this->assertTrue($has_news);
+    }
+
+    /**
      * Test isNightly
-     *
-     * @return void
      */
     public function testIsNightly(): void
     {
@@ -616,9 +866,43 @@ class Galette extends GaletteTestCase
     }
 
     /**
-     * Test jsonDecode
+     * Test isSqlDebugEnabled
      *
-     * @return void
+     * Neither the constant nor debug mode: nothing to dump.
+     */
+    public function testIsSqlDebugEnabled(): void
+    {
+        $this->assertFalse(defined('GALETTE_SQL_DEBUG'));
+        $this->assertFalse(\Galette\Core\Galette::isDebugEnabled());
+        $this->assertFalse(\Galette\Core\Galette::isSqlDebugEnabled());
+    }
+
+    /**
+     * Declared to false, the dump stays off
+     *
+     * The value is what counts, not the mere existence of the constant.
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testSqlDebugDeclaredFalse(): void
+    {
+        define('GALETTE_SQL_DEBUG', value: false);
+        $this->assertFalse(\Galette\Core\Galette::isSqlDebugEnabled());
+    }
+
+    /**
+     * Declared to true, every query is dumped
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testSqlDebugDeclaredTrue(): void
+    {
+        define('GALETTE_SQL_DEBUG', value: true);
+        $this->assertTrue(\Galette\Core\Galette::isSqlDebugEnabled());
+    }
+
+    /**
+     * Test jsonDecode
      */
     public function testJsonDecode(): void
     {
@@ -639,8 +923,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test jsonEncode
-     *
-     * @return void
      */
     public function testJsonEncode(): void
     {

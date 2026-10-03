@@ -1,31 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
+use Galette\Tests\GaletteRoutingTestCase;
 
 /**
  * PDF controller tests
@@ -35,11 +20,10 @@ use Slim\Psr7\Request;
 class PdfController extends GaletteRoutingTestCase
 {
     protected int $seed = 58144569971203;
+    private string $is_pdf_regexp = '/^%PDF-\d\.\d/';
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -54,46 +38,21 @@ class PdfController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        $this->cleanHistory();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test store models
-     *
-     * @return void
      */
     public function testStoreModels(): void
     {
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $model->title);
 
-        $route_name = 'pdfModels';
+        $route_name = 'storePdfModels';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $request = $request->withParsedBody(
             [
                 'store' => true,
@@ -106,7 +65,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('pdfModels', ['id' => $model->id])]],
+            ['Location' => [$this->routeparser->urlFor('pdfModels', ['id' => (string)$model->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -125,8 +84,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test display models
-     *
-     * @return void
      */
     public function testDisplayModels(): void
     {
@@ -151,8 +108,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test membersCards
-     *
-     * @return void
      */
     public function testMembersCards(): void
     {
@@ -169,7 +124,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'pdf-members-cards';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -216,7 +171,7 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Member ' . $member_one->id . ' is not up to date; cannot get his PDF member card');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Member ' . $member_one->id . ' is not up to date; cannot get his PDF member card');
 
         //make member up-to-date
         $this->login->logout();
@@ -225,7 +180,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logout();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -237,15 +192,13 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test filtered membersCards
-     *
-     * @return void
      */
     public function testFilteredMembersCards(): void
     {
         $member_one = $this->getMemberOne();
 
         $route_name = 'pdf-members-cards';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //test logged-in as superadmin
@@ -257,7 +210,7 @@ class PdfController extends GaletteRoutingTestCase
         $controller = new \Galette\Controllers\PdfController($this->container);
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d.\d.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         unset($this->session->{$controller->getFilterName('members')});
@@ -270,8 +223,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test membersLabels
-     *
-     * @return void
      */
     public function testMembersLabels(): void
     {
@@ -280,7 +231,7 @@ class PdfController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
 
         $route_name = 'pdf-members-labels';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //login is required to access this page
@@ -307,7 +258,7 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -320,8 +271,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test filtered membersLabels
-     *
-     * @return void
      */
     public function testFilteredMembersLabels(): void
     {
@@ -344,7 +293,7 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -356,8 +305,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test adhesionForm
-     *
-     * @return void
      */
     public function testadhesionForm(): void
     {
@@ -374,7 +321,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'adhesionForm';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //login is required to access this page
@@ -400,7 +347,7 @@ class PdfController extends GaletteRoutingTestCase
         //test logged-in as member one
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -412,8 +359,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test attendanceSheet
-     *
-     * @return void
      */
     public function testAttendanceSheet(): void
     {
@@ -421,7 +366,12 @@ class PdfController extends GaletteRoutingTestCase
 
         $route_name = 'attendance_sheet';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
 
         $this->logSuperAdmin();
 
@@ -444,7 +394,7 @@ class PdfController extends GaletteRoutingTestCase
             ]
         );
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -456,14 +406,17 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test attendanceSheetConfig
-     *
-     * @return void
      */
     public function testAttendanceSheetConfig(): void
     {
         $route_name = 'attendance_sheet_details';
         $route_arguments = [];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
 
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
@@ -480,8 +433,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test contribution
-     *
-     * @return void
      */
     public function testContribution(): void
     {
@@ -502,7 +453,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'printContribution';
-        $route_arguments = ['id' => $contribution_one->id];
+        $route_arguments = ['id' => (string)$contribution_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //test No rights
@@ -511,7 +462,7 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No contribution #' . $contribution_one->id);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No contribution #' . $contribution_one->id);
         $this->expectFlashData(
             [
                 'error_detected' => [
@@ -525,7 +476,7 @@ class PdfController extends GaletteRoutingTestCase
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -537,8 +488,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test group
-     *
-     * @return void
      */
     public function testGroup(): void
     {
@@ -552,12 +501,12 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         //no groups, no pdf
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'An error has occurred, unable to get groups list');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get groups list');
         $this->expectFlashData(['error_detected' => ['Unable to get groups list.']]);
 
         $g1 = new \Galette\Entity\Group();
@@ -575,8 +524,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test direct member card link
-     *
-     * @return void
      */
     public function testDirectlinkDocumentMemberCard(): void
     {
@@ -602,7 +549,7 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
         $expected_headers = [
@@ -614,8 +561,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test direct contribution link
-     *
-     * @return void
      */
     public function testDirectlinkDocumentContribution(): void
     {
@@ -635,7 +580,7 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $expected_headers = [
             'Content-type' => ['application/pdf'],

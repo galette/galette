@@ -1,29 +1,21 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
+use Galette\Core\Plugins;
 use Throwable;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpForbiddenException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Galette;
@@ -31,6 +23,7 @@ use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
 use function Safe\ob_end_clean;
 use function Safe\ob_start;
 
@@ -44,17 +37,17 @@ class PluginsController extends AbstractController
 {
     /**
      * Plugins page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function showPlugins(Request $request, Response $response): Response
+    #[Route(
+        name: 'plugins',
+        pattern: '/plugins',
+        methods: ['GET']
+    )]
+    public function showPlugins(Response $response): Response
     {
         $plugins = $this->plugins;
 
-        $plugins_list = $plugins->getModules();
+        $plugins_list = $plugins->getActiveModules();
         $disabled_plugins = $plugins->getDisabledModules();
 
         // display page
@@ -72,16 +65,14 @@ class PluginsController extends AbstractController
     }
 
     /**
-     * Plugins activation/desactivaion
-     *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param string   $action    Action
-     * @param string   $module_id Module id
-     *
-     * @return Response
+     * Plugins activation/deactivation
      */
-    public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
+    #[Route(
+        name: 'pluginsActivation',
+        pattern: '/plugins/{action:activate|deactivate}/{module_id}',
+        methods: ['GET']
+    )]
+    public function togglePlugin(Response $response, string $action, string $module_id): Response
     {
         $error_detected = [];
         $success_detected = [];
@@ -130,12 +121,13 @@ class PluginsController extends AbstractController
     /**
      * Plugins database activation
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $id       Plugin id
-     *
-     * @return Response
+     * @param string $id Plugin id
      */
+    #[Route(
+        name: 'pluginInitDb',
+        pattern: '/plugins/initialize-database/{id}',
+        methods: ['GET', 'POST']
+    )]
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
         if (Galette::isDemo()) {
@@ -143,7 +135,7 @@ class PluginsController extends AbstractController
                 'Trying to access plugin database initialization in DEMO mode.',
                 Analog::WARNING
             );
-            return $response->withStatus(403);
+            throw new HttpForbiddenException($request);
         }
 
         $params = [];
@@ -155,12 +147,40 @@ class PluginsController extends AbstractController
                 'Unable to load plugin `' . $plugid . '`!',
                 Analog::URGENT
             );
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
-        $plugin = $this->plugins->getModules($plugid);
+        $plugin = $this->plugins->getModule($plugid);
 
-        $mdplugin = md5((string) $plugin['root']);
+        // Reject plugins that cannot be installed or updated due to missing files
+        // or incompatibility. Only plugins that are installable/upgradable should
+        // reach the database initialization step.
+        if (
+            $this->plugins->isDisabled($plugid)
+            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)
+        ) {
+            Analog::log(
+                'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
+                . $this->plugins->getDisabledCause($plugid) . ').',
+                Analog::WARNING
+            );
+
+            throw new HttpNotFoundException($request);
+        }
+
+        // If available, ensure the plugin actually uses a database before offering
+        // database initialization.
+        if (!$this->plugins->needsDatabase($plugid)) {
+            Analog::log(
+                'Database initialization requested for plugin `' . $plugid
+                . '` that does not require a database.',
+                Analog::WARNING
+            );
+
+            throw new HttpBadRequestException($request);
+        }
+
+        $mdplugin = md5((string)$plugin['root']);
         if (
             isset($this->session->$mdplugin)
             && !isset($_GET['raz'])
@@ -176,6 +196,8 @@ class PluginsController extends AbstractController
         if (isset($post['stepback_btn'])) {
             $install->atPreviousStep();
         } elseif (isset($post['install_prefs_ok'])) {
+            $install->atEndStep();
+        } elseif (isset($post['install_dbwrite_ok'])) {
             $install->atEndStep();
         } elseif (isset($post['previous_version'])) {
             $install->setInstalledVersion($post['previous_version']);
@@ -247,9 +269,16 @@ class PluginsController extends AbstractController
                 $install->setInstalledVersion($post['previous_version'] ?? null);
                 $install->executeScripts($this->zdb, $plugin['root']);
                 break;
+            case 'i5':
+            case 'u5':
+                $install->setPluginInstalled($this->zdb, $this->plugins, $plugid);
         }
 
-        $this->session->$mdplugin = $install;
+        if ($step !== 'i5' && $step !== 'u5') {
+            $this->session->$mdplugin = $install;
+        } else {
+            unset($this->session->$mdplugin);
+        }
 
         $params += [
             'page_title'    => $install->getStepDetail('title'),
@@ -257,7 +286,7 @@ class PluginsController extends AbstractController
             'istep'         => $istep,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
-            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'error_detected' => $error_detected,
             'install' => $install,
         ];
@@ -268,6 +297,104 @@ class PluginsController extends AbstractController
             'modals/plugin_initdb.html.twig',
             $params
         );
+        return $response;
+    }
+
+    /**
+     * Plugin info page
+     *
+     * @param string $route Plugin route identifier
+     */
+    #[Route(
+        name: 'pluginInfo',
+        pattern: '/plugins/{route}',
+        methods: ['GET']
+    )]
+    public function pluginInfo(Request $request, Response $response, string $route): Response
+    {
+        $module = null;
+        foreach ($this->plugins->getActiveModules() as $mod) {
+            if ($mod['route'] === $route) {
+                $module = $mod;
+                break;
+            }
+        }
+
+        if ($module === null) {
+            throw new HttpNotFoundException($request);
+        }
+
+        $params = [
+            'page_title' => $module['name'],
+            'name'       => $module['name'],
+            'version'    => $module['version'],
+            'date'       => $module['date'],
+            'author'     => $module['author'],
+        ];
+        if ($this->login->isAdmin()) {
+            $params['module'] = $module;
+        }
+
+        $this->view->render(
+            $response,
+            'pages/plugin_info.html.twig',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Serve a plugin static resource (CSS, JS, image, font, ...).
+     *
+     * @param string $plugin Plugin identifier
+     * @param string $path   Path of the resource within the plugin
+     */
+    #[Route(
+        name: 'plugin_res',
+        pattern: '/plugins/{plugin}/res/{path:.*}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function resource(Request $request, Response $response, string $plugin, string $path): Response
+    {
+        $ext = pathinfo($path)['extension'] ?? '';
+        $auth_ext = [
+            'js'    => 'text/javascript',
+            'css'   => 'text/css',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpg',
+            'jpeg'  => 'image/jpg',
+            'gif'   => 'image/gif',
+            'svg'   => 'image/svg+xml',
+            'map'   => 'application/json',
+            'woff'  => 'application/font-woff',
+            'woff2' => 'application/font-woff2'
+        ];
+        if (str_contains($path, '../') || !isset($auth_ext[$ext])) {
+            Analog::log(
+                sprintf('Invalid extension %1$s (%2$s)!', $ext, $path),
+                Analog::WARNING
+            );
+            throw new HttpNotFoundException($request);
+        }
+
+        try {
+            $file = $this->plugins->getFile($plugin, $path);
+        } catch (Throwable $e) {
+            Analog::log(
+                sprintf(
+                    'Unable to serve resource `%1$s` from plugin `%2$s`: %3$s',
+                    $path,
+                    $plugin,
+                    $e->getMessage()
+                ),
+                Analog::WARNING
+            );
+            throw new HttpNotFoundException($request, previous: $e);
+        }
+
+        $response = $response->withHeader('Content-type', $auth_ext[$ext]);
+        $response->getBody()->write(file_get_contents($file));
         return $response;
     }
 }

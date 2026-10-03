@@ -1,29 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Login tests class
@@ -37,24 +25,7 @@ class Login extends GaletteTestCase
     private string $mdp_adh = 'sd8)AvtE|*';
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        parent::tearDown();
-    }
-
-    /**
      * Test defaults
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -66,14 +37,13 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
-        $this->assertNull($this->login->lang);
+        $this->assertNull($this->login->lang); // @phpstan-ignore method.impossibleType (__get explicitly return null)
     }
 
     /**
      * Test not logged-in users Impersonating
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testNotLoggedCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -88,9 +58,8 @@ class Login extends GaletteTestCase
 
     /**
      * Test staff users Impersonating
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testStaffCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -109,9 +78,8 @@ class Login extends GaletteTestCase
 
     /**
      * Test admin users Impersonating
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testAdminCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -130,9 +98,8 @@ class Login extends GaletteTestCase
 
     /**
      * Test Impersonating that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testImpersonateExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -154,15 +121,14 @@ class Login extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $this->assertFalse($login->impersonate(1));
-        $this->expectLogEntry(\Analog::WARNING, 'An error occurred: Error executing query!');
-        $this->expectLogEntry(\Analog::ERROR, 'Galette\Core\Login->impersonate()');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred: Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Galette\Core\Login->impersonate()');
     }
 
     /**
      * Test superadmin users Impersonating
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testSuperadminCanImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -174,25 +140,21 @@ class Login extends GaletteTestCase
 
         //We're faking, Impersonating won't work but will not throw any exception
         $this->assertFalse($login->impersonate(1));
-        $this->expectLogEntry(\Analog::WARNING, 'No entry found for id `1`');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'No entry found for id `1`');
     }
 
     /**
      * Test return requesting a non-existing property
-     *
-     * @return void
      */
     public function testInexistingGetter(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Property doesnotexists is not set!');
-        $this->assertFalse($this->login->doesnotexists);
+        $this->assertFalse($this->login->doesnotexists); // @phpstan-ignore property.notFound (class handle that)
     }
 
     /**
      * Test login exists
-     *
-     * @return void
      */
     public function testLoginExists(): void
     {
@@ -202,9 +164,8 @@ class Login extends GaletteTestCase
 
     /**
      * Test login exists that throws an exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoginExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -222,13 +183,11 @@ class Login extends GaletteTestCase
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
         $this->assertTrue($login->loginExists('doesnotexists'));
-        $this->expectLogEntry(\Analog::WARNING, 'Cannot check if login exists | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot check if login exists | Error executing query!');
     }
 
     /**
      * Test login as super admin
-     *
-     * @return void
      */
     public function testLogAdmin(): void
     {
@@ -250,8 +209,6 @@ class Login extends GaletteTestCase
 
     /**
      * Creates or load test user
-     *
-     * @return void
      */
     private function createUser(): void
     {
@@ -320,8 +277,6 @@ class Login extends GaletteTestCase
 
     /**
      * Look for a login that does exist
-     *
-     * @return void
      */
     public function testLoginExistsDb(): void
     {
@@ -331,21 +286,256 @@ class Login extends GaletteTestCase
 
     /**
      * Test user login
-     *
-     * @return void
      */
     public function testLogin(): void
     {
         $this->createUser();
         $this->assertFalse($this->login->login('doenotexists', 'empty'));
         $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
-        $this->expectLogEntry(\Analog::WARNING, 'No entry found for login `doenotexists`');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'No entry found for login `doenotexists`');
+    }
+
+    /**
+     * A member holding an enabled second factor is not logged in on credentials
+     * alone. isLogged() is the gate every middleware and template goes through,
+     * so anything calling logIn() then isLogged() fails closed on its own.
+     */
+    public function testEnrolledMemberOwesASecondFactor(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+
+        //not confirmed yet: nothing is owed, enrolment must not lock anyone out
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+        $this->login->logOut();
+
+        $secret->enable();
+
+        //now credentials alone are not enough
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($this->login->isLogged());
+        $this->assertTrue($this->login->isTwoFactorPending());
+        //identity is known though, the challenge needs it
+        $this->assertSame($this->login_adh, $this->login->login);
+
+        $this->login->validateTwoFactor();
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+
+        //and logging out clears the state
+        $this->login->logOut();
+        $this->assertFalse($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+    }
+
+    /**
+     * A session owing a second factor must hold none of its privileges:
+     * several routes carry no middleware and are gated on those predicates
+     * alone -- public pages, and the public documents
+     */
+    public function testPendingSessionHoldsNoPrivilege(): void
+    {
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Pretend a fully privileged account has just given its password
+             */
+            public function grantEverything(): void
+            {
+                $this->logged = true;
+                $this->admin = true;
+                $this->superadmin = true;
+                $this->staff = true;
+                $this->uptodate = true;
+                $this->managed_groups = [1];
+            }
+        };
+
+        $login->grantEverything();
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_SUPERADMIN, $login->getAccessLevel());
+
+        $login->requireTwoFactor();
+
+        $this->assertFalse($login->isLogged());
+        $this->assertFalse($login->isAdmin());
+        $this->assertFalse($login->isSuperAdmin());
+        $this->assertFalse($login->isStaff());
+        $this->assertFalse($login->isUp2Date());
+        $this->assertFalse($login->isGroupManager());
+        $this->assertFalse($login->isGroupManager(1));
+        //which is what public pages and public documents rely on
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_PUBLIC, $login->getAccessLevel());
+
+        //the account is still known, so the second factor can be looked up
+        //where it is kept
+        $this->assertTrue($login->isSuperAdminAccount());
+
+        $login->validateTwoFactor();
+
+        $this->assertTrue($login->isLogged());
+        $this->assertTrue($login->isAdmin());
+        $this->assertTrue($login->isSuperAdmin());
+        $this->assertTrue($login->isStaff());
+        $this->assertTrue($login->isUp2Date());
+        $this->assertTrue($login->isGroupManager());
+        $this->assertSame(\Galette\Core\Authentication::ACCESS_SUPERADMIN, $login->getAccessLevel());
+    }
+
+    /**
+     * A mandatory policy is held back by a flag, and reads as optional: the
+     * member enrolled while it applied is still asked for a code. Reading it as
+     * disabled would drop that protection without saying so.
+     */
+    public function testMandatoryPolicyStillChallengesWithoutTheFlag(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        try {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: false);
+
+            $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+            $this->assertFalse($this->login->isLogged());
+            $this->assertTrue($this->login->isTwoFactorPending());
+            $this->login->logOut();
+
+            //same answer when the policy has to be read from the table rather
+            //than from the global, which is the one read that bypasses
+            //Preferences entirely
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL])
+                ->where(['nom_pref' => 'pref_2fa_mode']);
+            $this->zdb->execute($update);
+
+            $kept = $preferences;
+            $preferences = null;
+            try {
+                $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+                $this->assertTrue($this->login->isTwoFactorPending());
+            } finally {
+                $preferences = $kept;
+                $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+                $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_DISABLED])
+                    ->where(['nom_pref' => 'pref_2fa_mode']);
+                $this->zdb->execute($update);
+            }
+        } finally {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
+            $this->login->logOut();
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+        }
+    }
+
+    /**
+     * Turning the feature off globally must let enrolled members back in: it is
+     * the escape hatch when something goes wrong instance wide
+     */
+    public function testDisabledPolicySkipsTheSecondFactor(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isTwoFactorPending());
+    }
+
+    /**
+     * The pending state must survive the session round trip, and a session
+     * written before the property existed must still unserialize
+     */
+    public function testPendingStateSurvivesSerialization(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+
+        $this->login->logIn($this->login_adh, $this->mdp_adh);
+        $this->assertTrue($this->login->isTwoFactorPending());
+
+        $revived = unserialize(serialize($this->login));
+        $this->assertInstanceOf(\Galette\Core\Login::class, $revived);
+        $this->assertFalse($revived->isLogged());
+        $this->assertTrue($revived->isTwoFactorPending());
+
+        //a session written before this property existed carries no value for
+        //it. PHP applies declared defaults to properties absent from a payload,
+        //so what has to hold is that a default is declared: without one the
+        //property would come back uninitialized and every read would throw.
+        $property = new \ReflectionProperty(\Galette\Core\Authentication::class, 'tfa_pending');
+        $this->assertTrue($property->hasDefaultValue(), 'tfa_pending must declare a default');
+        $this->assertFalse($property->getDefaultValue());
+    }
+
+    /**
+     * Passwords hashed with md5 are no longer accepted. Such hashes may still
+     * exist on instances upgraded from Galette older than 0.7.4, since nothing
+     * ever re-hashed them.
+     */
+    public function testLegacyMd5PasswordIsRejected(): void
+    {
+        $this->createUser();
+        $this->login->logOut();
+
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['mdp_adh' => md5($this->mdp_adh)])
+            ->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $this->zdb->execute($update);
+
+        $this->assertFalse($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($this->login->isLogged());
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Passwords mismatch for login `' . $this->login_adh . '`'
+        );
     }
 
     /**
      * Test logged user name
-     *
-     * @return void
      */
     public function testLoggedInAs(): void
     {
@@ -354,28 +544,22 @@ class Login extends GaletteTestCase
         $this->createUser();
         $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
 
-        /** Should get message in the right locale but doesn't... */
+        /* Should get message in the right locale but doesn't... */
         $this->i18n->changeLanguage('en_US');
         $tstring = $translator->translate(
-            "Logged in as:<br/>%login",
+            'Logged in as:<br/>%1$s',
             'galette',
             $this->login->lang
         );
         $this->assertSame(
-            str_replace(
-                '%login',
-                'Barre Olivier (dumas.roger)',
-                $tstring
-            ),
+            sprintf($tstring, 'Barre Olivier (dumas.roger)'),
             $this->login->loggedInAs()
         );
-        $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(true));
+        $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(only_name: true));
     }
 
     /**
      * Test login from cron
-     *
-     * @return void
      */
     public function testLogCron(): void
     {

@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+declare(strict_types=1);
+
+/**
+ * Feature Flags Registry with Dependencies Support
+ *
+ * This file contains the official registry of all feature flags in Galette.
+ *
+ * IMPORTANT:
+ * - Adding a flag to this registry is MANDATORY when developing a new feature
+ * - Flags should be removed from this registry only when the feature is considered stable
+ * - Users activate flags via GALETTE_FEATURE_FLAGS in behavior.inc.php
+ *
+ * Format (simple flag without dependencies):
+ *   'flag_name' => 'Description of the feature'
+ *
+ * Format (flag with dependencies):
+ *   'flag_name' => [
+ *       'description' => 'Description of the feature',
+ *       'requires' => ['dependency1', 'dependency2'], // Optional
+ *   ]
+ */
+
+/** @var array<string, string|array{description: string, requires?: array<string>}> $feature_flags_registry */
+$feature_flags_registry = [
+    /**
+     * ACLs - New Access Control Lists Management System
+     *
+     * Implements a new RBAC (Role-Based Access Control) system to replace
+     * the legacy permission system.
+     *
+     * Status: In Development
+     * Added: 2026-04-08
+     * Target: 1.2.0
+     */
+    /*'acls' => 'New Access Control Lists (RBAC) management system',*/
+
+    /**
+     * OAuth2 - OAuth2 Authentication System
+     *
+     * OAuth2 server implementation for API authentication.
+     * Requires ACLs for permission management.
+     *
+     * Status: Planning
+     * Added: 2026-04-08
+     * Target: 1.3.0
+     */
+    /*'oauth2' => [
+        'description' => 'OAuth2 authentication system for API',
+        'requires' => ['acls'], // Depends on ACLs
+    ],*/
+
+    /**
+     * New Dashboard - Redesigned admin dashboard
+     *
+     * Modern dashboard with improved UX and better data visualization.
+     *
+     * Status: Planning
+     * Added: 2026-04-08
+     * Target: 1.3.0
+     */
+    /*'new-dashboard' => 'Redesigned admin dashboard with modern UI',*/
+
+    /**
+     * API v2 - RESTful API with OAuth2
+     *
+     * New REST API version with OAuth2 authentication support.
+     * Requires both ACLs for permissions and OAuth2 for authentication.
+     *
+     * Status: Planning
+     * Added: 2026-04-08
+     * Target: 1.3.0
+     */
+    /*'api-v2' => [
+        'description' => 'RESTful API version 2 with OAuth2 support',
+        'requires' => ['acls', 'oauth2'], // Depends on ACLs AND OAuth2
+    ],*/
+
+    /**
+     * Mandatory two-factor authentication policies
+     *
+     * The second factor itself ships in 1.3.0, disabled by default and marked
+     * experimental. Making it compulsory -- for administrators and staff, or
+     * for everyone -- is held back one version: under a mandatory policy a
+     * clock that drifts or a botched enrolment puts a whole association outside
+     * its own instance, and the way back is a SQL statement. Without this flag
+     * both policies read as "optional", so a member already enrolled keeps
+     * being asked for their code.
+     *
+     * Status: In Development
+     * Added: 2026-09-06
+     * Target: 1.4.0
+     */
+    'two-factor-required' => 'Mandatory two-factor authentication policies (staff, everyone)',
+
+    /**
+     * Add new feature flags below following this format:
+     *
+     * Simple flag without dependencies:
+     * 'flag-name' => 'Short description of the feature',
+     *
+     * Flag with dependencies:
+     * 'flag-name' => [
+     *     'description' => 'Short description',
+     *     'requires' => ['dependency-flag-1', 'dependency-flag-2'],
+     * ],
+     */
+];
+
+return $feature_flags_registry;

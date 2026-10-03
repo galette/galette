@@ -10,7 +10,7 @@
   display: none !important;
 }
 
-.ui.corner.label .icon.btnlegend {
+.ui.corner.label .btnlegend {
     cursor: pointer;
 }
 
@@ -33,19 +33,25 @@
   }
 }
 
-.exemple,
 .disabled,
 .disabled a {
   color: @unselectedTextColor;
 }
 
+.field-description {
+  color: lighten(@textColor, 8.5);
+  font-style: italic;
+
+  & .error {
+    display: block;
+    color: @redTextColor;
+    font-weight: bold;
+  }
+}
+
 .inactive-account {
   color: lighten(@grey, 15);
   font-style: italic;
-}
-
-.language span {
-  text-transform: uppercase;
 }
 
 .error-trace pre {
@@ -147,7 +153,7 @@ body.pushable:not(.loggedin) {
   width: auto;
 }
 
-#top-navbar div.item a.button:not(:first-child) {
+#top-navbar div.item .button:not(:first-child) {
   margin-left: .5rem;
 }
 
@@ -168,13 +174,19 @@ aside.toc,
   display: none;
 }
 
-aside .ui.vertical.menu {
-  width: auto;
-  max-width: 100%;
-}
+aside {
+  .ui.vertical.menu {
+    width: auto;
+    max-width: 100%;
+  }
 
-aside .ui.small.compact.fluid.menu .ui.item {
-  max-width: 14.688rem;
+  .ui.small.compact.fluid.menu .ui.item {
+    max-width: 14.688rem;
+  }
+
+  .ui.toggle.checkbox.mini label {
+    color: darken(@textColor, 5);
+  }
 }
 
 footer,
@@ -266,8 +278,18 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
 }
 
 @media only screen and (max-width: 991px) {
-  #top-navbar nav {
-    display: none;
+  #top-navbar {
+    button.toc {
+      width: 52px;
+      margin-right: 0;
+      justify-content: center;
+      .icon {
+        margin-right: 0;
+      }
+    }
+    nav {
+      display: none;
+    }
   }
   .sidebar.uncover + .fixed.menu .toc i::before {
     content: '\f00d';
@@ -297,8 +319,8 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
       display: none;
     }
   }
-  #top-navbar div.item a.button.darkmode span {
-    display: none;
+  #top-navbar div.item .button.darkmode {
+    align-self: stretch;
   }
 
   aside.computer.toc {
@@ -444,6 +466,28 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
   margin-bottom: 0.75em;
 }
 
+/* Ensure consistent spacing at the top of every page */
+.main-content {
+  & > noscript:first-child,
+  & > noscript:first-child + div[role=alert] + script,
+  & > noscript:first-child + script,
+  & > noscript:first-child + .ui.modal,
+  & > noscript:first-child + div[role=alert] + script + .ui.modal,
+  & > noscript:first-child + script + .ui.modal {
+    & + .ui.message,
+    & + .ui.table,
+    & + .ui.pointing.menu,
+    & + form .infoline:first-child .ui.horizontal.segments,
+    & + .ui.fitted.segment {
+      margin-top: 0;
+    }
+  }
+  & > noscript:first-child > .ui.message:first-child,
+  & > noscript:first-child + div[role=alert] > .ui.message:first-child {
+    margin-top: 0;
+  }
+}
+
 /*-----------------------
     Sortable items
 ------------------------*/
@@ -567,6 +611,7 @@ ul.leaders span + span {
 /*-----------------------------
     Summernote display
 ------------------------------*/
+tfoot .note-editor .note-editable,
 .field .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
     background-color: #fff;
 }

@@ -1,29 +1,18 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use Galette\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Transaction tests class
@@ -36,56 +25,7 @@ class Transaction extends GaletteTestCase
     private \Galette\Entity\Transaction $transaction;
 
     /**
-     * Cleanup after each test method
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-
-        //first, remove contributions
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //then, remove transactions
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //Remove groups
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        //remove members with parents
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        //remove all others members
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
-        $this->assertTrue($this->preferences->store());
-    }
-
-    /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -104,12 +44,10 @@ class Transaction extends GaletteTestCase
 
     /**
      * Create test transaction in database
-     *
-     * @return \Galette\Entity\Transaction
      */
     private function createTransaction(): \Galette\Entity\Transaction
     {
-        $date = new \DateTime(); // 2020-11-07
+        $date = new DateTime(); // 2020-11-07
         $data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -133,8 +71,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test empty transaction
-     *
-     * @return void
      */
     public function testEmpty(): void
     {
@@ -154,17 +90,15 @@ class Transaction extends GaletteTestCase
         $this->assertArrayHasKey('trans_desc', $this->transaction->fields);
         $this->assertArrayHasKey('type_paiement_trans', $this->transaction->fields);
 
-        $this->assertEquals(false, $this->transaction->unknown_property);
+        $this->assertEquals(false, $this->transaction->unknown_property); //@phpstan-ignore property.notFound (expected)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Property unknown_property does not exist for transaction'
         );
     }
 
     /**
      * Test getter and setter special cases
-     *
-     * @return void
      */
     public function testGetterSetter(): void
     {
@@ -175,7 +109,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- Wrong date format (Y-m-d) for Date!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         //set a correct date
         $data = ['trans_date' => '1999-01-01'];
@@ -188,7 +122,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- The amount must be an integer!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         //set a correct amount
         $data = ['trans_amount' => 1256];
@@ -201,13 +135,11 @@ class Transaction extends GaletteTestCase
         $expected = ['- Transaction description must be 150 characters long maximum.'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
     }
 
     /**
      * Test transaction creation
-     *
-     * @return void
      */
     public function testCreation(): void
     {
@@ -220,8 +152,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -248,8 +178,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test fields labels
-     *
-     * @return void
      */
     public function testGetFieldLabel(): void
     {
@@ -276,9 +204,8 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction loading
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoad(): void
     {
         global $login;
@@ -303,15 +230,13 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($transaction->load((int)$id));
         $this->assertFalse($transaction->load(1355522012));
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'No transaction #1355522012'
         );
     }
 
     /**
      * Test transaction removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -325,20 +250,18 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($this->transaction->remove($this->history));
         $this->assertFalse($this->transaction->load($tid));
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'No transaction #' . $tid
         );
         $this->assertFalse($this->transaction->remove($this->history));
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Transaction has not been removed!'
         );
     }
 
     /**
      * Test can* methods
-     *
-     * @return void
      */
     public function testCan(): void
     {
@@ -413,7 +336,7 @@ class Transaction extends GaletteTestCase
         $cid = $child->id;
 
         //transaction for child
-        $date = new \DateTime(); // 2020-11-07
+        $date = new DateTime(); // 2020-11-07
 
         $data = [
             'id_adh' => $cid,
@@ -503,8 +426,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test a transaction
-     *
-     * @return void
      */
     public function testTransaction(): void
     {
@@ -517,7 +438,7 @@ class Transaction extends GaletteTestCase
         $tid = $this->transaction->id;
 
         //create a contribution attached to transaction
-        $bdate = new \DateTime(); // 2020-11-07
+        $bdate = new DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
         $bdate->add(new \DateInterval('P3D')); // 2020-06-10
 
@@ -609,7 +530,7 @@ class Transaction extends GaletteTestCase
         $check = $contrib->check($data, [], []);
         $this->assertSame(['- Sum of all contributions exceed corresponding transaction amount.'], $check);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '- Sum of all contributions exceed corresponding transaction amount.'
         );
 
@@ -644,13 +565,13 @@ class Transaction extends GaletteTestCase
         $this->expectNoLogEntry();
         $this->assertFalse($this->transaction->load($tid));
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'No transaction #' . $tid
         );
         foreach ($contribs_ids as $contrib_id) {
             $this->assertFalse($this->contrib->load($contrib_id));
             $this->expectLogEntry(
-                \Analog::ERROR,
+                \Analog\Analog::ERROR,
                 'No contribution #' . $contrib_id
             );
         }

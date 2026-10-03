@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -28,6 +15,8 @@ use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
+use Galette\Util\Html;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -42,36 +31,36 @@ use function Safe\unlink;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $subject
- * @property string $message
- * @property bool $html
- * @property int $current_step
- * @property-read  int $step
- * @property int|string $id
- * @property-read string $alt_message
- * @property-read string $wrapped_message
- * @property-read PHPMailer $mail
- * @property-read string[] $errors
- * @property-read Adherent[] $recipients
- * @property-read Adherent[] $unreachables
+ * @property      string            $subject
+ * @property      string            $message
+ * @property      bool              $html
+ * @property      int               $current_step
+ * @property-read int               $step
+ * @property      int|string        $id
+ * @property-read string            $alt_message
+ * @property-read string            $wrapped_message
+ * @property-read PHPMailer         $mail
+ * @property-read string[]          $errors
+ * @property-read Adherent[]        $recipients
+ * @property-read Adherent[]        $unreachables
  * @property-read string|false|null $tmp_path
- * @property File[] $attachments
- * @property-read string $sender_name
- * @property-read string $sender_address
- * @property int $history_id
+ * @property      File[]            $attachments
+ * @property-read string            $sender_name
+ * @property-read string            $sender_address
+ * @property      int               $history_id
  */
 class Mailing extends GaletteMail
 {
     use FileTrait;
 
-    public const STEP_START = 0;
-    public const STEP_PREVIEW = 1;
-    public const STEP_SEND = 2;
-    public const STEP_SENT = 3;
+    public const int STEP_START = 0;
+    public const int STEP_PREVIEW = 1;
+    public const int STEP_SEND = 2;
+    public const int STEP_SENT = 3;
 
-    public const MIME_HTML = 'text/html';
-    public const MIME_TEXT = 'text/plain';
-    public const MIME_DEFAULT = self::MIME_TEXT;
+    public const string MIME_HTML = 'text/html';
+    public const string MIME_TEXT = 'text/plain';
+    public const string MIME_DEFAULT = self::MIME_TEXT;
 
     private string|int $id;
 
@@ -96,6 +85,9 @@ class Mailing extends GaletteMail
     public function __construct(Preferences $preferences, array $members = [], ?int $id = null)
     {
         parent::__construct($preferences);
+        //attachments are stored by File instances, but the errors they return
+        //are worded here: both need to know the limit
+        $this->init(maxlength: UploadSize::Attachments->get($preferences));
         $this->id = $id ?? $this->generateNewId();
 
         $this->current_step = self::STEP_START;
@@ -111,8 +103,6 @@ class Mailing extends GaletteMail
 
     /**
      * Generate new mailing id and temporary path
-     *
-     * @return string
      */
     private function generateNewId(): string
     {
@@ -135,21 +125,15 @@ class Mailing extends GaletteMail
      * Generate temporary path
      *
      * @param ?string $id Random id, defaults to null
-     *
-     * @return void
      */
     private function generateTmpPath(?string $id = null): void
     {
-        if ($id === null) {
-            $id = $this->generateNewId();
-        }
+        $id ??= $this->generateNewId();
         $this->tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
     }
 
     /**
      * Load mailing attachments
-     *
-     * @return void
      */
     private function loadAttachments(): void
     {
@@ -177,8 +161,6 @@ class Mailing extends GaletteMail
      * @param bool                       $new True if we create a 'new' mailing,
      *                                        false otherwise (from preview for
      *                                        example)
-     *
-     * @return bool
      */
     public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
@@ -233,8 +215,6 @@ class Mailing extends GaletteMail
      * Copy attachments from another mailing
      *
      * @param int $id Original mailing id
-     *
-     * @return void
      */
     private function copyAttachments(int $id): void
     {
@@ -273,8 +253,6 @@ class Mailing extends GaletteMail
 
     /**
      * Apply final header to email and send it :-)
-     *
-     * @return int
      */
     public function send(): int
     {
@@ -341,7 +319,7 @@ class Mailing extends GaletteMail
         }
 
         //store files
-        $attachment = new File($this->tmp_path);
+        $attachment = new File($this->tmp_path, maxlength: $this->maxlength);
         $res = $attachment->storeFile($file);
         if ($res < 0) {
             return $res;
@@ -356,8 +334,6 @@ class Mailing extends GaletteMail
      * Move attachments with final id once mailing has been stored
      *
      * @param int $id Mailing history id
-     *
-     * @return void
      */
     public function moveAttachments(int $id): void
     {
@@ -385,8 +361,6 @@ class Mailing extends GaletteMail
      * Remove specified attachment
      *
      * @param string $name Filename
-     *
-     * @return void
      */
     public function removeAttachment(string $name): void
     {
@@ -439,8 +413,6 @@ class Mailing extends GaletteMail
      *
      * @param bool $temp Remove only temporary attachments,
      *                   to avoid history breaking
-     *
-     * @return bool
      */
     public function removeAttachments(bool $temp = false): bool
     {
@@ -494,8 +466,6 @@ class Mailing extends GaletteMail
 
     /**
      * Does mailing already exists in history?
-     *
-     * @return bool
      */
     public function existsInHistory(): bool
     {
@@ -569,8 +539,6 @@ class Mailing extends GaletteMail
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -590,8 +558,6 @@ class Mailing extends GaletteMail
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -600,7 +566,9 @@ class Mailing extends GaletteMail
                 $this->setSubject($value);
                 break;
             case 'message':
-                $this->setMessage($value);
+                //an HTML mailing is previewed with |raw: what is kept has to
+                //be safe to render
+                $this->setMessage(Html::clean((string)$value));
                 break;
             case 'html':
                 if (is_bool($value)) {

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,12 +11,14 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use DI\Attribute\Inject;
+use Galette\Controllers\Attributes\Route;
 use Galette\Filters\ContributionsList;
 use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
 use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
 use Safe\Exceptions\FilesystemException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
@@ -56,6 +45,9 @@ use function Safe\rewind;
 
 class CsvController extends AbstractController
 {
+    /** Occurrences offered in the import model for a field with no repeat limit */
+    public const int UNLIMITED_IMPORT_OCCURRENCES = 10;
+
     #[Inject]
     protected CsvIn $csvin;
     #[Inject]
@@ -66,22 +58,20 @@ class CsvController extends AbstractController
     /**
      * Send response
      *
-     * @param Response $response PSR Response
-     * @param string   $filepath File path on disk
-     * @param string   $filename File name for output
+     * @param string $filepath File path on disk
+     * @param string $filename File name for output
      *
-     * @return Response
+     * @throws HttpNotFoundException
      */
-    protected function sendResponse(Response $response, string $filepath, string $filename): Response
+    protected function sendResponse(Request $request, Response $response, string $filepath, string $filename): Response
     {
-        if (!file_exists($filepath)) {
+        if (!is_file($filepath)) {
             Analog::log(
                 'A request has been made to get a CSV file named `'
                 . $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
-            //FIXME: use a proper error page
-            return $response->withStatus(404);
+            throw new HttpNotFoundException($request);
         }
 
         $response = $response->withHeader('Content-Description', 'File Transfer')
@@ -102,16 +92,14 @@ class CsvController extends AbstractController
 
     /**
      * Exports page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function export(Request $request, Response $response): Response
+    #[Route(
+        name: 'export',
+        pattern: '/export',
+        methods: ['GET']
+    )]
+    public function export(Response $response, CsvOut $csv): Response
     {
-        $csv = new CsvOut();
-
         $tables_list = $this->zdb->getTables();
         $parameted = $csv->getParametedExports();
         $existing = $csv->getExisting();
@@ -134,16 +122,15 @@ class CsvController extends AbstractController
 
     /**
      * Proceed exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function doExport(Request $request, Response $response): Response
+    #[Route(
+        name: 'doExport',
+        pattern: '/export',
+        methods: ['POST']
+    )]
+    public function doExport(Request $request, Response $response, CsvOut $csv): Response
     {
         $post = $request->getParsedBody();
-        $csv = new CsvOut();
         $written = [];
 
         if (isset($post['export_tables']) && $post['export_tables'] != '') {
@@ -157,11 +144,11 @@ class CsvController extends AbstractController
                     try {
                         $fp = fopen($filepath, 'w');
                         $csv->export(
-                            $results,
-                            Csv::DEFAULT_SEPARATOR,
-                            Csv::DEFAULT_QUOTE,
-                            true,
-                            $fp
+                            rs: $results,
+                            separator: Csv::DEFAULT_SEPARATOR,
+                            quote: Csv::DEFAULT_QUOTE,
+                            titles: true,
+                            file: $fp
                         );
                         fclose($fp);
                         $written[] = [
@@ -174,10 +161,10 @@ class CsvController extends AbstractController
                 } else {
                     $this->flash->addMessage(
                         'warning_detected',
-                        str_replace(
-                            '%table',
-                            $table,
-                            _T("Table %table is empty, and has not been exported.")
+                        sprintf(
+                            //TRANS: parameter is the table name
+                            _T('Table %1$s is empty, and has not been exported.'),
+                            $table
                         )
                     );
                 }
@@ -192,20 +179,20 @@ class CsvController extends AbstractController
                     case Csv::FILE_NOT_WRITABLE:
                         $this->flash->addMessage(
                             'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory.")
+                            sprintf(
+                                //TRANS: parameter is the export name
+                                _T('Export file could not be write on disk for \'%1$s\'. Make sure web server can write in the exports directory.'),
+                                $pn
                             )
                         );
                         break;
                     case Csv::DB_ERROR:
                         $this->flash->addMessage(
                             'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'.")
+                            sprintf(
+                                //TRANS: parameter is the export name
+                                _T('An error occurred running parameted export \'%1$s\'.'),
+                                $pn
                             )
                         );
                         break;
@@ -237,13 +224,13 @@ class CsvController extends AbstractController
 
     /**
      * Imports page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function import(Request $request, Response $response): Response
+    #[Route(
+        name: 'import',
+        pattern: '/import',
+        methods: ['GET']
+    )]
+    public function import(Response $response): Response
     {
         $existing = $this->csvin->getExisting();
 
@@ -264,12 +251,12 @@ class CsvController extends AbstractController
 
     /**
      * Proceed imports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doImport',
+        pattern: '/import',
+        methods: ['POST']
+    )]
     public function doImports(Request $request, Response $response): Response
     {
         $csv = $this->csvin;
@@ -280,13 +267,13 @@ class CsvController extends AbstractController
         $this->session->import_file = $post['import_file'];
 
         $res = $csv->import(
-            $this->zdb,
-            $this->preferences,
-            $this->history,
-            $post['import_file'],
-            $this->members_fields,
-            $this->members_fields_cats,
-            $dryrun
+            zdb: $this->zdb,
+            preferences: $this->preferences,
+            history: $this->history,
+            filename: $post['import_file'],
+            members_fields: $this->members_fields,
+            members_fields_cats: $this->members_fields_cats,
+            dryrun: $dryrun
         );
         if ($res !== true) {
             if ($res < 0) {
@@ -327,15 +314,15 @@ class CsvController extends AbstractController
 
     /**
      * Get CSV file (imports or exports)
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'uploadImportFile',
+        pattern: '/import/upload',
+        methods: ['POST']
+    )]
     public function uploadImportFile(Request $request, Response $response): Response
     {
-        $request_files =  $request->getUploadedFiles();
+        $request_files = $request->getUploadedFiles();
         $key = 'new_file';
         if (!$this->csvin->upload(request_files: $request_files, key: $key)) {
             foreach ($this->csvin->uploadErrors() as $error) {
@@ -364,32 +351,39 @@ class CsvController extends AbstractController
     /**
      * Get CSV file (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
-     *
-     * @return Response
+     * @param string $file File name
+     * @param string $type File type
      */
+    #[Route(
+        name: 'getCsv',
+        pattern: '/{type:export|import}/get/{file}',
+        methods: ['GET']
+    )]
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
-        $filename = $file;
-        $filepath = $type === 'export'
-            ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+        //let's ensure we do not have a path here
+        $filename = basename($file);
+        $filepath = $type === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
      * Remove CSV file confirmation (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
-     *
-     * @return Response
+     * @param string $file File name
+     * @param string $type File type
      */
+    #[Route(
+        name: 'removeCsv',
+        pattern: '/{type:export|import}/remove/{file}',
+        methods: ['GET']
+    )]
     public function confirmRemoveFile(
         Request $request,
         Response $response,
@@ -407,7 +401,7 @@ class CsvController extends AbstractController
             $response,
             'modals/confirm_removal.html.twig',
             [
-                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
                     $type,
@@ -430,13 +424,14 @@ class CsvController extends AbstractController
     /**
      * Remove CSV file (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
-     *
-     * @return Response
+     * @param string $file File name
+     * @param string $type File type
      */
+    #[Route(
+        name: 'doRemoveCsv',
+        pattern: '/{type:export|import}/remove/{file}',
+        methods: ['POST']
+    )]
     public function removeFile(Request $request, Response $response, string $file, string $type): Response
     {
         $post = $request->getParsedBody();
@@ -458,19 +453,19 @@ class CsvController extends AbstractController
                 $success = true;
                 $this->flash->addMessage(
                     'success_detected',
-                    str_replace(
-                        '%export',
-                        $file,
-                        _T("'%export' file has been removed from disk.")
+                    sprintf(
+                        //TRANS: parameter is the export name
+                        _T('\'%1$s\' file has been removed from disk.'),
+                        $file
                     )
                 );
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    str_replace(
-                        '%export',
-                        $file,
-                        _T("Cannot remove '%export' from disk :/")
+                    sprintf(
+                        //TRANS: parameter is the export name
+                        _T('Cannot remove \'%1$s\' from disk :/'),
+                        $file
                     )
                 );
             }
@@ -492,15 +487,14 @@ class CsvController extends AbstractController
 
     /**
      * Import model page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function importModel(Request $request, Response $response): Response
+    #[Route(
+        name: 'importModel',
+        pattern: '/import/model',
+        methods: ['GET']
+    )]
+    public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         if (isset($request->getQueryParams()['remove'])) {
@@ -523,12 +517,26 @@ class CsvController extends AbstractController
         $import_fields = $this->members_form_fields;
         //get dynamic fields
         $dynamic_import_fields = [];
-        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
         $dfields = $fieldset->getList('adh');
         foreach ($dfields as $field) {
-            if ($field->hasData() && !$field instanceof \Galette\DynamicFields\File) {
+            if (!$field->hasData() || $field instanceof \Galette\DynamicFields\File) {
+                continue;
+            }
+
+            $label = __($field->getName());
+            if (!$field->isRepeatable()) {
                 $dynamic_import_fields['dynfield_' . $field->getId()] = [
-                    'label'     => __($field->getname())
+                    'label'     => $label
+                ];
+                continue;
+            }
+
+            //one column per occurrence; a field with no limit gets a workable default
+            $occurrences = $field->getRepeat() > 0 ? $field->getRepeat() : self::UNLIMITED_IMPORT_OCCURRENCES;
+            for ($i = 1; $i <= $occurrences; $i++) {
+                $dynamic_import_fields['dynfield_' . $field->getId() . '_' . $i] = [
+                    //TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+                    'label'     => sprintf(_T('%1$s (occurrence %2$s)'), $label, (string)$i)
                 ];
             }
         }
@@ -559,30 +567,27 @@ class CsvController extends AbstractController
 
     /**
      * Get CSV import model file
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function getImportModel(Request $request, Response $response): Response
+    #[Route(
+        name: 'getImportModel',
+        pattern: '/import/model/get',
+        methods: ['GET']
+    )]
+    public function getImportModel(Response $response, ImportModel $model): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         $fields = $model->getFields();
         $defaults = $this->csvin->getDefaultFields();
 
-        if ($fields === null) {
-            $fields = $defaults;
-        }
+        $fields ??= $defaults;
 
         $ocsv = new CsvOut();
         $res = $ocsv->export(
-            new ResultSet(),
-            Csv::DEFAULT_SEPARATOR,
-            Csv::DEFAULT_QUOTE,
-            $fields
+            rs: new ResultSet(),
+            separator: Csv::DEFAULT_SEPARATOR,
+            quote: Csv::DEFAULT_QUOTE,
+            titles: $fields
         );
         $filename = _T("galette_import_model.csv");
 
@@ -604,15 +609,14 @@ class CsvController extends AbstractController
 
     /**
      * Store CSV model
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function storeModel(Request $request, Response $response): Response
+    #[Route(
+        name: 'storeImportModel',
+        pattern: '/import/model/store',
+        methods: ['POST']
+    )]
+    public function storeModel(Request $request, Response $response, ImportModel $model): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         $model->setFields($request->getParsedBody()['fields']);
@@ -636,12 +640,12 @@ class CsvController extends AbstractController
 
     /**
      * Members CSV exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'csv-memberslist',
+        pattern: '/members/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function membersExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -654,18 +658,24 @@ class CsvController extends AbstractController
         $filepath = $this->members_csv->getPath();
         $filename = $this->members_csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
      * Contributions CSV exports
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'contributions' or 'transactions'
-     *
-     * @return Response
+     * @param string $type One of 'contributions' or 'transactions'
      */
+    #[Route(
+        name: 'csv-contributionslist',
+        pattern: '/{type:contributions|transactions}/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
         $post = $request->getParsedBody();
@@ -685,17 +695,22 @@ class CsvController extends AbstractController
         $filepath = $csv->getPath();
         $filename = $csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 
     /**
      * Scheduled payments CSV exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'csv-scheduledPaymentslist',
+        pattern: '/scheduled-payments/export/csv',
+        methods: ['GET', 'POST']
+    )]
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -709,6 +724,11 @@ class CsvController extends AbstractController
         $filepath = $this->scheduled_payments_csv->getPath();
         $filename = $this->scheduled_payments_csv->getFileName();
 
-        return $this->sendResponse($response, $filepath, $filename);
+        return $this->sendResponse(
+            request: $request,
+            response: $response,
+            filepath: $filepath,
+            filename: $filename
+        );
     }
 }

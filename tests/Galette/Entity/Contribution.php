@@ -1,29 +1,19 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use Galette\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
+use Galette\Tests\FakeTime;
+use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -33,32 +23,21 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class Contribution extends GaletteTestCase
 {
+    use FakeTime;
+
     protected int $seed = 95842354;
 
     /**
-     * Cleanup after each test method
-     *
-     * @return void
+     * Tear down tests
      */
     public function tearDown(): void
     {
+        $this->restoreRealTime();
         parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
-        $delete->where(['libelle_type_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $this->cleanMembers();
     }
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -77,7 +56,7 @@ class Contribution extends GaletteTestCase
     /**
      * pref_beg_membership provider
      *
-     * @return array
+     * @return array<array{interval: string}>
      */
     public static function begProvider(): array
     {
@@ -89,13 +68,11 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test empty contribution
-     *
-     * @return void
      */
     public function testMembershipExtensionJustEmpty(): void
     {
         $contrib = $this->contrib;
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -126,9 +103,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -137,14 +114,12 @@ class Contribution extends GaletteTestCase
      * Test empty contribution with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipJustEmpty(string $interval): void
     {
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         global $preferences;
@@ -163,7 +138,7 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -194,17 +169,15 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
 
     /**
      * Test empty donation
-     *
-     * @return void
      */
     public function testEmptyDonation(): void
     {
@@ -213,13 +186,13 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 4] //donation in kind
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals(date('Y-m-d'), $contrib->date);
         $this->assertEquals(date('Y-m-d'), $contrib->begin_date);
         $this->assertNull($contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals(date('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
@@ -247,9 +220,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -258,16 +231,14 @@ class Contribution extends GaletteTestCase
      * Test empty donation with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyDonation(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         global $preferences;
@@ -287,13 +258,13 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->begin_date);
         $this->assertNull($contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
@@ -321,24 +292,22 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
 
     /**
      * Test empty fee
-     *
-     * @return void
      */
     public function testEmptyFee(): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //expected begin date
-        $expected_begin = new \DateTime($now->format('Y-m-d'));
+        $expected_begin = new DateTime($now->format('Y-m-d'));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -349,15 +318,15 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 1] //annual fee
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(12, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
@@ -384,28 +353,31 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
 
     /**
      * Test empty fee with a "monthly" contribution type
-     *
-     * @return void
      */
     public function testEmptyMonthlyFee(): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //expected begin date
-        $expected_begin = new \DateTime($now->format('Y-m-d'));
+        $expected_begin = new DateTime($now->format('Y-m-d'));
 
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P2M'));
@@ -416,15 +388,15 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => $contribtype->id] //annual fee
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(2, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
@@ -451,9 +423,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -462,20 +434,18 @@ class Contribution extends GaletteTestCase
      * Test empty fee with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyFee(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         //expected begin date
-        $expected_begin = new \DateTime($beg_membership->format('Y-m-01'));
+        $expected_begin = new DateTime($beg_membership->format('Y-m-01'));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -498,18 +468,18 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
 
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
 
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
 
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
 
         $this->assertSame(12, $contrib->duration);
@@ -537,9 +507,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -548,25 +518,28 @@ class Contribution extends GaletteTestCase
      * Test empty fee with begin of membership set in preferences and a "monthly" contribution type
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyMonthlyFee(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         //expected begin date
-        $expected_begin = new \DateTime($beg_membership->format('Y-m-01'));
+        $expected_begin = new DateTime($beg_membership->format('Y-m-01'));
 
         //create monthly fee type - 2 months extension
         //extension should be ignored since we use a beg membership date in settings
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -589,18 +562,18 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
 
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
 
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
 
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
 
         $this->assertSame(12, $contrib->duration);
@@ -628,17 +601,15 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
 
     /**
      * Test getter and setter special cases
-     *
-     * @return void
      */
     public function testGetterSetter(): void
     {
@@ -653,9 +624,9 @@ class Contribution extends GaletteTestCase
         $this->assertInstanceOf('DateTime', $contrib->raw_begin_date);
         $this->assertSame('2017-06-17', $contrib->begin_date);
 
-        $contrib->amount = 'not an amount';
+        $contrib->amount = 'not an amount'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set an amount with a non numeric value, or with a zero value'
         );
         $this->assertNull($contrib->amount);
@@ -663,46 +634,46 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->amount);
         $contrib->amount = 42;
         $this->assertSame(42.0, $contrib->amount);
-        $contrib->amount = '42';
+        $contrib->amount = '42'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set an amount with a non numeric value, or with a zero value'
         );
         $this->assertSame(42.0, $contrib->amount);
 
-        $contrib->type = 156;
+        $contrib->type = 156; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Unknown ID 156'
         );
         $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertFalse($contrib->type->id);
-        $contrib->type = 1;
+        $contrib->type = 1; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertEquals(1, $contrib->type->id);
 
-        $contrib->transaction = 'not a transaction id';
+        $contrib->transaction = 'not a transaction id'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set a transaction from an id that is not an integer.'
         );
         $this->assertNull($contrib->transaction);
-        $contrib->transaction = 46;
+        $contrib->transaction = 46; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Non-logged-in users cannot load transaction id `46`'
         );
         $this->assertInstanceOf(\Galette\Entity\Transaction::class, $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
-        $contrib->member = 'not a member';
+        $contrib->member = 'not a member'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertNull($contrib->member);
         $contrib->member = 118218;
         $this->assertSame(118218, $contrib->member);
 
-        $contrib->not_a_property = 'abcde';
+        $contrib->not_a_property = 'abcde'; //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Entity\Contribution]: Trying to set an unknown property (not_a_property)'
         );
         $this->assertFalse(property_exists($contrib, 'not_a_property'));
@@ -752,8 +723,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution creation
-     *
-     * @return void
      */
     public function testCreation(): void
     {
@@ -766,8 +735,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contributions can have an amount equals to zero
-     *
-     * @return void
      */
     public function testZeroAmountContribution(): void
     {
@@ -814,18 +781,16 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test donation update
-     *
-     * @return void
      */
     public function testDonationUpdate(): void
     {
         $this->getMemberOne();
         //create contribution for member
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $due_date = new \DateTime(); //fake due date; not kept for donations.
+        $due_date = new DateTime(); //fake due date; not kept for donations.
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -892,8 +857,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution update
-     *
-     * @return void
      */
     public function testContributionUpdate(): void
     {
@@ -901,7 +864,7 @@ class Contribution extends GaletteTestCase
 
         $this->getMemberOne();
         //create contribution for member
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
@@ -978,8 +941,6 @@ class Contribution extends GaletteTestCase
     /**
      * Test end date retrieving
      * This is based on some Preferences parameters
-     *
-     * @return void
      */
     public function testRetrieveEndDate(): void
     {
@@ -992,16 +953,16 @@ class Contribution extends GaletteTestCase
         );
 
         // First, check for 12 months renewal
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->setDate((int)date('Y'), 5, 28);
-        if ($due_date <= new \DateTime()) {
+        if ($due_date <= new DateTime()) {
             $due_date->add(new \DateInterval('P1Y'));
         }
 
@@ -1013,11 +974,11 @@ class Contribution extends GaletteTestCase
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
         // Third, test with beginning of membership date and 2 last months offered
-        $begin_date = new \DateTime();
+        $begin_date = new DateTime();
         $begin_date->add(new \DateInterval('P1M'));
         $preferences->pref_beg_membership = $begin_date->format('01/m');
         $preferences->pref_membership_offermonths = 2;
-        $due_date = new \DateTime($begin_date->format('Y-m-01'));
+        $due_date = new DateTime($begin_date->format('Y-m-01'));
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
 
@@ -1031,7 +992,12 @@ class Contribution extends GaletteTestCase
         //then, test with a contribution type with a 2 months extension (will be ignored since we setup beg membershipe date)
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
@@ -1047,7 +1013,8 @@ class Contribution extends GaletteTestCase
 
         //unset pref_beg_membership and pref_membership_ext
         $preferences->pref_beg_membership = '';
-        $preferences->pref_membership_ext = 0;
+        //refused by the schema, which requires at least one month
+        $this->setRawPreference('pref_membership_ext', 0);
 
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
@@ -1060,14 +1027,17 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test monthly contribution
-     *
-     * @return void
      */
     public function testMonthlyContribution(): void
     {
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+        $this->assertTrue($contribtype->add(
+            label: 'FAKER' . $this->seed,
+            description: 'Fake description',
+            amount: 10.00,
+            extension: 2
+        ));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
@@ -1075,7 +1045,7 @@ class Contribution extends GaletteTestCase
             ['type' => $contribtype->id] //monthly fee
         );
 
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->add(new \DateInterval('P2M'));
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
@@ -1083,8 +1053,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test checkOverlap method
-     *
-     * @return void
      */
     public function testCheckOverlap(): void
     {
@@ -1117,7 +1085,7 @@ class Contribution extends GaletteTestCase
         //create first contribution for member
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
@@ -1171,7 +1139,7 @@ class Contribution extends GaletteTestCase
             $check
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '- Membership period overlaps period starting at ' . $now->format('Y-m-d')
         );
 
@@ -1182,8 +1150,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test fields labels
-     *
-     * @return void
      */
     public function testGetFieldLabel(): void
     {
@@ -1197,7 +1163,7 @@ class Contribution extends GaletteTestCase
             $this->contrib->getFieldLabel('date_debut_cotis')
         );
 
-        $this->contrib->type = 1;
+        $this->contrib->type = 1; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertSame(
             'Start date of membership',
             $this->contrib->getFieldLabel('date_debut_cotis')
@@ -1211,9 +1177,8 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution loading
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testLoad(): void
     {
         global $login;
@@ -1239,15 +1204,13 @@ class Contribution extends GaletteTestCase
 
         $this->assertFalse($contrib->load(1355522012));
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'No contribution #1355522012 (user )'
         );
     }
 
     /**
      * Test contribution removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -1259,15 +1222,13 @@ class Contribution extends GaletteTestCase
         $this->expectNoLogEntry();
         $this->assertFalse($this->contrib->remove());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Contribution has not been removed!'
         );
     }
 
     /**
      * Test can* methods
-     *
-     * @return void
      */
     public function testCan(): void
     {
@@ -1335,7 +1296,7 @@ class Contribution extends GaletteTestCase
         $cid = $child->id;
 
         //contribution for child
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
@@ -1393,13 +1354,11 @@ class Contribution extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = true;
         $can_show = $contrib->canShow($this->login);
         $preferences->pref_bool_groupsmanagers_see_contributions = $this->preferences->getDefaults()['pref_bool_groupsmanagers_see_contributions'];
-        $this->assertTrue($can_show);
+        $this->assertTrue($can_show); //@phpstan-ignore method.impossibleType (class handle that)
     }
 
     /**
      * Test next year contribution
-     *
-     * @return void
      */
     public function testNextYear(): void
     {
@@ -1407,7 +1366,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new \DateTime(); // 2023-12-30
+        $begin_date = new DateTime(); // 2023-12-30
         $ny_begin_date = clone $begin_date; // 2023-12-30
         $end_date = clone $begin_date;
         $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
@@ -1435,8 +1394,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test next year contribution from a 0.9.x
-     *
-     * @return void
      */
     public function testNextYearFrom096(): void
     {
@@ -1444,7 +1401,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new \DateTime(); // 2023-12-30
+        $begin_date = new DateTime(); // 2023-12-30
         $ny_begin_date = clone $begin_date; // 2023-12-30
         $end_date = clone $begin_date;
         $due_date = clone $begin_date;
@@ -1495,16 +1452,276 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Test contribution end date is set after start date - when relevant
+     * Test next year contribution with a beginning of membership date set.
+     * When the member is already up to date for the current period, a new
+     * contribution must start on the next membership begin date - not overlap
+     * the existing one.
+     */
+    public function testNextYearWithBeginMembership(): void
+    {
+        global $preferences;
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //membership begins the first day of next month
+        $beg_membership = new DateTime();
+        $beg_membership->add(new \DateInterval('P1M'));
+        $beg_membership = new DateTime($beg_membership->format('Y-m-01'));
+
+        //current period ends the day before the membership begin date (in the future)
+        $due_date = clone $beg_membership;
+        $due_date->sub(new \DateInterval('P1D'));
+
+        //current period begin date
+        $begin_date = clone $beg_membership;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+
+        //existing contribution covering the current period
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $due_date->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        //next contribution must start on the next membership begin date and
+        //cover the whole next period
+        $ny_end_date = clone $beg_membership;
+        $ny_end_date->add(new \DateInterval('P1Y'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+
+        $this->assertSame($beg_membership->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
+     * Test offered months with a beginning of membership date set.
      *
-     * @return void
+     * Offering months is only compatible with beginning of membership
+     * (pref_membership_ext must be empty). Two situations are checked:
+     * - a brand new member subscribing within the offered months window gets
+     *   the remaining months for free and the next full period;
+     * - a member already up to date must NOT get the offer applied a second
+     *   time: the continuous renewal already covers the next full period.
+     */
+    public function testNextYearWithBeginMembershipAndOfferedMonths(): void
+    {
+        global $preferences;
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //membership begins the first day of next month, so "now" always falls
+        //within the offered months window below.
+        $beg_membership = new DateTime();
+        $beg_membership->add(new \DateInterval('P1M'));
+        $beg_membership = new DateTime($beg_membership->format('Y-m-01'));
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+        $preferences->pref_membership_offermonths = 2;
+
+        //the contribution always ends the day before the next membership begin
+        //date, one year later - the offer must not add an extra year on top.
+        $end_date = clone $beg_membership;
+        $end_date->add(new \DateInterval('P1Y'));
+        $end_date->sub(new \DateInterval('P1D'));
+
+        //case 1: brand new member (no contribution yet). The current period
+        //started one year before the next begin date and is offered for free.
+        $new_begin_date = clone $beg_membership;
+        $new_begin_date->sub(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+        $this->assertSame($new_begin_date->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+
+        //case 2: member already up to date for the current period.
+        $due_date = clone $beg_membership;
+        $due_date->sub(new \DateInterval('P1D'));
+        $begin_date = clone $beg_membership;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $due_date->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+        $preferences->pref_membership_offermonths = $this->preferences->getDefaults()['pref_membership_offermonths'];
+
+        //the new contribution starts the day after the current end of membership
+        //and covers the next full period, without the offer being applied twice.
+        $this->assertSame($beg_membership->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
+     * Critical "now" dates for membership renewal.
+     *
+     * Each entry pins "now" to the very last valid day of a membership period
+     * (the day before the next membership begin date). These are the dates that
+     * used to break: for instance a member renewing on July 31st (period ending
+     * that day, next period starting on August 1st) got a contribution starting
+     * one year in the past, while the same scenario on August 1st worked fine.
+     *
+     * The list focuses on month/year boundaries and leap years, which is where
+     * date arithmetic (adding/subtracting months or years) overflows.
+     *
+     * @return array<string, array{now: string}>
+     */
+    public static function lastMembershipDayProvider(): array
+    {
+        return [
+            //the originally reported failing case (PR opened on July 31st)
+            'end of July (reported)'  => ['now' => '2026-07-31'],
+            //end of a 30-days month
+            'end of June'             => ['now' => '2026-06-30'],
+            //end of February, non leap year
+            'end of February'         => ['now' => '2026-02-28'],
+            //end of February, leap year (2024-02-29 minus one year is invalid)
+            'end of February (leap)'  => ['now' => '2024-02-29'],
+            //month before a short month (Jan 31st + 1 month overflows)
+            'end of January'          => ['now' => '2026-01-31'],
+            //year boundary
+            'end of December'         => ['now' => '2026-12-31'],
+            //plain mid-month control case, must keep working too
+            'mid-month control'       => ['now' => '2026-05-15'],
+        ];
+    }
+
+    /**
+     * A member renewing on the very last valid day of their membership must get
+     * a contribution continuing the current period (starting the day after the
+     * current end of membership), never one starting a year in the past.
+     *
+     * This is a regression test for the July 31st failure: the check comparing
+     * the stored due date (midnight) against "now" (with the current time)
+     * wrongly considered an up-to-date member as expired on their last valid day.
+     *
+     * @param string $now Date to freeze "now" to (last valid membership day)
+     */
+    #[DataProvider('lastMembershipDayProvider')]
+    public function testRenewalOnLastMembershipDay(string $now): void
+    {
+        global $preferences;
+
+        //freeze the clock at noon on the given day
+        $this->setFakeTime($now . ' 12:00:00');
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //today is the last valid day; the next period begins tomorrow
+        $today = new DateTime((new DateTime())->format('Y-m-d'));
+        $next_begin_date = clone $today;
+        $next_begin_date->add(new \DateInterval('P1D'));
+
+        //current period begins one year before the next begin date
+        $begin_date = clone $next_begin_date;
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $preferences->pref_beg_membership = $next_begin_date->format('d/m');
+        $preferences->pref_membership_ext = '';
+
+        //existing contribution covering the current period, ending today
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $today->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        //the renewal must cover the next full period
+        $ny_end_date = clone $next_begin_date;
+        $ny_end_date->add(new \DateInterval('P1Y'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id]
+        );
+
+        //reset preferences before asserting, so a failure does not leak
+        $preferences->pref_beg_membership = $this->preferences->getDefaults()['pref_beg_membership'];
+        $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
+
+        $this->assertSame(
+            $next_begin_date->format('Y-m-d'),
+            $contrib->begin_date,
+            'Renewal on the last valid day must start on the next membership begin date'
+        );
+        $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
+     * Test contribution end date is set after start date - when relevant
      */
     public function testEndDateBeforeStartDate(): void
     {
         $this->logSuperAdmin();
         $this->getMemberOne();
 
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
 
         $due_date = clone $now; //due date is before begin date
@@ -1545,14 +1762,12 @@ class Contribution extends GaletteTestCase
 
         $this->assertEquals($contrib->begin_date, $contrib_data['date_debut_cotis']);
         $this->assertNotTrue($check);
-        $this->expectLogEntry(\Analog::ERROR, '- The end date must be after the start date!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- The end date must be after the start date!');
         $this->assertSame(['- The end date must be after the start date!'], $check);
     }
 
     /**
      * Test login checks
-     *
-     * @return void
      */
     public function testCheckLogin(): void
     {
@@ -1560,7 +1775,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
         $this->login->logout();
 
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
 
         $due_date = clone $now; //due date is before begin date
@@ -1581,7 +1796,7 @@ class Contribution extends GaletteTestCase
         $check = $contrib->check($contrib_data, [], []);
         $this->assertNotTrue($check);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Please select a member from a group you manage.'
         );
         $this->assertSame(

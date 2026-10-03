@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -26,6 +13,8 @@ namespace Galette\Core;
 use Analog\Analog;
 
 use function Safe\bindtextdomain;
+use function Safe\filemtime;
+use function Safe\preg_match;
 use function Safe\realpath;
 
 /**
@@ -41,7 +30,7 @@ class I18n
     private string $name;
     private string $abbrev;
 
-    public const DEFAULT_LANG = 'en_US';
+    public const string DEFAULT_LANG = 'en_US';
 
     private string $dir = 'lang/';
     private readonly string $path;
@@ -75,7 +64,7 @@ class I18n
             $dlang = self::DEFAULT_LANG;
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $preferred_locales = array_reduce(
-                    explode(',', (string) $_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                    explode(',', (string)$_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;
@@ -86,7 +75,7 @@ class I18n
                 arsort($preferred_locales);
 
                 foreach (array_keys($preferred_locales) as $preferred_locale) {
-                    $short_locale = explode('_', (string) $preferred_locale)[0];
+                    $short_locale = explode('_', (string)$preferred_locale)[0];
                     foreach (array_keys($this->langs) as $lang) {
                         $short_key = explode('_', $lang)[0];
                         if ($short_key == $short_locale) {
@@ -106,8 +95,6 @@ class I18n
      * Load language parameters
      *
      * @param string $id Identifier for requested language
-     *
-     * @return void
      */
     public function changeLanguage(string $id): void
     {
@@ -119,8 +106,6 @@ class I18n
     /**
      * Update environment according to locale.
      * Mainly used at app initialization or at login
-     *
-     * @return void
      */
     public function updateEnv(): void
     {
@@ -139,14 +124,83 @@ class I18n
         if ($translator) {
             $translator->setLocale($this->getLongID());
         }
+
+        self::checkCompiledTranslations(GALETTE_ROOT . $this->dir, $domain, $this->getLongID());
+    }
+
+    /**
+     * Warn, in debug mode, when a MO file is missing or older than its PO source.
+     * MO files are not versioned, they are built with galette:compile-locales.
+     *
+     * @param string $lang_dir Lang directory
+     * @param string $domain   Translation domain
+     * @param string $locale   Locale (long ID)
+     */
+    public static function checkCompiledTranslations(string $lang_dir, string $domain, string $locale): void
+    {
+        $mo = self::findUncompiledTranslations($lang_dir, $domain, $locale);
+        if ($mo !== null) {
+            Analog::log(
+                sprintf(
+                    '%s is missing or outdated; run bin/console galette:compile-locales',
+                    $mo
+                ),
+                Analog::WARNING
+            );
+        }
+    }
+
+    /**
+     * Find, in debug mode, a MO file that is missing or older than its PO source
+     *
+     * @param string $lang_dir Lang directory
+     * @param string $domain   Translation domain
+     * @param string $locale   Locale (long ID)
+     *
+     * @return ?string Path to the MO file, null if it is up to date, or outside debug mode
+     */
+    public static function findUncompiledTranslations(string $lang_dir, string $domain, string $locale): ?string
+    {
+        if (!Galette::isDebugEnabled()) {
+            return null;
+        }
+
+        $po = sprintf('%s/%s_%s.po', rtrim($lang_dir, '/'), $domain, $locale);
+        $mo = sprintf('%s/%s/LC_MESSAGES/%s.mo', rtrim($lang_dir, '/'), $locale, $domain);
+        if (!file_exists($po)) {
+            return null;
+        }
+        if (!file_exists($mo) || filemtime($mo) < filemtime($po)) {
+            return $mo;
+        }
+        return null;
+    }
+
+    /**
+     * Warnings to display, in debug mode, when core translations of current language are not compiled
+     *
+     * @return array<int,string>
+     */
+    public function getCompiledTranslationsWarnings(): array
+    {
+        $mo = self::findUncompiledTranslations(GALETTE_ROOT . $this->dir, 'galette', $this->getLongID());
+        if ($mo === null) {
+            return [];
+        }
+
+        return [
+            sprintf(
+                //TRANS: %1$s is the path to a translation file
+                _T('Translation file %1$s is missing or outdated; run bin/console galette:compile-locales.'),
+                htmlspecialchars(str_replace(GALETTE_ROOT, '', $mo))
+            )
+        ];
     }
 
     /**
      * Load a language
      *
      * @param string $id identifier for the language to load
-     *
-     * @return void
      */
     private function load(string $id): void
     {
@@ -204,10 +258,9 @@ class I18n
         if (isset($this->langs[$id])) {
             return $this->langs[$id]['longname'];
         } else {
-            return str_replace(
-                '%lang',
-                $id,
-                _T('Unknown lang (%lang)')
+            return sprintf(
+                _T('Unknown lang (%1$s)'),
+                $id
             );
         }
     }
@@ -223,13 +276,25 @@ class I18n
     }
 
     /**
+     * Get current id in web format (with - instead of _)
+     *
+     * @return string current language identifier in web format
+     */
+    public function getWebID(): string
+    {
+        return str_replace('_', '-', $this->id);
+    }
+
+    /**
      * Get long identifier
+     *
+     * @param bool $noutf if true, remove utf part
      *
      * @return string current language long identifier
      */
-    public function getLongID(): string
+    public function getLongID(bool $noutf = false): string
     {
-        return $this->longid;
+        return $noutf ? str_replace('.utf8', '', $this->longid) : $this->longid;
     }
 
     /**
@@ -256,8 +321,6 @@ class I18n
      * Does string seem to be encoded as UTF-8?
      *
      * @param string $str string to analyze
-     *
-     * @return  bool
      */
     public static function seemUtf8(string $str): bool
     {
@@ -265,8 +328,11 @@ class I18n
     }
 
     /**
-     * Guess available languages from directories
-     * that are present in the lang directory.
+     * Guess available languages from translation sources
+     * (galette_<locale>.po) that are present in the lang directory.
+     *
+     * Compiled MO files are not versioned, a language is listed
+     * even if its MO file has not been built yet.
      *
      * Will store found langs in class langs variable and return it.
      *
@@ -277,19 +343,49 @@ class I18n
         $dir = new \DirectoryIterator($this->path);
         $langs = [];
         foreach ($dir as $fileinfo) {
-            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                $lang = $fileinfo->getFilename();
+            if ($fileinfo->isFile() && preg_match('/^galette_(.+)\.po$/', $fileinfo->getFilename(), $matches)) {
+                $lang = $matches[1];
                 $real_lang = str_replace('.utf8', '', $lang);
                 $parsed_lang = \Locale::parseLocale($lang);
 
+                $shortname = $parsed_lang['language'] ?? '';
+                $region = '';
+                if (isset($parsed_lang['region'])) {
+                    $region = strtolower($parsed_lang['region']);
+                }
+
+                $longname = \Locale::getDisplayLanguage(
+                    $lang,
+                    $real_lang
+                );
+
+                $longname_region = \Locale::getDisplayRegion(
+                    $lang,
+                    $real_lang
+                );
+
+                $excluded_regions = [
+                    'us',
+                    $parsed_lang['language']
+                ];
+                if (in_array($parsed_lang['language'], ['nb', 'nn'])) {
+                    //norvégien nynorsk (Norvège) (nn-NO)
+                    //norvégien bokmål (Norvège) (nb-NO)
+                    //But not:
+                    //norvégien bokmål (Svalbard et Jan Mayen) (nb-SJ)
+                    //norvégien nynorsk (Norvège) (nn-NO)
+                    $excluded_regions[] = 'no';
+                }
+
+                if (!in_array($region, $excluded_regions) && !empty($longname_region)) {
+                    $longname .= ', ' . $longname_region;
+                }
+
                 $langs[$real_lang] = [
                     'long'      => $lang,
-                    'shortname' => $parsed_lang['language'] ?? '',
+                    'shortname' => $shortname,
                     'longname'  => mb_convert_case(
-                        \Locale::getDisplayLanguage(
-                            $lang,
-                            $real_lang
-                        ),
+                        $longname,
                         MB_CASE_TITLE,
                         'UTF-8'
                     )
@@ -303,8 +399,6 @@ class I18n
 
     /**
      * Is current language RTL?
-     *
-     * @return bool
      */
     public function isRTL(): bool
     {

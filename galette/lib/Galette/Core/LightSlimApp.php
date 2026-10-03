@@ -1,32 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DI\Bridge\Slim\Bridge;
-use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
-use Slim\App;
 
 /**
  * Light Slim application
@@ -34,48 +18,33 @@ use Slim\App;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @template TContainerInterface of (ContainerInterface|null)
+ * @extends SlimApp<TContainerInterface>
  */
-class LightSlimApp
+class LightSlimApp extends SlimApp
 {
-    /** @var App<TContainerInterface> */
-    private readonly App $app;
-
     /**
      * Create a new Slim application
-     *
-     * @param string $mode Galette mode
      */
-    public function __construct(private readonly string $mode = 'NEED_UPDATE')
-    {
-        $builder = new ContainerBuilder();
-        $builder->useAttributes(true);
-        $builder->addDefinitions([
-            'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
-            'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
-            'settings.addContentLengthHeader'   => false,
-            'galette'                           => [
-                'mode'      => $this->mode,
-                'logger'    => [
-                    'name'  => 'galette',
-                    'level' => \Monolog\Logger::DEBUG,
-                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-                ]
-            ],
-            'mode'          => $this->mode,
-            'galette.mode'  => $this->mode
-        ]);
-        $container = $builder->build();
-
-        $this->app = Bridge::create($container);
+    public function __construct(
+        Plugins $plugins,
+        string $mode = 'NEED_UPDATE'
+    ) {
+        parent::__construct($plugins, $mode);
     }
 
     /**
-     * Get Slim application
+     * Get container definitions
      *
-     * @return App<TContainerInterface>
+     * @return array{"galette": array{"mode": string}, "mode": string, "galette.mode": string, "templates.path": string, "settings.displayErrorDetails": bool, "settings.addContentLengthHeader": bool}
      */
-    public function getApp(): App
+    protected function getContainerDefinitions(): array
     {
-        return $this->app;
+        return
+            parent::getContainerDefinitions()
+            + [
+                'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
+                'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
+                'settings.addContentLengthHeader'   => false
+            ];
     }
 }

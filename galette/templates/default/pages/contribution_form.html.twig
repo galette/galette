@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
@@ -27,7 +13,7 @@
     {% endif %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                    <i class="icon dropdown" aria-hidden="true"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Select contributor and membership fee type") }}
     {% else %}
@@ -164,19 +150,20 @@
                                     </div>
             {% if contribution.id == '' %}
                                     <div class="inline fields">
-                                        <label>
-                                            {{ _T("Dispatch type:") }}
-                                            <i class="circular small basic question icon tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
-                                        </label>
+                                        {% include "components/forms/tip.html.twig" with {
+                                            label: _T("Dispatch type:"),
+                                            tip: _T("Select a contribution type to create for dispatch transaction"),
+                                            id: "contrib_type"
+                                        } only %}
                                         <div class="field inline">
                                             <div class="ui radio checkbox">
-                                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/>
+                                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %} aria-describedby="contrib_type-tip"/>
                                                 <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
                                             </div>
                                         </div>
                                         <div class="field inline">
                                             <div class="ui radio checkbox">
-                                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/>
+                                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %} aria-describedby="contrib_type-tip"/>
                                                 <label for="contrib_type_donation">{{ _T("Donation") }}</label>
                                             </div>
                                         </div>
@@ -189,14 +176,14 @@
             {% set scheduled_amount = scheduled.getAllocation(contribution.id) %}
                             <div class="ui yellow segment">
                                 <div class="ui tiny header">
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         class="ui mini icon blue compact button tooltip"
                                         id="scheduledslist"
                                     >
                                         <i class="eye icon tooltip" aria-hidden="true"></i>
                                         <span class="ui special popup">{{ _T("View scheduled payments") }}</span>
-                                    </a>
+                                    </button>
                                     {{ _T("Scheduled payments") }}
                                 </div>
             {% if not contribution.isScheduleFullyAllocated() %}
@@ -236,7 +223,7 @@
 
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                    <i class="icon dropdown" aria-hidden="true"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Details of membership fee") }}
     {% else %}
@@ -294,7 +281,7 @@
                 {% if preferences.pref_membership_ext != "" %}
                                 <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
                                 <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
-                                <span class="exemple">{{ _T("months") }}</span>
+                                <span class="field-description">{{ _T("months") }}</span>
                 {% else %}
                                 <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
                                 <div class="ui calendar" id="membership-rangeend">
@@ -327,7 +314,7 @@
                             {{ _T("Notify member") }}
                         </label>
                         <br/>
-                        <span class="exemple">
+                        <span class="field-description">
                             {{ _T("Member will receive a notification by email, if he has an address.") }}
                         </span>
                     </div>
@@ -346,7 +333,6 @@
         </div>
     {% endif %}
     {% if mode != 'ajax' %}
-            {% include "components/forms/csrf.html.twig" %}
         </form>
     {% endif %}
 {% elseif mode != 'ajax' %} {# No members #}
@@ -437,7 +423,7 @@
                     $('#transaction_related').show();
                 } else if (_current > _amount) {
                     {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
+                        modal_title_twig: _T('Contribution amount should not be greater than %1$s')|format(contribution.transaction.getMissingAmount())|e("js"),
                         modal_without_content: true,
                         modal_class: "mini",
                         modal_deny_only: true,

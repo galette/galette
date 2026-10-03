@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,7 +11,9 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Galette\Core\Galette;
+use Galette\Core\Preferences;
 use Galette\IO\File;
+use Galette\Controllers\Attributes\Route;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
@@ -52,12 +41,13 @@ class DynamicFieldsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'addDynamicField',
+        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         $params = [
@@ -65,7 +55,7 @@ class DynamicFieldsController extends CrudController
             'form_name'         => $form_name,
             'action'            => 'add',
             'perm_names'        => DynamicField::getPermissionsList(),
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
 
@@ -86,12 +76,13 @@ class DynamicFieldsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doAddDynamicField',
+        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -168,14 +159,15 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request   PSR Request
-     * @param Response        $response  PSR Response
      * @param string|null     $option    One of 'page' or 'order'
      * @param int|string|null $value     Value of the option
      * @param string          $form_name Form name
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'configureDynamicFields',
+        pattern: '/fields/dynamic/configure[/{form_name:adh|contrib|trans|prefs}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -183,7 +175,7 @@ class DynamicFieldsController extends CrudController
         int|string|null $value = null,
         string $form_name = 'adh'
     ): Response {
-        if (isset($_POST['form_name']) && trim((string) $_POST['form_name']) != '') {
+        if (isset($_POST['form_name']) && trim((string)$_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
@@ -204,7 +196,7 @@ class DynamicFieldsController extends CrudController
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
@@ -225,11 +217,6 @@ class DynamicFieldsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -240,18 +227,18 @@ class DynamicFieldsController extends CrudController
     /**
      * Get a dynamic file
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param string   $form_name Form name
-     * @param int      $id        Object ID
-     * @param int      $fid       Dynamic fields ID
-     * @param int      $pos       Dynamic field position
-     * @param string   $name      File name
-     *
-     * @return Response
+     * @param string $form_name Form name
+     * @param int    $id        Object ID
+     * @param int    $fid       Dynamic fields ID
+     * @param int    $pos       Dynamic field position
+     * @param string $name      File name
      */
+    #[Route(
+        name: 'getDynamicFile',
+        pattern: '/{form_name:adh|contrib|trans|prefs}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
+        methods: ['GET']
+    )]
     public function getDynamicFile(
-        Request $request,
         Response $response,
         string $form_name,
         int $id,
@@ -260,44 +247,38 @@ class DynamicFieldsController extends CrudController
         string $name
     ): Response {
         $object_class = DynamicFieldsSet::getClasses()[$form_name];
-        if ($object_class === \Galette\Entity\Adherent::class) {
-            $object = new $object_class($this->zdb);
+        if ($object_class === Preferences::class) {
+            //settings are a single object, nothing to load but its dynamic fields
+            $object = new Preferences($this->zdb, load: false);
+            $loaded = true;
         } else {
-            $object = new $object_class($this->zdb, $this->login);
-        }
+            if ($object_class === \Galette\Entity\Adherent::class) {
+                $object = new $object_class($this->zdb);
+            } else {
+                $object = new $object_class($this->zdb, $this->login);
+            }
 
-        $object
-            ->disableAllDeps()
-            ->enableDep('dynamics')
-            ->load($id);
+            //objects the current user cannot reach are not loaded
+            $loaded = $object
+                ->disableAllDeps()
+                ->enableDep('dynamics')
+                ->load($id);
+        }
         $fields = $object->getDynamicFields()->getFields();
         $field = $fields[$fid] ?? null;
 
-        $denied = null;
-        if (!$object->canShow($this->login)) {
-            if (!isset($fields[$fid])) {
-                //field does not exist or access is forbidden
-                $denied = true;
-            } else {
-                $denied = false;
-            }
+        //field does not exist or access is forbidden
+        $denied = $field === null || !$loaded;
+        if (!$denied && !$object instanceof Preferences) {
+            //a settings file goes to whoever can see its field; other files also require access to their object
+            $denied = !$object->canShow($this->login);
         }
 
-        if ($denied === true) {
-            $route_name = 'member';
-            if ($form_name == 'contrib') {
-                $route_name = 'contribution';
-            } elseif ($form_name == 'trans') {
-                $route_name = 'transaction';
-            }
-
+        if ($denied) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
-                redirect_url: $this->routeparser->urlFor(
-                    $route_name,
-                    ['id' => (string)$id]
-                )
+                redirect_url: $this->getDynamicFileRedirectUrl($form_name, $id)
             );
         }
 
@@ -336,19 +317,29 @@ class DynamicFieldsController extends CrudController
                 Analog::WARNING
             );
 
-            $route_name = 'member';
-            if ($form_name == 'contrib') {
-                $route_name = 'contribution';
-            } elseif ($form_name == 'trans') {
-                $route_name = 'transaction';
-            }
-
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("The file does not exists or cannot be read :(")],
-                redirect_url: $this->routeparser->urlFor($route_name, ['id' => (string)$id])
+                redirect_url: $this->getDynamicFileRedirectUrl($form_name, $id)
             );
         }
+    }
+
+    /**
+     * URL to go back to when a dynamic file cannot be sent
+     *
+     * @param string $form_name Form name
+     * @param int    $id        Object ID
+     */
+    private function getDynamicFileRedirectUrl(string $form_name, int $id): string
+    {
+        return match ($form_name) {
+            //contributions and transactions have no display page
+            'contrib' => $this->routeparser->urlFor('contributions', ['type' => 'contributions']),
+            'trans' => $this->routeparser->urlFor('contributions', ['type' => 'transactions']),
+            'prefs' => $this->routeparser->urlFor($this->login->isAdmin() ? 'preferences' : 'slash'),
+            default => $this->routeparser->urlFor('member', ['id' => (string)$id])
+        };
     }
 
     // /CRUD - Read
@@ -357,13 +348,14 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Dynamic field id
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param int     $id        Dynamic field id
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'editDynamicField',
+        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         if ($this->session->dynamicfieldtype) {
@@ -385,7 +377,7 @@ class DynamicFieldsController extends CrudController
             'action'        => 'edit',
             'form_name'     => $form_name,
             'perm_names'    => DynamicField::getPermissionsList(),
-            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'df'            => $df,
             'html_editor'   => true,
             'html_editor_active' => $this->preferences->pref_editor_enabled
@@ -403,13 +395,14 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Dynamic field id
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param int     $id        Dynamic field id
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doEditDynamicField',
+        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -487,8 +480,6 @@ class DynamicFieldsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -499,8 +490,6 @@ class DynamicFieldsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -514,8 +503,6 @@ class DynamicFieldsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -535,8 +522,6 @@ class DynamicFieldsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -558,16 +543,17 @@ class DynamicFieldsController extends CrudController
     /**
      * Move field
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Field id
-     * @param string   $form_name Form name
-     * @param string   $direction One of DynamicField::MOVE_*
-     *
-     * @return Response
+     * @param int    $id        Field id
+     * @param string $form_name Form name
+     * @param string $direction One of DynamicField::MOVE_*
      */
+    #[Route(
+        name: 'moveDynamicField',
+        pattern: '/fields/dynamic/move/{form_name:adh|contrib|trans|prefs}'
+            . '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
+        methods: ['GET']
+    )]
     public function move(
-        Request $request,
         Response $response,
         int $id,
         string $form_name,

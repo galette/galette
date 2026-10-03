@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -26,6 +13,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Safe\DateTime;
 use Exception;
+use Galette\Events\GaletteEvent;
 use Galette\Repository\Groups;
 use OverflowException;
 use RuntimeException;
@@ -41,14 +29,14 @@ use Laminas\Db\Sql\Expression;
  */
 class Group
 {
-    public const TABLE = 'groups';
-    public const PK = 'id_group';
+    public const string TABLE = 'groups';
+    public const string PK = 'id_group';
     //relations tables
-    public const GROUPSUSERS_TABLE = 'groups_members';
-    public const GROUPSMANAGERS_TABLE = 'groups_managers';
+    public const string GROUPSUSERS_TABLE = 'groups_members';
+    public const string GROUPSMANAGERS_TABLE = 'groups_managers';
 
-    public const MEMBER_TYPE = 0;
-    public const MANAGER_TYPE = 1;
+    public const int MEMBER_TYPE = 0;
+    public const int MANAGER_TYPE = 1;
 
     private int $id;
     private string $group_name;
@@ -62,6 +50,8 @@ class Group
     private string $creation_date;
     private int $count_members;
     private bool $isempty;
+    /** @var array<string> */
+    private array $removal_blockers = [];
     private Login $login;
 
     /**
@@ -118,8 +108,6 @@ class Group
      * Load group from its name
      *
      * @param string $group_name Group name
-     *
-     * @return bool
      */
     public function loadFromName(string $group_name): bool
     {
@@ -150,8 +138,6 @@ class Group
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -171,8 +157,6 @@ class Group
      * Loads members for the current group
      *
      * @param int $type Either self::MEMBER_TYPE or self::MANAGER_TYPE
-     *
-     * @return void
      */
     private function loadPersons(int $type): void
     {
@@ -237,8 +221,6 @@ class Group
 
     /**
      * Load sub-groups
-     *
-     * @return void
      */
     private function loadSubGroups(): void
     {
@@ -278,17 +260,27 @@ class Group
      * Remove specified group
      *
      * @param bool $cascade Also remove members and managers
-     *
-     * @return bool
      */
     public function remove(bool $cascade = false): bool
     {
         global $zdb;
         $transaction = false;
 
+        if ($this->hasRemovalBlockers($cascade)) {
+            Analog::log(
+                sprintf(
+                    'Group "%1$s" cannot be removed: %2$s',
+                    $this->group_name,
+                    implode(' ', $this->removal_blockers)
+                ),
+                Analog::WARNING
+            );
+            return false;
+        }
+
         try {
-            if (!$zdb->connection->inTransaction()) {
-                $zdb->connection->beginTransaction();
+            if (!$zdb->inTransaction()) {
+                $zdb->beginTransaction();
                 $transaction = true;
             }
 
@@ -301,7 +293,7 @@ class Group
                         Analog::INFO
                     );
                     foreach ($subgroups as $subgroup) {
-                        $subgroup->remove(true);
+                        $subgroup->remove(cascade: true);
                     }
                 }
 
@@ -329,13 +321,13 @@ class Group
 
             //commit all changes
             if ($transaction) {
-                $zdb->connection->commit();
+                $zdb->commit();
             }
 
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
@@ -359,9 +351,51 @@ class Group
     }
 
     /**
-     * Is group empty? (after first deletion try)
+     * Ask group.before_remove listeners whether the group, and its subgroups
+     * on a cascade removal, can be removed
      *
-     * @return bool
+     * @param bool $cascade Subgroups are removed as well
+     */
+    private function hasRemovalBlockers(bool $cascade): bool
+    {
+        global $emitter;
+
+        $this->removal_blockers = [];
+        $emitter->dispatch(new GaletteEvent('group.before_remove', $this));
+        if ($cascade) {
+            foreach ($this->getGroups() as $subgroup) {
+                $subgroup->hasRemovalBlockers(cascade: true);
+                array_push($this->removal_blockers, ...$subgroup->getRemovalBlockers());
+            }
+        }
+        $this->removal_blockers = array_values(array_unique($this->removal_blockers));
+
+        return count($this->removal_blockers) > 0;
+    }
+
+    /**
+     * Prevent group removal, from a group.before_remove listener
+     *
+     * @param string $reason Why the group cannot be removed, displayed as is
+     */
+    public function preventRemoval(string $reason): self
+    {
+        $this->removal_blockers[] = $reason;
+        return $this;
+    }
+
+    /**
+     * Why the group could not be removed, according to group.before_remove listeners
+     *
+     * @return array<string>
+     */
+    public function getRemovalBlockers(): array
+    {
+        return $this->removal_blockers;
+    }
+
+    /**
+     * Is group empty? (after first deletion try)
      */
     public function isEmpty(): bool
     {
@@ -370,8 +404,6 @@ class Group
 
     /**
      * Detach a group from its parent
-     *
-     * @return bool
      */
     public function detach(): bool
     {
@@ -412,8 +444,6 @@ class Group
 
     /**
      * Store the group
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -423,9 +453,16 @@ class Group
         if ($this->parent_group) {
             $parent_group = $this->parent_group->getId();
         }
-        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
+        if (
+            !Groups::isUnique(
+                zdb: $zdb,
+                name: $this->getName(),
+                parent: $parent_group,
+                current: $this->id ?? null
+            )
+        ) {
             throw new RuntimeException(
-                _T("The group name you have requested already exists in the database.")
+                "The group name you have requested already exists in the database."
             );
         }
 
@@ -496,8 +533,6 @@ class Group
      * Is current logged-in user manager of the group?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function isManager(Login $login): bool
     {
@@ -521,8 +556,6 @@ class Group
 
     /**
      * Get group id
-     *
-     * @return int
      */
     public function getId(): ?int
     {
@@ -531,8 +564,6 @@ class Group
 
     /**
      * Get Level of the group
-     *
-     * @return int
      */
     public function getLevel(): int
     {
@@ -544,8 +575,6 @@ class Group
 
     /**
      * Get the full name of the group "foo / bar"
-     *
-     * @return ?string
      */
     public function getFullName(): ?string
     {
@@ -573,8 +602,6 @@ class Group
 
     /**
      * Get the indented short name of the group "  >> bar"
-     *
-     * @return ?string
      */
     public function getIndentName(): ?string
     {
@@ -586,8 +613,6 @@ class Group
 
     /**
      * Get group name
-     *
-     * @return ?string
      */
     public function getName(): ?string
     {
@@ -635,8 +660,6 @@ class Group
 
     /**
      * Get parent group
-     *
-     * @return Group|null
      */
     public function getParentGroup(): ?Group
     {
@@ -647,8 +670,6 @@ class Group
      * Get group creation date
      *
      * @param bool $formatted Return date formatted, raw if false
-     *
-     * @return string
      */
     public function getCreationDate(bool $formatted = true): string
     {
@@ -664,8 +685,6 @@ class Group
      * Get member count
      *
      * @param bool $force Force members load, defaults to false
-     *
-     * @return int
      */
     public function getMemberCount(bool $force = false): int
     {
@@ -684,8 +703,6 @@ class Group
      * Set name
      *
      * @param string $name Group name
-     *
-     * @return self
      */
     public function setName(string $name): self
     {
@@ -697,8 +714,6 @@ class Group
      * check if can Set parent group
      *
      * @param Group $group Parent group
-     *
-     * @return bool
      */
     public function canSetParentGroup(Group $group): bool
     {
@@ -715,8 +730,6 @@ class Group
      * Set parent group
      *
      * @param int $id Parent group identifier
-     *
-     * @return self
      */
     public function setParentGroup(int $id): self
     {
@@ -740,8 +753,6 @@ class Group
      * Add member to group
      *
      * @param Adherent $member Member to add
-     *
-     * @return void
      */
     public function addMember(Adherent $member): void
     {
@@ -779,7 +790,6 @@ class Group
      *
      * @param Adherent[] $members Members list
      *
-     * @return bool
      * @throws Throwable
      */
     public function setMembers(array $members = []): bool
@@ -787,7 +797,7 @@ class Group
         global $zdb;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             //first, remove current groups members
             $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
@@ -839,7 +849,7 @@ class Group
             }
 
             //commit all changes
-            $zdb->connection->commit();
+            $zdb->commit();
 
             Analog::log(
                 'Group members updated successfully.',
@@ -849,7 +859,7 @@ class Group
             return true;
         } catch (Throwable $e) {
             $te = new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             $messages = [];
             do {
                 $messages[] = $e->getMessage();
@@ -868,7 +878,6 @@ class Group
      *
      * @param Adherent[] $members Managers list
      *
-     * @return bool
      * @throws Throwable
      */
     public function setManagers(array $members = []): bool
@@ -876,7 +885,7 @@ class Group
         global $zdb;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             //first, remove current groups managers
             $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
@@ -928,7 +937,7 @@ class Group
             }
 
             //commit all changes
-            $zdb->connection->commit();
+            $zdb->commit();
 
             Analog::log(
                 'Groups managers updated successfully.',
@@ -938,7 +947,7 @@ class Group
             return true;
         } catch (Throwable $e) {
             $te = clone $e;
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             $messages = [];
             do {
                 $messages[] = $e->getMessage();
@@ -956,8 +965,6 @@ class Group
      * Set login instance
      *
      * @param Login $login Login instance
-     *
-     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -969,8 +976,6 @@ class Group
      * Can current logged-in user edit group
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {

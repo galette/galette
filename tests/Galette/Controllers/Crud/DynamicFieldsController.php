@@ -1,31 +1,20 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers\Crud;
+namespace Galette\Tests\Controllers\Crud;
 
-use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
+use Galette\Tests\GaletteRoutingTestCase;
+
+use function Safe\filesize;
+use function Safe\copy;
+use function Safe\unlink;
 
 /**
  * DynamicFields controller tests
@@ -37,52 +26,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     protected int $seed = 20240529064653;
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-
-        $tables = $this->zdb->getTables();
-        foreach ($tables as $table) {
-            if (str_starts_with($table, 'galette_field_contents_')) {
-                $this->zdb->db->query(
-                    'DROP TABLE ' . $table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            }
-        }
-
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test add page from controller
-     *
-     * @return void
      */
     public function testAddPageDynamicField(): void
     {
@@ -106,15 +50,13 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test edit page from controller
-     *
-     * @return void
      */
     public function testEditPageDynamicField(): void
     {
         $field_id = $this->createDynamicField();
         $route_name = 'editDynamicField';
         $route_arguments = [
-            'id' => $field_id,
+            'id' => (string)$field_id,
             'form_name' => 'adh'
         ];
 
@@ -130,9 +72,9 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $this->login->logout();
         $this->expectOK($test_response);
 
-        //test non existing field
+        //test non-existing field
         $this->logSuperAdmin();
-        $route_arguments['id'] = ++$field_id;
+        $route_arguments['id'] = (string)++$field_id;
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $this->login->logout();
@@ -147,8 +89,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test adding dynamic field from controller
-     *
-     * @return void
      */
     public function testAddDynamicField(): void
     {
@@ -156,7 +96,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $route_arguments = [
             'form_name' => 'adh'
         ];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $cfield_data = [
             'store' => true,
             'field_name' => 'Dynamic test field',
@@ -183,7 +128,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $id = $result->current()->field_id;
 
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('editDynamicField', ['id' => $id, 'form_name' => 'adh'])]],
+            ['Location' => [$this->routeparser->urlFor('editDynamicField', ['id' => (string)$id, 'form_name' => 'adh'])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -199,8 +144,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test cencelled adding dynamic field from controller
-     *
-     * @return void
      */
     public function testAddCancelynamicField(): void
     {
@@ -208,7 +151,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $route_arguments = [
             'form_name' => 'adh'
         ];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+        $request = $this->createRequest(
+            route_name: $route_name,
+            route_args: $route_arguments,
+            method: 'POST',
+            content_type: 'application/json'
+        );
         $cfield_data = [
             'store' => true,
             'field_name' => 'Dynamic test field',
@@ -236,16 +184,14 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test adding dynamic field from controller with an error
-     *
-     * @return void
      */
     public function testAddErrorDynamicField(): void
     {
         $request = $this->createRequest(
-            'addDynamicField',
-            ['form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'addDynamicField',
+            route_args: ['form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
 
         $request = $request->withParsedBody(
@@ -280,18 +226,16 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateDynamicField(): void
     {
         $field_id = $this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => $field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -331,18 +275,16 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test canceled updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateCancelDynamicField(): void
     {
         $field_id = $this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => $field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -374,18 +316,16 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test error updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateErrorDynamicField(): void
     {
         $field_id = (string)$this->createDynamicField();
 
         $request = $this->createRequest(
-            'editDynamicField',
-            ['id' => $field_id, 'form_name' => 'adh'],
-            'POST',
-            'application/json'
+            route_name: 'editDynamicField',
+            route_args: ['id' => (string)$field_id, 'form_name' => 'adh'],
+            method: 'POST',
+            content_type: 'application/json'
         );
         $request = $request->withParsedBody(
             [
@@ -405,7 +345,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $this->login->logout();
 
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('editDynamicField', ['id' => $field_id, 'form_name' => 'adh'])]],
+            ['Location' => [$this->routeparser->urlFor('editDynamicField', ['id' => (string)$field_id, 'form_name' => 'adh'])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -421,15 +361,13 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test remove page dynamic field from controller
-     *
-     * @return void
      */
     public function testRemovePageDynamicField(): void
     {
         $field_id = $this->createDynamicField();
         $route_name = 'removeDynamicField';
         $route_arguments = [
-            'id' => $field_id,
+            'id' => (string)$field_id,
             'form_name' => 'adh'
         ];
 
@@ -449,7 +387,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //test with a field that does not exist
         $route_arguments = [
-            'id' => ++$field_id,
+            'id' => (string)++$field_id,
             'form_name' => 'adh'
         ];
         $this->logSuperAdmin();
@@ -463,15 +401,13 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic field removal from controller
-     *
-     * @return void
      */
     public function testRemoveDynamicField(): void
     {
         $field_id = $this->createDynamicField();
         $route_name = 'doRemoveDynamicField';
         $route_arguments = [
-            'id' => $field_id,
+            'id' => (string)$field_id,
             'form_name' => 'adh'
         ];
 
@@ -508,7 +444,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'An error occurred on delete | Undefined array key "id"');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred on delete | Undefined array key "id"');
         $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
 
         //make sure field still exists
@@ -518,7 +454,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $this->assertCount(1, $result);
 
         $this->logSuperAdmin();
-        $request = $request->withParsedBody(['id' => $field_id, 'confirm' => true]);
+        $request = $request->withParsedBody(['id' => (string)$field_id, 'confirm' => true]);
         $test_response = $this->app->handle($request);
         $this->login->logout();
         $this->assertSame(
@@ -537,7 +473,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //test with a field that does not exist
         $this->logSuperAdmin();
-        $request = $request->withParsedBody(['id' => $field_id, 'confirm' => true]);
+        $request = $request->withParsedBody(['id' => (string)$field_id, 'confirm' => true]);
         $test_response = $this->app->handle($request);
         $this->login->logout();
         $this->assertSame(
@@ -551,8 +487,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic field removal from controller
-     *
-     * @return void
      */
     public function testMoveDynamicField(): void
     {
@@ -560,7 +494,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $field_id_2 = $this->createDynamicField('I like to move it :D');
         $route_name = 'moveDynamicField';
         $route_arguments = [
-            'id' => $field_id_2,
+            'id' => (string)$field_id_2,
             'form_name' => 'adh',
             'direction' => \Galette\DynamicFields\DynamicField::MOVE_UP
         ];
@@ -605,7 +539,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //field that does not exist
         $this->logSuperAdmin();
-        $route_arguments['id'] = ++$field_id_2;
+        $route_arguments['id'] = (string)++$field_id_2;
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $this->login->logout();
@@ -620,8 +554,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic fields list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -655,8 +587,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test getting dynamic file
-     *
-     * @return void
      */
     public function testGetDynamicFile(): void
     {
@@ -671,17 +601,17 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //create dynamic file
         $mdata = $this->dataAdherentOne();
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             $dynfile_id => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
-        $member_request = $this->createRequest('doEditMember', ['id' => $member_one->id], 'POST');
+        $member_request = $this->createRequest('doEditMember', ['id' => (string)$member_one->id], 'POST');
         $member_request = $member_request->withParsedBody($mdata + ['id_adh' => $member_one->id]);
         $member_request = $member_request->withUploadedFiles($uploaded_files);
         $test_response = $this->app->handle($member_request);
@@ -692,9 +622,9 @@ class DynamicFieldsController extends GaletteRoutingTestCase
             'getDynamicFile',
             [
                 'form_name' => 'adh',
-                'id' => $member_one->id,
-                'fid' => $field_id_1,
-                'pos' => 1,
+                'id' => (string)$member_one->id,
+                'fid' => (string)$field_id_1,
+                'pos' => '1',
                 'name' => $dynfile_id
             ]
         );
@@ -715,17 +645,17 @@ class DynamicFieldsController extends GaletteRoutingTestCase
             'getDynamicFile',
             [
                 'form_name' => 'adh',
-                'id' => $member_one->id,
-                'fid' => $field_id_1,
-                'pos' => 2,
+                'id' => (string)$member_one->id,
+                'fid' => (string)$field_id_1,
+                'pos' => '2',
                 'name' => $dynfile_id
             ]
         );
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]], $test_response->getHeaders());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             sprintf(
                 'A request has been made to get a dynamic file named `member_%1$s_field_%2$s_value_2` that does not exists.',
                 $member_one->id,
@@ -742,14 +672,14 @@ class DynamicFieldsController extends GaletteRoutingTestCase
             'getDynamicFile',
             [
                 'form_name' => 'adh',
-                'id' => $member_two->id,
-                'fid' => $field_id_1,
-                'pos' => 1,
+                'id' => (string)$member_two->id,
+                'fid' => (string)$field_id_1,
+                'pos' => '1',
                 'name' => $dynfile_id
             ]
         );
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_two->id])]], $test_response->getHeaders());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_two->id])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
@@ -758,24 +688,214 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test a member cannot get files of objects they cannot see
+     */
+    public function testGetOtherObjectDynamicFile(): void
+    {
+        $this->logSuperAdmin();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $this->assertSame($member_two->id, $this->adh->id);
+        $this->createContribution();
+        $contrib_id = $this->contrib->id;
+        $this->login->logout();
+
+        //fields members can read, so only access to their object is checked
+        $adh_field_id = $this->createDynamicField(
+            name: 'Member file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            perm: \Galette\Entity\FieldsConfig::USER_READ
+        );
+        $contrib_field_id = $this->createDynamicField(
+            name: 'Contribution file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            form_name: 'contrib',
+            perm: \Galette\Entity\FieldsConfig::USER_READ
+        );
+
+        $files = [
+            sprintf('member_%1$s_field_%2$s_value_1', $member_one->id, $adh_field_id),
+            sprintf('member_%1$s_field_%2$s_value_1', $member_two->id, $adh_field_id),
+            sprintf('contrib_%1$s_field_%2$s_value_1', $contrib_id, $contrib_field_id)
+        ];
+        foreach ($files as $file) {
+            copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', GALETTE_FILES_PATH . $file);
+        }
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        try {
+            //own file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)$adh_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertSame(['image/png'], $test_response->getHeader('Content-Type'));
+
+            //another member file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_two->id,
+                    'fid' => (string)$adh_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_two->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            //another member contribution file
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'contrib',
+                    'id' => (string)$contrib_id,
+                    'fid' => (string)$contrib_field_id,
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            //contribution is not loaded for a member who does not own it
+            $this->expectLogEntry(\Analog\Analog::ERROR, sprintf('No contribution #%1$s', $contrib_id));
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'contributions'])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            //non-existing field
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)($contrib_field_id + 1000),
+                    'pos' => '1',
+                    'name' => 'galette_pro.png'
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        } finally {
+            $this->login->logout();
+            foreach ($files as $file) {
+                unlink(GALETTE_FILES_PATH . $file);
+            }
+        }
+    }
+
+    /**
+     * Test a dynamic file stored in the settings
+     */
+    public function testGetPreferencesDynamicFile(): void
+    {
+        $this->logSuperAdmin();
+        $field_id = $this->createDynamicField(
+            name: 'Settings file',
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            form_name: 'prefs'
+        );
+
+        //settings have no identifier of their own, their values are stored against 0
+        $dynamics = $this->preferences->getDynamicFields();
+        $dynamics->setValue(item: 0, field: $field_id, index: 1, value: 'galette_pro.png');
+        $this->assertTrue($dynamics->storeValues(0));
+        $filename = sprintf('prefs_0_field_%1$s_value_1', $field_id);
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', GALETTE_FILES_PATH . $filename);
+
+        $file_url = $this->routeparser->urlFor(
+            'getDynamicFile',
+            [
+                'form_name' => 'prefs',
+                'id' => '0',
+                'fid' => (string)$field_id,
+                'pos' => '1',
+                'name' => 'galette_pro.png'
+            ]
+        );
+
+        //the stored file is linked from the settings
+        $test_response = $this->app->handle($this->createRequest('preferences'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(sprintf('href="%1$s"', $file_url), $body);
+        $this->assertStringContainsString('Choose another file', $body);
+
+        $request = $this->createRequest(
+            'getDynamicFile',
+            [
+                'form_name' => 'prefs',
+                'id' => '0',
+                'fid' => (string)$field_id,
+                'pos' => '1',
+                'name' => 'galette_pro.png'
+            ]
+        );
+        $test_response = $this->app->handle($request);
+        $this->expectOK(
+            $test_response,
+            [
+                'Content-Description' => ['File Transfer'],
+                'Content-Type' => ['image/png'],
+                'Content-Disposition' => ['attachment;filename="galette_pro.png"'],
+                'Pragma' => ['public'],
+                'Content-Transfer-Encoding' => ['binary'],
+                'Expires' => ['0'],
+                'Cache-Control' => ['must-revalidate']
+            ]
+        );
+        $this->login->logout();
+
+        //the field is restricted to staff members
+        $mdata = $this->dataAdherentOne();
+        $this->getMemberOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        $this->login->logout();
+
+        unlink(GALETTE_FILES_PATH . $filename);
+    }
+
+    /**
      * Create a dynamic field for tests
      *
-     * @param string $name Name of the field to create
-     * @param int    $type Type of the field to create (default to Line)
+     * @param string $name      Name of the field to create
+     * @param int    $type      Type of the field to create (default to Line)
+     * @param string $form_name Form the field belongs to (default to members)
+     * @param int    $perm      Field permission (default to staff)
      *
      * @return int The created field id
      */
     private function createDynamicField(
         string $name = 'Dynamic test field',
-        int $type = \Galette\DynamicFields\DynamicField::LINE
+        int $type = \Galette\DynamicFields\DynamicField::LINE,
+        string $form_name = 'adh',
+        int $perm = \Galette\Entity\FieldsConfig::STAFF
     ): int {
         //create field
         $field_data = [
             'field_name' => $name,
-            'field_perm' => (string)\Galette\Entity\FieldsConfig::STAFF,
+            'field_perm' => (string)$perm,
             'field_type' => (string)$type,
             'field_required' => '0',
-            'form_name' => 'adh'
+            'form_name' => $form_name
         ];
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);

@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -27,9 +14,11 @@ use ArrayObject;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Galette\Core\Db;
+use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
+use Galette\Util\Html;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 
@@ -40,35 +29,35 @@ use function Safe\preg_replace_callback;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?int $id
- * @property string $name
- * @property int $type
- * @property ?string $header
- * @property-read string $hheader
- * @property ?string $footer
- * @property-read string $hfooter
- * @property ?string $title
- * @property-read string $htitle
- * @property ?string $subtitle
- * @property-read string $hsubtitle
- * @property ?string $body
- * @property-read string $hbody
- * @property ?string $styles
- * @property string $hstyles
- * @property ?PdfMain $parent
+ * @property      ?int     $id
+ * @property      string   $name
+ * @property      int      $type
+ * @property      ?string  $header
+ * @property-read string   $hheader
+ * @property      ?string  $footer
+ * @property-read string   $hfooter
+ * @property      ?string  $title
+ * @property-read string   $htitle
+ * @property      ?string  $subtitle
+ * @property-read string   $hsubtitle
+ * @property      ?string  $body
+ * @property-read string   $hbody
+ * @property      ?string  $styles
+ * @property      string   $hstyles
+ * @property      ?PdfMain $parent
  */
 
 abstract class PdfModel
 {
     use Replacements;
 
-    public const TABLE = 'pdfmodels';
-    public const PK = 'model_id';
+    public const string TABLE = 'pdfmodels';
+    public const string PK = 'model_id';
 
-    public const MAIN_MODEL = 1;
-    public const INVOICE_MODEL = 2;
-    public const RECEIPT_MODEL = 3;
-    public const ADHESION_FORM_MODEL = 4;
+    public const int MAIN_MODEL = 1;
+    public const int INVOICE_MODEL = 2;
+    public const int RECEIPT_MODEL = 3;
+    public const int ADHESION_FORM_MODEL = 4;
 
     private ?int $id = null;
     private string $name;
@@ -95,7 +84,8 @@ abstract class PdfModel
         $this->preferences = $preferences;
         $this
             ->setDb($zdb)
-            ->setLogin($login);
+            ->setLogin($login)
+            ->setI18n($container->get(I18n::class));
 
         if (is_int($args)) {
             $this->load($args);
@@ -114,8 +104,6 @@ abstract class PdfModel
      *
      * @param int  $id   Identifier
      * @param bool $init Init data if required model is missing
-     *
-     * @return void
      */
     protected function load(int $id, bool $init = true): void
     {
@@ -133,7 +121,7 @@ abstract class PdfModel
                 if ($init === true) {
                     $models = new PdfModels($this->zdb, $this->preferences, $login);
                     $models->installInit();
-                    $this->load($id, false);
+                    $this->load($id, init: false);
                 } else {
                     throw new \RuntimeException('Model not found!');
                 }
@@ -156,8 +144,6 @@ abstract class PdfModel
      * Load model from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     protected function loadFromRS(ArrayObject $rs): void
     {
@@ -189,8 +175,6 @@ abstract class PdfModel
 
     /**
      * Store model in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -235,7 +219,7 @@ abstract class PdfModel
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing model: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -246,8 +230,6 @@ abstract class PdfModel
      * Get object class for specified type
      *
      * @param int $type Type
-     *
-     * @return string
      */
     public static function getTypeClass(int $type): string
     {
@@ -268,8 +250,6 @@ abstract class PdfModel
      * @param int    $chars Length
      * @param string $field Field name
      * @param bool   $empty Can value be empty
-     *
-     * @return void
      */
     protected function checkChars(string $value, int $chars, string $field, bool $empty = false): void
     {
@@ -299,8 +279,6 @@ abstract class PdfModel
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -367,8 +345,6 @@ abstract class PdfModel
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -383,8 +359,6 @@ abstract class PdfModel
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -399,10 +373,10 @@ abstract class PdfModel
                     $this->$name = $value;
                 } else {
                     throw new \UnexpectedValueException(
-                        str_replace(
-                            '%type',
-                            $value,
-                            _T("Unknown type %type!")
+                        sprintf(
+                            //TRANS: parameter is the PDF model type
+                            _T('Unknown type %1$s!'),
+                            $value
                         )
                     );
                 }
@@ -414,13 +388,13 @@ abstract class PdfModel
             case 'title':
             case 'subtitle':
                 $field = $name == 'title' ? _T("Title") : _T("Subtitle");
-                $this->checkChars($value, 100, $field, true);
+                $this->checkChars(value: $value, chars: 100, field: $field, empty: true);
                 $this->$name = $value;
                 break;
             case 'header':
             case 'footer':
             case 'body':
-                if ($value === null || trim((string) $value) === '') {
+                if ($value === null || trim((string)$value) === '') {
                     if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
@@ -432,9 +406,13 @@ abstract class PdfModel
                     }
                 }
 
-                $this->$name = $value;
+                //these three are markup, and reach TCPDF as such. Their ids
+                //are load-bearing: `styles` selects on them
+                $this->$name = $value === null ? null : Html::clean((string)$value, keep_ids: true);
                 break;
             case 'styles':
+                //CSS, not HTML: purifying it would turn a `>` selector into
+                //`&gt;`. It is never rendered outside a PDF
                 $this->styles = $value;
                 break;
             default:

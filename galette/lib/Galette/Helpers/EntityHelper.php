@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -27,8 +14,9 @@ namespace Galette\Helpers;
  * Entity helper trait
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @property array<string, array<string, string|null>> $fields
  */
-
 trait EntityHelper
 {
     use DatesHelper;
@@ -44,16 +32,8 @@ trait EntityHelper
      */
     protected array $fields;
 
-    /** @var string[] */
-    //protected array $forbidden_fields = [];
-
-    /** @var string[] */
-    //protected array $virtual_fields = [];
-
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     abstract protected function setFields(): self;
 
@@ -72,17 +52,15 @@ trait EntityHelper
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
-        if (in_array($name, ($this->forbidden_fields ?? []))) {
+        if (in_array($name, ($this->forbidden_fields ?? []))) { // @phpstan-ignore nullCoalesce.property
             return false;
         }
 
         $virtual_fields = [];
-        if (isset($this->virtual_fields)) {
+        if (isset($this->virtual_fields)) { // @phpstan-ignore isset.property
             $virtual_fields = $this->virtual_fields;
         }
         return in_array($name, $virtual_fields) || property_exists($this, $name);
@@ -93,8 +71,6 @@ trait EntityHelper
      *
      * @param string $field Field name
      * @param string $entry Array entry to use (defaults to "label")
-     *
-     * @return string
      */
     public function getFieldLabel(string $field, string $entry = 'label'): string
     {
@@ -109,8 +85,6 @@ trait EntityHelper
      * Get property name for given field
      *
      * @param string $field Field
-     *
-     * @return string
      */
     protected function getFieldPropertyName(string $field): string
     {

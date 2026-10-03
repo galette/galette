@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -28,6 +15,7 @@ use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
@@ -46,8 +34,8 @@ use Safe\DateTime;
  */
 class Contributions
 {
-    public const TABLE = Contribution::TABLE;
-    public const PK = Contribution::PK;
+    public const string TABLE = Contribution::TABLE;
+    public const string PK = Contribution::PK;
 
     private int $count = 0;
 
@@ -79,7 +67,7 @@ class Contributions
     public function getListFromTransaction(int $trans_id): array
     {
         $this->filters->from_transaction = $trans_id;
-        return $this->getList(true);
+        return $this->getList(as_contrib: true);
     }
 
     /**
@@ -189,8 +177,6 @@ class Contributions
      * Count contributions from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -227,8 +213,6 @@ class Contributions
      * Calculate sum of all selected contributions
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function calculateSum(Select $select): void
     {
@@ -300,8 +284,6 @@ class Contributions
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -357,8 +339,10 @@ class Contributions
 
             if ($this->filters->max_amount !== null) {
                 $select->where(
-                    '(montant_cotis <= ' . $this->filters->max_amount
-                    . ' OR montant_cotis IS NULL)'
+                    new PredicateExpression(
+                        '(montant_cotis <= ? OR montant_cotis IS NULL)',
+                        [$this->filters->max_amount]
+                    )
                 );
             }
 
@@ -425,17 +409,19 @@ class Contributions
                 //limit to managed members from managed groups
                 $mgroups = $this->login->getManagedGroups();
 
-                $select->join(
-                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                    'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    [],
-                    $select::JOIN_LEFT
+                //use a subquery rather than a join, so a member belonging to
+                //several managed groups does not duplicate its contributions
+                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
+                $groups_select->columns([Adherent::PK]);
+                $groups_select->where->in(
+                    'users_groups.' . Group::PK,
+                    array_values($mgroups)
                 );
+
                 $select->where->nest()
-                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->in('c.' . Adherent::PK, $groups_select)
                     ->or
                     ->in('c.' . Adherent::PK, $member_clause);
-                $select->group('c.' . Contribution::PK);
 
                 //member clause is already handled, reset it
                 $member_clause = null;
@@ -463,8 +449,6 @@ class Contributions
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -473,8 +457,6 @@ class Contributions
 
     /**
      * Get sum
-     *
-     * @return float
      */
     public function getSum(): float
     {
@@ -487,8 +469,6 @@ class Contributions
      * @param int|array<int> $ids         Contributions identifiers to delete
      * @param History        $hist        History
      * @param bool           $transaction True to begin a database transaction
-     *
-     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
@@ -499,32 +479,32 @@ class Contributions
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
             $contributions = $this->zdb->execute($select);
             foreach ($contributions as $contribution) {
                 $c = new Contribution($this->zdb, $this->login, $contribution);
-                $res = $c->remove(false);
+                $res = $c->remove(transaction: false);
                 if ($res === false) {
                     throw new \Exception();
                 }
             }
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             $hist->add(
-                str_replace(
-                    '%list',
-                    print_r($list, true),
-                    _T("Contributions deleted (%list)")
+                sprintf(
+                    //TRANS: parameter is the list of deleted contributions
+                    _T('Contributions deleted (%1$s)'),
+                    print_r($list, return: true)
                 )
             );
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove contributions | '

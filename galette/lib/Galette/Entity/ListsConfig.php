@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -70,7 +57,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array<string, int|string>
+     * @return array<string, mixed>
      */
     protected function buildField(ArrayObject $rset): array
     {
@@ -84,8 +71,6 @@ class ListsConfig extends FieldsConfig
     /**
      * Create field array configuration
      * Several lists of fields are kept (visible, required, etc), build them.
-     *
-     * @return void
      */
     protected function buildLists(): void
     {
@@ -109,8 +94,6 @@ class ListsConfig extends FieldsConfig
      * Adds a field to lists
      *
      * @param array<string,mixed> $field Field values
-     *
-     * @return void
      */
     protected function addToLists(array $field): void
     {
@@ -182,8 +165,6 @@ class ListsConfig extends FieldsConfig
      * Handle list labels
      *
      * @param object $field Field data
-     *
-     * @return void
      */
     private function handleLabel(object $field): void
     {
@@ -247,8 +228,6 @@ class ListsConfig extends FieldsConfig
      * Set fields
      *
      * @param array<int,array<string,mixed>> $fields categorized fields array
-     *
-     * @return bool
      */
     public function setListFields(array $fields): bool
     {
@@ -258,8 +237,6 @@ class ListsConfig extends FieldsConfig
 
     /**
      * Store list config in database
-     *
-     * @return bool
      */
     private function storeList(): bool
     {
@@ -270,7 +247,7 @@ class ListsConfig extends FieldsConfig
                 throw new \RuntimeException('No fields for list, aborting.');
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -317,12 +294,12 @@ class ListsConfig extends FieldsConfig
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return $this->load();
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
-                '[' . $class . '] An error occurred while storing list '
+                '[' . $class . '] An error occurred while saving list '
                 . 'configuration for table `' . $this->table . '`.'
                 . $e->getMessage(),
                 Analog::ERROR
@@ -345,8 +322,6 @@ class ListsConfig extends FieldsConfig
      * Get visibility for specified field
      *
      * @param string $field The requested field
-     *
-     * @return int
      */
     public function getVisibility(string $field): int
     {

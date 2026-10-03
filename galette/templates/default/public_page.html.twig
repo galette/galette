@@ -1,37 +1,34 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% set main_classes = [] %}
+{% if cur_route in ['login', 'password-lost', 'password-recovery', 'directlink', 'two-factor'] or ext_auth is defined %}
+    {% set main_classes = main_classes|merge(['text']) %}
+{% endif %}
+{% if not login.isLogged() or ext_auth is defined %}
+    {% set main_classes = main_classes|merge(['ui', 'container']) %}
+{% else %}
+    {% set main_classes = main_classes|merge(['full', 'height']) %}
+    {% if i18n.isRtl() %}
+        {% set main_classes = main_classes|merge(['rtl']) %}
+    {% endif %}
+{% endif %}
+
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additional_html_class is defined %} {{ additional_html_class }}{% endif %}">
+<html lang="{{ i18n.getWebID() }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additional_html_class is defined %} {{ additional_html_class }}{% endif %}">
     <head>
-        {% include 'elements/header.html.twig' with {
-            galette_lang: galette_lang
-        } %}
+        {% include 'elements/header.html.twig' %}
     </head>
-    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }}">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <main class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" or ext_auth is defined %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+            <div id="main" class="{{ main_classes|join(' ') }}">
 {% if login.isLogged() and ext_auth is not defined %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
@@ -67,6 +64,7 @@
                     </div>
 {% endif %}
                     <div class="main-content">
+                        {% include 'elements/noscript.html.twig' %}
                         {% include "elements/messages_inline.html.twig" %}
                         {% block content %}{{ _T("Public page content") }}{% endblock %}
                     </div>
@@ -76,6 +74,7 @@
         {% include "elements/footer.html.twig" %}
         <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
             <i class="arrow up icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("Back to top") }}</span>
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}

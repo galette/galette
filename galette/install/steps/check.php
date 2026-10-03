@@ -1,41 +1,35 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+declare(strict_types=1);
 
 ?>
 <?php
 $php_ok = true;
 $class = 'install-';
-$php_modules_class = '';
 $files_perms_class = '';
 
+/**
+ * @var \Galette\Core\Install $install
+ * @var \Galette\Core\I18n $i18n
+ */
+
 // check required PHP version...
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) { //@phpstan-ignore if.alwaysFalse
     $php_ok = false;
 }
 
 // check date settings
 $date_ok = false;
 try {
-    $test_date = new DateTime();
+    new \Safe\DateTime();
     $date_ok = true;
-} catch (Throwable) {
+} catch (\Exception) { // @phpstan-ignore catch.neverThrown (can be thrown depending on PHP configuration)
     //do nothing
 }
 
@@ -68,11 +62,11 @@ foreach ($files_need_rw as $label => $file) {
 ?>
     <h2><?php echo _T("Welcome to the Galette Install!"); ?></h2>
 <?php
-if ($perms_ok && $modules_ok && $php_ok && $date_ok) {
+if ($perms_ok && $modules_ok && $php_ok && $date_ok) { // @phpstan-ignore booleanAnd.rightAlwaysTrue,booleanAnd.rightAlwaysTrue
     echo '<p class="ui green message">' . _T("Galette requirements are met :)") . '</p>';
 }
 
-if (!$date_ok) {
+if (!$date_ok) { // @phpstan-ignore booleanNot.alwaysFalse
     echo '<p class="ui red message">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
 }
 ?>
@@ -101,7 +95,6 @@ if (!$modules_ok) {
     <ul class="leaders">
 <?php
 foreach ($files_need_rw as $label => $file) {
-    $writable = is_writable($file);
     ?>
         <li>
             <span><?php echo $label ?></span>
@@ -132,25 +125,24 @@ if (!$perms_ok) {
         </article>
     <?php
 }
-    ?>
+?>
     <div class="ui section divider"></div>
     <div class="ui equal width grid">
         <div class="right aligned column">
     <?php
-if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
-    ?>
+    if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) { // @phpstan-ignore booleanNot.alwaysFalse,booleanNot.alwaysFalse
+        ?>
         <form action="installer.php" method="post" class="ui form">
             <button type="submit" class="ui right labeled primary icon button"><i class="sync alt icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
         </form>
-    <?php
-} else {
-    ?>
+        <?php
+    } else {
+        ?>
         <form action="installer.php" method="POST" class="ui form">
             <button type="submit" class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
             <input type="hidden" name="install_permsok" value="1"/>
         </form>
-    <?php
-}
-    ?>
+        <?php
+    } ?>
         </div>
     </div>

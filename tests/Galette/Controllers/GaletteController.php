@@ -1,29 +1,22 @@
 <?php
 
 /**
-* Copyright © 2003-2025 The Galette Team
-*
-* This file is part of Galette (https://galette.eu).
-*
-* Galette is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Galette is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Galette. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTime;
+
+use function Safe\copy;
+use function Safe\filesize;
+use function Safe\preg_match;
 
 /**
 * Galette controller tests
@@ -35,9 +28,28 @@ class GaletteController extends GaletteRoutingTestCase
     protected int $seed = 20250802103040;
 
     /**
-     * Set up tests
+     * What a full preferences form posts: every default, minus the secrets.
      *
-     * @return void
+     * A secret is never rendered, so the form sends its field back empty, and
+     * an empty one leaves what is stored alone.
+     *
+     * @return array<string, mixed>
+     */
+    private function postedDefaults(): array
+    {
+        $posted = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            if (\Galette\Core\PreferencesSchema::isSensitive($key)) {
+                continue;
+            }
+            $posted[$key] = $value;
+        }
+
+        return $posted;
+    }
+
+    /**
+     * Set up tests
      */
     public function setUp(): void
     {
@@ -54,25 +66,7 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
      * Test main route (redirections)
-     *
-     * @return void
      */
     public function testSlash(): void
     {
@@ -92,8 +86,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test system information route
-     *
-     * @return void
      */
     public function testSystemInformation(): void
     {
@@ -109,7 +101,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
         $this->assertMatchesRegularExpression(
             '/Browser:\.+ Galette test suite/',
@@ -123,13 +115,11 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test dashboard route
-     *
-     * @return void
      */
     public function testDashboard(): void
     {
         $request = $this->createRequest('dashboard');
-        $request = $request->withCookieParams(['show_galette_dashboard' => 'true']);
+        $request = $request->withCookieParams(['show_galette_dashboard' => '1']);
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
@@ -140,14 +130,18 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
+
+        //news are expected for a superadmin, but loaded from the 'ajaxNews' route:
+        //the page carries the placeholder, never a post
+        $this->assertStringContainsString('id="dashboard-news"', $body);
+        $this->assertStringContainsString($this->routeparser->urlFor('ajaxNews'), $body);
+        $this->assertStringNotContainsString('Galette 1.0.0rc1', $body);
     }
 
     /**
      * Test preferences route
-     *
-     * @return void
      */
     public function testPreferences(): void
     {
@@ -162,23 +156,108 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Galette"', $body);
 
-        //simulate error while storing, values are kept in session
+        //public pages visibilities: the default one has nothing to inherit from
+        $generic = $this->getSelect($body, 'pref_publicpages_visibility_generic');
+        $this->assertStringContainsString('aria-describedby="pref_publicpages_visibility_generic-tip"', $generic);
+        $this->assertStringNotContainsString('>Inherit<', $generic);
+        $this->assertStringContainsString(
+            'value="' . \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED . '" selected="selected"',
+            $generic
+        );
+        $documents = $this->getSelect($body, 'pref_publicpages_visibility_documents');
+        $this->assertSame(5, substr_count($documents, '<option '));
+        $this->assertStringContainsString('>Inherit<', $documents);
+
+        //plugin-test1 declares a public page: it is offered with the core ones
+        $plugin = $this->getSelect($body, 'pref_plugin1_publicpages_visibility_page');
+        $this->assertStringContainsString(
+            '<label for="pref_plugin1_publicpages_visibility_page">Plugin one page (Galette Test1 Plugin)</label>',
+            $body
+        );
+        $this->assertStringContainsString(
+            'value="' . \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT . '" selected="selected"',
+            $plugin
+        );
+
+        //simulate error while saving, values are kept in session
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Name from test suite"', $body);
     }
 
     /**
-     * Test store preferences
+     * Get a select element out of a rendered page
      *
-     * @return void
+     * @param string $body Rendered page
+     * @param string $name Select name
+     */
+    private function getSelect(string $body, string $name): string
+    {
+        $matches = [];
+        $this->assertSame(
+            1,
+            preg_match('/<select name="' . $name . '".*?<\/select>/s', $body, $matches),
+            $name . ' is not rendered'
+        );
+        return $matches[0];
+    }
+
+    /**
+     * The second factor ships as experimental, and only the two policies that
+     * cannot lock an association out are offered
+     */
+    public function testPreferencesOfferTheSecondFactorPolicies(): void
+    {
+        global $preferences;
+
+        $request = $this->createRequest('preferences');
+        $this->logSuperAdmin();
+
+        //the flag is forced on for the suite, so all four are there
+        $body = (string)$this->app->handle($request)->getBody();
+        $this->assertStringContainsString('name="pref_2fa_mode"', $body);
+        //the setting carries the same experimental mark as the advanced page
+        $this->assertMatchesRegularExpression(
+            '/circular basic flask icon.*Experimental/s',
+            $body
+        );
+        $this->assertStringContainsString('Required for administrators and staff', $body);
+        $this->assertStringContainsString('Required for everyone', $body);
+
+        try {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: false);
+
+            //as shipped: the setting is there, the two mandatory policies are not
+            $body = (string)$this->app->handle($request)->getBody();
+            $this->assertStringContainsString('name="pref_2fa_mode"', $body);
+            $this->assertStringNotContainsString('Required for administrators and staff', $body);
+            $this->assertStringNotContainsString('Required for everyone', $body);
+
+            //an instance carrying a mandatory policy keeps it stored, and the
+            //form re-posts what applies: rendering none of the options as
+            //selected would have the browser keep the first, and the next save
+            //would write "disabled" over a policy in force
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL;
+            $body = (string)$this->app->handle($request)->getBody();
+            $this->assertStringContainsString(
+                'value="' . \Galette\Core\TwoFactorAuth::MODE_OPTIONAL . '" selected="selected"',
+                $body
+            );
+        } finally {
+            \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+        }
+    }
+
+    /**
+     * Test store preferences
      */
     public function testStorePreferences(): void
     {
@@ -191,7 +270,7 @@ class GaletteController extends GaletteRoutingTestCase
         //superadmin can store preferences
         $this->logSuperAdmin();
 
-        $request = $request->withParsedBody(['pref_nom' => 'Name changed from test suite', 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['pref_nom' => 'Name changed from test suite', 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -203,7 +282,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame('Name changed from test suite', $preferences->pref_nom);
 
         //restore
-        $request = $request->withParsedBody(['pref_nom' => 'Galette', 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['pref_nom' => 'Galette', 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $preferences = new \Galette\Core\Preferences($this->zdb);
@@ -211,32 +290,59 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * A plugin public page visibility is saved from the core settings form
+     */
+    public function testStorePluginPublicPage(): void
+    {
+        $name = 'pref_plugin1_publicpages_visibility_page';
+        $this->logSuperAdmin();
+
+        $request = $this->createRequest('store-preferences', [], 'POST')->withParsedBody(
+            [$name => (string)\Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN, 'valid' => 1]
+            + $this->postedDefaults()
+        );
+
+        try {
+            $test_response = $this->app->handle($request);
+            $this->assertEquals(301, $test_response->getStatusCode());
+            $this->expectNoLogEntry();
+            $this->expectFlashData(['success_detected' => ['Preferences has been saved.']]);
+
+            $preferences = new \Galette\Core\Preferences($this->zdb);
+            $this->assertSame(
+                \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN,
+                $preferences->getPluginValue($name)
+            );
+        } finally {
+            $this->preferences->resetValue($name, $this->login);
+        }
+    }
+
+    /**
      * Test store logo
-     *
-     * @return void
      */
     public function testStoreLogo(): void
     {
         $this->logSuperAdmin();
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'logo' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
 
         $request = $this->createRequest('store-preferences', [], 'POST');
         $request = $request->withUploadedFiles($uploaded_files);
-        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 0');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 0');
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
         //check for new logo presence
@@ -244,7 +350,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //delete logo
         $request = $this->createRequest('store-preferences', [], 'POST');
-        $request = $request->withParsedBody(['del_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['del_logo' => 1, 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -257,31 +363,29 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test store print logo
-     *
-     * @return void
      */
     public function testStorePrintLogo(): void
     {
         $this->logSuperAdmin();
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'card_logo' => new \Slim\Psr7\UploadedFile(
-                sys_get_temp_dir() . '/galette_pro.png',
-                'galette_pro.png',
-                'impage/png',
-                filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                UPLOAD_ERR_OK
+                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                name: 'galette_pro.png',
+                type: 'impage/png',
+                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                error: UPLOAD_ERR_OK
             )
         ];
 
         $request = $this->createRequest('store-preferences', [], 'POST');
         $request = $request->withUploadedFiles($uploaded_files);
-        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 999999');
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
@@ -290,7 +394,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //delete logo
         $request = $this->createRequest('store-preferences', [], 'POST');
-        $request = $request->withParsedBody(['del_card_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $request = $request->withParsedBody(['del_card_logo' => 1, 'valid' => 1] + $this->postedDefaults());
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
@@ -303,12 +407,10 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test email test route
-     *
-     * @return void
      */
     public function testTestEmail(): void
     {
-        $request = $this->createRequest('testEmail');
+        $request = $this->createRequest('testEmail', [], 'POST');
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
@@ -318,29 +420,51 @@ class GaletteController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['You asked Galette to send a test email, but email has been disabled in the preferences.']]);
 
-        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
+        //settings come from the form, so a method that is disabled in database
+        //no longer stands in the way
+        $smtp = [
+            'pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_SMTP,
+            'pref_mail_smtp_host' => '127.0.0.1',
+            'pref_mail_smtp_port' => '1'
+        ];
 
         //test invalid test email
-        $invalid_request = $request->withQueryParams(['adress' => 'invalidemail']);
+        $invalid_request = $request->withParsedBody($smtp + ['adress' => 'invalidemail']);
         $test_response = $this->app->handle($invalid_request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['Invalid email adress!']]);
 
         //standard working test email - no real email provider setup so gives an error
-        $test_response = $this->app->handle($request);
+        $smtp_request = $request->withParsedBody($smtp);
+        $test_response = $this->app->handle($smtp_request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(302, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
+        //failure is detailed with what the mailer had to say
+        $this->assertStringStartsWith(
+            "No email sent to mail@domain.com ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+
+        //testing does not store anything: neither the live instance nor the
+        //database know about the settings that have just been tried
+        $this->assertSame(
+            \Galette\Core\GaletteMail::METHOD_DISABLED,
+            $this->preferences->pref_mail_method
+        );
+        $stored = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(\Galette\Core\GaletteMail::METHOD_DISABLED, $stored->pref_mail_method);
+        $this->assertNotSame('127.0.0.1', $stored->pref_mail_smtp_host);
 
         //ajax test email - no real email provider setup so gives an error
-        $json_request = $request->withHeader('X-Requested-With', 'XMLHttpRequest');
+        $json_request = $smtp_request->withHeader('X-Requested-With', 'XMLHttpRequest');
         $test_response = $this->app->handle($json_request);
         $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
@@ -348,16 +472,74 @@ class GaletteController extends GaletteRoutingTestCase
 
         $body = (string)$test_response->getBody();
         $this->assertSame('{"sent":0}', $body);
-        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
+        $this->assertStringStartsWith(
+            "No email sent to mail@domain.com ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+    }
 
-        //Reset mail method to default
-        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
+    /**
+     * Test email connection test route
+     */
+    public function testTestEmailConnection(): void
+    {
+        $request = $this->createRequest('testEmailConnection', [], 'POST');
+
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        $this->logSuperAdmin();
+
+        //nothing to connect to as long as emailing is disabled
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'error_detected' => [
+                'Those emailing settings do not work. '
+                . 'Emailing has been disabled in the preferences.'
+            ]
+        ]);
+
+        //PHP hands messages over on its own, there is nothing to reach
+        $php_request = $request->withParsedBody(
+            ['pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_PHPMAIL]
+        );
+        $test_response = $this->app->handle($php_request);
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([
+            'success_detected' => ['Those emailing settings work.']
+        ]);
+
+        //nothing listens on port 1; connection is refused right away
+        $smtp_request = $request->withParsedBody([
+            'pref_mail_method' => (string)\Galette\Core\GaletteMail::METHOD_SMTP,
+            'pref_mail_smtp_host' => '127.0.0.1',
+            'pref_mail_smtp_port' => '1'
+        ]);
+        $test_response = $this->app->handle($smtp_request);
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->assertStringStartsWith(
+            "Those emailing settings do not work. ",
+            $this->flash_data['slimFlash']['error_detected'][0]
+        );
+        $this->flash_data = [];
+
+        //ajax variant
+        $json_request = $smtp_request->withHeader('X-Requested-With', 'XMLHttpRequest');
+        $test_response = $this->app->handle($json_request);
+        $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('{"connected":false}', (string)$test_response->getBody());
+        $this->flash_data = [];
     }
 
     /**
      * Test charts route
-     *
-     * @return void
      */
     public function testCharts(): void
     {
@@ -372,14 +554,12 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Charts', $body);
     }
 
     /**
      * Test core fields configuration route
-     *
-     * @return void
      */
     public function testCoreFieldsConfiguration(): void
     {
@@ -394,14 +574,12 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core fields', $body);
     }
 
     /**
      * Test core fields configuration storage route
-     *
-     * @return void
      */
     public function testStoreCoreFieldsConfiguration(): void
     {
@@ -470,8 +648,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test core list configuration route
-     *
-     * @return void
      */
     public function testConfigureListFields(): void
     {
@@ -486,14 +662,12 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core lists', $body);
     }
 
     /**
      * Test core list configuration storage route
-     *
-     * @return void
      */
     public function testStoreConfigureListFields(): void
     {
@@ -570,8 +744,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test reminders route
-     *
-     * @return void
      */
     public function testReminders(): void
     {
@@ -586,7 +758,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Reminders', $body);
         $this->assertStringContainsString(
             '<a href="/members/reminder-filter/nearly/withmail">0 members with an email address</a>',
@@ -608,8 +780,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test do reminders route
-     *
-     * @return void
      */
     public function testDoReminders(): void
     {
@@ -645,7 +815,7 @@ class GaletteController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
         $member_two = $this->getMemberTwo();
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //create a close to be expired contribution
         $due_date = clone $now;
@@ -697,6 +867,33 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertCount(1, $lreminders->getList($this->zdb));
         $this->assertCount(1, $ireminders->getList($this->zdb));
 
+        //with a quota set, sending has to be spread over time: reminders are
+        //queued and the progress page takes over from there
+        $this->preferences->pref_mail_daily_limit = 10;
+        $test_response = $this->app->handle($request);
+        $this->expectNoLogEntry();
+        $this->expectFlashData([]);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('remindersQueue')]],
+            $test_response->getHeaders()
+        );
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $stats = $queue->getStats(mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(2, $stats['total']);
+        $this->assertSame(2, $stats['remaining']);
+        $this->assertSame(0, $stats['sent_total']);
+
+        //queuing records nothing in the reminders audit table: the very same
+        //reminders are still due once the queue is emptied
+        $this->zdb->execute(
+            $this->zdb->delete(\Galette\Core\MailingQueue::TABLE)
+        );
+        $this->preferences->pref_mail_daily_limit = 0;
+        $this->assertCount(2, $reminders->getList($this->zdb));
+
+        //without a quota, reminders are sent from the request, as before
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
         // no real email provider setup so gives an error
@@ -711,13 +908,16 @@ class GaletteController extends GaletteRoutingTestCase
         );
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('reminders')]], $test_response->getHeaders());
+        $this->assertSame(0, $queue->getStats(
+            mailing_id: null,
+            kind: \Galette\Core\MailingQueue::KIND_REMINDER
+        )['total']);
+
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
     }
 
     /**
      * Test filter reminders route
-     *
-     * @return void
      */
     public function testFilterReminders(): void
     {
@@ -737,8 +937,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test direct link route
-     *
-     * @return void
      */
     public function testDocumentLink(): void
     {
@@ -746,7 +944,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Download document', $body);
         $this->assertStringContainsString(
             sprintf('<form action="%s"', $this->routeparser->urlFor('get-directlink', ['hash' => 'testhash'])),
@@ -759,13 +957,27 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
-     * Test favicon route
+     * Data provider for empty routes
      *
-     * @return void
+     * @return array<string[]>
      */
-    public function testFavicon(): void
+    public static function emptyRoutesProvider(): iterable
     {
-        $request = $this->createRequest('defaultFavicon');
+        return [
+            ['favicon.ico'],
+            ['robots.txt']
+        ];
+    }
+
+    /**
+     * Test empty route (default favicon.ico, robots.txt, ...)
+     *
+     * @param string $url URL to test
+     */
+    #[DataProvider('emptyRoutesProvider')]
+    public function testEmptyRoute(string $url): void
+    {
+        $request = $this->createRequest('defaultEmpty', ['url' => $url]);
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);

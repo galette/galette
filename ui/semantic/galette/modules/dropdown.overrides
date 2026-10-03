@@ -2,13 +2,6 @@
         Galette Overrides
 *******************************/
 
-/*-------------
-     No JS
---------------*/
-.nojs select[multiple].ui.dropdown {
-  height: 7rem;
-}
-
 /*------------------------------
      Compact menu dropdowns
 -------------------------------*/
@@ -66,4 +59,46 @@
 .ui.search.selection.paginated.dropdown,
 .ui.search.selection.paginated.dropdown > input.search {
     padding: .67857143em 6.5em .67857143em 1em;
+}
+
+/*--------------------------------
+     Button in combo dropdown
+---------------------------------*/
+.ui.combo.dropdown.button {
+    form {
+        button.ui.item {
+            position: relative;
+            cursor: pointer;
+            display: block;
+            background-color: transparent;
+            border: @itemBorder;
+            height: @itemHeight;
+            min-height: @itemMinHeight;
+            text-align: @itemTextAlign;
+            border-top: @itemDivider;
+            border-radius: 0;
+            line-height: @itemLineHeight;
+            font-size: @itemFontSize;
+            color: @itemColor;
+            padding: @itemPadding;
+            text-transform: @itemTextTransform;
+            font-weight: @itemFontWeight;
+            box-shadow: @itemBoxShadow;
+
+            &:hover {
+                background: @hoveredItemBackground;
+                color: @hoveredItemColor;
+                z-index: @hoveredZIndex;
+            }
+
+            & > i.icon {
+                margin-right: @itemElementDistance;
+            }
+        }
+    }
+}
+@supports selector(:has(.f)) {
+  .ui.combo.pointing.dropdown:not(.upward) .menu:has(form > button:hover)::after {
+    background: @white;
+  }
 }

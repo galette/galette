@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -48,12 +36,13 @@ class ScheduledPaymentController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id_cotis Contribution id
-     *
-     * @return Response
+     * @param int $id_cotis Contribution id
      */
+    #[Route(
+        name: 'addScheduledPayment',
+        pattern: '/scheduled-payment/{id_cotis:\d+}/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, int $id_cotis = 0): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -63,19 +52,19 @@ class ScheduledPaymentController extends CrudController
             $scheduled = new ScheduledPayment($this->zdb);
         }
         $scheduled->setContribution($id_cotis);
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         if ($scheduled->getMissingAmount() == 0) {
             $this->redirectWithErrors(
                 response: $response,
+                errors: [_T("Contribution is fully scheduled!")],
                 redirect_url: $this->routeparser->urlFor(
                     'editContribution',
                     [
                         'type' => ($scheduled->getContribution()->isFee() ? Contribution::TYPE_FEE : Contribution::TYPE_DONATION),
                         'id' => (string)$id_cotis
                     ]
-                ),
-                errors: [_T("Contribution is fully scheduled!")]
+                )
             );
         }
 
@@ -95,15 +84,15 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doAddScheduledPayment',
+        pattern: '/scheduled-payments/{id_cotis:\d+}/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, null);
+        return $this->store($request, $response, id: null);
     }
 
     // /CRUD - Create
@@ -112,13 +101,14 @@ class ScheduledPaymentController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'scheduledPayments',
+        pattern: '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $get = $request->getQueryParams();
@@ -126,7 +116,7 @@ class ScheduledPaymentController extends CrudController
 
         $filter_args = [];
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
@@ -201,14 +191,13 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * List page for logged-in member
-     *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
-     *
-     * @return Response
      */
-    public function myList(Request $request, Response $response, ?string $type = null): Response
+    #[Route(
+        name: 'myScheduledPayments',
+        pattern: '/scheduled-payments/mine',
+        methods: ['GET']
+    )]
+    public function myList(Request $request, Response $response): Response
     {
         $this->show_mine = true;
         return $this->list(
@@ -222,13 +211,13 @@ class ScheduledPaymentController extends CrudController
     }
 
     /**
-     * Scheduled payments filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Scheduled payments filtering (for logged-in member)
      */
+    #[Route(
+        name: 'filterMyScheduledPayments',
+        pattern: '/scheduled-payments/mine/filter',
+        methods: ['POST']
+    )]
     public function myFilter(Request $request, Response $response): Response
     {
         $this->show_mine = true;
@@ -244,17 +233,17 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Scheduled payments filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'filterScheduledPayments',
+        pattern: '/scheduled-payments/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         $ajax = false;
         $filter_args = [];
-        if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
+        if ($this->isAjax($request)) {
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }
@@ -296,7 +285,7 @@ class ScheduledPaymentController extends CrudController
                     $this->preferences,
                     $this->login
                 );
-                $ptlist = $ptypes->getList(false);
+                $ptlist = $ptypes->getList(schedulable: false);
                 if (isset($ptlist[$ptf])) {
                     $filters->payment_type_filter = $ptf;
                 } elseif ($ptf == -1) {
@@ -322,12 +311,12 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Batch actions handler
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'batch-scheduledPaymentslist',
+        pattern: '/scheduled-payments/batch',
+        methods: ['POST']
+    )]
     public function handleBatch(Request $request, Response $response): Response
     {
         $filter_name = $this->getFilterName(static::getDefaultFilterName());
@@ -367,12 +356,13 @@ class ScheduledPaymentController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Scheduled payment id
-     *
-     * @return Response
+     * @param int $id Scheduled payment id
      */
+    #[Route(
+        name: 'editScheduledPayment',
+        pattern: '/scheduled-payment/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -381,7 +371,7 @@ class ScheduledPaymentController extends CrudController
         } else {
             $scheduled = new ScheduledPayment($this->zdb, $id);
         }
-        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+        $mode = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
         $this->view->render(
@@ -399,12 +389,13 @@ class ScheduledPaymentController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Type id
-     *
-     * @return Response
+     * @param int $id Type id
      */
+    #[Route(
+        name: 'doEditScheduledPayment',
+        pattern: '/scheduled-payments/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -413,11 +404,7 @@ class ScheduledPaymentController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Type id
-     *
-     * @return Response
+     * @param ?int $id Type id
      */
     public function store(Request $request, Response $response, ?int $id = null): Response
     {
@@ -491,8 +478,6 @@ class ScheduledPaymentController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -503,8 +488,6 @@ class ScheduledPaymentController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -518,8 +501,6 @@ class ScheduledPaymentController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -531,8 +512,6 @@ class ScheduledPaymentController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -544,8 +523,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Get default filter name
-     *
-     * @return string
      */
     public static function getDefaultFilterName(): string
     {

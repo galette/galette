@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -42,8 +29,8 @@ use Galette\Entity\Adherent;
  */
 class SavedSearches
 {
-    public const TABLE = SavedSearch::TABLE;
-    public const PK = SavedSearch::PK;
+    public const string TABLE = SavedSearch::TABLE;
+    public const string PK = SavedSearch::PK;
 
     private ?int $count = null;
 
@@ -137,8 +124,6 @@ class SavedSearches
      * Count searches from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -183,8 +168,6 @@ class SavedSearches
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -197,8 +180,6 @@ class SavedSearches
      * @param int|array<int> $ids         Searches identifiers to delete
      * @param History        $hist        History
      * @param bool           $transaction True to begin a database transaction
-     *
-     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
@@ -213,7 +194,7 @@ class SavedSearches
         if (count($list)) {
             try {
                 if ($transaction) {
-                    $this->zdb->connection->beginTransaction();
+                    $this->zdb->beginTransaction();
                 }
                 $select = $this->zdb->select(self::TABLE);
                 $select->where->in(self::PK, $list);
@@ -226,19 +207,19 @@ class SavedSearches
                     }
                 }
                 if ($transaction) {
-                    $this->zdb->connection->commit();
+                    $this->zdb->commit();
                 }
                 $hist->add(
-                    str_replace(
-                        '%list',
-                        print_r($list, true),
-                        _T("Searches deleted (%list)")
+                    sprintf(
+                        //TRANS: parameter is the list of deleted searches
+                        _T('Searches deleted (%1$s)'),
+                        print_r($list, return: true)
                     )
                 );
                 return true;
             } catch (Throwable $e) {
                 if ($transaction) {
-                    $this->zdb->connection->rollBack();
+                    $this->zdb->rollback();
                 }
                 Analog::log(
                     'An error occurred trying to remove searches | '

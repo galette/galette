@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,11 +11,13 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Galette\IO\File;
-use Galette\Util\Text;
+use Galette\Util\Html;
+use PHPMailer\PHPMailer\SMTP;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
+use function Safe\ini_get;
 use function Safe\preg_match;
 
 /**
@@ -38,19 +27,24 @@ use function Safe\preg_match;
  */
 class GaletteMail
 {
-    public const MAIL_ERROR = 0;
-    public const MAIL_SENT = 1;
+    public const int MAIL_ERROR = 0;
+    public const int MAIL_SENT = 1;
+    /** Some of the messages a batched sending is made of have left, not all */
+    public const int MAIL_PARTIAL = 2;
 
-    public const METHOD_DISABLED = 0;
-    public const METHOD_PHPMAIL = 1;
-    public const METHOD_SMTP = 2;
-    public const METHOD_QMAIL = 3;
-    public const METHOD_GMAIL = 4;
-    public const METHOD_SENDMAIL = 5;
+    public const int METHOD_DISABLED = 0;
+    public const int METHOD_PHPMAIL = 1;
+    public const int METHOD_SMTP = 2;
+    //value 3 (former METHOD_QMAIL) is no longer used, do not reuse it
+    //value 4 (former METHOD_GMAIL) is no longer used, do not reuse it
+    public const int METHOD_SENDMAIL = 5;
 
-    public const SENDER_PREFS = 0;
-    public const SENDER_CURRENT = 1;
-    public const SENDER_OTHER = 2;
+    public const int SENDER_PREFS = 0;
+    public const int SENDER_CURRENT = 1;
+    public const int SENDER_OTHER = 2;
+
+    /** Timeout, in seconds, a connection test is given */
+    public const int CONNECTION_TIMEOUT = 10;
 
     private string $sender_name;
     private string $sender_address;
@@ -64,17 +58,22 @@ class GaletteMail
     private array $errors = [];
     /** @var array<string, string> */
     private array $recipients = [];
+    /** @var array<string, string> Recipients a message has actually left for */
+    private array $sent_recipients = [];
 
     private PHPMailer $mail;
     /** @var array<int,File> */
     protected array $attachments = [];
+
+    /** Is the sending quota already handled by the caller? */
+    private bool $quota_managed = false;
 
     /**
      * Constructor
      *
      * @param Preferences $preferences Preferences instance
      */
-    public function __construct(private readonly Preferences $preferences)
+    public function __construct(protected readonly Preferences $preferences)
     {
         $this->setSender(
             $preferences->pref_email_nom,
@@ -86,89 +85,83 @@ class GaletteMail
     }
 
     /**
+     * Create the underlying PHPMailer instance.
+     * Extracted as a seam so tests can inject a double that does not
+     * actually send anything.
+     */
+    protected function createMailer(): PHPMailer
+    {
+        return new PHPMailer();
+    }
+
+    /**
      * Initialize PHPMailer
-     *
-     * @return void
      */
     private function initMailer(): void
     {
         global $i18n;
 
-        $this->mail = new PHPMailer();
+        $this->mail = $this->createMailer();
         $this->mail->Timeout = $this->timeout;
 
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
-            case self::METHOD_GMAIL:
                 //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
                 if (Galette::isDebugEnabled()) {
-                    $this->mail->SMTPDebug = 4;
+                    $this->mail->SMTPDebug = SMTP::DEBUG_CONNECTION;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468
                     $this->mail->Debugoutput = 'error_log';
                 }
 
-                if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
-                    // sets GMAIL as the SMTP server
-                    $this->mail->Host = "smtp.gmail.com";
-                    // enable SMTP authentication
-                    $this->mail->SMTPAuth   = true;
-                    // sets the prefix to the servier
-                    $this->mail->SMTPSecure = "tls";
-                    // set the SMTP port for the GMAIL server
-                    $this->mail->Port = 587;
+                $this->mail->Host = $this->preferences->pref_mail_smtp_host;
+                $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
+
+                if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
+                    //Allow "unsecure" SMTP connections if user has asked fot it or
+                    //if user did not request TLS explicitly
+                    $this->mail->SMTPOptions = [
+                        'ssl' => [
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        ]
+                    ];
+                }
+
+                if ($this->preferences->pref_mail_smtp_port) {
+                    // set the SMTP port for the SMTP server
+                    $this->mail->Port = $this->preferences->pref_mail_smtp_port;
                 } else {
-                    $this->mail->Host = $this->preferences->pref_mail_smtp_host;
-                    $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
+                    $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
+                    Analog::log(
+                        sprintf(
+                            '[%1$s]No SMTP port provided. Switch to default (%2$s).',
+                            static::class,
+                            $this->mail->Port
+                        ),
+                        Analog::INFO
+                    );
+                }
 
-                    if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
-                        //Allow "unsecure" SMTP connections if user has asked fot it or
-                        //if user did not request TLS explicitly
-                        $this->mail->SMTPOptions = [
-                            'ssl' => [
-                                'verify_peer' => false,
-                                'verify_peer_name' => false,
-                                'allow_self_signed' => true
-                            ]
-                        ];
-                    }
-
-                    if ($this->preferences->pref_mail_smtp_port) {
-                        // set the SMTP port for the SMTP server
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_port;
-                    } else {
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
-                        Analog::log(
-                            sprintf(
-                                '[%1$s]No SMTP port provided. Switch to default (%2$s).',
-                                static::class,
-                                $this->mail->Port
-                            ),
-                            Analog::INFO
-                        );
-                    }
-
-                    if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
-                        $this->mail->SMTPSecure = "ssl";
-                    } elseif ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 587) {
-                        $this->mail->SMTPSecure = "tls";
-                    }
+                if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
+                    $this->mail->SMTPSecure = "ssl";
+                } elseif ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 587) {
+                    $this->mail->SMTPSecure = "tls";
                 }
 
                 // SMTP account username
                 $this->mail->Username   = $this->preferences->pref_mail_smtp_user;
                 // SMTP account password
                 $this->mail->Password   = $this->preferences->pref_mail_smtp_password;
+                //keep the SMTP connection open across messages (mailing batches)
+                $this->mail->SMTPKeepAlive = (bool)$this->preferences->pref_mail_smtp_keepalive;
                 break;
             case self::METHOD_SENDMAIL:
                 // telling the class to use Sendmail transport
                 $this->mail->IsSendmail();
-                break;
-            case self::METHOD_QMAIL:
-                // telling the class to use QMail transport
-                $this->mail->IsQmail();
                 break;
         }
 
@@ -186,8 +179,6 @@ class GaletteMail
      * regular recipient will be the sender.
      *
      * @param array<string, string> $recipients Array (mail=>name) of all recipients
-     *
-     * @return bool
      */
     public function setRecipients(array $recipients): bool
     {
@@ -227,9 +218,226 @@ class GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return int Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return int GaletteMail::MAIL_SENT, GaletteMail::MAIL_ERROR, or
+     *             GaletteMail::MAIL_PARTIAL when a batched sending only
+     *             partly left (see getSentRecipients)
      */
     public function send(): int
+    {
+        //reinit errors array
+        $this->errors = [];
+        $this->sent_recipients = [];
+
+        if (!$this->checkQuota()) {
+            return self::MAIL_ERROR;
+        }
+
+        //when a batch size is set and there are more recipients than
+        //this size, split the mailing into several messages
+        $batch_size = (int)$this->preferences->pref_mail_batch_size;
+        if ($batch_size > 0 && count($this->recipients) > $batch_size) {
+            return $this->sendBatched(
+                $batch_size,
+                (int)$this->preferences->pref_mail_batch_delay
+            );
+        }
+
+        $this->prepareMessage();
+
+        //set at least on real recipient (not bcc)
+        if (count($this->recipients) === 1) {
+            //there is only one recipient, clean bcc and readd as simple recipient
+            $this->mail->ClearBCCs();
+            $this->mail->AddAddress(
+                key($this->recipients),
+                current($this->recipients)
+            );
+        } else {
+            //we're sending a mailing. Set main recipient to sender
+            $this->mail->AddAddress(
+                $this->getSenderAddress(),
+                $this->getSenderName()
+            );
+        }
+
+        try {
+            //let's send the email
+            if (!$this->mail->Send()) {
+                $this->errors[] = $this->mail->ErrorInfo;
+                Analog::log(
+                    'An error occurred sending email to: '
+                    . implode(', ', array_keys($this->recipients))
+                    . "\n" . $this->mail->ErrorInfo,
+                    Analog::INFO
+                );
+                unset($this->mail);
+                return self::MAIL_ERROR;
+            } else {
+                $txt = '';
+                foreach ($this->recipients as $k => $v) {
+                    $txt .= $v . ' (' . $k . '), ';
+                }
+                Analog::log(
+                    'An email has been sent to: ' . $txt,
+                    Analog::INFO
+                );
+                $this->sent_recipients = $this->recipients;
+                $this->recordQuota($this->recipients);
+                unset($this->mail);
+                return self::MAIL_SENT;
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Error sending message: ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            $this->errors[] = $e->getMessage();
+            unset($this->mail);
+            return self::MAIL_ERROR;
+        }
+    }
+
+    /**
+     * Check the configured transport can be reached, without sending anything
+     *
+     * Setting a mail server up takes several tries, and each one of them used
+     * to cost a real message. Errors, when there are any, are available from
+     * getErrors().
+     */
+    public function testConnection(): bool
+    {
+        $this->errors = [];
+
+        if ($this->preferences->pref_mail_method <= self::METHOD_DISABLED) {
+            $this->errors[] = _T("Emailing has been disabled in the preferences.");
+            return false;
+        }
+
+        $mailer = $this->getPhpMailer();
+        //someone is waiting in front of the page; do not hold it for the five
+        //minutes a real transfer is allowed to take
+        $mailer->Timeout = self::CONNECTION_TIMEOUT;
+
+        $connected = match ($this->preferences->pref_mail_method) {
+            self::METHOD_SMTP => $this->connectSmtp($mailer),
+            self::METHOD_SENDMAIL => $this->checkSendmailBinary($mailer),
+            self::METHOD_PHPMAIL => $this->checkPhpMail(),
+            default => $this->unknownMethod()
+        };
+
+        unset($this->mail);
+
+        return $connected;
+    }
+
+    /**
+     * Report a sending method this version knows nothing about
+     */
+    private function unknownMethod(): bool
+    {
+        $this->errors[] = sprintf(
+            _T("Unknown emailing method '%s'."),
+            (string)$this->preferences->pref_mail_method
+        );
+
+        return false;
+    }
+
+    /**
+     * Open then close an SMTP session
+     *
+     * smtpConnect() also authenticates when SMTPAuth is on, so credentials and
+     * TLS are really exercised, not just the socket.
+     *
+     * @param PHPMailer $mailer Mailer the transport has been set up on
+     */
+    private function connectSmtp(PHPMailer $mailer): bool
+    {
+        try {
+            if (!$mailer->smtpConnect()) {
+                //smtpConnect() does not fill ErrorInfo; the SMTP session holds
+                //the only account of what went wrong
+                $this->errors[] = $this->smtpErrorMessage($mailer->getSMTPInstance()->getError());
+                return false;
+            }
+        } catch (Throwable $e) {
+            $this->errors[] = $e->getMessage();
+            return false;
+        }
+
+        $mailer->smtpClose();
+        return true;
+    }
+
+    /**
+     * Turn an SMTP error into something an administrator can act on
+     *
+     * @param array<string, string> $error Error as reported by the SMTP session
+     */
+    private function smtpErrorMessage(array $error): string
+    {
+        $reason = $error['error'] ?? '';
+        if ($reason === '') {
+            return _T("Unable to reach the SMTP server.");
+        }
+
+        //what the server, or the socket, had to say about it
+        $details = array_filter([
+            $error['detail'] ?? '',
+            $error['smtp_code_ex'] ?? ''
+        ]);
+
+        if ($details === []) {
+            return $reason;
+        }
+
+        return $reason . ': ' . implode(' ', $details);
+    }
+
+    /**
+     * Check the sendmail binary can be run
+     *
+     * @param PHPMailer $mailer Mailer the transport has been set up on
+     */
+    private function checkSendmailBinary(PHPMailer $mailer): bool
+    {
+        //isSendmail() has already resolved the path and dropped the
+        //arguments it may carry
+        if (!is_executable($mailer->Sendmail)) {
+            $this->errors[] = sprintf(
+                _T("'%s' does not exist, or cannot be run."),
+                $mailer->Sendmail
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check PHP is able to hand a message over on its own
+     */
+    private function checkPhpMail(): bool
+    {
+        if (!function_exists('mail')) {
+            $this->errors[] = _T("The PHP mail() function is not available on this server.");
+            return false;
+        }
+
+        if (DIRECTORY_SEPARATOR !== '\\' && ini_get('sendmail_path') === '') {
+            $this->errors[] = _T("PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages to.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Prepare the message (sender, reply-to, body, signature and attachments).
+     * Recipients are *not* set here; they are handled by the caller so the
+     * message can be reused across several batches.
+     */
+    private function prepareMessage(): void
     {
         if (!isset($this->mail)) {
             $this->initMailer();
@@ -251,45 +459,29 @@ class GaletteMail
         if ($this->html) {
             //the email is html :(
             $this->mail->AltBody = $this->getTextMessage();
-            $this->mail->IsHTML(true);
+            $this->mail->IsHTML(isHtml: true);
         } else {
             //the email is plaintext :)
             $this->mail->AltBody = '';
-            $this->mail->IsHTML(false);
+            $this->mail->IsHTML(isHtml: false);
         }
 
         $this->mail->Subject = $this->subject;
         $this->mail->Body = $this->message;
-
-        //set at least on real recipient (not bcc)
-        if (count($this->recipients) === 1) {
-            //there is only one recipient, clean bcc and readd as simple recipient
-            $this->mail->ClearBCCs();
-            $this->mail->AddAddress(
-                key($this->recipients),
-                current($this->recipients)
-            );
-        } else {
-            //we're sending a mailing. Set main recipient to sender
-            $this->mail->AddAddress(
-                $this->getSenderAddress(),
-                $this->getSenderName()
-            );
-        }
 
         $signature = $this->preferences->getMailSignature($this->mail);
         if ($signature != '') {
             if ($this->html) {
                 //we are sending HTML message
                 //apply email sign to text version
-                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, true);
+                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, as_text: true);
                 //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style . '">'
                     . nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, true);
+                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, as_text: true);
             }
         }
 
@@ -301,50 +493,186 @@ class GaletteMail
                 );
             }
         }
+    }
 
-        try {
-            //reinit errors array
-            $this->errors = [];
-            //let's send the email
-            if (!$this->mail->Send()) {
-                $this->errors[] = $this->mail->ErrorInfo;
-                Analog::log(
-                    'An error occurred sending email to: '
-                    . implode(', ', array_keys($this->recipients))
-                    . "\n" . $this->mail->ErrorInfo,
-                    Analog::INFO
-                );
-                unset($this->mail);
-                return self::MAIL_ERROR;
-            } else {
-                $txt = '';
-                foreach ($this->recipients as $k => $v) {
-                    $txt .= $v . ' (' . $k . '), ';
-                }
-                Analog::log(
-                    'An email has been sent to: ' . $txt,
-                    Analog::INFO
-                );
-                unset($this->mail);
-                return self::MAIL_SENT;
+    /**
+     * Send the message to recipients in batches, reusing the SMTP connection.
+     *
+     * All recipients are added as BCC and split into chunks of at most
+     * $batch_size addresses per message, with an optional delay between two
+     * messages. This helps comply with mail servers that restrict the number
+     * of recipients per message or the sending rate.
+     *
+     * @param int $batch_size Maximum number of recipients (BCC) per message
+     * @param int $delay      Delay, in seconds, between two messages
+     *
+     * @return int GaletteMail::MAIL_SENT if every batch has been sent,
+     *             GaletteMail::MAIL_PARTIAL if only some of them have,
+     *             GaletteMail::MAIL_ERROR if none of them left
+     */
+    private function sendBatched(int $batch_size, int $delay): int
+    {
+        $this->prepareMessage();
+
+        //mailing: the main recipient is always the sender, members stay in BCC
+        $this->mail->ClearAddresses();
+        $this->mail->AddAddress(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+
+        $has_error = false;
+        $chunks = array_chunk($this->recipients, $batch_size, preserve_keys: true);
+        $nb_chunks = count($chunks);
+
+        foreach ($chunks as $i => $chunk) {
+            $this->mail->ClearBCCs();
+            foreach ($chunk as $address => $name) {
+                $this->mail->AddBCC($address, $name);
             }
-        } catch (Throwable $e) {
-            Analog::log(
-                'Error sending message: ' . $e->getMessage(),
-                Analog::ERROR
-            );
-            $this->errors[] = $e->getMessage();
-            unset($this->mail);
-            return self::MAIL_ERROR;
+
+            try {
+                if (!$this->mail->Send()) {
+                    $has_error = true;
+                    $this->errors[] = $this->mail->ErrorInfo;
+                    Analog::log(
+                        'An error occurred sending mailing batch to: '
+                        . implode(', ', array_keys($chunk))
+                        . "\n" . $this->mail->ErrorInfo,
+                        Analog::INFO
+                    );
+                } else {
+                    Analog::log(
+                        'A mailing batch has been sent to '
+                        . count($chunk) . ' recipient(s).',
+                        Analog::INFO
+                    );
+                    $this->sent_recipients += $chunk;
+                    $this->recordQuota($chunk);
+                }
+            } catch (Throwable $e) {
+                $has_error = true;
+                $this->errors[] = $e->getMessage();
+                Analog::log(
+                    'Error sending mailing batch: ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
+
+            //pause between two messages, but not after the last one
+            if ($delay > 0 && $i < $nb_chunks - 1) {
+                sleep($delay);
+            }
         }
+
+        //close the (possibly kept-alive) SMTP connection
+        $this->mail->smtpClose();
+        unset($this->mail);
+
+        if (!$has_error) {
+            return self::MAIL_SENT;
+        }
+
+        //what already left cannot be taken back: say so, so the caller does
+        //not offer to send the whole thing again
+        return count($this->sent_recipients) > 0
+            ? self::MAIL_PARTIAL
+            : self::MAIL_ERROR;
+    }
+
+    /**
+     * Recipients the last send() actually delivered to.
+     *
+     * Only a batched sending can be partial; for any other message this is
+     * either every recipient, or none of them.
+     *
+     * @return array<string, string> Recipients, as email => name
+     */
+    public function getSentRecipients(): array
+    {
+        return $this->sent_recipients;
+    }
+
+    /**
+     * Tell this message its sending is already accounted for.
+     *
+     * Messages drained from the mailing queue have been counted, and allowed,
+     * by the queue itself: they must neither be checked against the quota
+     * twice nor recorded twice.
+     *
+     * @param bool $managed Whether the caller handles the quota
+     */
+    public function setQuotaManaged(bool $managed = true): self
+    {
+        $this->quota_managed = $managed;
+        return $this;
+    }
+
+    /**
+     * Get the quota bookkeeper for this message, if there is anything to book.
+     *
+     * Returns null when the caller already handles the quota, when there is no
+     * database at hand, or when no quota is configured at all - in which case
+     * nothing is ever counted nor written.
+     */
+    private function quotaLedger(): ?MailingQueue
+    {
+        if ($this->quota_managed) {
+            return null;
+        }
+
+        global $zdb;
+        if (!$zdb instanceof Db) {
+            return null;
+        }
+
+        $queue = new MailingQueue($zdb, $this->preferences);
+        return $queue->mustQueue() ? $queue : null;
+    }
+
+    /**
+     * Is there enough quota left to send this message right now?
+     *
+     * A direct sending cannot wait for the next window: either the whole
+     * message fits in what is left, or it is not sent at all.
+     */
+    private function checkQuota(): bool
+    {
+        $queue = $this->quotaLedger();
+        if ($queue === null) {
+            return true;
+        }
+
+        $remaining = $queue->getRemainingQuota();
+        $required = count($this->recipients);
+        if ($remaining === null || $remaining >= $required) {
+            return true;
+        }
+
+        $this->errors[] = _T("Sending quota has been reached, message has not been sent.");
+        Analog::log(
+            'Sending quota reached (' . $remaining . ' left, ' . $required
+            . ' required), message to ' . implode(', ', array_keys($this->recipients))
+            . ' has not been sent.',
+            Analog::WARNING
+        );
+        return false;
+    }
+
+    /**
+     * Record recipients that have just been sent against the quota.
+     *
+     * @param array<string, string> $recipients Recipients, as email => name
+     */
+    private function recordQuota(array $recipients): void
+    {
+        $this->quotaLedger()?->recordDirect($recipients);
     }
 
     /**
      * Check if an email address is valid
      *
      * @param string $address the email address to check
-     *
-     * @return bool
      */
     public static function isValidEmail(string $address): bool
     {
@@ -362,13 +690,11 @@ class GaletteMail
      * Check if a string is a URL
      *
      * @param string $url the URL to check
-     *
-     * @return bool
      */
     public static function isUrl(string $url): bool
     {
         $valid = preg_match(
-            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:[0-9]+)?(/.*)?$|i',
+            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:\d+)?(/.*)?$|i',
             $url
         );
         if (!$valid) {
@@ -388,7 +714,7 @@ class GaletteMail
      */
     protected function getTextMessage(): string
     {
-        return Text::convertHtmlToText($this->message);
+        return Html::convertToText($this->message);
     }
 
     /**
@@ -409,8 +735,6 @@ class GaletteMail
      * Is the email HTML formatted?
      *
      * @param ?bool $set The value to set
-     *
-     * @return bool
      */
     public function isHTML(?bool $set = null): bool
     {
@@ -422,8 +746,6 @@ class GaletteMail
 
     /**
      * Get sender name
-     *
-     * @return string
      */
     public function getSenderName(): string
     {
@@ -432,8 +754,6 @@ class GaletteMail
 
     /**
      * Get sender address
-     *
-     * @return string
      */
     public function getSenderAddress(): string
     {
@@ -495,8 +815,6 @@ class GaletteMail
      * Sets the subject
      *
      * @param string $subject The subject
-     *
-     * @return self
      */
     public function setSubject(string $subject): self
     {
@@ -508,8 +826,6 @@ class GaletteMail
      * Sets the message
      *
      * @param string $message The message
-     *
-     * @return self
      */
     public function setMessage(string $message): self
     {
@@ -522,8 +838,6 @@ class GaletteMail
      *
      * @param string $name    Sender name
      * @param string $address Sender address
-     *
-     * @return self
      */
     public function setSender(string $name, string $address): self
     {
@@ -536,8 +850,6 @@ class GaletteMail
      * Set timeout on SMTP connexion
      *
      * @param int $timeout SMTP timeout
-     *
-     * @return self
      */
     public function setTimeout(int $timeout): self
     {

@@ -1,29 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers;
+namespace Galette\Tests\Controllers;
 
-use Galette\GaletteRoutingTestCase;
+use Safe\DateTime;
+use Galette\Tests\GaletteRoutingTestCase;
 
 /**
  * Transactions controller tests
@@ -38,8 +26,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -54,40 +40,13 @@ class TransactionsController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Create test transactions in database
      *
-     * @param array $data Data to set
-     *
-     * @return \Galette\Entity\Transaction
+     * @param array<string, mixed> $data Data to set
      */
     private function createTransaction(array $data = []): \Galette\Entity\Transaction
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $data = array_merge(
             [
                 'id_adh' => $this->adh->id,
@@ -113,8 +72,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -219,9 +176,9 @@ class TransactionsController extends GaletteRoutingTestCase
         );
 
         //cannot show contributions of another member
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $member_two->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$member_two->id]);
         $test_response = $this->app->handle($request);
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display transactions for member #%1$s without appropriate ACLs', $member_two->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display transactions for member #%1$s without appropriate ACLs', $member_two->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
@@ -235,7 +192,7 @@ class TransactionsController extends GaletteRoutingTestCase
         );
 
         //can show transactions of children
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $child->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$child->id]);
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -258,7 +215,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         //FIXME: should not happen
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display transactions for member #%1$s without appropriate ACLs', $child->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display transactions for member #%1$s without appropriate ACLs', $child->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
@@ -407,8 +364,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -474,8 +429,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test contributions add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -555,7 +508,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
         $this->expectFlashData([]);
 
         //change preferences so managers can see group members contributions
@@ -583,9 +536,9 @@ class TransactionsController extends GaletteRoutingTestCase
         $member_three = $this->createMember($member_three_data);
         $this->login->logout();
 
-        //simulate error while storing, values are kept in session
+        //simulate error while saving, values are kept in session
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
-        $date = new \DateTime();
+        $date = new DateTime();
         $tdata = [
             'id_adh' => $member_three->id, //member not part of "Group 1"
             'trans_date' => $date->format('Y-m-d'),
@@ -601,7 +554,7 @@ class TransactionsController extends GaletteRoutingTestCase
             ],
             $check
         );
-        $this->expectLogEntry(\Analog::ERROR, 'Please select a member from a group you manage');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Please select a member from a group you manage');
         $this->session->transaction = $transaction;
 
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
@@ -619,26 +572,26 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         $body = (string)$test_response->getBody();
-        $this->assertStringContainsString('Transaction (creation)', $body);
+        $this->assertStringContainsString('New transaction', $body);
         //member_one is listed
         $this->assertStringContainsString(
             $member_one->getNameWithCase(
-                $member_one->name,
-                $member_one->surname,
-                false,
-                (int)$member_one->id,
-                $member_one->nickname
+                name: $member_one->name,
+                surname: $member_one->surname,
+                title: false,
+                id: (int)$member_one->id,
+                nick: $member_one->nickname
             ),
             $body
         );
         //member_two is listed
         $this->assertStringContainsString(
             $member_two->getNameWithCase(
-                $member_two->name,
-                $member_two->surname,
-                false,
-                (int)$member_two->id,
-                $member_two->nickname
+                name: $member_two->name,
+                surname: $member_two->surname,
+                title: false,
+                id: (int)$member_two->id,
+                nick: $member_two->nickname
             ),
             $body
         );
@@ -650,8 +603,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions edit page
-     *
-     * @return void
      */
     public function testEditPage(): void
     {
@@ -670,7 +621,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->login->logout();
 
         $route_name = 'editTransaction';
-        $route_arguments = ['id' => $this->transaction->id];
+        $route_arguments = ['id' => (string)$this->transaction->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -684,11 +635,11 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         //transaction that does not exist
-        $request = $this->createRequest($route_name, ['id' => 999999] + $route_arguments);
+        $request = $this->createRequest($route_name, ['id' => '999999'] + $route_arguments);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'transactions'])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No transaction #999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No transaction #999999');
         $this->expectFlashData(['error_detected' => ['Unable to load transaction #999999!']]);
 
         $this->login->logout();
@@ -733,8 +684,6 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         //check for submit form requirements
         $this->assertStringContainsString('<button type="submit" name="valid"', $body, 'Submit button not found');
-        $this->assertStringContainsString('<input type="hidden" name="csrf_name"', $body, 'CSRF name field not found');
-        $this->assertStringContainsString('<input type="hidden" name="csrf_value"', $body, 'CSRF value field not found');
 
         $this->login->logOut();
         //reset admin status
@@ -755,7 +704,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to edit transaction without appropriate ACLs'
         );
         $this->expectFlashData([]);
@@ -783,8 +732,6 @@ class TransactionsController extends GaletteRoutingTestCase
         );
         //check for submit form requirements
         $this->assertStringNotContainsString('<button type="submit" name="valid"', $body, 'Submit button found!');
-        $this->assertStringNotContainsString('<input type="hidden" name="csrf_name"', $body, 'CSRF name field found!');
-        $this->assertStringNotContainsString('<input type="hidden" name="csrf_value"', $body, 'CSRF value field found!');
 
         //all attachments features are present
         $this->assertStringContainsString($this->routeparser->urlFor('addContribution', ['type' => \Galette\Entity\Contribution::TYPE_FEE]), $body);
@@ -813,13 +760,11 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test add transactions
-     *
-     * @return void
      */
     public function testAddTransaction(): void
     {
         $member_one = $this->getMemberOne();
-        $date = new \DateTime();
+        $date = new DateTime();
         $transaction_data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -956,7 +901,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
         $this->expectFlashData([]);
 
         $result = $this->zdb->execute($count_select);
@@ -1001,7 +946,7 @@ class TransactionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Please select a member from a group you manage.'
         );
         $this->expectFlashData(
@@ -1022,15 +967,13 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test edit transactions
-     *
-     * @return void
      */
     public function testEditTransaction(): void
     {
         $member_one = $this->getMemberOne();
 
         $this->logSuperAdmin();
-        $date = new \DateTime();
+        $date = new DateTime();
         $transaction_data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -1051,7 +994,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'doEditTransaction';
-        $route_arguments = ['id' => $this->transaction->id];
+        $route_arguments = ['id' => (string)$this->transaction->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
@@ -1136,7 +1079,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
         $this->expectFlashData([]);
 
         //change preferences so managers can see and create group members contributions
@@ -1156,7 +1099,7 @@ class TransactionsController extends GaletteRoutingTestCase
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
         $this->expectFlashData([]);
 
         $this->login->logout();
@@ -1164,8 +1107,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test remove transaction page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -1183,7 +1124,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'removeContribution';
-        $route_arguments = ['type' => 'transactions', 'id' => $transaction_one->id];
+        $route_arguments = ['type' => 'transactions', 'id' => (string)$transaction_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -1258,8 +1199,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test delete transaction
-     *
-     * @return void
      */
     public function testDeleteTransaction(): void
     {
@@ -1402,8 +1341,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test attach contribution
-     *
-     * @return void
      */
     public function testAttachContribution(): void
     {
@@ -1429,8 +1366,8 @@ class TransactionsController extends GaletteRoutingTestCase
 
         $route_name = 'attach_contribution';
         $route_arguments = [
-            'id' => $transaction_one->id,
-            'cid' => $contribution_one->id
+            'id' => (string)$transaction_one->id,
+            'cid' => (string)$contribution_one->id
         ];
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -1444,7 +1381,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('editTransaction', ['id' => $transaction_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('editTransaction', ['id' => (string)$transaction_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1461,8 +1398,8 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_arguments = [
-            'id' => $transaction_two->id,
-            'cid' => $contribution_two->id
+            'id' => (string)$transaction_two->id,
+            'cid' => (string)$contribution_two->id
         ];
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -1504,8 +1441,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test deattach contribution
-     *
-     * @return void
      */
     public function testDetachContribution(): void
     {
@@ -1533,8 +1468,8 @@ class TransactionsController extends GaletteRoutingTestCase
 
         $route_name = 'detach_contribution';
         $route_arguments = [
-            'id' => $transaction_one->id,
-            'cid' => $contribution_one->id
+            'id' => (string)$transaction_one->id,
+            'cid' => (string)$contribution_one->id
         ];
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -1553,7 +1488,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('editTransaction', ['id' => $transaction_one->id])]],
+            ['Location' => [$this->routeparser->urlFor('editTransaction', ['id' => (string)$transaction_one->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1570,8 +1505,8 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_arguments = [
-            'id' => $transaction_two->id,
-            'cid' => $contribution_two->id
+            'id' => (string)$transaction_two->id,
+            'cid' => (string)$contribution_two->id
         ];
         $request = $this->createRequest($route_name, $route_arguments);
 

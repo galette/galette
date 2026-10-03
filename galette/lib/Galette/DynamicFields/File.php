@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -45,12 +32,11 @@ class File extends DynamicField
         parent::__construct($zdb, $id);
         $this->has_data = true;
         $this->has_size = true;
+        $this->multi_valued = true;
     }
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -61,10 +47,8 @@ class File extends DynamicField
      * Get file name on disk
      *
      * @param int         $id     Object (member, contribution, ...) ID
-     * @param int         $pos    Position in the list of values  (0-based)
+     * @param int         $pos    Value index in the list of values (1-based)
      * @param string|null $prefix Forced file prefix; if null (defaults) form_name wil be used verbatim
-     *
-     * @return string
      */
     public function getFileName(int $id, int $pos, ?string $prefix = null): string
     {
@@ -73,7 +57,7 @@ class File extends DynamicField
             $form_name = 'member'; //fix expected filename
         }
 
-        $filename = str_replace(
+        return str_replace(
             [
                 '%form',
                 '%oid',
@@ -88,7 +72,5 @@ class File extends DynamicField
             ],
             '%form_%oid_field_%fid_value_%pos'
         );
-
-        return $filename;
     }
 }

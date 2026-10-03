@@ -1,49 +1,30 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% block content %}
         <div class="ui centered grid">
-                <noscript>
-                    <div class="ui basic segment">
-                        <div class="ui message">{{ _T("This feature requires javascript.") }}</div>
-                    </div>
-                </noscript>
-                <div class="jsonly displaynone eight wide mobile five wide computer column">
+                <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by status") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly displaynone eight wide mobile five wide computer column">
+                <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by state of dues") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly displaynone eight wide mobile five wide computer column">
+                <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Contributions types repartition") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly displaynone eight wide mobile four wide computer column">
+                <div class="eight wide mobile four wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Individuals and Companies") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::COMPANIES_OR_NOT') }}" width="320" height="320"></canvas>
                 </div>
-                <div class="jsonly displaynone sixteen wide mobile twelve wide computer column">
+                <div class="sixteen wide mobile twelve wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Contributions over time") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME') }}" width="960" height="320"></canvas>
                 </div>

@@ -1,12 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-- Replace xgettext -k_T -n
-- support string like _T("xxx") and {_T string("xxxx")}
-- generates message.po with the same symtax as regular xgettext
-- translatable string sort may differ from regular xgettext
-
-Copyright © 2005-2016 The Galette Team
+Copyright © 2003-2026 The Galette Team
 
 This file is part of Galette (https://galette.eu).
 
@@ -22,6 +17,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 
 You should have received a copy of the GNU General Public License
 along with Galette. If not, see <http://www.gnu.org/licenses/>.
+"""
+
+"""
+- Replace xgettext -k_T -n
+- support string like _T("xxx") and {_T string("xxxx")}
+- generates message.po with the same symtax as regular xgettext
+- translatable string sort may differ from regular xgettext
 
 @author Didier Chevalier <unknown@unknow.com>
 @author Johan Cwiklinski <johan@x-tnd.be>

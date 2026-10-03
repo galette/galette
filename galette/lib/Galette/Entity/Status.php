@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,11 +28,11 @@ class Status
 {
     use I18n;
 
-    public const DEFAULT_STATUS = 9;
-    public const TABLE = 'statuts';
-    public const PK = 'id_statut';
+    public const int DEFAULT_STATUS = 9;
+    public const string TABLE = 'statuts';
+    public const string PK = 'id_statut';
 
-    public const ID_NOT_EXITS = -1;
+    public const int ID_NOT_EXITS = -1;
 
 
     private int $id;
@@ -54,7 +41,7 @@ class Status
     #[Inject]
     private Login $login;
 
-    public const ID_NOT_EXISTS = -1;
+    public const int ID_NOT_EXISTS = -1;
 
     /** @var array<string> */
     private array $errors = [];
@@ -129,8 +116,6 @@ class Status
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -142,7 +127,6 @@ class Status
     /**
      * Set defaults at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -311,8 +295,6 @@ class Status
      * @param int  $id         Id
      * @param bool $translated Do we want translated or original label?
      *                         Defaults to true.
-     *
-     * @return string|int
      */
     public function getLabel(int $id, bool $translated = true): string|int
     {
@@ -380,7 +362,7 @@ class Status
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_statut'  => $label,
                 'priorite_statut' => $extra
@@ -404,10 +386,10 @@ class Status
             } else {
                 throw new \Exception('New status not added.');
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to add new status `' . $label . '` | '
                 . $e->getMessage(),
@@ -439,7 +421,7 @@ class Status
 
         try {
             $oldlabel = $ret->libelle_statut;
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_statut' => $label,
                 'priorite_statut' => $extra
@@ -460,10 +442,10 @@ class Status
                 'Status #' . $id . ' updated successfully.',
                 Analog::INFO
             );
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to update status #' . $id . ' | '
                 . $e->getMessage(),
@@ -498,7 +480,7 @@ class Status
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
 
@@ -510,10 +492,10 @@ class Status
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete status  #' . $id
                 . ' | ' . $e->getMessage(),
@@ -527,8 +509,6 @@ class Status
      * Check if this entry is used.
      *
      * @param int $id Entry ID
-     *
-     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -539,11 +519,7 @@ class Status
             $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ($result !== null) {
-                return true;
-            } else {
-                return false;
-            }
+            return $result !== null;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to check if status #' . $id
@@ -585,8 +561,6 @@ class Status
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {

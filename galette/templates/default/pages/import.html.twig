@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% block content %}
@@ -30,7 +16,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                        <i class="icon dropdown" aria-hidden="true"></i>
                         {{ _T('Existing files') }}
                     </div>
                     <div class="active content field">
@@ -40,11 +26,13 @@
                             <table class="listing ui celled striped table">
                                 <thead>
                                     <tr>
-                                        <th class="small_head collapsing"></th>
-                                        <th>{{ _T('Name') }}</th>
-                                        <th class="collapsing">{{ _T('Date') }}</th>
-                                        <th class="collapsing">{{ _T('Size') }}</th>
-                                        <th class="actions_row collapsing">{{ _T('Actions') }}</th>
+                                        <th scope="col" class="small_head collapsing">
+                                            <span class="visually-hidden">{{ _T('Choice') }}</span>
+                                        </th>
+                                        <th scope="col">{{ _T('Name') }}</th>
+                                        <th scope="col" class="collapsing">{{ _T('Date') }}</th>
+                                        <th scope="col" class="collapsing">{{ _T('Size') }}</th>
+                                        <th scope="col" class="actions_row collapsing">{{ _T('Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,10 +56,10 @@
                                         <td class="actions_row collapsing">
                                             <a
                                                 href="{{ url_for("removeCsv", {"type": "import", "file": import.name}) }}"
-                                                class="delete"
+                                                class="delete icon-only"
                                             >
-                                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                                <span class="ui special popup">{{ _T('Remove \'%1$s\' from disk')|format(import.name) }}</span>
+                                                <i class="ui trash red icon" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ _T('Remove \'%1$s\' from disk')|format(import.name) }}</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -87,7 +75,6 @@
                                     <i class="ui file import blue icon" aria-hidden="true"></i>
                                     {{ _T('Import') }}
                                 </button>
-                                {% include "components/forms/csrf.html.twig" %}
                             </div>
 {% else %}
                             <p>{{ _T('No import file actually exists.') }}<br/>{{ _T('Use upload form below to send a new file on server, or copy it directly in the imports directory.') }}</p>
@@ -100,18 +87,19 @@
                 <div class="ui basic fitted segment">
                     <div class="ui styled fluid accordion row">
                         <div class="active title">
-                            <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                            <i class="icon dropdown" aria-hidden="true"></i>
                             {{ _T('Upload new file') }}
                         </div>
                         <div class="active content field">
                             <div class="field wide">
                                 <div class="ui file action input">
-                                    <input type="file" name="new_file" accept="text/csv" id="new_file"/>
+                                    <input type="file" name="new_file" accept="text/csv" id="new_file" aria-describedby="new_file-tip"/>
                                     <label for="new_file" class="ui button">
                                         <i class="blue file csv icon" aria-hidden="true"></i>
                                         {{ _T('Choose a file') }}
                                     </label>
                                 </div>
+                                {% include "components/forms/max_size.html.twig" with {max_size: preferences.pref_upload_size_imports, input_id: "new_file"} %}
                             </div>
                         </div>
                     </div>
@@ -129,7 +117,6 @@
                             <i class="cogs icon" aria-hidden="true"></i>
                             {{ _T('Configure import model') }}
                         </a>
-                        {% include "components/forms/csrf.html.twig" %}
                     </div>
                 </div>
             </form>

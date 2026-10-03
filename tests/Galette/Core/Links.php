@@ -1,29 +1,19 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Safe\DateTime;
+use Galette\Tests\GaletteTestCase;
+
+use function Safe\base64_decode;
 
 /**
  * Password tests class
@@ -34,18 +24,15 @@ class Links extends GaletteTestCase
 {
     protected int $seed = 95842355;
     private \Galette\Core\Links $links;
-    protected array $excluded_after_methods = ['testDuplicateLinkTarget'];
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->links = new \Galette\Core\Links($this->zdb, false);
+        $this->links = new \Galette\Core\Links($this->zdb, clean: false);
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -57,30 +44,7 @@ class Links extends GaletteTestCase
     }
 
     /**
-     * Cleanup after testeach test method
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
-        $this->zdb->execute($delete);
-
-        parent::tearDown();
-    }
-
-    /**
      * Test new Link generation
-     *
-     * @return void
      */
     public function testGenerateNewLink(): void
     {
@@ -129,8 +93,6 @@ class Links extends GaletteTestCase
 
     /**
      * Test expired is invalid
-     *
-     * @return void
      */
     public function testExpiredValidate(): void
     {
@@ -158,7 +120,7 @@ class Links extends GaletteTestCase
         $this->assertSame(1, $results->count());
 
         $update = $this->zdb->update(\Galette\Core\Links::TABLE);
-        $old_date = new \DateTime();
+        $old_date = new DateTime();
         $old_date->sub(new \DateInterval('P2W'));
         $update
             ->set(['creation_date' => $old_date->format('Y-m-d')])
@@ -170,12 +132,10 @@ class Links extends GaletteTestCase
 
     /**
      * Test cleanExpired
-     *
-     * @return void
      */
     public function testCleanExpired(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('PT48H'));
 
         $insert = $this->zdb->insert(\Galette\Core\Links::TABLE);
@@ -205,7 +165,7 @@ class Links extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(2, $results->count());
 
-        new \Galette\Core\Links($this->zdb, true);
+        new \Galette\Core\Links($this->zdb, clean: true);
 
         $results = $this->zdb->execute($select);
         $result = $results->current();
@@ -215,12 +175,10 @@ class Links extends GaletteTestCase
 
     /**
      * Test duplicate target
-     *
-     * @return void
      */
     public function testDuplicateLinkTarget(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('PT48H'));
 
         $insert = $this->zdb->insert(\Galette\Core\Links::TABLE);
@@ -252,10 +210,11 @@ class Links extends GaletteTestCase
         } catch (\Exception $e) {
             $exception_trhown = true;
             $this->expectLogEntry(
-                \Analog::ERROR,
-                $this->zdb->isPostgres() ?
-                    'duplicate key value violates unique constraint "galette_tmplinks_pkey"' :
-                    "Duplicate entry '1-1' for key"
+                \Analog\Analog::ERROR,
+                //match the constraint name only: message is localised by the server
+                $this->zdb->isPostgres()
+                    ? 'galette_tmplinks_pkey'
+                    : "Duplicate entry '1-1' for key"
             );
             $this->assertSame(
                 'Duplicate entry',
@@ -263,16 +222,20 @@ class Links extends GaletteTestCase
             );
         }
         $this->assertTrue($exception_trhown, 'No exception has been thrown');
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1062',
+            'Message' => "Duplicate entry '1-1' for key 'PRIMARY'"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**
      * Create test contribution in database
-     *
-     * @return void
      */
     protected function createContribution(): void
     {
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
         $begin_date->sub(new \DateInterval('P1Y')); // 2019-11-07
         $begin_date->sub(new \DateInterval('P6M')); // 2019-05-07
@@ -303,14 +266,10 @@ class Links extends GaletteTestCase
      *
      * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
      * @param array<string,mixed>           $new_expecteds Changes on expected values
-     *
-     * @return void
      */
     protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
-        if ($contrib === null) {
-            $contrib = $this->contrib;
-        }
+        $contrib ??= $this->contrib;
 
         $begin_date = $contrib->raw_begin_date;
 

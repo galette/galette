@@ -1,0 +1,28 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+        <div class="ui icon info message">
+            <i class="lock icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("Confirm your super admin password") }}</div>
+                <p>{{ _T("This page can break your installation, be very careful.") }}</p>
+            </div>
+        </div>
+
+        <form action="{{ url_for('confirmAdvancedConfig') }}" method="post" class="ui form">
+            <div class="required field">
+                <label for="password">{{ _T("Password:") }}</label>
+                <input type="password" name="password" id="password" required="required" autocomplete="current-password" autofocus="autofocus"/>
+            </div>
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="unlock icon" aria-hidden="true"></i>
+                {{ _T("Confirm") }}
+            </button>
+        </form>
+{% endblock %}

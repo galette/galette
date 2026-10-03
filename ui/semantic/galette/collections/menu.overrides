@@ -53,18 +53,34 @@
   .ui.vertical.menu:not(.pointing) div.item .item.button::before {
     content: none;
   }
+  .ui.vertical.menu button {
+    width: 100%;
+    border-radius: 0;
+    margin-right: 0;
+    font-size: inherit;
+  }
   .ui.vertical.accordion.menu {
     a.active.item,
     a.item:hover {
       & > .title {
-        color: @hoveredTextColor;
+        color: @hoverItemTextColor;
       }
     }
   }
   .ui.vertical.inverted.pointing.menu {
-    .item:not(.active, :hover) {
+    .item {
       .small.disabled.text {
         color: @midWhite;
+      }
+      &.active {
+        .small.disabled.text {
+          color: @textColor;
+        }
+      }
+      &:hover {
+        .small.disabled.text {
+          color: @hoverItemTextColor;
+        }
       }
     }
   }
@@ -77,6 +93,23 @@
   }
 }
 
+/*--------------------------
+     Language selector
+---------------------------*/
+
+.ui.language.dropdown > .menu > .item[aria-current],
+.language.item > .content > .item[aria-current] {
+    background: @activeItemBackground !important;
+    color: @activeItemTextColor !important;
+    font-weight: @activeItemFontWeight !important;
+    box-shadow: @activeItemBoxShadow !important;
+}
+.ui.language.dropdown > .menu > .item[aria-current]:hover,
+.language.item > .content > .item[aria-current]:hover {
+    background: @activeHoverItemBackground !important;
+    color: @activeHoverItemColor !important;
+}
+
 /* --------------
       Hover
 --------------- */
@@ -85,7 +118,7 @@
 .ui.menu .dropdown.item:hover,
 .ui.menu .link.item:hover,
 .ui.menu a.item:hover {
-    color: @hoveredTextColor;
+    color: @hoverItemTextColor;
 }
 
 /* -------------------------------------------------------------------
@@ -128,7 +161,7 @@
      Compact mode logout menu
 -----------------------------------*/
 .compact_menu #logoutmenu {
-  & > a.item {
+  & > .item {
     &.darkmode {
       background-color: @darkmodeItemBackground;
       &:hover,

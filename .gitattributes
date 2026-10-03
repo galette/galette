@@ -1,4 +1,9 @@
 /.tx export-ignore
-/bin export-ignore
+# bin/console is the user facing command line interface, it ships with releases;
+# every other script in bin/ is a development tool and stays out of the archive.
+/bin/install_deps export-ignore
+/bin/release export-ignore
+/bin/router.php export-ignore
+/bin/serve export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore

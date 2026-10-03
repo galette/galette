@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -29,6 +16,8 @@ use Analog\Analog;
  * Dependencies feature
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @property-read array<string, bool> $deps
  */
 
 trait Dependencies
@@ -48,8 +37,6 @@ trait Dependencies
      * Set dependencies
      *
      * @param array<string, bool> $deps Dependencies to set
-     *
-     * @return self
      */
     public function setDeps(array $deps): self
     {
@@ -62,22 +49,18 @@ trait Dependencies
 
     /**
      * Reset dependencies to load
-     *
-     * @return self
      */
     public function disableAllDeps(): self
     {
         $this->deps = array_fill_keys(
             array_keys($this->deps),
-            false
+            value: false
         );
         return $this;
     }
 
     /**
      * Enable all dependencies to load
-     *
-     * @return self
      */
     public function enableAllDeps(): self
     {
@@ -91,8 +74,6 @@ trait Dependencies
      * Enable a load dependency
      *
      * @param string $name Dependency name
-     *
-     * @return self
      */
     public function enableDep(string $name): self
     {
@@ -112,8 +93,6 @@ trait Dependencies
      * Enable a load dependency
      *
      * @param string $name Dependency name
-     *
-     * @return self
      */
     public function disableDep(string $name): self
     {
@@ -133,8 +112,6 @@ trait Dependencies
      * Is load dependency enabled?
      *
      * @param string $name Dependency name
-     *
-     * @return bool
      */
     protected function isDepEnabled(string $name): bool
     {

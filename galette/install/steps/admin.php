@@ -1,31 +1,22 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use Galette\Core\Install as GaletteInstall;
-use Galette\Core\Db as GaletteDb;
+declare(strict_types=1);
+
+/**
+ * @var \Galette\Core\I18n $i18n
+ */
 ?>
 <form id="adminform" action="installer.php" method="post" class="ui form">
     <h2><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></h2>
     <div class="field required inline">
         <label for="install_adminlogin"><?php echo _T("Username:"); ?></label>
-        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) { echo htmlspecialchars((string) $_POST['install_adminlogin']); } ?>" required autofocus/>
+        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php echo isset($_POST['install_adminlogin']) ? htmlspecialchars((string)$_POST['install_adminlogin']) : ''; ?>" required autofocus/>
     </div>
     <div class="field required inline">
         <label for="install_adminpass"><?php echo _T("Password:"); ?></label>

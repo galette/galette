@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,8 +11,8 @@ declare(strict_types=1);
 use Galette\Core\I18n;
 use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
+use Galette\Core\Plugins;
 use Galette\Core\SlimApp;
-use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
 use Galette\Middleware\UpdateAndMaintenance;
@@ -38,57 +25,47 @@ use Slim\Routing\RouteParser;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
+use function Safe\define;
+use function Safe\ini_set;
+use function Safe\parse_url;
+
 if (!defined('GLOB_BRACE')) {
-    define('GLOB_BRACE', 0);
+    \define('GLOB_BRACE', 0); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
-    define('GALETTE_ROOT', __DIR__ . '/../');
+    \define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', '../');
+    \define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
-
+/** @var bool $needs_update */
 $needs_update = false;
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
-//Galette needs database update!
-if ($needs_update) {
-    define('GALETTE_THEME', 'themes/default/');
-    $gapp = new LightSlimApp();
-} else {
-    $gapp = new SlimApp();
-}
-$app = $gapp->getApp();
-$app->setBasePath((function () {
-    $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
-    if (stripos($uri, (string) $_SERVER['SCRIPT_NAME']) === 0) {
-        return dirname((string) $_SERVER['SCRIPT_NAME']);
-    }
-
-    $scriptDir = str_replace('\\', '/', dirname((string) $_SERVER['SCRIPT_NAME']));
-    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
-        return $scriptDir;
-    }
-
-    return '';
-})());
+/** @var Plugins $plugins */
 
 //CONFIGURE AND START SESSION
 
 //Session duration
-if (!defined('GALETTE_TIMEOUT')) {
-    //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
-    define('GALETTE_TIMEOUT', 0);
-}
+//See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+//Preferences are unavailable from the installer, from tests, and while database
+//needs an update; the constant is then the only source left.
+//GALETTE_TIMEOUT is deliberately not defined from the preference: doing so
+//would make the setting look overridden by behavior.inc.php on the advanced
+//configuration page, and log a bogus warning on every read.
+$session_lifetime = isset($preferences)
+    ? (int)$preferences->getConfigValue('pref_session_timeout')
+    : (defined('GALETTE_TIMEOUT') ? (int)GALETTE_TIMEOUT : 0);
 
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instantiate sessions,
 // we have to check here if they're assigned
+/** @var bool $installer */
 if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
 } else {
@@ -97,25 +74,53 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
 $session_name = 'galette_' . $session_name;
 $session = new SessionMiddleware([
     'name'      => $session_name,
-    'lifetime'  => GALETTE_TIMEOUT
+    'lifetime'  => $session_lifetime
 ]);
 
-$session->start();
+if (session_status() === PHP_SESSION_NONE) {
+    //Do not send the session cookie along with cross site requests.
+    //"Lax" rather than "Strict", so that following a link from an
+    //email or from the association website does not look like a logged out
+    //session.
+    ini_set('session.cookie_samesite', 'Lax');
+    $session->start();
+}
+//Galette needs database update!
+if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
+    define('GALETTE_THEME', 'themes/default/');
+    $gapp = new LightSlimApp(plugins: $plugins);
+} else {
+    $gapp = new SlimApp(plugins: $plugins);
+}
+/** @var \DI\Container $container */
+$container = $gapp->getApp()->getContainer();
+$app = $gapp->getApp();
+
+// Globals... :( - see also galette/includes/dependencies.php
+global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
+
+$app->setBasePath((function () {
+    $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+    if (stripos($uri, (string)$_SERVER['SCRIPT_NAME']) === 0) {
+        return dirname((string)$_SERVER['SCRIPT_NAME']);
+    }
+
+    $scriptDir = str_replace('\\', '/', dirname((string)$_SERVER['SCRIPT_NAME']));
+    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
+        return $scriptDir;
+    }
+
+    return '';
+})());
+
+
 $app->add($session);
 
-// Set up dependencies
-require GALETTE_ROOT . '/includes/dependencies.php';
-$app->add($app->getContainer()->get('csrf'));
-
-/**
- * Authentication middleware
- * FIXME: use DI when needed instead of global variable
- */
-$authenticate = $container->get(Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
+$app->add(\Galette\Middleware\Csrf::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 
-if ($needs_update) {
+if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     $app->add(
         new UpdateAndMaintenance(
             $container->get(I18n::class),
@@ -129,7 +134,7 @@ if ($needs_update) {
 }
 
 //Maintenance middleware
-if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get(Login::class)->isSuperAdmin()) {
+if (Galette::isUnderMaintenance() && !$container->get(Login::class)->isSuperAdmin()) {
     $app->add(
         new UpdateAndMaintenance(
             $container->get(I18n::class),
@@ -149,14 +154,7 @@ $app->add(Language::class);
 //Telemetry update middleware
 $app->add(Telemetry::class);
 
-require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
-require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
+Galette::loadRoutes($app);
 
 // Via this middleware you could access the route and routing results from the resolved route
 $app->add(function (Request $request, RequestHandler $handler) use ($container) {
@@ -185,23 +183,27 @@ $app->addRoutingMiddleware();
 /**
  * Add Error Handling Middleware
  *
- * @param bool $displayErrorDetails -> Should be set to false in production
- * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
- * @param bool $logErrorDetails -> Display error details in error log
+ * @var bool $displayErrorDetails -> Should be set to false in production
+ * @var bool $logErrors -> Parameter is passed to the default ErrorHandler
+ * @var bool $logErrorDetails -> Display error details in error log
+ * @var \Analog\Logger $logger -> Logger instance
  * which can be replaced by a callable of your choice.
  *
  * Note: This middleware should be added last. It will not handle any exceptions/errors
  * for middleware added after it.
  */
 $errorMiddleware = $app->addErrorMiddleware(
-    Galette::isDebugEnabled(),
-    true,
-    true,
-    $logger
+    displayErrorDetails: Galette::isDebugEnabled(),
+    logErrors: true,
+    logErrorDetails: true,
+    logger: $logger
 );
 
+/** @var \Slim\Handlers\ErrorHandler $errorHandler */
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();
 $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
+//also use Galette error pages for clients that do not negotiate content type (Accept: */*)
+$errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
 
 /**
  * Twig-View Middleware
@@ -209,7 +211,9 @@ $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class
  */
 $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
-$app->run();
+if (!defined('GALETTE_TESTS')) {
+    $app->run();
+}
 
 if (isset($profiler)) {
     $profiler->stop();

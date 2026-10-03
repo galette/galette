@@ -1,80 +1,44 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Preferences tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class FieldsConfig extends TestCase
+class FieldsConfig extends GaletteTestCase
 {
     private ?\Galette\Entity\FieldsConfig $fields_config = null;
-    private \Galette\Core\Db $zdb;
-    private array $members_fields;
-    private array $members_fields_cats;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        $this->members_fields_cats = $members_fields_cats;
-
+        parent::setUp();
         $this->fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->fields_config->installInit();
-    }
-
-    /**
      * Test non required fields
-     *
-     * @return void
      */
     public function testNonRequired(): void
     {
@@ -99,8 +63,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test FieldsConfig initialization
-     *
-     * @return void
      */
     public function testInstallInit(): void
     {
@@ -109,10 +71,10 @@ class FieldsConfig extends TestCase
 
         //new object with values loaded from database to compare
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();
@@ -136,20 +98,20 @@ class FieldsConfig extends TestCase
         $this->assertFalse($isrequired);
 
         $lists_config = new \Galette\Entity\ListsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats,
-            true
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats,
+            install: true
         );
         $this->assertTrue($lists_config->load());
 
         $visibles = $fields_config->getVisibilities();
         $this->assertCount(
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]) +
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]) +
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]) +
-            count($lists_config->getAclMapping()),
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
+            + count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
+            + count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
+            + count($lists_config->getAclMapping()),
             $visibles
         );
 
@@ -160,9 +122,7 @@ class FieldsConfig extends TestCase
     /**
      * Count categorized_fields
      *
-     * @param array $categorized Categorized fields
-     *
-     * @return void
+     * @param array<int, array<int, array<string, mixed>>> $categorized Categorized fields
      */
     private function countCategorizedFields(array $categorized): void
     {
@@ -174,8 +134,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test setNotRequired
-     *
-     * @return void
      */
     public function testSetNotRequired(): void
     {
@@ -200,8 +158,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test getVisibility
-     *
-     * @return void
      */
     public function testGetVisibility(): void
     {
@@ -219,8 +175,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test setFields and storage
-     *
-     * @return void
      */
     public function testSetFields(): void
     {
@@ -260,8 +214,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test isSelfExcluded
-     *
-     * @return void
      */
     public function testIsSelfExcluded(): void
     {
@@ -272,8 +224,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test checkUpdate
-     *
-     * @return void
      */
     public function testCheckUpdate(): void
     {
@@ -311,25 +261,27 @@ class FieldsConfig extends TestCase
 
         //new object instanciation should add missing field back
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();
         $this->assertSame($categorized_init, $categorized);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Fields configuration count for `adherents` columns does not match records.'
+        );
     }
 
     /**
      * Test check update when all is empty
-     *
-     * @return void
      */
     public function testCheckUpdateWhenEmpty(): void
     {
         $this->zdb->db->query(
-            'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
+            'DELETE FROM ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
         $this->zdb->db->query(
@@ -339,21 +291,24 @@ class FieldsConfig extends TestCase
 
         //new object instanciation should add missing fieldis and categories
         $fields_config = new \Galette\Entity\FieldsConfig(
-            $this->zdb,
-            \Galette\Entity\Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
         );
 
         $categorized = $fields_config->getCategorizedFields();
         $this->countCategorizedFields($categorized);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Fields configuration count for `adherents` columns does not match records. Is : 0 and should be'
+        );
     }
 
     /**
      * Test get display elements
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetDisplayElements(): void
     {
         $fields_config = $this->fields_config;
@@ -407,9 +362,8 @@ class FieldsConfig extends TestCase
 
     /**
      * Test get form elements
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetFormElements(): void
     {
         $fields_config = $this->fields_config;
@@ -512,8 +466,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test permissions list
-     *
-     * @return void
      */
     public function testGetPermissionsList(): void
     {

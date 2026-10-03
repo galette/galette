@@ -1,55 +1,37 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\DynamicFields;
+namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic texts test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Text extends TestCase
+class Text extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Text $text;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->text = new \Galette\DynamicFields\Text($this->zdb);
     }
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -59,8 +41,6 @@ class Text extends TestCase
 
     /**
      * Test get type name
-     *
-     * @return void
      */
     public function testGetTypeName(): void
     {
@@ -69,8 +49,6 @@ class Text extends TestCase
 
     /**
      * Test if basic properties are ok
-     *
-     * @return void
      */
     public function testBaseProperties(): void
     {
@@ -108,10 +86,10 @@ class Text extends TestCase
         $this->assertNull($height);
 
         $repeat = $this->text->getRepeat();
-        $this->assertSame(1, $repeat);
+        $this->assertNull($repeat);
 
         $repeat = $this->text->isRepeatable();
-        $this->assertTrue($repeat);
+        $this->assertFalse($repeat);
 
         $size = $this->text->getSize();
         $this->assertNull($size);
@@ -124,8 +102,6 @@ class Text extends TestCase
 
     /**
      * Test displayed value
-     *
-     * @return void
      */
     public function testDisplayValue(): void
     {

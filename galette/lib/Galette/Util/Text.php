@@ -1,30 +1,14 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Util;
-
-use Galette\Converter\ImageConverter;
-use League\HTMLToMarkdown\HtmlConverter;
 
 use function Safe\preg_replace;
 
@@ -40,8 +24,6 @@ class Text
      *
      * @param string $string String to slugify
      * @param string $prefix Prefix to use
-     *
-     * @return string
      */
     public static function slugify(string $string, string $prefix = ''): string
     {
@@ -61,11 +43,8 @@ class Text
     /**
      * Get a random string
      *
-     * @param int $length of the random string
-     *
-     * @return string
-     *
      * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
+     * @param int $length of the random string
      */
     public static function getRandomString(int $length): string
     {
@@ -85,8 +64,6 @@ class Text
      * @param int    $max_words Maximum number of words to keep
      * @param string $suffix    Suffix to append if truncated
      * @param bool   $keep_html Keep HTML tags or not
-     *
-     * @return string
      */
     public static function truncateOnWords(
         string $text,
@@ -110,21 +87,10 @@ class Text
      *
      * @param string $html HTML to convert
      *
-     * @return string
+     * @deprecated 1.3.0 Use Galette\Util\Html::convertToText()
      */
     public static function convertHtmlToText(string $html): string
     {
-        $converter = new HtmlConverter();
-        $environment = $converter->getEnvironment();
-        $environment->addConverter(new ImageConverter()); // optionally - add converter manually
-
-        $config = $converter->getConfig();
-        $config->setOption('strip_tags', true); //remove all tags
-        $config->setOption('hard_break', true); //convert <br> to \n only
-        $config->setOption('header_style', 'atx'); //set headers style to atx (with #)
-        $config->setOption('strip_placeholder_links', true); //to remove links without links
-        $config->setOption('remove_nodes', 'meta script style'); //nodes to just remove
-
-        return $converter->convert($html);
+        return Html::convertToText($html);
     }
 }

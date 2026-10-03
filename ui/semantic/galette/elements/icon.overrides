@@ -5,11 +5,38 @@
 /*----------------------
      Tooltips icons
 -----------------------*/
-i.circular.basic.question.icon.tooltip {
-  box-shadow: 0 0 0 .1em @textColor inset;
-  background: @white;
+i.circular.basic.question.icon {
+  button.btnlegend.ui.icon-only.link.button &,
+  &.tooltip {
+    box-shadow: 0 0 0 .1em @textColor inset;
+    background: @white;
+    color: @textColor;
+    opacity: 1;
 
-  &:hover {
-    background: @galetteHeaderBackground;
+    &:hover {
+      background: @galetteHeaderBackground;
+    }
+
+    .ui.form .field.error .corner.label & {
+      color: @textColor;
+    }
+  }
+}
+
+.experimental {
+  color: @orangeTextColor;
+
+  i.circular.basic.flask.icon.tooltip {
+    box-shadow: 0 0 0 .08em @orangeTextColor inset;
+    background: @white;
+    color: @warningColor;
+
+    &:hover {
+      background: @orangeBackground;
+    }
+
+    .ui.form .field.error .corner.label & {
+      color: @warningColor;
+    }
   }
 }

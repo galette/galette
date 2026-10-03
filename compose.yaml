@@ -1,0 +1,61 @@
+#
+# This file is part of Galette (https://galette.eu).
+# SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# Throwaway database services backing `bin/serve`, meant for development only.
+#
+# Both services sit behind a profile and are never started together: `bin/serve`
+# raises the one matching --db. It also exports the variables used below, so the
+# containers, the volumes and the schema are named after the checkout and two
+# worktrees served at once never share any state.
+#
+# Do not run `docker compose up` directly, use `bin/serve`.
+
+services:
+  mysql:
+    profiles: [mysql]
+    image: mariadb:lts
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    environment:
+      MARIADB_DATABASE: ${GALETTE_DB_NAME:?run bin/serve instead of docker compose}
+      MARIADB_USER: galette
+      MARIADB_PASSWORD: galette
+      MARIADB_ROOT_PASSWORD: galette
+    ports:
+      - "127.0.0.1:${GALETTE_DB_PORT:?run bin/serve instead of docker compose}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      # `bin/serve` relies on `up --wait`, hence on this healthcheck: connecting
+      # too early makes the install fail while reading the greeting packet.
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  pgsql:
+    profiles: [pgsql]
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${GALETTE_DB_NAME:?run bin/serve instead of docker compose}
+      POSTGRES_USER: galette
+      POSTGRES_PASSWORD: galette
+    ports:
+      - "127.0.0.1:${GALETTE_DB_PORT:?run bin/serve instead of docker compose}:5432"
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U galette -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+volumes:
+  mysql_data:
+  pgsql_data:

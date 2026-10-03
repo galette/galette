@@ -1,67 +1,43 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
+
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\unlink;
 
 /**
  * Install tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Install extends TestCase
+class Install extends BaseGaletteTestCase
 {
+    protected string $app_mode = 'INSTALL';
     private \Galette\Core\Install $install;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
+        parent::setUp();
         setlocale(LC_ALL, 'en_US');
         $this->install = new \Galette\Core\Install();
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $zdb = new \Galette\Core\Db();
-            $this->assertSame([], $zdb->getWarnings());
-        }
-    }
-
-    /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -88,8 +64,6 @@ class Install extends TestCase
 
     /**
      * Tests update scripts list
-     *
-     * @return void
      */
     public function testGetUpgradeScripts(): void
     {
@@ -122,6 +96,7 @@ class Install extends TestCase
             '1.20'  => 'upgrade-to-1.20.php',
             '1.201' => 'upgrade-to-1.201-pgsql.sql',
             '1.21'  => 'upgrade-to-1.21.php',
+            '1.30'  => 'upgrade-to-1.30.php'
         ];
 
         $this->assertSame($knowns, $update_scripts);
@@ -164,8 +139,6 @@ class Install extends TestCase
 
     /**
      * Test type step
-     *
-     * @return void
      */
     public function testTypeStep(): void
     {
@@ -183,8 +156,6 @@ class Install extends TestCase
 
     /**
      * Test DB installation step
-     *
-     * @return void
      */
     public function testInstallDbStep(): void
     {
@@ -210,8 +181,6 @@ class Install extends TestCase
 
     /**
      * Test DB upgrade step
-     *
-     * @return void
      */
     public function testUpgradeDbStep(): void
     {
@@ -238,8 +207,6 @@ class Install extends TestCase
 
     /**
      * Test unknown mode
-     *
-     * @return void
      */
     public function testUnknownMode(): void
     {
@@ -250,8 +217,6 @@ class Install extends TestCase
 
     /**
      * Test Db types
-     *
-     * @return void
      */
     public function testSetDbType(): void
     {
@@ -281,19 +246,17 @@ class Install extends TestCase
 
     /**
      * Test Db chack step (same for install and upgrade)
-     *
-     * @return void
      */
     public function testDbCheckStep(): void
     {
         $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
-            HOST_DB,
-            PORT_DB,
-            NAME_DB,
-            USER_DB,
-            PWD_DB
+            host: HOST_DB,
+            port: PORT_DB,
+            name: NAME_DB,
+            user: USER_DB,
+            pass: PWD_DB
         );
         $this->install->setTablesPrefix(
             PREFIX_DB
@@ -340,19 +303,17 @@ class Install extends TestCase
 
     /**
      * Test db install step
-     *
-     * @return void
      */
     public function testDbInstallStep(): void
     {
         $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
-            HOST_DB,
-            PORT_DB,
-            NAME_DB,
-            USER_DB,
-            PWD_DB
+            host: HOST_DB,
+            port: PORT_DB,
+            name: NAME_DB,
+            user: USER_DB,
+            pass: PWD_DB
         );
         $this->install->setTablesPrefix(
             PREFIX_DB
@@ -379,8 +340,6 @@ class Install extends TestCase
 
     /**
      * Test admin step
-     *
-     * @return void
      */
     public function testAdminStep(): void
     {
@@ -397,17 +356,95 @@ class Install extends TestCase
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
+        $this->expectNoLogEntry();
 
         $this->install->atPreviousStep();
         //db install cannot be run twice, step is still Admin
         $step = $this->install->isAdminStep();
         $this->assertTrue($step);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'It is forbidden to rerun database install!');
+    }
+
+    /**
+     * Test installer enable file lifecycle (fail-safe: presence enables)
+     */
+    public function testInstallEnabledLifecycle(): void
+    {
+        $enable_file = $this->install->getEnableInstallFilePath();
+
+        //preserve any pre-existing enable file
+        $preexisting = file_exists($enable_file);
+        $backup = $preexisting ? file_get_contents($enable_file) : null;
+        if ($preexisting) {
+            unlink($enable_file);
+        }
+
+        try {
+            //absent by default => installer disabled
+            $this->assertFalse($this->install->isInstallEnabled());
+
+            //the admin creates the file => installer enabled
+            file_put_contents($enable_file, '');
+            $this->assertTrue($this->install->isInstallEnabled());
+
+            //Galette removes it on success => installer disabled again
+            $this->assertTrue($this->install->disableInstaller());
+            $this->assertFalse($this->install->isInstallEnabled());
+            $this->assertFileDoesNotExist($enable_file);
+
+            //disabling an already disabled installer is a no-op success
+            $this->assertTrue($this->install->disableInstaller());
+        } finally {
+            if ($preexisting) {
+                file_put_contents($enable_file, (string)$backup);
+            }
+        }
+    }
+
+    /**
+     * Test loading existing config for an update (credentials, including password)
+     */
+    public function testLoadExistingConfigForUpdate(): void
+    {
+        //the update loader reads everything, including the password
+        $errors = [];
+        $loaded = $this->install->loadExistingConfigForUpdate($errors);
+        $this->assertTrue($loaded, implode(', ', $errors));
+        $this->assertCount(0, $errors);
+
+        //values are read from the on-disk config file (which the test env may
+        //override at runtime), so assert they are populated rather than equal
+        //to the live constants. The key point is the password IS loaded, unlike
+        //the legacy loadExistingConfig() which leaves it null.
+        $this->assertNotEmpty($this->install->getDbType());
+        $this->assertNotEmpty($this->install->getDbPort());
+        $this->assertNotEmpty($this->install->getDbHost());
+        $this->assertNotEmpty($this->install->getDbUser());
+        $this->assertNotEmpty($this->install->getDbName());
+        $this->assertNotEmpty($this->install->getTablesPrefix());
+        $this->assertNotEmpty($this->install->getDbPass());
+    }
+
+    /**
+     * Test database constants are defined only once (idempotent)
+     */
+    public function testInitDbConstantsIdempotent(): void
+    {
+        $errors = [];
+        $this->install->setDbType(TYPE_DB, $errors);
+        $this->install->setDsn(host: HOST_DB, port: PORT_DB, name: NAME_DB, user: USER_DB, pass: PWD_DB);
+        $this->install->setTablesPrefix(PREFIX_DB);
+
+        //constants are already defined by the bootstrap; calling this again
+        //must not raise a "constant already defined" error
+        $this->install->initDbConstants();
+        $this->install->initDbConstants();
+
+        $this->assertSame(HOST_DB, constant('HOST_DB'));
     }
 
     /**
      * Test galette initialization
-     *
-     * @return void
      */
     public function testInitStep(): void
     {

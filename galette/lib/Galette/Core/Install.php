@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -37,6 +24,7 @@ use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\opendir;
 use function Safe\preg_match;
+use function Safe\unlink;
 
 /**
  * Galette installation
@@ -45,20 +33,20 @@ use function Safe\preg_match;
  */
 class Install
 {
-    public const STEP_CHECK = 0;
-    public const STEP_TYPE = 1;
-    public const STEP_DB = 2;
-    public const STEP_DB_CHECKS = 3;
-    public const STEP_VERSION = 4; //only for update
-    public const STEP_DB_UPGRADE = 5;
-    public const STEP_DB_INSTALL = 6;
-    public const STEP_ADMIN = 7;
-    public const STEP_TELEMETRY = 8;
-    public const STEP_GALETTE_INIT = 9;
-    public const STEP_END = 10;
+    public const int STEP_CHECK = 0;
+    public const int STEP_TYPE = 1;
+    public const int STEP_DB = 2;
+    public const int STEP_DB_CHECKS = 3;
+    public const int STEP_VERSION = 4; //only for update
+    public const int STEP_DB_UPGRADE = 5;
+    public const int STEP_DB_INSTALL = 6;
+    public const int STEP_ADMIN = 7;
+    public const int STEP_TELEMETRY = 8;
+    public const int STEP_GALETTE_INIT = 9;
+    public const int STEP_END = 10;
 
-    public const INSTALL = 'i';
-    public const UPDATE = 'u';
+    public const string INSTALL = 'i';
+    public const string UPDATE = 'u';
 
     //db version/galette version mapper
     /** @var array<string, string> */
@@ -104,8 +92,6 @@ class Install
      * Return current step details
      *
      * @param string $detail Requested detail
-     *
-     * @return string
      */
     public function getStepDetail(string $detail): string
     {
@@ -113,7 +99,8 @@ class Install
         $step_documentation = null;
         switch ($this->step) {
             case self::STEP_CHECK:
-                $step_title = _T("Checks");
+                //TRANS: installation step title, where the system requirements are verified
+                $step_title = _Tx("installation step", "Checks");
                 $step_documentation = 'installation/galette.html';
                 break;
             case self::STEP_TYPE:
@@ -184,8 +171,6 @@ class Install
 
     /**
      * Get current mode
-     *
-     * @return ?string
      */
     public function getMode(): ?string
     {
@@ -194,8 +179,6 @@ class Install
 
     /**
      * Are we installing?
-     *
-     * @return bool
      */
     public function isInstall(): bool
     {
@@ -204,8 +187,6 @@ class Install
 
     /**
      * Are we upgrading?
-     *
-     * @return bool
      */
     public function isUpgrade(): bool
     {
@@ -216,8 +197,6 @@ class Install
      * Set installation mode
      *
      * @param string $mode Requested mode
-     *
-     * @return self
      */
     public function setMode(string $mode): self
     {
@@ -232,8 +211,6 @@ class Install
 
     /**
      * Go back to previous step
-     *
-     * @return void
      */
     public function atPreviousStep(): void
     {
@@ -249,7 +226,7 @@ class Install
                 $this->step = self::STEP_DB_CHECKS;
             } else {
                 if ($this->step === self::STEP_DB_UPGRADE) {
-                    $this->setInstalledVersion(null);
+                    $this->setInstalledVersion(version: null);
                 }
                 $this->step -= 1;
             }
@@ -264,9 +241,15 @@ class Install
     }
 
     /**
+     * Set step to checks
+     */
+    public function atCheckStep(): void
+    {
+        $this->step = self::STEP_CHECK;
+    }
+
+    /**
      * Are we at check step?
-     *
-     * @return bool
      */
     public function isCheckStep(): bool
     {
@@ -275,8 +258,6 @@ class Install
 
     /**
      * Set step to type of installation
-     *
-     * @return void
      */
     public function atTypeStep(): void
     {
@@ -285,8 +266,6 @@ class Install
 
     /**
      * Are we at type step?
-     *
-     * @return bool
      */
     public function isTypeStep(): bool
     {
@@ -295,8 +274,6 @@ class Install
 
     /**
      * Set step to database information
-     *
-     * @return void
      */
     public function atDbStep(): void
     {
@@ -305,8 +282,6 @@ class Install
 
     /**
      * Are we at database step?
-     *
-     * @return bool
      */
     public function isDbStep(): bool
     {
@@ -315,8 +290,6 @@ class Install
 
     /**
      * Is DB step passed?
-     *
-     * @return bool
      */
     public function postCheckDb(): bool
     {
@@ -328,8 +301,6 @@ class Install
      *
      * @param string             $type Database type
      * @param array<int, string> $errs Errors array
-     *
-     * @return self
      */
     public function setDbType(string $type, array &$errs): self
     {
@@ -346,8 +317,6 @@ class Install
 
     /**
      * Get database type
-     *
-     * @return ?string
      */
     public function getDbType(): ?string
     {
@@ -362,8 +331,6 @@ class Install
      * @param string  $name Database name
      * @param string  $user Database username
      * @param ?string $pass Database user's password
-     *
-     * @return self
      */
     public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): self
     {
@@ -379,8 +346,6 @@ class Install
      * Set tables prefix
      *
      * @param string $prefix Prefix
-     *
-     * @return self
      */
     public function setTablesPrefix(string $prefix): self
     {
@@ -390,8 +355,6 @@ class Install
 
     /**
      * Retrieve database host
-     *
-     * @return ?string
      */
     public function getDbHost(): ?string
     {
@@ -400,8 +363,6 @@ class Install
 
     /**
      * Retrieve database port
-     *
-     * @return ?string
      */
     public function getDbPort(): ?string
     {
@@ -410,8 +371,6 @@ class Install
 
     /**
      * Retrieve database name
-     *
-     * @return ?string
      */
     public function getDbName(): ?string
     {
@@ -420,8 +379,6 @@ class Install
 
     /**
      * Retrieve database user
-     *
-     * @return ?string
      */
     public function getDbUser(): ?string
     {
@@ -430,8 +387,6 @@ class Install
 
     /**
      * Retrieve database password
-     *
-     * @return string
      */
     public function getDbPass(): string
     {
@@ -440,8 +395,6 @@ class Install
 
     /**
      * Retrieve tables prefix
-     *
-     * @return ?string
      */
     public function getTablesPrefix(): ?string
     {
@@ -450,8 +403,6 @@ class Install
 
     /**
      * Set step to database checks
-     *
-     * @return void
      */
     public function atDbCheckStep(): void
     {
@@ -460,8 +411,6 @@ class Install
 
     /**
      * Are we at database check step?
-     *
-     * @return bool
      */
     public function isDbCheckStep(): bool
     {
@@ -471,26 +420,22 @@ class Install
     /**
      * Test database connection
      *
-     * @return bool
-     *
      * @throws Throwable
      */
     public function testDbConnexion(): bool
     {
         return Db::testConnectivity(
-            $this->db_type,
-            $this->db_user,
-            $this->db_pass,
-            $this->db_host,
-            $this->db_port,
-            $this->db_name
+            type: $this->db_type,
+            user: $this->db_user,
+            pass: $this->db_pass,
+            host: $this->db_host,
+            port: $this->db_port,
+            db: $this->db_name
         );
     }
 
     /**
      * Set step to version selection
-     *
-     * @return void
      */
     public function atVersionSelection(): void
     {
@@ -499,8 +444,6 @@ class Install
 
     /**
      * Are we at version selection step?
-     *
-     * @return bool
      */
     public function isVersionSelectionStep(): bool
     {
@@ -509,8 +452,6 @@ class Install
 
     /**
      * Set step to database installation
-     *
-     * @return void
      */
     public function atDbInstallStep(): void
     {
@@ -519,8 +460,6 @@ class Install
 
     /**
      * Are we at db installation step?
-     *
-     * @return bool
      */
     public function isDbinstallStep(): bool
     {
@@ -529,8 +468,6 @@ class Install
 
     /**
      * Set step to database upgrade
-     *
-     * @return void
      */
     public function atDbUpgradeStep(): void
     {
@@ -539,8 +476,6 @@ class Install
 
     /**
      * Are we at db upgrade step?
-     *
-     * @return bool
      */
     public function isDbUpgradeStep(): bool
     {
@@ -557,9 +492,7 @@ class Install
      */
     public function getScripts(?string $path = null): array
     {
-        if ($path === null) {
-            $path = GALETTE_ROOT . '/install';
-        }
+        $path ??= GALETTE_ROOT . '/install';
         $update_scripts = [];
 
         if ($this->isUpgrade()) {
@@ -633,8 +566,6 @@ class Install
      *
      * @param Db      $zdb   Database instance
      * @param ?string $spath Path to scripts
-     *
-     * @return bool
      */
     public function executeScripts(Db $zdb, ?string $spath = null): bool
     {
@@ -688,10 +619,10 @@ class Install
                         );
                     }
 
-                    $ret['message'] = str_replace(
-                        '%version',
-                        $key,
-                        _T("%version script has been successfully executed :)")
+                    $ret['message'] = sprintf(
+                        //TRANS: parameter is the update script version
+                        _T('%1$s script has been successfully executed :)'),
+                        $key
                     );
                     $ret['res'] = true;
                     $this->report[] = $ret;
@@ -700,10 +631,10 @@ class Install
                         $e->getMessage(),
                         Analog::ERROR
                     );
-                    $ret['message'] = str_replace(
-                        '%version',
-                        $key,
-                        _T("Unable to run %version update script :(")
+                    $ret['message'] = sprintf(
+                        //TRANS: parameter is the update script version
+                        _T('Unable to run %1$s update script :('),
+                        $key
                     );
                     $fatal_error = true;
                     $this->report[] = $ret;
@@ -724,8 +655,6 @@ class Install
      *
      * @param Db     $zdb       Database instance
      * @param string $sql_query SQL instructions
-     *
-     * @return bool
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
@@ -741,23 +670,28 @@ class Install
 
         $sql_query = split_sql_file($sql_query, ';');
 
-        $zdb->connection->beginTransaction();
+        $zdb->beginTransaction();
 
         $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
-            $query = trim((string) $sql_query[$i]);
+            $query = trim((string)$sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
-                //some output infos
+                //some output information
                 $ret = [
                     'message'   => $query,
                     'res'       => false
                 ];
 
                 try {
-                    $zdb->db->query(
-                        $query,
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
+                    if ($zdb->willMysqlImplicitCommit($query)) {
+                        //commit will be done, whether I like it or not...
+                        $zdb->commit();
+                        $zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+                        //restart a new transaction :/
+                        $zdb->beginTransaction();
+                    } else {
+                        $zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+                    }
                     $ret['res'] = true;
                 } catch (Throwable $e) {
                     $log_lvl = Analog::WARNING;
@@ -782,26 +716,17 @@ class Install
                 }
 
                 $queries_results[] = $ret;
+                if ($fatal_error) {
+                    break;
+                }
             }
         }
 
-        if ($fatal_error) {
-            try {
-                $zdb->connection->rollBack();
-            } catch (\PDOException $e) {
-                //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
-                    throw $e;
-                }
-            }
-        } else {
-            try {
-                $zdb->connection->commit();
-            } catch (\PDOException $e) {
-                //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
-                    throw $e;
-                }
+        if ($zdb->inTransaction()) {
+            if ($fatal_error) {
+                $zdb->rollback();
+            } else {
+                $zdb->commit();
             }
         }
 
@@ -821,8 +746,6 @@ class Install
 
     /**
      * Reinitialize report array
-     *
-     * @return void
      */
     public function reinitReport(): void
     {
@@ -831,8 +754,6 @@ class Install
 
     /**
      * Set step to super admin information
-     *
-     * @return void
      */
     public function atAdminStep(): void
     {
@@ -841,8 +762,6 @@ class Install
 
     /**
      * Are we at super admin information step?
-     *
-     * @return bool
      */
     public function isAdminStep(): bool
     {
@@ -854,8 +773,6 @@ class Install
      *
      * @param string $login Login
      * @param string $pass  Password
-     *
-     * @return self
      */
     public function setAdminInfos(string $login, string $pass): self
     {
@@ -866,8 +783,6 @@ class Install
 
     /**
      * Retrieve super admin login
-     *
-     * @return string
      */
     public function getAdminLogin(): string
     {
@@ -876,8 +791,6 @@ class Install
 
     /**
      * Retrieve super admin password
-     *
-     * @return string
      */
     public function getAdminPass(): string
     {
@@ -886,8 +799,6 @@ class Install
 
     /**
      * Set step to telemetry
-     *
-     * @return void
      */
     public function atTelemetryStep(): void
     {
@@ -896,8 +807,6 @@ class Install
 
     /**
      * Are we at telemetry step?
-     *
-     * @return bool
      */
     public function isTelemetryStep(): bool
     {
@@ -906,8 +815,6 @@ class Install
 
     /**
      * Set step to Galette initialization
-     *
-     * @return void
      */
     public function atGaletteInitStep(): void
     {
@@ -916,8 +823,6 @@ class Install
 
     /**
      * Are we at Galette initialization step?
-     *
-     * @return bool
      */
     public function isGaletteInitStep(): bool
     {
@@ -929,8 +834,6 @@ class Install
      *
      * @param array<string, string> $post_data      Data posted
      * @param array<int, string>    $error_detected Errors array
-     *
-     * @return void
      */
     public function loadExistingConfig(array $post_data, array &$error_detected): void
     {
@@ -947,11 +850,11 @@ class Install
                 || $existing['db_name'] !== null
             ) {
                 $this->setDsn(
-                    $existing['db_host'],
-                    $existing['db_port'],
-                    $existing['db_name'],
-                    $existing['db_user'],
-                    null
+                    host: $existing['db_host'],
+                    port: $existing['db_port'],
+                    name: $existing['db_name'],
+                    user: $existing['db_user'],
+                    pass: null
                 );
             }
 
@@ -961,6 +864,53 @@ class Install
                 );
             }
         }
+    }
+
+    /**
+     * Load existing config for an update, including the database password.
+     *
+     * Unlike loadExistingConfig(), this reads the stored password so that an
+     * update can run without asking the user for any credential again.
+     *
+     * @param array<int, string> $error_detected Errors array
+     *
+     * @return bool True if all required connection information has been loaded
+     */
+    public function loadExistingConfigForUpdate(array &$error_detected): bool
+    {
+        if (!file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+            $error_detected[] = _T("No configuration file found!");
+            return false;
+        }
+
+        $existing = $this->loadExistingConfigFile([], pass: true);
+
+        $required = ['db_type', 'db_host', 'db_port', 'db_user', 'db_name', 'prefix'];
+        foreach ($required as $key) {
+            if (empty($existing[$key])) {
+                $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+                return false;
+            }
+        }
+
+        //password may legitimately be empty, only its presence is required
+        if (!array_key_exists('pwd_db', $existing)) {
+            $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+            return false;
+        }
+
+        $initial_errors = count($error_detected);
+        $this->setDbType($existing['db_type'], $error_detected);
+        $this->setDsn(
+            host: $existing['db_host'],
+            port: $existing['db_port'],
+            name: $existing['db_name'],
+            user: $existing['db_user'],
+            pass: $existing['pwd_db']
+        );
+        $this->setTablesPrefix($existing['prefix']);
+
+        return count($error_detected) === $initial_errors;
     }
 
     /**
@@ -1068,8 +1018,6 @@ class Install
 
     /**
      * Write configuration file to disk
-     *
-     * @return bool
      */
     public function writeConfFile(): bool
     {
@@ -1080,7 +1028,7 @@ class Install
         ];
 
         //if config file is already up-to-date, nothing to write
-        $existing = $this->loadExistingConfigFile([], true);
+        $existing = $this->loadExistingConfigFile([], pass: true);
 
         if (
             isset($existing['db_type'])
@@ -1122,10 +1070,10 @@ class Install
             $ret['res'] = true;
             Analog::log('Configuration file written on disk', Analog::INFO);
         } else {
-            $str = str_replace(
-                '%path',
-                $conffile,
-                _T("Unable to create configuration file (%path)")
+            $str = sprintf(
+                //TRANS: parameter is the file path
+                _T('Unable to create configuration file (%1$s)'),
+                $conffile
             );
             Analog::log($str, Analog::WARNING);
             $ret['error'] = $str;
@@ -1137,8 +1085,6 @@ class Install
 
     /**
      * Get configuration file contents
-     *
-     * @return string
      */
     public function getConfigFileContents(): string
     {
@@ -1159,31 +1105,29 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
-     *
-     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         if ($this->isInstall()) {
-            $preferences = new Preferences($zdb, false);
+            $preferences = new Preferences($zdb, load: false);
             $ct = new \Galette\Entity\ContributionsTypes($zdb);
             $status = new \Galette\Entity\Status($zdb);
             include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
             include_once __DIR__ . '/../../../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
-                $zdb,
-                \Galette\Entity\Adherent::TABLE,
+                zdb: $zdb,
+                table: \Galette\Entity\Adherent::TABLE,
                 //@phpstan-ignore variable.undefined
-                $members_fields,
+                defaults: $members_fields,
                 //@phpstan-ignore variable.undefined
-                $members_fields_cats,
-                true
+                cats_defaults: $members_fields_cats,
+                install: true
             );
 
             $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles($zdb);
-
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
+            $payment_types = new \Galette\Repository\PaymentTypes($zdb, $preferences, $login);
 
             $this->error = false;
 
@@ -1208,7 +1152,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $this->proceedReport(_T("Fields config and categories"), $res);
 
             //Install texts
-            $res = $texts->installInit(false);
+            $res = $texts->installInit(check_first: false);
             $this->proceedReport(_T("Mails texts"), $res);
 
             //Install titles
@@ -1216,22 +1160,31 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $this->proceedReport(_T("Titles"), $res);
 
             //Install PDF models
-            $res = $models->installInit(false);
+            $res = $models->installInit(check_first: false);
             $this->proceedReport(_T("PDF models"), $res);
+
+            //Install payment types
+            $res = $payment_types->installInit();
+            $this->proceedReport(_T("Payment types"), $res);
 
             return !$this->error;
         } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
-            $preferences->store(true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
-            $this->proceedReport(_T("Update preferences"), true);
+            $preferences->store(updating: true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
+            $this->proceedReport(_T("Update preferences"), res: true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
-            $models->installInit(true);
-            $this->proceedReport(_T("Update models"), true);
+            $models->installInit(check_first: true);
+            $this->proceedReport(_T("Update models"), res: true);
 
             $texts = new \Galette\Entity\Texts($preferences);
-            $texts->installInit(true);
-            $this->proceedReport(_T("Mails texts"), true);
+            $texts->installInit(check_first: true);
+            $this->proceedReport(_T("Mails texts"), res: true);
+
+            //add missing system payment types right now; do not wait for first use
+            $ptypes = new \Galette\Repository\PaymentTypes($zdb, $preferences, new Login($zdb, $i18n));
+            $ptypes->checkUpdate();
+            $this->proceedReport(_T("Payment types"), res: true);
 
             return true;
         }
@@ -1243,8 +1196,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param string         $msg Report message title
      * @param bool|Throwable $res Initialization result
-     *
-     * @return void
      */
     private function proceedReport(string $msg, bool|Throwable $res): void
     {
@@ -1273,8 +1224,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      * Set step to database installation
-     *
-     * @return void
      */
     public function atEndStep(): void
     {
@@ -1283,8 +1232,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      * Are we at end step?
-     *
-     * @return bool
      */
     public function isEndStep(): bool
     {
@@ -1295,8 +1242,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Set installed version if we're upgrading
      *
      * @param ?string $version Installed version
-     *
-     * @return self
      */
     public function setInstalledVersion(?string $version): self
     {
@@ -1308,13 +1253,11 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Current Galette installed version, according to database
      *
      * @param Db $zdb Database instance
-     *
-     * @return string|false
      */
     public function getCurrentVersion(Db $zdb): string|false
     {
         try {
-            $db_ver = $zdb->getDbVersion(true);
+            $db_ver = $zdb->getDbVersion(check_table: true);
             if (isset($this->versions_mapper[$db_ver])) {
                 return $this->versions_mapper[$db_ver];
             } else {
@@ -1329,8 +1272,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Check if step is passed
      *
      * @param int $step Step
-     *
-     * @return bool
      */
     public function isStepPassed(int $step): bool
     {
@@ -1339,17 +1280,76 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      *  Initialize database constants to connect
-     *
-     * @return void
      */
     public function initDbConstants(): void
     {
-        define('TYPE_DB', $this->getDbType());
-        define('PREFIX_DB', $this->getTablesPrefix());
-        define('USER_DB', $this->getDbUser());
-        define('PWD_DB', $this->getDbPass());
-        define('HOST_DB', $this->getDbHost());
-        define('PORT_DB', $this->getDbPort());
-        define('NAME_DB', $this->getDbName());
+        if (!defined('TYPE_DB')) {
+            define('TYPE_DB', $this->getDbType());
+        }
+        if (!defined('PREFIX_DB')) {
+            define('PREFIX_DB', $this->getTablesPrefix());
+        }
+        if (!defined('USER_DB')) {
+            define('USER_DB', $this->getDbUser());
+        }
+        if (!defined('PWD_DB')) {
+            define('PWD_DB', $this->getDbPass());
+        }
+        if (!defined('HOST_DB')) {
+            define('HOST_DB', $this->getDbHost());
+        }
+        if (!defined('PORT_DB')) {
+            define('PORT_DB', $this->getDbPort());
+        }
+        if (!defined('NAME_DB')) {
+            define('NAME_DB', $this->getDbName());
+        }
+    }
+
+    /**
+     * Get the installer enable file path.
+     *
+     * The web installer only runs while this file is present on the server.
+     * Its absence (the default state) disables the installer. This fail-safe
+     * semantic means an accidental deletion can only re-secure the installer,
+     * never open it. The file is created manually by the administrator (which
+     * proves filesystem access) and removed automatically once an install or
+     * update succeeds.
+     */
+    public function getEnableInstallFilePath(): string
+    {
+        return GALETTE_ENABLE_INSTALL_FILE;
+    }
+
+    /**
+     * Is the installer enabled (i.e. is the enable file present)?
+     */
+    public function isInstallEnabled(): bool
+    {
+        return file_exists($this->getEnableInstallFilePath());
+    }
+
+    /**
+     * Disable the installer by removing the enable file.
+     *
+     * Called after a successful install or update to re-secure the installer
+     * immediately. A no-op success if the file is already absent.
+     */
+    public function disableInstaller(): bool
+    {
+        $enable_file = $this->getEnableInstallFilePath();
+        if (file_exists($enable_file)) {
+            try {
+                unlink($enable_file);
+            } catch (FilesystemException) {
+                Analog::log(
+                    'Unable to remove installer enable file: ' . $enable_file,
+                    Analog::WARNING
+                );
+                return false;
+            }
+            Analog::log('Installer enable file removed from disk', Analog::INFO);
+        }
+        return true;
     }
 }

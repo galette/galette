@@ -1,25 +1,11 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 <!DOCTYPE html>
-<html lang="{{ galette_lang }}" class="public_page">
+<html lang="{{ i18n.getWebID() }}" class="public_page"{% if i18n.isRtl() %} dir="rtl"{% endif %}>
     <head>
         {% include 'elements/header.html.twig' %}
     </head>
@@ -28,18 +14,21 @@
             <header class="ui basic center aligned segment">
                 <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />
             </header>
-            <div class="ui red message">
-                <h2 class="ui center aligned header">{{ _T("Page not found") }}</h2>
-            </div>
-            <div class="ui basic fitted center aligned segment">
-                <p class="ui large text">{{ _T("Sorry, the page you are looking for could not be found.") }}</p>
-            </div>
-            <nav class="ui basic center aligned segment">
-                <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
-                    <i class="home icon" aria-hidden="true"></i>
-                    {{ _T("Home") }}
-                </a>
-            </nav>
+            <main>
+                {% include 'elements/noscript.html.twig' %}
+                <div class="ui red message">
+                    <h1 class="ui center aligned header">{{ _T("Page not found") }}</h1>
+                </div>
+                <div class="ui basic fitted center aligned segment">
+                    <p class="ui large text">{{ _T("Sorry, the page you are looking for could not be found.") }}</p>
+                </div>
+                <div class="ui basic center aligned segment">
+                    <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
+                        <i class="home icon" aria-hidden="true"></i>
+                        {{ _T("Home") }}
+                    </a>
+                </div>
+            </main>
         </div>
 
         {% include "elements/footer.html.twig" %}

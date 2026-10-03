@@ -1,86 +1,40 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * Update tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Install extends TestCase
+class Install extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    /** @var array<string> */
-    protected array $flash_data;
-    private \Slim\Flash\Messages $flash;
-    private \DI\Container $container;
+    protected bool $db_transactions = false;
+    protected string $app_mode = 'NEED_UPDATE';
     private string $latest_prefix = 'latest_galette_';
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
+        global $galette_log_var;
         setlocale(LC_ALL, 'en_US');
-
-        $flash_data = [];
-        $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
-
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from dependencies.php
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        $container = $app->getContainer();
-        $_SERVER['HTTP_HOST'] = '';
-
-        $container->set(\Slim\Flash\Messages::class, $this->flash);
-
-        $this->container = $container;
-
-        $this->zdb = $container->get(\Galette\Core\Db::class);
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::setUp();
+        $galette_log_var = null; //reset error messages after dependencies have been loaded - errors are specific to tests and can be ignored
     }
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testDbSupport(): void
     {
@@ -89,11 +43,13 @@ class Install extends TestCase
 
     /**
      * Test updates
-     *
-     * @return void
      */
     public function testUpdates(): void
     {
+        //update scripts run under installer context (see webroot/installer.php)
+        global $installer;
+        $installer = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used in _T()
+
         $install = new \Galette\Core\Install();
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install',
@@ -121,12 +77,19 @@ class Install extends TestCase
 
         $this->assertTrue($exec);
         $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
+
+        //on a properly versioned database, the installed version is detectable,
+        //which lets the installer auto-skip the manual version selection step
+        $this->assertNotFalse($install->getCurrentVersion($this->zdb));
+
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Upgrading from 0.6 will soon be discontinued.'
+        );
     }
 
     /**
      * Test updated database schema against fresh installed one
-     *
-     * @return void
      */
     public function testUpdatedDatabase(): void
     {
@@ -149,9 +112,9 @@ class Install extends TestCase
         //make sure all tables are present
         $this->assertEquals(
             array_map(
-                fn($table) =>
+                fn($table)
                     //table prefix differs
-                    str_replace($latest_prefix, PREFIX_DB, $table),
+                    => str_replace($latest_prefix, PREFIX_DB, $table),
                 $latest_tables
             ),
             $tables
@@ -181,15 +144,15 @@ class Install extends TestCase
 
                 //Q&D fixes... :'(
                 if (
-                    !$db->isPostgres() &&
-                    $table_name === 'galette_cotisations' &&
-                    (
-                        $latest_column->getName() === 'id_type_cotis' ||
-                        $latest_column->getName() === 'type_paiement_cotis'
+                    !$db->isPostgres()
+                    && $table_name === 'galette_cotisations'
+                    && (
+                        $latest_column->getName() === 'id_type_cotis'
+                        || $latest_column->getName() === 'type_paiement_cotis'
                     )
                 ) {
                     //dunno why default is not correct, 1.15-mysql upgrade does contain the correct statement.
-                    $column->setColumnDefault(null);
+                    $column->setColumnDefault(columnDefault: null);
                 }
 
                 $this->assertEquals(
@@ -210,7 +173,7 @@ class Install extends TestCase
             $this->assertSame(
                 count($latest_constraints),
                 count($constraints),
-                sprintf('Constraints count differs on %s!', $table_name) . print_r($constraints, true) . print_r($latest_constraints, true)
+                sprintf('Constraints count differs on %s!', $table_name) . print_r($constraints, return: true) . print_r($latest_constraints, return: true)
             );
 
             //constraint naming in mysql is not explicit, so we can't rely on it
@@ -251,7 +214,9 @@ class Install extends TestCase
                     'FOREIGN KEY-galette_searches-id_adh--' => 'FOREIGN KEY-galette_searches-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_socials-id_adh--' => 'FOREIGN KEY-galette_socials-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_tmppasswds-id_adh--' => 'FOREIGN KEY-galette_tmppasswds-id_adh-galette_adherents-id_adh',
-                    'FOREIGN KEY-galette_transactions-id_adh--' => 'FOREIGN KEY-galette_transactions-id_adh-galette_adherents-id_adh'
+                    'FOREIGN KEY-galette_transactions-id_adh--' => 'FOREIGN KEY-galette_transactions-id_adh-galette_adherents-id_adh',
+                    'FOREIGN KEY-galette_twofactor-id_adh--' => 'FOREIGN KEY-galette_twofactor-id_adh-galette_adherents-id_adh',
+                    'FOREIGN KEY-galette_twofactor_codes-id_adh--' => 'FOREIGN KEY-galette_twofactor_codes-id_adh-galette_adherents-id_adh'
                 ];
             }
             $rules_fails = [];
@@ -287,8 +252,8 @@ class Install extends TestCase
 
                 if (!in_array($key, $fail_mapping)) {
                     $this->assertSame(
-                        $constraint->getReferencedTableName() ?? '',
-                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? ''),
+                        $constraint->getReferencedTableName() ?? '', //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
+                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? ''), //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
                         sprintf(
                             'Constraint %1$s incorrect',
                             $key
@@ -311,11 +276,52 @@ class Install extends TestCase
     }
 
     /**
+     * Test data integrity after the 0.70 latin1 -> UTF-8 conversion.
+     *
+     * The 0.6 fixtures (tests/mysql_06.sql, tests/pgsql_06.sql) store accented
+     * labels in latin1 (byte 0xe9 for "é") and MUST be loaded with a latin1
+     * client (`mysql --default-character-set=latin1` / `PGCLIENTENCODING=LATIN1`),
+     * as the CI does (see .github/workflows/ci-linux.yml). After the upgrade those
+     * labels must read back as valid UTF-8 — neither mojibake nor double-encoded.
+     */
+    public function testUpdatedDatabaseContent(): void
+    {
+        // Read back over a dedicated connection (same pattern as
+        // testUpdatedDatabase()) to be independent from the upgrade session.
+        $db = new \Galette\Core\Db();
+
+        $select = $db->select('statuts');
+        $select->columns(['id_statut', 'libelle_statut']);
+        $statuts = [];
+        foreach ($db->execute($select) as $row) {
+            $statuts[(int)$row->id_statut] = $row->libelle_statut;
+        }
+
+        $this->assertSame('Président', $statuts[1]);
+        $this->assertSame('Trésorier', $statuts[2]);
+        $this->assertSame('Secrétaire', $statuts[3]);
+        $this->assertSame('Vice-président', $statuts[10]);
+
+        $select = $db->select('types_cotisation');
+        $select->columns(['id_type_cotis', 'libelle_type_cotis']);
+        $types = [];
+        foreach ($db->execute($select) as $row) {
+            $types[(int)$row->id_type_cotis] = $row->libelle_type_cotis;
+        }
+
+        $this->assertSame('Cotisation annuelle réduite', $types[2]);
+        $this->assertSame('Donation pécuniaire', $types[5]);
+
+        // Byte-level guards: make double-encoding / mojibake failures unambiguous.
+        $this->assertTrue(mb_check_encoding($statuts[1], 'UTF-8'));
+        $this->assertSame(9, mb_strlen($statuts[1], 'UTF-8')); // "Président" = 9 chars
+        $this->assertSame(10, strlen($statuts[1])); // one "é" = 2 bytes => 10 bytes
+    }
+
+    /**
      * Build constraint key since we can not rely on mysql ones
      *
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint Constraint from which key must be built
-     *
-     * @return string
      */
     private function buildConstraintKey(\Laminas\Db\Metadata\Object\ConstraintObject $constraint): string
     {
@@ -333,8 +339,16 @@ class Install extends TestCase
                 $constraint->getType(),
                 str_replace($this->latest_prefix, PREFIX_DB, $constraint->getTableName()),
                 implode('|', $constraint->getColumns()),
-                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getReferencedTableName() ?? ''),
+                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getReferencedTableName() ?? ''), //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
                 implode('|', $constraint->getReferencedColumns())
+            );
+        }
+        if ($constraint->isCheck()) {
+            return sprintf(
+                '%s-%s-%s',
+                $constraint->getType(),
+                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getTableName()),
+                $constraint->getCheckClause()
             );
         }
 
@@ -347,8 +361,6 @@ class Install extends TestCase
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint Constraint from installed database
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint        Constraint from updated database
      * @param string                                       $rule_type         Rule type (either 'update' or 'delete')
-     *
-     * @return void
      */
     private function checkFkeysRules(
         \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint,

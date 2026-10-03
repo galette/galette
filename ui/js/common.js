@@ -1,31 +1,12 @@
-/*!
- * Copyright © 2007-2024 The Galette Team
- *
+/**
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Javascript
- * @package   Galette
- *
- * @author Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7dev - 2007-10-06
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 /* Fomantic UI components */
 var _bindFomanticComponents = function() {
     var
@@ -35,12 +16,13 @@ var _bindFomanticComponents = function() {
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
-        $popup           = $('a[title], .tooltip'),
+        $popup           = $('a[title], button[title], .tooltip'),
+        $iconOnly        = $('.icon-only'),
         $inlinePopup     = $('.inline-tooltip'),
         $infoPopup       = $('i.circular.basic.question.icon.tooltip'),
-        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
-        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
-        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
+        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title], .ui.vertical.accordion.menu button[title]'),
+        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title], .ui.top.fixed.menu button.item[title]'),
+        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title], .ui.dropdown.right-aligned button[title]')
     ;
 
     $sidebar.sidebar('attach events', '.toc.item');
@@ -85,6 +67,16 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             inline: false,
             addTouchEvents: false,
+        })
+    ;
+    $iconOnly.each(function() {
+        const $this = $(this);
+        $this.popup({
+            variation: 'inverted',
+            inline: false,
+            addTouchEvents: false,
+            content: $this.find('.visually-hidden').html(),
+            });
         })
     ;
     $inlinePopup
@@ -150,37 +142,24 @@ var _keyboardNavigation = function() {
             }
         })
     });
-    // Mobile menu trigger
-    var _mobile_menu_trigger = document.querySelector('#top-navbar a.toc.item');
-    _mobile_menu_trigger.addEventListener('keydown', event => {
-        if (event.keyCode == 13) {
-            // Open mobile menu
-            event.target.click();
-            // Jump to mobile menu
-            var url = location.href;
-            location.href = "#sidebarmenu";
-            history.replaceState(null,null,url);
-        }
-    });
-}
-
-/* Required for keyboard accessibility on simple dropdowns with autosubmit.
- */
-var _bindDropdownsAutosubmit = function() {
-    $('.ui.dropdown.autosubmit').dropdown({
-        action: function(text, value, element) {
-            var element = element.parentElement !== undefined ? element : element[0];
-            var dropdown = element.closest('.ui.dropdown');
-            var form = element.closest('form');
-            $(dropdown).dropdown('set value', value);
-            $(dropdown).dropdown('hide');
-            $(form).trigger('submit');
-        }
-    });
+    // Mobile menu trigger. Opening it is the business of the button, which
+    // answers to Enter and to Space on its own; what is left to do here is to
+    // take the reading position into the panel it just opened.
+    var _mobile_menu_trigger = document.querySelector('#top-navbar .toc.item');
+    if (_mobile_menu_trigger) {
+        _mobile_menu_trigger.addEventListener('click', event => {
+            // a click with no pointer behind it was a key press
+            if (event.detail === 0) {
+                var url = location.href;
+                location.href = "#sidebarmenu";
+                history.replaceState(null,null,url);
+            }
+        });
+    }
 }
 
 var _bind_check = function(boxelt) {
-    if (typeof(boxelt) == 'undefined') {
+    if (boxelt === undefined) {
         boxelt = 'entries_sel'
     }
     var _is_checked = true;
@@ -201,10 +180,10 @@ var _bind_check = function(boxelt) {
                 _haschecked = true;
             }
         });
-        if (!_haschecked) {
-            _is_checked = true;
-        } else {
+        if (_haschecked) {
             _is_checked = false;
+        } else {
+            _is_checked = true;
         }
         return false;
     });
@@ -217,31 +196,87 @@ var _bind_legend = function() {
     });
 }
 
+/* Turn the server side flash messages into Fomantic UI toasts.
+ * The messages are the only rendering browsers without javascript get, so
+ * they live in the markup; here they are replayed as toasts, then dropped.
+ */
+var _bind_messages = function() {
+    var $messages = $('#messages');
+
+    if (!$.fn.toast) {
+        /* Fomantic did not load: show the messages where they are rather than
+         * leaving the user without any feedback at all.
+         */
+        $messages.show();
+        return;
+    }
+
+    $messages.children('.ui.message').each(function() {
+        var $message = $(this),
+            $content = $message.children('.content').first(),
+            $header  = $content.children('.header').first(),
+            title    = $header.length ? $header.html().trim() : '',
+            options  = {
+                position: 'top attached',
+                closeIcon: true,
+                title: title,
+                showIcon: $message.data('toastIcon'),
+                class: $message.data('toastClass')
+            }
+        ;
+
+        $header.remove();
+        options.message = $content.html().trim();
+
+        if ($message.data('toastPersistent')) {
+            options.displayTime = 0;
+        } else {
+            options.displayTime = 'auto';
+            options.minDisplayTime = 5000;
+            options.wordsPerMinute = 80;
+            options.showProgress = 'bottom';
+        }
+
+        $('body').toast(options);
+    });
+
+    $messages.remove();
+
+    /* Enable dismissable messages */
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
+    });
+
+    /* Apply transitions on inline messages */
+    $('.message.with-transition').transition('flash');
+}
+
 $(function() {
-    $('.nojs').removeClass('nojs').addClass('jsenabled');
-    /* Display/enable elements required only when javascript is active */
-    $('.jsenabled .jsonly.displaynone').removeClass('displaynone');
-    $('.jsenabled .jsonly.disabled').removeClass('disabled');
-    $('.jsenabled .jsonly.read-only').removeClass('read-only');
-    $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search clearable selection dropdown');
+    /* First, so that a failure further down never costs the user a message. */
+    _bind_messages();
 
     _bindFomanticComponents();
 
-    _bindDropdownsAutosubmit();
+    /* Add the accessibility semantics and keyboard behaviour for Fomantic
+     * dropdowns, including form submission for autosubmit dropdowns.
+     */
+    _dropdownA11y.install();
 
     _keyboardNavigation();
 
     var _back2Top = document.getElementById("back2top");
-    document.body.addEventListener('scroll', function() {
-        if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-            _back2Top.style.display = "block";
-        } else {
-            _back2Top.style.display = "none";
+    if (_back2Top) {
+        document.body.addEventListener('scroll', function() {
+            if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+                _back2Top.style.display = "block";
+            } else {
+                _back2Top.style.display = "none";
+            }
+        });
+        _back2Top.onclick = function(event){
+            event.preventDefault();
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
         }
-    });
-    _back2Top.onclick = function(event){
-        event.preventDefault();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
     }
 });

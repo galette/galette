@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -27,9 +14,14 @@ $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',
     'unimpersonate'                     => 'member',
+    'adminCredentials'                  => 'superadmin',
+    'storeAdminCredentials'             => 'superadmin',
     '/(.+)?admin(.+)?/i'                => 'superadmin',
+    '/(.+)?[aA]dvancedConfig(.+)?/i'    => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'admin',
     'setRegistered'                     => 'admin',
+    'authAttempts'                      => 'admin',
+    'doAuthAttempts'                    => 'admin',
     '/(.+)?preferences(.+)?/i'          => 'admin',
     '/(.+)?(Core|Dynamic|List)Field(.+)?/i'  => 'admin', //dynamic fields are for admins only
     '/(.+)?removeSearch(.+)?/i'         => 'member',
@@ -37,7 +29,16 @@ $core_acls = [
     'advanced-search'                   => 'groupmanager',
     '/(.+)?search(.+)?/i'               => 'member',
     'testEmail'                         => 'admin',
+    'testEmailConnection'               => 'admin',
     'dashboard'                         => 'member',
+    'ajaxNews'                          => 'member', //dashboard news, displayed to whoever the dashboard is
+    //every member manages their own second factor
+    'two-factor-manage'                 => 'member',
+    'two-factor-enrol'                  => 'member',
+    'do-two-factor-enrol'               => 'member',
+    'do-two-factor-disable'             => 'member',
+    'do-two-factor-codes'               => 'member',
+    'do-two-factor-reset'               => 'staff',
     'sysinfos'                          => 'staff',
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',
@@ -46,6 +47,8 @@ $core_acls = [
     'doMailing'                         => 'groupmanager',
     'mailingPreview'                    => 'groupmanager',
     'mailingRecipients'                 => 'groupmanager',
+    'mailingQueue'                      => 'groupmanager',
+    'mailingProcessQueue'               => 'groupmanager',
     '/(.+)?history(.+)?/i'              => 'staff',
     '/(.+)?import(.+)?/i'               => 'staff',
     '/(.+)?export(.+)?/i'               => 'staff',
@@ -69,6 +72,7 @@ $core_acls = [
     'member'                            => 'member',
     'pdf-members-cards'                 => 'member',
     'editMember'                        => 'member',
+    'memberVCard'                       => 'member',
     '/(.+)?addMemberChild/i'            => 'member',
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
@@ -79,8 +83,8 @@ $core_acls = [
     'getDynamicFile'                    => 'member',
     // /Members rules
     // Groups rules
+    'doAddGroup'                        => 'staff', //adding group is for staff only
     '/(.+)?group(.+)?/i'                => 'groupmanager',
-    'add_group'                         => 'staff', //adding group is for staff only
     // /Groups rules
 
     '/(.+)?text(.+)?/i'                 => 'staff',
@@ -92,7 +96,7 @@ $core_acls = [
     '/(.+)?dynamicTranslation(.+)?/i'   => 'staff',
     'previewAttachment'                 => 'groupmanager',
     'getCsv'                            => 'staff',
-    'pdfModels'                         => 'staff',
+    '/(store)?pdfModels/i'              => 'staff',
     'attendance_sheet_details'          => 'groupmanager',
     'attendance_sheet'                  => 'groupmanager',
     '/(.+)?document(.+)?/i'             => 'staff',

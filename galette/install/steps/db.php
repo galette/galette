@@ -1,26 +1,22 @@
 <?php
+
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+declare(strict_types=1);
 
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
+/**
+ * @var GaletteInstall $install
+ * @var \Galette\Core\I18n $i18n
+ */
+
+$error_detected = [];
 //define default database port
 $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
 if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
@@ -39,16 +35,13 @@ echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
     $install->loadExistingConfig($_POST, $error_detected);
-} elseif (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-    echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
-    $install->loadExistingConfig($_POST, $error_detected);
 }
 ?>
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
-                <option value="mysql"<?php if ($install->getDbType() === GaletteDb::MYSQL) {echo ' selected="selected"'; } ?>>Mysql</option>
-                <option value="pgsql"<?php if ($install->getDbType() === GaletteDb::PGSQL) {echo ' selected="selected"'; } ?>>Postgresql</option>
+                <option value="mysql"<?php echo $install->getDbType() === GaletteDb::MYSQL ? ' selected="selected"' : ''; ?>>Mysql</option>
+                <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
             </select>
         </div>
         <div id="install_dbconfig">
@@ -77,9 +70,9 @@ if ($install->isUpgrade()) {
                 <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
 <?php
 if ($install->isUpgrade()) {
-    echo '<div class="ui compact floating orange message"><p>' .
-        _T("(Indicate the CURRENT prefix of your Galette tables)") .
-        '</p></div>';
+    echo '<div class="ui compact floating orange message"><p>'
+        . _T("(Indicate the CURRENT prefix of your Galette tables)")
+        . '</p></div>';
 }
 ?>
             </div>

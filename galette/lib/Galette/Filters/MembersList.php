@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -35,14 +22,14 @@ use Slim\Views\Twig;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property ?string $filter_str
- * @property ?int $field_filter
- * @property ?int $membership_filter
- * @property ?int $filter_account
- * @property ?int $email_filter
- * @property ?int $group_filter
- * @property int[] $selected
- * @property int[] $unreachable
- * @property string $query
+ * @property ?int    $field_filter
+ * @property ?int    $membership_filter
+ * @property ?int    $filter_account
+ * @property ?int    $email_filter
+ * @property ?int    $group_filter
+ * @property int[]   $selected
+ * @property int[]   $unreachable
+ * @property string  $query
  */
 
 class MembersList extends Pagination
@@ -85,18 +72,14 @@ class MembersList extends Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
-        return 'nom_adh';
+        return 'list_adh_name';
     }
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -141,18 +124,10 @@ class MembersList extends Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
-        if (in_array($name, $this->pagination_fields)) {
-            return true;
-        } elseif (in_array($name, $this->memberslist_fields)) {
-            return true;
-        }
-
-        return false;
+        return in_array($name, $this->pagination_fields) || in_array($name, $this->memberslist_fields);
     }
 
     /**
@@ -160,8 +135,6 @@ class MembersList extends Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -261,8 +234,6 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Twig $view Template reference
-     *
-     * @return void
      */
     public function setViewCommonsFilters(Twig $view): void
     {

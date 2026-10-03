@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% set can_edit = group.canEdit(login) %}
 
 {% set managers = group.getManagers() %}
@@ -27,7 +13,7 @@
     <div class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Information") }}{% if group.getId() %} <span style="float:right;">{{ _T("Creation date:") }} {{ group.getCreationDate() }}</span>{% endif %}
             </div>
             <div class="active content field">
@@ -83,16 +69,16 @@
     <div id="group_managers" class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Managers") }} ({{ managers|length }})
             </div>
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <a href="#" class="jsonly disabled ui labeled icon button" id="btnmanagers_small">
+                    <button type="button" class="ui labeled icon button" id="btnmanagers_small">
                         <i class="user shield icon" aria-hidden="true"></i>
                         {{ _T("Manage managers") }}
-                    </a>
+                    </button>
                     {% endif %}
                     {% include "elements/group_persons.html.twig" with {'person_mode': "managers", 'persons': managers} %}
                 {% endif %}
@@ -103,16 +89,16 @@
     <div id="group_members" class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                <i class="icon dropdown" aria-hidden="true"></i>
                 {{ _T("Members") }} ({{ members|length }})
             </div>
             <div class="active content field">
                 {% if group %}
                     {% if login.isAdmin() or login.isStaff() %}
-                    <a href="#" class="jsonly disabled ui labeled icon button" id="btnusers_small">
+                    <button type="button" class="ui labeled icon button" id="btnusers_small">
                         <i class="user icon" aria-hidden="true"></i>
                         {{ _T("Manage members") }}
-                    </a>
+                    </button>
                     {% endif %}
                     {% include "elements/group_persons.html.twig" with {'person_mode': "members", 'persons': members} %}
                 {% endif %}
@@ -126,7 +112,6 @@
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
             <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
-            {% include "components/forms/csrf.html.twig" %}
         {% endif %}
         </div>
     </div>

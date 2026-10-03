@@ -1,36 +1,27 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
+use function Safe\define;
+use function Safe\ini_set;
+
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
-    define('GALETTE_ROOT', __DIR__ . '/../');
+    //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
+    \define('GALETTE_ROOT', __DIR__ . '/../');
 }
 
 require_once GALETTE_ROOT . '/includes/sys_config/versions.inc.php';
 require_once GALETTE_ROOT . '/includes/sys_config/paths.inc.php';
 
 // check required PHP version...
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {  //@phpstan-ignore if.alwaysFalse
     echo 'Galette is NOT compliant with your current PHP version. '
         . 'Galette requires PHP ' . GALETTE_PHP_MIN
         . ' minimum and current version is ' . phpversion();
@@ -39,13 +30,12 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', './');
+    //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
+    \define('GALETTE_BASE_PATH', './');
 }
 
 //we'll only include relevant parts if we work from installer
-if (!isset($installer)) {
-    $installer = false;
-}
+$installer ??= false;
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
@@ -61,7 +51,7 @@ if (
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
-if (isset($installer) && $installer !== true) {
+if ($installer !== true) {
     //If we're not working from installer
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
@@ -83,26 +73,17 @@ if (
     $profiler->start();
 }
 
-//Version to display
-if (!defined('GALETTE_HIDE_VERSION')) {
-    define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
-}
-
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
 if (!defined('GALETTE_DEBUG')) {
-    define('GALETTE_DEBUG', false);
-}
-
-if (!defined('GALETTE_ADAPTATIVE_CARDS')) {
-    define('GALETTE_ADAPTATIVE_CARDS', false);
+    define('GALETTE_DEBUG', value: false);
 }
 
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
-        'true',
+        '1',
         [
             'expires'   => time() + 31536000, //valid for a year
             'path'      => '/'
@@ -117,10 +98,11 @@ Logger stuff
 ------------------------------------------------------------------------------*/
 
 error_reporting(E_ALL);
-set_error_handler(function ($severity, $message, $file, $line): void {
+set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
     if (error_reporting() & $severity) {
-        throw new \ErrorException($message, 0, $severity, $file, $line);
+        throw new \ErrorException(message: $message, code: 0, severity: $severity, filename: $file, line: $line);
     }
+    return true;
 });
 
 //change default format so the 3rd param is a string for level name
@@ -144,12 +126,9 @@ if (defined('GALETTE_TESTS')) {
 } else {
     $galette_log_var = null;
 
-    if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
+    if (!$installer || defined('GALETTE_LOGGER_CHECKED')) {
         //logs everything in galette log file
-        if (!isset($logfile)) {
-            //if no filename has been setted (ie. from install), set default one
-            $logfile = 'galette';
-        }
+        $logfile ??= 'galette';
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
         $galette_run_log = LevelName::init(Handler\File::init($log_path));
     } else {
@@ -183,10 +162,12 @@ if (!$installer && !defined('GALETTE_TESTS')) {
         /**
          * Set the path to the current theme templates
          */
-        define(
-            '_CURRENT_THEME_PATH',
-            GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
-        );
+        if (!defined('_CURRENT_THEME_PATH')) {
+            define(
+                '_CURRENT_THEME_PATH',
+                GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
+            );
+        }
 
         if (!defined('GALETTE_THEME')) {
             define(

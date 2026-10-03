@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -53,65 +40,66 @@ use Galette\Features\Dynamics;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?int $id
- * @property int|Title|null $title Either a title id or an instance of Title
- * @property ?string $stitle Title label
- * @property string $company_name
- * @property string $name
- * @property ?string $surname
- * @property string $nickname
- * @property ?string $birthdate Localized birthdate
- * @property ?string $rbirthdate Raw birthdate
- * @property string $birth_place
- * @property int $gender
- * @property string $sgender Gender label
- * @property ?string $job
- * @property string $language
- * @property int $status
- * @property string $sstatus Status label
- * @property ?string $address
- * @property ?string $zipcode
- * @property ?string $town
- * @property ?string $country
- * @property ?string $phone
- * @property ?string $gsm
- * @property ?string $email
- * @property string $gnupgid
- * @property string $fingerprint
- * @property ?string $login
- * @property ?string $password Encrypted password
- * @property string $creation_date Localized creation date
- * @property string $modification_date Localized modification date
- * @property ?string $due_date Localized due date
- * @property ?string $rdue_date Due date
- * @property ?string $others_infos
- * @property ?string $others_infos_admin
- * @property Picture $picture
- * @property Group[] $groups
- * @property Group[] $managed_groups
- * @property int|Adherent|null $parent Parent id if parent dep is not loaded, Adherent instance otherwise
- * @property Adherent[] $children
- * @property bool $admin better to rely on isAdmin()
- * @property bool $staff better to rely on isStaff()
- * @property bool $due_free better to rely on isDueFree()
- * @property bool $appears_in_list better to rely on appearsInMembersList()
- * @property bool $active better to rely on isActive()
- * @property bool $duplicate better to rely on isDuplicate()
- * @property string $sadmin yes/no
- * @property string $sstaff yes/no
- * @property string $sdue_free yes/no
- * @property string $sappears_in_list yes/no
- * @property string $sactive yes/no
- * @property string $sfullname
- * @property string $sname
- * @property string $saddress
- * @property string $contribstatus State of member contributions
- * @property int $days_remaining
- * @property-read int $parent_id
- * @property Social $social Social networks/Contact
- * @property string $number Member number
- * @property-read bool $self_adh
- * @property ?string $region
+ * @property      ?int              $id
+ * @property      int|Title|null    $title              Either a title id or an instance of Title
+ * @property      ?string           $stitle             Title label
+ * @property      string            $company_name
+ * @property      string            $name
+ * @property      ?string           $surname
+ * @property      string            $nickname
+ * @property      ?string           $birthdate          Localized birthdate
+ * @property      ?string           $rbirthdate         Raw birthdate
+ * @property      string            $birth_place
+ * @property      int               $gender
+ * @property      string            $sgender            Gender label
+ * @property      ?string           $job
+ * @property      string            $language
+ * @property      int               $status
+ * @property      string            $sstatus            Status label
+ * @property      ?string           $address
+ * @property      ?string           $zipcode
+ * @property      ?string           $town
+ * @property      ?string           $country
+ * @property      ?string           $phone
+ * @property      ?string           $gsm
+ * @property      ?string           $email
+ * @property      string            $gnupgid
+ * @property      string            $fingerprint
+ * @property      ?string           $login
+ * @property      ?string           $password           Encrypted password
+ * @property      string            $creation_date      Localized creation date
+ * @property      string            $modification_date  Localized modification date
+ * @property      ?string           $due_date           Localized due date
+ * @property      ?string           $rdue_date          Due date
+ * @property      ?string           $others_infos
+ * @property      ?string           $others_infos_admin
+ * @property      ?Picture          $picture
+ * @property      Group[]           $groups
+ * @property      Group[]           $managed_groups
+ * @property      int|Adherent|null $parent             Parent id if parent dep is not loaded, Adherent instance otherwise
+ * @property      Adherent[]        $children
+ * @property      bool              $admin              better to rely on isAdmin()
+ * @property      bool              $staff              better to rely on isStaff()
+ * @property      bool              $due_free           better to rely on isDueFree()
+ * @property      bool              $appears_in_list    better to rely on appearsInMembersList()
+ * @property      bool              $active             better to rely on isActive()
+ * @property      bool              $duplicate          better to rely on isDuplicate()
+ * @property      string            $sadmin             yes/no
+ * @property      string            $sstaff             yes/no
+ * @property      string            $sdue_free          yes/no
+ * @property      string            $sappears_in_list   yes/no
+ * @property      string            $sactive            yes/no
+ * @property      string            $sfullname
+ * @property      string            $sname
+ * @property      string            $saddress
+ * @property      string            $contribstatus      State of member contributions
+ * @property      int               $days_remaining
+ * @property-read int               $parent_id
+ * @property      Social            $social             Social networks/Contact
+ * @property      string            $number             Member number
+ * @property-read bool              $self_adh
+ * @property      ?string           $region
+ * @property      array<int,Social> $socials
  */
 class Adherent implements AccessManagementInterface
 {
@@ -119,19 +107,19 @@ class Adherent implements AccessManagementInterface
     use Socials;
     use HasEvent;
 
-    public const TABLE = 'adherents';
-    public const PK = 'id_adh';
+    public const string TABLE = 'adherents';
+    public const string PK = 'id_adh';
 
-    public const NC = 0;
-    public const MAN = 1;
-    public const WOMAN = 2;
+    public const int NC = 0;
+    public const int MAN = 1;
+    public const int WOMAN = 2;
 
-    public const AFTER_ADD_DEFAULT = 0;
-    public const AFTER_ADD_TRANS = 1;
-    public const AFTER_ADD_NEW = 2;
-    public const AFTER_ADD_SHOW = 3;
-    public const AFTER_ADD_LIST = 4;
-    public const AFTER_ADD_HOME = 5;
+    public const int AFTER_ADD_DEFAULT = 0;
+    public const int AFTER_ADD_TRANS = 1;
+    public const int AFTER_ADD_NEW = 2;
+    public const int AFTER_ADD_SHOW = 3;
+    public const int AFTER_ADD_LIST = 4;
+    public const int AFTER_ADD_HOME = 5;
 
     private ?int $id = null;
     //Identity
@@ -257,6 +245,11 @@ class Adherent implements AccessManagementInterface
     /**
      * Returns default values for a new member
      *
+     * The password is deliberately absent: an account created without one gets
+     * its unusable hash from check(), or from store() when it was never
+     * checked. Generating it here would cost a bcrypt round on every single
+     * instantiation, for a value discarded as soon as a password is provided.
+     *
      * @return array<string, mixed>
      */
     public function getDefaultValues(): array
@@ -268,7 +261,7 @@ class Adherent implements AccessManagementInterface
         //Default values for both creation and update
         $defaults = [
             'gender' => self::NC,
-            'login' => $gp->makeRandomPassword(15),
+            'login' => $gp->makeRandomLogin(),
             //fields that cannot be null in database
             'surname'  => '',
             'nickname' => '',
@@ -287,7 +280,6 @@ class Adherent implements AccessManagementInterface
                 'creation_date' => date("Y-m-d"),
                 'status' => $this->getDefaultStatus(),
                 'title' => null,
-                'password' => $gp->makeRandomPassword(),
                 'picture' => new Picture(),
                 'admin' => false,
                 'staff' => false,
@@ -302,8 +294,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Apply default values
-     *
-     * @return void
      */
     public function applyDefaultValues(): void
     {
@@ -351,8 +341,6 @@ class Adherent implements AccessManagementInterface
      * Loads a member from its login
      *
      * @param string $login login for the member to load
-     *
-     * @return bool
      */
     public function loadFromLoginOrMail(string $login): bool
     {
@@ -380,8 +368,6 @@ class Adherent implements AccessManagementInterface
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -469,21 +455,17 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Load member parent
-     *
-     * @return void
      */
     private function loadParent(): void
     {
         if (isset($this->parent) && !$this->parent instanceof Adherent) {
-            $deps = array_fill_keys(array_keys($this->deps), false);
+            $deps = array_fill_keys(array_keys($this->deps), value: false);
             $this->parent = new Adherent($this->zdb, (int)$this->parent, $deps);
         }
     }
 
     /**
      * Load member children
-     *
-     * @return void
      */
     private function loadChildren(): void
     {
@@ -508,8 +490,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Load member groups
-     *
-     * @return void
      */
     public function loadGroups(): void
     {
@@ -519,8 +499,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Load member social network/contact information
-     *
-     * @return void
      */
     public function loadSocials(): void
     {
@@ -529,9 +507,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Retrieve status from preferences
-     *
-     * @return int
-     *
      */
     private function getDefaultStatus(): int
     {
@@ -541,8 +516,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Check for dues status
-     *
-     * @return void
      */
     private function checkDues(): void
     {
@@ -609,8 +582,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is member admin?
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -619,8 +590,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is user member of staff?
-     *
-     * @return bool
      */
     public function isStaff(): bool
     {
@@ -629,8 +598,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is member freed of dues?
-     *
-     * @return bool
      */
     public function isDueFree(): bool
     {
@@ -641,8 +608,6 @@ class Adherent implements AccessManagementInterface
      * Is member in specified group?
      *
      * @param string $group_name Group name
-     *
-     * @return bool
      */
     public function isGroupMember(string $group_name): bool
     {
@@ -662,8 +627,6 @@ class Adherent implements AccessManagementInterface
      * Is member manager of specified group?
      *
      * @param ?string $group_name Group name
-     *
-     * @return bool
      */
     public function isGroupManager(?string $group_name): bool
     {
@@ -687,8 +650,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Does current member represents a company?
-     *
-     * @return bool
      */
     public function isCompany(): bool
     {
@@ -697,8 +658,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is current member a man?
-     *
-     * @return bool
      */
     public function isMan(): bool
     {
@@ -707,8 +666,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is current member a woman?
-     *
-     * @return bool
      */
     public function isWoman(): bool
     {
@@ -718,8 +675,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Can member appear in public members list?
-     *
-     * @return bool
      */
     public function appearsInMembersList(): bool
     {
@@ -728,8 +683,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is member active?
-     *
-     * @return bool
      */
     public function isActive(): bool
     {
@@ -738,8 +691,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Does member have uploaded a picture?
-     *
-     * @return bool
      */
     public function hasPicture(): bool
     {
@@ -748,8 +699,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Does member have a parent?
-     *
-     * @return bool
      */
     public function hasParent(): bool
     {
@@ -758,8 +707,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Does member have children?
-     *
-     * @return bool
      */
     public function hasChildren(): bool
     {
@@ -860,8 +807,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is member a sponsor for current period?
-     *
-     * @return bool
      */
     public function isSponsor(): bool
     {
@@ -871,7 +816,7 @@ class Adherent implements AccessManagementInterface
 
         //calculate begin date of period
         if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
-            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
             $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
         } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
             $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
@@ -931,11 +876,11 @@ class Adherent implements AccessManagementInterface
         $results = $zdb->execute($select);
         $row = $results->current();
         return self::getNameWithCase(
-            $row->nom_adh,
-            $row->prenom_adh,
-            false,
-            ($wid === true ? (int)$row->id_adh : false),
-            ($wnick === true ? $row->pseudo_adh : false)
+            name: $row->nom_adh,
+            surname: $row->prenom_adh,
+            title: false,
+            id: $wid === true ? (int)$row->id_adh : false,
+            nick: $wnick === true ? $row->pseudo_adh : false
         );
     }
 
@@ -947,8 +892,6 @@ class Adherent implements AccessManagementInterface
      * @param false|Title  $title   Member title to show or false
      * @param false|int    $id      Member id to display or false
      * @param false|string $nick    Member nickname to display or false
-     *
-     * @return string
      */
     public static function getNameWithCase(
         ?string $name,
@@ -990,8 +933,6 @@ class Adherent implements AccessManagementInterface
      * @param Db     $zdb    Database instance
      * @param int    $id_adh Member identifier
      * @param string $pass   New password
-     *
-     * @return bool
      */
     public static function updatePassword(Db $zdb, int $id_adh, string $pass): bool
     {
@@ -1013,8 +954,6 @@ class Adherent implements AccessManagementInterface
      * Get field label
      *
      * @param string $field Field name
-     *
-     * @return string
      */
     private function getFieldLabel(string $field): string
     {
@@ -1057,8 +996,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Mark as self membership
-     *
-     * @return void
      */
     public function setSelfMembership(): void
     {
@@ -1067,8 +1004,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Is member up to date?
-     *
-     * @return bool
      */
     public function isUp2Date(): bool
     {
@@ -1096,8 +1031,6 @@ class Adherent implements AccessManagementInterface
      * @param Preferences         $preferences Preferences instance
      * @param array<string,mixed> $fields      Members fields configuration
      * @param History             $history     History instance
-     *
-     * @return void
      */
     public function setDependencies(
         Preferences $preferences,
@@ -1190,15 +1123,9 @@ class Adherent implements AccessManagementInterface
 
                 // now, check validity
                 if ($key !== 'mdp_adh') { //mdp_adh is handled after all data has been set
-                    if (empty($this->id) && empty($value) && ($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                    if (empty($this->id) && empty($value) && $key == 'login_adh' && !isset($required[$key])) {
                         $p = new Password($this->zdb);
-                        $generated_value = $p->makeRandomPassword(15);
-                        if ($key == 'login_adh') {
-                            //'@' is not permitted in logins
-                            $value = str_replace('@', 'a', $generated_value);
-                        } else {
-                            $value = $generated_value;
-                        }
+                        $value = $p->makeRandomLogin();
                     }
                     $this->validate($key, $value, $values);
                 }
@@ -1210,25 +1137,22 @@ class Adherent implements AccessManagementInterface
             $this->validate('mdp_adh', $values['mdp_adh'], $values);
         }
 
+        if (empty($this->id) && !isset($this->password)) {
+            //no password provided; the account gets a hash nothing can match,
+            //which also satisfies the mandatory password check below
+            $this->password = (new Password($this->zdb))->makeUnusablePasswordHash();
+        }
+
         // missing required fields?
         foreach (array_keys($required) as $key) {
             $prop = $this->fields[$key]['propname'];
 
-            if (!isset($disabled[$key])) {
-                $mandatory_missing = false;
-                if (!isset($this->$prop) || $this->$prop == '') {
-                    $mandatory_missing = true;
-                } elseif ($key === 'titre_adh' && $this->$prop == '-1') {
-                    $mandatory_missing = true;
-                }
-
-                if ($mandatory_missing === true) {
-                    $this->errors[] = sprintf(
-                        //TRANS: parameter is an hTML link to the field with its name
-                        _T('- Mandatory field %1$s empty.'),
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                    );
-                }
+            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is an HTML link to the field with its name
+                    _T('- Mandatory field %1$s empty.'),
+                    '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
+                );
             }
         }
 
@@ -1237,7 +1161,12 @@ class Adherent implements AccessManagementInterface
             $this->parent = null;
         }
 
-        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
+        //group managers must attach the members they create or edit to a group
+        //they own; their own card, and their children's, are not concerned.
+        $own_card = $this->id !== null && $this->id === $login->id;
+        $child_card = $this->parent_id === $login->id;
+
+        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && !$own_card && !$child_card) {
             if (!isset($values['groups_adh'])) {
                 $owned_group = false;
                 //when editing an existing member, check in his existing groups
@@ -1269,7 +1198,7 @@ class Adherent implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a member' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -1291,8 +1220,6 @@ class Adherent implements AccessManagementInterface
      * @param string              $field  Field name
      * @param mixed               $value  Value we want to set
      * @param array<string,mixed> $values All values, for some references
-     *
-     * @return void
      */
     public function validate(string $field, mixed $value, array $values): void
     {
@@ -1365,10 +1292,10 @@ class Adherent implements AccessManagementInterface
 
                         $years = (int)$diff->format('%R%Y');
                         if ($years <= -200) {
-                            $this->errors[] = str_replace(
-                                '%years',
-                                (string)($years * -1),
-                                _T('- Members must be less than 200 years old (currently %years)!')
+                            $this->errors[] = sprintf(
+                                //TRANS: parameter is the computed age
+                                _T('- Members must be less than 200 years old (currently %1$s)!'),
+                                ($years * -1)
                             );
                         }
                     }
@@ -1433,13 +1360,13 @@ class Adherent implements AccessManagementInterface
             case 'login_adh':
                 $this->$prop = $value;
                 /** FIXME: add a preference for login length */
-                if (strlen((string) $value) < 2) {
-                    $this->errors[] = str_replace(
-                        '%i',
-                        '2',
-                        _T("- The username must be composed of at least %i characters!")
+                if (strlen((string)$value) < 2) {
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the minimum number of characters
+                        _T('- The username must be composed of at least %1$s characters!'),
+                        '2'
                     );
-                } elseif (str_contains((string) $value, '@')) {
+                } elseif (str_contains((string)$value, '@')) {
                     //check if login does not contain the @ character
                     $this->errors[] = _T("- The username cannot contain the @ character");
                 } else {
@@ -1481,7 +1408,7 @@ class Adherent implements AccessManagementInterface
                     $this->errors[] = _T("- The passwords don't match!");
                 } elseif (
                     $this->self_adh === true
-                    && !crypt((string) $value, (string) $values['mdp_crypt']) == $values['mdp_crypt']
+                    && !crypt((string)$value, (string)$values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
@@ -1489,7 +1416,7 @@ class Adherent implements AccessManagementInterface
                     //check if value is already a hash
                     if ($pinfos['algo'] == 0) {
                         $this->$prop = password_hash(
-                            (string) $value,
+                            (string)$value,
                             PASSWORD_BCRYPT
                         );
 
@@ -1514,10 +1441,10 @@ class Adherent implements AccessManagementInterface
                     $results = $this->zdb->execute($select);
                     $result = $results->current();
                     if (!$result) {
-                        $this->errors[] = str_replace(
-                            '%id',
-                            (string)$value,
-                            _T("Status #%id does not exists in database.")
+                        $this->errors[] = sprintf(
+                            //TRANS: parameter is the status identifier
+                            _T('Status #%1$s does not exists in database.'),
+                            $value
                         );
                         break;
                     }
@@ -1551,7 +1478,11 @@ class Adherent implements AccessManagementInterface
                 if (in_array($value, [self::NC, self::MAN, self::WOMAN])) {
                     $this->$prop = (int)$value;
                 } else {
-                    $this->errors[] = _T("Gender %gender does not exists!");
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is the gender
+                        _T('Gender %1$s does not exists!'),
+                        $value
+                    );
                 }
                 break;
             case 'parent_id':
@@ -1608,8 +1539,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Store the member
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -1696,6 +1625,8 @@ class Adherent implements AccessManagementInterface
                     }
                 }
 
+                $values['mdp_adh'] ??= (new Password($this->zdb))->makeUnusablePasswordHash();
+
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
@@ -1705,7 +1636,7 @@ class Adherent implements AccessManagementInterface
                     // logging
                     if ($this->self_adh) {
                         $hist->add(
-                            _T("Self_subscription as a member: ")
+                            _T("Self registration as a member:")
                             . static::getNameWithCase($this->name, $this->surname),
                             $this->sname
                         );
@@ -1776,8 +1707,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Update member modification date
-     *
-     * @return void
      */
     private function updateModificationDate(): void
     {
@@ -1842,8 +1771,6 @@ class Adherent implements AccessManagementInterface
      * Global getter method
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -1966,8 +1893,6 @@ class Adherent implements AccessManagementInterface
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -2000,8 +1925,6 @@ class Adherent implements AccessManagementInterface
      * Get member email
      * If member does not have an email address but is attached to
      * another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getEmail(): string
     {
@@ -2017,8 +1940,6 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member address.
      * If member does not have an address but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getAddress(): string
     {
@@ -2034,8 +1955,6 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member zipcode.
      * If member does not have an address but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getZipcode(): string
     {
@@ -2052,8 +1971,6 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member town.
      * If member does not have an address but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getTown(): string
     {
@@ -2070,8 +1987,6 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member region.
      * If member does not have an address but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getRegion(): string
     {
@@ -2088,8 +2003,6 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member country.
      * If member does not have an address but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
      */
     public function getCountry(): string
     {
@@ -2105,8 +2018,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Get member age
-     *
-     * @return string
      */
     public function getAge(): string
     {
@@ -2131,10 +2042,10 @@ class Adherent implements AccessManagementInterface
             return '';
         }
 
-        return str_replace(
-            '%age',
-            (string)$d->diff(new DateTime())->y,
-            _T(' (%age years old)')
+        return sprintf(
+            //TRANS: parameter is the age
+            _T(' (%1$s years old)'),
+            $d->diff(new DateTime())->y
         );
     }
 
@@ -2168,7 +2079,7 @@ class Adherent implements AccessManagementInterface
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a member files' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -2179,8 +2090,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Set member as duplicate
-     *
-     * @return void
      */
     public function setDuplicate(): void
     {
@@ -2256,8 +2165,6 @@ class Adherent implements AccessManagementInterface
      * Can current logged-in user create member
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -2277,8 +2184,6 @@ class Adherent implements AccessManagementInterface
      * Can current logged-in user display member
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -2298,8 +2203,6 @@ class Adherent implements AccessManagementInterface
      * Can current logged-in user edit member
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -2331,8 +2234,6 @@ class Adherent implements AccessManagementInterface
      * Can current logged-in user delete member
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canDelete(Login $login): bool
     {
@@ -2342,8 +2243,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Are we currently duplicated a member?
-     *
-     * @return bool
      */
     public function isDuplicate(): bool
     {
@@ -2354,8 +2253,6 @@ class Adherent implements AccessManagementInterface
      * Flag creation mail sending
      *
      * @param bool $send True (default) to send creation email
-     *
-     * @return Adherent
      */
     public function setSendmail(bool $send = true): self
     {
@@ -2365,8 +2262,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Should we send administrative emails to member?
-     *
-     * @return bool
      */
     public function sendEMail(): bool
     {
@@ -2389,8 +2284,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Get current due status
-     *
-     * @return int
      */
     public function getDueStatus(): int
     {
@@ -2399,8 +2292,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Get prefix for events
-     *
-     * @return string
      */
     protected function getEventsPrefix(): string
     {
@@ -2411,7 +2302,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Get QR codes associated to member
      *
-     * @return QrCode[]
+     * @return array<string, QrCode>
      */
     public function getQrCodes(): array
     {
@@ -2463,8 +2354,6 @@ class Adherent implements AccessManagementInterface
 
     /**
      * Get member vCard
-     *
-     * @return VCard
      */
     public function getVCard(): VCard
     {

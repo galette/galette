@@ -9,3 +9,30 @@
 .ui.right.aligned.toggle.checkbox input:active ~ label {
  color: @textColor !important;
 }
+
+/*---------------------------------------------
+    Use emotive colors on toggle checkboxes
+-----------------------------------------------*/
+.ui.toggle.checkbox.emotive label::before {
+    background-color: @negativeColor;
+}
+.ui.toggle.checkbox.emotive input:focus ~ label::before {
+    background-color: @negativeColorFocus;
+}
+.ui.toggle.checkbox.emotive input:hover ~ label::before {
+    background-color: @negativeColorHover;
+}
+.ui.toggle.checkbox.emotive input:checked ~ label::before {
+    background-color: @positiveColor;
+}
+.ui.toggle.checkbox.emotive input:focus:checked ~ label::before {
+    background-color: @positiveColorFocus;
+}
+.ui.toggle.checkbox.emotive input:hover:checked ~ label::before {
+    background-color: @positiveColorHover;
+}
+.ui.toggle.checkbox.emotive.indeterminate label::before,
+.ui.toggle.checkbox.emotive.indeterminate input:focus ~ label::before,
+.ui.toggle.checkbox.emotive.indeterminate input:hover ~ label::before {
+    background-color: @toggleCenterLaneBackground;
+}

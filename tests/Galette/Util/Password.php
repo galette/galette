@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Util;
+namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 use Galette\Core\Preferences;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -32,42 +19,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Password extends TestCase
+class Password extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDow(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-        $this->preferences->pref_password_strength = Preferences::PWD_NONE;
-        $this->preferences->pref_password_length = 6;
-        $this->preferences->pref_password_blacklist = false;
-        $this->preferences->store();
-    }
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-    }
-
     /**
      * Passwords data provider
      *
-     * @return array
+     * @return array<int, array{0: int, 1: string, 2: array<int, string>}>
      */
     public static function passProvider(): array
     {
@@ -85,7 +42,7 @@ class Password extends TestCase
             [Preferences::PWD_WEAK, 'FÜKFJSLKFFSDFDSF', ['a', '1', '@']],
             [Preferences::PWD_WEAK, 'fjsfjdljfsjsjjlsj', ['A', '1', '@']],
 
-            [Preferences::PWD_MEDIUM, 'wee6eak',['A', '@']],
+            [Preferences::PWD_MEDIUM, 'wee6eak', ['A', '@']],
             [Preferences::PWD_MEDIUM, 'foobar!', ['A', '1']],
             [Preferences::PWD_MEDIUM, 'Foobar', ['1', '@']],
             [Preferences::PWD_MEDIUM, '123456!', ['nl']],
@@ -107,16 +64,14 @@ class Password extends TestCase
     /**
      * Test password validation
      *
-     * @param int    $level  Password level
-     * @param string $pass   Password
-     * @param array  $errors Errors
-     *
-     * @return void
+     * @param int                $level  Password level
+     * @param string             $pass   Password
+     * @param array<int, string> $errors Errors
      */
     #[DataProvider('passProvider')]
     public function testValidatePassword(int $level, string $pass, array $errors): void
     {
-        //errror messages mapping
+        //error messages mapping
         foreach ($errors as &$err) {
             switch ($err) {
                 case 'nl':
@@ -147,20 +102,20 @@ class Password extends TestCase
         $this->preferences->pref_password_strength = $level;
         $password = new \Galette\Util\Password($this->preferences);
         $this->assertTrue($password->isValid($pass), implode(', ', $password->getErrors()));
-        $this->assertSame($password->getErrors(), []);
+        $this->assertSame([], $password->getErrors());
         $this->assertEquals($errors, $password->getStrenghtErrors());
     }
 
     /**
      * Blacklist password provider
      *
-     * @return array
+     * @return array<int, array{0: string, 1: bool}>
      */
     public static function blacklistProvider(): array
     {
         return [
             ['galette', true],
-            ['toto',  false],
+            ['toto', false],
             ['mypassisgreat', false],
             ['starwars', true],
             ['123456', true],
@@ -172,9 +127,7 @@ class Password extends TestCase
      * Test password blacklist
      *
      * @param string $pass     Password to test
-     * @param bool   $expected Excpected return
-     *
-     * @return void
+     * @param bool   $expected Expected return
      */
     #[DataProvider('blacklistProvider')]
     public function testBlacklist(string $pass, bool $expected): void
@@ -189,17 +142,35 @@ class Password extends TestCase
     }
 
     /**
-     * Test with personal information
+     * Test a strength value the enum cannot read
      *
-     * @return void
+     * Only an explicit "none" turns the personal information check off; a
+     * stored value out of range must not disable it.
+     */
+    public function testPersonalInformationWithUnknownStrength(): void
+    {
+        $this->preferences->pref_password_strength = 99;
+
+        $password = new \Galette\Util\Password($this->preferences);
+        $password->addPersonalInformation(['mylogin']);
+
+        $this->assertFalse($password->isValid('mylogin'));
+        $this->assertContains(
+            'Do not use any of your personal information as password!',
+            $password->getErrors()
+        );
+    }
+
+    /**
+     * Test with personal information
      */
     public function testPersonalInformation(): void
     {
         $infos = [
-            'login'     => 'mylogin',
-            'name'      => 'myname',
-            'surname'   => 'mysurname',
-            'nickname'  => 'mynickname'
+            'mylogin',
+            'myname',
+            'mysurname',
+            'mynickname'
         ];
 
         $this->preferences->pref_password_strength = Preferences::PWD_NONE;
@@ -207,7 +178,7 @@ class Password extends TestCase
         $password->addPersonalInformation($infos);
         foreach ($infos as $info) {
             $this->assertTrue($password->isValid($info), implode(', ', $password->getErrors()));
-            $this->assertSame($password->getErrors(), []);
+            $this->assertSame([], $password->getErrors());
         }
 
         $this->preferences->pref_password_strength = Preferences::PWD_WEAK;
@@ -216,8 +187,8 @@ class Password extends TestCase
         foreach ($infos as $info) {
             $this->assertFalse($password->isValid($info));
             $this->assertEquals(
-                $password->getErrors(),
-                ['Do not use any of your personal information as password!']
+                ['Do not use any of your personal information as password!'],
+                $password->getErrors()
             );
         }
 
@@ -237,7 +208,7 @@ class Password extends TestCase
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
             $this->preferences,
-            $members_fields,
+            $this->members_fields,
             $history
         );
 

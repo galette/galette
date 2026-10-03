@@ -1,30 +1,23 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
-use Slim\Psr7\UploadedFile;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Safe\DateTime;
+
+use function Safe\copy;
+use function Safe\file_get_contents;
+use function Safe\filesize;
+use function Safe\json_decode;
 
 /**
  * Members repository tests
@@ -34,67 +27,25 @@ use Slim\Psr7\UploadedFile;
 class Members extends GaletteTestCase
 {
     protected int $seed = 335689;
+    /** @var int[] */
     private array $mids = [];
 
-    private ?string $contents_table = null;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
-        $this->contents_table = null;
         $this->createMembers();
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->deleteGroups();
-        $this->deleteMembers();
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete->where([
-            'text_orig' => [
-                'Dynamic choice field',
-                'Dynamic date field',
-                'Dynamic text field'
-            ]
-        ]);
-        $this->zdb->execute($delete);
-
-        if ($this->contents_table !== null) {
-            $this->zdb->drop($this->contents_table);
-        }
-    }
-
-    /**
      * Create members and store their id
-     *
-     * @return void
      */
     private function createMembers(): void
     {
         $this->logSuperAdmin();
-        try {
-            $this->deleteMembers();
-        } catch (\Exception) {
-            //empty catch
-        }
 
         $status = $this->container->get(\Galette\Entity\Status::class);
         if (count($status->getList()) === 0) {
@@ -134,7 +85,7 @@ class Members extends GaletteTestCase
                 $first = false;
                 $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-                $now = new \DateTime();
+                $now = new DateTime();
                 $begin_date = clone $now;
                 $begin_date->sub(new \DateInterval('P1D'));
                 $due_date = clone $begin_date;
@@ -159,17 +110,16 @@ class Members extends GaletteTestCase
                 $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
                 $url = GALETTE_ROOT . '../tests/fake_image.jpg';
 
-                $copied = copy($url, $file);
-                $this->assertTrue($copied);
+                copy($url, $file);
                 $uploaded_file = new \Slim\Psr7\UploadedFile(
-                    $file,
-                    'fakephoto.jpg',
-                    'image/jpeg',
-                    filesize($file),
-                    UPLOAD_ERR_OK
+                    fileNameOrStream: $file,
+                    name: 'fakephoto.jpg',
+                    type: 'image/jpeg',
+                    size: filesize($file),
+                    error: UPLOAD_ERR_OK
                 );
                 $this->assertGreaterThan(0, (int)$member->picture->storeFile($uploaded_file));
-                $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
         }
         $this->login->logOut();
@@ -179,59 +129,9 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Delete member
-     *
-     * @return void
-     */
-    private function deleteMembers(): void
-    {
-        if (is_array($this->mids) && count($this->mids) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-            $delete->where->in(\Galette\Entity\Adherent::PK, $this->mids);
-            $this->zdb->execute($delete);
-        }
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        //FIXME: Photos should be removed, but this fail for now :(
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\Picture::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
-    /**
-     * Delete groups
-     *
-     * @return void
-     */
-    private function deleteGroups(): void
-    {
-        //clean groups
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $delete->where->isNotNull('parent_group');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test getList
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetList(): void
     {
         $members = new \Galette\Repository\Members();
@@ -404,7 +304,7 @@ class Members extends GaletteTestCase
 
         //search on contribution begin date
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $contribdate = new \DateTime();
+        $contribdate = new DateTime();
         $contribdate->modify('+2 days');
         $filters->contrib_begin_date_begin = $contribdate->format('Y-m-d');
         $members = new \Galette\Repository\Members($filters);
@@ -454,7 +354,7 @@ class Members extends GaletteTestCase
 
         //search on status
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->status = \Galette\Entity\Status::DEFAULT_STATUS;
+        $filters->status = \Galette\Entity\Status::DEFAULT_STATUS; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -462,18 +362,18 @@ class Members extends GaletteTestCase
 
         //search on status
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->status = [(string)\Galette\Entity\Status::DEFAULT_STATUS];
+        $filters->status = [(string)\Galette\Entity\Status::DEFAULT_STATUS]; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->assertSame(5, $list->count());
 
-        //search on non existing status
+        //search on non-existing status
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->status = [999];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->assertSame(10, $list->count());
-        $this->expectLogEntry(\Analog::WARNING, 'Status #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Status #999 does not exists!');
 
         //search on status from free search
         $filters = new \Galette\Filters\AdvancedMembersList();
@@ -519,7 +419,7 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = 1;
+        $filters->contributions_types = [1];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -527,7 +427,7 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = '1';
+        $filters->contributions_types = ['1']; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -542,24 +442,24 @@ class Members extends GaletteTestCase
 
         $this->assertSame(1, $list->count());
 
-        $filters->contributions_types = 2;
+        $filters->contributions_types = [2];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(0, $list->count());
 
-        //search on non existing contribution type
+        //search on non-existing contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = 999;
+        $filters->contributions_types = [999];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(10, $list->count());
-        $this->expectLogEntry(\Analog::WARNING, 'Contribution type #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Contribution type #999 does not exists!');
 
         //search on payment type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->payments_types = \Galette\Entity\PaymentType::CASH;
+        $filters->payments_types = [\Galette\Entity\PaymentType::CASH];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -584,14 +484,14 @@ class Members extends GaletteTestCase
 
         //not filtered list
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(true);
+        $list = $members->getList(as_members: true);
 
         $this->assertCount(10, $list);
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $list[0]);
 
         //get list with specified fields
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(false, ['nom_adh', 'prenom_adh', 'ville_adh']);
+        $list = $members->getList(as_members: false, fields: ['nom_adh', 'prenom_adh', 'ville_adh']);
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
@@ -605,7 +505,15 @@ class Members extends GaletteTestCase
 
         //get export list (no priorite_statut if not explicitely required)
         $members = new \Galette\Repository\Members();
-        $list = $members->getMembersList(false, ['nom_adh', 'prenom_adh', 'ville_adh'], true, false, false, true, true);
+        $list = $members->getMembersList(
+            as_members: false,
+            fields: ['nom_adh', 'prenom_adh', 'ville_adh'],
+            count: true,
+            staff: false,
+            managed: false,
+            limit: true,
+            export: true
+        );
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
@@ -652,9 +560,157 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Test getList with contribution dynamic fields
+     * Test advanced free search cannot inject SQL
      *
-     * @return void
+     * Field names are concatenated in the query as identifiers, and values
+     * used to be as well; both come from the request.
+     */
+    public function testFreeSearchInjection(): void
+    {
+        $this->logSuperAdmin();
+
+        //how many members an unfiltered list does return
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $members = new \Galette\Repository\Members($filters);
+        $expected = $members->getList()->count();
+        $this->assertGreaterThan(0, $expected);
+
+        //a crafted field name is discarded, and never reaches the query
+        $payload = 'nom_adh) OR (1=1) -- ';
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => $payload,
+            'type' => 0,
+            'search' => 'doe',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on unknown or forbidden field `' . $payload . '`'
+        );
+        $this->assertStringNotContainsString('1=1', $this->zdb->query_string);
+        //criteria has been discarded, so the whole list comes back
+        $this->assertSame($expected, $list->count());
+
+        //password is not searchable, it would make the list an oracle on the hash
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'mdp_adh',
+            'type' => 0,
+            'search' => '$2y$',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on unknown or forbidden field `mdp_adh`'
+        );
+        $this->assertStringNotContainsString('mdp_adh', $this->zdb->query_string);
+        $this->assertSame($expected, $list->count());
+
+        //a payload on a boolean column is not a boolean, so it is discarded
+        //before reaching the query at all
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'bool_admin_adh',
+            'type' => 0,
+            'search' => '1 OR 1=1',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Advanced search on `bool_admin_adh` expects a boolean, `1 or 1=1` given'
+        );
+        $this->assertStringNotContainsString('1=1', $this->zdb->query_string);
+        $this->assertSame($expected, $list->count());
+
+        //a legitimate boolean criteria still works, and does split the list
+        $counts = [];
+        foreach (['0', '1'] as $bool) {
+            $filters = new \Galette\Filters\AdvancedMembersList();
+            $filters->free_search = [
+                'idx' => 1,
+                'field' => 'bool_admin_adh',
+                'type' => 0,
+                'search' => $bool,
+                'log_op' => $filters::OP_AND,
+                'qry_op' => $filters::OP_EQUALS
+            ];
+            $members = new \Galette\Repository\Members($filters);
+            $counts[$bool] = $members->getList()->count();
+        }
+        $this->assertGreaterThan(0, $counts['1']);
+        $this->assertSame($expected, $counts['0'] + $counts['1']);
+
+        //a payload in a text criteria stays a value
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'nom_adh',
+            'type' => 0,
+            'search' => "' OR SLEEP(3) -- ",
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_CONTAINS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        //quoting differs per engine (backslash on MySQL, doubled quote on
+        //PostgreSQL), so compare against what the platform itself produces
+        $this->assertStringContainsString(
+            $this->zdb->platform->quoteValue("%' or sleep(3) -- %"),
+            $this->zdb->query_string
+        );
+        $this->assertSame(0, $list->count());
+    }
+
+    /**
+     * Test a quote in a search criteria is searched, not interpreted
+     */
+    public function testFreeSearchOnQuotedValue(): void
+    {
+        $this->logSuperAdmin();
+
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $member->setDependencies($this->preferences, $this->members_fields, $this->history);
+        $data = array_merge(
+            $this->dataAdherentOne(),
+            [
+                'nom_adh' => "O'Brien",
+                'login_adh' => 'obrien',
+                'mail_adh' => 'obrien@galette.eu'
+            ]
+        );
+        $this->assertTrue($member->check($data, [], []));
+        $this->assertTrue($member->store());
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'nom_adh',
+            'type' => 0,
+            'search' => "O'Brien",
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+    }
+
+    /**
+     * Test getList with contribution dynamic fields
      */
     public function testGetListContributionDynamics(): void
     {
@@ -715,8 +771,10 @@ class Members extends GaletteTestCase
         );
         $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
         $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
-        //cleanup dynamic choices table
-        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
+        /** @var \Galette\DynamicFields\ChoiceSpecifications $specifications */
+        $specifications = $cdf->getSpecifications();
+        $count = count($specifications->getChoices());
+        $this->assertSame(3, $count);
 
         //new dynamic field, of type date.
         $field_data = [
@@ -753,7 +811,7 @@ class Members extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $begin_date = clone $now;
         $begin_date->sub(new \DateInterval('P1D'));
         $due_date = clone $begin_date;
@@ -780,7 +838,7 @@ class Members extends GaletteTestCase
 
         //search on contribution dynamic date field
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $ddate = new \DateTime('2020-01-01');
+        $ddate = new DateTime('2020-01-01');
         $filters->contrib_dynamic = [$ddf->getId() => $ddate->format(__('Y-m-d'))];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -830,14 +888,12 @@ class Members extends GaletteTestCase
 
     /**
      * Test getPublicList
-     *
-     * @return void
      */
     public function testGetPublicList(): void
     {
         $members = new \Galette\Repository\Members();
 
-        $list = $members->getPublicList(false);
+        $list = $members->getPublicList(with_photos: false);
         $this->assertSame(2, $members->getCount());
         $this->assertArrayHasKey('staff', $list);
         $this->assertArrayHasKey('members', $list);
@@ -853,7 +909,7 @@ class Members extends GaletteTestCase
         $this->assertTrue($adh->appearsInMembersList());
         $this->assertNull($adh->picture);
 
-        $list = $members->getPublicList(true);
+        $list = $members->getPublicList(with_photos: true);
         $this->assertSame(1, $members->getCount());
 
         $staff = $list['staff'];
@@ -871,13 +927,11 @@ class Members extends GaletteTestCase
 
     /**
      * Test search on groups
-     *
-     * @return void
      */
     public function testGroupsSearch(): void
     {
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(true);
+        $list = $members->getList(as_members: true);
         $this->assertSame(10, count($list));
         $this->assertSame(10, $members->getCount());
 
@@ -1013,8 +1067,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test reminders count
-     *
-     * @return void
      */
     public function testGetRemindersCount(): void
     {
@@ -1033,7 +1085,7 @@ class Members extends GaletteTestCase
 
         //create a close to be expired contribution
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $now = new \DateTime();
+        $now = new DateTime();
         $begin_date = clone $now;
         $begin_date->add(new \DateInterval('P6D'));
         $begin_date->sub(new \DateInterval('P1Y'));
@@ -1196,8 +1248,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test dropdown members
-     *
-     * @return void
      */
     public function testGetDropdownMembers(): void
     {
@@ -1211,8 +1261,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getArrayList
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -1231,9 +1279,60 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Test getMembersList
-     *
-     * @return void
+     * Test members removal with dependencies
+     */
+    public function testRemoveMembersWDeps(): void
+    {
+        $this->logSuperAdmin();
+
+        //Filter on inactive accounts
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+
+        $member_data = $list->current();
+        $member = new \Galette\Entity\Adherent($this->zdb, (int)$member_data[\Galette\Entity\Adherent::PK]);
+
+        //add member as sender for a mailing
+        $values = [
+            'mailing_sender'            => $member->id,
+            'mailing_sender_name'       => 'test',
+            'mailing_sender_address'    => 'test@test.com',
+            'mailing_subject'           => $this->seed,
+            'mailing_body'              => 'a mailing',
+            'mailing_date'              => '2015-01-01 00:00:00',
+            'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
+            'mailing_sent'              => true
+        ];
+        $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
+        $insert->values($values);
+        $this->zdb->execute($insert);
+
+        $this->assertFalse($members->removeMembers($member->id));
+        $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Member still have existing dependencies in the database');
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1451',
+            'Message' => sprintf(
+                "Cannot delete or update a parent row: a foreign key constraint fails (`%s`.`galette_mailing_history`, CONSTRAINT `galette_mailing_history_ibfk_1` FOREIGN KEY (`mailing_sender`) REFERENCES `galette_adherents` (`id_adh`) ON UPDATE CASCADE)",
+                $this->zdb->getDatabase()
+            )
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+
+        //a rollback has been processed, member and mailing no longer exists.
+    }
+
+    /**
+     * Test members removal
      */
     public function testRemoveMembers(): void
     {
@@ -1268,17 +1367,65 @@ class Members extends GaletteTestCase
         $this->zdb->execute($insert);
         $mailing_id = $this->zdb->getLastGeneratedValue($mailhist);
 
-        $this->assertFalse($members->removeMembers($member->id));
-        $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
-        $this->expectLogEntry(
-            \Analog::ERROR,
-            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
-        );
-        $this->expectLogEntry(\Analog::ERROR, 'Member still have existing dependencies in the database');
-
         //remove mailing so member can be removed
         $this->assertTrue($mailhist->removeEntries($mailing_id, $this->history));
         $this->assertTrue($members->removeMembers($member->id));
         $this->login->logOut();
+    }
+
+    /**
+     * Test member.before_remove is emitted before deletion, within the transaction
+     */
+    public function testRemoveMembersEmitsBeforeRemove(): void
+    {
+        $member = $this->getMemberTwo();
+        $id = (int)$member->id;
+
+        $seen = null;
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'member.before_remove',
+            function (\Galette\Events\GaletteEvent $event) use (&$seen): void {
+                $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+                $select->where([\Galette\Entity\Adherent::PK => $event->getObject()->id_adh]);
+                $seen = [
+                    'id'             => (int)$event->getObject()->id_adh,
+                    'exists'         => $this->zdb->execute($select)->count() === 1,
+                    'in_transaction' => $this->zdb->inTransaction()
+                ];
+            }
+        );
+
+        $members = new \Galette\Repository\Members();
+        $this->assertTrue($members->removeMembers($id));
+        $this->assertSame(['id' => $id, 'exists' => true, 'in_transaction' => true], $seen);
+    }
+
+    /**
+     * Test a failing member.before_remove listener cancels removal
+     */
+    public function testRemoveMembersBeforeRemoveFailure(): void
+    {
+        $member = $this->getMemberTwo();
+        $id = (int)$member->id;
+
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        $emitter->subscribeOnceTo(
+            'member.before_remove',
+            function (): void {
+                throw new \RuntimeException('Plugin refuses');
+            }
+        );
+
+        $members = new \Galette\Repository\Members();
+        try {
+            $members->removeMembers($id);
+            $this->fail('Exception expected');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Plugin refuses', $e->getMessage());
+        }
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) |Plugin refuses');
+        //rollback also cancels the test transaction, member cannot be checked
+        $this->assertFalse($this->zdb->inTransaction());
     }
 }

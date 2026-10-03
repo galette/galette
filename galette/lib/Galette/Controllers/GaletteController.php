@@ -1,48 +1,45 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Core\AuthThrottle;
 use DI\Attribute\Inject;
+use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
+use Galette\Util\Telemetry;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
 use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
+use Galette\Core\MailingQueue;
+use Galette\Core\Preferences;
+use Galette\Core\PreferencesSchema;
 use Galette\Core\SysInfos;
+use Galette\Core\TwoFactorAuth;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
+use Galette\Enums\PublicPageVisibility;
 use Galette\Filters\MembersList;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 
 use function Safe\dir;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
 
 /**
  * Galette main controller
@@ -57,12 +54,13 @@ class GaletteController extends AbstractController
 
     /**
      * Main route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'slash',
+        pattern: '/',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function slash(Request $request, Response $response): Response
     {
         return $this->galetteRedirect($request, $response);
@@ -70,15 +68,14 @@ class GaletteController extends AbstractController
 
     /**
      * System information
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function systemInformation(Request $request, Response $response): Response
+    #[Route(
+        name: 'sysinfos',
+        pattern: '/system-information',
+        methods: ['GET']
+    )]
+    public function systemInformation(Response $response, SysInfos $sysinfos): Response
     {
-        $sysinfos = new SysInfos();
         $raw_infos = $sysinfos->getRawData(
             $this->zdb,
             $this->preferences,
@@ -100,30 +97,25 @@ class GaletteController extends AbstractController
 
     /**
      * Dashboard page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function dashboard(Request $request, Response $response): Response
+    #[Route(
+        name: 'dashboard',
+        pattern: '/dashboard',
+        methods: ['GET']
+    )]
+    public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
     {
-        $news = Galette::getNews();
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
-            'news'              => $news,
+            //news are loaded asynchronously, they reach the network
+            'has_news'          => Galette::hasNews(),
             'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
             'documentation'     => 'usermanual'
         ];
 
         $hide_telemetry = true;
         if ($this->login->isAdmin()) {
-            $telemetry = new \Galette\Util\Telemetry(
-                $this->zdb,
-                $this->preferences,
-                $this->plugins
-            );
             $params['reguuid'] = $telemetry->getRegistrationUuid();
             $params['telemetry_sent'] = $telemetry->isSent();
             $params['registered'] = $telemetry->isRegistered();
@@ -144,21 +136,28 @@ class GaletteController extends AbstractController
 
     /**
      * Preferences page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function preferences(Request $request, Response $response): Response
+    #[Route(
+        name: 'preferences',
+        pattern: '/preferences',
+        methods: ['GET']
+    )]
+    public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
     {
         // flagging required fields
-        $required = $this->preferences->getRequiredFields($this->login);
+        $required = $this->preferences->getRequiredFields();
 
         $prefs_fields = $this->preferences->getFieldsNames();
         // collect data
         $pref = [];
         foreach ($prefs_fields as $fieldname) {
+            //a secret has no business reaching a template, even one that does
+            //not print it: this collects *every* preference. Which ones are
+            //secret is the schema's answer, and the only one -- it is what the
+            //advanced settings page states about them
+            if (PreferencesSchema::isSensitive($fieldname)) {
+                continue;
+            }
             $pref[$fieldname] = $this->preferences->$fieldname;
         }
 
@@ -167,6 +166,13 @@ class GaletteController extends AbstractController
             $pref = array_merge($pref, $this->session->entered_preferences);
             $this->session->entered_preferences = null;
         }
+
+        //the mandatory second factor policies are held back by a flag. An
+        //instance that stored one keeps it, but the form must offer -- and
+        //re-post -- what actually applies: rendering a stored 3 with only two
+        //options selects none, the browser keeps the first, and the next save
+        //would silently write "disabled" over a policy in force.
+        $pref['pref_2fa_mode'] = TwoFactorAuth::clampMode((int)$pref['pref_2fa_mode']);
 
         //List available themes
         $themes = [];
@@ -185,14 +191,7 @@ class GaletteController extends AbstractController
         $d->close();
 
         //List payment types for default to be selected
-        $ptypes = new PaymentTypes(
-            $this->zdb,
-            $this->preferences,
-            $this->login
-        );
-        $ptlist = $ptypes->getList(false);
-
-        $m = new Members();
+        $ptlist = $ptypes->getList(schedulable: false);
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'general';
@@ -203,9 +202,16 @@ class GaletteController extends AbstractController
             'pages/preferences.html.twig',
             [
                 'page_title'            => _T("Settings"),
-                'staff_members'         => $m->getStaffMembersList(true),
+                //asked here rather than in the template: is_feature_enabled()
+                //goes straight to the flag manager, which knows nothing of the
+                //override the test suite needs
+                'tfa_required_available' => TwoFactorAuth::isRequiredAvailable(),
+                'staff_members'         => $m->getStaffMembersList(as_members: true),
                 'time'                  => time(),
                 'pref'                  => $pref,
+                'visibility_choices'    => PublicPageVisibility::choices(),
+                'default_visibility_choices' => PublicPageVisibility::choices(inherit: false),
+                'plugin_public_pages'   => $this->plugins->getPublicPages(),
                 'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',
@@ -232,12 +238,12 @@ class GaletteController extends AbstractController
 
     /**
      * Store preferences
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'store-preferences',
+        pattern: '/preferences',
+        methods: ['POST']
+    )]
     public function storePreferences(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -248,7 +254,7 @@ class GaletteController extends AbstractController
         if (isset($post['valid']) && $post['valid'] == '1') {
             if ($this->preferences->check($post, $this->login)) {
                 if (!$this->preferences->store()) {
-                    $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
+                    $error_detected[] = _T("An SQL error has occurred while saving preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $success_detected[] = _T("Preferences has been saved.");
                 }
@@ -281,6 +287,11 @@ class GaletteController extends AbstractController
                         $this->logo = new Logo();
                         $this->print_logo = new PrintLogo();
                     }
+
+                    $res = $this->preferences->handleFiles($files);
+                    if ($res !== true) {
+                        $error_detected = array_merge($error_detected, $res);
+                    }
                 }
             } else {
                 $error_detected = $this->preferences->getErrors();
@@ -303,26 +314,139 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Test mail parameters
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Superadmin credentials form
      */
+    #[Route(
+        name: 'adminCredentials',
+        pattern: '/admin-credentials',
+        methods: ['GET'],
+        description: 'Manage super admin login and password'
+    )]
+    public function adminCredentials(Response $response): Response
+    {
+        //on error, the login that was typed is kept in session
+        $login = $this->session->entered_login ?? $this->preferences->pref_admin_login;
+        unset($this->session->entered_login);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/admin_credentials.html.twig',
+            [
+                'page_title' => _T("My information"),
+                'pref_admin_login' => $login
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Store superadmin credentials
+     */
+    #[Route(
+        name: 'storeAdminCredentials',
+        pattern: '/admin-credentials',
+        methods: ['POST']
+    )]
+    public function storeAdminCredentials(Request $request, Response $response, AuthThrottle $throttle): Response
+    {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+        $success_detected = [];
+
+        $admin_login = trim((string)($post['pref_admin_login'] ?? ''));
+        //passwords are taken as typed, as they are on login
+        $password = (string)($post['pref_admin_pass'] ?? '');
+        $confirmation = (string)($post['pref_admin_pass_check'] ?? '');
+
+        $password_error = $this->checkSuperAdminPassword(
+            (string)($post['current_password'] ?? ''),
+            $throttle,
+            'Wrong current password given to change the superadmin credentials.'
+        );
+        if ($password_error !== null) {
+            $error_detected[] = $password_error;
+        } elseif ($password !== $confirmation) {
+            $error_detected[] = _T("Passwords mismatch");
+        } elseif (!$this->preferences->storeAdminCredentials($admin_login, $password, $this->login)) {
+            $error_detected = $this->preferences->getErrors();
+        } else {
+            $success_detected[] = _T("Your credentials have been saved.");
+
+            //the session still holds the login it was opened with
+            $this->login->logAdmin($this->preferences->pref_admin_login, $this->preferences, challenge: false);
+            \RKA\Session::regenerate();
+            $this->session->login = $this->login;
+        }
+
+        if ($error_detected !== []) {
+            $this->session->entered_login = $admin_login;
+        }
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('adminCredentials'),
+            successes: $success_detected,
+            errors: $error_detected
+        );
+    }
+
+    /**
+     * Build the preferences a mail test runs on
+     *
+     * Testing what is stored is of little help to someone who is precisely
+     * changing it: the settings displayed in the form win, so that a server can
+     * be tried out before it is saved. Nothing is written back, the live
+     * instance is left alone, and only the preferences the transport is built
+     * from are taken into account.
+     *
+     * @param Request $request PSR Request
+     */
+    private function mailerPreferences(Request $request): Preferences
+    {
+        $prefs = clone $this->preferences;
+        $posted = (array)$request->getParsedBody();
+
+        foreach (PreferencesSchema::getMailer() as $name) {
+            if (PreferencesSchema::getType($name) === PreferencesSchema::TYPE_BOOL) {
+                //an unchecked checkbox is not posted at all
+                $prefs->$name = isset($posted[$name]);
+            } elseif (array_key_exists($name, $posted)) {
+                $prefs->$name = $posted[$name];
+            }
+        }
+
+        return $prefs;
+    }
+
+    /**
+     * Test mail parameters
+     */
+    #[Route(
+        name: 'testEmail',
+        pattern: '/test/email',
+        methods: ['POST']
+    )]
     public function testEmail(Request $request, Response $response): Response
     {
         $sent = false;
-        if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+        $prefs = $this->mailerPreferences($request);
+        $errors = $prefs->getErrors();
+
+        if ($errors !== []) {
+            foreach ($errors as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        } elseif ($prefs->pref_mail_method <= GaletteMail::METHOD_DISABLED) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You asked Galette to send a test email, but email has been disabled in the preferences.")
             );
         } else {
-            $get = $request->getQueryParams();
-            $dest = ($get['adress'] ?? $this->preferences->pref_email_newadh);
+            $post = (array)$request->getParsedBody();
+            $dest = ($post['adress'] ?? $prefs->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
-                $mail = new GaletteMail($this->preferences);
+                $mail = new GaletteMail($prefs);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
                     [
@@ -332,7 +456,7 @@ class GaletteController extends AbstractController
                 $mail->setMessage(_T('Test message.'));
                 $sent = $mail->send();
 
-                if ($sent) {
+                if ($sent === GaletteMail::MAIL_SENT) {
                     $this->flash->addMessage(
                         'success_detected',
                         sprintf(
@@ -343,9 +467,12 @@ class GaletteController extends AbstractController
                 } else {
                     $this->flash->addMessage(
                         'error_detected',
-                        sprintf(
-                            _T('No email sent to %1$s'),
-                            $dest
+                        $this->detailedMailError(
+                            sprintf(
+                                _T('No email sent to %1$s'),
+                                $dest
+                            ),
+                            $mail
                         )
                     );
                 }
@@ -357,9 +484,9 @@ class GaletteController extends AbstractController
             }
         }
 
-        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
+        if (!$this->isAjax($request)) {
             return $response
-                ->withStatus(301)
+                ->withStatus(302)
                 ->withHeader('Location', $this->routeparser->urlFor('preferences'));
         } else {
             return $this->withJson(
@@ -372,14 +499,86 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Charts page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Test mail parameters, without sending any message
      */
-    public function charts(Request $request, Response $response): Response
+    #[Route(
+        name: 'testEmailConnection',
+        pattern: '/test/email-connection',
+        methods: ['POST']
+    )]
+    public function testEmailConnection(Request $request, Response $response): Response
+    {
+        $connected = false;
+        $prefs = $this->mailerPreferences($request);
+        $errors = $prefs->getErrors();
+
+        if ($errors !== []) {
+            foreach ($errors as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        } else {
+            $mail = new GaletteMail($prefs);
+            $connected = $mail->testConnection();
+
+            if ($connected) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Those emailing settings work.")
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $this->detailedMailError(
+                        _T("Those emailing settings do not work."),
+                        $mail
+                    )
+                );
+            }
+        }
+
+        if (!$this->isAjax($request)) {
+            return $response
+                ->withStatus(302)
+                ->withHeader('Location', $this->routeparser->urlFor('preferences'));
+        } else {
+            return $this->withJson(
+                $response,
+                [
+                    'connected' => $connected
+                ]
+            );
+        }
+    }
+
+    /**
+     * Append what the mailer has to say to a failure message
+     *
+     * A bare "no email sent" leaves nothing to act on, while PHPMailer usually
+     * knows exactly what went wrong.
+     *
+     * @param string      $message Message to complete
+     * @param GaletteMail $mail    Mailer the failure comes from
+     */
+    private function detailedMailError(string $message, GaletteMail $mail): string
+    {
+        $errors = array_filter($mail->getErrors());
+        if ($errors === []) {
+            return $message;
+        }
+
+        //a flash message is rendered as a single line of HTML; keep it one
+        return $message . ' ' . implode(' ', $errors);
+    }
+
+    /**
+     * Charts page
+     */
+    #[Route(
+        name: 'charts',
+        pattern: '/charts',
+        methods: ['GET']
+    )]
+    public function charts(Response $response): Response
     {
         $charts = new Charts(
             [
@@ -406,13 +605,13 @@ class GaletteController extends AbstractController
 
     /**
      * Core fields configuration page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function configureCoreFields(Request $request, Response $response): Response
+    #[Route(
+        name: 'configureCoreFields',
+        pattern: '/fields/core/configure',
+        methods: ['GET']
+    )]
+    public function configureCoreFields(Response $response): Response
     {
         $fc = $this->fields_config;
 
@@ -437,12 +636,12 @@ class GaletteController extends AbstractController
 
     /**
      * Process core fields configuration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'storeCoreFieldsConfig',
+        pattern: '/fields/core/configure',
+        methods: ['POST']
+    )]
     public function storeCoreFieldsConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -460,7 +659,7 @@ class GaletteController extends AbstractController
 
             $res[$current_cat][] = [
                 'field_id'      =>  $field,
-                'label'         =>  htmlspecialchars((string) $post[$field . '_label'], ENT_QUOTES),
+                'label'         =>  htmlspecialchars((string)$post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,
@@ -479,7 +678,7 @@ class GaletteController extends AbstractController
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occurred while storing fields configuration :(")
+                _T("An error occurred while saving fields configuration :(")
             );
         }
 
@@ -491,13 +690,14 @@ class GaletteController extends AbstractController
     /**
      * Core lists configuration page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $table    Tbale name
-     *
-     * @return Response
+     * @param string $table Table name
      */
-    public function configureListFields(Request $request, Response $response, string $table): Response
+    #[Route(
+        name: 'configureListFields',
+        pattern: '/lists/{table}/configure',
+        methods: ['GET']
+    )]
+    public function configureListFields(Response $response, string $table): Response
     {
         $lc = $this->lists_config;
 
@@ -522,12 +722,12 @@ class GaletteController extends AbstractController
 
     /**
      * Process list fields configuration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'storeListFields',
+        pattern: '/lists/{table}/configure',
+        methods: ['POST']
+    )]
     public function storeListFields(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -547,7 +747,7 @@ class GaletteController extends AbstractController
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occurred while storing list configuration :(")
+                _T("An error occurred while saving list configuration :(")
             );
         }
 
@@ -558,22 +758,19 @@ class GaletteController extends AbstractController
 
     /**
      * Reminders page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function reminders(Request $request, Response $response): Response
+    #[Route(
+        name: 'reminders',
+        pattern: '/reminders',
+        methods: ['GET']
+    )]
+    public function reminders(Response $response, Texts $texts, Members $members): Response
     {
-        $texts = new Texts($this->preferences, $this->routeparser);
-
         $previews = [
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
             'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
         ];
 
-        $members = new Members();
         $reminders = $members->getRemindersCount();
 
         // display page
@@ -595,12 +792,12 @@ class GaletteController extends AbstractController
 
     /**
      * Send reminders
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doReminders',
+        pattern: '/reminders',
+        methods: ['POST']
+    )]
     public function doReminders(Request $request, Response $response): Response
     {
         $error_detected = [];
@@ -608,7 +805,6 @@ class GaletteController extends AbstractController
         $success_detected = [];
 
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->routeparser);
         $selected = null;
         if (isset($post['reminders'])) {
             $selected = $post['reminders'];
@@ -616,7 +812,6 @@ class GaletteController extends AbstractController
         $reminders = new Reminders($selected);
 
         $labels = false;
-        $labels_members = [];
         if (isset($post['reminder_wo_mail'])) {
             $labels = true;
         }
@@ -624,43 +819,54 @@ class GaletteController extends AbstractController
         $list_reminders = $reminders->getList($this->zdb, $labels);
         if (count($list_reminders) == 0) {
             $warning_detected[] = _T("No reminder to send for now.");
-        } else {
+        } elseif ($labels === true) {
+            //generate labels for members without email address
+            $labels_members = [];
             foreach ($list_reminders as $reminder) {
-                if ($labels === false) {
-                    $reminder
-                        ->setDb($this->zdb)
-                        ->setLogin($this->login)
-                        ->setPreferences($this->preferences)
-                        ->setRouteParser($this->routeparser)
-                    ;
-                    //send reminders by email
-                    $sent = $reminder->send($texts, $this->history, $this->zdb);
-
-                    if ($sent === true) {
-                        $success_detected[] = $reminder->getMessage();
-                    } else {
-                        $error_detected[] = $reminder->getMessage();
-                    }
-                } else {
-                    //generate labels for members without email address
-                    $labels_members[] = $reminder->member_id;
-                }
+                $labels_members[] = $reminder->member_id;
             }
 
-            if ($labels === true) {
-                if (count($labels_members) > 0) {
-                    $session_var = $this->getFilterName('reminders_labels');
-                    $labels_filters = new MembersList();
-                    $labels_filters->selected = $labels_members;
-                    $this->session->$session_var = $labels_filters;
-                    return $response
-                        ->withStatus(307)
-                        ->withHeader(
-                            'Location',
-                            $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
-                        );
+            //at least one reminder has been found, labels members list cannot be empty
+            $session_var = $this->getFilterName('reminders_labels');
+            $labels_filters = new MembersList();
+            $labels_filters->selected = $labels_members;
+            $this->session->$session_var = $labels_filters;
+            return $response
+                ->withStatus(307)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
+                );
+        } else {
+            $queue = new MailingQueue($this->zdb, $this->preferences);
+            if ($queue->mustQueue()) {
+                //sending has to be spread over time: queue the reminders and
+                //follow progress on the dedicated page
+                $queue->enqueueReminders($list_reminders);
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->routeparser->urlFor('remindersQueue')
+                    );
+            }
+
+            //no quota set: send right away, as a mass mailing would
+            $texts = new Texts($this->preferences, $this->routeparser);
+            foreach ($list_reminders as $reminder) {
+                $reminder
+                    ->setDb($this->zdb)
+                    ->setLogin($this->login)
+                    ->setPreferences($this->preferences)
+                    ->setRouteParser($this->routeparser)
+                ;
+                $sent = $reminder->send($texts, $this->history, $this->zdb);
+
+                if ($sent === true) {
+                    $success_detected[] = $reminder->getMessage();
                 } else {
-                    $error_detected[] = _T("There are no member to proceed.");
+                    $error_detected[] = $reminder->getMessage();
                 }
             }
 
@@ -679,39 +885,27 @@ class GaletteController extends AbstractController
             }
         }
 
-        //flash messages if any
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage('error_detected', $error);
-            }
-        }
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage('warning_detected', $warning);
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage('success_detected', $success);
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('reminders'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('reminders'),
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
 
     /**
      * Main route
      *
-     * @param Request  $request    PSR Request
-     * @param Response $response   PSR Response
-     * @param string   $membership Either 'late' or 'nearly'
-     * @param string   $mail       Either 'withmail' or 'withoutmail'
-     *
-     * @return Response
+     * @param string $membership Either 'late' or 'nearly'
+     * @param string $mail       Either 'withmail' or 'withoutmail'
      */
-    public function filterReminders(Request $request, Response $response, string $membership, string $mail): Response
+    #[Route(
+        name: 'reminders-filter',
+        pattern: '/members/reminder-filter/{membership:nearly|late}/{mail:withmail|withoutmail}',
+        methods: ['GET']
+    )]
+    public function filterReminders(Response $response, string $membership, string $mail): Response
     {
         //always reset filters
         $filters = new MembersList();
@@ -727,21 +921,22 @@ class GaletteController extends AbstractController
 
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('members'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('members')
+        );
     }
 
     /**
      * Direct document page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
-     *
-     * @return Response
      */
-    public function documentLink(Request $request, Response $response, string $hash): Response
+    #[Route(
+        name: 'directlink',
+        pattern: '/document/download/{hash}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function documentLink(Response $response, string $hash): Response
     {
         // display page
         $this->view->render(
@@ -756,15 +951,51 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Favicon route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Empty route (for default requests on favicon.ico, robots.txt, ...)
      */
-    public function favicon(Request $request, Response $response): Response
+    #[Route(
+        name: 'defaultEmpty',
+        pattern: '/{url:favicon.ico|robots.txt}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function empty(Response $response): Response
     {
+        return $response;
+    }
+
+    /**
+     * Store dark mode CSS in cache directory.
+     */
+    #[Route(
+        name: 'writeDarkCSS',
+        pattern: '/write-dark-css',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function writeDarkCss(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        file_put_contents(GALETTE_CACHE_DIR . '/dark.css', $post);
+        return $response->withStatus(200);
+    }
+
+    /**
+     * Serve cached dark mode CSS.
+     */
+    #[Route(
+        name: 'getDarkCSS',
+        pattern: '/get-dark-css',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function getDarkCss(Response $response): Response
+    {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            $response = $response->withHeader('Content-type', 'text/css');
+            $response->getBody()->write(file_get_contents($cssfile));
+        }
         return $response;
     }
 }

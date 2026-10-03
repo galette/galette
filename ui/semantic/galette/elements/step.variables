@@ -8,5 +8,5 @@
 
 /* Active */
 @activeBackground: @lightPrimaryColor;
-@activeColor: @textColor;
-@activeIconColor: @textColor;
+@activeColor: @primaryTextColor;
+@activeIconColor: @primaryTextColor;

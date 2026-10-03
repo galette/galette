@@ -1,47 +1,33 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <noscript>
-        <div class="ui basic fitted center aligned segment">
-            <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
-        </div>
-    </noscript>
     <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
         <div class="ui basic fitted segment loader_selector">
             <table id="listed_fields_table" class="listing ui celled striped table">
                 <thead>
                     <tr>
-                        <th class="id_row collapsing">#</th>
-                        <th>{{ _T("Field name") }}</th>
-                        <th>{{ _T("Permissions") }}</th>
-                        <th class="collapsing">{{ _T("Actions") }}</th>
+                        <th scope="col" class="id_row collapsing">#</th>
+                        <th scope="col">{{ _T("Field name") }}</th>
+                        <th scope="col">{{ _T("Permissions") }}</th>
+                        <th scope="col" class="collapsing">{{ _T("Actions") }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td class="collapsing" data-scope="row"></td>
+                        <td class="collapsing" data-scope="row">
+                            <span class="visually-hidden">
+                                {{ _T("Add field") }}
+                            </span>
+                        </td>
                         <td class="left" data-col-label="{{ _T("Available fields") }}" colspan="2">
-                            <div id="remaining_fields_dropdown" class="ui fluid search clearable selection dropdown">
+                            <label for="remaining_fields_dropdown" class="visually-hidden">{{ _T("Field name") }}</label>
+                            <div id="remaining_fields_dropdown" class="ui fluid search selection dropdown">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">{{ _T("Available fields") }}</div>
                                 <div id="remaining_fields" class="menu sortable-items">
@@ -58,10 +44,10 @@
                         </td>
                         <td class="actions_row collapsing">
                             <input type="hidden" name="new" value="1" />
-                            <a href="#" id="addfield" class="ui labeled icon button">
+                            <button type="button" id="addfield" class="ui labeled icon button">
                                 <i class="plus green icon" aria-hidden="true"></i>
                                 {{ _T("Add") }}
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </tfoot>
@@ -81,10 +67,10 @@
                             {{ permission }}
                         </td>
                         <td class="center actions_row collapsing">
-                            <a href="#" class="delete">
-                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>
-                            </a>
+                            <button type="button" class="ui delete icon-only button">
+                                <i class="ui trash red icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>
+                            </button>
                         </td>
                     </tr>
     {% endfor %}
@@ -96,7 +82,6 @@
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
         </div>
-        {% include "components/forms/csrf.html.twig" %}
     </form>
 {% endblock %}
 
@@ -166,10 +151,10 @@
                         _table_item +='<input type="hidden" name="fields[]" value="' + _field_id + '"/>' + _field_label;
                         _table_item +='</td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';
-                        _table_item +='<td class="center actions_row"><a href="#" class="delete">';
-                        _table_item +='<i class="ui trash red icon tooltip" aria-hidden="true"></i>';
-                        _table_item +='<span class="ui special popup">{{ _T("Delete '%s' field")|replace({"%s": ' + _field_label + '})|e('js') }}</span>';
-                        _table_item +='</a></td>';
+                        _table_item +='<td class="center actions_row collapsing"><button type="button" class="ui delete icon-only button">';
+                        _table_item +='<i class="ui trash red icon" aria-hidden="true"></i>';
+                        _table_item +='<span class="visually-hidden">' + '{{ _T("Delete '%s' field")|e('js') }}'.replace('%s', _field_label) + '</span>';
+                        _table_item +='</button></td>';
                         _table_item +='</tr>';
 
                     _selected_field[i].remove();
@@ -178,6 +163,7 @@
                 $('#remaining_fields_dropdown').dropdown('clear');
                 _listed_fields.innerHTML += _table_item;
             }
+            _bindFomanticComponents();
         }
 
         function _addToList() {

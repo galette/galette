@@ -1,5 +1,10 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
--- $Id$
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -99,6 +104,7 @@ DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
+  description longtext NOT NULL,
   amount decimal(15,2) DEFAULT NULL,
   cotis_extension smallint NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
@@ -108,7 +114,7 @@ DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref int unsigned NOT NULL auto_increment,
   nom_pref varchar(100) NOT NULL default '',
-  val_pref varchar(255) NOT NULL default '',
+  val_pref text NOT NULL,
   PRIMARY KEY (id_pref),
   UNIQUE (nom_pref)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
@@ -144,6 +150,7 @@ CREATE TABLE galette_field_types (
     field_information longtext default NULL,
     field_width_in_forms smallint NOT NULL default 1,
     field_information_above tinyint(1) NOT NULL default 0,
+    field_specifications json default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
@@ -186,6 +193,30 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(250) NOT NULL,
     date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+-- tables for two-factor authentication
+DROP TABLE IF EXISTS galette_twofactor_codes;
+DROP TABLE IF EXISTS galette_twofactor;
+CREATE TABLE galette_twofactor (
+    id_adh int unsigned NOT NULL,
+    secret varchar(64) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT 0,
+    date_crea datetime NOT NULL,
+    date_confirm datetime NULL DEFAULT NULL,
+    last_timeslice bigint NULL DEFAULT NULL,
+    PRIMARY KEY (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_twofactor_codes (
+    id_code int unsigned NOT NULL auto_increment,
+    id_adh int unsigned NOT NULL,
+    code varchar(255) NOT NULL,
+    date_used datetime NULL DEFAULT NULL,
+    PRIMARY KEY (id_code),
+    KEY galette_twofactor_codes_adh (id_adh),
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -240,6 +271,29 @@ CREATE TABLE galette_mailing_history (
   mailing_sender_address varchar(255) DEFAULT NULL,
   PRIMARY KEY (mailing_id),
   FOREIGN KEY (mailing_sender) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+DROP TABLE IF EXISTS galette_mailing_queue;
+CREATE TABLE galette_mailing_queue (
+  mailing_queue_id int unsigned NOT NULL auto_increment,
+  kind tinyint(1) NOT NULL DEFAULT 0,
+  mailing_id int unsigned DEFAULT NULL,
+  reminder_type int DEFAULT NULL,
+  recipient_id int unsigned DEFAULT NULL,
+  recipient_email varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  recipient_name varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  status tinyint(1) NOT NULL DEFAULT 0,
+  attempts int unsigned NOT NULL DEFAULT 0,
+  last_error longtext,
+  scheduled_at datetime DEFAULT NULL,
+  claimed_at datetime DEFAULT NULL,
+  sent_at datetime DEFAULT NULL,
+  dedup_key varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  PRIMARY KEY (mailing_queue_id),
+  KEY galette_mailing_queue_status (status, scheduled_at),
+  KEY galette_mailing_queue_sent_at (sent_at),
+  UNIQUE KEY galette_mailing_queue_dedup (dedup_key),
+  FOREIGN KEY (mailing_id) REFERENCES galette_mailing_history (mailing_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for groups
@@ -384,11 +438,35 @@ CREATE TABLE galette_payments_schedules (
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
+-- table for plugins
+DROP TABLE IF EXISTS galette_plugins;
+CREATE TABLE galette_plugins (
+  plugin_id varchar(100) NOT NULL,
+  version DECIMAL(4,3) NULL DEFAULT NULL,
+  PRIMARY KEY (plugin_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- table for authentication attempts throttling
+DROP TABLE IF EXISTS galette_auth_attempts;
+CREATE TABLE galette_auth_attempts (
+  id_attempt int unsigned NOT NULL auto_increment,
+  scope varchar(64) NOT NULL,
+  identifier varchar(255) NOT NULL,
+  failures int NOT NULL DEFAULT 0,
+  first_failure datetime NULL DEFAULT NULL,
+  last_failure datetime NULL DEFAULT NULL,
+  locked_until datetime NULL DEFAULT NULL,
+  PRIMARY KEY (id_attempt),
+  UNIQUE KEY galette_auth_attempts_scope (scope, identifier)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-INSERT INTO galette_database(version) VALUES(1.210);
+
+INSERT INTO galette_database(version) VALUES(1.300);
+
 
 SET FOREIGN_KEY_CHECKS=1;

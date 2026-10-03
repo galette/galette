@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -34,6 +21,10 @@ use Galette\Core\Login;
 use Galette\Core\Authentication;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
+use Galette\Util\Html;
+
+use function Safe\rename;
+use function Safe\unlink;
 
 /**
  * Dynamic fields handle, aggregating field descriptors and values
@@ -43,8 +34,8 @@ use Galette\Repository\DynamicFieldsSet;
 
 class DynamicFieldsHandle
 {
-    public const TABLE = 'dynamic_fields';
-    public const PK = 'item_id';
+    public const string TABLE = 'dynamic_fields';
+    public const string PK = 'item_id';
 
     /** @var DynamicField[] */
     private array $dynamic_fields = [];
@@ -83,15 +74,13 @@ class DynamicFieldsHandle
      * Load dynamic fields values for specified object
      *
      * @param object $object Object instance
-     *
-     * @return bool
      */
     public function load(object $object): bool
     {
         $this->form_name = $object->getFormName();
 
         try {
-            $this->item_id = $object->id;
+            $this->item_id = $object->getID();
             $fields = new DynamicFieldsSet($this->zdb, $this->login);
             $this->dynamic_fields = $fields->getList($this->form_name);
 
@@ -206,14 +195,32 @@ class DynamicFieldsHandle
     }
 
     /**
+     * Get the indexes of the occurrences currently held for a field
+     *
+     * Unlike getValues(), this does not create a pristine occurrence for a field
+     * that has none.
+     *
+     * @param int $field Field ID
+     *
+     * @return array<int>
+     */
+    public function getValueIndexes(int $field): array
+    {
+        $indexes = [];
+        foreach ($this->current_values[$field] ?? [] as $value) {
+            $indexes[] = (int)$value['val_index'];
+        }
+
+        return $indexes;
+    }
+
+    /**
      * Set field value
      *
      * @param ?int       $item  Item ID
      * @param int        $field Field ID
      * @param int        $index Value index
      * @param string|int $value Value
-     *
-     * @return void
      */
     public function setValue(?int $item, int $field, int $index, string|int $value): void
     {
@@ -222,7 +229,8 @@ class DynamicFieldsHandle
             'item_id'       => $item,
             'field_form'    => $this->dynamic_fields[$field]->getForm(),
             'val_index'     => $index,
-            'field_val'     => $value,
+            //member forms and lists render the value with |raw
+            'field_val'     => is_string($value) ? Html::clean($value) : $value,
         ];
 
         if (!isset($this->current_values[$field][$idx])) {
@@ -237,8 +245,6 @@ class DynamicFieldsHandle
      *
      * @param int $field Field ID
      * @param int $index Value index
-     *
-     * @return void
      */
     public function unsetValue(int $field, int $index): void
     {
@@ -253,8 +259,6 @@ class DynamicFieldsHandle
      *
      * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     public function storeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -263,7 +267,7 @@ class DynamicFieldsHandle
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             $this->handleRemovals();
@@ -295,12 +299,12 @@ class DynamicFieldsHandle
             }
 
             if (!$transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             if (!$transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred storing dynamic field. Form name: ' . $this->form_name
@@ -318,8 +322,6 @@ class DynamicFieldsHandle
 
     /**
      * Get (and prepare if not done yet) insert statement
-     *
-     * @return StatementInterface
      */
     private function getInsertStatement(): StatementInterface
     {
@@ -339,8 +341,6 @@ class DynamicFieldsHandle
 
     /**
      * Get (and prepare if not done yet) update statement
-     *
-     * @return StatementInterface
      */
     private function getUpdateStatement(): StatementInterface
     {
@@ -362,8 +362,6 @@ class DynamicFieldsHandle
 
     /**
      * Handle values that have been removed
-     *
-     * @return void
      */
     private function handleRemovals(): void
     {
@@ -411,8 +409,13 @@ class DynamicFieldsHandle
                     $this->delete_stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
                 }
                 $this->delete_stmt->execute($entry);
-                //update val index
                 $field_id = $entry['field_id'];
+                $field = $this->dynamic_fields[$field_id] ?? null;
+                if ($field instanceof File) {
+                    //the file on disk is named after the value index
+                    $this->removeFile($field, (int)$entry['val_index']);
+                }
+                //update val index
                 if (
                     isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
@@ -423,6 +426,9 @@ class DynamicFieldsHandle
                             $current['val_index'] = $val_index;
                             ++$val_index;
                             $current['old_val_index'] = $val_index;
+                            if ($field instanceof File) {
+                                $this->moveFile($field, $val_index, $val_index - 1);
+                            }
                         }
                     }
                 }
@@ -432,9 +438,56 @@ class DynamicFieldsHandle
     }
 
     /**
-     * Is there any change in dynamic fields?
+     * Get the path of the file stored for a dynamic file field occurrence
      *
-     * @return bool
+     * Files uploaded before Galette 1.2 are all prefixed with `member`, whatever
+     * the form they belong to; fall back on that name, as other call sites do.
+     *
+     * @param File $field     Field descriptor
+     * @param int  $val_index Value index
+     */
+    private function getFilePath(File $field, int $val_index): ?string
+    {
+        $filename = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index);
+        if (file_exists($filename)) {
+            return $filename;
+        }
+
+        $legacy = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index, 'member');
+        return file_exists($legacy) ? $legacy : null;
+    }
+
+    /**
+     * Remove the file stored for a dynamic file field occurrence
+     *
+     * @param File $field     Field descriptor
+     * @param int  $val_index Value index
+     */
+    private function removeFile(File $field, int $val_index): void
+    {
+        $filename = $this->getFilePath($field, $val_index);
+        if ($filename !== null) {
+            unlink($filename);
+        }
+    }
+
+    /**
+     * Move the file stored for a dynamic file field occurrence to another index
+     *
+     * @param File $field Field descriptor
+     * @param int  $from  Current value index
+     * @param int  $to    New value index
+     */
+    private function moveFile(File $field, int $from, int $to): void
+    {
+        $filename = $this->getFilePath($field, $from);
+        if ($filename !== null) {
+            rename($filename, GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $to));
+        }
+    }
+
+    /**
+     * Is there any change in dynamic fields?
      */
     public function hasChanged(): bool
     {
@@ -446,8 +499,6 @@ class DynamicFieldsHandle
      *
      * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     public function removeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -456,7 +507,7 @@ class DynamicFieldsHandle
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             $delete = $this->zdb->delete(self::TABLE);
@@ -469,12 +520,12 @@ class DynamicFieldsHandle
             $this->zdb->execute($delete);
 
             if (!$transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             if (!$transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred removing dynamic field. Form name: ' . $this->form_name
@@ -487,8 +538,6 @@ class DynamicFieldsHandle
 
     /**
      * Get current fields resultset
-     *
-     * @return ResultSet
      */
     protected function getCurrentFields(): ResultSet
     {
@@ -523,11 +572,16 @@ class DynamicFieldsHandle
             $accessible_fields[] = $field->getId();
         }
 
-        if (count($accessible_fields)) {
-            $select->where->in('d.' . DynamicField::PK, $accessible_fields);
+        if (!count($accessible_fields)) {
+            //no field to see: the values of hidden ones must not be loaded,
+            //nor removed on store as if they had been dropped from the form
+            return (new ResultSet())->initialize([]);
         }
+        $select->where->in('d.' . DynamicField::PK, $accessible_fields);
 
-        $results = $this->zdb->execute($select);
-        return $results;
+        //occurrences are numbered, they must come back in order
+        $select->order('val_index ASC');
+
+        return $this->zdb->execute($select);
     }
 }

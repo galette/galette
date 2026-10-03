@@ -1,33 +1,29 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Composer\Autoload\ClassLoader;
+use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
-use Galette\Common\ClassLoader;
+use Galette\Exception\MissingPluginException;
+use League\Event\EventDispatcher;
+use League\Event\ListenerSubscriber;
+use Psr\Container\ContainerInterface;
+use RuntimeException;
+use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
+use Throwable;
 
+use function Safe\dir;
 use function Safe\file_put_contents;
 use function Safe\realpath;
 
@@ -35,61 +31,204 @@ use function Safe\realpath;
  * Plugins class for galette
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-type ModuleId string
+ * @phpstan-type Module array{
+ *      root: string,
+ *      name: string,
+ *      desc: string,
+ *      author: string,
+ *      version: string,
+ *      acls: ?array<string,string>,
+ *      date: ?string,
+ *      priority: int,
+ *      route: ?string,
+ *      dbversion: ?float
+ *  }
+ * @phpstan-type Modules array<ModuleId, Module>
  */
 
 class Plugins
 {
-    public const DISABLED_COMPAT   = 0;
-    public const DISABLED_MISS     = 1;
-    public const DISABLED_EXPLICIT = 2;
+    public const string TABLE = 'plugins';
+    public const string PK = 'plugin_id';
+    public const int DISABLED_COMPAT   = 0;
+    public const int DISABLED_MISS     = 1;
+    public const int DISABLED_EXPLICIT = 2;
+    public const int DISABLED_DBVERSION = 3;
+    public const int DISABLED_NOT_INSTALLED = 4;
+    public const int DISABLED_NOT_UP2DATE = 5;
 
     /** @var array<string> */
     protected array $path;
-    /** @var array<string, array<string, mixed>> */
+    /** @var Modules */
     protected array $modules = [];
-    /** @var array<string, array<string, mixed>> */
+    /** @var array<ModuleId, self::DISABLED_*> */
     protected array $disabled = [];
-    /** @var array<string> */
+    /** @var array<ModuleId, ?float> */
+    protected array $db_existing = [];
+    /** @var string[] */
     protected array $csrf_exclusions = [];
 
     protected ?string $id = null;
     protected ?string $mroot = null;
 
+    #[Inject]
     protected Preferences $preferences;
     protected bool $autoload = false;
+
+    #[Inject]
+    protected Translator $translator;
+
+    #[Inject]
+    protected EventDispatcher $event_dispatcher;
+
+    #[Inject]
+    protected Db $zdb;
+
+    private ContainerInterface $container;
+
+    /** @var array<string, true> lib/ dirs already registered to avoid double-registration */
+    private array $registeredLibDirs = [];
 
     /**
      * Register autoloader for all plugins
      *
+     * This method must be called before session start so that plugin classes
+     * stored in session can be properly deserialized. It scans plugin directories
+     * and registers class loaders for each plugin's lib/ directory without
+     * requiring the database or _define.php files.
+     *
+     * Plugin namespaces are added to the Composer PSR-4 loader already present
+     * on the SPL stack so that a single autoloader handles both core and plugin
+     * classes.
+     *
      * @param string $path could be a separated list of paths
      *                     (path separator depends on your OS).
-     *
-     * @return void
      */
     public function autoload(string $path): void
     {
         $this->path = explode(PATH_SEPARATOR, $path);
         $this->autoload = true;
-        $this->parseModules();
+
+        foreach ($this->path as $root) {
+            $this->registerPluginClassLoaders($root);
+        }
+    }
+
+    /**
+     * Find the Composer ClassLoader from the SPL autoload stack.
+     *
+     * Galette requires Composer unconditionally: vendor/autoload.php is loaded
+     * before any plugin code runs, so the Composer ClassLoader is always present
+     * on the SPL stack. Throws a RuntimeException if it cannot be found, which
+     * would indicate a misconfigured environment.
+     */
+    private function findClassLoader(): ClassLoader
+    {
+        foreach (spl_autoload_functions() as $func) {
+            if (is_array($func) && $func[0] instanceof ClassLoader) {
+                return $func[0];
+            }
+        }
+        throw new RuntimeException(
+            'Composer ClassLoader not found on the SPL autoload stack. '
+            . 'Make sure vendor/autoload.php is loaded before calling Plugins::autoload().'
+        );
+    }
+
+    /**
+     * Scan a plugins root directory and register a class loader for every
+     * namespace directory found inside each plugin's lib/ subdirectory.
+     *
+     * Plugin namespaces are added via Composer's addPsr4() so that all class
+     * resolution stays within the single existing Composer autoload function.
+     *
+     * Already-registered lib/ directories are skipped to prevent duplicate
+     * entries when loadModules() calls autoload() a second time.
+     */
+    private function registerPluginClassLoaders(string $root): void
+    {
+        if (!str_ends_with($root, '/')) {
+            $root .= '/';
+        }
+
+        if (!is_dir($root)) {
+            return;
+        }
+
+        $composerLoader = $this->findClassLoader();
+
+        foreach (new \DirectoryIterator($root) as $entry) {
+            if ($entry->isDot() || !$entry->isDir()) {
+                continue;
+            }
+
+            $lib_dir = $entry->getPathname() . '/lib';
+            if (!is_dir($lib_dir)) {
+                continue;
+            }
+
+            // Skip if already registered (second call from loadModules())
+            if (isset($this->registeredLibDirs[$lib_dir])) {
+                continue;
+            }
+            $this->registeredLibDirs[$lib_dir] = true;
+
+            // Register every namespace directory found inside lib/
+            foreach (new \DirectoryIterator($lib_dir) as $ns_entry) {
+                if ($ns_entry->isDot() || !$ns_entry->isDir()) {
+                    continue;
+                }
+
+                $namespace = $ns_entry->getFilename();
+                $ns_dir = $ns_entry->getPathname();
+
+                // Add to the existing Composer PSR-4 loader.
+                // PSR-4 strips the namespace prefix, so the base path must
+                // point to the namespace directory itself:
+                //   GaletteActivities\ => lib/GaletteActivities/
+                $composerLoader->addPsr4($namespace . '\\', $ns_dir);
+            }
+        }
+    }
+
+    /**
+     * Load modules from database
+     */
+    protected function loadDbModules(): void
+    {
+        try {
+            $select = $this->zdb->select(self::TABLE, 'p');
+            $results = $this->zdb->execute($select);
+            foreach ($results as $result) {
+                $this->db_existing[$result['plugin_id']] = $result['version'] !== null ? (float)$result['version'] : null;
+            }
+        } catch (Throwable $e) {
+            //Laminas wraps PDOException in InvalidQueryException (which does not extend PDOException),
+            //so catching Throwable and delegating recognition to Db::isMissingTableException() is required.
+            if (!$this->zdb->isMissingTableException($e)) {
+                throw $e;
+            }
+            Analog::log(
+                'Cannot load plugins from database: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
     }
 
     /**
      * Parse modules in current path
-     *
-     * @return void
      */
     protected function parseModules(): void
     {
         foreach ($this->path as $root) {
-            if (!is_dir($root) || !is_readable($root)) {
-                continue;
-            }
-
             if (!str_ends_with($root, '/')) {
                 $root .= '/';
             }
 
-            if (($d = @dir($root)) === false) { //@phpstan-ignore theCodingMachineSafe.function
+            try {
+                $d = dir($root);
+            } catch (DirException $e) {
                 continue;
             }
 
@@ -105,30 +244,58 @@ class Plugins
                         ) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php '
-                                . 'files that are required.',
+                                sprintf('Plugin "%s" is missing a _define.php and/or _routes.php '
+                                    . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
+                            // Ensure plugin appears in modules list even if required files are missing.
+                            $this->modules[$entry] ??= [
+                                'name'      => $entry,
+                                'desc'      => '',
+                                'author'    => '',
+                                'version'   => '',
+                                'date'      => '',
+                                'priority'  => 0,
+                                'root'      => $full_entry,
+                                'route'     => null,
+                                'dbversion' => null,
+                            ];
                             $this->setDisabled(self::DISABLED_MISS);
-                        } elseif ($this->isExplicitlyDisabled()) {
-                            Analog::log(
-                                'Plugin ' . $entry . ' is explicitly disabled',
-                                Analog::INFO
-                            );
-                            $this->setDisabled(self::DISABLED_EXPLICIT);
                         } else {
+                            //Will call $this->register()
                             include $full_entry . '/_define.php';
+                            if ($this->moduleExists($entry)) {
+                                if ($this->isDisabled($entry)) {
+                                    //register() already disabled the plugin (e.g. DISABLED_COMPAT):
+                                    //do not let isExplicitlyDisabled() overwrite the root cause.
+                                    continue;
+                                }
+                                if ($this->isExplicitlyDisabled()) {
+                                    Analog::log(
+                                        sprintf('Plugin "%s" is explicitly disabled', $entry),
+                                        Analog::INFO
+                                    );
+                                    $this->setDisabled(self::DISABLED_EXPLICIT);
+                                    continue;
+                                }
+                                $this->postRegistrationChecks();
+
+                                if ($this->isDisabled($entry)) {
+                                    continue;
+                                }
+                                if (file_exists($full_entry . '/_config.inc.php')) {
+                                    //include plugin configuration file if exists; it often declares constants that may be used in self::check()
+                                    require_once $full_entry . '/_config.inc.php';
+                                }
+                                $this->check();
+                            } else {
+                                Analog::log(
+                                    sprintf('Plugin "%s" is not loaded', $entry),
+                                    Analog::ERROR
+                                );
+                            }
                             $this->id = null;
                             $this->mroot = null;
-                            //set autoloader to PluginName.
-                            if (isset($this->modules[$entry]) && file_exists($full_entry . '/lib')) {
-                                $varname = $entry . 'Loader';
-                                ${$varname} = new ClassLoader(
-                                    $this->getNamespace($entry),
-                                    $full_entry . '/lib'
-                                );
-                                ${$varname}->register();
-                            }
                         }
                     }
                 }
@@ -145,27 +312,63 @@ class Plugins
      *                                 (path separator depends on your OS).
      * @param ?string     $lang        Indicates if we need to load a lang file on plugin
      *                                 loading.
-     *
-     * @return void
      */
     public function loadModules(Preferences $preferences, string $path, ?string $lang = null): void
     {
         $this->preferences = $preferences;
-        $this->path = explode(PATH_SEPARATOR, $path);
-
+        $this->autoload($path);
+        $this->loadDbModules();
         $this->parseModules();
 
         // Sort plugins
-        uasort($this->modules, [$this, 'sortModules']);
+        uasort($this->modules, $this->sortModules(...));
 
         // Load translation, _prepend and ns_file
-        foreach (array_keys($this->modules) as $id) {
+        $declared = false;
+        foreach (array_keys($this->getActiveModules()) as $id) {
             if ($lang !== null) {
                 $this->loadModuleL10N($id, $lang);
             }
             $this->loadEventProviders($id);
             $this->overridePrefs($id);
+            $declared = $this->registerPreferences($id) || $declared;
         }
+
+        if ($declared) {
+            //preferences were built before any plugin was known
+            $this->preferences->refreshSchema();
+        }
+    }
+
+    /**
+     * Register the preferences and public pages a module declares
+     *
+     * @param string $id Module ID
+     *
+     * @return bool Whether the module declared any
+     */
+    private function registerPreferences(string $id): bool
+    {
+        $class = $this->getClassName($id, full: true);
+        if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+            return false;
+        }
+
+        $plugin = $this->container->get($class);
+        if (
+            !$plugin instanceof Plugins\PreferencesProviderInterface
+            && !$plugin instanceof Plugins\PublicPagesProviderInterface
+        ) {
+            return false;
+        }
+
+        //a registration replaces the previous one: both go in a single call
+        PreferencesSchema::register(
+            $this->modules[$id]['route'],
+            $plugin instanceof Plugins\PreferencesProviderInterface ? $plugin->getPreferences() : [],
+            $plugin instanceof Plugins\PublicPagesProviderInterface ? $plugin->getPublicPages() : []
+        );
+        return true;
     }
 
     /**
@@ -188,8 +391,7 @@ class Plugins
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
      * @param ?int                  $priority Module priority
-     *
-     * @return void
+     * @param ?float                $dbver    Module database version
      */
     public function register(
         string $name,
@@ -200,48 +402,142 @@ class Plugins
         ?string $route = null,
         ?string $date = null,
         ?array $acls = null,
-        ?int $priority = 1000
+        ?int $priority = 1000,
+        ?float $dbver = null
     ): void {
+        //store module information
+        $this->modules[$this->id] = [
+            'root'          => $this->mroot,
+            'name'          => $name,
+            'desc'          => $desc,
+            'author'        => $author,
+            'version'       => $version,
+            'acls'          => $acls,
+            'date'          => $date,
+            'priority'      => $priority ?? 1000,
+            'route'         => $route,
+            'dbversion'     => $dbver
+        ];
+
+        //check compatibility
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
-                'Plugin ' . $name . ' does not contains mandatory version '
-                . 'compatibility information. Please contact the author.',
+                sprintf(
+                    'Plugin "%s" does not contain mandatory version compatibility information. Please contact the author.',
+                    $name
+                ),
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } elseif (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
+            return;
+        }
+
+        if (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
             //plugin is not compatible with that version of galette.
             Analog::log(
-                'Plugin ' . $name . ' is known to be compatible with Galette '
-                . $compver . ' only, but you current installation require a '
-                . 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
+                sprintf(
+                    'Plugin "%s" is known to be compatible with Galette %s only, but you current installation requires a plugin compatible with at least %s',
+                    $name,
+                    $compver,
+                    GALETTE_COMPAT_VERSION
+                ),
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } elseif ($this->id) {
-            $this->modules[$this->id] = [
-                'root'          => $this->mroot,
-                'name'          => $name,
-                'desc'          => $desc,
-                'author'        => $author,
-                'version'       => $version,
-                'acls'          => $acls,
-                'date'          => $date,
-                'priority'      => $priority ?? 1000,
-                'route'         => $route
-            ];
+        }
+    }
+
+    /**
+     * Perform post plugin registration checks
+     */
+    private function postRegistrationChecks(): void
+    {
+        if ($this->isDisabled($this->id)) {
+            //already disabled; ignore
+            return;
+        }
+        if ($this->modules[$this->id]['dbversion'] === null && $this->needsDatabase($this->id)) {
+            //plugin needs a database but no version is provided
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" needs a database but no version is provided.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::ERROR
+            );
+            $this->setDisabled(self::DISABLED_DBVERSION);
+            return;
+        }
+
+        if (
+            $this->needsDatabase($this->id)
+            && isset($this->db_existing[$this->id])
+            && $this->modules[$this->id]['dbversion'] != $this->db_existing[$this->id]
+        ) {
+            //plugin database needs an update
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" database needs to be updated.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::WARNING
+            );
+            $this->markToUpdate();
+        }
+    }
+
+    /**
+     * Post plugin initialization checks
+     */
+    private function check(): void
+    {
+        $plugin_class = $this->getClassName($this->id, full: true);
+        if (
+            !class_exists($plugin_class)
+            || !is_subclass_of($plugin_class, GalettePlugin::class)
+        ) {
+            //plugin is missing its mandatory class or does not extend GalettePlugin
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" class "%s" is missing or it does not extend GalettePlugin.',
+                    $this->modules[$this->id]['name'],
+                    $plugin_class
+                ),
+                Analog::ERROR
+            );
+            $this->setDisabled(self::DISABLED_MISS);
+            return;
+        }
+
+        /** @var GalettePlugin $plugin */
+        $plugin = $this->container->get($plugin_class);
+        $is_installed = $plugin->isInstalled();
+        $needs_database = $this->needsDatabase($this->id);
+
+        if (!$is_installed && $needs_database) {
+            //FIXME: plugin may not be installed again if it's just missing in db_existing, creation script may remove existing tables!
+            //plugin database has not been installed
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" has not been installed.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::WARNING
+            );
+            $this->markDbMissing();
+        } elseif ($is_installed && $needs_database && !array_key_exists($this->id, $this->db_existing)) {
+            $this->autoMigratePluginVersion($plugin->getLegacyDbVersion());
         }
     }
 
     /**
      * Reset modules list
-     *
-     * @return void
      */
     public function resetModulesList(): void
     {
         $this->modules = [];
+        PreferencesSchema::reset();
     }
 
     /**
@@ -249,7 +545,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     public function deactivateModule(string $id): void
@@ -263,6 +558,8 @@ class Plugins
         } catch (Exception $e) {
             throw new Exception(_T("Cannot deactivate plugin."), $e->getCode(), $e);
         }
+
+        PreferencesSchema::unregister($this->modules[$id]['route']);
     }
 
     /**
@@ -270,7 +567,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     protected function createDisabledFile(string $id): void
@@ -287,12 +583,12 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     protected function removeDisabledFile(string $id): void
     {
-        $legacy_file = $this->disabled[$id]['root'] . '/_disabled';
+        $module = $this->getModule($id);
+        $legacy_file = $module['root'] . '/_disabled';
         //try to remove the old file
         if (file_exists($legacy_file) && @unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
             Analog::log(
@@ -316,7 +612,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     public function activateModule(string $id): void
@@ -339,13 +634,9 @@ class Plugins
      *
      * @param string $id       Module ID
      * @param string $language Language code
-     *
-     * @return void
      */
     public function loadModuleL10N(string $id, string $language): void
     {
-        global $translator;
-
         if (empty($language) || !isset($this->modules[$id])) {
             return;
         }
@@ -355,65 +646,90 @@ class Plugins
         ];
         foreach ($domains as $domain) {
             //load translation file for domain
-            $translator->addTranslationFilePattern(
-                'gettext',
-                $this->modules[$id]['root'] . '/lang/',
-                '/%s/LC_MESSAGES/' . $domain . '.mo',
-                $domain
+            $this->translator->addTranslationFilePattern(
+                type: 'gettext',
+                baseDir: $this->modules[$id]['root'] . '/lang/',
+                pattern: '/%s/LC_MESSAGES/' . $domain . '.mo',
+                textDomain: $domain
             );
 
             //check if a local lang file exists and load it
-            $translator->addTranslationFilePattern(
-                'phparray',
-                $this->modules[$id]['root'] . '/lang/',
-                $domain . '_%s_local_lang.php',
-                $domain
+            $this->translator->addTranslationFilePattern(
+                type: 'phparray',
+                baseDir: $this->modules[$id]['root'] . '/lang/',
+                pattern: $domain . '_%s_local_lang.php',
+                textDomain: $domain
             );
+
+            I18n::checkCompiledTranslations($this->modules[$id]['root'] . '/lang/', $domain, $language);
         }
     }
 
     /**
      * Loads event provider
      *
-     * @param string $id Module ID
+     * Plugin may provide a PluginEventProvider class in its namespace,
+     * implementing League\Event\ListenerSubscriber. It is built from
+     * the container, so its dependencies are injected.
      *
-     * @return void
+     * @param string $id Module ID
      */
     public function loadEventProviders(string $id): void
     {
-        global $emitter;
-
         $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
-        if (
-            class_exists($providerClassName)
-            && method_exists($providerClassName, 'provideListeners')
-        ) {
-            $emitter->subscribeListenersFrom(new $providerClassName());
+        if (is_a($providerClassName, ListenerSubscriber::class, allow_string: true)) {
+            /** @var ListenerSubscriber $provider */
+            $provider = $this->container->get($providerClassName);
+            $this->event_dispatcher->subscribeListenersFrom($provider);
         }
     }
 
     /**
-     * Returns all modules associative array or only one module if <var>$id</var>
-     * is present.
+     * Returns requested module
      *
-     * @param ?string $id Optional module ID
+     * @param string $id Module ID
      *
-     * @return array<string, mixed>
+     * @return Module
      */
-    public function getModules(?string $id = null): array
+    public function getModule(string $id): array
     {
-        if ($id && isset($this->modules[$id])) {
+        if (isset($this->modules[$id])) {
             return $this->modules[$id];
         }
+        throw new MissingPluginException($id);
+    }
+
+    /**
+     * List of all modules
+     *
+     * @return Modules
+     */
+    public function getModules(): array
+    {
         return $this->modules;
     }
 
     /**
-     * Returns true if the module with ID <var>$id</var> exists.
+     * List of all active modules
+     *
+     * @return Modules
+     */
+    public function getActiveModules(): array
+    {
+        $active_modules = $this->modules;
+        foreach (array_keys($active_modules) as $id) {
+            if ($this->isDisabled($id)) {
+                unset($active_modules[$id]);
+            }
+        }
+
+        return $active_modules;
+    }
+
+    /**
+     * Check if a module exists
      *
      * @param string $id Module ID
-     *
-     * @return bool
      */
     public function moduleExists(string $id): bool
     {
@@ -421,21 +737,80 @@ class Plugins
     }
 
     /**
-     * Returns all disabled modules in an array
+     * List of all disabled modules
      *
-     * @return array<string, array<string, mixed>>
+     * @return Modules
      */
     public function getDisabledModules(): array
     {
-        return $this->disabled;
+        return array_filter($this->modules, $this->isDisabled(...), ARRAY_FILTER_USE_KEY);
     }
 
     /**
-     * Returns root path for module with ID <var>$id</var>.
+     * Returns one disabled module
+     *
+     * @return Module
+     */
+    public function getDisabledModule(string $id): array
+    {
+        if (!$this->moduleExists($id)) {
+            throw new MissingPluginException($id);
+        }
+        if (!isset($this->disabled[$id])) {
+            throw new \LogicException(
+                sprintf('Module "%s" is not disabled!', $id)
+            );
+        }
+        return $this->modules[$id];
+    }
+
+    /**
+     * Get installed database version for a plugin
+     *
+     * Returns the version stored in the database for the given plugin ID,
+     * or null if the plugin has no database entry yet.
+     *
+     * @param string $id Plugin identifier
+     */
+    public function getInstalledDbVersion(string $id): ?string
+    {
+        if (!$this->moduleExists($id)) {
+            throw new MissingPluginException($id);
+        }
+        $version = $this->db_existing[$id] ?? null;
+        return $version !== null ? (string)$version : null;
+    }
+
+    /**
+     * Get cause for a plugin to be disabled
+     */
+    public function getDisabledCause(string $id): int
+    {
+        if (!$this->moduleExists($id)) {
+            throw new MissingPluginException($id);
+        }
+        if (!isset($this->disabled[$id])) {
+            throw new \LogicException(
+                sprintf('Module "%s" is not disabled!', $id)
+            );
+        }
+        return $this->disabled[$id];
+    }
+
+    /**
+     * Is module disabled
      *
      * @param string $id Module ID
+     */
+    public function isDisabled(string $id): bool
+    {
+        return isset($this->disabled[$id]);
+    }
+
+    /**
+     * Get a module root path
      *
-     * @return ?string
+     * @param string $id Module ID
      */
     public function moduleRoot(string $id): ?string
     {
@@ -464,7 +839,7 @@ class Plugins
     }
 
     /**
-     * Sort modules
+     * Sort modules by priority, then name
      *
      * @param array<string, mixed> $a A module
      * @param array<string, mixed> $b Another module
@@ -474,7 +849,7 @@ class Plugins
     private function sortModules(array $a, array $b): int
     {
         if ($a['priority'] == $b['priority']) {
-            return strcasecmp((string) $a['name'], (string) $b['name']);
+            return strcasecmp((string)$a['name'], (string)$b['name']);
         }
 
         return ($a['priority'] < $b['priority']) ? -1 : 1;
@@ -501,8 +876,7 @@ class Plugins
      */
     public function getTemplatesPathFromName(string $name): string
     {
-        foreach (array_keys($this->getModules()) as $r) {
-            $mod = $this->getModules($r);
+        foreach ($this->getActiveModules() as $r => $mod) {
             if ($mod['name'] === $name) {
                 return $this->getTemplatesPath($r);
             }
@@ -518,7 +892,7 @@ class Plugins
     public function getTplHeaders(): array
     {
         $_headers = [];
-        foreach (array_keys($this->modules) as $key) {
+        foreach (array_keys($this->getActiveModules()) as $key) {
             $headers_path = $this->getTemplatesPath($key) . '/headers.html.twig';
             if (file_exists($headers_path)) {
                 $_headers[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'headers');
@@ -535,7 +909,7 @@ class Plugins
     public function getTplScripts(): array
     {
         $_scripts = [];
-        foreach (array_keys($this->modules) as $key) {
+        foreach (array_keys($this->getActiveModules()) as $key) {
             $scripts_path = $this->getTemplatesPath($key) . '/scripts.html.twig';
             if (file_exists($scripts_path)) {
                 $_scripts[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'scripts');
@@ -548,16 +922,14 @@ class Plugins
      * Does module need a database?
      *
      * @param string $id Module's ID
-     *
-     * @return bool
      */
     public function needsDatabase(string $id): bool
     {
-        if (isset($this->modules[$id])) {
+        if ($this->moduleExists($id)) {
             $d = $this->modules[$id]['root'] . '/scripts/';
             return file_exists($d);
         } else {
-            throw new Exception(_T("Module does not exists!"));
+            throw new MissingPluginException($id);
         }
     }
 
@@ -565,8 +937,6 @@ class Plugins
      * Override preferences from plugin
      *
      * @param string $id Module ID
-     *
-     * @return void
      */
     public function overridePrefs(string $id): void
     {
@@ -586,6 +956,43 @@ class Plugins
     }
 
     /**
+     * Automatically migrate plugin version to core table
+     *
+     * Version is the plugin one, unless it reports its tables are older.
+     *
+     * @param ?float $legacy_version Version of existing tables, if older than the plugin one
+     */
+    private function autoMigratePluginVersion(?float $legacy_version): void
+    {
+        try {
+            $module = $this->getModule($this->id);
+            $version = $legacy_version ?? $module['dbversion'];
+            $insert = $this->zdb->insert(self::TABLE);
+            $insert->values([
+                'plugin_id' => $this->id,
+                'version' => $version,
+            ]);
+            $this->zdb->execute($insert);
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" automatically migrated to core table.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::INFO
+            );
+            $this->db_existing[$this->id] = $version;
+            if ($version != $module['dbversion']) {
+                $this->markToUpdate();
+            }
+        } catch (Throwable $e) {
+            if (!$this->zdb->isMissingTableException($e)) {
+                //plugins table may be missing while updating
+                throw $e;
+            }
+        }
+    }
+
+    /**
      * Get plugins routes ACLs
      *
      * @return array<string>
@@ -593,10 +1000,48 @@ class Plugins
     public function getAcls(): array
     {
         $acls = [];
-        foreach ($this->modules as $module) {
-            $acls = array_merge($acls, $module['acls']);
+        foreach ($this->getActiveModules() as $module) {
+            $acls = array_merge($acls, $module['acls'] ?? []);
         }
         return $acls;
+    }
+
+    /**
+     * Get the public pages active plugins declare, as the settings page lists them
+     *
+     * Only the pages the schema accepted are listed. Labels are asked for
+     * here, once translations are loaded, rather than at registration time.
+     *
+     * @return list<array{name: string, label: string, plugin: string}>
+     */
+    public function getPublicPages(): array
+    {
+        $pages = [];
+        foreach ($this->getActiveModules() as $id => $module) {
+            $class = $this->getClassName($id, full: true);
+            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+                continue;
+            }
+
+            $plugin = $this->container->get($class);
+            if (!$plugin instanceof Plugins\PublicPagesProviderInterface) {
+                continue;
+            }
+
+            foreach (array_keys($plugin->getPublicPages()) as $page) {
+                $name = PreferencesSchema::getPublicPageName(plugin: $module['route'], id: (string)$page);
+                if (!PreferencesSchema::isPublicPage($name)) {
+                    continue;
+                }
+                $pages[] = [
+                    'name' => $name,
+                    'label' => $plugin->getPublicPageLabel((string)$page),
+                    'plugin' => $module['name'],
+                ];
+            }
+        }
+
+        return $pages;
     }
 
     /**
@@ -604,46 +1049,57 @@ class Plugins
      *
      * @param string $id   Module id
      * @param string $path File path
-     *
-     * @return string
      */
     public function getFile(string $id, string $path): string
     {
-        if (isset($this->modules[$id])) {
-            $file = $this->modules[$id]['root'] . '/webroot/' . $path;
-            if (file_exists($file)) {
-                return $file;
-            } else {
-                throw new \RuntimeException(_T("File not found!"));
-            }
+        if (!$this->moduleExists($id)) {
+            throw new MissingPluginException($id);
+        }
+
+        if ($this->isDisabled($id)) {
+            throw new RuntimeException(
+                sprintf('Trying to access file "%s" from module "%s" that is disabled.', $path, $id)
+            );
+        }
+
+        $file = $this->modules[$id]['root'] . '/webroot/' . $path;
+        if (file_exists($file)) {
+            return $file;
         } else {
-            throw new Exception(_T("Module does not exists!"));
+            throw new RuntimeException(_T("File not found!"));
         }
     }
 
     /**
      * Set a module as disabled
      *
-     * @param int $cause Cause (one of Plugins::DISABLED_* constants)
-     *
-     * @return void
+     * @param self::DISABLED_* $cause Disabling cause
      */
     private function setDisabled(int $cause): void
     {
-        $this->disabled[$this->id] = [
-            'root'  => $this->mroot,
-            'cause' => $cause
-        ];
-        $this->id = null;
-        $this->mroot = null;
+        $this->disabled[$this->id] = $cause;
+    }
+
+    /**
+     * Mark a module as needing an update
+     */
+    private function markToUpdate(): void
+    {
+        $this->setDisabled(self::DISABLED_NOT_UP2DATE);
+    }
+
+    /**
+     * Mark a module as not installed
+     */
+    private function markDbMissing(): void
+    {
+        $this->setDisabled(self::DISABLED_NOT_INSTALLED);
     }
 
     /**
      * Get module namespace
      *
      * @param string $id Module ID
-     *
-     * @return string
      */
     public function getNamespace(string $id): string
     {
@@ -655,12 +1111,10 @@ class Plugins
      *
      * @param string $id   Module ID
      * @param bool   $full Include namespace, defaults to false
-     *
-     * @return string
      */
     public function getClassName(string $id, bool $full = false): string
     {
-        $class = sprintf('PluginGalette%1$s', ucfirst((string) $this->modules[$id]['route']));
+        $class = sprintf('PluginGalette%1$s', ucfirst((string)$this->modules[$id]['route']));
         if ($full === true) {
             return sprintf('%s\%s', $this->getNamespace($id), $class);
         }
@@ -668,11 +1122,9 @@ class Plugins
     }
 
     /**
-     * Set CRSF excluded routes for one plugin
+     * Set CSRF excluded routes for one plugin
      *
      * @param array<string> $exclusions Array of regular expressions patterns to be excluded
-     *
-     * @return self
      */
     public function setCsrfExclusions(array $exclusions): self
     {
@@ -692,8 +1144,6 @@ class Plugins
 
     /**
      * Is the current module explicitly disabled?
-     *
-     * @return bool
      */
     public function isExplicitlyDisabled(): bool
     {
@@ -718,8 +1168,8 @@ class Plugins
                         Analog::WARNING
                     );
                 }
-            } catch (\Exception) {
-                //emtpy catch
+            } catch (Exception) {
+                //empty catch
             }
 
             return true;
@@ -732,8 +1182,6 @@ class Plugins
      * Get path for disabled file
      *
      * @param string $id Module ID
-     *
-     * @return string
      */
     public function getDisabledPath(string $id): string
     {
@@ -742,5 +1190,53 @@ class Plugins
             GALETTE_PLUGINS_DATA_PATH,
             $id
         );
+    }
+
+    /**
+     * Set translator
+     *
+     * @param Translator $translator Translator instance
+     */
+    public function setTranslator(Translator $translator): self
+    {
+        $this->translator = $translator;
+        return $this;
+    }
+
+    /**
+     * Set event dispatcher
+     *
+     * @param EventDispatcher $dispatcher Event dispatcher instance
+     */
+    public function setEventDispatcher(EventDispatcher $dispatcher): self
+    {
+        $this->event_dispatcher = $dispatcher;
+        return $this;
+    }
+
+    /**
+     * Set container, and required dependencies
+     *
+     * Automatic injection is not possible since Plugins must be initialized
+     * before the dependency injection.
+     */
+    public function setContainer(ContainerInterface $container): self
+    {
+        $this->container = $container;
+        $this->setTranslator($container->get(Translator::class));
+        $this->setEventDispatcher($container->get(EventDispatcher::class));
+        $this->setDb($container->get(Db::class));
+        return $this;
+    }
+
+    /**
+     * Set database instance
+     *
+     * @param Db $db Database instance
+     */
+    public function setDb(Db $db): self
+    {
+        $this->zdb = $db;
+        return $this;
     }
 }

@@ -1,29 +1,18 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
+use Analog\Analog;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Groups repository tests
@@ -32,71 +21,12 @@ use Galette\GaletteTestCase;
  */
 class Groups extends GaletteTestCase
 {
-    private array $parents = [];
-    private array $children = [];
-    private array $subchildren = [];
     protected int $seed = 855224771456;
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        $this->deleteGroups();
-    }
-
-    /**
-     * Delete groups
-     *
-     * @return void
-     */
-    private function deleteGroups(): void
-    {
-        $zdb = new \Galette\Core\Db();
-
-        //Clean managers
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSUSERS_TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        $groups = self::groupsProvider();
-        foreach ($groups as $group) {
-            foreach ($group['children'] as $child) {
-                $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-                $delete->where->in('group_name', $child);
-                $zdb->execute($delete);
-            }
-            $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-            $delete->where->in('group_name', array_keys($group['children']));
-            $zdb->execute($delete);
-        }
-
-        $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-        $zdb->execute($delete);
-
-        $delete = $zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $zdb->execute($delete);
-
-        //Clean logs
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
 
     /**
      * Groups provider
      *
-     * @return array[]
+     * @return array<int, array{parent_name: string, children: array<string, array<string>>}>
      */
     public static function groupsProvider(): array
     {
@@ -136,20 +66,16 @@ class Groups extends GaletteTestCase
     /**
      * Create groups for tests
      *
-     * @param string $parent_name Parent name
-     * @param array  $children    Children
-     *
-     * @dataProvider groupsProvider
-     *
-     * @return void
+     * @param string                       $parent_name Parent name
+     * @param array<string, array<string>> $children    Children
      */
+    #[DataProvider('groupsProvider')]
     public function testCreateGroups(string $parent_name, array $children): void
     {
         $group = new \Galette\Entity\Group();
         $group->setName($parent_name);
         $this->assertTrue($group->store());
         $parent_id = $group->getId();
-        $this->parents[] = $group->getId();
 
         foreach ($children as $child => $subchildren) {
             $group = new \Galette\Entity\Group();
@@ -157,22 +83,18 @@ class Groups extends GaletteTestCase
             $group->setParentGroup($parent_id);
             $this->assertTrue($group->store());
             $sub_id = $group->getId();
-            $this->children[] = $group->getId();
 
             foreach ($subchildren as $subchild) {
                 $group = new \Galette\Entity\Group();
                 $group->setName($subchild);
                 $group->setParentGroup($sub_id);
                 $this->assertTrue($group->store());
-                $this->subchildren[] = $group->getId();
             }
         }
     }
 
     /**
      * Test getSimpleList
-     *
-     * @return void
      */
     public function testGetSimpleList(): void
     {
@@ -188,7 +110,7 @@ class Groups extends GaletteTestCase
             $this->assertNotEmpty($group_name);
         }
 
-        $list = \Galette\Repository\Groups::getSimpleList(true);
+        $list = \Galette\Repository\Groups::getSimpleList(as_groups: true);
         $this->assertCount(17, $list);
         foreach ($list as $group) {
             $this->assertInstanceOf(\Galette\Entity\Group::class, $group);
@@ -197,8 +119,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test getSimpleList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -211,10 +131,10 @@ class Groups extends GaletteTestCase
 
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
-        $parents_list = $groups->getList(false);
+        $parents_list = $groups->getList(full: false);
         $this->assertCount(3, $parents_list);
 
-        $parents_list = $groups->getList(true);
+        $parents_list = $groups->getList(full: true);
         $this->assertCount(17, $parents_list);
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
@@ -222,7 +142,7 @@ class Groups extends GaletteTestCase
         $result = $this->zdb->execute($select)->current();
         $europe = (int)$result->{\Galette\Entity\Group::PK};
 
-        $children_list = $groups->getList(true, $europe);
+        $children_list = $groups->getList(full: true, id: $europe);
         $this->assertCount(4, $children_list);
 
         //set manager on one group, impersonate him, and check it gets only one group
@@ -239,8 +159,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test group name uniqueness
-     *
-     * @return void
      */
     public function testUniqueness(): void
     {
@@ -271,7 +189,12 @@ class Groups extends GaletteTestCase
         //name does not exist on another level - unique
         $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, $europe));
         //name is the current one - unique
-        $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, null, $group_id));
+        $this->assertTrue(\Galette\Repository\Groups::isUnique(
+            zdb: $this->zdb,
+            name: $unique_name,
+            parent: null,
+            current: $group_id
+        ));
 
         //tests on another level
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france));
@@ -280,8 +203,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test members/groups
-     *
-     * @return void
      */
     public function testMembersGroups(): void
     {
@@ -298,8 +219,8 @@ class Groups extends GaletteTestCase
 
         $member = $this->getMemberOne();
         $member->loadGroups();
-        $this->assertSame([], $member->managed_groups);
-        $this->assertSame([], $member->groups);
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertSame([], $member->getGroups());
 
         //add member to France and Allemagne groups, as simple member
         $this->assertTrue(
@@ -313,8 +234,8 @@ class Groups extends GaletteTestCase
         );
 
         $member->loadGroups();
-        $this->assertSame([], $member->managed_groups);
-        $this->assertCount(2, $member->groups);
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertCount(2, $member->getGroups());
 
         //Add as manager of France
         $this->assertTrue(
@@ -323,13 +244,13 @@ class Groups extends GaletteTestCase
                 [
                     sprintf('%s|%s', $france->getId(), $france->getName())
                 ],
-                true
+                manager: true
             ),
         );
 
         $member->loadGroups();
-        $this->assertCount(1, $member->managed_groups);
-        $this->assertCount(2, $member->groups);
+        $this->assertCount(1, $member->getManagedGroups());
+        $this->assertCount(2, $member->getGroups());
 
         $member2 = $this->getMemberTwo();
         //Add as manager of France
@@ -339,13 +260,13 @@ class Groups extends GaletteTestCase
                 [
                     sprintf('%s|%s', $france->getId(), $france->getName())
                 ],
-                true
+                manager: true
             ),
         );
 
         $member2->loadGroups();
-        $this->assertCount(1, $member2->managed_groups);
-        $this->assertCount(0, $member2->groups);
+        $this->assertCount(1, $member2->getManagedGroups());
+        $this->assertCount(0, $member2->getGroups());
 
         $this->logSuperAdmin();
         $this->login->impersonate($member2->id);
@@ -358,7 +279,12 @@ class Groups extends GaletteTestCase
 
         \Galette\Repository\Groups::removeMemberFromGroups($member->id);
         $member->loadGroups();
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertSame([], $member->getGroups());
+        //make sure old discouraged way still works
         $this->assertSame([], $member->managed_groups);
+        $this->expectLogEntry(Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
         $this->assertSame([], $member->groups);
+        $this->expectLogEntry(Analog::WARNING, 'Calling property "groups" directly is discouraged.');
     }
 }

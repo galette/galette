@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -44,8 +31,8 @@ class ScheduledPayment
 {
     use EntityHelper;
 
-    public const TABLE = 'payments_schedules';
-    public const PK = 'id_schedule';
+    public const string TABLE = 'payments_schedules';
+    public const string PK = 'id_schedule';
     private int $id;
     private Contribution $contribution;
     private PaymentType $payment_type;
@@ -84,8 +71,6 @@ class ScheduledPayment
      * Load a scheduled payment from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return bool
      */
     public function load(int $id): bool
     {
@@ -115,8 +100,6 @@ class ScheduledPayment
      * Load scheduled payment from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -137,8 +120,6 @@ class ScheduledPayment
      * Check data
      *
      * @param array<string,mixed> $data Data
-     *
-     * @return bool
      */
     public function check(array $data): bool
     {
@@ -202,8 +183,6 @@ class ScheduledPayment
 
     /**
      * Store scheduled payment in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -236,7 +215,7 @@ class ScheduledPayment
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing scheduled payment: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                . "\n" . print_r($data, return: true),
                 Analog::ERROR
             );
             throw $e;
@@ -245,8 +224,6 @@ class ScheduledPayment
 
     /**
      * Remove current
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -272,8 +249,6 @@ class ScheduledPayment
 
     /**
      * Get identifier
-     *
-     * @return ?int
      */
     public function getId(): ?int
     {
@@ -282,8 +257,6 @@ class ScheduledPayment
 
     /**
      * Get contribution
-     *
-     * @return Contribution
      */
     public function getContribution(): Contribution
     {
@@ -294,8 +267,6 @@ class ScheduledPayment
      * Set contribution
      *
      * @param int|Contribution $contribution Contribution instance or id
-     *
-     * @return self
      */
     public function setContribution(int|Contribution $contribution): self
     {
@@ -323,8 +294,6 @@ class ScheduledPayment
 
     /**
      * Get payment type
-     *
-     * @return PaymentType
      */
     public function getPaymentType(): PaymentType
     {
@@ -337,8 +306,6 @@ class ScheduledPayment
      * Set payment type
      *
      * @param int|PaymentType $payment_type Payment type instance or id
-     *
-     * @return self
      */
     public function setPaymentType(int|PaymentType $payment_type): self
     {
@@ -368,8 +335,6 @@ class ScheduledPayment
      * Get creation date
      *
      * @param bool $formatted Get formatted date, or DateTime object
-     *
-     * @return string|DateTime|null
      */
     public function getCreationDate(bool $formatted = true): string|DateTime|null
     {
@@ -380,8 +345,6 @@ class ScheduledPayment
      * Set creation date
      *
      * @param string $creation_date Creation date
-     *
-     * @return self
      */
     public function setCreationDate(string $creation_date): self
     {
@@ -393,8 +356,6 @@ class ScheduledPayment
      * Get scheduled date
      *
      * @param bool $formatted Get formatted date, or DateTime object
-     *
-     * @return string|DateTime|null
      */
     public function getScheduledDate(bool $formatted = true): string|DateTime|null
     {
@@ -405,8 +366,6 @@ class ScheduledPayment
      * Set scheduled date
      *
      * @param string $scheduled_date Scheduled date
-     *
-     * @return self
      */
     public function setScheduledDate(string $scheduled_date): self
     {
@@ -416,8 +375,6 @@ class ScheduledPayment
 
     /**
      * Get amount
-     *
-     * @return float
      */
     public function getAmount(): ?float
     {
@@ -428,8 +385,6 @@ class ScheduledPayment
      * Set amount
      *
      * @param float $amount Amount
-     *
-     * @return self
      */
     public function setAmount(float $amount): self
     {
@@ -439,8 +394,6 @@ class ScheduledPayment
 
     /**
      * Is payment done?
-     *
-     * @return bool
      */
     public function isPaid(): bool
     {
@@ -451,8 +404,6 @@ class ScheduledPayment
      * Set paid
      *
      * @param bool $is_paid Paid status
-     *
-     * @return self
      */
     public function setPaid(bool $is_paid = true): self
     {
@@ -462,20 +413,16 @@ class ScheduledPayment
 
     /**
      * Is payment due?
-     *
-     * @return bool
      */
     public function isDue(): bool
     {
         $now = time();
-        $date = $this->getScheduledDate(false)->getTimestamp();
+        $date = $this->getScheduledDate(formatted: false)->getTimestamp();
         return !$this->isPaid() && $date < $now;
     }
 
     /**
      * Get comment
-     *
-     * @return ?string
      */
     public function getComment(): ?string
     {
@@ -486,8 +433,6 @@ class ScheduledPayment
      * Set comment
      *
      * @param ?string $comment Comment
-     *
-     * @return self
      */
     public function setComment(?string $comment): self
     {
@@ -500,7 +445,6 @@ class ScheduledPayment
      *
      * @param int $id_cotis Contribution identifier
      *
-     * @return bool
      * @throws Throwable
      */
     public function isContributionHandled(int $id_cotis): bool
@@ -517,7 +461,6 @@ class ScheduledPayment
      *
      * @param int $id_cotis Contribution identifier
      *
-     * @return float
      * @throws Throwable
      */
     public function getAllocation(int $id_cotis): float
@@ -534,7 +477,6 @@ class ScheduledPayment
     /**
      * Get allocated amount for current contribution
      *
-     * @return float
      * @throws Throwable
      */
     public function getAllocated(): float
@@ -544,8 +486,6 @@ class ScheduledPayment
 
     /**
      * Get missing amount
-     *
-     * @return float
      */
     public function getMissingAmount(): float
     {
@@ -556,8 +496,6 @@ class ScheduledPayment
      * Is scheduled payment fully allocated?
      *
      * @param Contribution $contrib Contribution
-     *
-     * @return bool
      */
     public function isFullyAllocated(Contribution $contrib): bool
     {
@@ -576,11 +514,11 @@ class ScheduledPayment
         $select->quantifier('DISTINCT');
 
         $select->join(
-            ['s' => PREFIX_DB . self::TABLE],
+            name: ['s' => PREFIX_DB . self::TABLE],
             //$on,
-            'c.' . Contribution::PK . '=s.' . Contribution::PK,
-            ['allocated' => new Expression('SUM(s.amount)')],
-            $select::JOIN_LEFT
+            on: 'c.' . Contribution::PK . '=s.' . Contribution::PK,
+            columns: ['allocated' => new Expression('SUM(s.amount)')],
+            type: $select::JOIN_LEFT
         );
 
         $select->group('c.' . Contribution::PK);
@@ -618,8 +556,6 @@ class ScheduledPayment
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     protected function setFields(): self
     {

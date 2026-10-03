@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -87,8 +74,6 @@ class PaymentTypes extends Repository
      * Add default payment types in database
      *
      * @param bool $check_first Check first if it seems initialized
-     *
-     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -112,7 +97,7 @@ class PaymentTypes extends Repository
                 }
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             //first, we drop all values
             $delete = $this->zdb->delete($ent::TABLE);
@@ -125,11 +110,11 @@ class PaymentTypes extends Repository
             );
             $this->insert($ent::TABLE, $this->defaults);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }
@@ -137,10 +122,8 @@ class PaymentTypes extends Repository
 
     /**
      * Checks for missing payment types in the database
-     *
-     * @return bool
      */
-    protected function checkUpdate(): bool
+    public function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;
@@ -165,7 +148,7 @@ class PaymentTypes extends Repository
             }
 
             if (count($missing) > 0) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing payment types were successfully stored into database.',
@@ -178,12 +161,12 @@ class PaymentTypes extends Repository
                     count($this->defaults)
                 );
 
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
                 return true;
             }
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }
@@ -195,8 +178,6 @@ class PaymentTypes extends Repository
      *
      * @param string              $table  Table name
      * @param array<string,mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(string $table, array $values): void
     {
@@ -227,7 +208,7 @@ class PaymentTypes extends Repository
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);
-            $this->defaults = $paytype->getSystemTypes(false);
+            $this->defaults = $paytype->getSystemTypes(translated: false);
         }
         return parent::loadDefaults();
     }

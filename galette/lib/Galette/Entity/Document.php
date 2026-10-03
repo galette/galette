@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -30,6 +17,9 @@ use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadSize;
+use Galette\Util\Html;
+use Galette\Repository\Documents;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Galette\Core\Db;
@@ -49,14 +39,8 @@ class Document
         writeOnDisk as protected trait_writeOnDisk;
     }
 
-    public const TABLE = 'documents';
-    public const PK = 'id_document';
-
-    public const STATUS = 'status';
-    public const RULES = 'rules';
-    public const ADHESION = 'adhesion';
-    public const MINUTES = 'minutes';
-    public const VOTES = 'votes';
+    public const string TABLE = 'documents';
+    public const string PK = 'id_document';
 
     private int $id;
     private string $type;
@@ -66,7 +50,6 @@ class Document
     private ?string $comment = null;
     /** @var string[] */
     private array $errors = [];
-    private bool $public_list = false;
 
     /**
      * Main constructor
@@ -78,7 +61,10 @@ class Document
     {
         $this->can_public = true;
 
-        $this->init($this->store_path);
+        $this->init(
+            dest: $this->store_path,
+            maxlength: UploadSize::Documents->get()
+        );
 
         if (is_int($args)) {
             $this->load($args);
@@ -91,8 +77,6 @@ class Document
      * Load a document from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -114,95 +98,9 @@ class Document
     }
 
     /**
-     * Get documents
-     *
-     * @param string|null $type Type to retrieve
-     *
-     * @return array<int,Document>
-     *
-     * @throws Throwable
-     */
-    public function getList(?string $type = null): array
-    {
-        global $login;
-
-        try {
-            $select = $this->zdb->select(self::TABLE);
-
-            if ($type !== null) {
-                $select->where(['type' => $type]);
-            }
-
-            $select->order(self::PK);
-
-            $results = $this->zdb->execute($select);
-            $documents = [];
-            $access_level = $login->getAccessLevel();
-
-            foreach ($results as $r) {
-                // skip entries according to access control
-                if (
-                    $r->visible == FieldsConfig::NOBODY
-                    && (($this->public_list === false && !$login->isAdmin()) || $this->public_list === true)
-                    || ($r->visible == FieldsConfig::ADMIN
-                        && $access_level < Authentication::ACCESS_ADMIN)
-                    || ($r->visible == FieldsConfig::STAFF
-                        && $access_level < Authentication::ACCESS_STAFF)
-                    || ($r->visible == FieldsConfig::MANAGER
-                        && $access_level < Authentication::ACCESS_MANAGER)
-                    || (($r->visible == FieldsConfig::USER_READ || $r->visible == FieldsConfig::USER_WRITE)
-                        && $access_level < Authentication::ACCESS_USER)
-                ) {
-                    continue;
-                }
-
-                $documents[$r->{self::PK}] = new Document($this->zdb, $r);
-            }
-            return $documents;
-        } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred loading documents. Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Get list by type
-     *
-     * @return array<string, array<int, Document>>
-     *
-     * @throws Throwable
-     */
-    public function getTypedList(): array
-    {
-        $this->public_list = true;
-        $list = $this->getList();
-        $sys_types = $this->getSystemTypes(false);
-
-        $typed_list = array_fill_keys($sys_types, []);
-        foreach ($list as $document) {
-            $typed_list[$document->getType()][] = $document;
-        }
-
-        //cleanup: some system types may have no entries
-        foreach ($sys_types as $type) {
-            if (count($typed_list[$type]) == 0) {
-                unset($typed_list[$type]);
-            }
-        }
-
-        return $typed_list;
-    }
-
-    /**
      * Check if a document can be shown
      *
      * @param Login $login Login
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -222,8 +120,6 @@ class Document
      * Load document from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -240,11 +136,12 @@ class Document
      *
      * @param array<string,mixed>          $post  POST data
      * @param array<UploadedFileInterface> $files Uploaded files
-     *
-     * @return bool
      */
     public function store(array $post, array $files): bool
     {
+        global $login;
+
+        $this->errors = [];
         $this->setType($post['document_type']);
         $this->setComment($post['comment']);
         $this->permission = (int)$post['visible'];
@@ -255,7 +152,23 @@ class Document
             return false;
         }
 
+        if (trim($this->type) === '') {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is a field name
+                _T('- Mandatory field %1$s empty.'),
+                _T("Document type")
+            );
+        }
+        if ($this->getDocumentFilename() === '') {
+            $this->errors[] = _T("No file was uploaded");
+        }
+        if (count($this->errors) > 0) {
+            return false;
+        }
+
         try {
+            $documents = new Documents($this->zdb, $login);
+
             $values = [
                 'type' => $this->type,
                 'filename' => $this->filename,
@@ -277,7 +190,7 @@ class Document
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-                if (!in_array($this->type, $this->getSystemTypes(false))) {
+                if (!in_array($this->type, $documents->getSystemTypes(translated: false))) {
                     $this->addTranslation($this->type);
                 }
             }
@@ -296,8 +209,6 @@ class Document
      * Remove document
      *
      * @param array<int>|null $ids IDs to remove, default to current id
-     *
-     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -306,7 +217,7 @@ class Document
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $ids]);
             $this->zdb->execute($delete);
@@ -318,10 +229,10 @@ class Document
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete document #' . implode(', #', $ids) . ' | ' . $e->getMessage(),
                 Analog::ERROR
@@ -332,13 +243,16 @@ class Document
 
     /**
      * Remove document file
-     *
-     * @return bool
      */
     protected function removeFile(): bool
     {
+        if ($this->getDocumentFilename() === '') {
+            Analog::log('No file to remove for document', Analog::WARNING);
+            return false;
+        }
+
         $file = $this->getDestDir() . $this->getDocumentFilename();
-        if (file_exists($file)) {
+        if (is_file($file)) {
             return unlink($file); //@phpstan-ignore theCodingMachineSafe.function
         }
 
@@ -348,8 +262,6 @@ class Document
 
     /**
      * Get file URL
-     *
-     * @return string
      */
     public function getURL(): string
     {
@@ -358,8 +270,6 @@ class Document
 
     /**
      * Get document ID
-     *
-     * @return ?int
      */
     public function getId(): ?int
     {
@@ -368,8 +278,6 @@ class Document
 
     /**
      * Get document file name
-     *
-     * @return string
      */
     public function getDocumentFilename(): string
     {
@@ -379,19 +287,16 @@ class Document
     /**
      * Set comment
      * @param ?string $comment Comment to set
-     *
-     * @return self
      */
     public function setComment(?string $comment): self
     {
-        $this->comment = $comment;
+        //the public documents list renders it with |raw
+        $this->comment = $comment === null ? null : Html::clean($comment);
         return $this;
     }
 
     /**
      * Get comment
-     *
-     * @return ?string
      */
     public function getComment(): ?string
     {
@@ -402,8 +307,6 @@ class Document
      * Set type
      *
      * @param string $type Type
-     *
-     * @return self
      */
     public function setType(string $type): self
     {
@@ -413,8 +316,6 @@ class Document
 
     /**
      * Get type
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -425,8 +326,6 @@ class Document
      * Get creation date
      *
      * @param bool $formatted Return formatted date (default) or not
-     *
-     * @return string|DateTime
      */
     public function getCreationDate(bool $formatted = true): string|DateTime
     {
@@ -437,68 +336,18 @@ class Document
     }
 
     /**
-     * Get system social types
-     *
-     * @param bool $translated Return translated types (default) or not
-     *
-     * @return array<string,string>
-     */
-    public function getSystemTypes(bool $translated = true): array
-    {
-        if ($translated) {
-            $systypes = [
-                self::STATUS => _T('Association status'),
-                self::RULES => _T('Rules of procedure'),
-                self::ADHESION => _T('Adhesion form'),
-                self::MINUTES => _T('Meeting minutes'),
-                self::VOTES => _T('Votes results')
-            ];
-        } else {
-            $systypes = [
-                self::STATUS => 'Association status',
-                self::RULES => 'Rules of procedure',
-                self::ADHESION => 'Adhesion form',
-                self::MINUTES => 'Meeting minutes',
-                self::VOTES => 'Votes results'
-            ];
-        }
-        return $systypes;
-    }
-
-    /**
-     * Get system documents types
+     * Get document system type
      *
      * @param string $type       Document type
      * @param bool   $translated Return translated types (default) or not
-     *
-     * @return string
      */
     public function getSystemType(string $type, bool $translated = true): string
     {
-        return $this->getSystemTypes($translated)[$type] ?? _T($type);
-    }
+        global $login;
 
-    /**
-     * Get all known types
-     *
-     * @return array<string,string>
-     *
-     * @throws Throwable
-     */
-    public function getTypes(): array
-    {
-        $types = $this->getSystemTypes();
+        $documents = new Documents($this->zdb, $login);
 
-        $select = $this->zdb->select(self::TABLE);
-        $select->quantifier('DISTINCT');
-        $select->where->notIn('type', array_keys($this->getSystemTypes(false)));
-        $results = $this->zdb->execute($select);
-
-        foreach ($results as $r) {
-            $types[$r->type] = _T($r->type);
-        }
-
-        return $types;
+        return $documents->getSystemTypes($translated)[$type] ?? $type;
     }
 
     /**
@@ -529,7 +378,7 @@ class Document
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been thew attempting to edit/store a document file' . "\n"
-                . print_r($this->errors, true),
+                . print_r($this->errors, return: true),
                 Analog::ERROR
             );
             return $this->errors;

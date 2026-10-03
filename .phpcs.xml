@@ -2,14 +2,17 @@
 <ruleset>
     <description>Coding standard based on PSR12 with comments from PEAR for Galette</description>
 
+    <file>bin/</file>
+    <!-- extensionless, so not picked up by the directory above -->
+    <file>bin/console</file>
     <file>galette/lib/</file>
     <file>galette/webroot/index.php</file>
-    <!--file>galette/webroot/installer.php</file-->
+    <file>galette/webroot/installer.php</file>
     <file>galette/webroot/compat_test.php</file>
     <file>galette/includes/</file>
-    <!--file>galette/install/</file-->
+    <file>galette/install/</file>
     <file>tests/TestsBootstrap.php</file>
-    <file>tests/GaletteTestCase.php</file>
+    <file>tests/lib/</file>
     <file>tests/Galette/</file>
     <file>tests/GaletteDbFails/</file>
     <file>tests/GaletteUpdate/</file>
@@ -37,16 +40,19 @@
          <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag"/>
          <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag"/>
      </rule>
-     <rule ref="PEAR.Commenting.FunctionComment"/>
+     <rule ref="Galette.Commenting.FunctionComment"/>
      <rule ref="PEAR.Commenting.InlineComment"/>
+
+     <!-- Type hinting -->
      <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
          <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
      </rule>
+     <!-- Force native typehint on methods properties -->
      <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
          <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
      </rule>
+     <!-- Force native typehint on methods return -->
      <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
-         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
          <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
      </rule>
      <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
@@ -56,4 +62,9 @@
      </rule>
      <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
      <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
+     <rule ref="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint">
+       <properties>
+         <property name="enableNativeTypeHint" value="1"/>
+       </properties>
+     </rule>
 </ruleset>

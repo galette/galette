@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -43,7 +30,7 @@ use function Safe\simplexml_load_file;
 
 class CsvOut extends Csv
 {
-    public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
+    public const string DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
     private string $legacy_parameted_file = 'exports.xml';
     private string $parameted_file = 'exports.yaml';
@@ -152,7 +139,7 @@ class CsvOut extends Csv
                 $this->write();
             }
         }
-        $this->write(true);
+        $this->write(last: true);
         return $this->result;
     }
 
@@ -162,8 +149,6 @@ class CsvOut extends Csv
      *   If not, it will be returned
      *
      * @param bool $last true if we write the latest line
-     *
-     * @return void
      */
     private function write(bool $last = false): void
     {
@@ -185,8 +170,6 @@ class CsvOut extends Csv
      * Retrieve parameted export name
      *
      * @param string $id Parameted export identifier
-     *
-     * @return ?string
      */
     public function getParamedtedExportName(string $id): ?string
     {
@@ -311,7 +294,7 @@ class CsvOut extends Csv
             }
         }
 
-        $this->export($results, $separator, $quote, $title, $fp);
+        $this->export(rs: $results, separator: $separator, quote: $quote, titles: $title, file: $fp);
         fclose($fp);
 
         return (string)$export['filename'];
@@ -375,7 +358,7 @@ class CsvOut extends Csv
             }
         }
 
-        $this->export($results, $separator, $quote, $title, $fp);
+        $this->export(rs: $results, separator: $separator, quote: $quote, titles: $title, file: $fp);
         fclose($fp);
 
         return $export['filename'];

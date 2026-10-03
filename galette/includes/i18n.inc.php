@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -25,6 +12,7 @@ if (!defined('GALETTE_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
+/** @var \Galette\Core\I18n $i18n */
 $i18n->updateEnv();
 global $language;
 //FIXME: should be handled differently
@@ -92,7 +80,7 @@ $foo = _T("Zip Code");
 $foo = _T("First name");
 $foo = _T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.");
 $foo = _T("Required membership:");
-$foo = _T("Complete the following form and send it with your funds, in order to complete your subscription.");
+$foo = _T("Complete the following form and send it with your funds, in order to complete your membership.");
 $foo = _T('on');
 $foo = _T('from');
 $foo = _T('to');

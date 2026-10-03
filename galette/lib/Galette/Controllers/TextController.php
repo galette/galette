@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Texts;
@@ -38,26 +26,22 @@ class TextController extends AbstractController
     /**
      * List texts
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $lang     Language
-     * @param ?string  $ref      Ref code
-     *
-     * @return Response
+     * @param ?string $lang Language
+     * @param ?string $ref  Ref code
      */
-    public function list(Request $request, Response $response, ?string $lang = null, ?string $ref = null): Response
-    {
-        if ($lang === null) {
-            $lang = $this->preferences->pref_lang;
-        }
-        if ($ref === null) {
-            $ref = Texts::DEFAULT_REF;
-        }
-
-        $texts = new Texts(
-            $this->preferences,
-            $this->routeparser
-        );
+    #[Route(
+        name: 'texts',
+        pattern: '/texts[/{lang}/{ref}]',
+        methods: ['GET']
+    )]
+    public function list(
+        Response $response,
+        Texts $texts,
+        ?string $lang = null,
+        ?string $ref = null
+    ): Response {
+        $lang ??= $this->preferences->pref_lang;
+        $ref ??= Texts::DEFAULT_REF;
 
         $texts->setCurrent($ref);
         $mtxt = $texts->getTexts($ref, $lang);
@@ -83,12 +67,12 @@ class TextController extends AbstractController
 
     /**
      * Change texts
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'changeText',
+        pattern: '/texts/change',
+        methods: ['POST']
+    )]
     public function change(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -108,16 +92,15 @@ class TextController extends AbstractController
 
     /**
      * Edit text
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function edit(Request $request, Response $response): Response
+    #[Route(
+        name: 'storeText',
+        pattern: '/texts',
+        methods: ['POST']
+    )]
+    public function edit(Request $request, Response $response, Texts $texts): Response
     {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->routeparser);
         $error_detected = [];
         $success_detected = [];
 
@@ -128,10 +111,10 @@ class TextController extends AbstractController
 
         $mtxt = $texts->getTexts($cur_ref, $cur_lang);
         $res = $texts->setTexts(
-            $cur_ref,
-            $cur_lang,
-            $post['text_subject'],
-            $post['text_body']
+            ref: $cur_ref,
+            lang: $cur_lang,
+            subject: $post['text_subject'],
+            body: $post['text_body']
         );
 
         if (!$res) {

@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- sequence for reminders
 DROP SEQUENCE IF EXISTS galette_reminders_id_seq;
 CREATE SEQUENCE galette_reminders_id_seq

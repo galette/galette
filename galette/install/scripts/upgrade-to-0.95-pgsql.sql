@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 -- Update fields length
 ALTER TABLE galette_adherents ALTER COLUMN nom_adh TYPE varchar(255);
 ALTER TABLE galette_adherents ALTER COLUMN prenom_adh TYPE varchar(255);

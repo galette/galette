@@ -1,4 +1,9 @@
--- $Id$
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 ALTER TABLE galette_adherents ADD pref_lang character varying(20);
 ALTER TABLE galette_adherents ALTER pref_lang SET DEFAULT 'french';
 ALTER TABLE galette_adherents ALTER ddn_adh SET DEFAULT '19010101';

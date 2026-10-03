@@ -1,71 +1,40 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+
+use function Safe\preg_match;
+use function Safe\mb_convert_encoding;
 
 /**
  * I18n tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class I18n extends TestCase
+class I18n extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private ?\Galette\Core\I18n $i18n = null;
     private \Galette\Core\Galette $galette;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
+        parent::setUp();
         $this->galette = new \Galette\Core\Galette();
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-    }
-
-    /**
      * Test lang autodetect
-     *
-     * @return void
      */
     public function testAutoLang(): void
     {
@@ -94,8 +63,6 @@ class I18n extends TestCase
 
     /**
      * Test languages list
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -109,9 +76,52 @@ class I18n extends TestCase
     }
 
     /**
+     * Test languages are guessed from PO sources, compiled MO files are not versioned
+     */
+    public function testGuessLangsFromSources(): void
+    {
+        $expected = [];
+        foreach (\Safe\glob(GALETTE_ROOT . 'lang/galette_*.po') as $po) {
+            $expected[] = substr(basename($po, '.po'), strlen('galette_'));
+        }
+        sort($expected);
+
+        $langs = $this->i18n->guessLangs();
+        $long_ids = array_column($langs, 'long');
+        sort($long_ids);
+
+        $this->assertSame($expected, $long_ids);
+        $this->assertSame('fr_FR.utf8', $langs['fr_FR']['long']);
+        $this->assertSame('en_US', $langs['en_US']['long']);
+    }
+
+    /**
+     * Test missing MO files are only reported in debug mode
+     */
+    public function testCompiledTranslationsWarnings(): void
+    {
+        $this->assertFalse(\Galette\Core\Galette::isDebugEnabled());
+        $this->assertSame([], $this->i18n->getCompiledTranslationsWarnings());
+        $this->assertNull(
+            \Galette\Core\I18n::findUncompiledTranslations(GALETTE_ROOT . 'lang/', 'galette', 'unknown_LANG')
+        );
+    }
+
+    /**
+     * Test contextualized translations
+     */
+    public function testContextualizedTranslation(): void
+    {
+        $this->i18n->changeLanguage('fr_FR');
+        $this->assertSame('Vérifications', _Tx('installation step', 'Checks'));
+        //payment type names are stored in database, they must be found without context
+        $this->assertSame('Chèque', _T('Check'));
+        $this->assertSame('Checks', _Tx('unknown context', 'Checks', nt: false));
+        $this->i18n->changeLanguage('en_US');
+    }
+
+    /**
      * Test languages list as array
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -122,8 +132,6 @@ class I18n extends TestCase
 
     /**
      * Test getting language name from its ID
-     *
-     * @return void
      */
     public function testGetNameFromid(): void
     {
@@ -136,8 +144,6 @@ class I18n extends TestCase
 
     /**
      * Test retrieving language information
-     *
-     * @return void
      */
     public function testGetLangInfos(): void
     {
@@ -165,8 +171,6 @@ class I18n extends TestCase
 
     /**
      * Change to an unknown language
-     *
-     * @return void
      */
     public function testChangeUnknownLanguage(): void
     {
@@ -174,12 +178,11 @@ class I18n extends TestCase
         $id = $this->i18n->getID();
 
         $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $id);
+        $this->expectLogEntry(\Analog\Analog::WARNING, "Lang un_KN does not exist, switching to default.");
     }
 
     /**
      * Check (non) UTF strings
-     *
-     * @return void
      */
     public function testSeemUtf8(): void
     {
@@ -192,8 +195,6 @@ class I18n extends TestCase
 
     /**
      * Test getting online documentation base URL
-     *
-     * @return void
      */
     public function testGetDocumentationBaseUrl(): void
     {

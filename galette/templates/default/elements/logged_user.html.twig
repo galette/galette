@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% if ui is defined %}
     {% if ui == 'item' %}
        {% set component_classes = "item" %}
@@ -31,13 +17,13 @@
             <div class="ui basic center aligned fitted segment">
                 <span class="ui tiny header">{{ login.loggedInAs()|raw }}</span>
             </div>
-            <a
-                href="#"
+            <button
+                type="button"
                 class="ui fluid darkmode{% if login.isDarkModeEnabled() %} black{% endif %} basic button"
             >
                 <i class="icon adjust" aria-hidden="true"></i>
                 {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
-            </a>
+            </button>
             <a
                 class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -56,14 +42,14 @@
                 <div class="right menu">
                     <div class="item">
                         <div class="ui icon buttons">
-                            <a
-                                href="#"
+                            <button
+                                type="button"
                                 class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
                                 title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                             >
                                 <i class="icon adjust" aria-hidden="true"></i>
                                 <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
-                            </a>
+                            </button>
                             <a
                                 class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
                                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -109,15 +95,15 @@
                         </div>
                     </div>
                 </div>
-                <a
-                    href="#"
-                    class="item darkmode{% if login.isDarkModeEnabled() %} black{% endif %}"
+                <button
+                    type="button"
+                    class="ui item darkmode button{% if login.isDarkModeEnabled() %} black{% endif %}"
                     title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                     data-position="right center"
                 >
                     <i class="icon adjust" aria-hidden="true"></i>
                     <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
-                </a>
+                </button>
                 <a
                     class="item{% if login.isImpersonated() %} purple{% else %} red{% endif %}"
                     href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"

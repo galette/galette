@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,14 +28,19 @@ class CheckModules
     private array $modules = [
         //name      => required
         'SimpleXML' => true,
+        'ctype'     => true,
+        'dom'       => true,
+        'fileinfo'  => true,
+        'filter'    => true,
         'gd'        => true,
-        'pdo'       => true,
-        'curl'      => false,
-        'gettext'   => false,
-        'mbstring'  => true,
-        'openssl'   => false,
+        'gettext'   => true,
+        'iconv'     => true,
         'intl'      => true,
-        'session'   => true
+        'mbstring'  => true,
+        'pdo'       => true,
+        'session'   => true,
+        'curl'      => false,
+        'openssl'   => false
     ];
 
 
@@ -72,8 +64,6 @@ class CheckModules
      * - missing: required modules that are missing
      *
      * @param bool $translated Use translations (default to true)
-     *
-     * @return void
      */
     public function doCheck(bool $translated = true): void
     {
@@ -112,8 +102,6 @@ class CheckModules
      * HTML formatted results for checks
      *
      * @param bool $translated Use translations (default to true)
-     *
-     * @return string
      */
     public function toHtml(bool $translated = true): string
     {
@@ -149,9 +137,17 @@ class CheckModules
     }
 
     /**
-     * Check if it is ok to use Galette with current modules
+     * Retrieve checked modules, along with their required state
      *
-     * @return bool
+     * @return array<string,bool>
+     */
+    public function getModules(): array
+    {
+        return $this->modules;
+    }
+
+    /**
+     * Check if it is ok to use Galette with current modules
      */
     public function isValid(): bool
     {
@@ -162,8 +158,6 @@ class CheckModules
      * Check if a specific module is OK for that instance
      *
      * @param string $module Module name to check
-     *
-     * @return bool
      */
     public function isGood(string $module): bool
     {
@@ -204,8 +198,6 @@ class CheckModules
      * Check if a module is loaded
      *
      * @param string $ext Module name
-     *
-     * @return bool
      */
     protected function isExtensionLoaded(string $ext): bool
     {

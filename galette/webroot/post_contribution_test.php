@@ -1,26 +1,12 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
-
 
 /**
  * Post contribution script test
@@ -37,7 +23,7 @@ $internal = false;
 
 if (defined('STDIN')) {
     //we're called from command line
-    $args = stream_get_contents(STDIN);
+    $args = stream_get_contents(STDIN); //@phpstan-ignore theCodingMachineSafe.function
 } elseif (count($_POST) > 0) {
     //we're called from HTTP POST
     $args = $_POST;
@@ -47,8 +33,8 @@ if (defined('STDIN')) {
         include_once __DIR__ . '/../includes/galette.inc.php';
         unset($_POST['galette_internal']);
         Analog\Analog::info(
-            'Requested as Galette HTTP POST with parameters:' . "\n" .
-            print_r($args, true)
+            'Requested as Galette HTTP POST with parameters:' . "\n"
+            . print_r($args, return: true)
         );
     } else {
         echo 'Requested as HTTP POST with parameters:<br/>';
@@ -66,9 +52,9 @@ if (empty($args)) {
 }
 
 if (defined('STDIN')) {
-    $json_args = json_decode((string) $args);
+    $json_args = json_decode((string)$args); //@phpstan-ignore theCodingMachineSafe.function
 } else {
-    $json_args = isset($args['params']) ? json_decode((string) $args['params']) : json_decode('{"auth_token": ""}');
+    $json_args = isset($args['params']) ? json_decode((string)$args['params']) : json_decode('{"auth_token": ""}'); //@phpstan-ignore theCodingMachineSafe.function,theCodingMachineSafe.function
 }
 if ($script_auth_token !== $json_args->auth_token) {
     //we're called without authentication token => exit.
@@ -78,9 +64,9 @@ if ($script_auth_token !== $json_args->auth_token) {
 
 if (defined('STDIN')) {
     //a successful script returns 0, we do not output anything
-    $fp = fopen(__DIR__ . '/../data/cache/galette_post_contrib_file.txt', 'w');
-    fwrite($fp, $args);
-    fclose($fp);
+    $fp = fopen(__DIR__ . '/../data/cache/galette_post_contrib_file.txt', 'w'); //@phpstan-ignore theCodingMachineSafe.function
+    fwrite($fp, $args); //@phpstan-ignore theCodingMachineSafe.function
+    fclose($fp); //@phpstan-ignore theCodingMachineSafe.function
 } else {
-    echo json_encode($json_args, JSON_PRETTY_PRINT);
+    echo json_encode($json_args, JSON_PRETTY_PRINT); //@phpstan-ignore theCodingMachineSafe.function
 }

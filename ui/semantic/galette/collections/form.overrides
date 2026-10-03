@@ -41,6 +41,22 @@
 }
 
 /*--------------------
+      Fieldsets
+---------------------*/
+fieldset {
+  border: 1px solid @internalBorderColor;
+  border-radius: @inputBorderRadius;
+
+  &:not(:last-child) {
+    margin-bottom: 1.5em;
+  }
+
+  legend.ui.dividing.header {
+    border-width: 0;
+  }
+}
+
+/*--------------------
       Fields
 ---------------------*/
 .ui .fields:first-child:last-child {
@@ -54,6 +70,32 @@
 @media only screen and (min-width: @tabletBreakpoint) {
   .ui .two.fields .right.aligned.field {
     text-align: right;
+  }
+}
+
+/*-----------------------------------
+      Repeatable fields occurrences
+------------------------------------*/
+/* The button that removes an occurrence shares the label's line,
+   so an occurrence does not take a row more than a plain field. */
+.ui.form .field.removable {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  & > * {
+    flex: 1 1 100%;
+  }
+
+  & > label {
+    flex: 1 1 auto;
+    width: auto;
+    margin-right: @labelDistance;
+  }
+
+  & > .repeat_remove {
+    flex: 0 0 auto;
+    margin: 0 0 @labelDistance;
   }
 }
 
@@ -82,6 +124,13 @@
 ---------------------------*/
 .ui.form .data.inline.fields {
   margin-bottom: 0;
+}
+
+/*-------------------------------
+      Socials combo fields
+--------------------------------*/
+.ui.form .addsocial .combo-social.fields {
+  align-items: end;
 }
 
 /*--------------------------

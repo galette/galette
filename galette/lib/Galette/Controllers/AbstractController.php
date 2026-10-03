@@ -1,28 +1,17 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
+use Galette\Core\AuthThrottle;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\I18n;
@@ -103,8 +92,6 @@ abstract class AbstractController
 
     /**
      * Constructor
-     *
-     * @param ContainerInterface $container Container instance
      */
     public function __construct(private readonly ContainerInterface $container)
     {
@@ -113,11 +100,6 @@ abstract class AbstractController
     /**
      * Galette redirection workflow
      * Each user have a default homepage depending on it status (logged in or not, its credentials, etc.
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     protected function galetteRedirect(Request $request, Response $response): Response
     {
@@ -173,8 +155,6 @@ abstract class AbstractController
      * Get route arguments
      * php-di bridge pass each variable, not an array of all arguments
      *
-     * @param Request $request PSR Request
-     *
      * @return array<string,mixed>
      */
     protected function getArgs(Request $request): array
@@ -185,13 +165,19 @@ abstract class AbstractController
     }
 
     /**
+     * Check if request has been made via AJAX (XMLHttpRequest)
+     */
+    protected function isAjax(Request $request): bool
+    {
+        return $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    /**
      * Get a JSON response
      *
      * @param Response            $response Response instance
      * @param array<string,mixed> $data     Data to send
      * @param int                 $status   HTTP status code
-     *
-     * @return Response
      */
     protected function withJson(Response $response, array $data, int $status = 200): Response
     {
@@ -206,8 +192,6 @@ abstract class AbstractController
      *
      * @param string                   $filter_name Filter name
      * @param array<string,mixed>|null $args        Arguments
-     *
-     * @return string
      */
     public function getFilterName(string $filter_name, ?array $args = null): string
     {
@@ -227,8 +211,7 @@ abstract class AbstractController
 
         $filter_name .= '_filter';
 
-        $filter_name = Text::slugify($filter_name);
-        return $filter_name;
+        return Text::slugify($filter_name);
     }
 
     /**
@@ -237,8 +220,6 @@ abstract class AbstractController
      * @param Response $response     PSR Response
      * @param string[] $errors       Errors to report
      * @param string   $redirect_url URL to redirect to
-     *
-     * @return Response
      */
     protected function redirectWithErrors(Response $response, array $errors, string $redirect_url): Response
     {
@@ -257,8 +238,6 @@ abstract class AbstractController
      * @param string[] $successes    Successes to report
      * @param string[] $warnings     Warnings to report
      * @param string[] $errors       Errors to report
-     *
-     * @return Response
      */
     protected function redirect(
         Response $response,
@@ -295,5 +274,171 @@ abstract class AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $redirect_url);
+    }
+
+    /**
+     * Check the superadmin password asked again by a sensitive page
+     *
+     * A wrong one counts as a failed login on the superadmin account: an open
+     * session must not offer a way around the login throttle.
+     *
+     * @param string       $password    Submitted password
+     * @param AuthThrottle $throttle    Authentication throttle
+     * @param string       $failure_log What to log when the password is wrong
+     *
+     * @return string|null Error to report, null when the password is right
+     */
+    protected function checkSuperAdminPassword(
+        string $password,
+        AuthThrottle $throttle,
+        string $failure_log
+    ): ?string {
+        $admin_login = (string)$this->preferences->pref_admin_login;
+
+        $delay = $throttle->getRetryDelay($admin_login);
+        if ($delay > 0) {
+            $this->history->add(_T("Authentication throttled"), $admin_login);
+            Analog::log(
+                'Superadmin password check throttled, ' . $delay . ' seconds left.',
+                Analog::INFO
+            );
+            return _T("Too many failed attempts. Please try again later.");
+        }
+
+        if (!password_verify($password, (string)$this->preferences->pref_admin_pass)) {
+            $throttle->recordFailure($admin_login);
+            Analog::log($failure_log, Analog::WARNING);
+            return _T("Wrong password!");
+        }
+
+        return null;
+    }
+
+    /**
+     * Get current route information from request
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRoute(Request $request): ?\Slim\Interfaces\RouteInterface
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        return $routeContext->getRoute();
+    }
+
+    /**
+     * Get current route name
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRouteName(Request $request): ?string
+    {
+        return $this->getRoute($request)?->getName();
+    }
+
+    /**
+     * Get current route arguments
+     *
+     * @param Request $request PSR7 request
+     *
+     * @return array<string, string>
+     */
+    protected function getRouteArguments(Request $request): array
+    {
+        return $this->getRoute($request)?->getArguments() ?? [];
+    }
+
+    /**
+     * Get current route pattern
+     *
+     * @param Request $request PSR7 request
+     */
+    protected function getRoutePattern(Request $request): ?string
+    {
+        return $this->getRoute($request)?->getPattern();
+    }
+
+    /**
+     * Get current route allowed methods
+     *
+     * @param Request $request PSR7 request
+     *
+     * @return string[]
+     */
+    protected function getRouteMethods(Request $request): array
+    {
+        return $this->getRoute($request)?->getMethods() ?? [];
+    }
+
+    /**
+     * Check if current route has a specific name
+     *
+     * @param Request $request PSR7 request
+     * @param string  $name    Route name to check
+     */
+    protected function isRoute(Request $request, string $name): bool
+    {
+        return $this->getRouteName($request) === $name;
+    }
+
+    /**
+     * Generate URL for current route with different parameters
+     *
+     * @param Request              $request     PSR7 request
+     * @param array<string,string> $data        Route parameters
+     * @param array<string,mixed>  $queryParams Query string parameters
+     */
+    protected function urlForCurrentRoute(Request $request, array $data = [], array $queryParams = []): string
+    {
+        $routeName = $this->getRouteName($request);
+        if (!$routeName) {
+            throw new \RuntimeException('Cannot generate URL: current route has no name');
+        }
+        return $this->routeparser->urlFor($routeName, $data, $queryParams);
+    }
+
+    /**
+     * Get all Route attributes for current method
+     * Useful for debugging or logging
+     *
+     * @return \Galette\Controllers\Attributes\Route[]
+     */
+    protected function getRouteAttributes(): array
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $callerMethod = $backtrace[1]['function'] ?? null;
+
+        if (!$callerMethod) {
+            return [];
+        }
+
+        try {
+            $reflection = new \ReflectionMethod(static::class, $callerMethod);
+            $attributes = $reflection->getAttributes(\Galette\Controllers\Attributes\Route::class);
+
+            return array_map(
+                fn($attr) => $attr->newInstance(),
+                $attributes
+            );
+        } catch (\ReflectionException) {
+            return [];
+        }
+    }
+
+    /**
+     * Get route attribute matching the current request
+     *
+     * @param Request $request Current request
+     */
+    protected function getCurrentRouteAttribute(Request $request): ?\Galette\Controllers\Attributes\Route
+    {
+        $currentRouteName = $this->getRouteName($request);
+
+        foreach ($this->getRouteAttributes() as $routeAttr) {
+            if ($routeAttr->name === $currentRouteName) {
+                return $routeAttr;
+            }
+        }
+
+        return null;
     }
 }

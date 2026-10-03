@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
@@ -30,11 +18,13 @@ use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
+use Galette\Core\MailingQueue;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Throwable;
 
 use function Safe\file_get_contents;
 
@@ -50,12 +40,12 @@ class MailingsController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'mailing',
+        pattern: '/mailing',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response): Response
     {
         $get = $request->getQueryParams();
@@ -91,11 +81,9 @@ class MailingsController extends CrudController
                 redirect_url: $this->routeparser->urlFor('slash')
             );
         } else {
-            if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-                $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
-            } else {
-                $filters = new MembersList();
-            }
+            //RKA\Session::__isset() reports whether the key exists, not
+            //whether it holds something: a null has to be caught here.
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())} ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
@@ -112,7 +100,7 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                $members = $m->getList(true);
+                $members = $m->getList(as_members: true);
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
@@ -128,8 +116,8 @@ class MailingsController extends CrudController
                     $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
                     return $this->redirectWithErrors(
                         response: $response,
-                        redirect_url: $redirect_url,
-                        errors: [_T('No member selected for mailing!')]
+                        errors: [_T('No member selected for mailing!')],
+                        redirect_url: $redirect_url
                     );
                 }
                 $m = new Members();
@@ -149,7 +137,7 @@ class MailingsController extends CrudController
             $this->session->labels = $mailing->unreachables;
 
             if (!$this->login->isSuperAdmin()) {
-                $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                 $params['sender_current'] = [
                     'name'  => $member->sname,
                     'email' => $member->getEmail()
@@ -184,12 +172,12 @@ class MailingsController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'doMailing',
+        pattern: '/mailing',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -246,8 +234,8 @@ class MailingsController extends CrudController
 
                     return $this->redirectWithErrors(
                         response: $response,
-                        redirect_url: $redirect_url,
-                        errors: [_T('No member selected for mailing!')]
+                        errors: [_T('No member selected for mailing!')],
+                        redirect_url: $redirect_url
                     );
                 }
                 $m = new Members();
@@ -261,13 +249,13 @@ class MailingsController extends CrudController
                 || isset($post['mailing_confirm'])
                 || isset($post['mailing_save'])
             ) {
-                if (trim((string) $post['mailing_objet']) == '') {
+                if (trim((string)$post['mailing_objet']) == '') {
                     $error_detected[] = _T("Please type an object for the message.");
                 } else {
                     $mailing->subject = $post['mailing_objet'];
                 }
 
-                if (trim((string) $post['mailing_corps']) == '') {
+                if (trim((string)$post['mailing_corps']) == '') {
                     $error_detected[] = _T("Please enter a message.");
                 } else {
                     $mailing->message = $post['mailing_corps'];
@@ -275,7 +263,7 @@ class MailingsController extends CrudController
 
                 switch ($post['sender'] ?? false) {
                     case GaletteMail::SENDER_CURRENT:
-                        $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                        $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                         $mailing->setSender(
                             $member->sname,
                             $member->getEmail()
@@ -316,30 +304,132 @@ class MailingsController extends CrudController
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
                 $mailing->current_step = Mailing::STEP_SEND;
+
+                //when hourly/daily limits are set, sending must be spread over
+                //time: store the mailing and queue its recipients instead of
+                //sending synchronously
+                $queue = new MailingQueue($this->zdb, $this->preferences);
+
+                if ($queue->mustQueue()) {
+                    //the stored mailing and its recipients are one thing: a
+                    //history entry whose queue is half filled would be drained
+                    //by a cron job and reach only some of the members, with no
+                    //way to tell it apart from a complete one
+                    try {
+                        $this->zdb->beginTransaction();
+                        $mlh = new MailingHistory(
+                            zdb: $this->zdb,
+                            login: $this->login,
+                            preferences: $this->preferences,
+                            filters: null,
+                            mailing: $mailing
+                        );
+                        $mlh->storeMailing(sent: false);
+                        $nb = $queue->enqueue((int)$mailing->id, $mailing->recipients);
+                        $this->zdb->commit();
+                    } catch (Throwable $e) {
+                        $this->zdb->rollback();
+                        Analog::log(
+                            '[Mailings] Unable to queue mailing | ' . $e->getMessage(),
+                            Analog::ERROR
+                        );
+                        $error_detected[] = _T("The mailing could not be queued, nothing has been sent.");
+                        $mailing->current_step = Mailing::STEP_START;
+                        //what has been composed is kept, so it can be sent again
+                        $this->session->mailing = $mailing;
+                        return $this->redirect(
+                            response: $response,
+                            redirect_url: $this->routeparser->urlFor('mailing'),
+                            errors: $error_detected
+                        );
+                    }
+
+                    Analog::log(
+                        '[Mailings] ' . $nb . ' recipient(s) queued for mailing #' . $mailing->id,
+                        Analog::INFO
+                    );
+                    //cleanup and redirect to the progress page
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader(
+                            'Location',
+                            $this->routeparser->urlFor('mailingQueue', ['id' => (string)$mailing->id])
+                        );
+                }
+
                 //ok... let's go for fun
                 $sent = $mailing->send();
-                if ($sent == Mailing::MAIL_ERROR) {
+                if ($sent == Mailing::MAIL_PARTIAL) {
+                    //some of the messages have left and cannot be taken back:
+                    //offering the very same form again would send them twice.
+                    //Store what happened and send the user to the history.
+                    $mlh = new MailingHistory(
+                        zdb: $this->zdb,
+                        login: $this->login,
+                        preferences: $this->preferences,
+                        filters: null,
+                        mailing: $mailing
+                    );
+                    $mlh->storeMailing(sent: false);
+                    Analog::log(
+                        '[Mailings] Message was only partly sent, to '
+                        . count($mailing->getSentRecipients()) . ' of '
+                        . count($mailing->recipients) . ' recipient(s). Errors: '
+                        . print_r($mailing->errors, return: true),
+                        Analog::ERROR
+                    );
+                    foreach ($mailing->errors as $e) {
+                        $error_detected[] = $e;
+                    }
+                    $error_detected[] = sprintf(
+                        //TRANS: first parameter is the number of recipients reached, second the total
+                        _T('The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been stored, unsent, so you can check what has been delivered before sending it again.'),
+                        count($mailing->getSentRecipients()),
+                        count($mailing->recipients)
+                    );
+                    $mailing->current_step = Mailing::STEP_SENT;
+                    //cleanup
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
+                    $goto = $this->routeparser->urlFor('mailings');
+                } elseif ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
                         '[Mailings] Message was not sent. Errors: '
-                        . print_r($mailing->errors, true),
+                        . print_r($mailing->errors, return: true),
                         Analog::ERROR
                     );
                     foreach ($mailing->errors as $e) {
                         $error_detected[] = $e;
                     }
                 } else {
-                    $mlh = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
-                    $mlh->storeMailing(true);
+                    $mlh = new MailingHistory(
+                        zdb: $this->zdb,
+                        login: $this->login,
+                        preferences: $this->preferences,
+                        filters: null,
+                        mailing: $mailing
+                    );
+                    $mlh->storeMailing(sent: true);
                     Analog::log(
                         '[Mailings] Message has been sent.',
                         Analog::INFO
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-                    $this->session->mailing = null;
-                    $this->session->redirect_mailing = null;
+                    unset(
+                        $this->session->{$this->getFilterName($this->getDefaultFilterName())},
+                        $this->session->mailing,
+                        $this->session->redirect_mailing
+                    );
                     $success_detected[] = _T("Mailing has been successfully sent!");
                     $goto = $redirect_url;
                 }
@@ -361,7 +451,13 @@ class MailingsController extends CrudController
 
             if (isset($post['mailing_save'])) {
                 //user requested to save the mailing
-                $histo = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
+                $histo = new MailingHistory(
+                    zdb: $this->zdb,
+                    login: $this->login,
+                    preferences: $this->preferences,
+                    filters: null,
+                    mailing: $mailing
+                );
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
@@ -385,13 +481,14 @@ class MailingsController extends CrudController
     /**
      * Mailings history page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'mailings',
+        pattern: '/mailings[/{option:page|order|reset}/{value}]',
+        methods: ['GET']
+    )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName('mailings')})) {
@@ -404,7 +501,12 @@ class MailingsController extends CrudController
             $filters->show = $request->getQueryParams()['nbshow'];
         }
 
-        $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+        $mailhist = new MailingHistory(
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: $filters
+        );
 
         switch ($option) {
             case 'page':
@@ -417,7 +519,12 @@ class MailingsController extends CrudController
                 $mailhist->clean();
                 //reinitialize object after flush
                 $filters = new MailingsList();
-                $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+                $mailhist = new MailingHistory(
+                    zdb: $this->zdb,
+                    login: $this->login,
+                    preferences: $this->preferences,
+                    filters: $filters
+                );
                 break;
             default:
                 break;
@@ -448,12 +555,12 @@ class MailingsController extends CrudController
 
     /**
      * Mailings filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'mailings_filter',
+        pattern: '/mailings/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -504,11 +611,7 @@ class MailingsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -519,11 +622,7 @@ class MailingsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -538,8 +637,6 @@ class MailingsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -550,8 +647,6 @@ class MailingsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -565,8 +660,6 @@ class MailingsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -581,8 +674,6 @@ class MailingsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -595,19 +686,20 @@ class MailingsController extends CrudController
     /**
      * Preview action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Mailing id
-     *
-     * @return Response
+     * @param ?int $id Mailing id
      */
+    #[Route(
+        name: 'mailingPreview',
+        pattern: '/mailing/preview[/{id:\d+}]',
+        methods: ['GET', 'POST']
+    )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
         // check for ajax mode
         $ajax = false;
         if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            ($this->isAjax($request))
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -616,13 +708,13 @@ class MailingsController extends CrudController
 
         if ($id !== null) {
             $mailing = new Mailing($this->preferences);
-            MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
+            MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         } else {
             $mailing = $this->session->mailing;
 
             switch ($post['sender']) {
                 case GaletteMail::SENDER_CURRENT:
-                    $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                    $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
                     $mailing->setSender(
                         $member->sname,
                         $member->getEmail()
@@ -668,17 +760,18 @@ class MailingsController extends CrudController
     /**
      * Preview attachment action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Mailing id
-     * @param int      $pos      Attachment position in list
-     *
-     * @return Response
+     * @param int $id  Mailing id
+     * @param int $pos Attachment position in list
      */
+    #[Route(
+        name: 'previewAttachment',
+        pattern: '/mailing/preview/{id:\d+}/attachment/{pos:\d+}',
+        methods: ['GET']
+    )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
         $mailing = new Mailing($this->preferences);
-        MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
+        MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         $attachments = $mailing->attachments;
         $attachment = $attachments[$pos];
         $filepath = $attachment->getDestDir() . $attachment->getFileName();
@@ -692,12 +785,12 @@ class MailingsController extends CrudController
 
     /**
      * Set recipients action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'mailingRecipients',
+        pattern: '/ajax/mailing/set-recipients',
+        methods: ['POST']
+    )]
     public function setRecipients(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -708,14 +801,14 @@ class MailingsController extends CrudController
 
         if (isset($post['recipients'])) {
             $members = $m->getArrayList(
-                $post['recipients'],
-                null,
-                false,
-                true,
-                null,
-                false,
-                false,
-                true
+                ids: $post['recipients'],
+                orderby: null,
+                with_photos: false,
+                as_members: true,
+                fields: null,
+                export: false,
+                dues: false,
+                parent: true
             );
         }
         $mailing->setRecipients($members);
@@ -735,9 +828,125 @@ class MailingsController extends CrudController
     }
 
     /**
-     * Get default filter name
+     * Mailing queue progress page
      *
-     * @return string
+     * @param int $id Mailing history id
+     */
+    #[Route(
+        name: 'mailingQueue',
+        pattern: '/mailing/queue/{id:\d+}',
+        methods: ['GET']
+    )]
+    public function queue(Request $request, Response $response, int $id): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/mailing_queue.html.twig',
+            [
+                'page_title'    => _T("Sending mailing"),
+                'mailing_id'    => $id,
+                'process_url'   => $this->routeparser->urlFor('mailingProcessQueue'),
+                'stats'         => $queue->getStats($id),
+                'mail_usage'    => $queue->getUsage(),
+                'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
+                'end_links'     => [
+                    [
+                        'url'   => $this->routeparser->urlFor('members'),
+                        'label' => _T("Back to members list")
+                    ],
+                    [
+                        'url'   => $this->routeparser->urlFor('mailings'),
+                        'label' => _T("Mailings history")
+                    ]
+                ],
+                'documentation' => 'usermanual/adherents.html#e-mailing'
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Process a batch of the mailing queue (AJAX)
+     */
+    #[Route(
+        name: 'mailingProcessQueue',
+        pattern: '/ajax/mailing/process-queue',
+        methods: ['POST']
+    )]
+    public function processQueue(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $mailing_id = isset($post['id']) && is_numeric($post['id'])
+            ? (int)$post['id']
+            : null;
+
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+        $progress = $queue->processBatch($mailing_id, MailingQueue::KIND_MAILING);
+
+        return $this->withJson($response, $progress);
+    }
+
+    /**
+     * Reminders queue progress page
+     */
+    #[Route(
+        name: 'remindersQueue',
+        pattern: '/reminders/queue',
+        methods: ['GET']
+    )]
+    public function remindersQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/mailing_queue.html.twig',
+            [
+                'page_title'    => _T("Sending reminders"),
+                'mailing_id'    => null,
+                'process_url'   => $this->routeparser->urlFor('remindersProcessQueue'),
+                'stats'         => $queue->getStats(mailing_id: null, kind: MailingQueue::KIND_REMINDER),
+                'mail_usage'    => $queue->getUsage(),
+                'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
+                'end_links'     => [
+                    [
+                        'url'   => $this->routeparser->urlFor('members'),
+                        'label' => _T("Back to members list")
+                    ],
+                    [
+                        'url'   => $this->routeparser->urlFor('reminders'),
+                        'label' => _T("Reminders")
+                    ]
+                ],
+                'documentation' => 'usermanual/contributions.html#reminders'
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Process a batch of the reminders queue (AJAX)
+     */
+    #[Route(
+        name: 'remindersProcessQueue',
+        pattern: '/ajax/reminders/process-queue',
+        methods: ['POST']
+    )]
+    public function remindersProcessQueue(Request $request, Response $response): Response
+    {
+        $queue = new MailingQueue($this->zdb, $this->preferences);
+        $queue->setReminderContext($this->history, $this->login, $this->routeparser);
+        $progress = $queue->processBatch(only_mailing_id: null, kind: MailingQueue::KIND_REMINDER);
+
+        return $this->withJson($response, $progress);
+    }
+
+    /**
+     * Get default filter name
      */
     public function getDefaultFilterName(): string
     {

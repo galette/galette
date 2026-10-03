@@ -1,3 +1,9 @@
+--
+-- This file is part of Galette (https://galette.eu).
+-- SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+-- SPDX-License-Identifier: GPL-3.0-or-later
+--
+
 ALTER TABLE galette_adherents ADD pref_lang varchar(20) default 'french' AFTER date_echeance;
 ALTER TABLE galette_adherents ADD lieu_naissance varchar(20) default '';
 ALTER TABLE galette_adherents ADD gpgid varchar(8);

@@ -3,6 +3,7 @@
 *******************************/
 
 i.circular.basic.question.icon.tooltip:hover,
+i.circular.basic.flask.icon.tooltip:hover,
 div.inline-tooltip:hover {
    cursor: help;
 }

@@ -1,29 +1,15 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
 {% set new_release = callstatic('\\Galette\\Core\\Galette', 'getNewRelease') %}
     <footer class="page-footer">
         <div class="ui center aligned basic padded segment footer-wrapper{% if login.getCompactMenu() %} extended"{% endif %}">
             <div class="row">
                 <div class="ui horizontal bulleted link list">
-                    <a id="copyright" href="https://galette.eu/" class="item{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %} tooltip" data-title="{{ _T("A new Galette release is available.") }}" data-content="{{ _T("You currently use Galette %1$s, and %2$s is available.")|replace({"%1$s": constant('GALETTE_DISPLAY_VERSION'), "%2$s": new_release.version}) }}"{% else %}"{% endif %}>
+                    <a id="copyright" href="https://galette.eu/" class="item{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %} tooltip" data-title="{{ _T("A new Galette release is available.") }}" data-content="{{ _T("You currently use Galette %1$s, and %2$s is available.")|replace({"%1$s": display_version, "%2$s": new_release.version}) }}"{% else %}"{% endif %}>
 {% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %}
                         <div class="ui transition looping pulsating blue circular horizontal icon label">
                             <i class="arrow alternate circle up icon" aria-hidden="true"></i>
@@ -32,7 +18,7 @@
 {% else %}
                         <i class="icon cookie bite" aria-hidden="true"></i>
 {% endif %}
-                        Galette{% if login.isLogged() and ext_auth is not defined %} {{ constant('GALETTE_DISPLAY_VERSION') }}{% endif %}
+                        Galette{% if login.isLogged() and ext_auth is not defined %} {{ display_version }}{% endif %}
                     </a>
                     <a href="https://doc.galette.eu" class="item">
                         <i class="icon book" aria-hidden="true"></i>

@@ -1,31 +1,20 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Document;
 use Galette\Filters\DocumentsList;
+use Galette\Repository\Documents;
 use Galette\IO\File;
 use Throwable;
 use Galette\Controllers\CrudController;
@@ -51,14 +40,23 @@ class DocumentsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'addDocument',
+        pattern: '/document/add',
+        methods: ['GET']
+    )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
+        $filters = new DocumentsList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+
         if (isset($this->session->document)) {
             $document = $this->session->document;
             unset($this->session->document);
@@ -66,11 +64,11 @@ class DocumentsController extends CrudController
             $document = new Document($this->zdb);
         }
         $params = [
-            'page_title'        => _T("Add document"),
+            'page_title'        => _T("New document"),
             'action'            => 'add',
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $document->getSystemTypes(),
+            'types'             => $documents->getTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
@@ -88,12 +86,13 @@ class DocumentsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
-     *
-     * @return Response
+     * @param ?string $form_name Form name
      */
+    #[Route(
+        name: 'doAddDocument',
+        pattern: '/document/add',
+        methods: ['POST']
+    )]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $document = new Document($this->zdb);
@@ -106,13 +105,14 @@ class DocumentsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'documentsList',
+        pattern: '/documents[/{option:page|order}/{value}]',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -121,16 +121,51 @@ class DocumentsController extends CrudController
     ): Response {
         $filters = new DocumentsList();
 
+        $session_varname = $this->getFilterName(static::getDefaultFilterName());
+
+        if (isset($this->session->$session_varname)) {
+            $filters = $this->session->$session_varname;
+        } else {
+            $filters = new DocumentsList();
+        }
+
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $filters->show = $request->getQueryParams()['nbshow'];
+        }
+
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
+        }
+
         $document = new Document($this->zdb);
-        $documents = $document->getList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+        $documents_list = $documents->getList();
+        $documents_count = $documents->getCount();
+
+        //store filters into session
+        $this->session->$session_varname = $filters;
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view);
 
         $params = [
             'page_title' => _T("Documents"),
-            'nb' => count($documents),
-            'documents' => $documents,
+            'nb' => $documents_count,
+            'documents' => $documents_list,
+            'types' => $documents->getTypes(),
+            'perm_names' => $document::getPermissionsList(can_public: true),
             'filters' => $filters,
             'documentation' => 'usermanual/documents.html'
         ];
@@ -145,27 +180,27 @@ class DocumentsController extends CrudController
     }
 
     /**
-     * List page
-     *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * Public list page
      */
-    public function publicList(
-        Request $request,
-        Response $response,
-        ?string $option = null,
-        int|string|null $value = null,
-    ): Response {
+    #[Route(
+        name: 'documentsPublicList',
+        pattern: '/public/documents[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function publicList(Response $response): Response
+    {
         $document = new Document($this->zdb);
-        $documents = $document->getTypedList();
+        $documents = new Documents(
+            $this->zdb,
+            $this->login
+        );
+        $documents_list = $documents->getTypedList();
 
         $params = [
             'page_title' => _T("Documents"),
-            'typed_documents' => $documents,
+            'document_object' => $document,
+            'typed_documents' => $documents_list,
             'documentation' => 'usermanual/documents.html#public-list'
         ];
 
@@ -180,29 +215,77 @@ class DocumentsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'documentsFilter',
+        pattern: '/documents/filter',
+        methods: ['POST']
+    )]
     public function filter(Request $request, Response $response): Response
     {
-        //no filtering
-        return $response;
+        $filter_name = $this->getFilterName(static::getDefaultFilterName());
+
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($this->session->$filter_name !== null) {
+            $filters = $this->session->$filter_name;
+        } else {
+            $filters = new DocumentsList();
+        }
+
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
+                }
+            }
+
+            if (isset($post['filename_filter']) && $post['filename_filter'] !== '') {
+                $filters->filename_filter = $post['filename_filter'];
+            }
+
+            if (isset($post['type_filter']) && $post['type_filter'] !== '') {
+                $filters->type_filter = $post['type_filter'];
+            }
+
+            if (isset($post['visibility_filter']) && $post['visibility_filter'] !== 'none') {
+                $filters->visibility_filter = $post['visibility_filter'];
+            } else {
+                $filters->visibility_filter = null;
+            }
+        }
+
+        $this->session->$filter_name = $filters;
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('documentsList'),
+            errors: $error_detected
+        );
     }
 
     /**
      * Get a document
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document ID
-     *
-     * @return Response
+     * @param int $id Document ID
      */
+    #[Route(
+        name: 'getDocumentFile',
+        pattern: '/document/get/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function getDocument(
-        Request $request,
         Response $response,
         int $id
     ): Response {
@@ -211,8 +294,8 @@ class DocumentsController extends CrudController
         if (!$document->canShow($this->login)) {
             return $this->redirectWithErrors(
                 response: $response,
-                redirect_url: $this->routeparser->urlFor('slash'),
-                errors: [_T("You do not have permission for requested URL.")]
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
         }
 
@@ -262,14 +345,23 @@ class DocumentsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document id
-     *
-     * @return Response
+     * @param int $id Document id
      */
+    #[Route(
+        name: 'editDocument',
+        pattern: '/document/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
+        $filters = new DocumentsList();
+
+        $documents = new Documents(
+            $this->zdb,
+            $this->login,
+            $filters
+        );
+
         if (isset($this->session->document)) {
             $document = $this->session->document;
             unset($this->session->document);
@@ -279,9 +371,9 @@ class DocumentsController extends CrudController
         $params = [
             'page_title'        => _T("Edit document"),
             'action'            => 'edit',
-            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
+            'mode'              => (($this->isAjax($request)) ? 'ajax' : ''),
             'document'          => $document,
-            'types'             => $document->getSystemTypes(),
+            'types'             => $documents->getTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
             'documentation'     => 'usermanual/documents.html#management'
@@ -299,12 +391,13 @@ class DocumentsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document id
-     *
-     * @return Response
+     * @param int $id Document id
      */
+    #[Route(
+        name: 'doEditDocument',
+        pattern: '/document/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         $document = new Document($this->zdb, $id);
@@ -313,12 +406,6 @@ class DocumentsController extends CrudController
 
     /**
      * Store a document
-     *
-     * @param Request  $request  PSR request
-     * @param Response $response PSR response
-     * @param Document $document Document to work on
-     *
-     * @return Response
      */
     private function store(Request $request, Response $response, Document $document): Response
     {
@@ -355,7 +442,9 @@ class DocumentsController extends CrudController
         if (count($error_detected) > 0) {
             //something went wrong :'(
             $this->session->document = $document;
-            $redirect_url = $this->routeparser->urlFor('addDocument');
+            $redirect_url = $document->getId() === null
+                ? $this->routeparser->urlFor('addDocument')
+                : $this->routeparser->urlFor('editDocument', ['id' => (string)$document->getId()]);
         } else {
             $success_detected[] = _T('Document has been successfully stored!');
             $redirect_url = $this->routeparser->urlFor('documentsList');
@@ -376,8 +465,6 @@ class DocumentsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -388,8 +475,6 @@ class DocumentsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -403,8 +488,6 @@ class DocumentsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -416,8 +499,6 @@ class DocumentsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -427,4 +508,12 @@ class DocumentsController extends CrudController
 
     // /CRUD - Delete
     // /CRUD
+
+    /**
+     * Get default filter name
+     */
+    public static function getDefaultFilterName(): string
+    {
+        return 'documents';
+    }
 }

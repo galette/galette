@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -26,12 +13,14 @@ namespace Galette\Core;
 use Analog\Analog;
 use Safe\DateTime;
 use Galette\Entity\Adherent;
-use Galette\Entity\Document;
+use Galette\Repository\Documents;
 use Galette\IO\News;
 use Galette\Util\Release;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Slim\App;
 
+use function Safe\glob;
 use function Safe\exec;
 
 /**
@@ -41,19 +30,17 @@ use function Safe\exec;
  */
 class Galette
 {
-    public const MODE_PROD = 'PROD';
-    public const MODE_DEV = 'DEV';
-    public const MODE_MAINT = 'MAINT';
-    public const MODE_DEMO = 'DEMO';
+    public const string MODE_PROD = 'PROD';
+    public const string MODE_DEV = 'DEV';
+    public const string MODE_MAINT = 'MAINT';
+    public const string MODE_DEMO = 'DEMO';
 
-    public const RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
+    public const string RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
 
     /**
      * Retrieve Galette version from git, if present.
      *
      * @param bool $time Include time and timezone. Defaults to false.
-     *
-     * @return string
      */
     public static function gitVersion(bool $time = false): string
     {
@@ -89,7 +76,7 @@ class Galette
      */
     public static function getNewRelease(): array
     {
-        if (defined('GALETTE_TESTS')) {
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
             return [
                 'new' => false,
                 'version' => GALETTE_VERSION
@@ -110,7 +97,7 @@ class Galette
      */
     public static function getAllMenus(): array
     {
-        return static::getMenus(true);
+        return static::getMenus(public: true);
     }
 
     /**
@@ -133,56 +120,82 @@ class Galette
         $menus = [];
 
         if ($login->isLogged()) {
+            $menus['myaccount'] = [
+                'title' => _T("My Account"),
+                'icon' => 'user',
+                'items' => []
+            ];
+
             if (!$login->isSuperAdmin()) {
                 //member menu
-                $menus['myaccount'] = [
-                    'title' => _T("My Account"),
-                    'icon' => 'user',
-                    'items' => [
-                        [
-                            'label' => _T('My contributions'),
-                            'title' => _T('View and filter all my contributions'),
-                            'route' => [
-                                'name' => 'myContributions',
-                                'args' => ['type' => 'contributions']
-                            ]
-                        ],
-                        [
-                            'label' => _T('My scheduled payments'),
-                            'title' => _T('View and filter all my scheduled payments'),
-                            'route' => [
-                                'name' => 'myScheduledPayments'
-                            ]
-                        ],
-                        [
-                            'label' => _T('My transactions'),
-                            'title' => _T('View and filter all my transactions'),
-                            'route' => [
-                                'name' => 'myContributions',
-                                'args' => ['type' => 'transactions']
-                            ]
-                        ],
-                        [
-                            'label' => _T('My information'),
-                            'title' => _T('View my member card'),
-                            'route' => [
-                                'name' => 'me',
-                                'args' => []
-                            ]
+                $menus['myaccount']['items'] = [
+                    [
+                        'label' => _T('My contributions'),
+                        'title' => _T('View and filter all my contributions'),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'contributions']
+                        ]
+                    ],
+                    [
+                        'label' => _T('My scheduled payments'),
+                        'title' => _T('View and filter all my scheduled payments'),
+                        'route' => [
+                            'name' => 'myScheduledPayments'
+                        ]
+                    ],
+                    [
+                        'label' => _T('My transactions'),
+                        'title' => _T('View and filter all my transactions'),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'transactions']
+                        ]
+                    ],
+                    [
+                        'label' => _T('My information'),
+                        'title' => _T('View my member card'),
+                        'route' => [
+                            'name' => 'me',
+                            'args' => []
                         ]
                     ]
                 ];
+            } else {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('My information'),
+                    'title' => _T('Modify my login and password'),
+                    'route' => [
+                        'name' => 'adminCredentials',
+                        'args' => []
+                    ]
+                ];
+            }
 
-                if ($preferences->pref_bool_create_member) {
-                    $menus['myaccount']['items'][] = [
-                        'label' => _T('Add a child member'),
-                        'title' => _T('Add new child member in database'),
-                        'route' => [
-                            'name' => 'addMemberChild',
-                            'args' => []
-                        ]
-                    ];
-                }
+            //outside the member menu block above: the super administrator is not a
+            //member, but it does hold a second factor of its own. That one lives in
+            //the preferences, which are read only in the settings -- no form may
+            //write them -- so this entry is the only way in from the interface.
+            if (TwoFactorAuth::modeFrom($preferences) !== TwoFactorAuth::MODE_DISABLED) {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('Two-factor authentication'),
+                    'title' => _T('Manage my two-factor authentication'),
+                    'route' => [
+                        'name' => 'two-factor-manage',
+                        'args' => []
+                    ]
+                ];
+            }
+
+            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('Add a child member'),
+                    'title' => _T('Add new child member in database'),
+                    'route' => [
+                        'name' => 'addMemberChild',
+                        'args' => []
+                    ]
+                ];
             }
 
             $menus['members'] = [
@@ -413,6 +426,13 @@ class Galette
                                 ]
                             ],
                             [
+                                'label' => _T("Authentication attempts"),
+                                'title' => _T("See what is being refused after repeated failures, and lift it"),
+                                'route' => [
+                                    'name' => 'authAttempts'
+                                ]
+                            ],
+                            [
                                 'label' => _T("Plugins"),
                                 'title' => _T("Information about available plugins"),
                                 'route' => [
@@ -447,6 +467,7 @@ class Galette
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
                                     'name' => 'contributionsTypes',
+                                    'aliases' => ['editContributionType']
                                 ]
                             ],
                             [
@@ -505,17 +526,28 @@ class Galette
                                 'name' => 'adminTools'
                             ]
                         ];
+                        $menus['configuration']['items'][] = [
+                            'label' => _T("Advanced configuration"),
+                            'title' => _T("Edit every setting, including those the settings form does not show"),
+                            'route' => [
+                                'name' => 'advancedConfig'
+                            ]
+                        ];
                     }
                 }
             }
         } // /isLogged
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MenuProviderInterface
+                || method_exists($plugin, 'getMenusContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $menus = array_merge_recursive(
                     $menus,
                     $plugin->getMenus()
@@ -635,12 +667,16 @@ class Galette
             ];
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins public menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MenuProviderInterface
+                || method_exists($plugin, 'getPublicMenusItemsList')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $items = array_merge(
                     $items,
                     $plugin->getPublicMenuItems()
@@ -709,12 +745,16 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\DashboardProviderInterface
+                || method_exists($plugin, 'getMyDashboardsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getMyDashboards()
@@ -737,8 +777,9 @@ class Galette
          * @var Plugins $plugins
          * @var Db $zdb
          * @var ContainerInterface $container
+         * @var Preferences $preferences
          */
-        global $login, $plugins, $zdb, $container;
+        global $login, $plugins, $zdb, $container, $preferences;
 
         $dashboards = [];
 
@@ -778,6 +819,14 @@ class Galette
                         ],
                         'icon' => 'postbox'
                     ],
+                ]
+            );
+        }
+
+        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_contributions) || $login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Contributions"),
                         'title' => _T("View and filter contributions"),
@@ -787,6 +836,14 @@ class Galette
                         ],
                         'icon' => 'receipt'
                     ],
+                ]
+            );
+        }
+
+        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_transactions) || $login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Transactions"),
                         'title' => _T("View and filter transactions"),
@@ -796,6 +853,14 @@ class Galette
                         ],
                         'icon' => 'book'
                     ],
+                ]
+            );
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Reminders"),
                         'title' => _T("Send reminders to late members"),
@@ -809,9 +874,9 @@ class Galette
         }
 
         //display documents menu if at least one document is present with current ACLs
-        $document = new Document($zdb);
-        $documents = $document->getList();
-        if ($login->isSuperAdmin() || count($documents)) {
+        $documents = new Documents($zdb, $login);
+        $documents_list = $documents->getList();
+        if ($login->isSuperAdmin() || count($documents_list)) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -851,12 +916,16 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\DashboardProviderInterface
+                || method_exists($plugin, 'getDashboardsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getDashboards()
@@ -887,15 +956,15 @@ class Galette
 
         if ($member->canEdit($login)) {
             $actions[] = [
-                'label' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("%membername: edit information")
+                'label' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('%1$s: edit information'),
+                    $member->sname
                 ),
-                'title' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("%membername: edit information")
+                'title' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('%1$s: edit information'),
+                    $member->sname
                 ),
                 'route' => [
                     'name' => 'editMember',
@@ -908,15 +977,15 @@ class Galette
         if ($login->isAdmin() || $login->isStaff()) {
             $actions = array_merge($actions, [
                 [
-                    'label' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: contributions")
+                    'label' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: contributions'),
+                        $member->sname
                     ),
-                    'title' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: contributions")
+                    'title' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: contributions'),
+                        $member->sname
                     ),
                     'route' => [
                         'name' => 'contributions',
@@ -929,15 +998,15 @@ class Galette
                     'icon' => 'receipt green'
                 ],
                 [
-                    'label' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: remove from database")
+                    'label' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: remove from database'),
+                        $member->sname
                     ),
-                    'title' => str_replace(
-                        "%membername",
-                        $member->sname,
-                        _T("%membername: remove from database")
+                    'title' => sprintf(
+                        //TRANS: parameter is the member name
+                        _T('%1$s: remove from database'),
+                        $member->sname
                     ),
                     'route' => [
                         'name' => 'removeMember',
@@ -953,15 +1022,15 @@ class Galette
 
         if ($login->isSuperAdmin()) {
             $actions[] = [
-                'label' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("Log in as %membername")
+                'label' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('Log in as %1$s'),
+                    $member->sname
                 ),
-                'title' => str_replace(
-                    "%membername",
-                    $member->sname,
-                    _T("Log in as %membername")
+                'title' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('Log in as %1$s'),
+                    $member->sname
                 ),
                 'route' => [
                     'name' => 'impersonate',
@@ -973,12 +1042,16 @@ class Galette
             ];
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getListActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getListActions($member)
@@ -1007,12 +1080,16 @@ class Galette
 
         //TODO: add core detailed actions
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getDetailedActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getDetailedActions($member)
@@ -1067,9 +1144,9 @@ class Galette
 
         if (
             ($login->isAdmin()
-            || $login->isStaff()
-            || $login->isGroupManager()
-            && $preferences->pref_bool_groupsmanagers_mailings)
+                || $login->isStaff()
+                || $login->isGroupManager()
+                && $preferences->pref_bool_groupsmanagers_mailings)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
         ) {
             $actions[] = [
@@ -1112,12 +1189,16 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getBatchActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getBatchActions()
@@ -1166,13 +1247,24 @@ class Galette
             $news[$entry->getPosition()] = $entry;
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
-            $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
-                if ($plugin->isInstalled() && $entry = $plugin->getNews()) {
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\NewsProviderInterface
+                || method_exists($plugin, 'getNews')) //handle deprecated 1.2.2 case
+                && $plugin->isInstalled()
+            ) {
+                //display deprecation message - since 1.2.2
+                if (!($plugin instanceof Plugins\NewsProviderInterface)) {
+                    Analog::log(
+                        $plugin::class . '::getNews() is deprecated, please implement NewsProviderInterface',
+                        Analog::WARNING
+                    );
+                }
+                if ($entry = $plugin->getNews()) {
                     $position = $entry->getPosition();
                     while (isset($news[$position])) {
                         ++$position;
@@ -1187,9 +1279,51 @@ class Galette
     }
 
     /**
-     * Is demonstration mode enabled
+     * Are news to be expected?
      *
-     * @return bool
+     * Tells whether a news source is configured, without loading any feed:
+     * getNews() reaches the network, this one must not. A plugin may still
+     * provide no entry at all, so the answer is optimistic.
+     */
+    public static function hasNews(): bool
+    {
+        global $container;
+
+        /**
+         * @var Login $login
+         * @var Preferences $preferences
+         * @var Plugins $plugins
+         */
+        global $login, $preferences, $plugins;
+
+        //Galette news are displayed for staff and admins
+        if ($login->isStaff() || $login->isAdmin()) {
+            return true;
+        }
+
+        //a custom RSS feed is displayed for everyone
+        if (!empty($preferences->pref_rss_url) && $preferences->pref_rss_url != self::RSS_URL) {
+            return true;
+        }
+
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
+            $plugin_class = $plugins->getClassName($module_id, full: true);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\NewsProviderInterface
+                || method_exists($plugin, 'getNews')) //handle deprecated 1.2.2 case
+                && $plugin->isInstalled()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Is demonstration mode enabled
      */
     public static function isDemo(): bool
     {
@@ -1197,9 +1331,15 @@ class Galette
     }
 
     /**
+     * Is maintenance mode enabled
+     */
+    public static function isUnderMaintenance(): bool
+    {
+        return GALETTE_MODE === static::MODE_MAINT;
+    }
+
+    /**
      * Is debug mode enabled
-     *
-     * @return bool
      */
     public static function isDebugEnabled(): bool
     {
@@ -1217,18 +1357,14 @@ class Galette
 
     /**
      * Is SQL debug mode enabled
-     *
-     * @return bool
      */
     public static function isSqlDebugEnabled(): bool
     {
-        return defined('GALETTE_SQL_DEBUG') || static::isDebugEnabled();
+        return defined('GALETTE_SQL_DEBUG') && GALETTE_SQL_DEBUG || static::isDebugEnabled();
     }
 
     /**
      * Is a nightly build
-     *
-     * @return bool
      */
     public static function isNightly(): bool
     {
@@ -1239,8 +1375,6 @@ class Galette
      * Check if a string is serialized
      *
      * @param string $string String to check
-     *
-     * @return bool
      */
     public static function isSerialized(string $string): bool
     {
@@ -1257,7 +1391,7 @@ class Galette
      */
     public static function jsonDecode(string $string): array
     {
-        $decoded = \json_decode($string, true); // @phpstan-ignore theCodingMachineSafe.function
+        $decoded = \json_decode($string, associative: true); // @phpstan-ignore theCodingMachineSafe.function
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('JSON decode error: ' . json_last_error_msg());
         }
@@ -1270,7 +1404,6 @@ class Galette
      *
      * @param array<string|int, mixed>|object $data Data to encode
      *
-     * @return string
      * @throws RuntimeException
      */
     public static function jsonEncode(array|object $data): string
@@ -1281,5 +1414,68 @@ class Galette
         }
 
         return $encoded;
+    }
+
+    /**
+     * Load routes
+     *
+     * @param App<ContainerInterface> $app   App instance
+     * @param bool                    $force Force routes re-loading (for tests)
+     * @param bool                    $cron  Load only cron routes
+     */
+    public static function loadRoutes(App $app, bool $force = false, bool $cron = false): void
+    {
+        /** @var array<string, array<int, string>> $routeFiles */
+        static $routeFiles = [];
+
+        $cron_exclusions = [
+            'ajax.routes.php',
+            'plugins.routes.php'
+        ];
+
+        $mode = $cron ? 'cron' : 'all';
+        if (!isset($routeFiles[$mode]) || $force) {
+            $routesPath = GALETTE_ROOT . 'includes/routes/';
+            $files = array_merge(
+                glob($routesPath . '*.route.php') ?: [],
+                glob($routesPath . '*.routes.php') ?: []
+            );
+            $files = array_values(array_unique($files));
+
+            if ($cron) {
+                $files = array_filter(
+                    $files,
+                    static fn(string $file): bool => !in_array(basename($file), $cron_exclusions, strict: true)
+                );
+            }
+
+            usort(
+                $files,
+                static function (string $left, string $right): int {
+                    $baseLeft = basename($left);
+                    $baseRight = basename($right);
+
+                    if ($baseLeft === $baseRight && $baseLeft === 'main.routes.php') {
+                        return 0;
+                    }
+                    if ($baseLeft === 'main.routes.php') {
+                        return -1;
+                    }
+                    if ($baseRight === 'main.routes.php') {
+                        return 1;
+                    }
+                    return strcmp($left, $right);
+                }
+            );
+            $routeFiles[$mode] = $files;
+        }
+
+        foreach ($routeFiles[$mode] as $routeFile) {
+            if ($force) {
+                require $routeFile;
+            } else {
+                require_once $routeFile;
+            }
+        }
     }
 }

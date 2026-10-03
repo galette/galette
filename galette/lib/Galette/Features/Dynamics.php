@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,7 +11,6 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Galette\Core\Login;
-use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
@@ -33,10 +19,10 @@ use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\IO\UploadSize;
+use Galette\Util\Filesize;
 
 use function Safe\preg_grep;
-use function Safe\preg_replace;
-use function Safe\unlink;
 
 /**
  * Dynamics fields trait
@@ -54,13 +40,10 @@ trait Dynamics
 
     /**
      * Load dynamic fields for member
-     *
-     * @return void
      */
     private function loadDynamicFields(): void
     {
-        //@phpstan-ignore-next-line function.alreadyNarrowedType
-        if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
+        if (($this->login ?? null) instanceof Login) {
             $login = $this->login;
         } else {
             global $login;
@@ -70,8 +53,6 @@ trait Dynamics
 
     /**
      * Get dynamic fields
-     *
-     * @return DynamicFieldsHandle
      */
     public function getDynamicFields(): DynamicFieldsHandle
     {
@@ -87,8 +68,6 @@ trait Dynamics
      * @param array<string, mixed>   $post     Posted values
      * @param array<string,int|bool> $required Array of required fields
      * @param array<string>          $disabled Array of disabled fields
-     *
-     * @return bool
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled): bool
     {
@@ -132,31 +111,61 @@ trait Dynamics
                 }
             }
 
+            //a repeatable field is required as a whole: one filled occurrence is enough,
+            //and a field that is missing it is reported once, not once per occurrence
+            $missing = [];
+            $posted_values = [];
+            foreach ($dynamic_fields as $dfield_values) {
+                $posted_values[(int)$dfield_values['field_id']][(int)$dfield_values['val_index']]
+                    = $dfield_values['value'];
+            }
+
+            //an occurrence removed from the form is no longer posted; drop what is gone.
+            //files are left out: they travel apart, and have their own delete control.
+            foreach ($posted_values as $field_id => $values) {
+                if ($fields[$field_id] instanceof File) {
+                    continue;
+                }
+                foreach ($this->dynamics->getValueIndexes($field_id) as $val_index) {
+                    if (!isset($values[$val_index])) {
+                        $this->dynamics->unsetValue($field_id, $val_index);
+                    }
+                }
+            }
+
+            foreach ($posted_values as $field_id => $values) {
+                if (!$fields[$field_id]->isRequired()) {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    if ($value !== null && trim((string)$value) !== '') {
+                        continue 2;
+                    }
+                }
+                $missing[$field_id] = true;
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is a field name
+                    _T('Missing required field %1$s'),
+                    $fields[$field_id]->getName(),
+                );
+            }
+
             foreach ($dynamic_fields as $dfield_values) {
                 $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
 
-                if ($fields[$field_id]->isRequired() && (trim((string) $value) === '' || $value == null)) {
-                    $this->errors[] = sprintf(
-                        //TRANS: parameter is a field name
-                        _T('Missing required field %1$s'),
-                        $fields[$field_id]->getName(),
-                    );
-                } elseif ($fields[$field_id] instanceof File) {
-                    //delete checkbox
-                    $filename = $fields[$field_id]->getFileName($this->id, $val_index);
-                    if (file_exists(GALETTE_FILES_PATH . $filename)) {
-                        unlink(GALETTE_FILES_PATH . $filename);
-                    } elseif (!$this instanceof Adherent) {
-                        $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
-                        if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
-                            unlink(GALETTE_FILES_PATH . $test_filename);
-                        }
-                    }
-                    $this->dynamics->setValue($this->id, $field_id, $val_index, '');
+                if (isset($missing[$field_id])) {
+                    //already reported, do not touch stored values
+                    continue;
+                }
+
+                if ($fields[$field_id] instanceof File) {
+                    //the delete checkbox: the occurrence goes away entirely, and the file
+                    //on disk goes with it once the values are stored
+                    $this->dynamics->unsetValue($field_id, $val_index);
                 } else {
-                    if ($fields[$field_id] instanceof Date && !empty(trim((string) $value))) {
+                    if ($fields[$field_id] instanceof Date && !empty(trim((string)$value))) {
                         //check date format
                         try {
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
@@ -190,8 +199,13 @@ trait Dynamics
                         }
                     }
                     //actual field value
-                    if ($value !== null && trim($value) !== '') {
-                        $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
+                    if ($value !== null && trim((string)$value) !== '') {
+                        $this->dynamics->setValue(
+                            item: $this->getID() ?? null,
+                            field: $field_id,
+                            index: $val_index,
+                            value: $value
+                        );
                     } else {
                         $this->dynamics->unsetValue($field_id, $val_index);
                     }
@@ -207,15 +221,13 @@ trait Dynamics
      * Stores dynamic fields
      *
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     protected function dynamicsStore(bool $transaction = false): bool
     {
         if (!isset($this->dynamics)) {
             $this->loadDynamicFields();
         }
-        $return = $this->dynamics->storeValues($this->id, $transaction);
+        $return = $this->dynamics->storeValues($this->getID(), $transaction);
         //@phpstan-ignore function.alreadyNarrowedType
         if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
             $this->updateModificationDate();
@@ -227,8 +239,6 @@ trait Dynamics
      * Store dynamic Files
      *
      * @param array<UploadedFileInterface> $files Posted files
-     *
-     * @return void
      */
     protected function dynamicsFiles(array $files): void
     {
@@ -237,7 +247,7 @@ trait Dynamics
         $store = false;
 
         foreach ($files as $key => $file) {
-            if (substr((string) $key, 0, 11) != $this->name_pattern) {
+            if (substr((string)$key, 0, 11) != $this->name_pattern) {
                 continue;
             }
 
@@ -257,37 +267,31 @@ trait Dynamics
                 continue;
             }
 
-            $max_size
-                = $fields[$field_id]->getSize()
-                ? $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
-            if ($file->getSize() > $max_size) {
+            $field = $fields[(int)$field_id] ?? null;
+            if (!$field instanceof File) {
+                continue;
+            }
+
+            //a field declaring no size of its own follows the preference
+            $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
+            if ($file->getSize() > $max_size * 1024) {
                 Analog::log(
-                    "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
+                    'file too large: ' . Filesize::fromBytes($file->getSize())
+                    . ', vs ' . Filesize::fromKilobytes($max_size) . ' allowed',
                     Analog::ERROR
                 );
-                $this->errors[] = preg_replace(
-                    '|%d|',
-                    (string)$max_size,
-                    _T("File is too big. Maximum allowed size is %dKo")
+                $this->errors[] = sprintf(
+                    _T('File is too big. Maximum allowed size is %1$s'),
+                    Filesize::fromKilobytes($max_size)
                 );
                 continue;
             }
 
-            $form_name = $this->getFormName();
-            if ($form_name === 'adh') {
-                $form_name = 'member'; //for compatibility with existing files
-            }
-            $new_filename = sprintf(
-                '%s_%d_field_%d_value_%d',
-                $form_name,
-                $this->id,
-                $field_id,
-                $val_index
-            );
+            $new_filename = $field->getFileName($this->getID(), (int)$val_index);
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
             $file->moveTo(GALETTE_FILES_PATH . $new_filename);
-            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file->getClientFilename());
+            $this->dynamics->setValue($this->getID(), (int)$field_id, (int)$val_index, $file->getClientFilename());
             $store = true;
         }
 
@@ -300,15 +304,13 @@ trait Dynamics
      * Remove dynamic fields values
      *
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     protected function dynamicsRemove(bool $transaction = false): bool
     {
         if (!isset($this->dynamics)) {
             $this->loadDynamicFields();
         }
-        return $this->dynamics->removeValues($this->id, $transaction);
+        return $this->dynamics->removeValues($this->getID(), $transaction);
     }
 
     /**
@@ -327,8 +329,6 @@ trait Dynamics
      *
      * @param array<string> $values Dynamic fields values
      * @param string        $prefix Prefix to replace, default to 'dynfield_'
-     *
-     * @return bool
      */
     public function dynamicsValidate(array $values, string $prefix = 'dynfield_'): bool
     {
@@ -341,11 +341,17 @@ trait Dynamics
 
     /**
      * Get form name
-     *
-     * @return string
      */
     public function getFormName(): string
     {
         return array_search(static::class, DynamicFieldsSet::getClasses());
+    }
+
+    /**
+     * Get ID
+     */
+    public function getID(): ?int
+    {
+        return $this->id ?? null;
     }
 }

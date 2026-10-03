@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,7 +11,9 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -45,11 +34,6 @@ class GroupsController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -59,46 +43,17 @@ class GroupsController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $name     Group name
-     *
-     * @return Response
      */
-    public function doAdd(Request $request, Response $response, ?string $name = null): Response
-    {
-        $group = new Group();
-        $group->setLogin($this->login);
-        $group->setName($name);
-        $group->store();
-        if (!$this->login->isSuperAdmin()) {
-            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
-        }
-        $id = $group->getId();
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('doEditGroup', ['id' => (string)$id]));
-    }
-
-
-    /**
-     * Check uniqueness
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
-     */
-    public function checkUniqueness(Request $request, Response $response): Response
+    #[Route(
+        name: 'doAddGroup',
+        pattern: '/group/add',
+        methods: ['POST']
+    )]
+    public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+
         if (!isset($post['gname']) || $post['gname'] == '') {
-            Analog::log(
-                'Trying to check if group name is unique without name specified',
-                Analog::INFO
-            );
             return $this->withJson(
                 $response,
                 [
@@ -106,14 +61,48 @@ class GroupsController extends CrudController
                     'message' => htmlentities(_T("Group name is missing!"))
                 ]
             );
-        } else {
+        }
+        $name = $post['gname'];
+
+        //check group name uniqueness
+        if (!Groups::isUnique($this->zdb, $post['gname'])) {
             return $this->withJson(
                 $response,
                 [
-                    'success' => Groups::isUnique($this->zdb, $post['gname'])
+                    'success' => false,
+                    'message' => htmlentities(_T("Group name already exists!"))
                 ]
             );
         }
+
+        $group = new Group();
+        $group
+            ->setLogin($this->login)
+            ->setName($name)
+            ->store();
+        if (!$this->login->isSuperAdmin()) {
+            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
+        }
+        $id = $group->getId();
+
+        $redirect = $this->routeparser->urlFor('doEditGroup', ['id' => (string)$id]);
+        if ($this->isAjax($request)) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Group added")
+            );
+            return $this->withJson(
+                $response,
+                [
+                    'success' => true,
+                    'redirect' => $redirect
+                ]
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect);
     }
 
     // /CRUD - Create
@@ -122,13 +111,14 @@ class GroupsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
+    #[Route(
+        name: 'groups',
+        pattern: '/groups',
+        methods: ['GET']
+    )]
     public function list(
         Request $request,
         Response $response,
@@ -139,7 +129,7 @@ class GroupsController extends CrudController
         $group = new Group();
         $group->setLogin($this->login);
 
-        $groups_root = $groups->getList(false);
+        $groups_root = $groups->getList(full: false);
         $groups_list = $groups->getList();
 
         // display page
@@ -166,19 +156,19 @@ class GroupsController extends CrudController
 
     /**
      * List reorder
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'reorderGroups',
+        pattern: '/groups/reorder',
+        methods: ['POST']
+    )]
     public function reorderList(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $list = '<ul>';
         if (isset($post['reordered']) && !empty($post['reordered'])) {
             foreach ($post['reordered'] as $value) {
-                $item = explode('|', (string) $value);
+                $item = explode('|', (string)$value);
                 $id = $item[0];
                 $parentId = $item[1];
                 $group = new Group((int)$id);
@@ -212,12 +202,12 @@ class GroupsController extends CrudController
 
     /**
      * Group page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'ajax_group',
+        pattern: '/ajax/group',
+        methods: ['POST']
+    )]
     public function getGroup(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -244,12 +234,12 @@ class GroupsController extends CrudController
 
     /**
      * Groups list page for ajax calls
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'ajax_groups',
+        pattern: '/ajax/groups',
+        methods: ['POST']
+    )]
     public function simpleList(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -270,13 +260,13 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Groups list page for ajax calls
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Group members ajax loader
      */
+    #[Route(
+        name: 'ajaxGroupMembers',
+        pattern: '/ajax/group/members',
+        methods: ['POST']
+    )]
     public function ajaxMembers(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -309,11 +299,6 @@ class GroupsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -327,12 +312,13 @@ class GroupsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
+    #[Route(
+        name: 'editGroup',
+        pattern: '/group/edit/{id:\d+}',
+        methods: ['GET']
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $groups = new Groups($this->zdb, $this->login);
@@ -348,7 +334,7 @@ class GroupsController extends CrudController
                 'Trying to display group ' . $id . ' without appropriate permissions',
                 Analog::INFO
             );
-            return $response->withStatus(403);
+            throw new HttpForbiddenException($request);
         }
 
         $parent_groups = [];
@@ -363,7 +349,7 @@ class GroupsController extends CrudController
             $response,
             'pages/group_form.html.twig',
             [
-                'page_title'            => $group->getName(),
+                'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
                 'parent_groups'         => $parent_groups,
                 'group'                 => $group
             ]
@@ -374,12 +360,13 @@ class GroupsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Group id
-     *
-     * @return Response
+     * @param int $id Group id
      */
+    #[Route(
+        name: 'doEditGroup',
+        pattern: '/group/edit/{id:\d+}',
+        methods: ['POST']
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         $post = $request->getParsedBody();
@@ -429,7 +416,7 @@ class GroupsController extends CrudController
                 //something went wrong :'(
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("An error occurred while storing the group.")
+                    _T("An error occurred while saving the group.")
                 );
             }
         } catch (Throwable $e) {
@@ -445,13 +432,13 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Reoder action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Reorder action
      */
+    #[Route(
+        name: 'ajax_groups_reorder',
+        pattern: '/ajax/groups/reorder',
+        methods: ['POST']
+    )]
     public function reorder(Request $request, Response $response): Response
     {
         if (
@@ -495,8 +482,6 @@ class GroupsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -507,8 +492,6 @@ class GroupsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -522,8 +505,6 @@ class GroupsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -539,8 +520,6 @@ class GroupsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -549,20 +528,24 @@ class GroupsController extends CrudController
         $cascade = isset($post['cascade']);
         $is_deleted = $group->remove($cascade);
 
-        if ($is_deleted !== true && $group->isEmpty() === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Group is not empty, it cannot be deleted. Use cascade delete instead.")
-            );
+        if ($is_deleted !== true) {
+            $blockers = $group->getRemovalBlockers();
+            foreach ($blockers as $blocker) {
+                $this->flash->addMessage('error_detected', $blocker);
+            }
+            if (count($blockers) === 0 && $group->isEmpty() === false) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Group is not empty, it cannot be deleted. Use cascade delete instead.")
+                );
+            }
         }
 
         return $is_deleted;
     }
 
     /**
-     * Removal confirmation parameters, can be override
-     *
-     * @param Request $request PSR Request
+     * Removal confirmation parameters, can be overridden
      *
      * @return array<string,mixed>
      */

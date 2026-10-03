@@ -1,28 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins activation console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-import-type Modules from Plugins
  */
 
 #[AsCommand(
@@ -43,11 +32,6 @@ class PluginEnable extends AbstractPlugins
 {
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -68,9 +52,7 @@ class PluginEnable extends AbstractPlugins
     /**
      * Get relevant plugins (disabled ones) for current command
      *
-     * @param SymfonyStyle $io Output interface
-     *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
@@ -78,19 +60,16 @@ class PluginEnable extends AbstractPlugins
 
         $relevant_plugins = [];
         foreach ($disabled_plugins as $module_id => $module) {
-            if ($module['cause'] == \Galette\Core\Plugins::DISABLED_EXPLICIT) {
+            $cause = $this->plugins->getDisabledCause($module_id);
+            if ($cause === Plugins::DISABLED_EXPLICIT) {
                 $relevant_plugins[$module_id] = $module;
             } else {
-                switch ($module['cause']) {
-                    case \Galette\Core\Plugins::DISABLED_COMPAT:
-                        $module['cause'] = 'Not compatible';
-                        break;
-                    case \Galette\Core\Plugins::DISABLED_MISS:
-                        $module['cause'] = 'Miss a required file';
-                        break;
-                }
                 $io->writeln(
-                    sprintf('Plugin "%s" is not explicitly disabled (%s)', $module_id, $module['cause']),
+                    sprintf(
+                        'Plugin "%s" is not explicitly disabled (%s)',
+                        $module_id,
+                        $this->getDisplayCause($cause)
+                    ),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
             }

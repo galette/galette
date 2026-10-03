@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -41,8 +28,6 @@ trait Socials
      * Check socials
      *
      * @param array<string,mixed> $post User input
-     *
-     * @return void
      */
     protected function checkSocials(array $post): void
     {
@@ -58,15 +43,13 @@ trait Socials
      * Store social networks/contacts
      *
      * @param int|null $id ID
-     *
-     * @return bool
      */
     protected function storeSocials(?int $id = null): bool
     {
         $existings = Social::getListForMember($id);
         foreach ($this->socials_input as $key => $value) {
             if (
-                str_starts_with((string) $key, 'social_new_type')
+                str_starts_with((string)$key, 'social_new_type')
                 && !empty($value)
                 && isset($this->socials_input[str_replace('_type', '_value', $key)])
                 && !empty($this->socials_input[str_replace('_type', '_value', $key)])
@@ -79,7 +62,7 @@ trait Socials
                     ->setLinkedMember($id)
                     ->setUrl($this->socials_input['social_new_value_' . $new_index])
                     ->store();
-            } elseif (str_starts_with((string) $key, 'social_') && !str_starts_with((string) $key, 'social_new_')) {
+            } elseif (str_starts_with((string)$key, 'social_') && !str_starts_with((string)$key, 'social_new_')) {
                 //existing social network
                 $social_id = (int)str_replace('social_', '', $key);
                 $social = $existings[$social_id];

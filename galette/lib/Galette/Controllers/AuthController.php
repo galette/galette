@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,16 +11,18 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Galette\Controllers\Attributes\Route;
+use Galette\Core\AuthThrottle;
 use Galette\Core\Login;
+use Galette\Core\TwoFactorAuth;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Galette\Util\Release;
-
-use function Safe\base64_decode;
 
 /**
  * Galette authentication controller
@@ -44,14 +33,25 @@ use function Safe\base64_decode;
 class AuthController extends AbstractController
 {
     /**
+     * Prefix of the cookie silencing the invitation to hold a second factor.
+     *
+     * The account identifier is appended to it: one cookie per account and not
+     * one per browser, or the first member to decline on a shared computer
+     * would answer for everybody logging in after them.
+     */
+    public const string TFA_SUGGESTION_COOKIE = 'hide_galette_2fa_suggestion';
+
+    /**
      * Log in
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $r        Redirect after login
-     *
-     * @return Response
+     * @param ?string $r Redirect after login
      */
+    #[Route(
+        name: 'login',
+        pattern: '/login[/{r:.+}]',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
     public function login(Request $request, Response $response, ?string $r = null): Response
     {
         //store redirect path if any
@@ -80,19 +80,26 @@ class AuthController extends AbstractController
 
     /**
      * Do login
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function doLogin(Request $request, Response $response): Response
-    {
-        $nick = $request->getParsedBody()['login'];
-        $password = $request->getParsedBody()['password'];
-        $checkpass = new \Galette\Util\Password($this->preferences);
+    #[Route(
+        name: 'dologin',
+        pattern: '/login',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function doLogin(
+        Request $request,
+        Response $response,
+        \Galette\Util\Password $checkpass,
+        Release $release,
+        AuthThrottle $throttle,
+        TwoFactorAuth $tfa
+    ): Response {
+        $post =  $request->getParsedBody();
+        $nick = $post['login'] ?? '';
+        $password = $post['password'] ?? '';
 
-        if (trim((string) $nick) == '' || trim((string) $password) == '') {
+        if (trim((string)$nick) == '' || trim((string)$password) == '') {
             $this->flash->addMessage(
                 'loginfault',
                 _T("You must provide both login and password.")
@@ -102,16 +109,32 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $this->routeparser->urlFor('login'));
         }
 
+        //evaluated before any credential check, so that a locked out caller
+        //costs nothing but a lookup
+        $delay = $throttle->getRetryDelay((string)$nick);
+        if ($delay > 0) {
+            //no countdown on the page: how long is left is a measure of what
+            //has been tried on this account, and whoever is refused has no
+            //business learning it. It is in the history and in the log.
+            $this->flash->addMessage(
+                'loginfault',
+                _T("Too many failed attempts. Please try again later.")
+            );
+            $this->history->add(_T("Authentication throttled"), (string)$nick);
+            Analog::log(
+                'Authentication throttled for `' . $nick . '`, ' . $delay . ' seconds left.',
+                Analog::INFO
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('login'));
+        }
+
         if ($nick === $this->preferences->pref_admin_login) {
             $pw_superadmin = password_verify(
-                (string) $password,
+                (string)$password,
                 $this->preferences->pref_admin_pass
             );
-            if (!$pw_superadmin) {
-                $pw_superadmin = (
-                    md5((string) $password) === $this->preferences->pref_admin_pass
-                );
-            }
             if ($pw_superadmin) {
                 $this->login->logAdmin($nick, $this->preferences);
             }
@@ -119,23 +142,35 @@ class AuthController extends AbstractController
             $this->login->logIn($nick, $password);
         }
 
+        if ($this->login->isTwoFactorPending()) {
+            //credentials are accepted, the session is not logged in yet. Storing
+            //it is safe and avoids carrying the password over to the next
+            //request: isLogged() stays false, so Authenticate keeps refusing.
+            $this->session->login = $this->login;
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('two-factor'));
+        }
+
         if ($this->login->isLogged()) {
+            $throttle->recordSuccess((string)$nick);
+
+            //privileges just changed: rotate the session id so that an
+            //identifier known before authentication cannot be reused
+            \RKA\Session::regenerate();
+
             if (
                 $this->login->isSuperAdmin()
                 || $this->login->isAdmin()
                 || $this->login->isStaff()
             ) {
                 $deprecated_constants = [
-                    'NON_UTF_DBCONNECT'
+                    'NON_UTF_DBCONNECT',
+                    'GALETTE_CARD_WIDTH',
+                    'GALETTE_CARD_HEIGHT',
+                    'GALETTE_CARD_COLS',
+                    'GALETTE_CARD_ROWS'
                 ];
-                if (GALETTE_ADAPTATIVE_CARDS) {
-                    $deprecated_constants += [
-                        'GALETTE_CARD_WIDTH',
-                        'GALETTE_CARD_HEIGHT',
-                        'GALETTE_CARD_COLS',
-                        'GALETTE_CARD_ROWS'
-                    ];
-                }
 
                 foreach ($deprecated_constants as $deprecated_constant) {
                     if (defined($deprecated_constant)) {
@@ -151,7 +186,6 @@ class AuthController extends AbstractController
 
                 //check for new release
                 try {
-                    $release = new Release();
                     if ($release->checkNewRelease()) {
                         Analog::log(
                             sprintf(
@@ -181,6 +215,8 @@ class AuthController extends AbstractController
                 }
             }
 
+            $this->suggestSecondFactor($tfa);
+
             if (!$checkpass->isValid($password)) {
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
@@ -193,6 +229,8 @@ class AuthController extends AbstractController
             $this->history->add(_T("Login"));
             return $this->galetteRedirect($request, $response);
         } else {
+            $throttle->recordFailure((string)$nick);
+            //the message stays the same whether the account exists or not
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
             return $response->withStatus(301)->withHeader('Location', $this->routeparser->urlFor('login'));
@@ -200,14 +238,62 @@ class AuthController extends AbstractController
     }
 
     /**
-     * Log out
+     * Invite an account that holds no second factor to enrol.
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
+     * The mandatory policies are held back, so nothing drives anybody to
+     * enrol: an instance that turned the second factor on would see it used by
+     * nobody. Offered to every account, and not only to the ones that read the
+     * whole membership, because a member's own file is their civil status,
+     * their address and their contributions. Told once at login rather than
+     * shown on every page, and silenced by a cookie, the way the telemetry
+     * reminder is.
      *
-     * @return Response
+     * @param TwoFactorAuth $tfa Second factor service
      */
-    public function logout(Request $request, Response $response): Response
+    private function suggestSecondFactor(TwoFactorAuth $tfa): void
+    {
+        $cookie = $this->suggestionCookie();
+        if (isset($_COOKIE[$cookie]) && $_COOKIE[$cookie]) {
+            return;
+        }
+
+        //nothing to suggest when the instance does not use it, and nothing to
+        //say when the policy already requires it: that is the middleware's job
+        if (!$tfa->isEnabled() || $tfa->isRequiredFor($this->login)) {
+            return;
+        }
+
+        if ($tfa->storeFor($this->login)->isEnabled()) {
+            return;
+        }
+
+        //the name travels with the invitation: the page that offers to silence
+        //it has no business knowing how it is built
+        $this->flash->addMessage('suggest_two_factor', $cookie);
+    }
+
+    /**
+     * Name of the cookie silencing the invitation for the account logging in.
+     *
+     * The super administrator is not a member and holds no identifier of its
+     * own: it is the only account carrying 0, which is enough to tell it from
+     * the others.
+     */
+    private function suggestionCookie(): string
+    {
+        return self::TFA_SUGGESTION_COOKIE . '_' . (int)$this->login->id;
+    }
+
+    /**
+     * Log out
+     */
+    #[Route(
+        name: 'logout',
+        pattern: '/logout',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function logout(Response $response): Response
     {
         $this->login->logOut();
         $this->history->add(_T("Log off"));
@@ -220,22 +306,24 @@ class AuthController extends AbstractController
     /**
      * Impersonate
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member to impersonate
-     *
-     * @return Response
+     * @param int $id Member to impersonate
      */
-    public function impersonate(Request $request, Response $response, int $id): Response
+    #[Route(
+        name: 'impersonate',
+        pattern: '/impersonate/{id:\d+}',
+        methods: ['GET']
+    )]
+    public function impersonate(Response $response, int $id): Response
     {
         $success = $this->login->impersonate($id);
 
         if ($success === true) {
+            \RKA\Session::regenerate();
             $this->session->login = $this->login;
-            $msg = str_replace(
-                '%login',
-                $this->login->login,
-                _T("Impersonating as %login")
+            $msg = sprintf(
+                //TRANS: parameter is the login
+                _T('Impersonating as %1$s'),
+                $this->login->login
             );
 
             $this->history->add($msg);
@@ -244,10 +332,10 @@ class AuthController extends AbstractController
                 $msg
             );
         } else {
-            $msg = str_replace(
-                '%id',
-                (string)$id,
-                _T("Unable to impersonate as %id")
+            $msg = sprintf(
+                //TRANS: parameter is the member identifier
+                _T('Unable to impersonate as %1$s'),
+                $id
             );
             $this->flash->addMessage(
                 'error_detected',
@@ -263,17 +351,31 @@ class AuthController extends AbstractController
 
     /**
      * End impersonate
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
+    #[Route(
+        name: 'unimpersonate',
+        pattern: '/unimpersonate',
+        methods: ['GET']
+    )]
     public function unimpersonate(Request $request, Response $response): Response
     {
+        if (!$this->login->isImpersonated()) {
+            //this route grants super administrator rights back; it must only be
+            //reachable from a session that is actually impersonating someone.
+            Analog::log(
+                'Trying to unimpersonate while not impersonating!',
+                Analog::WARNING
+            );
+            $this->history->add(_T("Attempt to unimpersonate from a non impersonated session"));
+            throw new HttpForbiddenException($request);
+        }
+
         $login = new Login($this->zdb, $this->i18n);
-        $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
+        //no second factor on the way back: this session produced one to become
+        //the super administrator in the first place, and it never lost that
+        $login->logAdmin($this->preferences->pref_admin_login, $this->preferences, challenge: false);
         $this->history->add(_T("Impersonating ended"));
+        \RKA\Session::regenerate();
         $this->session->login = $login;
         $this->login = $login;
         $this->flash->addMessage(
@@ -287,13 +389,14 @@ class AuthController extends AbstractController
 
     /**
      * Lost password page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function lostPassword(Request $request, Response $response): Response
+    #[Route(
+        name: 'password-lost',
+        pattern: '/password-lost',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function lostPassword(Response $response): Response
     {
         if ($this->preferences->pref_mail_method === GaletteMail::METHOD_DISABLED) {
             throw new \RuntimeException('Mailing disabled.');
@@ -311,15 +414,19 @@ class AuthController extends AbstractController
 
     /**
      * Retrieve password procedure
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
-     *
-     * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
-    {
+    #[Route(
+        name: 'retrieve-pass',
+        pattern: '/retrieve-pass[/{' . Adherent::PK . ':\d+}]',
+        methods: ['GET', 'POST'],
+        requiresAuth: false
+    )]
+    public function retrievePassword(
+        Request $request,
+        Response $response,
+        AuthThrottle $throttle,
+        ?int $id_adh = null
+    ): Response {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
         if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
@@ -348,7 +455,28 @@ class AuthController extends AbstractController
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
-            $login_adh = htmlspecialchars((string) $post['login'], ENT_QUOTES);
+            $login_adh = htmlspecialchars((string)$post['login'], ENT_QUOTES);
+
+            //anybody can ask, and what it does is send a mail to somebody
+            //else: without a limit, that is a way to fill the mailbox of a
+            //member, and to walk through logins to find out which ones exist
+            $delay = $throttle->getRecoveryDelay($login_adh);
+            if ($delay > 0) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Too many requests. Please try again later.")
+                );
+                $this->history->add(_T("Password recovery throttled"), $login_adh);
+                Analog::log(
+                    'Password recovery throttled for `' . $login_adh . '`, ' . $delay . ' seconds left.',
+                    Analog::INFO
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $redirect_url);
+            }
+            $throttle->recordRecovery($login_adh);
+
             $adh = new Adherent($this->zdb, $login_adh);
         }
 
@@ -395,16 +523,12 @@ class AuthController extends AbstractController
                                 _T("Email sent to '%s' for password recovery.")
                             )
                         );
-                        if ($from_admin === false) {
-                            $message = _T("An email has been sent to your address.<br/>Please check your inbox and follow the instructions.");
-                        } else {
-                            $message = _T("An email has been sent to the member.");
+                        if ($from_admin === true) {
+                            $this->flash->addMessage(
+                                'success_detected',
+                                _T("An email has been sent to the member.")
+                            );
                         }
-
-                        $this->flash->addMessage(
-                            'success_detected',
-                            $message
-                        );
                     } else {
                         $str = str_replace(
                             '%s',
@@ -412,12 +536,9 @@ class AuthController extends AbstractController
                             _T("A problem happened while sending password for account '%s'")
                         );
                         $this->history->add($str);
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $str
-                        );
-
-                        $error_detected[] = $str;
+                        if ($from_admin === true) {
+                            $this->flash->addMessage('error_detected', $str);
+                        }
                     }
                 } else {
                     $str = str_replace(
@@ -426,10 +547,9 @@ class AuthController extends AbstractController
                         _T("An error occurred storing temporary password for %s. Please inform an admin.")
                     );
                     $this->history->add($str);
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $str
-                    );
+                    if ($from_admin === true) {
+                        $this->flash->addMessage('error_detected', $str);
+                    }
                 }
             } else {
                 $str = str_replace(
@@ -438,10 +558,9 @@ class AuthController extends AbstractController
                     _T("Your account (%s) do not contain any valid email address")
                 );
                 $this->history->add($str);
-                $this->flash->addMessage(
-                    'error_detected',
-                    $str
-                );
+                if ($from_admin === true) {
+                    $this->flash->addMessage('error_detected', $str);
+                }
             }
         } else {
             //account has not been found
@@ -460,9 +579,20 @@ class AuthController extends AbstractController
             }
 
             $this->history->add($str);
+            if ($from_admin === true) {
+                $this->flash->addMessage('error_detected', $str);
+            }
+        }
+
+        if ($from_admin === false) {
+            //one answer for every outcome, and the same one: whether an
+            //account exists, whether it holds a usable address, whether the
+            //mail went out. Anything else here is a way to find out which
+            //logins are real, one request at a time. What happened is in the
+            //history, where only staff can read it.
             $this->flash->addMessage(
-                'error_detected',
-                $str
+                'success_detected',
+                _T("If an account matches, an email has been sent to its address.<br/>Please check your inbox and follow the instructions.")
             );
         }
 
@@ -473,17 +603,16 @@ class AuthController extends AbstractController
 
     /**
      * Password recovery page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
-     *
-     * @return Response
      */
-    public function recoverPassword(Request $request, Response $response, string $hash): Response
+    #[Route(
+        name: 'password-recovery',
+        pattern: '/password-recovery/{hash}',
+        methods: ['GET'],
+        requiresAuth: false
+    )]
+    public function recoverPassword(Response $response, string $hash, Password $password): Response
     {
-        $password = new Password($this->zdb);
-        if (!$password->isHashValid(base64_decode($hash))) {
+        if (!$password->isTokenValid($hash)) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("This link is no longer valid. You should ask to retrieve your password again.")
@@ -510,85 +639,126 @@ class AuthController extends AbstractController
 
     /**
      * Password recovery
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
-    public function doRecoverPassword(Request $request, Response $response): Response
-    {
+    #[Route(
+        name: 'do-password-recovery',
+        pattern: '/password-recovery',
+        methods: ['POST'],
+        requiresAuth: false
+    )]
+    public function doRecoverPassword(
+        Request $request,
+        Response $response,
+        Password $password,
+        \Galette\Util\Password $checkpass
+    ): Response {
         $post = $request->getParsedBody();
-        $password = new Password($this->zdb);
 
-        if (!$id_adh = $password->isHashValid(base64_decode((string) $post['hash']))) {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
-                );
+        if (!$id_adh = $password->isTokenValid((string)$post['hash'])) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
+            );
         }
 
-        $error = null;
+        $errors = [];
         if ($post['mdp_adh'] == '') {
-            $error = _T("No password");
+            $errors[] = _T("No password");
         } elseif (isset($post['mdp_adh2'])) {
-            if (strcmp((string) $post['mdp_adh'], $post['mdp_adh2'])) {
-                $error = _T("- The passwords don't match!");
+            if (strcmp((string)$post['mdp_adh'], $post['mdp_adh2'])) {
+                $errors[] = _T("- The passwords don't match!");
+            } elseif (!$checkpass->isValid($post['mdp_adh'])) {
+                //password is not valid with current rules
+                $errors[] = _T("Your password is too weak!")
+                    . '<br/> -' . implode('<br/>', $checkpass->getErrors());
             } else {
-                $checkpass = new \Galette\Util\Password($this->preferences);
-
-                if (!$checkpass->isValid($post['mdp_adh'])) {
-                    //password is not valid with current rules
-                    $error = _T("Your password is too weak!")
-                        . '<br/> -' . implode('<br/>', $checkpass->getErrors());
+                $res = Adherent::updatePassword(
+                    $this->zdb,
+                    $id_adh,
+                    $post['mdp_adh']
+                );
+                if ($res !== true) {
+                    $errors[] = _T("An error occurred while updating your password.");
                 } else {
-                    $res = Adherent::updatePassword(
-                        $this->zdb,
-                        $id_adh,
-                        $post['mdp_adh']
+                    $this->history->add(
+                        str_replace(
+                            '%s',
+                            (string)$id_adh,
+                            _T("Password changed for member '%s'.")
+                        )
                     );
-                    if ($res !== true) {
-                        $error = _T("An error occurred while updating your password.");
-                    } else {
-                        $this->history->add(
-                            str_replace(
-                                '%s',
-                                (string)$id_adh,
-                                _T("Password changed for member '%s'.")
-                            )
-                        );
-                        //once password has been changed, we can remove the
-                        //temporary password entry
-                        $password->removeHash(base64_decode((string) $post['hash']));
-                        $this->flash->addMessage(
-                            'success_detected',
-                            _T("Your password has been changed!")
-                        );
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader(
-                                'Location',
-                                $this->routeparser->urlFor('slash')
-                            );
-                    }
+                    //once password has been changed, we can remove the
+                    //temporary password entry
+                    $password->removeToken((string)$post['hash']);
+                    return $this->redirect(
+                        response: $response,
+                        redirect_url: $this->routeparser->urlFor('slash'),
+                        successes: [_T("Your password has been changed!")]
+                    );
                 }
             }
         }
 
-        if ($error !== null) {
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']]),
+            errors: $errors
+        );
+    }
+
+    /**
+     * Authentication attempts currently refused
+     */
+    #[Route(
+        name: 'authAttempts',
+        pattern: '/authentication-attempts',
+        methods: ['GET']
+    )]
+    public function authAttempts(Response $response, AuthThrottle $throttle): Response
+    {
+        $this->view->render(
+            $response,
+            'pages/authentication_attempts.html.twig',
+            [
+                'page_title' => _T("Authentication attempts"),
+                'locks'      => $throttle->getLocks()
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Lift a refused authentication attempt, or all of them
+     */
+    #[Route(
+        name: 'doAuthAttempts',
+        pattern: '/authentication-attempts',
+        methods: ['POST']
+    )]
+    public function doAuthAttempts(Request $request, Response $response, AuthThrottle $throttle): Response
+    {
+        $post = $request->getParsedBody();
+
+        if (isset($post['release_all'])) {
+            $done = $throttle->releaseAll();
+            $message = _T("All authentication counters have been lifted.");
+        } else {
+            $done = $throttle->release((int)($post['release'] ?? 0));
+            $message = _T("The counter has been lifted.");
+        }
+
+        if ($done) {
+            $this->history->add(_T("Authentication counters lifted"));
+            $this->flash->addMessage('success_detected', $message);
+        } else {
             $this->flash->addMessage(
                 'error_detected',
-                $error
+                _T("Nothing to lift; it may have expired on its own.")
             );
         }
 
         return $response
             ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
-            );
+            ->withHeader('Location', $this->routeparser->urlFor('authAttempts'));
     }
 }

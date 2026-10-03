@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -33,6 +20,7 @@ use Analog\Analog;
 use function Safe\file_get_contents;
 use function Safe\ini_get;
 use function Safe\json_decode;
+use function Safe\realpath;
 use function Safe\simplexml_load_string;
 
 /**
@@ -43,6 +31,9 @@ use function Safe\simplexml_load_string;
 class News
 {
     use Cacheable;
+
+    //number of hours until a feed that could not be read is asked again
+    private const int RETRY_TIMEOUT = 1;
 
     protected string $cache_filename = '%feed.cache';
     private int $show = 10;
@@ -59,12 +50,17 @@ class News
     /**
      * Default constructor
      *
-     * @param string $url     Feed URL
-     * @param bool   $nocache Do not try to cache
+     * @param string $requested_url Feed URL
+     * @param bool   $nocache       Do not try to cache
      */
-    public function __construct(string $url, bool $nocache = false)
+    public function __construct(private string $requested_url, bool $nocache = false)
     {
-        $this->feed_url = $this->getFeedURL($url);
+        //a feed that answered nothing is cached as empty, so that an unreachable
+        //host is not asked again on every page. It is retried well before a feed
+        //that did answer, though: an outage must not cost a whole day of news.
+        if ($this->isCacheEmpty()) {
+            $this->cache_timeout = self::RETRY_TIMEOUT;
+        }
 
         //only if cache should be used
         if ($nocache === false && !Galette::isDebugEnabled()) {
@@ -76,8 +72,6 @@ class News
 
     /**
      * Get data to cache
-     *
-     * @return string
      */
     protected function getDataTocache(): string
     {
@@ -90,45 +84,76 @@ class News
      * Called once cache has been loaded.
      *
      * @param mixed $contents Content from cache
-     *
-     * @return bool
      */
     protected function cacheLoaded(mixed $contents): bool
     {
-        if (Galette::isSerialized($contents)) {
-            //legacy cache format
-            $this->posts = unserialize($contents);
-        } else {
-            $this->posts = Galette::jsonDecode($contents);
-        }
+        $posts = [];
 
-        //check if posts were cached
-        if (count($this->posts) == 0) {
-            $this->parseFeed();
+        try {
+            if (Galette::isSerialized($contents)) {
+                //legacy cache format
+                $posts = unserialize($contents);
+                if (!is_array($posts)) {
+                    throw new \RuntimeException('Unreadable legacy cache contents');
+                }
+            } else {
+                foreach (Galette::jsonDecode($contents) as $post) {
+                    $posts[] = Post::fromArray($post);
+                }
+            }
+        } catch (Throwable $e) {
+            //cache is unusable, it will be rebuilt from the feed
+            Analog::log(
+                'Unable to load news from cache :( | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            $this->posts = [];
             return false;
         }
 
+        //an empty feed is an answer like any other: rebuilding the cache here
+        //would reach the feed again on every single page
+        $this->posts = $posts;
         return true;
     }
 
     /**
      * Complete path to cache file
      *
-     * @return string
+     * Keyed on the requested URL and the current language: the Galette website
+     * serves a different feed per language, and the key has to be known before
+     * the feed URL is resolved - resolving it may reach the network.
      */
     protected function getCacheFilename(): string
     {
+        global $i18n;
+
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
-            md5((string) $this->feed_url),
+            md5($this->requested_url . '|' . $i18n->getAbbrev()),
             $this->cache_filename
         );
     }
 
     /**
+     * Has the feed been cached without a single post?
+     */
+    private function isCacheEmpty(): bool
+    {
+        $cfile = $this->getCacheFilename();
+        if (!file_exists($cfile)) {
+            return false;
+        }
+
+        try {
+            return trim(file_get_contents($cfile)) === '[]';
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    /**
      * Parse feed
-     *
-     * @return void
      */
     private function parseFeed(): void
     {
@@ -139,8 +164,12 @@ class News
                 );
             }
 
+            //resolved here rather than in the constructor: it may reach the
+            //network, and a warm cache must not pay for it
+            $this->feed_url = $this->getFeedURL($this->requested_url);
+
             $context = stream_context_create($this->stream_opts);
-            $data = file_get_contents($this->feed_url, false, $context);
+            $data = file_get_contents($this->feed_url, use_include_path: false, context: $context);
             if (!$data) {
                 throw new \Exception();
             }
@@ -188,7 +217,7 @@ class News
             $this->posts = $posts;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->feed_url
+                'Unable to load feed from "' . ($this->feed_url ?? $this->requested_url)
                 . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -209,8 +238,6 @@ class News
      * Get feed url, handle Galette website to check available langs
      *
      * @param string $url Requested URL
-     *
-     * @return string
      */
     public function getFeedURL(string $url): string
     {
@@ -224,30 +251,53 @@ class News
             return $url;
         }
 
-        try {
-            $galette_website_langs = $url . '/langs.json';
-            $context = stream_context_create($this->stream_opts);
-            $langs = json_decode(file_get_contents($galette_website_langs, false, $context));
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
+            // During tests, we use a local feed file to avoid depending on external resources, if URL is not explicitly set
+            // The environment variable covers e2e, where the constant cannot be defined (see tests/router_e2e.php)
+            return 'file:///' . realpath(GALETTE_TESTS_PATH . '/feed.xml');
+        }
 
-            if ($i18n->getAbbrev() != 'en' && in_array($i18n->getAbbrev(), $langs)) {
-                $url .= '/' . $i18n->getAbbrev();
-            }
-            $url .= '/feed.xml';
+        $lang = $i18n->getAbbrev();
+        if ($lang != 'en' && in_array($lang, $this->getWebsiteLangs($url))) {
+            $url .= '/' . $lang;
+        }
+
+        //appended whatever happened above: the English feed still is a feed,
+        //the website itself is not one
+        return $url . '/feed.xml';
+    }
+
+    /**
+     * Languages the Galette website is translated to
+     *
+     * An unreadable list is not fatal: the English feed is served from the
+     * website root, so the caller just does not localize the feed URL.
+     *
+     * @param string $url Galette website URL
+     *
+     * @return array<int, string>
+     */
+    public function getWebsiteLangs(string $url): array
+    {
+        try {
+            $context = stream_context_create($this->stream_opts);
+            $langs = json_decode(
+                file_get_contents($url . '/langs.json', use_include_path: false, context: $context)
+            );
+
+            return is_array($langs) ? $langs : [];
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to load feed languages from "' . $url
                 . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
+            return [];
         }
-
-        return $url;
     }
 
     /**
      * Check if allow_url_fopen is enabled
-     *
-     * @return bool
      */
     protected function allowURLFOpen(): bool
     {
@@ -256,8 +306,6 @@ class News
 
     /**
      * Ensure data to cache are present
-     *
-     * @return void
      */
     protected function prepareForCache(): void
     {

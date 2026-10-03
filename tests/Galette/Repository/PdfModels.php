@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Repository;
+namespace Galette\Tests\Repository;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * PDF models repository tests
@@ -32,57 +19,20 @@ use Galette\GaletteTestCase;
  */
 class PdfModels extends GaletteTestCase
 {
-    private array $remove = [];
-
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $models->installInit(false);
+        $res = $models->installInit(check_first: false);
         $this->assertTrue($res);
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deletePdfModels();
-    }
-
-    /**
-     * Delete pdf models
-     *
-     * @return void
-     */
-    private function deletePdfModels(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\PdfModel::TABLE);
-            $delete->where->in(\Galette\Repository\PdfModel::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
-    /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -126,5 +76,33 @@ class PdfModels extends GaletteTestCase
                 'Incorrect PDF models sequence ' . $result->last_value
             );
         }
+    }
+
+    /**
+     * Test existing models are kept on update, and missing ones restored
+     */
+    public function testInstallInitKeepsExisting(): void
+    {
+        $update = $this->zdb->update(\Galette\Entity\PdfModel::TABLE);
+        $update->set(['model_footer' => 'My own footer'])
+            ->where([\Galette\Entity\PdfModel::PK => \Galette\Entity\PdfModel::MAIN_MODEL]);
+        $this->zdb->execute($update);
+
+        $delete = $this->zdb->delete(\Galette\Entity\PdfModel::TABLE);
+        $delete->where([\Galette\Entity\PdfModel::PK => 4]);
+        $this->zdb->execute($delete);
+
+        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
+        $this->assertTrue($models->installInit());
+        $this->assertCount(4, $models->getList());
+
+        $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE);
+        $select->where([\Galette\Entity\PdfModel::PK => \Galette\Entity\PdfModel::MAIN_MODEL]);
+        $this->assertSame('My own footer', $this->zdb->execute($select)->current()->model_footer);
+
+        //nothing missing
+        $this->assertTrue($models->installInit());
+        $this->assertCount(4, $models->getList());
+        $this->assertSame('My own footer', $this->zdb->execute($select)->current()->model_footer);
     }
 }

@@ -1,23 +1,9 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
         <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
     {% if login.isDarkModeEnabled() %}
@@ -25,11 +11,6 @@
     {% endif %}
 
         <script type="text/javascript">
-            function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-
             $(function(){
                 function _darkMode() {
                     var _dark_enabled = Cookies.get('galette_dark_mode');
@@ -92,19 +73,6 @@
                 }
                 _darkMode();
 
-                $.ajaxPrefilter(function(options, originalOptions, jqXHR){
-                    if (options.type.toLowerCase() === "post") {
-                        // initialize `data` to empty string if it does not exist
-                        options.data = options.data || "";
-
-                        // add leading ampersand if `data` is non-empty
-                        options.data += options.data?"&":"";
-
-                        // add csrf
-                        options.data += encodeURIComponent("{{ csrf_name_key }}") + "=" + encodeURIComponent("{{ csrf_name }}") + "&" + encodeURIComponent("{{ csrf_value_key }}") + "=" + encodeURIComponent("{{ csrf_value }}")
-                    }
-                });
-
     {% if login.isLogged() and ext_auth is not defined %}
                 // Display user menu in compact mode
                 var _compactMenu = function() {
@@ -134,7 +102,7 @@
                 _compactMenu();
     {% endif %}
 
-    {% if autocomplete %}
+    {% if autocomplete_options is defined %}
                 $('#ville_adh_field, #lieu_naissance_field').search({
                     apiSettings: {
                         url: '{{ url_for('suggestTown', {'term': '{query}'}) }}',
@@ -205,11 +173,16 @@
 
             {% include "elements/js/calendar.js.twig" %}
 
-    {% if renew_telemetry is defined %}
+    {% if is_current_url("preferences") or (renew_telemetry is defined and renew_telemetry) or (hide_telemetry is defined and not hide_telemetry and telemetry_sent is defined and not telemetry_sent)
+    %}
             {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
     {% endif %}
 
-            {% include "elements/js/messages.js.twig" %}
+    {% if (renew_telemetry is defined and renew_telemetry) %}
+            {% include "modals/telemetry.html.twig" with {part: "jsrenew"} %}
+    {% endif %}
+
+            {% include "elements/js/two_factor_suggestion.js.twig" %}
 
             });
         </script>
@@ -227,7 +200,7 @@
         <script type="text/javascript" src="{{ base_path() }}/assets/js/xml.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/formatting.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getWebID() }}.min.js"></script>
         <script type="text/javascript">
             function activateHtmlEditor(elt, basic, styletags, insert) {
                 var _styletags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -255,7 +228,7 @@
                     ];
                 }
                 elt.summernote({
-                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    lang: '{{ i18n.getWebID() }}',
                     disableDragAndDrop: true,
                     height: 240,
                     toolbar: _toolbar,

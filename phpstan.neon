@@ -6,7 +6,20 @@ parameters:
     bootstrapFiles:
         - stubs/constants.php
     paths:
+        - bin/
+        # extensionless, so not picked up by the directory above
+        - bin/console
         - galette/lib/
+        - galette/includes/
+        - galette/install/
+        - galette/webroot/
+        - tests/
+    excludePaths:
+        # generated at runtime by the test suite (compiled Twig templates,
+        # caches, uploads, ...); analysing it reports hundreds of false
+        # positives on __TwigTemplate_* classes.
+        # (?) marks it optional: it does not exist on a fresh checkout
+        - tests/tests-data (?)
     scanFiles:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
@@ -33,23 +46,42 @@ parameters:
         - GALETTE_TELEMETRY_URI
         - GALETTE_TPL_THEME_DIR
         - GALETTE_DOWNLOADS_URI
+        - GALETTE_ENV
         - GALETTE_CRON
         - GALETTE_INSTALLER
         - GALETTE_LOGGER_CHECKED
         - GALETTE_MODE
         - GALETTE_DEBUG
-        - GALETTE_ADAPTATIVE_CARDS
         - GALETTE_LOG_LVL
         - GALETTE_THEME
         - GALETTE_TIMEOUT
         - GALETTE_NIGHTLY
+        - _CURRENT_THEME_PATH
+        - GALETTE_TESTS_PATH
+        - GALETTE_TESTS
+        - GALETTE_FEATURE_FLAGS
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'
+        - '/Access to an undefined property Sabre\\VObject\\Component\\VCard.*/'
         - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'
         - '/Cannot unset property .* because it might have hooks in a subclass./'
+        - '/Function unserialize is unsafe to use./'
+        -
+            identifier: theCodingMachineSafe.function
+            paths:
+                - tests/config/*/galette_tcpdf_config.php
+                - tests/config/*/config.inc.php
+                - tests/config/*/local_config.inc.php
+                - tests/TestsBootstrap.php
 includes:
     - galette/vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+
+services:
+    -
+        class: Galette\Tests\PHPStan\RequireEntityConstantRule
+        tags:
+            - phpstan.rules.rule

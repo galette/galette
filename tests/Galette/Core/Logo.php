@@ -1,67 +1,28 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
+
+use function Safe\realpath;
 
 /**
  * Picture tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Logo extends TestCase
+class Logo extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        global $zdb;
-        $this->zdb = new \Galette\Core\Db();
-        $zdb = $this->zdb;
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame($this->zdb->getWarnings(), []);
-        }
-    }
-
     /**
      * Test defaults after initialization
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -76,9 +37,70 @@ class Logo extends TestCase
         $instance = new \Galette\Core\Logo();
         $this->assertNull($instance->getDestDir());
         $this->assertNull($instance->getFileName());
-        $this->assertTrue(in_array($instance->getPath(), $expected_paths, true));
+        $this->assertTrue(in_array($instance->getPath(), $expected_paths, strict: true));
         $this->assertSame('image/webp', $instance->getMime());
         $this->assertSame('webp', $instance->getFormat());
         $this->assertFalse($instance->isCustom());
+    }
+
+    /**
+     * Test a missing default logo is only reported when the logo is used.
+     *
+     * Logos are built from the dependency container, before any error page can
+     * be rendered; failing right away would only produce a blank HTTP 500.
+     */
+    public function testMissingDefaultLogo(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        //building it must not throw...
+        $instance = new class extends \Galette\Core\Logo {
+            /**
+             * Get default picture
+             */
+            protected function getDefaultPicture(): void
+            {
+                $this->format = 'webp';
+                $this->mime = 'image/webp';
+                $this->setDefaultPath('/nonexistent/images/galette.webp');
+            }
+        };
+
+        //...using it must
+        $this->expectException(\Galette\Exception\MissingAssetException::class);
+        $this->expectExceptionMessage('assets may not have been built');
+        $instance->getOptimalWidth();
+    }
+
+    /**
+     * Test a stale resolved path does not fail the constructor.
+     *
+     * realpath() keeps a cache of its own that outlives the request, and still
+     * resolves files removed meanwhile by another process; the picture then
+     * holds a path that cannot be read.
+     */
+    public function testStaleResolvedPath(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        //building it must not throw, even though the path looks resolved...
+        $instance = new class extends \Galette\Core\Logo {
+            /**
+             * Get default picture
+             */
+            protected function getDefaultPicture(): void
+            {
+                $this->format = 'webp';
+                $this->mime = 'image/webp';
+                //bypass setDefaultPath(), as a stale realpath() would
+                $this->file_path = '/nonexistent/images/galette.webp';
+            }
+        };
+
+        //...using it must
+        $this->expectException(\Galette\Exception\MissingAssetException::class);
+        $instance->getOptimalWidth();
     }
 }

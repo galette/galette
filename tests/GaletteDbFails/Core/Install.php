@@ -1,86 +1,40 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * DB fail tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Install extends TestCase
+class Install extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    /** @var array<string> */
-    protected array $flash_data;
-    private \Slim\Flash\Messages $flash;
-    private \DI\Container $container;
+    protected bool $db_transactions = false;
+    protected string $app_mode = 'INSTALL';
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
+        global $galette_log_var;
         setlocale(LC_ALL, 'en_US');
-
-        $flash_data = [];
-        $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
-
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- global
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        $container = $app->getContainer();
-        $_SERVER['HTTP_HOST'] = '';
-
-        $container->set(\Slim\Flash\Messages::class, $this->flash);
-
-        $this->container = $container;
-
-        $this->zdb = $container->get(\Galette\Core\Db::class);
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::setUp();
+        $galette_log_var = null; //reset error messages after dependencies have been loaded - errors are specific to tests and can be ignored
     }
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testDbSupport(): void
     {
@@ -89,8 +43,6 @@ class Install extends TestCase
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testGetUnsupportedMessage(): void
     {

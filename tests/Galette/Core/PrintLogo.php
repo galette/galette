@@ -1,67 +1,26 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * Print logo tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PrintLogo extends TestCase
+class PrintLogo extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        global $zdb;
-        $this->zdb = new \Galette\Core\Db();
-        $zdb = $this->zdb;
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-    }
-
     /**
      * Test defaults after initialization
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -79,5 +38,43 @@ class PrintLogo extends TestCase
         $this->assertSame('image/png', $logo->getMime());
         $this->assertSame('png', $logo->getFormat());
         $this->assertFalse($logo->isCustom());
+    }
+
+    /**
+     * Test a missing logo is only reported when the print logo is used.
+     *
+     * Print logos build upon Logo, whose path cannot be asked for while
+     * constructing them without reintroducing a failure from the container.
+     */
+    public function testMissingDefaultLogo(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        //building it must not throw...
+        $logo = new class extends \Galette\Core\PrintLogo {
+            /**
+             * Get logo
+             */
+            protected function getLogo(): \Galette\Core\Logo
+            {
+                return new class extends \Galette\Core\Logo {
+                    /**
+                     * Get default picture
+                     */
+                    protected function getDefaultPicture(): void
+                    {
+                        $this->format = 'webp';
+                        $this->mime = 'image/webp';
+                        $this->setDefaultPath('/nonexistent/images/galette.webp');
+                    }
+                };
+            }
+        };
+
+        //...using it must
+        $this->expectException(\Galette\Exception\MissingAssetException::class);
+        $this->expectExceptionMessage('assets may not have been built');
+        $logo->getPath();
     }
 }

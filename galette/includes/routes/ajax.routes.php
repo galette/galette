@@ -1,34 +1,31 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
 use Galette\Controllers\AjaxController;
+use Galette\Middleware\Authenticate;
 use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): void {
+/**
+ * @var \Slim\App<\DI\Container> $app
+ */
+
+$app->group('/ajax', function (RouteCollectorProxy $app): void {
     $app->get(
         '/messages',
         [AjaxController::class, 'messages']
     )->setName('ajaxMessages');
+
+    $app->get(
+        '/news',
+        [AjaxController::class, 'news']
+    )->setName('ajaxNews')->add(Authenticate::class);
 
     $app->post(
         '/suggest/towns/{term}',
@@ -48,27 +45,27 @@ $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): vo
     $app->get(
         '/telemetry/infos',
         [AjaxController::class, 'telemetryInfos']
-    )->setName('telemetryInfos')->add($authenticate);
+    )->setName('telemetryInfos')->add(Authenticate::class);
 
     $app->post(
         '/telemetry/send',
         [AjaxController::class, 'telemetrySend']
-    )->setName('telemetrySend')->add($authenticate);
+    )->setName('telemetrySend')->add(Authenticate::class);
 
     $app->get(
         '/telemetry/registered',
         [AjaxController::class, 'telemetryRegistered']
-    )->setName('setRegistered')->add($authenticate);
+    )->setName('setRegistered')->add(Authenticate::class);
 
     $app->post(
         '/contribution/dates',
         [AjaxController::class, 'contributionDates']
-    )->setName('contributionDates')->add($authenticate);
+    )->setName('contributionDates')->add(Authenticate::class);
 
     $app->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
         [AjaxController::class, 'contributionMembers']
-    )->setName('contributionMembers')->add($authenticate);
+    )->setName('contributionMembers')->add(Authenticate::class);
 
     $app->post(
         '/password/strength',

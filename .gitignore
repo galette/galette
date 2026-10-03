@@ -9,6 +9,8 @@ nbproject
 /galette/build-stamp
 /galette/configure-stamp
 
+/galette/data/ENABLE_INSTALL
+
 /galette/data/cache/*
 !/galette/data/cache/readme.txt
 !/galette/data/cache/.htaccess
@@ -105,3 +107,14 @@ dist/
 
 #local CS configuration files
 .php-cs-fixer.php
+
+playwright-report/
+test-results/
+.phpunit.result.cache
+
+# bin/serve local state (ports, saved configurations, sessions)
+/.serve/
+/compose.override.yaml
+
+# compiled translations, built by bin/console galette:compile-locales
+galette/lang/*/LC_MESSAGES/*.mo

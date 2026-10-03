@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -40,8 +27,8 @@ use Analog\Analog;
  */
 class Login extends Authentication
 {
-    public const TABLE = Adherent::TABLE;
-    public const PK = 'login_adh';
+    public const string TABLE = Adherent::TABLE;
+    public const string PK = 'login_adh';
 
     private bool $impersonated = false;
 
@@ -60,13 +47,28 @@ class Login extends Authentication
      *
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
+     * @param bool        $challenge   Ask for a second factor, when one is set
      */
-    public function logAdmin(string $login, Preferences $preferences): bool
+    public function logAdmin(string $login, Preferences $preferences, bool $challenge = true): bool
     {
         parent::logAdmin($login, $preferences);
         $this->impersonated = false;
+
+        //logAdmin does not go through logUser(), so the gate has to be applied
+        //here too. Preferences are at hand, which is where this account keeps
+        //its second factor. Returning from impersonation is the exception: that
+        //session produced a code already, and it never stopped being the super
+        //administrator's.
+        if (
+            $challenge
+            && TwoFactorAuth::modeFrom($preferences) !== TwoFactorAuth::MODE_DISABLED
+        ) {
+            $secret = new TwoFactorSuperAdmin($preferences);
+            if ($secret->isEnabled()) {
+                $this->requireTwoFactor();
+            }
+        }
+
         return true;
     }
 
@@ -75,13 +77,11 @@ class Login extends Authentication
      *
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     public function logCron(string $name, Preferences $preferences): bool
     {
         //known cronable files
-        $ok = ['reminder'];
+        $ok = ['reminder', 'mailing_queue'];
 
         if (in_array($name, $ok)) {
             $this->logged = true;
@@ -98,8 +98,6 @@ class Login extends Authentication
 
     /**
      * Log out user and unset variables
-     *
-     * @return bool
      */
     public function logOut(): bool
     {
@@ -113,8 +111,6 @@ class Login extends Authentication
      *
      * @param string $user  user's login
      * @param string $passe user's password
-     *
-     * @return bool
      */
     public function logIn(string $user, string $passe): bool
     {
@@ -147,7 +143,7 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                if ($row->activite_adh != true) {
+                if (!$row->activite_adh) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
@@ -156,11 +152,7 @@ class Login extends Authentication
                 }
 
                 //check if passwords match
-                $pw_checked = password_verify($passe, (string) $row->mdp_adh);
-                if (!$pw_checked) {
-                    //if password did not match, we try old md5 method
-                    $pw_checked = (md5($passe) === $row->mdp_adh);
-                }
+                $pw_checked = password_verify($passe, (string)$row->mdp_adh);
 
                 if ($pw_checked === false) {
                     //Passwords mismatch. Log and return.
@@ -185,8 +177,6 @@ class Login extends Authentication
 
     /**
      * Get select query without where clause
-     *
-     * @return Select
      */
     private function select(): Select
     {
@@ -216,8 +206,6 @@ class Login extends Authentication
      * Populate object after successful login
      *
      * @param ArrayObject<string, int|string> $row User information
-     *
-     * @return void
      */
     private function logUser(ArrayObject $row): void
     {
@@ -256,17 +244,80 @@ class Login extends Authentication
         ) {
             $this->managed_groups = Groups::loadManagedGroups(
                 $this->id,
-                false
+                as_group: false
             );
         }
+
+        if ($this->needsTwoFactor()) {
+            $this->requireTwoFactor();
+        }
+    }
+
+    /**
+     * Does the member owe a second factor?
+     *
+     * Asked here rather than from the controller so that every caller is
+     * covered, including the ones outside the core that call logIn() then
+     * isLogged() on their own.
+     */
+    private function needsTwoFactor(): bool
+    {
+        //impersonating does not change who is at the keyboard: the operator has
+        //already produced their own second factor, and asking for the target's
+        //would hold the session at a challenge nobody can answer -- the way
+        //back sits behind the authentication middleware
+        if ($this->impersonated) {
+            return false;
+        }
+
+        if (!isset($this->id) || $this->getTwoFactorMode() === TwoFactorAuth::MODE_DISABLED) {
+            return false;
+        }
+
+        $secret = new TwoFactorSecret($this->zdb);
+        return $secret->load($this->id) && $secret->isEnabled();
+    }
+
+    /**
+     * Configured second factor policy.
+     *
+     * Preferences are not injected: this object is serialized into the session,
+     * and carrying the whole preference set in there would both bloat it and
+     * serve stale values.
+     */
+    private function getTwoFactorMode(): int
+    {
+        global $preferences;
+
+        if ($preferences instanceof Preferences) {
+            return TwoFactorAuth::modeFrom($preferences);
+        }
+
+        try {
+            $select = $this->zdb->select(Preferences::TABLE);
+            $select->columns(['val_pref'])->where(['nom_pref' => 'pref_2fa_mode'])->limit(1);
+            $results = $this->zdb->execute($select);
+            if ($results->count() > 0) {
+                //the one read that does not go through Preferences, and so the
+                //one the clamp has to be spelled out for
+                return TwoFactorAuth::clampMode((int)$results->current()->val_pref);
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot read second factor policy. ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+
+        //a member holding an enabled secret expects to be asked for it, so an
+        //unreadable policy must not silently skip the second factor
+        return TwoFactorAuth::MODE_OPTIONAL;
     }
 
     /**
      * Impersonate user
      *
      * @param int $id Member ID
-     *
-     * @return bool
      */
     public function impersonate(int $id): bool
     {
@@ -309,8 +360,6 @@ class Login extends Authentication
      * Does this login already exist?
      *
      * @param string $user the username
-     *
-     * @return bool
      */
     public function loginExists(string $user): bool
     {
@@ -332,8 +381,6 @@ class Login extends Authentication
 
     /**
      * Is impersonated
-     *
-     * @return bool
      */
     public function isImpersonated(): bool
     {

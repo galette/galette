@@ -1,52 +1,33 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * L10n tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class L10n extends TestCase
+class L10n extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\I18n $i18n;
     private \Galette\Core\L10n $l10n;
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
+        parent::setUp();
         $this->l10n = new \Galette\Core\L10n(
             $this->zdb,
             $this->i18n
@@ -54,35 +35,7 @@ class L10n extends TestCase
     }
 
     /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete
-            ->where(
-                [
-                    'text_orig' => [
-                        'A text for test',
-                        'Un texte de test',
-                        'A text for flow test',
-                        'A text created on update'
-                    ]
-                ]
-            );
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test add dynamic translation
-     *
-     * @return void
      */
     public function testAddDynamicTranslation(): void
     {
@@ -159,8 +112,6 @@ class L10n extends TestCase
 
     /**
      * Test dynamic translation flow (add/update/get/delete)
-     *
-     * @return void
      */
     public function testDynamicTranslationFlow(): void
     {
@@ -227,7 +178,7 @@ class L10n extends TestCase
         $results = $this->l10n->getDynamicTranslations(md5('A text for flow test'));
         $this->assertCount(count($langs), $results);
         foreach ($results as $result) {
-                $this->assertSame('', $result['text'], $result['key']);
+            $this->assertSame('', $result['text'], $result['key']);
         }
 
         //update method will create text if it does not exist
@@ -257,9 +208,8 @@ class L10n extends TestCase
 
     /**
      * Test add dynamic translation with exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testAddWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -278,13 +228,13 @@ class L10n extends TestCase
             $this->i18n
         );
         $this->assertFalse($l10n->addDynamicTranslation('A text that will not be added'));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred adding dynamic translation for `A text that will not be added` | Error executing query!');
     }
 
     /**
      * Test update dynamic translation with exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testUpdateWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -309,13 +259,13 @@ class L10n extends TestCase
                 'A text that will not be updated'
             )
         );
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred updating dynamic translation for `A text that will not be updated` | Error executing query!');
     }
 
     /**
      * Test delete dynamic translation with exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDeleteWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -334,13 +284,13 @@ class L10n extends TestCase
             $this->i18n
         );
         $this->assertFalse($l10n->deleteDynamicTranslation('A text that will not be deleted'));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred deleting dynamic translation for `A text that will not be deleted` | Error executing query!');
     }
 
     /**
      * Test get dynamic translation with exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -358,15 +308,22 @@ class L10n extends TestCase
             $zdb,
             $this->i18n
         );
-        $this->expectExceptionMessage('Error executing query!');
-        $l10n->getDynamicTranslation('A text that will not be get', 'en_US');
+
+        $exception_thrown = false;
+        try {
+            $l10n->getDynamicTranslation('A text that will not be get', 'en_US');
+        } catch (\LogicException $e) {
+            $exception_thrown = true;
+            $this->assertSame('Error executing query!', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred retrieving l10n entry. text_orig=A text that will not be get, text_locale=en_US | Error executing query!');
     }
 
     /**
      * Test get dynamic translations with exception
-     *
-     * @return void
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
@@ -384,7 +341,15 @@ class L10n extends TestCase
             $zdb,
             $this->i18n
         );
-        $this->expectExceptionMessage('Error executing query!');
-        $l10n->getDynamicTranslations(md5('A text that will not be get'));
+
+        $exception_thrown = false;
+        try {
+            $l10n->getDynamicTranslations(md5('A text that will not be get'));
+        } catch (\LogicException $e) {
+            $exception_thrown = true;
+            $this->assertSame('Error executing query!', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred retrieving l10n entries. text_orig_sum=' . md5('A text that will not be get') . ' | Error executing query!');
     }
 }

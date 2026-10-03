@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -47,8 +34,8 @@ use Safe\DateTime;
  */
 class Transactions
 {
-    public const TABLE = Transaction::TABLE;
-    public const PK = Transaction::PK;
+    public const string TABLE = Transaction::TABLE;
+    public const string PK = Transaction::PK;
 
     private int $count = 0;
 
@@ -148,8 +135,6 @@ class Transactions
      * Count transactions from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -216,8 +201,6 @@ class Transactions
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -303,14 +286,17 @@ class Transactions
                 //limit to managed members from managed groups
                 $mgroups = $this->login->getManagedGroups();
 
-                $select->join(
-                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                    't.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    [],
-                    $select::JOIN_LEFT
+                //use a subquery rather than a join, so a member belonging to
+                //several managed groups does not duplicate its transactions
+                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
+                $groups_select->columns([Adherent::PK]);
+                $groups_select->where->in(
+                    'users_groups.' . Group::PK,
+                    array_values($mgroups)
                 );
+
                 $select->where->nest()
-                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->in('t.' . Adherent::PK, $groups_select)
                     ->or
                     ->in('t.' . Adherent::PK, $member_clause);
 
@@ -335,8 +321,6 @@ class Transactions
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -348,8 +332,6 @@ class Transactions
      *
      * @param array<int>|int $ids  Transactions identifiers to delete
      * @param History        $hist History
-     *
-     * @return bool
      */
     public function remove(array|int $ids, History $hist): bool
     {
@@ -362,7 +344,7 @@ class Transactions
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
@@ -371,18 +353,18 @@ class Transactions
             foreach ($results as $transaction) {
                 /** @var ArrayObject<string, int|string> $transaction */
                 $c = new Transaction($this->zdb, $this->login, $transaction);
-                $res = $c->remove($hist, false);
+                $res = $c->remove($hist, transaction: false);
                 if ($res === false) {
                     throw new Exception();
                 }
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             $hist->add(
-                "Transactions deleted (" . print_r($list, true) . ')'
+                "Transactions deleted (" . print_r($list, return: true) . ')'
             );
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'An error occurred trying to remove transactions | '
                 . $e->getMessage(),

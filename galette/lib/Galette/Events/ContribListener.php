@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -71,8 +58,6 @@ class ContribListener implements ListenerSubscriber
      * Set up contribution listeners
      *
      * @param ListenerRegistry $acceptor Listener
-     *
-     * @return void
      */
     public function subscribeListeners(ListenerRegistry $acceptor): void
     {
@@ -88,8 +73,6 @@ class ContribListener implements ListenerSubscriber
      * Contribution added listener
      *
      * @param Contribution $contrib Added contribution
-     *
-     * @return void
      */
     public function contributionAdded(Contribution $contrib): void
     {
@@ -101,9 +84,9 @@ class ContribListener implements ListenerSubscriber
         $this->callPostContributionScript($contrib);
 
         if ($contrib->sendEMail()) {
-            $this->sendContribEmail($contrib, true);
+            $this->sendContribEmail($contrib, new: true);
         }
-        $this->sendAdminEmail($contrib, true);
+        $this->sendAdminEmail($contrib, new: true);
     }
 
     /**
@@ -111,8 +94,6 @@ class ContribListener implements ListenerSubscriber
      *
      * @param Contribution $contrib Contribution
      * @param bool         $new     New contribution or editing existing one
-     *
-     * @return void
      */
     private function sendContribEmail(Contribution $contrib, bool $new): void
     {
@@ -187,7 +168,9 @@ class ContribListener implements ListenerSubscriber
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
 
-        if ($sent) {
+        //a batched sending that only partly left is not a success: MAIL_PARTIAL
+        //is a status of its own, and it is truthy
+        if ($sent === GaletteMail::MAIL_SENT) {
             $this->history->add(
                 sprintf(
                     //TRANS: first parameter is the use name, second his email address
@@ -216,8 +199,6 @@ class ContribListener implements ListenerSubscriber
      *
      * @param Contribution $contrib Contribution
      * @param bool         $new     New contribution or editing existing one
-     *
-     * @return void
      */
     private function sendAdminEmail(Contribution $contrib, bool $new): void
     {
@@ -261,7 +242,9 @@ class ContribListener implements ListenerSubscriber
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
 
-        if ($sent) {
+        //several administrators may be notified at once: a partly delivered
+        //message has to be reported, not counted as sent
+        if ($sent === GaletteMail::MAIL_SENT) {
             $this->history->add(
                 sprintf(
                     //TRANS: first parameter is member name, second his email address
@@ -289,8 +272,6 @@ class ContribListener implements ListenerSubscriber
      * Call post contribution script from Preferences
      *
      * @param Contribution $contrib Added contribution
-     *
-     * @return void
      */
     private function callPostContributionScript(Contribution $contrib): void
     {
@@ -321,14 +302,14 @@ class ContribListener implements ListenerSubscriber
                     $mail->setMessage($message);
                     $sent = $mail->send();
 
-                    if (!$sent) {
+                    if ($sent !== GaletteMail::MAIL_SENT) {
                         $txt = _T('Post contribution script has failed.');
                         $this->history->add($txt, $message);
                         $warning_detected[] = $txt;
                         //Mails are disabled... We log (not safe, but)...
                         Analog::log(
                             'Email to admin has not been sent. Here was the data: '
-                            . "\n" . print_r($res, true),
+                            . "\n" . print_r($res, return: true),
                             Analog::ERROR
                         );
                     }
@@ -336,7 +317,7 @@ class ContribListener implements ListenerSubscriber
                     //Mails are disabled... We log (not safe, but)...
                     Analog::log(
                         'Post contribution script has failed. Here was the data: '
-                        . "\n" . print_r($res, true),
+                        . "\n" . print_r($res, return: true),
                         Analog::ERROR
                     );
                 }

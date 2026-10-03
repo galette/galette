@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -43,8 +30,8 @@ use function Safe\preg_split;
 
 class History
 {
-    public const TABLE = 'logs';
-    public const PK = 'id_log';
+    public const string TABLE = 'logs';
+    public const string PK = 'id_log';
 
     protected int $count;
 
@@ -79,18 +66,22 @@ class History
      * (blindly trusting X-Forwarded-For would make the IP address logging
      * very easy to deveive.
      *
-     * @return string
+     * @param ?Preferences $preferences Preferences instance. Without one, the
+     *                                  header is not looked at: a caller that
+     *                                  cannot say how many proxies sit in
+     *                                  front gets the remote address
      */
-    public static function findUserIPAddress(): string
+    public static function findUserIPAddress(?Preferences $preferences = null): string
     {
-        if (
-            defined('GALETTE_X_FORWARDED_FOR_INDEX')
-            && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-        ) {
-            $split_xff = preg_split('/,\s*/', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+        //1-based index, counted from the end of the header; 0 disables the lookup
+        $index = (int)($preferences?->getConfigValue('pref_x_forwarded_for_index') ?? 0);
+
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if ($index > 0 && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $split_xff = preg_split('/,\s*/', (string)$_SERVER['HTTP_X_FORWARDED_FOR']);
+            //a header shorter than the configured index means it did not come
+            //through the expected proxies; the address cannot be trusted
+            $ip = $split_xff[count($split_xff) - $index] ?? '';
         }
 
         if (
@@ -114,7 +105,7 @@ class History
      */
     public function add(string $action, string $argument = '', string $query = ''): bool
     {
-        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIpAddress();
+        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIPAddress($this->preferences);
 
         try {
             $values = [
@@ -142,14 +133,12 @@ class History
 
     /**
      * Delete all entries
-     *
-     * @return bool
      */
     public function clean(): bool
     {
         try {
             $this->zdb->db->query(
-                'TRUNCATE TABLE ' . $this->getTableName(true),
+                'DELETE FROM ' . $this->getTableName(prefixed: true),
                 Adapter::QUERY_MODE_EXECUTE
             );
             $this->add('Logs flushed');
@@ -203,10 +192,8 @@ class History
      * Builds users and actions lists
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
-    private function buildLists(Select $select): void
+    protected function buildLists(Select $select): void
     {
         $this->users = [];
         try {
@@ -285,10 +272,8 @@ class History
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
-    private function buildWhereClause(Select $select): void
+    protected function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -338,8 +323,6 @@ class History
      * Count history entries from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -386,8 +369,6 @@ class History
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -399,8 +380,6 @@ class History
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -411,8 +390,6 @@ class History
      * Get table's name
      *
      * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
      */
     protected function getTableName(bool $prefixed = false): string
     {
@@ -425,8 +402,6 @@ class History
 
     /**
      * Get table's PK
-     *
-     * @return string
      */
     protected function getPk(): string
     {
@@ -437,8 +412,6 @@ class History
      * Set filters
      *
      * @param HistoryList $filters Filters
-     *
-     * @return self
      */
     public function setFilters(HistoryList $filters): self
     {
@@ -448,8 +421,6 @@ class History
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {

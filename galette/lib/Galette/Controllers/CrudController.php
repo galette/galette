@@ -1,22 +1,9 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
@@ -24,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Throwable;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
@@ -40,21 +28,11 @@ abstract class CrudController extends AbstractController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function add(Request $request, Response $response): Response;
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function doAdd(Request $request, Response $response): Response;
 
@@ -64,22 +42,13 @@ abstract class CrudController extends AbstractController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
-     *
-     * @return Response
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     abstract public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response;
 
     /**
      * List filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function filter(Request $request, Response $response): Response;
 
@@ -89,22 +58,14 @@ abstract class CrudController extends AbstractController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     abstract public function edit(Request $request, Response $response, int $id): Response;
 
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
-     *
-     * @return Response
+     * @param int $id Record id
      */
     abstract public function doEdit(Request $request, Response $response, int $id): Response;
 
@@ -112,13 +73,88 @@ abstract class CrudController extends AbstractController
     // CRUD - Delete
 
     /**
-     * Removal confirmation
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Removal confirmation — handled by every concrete CRUD subclass via inheritance.
      */
+    #[Route(
+        name: 'removeContribution',
+        pattern: '/{type:contributions|transactions}/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeContributions',
+        pattern: '/{type:contributions|transactions}/batch/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeScheduledPayment',
+        pattern: '/scheduled-payment/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeScheduledPayments',
+        pattern: '/scheduled-payment/batch/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeGroup',
+        pattern: '/group/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMailing',
+        pattern: '/mailings/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeTitle',
+        pattern: '/titles/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeContributionType',
+        pattern: '/contributions-types/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeStatus',
+        pattern: '/status/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeDynamicField',
+        pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removePaymentType',
+        pattern: '/payment-type/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeDocument',
+        pattern: '/document/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMember',
+        pattern: '/member/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeMembers',
+        pattern: '/members/remove',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeSearch',
+        pattern: '/search/remove/{id:\d+}',
+        methods: ['GET']
+    )]
+    #[Route(
+        name: 'removeSearches',
+        pattern: '/searches/remove',
+        methods: ['GET']
+    )]
     public function confirmDelete(Request $request, Response $response): Response
     {
         // display page
@@ -133,8 +169,6 @@ abstract class CrudController extends AbstractController
     /**
      * Removal confirmation parameters, can be override
      *
-     * @param Request $request PSR Request
-     *
      * @return array<string,mixed>
      */
     protected function getconfirmDeleteParams(Request $request): array
@@ -147,7 +181,7 @@ abstract class CrudController extends AbstractController
         ];
 
         return [
-            'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
+            'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
             'page_title'    => $this->confirmRemoveTitle($args),
             'form_url'      => $this->formUri($args),
             'cancel_uri'    => $this->cancelUri($args),
@@ -213,8 +247,6 @@ abstract class CrudController extends AbstractController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function redirectUri(array $args): string;
 
@@ -222,8 +254,6 @@ abstract class CrudController extends AbstractController
      * Get cancel URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function cancelUri(array $args): string
     {
@@ -234,8 +264,6 @@ abstract class CrudController extends AbstractController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function formUri(array $args): string;
 
@@ -243,19 +271,72 @@ abstract class CrudController extends AbstractController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function confirmRemoveTitle(array $args): string;
 
     /**
-     * Removal
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
+     * Removal — handled by every concrete CRUD subclass via inheritance.
      */
+    #[Route(
+        name: 'doRemoveContribution',
+        pattern: '/{type:contributions|transactions}/remove[/{id}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveScheduledPayment',
+        pattern: '/scheduled-payment/remove[/{id}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveGroup',
+        pattern: '/group/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveMailing',
+        pattern: '/mailings/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveTitle',
+        pattern: '/titles/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveContributionType',
+        pattern: '/contributions-types/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveStatus',
+        pattern: '/status/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveDynamicField',
+        pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemovePaymentType',
+        pattern: '/payment-type/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveDocument',
+        pattern: '/document/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveMember',
+        pattern: '/member/remove[/{id:\d+}]',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveSearch',
+        pattern: '/search/remove[/{id:\d+}]',
+        methods: ['POST']
+    )]
     public function delete(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -291,8 +372,6 @@ abstract class CrudController extends AbstractController
                     'error_detected',
                     _T('An error occurred trying to delete :(')
                 );
-
-                $success = false;
             }
         }
 
@@ -310,8 +389,6 @@ abstract class CrudController extends AbstractController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     abstract protected function doDelete(array $args, array $post): bool;
     // /CRUD - Delete

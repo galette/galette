@@ -1,29 +1,16 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
- *
  * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * History tests class
@@ -34,8 +21,6 @@ class History extends GaletteTestCase
 {
     /**
      * Test class constants
-     *
-     * @return void
      */
     public function testConstants(): void
     {
@@ -45,8 +30,6 @@ class History extends GaletteTestCase
 
     /**
      * Test history workflow
-     *
-     * @return void
      */
     public function testHistoryFlow(): void
     {
@@ -104,7 +87,48 @@ class History extends GaletteTestCase
 
         $list = $this->history->getHistory();
         $this->assertCount(1, $list);
+        $this->assertSame('Logs flushed', $list[0]->action_log);
+    }
 
-        $this->cleanHistory();
+    /**
+     * X-Forwarded-For is only trusted when a proxy depth is configured
+     */
+    public function testFindUserIPAddress(): void
+    {
+        $remote = $_SERVER['REMOTE_ADDR'] ?? null;
+        $xff = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null;
+
+        $_SERVER['REMOTE_ADDR'] = '192.0.2.10';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.7, 198.51.100.4';
+
+        //not configured: the header is ignored, whatever it claims
+        $this->assertSame(0, $this->preferences->pref_x_forwarded_for_index);
+        $this->assertSame('192.0.2.10', \Galette\Core\History::findUserIPAddress($this->preferences));
+
+        //behind one proxy: last entry of the header
+        $this->preferences->setValue('pref_x_forwarded_for_index', 1, $this->login);
+        $this->assertSame('198.51.100.4', \Galette\Core\History::findUserIPAddress($this->preferences));
+
+        //behind two: the one before
+        $this->preferences->setValue('pref_x_forwarded_for_index', 2, $this->login);
+        $this->assertSame('203.0.113.7', \Galette\Core\History::findUserIPAddress($this->preferences));
+
+        //header shorter than configured: it did not come through the expected
+        //proxies, so no address is returned rather than an error
+        $this->preferences->setValue('pref_x_forwarded_for_index', 3, $this->login);
+        $this->assertSame('', \Galette\Core\History::findUserIPAddress($this->preferences));
+
+        $this->preferences->resetValue('pref_x_forwarded_for_index', $this->login);
+
+        if ($remote === null) {
+            unset($_SERVER['REMOTE_ADDR']);
+        } else {
+            $_SERVER['REMOTE_ADDR'] = $remote;
+        }
+        if ($xff === null) {
+            unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+        } else {
+            $_SERVER['HTTP_X_FORWARDED_FOR'] = $xff;
+        }
     }
 }

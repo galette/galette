@@ -1,27 +1,13 @@
 {#
-/**
- * Copyright © 2003-2024 The Galette Team
- *
- * This file is part of Galette (https://galette.eu).
- *
- * Galette is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Galette is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- */
-#}
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
             {% for fieldset in fieldsets %}
             <div class="galetteform fieldset-{{ fieldset.id }} ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <i class="dropdown icon" aria-hidden="true"></i>
                     {{ _T(fieldset.label) }}
                 </div>
                 <div class="active content field">
@@ -49,7 +35,7 @@
                         {% set size = null %}
                         {% set propname = entry.propname %}
                         {% set value = null %}
-                        {% set example = null %}
+                        {% set description = null %}
 
                         {% if entry.type == constant('Galette\\Entity\\FieldsConfig::TYPE_BOOL') %}
                             {% set template = "checkbox.html.twig" %}
@@ -84,10 +70,10 @@
                         {% if entry.field_id == 'info_adh' or entry.field_id == 'info_public_adh' %}
                             {% set template = "textarea.html.twig" %}
                             {% if entry.field_id == 'info_adh' %}
-                                {% set example = _T("This comment is only displayed for admins and staff members.") %}
+                                {% set description = _T("This comment is only displayed for admins and staff members.") %}
                             {% else %}
                                 {% if login.isAdmin() or login.isStaff() %}
-                                    {% set example = _T("This comment is reserved to the member.") %}
+                                    {% set description = _T("This comment is reserved to the member.") %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -112,11 +98,12 @@
                         {% endif %}
                         {% if entry.field_id == 'bool_display_info' %}
                             {% set title = _T("Do member want to appear publically?") %}
+                            {# the tip carries markup, hence tip_html below: Fomantic escapes a plain title #}
                             {% set tip = _T("If you check this box (and if you are up to date with your contributions), your full name and other information will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the gallery page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.") %}
                             {% set checked = member.appearsInMembersList() %}
                         {% endif %}
                         {% if entry.field_id == 'login_adh' %}
-                            {% set example = _T("(at least %i characters)")|replace({"%i": 2}) %}
+                            {% set description = _T('(at least %1$s characters)')|format(2) %}
                         {% endif %}
 
                         {% if entry.field_id == 'bool_admin_adh' %}
@@ -147,7 +134,7 @@
                                 label: entry.label,
                                 title: title,
                                 size: size,
-                                tip: tip,
+                                tip_html: tip,
                                 compile_id: "input_" ~ entry.field_id,
                                 checked: checked ?? false,
                                 masschange: masschange ?? false

@@ -1,0 +1,121 @@
+/**
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+import { defineConfig, devices } from '@playwright/test';
+import { config } from 'dotenv' ;
+
+// Load .env file so it is available everywhere.
+config({path: './tests/e2e/.env.local', quiet: true});
+config({path: './tests/e2e/.env', quiet: true});
+
+/**
+ * Playwright configuration file
+ *
+ * See:
+ * - https://playwright.dev/docs/test-configuration.
+ * - https://playwright.dev/docs/api/class-testconfig
+ */
+export default defineConfig({
+    // Directory that will be recursively scanned for test files.
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-test-dir
+    // /!\ Playwright will fail with "no tests files" if a directory, like `galette/data/cache` is not readable /!/
+    testDir: '.',
+
+    // Run tests in files in parallel
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-fully-parallel
+    fullyParallel: true,
+
+    // Fail the build on CI if you accidentally left test.only in the source code.
+    // See: https://playwright.dev/docs/api/class-testconfig#test-config-forbid-only
+    forbidOnly: !!process.env.CI,
+
+  // Report: generated HTML in playwright-report/
+  reporter: process.env.CI ? [
+    ['html', { open: 'never' }],
+    ['list'],
+    [
+        "playwright-ctrf-json-reporter",
+        { outputDir: "ctrf", outputFile: "galette.json" },
+    ]
+  ] : [
+    ['html', { open: 'never' }],
+    ['list']
+  ],
+
+  use: {
+    // Priority: --base-url (CLI) > E2E_BASE_URL (env) > default value
+    baseURL: process.env.E2E_BASE_URL ?? 'http://127.0.0.1:8090',
+
+    // Screenshot and trace only on failure
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+
+    // Capture console logs for better debugging on CI
+    // video: 'on-first-retry',
+
+    // Browser lang aligned with default Galette lang
+    locale: 'fr-FR',
+  },
+
+  projects: [
+    // ── Core Galette A11y tests ──
+    {
+      name: 'a11y',
+      testMatch: 'tests/e2e/specs/a11y.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    // ── Core Galette tests ──
+    {
+      name: 'chromium',
+      testMatch: 'tests/e2e/specs/**/*.spec.ts',
+      testIgnore: [
+        'tests/e2e/specs/a11y.spec.ts',
+        'tests/e2e/specs/*-queue.spec.ts',
+        'tests/e2e/specs/two-factor.spec.ts',
+      ],
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    // ── Mail queue tests ──
+    // Those specs really send mail: they share the Mailpit inbox and the
+    // global mail preferences, which they mutate and reset. Running two of
+    // them at once would have one wipe the other's messages, or turn its
+    // transport off mid-drain, so they get a project of their own where a
+    // single worker runs them one after the other.
+    {
+      name: 'mail-queue',
+      testMatch: 'tests/e2e/specs/*-queue.spec.ts',
+      fullyParallel: false,
+      workers: 1,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // ── Second factor tests ──
+    // Those specs drive an instance wide policy: while one of them holds a
+    // required policy, or leaves a shared account carrying a secret, every
+    // other spec logging in lands on the challenge or on enrolment instead of
+    // the dashboard. They get a project of their own, which CI runs as its own
+    // job against its own instance, and a single worker so they do not do it
+    // to each other either.
+    {
+      name: 'two-factor',
+      testMatch: 'tests/e2e/specs/two-factor.spec.ts',
+      fullyParallel: false,
+      workers: 1,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // ── Plugin tests (discovered via testMatch glob) ──
+    {
+      name: 'plugins-chromium',
+      // Also match plugin specs in tests/plugins when present.
+      testMatch: [
+        'galette/plugins/*/tests/e2e/specs/**/*.spec.ts',
+        'tests/plugins/*/tests/e2e/specs/**/*.spec.ts',
+      ],
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+});
