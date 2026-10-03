@@ -202,7 +202,8 @@ class Db
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw new LogicException('Cannot check database version', $e->getCode(), $e);
+            //PDO error codes are SQLSTATE strings, which Exception does not accept
+            throw new LogicException('Cannot check database version', is_int($e->getCode()) ? $e->getCode() : 0, $e);
         }
     }
 
