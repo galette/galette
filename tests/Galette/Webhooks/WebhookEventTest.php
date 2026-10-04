@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Webhooks;
 
+use Galette\Tests\GaletteTestCase;
 use Galette\Webhooks\WebhookEvent;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Webhooks events catalog tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class WebhookEventTest extends TestCase
+class WebhookEventTest extends GaletteTestCase
 {
     /**
      * Test mapping from internal events
