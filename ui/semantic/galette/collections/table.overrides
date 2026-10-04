@@ -294,3 +294,13 @@ tr.inactives.plugins th {
 .advanced-config-jump > i.icon {
     transform: rotate(180deg);
 }
+
+/* Webhooks deliveries: payloads and errors are long unbroken strings */
+#webhook_deliveries pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+#webhook_deliveries code {
+    overflow-wrap: anywhere;
+}

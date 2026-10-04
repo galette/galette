@@ -213,11 +213,31 @@ class WebhooksController extends CrudController
                     $webhook->getName()
                 ),
                 'webhook' => $webhook,
-                'deliveries' => $this->queue->getForWebhook($id),
+                'deliveries' => array_map($this->prettifyPayload(...), $this->queue->getForWebhook($id)),
                 'max_attempts' => Dispatcher::MAX_ATTEMPTS,
             ]
         );
         return $response;
+    }
+
+    /**
+     * Add an indented version of the payload, for display
+     *
+     * @param \ArrayObject<string, mixed> $delivery Delivery row
+     *
+     * @return \ArrayObject<string, mixed>
+     */
+    private function prettifyPayload(\ArrayObject $delivery): \ArrayObject
+    {
+        try {
+            $delivery['payload_pretty'] = json_encode(
+                json_decode((string)$delivery['payload'], flags: JSON_THROW_ON_ERROR),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+            );
+        } catch (\JsonException) {
+            $delivery['payload_pretty'] = $delivery['payload'];
+        }
+        return $delivery;
     }
 
     /**

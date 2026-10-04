@@ -31,7 +31,7 @@
         <p>{{ _T("Deliveries are listed here once a subscribed event occurs. Finished ones are kept 30 days.") }}</p>
     </div>
     {% else %}
-    <table class="listing ui celled striped table">
+    <table class="listing ui celled striped table" id="webhook_deliveries">
         <caption class="visually-hidden">{{ _T("Latest deliveries") }}</caption>
         <thead>
             <tr>
@@ -66,7 +66,7 @@
                     {% endif %}
                     <details>
                         <summary>{{ _T("Payload") }}</summary>
-                        <pre>{{ delivery.payload }}</pre>
+                        <pre>{{ delivery.payload_pretty }}</pre>
                     </details>
                 </td>
                 <td class="center actions_row collapsing">
