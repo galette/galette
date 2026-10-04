@@ -144,6 +144,7 @@ use function Safe\preg_replace;
  * @property      string   $pref_footer
  * @property      int      $pref_filter_account
  * @property      string   $pref_galette_url
+ * @property      bool     $pref_webhooks_cron
  * @property      int      $pref_redirect_on_create
  * @property      int      $pref_password_length
  * @property      bool     $pref_password_blacklist

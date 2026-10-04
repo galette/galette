@@ -16,6 +16,7 @@ use Galette\Repository\Webhooks;
 use Galette\Webhooks\DeliveryQueue;
 use Galette\Webhooks\Payload\Envelope;
 use Galette\Webhooks\Payload\PayloadBuilder;
+use Galette\Webhooks\ShutdownDispatcher;
 use Galette\Webhooks\WebhookEvent;
 use League\Event\ListenerRegistry;
 use League\Event\ListenerSubscriber;
@@ -28,7 +29,8 @@ use Throwable;
  */
 class WebhookListener implements ListenerSubscriber
 {
-    private bool $has_enqueued = false;
+    /** @var list<int> Deliveries queued during current request */
+    private array $enqueued = [];
 
     /**
      * Constructor
@@ -38,11 +40,13 @@ class WebhookListener implements ListenerSubscriber
      * @param Closure():PayloadBuilder $payload_builder Payload builder provider; the builder loads the
      *                                                  fields configuration, which is not needed on
      *                                                  most requests
+     * @param ?ShutdownDispatcher      $shutdown        Sends queued deliveries at the end of the request
      */
     public function __construct(
         private readonly Webhooks $webhooks,
         private readonly DeliveryQueue $queue,
-        private readonly Closure $payload_builder
+        private readonly Closure $payload_builder,
+        private readonly ?ShutdownDispatcher $shutdown = null
     ) {
     }
 
@@ -88,9 +92,9 @@ class WebhookListener implements ListenerSubscriber
             foreach ($webhooks as $webhook) {
                 $level = $webhook->getAccessLevel();
                 $envelopes[$level] ??= $builder->build($event, $subject, $level);
-                $this->queue->enqueue($webhook, $envelopes[$level], $message_id);
-                $this->has_enqueued = true;
+                $this->enqueued[] = $this->queue->enqueue($webhook, $envelopes[$level], $message_id);
             }
+            $this->shutdown?->schedule($this->getEnqueued(...));
         } catch (Throwable $e) {
             Analog::log(
                 sprintf(
@@ -104,10 +108,12 @@ class WebhookListener implements ListenerSubscriber
     }
 
     /**
-     * Have deliveries been queued during current request?
+     * Get deliveries queued during current request
+     *
+     * @return list<int>
      */
-    public function hasEnqueued(): bool
+    public function getEnqueued(): array
     {
-        return $this->has_enqueued;
+        return $this->enqueued;
     }
 }

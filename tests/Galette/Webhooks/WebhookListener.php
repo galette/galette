@@ -122,7 +122,10 @@ class WebhookListener extends GaletteTestCase
         $this->assertCount(3, $deliveries);
         $this->assertSame($manager->getId(), (int)$deliveries[2]['id_webhook']);
         $this->assertSame('group.created', $deliveries[2]['event_type']);
-        $this->assertTrue($this->container->get(\Galette\Events\WebhookListener::class)->hasEnqueued());
+        $this->assertSame(
+            array_map(fn(array $delivery): int => (int)$delivery['id_delivery'], $deliveries),
+            array_slice($this->container->get(\Galette\Events\WebhookListener::class)->getEnqueued(), -3)
+        );
     }
 
     /**
@@ -160,7 +163,7 @@ class WebhookListener extends GaletteTestCase
         $group = new \Galette\Entity\Group();
         $listener->enqueue(WebhookEvent::GroupCreated, $group);
 
-        $this->assertFalse($listener->hasEnqueued());
+        $this->assertSame([], $listener->getEnqueued());
         $this->assertSame([], $this->getDeliveries());
         $this->expectLogEntry(
             \Analog\Analog::ERROR,

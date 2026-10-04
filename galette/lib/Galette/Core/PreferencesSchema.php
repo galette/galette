@@ -719,6 +719,8 @@ final class PreferencesSchema
                 'default' => '',
                 'constant' => 'GALETTE_URI',
             ],
+            /* Webhooks deliveries are left to the cron script */
+            'pref_webhooks_cron' => ['type' => self::TYPE_BOOL, 'default' => false, 'advanced' => true],
             'pref_redirect_on_create' => [
                 'type' => self::TYPE_INT,
                 'default' => Adherent::AFTER_ADD_DEFAULT,

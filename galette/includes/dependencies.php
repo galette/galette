@@ -294,7 +294,11 @@ $container->set(
         queue: $c->get(\Galette\Webhooks\DeliveryQueue::class),
         //built on first use only: it loads fields configuration
         payload_builder: fn(): \Galette\Webhooks\Payload\PayloadBuilder
-            => $c->get(\Galette\Webhooks\Payload\PayloadBuilder::class)
+            => $c->get(\Galette\Webhooks\Payload\PayloadBuilder::class),
+        shutdown: new \Galette\Webhooks\ShutdownDispatcher(
+            preferences: $c->get(\Galette\Core\Preferences::class),
+            dispatcher: fn(): \Galette\Webhooks\Dispatcher => $c->get(\Galette\Webhooks\Dispatcher::class)
+        )
     )
 );
 

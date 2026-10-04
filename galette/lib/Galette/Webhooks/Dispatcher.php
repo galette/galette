@@ -105,6 +105,23 @@ class Dispatcher
     }
 
     /**
+     * Send given deliveries, if they are still pending
+     *
+     * @param array<int> $ids Deliveries identifiers
+     */
+    public function processIds(array $ids): DispatchReport
+    {
+        $report = new DispatchReport();
+        foreach ($ids as $id) {
+            $result = $this->deliver($id);
+            if ($result !== null) {
+                $report->add($result);
+            }
+        }
+        return $report;
+    }
+
+    /**
      * Send a single delivery right away, whatever its status and schedule
      *
      * Used to retry a delivery or to send a test event from the webhook page.
