@@ -1045,6 +1045,32 @@ class Plugins
     }
 
     /**
+     * Get fixtures providers of active plugins
+     *
+     * They live in a `Fixtures` class of the plugin namespace, not in its main
+     * class; see FixturesProviderInterface.
+     *
+     * @return array<string, Plugins\FixturesProviderInterface> Providers, indexed by module id
+     */
+    public function getFixturesProviders(): array
+    {
+        $providers = [];
+        foreach (array_keys($this->getActiveModules()) as $id) {
+            $class = sprintf('%s\\Fixtures', $this->getNamespace($id));
+            if (!class_exists($class) || !is_subclass_of($class, Plugins\FixturesProviderInterface::class)) {
+                continue;
+            }
+
+            $provider = $this->container->get($class);
+            if ($provider instanceof Plugins\FixturesProviderInterface) {
+                $providers[$id] = $provider;
+            }
+        }
+
+        return $providers;
+    }
+
+    /**
      * Retrieve a file that should be publicly exposed
      *
      * @param string $id   Module id
