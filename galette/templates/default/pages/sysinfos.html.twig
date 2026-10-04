@@ -8,6 +8,7 @@
 
 {% block content %}
 <div id="sysinfos">
+    {% include "components/copy_button.html.twig" with {target: "#sysinfos pre", label: _T("Copy system information")} only %}
     <pre>{{ rawinfos }}</pre>
 </div>
 {% endblock %}
