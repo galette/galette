@@ -1505,6 +1505,59 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test removing a member removes its contributions and transactions through their entities
+     */
+    public function testRemoveMembersEmitsContributionsAndTransactionsEvents(): void
+    {
+        $this->logSuperAdmin();
+        $member_two = $this->getMemberTwo();
+        $member_one = $this->getMemberOne();
+
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $this->assertTrue($transaction->check([
+            'id_adh' => $member_one->id,
+            'trans_date' => date('Y-m-d'),
+            'trans_amount' => 92,
+            'trans_desc' => 'FAKER' . $this->seed,
+            'type_paiement_trans' => 6,
+        ], [], []));
+        $this->assertTrue($transaction->store($this->history));
+
+        $data = ['montant_cotis' => 46, \Galette\Entity\Transaction::PK => $transaction->id] + $this->getContribData();
+        $own_contrib = $this->createContrib($data);
+        $other_contrib = $this->createContrib(
+            [\Galette\Entity\Adherent::PK => $member_two->id] + $data,
+            new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => $data['id_type_cotis']])
+        );
+
+        $removed = [];
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        foreach (['contribution.remove', 'transaction.remove'] as $event_name) {
+            $emitter->subscribeOnceTo(
+                $event_name,
+                function (\Galette\Events\GaletteEvent $event) use (&$removed): void {
+                    $removed[] = [$event->eventName(), $event->getObject()->id];
+                }
+            );
+        }
+
+        $members = new \Galette\Repository\Members();
+        $this->assertTrue($members->removeMembers((int)$member_one->id));
+        $this->assertSame(
+            [['contribution.remove', $own_contrib->id], ['transaction.remove', $transaction->id]],
+            $removed
+        );
+
+        //contribution of another member is kept, without its link to the removed transaction
+        $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE);
+        $select->where([\Galette\Entity\Contribution::PK => $other_contrib->id]);
+        $row = $this->zdb->execute($select)->current();
+        $this->assertNotNull($row);
+        $this->assertNull($row->{\Galette\Entity\Transaction::PK});
+        $this->login->logOut();
+    }
+
+    /**
      * Test a failing member.before_remove listener cancels removal
      */
     public function testRemoveMembersBeforeRemoveFailure(): void
