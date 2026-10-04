@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+declare(strict_types=1);
+
+namespace Galette\Events;
+
+use Analog\Analog;
+use Closure;
+use Galette\Repository\Webhooks;
+use Galette\Webhooks\DeliveryQueue;
+use Galette\Webhooks\Payload\Envelope;
+use Galette\Webhooks\Payload\PayloadBuilder;
+use Galette\Webhooks\WebhookEvent;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
+use Throwable;
+
+/**
+ * Queues webhooks deliveries for subscribed events
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+class WebhookListener implements ListenerSubscriber
+{
+    private bool $has_enqueued = false;
+
+    /**
+     * Constructor
+     *
+     * @param Webhooks                 $webhooks        Webhooks repository
+     * @param DeliveryQueue            $queue           Deliveries queue
+     * @param Closure():PayloadBuilder $payload_builder Payload builder provider; the builder loads the
+     *                                                  fields configuration, which is not needed on
+     *                                                  most requests
+     */
+    public function __construct(
+        private readonly Webhooks $webhooks,
+        private readonly DeliveryQueue $queue,
+        private readonly Closure $payload_builder
+    ) {
+    }
+
+    /**
+     * Set up listeners
+     *
+     * @param ListenerRegistry $acceptor Listener
+     */
+    public function subscribeListeners(ListenerRegistry $acceptor): void
+    {
+        foreach (WebhookEvent::subscribable() as $event) {
+            $acceptor->subscribeTo(
+                (string)$event->getInternalName(),
+                function (GaletteEvent $galette_event) use ($event): void {
+                    $this->enqueue($event, $galette_event->getObject());
+                }
+            );
+        }
+    }
+
+    /**
+     * Queue deliveries for an event
+     *
+     * Errors are logged and never thrown: a webhook must not prevent the
+     * change it reports.
+     *
+     * @param WebhookEvent $event   Public event
+     * @param object       $subject Object carried by the internal event
+     */
+    public function enqueue(WebhookEvent $event, object $subject): void
+    {
+        try {
+            $webhooks = $this->webhooks->getActiveFor($event);
+            if ($webhooks === []) {
+                return;
+            }
+
+            /** @var PayloadBuilder $builder */
+            $builder = ($this->payload_builder)();
+            $message_id = DeliveryQueue::generateMessageId();
+            /** @var array<int, Envelope> $envelopes Envelopes per access level */
+            $envelopes = [];
+            foreach ($webhooks as $webhook) {
+                $level = $webhook->getAccessLevel();
+                $envelopes[$level] ??= $builder->build($event, $subject, $level);
+                $this->queue->enqueue($webhook, $envelopes[$level], $message_id);
+                $this->has_enqueued = true;
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                sprintf(
+                    'Unable to queue webhooks for %1$s event: %2$s',
+                    $event->value,
+                    $e->getMessage()
+                ),
+                Analog::ERROR
+            );
+        }
+    }
+
+    /**
+     * Have deliveries been queued during current request?
+     */
+    public function hasEnqueued(): bool
+    {
+        return $this->has_enqueued;
+    }
+}

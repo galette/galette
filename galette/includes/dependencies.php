@@ -281,6 +281,21 @@ $container->set(
             'subscribeListenersFrom',
             DI\get(\Galette\Events\ContribListener::class)
         )
+        ->method(
+            'subscribeListenersFrom',
+            DI\get(\Galette\Events\WebhookListener::class)
+        )
+);
+
+$container->set(
+    \Galette\Events\WebhookListener::class,
+    fn(ContainerInterface $c) => new \Galette\Events\WebhookListener(
+        webhooks: $c->get(\Galette\Repository\Webhooks::class),
+        queue: $c->get(\Galette\Webhooks\DeliveryQueue::class),
+        //built on first use only: it loads fields configuration
+        payload_builder: fn(): \Galette\Webhooks\Payload\PayloadBuilder
+            => $c->get(\Galette\Webhooks\Payload\PayloadBuilder::class)
+    )
 );
 
 $container->set(
