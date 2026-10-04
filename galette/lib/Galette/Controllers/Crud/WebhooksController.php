@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use Analog\Analog;
+use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
@@ -18,6 +19,9 @@ use Galette\Entity\Webhook;
 use Galette\Exception\EntityException;
 use Galette\Repository\Webhooks;
 use Galette\Webhooks\DeliveryQueue;
+use Galette\Webhooks\DeliveryResult;
+use Galette\Webhooks\Dispatcher;
+use Galette\Webhooks\Payload\PayloadBuilder;
 use Galette\Webhooks\WebhookEvent;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -31,6 +35,13 @@ class WebhooksController extends CrudController
 {
     /** Session key holding values of a form that could not be stored */
     private const string FORM_SESSION_KEY = 'webhook_form';
+
+    #[Inject]
+    protected Dispatcher $dispatcher;
+    #[Inject]
+    protected DeliveryQueue $queue;
+    #[Inject]
+    protected PayloadBuilder $payload_builder;
 
     // CRUD - Create
 
@@ -82,7 +93,7 @@ class WebhooksController extends CrudController
             [
                 'page_title' => _T('Webhooks'),
                 'webhooks' => (new Webhooks($this->zdb))->getList(),
-                'summaries' => (new DeliveryQueue($this->zdb))->getSummaries(),
+                'summaries' => $this->queue->getSummaries(),
             ]
         );
         return $response;
@@ -172,6 +183,132 @@ class WebhooksController extends CrudController
                 ? [_T('A new secret has been generated, update it on the receiver side.')]
                 : [],
             errors: $stored ? [] : [_T('An error occurred generating a new secret.')]
+        );
+    }
+
+    /**
+     * Deliveries log page
+     *
+     * @param int $id Webhook identifier
+     */
+    #[Route(
+        name: 'webhookDeliveries',
+        pattern: '/webhooks/{id:\d+}/deliveries',
+        methods: ['GET']
+    )]
+    public function deliveries(Request $request, Response $response, int $id): Response
+    {
+        $webhook = $this->loadWebhook($id);
+        if ($webhook === null) {
+            return $this->notFound($response);
+        }
+
+        $this->view->render(
+            $response,
+            'pages/webhook_deliveries.html.twig',
+            [
+                'page_title' => sprintf(
+                    //TRANS: %1$s is the webhook name
+                    _T('Deliveries of webhook %1$s'),
+                    $webhook->getName()
+                ),
+                'webhook' => $webhook,
+                'deliveries' => $this->queue->getForWebhook($id),
+                'max_attempts' => Dispatcher::MAX_ATTEMPTS,
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Send a delivery again, right away
+     *
+     * @param int $id Delivery identifier
+     */
+    #[Route(
+        name: 'retryWebhookDelivery',
+        pattern: '/webhooks/deliveries/{id:\d+}/retry',
+        methods: ['POST']
+    )]
+    public function retryDelivery(Request $request, Response $response, int $id): Response
+    {
+        $webhook_id = $this->queue->getWebhookId($id);
+        if ($webhook_id === null) {
+            return $this->notFound($response);
+        }
+
+        return $this->reportResult(
+            $response,
+            $this->dispatcher->sendNow($id),
+            $this->routeparser->urlFor('webhookDeliveries', ['id' => (string)$webhook_id])
+        );
+    }
+
+    /**
+     * Send a test event, right away
+     *
+     * @param int $id Webhook identifier
+     */
+    #[Route(
+        name: 'pingWebhook',
+        pattern: '/webhooks/{id:\d+}/ping',
+        methods: ['POST']
+    )]
+    public function ping(Request $request, Response $response, int $id): Response
+    {
+        $webhook = $this->loadWebhook($id);
+        if ($webhook === null) {
+            return $this->notFound($response);
+        }
+
+        $delivery = $this->queue->enqueue($webhook, $this->payload_builder->ping(), DeliveryQueue::generateMessageId());
+        return $this->reportResult(
+            $response,
+            $this->dispatcher->sendNow($delivery),
+            $this->routeparser->urlFor('webhookDeliveries', ['id' => (string)$id])
+        );
+    }
+
+    /**
+     * Redirect with a delivery attempt outcome
+     *
+     * @param ?DeliveryResult $result       Attempt result, null if another worker was sending it
+     * @param string          $redirect_url Where to go next
+     */
+    private function reportResult(Response $response, ?DeliveryResult $result, string $redirect_url): Response
+    {
+        if ($result === null) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                warnings: [_T('This delivery is being sent already.')]
+            );
+        }
+
+        if ($result->isSuccess()) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                successes: [
+                    sprintf(
+                        //TRANS: %1$d is the HTTP status code
+                        _T('Delivery succeeded, the receiver answered %1$d.'),
+                        (int)$result->status_code
+                    )
+                ]
+            );
+        }
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            errors: [
+                sprintf(
+                    //TRANS: %1$s is the error message
+                    _T('Delivery failed: %1$s'),
+                    (string)$result->error
+                )
+            ]
         );
     }
 

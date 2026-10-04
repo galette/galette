@@ -258,6 +258,21 @@ $app->post(
 )->setName('regenerateWebhookSecret')->add(Authenticate::class);
 
 $app->get(
+    '/webhooks/{id:\d+}/deliveries',
+    [Crud\WebhooksController::class, 'deliveries']
+)->setName('webhookDeliveries')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/deliveries/{id:\d+}/retry',
+    [Crud\WebhooksController::class, 'retryDelivery']
+)->setName('retryWebhookDelivery')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/{id:\d+}/ping',
+    [Crud\WebhooksController::class, 'ping']
+)->setName('pingWebhook')->add(Authenticate::class);
+
+$app->get(
     '/webhooks/remove/{id:\d+}',
     [Crud\WebhooksController::class, 'confirmDelete']
 )->setName('removeWebhook')->add(Authenticate::class);

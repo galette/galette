@@ -13,7 +13,15 @@ namespace Galette\Tests\Controllers;
 use Galette\Core\Authentication;
 use Galette\Entity\Webhook;
 use Galette\Tests\GaletteRoutingTestCase;
+use Galette\Webhooks\DeliveryQueue;
+use Galette\Webhooks\Dispatcher;
+use Galette\Webhooks\Payload\Envelope;
 use Galette\Webhooks\WebhookEvent;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use Psr\Clock\ClockInterface;
 
 /**
  * Webhooks controller tests
@@ -248,5 +256,79 @@ class WebhooksController extends GaletteRoutingTestCase
         );
         $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
         $this->assertSame([], (new \Galette\Repository\Webhooks($this->zdb))->getList());
+    }
+
+    /**
+     * Use a dispatcher whose receiver answers queued responses
+     *
+     * Controllers are built once by the container: this must be done before any request.
+     */
+    private function mockReceiver(): MockHandler
+    {
+        $mock = new MockHandler();
+        $this->container->set(
+            Dispatcher::class,
+            new Dispatcher(
+                $this->zdb,
+                $this->container->get(ClockInterface::class),
+                new Client(['handler' => HandlerStack::create($mock)])
+            )
+        );
+        return $mock;
+    }
+
+    /**
+     * Test deliveries page, test event and retries
+     */
+    public function testDeliveries(): void
+    {
+        $mock = $this->mockReceiver();
+        $this->logSuperAdmin();
+        $webhook = $this->createWebhook();
+        $id = (string)$webhook->getId();
+        $deliveries_url = $this->routeparser->urlFor('webhookDeliveries', ['id' => $id]);
+
+        $test_response = $this->app->handle($this->createRequest('webhookDeliveries', ['id' => $id]));
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('No delivery yet', (string)$test_response->getBody());
+
+        //test event, answered
+        $mock->append(new Response(202));
+        $test_response = $this->app->handle($this->createRequest('pingWebhook', ['id' => $id], 'POST'));
+        $this->assertSame(['Location' => [$deliveries_url]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Delivery succeeded, the receiver answered 202.']]);
+        $this->assertSame(0, $mock->count());
+
+        //a failed delivery, sent again
+        $delivery = (new DeliveryQueue($this->zdb))->enqueue(
+            $webhook,
+            new Envelope(WebhookEvent::MemberCreated, ['id' => 1]),
+            'msg_retry'
+        );
+        $mock->append(new Response(500, [], 'Down'));
+        $test_response = $this->app->handle(
+            $this->createRequest('retryWebhookDelivery', ['id' => (string)$delivery], 'POST')
+        );
+        $this->assertSame(['Location' => [$deliveries_url]], $test_response->getHeaders());
+        $this->expectFlashData(['error_detected' => ['Delivery failed: HTTP 500: Down']]);
+
+        $test_response = $this->app->handle($this->createRequest('webhookDeliveries', ['id' => $id]));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('webhook.ping', $body);
+        $this->assertStringContainsString('msg_retry', $body);
+        $this->assertStringContainsString('HTTP 500: Down', $body);
+        $this->assertStringContainsString('Next attempt on', $body);
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('retryWebhookDelivery', ['id' => (string)$delivery]),
+            $body
+        );
+
+        //unknown delivery
+        $test_response = $this->app->handle(
+            $this->createRequest('retryWebhookDelivery', ['id' => '999999'], 'POST')
+        );
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('webhooks')]], $test_response->getHeaders());
+        $this->expectFlashData(['error_detected' => ['This webhook does not exist.']]);
     }
 }

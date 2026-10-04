@@ -66,6 +66,12 @@
     </form>
 
     {% if not is_new %}
+    <div class="ui basic fitted segment">
+        <a class="ui tiny labeled icon button" href="{{ url_for('webhookDeliveries', {'id': webhook.getId()}) }}">
+            <i class="list alternate outline icon" aria-hidden="true"></i>
+            {{ _T("Deliveries and test event") }}
+        </a>
+    </div>
     <div class="ui segment">
         <h2 class="ui header">{{ _T("Signing secret") }}</h2>
         <p>{{ _T("Requests are signed following the Standard Webhooks specification: the receiver checks the webhook-signature header with this secret. Libraries doing so exist for most languages.") }}</p>

@@ -444,7 +444,7 @@ class Galette
                                 'title' => _T("Notify external services when data changes"),
                                 'route' => [
                                     'name' => 'webhooks',
-                                    'aliases' => ['addWebhook', 'editWebhook']
+                                    'aliases' => ['addWebhook', 'editWebhook', 'webhookDeliveries']
                                 ]
                             ],
                             [

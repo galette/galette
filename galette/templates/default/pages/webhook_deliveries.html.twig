@@ -1,0 +1,87 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    {% set date_format = _T('Y-m-d H:i:s') %}
+    <div class="ui basic fitted segment">
+        <form action="{{ url_for('pingWebhook', {'id': webhook.getId()}) }}" method="post" class="ui form">
+            <button type="submit" class="ui tiny labeled icon primary button">
+                <i class="paper plane icon" aria-hidden="true"></i>
+                {{ _T("Send a test event") }}
+            </button>
+            <a class="ui tiny labeled icon button" href="{{ url_for('editWebhook', {'id': webhook.getId()}) }}">
+                <i class="edit icon" aria-hidden="true"></i>
+                {{ _T("Edit webhook") }}
+            </a>
+        </form>
+    </div>
+    {% if not webhook.isActive() %}
+    <div class="ui warning message">
+        <p>{{ _T("This webhook is disabled: pending deliveries wait until it is enabled again. A test event is sent anyway.") }}</p>
+    </div>
+    {% endif %}
+    {% if deliveries|length == 0 %}
+    <div class="ui info message">
+        <div class="header">{{ _T("No delivery yet") }}</div>
+        <p>{{ _T("Deliveries are listed here once a subscribed event occurs. Finished ones are kept 30 days.") }}</p>
+    </div>
+    {% else %}
+    <table class="listing ui celled striped table">
+        <caption class="visually-hidden">{{ _T("Latest deliveries") }}</caption>
+        <thead>
+            <tr>
+                <th class="collapsing">{{ _T("Date") }}</th>
+                <th>{{ _T("Event") }}</th>
+                <th class="collapsing">{{ _T("Status") }}</th>
+                <th class="collapsing">{{ _T("Attempts") }}</th>
+                <th>{{ _T("Details") }}</th>
+                <th class="collapsing">{{ _T("Actions") }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for delivery in deliveries %}
+            <tr>
+                <td class="nowrap collapsing" data-scope="row" data-col-label="{{ _T("Date") }}">{{ delivery.creation_date|date(date_format) }}</td>
+                <td class="left" data-col-label="{{ _T("Event") }}">
+                    <code>{{ delivery.event_type }}</code>
+                    <br/><small><code>{{ delivery.message_id }}</code></small>
+                </td>
+                <td class="collapsing" data-col-label="{{ _T("Status") }}">
+                    {% include "elements/webhook_delivery_status.html.twig" with {status: delivery.status, code: delivery.response_code} only %}
+                </td>
+                <td class="right collapsing" data-col-label="{{ _T("Attempts") }}">{{ delivery.attempts }}/{{ max_attempts }}</td>
+                <td class="left" data-col-label="{{ _T("Details") }}">
+                    {% if delivery.delivered_at is not null %}
+                        {{ _T("Delivered on %1$s")|format(delivery.delivered_at|date(date_format)) }}<br/>
+                    {% elseif delivery.next_attempt_at is not null %}
+                        {{ _T("Next attempt on %1$s")|format(delivery.next_attempt_at|date(date_format)) }}<br/>
+                    {% endif %}
+                    {% if delivery.last_error is not null %}
+                        <code>{{ delivery.last_error }}</code>
+                    {% endif %}
+                    <details>
+                        <summary>{{ _T("Payload") }}</summary>
+                        <pre>{{ delivery.payload }}</pre>
+                    </details>
+                </td>
+                <td class="center actions_row collapsing">
+                    {% if delivery.status != constant('Galette\\Webhooks\\DeliveryQueue::STATUS_SENDING') %}
+                    <form action="{{ url_for('retryWebhookDelivery', {'id': delivery.id_delivery}) }}" method="post">
+                        <button type="submit" class="ui tiny labeled icon button">
+                            <i class="redo icon" aria-hidden="true"></i>
+                            {{ _T("Send again") }}
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

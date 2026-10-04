@@ -123,4 +123,39 @@ class DeliveryQueue
 
         return $summaries;
     }
+
+    /**
+     * Get latest deliveries of a webhook
+     *
+     * @param int $webhook_id Webhook identifier
+     * @param int $limit      Maximum number of deliveries
+     *
+     * @return list<\ArrayObject<string, mixed>>
+     */
+    public function getForWebhook(int $webhook_id, int $limit = 100): array
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select
+            ->where([Webhook::PK => $webhook_id])
+            ->order(self::PK . ' DESC')
+            ->limit($limit);
+        $deliveries = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $deliveries[] = $row;
+        }
+        return $deliveries;
+    }
+
+    /**
+     * Get webhook a delivery belongs to
+     *
+     * @param int $id Delivery identifier
+     */
+    public function getWebhookId(int $id): ?int
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select->columns([Webhook::PK])->where([self::PK => $id])->limit(1);
+        $row = $this->zdb->execute($select)->current();
+        return $row !== null ? (int)$row->{Webhook::PK} : null;
+    }
 }
