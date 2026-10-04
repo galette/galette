@@ -1,0 +1,24 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+{#
+ # Copy to clipboard button, displayed by common.js where the clipboard is available.
+ #
+ # Parameters:
+ # - target: CSS selector of the element to copy, value of a field or text of any other element
+ # - label: what the button copies, for its tooltip and screen readers
+ #}
+<button
+    type="button"
+    class="ui icon button copy-to-clipboard"
+    data-copy-target="{{ target }}"
+    data-copied="{{ _T("Copied to clipboard.") }}"
+    data-copy-failed="{{ _T("Unable to copy, please select the text and copy it by hand.") }}"
+    title="{{ label }}"
+    hidden
+>
+    <i class="copy outline icon" aria-hidden="true"></i>
+    <span class="visually-hidden">{{ label }}</span>
+</button>

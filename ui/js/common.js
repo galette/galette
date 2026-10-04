@@ -251,6 +251,43 @@ var _bind_messages = function() {
     $('.message.with-transition').transition('flash');
 }
 
+/* Copy to clipboard buttons (components/copy_button.html.twig).
+ * They stay hidden where the clipboard API is not available, that is outside
+ * of secure contexts: the value can still be selected and copied by hand.
+ */
+var _bindCopyButtons = function() {
+    if (!navigator.clipboard) {
+        return;
+    }
+
+    $('.copy-to-clipboard')
+        .removeAttr('hidden')
+        .on('click', function() {
+            var
+                $button = $(this),
+                $target = $($button.data('copy-target')),
+                text    = $target.is('input, textarea') ? $target.val() : $target[0].innerText.trim()
+            ;
+
+            navigator.clipboard.writeText(text).then(
+                function() {
+                    $('body').toast({
+                        class: 'success',
+                        message: $button.data('copied'),
+                        showProgress: 'bottom'
+                    });
+                },
+                function() {
+                    $('body').toast({
+                        class: 'error',
+                        message: $button.data('copy-failed'),
+                        displayTime: 0
+                    });
+                }
+            );
+        });
+}
+
 $(function() {
     /* First, so that a failure further down never costs the user a message. */
     _bind_messages();
@@ -263,6 +300,8 @@ $(function() {
     _dropdownA11y.install();
 
     _keyboardNavigation();
+
+    _bindCopyButtons();
 
     var _back2Top = document.getElementById("back2top");
     if (_back2Top) {

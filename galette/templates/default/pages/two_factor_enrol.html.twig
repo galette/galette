@@ -22,7 +22,10 @@
             <div class="column ui form">
                 <div class="field">
                     <label for="tfa_secret">{{ _T("Key, to type in by hand:") }}</label>
-                    <input type="text" id="tfa_secret" value="{{ secret }}" readonly="readonly" size="40"/>
+                    <div class="ui action input">
+                        <input type="text" id="tfa_secret" value="{{ secret }}" readonly="readonly" size="40"/>
+                        {% include "components/copy_button.html.twig" with {target: "#tfa_secret", label: _T("Copy the key")} only %}
+                    </div>
                 </div>
                 <br>
                 <form action="{{ url_for('do-two-factor-enrol') }}" method="post">
