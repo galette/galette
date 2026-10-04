@@ -354,4 +354,63 @@ class Group extends GaletteTestCase
             $switch['on'] = false;
         }
     }
+
+    /**
+     * Test group.add, group.edit and group.remove events
+     */
+    public function testEvents(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        //no way to unsubscribe: listener is switched off once done
+        $switch = new \ArrayObject(['on' => true]);
+        $seen = new \ArrayObject();
+        $listener = function (\Galette\Events\GaletteEvent $event) use ($switch, $seen): void {
+            if ($switch['on']) {
+                $seen->append([$event->eventName(), $event->getObject()->getName()]);
+            }
+        };
+        foreach (['group.add', 'group.edit', 'group.remove'] as $name) {
+            $emitter->subscribeTo($name, $listener);
+        }
+
+        try {
+            $group = new \Galette\Entity\Group();
+            $group->setName('An evented group');
+            $this->assertTrue($group->store());
+            $parent_id = $group->getId();
+
+            $group->setName('A renamed evented group');
+            $this->assertTrue($group->store());
+
+            $child = new \Galette\Entity\Group();
+            $child->setName('An evented child group');
+            $child->setParentGroup($parent_id);
+            $this->assertTrue($child->store());
+
+            //disabled events are not sent
+            $child->disableEvents();
+            $this->assertTrue($child->store());
+
+            $group = new \Galette\Entity\Group($parent_id);
+            $this->logSuperAdmin();
+            $group->setLogin($this->login);
+            $this->assertTrue($group->remove(cascade: true));
+
+            $this->assertSame(
+                [
+                    ['group.add', 'An evented group'],
+                    ['group.edit', 'A renamed evented group'],
+                    ['group.add', 'An evented child group'],
+                    ['group.remove', 'An evented child group'],
+                    ['group.remove', 'A renamed evented group'],
+                ],
+                $seen->getArrayCopy()
+            );
+        } finally {
+            $switch['on'] = false;
+        }
+    }
 }
