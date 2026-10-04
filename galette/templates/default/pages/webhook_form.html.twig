@@ -72,7 +72,10 @@
         <div class="ui form">
             <div class="field">
                 <label for="secret">{{ _T("Secret") }}</label>
-                <input type="text" id="secret" value="{{ webhook.getSecret() }}" readonly="readonly" autocomplete="off" spellcheck="false"/>
+                <div class="ui action input">
+                    <input type="text" id="secret" value="{{ webhook.getSecret() }}" readonly="readonly" autocomplete="off" spellcheck="false"/>
+                    {% include "components/copy_button.html.twig" with {target: "#secret", label: _T("Copy the secret")} only %}
+                </div>
             </div>
         </div>
         <form action="{{ url_for('regenerateWebhookSecret', {'id': webhook.getId()}) }}" method="post" class="ui basic fitted segment">
