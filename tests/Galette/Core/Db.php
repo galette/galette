@@ -533,6 +533,8 @@ class Db extends BaseGaletteTestCase
             'galette_tmplinks',
             'galette_documents',
             'galette_auth_attempts',
+            'galette_webhooks',
+            'galette_webhooks_deliveries',
             'galette_twofactor',
             'galette_twofactor_codes'
         ];
