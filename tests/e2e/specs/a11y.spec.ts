@@ -314,6 +314,22 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  test('A11y - Webhooks page', async ({ loggedInPage: page }) => {
+    await page.goto('/webhooks');
+    await page.locator('a[href$="/webhooks/add"]').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Add webhook page', async ({ loggedInPage: page }) => {
+    await page.goto('/webhooks/add');
+    await page.locator('form.ui.form').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
   test('A11y - Core list configuration page', async ({ loggedInPage: page }) => {
     await page.goto('/lists/adherents/configure');
     await page.locator('table.listing').waitFor({ state: 'visible' });
