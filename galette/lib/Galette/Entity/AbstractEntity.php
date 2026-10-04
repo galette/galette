@@ -227,7 +227,9 @@ abstract class AbstractEntity
         unset($data['id'], $data[static::PK]);
         foreach ($data as $property => $column) {
             $prop = $reflection->getProperty($property);
-            $prop->setValue($this, $rs->{$column->columnName});
+            /** @var ReflectionNamedType $type */
+            $type = $prop->getType();
+            $prop->setValue($this, $this->fromDbValue($rs->{$column->columnName}, $type));
         }
 
         return $this;
@@ -440,9 +442,52 @@ abstract class AbstractEntity
         $mappings = $this->getColumnMapping($scope);
         $data = [];
         foreach ($mappings as $mapping) {
-            $data[$mapping->columnName] = $mapping->value;
+            $data[$mapping->columnName] = $this->toDbValue($mapping->value);
         }
         return $data;
+    }
+
+    /**
+     * Convert a database value to the type of the property it is loaded in.
+     *
+     * Drivers return booleans and numbers in various forms (native types,
+     * strings when fetches are stringified, 't'/'f' from PostgreSQL),
+     * while properties are strictly typed.
+     *
+     * @param mixed               $value Raw database value
+     * @param ReflectionNamedType $type  Property type
+     */
+    private function fromDbValue(mixed $value, ReflectionNamedType $type): mixed
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return match ($type->getName()) {
+            'bool' => in_array($value, [true, 1, '1', 't', 'true'], strict: true),
+            'int' => (int)$value,
+            'float' => (float)$value,
+            default => $value
+        };
+    }
+
+    /**
+     * Convert a property value to a value both database engines accept.
+     *
+     * A false boolean would be sent as an empty string, which neither
+     * MySQL integer columns nor PostgreSQL boolean ones accept.
+     *
+     * @param mixed $value Property value
+     */
+    private function toDbValue(mixed $value): mixed
+    {
+        if (!is_bool($value)) {
+            return $value;
+        }
+        if ($this->getDB()->isPostgres()) {
+            return $value ? 'true' : 'false';
+        }
+        return (int)$value;
     }
 
     /**
