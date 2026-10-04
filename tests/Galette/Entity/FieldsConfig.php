@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use Galette\Core\Authentication;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Preferences tests class
@@ -171,6 +173,58 @@ class FieldsConfig extends GaletteTestCase
 
         $visible = $this->fields_config->getVisibility('info_adh');
         $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $visible);
+    }
+
+    /**
+     * Visibilities and access levels provider
+     *
+     * @return array<string, array{int, int, bool}>
+     */
+    public static function grantedProvider(): array
+    {
+        $fc = \Galette\Entity\FieldsConfig::class;
+        return [
+            'nobody, superadmin' => [$fc::NOBODY, Authentication::ACCESS_SUPERADMIN, false],
+            'admin, admin' => [$fc::ADMIN, Authentication::ACCESS_ADMIN, true],
+            'admin, staff' => [$fc::ADMIN, Authentication::ACCESS_STAFF, false],
+            'staff, staff' => [$fc::STAFF, Authentication::ACCESS_STAFF, true],
+            'staff, manager' => [$fc::STAFF, Authentication::ACCESS_MANAGER, false],
+            'manager, manager' => [$fc::MANAGER, Authentication::ACCESS_MANAGER, true],
+            'manager, user' => [$fc::MANAGER, Authentication::ACCESS_USER, false],
+            'user read, user' => [$fc::USER_READ, Authentication::ACCESS_USER, true],
+            'user write, public' => [$fc::USER_WRITE, Authentication::ACCESS_PUBLIC, true],
+            'public, public' => [$fc::ALL, Authentication::ACCESS_PUBLIC, true],
+        ];
+    }
+
+    /**
+     * Test isGranted
+     */
+    #[DataProvider('grantedProvider')]
+    public function testIsGranted(int $visibility, int $access_level, bool $expected): void
+    {
+        $this->assertSame(
+            $expected,
+            \Galette\Entity\FieldsConfig::isGranted($visibility, $access_level)
+        );
+    }
+
+    /**
+     * Test isVisibleFor
+     */
+    public function testIsVisibleFor(): void
+    {
+        $this->fields_config->load();
+
+        //info_adh is staff only
+        $this->assertTrue($this->fields_config->isVisibleFor('info_adh', Authentication::ACCESS_STAFF));
+        $this->assertFalse($this->fields_config->isVisibleFor('info_adh', Authentication::ACCESS_MANAGER));
+        //id_adh is not visible
+        $this->assertFalse($this->fields_config->isVisibleFor('id_adh', Authentication::ACCESS_SUPERADMIN));
+        //nom_adh is visible for everyone
+        $this->assertTrue($this->fields_config->isVisibleFor('nom_adh', Authentication::ACCESS_USER));
+        //unknown fields are never visible
+        $this->assertFalse($this->fields_config->isVisibleFor('does_not_exist', Authentication::ACCESS_SUPERADMIN));
     }
 
     /**
