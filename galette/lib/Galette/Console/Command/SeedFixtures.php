@@ -16,6 +16,8 @@ use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Core\MailingHistory;
 use Galette\Core\Picture;
+use Galette\Core\Plugins;
+use Galette\Core\Plugins\FixturesContext;
 use Galette\Core\Preferences;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\Adherent;
@@ -64,6 +66,7 @@ class SeedFixtures extends AbstractCommand
     private Login $login;
     private Preferences $preferences;
     private History $history;
+    private Plugins $plugins;
     /** @var array<string,mixed> */
     private array $members_fields;
 
@@ -108,6 +111,7 @@ class SeedFixtures extends AbstractCommand
 
         $container = $GLOBALS['container'];
         $this->members_fields = $container->get('members_fields');
+        $this->plugins = $container->get(Plugins::class);
 
         // Ensure HTTP_HOST is set for CLI context (used by Preferences::getURL())
         $_SERVER['HTTP_HOST'] ??= 'localhost';
@@ -151,6 +155,8 @@ class SeedFixtures extends AbstractCommand
         $io->section('Setting dynamic field values');
         $this->setDynamicFieldValues($io);
 
+        $this->seedPlugins($io);
+
         $io->success(sprintf(
             'Fixtures seeded: %d members, %d transactions, dynamic fields configured.',
             count($this->members),
@@ -165,6 +171,12 @@ class SeedFixtures extends AbstractCommand
      */
     public function cleanAll(SymfonyStyle $io): void
     {
+        // Plugins data may reference fixture members and groups, remove it first
+        $context = $this->getFixturesContext();
+        foreach ($this->plugins->getFixturesProviders() as $provider) {
+            $provider->cleanFixtures($context);
+        }
+
         // Get all fixture member IDs
         $select = $this->zdb->select(Adherent::TABLE);
         $select->columns(['id_adh']);
@@ -307,6 +319,55 @@ class SeedFixtures extends AbstractCommand
         }
 
         $io->text('Cleaned existing fixture data.');
+    }
+
+    /**
+     * Seed fixtures of active plugins
+     */
+    private function seedPlugins(SymfonyStyle $io): void
+    {
+        $context = $this->getFixturesContext();
+        foreach ($this->plugins->getFixturesProviders() as $id => $provider) {
+            $io->section(sprintf('Seeding plugin %s', $id));
+            $io->text('   ' . $provider->seedFixtures($context));
+        }
+    }
+
+    /**
+     * Get context for plugins fixtures, from fixture members and groups in database
+     */
+    private function getFixturesContext(): FixturesContext
+    {
+        $select = $this->zdb->select(Adherent::TABLE);
+        $select->columns([Adherent::PK, 'login_adh']);
+        $select->where(['fingerprint' => self::FIXTURE_FINGERPRINT]);
+        $select->order(Adherent::PK);
+        $members = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $members[(string)($row->login_adh ?: 'member-' . $row->{Adherent::PK})] = (int)$row->{Adherent::PK};
+        }
+
+        $groups = [];
+        $names = array_column($this->getGroupDefinitions(), 'name');
+        if ($names !== []) {
+            $select = $this->zdb->select(Group::TABLE);
+            $select->columns([Group::PK, 'group_name']);
+            $select->where->in('group_name', $names);
+            $select->order(Group::PK);
+            foreach ($this->zdb->execute($select) as $row) {
+                $groups[(string)$row->group_name] = (int)$row->{Group::PK};
+            }
+        }
+
+        return new FixturesContext(
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            history: $this->history,
+            plugins: $this->plugins,
+            members: $members,
+            groups: $groups
+        );
     }
 
     /**
