@@ -5409,8 +5409,8 @@ msgid ""
 msgstr ""
 "Entrez l’URL complète du flux RSS. Il sera affiché sur le bureau de Galette."
 
-msgid "Can members create child?"
-msgstr "Les adhérents peuvent créer des enfants ?"
+msgid "Can members create child members?"
+msgstr "Les adhérents peuvent-ils créer des adhérents enfants ?"
 
 msgid "Can group managers edit their groups?"
 msgstr "Les responsables de groupes peuvent éditer leurs groupes ?"
