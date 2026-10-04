@@ -358,4 +358,33 @@ class Dispatcher extends GaletteTestCase
         $this->setDelivery($id, ['status' => DeliveryQueue::STATUS_SENDING]);
         $this->assertNull($this->getDispatcher()->sendNow($id));
     }
+
+    /**
+     * Test deliveries summaries
+     */
+    public function testSummaries(): void
+    {
+        [$webhook, $delivered] = $this->queue();
+        $queue = new DeliveryQueue($this->zdb);
+        $envelope = new Envelope(WebhookEvent::GroupCreated, ['id' => 2]);
+        $failed = $queue->enqueue($webhook, $envelope, 'msg_failed');
+        $pending = $queue->enqueue($webhook, $envelope, 'msg_pending');
+        $this->setDelivery($delivered, [
+            'status' => DeliveryQueue::STATUS_DELIVERED,
+            'delivered_at' => '2026-10-04 12:00:00',
+            'response_code' => 200,
+        ]);
+        $this->setDelivery($failed, ['status' => DeliveryQueue::STATUS_FAILED, 'response_code' => 500]);
+
+        $summaries = $queue->getSummaries();
+        $this->assertSame([$webhook->getId()], array_keys($summaries));
+        $summary = $summaries[$webhook->getId()];
+        $this->assertSame(1, $summary['pending']);
+        $this->assertSame(1, $summary['failed']);
+        //last one is the pending delivery
+        $this->assertSame(DeliveryQueue::STATUS_PENDING, $summary['last_status']);
+        $this->assertNull($summary['last_code']);
+        $this->assertNotNull($summary['last_date']);
+        $this->assertGreaterThan($failed, $pending);
+    }
 }

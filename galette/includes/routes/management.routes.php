@@ -228,6 +228,46 @@ $app->post(
 )->setName('doEditTitle')->add(Authenticate::class);
 
 $app->get(
+    '/webhooks',
+    [Crud\WebhooksController::class, 'list']
+)->setName('webhooks')->add(Authenticate::class);
+
+$app->get(
+    '/webhooks/add',
+    [Crud\WebhooksController::class, 'add']
+)->setName('addWebhook')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/add',
+    [Crud\WebhooksController::class, 'doAdd']
+)->setName('doAddWebhook')->add(Authenticate::class);
+
+$app->get(
+    '/webhooks/edit/{id:\d+}',
+    [Crud\WebhooksController::class, 'edit']
+)->setName('editWebhook')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/edit/{id:\d+}',
+    [Crud\WebhooksController::class, 'doEdit']
+)->setName('doEditWebhook')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/{id:\d+}/secret',
+    [Crud\WebhooksController::class, 'regenerateSecret']
+)->setName('regenerateWebhookSecret')->add(Authenticate::class);
+
+$app->get(
+    '/webhooks/remove/{id:\d+}',
+    [Crud\WebhooksController::class, 'confirmDelete']
+)->setName('removeWebhook')->add(Authenticate::class);
+
+$app->post(
+    '/webhooks/remove/{id:\d+}',
+    [Crud\WebhooksController::class, 'delete']
+)->setName('doRemoveWebhook')->add(Authenticate::class);
+
+$app->get(
     '/texts[/{lang}/{ref}]',
     [TextController::class, 'list']
 )->setName('texts')->add(Authenticate::class);

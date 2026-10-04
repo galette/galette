@@ -13,6 +13,7 @@ namespace Galette\Webhooks;
 use Galette\Core\Db;
 use Galette\Entity\Webhook;
 use Galette\Webhooks\Payload\Envelope;
+use Laminas\Db\Sql\Expression;
 
 use function Safe\json_encode;
 
@@ -81,5 +82,45 @@ class DeliveryQueue
         ]);
         $this->zdb->execute($insert);
         return $this->zdb->getLastGeneratedValue($this);
+    }
+
+    /**
+     * Get deliveries summary for each webhook
+     *
+     * @return array<int, array{pending: int, failed: int, last_status: ?int, last_date: ?string, last_code: ?int}>
+     *         Webhook identifier as key
+     */
+    public function getSummaries(): array
+    {
+        $summaries = [];
+        $empty = ['pending' => 0, 'failed' => 0, 'last_status' => null, 'last_date' => null, 'last_code' => null];
+
+        $select = $this->zdb->select(self::TABLE);
+        $select
+            ->columns([Webhook::PK, 'status', 'count' => new Expression('COUNT(*)')])
+            ->group([Webhook::PK, 'status']);
+        $select->where->in('status', [self::STATUS_PENDING, self::STATUS_SENDING, self::STATUS_FAILED]);
+        foreach ($this->zdb->execute($select) as $row) {
+            $id = (int)$row->{Webhook::PK};
+            $summaries[$id] ??= $empty;
+            $key = (int)$row->status === self::STATUS_FAILED ? 'failed' : 'pending';
+            $summaries[$id][$key] += (int)$row->count;
+        }
+
+        $last = $this->zdb->select(self::TABLE);
+        $last
+            ->columns(['last' => new Expression('MAX(' . self::PK . ')')])
+            ->group(Webhook::PK);
+        $select = $this->zdb->select(self::TABLE);
+        $select->where->in(self::PK, $last);
+        foreach ($this->zdb->execute($select) as $row) {
+            $id = (int)$row->{Webhook::PK};
+            $summaries[$id] ??= $empty;
+            $summaries[$id]['last_status'] = (int)$row->status;
+            $summaries[$id]['last_date'] = (string)($row->delivered_at ?? $row->creation_date);
+            $summaries[$id]['last_code'] = $row->response_code !== null ? (int)$row->response_code : null;
+        }
+
+        return $summaries;
     }
 }

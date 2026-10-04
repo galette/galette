@@ -156,6 +156,11 @@ abstract class CrudController extends AbstractController
         pattern: '/searches/remove',
         methods: ['GET']
     )]
+    #[Route(
+        name: 'removeWebhook',
+        pattern: '/webhooks/remove/{id:\d+}',
+        methods: ['GET']
+    )]
     public function confirmDelete(Request $request, Response $response): Response
     {
         // display page
@@ -301,6 +306,11 @@ abstract class CrudController extends AbstractController
     #[Route(
         name: 'doRemoveTitle',
         pattern: '/titles/remove/{id:\d+}',
+        methods: ['POST']
+    )]
+    #[Route(
+        name: 'doRemoveWebhook',
+        pattern: '/webhooks/remove/{id:\d+}',
         methods: ['POST']
     )]
     #[Route(

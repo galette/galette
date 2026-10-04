@@ -1,0 +1,87 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    {% set selected_events = webhook.getEvents() %}
+    <form action="{% if is_new %}{{ url_for('doAddWebhook') }}{% else %}{{ url_for('doEditWebhook', {'id': webhook.getId()}) }}{% endif %}" method="post" class="ui form">
+        <div class="ui segment">
+            <div class="required field">
+                <label for="name">{{ _T("Name") }}</label>
+                <input type="text" name="name" id="name" value="{{ webhook.getName() }}" maxlength="{{ constant('Galette\\Entity\\Webhook::NAME_MAX_LENGTH') }}" required/>
+            </div>
+            <div class="required field">
+                <label for="url">{{ _T("URL") }}</label>
+                <input type="url" name="url" id="url" value="{{ webhook.getUrl() }}" maxlength="{{ constant('Galette\\Entity\\Webhook::URL_MAX_LENGTH') }}" placeholder="https://" aria-describedby="url-tip" required/>
+                <span class="tip" id="url-tip">{{ _T("Address requests are sent to, with POST. Prefer https: data is sent unencrypted otherwise.") }}</span>
+            </div>
+            <div class="required field">
+                <label for="access_level">{{ _T("Data access level") }}</label>
+                <select name="access_level" id="access_level" class="ui dropdown" aria-describedby="access_level-tip">
+                    {% for level, label in access_levels %}
+                        <option value="{{ level }}"{% if level == webhook.getAccessLevel() %} selected="selected"{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <span class="tip" id="access_level-tip">{{ _T("Members fields are sent as a user with this role would see them, according to the core fields configuration. Passwords are never sent.") }}</span>
+            </div>
+            <div class="field">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="active" id="active" value="1"{% if webhook.isActive() %} checked="checked"{% endif %}/>
+                    <label for="active">{{ _T("Active") }}</label>
+                </div>
+            </div>
+        </div>
+
+        <fieldset class="ui segment">
+            <legend class="ui header">{{ _T("Events") }}</legend>
+            <div class="ui stackable four column grid">
+            {% for subject, events in grouped_events %}
+                <div class="column">
+                    <div class="grouped fields">
+                        <label>{{ subject }}</label>
+                        {% for event in events %}
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="events[]" id="event_{{ loop.parent.loop.index }}_{{ loop.index }}" value="{{ event.value }}"{% if event in selected_events %} checked="checked"{% endif %}/>
+                                <label for="event_{{ loop.parent.loop.index }}_{{ loop.index }}">{{ event.getLabel() }} <code>{{ event.value }}</code></label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </fieldset>
+
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate/>
+        </div>
+    </form>
+
+    {% if not is_new %}
+    <div class="ui segment">
+        <h2 class="ui header">{{ _T("Signing secret") }}</h2>
+        <p>{{ _T("Requests are signed following the Standard Webhooks specification: the receiver checks the webhook-signature header with this secret. Libraries doing so exist for most languages.") }}</p>
+        <div class="ui form">
+            <div class="field">
+                <label for="secret">{{ _T("Secret") }}</label>
+                <input type="text" id="secret" value="{{ webhook.getSecret() }}" readonly="readonly" autocomplete="off" spellcheck="false"/>
+            </div>
+        </div>
+        <form action="{{ url_for('regenerateWebhookSecret', {'id': webhook.getId()}) }}" method="post" class="ui basic fitted segment">
+            <button type="submit" class="ui labeled icon button">
+                <i class="sync alternate icon" aria-hidden="true"></i>
+                {{ _T("Generate a new secret") }}
+            </button>
+            <span class="tip">{{ _T("The receiver will refuse requests until it is given the new secret.") }}</span>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}

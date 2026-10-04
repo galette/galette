@@ -1,0 +1,95 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <p>
+        {{ _T("Webhooks notify external services, such as an automation tool or a website, when members, contributions, transactions or groups change. Each notification is a signed JSON request, sent in the background and retried for a while if the service does not answer.") }}
+    </p>
+    <div class="ui basic fitted segment">
+        <a class="ui tiny labeled icon button" href="{{ url_for('addWebhook') }}">
+            <i class="plus circle green icon" aria-hidden="true"></i>
+            {{ _T("Add a webhook") }}
+        </a>
+    </div>
+    {% if webhooks|length == 0 %}
+    <div class="ui info message">
+        <div class="header">{{ _T("No webhook yet") }}</div>
+        <p>{{ _T("Nothing is sent to any external service.") }}</p>
+    </div>
+    {% else %}
+    {% set date_format = _T('Y-m-d H:i:s') %}
+    <table class="listing ui celled striped table">
+        <caption class="visually-hidden">{{ _T("Webhooks") }}</caption>
+        <thead>
+            <tr>
+                <th>{{ _T("Name") }}</th>
+                <th>{{ _T("URL") }}</th>
+                <th>{{ _T("Events") }}</th>
+                <th class="collapsing">{{ _T("Active") }}</th>
+                <th>{{ _T("Last delivery") }}</th>
+                <th class="collapsing">{{ _T("Actions") }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for webhook in webhooks %}
+            {% set summary = summaries[webhook.getId()] ?? null %}
+            <tr>
+                <td class="left" data-scope="row" data-col-label="{{ _T("Name") }}">
+                    <a href="{{ url_for('editWebhook', {'id': webhook.getId()}) }}">{{ webhook.getName() }}</a>
+                </td>
+                <td class="left" data-col-label="{{ _T("URL") }}">
+                    {% if webhook.isInsecure() %}
+                        <i class="exclamation triangle orange icon" aria-hidden="true" title="{{ _T("Data is sent unencrypted") }}"></i>
+                        <span class="visually-hidden">{{ _T("Data is sent unencrypted") }}</span>
+                    {% endif %}
+                    <code>{{ webhook.getUrl() }}</code>
+                </td>
+                <td class="left" data-col-label="{{ _T("Events") }}">
+                    {% for event in webhook.getEvents() %}
+                        <span class="ui tiny label">{{ event.value }}</span>
+                    {% endfor %}
+                </td>
+                <td class="center collapsing" data-col-label="{{ _T("Active") }}">
+                    {% if webhook.isActive() %}
+                        <i class="check green icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Yes") }}</span>
+                    {% else %}
+                        <i class="times red icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("No") }}</span>
+                    {% endif %}
+                </td>
+                <td class="left" data-col-label="{{ _T("Last delivery") }}">
+                    {% if summary is null or summary.last_status is null %}
+                        {{ _T("Never") }}
+                    {% else %}
+                        {% include "elements/webhook_delivery_status.html.twig" with {status: summary.last_status, code: summary.last_code} only %}
+                        {{ summary.last_date|date(date_format) }}
+                    {% endif %}
+                    {% if summary is not null and summary.pending > 0 %}
+                        <span class="ui tiny label">{{ _Tn("%1$s pending", "%1$s pending", summary.pending)|format(summary.pending) }}</span>
+                    {% endif %}
+                    {% if summary is not null and summary.failed > 0 %}
+                        <span class="ui tiny red label">{{ _Tn("%1$s failed", "%1$s failed", summary.failed)|format(summary.failed) }}</span>
+                    {% endif %}
+                </td>
+                <td class="center actions_row collapsing">
+                    <a href="{{ url_for('editWebhook', {'id': webhook.getId()}) }}" class="action icon-only">
+                        <i class="ui edit icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Edit webhook %1$s")|format(webhook.getName()) }}</span>
+                    </a>
+                    <a href="{{ url_for('removeWebhook', {'id': webhook.getId()}) }}" class="action icon-only delete">
+                        <i class="ui trash red icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Remove webhook %1$s")|format(webhook.getName()) }}</span>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

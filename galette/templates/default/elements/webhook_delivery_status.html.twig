@@ -1,0 +1,14 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+{% if status == constant('Galette\\Webhooks\\DeliveryQueue::STATUS_DELIVERED') %}
+    <span class="ui tiny green label">{{ _T("Delivered") }}{% if code is not null %} ({{ code }}){% endif %}</span>
+{% elseif status == constant('Galette\\Webhooks\\DeliveryQueue::STATUS_FAILED') %}
+    <span class="ui tiny red label">{{ _T("Failed") }}{% if code is not null %} ({{ code }}){% endif %}</span>
+{% elseif status == constant('Galette\\Webhooks\\DeliveryQueue::STATUS_SENDING') %}
+    <span class="ui tiny blue label">{{ _T("Sending") }}</span>
+{% else %}
+    <span class="ui tiny orange label">{{ _T("Pending") }}{% if code is not null %} ({{ code }}){% endif %}</span>
+{% endif %}

@@ -23,6 +23,7 @@ $core_acls = [
     'setRegistered'                     => 'admin',
     'authAttempts'                      => 'admin',
     'doAuthAttempts'                    => 'admin',
+    '/(.+)?[wW]ebhook(.+)?/i'           => 'admin',
     '/(.+)?preferences(.+)?/i'          => 'admin',
     '/(.+)?(Core|Dynamic|List)Field(.+)?/i'  => 'admin', //dynamic fields are for admins only
     '/(.+)?removeSearch(.+)?/i'         => 'member',

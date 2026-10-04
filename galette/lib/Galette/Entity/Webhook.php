@@ -84,13 +84,21 @@ class Webhook extends AbstractEntity
     }
 
     /**
+     * Is it a webhook not stored yet?
+     */
+    public function isNew(): bool
+    {
+        return !isset($this->id);
+    }
+
+    /**
      * Save webhook, with a generated secret for a new one
      */
     public function save(): bool
     {
         //dates and secret are set here: preInsert() runs once values have been collected
         $now = date('Y-m-d H:i:s');
-        if (!isset($this->id)) {
+        if ($this->isNew()) {
             $this->creation_date = $now;
             if ($this->secret === '') {
                 $this->secret = Signer::generateSecret();

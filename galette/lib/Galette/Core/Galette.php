@@ -440,6 +440,14 @@ class Galette
                                 ]
                             ],
                             [
+                                'label' => _T("Webhooks"),
+                                'title' => _T("Notify external services when data changes"),
+                                'route' => [
+                                    'name' => 'webhooks',
+                                    'aliases' => ['addWebhook', 'editWebhook']
+                                ]
+                            ],
+                            [
                                 'label' => _T("Core lists"),
                                 'title' => _T("Customize lists fields and order"),
                                 'route' => [
