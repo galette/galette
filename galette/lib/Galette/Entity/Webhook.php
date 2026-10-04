@@ -92,20 +92,25 @@ class Webhook extends AbstractEntity
     }
 
     /**
-     * Save webhook, with a generated secret for a new one
+     * Set dates, and generate a secret when none has been set
      */
-    public function save(): bool
+    protected function preInsert(): bool
     {
-        //dates and secret are set here: preInsert() runs once values have been collected
-        $now = date('Y-m-d H:i:s');
-        if ($this->isNew()) {
-            $this->creation_date = $now;
-            if ($this->secret === '') {
-                $this->secret = Signer::generateSecret();
-            }
+        $this->creation_date = date('Y-m-d H:i:s');
+        $this->modification_date = $this->creation_date;
+        if ($this->secret === '') {
+            $this->secret = Signer::generateSecret();
         }
-        $this->modification_date = $now;
-        return parent::save();
+        return true;
+    }
+
+    /**
+     * Set modification date
+     */
+    protected function preUpdate(): bool
+    {
+        $this->modification_date = date('Y-m-d H:i:s');
+        return true;
     }
 
     /**
