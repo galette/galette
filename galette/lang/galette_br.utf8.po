@@ -4,13 +4,14 @@
 # Egareg JAOUEN <egareg@jaouen.eu>, 2021.
 # Pierre Wani Alan Morvan <allannkorh@yahoo.fr>, 2022.
 # Pierre Wani Alan Morvan <per.morvan.bzh29@gmail.com>, 2023.
+# Florent <florent.grouin+osmand@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-04-23 21:31+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-10-04 07:44+0000\n"
+"Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -22,7 +23,7 @@ msgstr ""
 "&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && "
 "(n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.10.1.dev0\n"
 
 #, php-format
 msgid "File %1$s cannot be open!"
@@ -272,7 +273,7 @@ msgid "Ko"
 msgstr "Ko"
 
 msgid "Ok"
-msgstr "Ok"
+msgstr "Mat eo"
 
 msgid "Delete mailing entries"
 msgstr ""
@@ -363,22 +364,22 @@ msgid "Checks"
 msgstr "Gwiriadennoù"
 
 msgid "Installation mode"
-msgstr "mod da staliañ"
+msgstr "Mod staliañ"
 
 msgid "Database"
-msgstr "diaz-roadennoù"
+msgstr "Diaz-roadennoù"
 
 msgid "Database access and permissions"
-msgstr "kevreadenn ha gwirioù an diaz roadennoù"
+msgstr "Kevreañ ha gwirioù an diaz roadennoù"
 
 msgid "Previous version selection"
-msgstr "Choaz stummoù kozhoc'h"
+msgstr "Choaz stummoù koshoc’h"
 
 msgid "Database upgrade"
 msgstr ""
 
 msgid "Tables Creation"
-msgstr "Krouiñ an taolennoù"
+msgstr "Krouiñ an taolioù"
 
 msgid "Admin parameters"
 msgstr "Arventennoù ar merer"
@@ -393,7 +394,7 @@ msgid "End!"
 msgstr "Echu !"
 
 msgid "Database type unknown"
-msgstr "Stumm an diaz roadennoù disanavezet"
+msgstr "Stumm an diaz roadennoù dianav"
 
 #. TRANS: parameter is the update script version
 #, php-format
@@ -535,7 +536,7 @@ msgstr "Pegement eo %1$s ha %2$s ?"
 
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr "Pegement eo %1$s ha %2$s ?"
+msgstr "Pegement eo %1$s ouzhpennet da %2$s ?"
 
 #, php-format
 msgid ""
