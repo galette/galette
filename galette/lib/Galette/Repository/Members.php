@@ -254,7 +254,7 @@ class Members
      */
     public function removeMembers(int|array $ids): bool
     {
-        global $zdb, $hist, $emitter;
+        global $zdb, $hist, $emitter, $login;
 
         $processed = [];
         $list = (is_array($ids) ? $ids : [$ids]);
@@ -303,42 +303,43 @@ class Members
                 $emitter->dispatch(new GaletteEvent('member.before_remove', $p));
             }
 
-            //delete contributions
-            $del_qry = $zdb->delete(Contribution::TABLE);
-            $del_qry->where->in(
-                self::PK,
-                $list
-            );
-            $zdb->execute($del_qry);
+            //delete contributions, through entities so their events are dispatched
+            $select = $zdb->select(Contribution::TABLE);
+            $select->where->in(self::PK, $list);
+            foreach ($zdb->execute($select) as $row) {
+                $contribution = new Contribution($zdb, $login, $row);
+                if (!$contribution->remove(transaction: false)) {
+                    throw new \Exception('Unable to remove contribution #' . $contribution->id);
+                }
+            }
 
             //get transactions
             $select = $zdb->select(Transaction::TABLE);
             $select->where->in(self::PK, $list);
-            $results = $zdb->execute($select);
+            $transactions = [];
+            foreach ($zdb->execute($select) as $row) {
+                $transactions[] = new Transaction($zdb, $login, $row);
+            }
 
-            //if members has transactions;
-            //reset link with other contributions
-            //and remove them
-            if ($results->count() > 0) {
-                $transactions = [];
-                foreach ($results as $transaction) {
-                    $transactions[] = $transaction[Transaction::PK];
-                }
-
+            if ($transactions !== []) {
+                //contributions left on members transactions belong to other members:
+                //unlink them, so removing transactions does not remove them
                 $update = $zdb->update(Contribution::TABLE);
                 $update->set([
                     Transaction::PK => new Expression('NULL')
                 ])->where->in(
                     Transaction::PK,
-                    $transactions
+                    array_map(fn(Transaction $transaction): int => $transaction->id, $transactions)
                 );
                 $zdb->execute($update);
-            }
 
-            //delete transactions
-            $del_qry = $zdb->delete(Transaction::TABLE);
-            $del_qry->where->in(self::PK, $list);
-            $zdb->execute($del_qry);
+                //delete transactions, through entities so their events are dispatched
+                foreach ($transactions as $transaction) {
+                    if (!$transaction->remove($hist, transaction: false)) {
+                        throw new \Exception('Unable to remove transaction #' . $transaction->id);
+                    }
+                }
+            }
 
             //delete groups membership/mamagmentship
             Groups::removeMembersFromGroups($list);
