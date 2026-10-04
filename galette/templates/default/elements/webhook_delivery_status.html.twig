@@ -10,5 +10,5 @@
 {% elseif status == constant('Galette\\Webhooks\\DeliveryQueue::STATUS_SENDING') %}
     <span class="ui tiny blue label">{{ _T("Sending") }}</span>
 {% else %}
-    <span class="ui tiny orange label">{{ _T("Pending") }}{% if code is not null %} ({{ code }}){% endif %}</span>
+    <span class="ui tiny grey label">{{ _T("Pending") }}{% if code is not null %} ({{ code }}){% endif %}</span>
 {% endif %}
