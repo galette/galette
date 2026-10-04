@@ -92,6 +92,7 @@ class WebhooksController extends CrudController
             'pages/webhooks_list.html.twig',
             [
                 'page_title' => _T('Webhooks'),
+                'documentation' => 'usermanual/webhooks.html',
                 'webhooks' => (new Webhooks($this->zdb))->getList(),
                 'summaries' => $this->queue->getSummaries(),
             ]
@@ -212,6 +213,7 @@ class WebhooksController extends CrudController
                     _T('Deliveries of webhook %1$s'),
                     $webhook->getName()
                 ),
+                'documentation' => 'usermanual/webhooks.html#deliveries-and-retries',
                 'webhook' => $webhook,
                 'deliveries' => array_map($this->prettifyPayload(...), $this->queue->getForWebhook($id)),
                 'max_attempts' => Dispatcher::MAX_ATTEMPTS,
@@ -443,6 +445,7 @@ class WebhooksController extends CrudController
             'pages/webhook_form.html.twig',
             [
                 'page_title' => $page_title,
+                'documentation' => 'usermanual/webhooks.html#managing-webhooks',
                 'webhook' => $webhook,
                 'is_new' => $webhook->isNew(),
                 'grouped_events' => WebhookEvent::grouped(),
