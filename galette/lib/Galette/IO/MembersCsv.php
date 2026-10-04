@@ -14,7 +14,6 @@ use Safe\DateTime;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\Entity\Status;
 use Galette\Entity\Adherent;
 use Galette\Repository\Titles;
@@ -97,15 +96,7 @@ class MembersCsv extends CsvOut
             }
 
             // skip fields according to access control
-            if (
-                $visibles[$k] == FieldsConfig::NOBODY
-                || ($visibles[$k] == FieldsConfig::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == FieldsConfig::STAFF
-                    && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == FieldsConfig::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-            ) {
+            if (!FieldsConfig::isGranted((int)$visibles[$k], $access_level)) {
                 continue;
             }
 

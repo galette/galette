@@ -494,15 +494,7 @@ class FieldsConfig
                         }
 
                         // skip fields according to access control
-                        if (
-                            $o->visible == self::NOBODY
-                            || ($o->visible == self::ADMIN
-                                && $access_level < Authentication::ACCESS_ADMIN)
-                            || ($o->visible == self::STAFF
-                                && $access_level < Authentication::ACCESS_STAFF)
-                            || ($o->visible == self::MANAGER
-                                && $access_level < Authentication::ACCESS_MANAGER)
-                        ) {
+                        if (!self::isGranted((int)$o->visible, $access_level)) {
                             continue;
                         }
 
@@ -641,15 +633,7 @@ class FieldsConfig
                         }
 
                         // skip fields according to access control
-                        if (
-                            $o->visible == self::NOBODY
-                            || ($o->visible == self::ADMIN
-                                && $access_level < Authentication::ACCESS_ADMIN)
-                            || ($o->visible == self::STAFF
-                                && $access_level < Authentication::ACCESS_STAFF)
-                            || ($o->visible == self::MANAGER
-                                && $access_level < Authentication::ACCESS_MANAGER)
-                        ) {
+                        if (!self::isGranted((int)$o->visible, $access_level)) {
                             continue;
                         }
 
@@ -699,6 +683,39 @@ class FieldsConfig
     public function getVisibility(string $field): int
     {
         return $this->all_visibles[$field];
+    }
+
+    /**
+     * Is specified field visible at given access level?
+     *
+     * Unknown fields are never visible.
+     *
+     * @param string $field        Field name
+     * @param int    $access_level Access level, one of Authentication::ACCESS_* constants
+     */
+    public function isVisibleFor(string $field, int $access_level): bool
+    {
+        return self::isGranted((int)($this->all_visibles[$field] ?? self::NOBODY), $access_level);
+    }
+
+    /**
+     * Does given access level grant access to a field with specified visibility?
+     *
+     * User related visibilities (read, write) and public ones do not restrict
+     * anything here: they only matter on the member own pages.
+     *
+     * @param int $visibility   Field visibility, one of Permissions constants
+     * @param int $access_level Access level, one of Authentication::ACCESS_* constants
+     */
+    public static function isGranted(int $visibility, int $access_level): bool
+    {
+        return match ($visibility) {
+            self::NOBODY => false,
+            self::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            self::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            self::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            default => true
+        };
     }
 
     /**
@@ -947,15 +964,7 @@ class FieldsConfig
         unset($fields['mdp_adh']);
 
         foreach (array_keys($fields) as $k) {
-            if (
-                $visibles[$k] == self::NOBODY
-                || ($visibles[$k] == self::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == self::STAFF
-                    && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == self::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-            ) {
+            if (!self::isGranted((int)$visibles[$k], $access_level)) {
                 unset($fields[$k]);
             }
         }
