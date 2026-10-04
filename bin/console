@@ -20,7 +20,10 @@ $basepath ??= \dirname(__DIR__) . '/galette/';
 if (getenv('GALETTE_TESTS')) {
     require_once __DIR__ . '/../tests/test_env.inc.php';
 }
-\define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
+//test environment already defines it
+if (!\defined('GALETTE_ROOT')) {
+    \define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
+}
 
 //specific logfile for console, read back by includes/galette.inc.php through the
 //scope of the require below, hence unused as far as the sniff can tell
