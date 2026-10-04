@@ -127,7 +127,7 @@ abstract class AbstractEntity
     private function insert(): bool
     {
         $zdb = $this->getDB();
-        $data = $this->toColumnData(ColumnMapping::SCOPE_INSERT);
+        $data = [];
         try {
             $zdb->beginTransaction();
 
@@ -137,6 +137,8 @@ abstract class AbstractEntity
                 return false;
             }
 
+            //collected once preInsert() had a chance to change values
+            $data = $this->toColumnData(ColumnMapping::SCOPE_INSERT);
             unset($data['id'], $data[static::PK]);
 
             $insert = $zdb->insert(static::TABLE);
@@ -250,7 +252,7 @@ abstract class AbstractEntity
     private function update(): bool
     {
         $zdb = $this->getDB();
-        $data = $this->toColumnData(ColumnMapping::SCOPE_UPDATE);
+        $data = [];
         try {
             $zdb->beginTransaction();
             if (!$this->preUpdate()) {
@@ -258,6 +260,8 @@ abstract class AbstractEntity
                 $zdb->rollBack();
                 return false;
             }
+            //collected once preUpdate() had a chance to change values
+            $data = $this->toColumnData(ColumnMapping::SCOPE_UPDATE);
             unset($data['id'], $data[static::PK]);
 
             $update = $zdb->update(static::TABLE);
