@@ -14,6 +14,7 @@ use ArrayObject;
 use Safe\DateTime;
 use Exception;
 use Galette\Events\GaletteEvent;
+use Galette\Features\HasEvent;
 use Galette\Repository\Groups;
 use OverflowException;
 use RuntimeException;
@@ -30,6 +31,8 @@ use Laminas\Db\Sql\Expression;
  */
 class Group
 {
+    use HasEvent;
+
     public const string TABLE = 'groups';
     public const string PK = 'id_group';
     //relations tables
@@ -64,6 +67,11 @@ class Group
      */
     public function __construct(ArrayObject|int|null $args = null)
     {
+        $this
+            ->withAddEvent()
+            ->withEditEvent()
+            ->withDeleteEvent();
+
         if ($args === null || is_int($args)) {
             if (is_int($args) && $args > 0) {
                 $this->load($args);
@@ -257,7 +265,7 @@ class Group
      */
     public function remove(bool $cascade = false): bool
     {
-        global $zdb;
+        global $zdb, $emitter;
         $transaction = false;
 
         if ($this->hasRemovalBlockers($cascade)) {
@@ -316,6 +324,13 @@ class Group
             //commit all changes
             if ($transaction) {
                 $zdb->commit();
+            }
+
+            //named .remove like the other removal events, HasEvent would build .delete;
+            //on a cascade removal, subgroups events are sent before the outer commit,
+            //as contributions ones are when removing a transaction
+            if ($this->hasDeleteEvent()) {
+                $emitter->dispatch(new GaletteEvent('group.remove', $this));
             }
 
             return true;
@@ -435,7 +450,7 @@ class Group
      */
     public function store(): bool
     {
-        global $zdb, $hist;
+        global $zdb, $hist, $emitter;
 
         $parent_group = null;
         if ($this->parent_group) {
@@ -479,6 +494,9 @@ class Group
                         _T("Group added"),
                         $this->group_name
                     );
+                    if ($this->hasAddEvent()) {
+                        $emitter->dispatch(new GaletteEvent((string)$this->getAddEventName(), $this));
+                    }
                     return true;
                 } else {
                     $hist->add(_T("Fail to add new group."));
@@ -503,6 +521,9 @@ class Group
                         _T("Group updated"),
                         $this->group_name
                     );
+                }
+                if ($this->hasEditEvent()) {
+                    $emitter->dispatch(new GaletteEvent((string)$this->getEditEventName(), $this));
                 }
                 return true;
             }
@@ -955,5 +976,13 @@ class Group
         }
         //group managers can edit groups they manage when pref is on
         return $preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login);
+    }
+
+    /**
+     * Get prefix for events
+     */
+    protected function getEventsPrefix(): string
+    {
+        return 'group';
     }
 }
