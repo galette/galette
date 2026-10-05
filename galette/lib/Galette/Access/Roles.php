@@ -27,8 +27,8 @@ use Throwable;
  */
 class Roles
 {
-    public const string TABLE = 'roles';
-    public const string PK = 'id_role';
+    public const string TABLE = Role::TABLE;
+    public const string PK = Role::PK;
     public const string PERMISSIONS_TABLE = 'roles_permissions';
     public const string MEMBERS_TABLE = 'members_roles';
 
@@ -171,5 +171,171 @@ class Roles
             Analog::log('Unable to initialize system roles: ' . $e->getMessage(), Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Get all roles, system ones first
+     *
+     * @return array<int, Role>
+     */
+    public function getList(): array
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select->order(self::PK);
+        $roles = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $role = new Role($row);
+            $roles[$role->getId()] = $role;
+        }
+        return $roles;
+    }
+
+    /**
+     * Get permissions a role inherits from its parents
+     *
+     * @param Role $role Role
+     *
+     * @return array<string>
+     */
+    public function getInheritedPermissions(Role $role): array
+    {
+        $roles = $this->getList();
+        $permissions = [];
+        $seen = $role->isLoaded() ? [$role->getId() => true] : [];
+        $parent = $role->getParentId();
+        while ($parent !== null && isset($roles[$parent]) && !isset($seen[$parent])) {
+            $seen[$parent] = true;
+            $permissions = array_merge($permissions, $roles[$parent]->getPermissions());
+            $parent = $roles[$parent]->getParentId();
+        }
+        $permissions = array_values(array_unique($permissions));
+        sort($permissions);
+        return $permissions;
+    }
+
+    /**
+     * Get roles a role can inherit from: neither itself nor one inheriting from it
+     *
+     * @param Role $role Role
+     *
+     * @return array<int, Role>
+     */
+    public function getPossibleParents(Role $role): array
+    {
+        $roles = $this->getList();
+        if (!$role->isLoaded()) {
+            return $roles;
+        }
+
+        $possible = [];
+        foreach ($roles as $id => $candidate) {
+            $ancestor = $candidate;
+            $seen = [];
+            $descendant = false;
+            while (!isset($seen[$ancestor->getId()])) {
+                $seen[$ancestor->getId()] = true;
+                if ($ancestor->getId() === $role->getId()) {
+                    $descendant = true;
+                    break;
+                }
+                $parent = $ancestor->getParentId();
+                if ($parent === null || !isset($roles[$parent])) {
+                    break;
+                }
+                $ancestor = $roles[$parent];
+            }
+            if (!$descendant) {
+                $possible[$id] = $candidate;
+            }
+        }
+        return $possible;
+    }
+
+    /**
+     * Get members a role has been given to
+     *
+     * @param int $role Role identifier
+     *
+     * @return array<int, array{id: int, id_adh: int, member: string, id_group: ?int, group: ?string}>
+     */
+    public function getMembersOf(int $role): array
+    {
+        $select = $this->zdb->select(self::MEMBERS_TABLE, 'mr');
+        $select->join(
+            ['a' => PREFIX_DB . \Galette\Entity\Adherent::TABLE],
+            'a.' . \Galette\Entity\Adherent::PK . ' = mr.id_adh',
+            ['nom_adh', 'prenom_adh']
+        )->join(
+            ['g' => PREFIX_DB . \Galette\Entity\Group::TABLE],
+            'g.' . \Galette\Entity\Group::PK . ' = mr.id_group',
+            ['group_name'],
+            $select::JOIN_LEFT
+        )->where(['mr.' . self::PK => $role]);
+
+        $members = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $members[(int)$row->id_member_role] = [
+                'id' => (int)$row->id_member_role,
+                'id_adh' => (int)$row->id_adh,
+                'member' => trim($row->nom_adh . ' ' . $row->prenom_adh),
+                'id_group' => $row->id_group === null ? null : (int)$row->id_group,
+                'group' => $row->group_name
+            ];
+        }
+
+        //by member, then all groups first; NULL ordering differs between databases
+        uasort(
+            $members,
+            fn(array $a, array $b): int => [$a['member'], $a['group'] !== null, $a['group']]
+                <=> [$b['member'], $b['group'] !== null, $b['group']]
+        );
+        return $members;
+    }
+
+    /**
+     * Give a role to a member, for a group or globally
+     *
+     * @param int  $member Member identifier
+     * @param int  $role   Role identifier
+     * @param ?int $group  Group identifier, null for all groups
+     *
+     * @return bool false if member already has that role
+     */
+    public function give(int $member, int $role, ?int $group = null): bool
+    {
+        $select = $this->zdb->select(self::MEMBERS_TABLE);
+        $select->where([
+            'id_adh' => $member,
+            self::PK => $role,
+            'id_group' => $group
+        ]);
+        if ($this->zdb->execute($select)->count() > 0) {
+            return false;
+        }
+
+        $insert = $this->zdb->insert(self::MEMBERS_TABLE);
+        $insert->values([
+            'id_adh' => $member,
+            self::PK => $role,
+            'id_group' => $group
+        ]);
+        $this->zdb->execute($insert);
+        return true;
+    }
+
+    /**
+     * Take a given role back
+     *
+     * @param int $role       Role identifier
+     * @param int $assignment Assignment identifier
+     */
+    public function take(int $role, int $assignment): bool
+    {
+        $delete = $this->zdb->delete(self::MEMBERS_TABLE);
+        $delete->where([
+            'id_member_role' => $assignment,
+            self::PK => $role
+        ]);
+        return $this->zdb->execute($delete)->getAffectedRows() > 0;
     }
 }
