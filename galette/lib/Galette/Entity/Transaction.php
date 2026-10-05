@@ -23,6 +23,7 @@ use Galette\Repository\Contributions;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
+use Galette\Features\AccessControlled;
 use Galette\Features\Dynamics;
 use Galette\Helpers\EntityHelper;
 
@@ -40,6 +41,7 @@ use Galette\Helpers\EntityHelper;
  */
 class Transaction implements AccessManagementInterface
 {
+    use AccessControlled;
     use Dynamics;
     use EntityHelper;
 
@@ -637,16 +639,7 @@ class Transaction implements AccessManagementInterface
      */
     public function canCreate(Login $login): bool
     {
-        global $preferences;
-
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-        return $preferences->pref_bool_groupsmanagers_create_transactions && $login->isGroupManager();
+        return $this->isGranted('transaction:create', $login);
     }
 
     /**
@@ -656,39 +649,7 @@ class Transaction implements AccessManagementInterface
      */
     public function canShow(Login $login): bool
     {
-        global $preferences;
-
-        //non-logged-in members cannot show contributions
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        //admin and staff users can edit, as well as member itself
-        if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        //group managers can see transactions of members of groups they manage - if enabled in preferences
-        if ($preferences->pref_bool_groupsmanagers_see_transactions && $this->isManagedBy($login)) {
-            return true;
-        }
-
-        //parent can see their children transactions
-        $parent = new Adherent($this->zdb);
-        $parent
-            ->disableAllDeps()
-            ->enableDep('children')
-            ->load($this->login->id);
-        if ($parent->hasChildren()) {
-            foreach ($parent->children as $child) {
-                if ($child->id === $this->member) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return false;
+        return $this->isGranted('transaction:read', $login);
     }
 
     /**
@@ -698,7 +659,7 @@ class Transaction implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        return $this->canDelete($login);
+        return $this->isGranted('transaction:edit', $login);
     }
 
     /**
@@ -709,28 +670,7 @@ class Transaction implements AccessManagementInterface
      */
     public function canAttachAndDetach(Login $login): bool
     {
-        if ($this->canEdit($login)) {
-            return true;
-        }
-
-        global $preferences;
-        return isset($this->id)
-            && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions)
-            && $this->isManagedBy($login);
-    }
-
-    /**
-     * Is transaction member part of a group managed by logged-in user?
-     *
-     * @param Login $login Login instance
-     */
-    private function isManagedBy(Login $login): bool
-    {
-        if (!$login->isGroupManager()) {
-            return false;
-        }
-        $member = new Adherent($this->zdb, (int)$this->member, deps: false);
-        return $login->isGroupManager(array_keys($member->getGroups()));
+        return $this->isGranted('transaction:attach', $login);
     }
 
     /**
@@ -740,9 +680,6 @@ class Transaction implements AccessManagementInterface
      */
     public function canDelete(Login $login): bool
     {
-        if (!$login->isLogged()) {
-            return false;
-        }
-        return $login->isAdmin() || $login->isStaff();
+        return $this->isGranted('transaction:delete', $login);
     }
 }
