@@ -15,6 +15,7 @@ use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Entity\Group;
 use Galette\Entity\Transaction;
 use Galette\Interfaces\PermissionResolverInterface;
 
@@ -78,6 +79,7 @@ class LegacyResolver implements PermissionResolverInterface
             'contribution:read' => $this->canReadContribution(...),
             'transaction:read' => $this->canReadTransaction(...),
             'transaction:attach' => $this->canAttachToTransaction(...),
+            'group:edit' => $this->canEditGroup(...),
             default => null,
         };
     }
@@ -228,6 +230,22 @@ class LegacyResolver implements PermissionResolverInterface
                 $this->preferences->pref_bool_groupsmanagers_create_contributions
                 || $this->preferences->pref_bool_groupsmanagers_see_contributions
             );
+    }
+
+    /**
+     * Can login edit a group?
+     *
+     * @param Login  $login Login to check
+     * @param ?Group $group Group
+     */
+    private function canEditGroup(Login $login, ?Group $group): bool
+    {
+        //admin and staff users can edit
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+        //group managers can edit groups they manage when pref is on
+        return $this->preferences->pref_bool_groupsmanagers_edit_groups && $group?->isManager($login) === true;
     }
 
     /**

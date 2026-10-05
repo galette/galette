@@ -112,6 +112,8 @@ class Permissions
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
             //groups managers are granted when they can either create or see contributions
             new Permission('transaction:attach', _T('Attach contributions to transactions'), $staff),
+
+            new Permission('group:edit', _T('Edit groups'), $staff, 'pref_bool_groupsmanagers_edit_groups'),
         ];
     }
 }
