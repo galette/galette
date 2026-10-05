@@ -27,17 +27,22 @@ final readonly class Permission
     /**
      * Constructor
      *
-     * @param string           $name     Permission name, "domain:action"
-     * @param string           $label    Translated label
-     * @param int              $level    Lowest legacy access level granted, one of Authentication::ACCESS_*
-     * @param string|bool|null $managers Whether groups managers are granted, on their groups:
-     *                                   always (true), never (null) or if a preference is on (its name)
+     * Groups managers and members are granted always (true), never (null), or
+     * when a preference is on (its name) - or any of them (a list of names).
+     *
+     * @param string                         $name     Permission name, "domain:action"
+     * @param string                         $label    Translated label
+     * @param int                            $level    Lowest legacy access level granted,
+     *                                                 one of Authentication::ACCESS_*
+     * @param string|array<string>|bool|null $managers Whether groups managers are granted, on their groups
+     * @param string|bool|null               $members  Whether any member is granted
      */
     public function __construct(
         public string $name,
         public string $label,
         public int $level = Authentication::ACCESS_ADMIN,
-        public string|bool|null $managers = null
+        public string|array|bool|null $managers = null,
+        public string|bool|null $members = null
     ) {
         if (!preg_match('/^[a-z][a-z0-9_-]*:[a-z][a-z0-9_-]*$/', $name)) {
             throw new \InvalidArgumentException(sprintf('Invalid permission name "%s"', $name));

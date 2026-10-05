@@ -76,7 +76,13 @@ class Permissions
         $staff = Authentication::ACCESS_STAFF;
 
         return [
-            new Permission('member:create', _T('Create members'), $staff, 'pref_bool_groupsmanagers_create_member'),
+            new Permission(
+                'member:create',
+                _T('Create members'),
+                $staff,
+                'pref_bool_groupsmanagers_create_member',
+                'pref_bool_create_member'
+            ),
             new Permission('member:read', _T('Display members'), $staff, true),
             new Permission('member:edit', _T('Edit members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
             new Permission('member:delete', _T('Delete members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
@@ -110,8 +116,12 @@ class Permissions
             ),
             new Permission('transaction:edit', _T('Edit transactions'), $staff),
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
-            //groups managers are granted when they can either create or see contributions
-            new Permission('transaction:attach', _T('Attach contributions to transactions'), $staff),
+            new Permission(
+                'transaction:attach',
+                _T('Attach contributions to transactions'),
+                $staff,
+                ['pref_bool_groupsmanagers_create_contributions', 'pref_bool_groupsmanagers_see_contributions']
+            ),
 
             new Permission('group:edit', _T('Edit groups'), $staff, 'pref_bool_groupsmanagers_edit_groups'),
         ];

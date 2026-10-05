@@ -52,6 +52,19 @@ class AccessControlTest extends GaletteTestCase
                         'pref_bool_groupsmanagers_exports'
                     ),
                     new Permission('test:admin', 'Admin', Authentication::ACCESS_ADMIN),
+                    new Permission(
+                        'test:any',
+                        'Managers if any pref is on',
+                        Authentication::ACCESS_STAFF,
+                        ['pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_mailings']
+                    ),
+                    new Permission(
+                        'test:members',
+                        'Members if pref is on',
+                        Authentication::ACCESS_STAFF,
+                        null,
+                        'pref_bool_create_member'
+                    ),
                 ];
             }
         };
@@ -81,9 +94,10 @@ class AccessControlTest extends GaletteTestCase
     {
         $login = $this->getMockBuilder(Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['getAccessLevel', 'isGroupManager'])
+            ->onlyMethods(['getAccessLevel', 'isGroupManager', 'isLogged'])
             ->getMock();
         $login->method('getAccessLevel')->willReturn($level);
+        $login->method('isLogged')->willReturn($level > Authentication::ACCESS_PUBLIC);
         $login->method('isGroupManager')->willReturn($manager);
         return $login;
     }
@@ -97,6 +111,7 @@ class AccessControlTest extends GaletteTestCase
         $this->assertSame('member', $permission->getDomain());
         $this->assertSame(Authentication::ACCESS_ADMIN, $permission->level);
         $this->assertNull($permission->managers);
+        $this->assertNull($permission->members);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid permission name "member"');
@@ -158,7 +173,36 @@ class AccessControlTest extends GaletteTestCase
         $this->preferences->pref_bool_groupsmanagers_exports = true;
         $this->assertTrue($access->can('test:pref', login: $manager));
         $this->assertFalse($access->can('test:pref', login: $member));
+
+        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        $this->assertFalse($access->can('test:any', login: $manager));
+        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+        $this->assertTrue($access->can('test:any', login: $manager));
+        $this->assertFalse($access->can('test:any', login: $member));
+
         $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
+        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings; //reset
+    }
+
+    /**
+     * Test permissions granted to any member
+     */
+    public function testLegacyMembers(): void
+    {
+        $access = $this->getAccessControl();
+        $member = $this->getLogin(Authentication::ACCESS_USER);
+        $anonymous = $this->getLogin(Authentication::ACCESS_PUBLIC);
+
+        $create_member = $this->preferences->pref_bool_create_member;
+        $this->preferences->pref_bool_create_member = false;
+        $this->assertFalse($access->can('test:members', login: $member));
+        $this->preferences->pref_bool_create_member = true;
+        $this->assertTrue($access->can('test:members', login: $member));
+        $this->assertFalse($access->can('test:members', login: $anonymous));
+        $this->assertTrue($access->can('test:members', login: $this->getLogin(Authentication::ACCESS_STAFF)));
+        $this->preferences->pref_bool_create_member = $create_member; //reset
     }
 
     /**
