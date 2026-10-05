@@ -15,6 +15,7 @@ use DateInterval;
 use Galette\Entity\Attributes\Column;
 use Safe\DateTime;
 use Galette\Events\GaletteEvent;
+use Galette\Features\AccessControlled;
 use Galette\Features\HasEvent;
 use Galette\Interfaces\AccessManagementInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -59,6 +60,7 @@ use function Safe\mkdir;
  */
 class Contribution implements AccessManagementInterface
 {
+    use AccessControlled;
     use Dynamics;
     use HasEvent;
     use EntityHelper {
@@ -1394,16 +1396,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canCreate(Login $login): bool
     {
-        global $preferences;
-
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-        return $preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager();
+        return $this->isGranted('contribution:create', $login);
     }
 
     /**
@@ -1413,40 +1406,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canShow(Login $login): bool
     {
-        global $preferences;
-
-        //non-logged-in members cannot show contributions
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        //admin and staff users can edit, as well as member itself
-        if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        //groups managers can see contributions of their group members - if preferences is enabled
-        if ($preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
-            $member = new Adherent($this->zdb, (int)$this->member, deps: false);
-            return $login->isGroupManager(array_keys($member->getGroups()));
-        }
-
-        //parent can see their children contributions
-        $parent = new Adherent($this->zdb);
-        $parent
-            ->disableAllDeps()
-            ->enableDep('children')
-            ->load($login->id);
-        if ($parent->hasChildren()) {
-            foreach ($parent->children as $child) {
-                if ($child->id === $this->member) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return false;
+        return $this->isGranted('contribution:read', $login);
     }
 
     /**
@@ -1456,10 +1416,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        if (!$login->isLogged()) {
-            return false;
-        }
-        return $login->isAdmin() || $login->isStaff();
+        return $this->isGranted('contribution:edit', $login);
     }
 
     /**
@@ -1469,7 +1426,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canDelete(Login $login): bool
     {
-        return $this->canEdit($login);
+        return $this->isGranted('contribution:delete', $login);
     }
 
     /**
