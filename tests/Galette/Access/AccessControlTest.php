@@ -66,7 +66,7 @@ class AccessControlTest extends GaletteTestCase
     {
         return new AccessControl(
             $this->getPermissions(),
-            new LegacyResolver($this->preferences),
+            new LegacyResolver($this->zdb, $this->preferences),
             $login ?? $this->login
         );
     }

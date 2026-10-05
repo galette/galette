@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace Galette\Access;
 
+use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
 use Galette\Interfaces\PermissionResolverInterface;
 
 /**
@@ -28,9 +30,11 @@ class LegacyResolver implements PermissionResolverInterface
     /**
      * Constructor
      *
+     * @param Db          $zdb         Database instance
      * @param Preferences $preferences Preferences instance
      */
     public function __construct(
+        private readonly Db $zdb,
         private readonly Preferences $preferences
     ) {
     }
@@ -70,6 +74,7 @@ class LegacyResolver implements PermissionResolverInterface
             'member:read' => $this->canReadMember(...),
             //FIXME: deleting is granted as widely as editing, too large.
             'member:edit', 'member:delete' => $this->canEditMember(...),
+            'contribution:read' => $this->canReadContribution(...),
             default => null,
         };
     }
@@ -132,6 +137,62 @@ class LegacyResolver implements PermissionResolverInterface
 
         //group managers can edit members of groups they manage when pref is on
         return $this->preferences->pref_bool_groupsmanagers_edit_member && $this->managesGroupOf($login, $member);
+    }
+
+    /**
+     * Can login display a contribution?
+     *
+     * @param Login         $login        Login to check
+     * @param ?Contribution $contribution Contribution, a new one if null
+     */
+    private function canReadContribution(Login $login, ?Contribution $contribution): bool
+    {
+        //non-logged-in members cannot show contributions
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        //admin and staff users can edit, as well as member itself
+        if (
+            $contribution?->id === null
+            || $login->id == $contribution->member
+            || $login->isAdmin()
+            || $login->isStaff()
+        ) {
+            return true;
+        }
+
+        //groups managers can see contributions of their group members - if preferences is enabled
+        if ($this->preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
+            $member = new Adherent($this->zdb, (int)$contribution->member, deps: false);
+            return $login->isGroupManager(array_keys($member->getGroups()));
+        }
+
+        //parent can see their children contributions
+        return $this->isParentOf($login, $contribution->member);
+    }
+
+    /**
+     * Is login the parent of a member?
+     *
+     * @param Login $login     Login to check
+     * @param ?int  $member_id Member identifier
+     */
+    private function isParentOf(Login $login, ?int $member_id): bool
+    {
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load($login->id);
+        if ($parent->hasChildren()) {
+            foreach ($parent->children as $child) {
+                if ($child->id === $member_id) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

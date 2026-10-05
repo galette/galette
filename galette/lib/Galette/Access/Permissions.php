@@ -80,6 +80,21 @@ class Permissions
             new Permission('member:read', _T('Display members'), $staff, true),
             new Permission('member:edit', _T('Edit members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
             new Permission('member:delete', _T('Delete members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
+
+            new Permission(
+                'contribution:create',
+                _T('Create contributions'),
+                $staff,
+                'pref_bool_groupsmanagers_create_contributions'
+            ),
+            new Permission(
+                'contribution:read',
+                _T('Display contributions'),
+                $staff,
+                'pref_bool_groupsmanagers_see_contributions'
+            ),
+            new Permission('contribution:edit', _T('Edit contributions'), $staff),
+            new Permission('contribution:delete', _T('Delete contributions'), $staff),
         ];
     }
 }
