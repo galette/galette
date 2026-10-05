@@ -34,13 +34,14 @@ $feature_flags_registry = [
      * ACLs - New Access Control Lists Management System
      *
      * Implements a new RBAC (Role-Based Access Control) system to replace
-     * the legacy permission system.
+     * the legacy permission system. Without the flag, permissions are
+     * resolved from legacy access levels and preferences.
      *
      * Status: In Development
      * Added: 2026-04-08
-     * Target: 1.2.0
+     * Target: 1.4.0
      */
-    /*'acls' => 'New Access Control Lists (RBAC) management system',*/
+    'acls' => 'New Access Control Lists (RBAC) management system',
 
     /**
      * OAuth2 - OAuth2 Authentication System
