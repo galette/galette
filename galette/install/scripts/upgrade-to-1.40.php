@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Updates;
 
+use Galette\Access\Permissions;
+use Galette\Access\Roles;
+use Galette\Core\Preferences;
 use Galette\Updater\AbstractUpdater;
 
 /**
@@ -35,6 +38,19 @@ class UpgradeTo140 extends AbstractUpdater
      */
     protected function update(): bool
     {
+        return true;
+    }
+
+    /**
+     * Post stuff, if any.
+     * Will be executed at the end.
+     */
+    protected function postUpdate(): bool
+    {
+        //system roles get what current groups managers preferences allow
+        $roles = new Roles($this->zdb, new Permissions());
+        $roles->installInit(new Preferences($this->zdb));
+        $this->addReportEntry(_T('System roles have been created.'), self::REPORT_SUCCESS);
         return true;
     }
 }

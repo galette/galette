@@ -59,11 +59,11 @@ class LegacyResolver implements PermissionResolverInterface
             return true;
         }
 
-        if ($login->isLogged() && $this->isOn($permission->members)) {
+        if ($login->isLogged() && $permission->isGrantedToMembers($this->preferences)) {
             return true;
         }
 
-        return $login->isGroupManager() && $this->isOn($permission->managers);
+        return $login->isGroupManager() && $permission->isGrantedToManagers($this->preferences);
     }
 
     /**
@@ -289,25 +289,6 @@ class LegacyResolver implements PermissionResolverInterface
 
         foreach ($member->getGroups() as $group) {
             if ($login->isGroupManager($group->getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Is a grant on: always (true), or when its preference - or any of them - is on
-     *
-     * @param string|array<string>|bool|null $grant Grant
-     */
-    private function isOn(string|array|bool|null $grant): bool
-    {
-        if (is_bool($grant) || $grant === null) {
-            return $grant === true;
-        }
-
-        foreach ((array)$grant as $preference) {
-            if ($this->preferences->$preference) {
                 return true;
             }
         }
