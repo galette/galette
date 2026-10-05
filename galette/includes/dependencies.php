@@ -57,6 +57,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
     $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
     $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\AccessControlExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
