@@ -503,9 +503,9 @@ $app->get(
 $app->get(
     '/rbac',
     [RbacController::class, 'index']
-)->setName('rbac_matrix')->add($authenticate);
+)->setName('rbac_matrix')->add(Authenticate::class);
 
 $app->post(
     '/rbac',
     [RbacController::class, 'save']
-)->setName('save_rbac_matrix')->add($authenticate);
+)->setName('save_rbac_matrix')->add(Authenticate::class);
