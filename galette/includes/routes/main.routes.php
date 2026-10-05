@@ -60,7 +60,7 @@ $app->get(
 $app->post(
     '/write-dark-css',
     [GaletteController::class, 'writeDarkCss']
-)->setName('writeDarkCSS');
+)->setName('writeDarkCSS')->add(Authenticate::class);
 
 $app->get(
     '/get-dark-css',

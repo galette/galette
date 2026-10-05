@@ -15,8 +15,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 
 use function Safe\copy;
+use function Safe\file_get_contents;
 use function Safe\filesize;
 use function Safe\preg_match;
+use function Safe\unlink;
 
 /**
 * Galette controller tests
@@ -981,5 +983,78 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
+    }
+
+    /**
+     * Build a request storing given dark mode stylesheet
+     *
+     * @param string $css Stylesheet contents
+     */
+    private function createDarkCssRequest(string $css): \Slim\Psr7\Request
+    {
+        $request = $this->createRequest('writeDarkCSS', method: 'POST', content_type: 'text/css');
+        $request->getBody()->write($css);
+        $request->getBody()->rewind();
+
+        return $request;
+    }
+
+    /**
+     * Test dark mode stylesheet storage is limited to staff
+     */
+    public function testWriteDarkCss(): void
+    {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            unlink($cssfile);
+        }
+
+        //characters a form encoded body would mangle
+        $css = 'input[type="text"] { color: #fff; } a + b { content: "&"; }' . "\n";
+
+        try {
+            //anonymous visitors cannot store it
+            $test_response = $this->app->handle($this->createDarkCssRequest($css));
+            $this->expectLogin($test_response);
+            $this->assertFileDoesNotExist($cssfile);
+
+            //nor can simple members
+            $member_one = $this->getMemberOne();
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+            $test_response = $this->app->handle($this->createDarkCssRequest($css));
+            $this->expectAuthMiddlewareRefused($test_response);
+            $this->assertFileDoesNotExist($cssfile);
+            $this->login->logOut();
+
+            //staff members can
+            $staff_member = $this->getStaffMember($member_one);
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertTrue($this->login->isStaff());
+
+            $test_response = $this->app->handle($this->createDarkCssRequest($css));
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertSame($css, file_get_contents($cssfile));
+
+            //an empty or oversized body is refused, and leaves the stored file alone
+            $test_response = $this->app->handle($this->createDarkCssRequest('  '));
+            $this->assertSame(400, $test_response->getStatusCode());
+            $test_response = $this->app->handle($this->createDarkCssRequest(str_repeat('a', 5 * 1024 * 1024 + 1)));
+            $this->assertSame(413, $test_response->getStatusCode());
+            $this->assertSame($css, file_get_contents($cssfile));
+            $this->login->logOut();
+            $this->resetStaffStatus($staff_member, $member_one);
+
+            //reading it remains public
+            $test_response = $this->app->handle($this->createRequest('getDarkCSS'));
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertSame(['text/css'], $test_response->getHeader('Content-type'));
+            $this->assertSame($css, (string)$test_response->getBody());
+        } finally {
+            if (file_exists($cssfile)) {
+                unlink($cssfile);
+            }
+        }
     }
 }

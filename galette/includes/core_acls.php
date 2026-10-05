@@ -16,6 +16,7 @@ $core_acls = [
     'unimpersonate'                     => 'member',
     'adminCredentials'                  => 'superadmin',
     'storeAdminCredentials'             => 'superadmin',
+    'writeDarkCSS'                      => 'staff', //served to every visitor
     '/(.+)?admin(.+)?/i'                => 'superadmin',
     '/(.+)?[aA]dvancedConfig(.+)?/i'    => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'admin',
