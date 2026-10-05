@@ -172,8 +172,6 @@ $container->set(\Galette\Core\AccessControl::class, function (ContainerInterface
     return $ac;
 });
 
-$container->set(\Galette\Middleware\ApiRbacMiddleware::class, \DI\autowire());
-
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
     /** @var array<string, string> $core_acls */
