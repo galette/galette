@@ -65,6 +65,36 @@ class Permissions
     }
 
     /**
+     * Get all permissions, by domain
+     *
+     * @return array<string, array<string, Permission>>
+     */
+    public function getByDomain(): array
+    {
+        $domains = [];
+        foreach ($this->getAll() as $name => $permission) {
+            $domains[$permission->getDomain()][$name] = $permission;
+        }
+        return $domains;
+    }
+
+    /**
+     * Get translated label of a domain
+     *
+     * @param string $domain Domain
+     */
+    public function getDomainLabel(string $domain): string
+    {
+        return match ($domain) {
+            'member' => _T('Members'),
+            'contribution' => _T('Contributions'),
+            'transaction' => _T('Transactions'),
+            'group' => _T('Groups'),
+            default => ucfirst($domain),
+        };
+    }
+
+    /**
      * Core permissions
      *
      * Built on first use, so labels are translated in the current language.
