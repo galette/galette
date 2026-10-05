@@ -1,0 +1,159 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% set own = role.getPermissions() %}
+
+{% block content %}
+    <form action="{{ url_for('doEditRole', {'id': role.getId()}) }}" method="post" class="ui form">
+        <div class="ui segment">
+    {% if role.isSystem() %}
+            <div class="ui info message">
+                {{ _T("This system role is given from members data; only its permissions can be changed.") }}
+            </div>
+            <div class="field inline">
+                <label>{{ _T("Inherits from") }}</label>
+                <span>{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}</span>
+            </div>
+    {% else %}
+            <div class="required field inline">
+                <label for="name">{{ _T("Name") }}</label>
+                <input type="text" name="name" id="name" value="{{ role.getName() }}" required="required" maxlength="100"/>
+            </div>
+            <div class="field inline">
+                <label for="parent">{{ _T("Inherits from") }}</label>
+                <select name="parent" id="parent" class="ui search dropdown nochosen">
+                    <option value="">{{ _T("None") }}</option>
+        {% for parent in parents %}
+                    <option value="{{ parent.getId() }}"{% if parent.getId() == role.getParentId() %} selected="selected"{% endif %}>{{ parent.getLabel() }}</option>
+        {% endfor %}
+                </select>
+            </div>
+    {% endif %}
+        </div>
+
+    {% for domain, permissions in catalog.getByDomain() %}
+        <div class="ui segment">
+            <h2 class="ui header">{{ catalog.getDomainLabel(domain) }}</h2>
+            <table class="ui compact celled table">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ _T("Permission") }}</th>
+                        <th scope="col" class="collapsing center aligned">{{ _T("Granted") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+        {% for name, permission in permissions %}
+                    {% set is_inherited = name in inherited %}
+                    <tr>
+                        <td>
+                            <label for="perm_{{ loop.parent.loop.index }}_{{ loop.index }}">{{ permission.label }}</label>
+                            <span class="ui mini basic label">{{ name }}</span>
+            {% if permission.owner %}
+                            <span class="ui mini label tooltip" title="{{ _T("Members are always granted on what they own, and what their children own.") }}">{{ _T("Always on own") }}</span>
+            {% endif %}
+                        </td>
+                        <td class="center aligned">
+                            <div class="ui fitted checkbox{% if is_inherited %} disabled{% endif %}">
+                                <input type="checkbox" name="permissions[{{ name }}]" id="perm_{{ loop.parent.loop.index }}_{{ loop.index }}" value="1"{% if name in own or is_inherited %} checked="checked"{% endif %}{% if is_inherited %} disabled="disabled"{% endif %}/>
+                                <label for="perm_{{ loop.parent.loop.index }}_{{ loop.index }}"></label>
+                            </div>
+            {% if is_inherited %}
+                            <span class="ui mini label">{{ _T("Inherited") }}</span>
+            {% endif %}
+                        </td>
+                    </tr>
+        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate="formnovalidate"/>
+        </div>
+    </form>
+
+    {% if not role.isSystem() %}
+    <div class="ui segment">
+        <h2 class="ui header">{{ _T("Members") }}</h2>
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th scope="col">{{ _T("Member") }}</th>
+                    <th scope="col">{{ _T("Group") }}</th>
+                    <th scope="col" class="collapsing">{{ _T("Actions") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for assignment in given %}
+                <tr>
+                    <td data-col-label="{{ _T("Member") }}">
+                        <a href="{{ url_for('member', {'id': assignment.id_adh}) }}">{{ assignment.member }}</a>
+                    </td>
+                    <td data-col-label="{{ _T("Group") }}">
+                        {% if assignment.group is not null %}{{ assignment.group }}{% else %}{{ _T("All groups") }}{% endif %}
+                    </td>
+                    <td class="center actions_row collapsing">
+                        <form action="{{ url_for('takeRole', {'id': role.getId(), 'assignment': assignment.id}) }}" method="post">
+                            <button type="submit" class="ui mini icon button tooltip" title="{{ _T("Take role back") }}">
+                                <i class="ui trash red icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Take role back from %1$s")|format(assignment.member) }}</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+        {% else %}
+                <tr>
+                    <td colspan="3">{{ _T("This role has not been given to anyone yet.") }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="{{ url_for('giveRole', {'id': role.getId()}) }}" method="post" class="ui form">
+            <div class="fields">
+        {% include 'components/forms/member_dropdown.html.twig' with {
+            'required': true,
+            'id': 'id_adh',
+            'label': _T("Member"),
+            'value': null,
+            'component_class': 'field'
+        } %}
+                <div class="field">
+                    <label for="id_group">{{ _T("Group") }}</label>
+                    <select name="id_group" id="id_group" class="ui search dropdown nochosen">
+                        <option value="">{{ _T("All groups") }}</option>
+        {% for id, name in groups %}
+                        <option value="{{ id }}">{{ name }}</option>
+        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label class="visually-hidden">{{ _T("Give role") }}</label>
+                    <button type="submit" class="ui labeled icon button">
+                        <i class="plus green icon" aria-hidden="true"></i>
+                        {{ _T("Give role") }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if not role.isSystem() %}
+    <script type="text/javascript">
+        {% include "elements/js/choose_adh.js.twig" %}
+        document.getElementById('id_adh_input').type = 'hidden';
+    </script>
+    {% endif %}
+{% endblock %}
