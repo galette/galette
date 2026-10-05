@@ -59,7 +59,11 @@ class LegacyResolver implements PermissionResolverInterface
             return true;
         }
 
-        return $this->isGrantedToManagers($login, $permission);
+        if ($login->isLogged() && $this->isOn($permission->members)) {
+            return true;
+        }
+
+        return $login->isGroupManager() && $this->isOn($permission->managers);
     }
 
     /**
@@ -292,17 +296,21 @@ class LegacyResolver implements PermissionResolverInterface
     }
 
     /**
-     * Are groups managers granted, whatever group they manage?
+     * Is a grant on: always (true), or when its preference - or any of them - is on
      *
-     * @param Login      $login      Login to check
-     * @param Permission $permission Permission
+     * @param string|array<string>|bool|null $grant Grant
      */
-    private function isGrantedToManagers(Login $login, Permission $permission): bool
+    private function isOn(string|array|bool|null $grant): bool
     {
-        if ($permission->managers === null || $permission->managers === false || !$login->isGroupManager()) {
-            return false;
+        if (is_bool($grant) || $grant === null) {
+            return $grant === true;
         }
 
-        return $permission->managers === true || (bool)$this->preferences->{$permission->managers};
+        foreach ((array)$grant as $preference) {
+            if ($this->preferences->$preference) {
+                return true;
+            }
+        }
+        return false;
     }
 }
