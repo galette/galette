@@ -518,6 +518,17 @@ class Galette
                         ]
                     ];
 
+                    if ($container->get(FeatureFlagManager::class)->isEnabled('acls')) {
+                        $menus['configuration']['items'][] = [
+                            'label' => _T("Roles"),
+                            'title' => _T("Manage roles and their permissions"),
+                            'route' => [
+                                'name' => 'roles',
+                                'aliases' => ['editRole']
+                            ]
+                        ];
+                    }
+
                     if ($login->isSuperAdmin()) {
                         $menus['configuration']['items'][] = [
                             'label' => _T("Administration tools"),
