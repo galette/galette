@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Access;
 
 use Galette\Core\Authentication;
+use Galette\Core\Preferences;
 
 use function Safe\preg_match;
 
@@ -55,5 +56,45 @@ final readonly class Permission
     public function getDomain(): string
     {
         return explode(':', $this->name, 2)[0];
+    }
+
+    /**
+     * Are groups managers granted, on their groups, with current preferences?
+     *
+     * @param Preferences $preferences Preferences instance
+     */
+    public function isGrantedToManagers(Preferences $preferences): bool
+    {
+        return $this->isOn($this->managers, $preferences);
+    }
+
+    /**
+     * Is any member granted, with current preferences?
+     *
+     * @param Preferences $preferences Preferences instance
+     */
+    public function isGrantedToMembers(Preferences $preferences): bool
+    {
+        return $this->isOn($this->members, $preferences);
+    }
+
+    /**
+     * Is a grant on: always (true), or when its preference - or any of them - is on
+     *
+     * @param string|array<string>|bool|null $grant       Grant
+     * @param Preferences                    $preferences Preferences instance
+     */
+    private function isOn(string|array|bool|null $grant, Preferences $preferences): bool
+    {
+        if (is_bool($grant) || $grant === null) {
+            return $grant === true;
+        }
+
+        foreach ((array)$grant as $preference) {
+            if ($preferences->$preference) {
+                return true;
+            }
+        }
+        return false;
     }
 }
