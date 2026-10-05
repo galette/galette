@@ -18,8 +18,8 @@ use function Safe\preg_match;
 /**
  * A permission, named "domain:action"
  *
- * Level and groups managers describe what legacy access levels grant; they
- * are the defaults when there is no more specific rule.
+ * Level, groups managers and members describe what legacy access levels
+ * grant; they are the defaults when there is no more specific rule.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -37,13 +37,16 @@ final readonly class Permission
      *                                                 one of Authentication::ACCESS_*
      * @param string|array<string>|bool|null $managers Whether groups managers are granted, on their groups
      * @param string|bool|null               $members  Whether any member is granted
+     * @param bool                           $owner    Whether members are granted on what they own,
+     *                                                 or what their children own
      */
     public function __construct(
         public string $name,
         public string $label,
         public int $level = Authentication::ACCESS_ADMIN,
         public string|array|bool|null $managers = null,
-        public string|bool|null $members = null
+        public string|bool|null $members = null,
+        public bool $owner = false
     ) {
         if (!preg_match('/^[a-z][a-z0-9_-]*:[a-z][a-z0-9_-]*$/', $name)) {
             throw new \InvalidArgumentException(sprintf('Invalid permission name "%s"', $name));
