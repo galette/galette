@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Access\AccessControl;
 use Galette\Core\AuthThrottle;
 use Galette\Core\Db;
 use Galette\Core\History;
@@ -47,7 +48,7 @@ abstract class AbstractController
     #[Inject]
     protected Db $zdb;
     #[Inject]
-    protected \Galette\Core\AccessControl $accessControl;
+    protected AccessControl $accessControl;
     #[Inject]
     protected Login $login;
     #[Inject]
