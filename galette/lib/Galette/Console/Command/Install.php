@@ -142,6 +142,19 @@ class Install extends AbstractCommand
             $install->loadExistingConfig([], $errors);
         }
 
+        //check before touching the database, the config file could not be written afterwards
+        if (
+            $input->getOption('write-config')
+            && !file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')
+            && !is_writable(GALETTE_CONFIG_PATH)
+        ) {
+            $io->error(sprintf(
+                'Configuration directory %s is not writable by the current user.',
+                GALETTE_CONFIG_PATH
+            ));
+            return Command::FAILURE;
+        }
+
         $db_type = $input->getOption('dbtype');
         if ($db_type === null) {
             if ($use_config && $install->getDbType() !== null) {
@@ -400,6 +413,7 @@ class Install extends AbstractCommand
 
         $install->initDbConstants();
 
+        $config_file_ok = true;
         if ($input->getOption('write-config')) {
             $io->info('Writing configuration, please wait...');
             $config_file_ok = $install->writeConfFile();
@@ -430,6 +444,11 @@ class Install extends AbstractCommand
         //(no-op if absent). CLI access already implies filesystem access.
         if ($init_ok && !$install->disableInstaller()) {
             $io->warning('Could not remove the installer enable file (' . $install->getEnableInstallFilePath() . ').');
+        }
+
+        if (!$config_file_ok || !$init_ok) {
+            $io->error('Galette installation is incomplete.');
+            return Command::FAILURE;
         }
 
         $io->success('Galette installation is complete!');
