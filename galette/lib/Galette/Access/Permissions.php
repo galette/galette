@@ -95,6 +95,23 @@ class Permissions
             ),
             new Permission('contribution:edit', _T('Edit contributions'), $staff),
             new Permission('contribution:delete', _T('Delete contributions'), $staff),
+
+            new Permission(
+                'transaction:create',
+                _T('Create transactions'),
+                $staff,
+                'pref_bool_groupsmanagers_create_transactions'
+            ),
+            new Permission(
+                'transaction:read',
+                _T('Display transactions'),
+                $staff,
+                'pref_bool_groupsmanagers_see_transactions'
+            ),
+            new Permission('transaction:edit', _T('Edit transactions'), $staff),
+            new Permission('transaction:delete', _T('Delete transactions'), $staff),
+            //groups managers are granted when they can either create or see contributions
+            new Permission('transaction:attach', _T('Attach contributions to transactions'), $staff),
         ];
     }
 }

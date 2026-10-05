@@ -15,6 +15,7 @@ use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Entity\Transaction;
 use Galette\Interfaces\PermissionResolverInterface;
 
 /**
@@ -75,6 +76,8 @@ class LegacyResolver implements PermissionResolverInterface
             //FIXME: deleting is granted as widely as editing, too large.
             'member:edit', 'member:delete' => $this->canEditMember(...),
             'contribution:read' => $this->canReadContribution(...),
+            'transaction:read' => $this->canReadTransaction(...),
+            'transaction:attach' => $this->canAttachToTransaction(...),
             default => null,
         };
     }
@@ -170,6 +173,61 @@ class LegacyResolver implements PermissionResolverInterface
 
         //parent can see their children contributions
         return $this->isParentOf($login, $contribution->member);
+    }
+
+    /**
+     * Can login display a transaction?
+     *
+     * @param Login        $login       Login to check
+     * @param ?Transaction $transaction Transaction, a new one if null
+     */
+    private function canReadTransaction(Login $login, ?Transaction $transaction): bool
+    {
+        //non-logged-in members cannot show transactions
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        //admin and staff users can edit, as well as member itself
+        if (
+            $transaction?->id === null
+            || $login->id == $transaction->member
+            || $login->isAdmin()
+            || $login->isStaff()
+        ) {
+            return true;
+        }
+
+        //group managers can see transactions - if enabled in preferences
+        //FIXME: whatever group the member belongs to, unlike contributions
+        if ($login->isGroupManager() && $this->preferences->pref_bool_groupsmanagers_see_transactions) {
+            return true;
+        }
+
+        //parent can see their children transactions
+        return $this->isParentOf($login, $transaction->member);
+    }
+
+    /**
+     * Can login attach contributions to, or detach them from, a transaction?
+     *
+     * Specific right for groups managers on transaction edit page.
+     *
+     * @param Login        $login       Login to check
+     * @param ?Transaction $transaction Transaction, a new one if null
+     */
+    private function canAttachToTransaction(Login $login, ?Transaction $transaction): bool
+    {
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        return $transaction?->id !== null
+            && $login->isGroupManager()
+            && (
+                $this->preferences->pref_bool_groupsmanagers_create_contributions
+                || $this->preferences->pref_bool_groupsmanagers_see_contributions
+            );
     }
 
     /**
