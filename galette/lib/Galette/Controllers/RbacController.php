@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -39,6 +40,11 @@ class RbacController extends AbstractController
     /**
      * Display RBAC matrix
      */
+    #[Route(
+        name: 'rbac_matrix',
+        pattern: '/rbac',
+        methods: ['GET']
+    )]
     public function index(Response $response): ResponseInterface
     {
         // 1. Fetch all permissions
@@ -91,6 +97,11 @@ class RbacController extends AbstractController
     /**
      * Save RBAC matrix
      */
+    #[Route(
+        name: 'save_rbac_matrix',
+        pattern: '/rbac',
+        methods: ['POST']
+    )]
     public function save(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
