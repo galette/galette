@@ -83,9 +83,22 @@ class Permissions
                 'pref_bool_groupsmanagers_create_member',
                 'pref_bool_create_member'
             ),
-            new Permission('member:read', _T('Display members'), $staff, true),
-            new Permission('member:edit', _T('Edit members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
-            new Permission('member:delete', _T('Delete members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
+            new Permission('member:read', _T('Display members'), $staff, true, owner: true),
+            new Permission(
+                'member:edit',
+                _T('Edit members'),
+                $staff,
+                'pref_bool_groupsmanagers_edit_member',
+                owner: true
+            ),
+            //FIXME: members can delete their own card, as they can edit it
+            new Permission(
+                'member:delete',
+                _T('Delete members'),
+                $staff,
+                'pref_bool_groupsmanagers_edit_member',
+                owner: true
+            ),
 
             new Permission(
                 'contribution:create',
@@ -97,7 +110,8 @@ class Permissions
                 'contribution:read',
                 _T('Display contributions'),
                 $staff,
-                'pref_bool_groupsmanagers_see_contributions'
+                'pref_bool_groupsmanagers_see_contributions',
+                owner: true
             ),
             new Permission('contribution:edit', _T('Edit contributions'), $staff),
             new Permission('contribution:delete', _T('Delete contributions'), $staff),
@@ -112,7 +126,8 @@ class Permissions
                 'transaction:read',
                 _T('Display transactions'),
                 $staff,
-                'pref_bool_groupsmanagers_see_transactions'
+                'pref_bool_groupsmanagers_see_transactions',
+                owner: true
             ),
             new Permission('transaction:edit', _T('Edit transactions'), $staff),
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
