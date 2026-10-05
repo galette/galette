@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Galette\Access;
 
+use Galette\Core\Authentication;
+
 /**
  * Permissions catalog
  *
@@ -71,6 +73,13 @@ class Permissions
      */
     protected function getCorePermissions(): array
     {
-        return [];
+        $staff = Authentication::ACCESS_STAFF;
+
+        return [
+            new Permission('member:create', _T('Create members'), $staff, 'pref_bool_groupsmanagers_create_member'),
+            new Permission('member:read', _T('Display members'), $staff, true),
+            new Permission('member:edit', _T('Edit members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
+            new Permission('member:delete', _T('Delete members'), $staff, 'pref_bool_groupsmanagers_edit_member'),
+        ];
     }
 }

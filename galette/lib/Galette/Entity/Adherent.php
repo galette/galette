@@ -15,6 +15,7 @@ use DateInterval;
 use Safe\DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
+use Galette\Features\AccessControlled;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
@@ -104,6 +105,7 @@ use Galette\Features\Dynamics;
  */
 class Adherent implements AccessManagementInterface
 {
+    use AccessControlled;
     use Dynamics;
     use Socials;
     use HasEvent;
@@ -2149,16 +2151,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canCreate(Login $login): bool
     {
-        global $preferences;
-
-        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        if ($preferences->pref_bool_groupsmanagers_create_member && $login->isGroupManager()) {
-            return true;
-        }
-        return $preferences->pref_bool_create_member && $login->isLogged();
+        return $this->isGranted('member:create', $login);
     }
 
     /**
@@ -2168,16 +2161,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canShow(Login $login): bool
     {
-        //group managers can show members of groups they manage
-        if ($login->isGroupManager()) {
-            foreach ($this->getGroups() as $g) {
-                if ($login->isGroupManager($g->getId())) {
-                    return true;
-                }
-            }
-        }
-
-        return $this->canEdit($login);
+        return $this->isGranted('member:read', $login);
     }
 
     /**
@@ -2187,28 +2171,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        global $preferences;
-
-        //admin and staff users can edit, as well as member itself
-        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        //parent can edit their child cards
-        if ($this->hasParent() && $this->parent_id === $login->id) {
-            return true;
-        }
-
-        //group managers can edit members of groups they manage when pref is on
-        if ($preferences->pref_bool_groupsmanagers_edit_member && $login->isGroupManager()) {
-            foreach ($this->getGroups() as $g) {
-                if ($login->isGroupManager($g->getId())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->isGranted('member:edit', $login);
     }
 
     /**
@@ -2218,8 +2181,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canDelete(Login $login): bool
     {
-        //FIXME: too large.
-        return $this->canEdit($login);
+        return $this->isGranted('member:delete', $login);
     }
 
     /**
