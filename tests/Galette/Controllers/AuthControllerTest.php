@@ -1235,9 +1235,7 @@ class AuthControllerTest extends GaletteRoutingTestCase
         //the right code no longer gets through
         $this->app->handle($this->postTo('do-two-factor', $tfa->getCodeAt($secret->getSecret())));
         $this->assertFalse($this->login->isLogged());
-        $flash = $this->flash_data['slimFlash']['error_detected'][0] ?? '';
-        $this->assertStringContainsString('Too many failed attempts', $flash);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => [_T('Too many failed attempts. Please try again later.')]]);
 
         //and it is counted apart from the password stage
         $select = $this->zdb->select(\Galette\Core\AuthThrottle::TABLE);

@@ -83,7 +83,7 @@
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
         "friendsoftwig/twigcs": "^6.2",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^2.3",
         "phpunit/phpunit": "^12.5",
         "slevomat/coding-standard": "^8.26",
         "alisqi/twigqi": "^3.0",
