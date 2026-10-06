@@ -277,7 +277,7 @@ class ListsConfig extends FieldsConfig
 
             foreach (array_keys($this->getRemainingFields()) as $field) {
                 $params = [
-                    'list_visible'  => $this->zdb->isPostgres() ? 'false' : 0,
+                    'list_visible'  => false,
                     'list_position' => -1,
                     'field_id'      => $field
                 ];

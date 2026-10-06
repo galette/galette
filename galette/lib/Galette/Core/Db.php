@@ -19,8 +19,11 @@ use LogicException;
 use RuntimeException;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Db\MysqlPlatform;
+use Galette\Core\Db\PostgresqlPlatform;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
+use Laminas\Db\Adapter\Driver\Pdo\Pdo;
 use Laminas\Db\Adapter\Driver\AbstractConnection;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Laminas\Db\Sql\Insert;
@@ -134,8 +137,13 @@ class Db
      */
     private function doConnection(): void
     {
-        $this->db = new Adapter($this->options);
-        $this->db->getDriver()->getConnection()->connect();
+        /** @var Pdo $driver */
+        $driver = (new Adapter($this->options))->getDriver();
+        $this->db = new Adapter(
+            $driver,
+            $this->type_db === self::PGSQL ? new PostgresqlPlatform($driver) : new MysqlPlatform($driver)
+        );
+        $driver->getConnection()->connect();
         $this->sql = new Sql($this->db);
 
         if (!$this->isPostgres()) {

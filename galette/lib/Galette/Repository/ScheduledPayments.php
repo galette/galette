@@ -340,10 +340,7 @@ class ScheduledPayments
             }
 
             if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {
-                $paid = $this->filters->paid
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0);
-                $select->where(['s.paid' => $paid]);
+                $select->where(['s.paid' => (bool)$this->filters->paid]);
             }
         } catch (Throwable $e) {
             Analog::log(

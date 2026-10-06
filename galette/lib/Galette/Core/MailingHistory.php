@@ -433,9 +433,7 @@ class MailingHistory extends History
             'mailing_body'              => $this->message,
             'mailing_date'              => $this->date,
             'mailing_recipients'        => Galette::jsonEncode($_recipients),
-            'mailing_sent'              => ($this->sent)
-                ? true
-                : ($this->zdb->isPostgres() ? 'false' : 0)
+            'mailing_sent'              => $this->sent
         ];
     }
 

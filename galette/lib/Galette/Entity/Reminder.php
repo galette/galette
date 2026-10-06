@@ -129,12 +129,8 @@ class Reminder
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->success)
-                ? true
-                : ($zdb->isPostgres() ? 'false' : 0),
-            'reminder_nomail'   => ($this->nomail)
-                ? true
-                : ($zdb->isPostgres() ? 'false' : 0)
+            'reminder_success'  => $this->success,
+            'reminder_nomail'   => $this->nomail
         ];
         try {
             $insert = $zdb->insert(self::TABLE);

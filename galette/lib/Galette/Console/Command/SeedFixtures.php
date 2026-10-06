@@ -833,9 +833,7 @@ class SeedFixtures extends AbstractCommand
                 'mailing_body'              => $mailing_data['body'],
                 'mailing_date'              => $mailing_data['date'],
                 'mailing_recipients'        => Galette::jsonEncode($recipients),
-                'mailing_sent'              => $mailing_data['sent']
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0),
+                'mailing_sent'              => (bool)$mailing_data['sent'],
             ]);
             $this->zdb->execute($insert);
 

@@ -949,7 +949,7 @@ class MailingQueue
 
         try {
             $update = $this->zdb->update(MailingHistory::TABLE);
-            $update->set(['mailing_sent' => $this->zdb->isPostgres() ? 'true' : 1]);
+            $update->set(['mailing_sent' => true]);
             $update->where(['mailing_id' => $mailing_id]);
             $this->zdb->execute($update);
         } catch (Throwable $e) {

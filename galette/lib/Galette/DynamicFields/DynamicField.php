@@ -656,16 +656,6 @@ abstract class DynamicField
                 'field_specifications'    => $specifications
             ];
 
-            if ($this->required === false) {
-                //Handle booleans for postgres ; bugs #18899 and #19354
-                $values['field_required'] = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
-            if ($this->information_above === false) {
-                //Handle booleans for postgres ; bugs #18899 and #19354
-                $values['field_information_above'] = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
             if (!$isnew) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($values)->where([self::PK => $this->id]);

@@ -1559,16 +1559,7 @@ class Adherent implements AccessManagementInterface
                     || empty($this->id)
                 ) {
                     $prop = $this->fields[$field]['propname'];
-                    if (
-                        ($field === 'bool_admin_adh'
-                        || $field === 'bool_exempt_adh'
-                        || $field === 'bool_display_info'
-                        || $field === 'activite_adh')
-                        && $this->$prop === false
-                    ) {
-                        //Handle booleans for postgres ; bugs #18899 and #19354
-                        $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
-                    } elseif ($field === 'parent_id') {
+                    if ($field === 'parent_id') {
                         //handle parents
                         if (!isset($this->parent)) {
                             $values['parent_id'] = new Expression('NULL');

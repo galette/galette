@@ -105,7 +105,7 @@ class TwoFactorSecret implements TwoFactorStore
                 [
                     self::PK    => $id_adh,
                     'secret'    => $secret,
-                    'enabled'   => $this->zdb->isPostgres() ? 'false' : 0,
+                    'enabled'   => false,
                     'date_crea' => date('Y-m-d H:i:s')
                 ]
             );
@@ -138,7 +138,7 @@ class TwoFactorSecret implements TwoFactorStore
         $update = $this->zdb->update(self::TABLE);
         $update->set(
             [
-                'enabled'      => $this->zdb->isPostgres() ? 'true' : 1,
+                'enabled'      => true,
                 'date_confirm' => date('Y-m-d H:i:s')
             ]
         )->where([self::PK => $this->id_adh]);

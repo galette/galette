@@ -191,7 +191,7 @@ class ScheduledPayment
             'id_paymenttype' => $this->payment_type->id,
             'scheduled_date' => $this->scheduled_date,
             'amount' => $this->amount,
-            'paid' => ($this->is_paid ? true : ($this->zdb->isPostgres() ? 'false' : 0)),
+            'paid' => $this->is_paid,
             'comment' => $this->comment
         ];
         try {

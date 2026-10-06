@@ -740,7 +740,7 @@ class FieldsConfig
             foreach ($this->categorized_fields as $cat) {
                 foreach ($cat as $pos => $field) {
                     if (in_array($field['field_id'], $this->non_required)) {
-                        $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
+                        $field['required'] = false;
                     }
 
                     if ($field['field_id'] === 'parent_id') {
@@ -829,8 +829,7 @@ class FieldsConfig
             foreach ($old_required as $or) {
                 $stmt->execute(
                     [
-                        'required'  => ($or->required === false)
-                            ? ($this->zdb->isPostgres() ? 'false' : 0) : true,
+                        'required'  => $or->required !== false,
                         'field_id'  => $or->field_id
                     ]
                 );
@@ -888,25 +887,15 @@ class FieldsConfig
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
-            $required = $d['required'];
-            if ($required === false) {
-                $required = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
-            $list_visible = $d['list_visible'] ?? false;
-            if ($list_visible === false) {
-                $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
             $stmt->execute(
                 [
                     'field_id'              => $d['field_id'],
                     'table_name'            => $d['table_name'],
-                    'required'              => $required,
+                    'required'              => $d['required'],
                     'visible'               => $d['visible'],
                     'category'              => $d['category'],
                     'position'              => $d['position'],
-                    'list_visible'          => $list_visible,
+                    'list_visible'          => $d['list_visible'] ?? false,
                     'list_position'         => $d['list_position'] ?? -1,
                     'width_in_forms'        => $d['width_in_forms'] ?? 1
                 ]

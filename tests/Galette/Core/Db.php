@@ -594,6 +594,51 @@ class Db extends BaseGaletteTestCase
     }
 
     /**
+     * Test PHP booleans are quoted the same way on every engine
+     */
+    public function testBooleanQuoting(): void
+    {
+        $platform = $this->zdb->platform;
+        $this->assertInstanceOf(
+            $this->zdb->isPostgres() ? \Galette\Core\Db\PostgresqlPlatform::class : \Galette\Core\Db\MysqlPlatform::class,
+            $platform
+        );
+        $this->assertSame("'0'", $platform->quoteValue(false));
+        $this->assertSame("'1'", $platform->quoteValue(true));
+        $this->assertSame("'0'", $platform->quoteTrustedValue(false));
+        $this->assertSame("'1'", $platform->quoteTrustedValue(true));
+
+        $insert = $this->zdb->insert('mailing_history');
+        $insert->values([
+            'mailing_subject'       => 'Boolean quoting',
+            'mailing_body'          => 'Body',
+            'mailing_date'          => '2026-10-06 00:00:00',
+            'mailing_recipients'    => '[]',
+            'mailing_sent'          => false
+        ]);
+        $this->zdb->execute($insert);
+
+        $select = $this->zdb->select('mailing_history');
+        $select->where([
+            'mailing_subject'   => 'Boolean quoting',
+            'mailing_sent'      => false
+        ]);
+        $this->assertSame(1, $this->zdb->execute($select)->count());
+
+        $update = $this->zdb->update('mailing_history');
+        $update->set(['mailing_sent' => true]);
+        $update->where(['mailing_subject' => 'Boolean quoting']);
+        $this->assertSame(1, $this->zdb->execute($update)->count());
+
+        $select = $this->zdb->select('mailing_history');
+        $select->where([
+            'mailing_subject'   => 'Boolean quoting',
+            'mailing_sent'      => true
+        ]);
+        $this->assertSame(1, $this->zdb->execute($select)->count());
+    }
+
+    /**
      * Test execute Method
      */
     public function testExecute(): void
