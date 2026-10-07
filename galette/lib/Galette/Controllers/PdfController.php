@@ -424,7 +424,7 @@ class PdfController extends AbstractController
     )]
     public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('group:export')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
