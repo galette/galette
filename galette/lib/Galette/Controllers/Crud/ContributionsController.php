@@ -714,6 +714,18 @@ class ContributionsController extends CrudController
     {
         $filter_name = $this->getFilterName($type);
         $post = $request->getParsedBody();
+        $domain = $type === 'transactions' ? 'transaction' : 'contribution';
+
+        if (
+            isset($post['csv']) && !$this->accessControl->can($domain . ':export')
+            || isset($post['delete']) && !$this->accessControl->can($domain . ':delete')
+        ) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
 
         if (isset($post['entries_sel'])) {
             $filter_class = '\\Galette\\Filters\\' . ucwords($type . 'List');
@@ -1000,6 +1012,11 @@ class ContributionsController extends CrudController
             'contributions' => 'contributions',
             default => throw new \OverflowException('Unknown type ' . $args['type']),
         };
+
+        $permission = $raw_type === 'transactions' ? 'transaction:delete' : 'contribution:delete';
+        if (!$this->accessControl->can($permission)) {
+            throw new \RuntimeException('Removal requires ' . $permission . ' permission');
+        }
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);

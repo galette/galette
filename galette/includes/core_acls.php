@@ -80,6 +80,12 @@ $core_acls = [
     '/(at|de)tach_contribution/i'       => 'transaction:attach',
     '/contributionDates/i'              => 'contribution:create|contribution:edit',
     '/(do)?editContribution/i'          => 'contribution:edit',
+    //contributions and transactions share batch, export and removal routes; type is checked in controllers
+    'batch-contributionslist'           => 'contribution:delete|contribution:export|transaction:delete|transaction:export',
+    'csv-contributionslist'             => 'contribution:export|transaction:export',
+    'removeContribution'                => 'contribution:delete|transaction:delete',
+    'removeContributions'               => 'contribution:delete|transaction:delete',
+    'doRemoveContribution'              => 'contribution:delete|transaction:delete',
     '/(.+)?contribution(.+)?/i'         => 'staff',
     '/(.*)?addTransaction/i'            => 'transaction:create',
     //attaching contributions happens on transaction edit page
