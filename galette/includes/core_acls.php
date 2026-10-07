@@ -121,5 +121,5 @@ $core_acls = [
     'attendance_sheet'                  => 'member:print',
     '/(.+)?document(.+)?/i'             => 'staff',
     '/(.+)?myScheduledPayments/i'       => 'member',
-    '/(.+)?scheduledPayment(.+)?/i'     => 'staff'
+    '/(.+)?scheduledPayment(.+)?/i'     => 'contribution:schedule'
 ];

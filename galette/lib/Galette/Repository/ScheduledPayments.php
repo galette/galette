@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
+use Galette\Access\MembersScope;
 use Galette\Entity\ScheduledPayment;
+use Galette\Features\AccessControlled;
 use Galette\Filters\ScheduledPaymentsList;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
@@ -32,6 +34,8 @@ use Safe\DateTime;
  */
 class ScheduledPayments
 {
+    use AccessControlled;
+
     public const string TABLE = ScheduledPayment::TABLE;
     public const string PK = ScheduledPayment::PK;
 
@@ -320,7 +324,7 @@ class ScheduledPayments
                 );
             }
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if (!$this->getMembersScope()->isGlobal()) {
                 $select->where(
                     [
                         'a.' . Adherent::PK => $this->login->id
@@ -349,38 +353,30 @@ class ScheduledPayments
         }
 
         //handle case when list is filtered on a single member id
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->member_filter != $this->login->id) {
-            $member = new Adherent(
-                $this->zdb,
-                (int)$this->filters->member_filter,
-                [
-                    'picture' => false,
-                    'groups' => false,
-                    'dues' => false,
-                    'parent' => true
-                ]
+        if (!$this->getMembersScope()->allows((int)$this->filters->member_filter)) {
+            Analog::log(
+                'Trying to display scheduled payments for member #' . $this->filters->member_filter
+                . ' without appropriate ACLs',
+                Analog::WARNING
             );
-            if (
-                !$member->hasParent()
-                || $member->parent->id != $this->login->id
-            ) {
-                //check if member is part of logged-in user managed groups
-                $mgroup = $this->login->getManagedGroups();
-                $groups = $member->getGroups();
-                if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
-                    Analog::log(
-                        'Trying to display scheduled payments for member #' . $member->id
-                        . ' without appropriate ACLs',
-                        Analog::WARNING
-                    );
-                    $this->filters->member_filter = $this->login->id;
-                }
-            }
+            $this->filters->member_filter = $this->login->id;
         }
         $select->where(
             [
                 'a.' . Adherent::PK => $this->filters->member_filter
             ]
+        );
+    }
+
+    /**
+     * Members whose scheduled payments current user can see
+     */
+    private function getMembersScope(): MembersScope
+    {
+        return new MembersScope(
+            $this->zdb,
+            $this->login,
+            $this->getGroupScope('contribution:schedule', $this->login)
         );
     }
 
