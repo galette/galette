@@ -100,6 +100,38 @@ class RoleResolver implements PermissionResolverInterface
     }
 
     /**
+     * Get the groups a permission is granted on
+     *
+     * @param Login      $login      Login to check
+     * @param Permission $permission Permission
+     *
+     * @return ?array<int>
+     */
+    public function getGroupScope(Login $login, Permission $permission): ?array
+    {
+        if (!$login->isLogged()) {
+            return [];
+        }
+
+        if ($login->isSuperAdmin()) {
+            return null;
+        }
+
+        $grants = $this->getGrants($login);
+        if (isset($grants['global'][$permission->name])) {
+            return null;
+        }
+
+        $groups = [];
+        foreach ($grants['groups'] as $group_id => $permissions) {
+            if (isset($permissions[$permission->name])) {
+                $groups[] = $group_id;
+            }
+        }
+        return $groups;
+    }
+
+    /**
      * Forget loaded roles and grants, after they have been changed
      */
     public function reset(): void

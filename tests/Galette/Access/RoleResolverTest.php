@@ -273,4 +273,32 @@ class RoleResolverTest extends GaletteTestCase
         $this->assertFalse($this->access->can('group:export'));
         $this->assertFalse($this->access->can('mailing:send'));
     }
+
+    /**
+     * Test groups scope
+     */
+    public function testGroupScope(): void
+    {
+        $member_one = $this->getMemberOne();
+
+        $this->assertSame([], $this->access->getGroupScope('member:read'));
+
+        $this->logSuperAdmin();
+        $this->assertNull($this->access->getGroupScope('member:read'));
+        $group = new \Galette\Entity\Group();
+        $group->setName('Scoped group');
+        $this->assertTrue($group->store());
+        $this->login->logOut();
+
+        $this->logMemberOne();
+        $this->assertSame([], $this->access->getGroupScope('member:read'));
+
+        $reader = $this->createRole('Reader', ['member:read']);
+        $this->giveRole((int)$member_one->id, $reader, $group->getId());
+        $this->assertSame([$group->getId()], $this->access->getGroupScope('member:read'));
+        $this->assertSame([], $this->access->getGroupScope('member:edit'));
+
+        $this->giveRole((int)$member_one->id, $reader);
+        $this->assertNull($this->access->getGroupScope('member:read'));
+    }
 }

@@ -67,6 +67,37 @@ class LegacyResolver implements PermissionResolverInterface
     }
 
     /**
+     * Get the groups a permission is granted on
+     *
+     * Follows levels and groups managers grants only: specific rules are not
+     * taken into account.
+     *
+     * @param Login      $login      Login to check
+     * @param Permission $permission Permission
+     *
+     * @return ?array<int>
+     */
+    public function getGroupScope(Login $login, Permission $permission): ?array
+    {
+        if ($login->getAccessLevel() >= $permission->level) {
+            return null;
+        }
+
+        if ($login->isLogged() && $permission->isGrantedToMembers($this->preferences)) {
+            return null;
+        }
+
+        if ($login->isGroupManager() && $permission->isGrantedToManagers($this->preferences)) {
+            return array_values(array_map(
+                fn(Group|int $group): int => $group instanceof Group ? (int)$group->getId() : (int)$group,
+                $login->getManagedGroups()
+            ));
+        }
+
+        return [];
+    }
+
+    /**
      * Get the specific rule of a permission, if any
      *
      * @param string $name Permission name
