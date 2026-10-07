@@ -90,6 +90,7 @@ class Permissions
             'contribution' => _T('Contributions'),
             'transaction' => _T('Transactions'),
             'group' => _T('Groups'),
+            'mailing' => _T('Mailings'),
             default => ucfirst($domain),
         };
     }
@@ -128,6 +129,18 @@ class Permissions
                 $staff,
                 'pref_bool_groupsmanagers_edit_member',
                 owner: true
+            ),
+            new Permission(
+                'member:export',
+                _T('Export members as CSV'),
+                $staff,
+                'pref_bool_groupsmanagers_exports'
+            ),
+            new Permission(
+                'member:print',
+                _T('Print members cards, labels and attendance sheets'),
+                $staff,
+                'pref_bool_groupsmanagers_exports'
             ),
 
             new Permission(
@@ -169,6 +182,9 @@ class Permissions
             ),
 
             new Permission('group:edit', _T('Edit groups'), $staff, 'pref_bool_groupsmanagers_edit_groups'),
+            new Permission('group:export', _T('Export groups as PDF'), $staff, 'pref_bool_groupsmanagers_exports'),
+
+            new Permission('mailing:send', _T('Send mailings'), $staff, 'pref_bool_groupsmanagers_mailings'),
         ];
     }
 }
