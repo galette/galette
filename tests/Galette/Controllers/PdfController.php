@@ -376,6 +376,7 @@ class PdfController extends GaletteRoutingTestCase
             $this->createRequest('pdf-members-labels', []),
             $this->createRequest(route_name: 'attendance_sheet', route_args: [], method: 'POST'),
             $this->createRequest(route_name: 'attendance_sheet_details', route_args: [], method: 'POST'),
+            $this->createRequest('pdf_groups', []),
         ];
         foreach ($requests as $request) {
             $test_response = $this->app->handle($request);
