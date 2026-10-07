@@ -123,6 +123,24 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test routes ACLs only name known permissions
+     */
+    public function testRoutesPermissionsExist(): void
+    {
+        $permissions = new Permissions();
+        $levels = ['superadmin', 'admin', 'staff', 'groupmanager', 'member'];
+        $found = 0;
+        foreach ($this->container->get('acls') as $route => $acl) {
+            if (in_array($acl, $levels, true)) {
+                continue;
+            }
+            $this->assertTrue($permissions->has($acl), sprintf('Unknown permission "%s" for route %s', $acl, $route));
+            ++$found;
+        }
+        $this->assertGreaterThan(0, $found);
+    }
+
+    /**
      * Test unknown permission
      */
     public function testUnknownPermission(): void
