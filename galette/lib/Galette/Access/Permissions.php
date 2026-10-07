@@ -172,6 +172,7 @@ class Permissions
             new Permission('contribution:mass-create', _T('Add contributions in mass'), $staff),
             new Permission('contribution:edit', _T('Edit contributions'), $staff),
             new Permission('contribution:delete', _T('Delete contributions'), $staff),
+            new Permission('contribution:export', _T('Export contributions as CSV'), $staff),
             new Permission('contribution:schedule', _T('Manage scheduled payments'), $staff),
 
             new Permission(
@@ -189,6 +190,7 @@ class Permissions
             ),
             new Permission('transaction:edit', _T('Edit transactions'), $staff),
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
+            new Permission('transaction:export', _T('Export transactions as CSV'), $staff),
             new Permission(
                 'transaction:attach',
                 _T('Attach contributions to transactions'),
