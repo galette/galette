@@ -649,7 +649,7 @@ class CsvController extends AbstractController
     )]
     public function membersExport(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:export')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],

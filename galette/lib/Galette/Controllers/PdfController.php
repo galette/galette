@@ -96,7 +96,7 @@ class PdfController extends AbstractController
             }
             // If we are called from a member's card, get unique id value
             $unique = $id_adh;
-        } elseif (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        } elseif (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -159,7 +159,7 @@ class PdfController extends AbstractController
     )]
     public function membersLabels(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -263,7 +263,7 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -320,7 +320,7 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheet(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],

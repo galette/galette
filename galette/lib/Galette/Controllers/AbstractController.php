@@ -218,21 +218,6 @@ abstract class AbstractController
     }
 
     /**
-     * Is a feature restricted by a group managers preference available to current user?
-     * Admin and staff always have access, group managers only when the preference is on.
-     *
-     * @param string $pref Preference name (one of pref_bool_groupsmanagers_*)
-     */
-    protected function isAllowedForGroupManagers(string $pref): bool
-    {
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            return true;
-        }
-
-        return $this->login->isGroupManager() && (bool)$this->preferences->$pref;
-    }
-
-    /**
      * Get a filter from session, from its name sent in request (session_var)
      *
      * Requested session entry is used only when it holds an instance of expected class,
