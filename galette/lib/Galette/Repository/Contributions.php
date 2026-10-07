@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use Galette\Entity\Group;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
@@ -21,6 +20,8 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
 use Galette\Entity\Contribution;
+use Galette\Access\MembersScope;
+use Galette\Features\AccessControlled;
 use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
@@ -35,6 +36,8 @@ use Safe\DateTime;
  */
 class Contributions
 {
+    use AccessControlled;
+
     public const string TABLE = Contribution::TABLE;
     public const string PK = Contribution::PK;
 
@@ -276,8 +279,6 @@ class Contributions
      */
     private function buildWhereClause(Select $select): void
     {
-        global $preferences;
-
         $field = match ($this->filters->date_field) {
             ContributionsList::DATE_RECORD => 'date_enreg',
             ContributionsList::DATE_END => 'date_fin_cotis',
@@ -335,43 +336,25 @@ class Contributions
                 );
             }
 
+            $scope = new MembersScope(
+                $this->zdb,
+                $this->login,
+                $this->getGroupScope('contribution:read', $this->login)
+            );
             $member_clause = null;
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                //default case, only display transactions for current member
+            if (!$scope->isGlobal()) {
+                //default case, only display contributions for current member
                 $member_clause = [$this->login->id];
             }
             if ($this->filters->filtre_cotis_adh != null) {
                 //handle case when list is filtered on a single member id
-                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
-                    $member = new Adherent(
-                        $this->zdb,
-                        (int)$this->filters->filtre_cotis_adh,
-                        [
-                            'picture' => false,
-                            'groups' => true,
-                            'dues' => false,
-                            'parent' => true
-                        ]
+                if (!$scope->allows((int)$this->filters->filtre_cotis_adh)) {
+                    Analog::log(
+                        'Trying to display contributions for member #' . $this->filters->filtre_cotis_adh
+                        . ' without appropriate ACLs',
+                        Analog::WARNING
                     );
-                    if (
-                        !$member->hasParent()
-                        || $member->parent->id != $this->login->id
-                    ) {
-                        //check if member is part of logged-in user managed groups, when managers are allowed to
-                        $mgroup = $this->login->getManagedGroups();
-                        $groups = $member->getGroups();
-                        if (
-                            !$preferences->pref_bool_groupsmanagers_see_contributions
-                            || count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0
-                        ) {
-                            Analog::log(
-                                'Trying to display contributions for member #' . $member->id
-                                . ' without appropriate ACLs',
-                                Analog::WARNING
-                            );
-                            $this->filters->filtre_cotis_adh = $this->login->id;
-                        }
-                    }
+                    $this->filters->filtre_cotis_adh = $this->login->id;
                 }
                 $member_clause = [$this->filters->filtre_cotis_adh];
             } elseif ($this->filters->filtre_cotis_children !== false) {
@@ -391,27 +374,10 @@ class Contributions
                 }
             }
 
-            if (
-                $this->filters->filtre_cotis_adh == null
-                && !$this->login->isAdmin()
-                && !$this->login->isStaff()
-                && $this->login->isGroupManager()
-                && $preferences->pref_bool_groupsmanagers_see_contributions
-            ) {
-                //limit to managed members from managed groups
-                $mgroups = $this->login->getManagedGroups();
-
-                //use a subquery rather than a join, so a member belonging to
-                //several managed groups does not duplicate its contributions
-                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
-                $groups_select->columns([Adherent::PK]);
-                $groups_select->where->in(
-                    'users_groups.' . Group::PK,
-                    array_values($mgroups)
-                );
-
+            if ($this->filters->filtre_cotis_adh == null && $scope->hasGroups()) {
+                //limit to members of the groups permission is granted on
                 $select->where->nest()
-                    ->in('c.' . Adherent::PK, $groups_select)
+                    ->in('c.' . Adherent::PK, $scope->getGroupsMembersSelect())
                     ->or
                     ->in('c.' . Adherent::PK, $member_clause);
 

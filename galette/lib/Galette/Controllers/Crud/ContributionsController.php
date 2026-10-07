@@ -471,7 +471,8 @@ class ContributionsController extends CrudController
                 break;
         }
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
+        $read = $raw_type === 'contributions' ? 'contribution:read' : 'transaction:read';
+        if ($this->accessControl->getGroupScope($read) !== null && $value != $this->login->id) {
             if ($value === 'all' || empty($value)) {
                 $value = $this->login->id;
             } else {
@@ -907,8 +908,8 @@ class ContributionsController extends CrudController
                     Contribution::PK => (string)$contrib->id
                 ]
             );
-        } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
-            //contributions list (for member if admin or staff member)
+        } elseif ($this->accessControl->getGroupScope('contribution:read') === null) {
+            //contributions list (for member if allowed to see all contributions)
             $redirect_url = $this->routeparser->urlFor(
                 'contributions',
                 [

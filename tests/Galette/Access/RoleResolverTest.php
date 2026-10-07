@@ -58,6 +58,7 @@ class RoleResolverTest extends GaletteTestCase
      */
     public function tearDown(): void
     {
+        $this->cleanContributions();
         $this->cleanMembers();
         parent::tearDown();
     }
@@ -343,5 +344,73 @@ class RoleResolverTest extends GaletteTestCase
         } finally {
             $this->container->set(AccessControl::class, $previous);
         }
+    }
+
+    /**
+     * Test contributions are restricted to the groups a role is given on
+     */
+    public function testScopedContributions(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Treasurers group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->adh = $member_two;
+        $contribution = $this->createContrib($this->getContribData());
+        $this->login->logOut();
+
+        $treasurer = $this->createRole('Treasurer', ['contribution:read']);
+        $this->giveRole((int)$member_one->id, $treasurer, $group->getId());
+
+        $previous = $this->container->get(AccessControl::class);
+        $this->container->set(AccessControl::class, $this->access);
+        try {
+            $this->logMemberOne();
+
+            $filters = new \Galette\Filters\ContributionsList();
+            $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+            $this->assertContains((int)$contribution->id, $this->getContributionsIds($contributions));
+            $this->assertTrue((new \Galette\Entity\Contribution($this->zdb, $this->login))->load((int)$contribution->id));
+
+            $filters->filtre_cotis_adh = (int)$member_two->id;
+            $this->assertContains((int)$contribution->id, $this->getContributionsIds($contributions));
+
+            //out of the group, contributions are no longer visible
+            $this->assertTrue($group->setMembers([]));
+            $this->assertNotContains((int)$contribution->id, $this->getContributionsIds($contributions));
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to display contributions for member #' . $member_two->id . ' without appropriate ACLs'
+            );
+            $filters->filtre_cotis_adh = null;
+            $this->assertNotContains((int)$contribution->id, $this->getContributionsIds($contributions));
+            $this->assertFalse((new \Galette\Entity\Contribution($this->zdb, $this->login))->load((int)$contribution->id));
+            $this->expectLogEntry(
+                \Analog\Analog::ERROR,
+                'No contribution #' . $contribution->id . ' (user ' . $member_one->id . ')'
+            );
+        } finally {
+            $this->container->set(AccessControl::class, $previous);
+        }
+    }
+
+    /**
+     * Get contributions identifiers from a list
+     *
+     * @param \Galette\Repository\Contributions $contributions Contributions repository
+     *
+     * @return array<int>
+     */
+    private function getContributionsIds(\Galette\Repository\Contributions $contributions): array
+    {
+        $ids = [];
+        foreach ($contributions->getList(false) as $row) {
+            $ids[] = (int)$row->id_cotis;
+        }
+        return $ids;
     }
 }

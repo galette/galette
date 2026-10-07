@@ -15,6 +15,7 @@ use DateInterval;
 use Galette\Entity\Attributes\Column;
 use Safe\DateTime;
 use Galette\Events\GaletteEvent;
+use Galette\Access\MembersScope;
 use Galette\Features\AccessControlled;
 use Galette\Features\HasEvent;
 use Galette\Interfaces\AccessManagementInterface;
@@ -288,8 +289,6 @@ class Contribution implements AccessManagementInterface
      */
     public function load(int $id): bool
     {
-        global $preferences;
-
         if (!$this->login->isLogged() && $this->login->id == '') {
             Analog::log('Load contribution #' . $id . ': refused, no logged in user', Analog::INFO);
             return false;
@@ -302,40 +301,29 @@ class Contribution implements AccessManagementInterface
                 'c.' . Adherent::PK . '=a.' . Adherent::PK,
                 []
             );
-            //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions)) {
-                    //limit to managed members from managed groups
-                    $mgroups = $this->login->getManagedGroups();
-                    $select->join(
-                        name: ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                        on: 'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                        columns: [],
-                        type: $select::JOIN_LEFT
-                    );
-                    $select->where
-                        ->nest()
-                            ->in('users_groups.' . Group::PK, array_values($mgroups))
-                            ->or
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id);
-                } else {
-                    $select->where
-                        ->nest()
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id)
-                    ;
-                }
-            } else {
+            $groups = $this->getLoadableGroups();
+            if ($groups === null) {
                 $select->where->equalTo(self::PK, $id);
+            } else {
+                //restrict query on current member, their children, and members
+                //of the groups contributions can be displayed or created on
+                $members = $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id);
+                if (count($groups) > 0) {
+                    $members
+                        ->or
+                        ->in(
+                            'c.' . Adherent::PK,
+                            (new MembersScope($this->zdb, $this->login, $groups))->getGroupsMembersSelect()
+                        );
+                }
+                $members
+                    ->unnest()
+                    ->and
+                    ->equalTo('c.' . self::PK, $id);
             }
 
             $results = $this->zdb->execute($select);
@@ -356,6 +344,21 @@ class Contribution implements AccessManagementInterface
         }
     }
 
+
+    /**
+     * Groups current user can load contributions from
+     *
+     * @return ?array<int> Null when all contributions can be loaded
+     */
+    private function getLoadableGroups(): ?array
+    {
+        $read = $this->getGroupScope('contribution:read', $this->login);
+        $create = $this->getGroupScope('contribution:create', $this->login);
+        if ($read === null || $create === null) {
+            return null;
+        }
+        return array_values(array_unique(array_merge($read, $create)));
+    }
     /**
      * Populate object from a resultset row
      *
@@ -545,9 +548,7 @@ class Contribution implements AccessManagementInterface
                             $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 $this->checklogin
-                                && !$this->login->isStaff()
-                                && !$this->login->isAdmin()
-                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                                && !$this->isGrantedOnMemberGroups('contribution:create', $this->login, $member)
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
                                 unset($this->member);

@@ -12,6 +12,7 @@ namespace Galette\Features;
 
 use Galette\Access\AccessControl;
 use Galette\Core\Login;
+use Galette\Entity\Adherent;
 
 /**
  * Objects whose access is checked against permissions, and lists restricted by them
@@ -50,5 +51,19 @@ trait AccessControlled
         /** @var AccessControl $access */
         $access = $container->get(AccessControl::class);
         return $access->getGroupScope($permission, $login);
+    }
+
+    /**
+     * Is permission granted on every group, or on one of the groups of a member?
+     *
+     * @param string   $permission Permission name
+     * @param Login    $login      Login instance
+     * @param Adherent $member     Member
+     */
+    protected function isGrantedOnMemberGroups(string $permission, Login $login, Adherent $member): bool
+    {
+        $groups = $this->getGroupScope($permission, $login);
+        return $groups === null
+            || count(array_intersect($groups, array_keys($member->getGroups()))) > 0;
     }
 }

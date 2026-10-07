@@ -150,8 +150,12 @@ class Transaction implements AccessManagementInterface
                 []
             );
 
-            //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
+            //restrict query on current member id if not allowed to display all transactions
+            //FIXME: any group manager can load any transaction
+            if (
+                $this->getGroupScope('transaction:read', $this->login) !== null
+                && !$this->login->isGroupManager()
+            ) {
                 $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
@@ -303,9 +307,7 @@ class Transaction implements AccessManagementInterface
                         if ($value != '') {
                             $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
-                                !$this->login->isStaff()
-                                && !$this->login->isAdmin()
-                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                                !$this->isGrantedOnMemberGroups('transaction:create', $this->login, $member)
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
                                 $this->member = null;
