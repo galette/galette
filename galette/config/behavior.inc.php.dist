@@ -64,7 +64,8 @@
  * Feature flags to activate, among those declared in
  * includes/sys_config/feature_flags.inc.php
  *
- * They only apply when GALETTE_DEBUG is enabled.
+ * Declaring this constant takes precedence over the features turned on from
+ * the advanced configuration page.
  */
 //define('GALETTE_FEATURE_FLAGS', ['acls', 'oauth2']);
 

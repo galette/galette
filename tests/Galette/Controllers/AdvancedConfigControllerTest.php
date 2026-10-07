@@ -52,13 +52,45 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
     }
 
     /**
+     * The tab the page was left on survives the password confirmation
+     */
+    public function testConfirmationKeepsTab(): void
+    {
+        $this->logSuperAdmin();
+        $this->assertTrue($this->preferences->setValue('pref_admin_pass', self::PASSWORD, $this->login));
+
+        $request = $this->createRequest('advancedConfig', query_params: ['tab' => 'features']);
+        $body = (string)$this->app->handle($request)->getBody();
+        $this->assertStringContainsString('<input type="hidden" name="tab" value="features"/>', $body);
+
+        //an unknown tab falls back to the default one
+        $request = $this->createRequest('advancedConfig', query_params: ['tab' => '"><script>']);
+        $body = (string)$this->app->handle($request)->getBody();
+        $this->assertStringContainsString('<input type="hidden" name="tab" value="settings"/>', $body);
+
+        $request = $this->createRequest('confirmAdvancedConfig', method: 'POST')
+            ->withParsedBody(['password' => self::PASSWORD, 'tab' => 'features']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('advancedConfig') . '?tab=features']],
+            $test_response->getHeaders()
+        );
+
+        $body = (string)$this->app->handle(
+            $this->createRequest('advancedConfig', query_params: ['tab' => 'features'])
+        )->getBody();
+        $this->assertStringContainsString('class="ui active tab segment" data-tab="features"', $body);
+    }
+
+    /**
      * Every route of the page is reserved to the superadmin
      */
     public function testRoutesAreSuperAdminOnly(): void
     {
         $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
 
-        foreach (['advancedConfig', 'saveAdvancedConfig', 'resetAdvancedConfig'] as $route) {
+        foreach (['advancedConfig', 'saveAdvancedConfig', 'resetAdvancedConfig', 'saveFeatureFlagAdvancedConfig'] as $route) {
             $this->assertSame(
                 'superadmin',
                 $authenticate->getAclFor($route),
@@ -104,6 +136,83 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame($default, $prefs->pref_numrows);
+    }
+
+    /**
+     * Turning an experimental feature on then off, through the page
+     */
+    public function testTurnFeatureOnThenOff(): void
+    {
+        $this->reachPage();
+        $redirect = ['Location' => [$this->routeparser->urlFor('advancedConfig') . '?tab=features']];
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString('<code>two-factor-required</code>', $body);
+        $this->assertStringNotContainsString('power off icon', $body);
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'two-factor-required', 'value' => '1']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame($redirect, $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Turned on: two-factor-required.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(['two-factor-required'], $prefs->getFeatureFlags());
+        $this->assertTrue((new \Galette\Core\FeatureFlagManager($prefs))->isEnabled('two-factor-required'));
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString('power off icon', $body);
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'two-factor-required', 'value' => '0']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['Turned off: two-factor-required.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame([], $prefs->getFeatureFlags());
+    }
+
+    /**
+     * A feature declared outside of the page cannot be changed from it
+     */
+    public function testDeclaredFeatureIsLocked(): void
+    {
+        $this->reachPage();
+        $form = '<input type="hidden" name="flag" value="two-factor-required"/>';
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString($form, $body);
+
+        $_ENV['GALETTE_FEATURE_TWO-FACTOR-REQUIRED'] = '1';
+        try {
+            $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        } finally {
+            unset($_ENV['GALETTE_FEATURE_TWO-FACTOR-REQUIRED']);
+        }
+        $this->assertStringNotContainsString($form, $body);
+        $this->assertStringContainsString('Declared in behavior.inc.php or in the environment, which takes precedence.', $body);
+    }
+
+    /**
+     * Only registered features can be turned on from the page
+     */
+    public function testTurnOnRefusesUnknown(): void
+    {
+        $this->reachPage();
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'unknown', 'value' => '1']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['An error occurred :(']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame([], $prefs->getFeatureFlags());
     }
 
     /**

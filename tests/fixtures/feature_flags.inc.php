@@ -8,7 +8,6 @@
 
 declare(strict_types=1);
 
-
 /**
  * Feature Flags Registry with Dependencies Support
  *
@@ -17,7 +16,7 @@ declare(strict_types=1);
  * IMPORTANT:
  * - Adding a flag to this registry is MANDATORY when developing a new feature
  * - Flags should be removed from this registry only when the feature is considered stable
- * - Users activate flags via GALETTE_FEATURE_FLAGS in behavior.inc.php
+ * - Super administrators turn flags on from the advanced configuration page
  *
  * Format (simple flag without dependencies):
  *   'flag_name' => 'Description of the feature'
