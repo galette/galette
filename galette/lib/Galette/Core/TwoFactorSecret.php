@@ -173,6 +173,24 @@ class TwoFactorSecret implements TwoFactorStore
     }
 
     /**
+     * Forget the last accepted time slice
+     */
+    public function forgetTimeslice(): bool
+    {
+        if ($this->id_adh === null) {
+            throw new \RuntimeException('No second factor loaded!');
+        }
+
+        $update = $this->zdb->update(self::TABLE);
+        $update->set(['last_timeslice' => null])
+            ->where([self::PK => $this->id_adh]);
+        $this->zdb->execute($update);
+
+        $this->last_timeslice = null;
+        return true;
+    }
+
+    /**
      * Drop the second factor of a member, recovery codes included
      *
      * @param int|null $id_adh Member identifier, the loaded one by default
