@@ -47,7 +47,7 @@ class MailingsController extends CrudController
     )]
     public function add(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -191,7 +191,7 @@ class MailingsController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -691,7 +691,7 @@ class MailingsController extends CrudController
     )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -759,7 +759,7 @@ class MailingsController extends CrudController
     )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -797,7 +797,7 @@ class MailingsController extends CrudController
     )]
     public function setRecipients(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->withJson(
                 $response,
                 ['error' => _T("You do not have permission for requested URL.")],
@@ -851,7 +851,7 @@ class MailingsController extends CrudController
     )]
     public function queue(Request $request, Response $response, int $id): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -906,7 +906,7 @@ class MailingsController extends CrudController
     )]
     public function processQueue(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->withJson(
                 $response,
                 ['error' => _T("You do not have permission for requested URL.")],
