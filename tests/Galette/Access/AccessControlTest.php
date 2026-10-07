@@ -190,6 +190,47 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test the exports preference grants every export permission, mailings its own
+     */
+    public function testLegacyExportsAndMailings(): void
+    {
+        $access = new AccessControl(
+            new Permissions(),
+            new LegacyResolver($this->zdb, $this->preferences),
+            $this->login
+        );
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $staff = $this->getLogin(Authentication::ACCESS_STAFF);
+        $exports_permissions = ['member:export', 'member:print', 'group:export'];
+
+        $exports = $this->preferences->pref_bool_groupsmanagers_exports;
+        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
+
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        foreach ([...$exports_permissions, 'mailing:send'] as $permission) {
+            $this->assertFalse($access->can($permission, login: $manager), $permission);
+            $this->assertTrue($access->can($permission, login: $staff), $permission);
+        }
+
+        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        foreach ($exports_permissions as $permission) {
+            $this->assertTrue($access->can($permission, login: $manager), $permission);
+        }
+        $this->assertFalse($access->can('mailing:send', login: $manager));
+
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+        foreach ($exports_permissions as $permission) {
+            $this->assertFalse($access->can($permission, login: $manager), $permission);
+        }
+        $this->assertTrue($access->can('mailing:send', login: $manager));
+
+        $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
+        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings; //reset
+    }
+
+    /**
      * Test permissions granted to any member
      */
     public function testLegacyMembers(): void

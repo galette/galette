@@ -257,4 +257,20 @@ class RoleResolverTest extends GaletteTestCase
         $this->assertTrue($this->access->can('member:edit', $member_one));
         $this->assertFalse($this->access->can('member:delete', $member_one));
     }
+
+    /**
+     * Test exports permissions are granted separately
+     */
+    public function testSplitExports(): void
+    {
+        $member_one = $this->getMemberOne();
+        $printer = $this->createRole('Printer', ['member:print']);
+        $this->giveRole((int)$member_one->id, $printer);
+
+        $this->logMemberOne();
+        $this->assertTrue($this->access->can('member:print'));
+        $this->assertFalse($this->access->can('member:export'));
+        $this->assertFalse($this->access->can('group:export'));
+        $this->assertFalse($this->access->can('mailing:send'));
+    }
 }
