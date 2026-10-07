@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Middleware;
 
 use DI\Attribute\Inject;
+use Galette\Access\AccessControl;
 use Galette\Core\Login;
 use Galette\Core\TwoFactorAuth;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -38,6 +39,9 @@ class Authenticate
      */
     #[Inject('acls')]
     protected array $acls;
+
+    #[Inject]
+    protected AccessControl $accessControl;
 
     /**
      * Constructor
@@ -102,7 +106,10 @@ class Authenticate
         $acl = $this->getAclFor($cur_route);
 
         $go = false;
-        switch ($acl) {
+        switch ($this->isPermission($acl) ? 'permission' : $acl) {
+            case 'permission':
+                $go = $this->accessControl->can($acl);
+                break;
             case 'superadmin':
                 if ($this->login->isSuperAdmin()) {
                     $go = true;
@@ -162,6 +169,16 @@ class Authenticate
         }
 
         return $handler->handle($request);
+    }
+
+    /**
+     * Is an ACL rule a permission name, "domain:action", rather than a level?
+     *
+     * @param string $acl ACL rule
+     */
+    private function isPermission(string $acl): bool
+    {
+        return str_contains($acl, ':');
     }
 
     /**
