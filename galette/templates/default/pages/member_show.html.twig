@@ -34,7 +34,7 @@
                                 <span class="visually-hidden">{{ _T("Actions") }}</span>
                                 <i class="dropdown icon" aria-hidden="true"></i>
                                 <div class="menu">
-                {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+                {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('member:credentials') %}
                                     <a
                                         href="{{ url_for("retrieve-pass", {"id_adh": member.id}) }}"
                                         id="btn_lostpassword"
@@ -45,7 +45,7 @@
                                         {{ _T("New password") }}
                                     </a>
                 {% endif %}
-                {% if preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+                {% if preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and can('member:credentials') %}
                                     {# a POST, unlike the link above: this removes a protection from someone else's account #}
                                     <form action="{{ url_for("do-two-factor-reset", {"id": member.id}) }}" method="post">
                                         <button
@@ -98,7 +98,7 @@
                                         <i class="gift icon" aria-hidden="true"></i>
                                         {{ _T("Add a donation") }}
                                     </a>
-                    {% if login.isAdmin() or login.isStaff() %}
+                    {% if can('member:create') and can('member:manage') %}
                                     <a
                                         href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"
                                         title="{{ _T("Create a new member with %1$s information.")|format(member.sfullname) }}"

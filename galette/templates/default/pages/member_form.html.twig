@@ -57,7 +57,7 @@
                             <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
             {% endif %}
                         </div>
-            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
+            {% if can('member:manage') and (addchild is not defined or not addchild) %}
                         <div class="field">
                             <div class="ui toggle checkbox">
                                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
             {% endif %}
-        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() %}
+        {% elseif can('member:manage') and not member.hasChildren() %}
                         <div class="field">
                             <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
                                 <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>

@@ -1450,8 +1450,7 @@ class Adherent implements AccessManagementInterface
 
                     if (
                         $value !== $this->$prop
-                        && !$login->isStaff()
-                        && !$login->isAdmin()
+                        && !$this->isGranted('member:manage', $login)
                         && $result->priorite_statut < Members::NON_STAFF_MEMBERS
                     ) {
                         Analog::log(
@@ -1493,7 +1492,7 @@ class Adherent implements AccessManagementInterface
                 break;
             case 'bool_admin_adh':
                 $value = (bool)$value;
-                if ($value !== $this->$prop && !$login->isAdmin()) {
+                if ($value !== $this->$prop && !$this->isGranted('member:grant-admin', $login)) {
                     Analog::log(
                         sprintf(
                             'Non allowed user %1$s attempting to change member %2$s admin flag',

@@ -131,6 +131,19 @@ class Permissions
                 owner: true
             ),
             new Permission(
+                'member:manage',
+                _T('Manage members administrative information (status, exemption, account, parent)'),
+                $staff
+            ),
+            new Permission('member:grant-admin', _T('Grant administrator rights to members'), Authentication::ACCESS_ADMIN),
+            new Permission('member:mass-edit', _T('Change or delete members in mass'), $staff),
+            new Permission(
+                'member:credentials',
+                _T('Send members new password links, reset their two-factor authentication'),
+                $staff
+            ),
+            new Permission('member:import', _T('Import members'), $staff),
+            new Permission(
                 'member:export',
                 _T('Export members as CSV'),
                 $staff,

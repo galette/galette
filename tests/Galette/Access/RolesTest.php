@@ -90,6 +90,11 @@ class RolesTest extends GaletteTestCase
     {
         $roles = new Roles($this->zdb, new Permissions());
         $all = array_keys((new Permissions())->getAll());
+        $admin = array_keys(array_filter(
+            (new Permissions())->getAll(),
+            fn($permission): bool => $permission->level === \Galette\Core\Authentication::ACCESS_ADMIN
+        ));
+        $staff = array_values(array_diff($all, $admin));
 
         $this->setPreferences(false);
         $this->assertSame(
@@ -97,8 +102,8 @@ class RolesTest extends GaletteTestCase
                 Roles::MEMBER => [],
                 Roles::UPTODATE => [],
                 Roles::MANAGER => ['member:read'],
-                Roles::STAFF => $all,
-                Roles::ADMIN => [],
+                Roles::STAFF => $staff,
+                Roles::ADMIN => $admin,
             ],
             $roles->getDefaultPermissions($this->preferences)
         );
@@ -123,8 +128,8 @@ class RolesTest extends GaletteTestCase
                     'group:export',
                     'mailing:send',
                 ],
-                Roles::STAFF => array_values(array_diff($all, ['member:create'])),
-                Roles::ADMIN => [],
+                Roles::STAFF => array_values(array_diff($staff, ['member:create'])),
+                Roles::ADMIN => $admin,
             ],
             $roles->getDefaultPermissions($this->preferences)
         );

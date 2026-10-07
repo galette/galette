@@ -50,7 +50,7 @@ $core_acls = [
     'do-two-factor-enrol'               => 'member',
     'do-two-factor-disable'             => 'member',
     'do-two-factor-codes'               => 'member',
-    'do-two-factor-reset'               => 'staff',
+    'do-two-factor-reset'               => 'member:credentials',
     'sysinfos'                          => 'staff',
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',
@@ -62,7 +62,7 @@ $core_acls = [
     'mailingQueue'                      => 'mailing:send',
     'mailingProcessQueue'               => 'mailing:send',
     '/(.+)?history(.+)?/i'              => 'staff',
-    '/(.+)?import(.+)?/i'               => 'staff',
+    '/(.+)?import(.+)?/i'               => 'member:import',
     '/(.+)?export(.+)?/i'               => 'staff',
     // /Main core rule
     // Contributions rules
@@ -95,7 +95,7 @@ $core_acls = [
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
     'ajaxGroupMembers'                  => 'staff',
-    'duplicateMember'                   => 'staff',
+    'duplicateMember'                   => 'member:manage', //and member:create, in controller
     'filterContributions'               => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',

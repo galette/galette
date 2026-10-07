@@ -1128,33 +1128,29 @@ class Galette
 
         $actions = [];
 
-        if (
-            $login->isAdmin()
-            || $login->isStaff()
-        ) {
-            $actions = array_merge(
-                $actions,
-                [
-                    [
-                        'name' => 'masschange',
-                        'label' => _T('Mass change'),
-                        'icon' => 'user edit blue'
-                    ],
-                    [
-                        'name' => 'masscontributions',
-                        'label' => _T('Mass add contributions'),
-                        'icon' => 'receipt bite green'
-                    ],
-                    [
-                        'name' => 'delete',
-                        'label' => _T('Delete'),
-                        'icon' => 'user times red'
-                    ]
-                ]
-            );
+        $access = $container->get(AccessControl::class);
+        if ($access->can('member:mass-edit', login: $login)) {
+            $actions[] = [
+                'name' => 'masschange',
+                'label' => _T('Mass change'),
+                'icon' => 'user edit blue'
+            ];
+        }
+        if ($access->can('contribution:mass-create', login: $login)) {
+            $actions[] = [
+                'name' => 'masscontributions',
+                'label' => _T('Mass add contributions'),
+                'icon' => 'receipt bite green'
+            ];
+        }
+        if ($access->can('member:mass-edit', login: $login) && $access->can('member:delete', login: $login)) {
+            $actions[] = [
+                'name' => 'delete',
+                'label' => _T('Delete'),
+                'icon' => 'user times red'
+            ];
         }
 
-        $access = $container->get(AccessControl::class);
         if (
             $access->can('mailing:send', login: $login)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
