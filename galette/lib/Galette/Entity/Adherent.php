@@ -1506,7 +1506,7 @@ class Adherent implements AccessManagementInterface
                 $this->$prop = $value;
                 break;
             case 'info_adh':
-                if ($value !== $this->$prop && !$login->isStaff() && !$login->isAdmin()) {
+                if ($value !== $this->$prop && !$this->isGranted('member:manage', $login)) {
                     Analog::log(
                         sprintf(
                             'Non allowed user %1$s attempting to change member %2$s admin information',
