@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 //TODO: find a better way.
 //Each route gets a level (superadmin, admin, staff, groupmanager or member) or a
-//permission name ("domain:action"), checked through AccessControl.
+//permission name ("domain:action"), checked through AccessControl. Permissions separated
+//with a pipe ("domain:action|domain:other") grant access when any of them is granted.
 //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $core_acls = [
     // Main core rules.
@@ -69,18 +70,21 @@ $core_acls = [
     'contributions'                     => 'member',
     'printContribution'                 => 'member',
     'myContributions'                   => 'member',
-    'contributionMembers'               => 'groupmanager',
+    //members dropdown of contributions, transactions, members (parent) and roles forms
+    'contributionMembers'               => 'contribution:create|contribution:edit|transaction:create|transaction:edit|member:manage',
     //mass changes are for staff; the addContribution rule below would let groups managers in
     'massAddContributionsChooseType'    => 'contribution:mass-create',
     'massAddContributions'              => 'contribution:mass-create',
     'doMassAddContributions'            => 'contribution:mass-create',
-    '/(.*)?addContribution/i'           => 'groupmanager',
-    '/(at|de)tach_contribution/i'       => 'groupmanager',
-    '/contributionDates/i'              => 'groupmanager',
+    '/(.*)?addContribution/i'           => 'contribution:create',
+    '/(at|de)tach_contribution/i'       => 'transaction:attach',
+    '/contributionDates/i'              => 'contribution:create|contribution:edit',
+    '/(do)?editContribution/i'          => 'contribution:edit',
     '/(.+)?contribution(.+)?/i'         => 'staff',
-    '/(.*)?addTransaction/i'            => 'groupmanager',
-    '/(.*)?editTransaction/i'           => 'groupmanager',
-    '/doEditTransaction/i'              => 'staff',
+    '/(.*)?addTransaction/i'            => 'transaction:create',
+    //attaching contributions happens on transaction edit page
+    'editTransaction'                   => 'transaction:create|transaction:edit|transaction:attach',
+    'doEditTransaction'                 => 'transaction:edit',
     '/(.+)?transaction(.+)?/i'          => 'staff',
     // /Contributions rules
     // Members rules

@@ -108,7 +108,13 @@ class Authenticate
         $go = false;
         switch ($this->isPermission($acl) ? 'permission' : $acl) {
             case 'permission':
-                $go = $this->accessControl->can($acl);
+                //several permissions separated with a pipe: any of them is enough
+                foreach (explode('|', $acl) as $permission) {
+                    if ($this->accessControl->can($permission)) {
+                        $go = true;
+                        break;
+                    }
+                }
                 break;
             case 'superadmin':
                 if ($this->login->isSuperAdmin()) {
@@ -173,6 +179,8 @@ class Authenticate
 
     /**
      * Is an ACL rule a permission name, "domain:action", rather than a level?
+     *
+     * Several permissions can be separated with a pipe, any of them is then enough.
      *
      * @param string $acl ACL rule
      */

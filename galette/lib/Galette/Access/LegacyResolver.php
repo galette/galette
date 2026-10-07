@@ -251,7 +251,7 @@ class LegacyResolver implements PermissionResolverInterface
      * Specific right for groups managers on transaction edit page.
      *
      * @param Login        $login       Login to check
-     * @param ?Transaction $transaction Transaction, a new one if null
+     * @param ?Transaction $transaction Transaction, null for any
      */
     private function canAttachToTransaction(Login $login, ?Transaction $transaction): bool
     {
@@ -259,7 +259,8 @@ class LegacyResolver implements PermissionResolverInterface
             return true;
         }
 
-        return $transaction?->id !== null
+        //no transaction: route check, existing transactions only are checked later
+        return ($transaction === null || $transaction->id !== null)
             && $login->isGroupManager()
             && (
                 $this->preferences->pref_bool_groupsmanagers_create_contributions

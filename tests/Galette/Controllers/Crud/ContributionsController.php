@@ -517,10 +517,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //with default preferences, groups manager cannot access add page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can create contributions
         $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
@@ -886,10 +883,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //with default preferences, groups manager cannot access add page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no contribution added
