@@ -129,7 +129,7 @@ final class BehaviorConstants
             ],
             'GALETTE_FEATURE_FLAGS' => [
                 self::TYPE_LIST,
-                _T("Development features to activate, among those declared in the feature flags registry. They only apply in debug mode."),
+                _T("Features to activate, among those declared in the feature flags registry. Development ones only apply in debug mode. Takes precedence over the preview features turned on from this page."),
             ],
         ];
     }

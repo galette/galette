@@ -13,6 +13,7 @@ namespace Galette\Controllers;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\AuthThrottle;
 use Galette\Core\BehaviorConstants;
+use Galette\Core\FeatureFlagManager;
 use Galette\Core\PreferencesSchema;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -52,6 +53,8 @@ class AdvancedConfigController extends AbstractController
             'documentation' => 'usermanual/avancee.html#advanced-configuration',
             'entries'       => $this->getEntries(),
             'constants'     => BehaviorConstants::getStatus(),
+            'previews'      => $this->getPreviews(),
+            'previews_locked' => $this->getFeatureFlags()->isLockedByConstant(),
         ];
 
         $this->view->render(
@@ -190,6 +193,119 @@ class AdvancedConfigController extends AbstractController
             )] : [],
             errors: $reset ? [] : $this->preferences->getErrors()
         );
+    }
+
+    /**
+     * Turn a preview feature on or off
+     */
+    #[Route(
+        name: 'saveFeatureFlagAdvancedConfig',
+        pattern: '/advanced-config/feature',
+        methods: ['POST']
+    )]
+    public function saveFeatureFlagAdvancedConfig(Request $request, Response $response): Response
+    {
+        if (!$this->isConfirmed()) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('advancedConfig'),
+                errors: [_T("Please confirm your password again.")]
+            );
+        }
+
+        $post = $request->getParsedBody();
+        $flag = strtolower((string)($post['flag'] ?? ''));
+        $turn_on = ($post['value'] ?? '0') === '1';
+        $flags = $this->getFeatureFlags();
+        $redirect_url = $this->routeparser->urlFor('advancedConfig') . '#previews';
+
+        try {
+            $change = $turn_on ? $flags->computeTurnOn($flag) : $flags->computeTurnOff($flag);
+        } catch (\DomainException $e) {
+            $error = match ($e->getCode()) {
+                FeatureFlagManager::ERR_LOCKED => _T("Preview features are set by the GALETTE_FEATURE_FLAGS constant in behavior.inc.php, which takes precedence."),
+                FeatureFlagManager::ERR_DEV_DEPENDENCY => _T("This feature requires another one that is still in development."),
+                default => _T("This is not a preview feature."),
+            };
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                errors: [$error]
+            );
+        }
+
+        if (!$this->preferences->storeFeatureFlags($change['flags'])) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                errors: [_T("An error occurred while storing preview features.")]
+            );
+        }
+
+        $changed = $turn_on ? $change['added'] : $change['removed'];
+        if ($changed !== []) {
+            $this->history->add(
+                $turn_on ? _T("Preview feature turned on") : _T("Preview feature turned off"),
+                implode(', ', $changed)
+            );
+        }
+
+        $labels = array_map(
+            fn(string $changed_flag): string => (string)$flags->getLabel($changed_flag),
+            $changed
+        );
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $changed === [] ? [] : [sprintf(
+                $turn_on
+                    //TRANS: parameter is a list of features
+                    ? _T('Turned on: %1$s.')
+                    //TRANS: parameter is a list of features
+                    : _T('Turned off: %1$s.'),
+                implode(', ', $labels)
+            )]
+        );
+    }
+
+    /**
+     * Feature flags, as stored right now
+     *
+     * Built here rather than taken from the container: the shared instance
+     * may have been loaded before the preferences it reads changed.
+     */
+    private function getFeatureFlags(): FeatureFlagManager
+    {
+        return new FeatureFlagManager($this->preferences);
+    }
+
+    /**
+     * Build what the page displays, one entry per preview feature
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function getPreviews(): array
+    {
+        $flags = $this->getFeatureFlags();
+        $status = $flags->getAllFlagsWithStatus();
+        $previews = [];
+
+        foreach (array_keys($flags->getPreviewFlags()) as $flag) {
+            $previews[] = [
+                'name'     => $flag,
+                'label'    => $flags->getLabel($flag),
+                'risk'     => $flags->getRisk($flag),
+                'enabled'  => $status[$flag]['enabled'],
+                'stored'   => in_array($flag, $flags->getStoredFlags(), strict: true),
+                'source'   => $status[$flag]['source'],
+                'requires' => array_map(
+                    fn(string $dependency): string => (string)$flags->getLabel($dependency),
+                    $status[$flag]['requires']
+                ),
+            ];
+        }
+
+        return $previews;
     }
 
     /**

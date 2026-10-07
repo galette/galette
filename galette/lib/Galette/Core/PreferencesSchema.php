@@ -784,6 +784,21 @@ final class PreferencesSchema
                 'alpha' => true,
             ],
             // === /Two-factor authentication ===
+            /*
+             * Preview features the super administrator turned on, as a comma
+             * separated list of flags. Only flags the registry marks as
+             * "preview" are honoured from here. Written by the advanced
+             * configuration page and the console, never by a form. Locked on
+             * a demonstration instance, whose credentials are public.
+             */
+            'pref_feature_flags' => [
+                'type' => self::TYPE_STRING,
+                'default' => '',
+                'readonly' => true,
+                'demo_locked' => true,
+                'acl' => self::ACL_SUPERADMIN,
+                'alpha' => true,
+            ],
             /* Throttling of failed authentication attempts */
             'pref_throttle_account_ip_attempts' => [
                 'type' => self::TYPE_INT,

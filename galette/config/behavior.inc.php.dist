@@ -64,7 +64,9 @@
  * Feature flags to activate, among those declared in
  * includes/sys_config/feature_flags.inc.php
  *
- * They only apply when GALETTE_DEBUG is enabled.
+ * Development flags only apply when GALETTE_DEBUG is enabled; preview flags
+ * apply in any mode. Declaring this constant takes precedence over preview
+ * features turned on from the advanced configuration page.
  */
 //define('GALETTE_FEATURE_FLAGS', ['acls', 'oauth2']);
 
