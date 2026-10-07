@@ -506,10 +506,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //with default preferences, groups manager cannot access add page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see group members contributions
         $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
@@ -701,13 +698,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //groups manager: refused per default configuration
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(
-            \Analog\Analog::WARNING,
-            'Trying to edit transaction without appropriate ACLs'
-        );
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can access transaction edit page
         $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
@@ -899,10 +890,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //with default preferences, groups manager cannot access add page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add transaction without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no transaction added
@@ -1077,10 +1065,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //groups manager cannot edit transactions
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see and create group members contributions
         $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
@@ -1094,13 +1079,7 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('slash')]],
-            $test_response->getHeaders()
-        );
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to edit transaction without appropriate ACLs');
-        $this->expectFlashData([]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         $this->login->logout();
     }
@@ -1416,10 +1395,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->expectFlashData(['error_detected' => ['Unable to attach contribution to transaction']]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //groups manager: refused from authenticate middleware
         //change preferences so managers can see group members contributions and see transactions
@@ -1523,10 +1499,7 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->expectFlashData(['error_detected' => ['Unable to detach contribution from transaction']]);
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //reload and check attachment
         $this->logSuperAdmin();

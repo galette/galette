@@ -134,8 +134,13 @@ class AccessControlTest extends GaletteTestCase
             if (in_array($acl, $levels, true)) {
                 continue;
             }
-            $this->assertTrue($permissions->has($acl), sprintf('Unknown permission "%s" for route %s', $acl, $route));
-            ++$found;
+            foreach (explode('|', $acl) as $permission) {
+                $this->assertTrue(
+                    $permissions->has($permission),
+                    sprintf('Unknown permission "%s" for route %s', $permission, $route)
+                );
+                ++$found;
+            }
         }
         $this->assertGreaterThan(0, $found);
     }
