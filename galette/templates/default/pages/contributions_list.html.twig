@@ -19,7 +19,10 @@
     }
 } %}
 
-{% if nb != 0 and (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+{% set can_batch = can('contribution:delete') or can('contribution:export') %}
+{% set can_edit_transactions = can('transaction:create') or can('transaction:edit') %}
+{% set read_scope = permission_scope('contribution:read') %}
+{% if nb != 0 and can_batch and mode != 'ajax' %}
     {% set batch = {
         'route': {
             'name': 'batch-contributionslist',
@@ -30,18 +33,21 @@
             'content': _T("Please make sure to select at least one contribution from the list to perform this action.")
         }
     } %}
-    {% set batch_actions = [
-        {
+    {% set batch_actions = [] %}
+    {% if can('contribution:delete') %}
+        {% set batch_actions = batch_actions|merge([{
             'name': 'delete',
             'label': _T("Delete"),
             'icon': 'trash red'
-        },
-        {
+        }]) %}
+    {% endif %}
+    {% if can('contribution:export') %}
+        {% set batch_actions = batch_actions|merge([{
             'name': 'csv__directdownload',
             'label': _T("Export as CSV"),
             'icon': 'file csv'
-        }
-    ] %}
+        }]) %}
+    {% endif %}
 {% endif %}
 
 {% set columns = [
@@ -67,7 +73,7 @@
     }
 ] %}
 
-{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+{% if (read_scope == 'all' and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
 {% endif %}
 
@@ -157,7 +163,7 @@
                 <div class="ui horizontal list">
                     <span class="ui primary ribbon label">
                         {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                        {% if read_scope != 'none' or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             <a
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
                                 class="icon-only"
@@ -182,7 +188,7 @@
                             </a>
                         </div>
                     {% endif %}
-                    {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_contributions) %}
+                    {% if can('contribution:create') %}
                         <div class="item">
                             <a href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
                                 <i class="ui user check green icon" aria-hidden="true"></i>
@@ -229,7 +235,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_contributions)) and member is not defined %}
+    {% if can('contribution:create') and member is not defined %}
         <a
             class="ui tiny labeled icon button"
             href="{{ url_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}"
@@ -273,21 +279,21 @@
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
             <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
-                <span{% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %} class="ui checkbox"{% endif %}>
-                    {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                <span{% if can_batch or mode == 'ajax' %} class="ui checkbox"{% endif %}>
+                    {% if can_batch or mode == 'ajax' %}
                         <input type="checkbox" name="entries_sel[]" id="entry_sel_{{ contribution.id }}" value="{{ contribution.id }}"/>
                         <label for="entry_sel_{{ contribution.id }}">
                     {% else %}
                         <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
                     {% endif %}
                         {{ contribution.id }}
-                    {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                    {% if can_batch or mode == 'ajax' %}
                         </label>
                     {% endif %}
                 </span>
 
-                {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                    {% if contribution.isTransactionPart() %}
+                {% if contribution.isTransactionPart() %}
+                    {% if can_edit_transactions and mode != 'ajax' %}
                         <a
                             href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                             class="icon-only"
@@ -299,9 +305,17 @@
                             </span>
                         </a>
                     {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
+                        <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">
+                            {{ _T("Is part of a transaction") }}
+                            {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                        </span>
                     {% endif %}
-                    {% if contribution.hasSchedule() %}
+                {% else %}
+                    <i class="ui icon" aria-hidden="true"></i>
+                {% endif %}
+                {% if contribution.hasSchedule() %}
+                    {% if can('contribution:schedule') and mode != 'ajax' %}
                         <a href="{{ url_for("scheduledPayments") }}?id_cotis={{ contribution.id }}" class="icon-only">
                             <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
                             <span class="visually-hidden">
@@ -309,52 +323,14 @@
                                 {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
                         </a>
-                    {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
-                    {% endif %}
-                {% elseif login.isGroupManager() %}
-                    {% if contribution.isTransactionPart() %}
-                        {% if preferences.pref_bool_groupsmanagers_create_transactions %}
-                            <a
-                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                class="icon-only"
-                            >
-                        {% endif %}
-                                <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
-                                <span class="visually-hidden">
-                                    {% if preferences.pref_bool_groupsmanagers_create_transactions %}
-                                        {{ _T('Edit transaction #%1$s')|format(contribution.transaction.id) }}
-                                    {% else %}
-                                        {{ _T("Is part of a transaction") }}
-                                    {% endif %}
-                                    {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
-                                </span>
-                        {% if preferences.pref_bool_groupsmanagers_create_transactions %}
-                            </a>
-                        {% endif %}
-                    {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
-                    {% endif %}
-                    {% if contribution.hasSchedule() %}
+                    {% elseif read_scope != 'none' %}
+                        {# others contributions are listed, own scheduled payments page would not show them #}
                         <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
                         <span class="ui special popup">
                             {{ _T("Has scheduled payments") }}
                             {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                         </span>
                     {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
-                    {% endif %}
-                {% else %}
-                    {% if contribution.isTransactionPart() %}
-                        <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">
-                            {{ _T("Is part of a transaction") }}
-                            {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
-                        </span>
-                    {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
-                    {% endif %}
-                    {% if contribution.hasSchedule() %}
                         <a href="{{ url_for("myScheduledPayments") }}?id_cotis={{ contribution.id }}" class="icon-only">
                             <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
                             <span class="visually-hidden">
@@ -362,16 +338,16 @@
                                 {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
                         </a>
-                    {% else %}
-                        <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
+                {% else %}
+                    <i class="ui icon" aria-hidden="true"></i>
                 {% endif %}
 
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ contribution.date }}</td>
             <td class="collapsing" data-col-label="{{ _T("Begin") }}">{{ contribution.begin_date }}</td>
             <td class="collapsing" data-col-label="{{ _T("End") }}">{{ contribution.end_date }}</td>
-            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+            {% if (read_scope == 'all' and member is not defined) or pmember is defined %}
                 <td data-col-label="{{ _T("Member") }}">
                     {% if member is defined %}
                         {% set mname = member.sname %}
@@ -409,7 +385,7 @@
                         <i class="ui file pdf green icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
-                    {% if (login.isAdmin() or login.isStaff()) %}
+                    {% if can('contribution:edit') %}
                         <a
                                 href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
                                 class="action icon-only"
@@ -417,6 +393,8 @@
                             <i class="ui edit icon" aria-hidden="true"></i>
                             <span class="visually-hidden">{{ _T("Edit the contribution") }}</span>
                         </a>
+                    {% endif %}
+                    {% if can('contribution:delete') %}
                         <a
                                 href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
                                 class="delete icon-only"
@@ -460,7 +438,7 @@
                         </tr>
                     </thead>
                     <tbody>
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if can('contribution:edit') or can('contribution:delete') %}
                     <tr>
                         <th scope="row">
                             <i class="ui edit blue icon" aria-hidden="true"></i>
