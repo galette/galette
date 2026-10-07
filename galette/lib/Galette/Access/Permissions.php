@@ -174,6 +174,7 @@ class Permissions
             new Permission('contribution:delete', _T('Delete contributions'), $staff),
             new Permission('contribution:export', _T('Export contributions as CSV'), $staff),
             new Permission('contribution:schedule', _T('Manage scheduled payments'), $staff),
+            new Permission('contribution:remind', _T('Send reminders to late members'), $staff),
 
             new Permission(
                 'transaction:create',

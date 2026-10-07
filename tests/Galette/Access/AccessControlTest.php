@@ -146,6 +146,38 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test contributions related routes permissions
+     */
+    public function testContributionsRoutes(): void
+    {
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
+        $expected = [
+            'addContribution' => 'contribution:create',
+            'doAddContribution' => 'contribution:create',
+            'editContribution' => 'contribution:edit',
+            'doEditContribution' => 'contribution:edit',
+            'massAddContributions' => 'contribution:mass-create',
+            'removeContribution' => 'contribution:delete|transaction:delete',
+            'csv-contributionslist' => 'contribution:export|transaction:export',
+            'addTransaction' => 'transaction:create',
+            'doAddTransaction' => 'transaction:create',
+            'editTransaction' => 'transaction:create|transaction:edit|transaction:attach',
+            'doEditTransaction' => 'transaction:edit',
+            'attach_contribution' => 'transaction:attach',
+            'scheduledPayments' => 'contribution:schedule',
+            'myScheduledPayments' => 'member',
+            'reminders' => 'contribution:remind',
+            'doReminders' => 'contribution:remind',
+            'reminders-filter' => 'contribution:remind',
+            'remindersQueue' => 'contribution:remind',
+            'remindersProcessQueue' => 'contribution:remind',
+        ];
+        foreach ($expected as $route => $acl) {
+            $this->assertSame($acl, $authenticate->getAclFor($route), $route);
+        }
+    }
+
+    /**
      * Test unknown permission
      */
     public function testUnknownPermission(): void
