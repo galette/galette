@@ -51,4 +51,23 @@ class AccessControl
             $subject
         );
     }
+
+    /**
+     * Get the groups a permission is granted on, to restrict lists
+     *
+     * @param string $permission Permission name, "domain:action"
+     * @param ?Login $login      Login to check, current one if null
+     *
+     * @return ?array<int> Null when granted on every group, groups identifiers otherwise;
+     *                     empty when not granted at all
+     *
+     * @throws \InvalidArgumentException when permission does not exist
+     */
+    public function getGroupScope(string $permission, ?Login $login = null): ?array
+    {
+        return $this->resolver->getGroupScope(
+            $login ?? $this->login,
+            $this->permissions->get($permission)
+        );
+    }
 }

@@ -97,11 +97,12 @@ class AccessControlTest extends GaletteTestCase
     {
         $login = $this->getMockBuilder(Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['getAccessLevel', 'isGroupManager', 'isLogged'])
+            ->onlyMethods(['getAccessLevel', 'isGroupManager', 'isLogged', 'getManagedGroups'])
             ->getMock();
         $login->method('getAccessLevel')->willReturn($level);
         $login->method('isLogged')->willReturn($level > Authentication::ACCESS_PUBLIC);
         $login->method('isGroupManager')->willReturn($manager);
+        $login->method('getManagedGroups')->willReturn($manager ? [3, 7] : []);
         return $login;
     }
 
@@ -187,6 +188,28 @@ class AccessControlTest extends GaletteTestCase
 
         $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
         $this->preferences->pref_bool_groupsmanagers_mailings = $mailings; //reset
+    }
+
+    /**
+     * Test groups scope from legacy levels and groups managers
+     */
+    public function testLegacyGroupScope(): void
+    {
+        $access = $this->getAccessControl();
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $member = $this->getLogin(Authentication::ACCESS_USER);
+
+        $this->assertNull($access->getGroupScope('test:staff', $this->getLogin(Authentication::ACCESS_STAFF)));
+        $this->assertSame([], $access->getGroupScope('test:staff', $manager));
+        $this->assertSame([3, 7], $access->getGroupScope('test:managers', $manager));
+        $this->assertSame([], $access->getGroupScope('test:managers', $member));
+
+        $create_member = $this->preferences->pref_bool_create_member;
+        $this->preferences->pref_bool_create_member = true;
+        $this->assertNull($access->getGroupScope('test:members', $member));
+        $this->preferences->pref_bool_create_member = false;
+        $this->assertSame([], $access->getGroupScope('test:members', $member));
+        $this->preferences->pref_bool_create_member = $create_member; //reset
     }
 
     /**

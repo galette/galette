@@ -28,4 +28,17 @@ interface PermissionResolverInterface
      * @param mixed      $subject    Object the permission applies to, if any
      */
     public function isGranted(Login $login, Permission $permission, mixed $subject = null): bool;
+
+    /**
+     * Get the groups a permission is granted on
+     *
+     * Used to restrict lists. What login owns is not part of it.
+     *
+     * @param Login      $login      Login to check
+     * @param Permission $permission Permission
+     *
+     * @return ?array<int> Null when granted on every group, groups identifiers otherwise;
+     *                     empty when not granted at all
+     */
+    public function getGroupScope(Login $login, Permission $permission): ?array;
 }
