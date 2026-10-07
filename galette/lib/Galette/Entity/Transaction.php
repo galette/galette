@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Galette\Access\MembersScope;
 use Galette\Events\GaletteEvent;
 use Galette\Interfaces\AccessManagementInterface;
 use Galette\Repository\PaymentTypes;
@@ -150,30 +151,29 @@ class Transaction implements AccessManagementInterface
                 []
             );
 
-            //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $where = $select->where
+            $groups = $this->getLoadableGroups();
+            if ($groups === null) {
+                $select->where->equalTo(self::PK, $id);
+            } else {
+                //restrict query on current member, their children, and members
+                //of the groups transactions can be displayed or attached on
+                $members = $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
                         ->or
                         ->equalTo('a.parent_id', $this->login->id);
-                if ($this->login->isGroupManager()) {
-                    //groups managers can also load transactions of members from managed groups
-                    $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
-                    $groups_select->columns([Adherent::PK]);
-                    $groups_select->where->in(
-                        'users_groups.' . Group::PK,
-                        array_values($this->login->getManagedGroups())
-                    );
-                    $where->or->in('a.' . Adherent::PK, $groups_select);
+                if (count($groups) > 0) {
+                    $members
+                        ->or
+                        ->in(
+                            't.' . Adherent::PK,
+                            (new MembersScope($this->zdb, $this->login, $groups))->getGroupsMembersSelect()
+                        );
                 }
-                $where
+                $members
                     ->unnest()
                     ->and
-                    ->equalTo('t.' . self::PK, $id)
-                ;
-            } else {
-                $select->where->equalTo(self::PK, $id);
+                    ->equalTo('t.' . self::PK, $id);
             }
 
             $results = $this->zdb->execute($select);
@@ -193,6 +193,21 @@ class Transaction implements AccessManagementInterface
             Logs::exception($e, 'An error occurred attempting to load transaction #' . $id);
             throw $e;
         }
+    }
+
+    /**
+     * Groups current user can load transactions from
+     *
+     * @return ?array<int> Null when all transactions can be loaded
+     */
+    private function getLoadableGroups(): ?array
+    {
+        $read = $this->getGroupScope('transaction:read', $this->login);
+        $attach = $this->getGroupScope('transaction:attach', $this->login);
+        if ($read === null || $attach === null) {
+            return null;
+        }
+        return array_values(array_unique(array_merge($read, $attach)));
     }
 
     /**
@@ -314,9 +329,7 @@ class Transaction implements AccessManagementInterface
                         if ($value != '') {
                             $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
-                                !$this->login->isStaff()
-                                && !$this->login->isAdmin()
-                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                                !$this->isGrantedOnMemberGroups('transaction:create', $this->login, $member)
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
                                 $this->member = null;
