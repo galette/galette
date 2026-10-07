@@ -598,6 +598,21 @@
             </div>{# /column grid #}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'rights' ? ' active' }} tab segment" data-tab="rights">
+{% if is_feature_enabled('acls') %}
+            <div class="ui icon info visible message">
+                <i class="info circle blue icon" aria-hidden="true"></i>
+                <div class="content">
+                    <p>{{ _T("Rights are managed with roles.") }}</p>
+                    <a href="{{ url_for('roles') }}" class="ui small labeled icon button"><i class="user shield icon" aria-hidden="true"></i> {{ _T("Manage roles") }}</a>
+                </div>
+            </div>
+            {# kept as is: a missing field would turn its preference off on save #}
+    {% for rights_pref in ['pref_bool_create_member', 'pref_bool_groupsmanagers_edit_groups', 'pref_bool_groupsmanagers_create_member', 'pref_bool_groupsmanagers_edit_member', 'pref_bool_groupsmanagers_mailings', 'pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_see_contributions', 'pref_bool_groupsmanagers_create_contributions', 'pref_bool_groupsmanagers_see_transactions', 'pref_bool_groupsmanagers_create_transactions'] %}
+        {% if pref[rights_pref] %}
+            <input type="hidden" name="{{ rights_pref }}" value="1"/>
+        {% endif %}
+    {% endfor %}
+{% else %}
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field inline">
@@ -666,6 +681,7 @@
                     </div>
                 </div>
             </div>
+{% endif %}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'mail' ? ' active' }} tab segment" data-tab="mail">
     {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
