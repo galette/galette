@@ -3,7 +3,7 @@ Changes
 
 1.3.0 -> 1.3.1
 
-- Chech if cconfig file can be written at installation
+- Check if config file can be written at installation
 - galette:superadmin:password failed when the super administrator had enabled two-factor authentication
 - New galette:twofactor:reset console command, to reset the second factor of the super administrator or of a member, forget its last used code, or disable two-factor authentication for the whole instance
 
