@@ -256,6 +256,14 @@ class MembersController extends CrudController
     )]
     public function duplicate(Response $response, int $id_adh): Response
     {
+        if (!$this->accessControl->can('member:create')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
@@ -1146,7 +1154,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1685,7 +1693,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1772,7 +1780,7 @@ class MembersController extends CrudController
                         $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
                 }
-                if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                if ($this->accessControl->can('member:manage')) {
                     //add/remove manager from groups
                     $managed_groups_adh = $post['groups_managed_adh'] ?? [];
                     $add_groups = Groups::addMemberToGroups(
