@@ -1,12 +1,12 @@
 INSTALLDIR = .
 LANGUAGES = `find ./ -name "galette_*.po" -print | sed 's|^\./galette_\(.*\).po|\1|'`
 DOMAINS = galette
-PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
-              $(shell find ../lib/Galette -name \*.php) \
-              $(shell find ../webroot -name \*.php) \
-              $(shell find ../includes -name \*.php) \
-              $(shell find ../install -name \*.php) \
-              $(shell find ../../tempcache -name \*.twig)
+PHP_SOURCES = $(sort $(shell find ../ -maxdepth 1 -name \*.php)) \
+              $(sort $(shell find ../lib/Galette -name \*.php)) \
+              $(sort $(shell find ../webroot -name \*.php)) \
+              $(sort $(shell find ../includes -name \*.php)) \
+              $(sort $(shell find ../install -name \*.php)) \
+              $(sort $(shell find ../../tempcache -name \*.twig))
 
 
 all : extract mo
@@ -36,5 +36,5 @@ extract : twig ${PHP_SOURCES} Makefile
 	cd ../../ && bin/console galette:twig-pot-references galette/lang/galette.pot;
 	echo "Generating en_US:"
 	@for d in ${DOMAINS}; do \
-	  LANG=C msginit --no-translator -i $$d.pot --locale=en_US.utf8 -o $${d}_en_US.po; \
+	  sed 's/charset=CHARSET/charset=UTF-8/' $$d.pot | LANG=C msginit --no-translator -i - --locale=en_US.utf8 -o $${d}_en_US.po; \
 	done
