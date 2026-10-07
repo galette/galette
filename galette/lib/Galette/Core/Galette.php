@@ -12,6 +12,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Safe\DateTime;
+use Galette\Access\AccessControl;
 use Galette\Entity\Adherent;
 use Galette\Repository\Documents;
 use Galette\IO\News;
@@ -1153,11 +1154,9 @@ class Galette
             );
         }
 
+        $access = $container->get(AccessControl::class);
         if (
-            ($login->isAdmin()
-                || $login->isStaff()
-                || $login->isGroupManager()
-                && $preferences->pref_bool_groupsmanagers_mailings)
+            $access->can('mailing:send', login: $login)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
         ) {
             $actions[] = [
@@ -1167,12 +1166,7 @@ class Galette
             ];
         }
 
-        if (
-            $login->isGroupManager()
-            && $preferences->pref_bool_groupsmanagers_exports
-            || $login->isAdmin()
-            || $login->isStaff()
-        ) {
+        if ($access->can('member:print', login: $login)) {
             $actions = array_merge(
                 $actions,
                 [
@@ -1191,13 +1185,16 @@ class Galette
                         'label' => _T('Generate Member Cards'),
                         'icon' => 'id badge'
                     ],
-                    [
-                        'name' => 'csv__directdownload',
-                        'label' => _T('Export as CSV'),
-                        'icon' => 'file csv'
-                    ],
                 ]
             );
+        }
+
+        if ($access->can('member:export', login: $login)) {
+            $actions[] = [
+                'name' => 'csv__directdownload',
+                'label' => _T('Export as CSV'),
+                'icon' => 'file csv'
+            ];
         }
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {

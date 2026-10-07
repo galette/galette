@@ -6,8 +6,6 @@
 
 {% extends "page.html.twig" %}
 
-{% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
-
 {% block content %}
     {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
 {% endblock %}
