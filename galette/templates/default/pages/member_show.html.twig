@@ -74,7 +74,7 @@
                                         {{ _T("Adhesion form") }}
                                     </a>
                 {% endif %}
-                {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
+                {% if permission_scope('contribution:read') == 'all' or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
                                     <a
                                         href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
                                         class="ui item"
@@ -83,7 +83,7 @@
                                         {{ _T("View contributions") }}
                                     </a>
                 {% endif %}
-                {% if login.isAdmin() or login.isStaff() %}
+                {% if permission_scope('contribution:create') == 'all' %}
                                     <a
                                         href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
                                         class="ui item"
@@ -98,6 +98,8 @@
                                         <i class="gift icon" aria-hidden="true"></i>
                                         {{ _T("Add a donation") }}
                                     </a>
+                {% endif %}
+                {% if login.isAdmin() or login.isStaff() %}
                     {% if can('member:create') and can('member:manage') %}
                                     <a
                                         href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"

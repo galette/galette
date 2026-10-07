@@ -39,6 +39,7 @@ class AccessControlExtension extends AbstractExtension
     {
         return [
             new TwigFunction('can', $this->can(...)),
+            new TwigFunction('permission_scope', $this->getScope(...)),
         ];
     }
 
@@ -51,5 +52,24 @@ class AccessControlExtension extends AbstractExtension
     public function can(string $permission, mixed $subject = null): bool
     {
         return $this->accessControl->can($permission, $subject);
+    }
+
+    /**
+     * On which members is permission granted to current login?
+     *
+     * Lists use it, as can() without a subject does not tell whether other
+     * members are reachable.
+     *
+     * @param string $permission Permission name, "domain:action"
+     *
+     * @return string "all" for every member, "groups" for some groups members, "none" otherwise
+     */
+    public function getScope(string $permission): string
+    {
+        return match ($this->accessControl->getGroupScope($permission)) {
+            null => 'all',
+            [] => 'none',
+            default => 'groups',
+        };
     }
 }

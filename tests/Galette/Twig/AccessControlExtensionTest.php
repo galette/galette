@@ -41,11 +41,31 @@ class AccessControlExtensionTest extends GaletteTestCase
     }
 
     /**
+     * Test permission_scope() names access control groups scope
+     */
+    public function testScope(): void
+    {
+        $access = $this->createStub(AccessControl::class);
+        $access->method('getGroupScope')
+            ->willReturnMap([
+                ['contribution:read', null, null],
+                ['transaction:read', null, [3, 7]],
+                ['contribution:create', null, []],
+            ]);
+
+        $extension = new AccessControlExtension($access);
+        $this->assertSame('all', $extension->getScope('contribution:read'));
+        $this->assertSame('groups', $extension->getScope('transaction:read'));
+        $this->assertSame('none', $extension->getScope('contribution:create'));
+    }
+
+    /**
      * Test can() is available in templates
      */
     public function testRegistered(): void
     {
         $view = $this->container->get(\Slim\Views\Twig::class);
         $this->assertNotNull($view->getEnvironment()->getFunction('can'));
+        $this->assertNotNull($view->getEnvironment()->getFunction('permission_scope'));
     }
 }
