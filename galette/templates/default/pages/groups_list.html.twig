@@ -6,7 +6,7 @@
 
 {% extends 'elements/list.html.twig' %}
 
-{% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
+{% set can_export = can('group:export') %}
 {% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
 
 {% if can_edit %}

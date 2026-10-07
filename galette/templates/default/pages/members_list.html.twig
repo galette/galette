@@ -447,7 +447,7 @@
 {% endfor %}
 {% endblock %}
 
-{% if nb_members != 0 and (login.isGroupManager() and (preferences.pref_bool_groupsmanagers_exports or preferences.pref_bool_groupsmanagers_mailings) or login.isAdmin() or login.isStaff()) %}
+{% if nb_members != 0 and (can('member:export') or can('member:print') or can('mailing:send')) %}
     {% set batch = {
         'route': {
             'name': 'batch-memberslist'
