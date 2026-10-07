@@ -70,10 +70,10 @@ $core_acls = [
     'printContribution'                 => 'member',
     'myContributions'                   => 'member',
     'contributionMembers'               => 'groupmanager',
-    //mass contributions are for staff only
-    'massAddContributionsChooseType'    => 'staff',
-    'massAddContributions'              => 'staff',
-    'doMassAddContributions'            => 'staff',
+    //mass changes are for staff; the addContribution rule below would let groups managers in
+    'massAddContributionsChooseType'    => 'contribution:mass-create',
+    'massAddContributions'              => 'contribution:mass-create',
+    'doMassAddContributions'            => 'contribution:mass-create',
     '/(.*)?addContribution/i'           => 'groupmanager',
     '/(at|de)tach_contribution/i'       => 'groupmanager',
     '/contributionDates/i'              => 'groupmanager',
