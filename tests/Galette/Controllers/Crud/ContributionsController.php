@@ -1343,4 +1343,26 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->expectAuthMiddlewareRefused($test_response);
     }
+
+    /**
+     * Test mass contributions are refused to group managers
+     */
+    public function testMassAddContributionsGroupManager(): void
+    {
+        $this->logGroupManager();
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+
+        $requests = [
+            $this->createRequest('massAddContributionsChooseType', []),
+            $this->createRequest('massAddContributions', [], 'POST'),
+            $this->createRequest('doMassAddContributions', [], 'POST'),
+        ];
+        foreach ($requests as $request) {
+            $test_response = $this->app->handle($request);
+            $this->expectAuthMiddlewareRefused($test_response);
+        }
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+
+        $this->login->logOut();
+    }
 }

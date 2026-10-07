@@ -59,6 +59,10 @@ $core_acls = [
     'printContribution'                 => 'member',
     'myContributions'                   => 'member',
     'contributionMembers'               => 'groupmanager',
+    //mass contributions are for staff only
+    'massAddContributionsChooseType'    => 'staff',
+    'massAddContributions'              => 'staff',
+    'doMassAddContributions'            => 'staff',
     '/(.*)?addContribution/i'           => 'groupmanager',
     '/(at|de)tach_contribution/i'       => 'groupmanager',
     '/contributionDates/i'              => 'groupmanager',
