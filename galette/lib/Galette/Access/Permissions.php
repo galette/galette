@@ -156,6 +156,7 @@ class Permissions
                 'pref_bool_groupsmanagers_see_contributions',
                 owner: true
             ),
+            new Permission('contribution:mass-create', _T('Add contributions in mass'), $staff),
             new Permission('contribution:edit', _T('Edit contributions'), $staff),
             new Permission('contribution:delete', _T('Delete contributions'), $staff),
 
