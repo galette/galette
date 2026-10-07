@@ -9,6 +9,8 @@
 declare(strict_types=1);
 
 //TODO: find a better way.
+//Each route gets a level (superadmin, admin, staff, groupmanager or member) or a
+//permission name ("domain:action"), checked through AccessControl.
 //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $core_acls = [
     // Main core rules.
