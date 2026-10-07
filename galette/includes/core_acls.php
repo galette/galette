@@ -55,12 +55,12 @@ $core_acls = [
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',
     '/(.+)?mailing(.+)?/i'              => 'staff',
-    'mailing'                           => 'groupmanager',
-    'doMailing'                         => 'groupmanager',
-    'mailingPreview'                    => 'groupmanager',
-    'mailingRecipients'                 => 'groupmanager',
-    'mailingQueue'                      => 'groupmanager',
-    'mailingProcessQueue'               => 'groupmanager',
+    'mailing'                           => 'mailing:send',
+    'doMailing'                         => 'mailing:send',
+    'mailingPreview'                    => 'mailing:send',
+    'mailingRecipients'                 => 'mailing:send',
+    'mailingQueue'                      => 'mailing:send',
+    'mailingProcessQueue'               => 'mailing:send',
     '/(.+)?history(.+)?/i'              => 'staff',
     '/(.+)?import(.+)?/i'               => 'staff',
     '/(.+)?export(.+)?/i'               => 'staff',
@@ -87,6 +87,8 @@ $core_acls = [
     'me'                                => 'member',
     'member'                            => 'member',
     'pdf-members-cards'                 => 'member',
+    'pdf-members-labels'                => 'member:print',
+    'csv-memberslist'                   => 'member:export',
     'editMember'                        => 'member',
     'memberVCard'                       => 'member',
     '/(.+)?addMemberChild/i'            => 'member',
@@ -100,6 +102,7 @@ $core_acls = [
     // /Members rules
     // Groups rules
     'doAddGroup'                        => 'staff', //adding group is for staff only
+    'pdf_groups'                        => 'group:export',
     '/(.+)?group(.+)?/i'                => 'groupmanager',
     // /Groups rules
 
@@ -113,8 +116,8 @@ $core_acls = [
     'previewAttachment'                 => 'groupmanager',
     'getCsv'                            => 'staff',
     '/(store)?pdfModels/i'              => 'staff',
-    'attendance_sheet_details'          => 'groupmanager',
-    'attendance_sheet'                  => 'groupmanager',
+    'attendance_sheet_details'          => 'member:print',
+    'attendance_sheet'                  => 'member:print',
     '/(.+)?document(.+)?/i'             => 'staff',
     '/(.+)?myScheduledPayments/i'       => 'member',
     '/(.+)?scheduledPayment(.+)?/i'     => 'staff'
