@@ -213,6 +213,69 @@ class FieldsConfig extends GaletteTestCase
     }
 
     /**
+     * Test admin information visibility cannot be opened to members
+     */
+    public function testAdminInfoVisibility(): void
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->installInit();
+        $fields_config->load();
+
+        $set_visibility = function (int $visible) use ($fields_config): void {
+            $fields = $fields_config->getCategorizedFields();
+            foreach ($fields as &$category) {
+                foreach ($category as &$field) {
+                    if ($field['field_id'] === 'info_adh') {
+                        $field['visible'] = $visible;
+                    }
+                }
+            }
+            $this->assertTrue($fields_config->setFields($fields));
+            $fields_config->load();
+        };
+
+        $allowed = [
+            \Galette\Entity\FieldsConfig::NOBODY,
+            \Galette\Entity\FieldsConfig::ADMIN,
+            \Galette\Entity\FieldsConfig::STAFF,
+        ];
+        foreach ($allowed as $visible) {
+            $set_visibility($visible);
+            $this->assertSame($visible, $fields_config->getVisibility('info_adh'));
+        }
+
+        $restricted = [
+            \Galette\Entity\FieldsConfig::USER_WRITE,
+            \Galette\Entity\FieldsConfig::MANAGER,
+            \Galette\Entity\FieldsConfig::USER_READ,
+            \Galette\Entity\FieldsConfig::ALL,
+        ];
+        foreach ($restricted as $visible) {
+            $set_visibility($visible);
+            $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $fields_config->getVisibility('info_adh'));
+        }
+
+        //a value already stored in database is restricted as well
+        $update = $this->zdb->update(\Galette\Entity\FieldsConfig::TABLE);
+        $update
+            ->set(['visible' => \Galette\Entity\FieldsConfig::USER_READ])
+            ->where([
+                'field_id' => 'info_adh',
+                'table_name' => \Galette\Entity\Adherent::TABLE
+            ]);
+        $this->zdb->execute($update);
+        $stored_config = new \Galette\Entity\FieldsConfig(
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
+        );
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $stored_config->getVisibility('info_adh'));
+
+        $fields_config->installInit();
+    }
+
+    /**
      * Test isSelfExcluded
      */
     public function testIsSelfExcluded(): void

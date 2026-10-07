@@ -190,13 +190,30 @@ class FieldsConfig
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
-            'visible'        => (int)$rset->visible,
+            'visible'        => $this->restrictVisibility((string)$rset->field_id, (int)$rset->visible),
             'required'       => (bool)$rset->required,
             'propname'       => $this->defaults[$rset->field_id]['propname'],
             'position'       => (int)$rset->position,
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
         ];
+    }
+
+    /**
+     * Restrict visibility of fields that must never be exposed to members
+     *
+     * @param string $field_id Field name
+     * @param int    $visible  Configured visibility
+     */
+    private function restrictVisibility(string $field_id, int $visible): int
+    {
+        if (
+            $field_id === 'info_adh'
+            && !in_array($visible, [self::NOBODY, self::ADMIN, self::STAFF], strict: true)
+        ) {
+            return self::STAFF;
+        }
+        return $visible;
     }
 
     /**
@@ -476,11 +493,6 @@ class FieldsConfig
                             $o->visible = self::ADMIN;
                         }
 
-                        // enforce access control on other info admin field
-                        if ($o->field_id === 'others_infos_admin') {
-                            $o->visible = self::STAFF;
-                        }
-
                         // skip fields according to access control
                         if (
                             $o->visible == self::NOBODY
@@ -746,6 +758,7 @@ class FieldsConfig
                     if ($field['field_id'] === 'parent_id') {
                         $field['visible'] = 0;
                     }
+                    $field['visible'] = $this->restrictVisibility($field['field_id'], (int)$field['visible']);
 
                     $params = [
                         'required'              => $field['required'],

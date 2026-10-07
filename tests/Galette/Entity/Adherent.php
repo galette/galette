@@ -561,6 +561,74 @@ class Adherent extends GaletteTestCase
     }
 
     /**
+     * Test checking admin information
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testCheckAdminInfo(): void
+    {
+        global $login;
+
+        $this->logSuperAdmin();
+        $member = $this->getMemberOne();
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+        $this->assertTrue($member->store());
+        $this->assertSame('Admin note', $member->others_infos_admin);
+
+        //staff can store a card with admin information
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+        $this->assertFalse($login->isAdmin());
+
+        $this->assertTrue($member->check([], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Staff note'], [], []));
+        $this->assertSame('Staff note', $member->others_infos_admin);
+        $this->assertTrue($member->load($member->id));
+
+        //force admin information to be allowed for everyone
+        $fc = $this->getMockBuilder(\Galette\Entity\FieldsConfig::class)
+            ->setConstructorArgs([
+                $this->zdb,
+                \Galette\Entity\Adherent::TABLE,
+                $this->members_fields,
+                $this->members_fields_cats
+            ])
+            ->onlyMethods(['getAllowedFields'])
+            ->getMock();
+        $fc->method('getAllowedFields')->willReturn(['info_adh']);
+        $this->container->set(\Galette\Entity\FieldsConfig::class, $fc);
+
+        //other members cannot change it
+        $login = new \Galette\Core\Login($this->zdb, $this->i18n);
+        $login->setId($member->id);
+        $this->assertTrue($member->check([], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+
+        $exception_thrown = false;
+        try {
+            $member->check(['info_adh' => 'Member note'], [], []);
+        } catch (\RuntimeException $e) {
+            $exception_thrown = true;
+            $this->assertSame('No right to store member #' . $member->id, $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->assertSame('Admin note', $member->others_infos_admin);
+        $this->expectLogEntry(
+            \Analog\Analog::CRITICAL,
+            sprintf(
+                'Non allowed user %1$s attempting to change member %2$s admin information',
+                $member->id,
+                $member->id
+            )
+        );
+
+        $this->cleanMembers();
+    }
+
+    /**
      * Test picture
      */
     public function testPhoto(): void
