@@ -301,4 +301,47 @@ class RoleResolverTest extends GaletteTestCase
         $this->giveRole((int)$member_one->id, $reader);
         $this->assertNull($this->access->getGroupScope('member:read'));
     }
+
+    /**
+     * Test members lists follow the groups a role is given for
+     */
+    public function testScopedMembersLists(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Readers group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        $reader = $this->createRole('Reader', ['member:read']);
+        $this->giveRole((int)$member_one->id, $reader, $group->getId());
+
+        $previous = $this->container->get(AccessControl::class);
+        $this->container->set(AccessControl::class, $this->access);
+        try {
+            $this->logMemberOne();
+            $members = new \Galette\Repository\Members();
+
+            $visible = $members->getVisibleMembersList(fields: ['id_adh', 'nom_adh', 'prenom_adh']);
+            $ids = [];
+            foreach ($visible as $row) {
+                $ids[] = (int)$row->id_adh;
+            }
+            $this->assertSame([(int)$member_two->id], $ids);
+
+            //self is always accessible, other members only when in the group
+            $list = $members->getArrayList([(int)$member_one->id, (int)$member_two->id], as_members: false);
+            $this->assertIsArray($list);
+            $this->assertCount(2, $list);
+            $this->assertTrue($group->setMembers([]));
+            $this->assertCount(1, $members->getArrayList([(int)$member_two->id, (int)$member_one->id], as_members: false));
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
+        } finally {
+            $this->container->set(AccessControl::class, $previous);
+        }
+    }
 }
