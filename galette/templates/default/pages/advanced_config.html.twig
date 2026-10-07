@@ -40,9 +40,9 @@
                         {{ preview.label }}
                         {{ macros.experimentalMark() }}
         {% if preview.enabled %}
-                        <span class="ui green label">{{ _T("on") }}</span>
+                        <span class="ui green label">{{ _Tx("feature state", "on") }}</span>
         {% else %}
-                        <span class="ui basic label">{{ _T("off") }}</span>
+                        <span class="ui basic label">{{ _Tx("feature state", "off") }}</span>
         {% endif %}
         {% if preview.source and preview.source != 'database' %}
                         <span class="ui red label" title="{{ _T("Declared in behavior.inc.php or in the environment, which takes precedence.") }}">{{ _T("locked") }}</span>
