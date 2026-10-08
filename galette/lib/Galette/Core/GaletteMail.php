@@ -274,7 +274,7 @@ class GaletteMail
                     . "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
-                unset($this->mail);
+                $this->releaseMailer();
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
@@ -287,7 +287,7 @@ class GaletteMail
                 );
                 $this->sent_recipients = $this->recipients;
                 $this->recordQuota($this->recipients);
-                unset($this->mail);
+                $this->releaseMailer();
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
@@ -296,7 +296,7 @@ class GaletteMail
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
-            unset($this->mail);
+            $this->releaseMailer();
             return self::MAIL_ERROR;
         }
     }
@@ -329,7 +329,7 @@ class GaletteMail
             default => $this->unknownMethod()
         };
 
-        unset($this->mail);
+        $this->releaseMailer();
 
         return $connected;
     }
@@ -569,9 +569,7 @@ class GaletteMail
             }
         }
 
-        //close the (possibly kept-alive) SMTP connection
-        $this->mail->smtpClose();
-        unset($this->mail);
+        $this->releaseMailer();
 
         if (!$has_error) {
             return self::MAIL_SENT;
@@ -754,6 +752,19 @@ class GaletteMail
     public function getSenderName(): string
     {
         return $this->sender_name;
+    }
+
+    /**
+     * Let the PHPMailer instance go
+     *
+     * Preferences keep a reference to it for the signature replacements, so it
+     * outlives this object: close a kept alive SMTP connection now, while it
+     * can still be logged, rather than when the request ends.
+     */
+    private function releaseMailer(): void
+    {
+        $this->mail->smtpClose();
+        unset($this->mail);
     }
 
     /**
