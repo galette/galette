@@ -245,10 +245,13 @@ class Transactions
                         !$member->hasParent()
                         || $member->parent->id != $this->login->id
                     ) {
-                        //check if member is part of logged-in user managed groups
+                        //check if member is part of logged-in user managed groups, when managers are allowed to
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
-                        if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
+                        if (
+                            !$preferences->pref_bool_groupsmanagers_see_transactions
+                            || count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0
+                        ) {
                             Analog::log(
                                 'Trying to display transactions for member #' . $member->id
                                 . ' without appropriate ACLs',
