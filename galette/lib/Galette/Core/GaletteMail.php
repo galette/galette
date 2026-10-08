@@ -15,6 +15,7 @@ use Galette\Util\Html;
 use PHPMailer\PHPMailer\SMTP;
 use Throwable;
 use Analog\Analog;
+use Analog\Logger;
 use PHPMailer\PHPMailer\PHPMailer;
 
 use function Safe\ini_get;
@@ -113,7 +114,10 @@ class GaletteMail
                     $this->mail->SMTPDebug = SMTP::DEBUG_CONNECTION;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468
-                    $this->mail->Debugoutput = 'error_log';
+                    //a PSR-3 logger holds no closure, and brings the SMTP
+                    //exchange to Galette logs; credentials are kept hidden
+                    //below SMTP::DEBUG_LOWLEVEL
+                    $this->mail->Debugoutput = new Logger();
                 }
 
                 $this->mail->Host = $this->preferences->pref_mail_smtp_host;
