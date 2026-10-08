@@ -115,4 +115,56 @@ class GroupsController extends GaletteRoutingTestCase
 
         $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
     }
+
+    /**
+     * Test groups are reordered only by those who can edit them
+     */
+    public function testReorderPermissions(): void
+    {
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager($group->getId()));
+        $this->assertFalse($this->login->isGroupManager($other->getId()));
+
+        $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
+        foreach ([false, true] as $allowed) {
+            $this->preferences->pref_bool_groupsmanagers_edit_groups = $allowed;
+
+            //group not managed cannot be moved
+            $request = $this->createRequest('reorderGroups', method: 'POST')
+                ->withParsedBody(['reordered' => [$other->getId() . '|' . $group->getId()]]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->flash_data = [];
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to reorder group ' . $other->getId() . ' without appropriate permissions'
+            );
+            $this->assertNull((new \Galette\Entity\Group($other->getId()))->getParentGroup());
+
+            //managed group can be moved when preferences allow it
+            $request = $this->createRequest('reorderGroups', method: 'POST')
+                ->withParsedBody(['reordered' => [$group->getId() . '|' . $other->getId()]]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->flash_data = [];
+            $parent = (new \Galette\Entity\Group($group->getId()))->getParentGroup();
+            $this->assertSame($allowed ? $other->getId() : null, $parent?->getId());
+            if (!$allowed) {
+                $this->expectLogEntry(
+                    \Analog\Analog::WARNING,
+                    'Trying to reorder group ' . $group->getId() . ' without appropriate permissions'
+                );
+            }
+        }
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups;
+        $this->login->logOut();
+    }
 }

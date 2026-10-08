@@ -172,6 +172,13 @@ class GroupsController extends CrudController
                 $id = $item[0];
                 $parentId = $item[1];
                 $group = new Group((int)$id);
+                if (!$group->canEdit($this->login)) {
+                    Analog::log(
+                        'Trying to reorder group ' . $id . ' without appropriate permissions',
+                        Analog::WARNING
+                    );
+                    continue;
+                }
                 $parentGroup = new Group((int)$parentId);
                 if ($parentId != '0') {
                     $group->setParentGroup((int)$parentId);
@@ -437,14 +444,6 @@ class GroupsController extends CrudController
     )]
     public function reorder(Request $request, Response $response): Response
     {
-        if (
-            !$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && !($this->login->isGroupManager() && $this->preferences->pref_bool_groupsmanagers_edit_groups)
-        ) {
-            throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
-        }
-
         $post = $request->getParsedBody();
         if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {
             Analog::log(
@@ -455,6 +454,9 @@ class GroupsController extends CrudController
         } else {
             $id = $post['id_group'];
             $group = new Group((int)$id);
+            if (!$group->canEdit($this->login)) {
+                throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
+            }
             if (!empty($post['to'])) {
                 $group->setParentGroup((int)$post['to']);
             } else {
