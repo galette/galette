@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-08 21:02+0000\n"
+"PO-Revision-Date: 2026-10-09 10:41+0000\n"
 "Last-Translator: Marko Puljic <markopuljic.uo@gmail.com>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
 "hr/>\n"
@@ -1050,7 +1050,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:133 ../lib/Galette/Core/Galette.php:727
 msgid "My contributions"
-msgstr ""
+msgstr "Moje uplate"
 
 #: ../lib/Galette/Core/Galette.php:134 ../lib/Galette/Core/Galette.php:728
 msgid "View and filter all my contributions"
@@ -1076,7 +1076,7 @@ msgstr ""
 #: ../lib/Galette/Core/Galette.php:719
 #: ../lib/Galette/Controllers/GaletteController.php:336
 msgid "My information"
-msgstr ""
+msgstr "Moji podaci"
 
 #: ../lib/Galette/Core/Galette.php:157 ../lib/Galette/Core/Galette.php:720
 msgid "View my member card"
@@ -1090,7 +1090,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/TwoFactorController.php:53
 #: ../lib/Galette/Controllers/TwoFactorController.php:157
 msgid "Two-factor authentication"
-msgstr ""
+msgstr "Dvofaktorska autentifikacija"
 
 #: ../lib/Galette/Core/Galette.php:182
 msgid "Manage my two-factor authentication"
