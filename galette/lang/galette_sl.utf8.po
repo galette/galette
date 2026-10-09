@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-08 20:44+0000\n"
+"PO-Revision-Date: 2026-10-09 10:41+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
@@ -820,7 +820,7 @@ msgstr ""
 "poslovnik, ...)"
 
 msgid "Mailings"
-msgstr "Pošiljke"
+msgstr "Sporočila"
 
 msgid "Manage mailings that has been sent"
 msgstr "Upravljanje poslanih poštnih sporočil"
@@ -2185,7 +2185,7 @@ msgstr "Prosimo, vnesite sporočilo."
 
 msgid "The mailing could not be queued, nothing has been sent."
 msgstr ""
-"Pošiljke ni bilo mogoče postaviti v čakalno vrsto, nič ni bilo poslano."
+"Sporočila ni bilo mogoče postaviti v čakalno vrsto, nič ni bilo poslano."
 
 #. TRANS: first parameter is the number of recipients reached, second the total
 #, php-format
@@ -4035,7 +4035,7 @@ msgid "beetween"
 msgstr "med"
 
 msgid "yyyy-mm-dd format"
-msgstr "oblika yyyy-mm-dd"
+msgstr "oblika dd-mm-yyyy"
 
 msgid "Modification date"
 msgstr "Datum spremembe"
@@ -4708,7 +4708,7 @@ msgid "Transaction details"
 msgstr "Podrobnosti transakcije"
 
 msgid "Dispatch type:"
-msgstr "Vrsta pošiljke:"
+msgstr "Vrsta sporočila:"
 
 msgid "Select a contribution type to create for dispatch transaction"
 msgstr ""
@@ -5195,7 +5195,7 @@ msgid "Beginning of membership:"
 msgstr "Začetek članstva:"
 
 msgid "(dd/mm)"
-msgstr "(dd/mm)"
+msgstr "(dd.mm.)"
 
 msgid "Number of months offered:"
 msgstr "Število ponujenih mesecev:"
