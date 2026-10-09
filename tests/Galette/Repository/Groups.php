@@ -26,7 +26,7 @@ class Groups extends GaletteTestCase
     /**
      * Groups provider
      *
-     * @return array<int, array{parent_name: string, children: array<string, array<string>>}>
+     * @return array<int, array{parent_name: string, children: array<string, array<string|string[]>>}>
      */
     public static function groupsProvider(): array
     {
@@ -35,8 +35,15 @@ class Groups extends GaletteTestCase
                 'parent_name' => 'Europe',
                 'children' => [
                     'France' => [
-                        'Nord',
-                        'Hérault',
+                        'Nord' => [
+                            'Lille',
+                            'Wimereux'
+                        ],
+                        'Hérault' => [
+                            'Béziers',
+                            'Agde',
+                            'Montpellier'
+                        ],
                         'Vaucluse',
                         'Gironde'
                     ],
@@ -66,29 +73,39 @@ class Groups extends GaletteTestCase
     /**
      * Create groups for tests
      *
-     * @param string                       $parent_name Parent name
-     * @param array<string, array<string>> $children    Children
+     * @param string                                $parent_name Parent name
+     * @param array<string, array<string|string[]>> $children    Children
      */
     #[DataProvider('groupsProvider')]
     public function testCreateGroups(string $parent_name, array $children): void
     {
-        $group = new \Galette\Entity\Group();
-        $group->setName($parent_name);
-        $this->assertTrue($group->store());
-        $parent_id = $group->getId();
+        $parent_group = new \Galette\Entity\Group();
+        $parent_group->setName($parent_name);
+        $this->assertTrue($parent_group->store());
+        $parent_id = $parent_group->getId();
 
-        foreach ($children as $child => $subchildren) {
-            $group = new \Galette\Entity\Group();
-            $group->setName($child);
-            $group->setParentGroup($parent_id);
-            $this->assertTrue($group->store());
-            $sub_id = $group->getId();
+        foreach ($children as $child => $firstchildren) {
+            $first_child_group = new \Galette\Entity\Group();
+            $first_child_group->setName($child);
+            $first_child_group->setParentGroup($parent_id);
+            $this->assertTrue($first_child_group->store());
+            $first_child_id = $first_child_group->getId();
 
-            foreach ($subchildren as $subchild) {
-                $group = new \Galette\Entity\Group();
-                $group->setName($subchild);
-                $group->setParentGroup($sub_id);
-                $this->assertTrue($group->store());
+            foreach ($firstchildren as $firstchild => $secondchildren) {
+                $second_child_group = new \Galette\Entity\Group();
+                $firstname = is_array($secondchildren) ? $firstchild : $secondchildren;
+                $second_child_group->setName($firstname);
+                $second_child_group->setParentGroup($first_child_id);
+                $this->assertTrue($second_child_group->store());
+                $second_child_id = $second_child_group->getId();
+                if (is_array($secondchildren)) {
+                    foreach ($secondchildren as $secondchild) {
+                        $third_child_group = new \Galette\Entity\Group();
+                        $third_child_group->setName($secondchild);
+                        $third_child_group->setParentGroup($second_child_id);
+                        $this->assertTrue($third_child_group->store());
+                    }
+                }
             }
         }
     }
@@ -104,14 +121,14 @@ class Groups extends GaletteTestCase
         }
 
         $list = \Galette\Repository\Groups::getSimpleList();
-        $this->assertCount(17, $list);
+        $this->assertCount(22, $list);
 
         foreach ($list as $group_name) {
             $this->assertNotEmpty($group_name);
         }
 
         $list = \Galette\Repository\Groups::getSimpleList(as_groups: true);
-        $this->assertCount(17, $list);
+        $this->assertCount(22, $list);
         foreach ($list as $group) {
             $this->assertInstanceOf(\Galette\Entity\Group::class, $group);
         }
@@ -135,15 +152,15 @@ class Groups extends GaletteTestCase
         $this->assertCount(3, $parents_list);
 
         $parents_list = $groups->getList(full: true);
-        $this->assertCount(17, $parents_list);
+        $this->assertCount(22, $parents_list);
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
         $europe = (int)$result->{\Galette\Entity\Group::PK};
 
-        $children_list = $groups->getList(full: true, id: $europe);
-        $this->assertCount(4, $children_list);
+        $children_list = $groups->getList(full: false, id: $europe);
+        $this->assertCount(15, $children_list);
 
         //set manager on one group, impersonate him, and check it gets only one group
         $this->getMemberOne();

@@ -101,18 +101,12 @@ class Groups
                 type: $select::JOIN_LEFT
             );
 
-            if ($full !== true) {
+            if ($full !== true && $id === null) {
                 $select->where('ggroup.parent_group IS NULL');
             }
 
             if ($id !== null) {
-                $select->where
-                    ->nest()
-                        ->equalTo('ggroup.' . Group::PK, $id)
-                    ->or
-                        ->equalTo('ggroup.parent_group', $id)
-                    ->unnest()
-                ;
+                $select->where(['ggroup.' . Group::PK => $id]);
             }
 
             $select->group('ggroup.' . Group::PK)
@@ -126,10 +120,17 @@ class Groups
             $results = $this->zdb->execute($select);
 
             foreach ($results as $row) {
+                if ($id !== null && (int)$row->id_group !== $id) {
+                    continue;
+                }
                 /** @var ArrayObject<string, int|string> $row */
                 $group = new Group($row);
                 $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
+
+                if ($id !== null) {
+                    $this->appendDescendants($groups, $group);
+                }
             }
             if ($full) { // Order by tree name instead of name
                 ksort($groups);
@@ -141,6 +142,32 @@ class Groups
                 Analog::WARNING
             );
             throw $e;
+        }
+    }
+
+    /**
+     * Add all descendants of a group to list.
+     *
+     * @param array<string, Group> $groups
+     */
+    private function appendDescendants(array &$groups, Group $group): void
+    {
+        $queue = $group->getGroups();
+
+        while (count($queue) > 0) {
+            /** @var Group $current */
+            $current = array_shift($queue);
+            $key = $current->getFullName();
+
+            if (isset($groups[$key])) {
+                continue;
+            }
+
+            $groups[$key] = $current;
+
+            foreach ($current->getGroups() as $child) {
+                $queue[] = $child;
+            }
         }
     }
 
