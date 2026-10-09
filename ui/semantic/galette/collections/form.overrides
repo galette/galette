@@ -6,11 +6,21 @@
     Style for "codeeditor" textareas
     and text inputs
 --------------------------------------*/
-
 .ui.form input[type="text"].codeeditor,
 .ui.input textarea.codeeditor,
 .ui.form textarea.codeeditor {
   font-family: monospace;
+}
+
+/* --------------------------------------------
+    Fix missing FUI invalid textarea's style
+----------------------------------------------*/
+.ui.form:not(.initial) .field textarea:invalid {
+  color: @formErrorColor;
+  background: @formErrorBackground;
+  border-color: @formErrorBorder;
+  border-radius: @inputErrorBorderRadius;
+  box-shadow: @inputErrorBoxShadow;
 }
 
 /*--------------------
