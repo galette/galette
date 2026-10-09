@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-09 11:54+0000\n"
+"PO-Revision-Date: 2026-10-10 13:51+0000\n"
 "Last-Translator: Marko Puljic <markopuljic.uo@gmail.com>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
 "hr/>\n"
@@ -184,7 +184,7 @@ msgstr "Voditelji:"
 #: ../templates/default/elements/group_persons.html.twig:12
 #: ../templates/default/elements/group_persons.html.twig:27
 msgid "Name"
-msgstr "Ime i prezime"
+msgstr "Naziv"
 
 #: ../lib/Galette/IO/PdfGroups.php:137
 #: ../lib/Galette/Features/Replacements.php:313
@@ -1129,7 +1129,7 @@ msgstr "Upravljaj mojom dvofaktorskom autentifikacijom"
 
 #: ../lib/Galette/Core/Galette.php:192
 msgid "Add a child member"
-msgstr "Dodaj podređenog člana"
+msgstr "Dodaj povezanog člana"
 
 #: ../lib/Galette/Core/Galette.php:193
 msgid "Add new child member in database"
@@ -1439,7 +1439,7 @@ msgstr "Upravljaj oznakama koje se mogu prevoditi"
 #: ../lib/Galette/Core/Galette.php:523
 #: ../lib/Galette/Controllers/AdminToolsController.php:40
 msgid "Administration tools"
-msgstr "Administracijski alati"
+msgstr "Administratorski alati"
 
 #: ../lib/Galette/Core/Galette.php:524
 msgid "Various administrative tools"
@@ -7358,7 +7358,7 @@ msgstr "Probni uvoz"
 
 #: ../templates/default/pages/import.html.twig:76
 msgid "Import"
-msgstr "Uvezi"
+msgstr "Uvoz"
 
 #: ../templates/default/pages/import.html.twig:80
 msgid "No import file actually exists."
@@ -7987,7 +7987,7 @@ msgstr ""
 
 #: ../templates/default/pages/preferences.html.twig:606
 msgid "Can members create child?"
-msgstr "Mogu li članovi dodavati podređene članove?"
+msgstr "Mogu li članovi dodavati povezane članove?"
 
 #: ../templates/default/pages/preferences.html.twig:612
 msgid "Can group managers edit their groups?"
@@ -8714,7 +8714,7 @@ msgstr "Vrati '%s' na zadanu vrijednost"
 
 #: ../templates/default/pages/advanced_config.html.twig:124
 msgid "Constants behavior.inc.php understands"
-msgstr "Konstante koje behavior.inc.php prepoznaje"
+msgstr "Konstante koje prepoznaje behavior.inc.php"
 
 #: ../templates/default/pages/advanced_config.html.twig:129
 #, php-format
@@ -8834,7 +8834,7 @@ msgstr ""
 
 #: ../templates/default/pages/authentication_attempts.html.twig:23
 msgid "Authentication attempts currently refused"
-msgstr "Trenutno blokirani pokušaji prijave"
+msgstr "Trenutačno blokirani pokušaji prijave"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:26
 #: ../templates/default/pages/authentication_attempts.html.twig:37
