@@ -14,6 +14,7 @@ use ArrayObject;
 use Safe\DateTime;
 use Exception;
 use Galette\Events\GaletteEvent;
+use Galette\Features\AccessControlled;
 use Galette\Repository\Groups;
 use OverflowException;
 use RuntimeException;
@@ -30,6 +31,8 @@ use Laminas\Db\Sql\Expression;
  */
 class Group
 {
+    use AccessControlled;
+
     public const string TABLE = 'groups';
     public const string PK = 'id_group';
     //relations tables
@@ -941,19 +944,22 @@ class Group
     }
 
     /**
+     * Can current logged-in user display group
+     *
+     * @param Login $login Login instance
+     */
+    public function canShow(Login $login): bool
+    {
+        return $this->isGranted('group:read', $login);
+    }
+
+    /**
      * Can current logged-in user edit group
      *
      * @param Login $login Login instance
      */
     public function canEdit(Login $login): bool
     {
-        global $preferences;
-
-        //admin and staff users can edit
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-        //group managers can edit groups they manage when pref is on
-        return $preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login);
+        return $this->isGranted('group:edit', $login);
     }
 }

@@ -327,6 +327,40 @@ CREATE TABLE galette_groups_members (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+-- tables for roles based access control
+DROP TABLE IF EXISTS galette_members_roles;
+DROP TABLE IF EXISTS galette_roles_permissions;
+DROP TABLE IF EXISTS galette_roles;
+CREATE TABLE galette_roles (
+  id_role int unsigned NOT NULL auto_increment,
+  role_key varchar(50) NULL DEFAULT NULL,
+  name varchar(100) NOT NULL,
+  id_parent int unsigned NULL DEFAULT NULL,
+  PRIMARY KEY (id_role),
+  UNIQUE KEY (role_key),
+  UNIQUE KEY (name),
+  FOREIGN KEY (id_parent) REFERENCES galette_roles (id_role) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_roles_permissions (
+  id_role int unsigned NOT NULL,
+  permission varchar(100) NOT NULL,
+  PRIMARY KEY (id_role, permission),
+  FOREIGN KEY (id_role) REFERENCES galette_roles (id_role) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_members_roles (
+  id_member_role int unsigned NOT NULL auto_increment,
+  id_adh int unsigned NOT NULL,
+  id_role int unsigned NOT NULL,
+  id_group int unsigned NULL DEFAULT NULL,
+  PRIMARY KEY (id_member_role),
+  UNIQUE KEY (id_adh, id_role, id_group),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_role) REFERENCES galette_roles (id_role) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 -- Table for reminders
 DROP TABLE IF EXISTS galette_reminders;
 CREATE TABLE galette_reminders (
@@ -466,7 +500,7 @@ CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-INSERT INTO galette_database(version) VALUES(1.300);
+INSERT INTO galette_database(version) VALUES(1.400);
 
 
 SET FOREIGN_KEY_CHECKS=1;

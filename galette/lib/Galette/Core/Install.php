@@ -1159,6 +1159,11 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $res = $status->installInit();
             $this->proceedReport(_T("Status"), $res);
 
+            //Install system roles
+            $roles = new \Galette\Access\Roles($zdb, new \Galette\Access\Permissions());
+            $res = $roles->installInit($preferences);
+            $this->proceedReport(_T("Roles"), $res);
+
             //Install fields configuration and categories
             $res = $fc->installInit();
             $this->proceedReport(_T("Fields config and categories"), $res);

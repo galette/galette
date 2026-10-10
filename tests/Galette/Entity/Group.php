@@ -354,4 +354,52 @@ class Group extends GaletteTestCase
             $switch['on'] = false;
         }
     }
+
+    /**
+     * Test canEdit
+     */
+    #[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
+    public function testCanEdit(): void
+    {
+        $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
+
+        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(['isManager'])
+            ->getMock();
+
+        //not a manager
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin', 'isStaff'])
+            ->getMock();
+        $group->method('isManager')->willReturn(false);
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+        $this->assertFalse($group->canEdit($login));
+
+        //admin and staff
+        $admin = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
+            ->getMock();
+        $admin->method('isAdmin')->willReturn(true);
+        $this->assertTrue($group->canEdit($admin));
+
+        $staff = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
+            ->getMock();
+        $staff->method('isStaff')->willReturn(true);
+        $this->assertTrue($group->canEdit($staff));
+
+        //group manager, only when preference is on
+        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(['isManager'])
+            ->getMock();
+        $group->method('isManager')->willReturn(true);
+        $this->assertTrue($group->canEdit($login));
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+        $this->assertFalse($group->canEdit($login));
+
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups; //reset
+    }
 }

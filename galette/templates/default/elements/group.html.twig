@@ -41,7 +41,7 @@
                                 <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>
                                 <div class="menu">
                                     <div class="item" data-value="">{{ _T("None") }}</div>
-                                {% if pgroup is defined and not login.isGroupManager(pgroup.getId()) %}
+                                {% if pgroup is defined and not can('group:read', pgroup) %}
                                     <div class="item" data-value="{{ pgroup.getId() }}">{{ pgroup.getIndentName()|raw }}</div>
                                 {% endif %}
                                 {% for g in parent_groups %}
@@ -74,7 +74,7 @@
             </div>
             <div class="active content field">
                 {% if group %}
-                    {% if login.isAdmin() or login.isStaff() %}
+                    {% if can_edit and permission_scope('member:read') == 'all' %}
                     <button type="button" class="ui labeled icon button" id="btnmanagers_small">
                         <i class="user shield icon" aria-hidden="true"></i>
                         {{ _T("Manage managers") }}
@@ -94,7 +94,7 @@
             </div>
             <div class="active content field">
                 {% if group %}
-                    {% if login.isAdmin() or login.isStaff() %}
+                    {% if can_edit and permission_scope('member:read') == 'all' %}
                     <button type="button" class="ui labeled icon button" id="btnusers_small">
                         <i class="user icon" aria-hidden="true"></i>
                         {{ _T("Manage members") }}

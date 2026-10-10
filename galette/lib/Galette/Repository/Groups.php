@@ -20,6 +20,7 @@ use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;
 use Galette\Core\Db;
+use Galette\Features\AccessControlled;
 
 /**
  * Groups entity
@@ -28,6 +29,8 @@ use Galette\Core\Db;
  */
 class Groups
 {
+    use AccessControlled;
+
     /**
      * Constructor
      *
@@ -84,12 +87,9 @@ class Groups
         try {
             $select = $this->zdb->select(Group::TABLE, 'ggroup');
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
-                $select->join(
-                    ['gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
-                    'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
-                    []
-                )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
+            $scope = $this->getGroupScope('group:read', $this->login);
+            if ($scope !== null && $full === true) {
+                $select->where->in('ggroup.' . Group::PK, $scope ?: [0]);
             }
 
             $select->join(

@@ -497,3 +497,44 @@ $app->get(
     '/document/get/{id:\d+}',
     [Crud\DocumentsController::class, 'getDocument']
 )->setName('getDocumentFile');
+
+// roles, with acls feature flag
+$app->get(
+    '/roles',
+    [Crud\RolesController::class, 'list']
+)->setName('roles')->add(Authenticate::class);
+
+$app->post(
+    '/roles',
+    [Crud\RolesController::class, 'doAdd']
+)->setName('storeRole')->add(Authenticate::class);
+
+$app->get(
+    '/roles/edit/{id:\d+}',
+    [Crud\RolesController::class, 'edit']
+)->setName('editRole')->add(Authenticate::class);
+
+$app->post(
+    '/roles/edit/{id:\d+}',
+    [Crud\RolesController::class, 'doEdit']
+)->setName('doEditRole')->add(Authenticate::class);
+
+$app->get(
+    '/roles/remove/{id:\d+}',
+    [Crud\RolesController::class, 'confirmDelete']
+)->setName('removeRole')->add(Authenticate::class);
+
+$app->post(
+    '/roles/remove/{id:\d+}',
+    [Crud\RolesController::class, 'delete']
+)->setName('doRemoveRole')->add(Authenticate::class);
+
+$app->post(
+    '/roles/{id:\d+}/members',
+    [Crud\RolesController::class, 'give']
+)->setName('giveRole')->add(Authenticate::class);
+
+$app->post(
+    '/roles/{id:\d+}/members/remove/{assignment:\d+}',
+    [Crud\RolesController::class, 'take']
+)->setName('takeRole')->add(Authenticate::class);

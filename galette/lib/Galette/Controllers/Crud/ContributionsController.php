@@ -471,7 +471,8 @@ class ContributionsController extends CrudController
                 break;
         }
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
+        $read = $raw_type === 'contributions' ? 'contribution:read' : 'transaction:read';
+        if ($this->accessControl->getGroupScope($read) !== null && $value != $this->login->id) {
             if ($value === 'all' || empty($value)) {
                 $value = $this->login->id;
             } else {
@@ -713,6 +714,18 @@ class ContributionsController extends CrudController
     {
         $filter_name = $this->getFilterName($type);
         $post = $request->getParsedBody();
+        $domain = $type === 'transactions' ? 'transaction' : 'contribution';
+
+        if (
+            isset($post['csv']) && !$this->accessControl->can($domain . ':export')
+            || isset($post['delete']) && !$this->accessControl->can($domain . ':delete')
+        ) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
 
         if (isset($post['entries_sel'])) {
             $filter_class = '\\Galette\\Filters\\' . ucwords($type . 'List');
@@ -907,8 +920,8 @@ class ContributionsController extends CrudController
                     Contribution::PK => (string)$contrib->id
                 ]
             );
-        } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
-            //contributions list (for member if admin or staff member)
+        } elseif ($this->accessControl->getGroupScope('contribution:read') === null) {
+            //contributions list (for member if allowed to see all contributions)
             $redirect_url = $this->routeparser->urlFor(
                 'contributions',
                 [
@@ -999,6 +1012,11 @@ class ContributionsController extends CrudController
             'contributions' => 'contributions',
             default => throw new \OverflowException('Unknown type ' . $args['type']),
         };
+
+        $permission = $raw_type === 'transactions' ? 'transaction:delete' : 'contribution:delete';
+        if (!$this->accessControl->can($permission)) {
+            throw new \RuntimeException('Removal requires ' . $permission . ' permission');
+        }
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);

@@ -57,6 +57,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
     $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
     $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\AccessControlExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
@@ -164,6 +165,15 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 
 //code depending on "now" takes a clock rather than calling time() itself
 $container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
+
+//permissions come from roles with the acls feature flag, from legacy access levels otherwise
+$container->set(
+    \Galette\Interfaces\PermissionResolverInterface::class,
+    fn(ContainerInterface $c) => $c->get(\Galette\Core\FeatureFlagManager::class)->isEnabled('acls')
+        ? $c->get(\Galette\Access\RoleResolver::class)
+        : $c->get(\Galette\Access\LegacyResolver::class)
+);
+$container->set(\Galette\Access\AccessControl::class, DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';

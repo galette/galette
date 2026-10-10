@@ -255,6 +255,14 @@ class MembersController extends CrudController
     )]
     public function duplicate(Response $response, int $id_adh): Response
     {
+        if (!$this->accessControl->can('member:create')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
@@ -668,11 +676,7 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(as_members: true);
-        } else {
-            $members_list = $members->getManagedMembersList(as_members: true);
-        }
+        $members_list = $members->getVisibleMembersList(as_members: true);
 
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
@@ -947,23 +951,18 @@ class MembersController extends CrudController
         }
 
         $members = new Members($filters);
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            if ($this->login->isGroupManager()) {
-                $members_list = $members->getManagedMembersList(as_members: true);
-            } else {
-                Analog::log(
-                    str_replace(
-                        ['%id', '%login'],
-                        [(string)$this->login->id, $this->login->login],
-                        'Trying to list group members without access from #%id (%login)'
-                    ),
-                    Analog::ERROR
-                );
-                throw new \Exception('Access denied.');
-            }
-        } else {
-            $members_list = $members->getMembersList(as_members: true);
+        if ($this->accessControl->getGroupScope('member:read') === []) {
+            Analog::log(
+                str_replace(
+                    ['%id', '%login'],
+                    [(string)$this->login->id, $this->login->login],
+                    'Trying to list group members without access from #%id (%login)'
+                ),
+                Analog::ERROR
+            );
+            throw new \Exception('Access denied.');
         }
+        $members_list = $members->getVisibleMembersList(as_members: true);
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
@@ -1184,7 +1183,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1723,7 +1722,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1810,7 +1809,7 @@ class MembersController extends CrudController
                         $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
                 }
-                if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                if ($this->accessControl->can('member:manage')) {
                     //add/remove manager from groups
                     $managed_groups_adh = $post['groups_managed_adh'] ?? [];
                     $add_groups = Groups::addMemberToGroups(
@@ -2050,19 +2049,11 @@ class MembersController extends CrudController
         //we must navigate between all members
         $filters->show = 0;
 
-        if (
-            $this->login->isAdmin()
-            || $this->login->isStaff()
-            || $this->login->isGroupManager()
-        ) {
+        if ($this->accessControl->getGroupScope('member:read') !== []) {
             $m = new Members($filters);
 
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
-            if ($this->login->isAdmin() || $this->login->isStaff()) {
-                $ids = $m->getMembersList(as_members: false, fields: $fields);
-            } else {
-                $ids = $m->getManagedMembersList(as_members: false, fields: $fields);
-            }
+            $ids = $m->getVisibleMembersList(as_members: false, fields: $fields);
 
             $ids = $ids->toArray();
             foreach ($ids as $k => $m) {

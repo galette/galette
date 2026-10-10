@@ -1,0 +1,111 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <div class="ui info message">
+        {{ _T("System roles are given from members data: any logged-in member, members up to date, groups managers (on the groups they manage), staff members and administrators. Other roles are given explicitly, for all groups or for one.") }}
+    </div>
+    <form action="{{ url_for('storeRole') }}" method="post" class="ui form">
+        <div class="ui basic fitted segment loader_selector">
+            <table class="listing ui celled striped table">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ _T("Name") }}</th>
+                        <th scope="col">{{ _T("Inherits from") }}</th>
+                        <th scope="col" class="collapsing">{{ _T("Permissions") }}</th>
+                        <th scope="col" class="collapsing">{{ _T("Members") }}</th>
+                        <th scope="col" class="collapsing">{{ _T("Actions") }}</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td class="left" data-col-label="{{ _T("Name") }}">
+                            <div class="required field">
+                                <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
+                                <input size="20" type="text" name="name" id="name" required="required" maxlength="100"/>
+                            </div>
+                        </td>
+                        <td class="left" data-col-label="{{ _T("Inherits from") }}">
+                            <div class="field">
+                                <label for="parent" class="visually-hidden">{{ _T("Inherits from") }}</label>
+                                <select name="parent" id="parent" class="ui search dropdown nochosen">
+                                    <option value="">{{ _T("None") }}</option>
+        {% for role in roles %}
+                                    <option value="{{ role.getId() }}">{{ role.getLabel() }}</option>
+        {% endfor %}
+                                </select>
+                            </div>
+                        </td>
+                        <td colspan="2"></td>
+                        <td class="center actions_row collapsing">
+                            <button type="submit" name="valid" class="ui labeled icon button">
+                                <i class="plus green icon" aria-hidden="true"></i>
+                                {{ _T("Add") }}
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+        {% for role in roles %}
+                    <tr>
+                        <td class="left" data-col-label="{{ _T("Name") }}">
+                            {{ role.getLabel() }}
+            {% if role.isSystem() %}
+                            <span class="ui mini label">{{ _T("System") }}</span>
+            {% endif %}
+                        </td>
+                        <td class="left" data-col-label="{{ _T("Inherits from") }}">
+            {% if role.getParentId() is not null and roles[role.getParentId()] is defined %}
+                            {{ roles[role.getParentId()].getLabel() }}
+            {% endif %}
+                        </td>
+                        <td class="center" data-col-label="{{ _T("Permissions") }}">{{ role.getPermissions()|length }}</td>
+                        <td class="center" data-col-label="{{ _T("Members") }}">
+            {% if role.isSystem() %}
+                            &mdash;
+            {% else %}
+                            {{ members_count[role.getId()] }}
+            {% endif %}
+                        </td>
+                        <td class="center actions_row collapsing">
+                            <a
+                                href="{{ url_for('editRole', {'id': role.getId()}) }}"
+                                class="action icon-only"
+                            >
+                                <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Edit role '%1$s'")|format(role.getLabel()) }}</span>
+                            </a>
+            {% if role.isSystem() %}
+                            <i class="ui icon">&nbsp;</i>
+            {% else %}
+                            <a
+                                href="{{ url_for('removeRole', {'id': role.getId()}) }}"
+                                class="delete icon-only"
+                            >
+                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Delete role '%1$s'")|format(role.getLabel()) }}</span>
+                            </a>
+            {% endif %}
+                        </td>
+                    </tr>
+        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}

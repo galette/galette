@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Access\AccessControl;
 use Galette\Core\AuthThrottle;
 use Galette\Core\Db;
 use Galette\Core\History;
@@ -46,6 +47,8 @@ abstract class AbstractController
 {
     #[Inject]
     protected Db $zdb;
+    #[Inject]
+    protected AccessControl $accessControl;
     #[Inject]
     protected Login $login;
     #[Inject]
@@ -212,21 +215,6 @@ abstract class AbstractController
         $filter_name .= '_filter';
 
         return Text::slugify($filter_name);
-    }
-
-    /**
-     * Is a feature restricted by a group managers preference available to current user?
-     * Admin and staff always have access, group managers only when the preference is on.
-     *
-     * @param string $pref Preference name (one of pref_bool_groupsmanagers_*)
-     */
-    protected function isAllowedForGroupManagers(string $pref): bool
-    {
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            return true;
-        }
-
-        return $this->login->isGroupManager() && (bool)$this->preferences->$pref;
     }
 
     /**

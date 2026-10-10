@@ -12,6 +12,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Safe\DateTime;
+use Galette\Access\AccessControl;
 use Galette\Entity\Adherent;
 use Galette\Repository\Documents;
 use Galette\IO\News;
@@ -517,6 +518,17 @@ class Galette
                             ]
                         ]
                     ];
+
+                    if ($container->get(FeatureFlagManager::class)->isEnabled('acls')) {
+                        $menus['configuration']['items'][] = [
+                            'label' => _T("Roles"),
+                            'title' => _T("Manage roles and their permissions"),
+                            'route' => [
+                                'name' => 'roles',
+                                'aliases' => ['editRole']
+                            ]
+                        ];
+                    }
 
                     if ($login->isSuperAdmin()) {
                         $menus['configuration']['items'][] = [
@@ -1116,37 +1128,31 @@ class Galette
 
         $actions = [];
 
-        if (
-            $login->isAdmin()
-            || $login->isStaff()
-        ) {
-            $actions = array_merge(
-                $actions,
-                [
-                    [
-                        'name' => 'masschange',
-                        'label' => _T('Mass change'),
-                        'icon' => 'user edit blue'
-                    ],
-                    [
-                        'name' => 'masscontributions',
-                        'label' => _T('Mass add contributions'),
-                        'icon' => 'receipt bite green'
-                    ],
-                    [
-                        'name' => 'delete',
-                        'label' => _T('Delete'),
-                        'icon' => 'user times red'
-                    ]
-                ]
-            );
+        $access = $container->get(AccessControl::class);
+        if ($access->can('member:mass-edit', login: $login)) {
+            $actions[] = [
+                'name' => 'masschange',
+                'label' => _T('Mass change'),
+                'icon' => 'user edit blue'
+            ];
+        }
+        if ($access->can('contribution:mass-create', login: $login)) {
+            $actions[] = [
+                'name' => 'masscontributions',
+                'label' => _T('Mass add contributions'),
+                'icon' => 'receipt bite green'
+            ];
+        }
+        if ($access->can('member:mass-edit', login: $login) && $access->can('member:delete', login: $login)) {
+            $actions[] = [
+                'name' => 'delete',
+                'label' => _T('Delete'),
+                'icon' => 'user times red'
+            ];
         }
 
         if (
-            ($login->isAdmin()
-                || $login->isStaff()
-                || $login->isGroupManager()
-                && $preferences->pref_bool_groupsmanagers_mailings)
+            $access->can('mailing:send', login: $login)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
         ) {
             $actions[] = [
@@ -1156,12 +1162,7 @@ class Galette
             ];
         }
 
-        if (
-            $login->isGroupManager()
-            && $preferences->pref_bool_groupsmanagers_exports
-            || $login->isAdmin()
-            || $login->isStaff()
-        ) {
+        if ($access->can('member:print', login: $login)) {
             $actions = array_merge(
                 $actions,
                 [
@@ -1180,13 +1181,16 @@ class Galette
                         'label' => _T('Generate Member Cards'),
                         'icon' => 'id badge'
                     ],
-                    [
-                        'name' => 'csv__directdownload',
-                        'label' => _T('Export as CSV'),
-                        'icon' => 'file csv'
-                    ],
                 ]
             );
+        }
+
+        if ($access->can('member:export', login: $login)) {
+            $actions[] = [
+                'name' => 'csv__directdownload',
+                'label' => _T('Export as CSV'),
+                'icon' => 'file csv'
+            ];
         }
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
