@@ -12,6 +12,8 @@ namespace Galette\Tests\Controllers\Crud;
 
 use Galette\Tests\GaletteRoutingTestCase;
 
+use function Safe\preg_match_all;
+
 /**
  * Groups controller tests
  *
@@ -207,6 +209,79 @@ class GroupsController extends GaletteRoutingTestCase
             }
         }
         $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups;
+        $this->login->logOut();
+    }
+
+    /**
+     * Test group managers only see their groups and their ancestors in the list
+     */
+    public function testListScope(): void
+    {
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+
+        $this->logSuperAdmin();
+        $created = [];
+        foreach (
+            [
+                'Scope root' => null,
+                'Scope parent' => 'Scope root',
+                'Scope sibling' => 'Scope root',
+                'Scope child' => $group->getName(),
+                'Unrelated root' => null,
+                'Unrelated child' => 'Unrelated root'
+            ] as $name => $parent
+        ) {
+            $created[$name] = new \Galette\Entity\Group();
+            $created[$name]->setName($name);
+            if ($parent !== null) {
+                $created[$name]->setParentGroup(($created[$parent] ?? $group)->getId());
+            }
+            $this->assertTrue($created[$name]->store());
+        }
+        $group->setParentGroup($created['Scope parent']->getId());
+        $this->assertTrue($group->store());
+
+        $listed = function (string $body): array {
+            preg_match_all('/<tr data-label="([^"]+)" data-group=/', $body, $matches);
+            return $matches[1];
+        };
+
+        //staff sees every group
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertSame(
+            [
+                'Scope root',
+                'Scope parent',
+                $group->getName(),
+                'Scope child',
+                'Scope sibling',
+                'Unrelated root',
+                'Unrelated child'
+            ],
+            $listed($body)
+        );
+        $this->login->logOut();
+
+        //group manager sees managed group and its ancestors only
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertSame(['Scope root', 'Scope parent', $group->getName()], $listed($body));
+        $this->assertStringNotContainsString('Scope sibling', $body);
+        $this->assertStringNotContainsString('Unrelated', $body);
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$group->getId()]),
+            $body
+        );
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$created['Scope parent']->getId()]),
+            $body
+        );
         $this->login->logOut();
     }
 }

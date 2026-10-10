@@ -132,6 +132,22 @@ class GroupsController extends CrudController
         $groups_root = $groups->getList(full: false);
         $groups_list = $groups->getList();
 
+        //group managers only see the groups they manage, and their ancestors to keep the tree readable
+        $visible_groups = null;
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $visible_groups = [];
+            foreach ($groups_list as $visible_group) {
+                do {
+                    $visible_groups[] = $visible_group->getId();
+                } while ($visible_group = $visible_group->getParentGroup());
+            }
+            $visible_groups = array_values(array_unique($visible_groups));
+            $groups_root = array_filter(
+                $groups_root,
+                fn(Group $root): bool => in_array($root->getId(), $visible_groups, strict: true)
+            );
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -139,6 +155,7 @@ class GroupsController extends CrudController
             [
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
+                'visible_groups'        => $visible_groups,
                 'is_paginated'          => false,
                 'form'                  => true,
                 'table'                 => [
