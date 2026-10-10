@@ -8,7 +8,6 @@
 
 declare(strict_types=1);
 
-
 /**
  * Feature Flags Registry with Dependencies Support
  *
@@ -81,6 +80,26 @@ $feature_flags_registry = [
     'api-v2' => [
         'description' => 'RESTful API version 2 with OAuth2 support',
         'requires' => ['acls', 'oauth2'], // Depends on ACLs AND OAuth2
+    ],
+
+    /**
+     * Preview features, which work without debug mode
+     */
+    'preview-feature' => [
+        'description' => 'A finished feature, not mature yet',
+        'stage' => 'preview',
+        'label' => fn(): string => 'Preview feature',
+        'risk' => fn(): string => 'Might break things',
+    ],
+    'preview-child' => [
+        'description' => 'A preview feature requiring another one',
+        'stage' => 'preview',
+        'requires' => ['preview-feature'],
+    ],
+    'preview-on-dev' => [
+        'description' => 'A preview feature requiring one still in development',
+        'stage' => 'preview',
+        'requires' => ['acls'],
     ],
 
     /**

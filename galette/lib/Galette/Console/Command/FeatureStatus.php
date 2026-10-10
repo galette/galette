@@ -95,7 +95,7 @@ class FeatureStatus extends AbstractCommand
             $badges_str = $badges !== [] ? implode(' ', $badges) : '<fg=gray>[available]</>';
 
             $reason = '';
-            if (!$debugMode && $info['declared']) {
+            if (!$debugMode && $info['declared'] && $info['stage'] !== FeatureFlagManager::STAGE_PREVIEW) {
                 $reason = '<comment>(requires debug mode)</comment>';
             } elseif (!empty($info['requires']) && !$info['dependencies_satisfied']) {
                 $missing = $info['requires'];
@@ -118,6 +118,8 @@ class FeatureStatus extends AbstractCommand
             $tableRows[] = [
                 $flag,
                 $status,
+                $info['stage'] ?? '-',
+                $info['source'] ?? '-',
                 $info['description'],
                 $dependencies,
                 $badges_str,
@@ -126,7 +128,7 @@ class FeatureStatus extends AbstractCommand
         }
 
         $io->table(
-            ['Flag Name', 'Status', 'Description', 'Dependencies', 'State', 'Note'],
+            ['Flag Name', 'Status', 'Stage', 'Source', 'Description', 'Dependencies', 'State', 'Note'],
             $tableRows
         );
 
@@ -141,7 +143,7 @@ class FeatureStatus extends AbstractCommand
             '<info>Statistics:</info>',
             sprintf('  - Total registered flags: %d', $registeredCount),
             sprintf('  - Enabled flags: %d', $enabledCount),
-            sprintf('  - Declared in config: %d', $declaredCount),
+            sprintf('  - Declared (config, environment, database): %d', $declaredCount),
             sprintf('  - Used in code: %d', $accessedCount),
             ''
         ]);
@@ -159,14 +161,15 @@ class FeatureStatus extends AbstractCommand
 
         // Display usage information
         if (!$debugMode) {
-            $io->warning(
-                'Feature flags are only enabled when GALETTE_DEBUG is set to true. '
-                . 'They are automatically disabled in production mode for security.'
+            $io->note(
+                'Development flags are only enabled when GALETTE_DEBUG is set to true. '
+                . 'Preview flags work in production too; turn them on from the advanced configuration page or with galette:feature:enable.'
             );
-        } elseif ($enabledCount > 0) {
+        }
+        if ($enabledCount > 0) {
             $io->success(sprintf('%d feature flag(s) currently active.', $enabledCount));
         } else {
-            $io->note('No flags are currently enabled. Enable them in behavior.inc.php to use experimental features.');
+            $io->note('No flags are currently enabled.');
         }
 
         return Command::SUCCESS;

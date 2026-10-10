@@ -174,6 +174,7 @@ use function Safe\preg_replace;
  * @property      string   $pref_2fa_superadmin_secret
  * @property      bool     $pref_2fa_superadmin_enabled
  * @property      int      $pref_2fa_superadmin_timeslice
+ * @property      string   $pref_feature_flags
  * @property      int      $pref_throttle_ip_attempts
  * @property      int      $pref_throttle_ip_window
  * @property      int      $pref_throttle_account_attempts
@@ -1364,6 +1365,43 @@ class Preferences
             'pref_registration_date',
             date('Y-m-d H:i:s')
         );
+    }
+
+    /**
+     * Get the preview features the super administrator turned on
+     *
+     * @return array<string> Lowercased flag names
+     */
+    public function getFeatureFlags(): array
+    {
+        $stored = (string)($this->prefs['pref_feature_flags'] ?? '');
+        if (trim($stored) === '') {
+            return [];
+        }
+
+        return array_values(array_unique(array_filter(array_map(
+            fn(string $flag): string => strtolower(trim($flag)),
+            explode(',', $stored)
+        ))));
+    }
+
+    /**
+     * Store the preview features turned on
+     *
+     * Checking that each flag may be turned on from here is up to the caller:
+     * the registry, not the preferences, knows what a flag is.
+     *
+     * @param array<string> $flags Flag names
+     */
+    public function storeFeatureFlags(array $flags): bool
+    {
+        $flags = array_values(array_unique(array_map(
+            fn(string $flag): string => strtolower(trim($flag)),
+            $flags
+        )));
+        sort($flags);
+
+        return $this->updateOneField('pref_feature_flags', implode(',', $flags));
     }
 
     /**

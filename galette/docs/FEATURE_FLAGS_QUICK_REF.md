@@ -16,11 +16,43 @@
 ],
 ```
 
+### Add a preview flag
+```php
+'my-flag' => [
+    'description' => 'Description', // console, logs
+    'stage' => 'preview',
+    'label' => fn(): string => _T('Name shown in the interface'),
+    'risk' => fn(): string => _T('What turning it on puts at stake'),
+],
+```
+
+### Stages
+
+| Stage | Enabled by | Debug mode required |
+|---|---|---|
+| `dev` (default) | `GALETTE_FEATURE_FLAGS` or `GALETTE_FEATURE_<FLAG>=1` | yes |
+| `preview` | super administrator, from *Advanced configuration*; or the same declarations | no |
+
+Lifecycle: `dev` → `preview` → stable (flag removed from the registry).
+
 ### Activate
 ```php
 // galette/config/behavior.inc.php
 define('GALETTE_FEATURE_FLAGS', ['my-flag']);
 ```
+
+When defined, the constant takes precedence over the preview features turned on
+from the interface, which can then no longer be changed there.
+
+### Turn preview features on or off from the command line
+```bash
+bin/console galette:feature:enable my-flag
+bin/console galette:feature:disable my-flag
+bin/console galette:feature:disable --all
+```
+
+Both need an installed Galette: like every command using the database, they
+are not listed while `config.inc.php` is missing.
 
 ### Usage in code
 ```php
@@ -78,7 +110,7 @@ if ($featureFlags->isEnabled('api-v2')) {
 ## ⚠️ Important
 
 - ✅ **ALWAYS** ajouter au registry avant utilisation
-- ✅ **Flags = development** only (disabled in production environment)
+- ✅ **Development flags** are disabled in production; only **preview** flags can be turned on there
 - ✅ **Dependencies** = automatic checks
 - ❌ **Do not** forget to activate dependencies
 

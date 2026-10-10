@@ -32,11 +32,11 @@ class TwoFactorAuth
      * Feature flag the two mandatory policies live behind.
      *
      * The second factor itself ships: disabled by default, offered as
-     * experimental. What is held back is making it compulsory, where a clock
-     * that drifts or a botched enrolment puts a whole association outside its
-     * own instance, and the way back is a SQL statement. Flags only ever answer
-     * yes in debug mode, so those two policies read as "optional" everywhere
-     * else -- see clampMode().
+     * experimental. Making it compulsory is a preview feature the super
+     * administrator turns on from the advanced configuration page: a clock
+     * that drifts or a botched enrolment can put members outside their own
+     * instance, and galette:twofactor:reset is the way back. Until the flag is
+     * on, those two policies read as "optional" -- see clampMode().
      */
     public const string FEATURE_REQUIRED = 'two-factor-required';
 
@@ -159,8 +159,8 @@ class TwoFactorAuth
      *
      * Static because the places that have to ask are not all built by the
      * container: the session holds a Login, and the menus are assembled from a
-     * static method. The manager is cheap to build -- it reads the registry and
-     * a constant -- and answers no outright in production.
+     * static method. The manager is cheap to build -- it reads the registry, a
+     * constant and one preference.
      */
     public static function isRequiredAvailable(): bool
     {
@@ -171,10 +171,9 @@ class TwoFactorAuth
     /**
      * Answer the question above without asking the flag, or stop doing so.
      *
-     * For the test suite only: a flag needs debug mode, and PHPUnit does not
-     * run in it -- debug wires a Twig extension onto a logger that only the web
-     * bootstrap sets. The end to end server does run in debug, and exercises
-     * the flag itself.
+     * For the test suite only: tests checking the mandatory policies should
+     * not depend on what the test database stores, nor on the constant the
+     * end to end server declares, which exercises the flag itself.
      *
      * @param ?bool $available true or false to force, null to ask the flag again
      */

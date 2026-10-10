@@ -19,6 +19,74 @@
             </div>
         </div>
 
+{% if previews|length > 0 %}
+        <h2 class="ui dividing header" id="previews">{{ _T("Preview features") }}</h2>
+
+        <div class="ui icon info message">
+            <i class="flask icon" aria-hidden="true"></i>
+            <div class="content">
+                <p>{{ _T("These features are complete but have not been used widely yet. Turn one on to try it on this instance, and tell us how it goes; turn it off again at any time. Read what each one puts at stake first.") }}</p>
+    {% if previews_locked %}
+                <p>{{ _T("They are currently set by the %s constant in behavior.inc.php, which takes precedence. Remove it from that file to manage them from here.")|replace({'%s': 'GALETTE_FEATURE_FLAGS'}) }}</p>
+    {% endif %}
+            </div>
+        </div>
+
+        <div class="ui divided items">
+    {% for preview in previews %}
+            <div class="item" id="preview_{{ preview.name }}">
+                <div class="content">
+                    <div class="header">
+                        {{ preview.label }}
+                        {{ macros.experimentalMark() }}
+        {% if preview.enabled %}
+                        <span class="ui green label">{{ _Tx("feature state", "on") }}</span>
+        {% else %}
+                        <span class="ui basic label">{{ _Tx("feature state", "off") }}</span>
+        {% endif %}
+        {% if preview.source and preview.source != 'database' %}
+                        <span class="ui red label" title="{{ _T("Declared in behavior.inc.php or in the environment, which takes precedence.") }}">{{ _T("locked") }}</span>
+        {% endif %}
+                    </div>
+                    <div class="meta"><code>{{ preview.name }}</code></div>
+        {% if preview.risk %}
+                    <div class="description">
+                        <p><i class="exclamation triangle icon" aria-hidden="true"></i> {{ preview.risk }}</p>
+                    </div>
+        {% endif %}
+        {% if preview.requires|length > 0 %}
+                    <div class="extra">
+                        {{ _T("Requires: %s")|replace({'%s': preview.requires|join(', ')}) }}
+                    </div>
+        {% endif %}
+        {% if not previews_locked and (preview.source is null or preview.source == 'database') %}
+                    <div class="extra">
+                        <form action="{{ url_for('saveFeatureFlagAdvancedConfig') }}" method="post" class="ui form">
+                            <input type="hidden" name="flag" value="{{ preview.name }}"/>
+            {% if preview.stored %}
+                            <input type="hidden" name="value" value="0"/>
+                            <button type="submit" class="ui button">
+                                <i class="power off icon" aria-hidden="true"></i>
+                                {{ _T("Turn off") }}
+                            </button>
+            {% else %}
+                            <input type="hidden" name="value" value="1"/>
+                            <button type="submit" class="ui primary button">
+                                <i class="flask icon" aria-hidden="true"></i>
+                                {{ _T("Turn on") }}
+                            </button>
+            {% endif %}
+                        </form>
+                    </div>
+        {% endif %}
+                </div>
+            </div>
+    {% endfor %}
+        </div>
+
+        <h2 class="ui dividing header">{{ _T("Settings") }}</h2>
+{% endif %}
+
         <div class="ui basic fitted segment">
             <div class="ui fluid icon input">
                 <label for="config_filter" class="visually-hidden">{{ _T("Filter settings") }}</label>

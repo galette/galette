@@ -58,7 +58,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
     {
         $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
 
-        foreach (['advancedConfig', 'saveAdvancedConfig', 'resetAdvancedConfig'] as $route) {
+        foreach (['advancedConfig', 'saveAdvancedConfig', 'resetAdvancedConfig', 'saveFeatureFlagAdvancedConfig'] as $route) {
             $this->assertSame(
                 'superadmin',
                 $authenticate->getAclFor($route),
@@ -104,6 +104,62 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame($default, $prefs->pref_numrows);
+    }
+
+    /**
+     * Turning a preview feature on then off, through the page
+     */
+    public function testTurnPreviewOnThenOff(): void
+    {
+        $this->reachPage();
+        $redirect = ['Location' => [$this->routeparser->urlFor('advancedConfig') . '#previews']];
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString('id="preview_two-factor-required"', $body);
+        $this->assertStringContainsString('Turn on', $body);
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'two-factor-required', 'value' => '1']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame($redirect, $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Turned on: Mandatory two-factor authentication.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame(['two-factor-required'], $prefs->getFeatureFlags());
+        $this->assertTrue((new \Galette\Core\FeatureFlagManager($prefs))->isEnabled('two-factor-required'));
+
+        $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
+        $this->assertStringContainsString('Turn off', $body);
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'two-factor-required', 'value' => '0']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['Turned off: Mandatory two-factor authentication.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame([], $prefs->getFeatureFlags());
+    }
+
+    /**
+     * Only preview features can be turned on from the page
+     */
+    public function testTurnOnRefusesNonPreview(): void
+    {
+        $this->reachPage();
+
+        $request = $this->createRequest('saveFeatureFlagAdvancedConfig', method: 'POST')
+            ->withParsedBody(['flag' => 'acls', 'value' => '1']);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['This is not a preview feature.']]);
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame([], $prefs->getFeatureFlags());
     }
 
     /**
