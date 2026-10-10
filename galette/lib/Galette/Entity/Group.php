@@ -944,6 +944,16 @@ class Group
     }
 
     /**
+     * Can current logged-in user display group
+     *
+     * @param Login $login Login instance
+     */
+    public function canShow(Login $login): bool
+    {
+        return $this->isGranted('group:read', $login);
+    }
+
+    /**
      * Can current logged-in user edit group
      *
      * @param Login $login Login instance

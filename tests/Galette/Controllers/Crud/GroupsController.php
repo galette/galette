@@ -391,4 +391,59 @@ class GroupsController extends GaletteRoutingTestCase
         );
         $this->login->logOut();
     }
+
+    /**
+     * Test groups managers display only groups they manage
+     */
+    public function testGroupManagerDisplay(): void
+    {
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        //whole tree is listed, only managed group can be opened; no creation nor removal
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$group->getId()]),
+            $body
+        );
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$other->getId()]),
+            $body
+        );
+        $this->assertStringNotContainsString('id="newgroup"', $body);
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('removeGroup', ['id' => (string)$group->getId()]),
+            $body
+        );
+
+        //managed group page is displayed, other one is forbidden
+        $test_response = $this->app->handle($this->createRequest('editGroup', ['id' => (string)$group->getId()]));
+        $this->expectOK($test_response);
+        $test_response = $this->app->handle($this->createRequest('editGroup', ['id' => (string)$other->getId()]));
+        $this->assertSame(403, $test_response->getStatusCode());
+
+        //creation and removal are refused from middleware
+        $this->expectAuthMiddlewareRefused(
+            $this->app->handle($this->createRequest('removeGroup', ['id' => (string)$group->getId()]))
+        );
+        $this->login->logOut();
+
+        //a simple member cannot reach groups at all
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isGroupManager());
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->flash_data = [];
+        $this->login->logOut();
+    }
 }

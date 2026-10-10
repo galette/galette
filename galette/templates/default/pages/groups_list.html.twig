@@ -7,7 +7,7 @@
 {% extends 'elements/list.html.twig' %}
 
 {% set can_export = can('group:export') %}
-{% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+{% set can_edit = permission_scope('group:edit') != 'none' %}
 
 {% if can_edit %}
     {% set form = {
@@ -24,12 +24,12 @@
 ] %}
 
 {% macro group_item(login, can_export, can_edit, group, level, parent_id, visible_groups) %}
-    <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if login.isGroupManager(group.getId()) %}1{% else %}0{% endif %}">
-        <td class="left{% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
+    <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if can('group:read', group) %}1{% else %}0{% endif %}">
+        <td class="left{% if can('group:edit', group) %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
             {% for i in 0..level %}{% if not loop.first %}<i class="icon group-indent" aria-hidden="true"></i>{% endif %}{% endfor %}
-            {% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+            {% if can('group:edit', group) %}
                 <i class="arrows alternate icon" aria-hidden="true"></i>
-            {% elseif login.isGroupManager() and not preferences.pref_bool_groupsmanagers_edit_groups %}
+            {% elseif not can_edit and permission_scope('group:read') != 'none' %}
                 {% if level >= '1' %}
                     <i class="chevron left icon" aria-hidden="true" style="transform:rotate(-45deg);"></i>
                 {% endif %}
@@ -39,19 +39,19 @@
             {{ group.getName() }}
         </td>
         <td class="center actions_row collapsing">
-            {% if login.isGroupManager(group.getId()) and can_export %}
+            {% if can_export and can('group:read', group) %}
                 <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="icon-only">
                     <i class="file pdf green icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Export as PDF") }}</span>
                 </a>
             {% endif %}
-            {% if login.isGroupManager(group.getId()) %}
+            {% if can('group:read', group) %}
                 <a href="{{ url_for("editGroup", {"id": group.getId()}) }}" class="icon-only">
                     <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
                 </a>
             {% endif %}
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if can('group:delete') %}
                 <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete icon-only">
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Delete") }}</span>
@@ -72,20 +72,20 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': login.isAdmin() or login.isStaff() ? _Tn("%1$s entry", "%1$s entries", nb)|format(nb) : _Tn("%1$s managed group", "%1$s managed groups", nb)|format(nb)
+        'label': permission_scope('group:read') == 'all' ? _Tn("%1$s entry", "%1$s entries", nb)|format(nb) : _Tn("%1$s managed group", "%1$s managed groups", nb)|format(nb)
     } %}
     {{ parent() }}
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if can_export or login.isAdmin() or login.isStaff() %}
+    {% if can_export or can('group:create') %}
         {% if can_export %}
             <a href="{{ url_for("pdf_groups") }}" class="ui tiny labeled icon button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
                 <i class="file pdf red labeled icon" aria-hidden="true"></i>
                 {{ _T("All groups PDF") }}
             </a>
         {% endif %}
-        {% if login.isAdmin() or login.isStaff() %}
+        {% if can('group:create') %}
             <button class="ui tiny labeled icon button tooltip" id="newgroup" type="button">
                 <i class="plus circle green icon" aria-hidden="true"></i>
                 {{ _T("New group") }}
@@ -350,7 +350,7 @@
         {% endif %}
 
         $(function() {
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if can('group:create') %}
                 {# New group #}
                 $('#newgroup').click(function(){
                     var _input = '<div class="ui labeled input"><label for="new_group_name" class="ui label">{{ _T("Name:") }}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>';

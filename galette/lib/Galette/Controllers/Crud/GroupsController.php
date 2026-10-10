@@ -135,7 +135,7 @@ class GroupsController extends CrudController
 
         //group managers only see the groups they manage, and their ancestors to keep the tree readable
         $visible_groups = null;
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+        if ($this->accessControl->getGroupScope('group:read') !== null) {
             $visible_groups = [];
             foreach ($groups_list as $visible_group) {
                 do {
@@ -355,9 +355,7 @@ class GroupsController extends CrudController
 
         $groups_list = $groups->getList();
 
-        if ($this->login->isGroupManager($id)) {
-            $group->load($id);
-        } else {
+        if (!$group->load($id) || !$group->canShow($this->login)) {
             Analog::log(
                 'Trying to display group ' . $id . ' without appropriate permissions',
                 Analog::INFO
@@ -602,7 +600,7 @@ class GroupsController extends CrudController
         if (
             $parent_id === 0
             || $parent_id === $group->getParentGroup()?->getId()
-            || $this->login->isGroupManager($parent_id)
+            || (new Group($parent_id))->canEdit($this->login)
         ) {
             return true;
         }
@@ -631,7 +629,7 @@ class GroupsController extends CrudController
      */
     private function getPostedPersons(Group $group, array $ids, int $type): array|false
     {
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->getGroupScope('member:read') === null) {
             $m = new Members();
             return $m->getArrayList($ids);
         }

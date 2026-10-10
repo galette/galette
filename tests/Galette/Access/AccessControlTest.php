@@ -178,6 +178,56 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test groups related routes permissions
+     */
+    public function testGroupsRoutes(): void
+    {
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
+        $expected = [
+            'groups' => 'group:read',
+            'editGroup' => 'group:read',
+            'doEditGroup' => 'group:read',
+            'reorderGroups' => 'group:read',
+            'ajax_groups' => 'group:read',
+            'doAddGroup' => 'group:create',
+            'removeGroup' => 'group:delete',
+            'doRemoveGroup' => 'group:delete',
+            'pdf_groups' => 'group:export',
+            'ajaxGroupMembers' => 'group:edit',
+        ];
+        foreach ($expected as $route => $acl) {
+            $this->assertSame($acl, $authenticate->getAclFor($route), $route);
+        }
+    }
+
+    /**
+     * Test groups managers display the groups they manage only
+     */
+    public function testLegacyGroupRead(): void
+    {
+        $access = new AccessControl(
+            new Permissions(),
+            new LegacyResolver($this->zdb, $this->preferences),
+            $this->login
+        );
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $member = $this->getLogin(Authentication::ACCESS_USER);
+
+        $this->assertTrue($access->can('group:read', login: $manager));
+        $this->assertFalse($access->can('group:read', login: $member));
+        $this->assertTrue($access->can('group:read', login: $this->getLogin(Authentication::ACCESS_STAFF)));
+        $this->assertSame([3, 7], $access->getGroupScope('group:read', $manager));
+        $this->assertFalse($access->can('group:create', login: $manager));
+        $this->assertFalse($access->can('group:delete', login: $manager));
+
+        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(['isManager'])
+            ->getMock();
+        $group->method('isManager')->willReturn(false);
+        $this->assertFalse($access->can('group:read', $group, $manager));
+    }
+
+    /**
      * Test unknown permission
      */
     public function testUnknownPermission(): void

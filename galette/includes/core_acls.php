@@ -104,16 +104,18 @@ $core_acls = [
     '/(.+)?addMemberChild/i'            => 'member',
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
-    'ajaxGroupMembers'                  => 'staff',
+    'ajaxGroupMembers'                  => 'group:edit', //persons are restricted to accessible members
     'duplicateMember'                   => 'member:manage', //and member:create, in controller
     'filterContributions'               => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',
     // /Members rules
     // Groups rules
-    'doAddGroup'                        => 'staff', //adding group is for staff only
+    'doAddGroup'                        => 'group:create',
+    'removeGroup'                       => 'group:delete',
+    'doRemoveGroup'                     => 'group:delete',
     'pdf_groups'                        => 'group:export',
-    '/(.+)?group(.+)?/i'                => 'groupmanager',
+    '/(.+)?group(.+)?/i'                => 'group:read',
     // /Groups rules
 
     '/(.+)?text(.+)?/i'                 => 'staff',
