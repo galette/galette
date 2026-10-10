@@ -196,16 +196,7 @@ class GroupsController extends CrudController
                     );
                     continue;
                 }
-                //as on the list, group managers can only move a group under a group they manage
-                if (
-                    $parentId != '0'
-                    && (int)$parentId !== $group->getParentGroup()?->getId()
-                    && !$this->login->isGroupManager((int)$parentId)
-                ) {
-                    Analog::log(
-                        'Trying to move group ' . $id . ' under group ' . $parentId . ' without appropriate permissions',
-                        Analog::WARNING
-                    );
+                if (!$this->canMoveUnder($group, (int)$parentId)) {
                     continue;
                 }
                 $parentGroup = new Group((int)$parentId);
@@ -413,6 +404,14 @@ class GroupsController extends CrudController
 
         $group->setName($post['group_name']);
         try {
+            if (!$this->canMoveUnder($group, (int)$post['parent_group'])) {
+                throw new \RuntimeException(
+                    sprintf(
+                        _T('Group `%1$s` cannot be set as parent!'),
+                        (new Group((int)$post['parent_group']))->getName()
+                    )
+                );
+            }
             if ($post['parent_group'] !== '') {
                 $group->setParentGroup((int)$post['parent_group']);
             } else {
@@ -486,12 +485,16 @@ class GroupsController extends CrudController
             if (!$group->canEdit($this->login)) {
                 throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
             }
-            if (!empty($post['to'])) {
-                $group->setParentGroup((int)$post['to']);
+            if (!$this->canMoveUnder($group, (int)$post['to'])) {
+                $result = false;
             } else {
-                $group->detach();
+                if (!empty($post['to'])) {
+                    $group->setParentGroup((int)$post['to']);
+                } else {
+                    $group->detach();
+                }
+                $result = $group->store();
             }
-            $result = $group->store();
         }
 
         return $this->withJson(
@@ -582,6 +585,33 @@ class GroupsController extends CrudController
     }
 
     // CRUD - Delete
+
+    /**
+     * Can current user move a group under given parent?
+     *
+     * As on the groups list, group managers can only move a group under a group
+     * they manage. Moving at the top, or keeping current parent, is always allowed.
+     *
+     * @param Group $group     Group to move
+     * @param int   $parent_id Parent group id, 0 for none
+     */
+    private function canMoveUnder(Group $group, int $parent_id): bool
+    {
+        if (
+            $parent_id === 0
+            || $parent_id === $group->getParentGroup()?->getId()
+            || $this->login->isGroupManager($parent_id)
+        ) {
+            return true;
+        }
+
+        Analog::log(
+            'Trying to move group ' . $group->getId() . ' under group ' . $parent_id
+                . ' without appropriate permissions',
+            Analog::WARNING
+        );
+        return false;
+    }
 
     /**
      * Get persons posted for a group.

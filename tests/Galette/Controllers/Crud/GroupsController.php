@@ -12,6 +12,7 @@ namespace Galette\Tests\Controllers\Crud;
 
 use Galette\Tests\GaletteRoutingTestCase;
 
+use function Safe\json_decode;
 use function Safe\preg_match_all;
 
 /**
@@ -241,6 +242,81 @@ class GroupsController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $this->assertSame($other->getId(), $reorder($group->getId() . '|' . $other->getId()));
         $this->login->logOut();
+    }
+
+    /**
+     * Test group managers cannot set a parent they do not manage from other routes
+     */
+    public function testParentScope(): void
+    {
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+
+        $this->logSuperAdmin();
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+        $managed_parent = new \Galette\Entity\Group();
+        $managed_parent->setName('Managed parent');
+        $this->assertTrue($managed_parent->store());
+        $this->assertTrue($managed_parent->setManagers([$member_one]));
+        $this->login->logOut();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $parent_id = fn(): ?int => (new \Galette\Entity\Group($group->getId()))->getParentGroup()?->getId();
+        $warning = 'Trying to move group ' . $group->getId() . ' under group ' . $other->getId()
+            . ' without appropriate permissions';
+        $edit = function (string $parent) use ($group): void {
+            $request = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST')
+                ->withParsedBody([
+                    'group_name' => $group->getName(),
+                    'parent_group' => $parent
+                ]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+        };
+        $ajax_reorder = function (string $parent) use ($group): bool {
+            $request = $this->createRequest('ajax_groups_reorder', method: 'POST')
+                ->withParsedBody(['id_group' => (string)$group->getId(), 'to' => $parent]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(200, $test_response->getStatusCode());
+            return json_decode((string)$test_response->getBody(), associative: true)['success'];
+        };
+
+        //group edition
+        $edit((string)$other->getId());
+        $this->expectLogEntry(\Analog\Analog::WARNING, $warning);
+        $this->expectFlashData(['error_detected' => [sprintf('Group `%1$s` cannot be set as parent!', $other->getName())]]);
+        $this->assertNull($parent_id());
+
+        $edit((string)$managed_parent->getId());
+        $this->flash_data = [];
+        $this->assertSame($managed_parent->getId(), $parent_id());
+
+        //ajax reorder
+        $this->assertFalse($ajax_reorder((string)$other->getId()));
+        $this->expectLogEntry(\Analog\Analog::WARNING, $warning);
+        $this->assertSame($managed_parent->getId(), $parent_id());
+
+        $this->assertTrue($ajax_reorder(''));
+        $this->assertNull($parent_id());
+        $this->login->logOut();
+
+        //a current parent not managed is kept when saving the group
+        $this->logSuperAdmin();
+        $this->assertTrue($ajax_reorder((string)$other->getId()));
+        $this->login->logOut();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $edit((string)$other->getId());
+        $this->flash_data = [];
+        $this->assertSame($other->getId(), $parent_id());
+        $this->login->logOut();
+
+        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
     }
 
     /**
