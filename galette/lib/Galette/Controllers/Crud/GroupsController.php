@@ -557,9 +557,10 @@ class GroupsController extends CrudController
     /**
      * Get persons posted for a group.
      *
-     * Persons already attached to the group are kept as is; new ones must be
-     * accessible to current user, so a group manager cannot add members out
-     * of the groups they manage.
+     * Only admin and staff can change managers and members from the group page,
+     * as the user interface does. Group managers change members of their groups
+     * from member pages. The group form always posts current persons back, so
+     * a warning is logged only if a group manager tries to change them.
      *
      * @param Group        $group Group instance, before changes
      * @param array<mixed> $ids   Posted persons ids
@@ -569,29 +570,27 @@ class GroupsController extends CrudController
      */
     private function getPostedPersons(Group $group, array $ids, int $type): array|false
     {
-        $m = new Members();
         if ($this->login->isAdmin() || $this->login->isStaff()) {
+            $m = new Members();
             return $m->getArrayList($ids);
         }
 
-        $ids = array_map(intval(...), $ids);
-
-        $persons = [];
         $current = $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers();
-        foreach ($current as $person) {
-            if (in_array((int)$person->id, $ids, strict: true)) {
-                $persons[] = $person;
-            }
+        $current = array_map(fn(Adherent $person): int => (int)$person->id, $current);
+        $ids = array_unique(array_map(intval(...), $ids));
+        sort($current);
+        sort($ids);
+        if ($ids !== $current) {
+            Analog::log(
+                sprintf(
+                    'Trying to change %1$s of group %2$s without appropriate permissions',
+                    $type === Group::MANAGER_TYPE ? 'managers' : 'members',
+                    $group->getId()
+                ),
+                Analog::WARNING
+            );
         }
 
-        $added = array_values(array_diff($ids, array_map(
-            fn(Adherent $person): int => (int)$person->id,
-            $current
-        )));
-        if (count($added) > 0) {
-            $persons = array_merge($persons, $m->getArrayList($added) ?: []);
-        }
-
-        return count($persons) > 0 ? $persons : false;
+        return false;
     }
 }

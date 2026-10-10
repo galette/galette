@@ -72,7 +72,7 @@ class GroupsController extends GaletteRoutingTestCase
     }
 
     /**
-     * Test group managers cannot add members out of their scope
+     * Test group managers cannot change managers nor members from the group page
      */
     public function testGroupManagerEditScope(): void
     {
@@ -83,24 +83,65 @@ class GroupsController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
         $member_two = $this->getMemberTwo();
 
-        //member two is a co-manager, out of member one scope
+        //member two is a simple member of the group, so in member one scope
         $this->logSuperAdmin();
-        $this->assertTrue($group->setManagers([$member_one, $member_two]));
+        $this->assertTrue($group->setMembers([$member_two]));
         $this->login->logOut();
 
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
+        //group form posts current managers and members back: no change, no warning
         $request = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST');
         $request = $request->withParsedBody([
-            'group_name' => $group->getName(),
+            'group_name' => 'Renamed by member one',
             'parent_group' => '',
-            'managers' => [$member_one->id, $member_two->id],
+            'managers' => [$member_one->id],
             'members' => [$member_two->id]
         ]);
         $test_response = $this->app->handle($request);
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+        $this->flash_data = [];
+        $this->assertSame('Renamed by member one', (new \Galette\Entity\Group($group->getId()))->getName());
+
+        //forged request: member two promoted as co-manager, and removed from members
+        $request = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST');
+        $request = $request->withParsedBody([
+            'group_name' => 'Renamed by member one',
+            'parent_group' => '',
+            'managers' => [$member_one->id, $member_two->id],
+            'members' => [$member_one->id]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->flash_data = [];
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Trying to change managers of group ' . $group->getId() . ' without appropriate permissions'
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Trying to change members of group ' . $group->getId() . ' without appropriate permissions'
+        );
+        $this->login->logOut();
+
+        $group = new \Galette\Entity\Group($group->getId());
+        $this->assertSame(
+            [(int)$member_one->id],
+            array_map(fn($m) => (int)$m->id, $group->getManagers())
+        );
+        $this->assertSame(
+            [(int)$member_two->id],
+            array_map(fn($m) => (int)$m->id, $group->getMembers())
+        );
+        $member_two->loadGroups();
+        $this->assertSame([], $member_two->getManagedGroups());
+
+        //staff still manages managers and members from the group page
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->flash_data = [];
         $this->login->logOut();
 
         $group = new \Galette\Entity\Group($group->getId());
@@ -108,10 +149,11 @@ class GroupsController extends GaletteRoutingTestCase
         sort($managers);
         $expected = [(int)$member_one->id, (int)$member_two->id];
         sort($expected);
-        //existing co-manager is kept...
         $this->assertSame($expected, $managers);
-        //...but out of scope member has not been added
-        $this->assertCount(0, $group->getMembers());
+        $this->assertSame(
+            [(int)$member_one->id],
+            array_map(fn($m) => (int)$m->id, $group->getMembers())
+        );
 
         $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
     }
