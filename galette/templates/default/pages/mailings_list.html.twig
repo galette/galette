@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('mailing:send') %}
     <a
         class="action ui tiny labeled icon button"
         href="{{ url_for('mailing') }}?mailing_new=true"
@@ -159,6 +159,7 @@
 {% endblock %}
 
 {% block body %}
+    {% set can_send = can('mailing:send') %}
     {% for log in logs %}
         {% set date_format = _T('Y-m-d H:i:s') %}
         <tr>
@@ -192,7 +193,8 @@
                     <i class="ui eye green icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
                 </a>
-                {% if log.mailing_sending %}
+                {% if not can_send %}
+                {% elseif log.mailing_sending %}
                 <a
                         href="{{ url_for('mailingQueue', {'id': log.mailing_id}) }}"
                         class="icon-only"

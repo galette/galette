@@ -201,6 +201,45 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test mailings history and documents routes permissions
+     */
+    public function testMailingsAndDocumentsRoutes(): void
+    {
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
+        $expected = [
+            'mailings' => 'mailing:history',
+            'mailings_filter' => 'mailing:history',
+            'removeMailing' => 'mailing:history',
+            'doRemoveMailing' => 'mailing:history',
+            'mailing' => 'mailing:send',
+            'mailingPreview' => 'mailing:send|mailing:history',
+            'previewAttachment' => 'mailing:send|mailing:history',
+            'documentsList' => 'document:manage',
+            'documentsFilter' => 'document:manage',
+            'addDocument' => 'document:manage',
+            'doAddDocument' => 'document:manage',
+            'editDocument' => 'document:manage',
+            'doEditDocument' => 'document:manage',
+            'removeDocument' => 'document:manage',
+            'doRemoveDocument' => 'document:manage',
+        ];
+        foreach ($expected as $route => $acl) {
+            $this->assertSame($acl, $authenticate->getAclFor($route), $route);
+        }
+
+        $access = new AccessControl(
+            new Permissions(),
+            new LegacyResolver($this->zdb, $this->preferences),
+            $this->login
+        );
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        foreach (['mailing:history', 'document:manage'] as $permission) {
+            $this->assertTrue($access->can($permission, login: $this->getLogin(Authentication::ACCESS_STAFF)));
+            $this->assertFalse($access->can($permission, login: $manager));
+        }
+    }
+
+    /**
      * Test groups managers display the groups they manage only
      */
     public function testLegacyGroupRead(): void

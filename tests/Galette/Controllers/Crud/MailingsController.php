@@ -116,6 +116,85 @@ class MailingsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test mailings history is for staff, while senders preview their own mailings
+     */
+    public function testMailingsHistoryAccess(): void
+    {
+        $mail_method = $this->preferences->pref_mail_method;
+        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+
+        $member_one = $this->getMemberOne();
+        $mailing_ids = [];
+        $senders = ['Sent by an admin' => null, 'Sent by a group manager' => $member_one->id];
+        foreach ($senders as $subject => $sender) {
+            $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
+            $insert->values([
+                'mailing_sender' => $sender,
+                'mailing_subject' => $subject,
+                'mailing_body' => 'History access body',
+                'mailing_date' => '2026-01-01 00:00:00',
+                //recipients are loaded within the scope of current user
+                'mailing_recipients' => \Safe\json_encode([]),
+                'mailing_sent' => true
+            ]);
+            $this->zdb->execute($insert);
+            $select = $this->zdb->select(\Galette\Core\MailingHistory::TABLE);
+            $select->where(['mailing_subject' => $subject]);
+            $mailing_ids[$subject] = (int)$this->zdb->execute($select)->current()->mailing_id;
+        }
+
+        //staff browses history and previews every mailing, sending is not required
+        //(history comes first: a paginated list cannot be rendered after another page in the same test)
+        $staff_member = $this->getStaffMember($member_one);
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isStaff());
+
+        $test_response = $this->app->handle($this->createRequest('mailings'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Sent by an admin', $body);
+        $this->assertStringContainsString('Sent by a group manager', $body);
+
+        $test_response = $this->app->handle(
+            $this->createRequest('mailingPreview', ['id' => (string)$mailing_ids['Sent by an admin']])
+        );
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('Sent by an admin', (string)$test_response->getBody());
+        $this->login->logOut();
+
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        $this->logGroupManager();
+        //group managers preview the mailings they sent
+        $test_response = $this->app->handle(
+            $this->createRequest('mailingPreview', ['id' => (string)$mailing_ids['Sent by a group manager']])
+        );
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('Sent by a group manager', (string)$test_response->getBody());
+
+        //but cannot browse nor clean history
+        foreach (['mailings' => [], 'removeMailing' => ['id' => (string)$mailing_ids['Sent by a group manager']]] as $route => $args) {
+            $this->expectAuthMiddlewareRefused($this->app->handle($this->createRequest($route, $args)));
+        }
+
+        //nor preview their own mailings once mailings are disabled for them
+        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        $this->expectAuthMiddlewareRefused($this->app->handle(
+            $this->createRequest('mailingPreview', ['id' => (string)$mailing_ids['Sent by a group manager']])
+        ));
+        $this->login->logOut();
+
+        $delete = $this->zdb->delete(\Galette\Core\MailingHistory::TABLE);
+        $delete->where->in(\Galette\Core\MailingHistory::PK, array_values($mailing_ids));
+        $this->zdb->execute($delete);
+        $this->preferences->pref_mail_method = $mail_method;
+        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings;
+    }
+
+    /**
      * Test group managers only remind late members of groups they manage
      */
     public function testGroupManagerReminder(): void

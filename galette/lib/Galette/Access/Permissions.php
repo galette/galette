@@ -91,6 +91,7 @@ class Permissions
             'transaction' => _T('Transactions'),
             'group' => _T('Groups'),
             'mailing' => _T('Mailings'),
+            'document' => _T('Documents'),
             default => ucfirst($domain),
         };
     }
@@ -206,6 +207,9 @@ class Permissions
             new Permission('group:export', _T('Export groups as PDF'), $staff, 'pref_bool_groupsmanagers_exports'),
 
             new Permission('mailing:send', _T('Send mailings'), $staff, 'pref_bool_groupsmanagers_mailings'),
+            new Permission('mailing:history', _T('Browse and delete sent mailings'), $staff),
+
+            new Permission('document:manage', _T('Manage documents'), $staff),
         ];
     }
 }
