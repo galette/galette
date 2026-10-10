@@ -101,7 +101,7 @@ class RolesTest extends GaletteTestCase
             [
                 Roles::MEMBER => [],
                 Roles::UPTODATE => [],
-                Roles::MANAGER => ['member:read'],
+                Roles::MANAGER => ['member:read', 'group:read'],
                 Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
@@ -124,6 +124,7 @@ class RolesTest extends GaletteTestCase
                     'transaction:create',
                     'transaction:read',
                     'transaction:attach',
+                    'group:read',
                     'group:edit',
                     'group:export',
                     'mailing:send',
@@ -167,6 +168,7 @@ class RolesTest extends GaletteTestCase
         foreach ($this->zdb->execute($select) as $row) {
             $permissions[] = $row->permission;
         }
-        $this->assertSame(['member:read'], $permissions);
+        sort($permissions);
+        $this->assertSame(['group:read', 'member:read'], $permissions);
     }
 }

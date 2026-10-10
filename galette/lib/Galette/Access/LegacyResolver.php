@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Access;
 
+use Galette\Core\Authentication;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Preferences;
@@ -114,6 +115,7 @@ class LegacyResolver implements PermissionResolverInterface
             'contribution:read' => $this->canReadContribution(...),
             'transaction:read' => $this->canReadTransaction(...),
             'transaction:attach' => $this->canAttachToTransaction(...),
+            'group:read' => $this->canReadGroup(...),
             'group:edit' => $this->canEditGroup(...),
             default => null,
         };
@@ -266,6 +268,24 @@ class LegacyResolver implements PermissionResolverInterface
                 $this->preferences->pref_bool_groupsmanagers_create_contributions
                 || $this->preferences->pref_bool_groupsmanagers_see_contributions
             );
+    }
+
+    /**
+     * Can login display a group?
+     *
+     * @param Login  $login Login to check
+     * @param ?Group $group Group, null for any
+     */
+    private function canReadGroup(Login $login, ?Group $group): bool
+    {
+        if ($login->getAccessLevel() >= Authentication::ACCESS_STAFF) {
+            return true;
+        }
+        //no group: route check, groups managers reach the groups they manage
+        if ($group === null) {
+            return $login->isGroupManager();
+        }
+        return $group->isManager($login);
     }
 
     /**

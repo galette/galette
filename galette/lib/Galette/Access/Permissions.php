@@ -199,6 +199,9 @@ class Permissions
                 ['pref_bool_groupsmanagers_create_contributions', 'pref_bool_groupsmanagers_see_contributions']
             ),
 
+            new Permission('group:read', _T('Display groups'), $staff, true),
+            new Permission('group:create', _T('Create groups'), $staff),
+            new Permission('group:delete', _T('Delete groups'), $staff),
             new Permission('group:edit', _T('Edit groups'), $staff, 'pref_bool_groupsmanagers_edit_groups'),
             new Permission('group:export', _T('Export groups as PDF'), $staff, 'pref_bool_groupsmanagers_exports'),
 
