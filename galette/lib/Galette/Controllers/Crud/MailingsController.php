@@ -15,11 +15,9 @@ use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
 use Galette\Core\MailingQueue;
-use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
@@ -152,14 +150,6 @@ class MailingsController extends CrudController
             /** TODO: replace that... */
             $this->session->labels = $mailing->unreachables;
 
-            if (!$this->login->isSuperAdmin()) {
-                $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                $params['sender_current'] = [
-                    'name'  => $member->sname,
-                    'email' => $member->getEmail()
-                ];
-            }
-
             $params = array_merge(
                 $params,
                 [
@@ -283,26 +273,6 @@ class MailingsController extends CrudController
                     $error_detected[] = _T("Please enter a message.");
                 } else {
                     $mailing->message = $post['mailing_corps'];
-                }
-
-                switch ($post['sender'] ?? false) {
-                    case GaletteMail::SENDER_CURRENT:
-                        $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                        $mailing->setSender(
-                            $member->sname,
-                            $member->getEmail()
-                        );
-                        break;
-                    case GaletteMail::SENDER_OTHER:
-                        $mailing->setSender(
-                            $post['sender_name'],
-                            $post['sender_address']
-                        );
-                        break;
-                    case GaletteMail::SENDER_PREFS:
-                    default:
-                        //nothing to do; this is the default :)
-                        break;
                 }
 
                 $mailing->html = isset($post['mailing_html']);
@@ -747,27 +717,6 @@ class MailingsController extends CrudController
             MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         } else {
             $mailing = $this->session->mailing;
-
-            switch ($post['sender']) {
-                case GaletteMail::SENDER_CURRENT:
-                    $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                    $mailing->setSender(
-                        $member->sname,
-                        $member->getEmail()
-                    );
-                    break;
-                case GaletteMail::SENDER_OTHER:
-                    $mailing->setSender(
-                        $post['sender_name'],
-                        $post['sender_address']
-                    );
-                    break;
-                case GaletteMail::SENDER_PREFS:
-                default:
-                    //nothing to do; this is the default :)
-                    break;
-            }
-
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
@@ -784,8 +733,7 @@ class MailingsController extends CrudController
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' <'
-                    . $mailing->getSenderAddress() . '>',
+                'sender'        => $mailing->getSender(stored: $id !== null),
                 'attachments'   => $attachments
 
             ]

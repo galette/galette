@@ -54,10 +54,6 @@ class MailingQueue extends GaletteTestCase
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
         $mailing->subject = 'Queue test';
         $mailing->message = 'Queue test body';
-        $mailing->setSender(
-            name: 'Galette unit tests',
-            address: 'test@galette.eu'
-        );
 
         $mh = new \Galette\Core\MailingHistory(
             zdb: $this->zdb,
@@ -761,7 +757,6 @@ class MailingQueue extends GaletteTestCase
         $mail = new RecordingGaletteMail($this->preferences);
         $mail->setSubject('Direct subject');
         $mail->setMessage('Direct body');
-        $mail->setSender(name: 'Galette unit tests', address: 'test@galette.eu');
         $mail->setRecipients($recipients);
         return $mail;
     }

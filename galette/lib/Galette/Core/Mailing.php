@@ -191,7 +191,7 @@ class Mailing extends GaletteMail
         $this->message = $rs->mailing_body;
         $this->html = $this->message != strip_tags($this->message);
         if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
-            $this->setSender(
+            $this->setStoredSender(
                 $rs->mailing_sender_name,
                 $rs->mailing_sender_address
             );

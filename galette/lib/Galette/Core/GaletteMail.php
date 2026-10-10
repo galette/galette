@@ -40,15 +40,16 @@ class GaletteMail
     //value 4 (former METHOD_GMAIL) is no longer used, do not reuse it
     public const int METHOD_SENDMAIL = 5;
 
-    public const int SENDER_PREFS = 0;
-    public const int SENDER_CURRENT = 1;
-    public const int SENDER_OTHER = 2;
-
     /** Timeout, in seconds, a connection test is given */
     public const int CONNECTION_TIMEOUT = 10;
 
-    private string $sender_name;
-    private string $sender_address;
+    private readonly string $sender_name;
+    private readonly string $sender_address;
+    /** Sender stored in database */
+    private ?string $db_sender_name = null;
+    /** Sender mail stored in database */
+    private ?string $db_sender_address = null;
+
     private string $subject;
     private string $message;
     private bool $html = false;
@@ -76,10 +77,8 @@ class GaletteMail
      */
     public function __construct(protected readonly Preferences $preferences)
     {
-        $this->setSender(
-            $preferences->pref_email_nom,
-            $preferences->pref_email
-        );
+        $this->sender_name = $preferences->pref_email_nom;
+        $this->sender_address = $preferences->pref_email;
         if (!$this->preferences->pref_bool_wrap_mails) {
             $this->word_wrap = 0;
         }
@@ -742,6 +741,20 @@ class GaletteMail
     }
 
     /**
+     * Get sender in the format "Name <address>"
+     *
+     * @param bool $stored Get sender stored in database, falls back to the one from preferences if none
+     */
+    public function getSender(bool $stored = false): string
+    {
+        return sprintf(
+            '%s <%s>',
+            ($stored ? $this->db_sender_name : null) ?? $this->sender_name,
+            ($stored ? $this->db_sender_address : null) ?? $this->sender_address
+        );
+    }
+
+    /**
      * Get sender name
      */
     public function getSenderName(): string
@@ -844,15 +857,15 @@ class GaletteMail
     }
 
     /**
-     * Sets the sender
+     * Sets the sender stored in database
      *
-     * @param string $name    Sender name
-     * @param string $address Sender address
+     * @param ?string $name    Sender name
+     * @param ?string $address Sender address
      */
-    public function setSender(string $name, string $address): self
+    public function setStoredSender(?string $name, ?string $address): self
     {
-        $this->sender_name = $name;
-        $this->sender_address = $address;
+        $this->db_sender_name = $name;
+        $this->db_sender_address = $address;
         return $this;
     }
 

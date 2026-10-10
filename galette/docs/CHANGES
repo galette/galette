@@ -8,6 +8,7 @@ Changes
 - New galette:twofactor:reset console command, to reset the second factor of the super administrator or of a member, forget its last used code, or disable two-factor authentication for the whole instance
 - Group PDF export now displays all subgroups, not only first level
 - Fix required textareas display
+- It is no longer possible to change sender name and address when sending a mailing
 
 1.2.1 -> 1.3.0
 

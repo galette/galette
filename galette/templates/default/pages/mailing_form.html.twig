@@ -23,27 +23,6 @@
                         {{ _T("Mailing information") }}
                     </div>
                     <div class="active content field">
-                        <div class="three fields">
-                            <div class="field">
-                                <label for="sender">{{ _T("Sender") }}</label>
-                                <select name="sender" id="sender" class="ui dropdown">
-                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}">{{ _T("from preferences") }}</option>
-                                {% if not login.isSuperAdmin() %}
-                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}">{{ _T("current logged in user") }}</option>
-                                {% endif %}
-                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}">{{ _T("other") }}</option>
-                                </select>
-                            </div>
-                            <div class="field required">
-                                <label for="sender_name">{{ _T("Name") }}</label>
-                                <input type="text" name="sender_name" id="sender_name" value="{{ preferences.pref_email_nom }}" disabled="disabled"/>
-                            </div>
-                            <div class="field required">
-                                <label for="sender_address">{{ _T("Address") }}</label>
-                                <input type="text" name="sender_address" id="sender_address" value="{{ preferences.pref_email }}" disabled="disabled"/>
-                            </div>
-                        </div>
-                        <div class="ui section divider"></div>
                         <div class="two fields">
                             <div class="field">
                                 <label>{{ _T("Recipients") }}</label>
@@ -235,9 +214,6 @@
     $(function() {
         {# Preview popup #}
         $('#btnpreview').click(function(){
-            var _sender = $('#sender').val();
-            var _sender_name = $('#sender_name').val();
-            var _sender_address = $('#sender_address').val();
             var _subject = $('#mailing_objet').val();
             var _body = $('#mailing_corps').val();
             var _html = $('#mailing_html').is(':checked');
@@ -249,9 +225,6 @@
                 url: '{{ url_for('mailingPreview') }}',
                 type: "POST",
                 data: {
-                    sender: _sender,
-                    sender_name: _sender_name,
-                    sender_address: _sender_address,
                     subject: _subject,
                     body: _body,
                     html: _html,
@@ -450,42 +423,6 @@
                 modal_cancel_text: _T("Cancel")|e("js"),
                 modal_classname: "redalert",
             } %}
-        });
-
-        $('#sender').on('change', function() {
-            var _this = $(this);
-            var _sender_name = $('#sender_name');
-            var _sender_address = $('#sender_address');
-            var _editable = false;
-            var _val = _this.val();
-            switch (_val) {
-                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}':
-                    _sender_name.val('{{ preferences.pref_email_nom|e('js') }}');
-                    _sender_address.val('{{ preferences.pref_email|e('js') }}');
-                    break;
-
-        {% if not login.isSuperAdmin() %}
-                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}':
-                    _sender_name.val('{{ sender_current['name']|e('js') }}');
-                    _sender_address.val('{{ sender_current['email']|e('js') }}');
-                    break;
-        {% endif %}
-                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}':
-                    _sender_name.val('');
-                    _sender_address.val('');
-                    _editable = true;
-                    break;
-            }
-
-            if (_editable) {
-                _sender_name.removeAttr('disabled');
-                _sender_address.removeAttr('disabled');
-                $('#sender + span').removeClass('disabled');
-            } else {
-                _sender_name.attr('disabled', 'disabled');
-                _sender_address.attr('disabled', 'disabled');
-                $('#sender + span').addClass('disabled');
-            }
         });
     });
 </script>

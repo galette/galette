@@ -892,12 +892,6 @@ class MailingQueue
             $mailing->subject = $row->mailing_subject;
             $mailing->message = $row->mailing_body;
             $mailing->html = ($row->mailing_body != strip_tags($row->mailing_body));
-            if ($row->mailing_sender_name !== null || $row->mailing_sender_address !== null) {
-                $mailing->setSender(
-                    $row->mailing_sender_name,
-                    $row->mailing_sender_address
-                );
-            }
             return $mailing;
         } catch (Throwable $e) {
             Logs::exception($e, 'Unable to load mailing #' . $mailing_id . ' for queue', Analog::ERROR);

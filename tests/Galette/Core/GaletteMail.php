@@ -126,6 +126,21 @@ class GaletteMail extends GaletteTestCase
         $mail = new \Galette\Core\GaletteMail($this->preferences);
         $this->assertSame($this->preferences->getDefaults()['pref_email_nom'], $mail->getSenderName());
         $this->assertSame($this->preferences->getDefaults()['pref_email'], $mail->getSenderAddress());
+
+        $expected = sprintf(
+            '%s <%s>',
+            $this->preferences->getDefaults()['pref_email_nom'],
+            $this->preferences->getDefaults()['pref_email']
+        );
+        $this->assertSame($expected, $mail->getSender());
+        //no sender stored: falls back to preferences
+        $this->assertSame($expected, $mail->getSender(stored: true));
+
+        $mail->setStoredSender('Former sender', 'former@galette.eu');
+        $this->assertSame('Former sender <former@galette.eu>', $mail->getSender(stored: true));
+        //sender actually used is still the one from preferences
+        $this->assertSame($expected, $mail->getSender());
+        $this->assertSame($this->preferences->getDefaults()['pref_email'], $mail->getSenderAddress());
     }
 
     /**
