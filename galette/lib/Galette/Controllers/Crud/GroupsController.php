@@ -196,6 +196,18 @@ class GroupsController extends CrudController
                     );
                     continue;
                 }
+                //as on the list, group managers can only move a group under a group they manage
+                if (
+                    $parentId != '0'
+                    && (int)$parentId !== $group->getParentGroup()?->getId()
+                    && !$this->login->isGroupManager((int)$parentId)
+                ) {
+                    Analog::log(
+                        'Trying to move group ' . $id . ' under group ' . $parentId . ' without appropriate permissions',
+                        Analog::WARNING
+                    );
+                    continue;
+                }
                 $parentGroup = new Group((int)$parentId);
                 if ($parentId != '0') {
                     $group->setParentGroup((int)$parentId);

@@ -167,40 +167,66 @@ class GroupsController extends GaletteRoutingTestCase
     {
         $group = $this->logGroupManager();
         $this->login->logOut();
+        $member_one = $this->getMemberOne();
 
+        $this->logSuperAdmin();
         $other = new \Galette\Entity\Group();
         $other->setName('Not managed');
         $this->assertTrue($other->store());
+        $managed_parent = new \Galette\Entity\Group();
+        $managed_parent->setName('Managed parent');
+        $this->assertTrue($managed_parent->store());
+        $this->assertTrue($managed_parent->setManagers([$member_one]));
+        $this->login->logOut();
 
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager($group->getId()));
+        $this->assertTrue($this->login->isGroupManager($managed_parent->getId()));
         $this->assertFalse($this->login->isGroupManager($other->getId()));
+
+        $reorder = function (string $reordered): ?int {
+            $request = $this->createRequest('reorderGroups', method: 'POST')
+                ->withParsedBody(['reordered' => [$reordered]]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->flash_data = [];
+            return (new \Galette\Entity\Group((int)explode('|', $reordered)[0]))->getParentGroup()?->getId();
+        };
 
         $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
         foreach ([false, true] as $allowed) {
             $this->preferences->pref_bool_groupsmanagers_edit_groups = $allowed;
 
             //group not managed cannot be moved
-            $request = $this->createRequest('reorderGroups', method: 'POST')
-                ->withParsedBody(['reordered' => [$other->getId() . '|' . $group->getId()]]);
-            $test_response = $this->app->handle($request);
-            $this->assertSame(301, $test_response->getStatusCode());
-            $this->flash_data = [];
+            $this->assertNull($reorder($other->getId() . '|' . $group->getId()));
             $this->expectLogEntry(
                 \Analog\Analog::WARNING,
                 'Trying to reorder group ' . $other->getId() . ' without appropriate permissions'
             );
-            $this->assertNull((new \Galette\Entity\Group($other->getId()))->getParentGroup());
 
-            //managed group can be moved when preferences allow it
-            $request = $this->createRequest('reorderGroups', method: 'POST')
-                ->withParsedBody(['reordered' => [$group->getId() . '|' . $other->getId()]]);
-            $test_response = $this->app->handle($request);
-            $this->assertSame(301, $test_response->getStatusCode());
-            $this->flash_data = [];
-            $parent = (new \Galette\Entity\Group($group->getId()))->getParentGroup();
-            $this->assertSame($allowed ? $other->getId() : null, $parent?->getId());
+            //managed group cannot be moved under a group not managed
+            $this->assertNull($reorder($group->getId() . '|' . $other->getId()));
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                $allowed
+                    ? 'Trying to move group ' . $group->getId() . ' under group ' . $other->getId()
+                        . ' without appropriate permissions'
+                    : 'Trying to reorder group ' . $group->getId() . ' without appropriate permissions'
+            );
+
+            //managed group can be moved under a managed group, and back to the top, when preferences allow it
+            $this->assertSame(
+                $allowed ? $managed_parent->getId() : null,
+                $reorder($group->getId() . '|' . $managed_parent->getId())
+            );
+            if (!$allowed) {
+                $this->expectLogEntry(
+                    \Analog\Analog::WARNING,
+                    'Trying to reorder group ' . $group->getId() . ' without appropriate permissions'
+                );
+            }
+            $this->assertNull($reorder($group->getId() . '|0'));
             if (!$allowed) {
                 $this->expectLogEntry(
                     \Analog\Analog::WARNING,
@@ -209,6 +235,11 @@ class GroupsController extends GaletteRoutingTestCase
             }
         }
         $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups;
+        $this->login->logOut();
+
+        //staff can move any group anywhere
+        $this->logSuperAdmin();
+        $this->assertSame($other->getId(), $reorder($group->getId() . '|' . $other->getId()));
         $this->login->logOut();
     }
 
