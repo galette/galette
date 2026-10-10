@@ -103,7 +103,11 @@ class FeatureCommands extends GaletteTestCase
         //unattended, --force is required
         $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['--all' => true], options: ['interactive' => false]);
         $this->assertSame(Command::FAILURE, $tester->getStatusCode());
-        $this->assertStringContainsString('pass --force', $tester->getDisplay());
+        //messages wrap at the terminal width
+        $this->assertStringContainsString(
+            'Run this command from an interactive terminal to confirm, or pass --force.',
+            preg_replace('/\s+/', ' ', $tester->getDisplay())
+        );
         $this->assertSame([self::FLAG], $this->getStored());
 
         $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['--all' => true, '--force' => true]);
