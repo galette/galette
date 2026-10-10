@@ -163,7 +163,7 @@ class FeatureStatus extends AbstractCommand
         if (!$debugMode) {
             $io->note(
                 'Development flags are only enabled when GALETTE_DEBUG is set to true. '
-                . 'Preview flags work in production too; turn them on from the advanced configuration page.'
+                . 'Preview flags work in production too; turn them on from the advanced configuration page or with galette:feature:enable.'
             );
         }
         if ($enabledCount > 0) {

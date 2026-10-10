@@ -225,10 +225,7 @@ class FeatureFlagManager
             }
             $stored = (string)$results->current()->val_pref;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot read stored feature flags. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot read stored feature flags', Analog::WARNING);
             return [];
         }
 

@@ -10,10 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
-use Analog\Analog;
 use Galette\Core\FeatureFlagManager;
-use Galette\Core\History;
-use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -25,19 +22,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Turn off preview features
  *
- * Preview features are turned on from the advanced configuration page. Should
- * one of them break that page, or keep its users out, this is the way back
- * that does not go through the interface. Running this command requires access
- * to the server, which stands as the authentication here - just like the
- * installer.
- *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 #[AsCommand(
     name: 'galette:feature:disable',
-    description: 'Turn off preview features turned on from the advanced configuration page'
+    description: 'Turn off preview features'
 )]
-class FeatureDisable extends AbstractCommand
+class FeatureDisable extends AbstractFeature
 {
     /**
      * Configure command
@@ -48,20 +39,15 @@ class FeatureDisable extends AbstractCommand
             ->addArgument(
                 name: 'flag',
                 mode: InputArgument::OPTIONAL,
-                description: 'Feature flag to turn off'
+                description: 'Feature flag to turn off; the ones requiring it are turned off as well'
             )
             ->addOption(
                 name: 'all',
                 shortcut: null,
                 mode: InputOption::VALUE_NONE,
                 description: 'Turn off every preview feature'
-            )
-            ->addOption(
-                name: 'force',
-                shortcut: null,
-                mode: InputOption::VALUE_NONE,
-                description: 'Do not ask for confirmation (required to run unattended)'
             );
+        $this->addForceOption();
     }
 
     /**
@@ -72,7 +58,6 @@ class FeatureDisable extends AbstractCommand
         global $container;
 
         $preferences = $container->get(Preferences::class);
-        $login = $container->get(Login::class);
         $flags = new FeatureFlagManager($preferences);
 
         $this->io->title('Turn off preview features');
@@ -93,6 +78,7 @@ class FeatureDisable extends AbstractCommand
             try {
                 $change = $flags->computeTurnOff((string)$flag);
             } catch (\DomainException $e) {
+                // no log: a refused change, reported to the user
                 $this->io->error($e->getMessage());
                 return Command::FAILURE;
             }
@@ -110,46 +96,6 @@ class FeatureDisable extends AbstractCommand
             return Command::FAILURE;
         }
 
-        if (!$preferences->storeFeatureFlags($remaining)) {
-            $this->io->error('Preview features could not be stored.');
-            return Command::FAILURE;
-        }
-
-        //history records who did it; access to the server stands for the
-        //super administrator
-        $login->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
-        $container->get(History::class)->add(_T("Preview feature turned off"), implode(', ', $removed));
-        Analog::log(
-            sprintf('Preview features turned off from command line: %s', implode(', ', $removed)),
-            Analog::INFO
-        );
-
-        $this->io->success('Preview features have been turned off.');
-        return Command::SUCCESS;
-    }
-
-    /**
-     * Ask for confirmation, unless --force has been passed
-     *
-     * @param InputInterface $input    Input
-     * @param string         $question Question to ask
-     */
-    private function confirm(InputInterface $input, string $question): bool
-    {
-        if ($input->getOption('force')) {
-            return true;
-        }
-
-        if (!$input->isInteractive()) {
-            $this->io->error('Run this command from an interactive terminal to confirm, or pass --force.');
-            return false;
-        }
-
-        if (!$this->io->confirm($question, default: false)) {
-            $this->io->text('Nothing has been changed.');
-            return false;
-        }
-
-        return true;
+        return $this->store($remaining, $removed, turn_on: false);
     }
 }

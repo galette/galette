@@ -222,6 +222,7 @@ class AdvancedConfigController extends AbstractController
         try {
             $change = $turn_on ? $flags->computeTurnOn($flag) : $flags->computeTurnOff($flag);
         } catch (\DomainException $e) {
+            // no log: a refused change, reported to the user
             $error = match ($e->getCode()) {
                 FeatureFlagManager::ERR_LOCKED => _T("Preview features are set by the GALETTE_FEATURE_FLAGS constant in behavior.inc.php, which takes precedence."),
                 FeatureFlagManager::ERR_DEV_DEPENDENCY => _T("This feature requires another one that is still in development."),

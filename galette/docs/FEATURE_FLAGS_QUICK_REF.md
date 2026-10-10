@@ -44,11 +44,15 @@ define('GALETTE_FEATURE_FLAGS', ['my-flag']);
 When defined, the constant takes precedence over the preview features turned on
 from the interface, which can then no longer be changed there.
 
-### Turn preview features off from the command line
+### Turn preview features on or off from the command line
 ```bash
+bin/console galette:feature:enable my-flag
 bin/console galette:feature:disable my-flag
 bin/console galette:feature:disable --all
 ```
+
+Both need an installed Galette: like every command using the database, they
+are not listed while `config.inc.php` is missing.
 
 ### Usage in code
 ```php
