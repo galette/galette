@@ -15,6 +15,7 @@ use Galette\Filters\ScheduledPaymentsList;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -121,10 +122,7 @@ class ScheduledPayments
             }
             return $scheduleds;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list scheduled payments | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list scheduled payments', Analog::WARNING);
             throw $e;
         }
     }
@@ -168,10 +166,7 @@ class ScheduledPayments
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for scheduled payments | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for scheduled payments', Analog::WARNING);
             throw $e;
         }
     }
@@ -200,10 +195,7 @@ class ScheduledPayments
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count scheduled payments | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count scheduled payments', Analog::WARNING);
             throw $e;
         }
     }
@@ -231,10 +223,7 @@ class ScheduledPayments
                 $this->sum = round((float)$result->scheduledsum, 2);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot calculate scheduled payments sum | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot calculate scheduled payments sum', Analog::WARNING);
             throw $e;
         }
     }
@@ -343,10 +332,7 @@ class ScheduledPayments
                 $select->where(['s.paid' => (bool)$this->filters->paid]);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -454,11 +440,7 @@ class ScheduledPayments
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove scheduled payments | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove scheduled payments', Analog::ERROR);
             throw $e;
         }
     }

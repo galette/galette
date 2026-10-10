@@ -16,6 +16,7 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Status;
 use Galette\Repository\Members;
+use Analog\Analog;
 
 /**
  * Galette status controller
@@ -296,6 +297,10 @@ class StatusController extends CrudController
                     $error
                 );
             }
+            Analog::log(
+                'Delete status #' . (int)$args['id'] . ': not deleted. ' . implode(' ', $class->getErrors()),
+                Analog::INFO
+            );
             return false;
         }
 

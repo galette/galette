@@ -15,6 +15,7 @@ use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Links;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
@@ -561,6 +562,7 @@ class PdfController extends AbstractController
                     $error_detected[] = _T("Model has not been stored :(");
                 }
             } catch (Throwable $e) {
+                Logs::exception($e, 'Unable to store PDF model of type ' . $type, Analog::ERROR);
                 $error_detected[] = $e->getMessage();
             }
         }

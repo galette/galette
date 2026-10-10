@@ -85,3 +85,7 @@ services:
         class: Galette\Tests\PHPStan\RequireEntityConstantRule
         tags:
             - phpstan.rules.rule
+    -
+        class: Galette\Tests\PHPStan\CatchMustLogRule
+        tags:
+            - phpstan.rules.rule

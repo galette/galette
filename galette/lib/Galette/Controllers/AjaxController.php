@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Adherent;
@@ -159,10 +160,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in towns suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in towns suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -201,10 +199,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in countries suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in countries suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -243,10 +238,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in regions suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in regions suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -296,6 +288,7 @@ class AjaxController extends AbstractController
                 'message'   => $message
             ];
         } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to send telemetry data', Analog::WARNING);
             $result = [
                 'success'   => false,
                 'message'   => $e->getMessage()

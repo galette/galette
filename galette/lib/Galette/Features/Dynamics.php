@@ -15,6 +15,7 @@ use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
@@ -184,10 +185,11 @@ trait Dynamics
                             $value = $d->format('Y-m-d');
                         } catch (Throwable $e) {
                             $valid = false;
-                            Analog::log(
+                            Logs::exception(
+                                $e,
                                 'Wrong date format. field: ' . $field_id
                                 . ', value: ' . $value . ', expected fmt: '
-                                . __("Y-m-d") . ' | ' . $e->getMessage(),
+                                . __("Y-m-d"),
                                 Analog::INFO
                             );
                             $this->errors[] = sprintf(

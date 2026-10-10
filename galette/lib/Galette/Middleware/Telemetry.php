@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Safe\DateTime;
 
 use function Safe\filemtime;
@@ -104,15 +105,12 @@ class Telemetry
                         try {
                             $telemetry->send();
                         } catch (Throwable $e) {
-                            Analog::log(
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
+                            Logs::exception($e, 'Unable to send telemetry data', Analog::INFO);
                         }
                     }
                 }
-            } catch (Throwable) {
-                //empty catch
+            } catch (Throwable $e) {
+                Logs::exception($e, 'Unable to check telemetry expiry or write its cache file', Analog::WARNING);
             }
         }
         return $response;

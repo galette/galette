@@ -20,6 +20,7 @@ use RuntimeException;
 use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 
 /**
@@ -93,13 +94,11 @@ class Group
                 $this->loadFromRS($results->current());
                 return true;
             } else {
+                Analog::log('Load group #' . $id . ': group not found', Analog::INFO);
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load group from id `' . $id . '` | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load group from id `' . $id . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -123,13 +122,11 @@ class Group
                 $this->loadFromRS($results->current());
                 return true;
             } else {
+                Analog::log('Load group `' . $group_name . '`: group not found', Analog::INFO);
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load group from name `' . $group_name . '` | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load group from name `' . $group_name . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -210,10 +207,7 @@ class Group
                     $this->managers = $members;
                 }
             } catch (Throwable $e) {
-                Analog::log(
-                    'Cannot get group persons | ' . $e->getMessage(),
-                    Analog::WARNING
-                );
+                Logs::exception($e, 'Cannot get group persons', Analog::WARNING);
                 throw $e;
             }
         }
@@ -247,9 +241,9 @@ class Group
             }
             $this->groups = $groups;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot get subgroup for group ' . $this->group_name
-                . ' (' . $this->id . ')| ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'Cannot get subgroup for group ' . $this->group_name . ' (' . $this->id . ')',
                 Analog::WARNING
             );
             throw $e;
@@ -339,11 +333,7 @@ class Group
                 );
                 $this->isempty = false;
             } else {
-                Analog::log(
-                    'Unable to delete group ' . $this->group_name
-                    . ' (' . $this->id . ') |' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Unable to delete group ' . $this->group_name . ' (' . $this->id . ')');
                 throw $e;
             }
             return false;
@@ -431,12 +421,10 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Something went wrong detaching group `' . $this->group_name
-                . '` (' . $this->id . ') from its parent:\'( | '
-                . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
+                . '` (' . $this->id . ') from its parent'
             );
             throw $e;
         }
@@ -520,11 +508,7 @@ class Group
             }
             /** FIXME: also store members and managers? */
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing group `' . $this->group_name . '` (' . ($this->id ?? 'new') . ')');
             throw $e;
         }
     }
@@ -776,11 +760,7 @@ class Group
                 Analog::INFO
             );
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot add member to group `' . $this->group_name
-                . '` (' . $this->id . ') | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot add member to group `' . $this->group_name . '` (' . $this->id . ')');
             throw $e;
         }
     }
@@ -858,18 +838,12 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
             $zdb->rollback();
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-            Analog::log(
-                'Unable to attach members to group `' . $this->group_name
-                . '` (' . $this->id . ')|' . implode("\n", $messages),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to attach members to group `' . $this->group_name . '` (' . $this->id . ')'
             );
-            throw $te;
+            throw new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
         }
     }
 
@@ -946,18 +920,12 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = clone $e;
             $zdb->rollback();
-            $messages = [];
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-            Analog::log(
-                'Unable to attach managers to group `' . $this->group_name
-                . '` (' . $this->id . ')|' . implode("\n", $messages),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to attach managers to group `' . $this->group_name . '` (' . $this->id . ')'
             );
-            throw $te;
+            throw $e;
         }
     }
 

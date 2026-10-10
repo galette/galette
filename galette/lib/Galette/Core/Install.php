@@ -556,7 +556,7 @@ class Install
             closedir($dh);
             ksort($update_scripts);
         } catch (DirException) {
-            //empty catch
+            // no log: no scripts directory, nothing to update
         }
         return $update_scripts;
     }
@@ -627,10 +627,7 @@ class Install
                     $ret['res'] = true;
                     $this->report[] = $ret;
                 } catch (RuntimeException $e) {
-                    Analog::log(
-                        $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    Logs::exception($e, 'Unable to run ' . $key . ' update script', Analog::ERROR);
                     $ret['message'] = sprintf(
                         //TRANS: parameter is the update script version
                         _T('Unable to run %1$s update script :('),
@@ -709,10 +706,7 @@ class Install
                     } else {
                         $ret['res'] = true;
                     }
-                    Analog::log(
-                        'Error executing query | ' . $e->getMessage(),
-                        $log_lvl
-                    );
+                    Logs::exception($e, 'Error executing query: ' . $query, $log_lvl);
                 }
 
                 $queries_results[] = $ret;
@@ -888,6 +882,10 @@ class Install
     {
         if (!file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             $error_detected[] = _T("No configuration file found!");
+            Analog::log(
+                'Load existing configuration for update: ' . GALETTE_CONFIG_PATH . 'config.inc.php not found',
+                Analog::WARNING
+            );
             return false;
         }
 
@@ -897,6 +895,10 @@ class Install
         foreach ($required as $key) {
             if (empty($existing[$key])) {
                 $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+                Analog::log(
+                    'Load existing configuration for update: ' . $key . ' missing or empty',
+                    Analog::WARNING
+                );
                 return false;
             }
         }
@@ -904,6 +906,7 @@ class Install
         //password may legitimately be empty, only its presence is required
         if (!array_key_exists('pwd_db', $existing)) {
             $error_detected[] = _T("Existing configuration file is incomplete or unreadable!");
+            Analog::log('Load existing configuration for update: pwd_db missing', Analog::WARNING);
             return false;
         }
 
@@ -1016,8 +1019,9 @@ class Install
                         $existing['pwd_db'] = $matches[1];
                     }
                 }
-            } catch (FilesystemException) {
-                //empty catch
+            } catch (FilesystemException $e) {
+                //existing values are only a convenience, the form can still be filled
+                Logs::exception($e, 'Unable to read existing configuration file', Analog::WARNING);
             }
         }
 
@@ -1196,6 +1200,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
             return true;
         }
+        Analog::log('Init objects: unknown installation mode ' . var_export($this->mode, return: true), Analog::WARNING);
         return false;
     }
 
@@ -1272,6 +1277,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
                 return $db_ver;
             }
         } catch (\LogicException) {
+            // no log: already logged by Db::getDbVersion()
             return false;
         }
     }
@@ -1349,11 +1355,8 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
         if (file_exists($enable_file)) {
             try {
                 unlink($enable_file);
-            } catch (FilesystemException) {
-                Analog::log(
-                    'Unable to remove installer enable file: ' . $enable_file,
-                    Analog::WARNING
-                );
+            } catch (FilesystemException $e) {
+                Logs::exception($e, 'Unable to remove installer enable file: ' . $enable_file, Analog::WARNING);
                 return false;
             }
             Analog::log('Installer enable file removed from disk', Analog::INFO);

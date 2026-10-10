@@ -18,6 +18,7 @@ use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\json_encode;
 
@@ -93,11 +94,7 @@ class SavedSearch
 
             $this->loadFromRS($res);
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading saved search #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading saved search #' . $id);
             throw $e;
         }
     }
@@ -115,11 +112,7 @@ class SavedSearch
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
         } catch (RuntimeException $e) {
-            Analog::log(
-                'Unable to decode parameters for saved search #' . $this->id
-                . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to decode parameters for saved search #' . $this->id);
             $this->parameters = [];
         }
         if ($rs->id_adh !== null) {
@@ -189,11 +182,7 @@ class SavedSearch
             $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing saved search: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
-            );
+            Logs::exception($e, "An error occurred storing saved search:\n" . print_r($data, return: true));
             throw $e;
         }
     }
@@ -217,10 +206,7 @@ class SavedSearch
         } catch (RuntimeException $re) {
             throw $re;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete saved search ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete saved search ' . $id);
             throw $e;
         }
     }
@@ -247,9 +233,9 @@ class SavedSearch
                             return $d->format(__("Y-m-d"));
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$name . ') | '
-                                . $e->getMessage(),
+                            Logs::exception(
+                                $e,
+                                'Bad date (' . $this->$name . ')',
                                 Analog::INFO
                             );
                             return $this->$name;

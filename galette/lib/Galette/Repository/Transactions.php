@@ -18,6 +18,7 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
 use Galette\Entity\Adherent;
@@ -81,10 +82,7 @@ class Transactions
             }
             return $transactions;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list transactions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list transactions', Analog::WARNING);
             throw $e;
         }
     }
@@ -123,10 +121,7 @@ class Transactions
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for transactions', Analog::WARNING);
             throw $e;
         }
     }
@@ -155,10 +150,7 @@ class Transactions
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count transactions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count transactions', Analog::WARNING);
             throw $e;
         }
     }
@@ -315,10 +307,7 @@ class Transactions
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
         }
     }
 
@@ -368,11 +357,7 @@ class Transactions
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'An error occurred trying to remove transactions | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove transactions', Analog::ERROR);
             return false;
         }
     }

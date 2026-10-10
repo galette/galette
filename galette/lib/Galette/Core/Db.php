@@ -123,11 +123,7 @@ class Db
             $this->doConnection();
         } catch (Throwable $e) {
             // perhaps factory() failed to load the specified Adapter class
-            Analog::log(
-                '[Db] Error (' . $e->getCode() . '|'
-                . $e->getMessage() . ')',
-                Analog::ALERT
-            );
+            Logs::exception($e, '[Db] Error (' . $e->getCode() . ')', Analog::ALERT);
             throw $e;
         }
     }
@@ -206,10 +202,7 @@ class Db
                 return '0.63';
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot check database version: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot check database version', Analog::ERROR);
             //PDO error codes are SQLSTATE strings, which Exception does not accept
             throw new LogicException('Cannot check database version', is_int($e->getCode()) ? $e->getCode() : 0, $e);
         }
@@ -231,6 +224,7 @@ class Db
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
         } catch (LogicException) {
+            // no log: already logged by getDbVersion()
             return false;
         }
     }
@@ -292,11 +286,7 @@ class Db
             return true;
         } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
-            Analog::log(
-                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|'
-                . $e->getMessage() . ')',
-                Analog::ALERT
-            );
+            Logs::exception($e, '[' . __METHOD__ . '] Connection error (' . $e->getCode() . ')', Analog::ALERT);
             throw $e;
         }
     }
@@ -310,10 +300,7 @@ class Db
             $this->db->query('DROP TABLE IF EXISTS galette_test');
             Analog::log('Test table successfully dropped.', Analog::DEBUG);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot drop test table! ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot drop test table!', Analog::WARNING);
         }
     }
 
@@ -354,10 +341,7 @@ class Db
             $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot CREATE TABLE | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot CREATE TABLE', Analog::WARNING);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
             $results['create'] = $e;
@@ -372,10 +356,7 @@ class Db
                     $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                     $results['alter'] = true;
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'Cannot ALTER TABLE | ' . $e->getMessage(),
-                        Analog::WARNING
-                    );
+                    Logs::exception($e, 'Cannot ALTER TABLE', Analog::WARNING);
                     $results['alter'] = $e;
                 }
             }
@@ -397,10 +378,7 @@ class Db
                     throw new Exception('No row inserted!');
                 }
             } catch (Throwable $e) {
-                Analog::log(
-                    'Cannot INSERT records | ' . $e->getMessage(),
-                    Analog::WARNING
-                );
+                Logs::exception($e, 'Cannot INSERT records', Analog::WARNING);
                 //if we cannot insert records, some other tests cannot be done
                 $stop = true;
                 $results['insert'] = $e;
@@ -424,10 +402,7 @@ class Db
                         throw new Exception('No row updated!');
                     }
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'Cannot UPDATE records | ' . $e->getMessage(),
-                        Analog::WARNING
-                    );
+                    Logs::exception($e, 'Cannot UPDATE records', Analog::WARNING);
                     $results['update'] = $e;
                 }
 
@@ -444,10 +419,7 @@ class Db
                         throw new Exception('Select is empty!');
                     }
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'Cannot SELECT records | ' . $e->getMessage(),
-                        Analog::WARNING
-                    );
+                    Logs::exception($e, 'Cannot SELECT records', Analog::WARNING);
                     $results['select'] = $e;
                 }
 
@@ -458,10 +430,7 @@ class Db
                     $this->execute($delete);
                     $results['delete'] = true;
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'Cannot DELETE records | ' . $e->getMessage(),
-                        Analog::WARNING
-                    );
+                    Logs::exception($e, 'Cannot DELETE records', Analog::WARNING);
                     $results['delete'] = $e;
                 }
             }
@@ -472,10 +441,7 @@ class Db
                 $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                 $results['drop'] = true;
             } catch (Throwable $e) {
-                Analog::log(
-                    'Cannot DROP TABLE | ' . $e->getMessage(),
-                    Analog::WARNING
-                );
+                Logs::exception($e, 'Cannot DROP TABLE', Analog::WARNING);
                 $results['drop'] = $e;
             }
         }
@@ -586,11 +552,7 @@ class Db
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred while converting to utf table '
-                . $table . ' (' . $e->getMessage() . ')',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred while converting to utf table ' . $table, Analog::ERROR);
             throw $e;
         }
     }
@@ -716,14 +678,7 @@ class Db
             );
         } catch (Throwable $e) {
             if ($this->log_execute) {
-                $msg = 'Query error: ';
-                if (isset($query_string)) {
-                    $msg .= $query_string;
-                }
-                Analog::log(
-                    $msg . ' ' . $e->__toString(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Query error: ' . ($query_string ?? ''));
             }
             if ($this->isDuplicateException($sql, $e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);

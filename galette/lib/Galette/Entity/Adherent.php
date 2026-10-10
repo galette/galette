@@ -23,6 +23,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Sabre\VObject\Component\VCard;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Picture;
@@ -355,6 +356,7 @@ class Adherent implements AccessManagementInterface
 
         $results = $this->zdb->execute($select);
         if ($results->count() === 0) {
+            Analog::log('Load member from login or email `' . $login . '`: no member found', Analog::INFO);
             return false;
         }
 
@@ -1301,10 +1303,11 @@ class Adherent implements AccessManagementInterface
                     }
                     $this->$prop = $d->format('Y-m-d');
                 } catch (Throwable $e) {
-                    Analog::log(
+                    Logs::exception(
+                        $e,
                         'Wrong date format. field: ' . $field
                         . ', value: ' . $value . ', expected fmt: '
-                        . __("Y-m-d") . ' | ' . $e->getMessage(),
+                        . __("Y-m-d"),
                         Analog::INFO
                     );
                     $this->errors[] = sprintf(
@@ -1349,11 +1352,8 @@ class Adherent implements AccessManagementInterface
                     if ($results->count() !== 0) {
                         $this->errors[] = _T("- This E-Mail address is already used by another member!");
                     }
-                } catch (Throwable) {
-                    Analog::log(
-                        'An error occurred checking member email uniqueness.',
-                        Analog::ERROR
-                    );
+                } catch (Throwable $e) {
+                    Logs::exception($e, 'An error occurred checking member email uniqueness.');
                     $this->errors[] = _T("An error has occurred while looking if login already exists.");
                 }
                 break;
@@ -1390,11 +1390,8 @@ class Adherent implements AccessManagementInterface
                         ) {
                             $this->errors[] = _T("- This username is already in use, please choose another one!");
                         }
-                    } catch (Throwable) {
-                        Analog::log(
-                            'An error occurred checking member login uniqueness.',
-                            Analog::ERROR
-                        );
+                    } catch (Throwable $e) {
+                        Logs::exception($e, 'An error occurred checking member login uniqueness.');
                         $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
                 }
@@ -1467,10 +1464,7 @@ class Adherent implements AccessManagementInterface
                     }
                     $this->$prop = $value;
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'An error occurred checking status existence: ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    Logs::exception($e, 'An error occurred checking status existence');
                     throw $e;
                 }
                 break;
@@ -1687,11 +1681,7 @@ class Adherent implements AccessManagementInterface
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing member #' . ($this->id ?? 'new'));
             throw $e;
         }
     }
@@ -1855,9 +1845,9 @@ class Adherent implements AccessManagementInterface
                         return $d->format(__("Y-m-d"));
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$name . ') | '
-                            . $e->getMessage(),
+                        Logs::exception(
+                            $e,
+                            'Bad date (' . $this->$name . ')',
                             Analog::INFO
                         );
                         return $this->$name;

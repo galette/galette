@@ -657,7 +657,7 @@ class SeedFixtures extends AbstractCommand
                 ]
             );
         } catch (\Throwable) {
-            // Picture might already exist, ignore
+            // no log: picture might already exist, ignore
         }
     }
 

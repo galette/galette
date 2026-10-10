@@ -14,6 +14,7 @@ use DateTime;
 use Exception;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Entity helper trait
@@ -60,10 +61,11 @@ trait DatesHelper
             $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
             $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Wrong date format. field: ' . $field
                 . ', value: ' . $field . ', expected fmt: '
-                . __("Y-m-d") . ' | ' . $e->getMessage(),
+                . __("Y-m-d"),
                 Analog::INFO
             );
 
@@ -213,9 +215,9 @@ trait DatesHelper
                 return $date->format(__('Y-m-d'));
             } catch (Throwable $e) {
                 //oops, we've got a bad date :/
-                Analog::log(
-                    'Bad date (' . $this->$fieldPropertyName . ') | '
-                    . $e->getMessage(),
+                Logs::exception(
+                    $e,
+                    'Bad date (' . $this->$fieldPropertyName . ')',
                     Analog::INFO
                 );
                 return $this->$fieldPropertyName;

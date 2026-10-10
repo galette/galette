@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use ArrayObject;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
@@ -164,7 +165,10 @@ abstract class AbstractEntity
                 $e->getMessage(),
                 var_export($data, return: true)
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception(
+                $e,
+                sprintf("An error occurred inserting %s, data: %s", static::class, var_export($data, return: true))
+            );
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }
@@ -199,7 +203,7 @@ abstract class AbstractEntity
                 $id,
                 $e->getMessage()
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception($e, sprintf('An error occurred loading %s #%s', static::class, $id));
             throw new EntityException($msg, $e->getCode(), $e);
         }
 
@@ -274,7 +278,10 @@ abstract class AbstractEntity
                 $e->getMessage(),
                 var_export($data, return: true)
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception(
+                $e,
+                sprintf("An error occurred updating %s, data: %s", static::class, var_export($data, return: true))
+            );
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }
@@ -332,7 +339,7 @@ abstract class AbstractEntity
                 static::class,
                 $id
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception($e, $msg);
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }

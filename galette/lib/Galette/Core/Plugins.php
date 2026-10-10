@@ -228,7 +228,8 @@ class Plugins
 
             try {
                 $d = dir($root);
-            } catch (DirException $e) {
+            } catch (DirException) {
+                // no log: missing plugins directory, nothing to load from there
                 continue;
             }
 
@@ -1194,8 +1195,9 @@ class Plugins
                         Analog::WARNING
                     );
                 }
-            } catch (Exception) {
-                //empty catch
+            } catch (Exception $e) {
+                //the module stays disabled anyway, from its legacy file
+                Logs::exception($e, 'Unable to migrate disabled file of plugin ' . $this->id, Analog::WARNING);
             }
 
             return true;

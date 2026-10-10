@@ -15,6 +15,7 @@ use Safe\Exceptions\FilesystemException;
 use Symfony\Component\Yaml\Yaml;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Adapter;
 
 use function Safe\fclose;
@@ -267,10 +268,7 @@ class CsvOut extends Csv
         try {
             $fp = fopen($filename, 'w');
         } catch (FilesystemException $e) {
-            Analog::log(
-                'File ' . $filename . ' seems not writeable. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'File ' . $filename . ' seems not writeable.', Analog::ERROR);
             return self::FILE_NOT_WRITABLE;
         }
 
@@ -337,10 +335,7 @@ class CsvOut extends Csv
         try {
             $fp = fopen($filename, 'w');
         } catch (FilesystemException $e) {
-            Analog::log(
-                'File ' . $filename . ' seems not writeable. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'File ' . $filename . ' seems not writeable.', Analog::ERROR);
             return self::FILE_NOT_WRITABLE;
         }
 
@@ -385,10 +380,7 @@ class CsvOut extends Csv
                 return $this->runXmlParametedExport($id);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred while exporting', Analog::ERROR);
             return self::DB_ERROR;
         }
 

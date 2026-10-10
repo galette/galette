@@ -141,10 +141,7 @@ class MailingQueue
                 $count++;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to enqueue mailing #' . $mailing_id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to enqueue mailing #' . $mailing_id, Analog::ERROR);
             throw $e;
         }
 
@@ -217,10 +214,7 @@ class MailingQueue
                 }
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to enqueue reminders | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to enqueue reminders', Analog::ERROR);
             throw $e;
         }
 
@@ -243,6 +237,7 @@ class MailingQueue
         try {
             return $this->hasPendingReminder($member_id, $type);
         } catch (Throwable) {
+            // no log: the caller reports the original failure
             return false;
         }
     }
@@ -324,10 +319,7 @@ class MailingQueue
             $this->purgeCompleted();
         } catch (Throwable $e) {
             //a mail that has left must not fail on its bookkeeping
-            Analog::log(
-                'Unable to record direct sending | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to record direct sending', Analog::ERROR);
         }
 
         return $count;
@@ -389,10 +381,7 @@ class MailingQueue
             $this->zdb->execute($delete);
         } catch (Throwable $e) {
             //housekeeping must never get in the way of a sending
-            Analog::log(
-                'Unable to purge completed mailing queue rows | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to purge completed mailing queue rows', Analog::WARNING);
         }
     }
 
@@ -613,10 +602,7 @@ class MailingQueue
             return $ids;
         } catch (Throwable $e) {
             //the history is still worth showing without that detail
-            Analog::log(
-                'Unable to get mailings being sent | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to get mailings being sent', Analog::WARNING);
             return [];
         }
     }
@@ -838,10 +824,7 @@ class MailingQueue
             } catch (Throwable $e) {
                 $this->markRow($qid, self::STATUS_FAILED, $e->getMessage());
                 $failed++;
-                Analog::log(
-                    'Unable to send queued reminder #' . $qid . ' | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Unable to send queued reminder #' . $qid, Analog::ERROR);
             }
         }
 
@@ -886,10 +869,7 @@ class MailingQueue
             $delete->where([self::PK => $id]);
             $this->zdb->execute($delete);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to drop mailing queue row #' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to drop mailing queue row #' . $id, Analog::ERROR);
         }
     }
 
@@ -920,10 +900,7 @@ class MailingQueue
             }
             return $mailing;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to load mailing #' . $mailing_id . ' for queue | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to load mailing #' . $mailing_id . ' for queue', Analog::ERROR);
             return null;
         }
     }
@@ -953,10 +930,7 @@ class MailingQueue
             $update->where(['mailing_id' => $mailing_id]);
             $this->zdb->execute($update);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to mark mailing #' . $mailing_id . ' as sent | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to mark mailing #' . $mailing_id . ' as sent', Analog::WARNING);
         }
     }
 
@@ -993,10 +967,7 @@ class MailingQueue
             $update->where([self::PK => $id]);
             $this->zdb->execute($update);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to update mailing queue row #' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to update mailing queue row #' . $id, Analog::ERROR);
         }
     }
 
@@ -1049,10 +1020,7 @@ class MailingQueue
             );
             return $this->zdb->execute($update)->count() === 1;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to claim mailing queue row #' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to claim mailing queue row #' . $id, Analog::ERROR);
             return false;
         }
     }
@@ -1113,10 +1081,7 @@ class MailingQueue
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to release stale mailing queue claims | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to release stale mailing queue claims', Analog::ERROR);
         }
     }
 

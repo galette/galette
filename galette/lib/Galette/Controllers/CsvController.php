@@ -29,6 +29,7 @@ use Galette\IO\CsvOut;
 use Galette\IO\MembersCsv;
 use Galette\Repository\DynamicFieldsSet;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Slim\Psr7\Stream;
 
 use function Safe\file_get_contents;
@@ -155,8 +156,8 @@ class CsvController extends AbstractController
                             'name' => $table,
                             'file' => $filename
                         ];
-                    } catch (FilesystemException) {
-                        //empty catch
+                    } catch (FilesystemException $e) {
+                        Logs::exception($e, 'Unable to write CSV export of table ' . $table, Analog::ERROR);
                     }
                 } else {
                     $this->flash->addMessage(

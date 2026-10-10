@@ -291,10 +291,7 @@ class GaletteMail
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Error sending message: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Error sending message', Analog::ERROR);
             $this->errors[] = $e->getMessage();
             $this->releaseMailer();
             return self::MAIL_ERROR;
@@ -365,6 +362,7 @@ class GaletteMail
                 return false;
             }
         } catch (Throwable $e) {
+            Logs::exception($e, 'Cannot connect to SMTP server', Analog::WARNING);
             $this->errors[] = $e->getMessage();
             return false;
         }
@@ -557,10 +555,7 @@ class GaletteMail
             } catch (Throwable $e) {
                 $has_error = true;
                 $this->errors[] = $e->getMessage();
-                Analog::log(
-                    'Error sending mailing batch: ' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Error sending mailing batch', Analog::ERROR);
             }
 
             //pause between two messages, but not after the last one

@@ -15,6 +15,7 @@ use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette dynamic translations controller
@@ -83,11 +84,7 @@ class DynamicTranslationsController extends AbstractController
             $params['trans'] = $text_trans;
             $params['text_orig'] = $text_orig;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving l10n entries | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred retrieving l10n entries', Analog::WARNING);
         }
 
         $params['mode'] = $this->isAjax($request) ? 'ajax' : '';

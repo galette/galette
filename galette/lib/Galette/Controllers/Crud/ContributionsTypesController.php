@@ -15,6 +15,7 @@ use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ContributionsTypes;
+use Analog\Analog;
 
 /**
  * Galette contributions types controller
@@ -300,6 +301,10 @@ class ContributionsTypesController extends CrudController
                     $error
                 );
             }
+            Analog::log(
+                'Delete contribution type #' . (int)$args['id'] . ': not deleted. ' . implode(' ', $ctype->getErrors()),
+                Analog::INFO
+            );
             return false;
         }
 

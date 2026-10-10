@@ -20,6 +20,7 @@ use Galette\Interfaces\AccessManagementInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -288,6 +289,7 @@ class Contribution implements AccessManagementInterface
         global $preferences;
 
         if (!$this->login->isLogged() && $this->login->id == '') {
+            Analog::log('Load contribution #' . $id . ': refused, no logged in user', Analog::INFO);
             return false;
         }
 
@@ -347,11 +349,7 @@ class Contribution implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred attempting to load contribution #' . $id
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred attempting to load contribution #' . $id);
             throw $e;
         }
     }
@@ -710,10 +708,7 @@ class Contribution implements AccessManagementInterface
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred checking overlapping fee. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred checking overlapping fee.');
             throw $e;
         }
     }
@@ -836,12 +831,7 @@ class Contribution implements AccessManagementInterface
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating member ' . $this->member
-                . '\'s deadline |'
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred updating member ' . $this->member . '\'s deadline');
             throw $e;
         }
     }
@@ -882,11 +872,7 @@ class Contribution implements AccessManagementInterface
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove contribution #'
-                . $this->id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove contribution #' . $this->id);
             throw $e;
         }
     }
@@ -969,10 +955,7 @@ class Contribution implements AccessManagementInterface
             }
             return $due_date;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred trying to retrieve member\'s due date',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to retrieve member\'s due date');
             throw $e;
         }
     }
@@ -1005,10 +988,9 @@ class Contribution implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to detach contribution #' . $this->id
-                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to detach contribution #' . $this->id . ' to transaction #' . $trans_id
             );
             throw $e;
         }
@@ -1030,10 +1012,9 @@ class Contribution implements AccessManagementInterface
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to attach contribution #' . $this->id
-                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to attach contribution #' . $this->id . ' to transaction #' . $trans_id
             );
             throw $e;
         }

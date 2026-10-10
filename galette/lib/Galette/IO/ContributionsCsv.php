@@ -20,6 +20,8 @@ use Galette\Repository\Contributions;
 use Galette\Filters\ContributionsList;
 use Galette\Repository\PaymentTypes;
 use Safe\Exceptions\FilesystemException;
+use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\fclose;
 use function Safe\fopen;
@@ -144,8 +146,8 @@ class ContributionsCsv extends CsvOut
                 file: $fp
             );
             fclose($fp);
-        } catch (FilesystemException) {
-            //empty catch
+        } catch (FilesystemException $e) {
+            Logs::exception($e, 'Unable to write contributions CSV export to ' . $this->path, Analog::ERROR);
         }
     }
 

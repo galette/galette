@@ -1527,7 +1527,7 @@ class Members extends GaletteTestCase
         } catch (\RuntimeException $e) {
             $this->assertSame('Plugin refuses', $e->getMessage());
         }
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) |Plugin refuses');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) | Plugin refuses');
         //rollback also cancels the test transaction, member cannot be checked
         $this->assertFalse($this->zdb->inTransaction());
     }

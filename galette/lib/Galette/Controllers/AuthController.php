@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -208,10 +209,7 @@ class AuthController extends AbstractController
                         );
                     }
                 } catch (\Throwable $e) {
-                    Analog::log(
-                        'Error looking for new release: ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    Logs::exception($e, 'Error looking for new release', Analog::ERROR);
                 }
             }
 

@@ -482,6 +482,7 @@ abstract class AbstractController
                 $attributes
             );
         } catch (\ReflectionException) {
+            // no log: caller is not a method of this controller, it has no route attribute
             return [];
         }
     }

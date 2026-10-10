@@ -21,6 +21,7 @@ use Galette\Filters\MembersList;
 use Galette\Filters\SavedSearchesList;
 use Galette\Repository\SavedSearches;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette saved searches controller
@@ -300,7 +301,7 @@ class SavedSearchesController extends CrudController
             }
             $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
         } catch (Throwable $e) {
-            Analog::log($e->getMessage(), Analog::ERROR);
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::ERROR);
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")

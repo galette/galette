@@ -15,6 +15,7 @@ use Galette\DynamicFields\Separator;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -127,10 +128,7 @@ class DynamicFieldsHandle
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -306,11 +304,7 @@ class DynamicFieldsHandle
             if (!$transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred storing dynamic field. Form name: ' . $this->form_name
-                . ' | Error was: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing dynamic field. Form name: ' . $this->form_name);
             throw $e;
         } finally {
             unset(
@@ -527,11 +521,7 @@ class DynamicFieldsHandle
             if (!$transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred removing dynamic field. Form name: ' . $this->form_name
-                . ' | Error was: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred removing dynamic field. Form name: ' . $this->form_name);
             throw $e;
         }
     }

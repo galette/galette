@@ -14,6 +14,7 @@ use ArrayObject;
 use Galette\Entity\Status;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
@@ -65,10 +66,7 @@ class Groups
             }
             return $groups;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list groups (simple) | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list groups (simple)', Analog::WARNING);
             throw $e;
         }
     }
@@ -137,10 +135,7 @@ class Groups
             }
             return $groups;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list groups | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list groups', Analog::WARNING);
             throw $e;
         }
     }
@@ -218,11 +213,7 @@ class Groups
             }
             return $groups;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load member groups for id `' . $id . '` | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load member groups for id `' . $id . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -338,7 +329,6 @@ class Groups
             }
             return true;
         } catch (Throwable $e) {
-            $te = $e;
             if ($transaction === false) {
                 $zdb->rollback();
             }
@@ -347,14 +337,8 @@ class Groups
             if ($manager === true) {
                 $msg .= ' as a manager';
             }
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-            Analog::log(
-                $msg . ' |' . implode("\n", $messages),
-                Analog::ERROR
-            );
-            throw $te;
+            Logs::exception($e, $msg);
+            throw $e;
         }
     }
 
@@ -376,11 +360,7 @@ class Groups
             $del_qry->where->in(Adherent::PK, $ids);
             $zdb->execute($del_qry);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to remove member #' . implode(', ', $ids) . ' from his groups', Analog::ERROR);
             throw $e;
         }
     }
@@ -423,10 +403,7 @@ class Groups
             $results = $zdb->execute($select);
             return $results->count() <= 0;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot check group name uniqueness | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot check group name uniqueness', Analog::WARNING);
             throw $e;
         }
     }

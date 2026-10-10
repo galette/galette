@@ -15,6 +15,7 @@ use Galette\Entity\Title;
 use Safe\Exceptions\FilesystemException;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 use Galette\Core\History;
@@ -205,10 +206,7 @@ class CsvIn extends Csv
         try {
             $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
         } catch (FilesystemException $e) {
-            Analog::log(
-                'File ' . $filename . ' cannot be open! ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'File ' . $filename . ' cannot be open!', Analog::ERROR);
             $this->addError(
                 sprintf(
                     _T('File %1$s cannot be open!'),
@@ -562,6 +560,11 @@ class CsvIn extends Csv
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
+            Logs::exception(
+                $e,
+                'Members import from ' . $filename . ' failed, changes have been rolled back',
+                Analog::ERROR
+            );
             $this->addError($e->getMessage());
         }
 

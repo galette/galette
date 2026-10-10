@@ -17,6 +17,7 @@ use Galette\Repository\PaymentTypes;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Repository\Contributions;
 use Galette\Core\Db;
@@ -176,11 +177,7 @@ class Transaction implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred attempting to load contribution #' . $id
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred attempting to load transaction #' . $id);
             throw $e;
         }
     }
@@ -235,11 +232,7 @@ class Transaction implements AccessManagementInterface
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove transaction #'
-                . $this->id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove transaction #' . $this->id);
             throw $e;
         }
     }
@@ -461,11 +454,7 @@ class Transaction implements AccessManagementInterface
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing transaction #' . ($this->id ?? 'new'));
             throw $e;
         }
     }
@@ -492,11 +481,7 @@ class Transaction implements AccessManagementInterface
             $dispatched_amount = $result->sum;
             return (float)$dispatched_amount;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving dispatched amounts | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred retrieving dispatched amounts');
             throw $e;
         }
     }
@@ -523,11 +508,7 @@ class Transaction implements AccessManagementInterface
             $dispatched_amount = $result->sum;
             return (float)$this->amount - (float)$dispatched_amount;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving missing amounts | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred retrieving missing amounts');
             throw $e;
         }
     }

@@ -12,6 +12,7 @@ namespace Galette\Entity;
 
 use Galette\Util\Html;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Db;
 use ArrayObject;
 use Galette\Features\I18n;
@@ -111,11 +112,7 @@ class ContributionsTypes
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load contribution type #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load contribution type #' . $id, Analog::WARNING);
             throw $e;
         }
     }
@@ -200,11 +197,7 @@ class ContributionsTypes
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize defaults contributions types'
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to initialize defaults contributions types', Analog::WARNING);
             throw $e;
         }
     }
@@ -246,10 +239,7 @@ class ContributionsTypes
             }
             return $list;
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, __METHOD__);
             throw $e;
         }
     }
@@ -287,11 +277,7 @@ class ContributionsTypes
             }
             return $list;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list contributions types '
-                . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list contributions types', Analog::WARNING);
             throw $e;
         }
     }
@@ -319,10 +305,7 @@ class ContributionsTypes
 
             return $result;
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -363,14 +346,11 @@ class ContributionsTypes
             if ($result) {
                 return (int)$result->{self::PK};
             } else {
+                Analog::log('Get contribution type id from label `' . $label . '`: label not found', Analog::INFO);
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to retrieve contribution type from label `'
-                . $label . '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to retrieve contribution type from label `' . $label . '`');
             throw $e;
         }
     }
@@ -431,11 +411,7 @@ class ContributionsTypes
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to add new contribution type `' . $label . '` | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to add new contribution type `' . $label . '`');
             throw $e;
         }
     }
@@ -490,11 +466,7 @@ class ContributionsTypes
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to update contribution type #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to update contribution type #' . $id);
             throw $e;
         }
     }
@@ -536,11 +508,7 @@ class ContributionsTypes
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to delete contribution type #' . $id
-                . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete contribution type #' . $id);
             throw $e;
         }
     }
@@ -561,11 +529,7 @@ class ContributionsTypes
 
             return $result !== null;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to check if contribution type #' . $id
-                . ' is used. | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to check if contribution type #' . $id . ' is used.');
             //in case of error, we consider that it is used, to avoid errors
             return true;
         }

@@ -121,10 +121,7 @@ class History
             $insert->values($values);
             $this->zdb->execute($insert);
         } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred trying to add log entry. " . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to add log entry', Analog::ERROR);
             throw $e;
         }
 
@@ -146,10 +143,7 @@ class History
             return true;
         } catch (Throwable $e) {
             $this->add('Error flushing logs');
-            Analog::log(
-                'Unable to flush logs. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to flush logs', Analog::WARNING);
             throw $e;
         }
     }
@@ -180,10 +174,7 @@ class History
 
             return $entries;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to get history. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to get history', Analog::WARNING);
             throw $e;
         }
     }
@@ -213,10 +204,7 @@ class History
                 $this->users[] = $ulabel;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list members from history! | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list members from history!', Analog::WARNING);
         }
 
         try {
@@ -233,10 +221,7 @@ class History
                 $this->actions[] = $result->action_log;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list actions from history! | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list actions from history!', Analog::WARNING);
             throw $e;
         }
     }
@@ -311,10 +296,7 @@ class History
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -344,10 +326,7 @@ class History
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count history | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count history', Analog::WARNING);
             throw $e;
         }
     }

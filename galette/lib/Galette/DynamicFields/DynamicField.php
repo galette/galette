@@ -15,6 +15,7 @@ use Galette\Features\Permissions;
 use Galette\Util\Html;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Features\Translatable;
@@ -129,9 +130,10 @@ abstract class DynamicField
                 return $field_type;
             }
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 __METHOD__ . ' | Unable to retrieve field `' . $id
-                . '` information | ' . $e->getMessage(),
+                . '` information',
                 Analog::ERROR
             );
             return false;
@@ -178,11 +180,7 @@ abstract class DynamicField
                 $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to retrieve field type for field ' . $id . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to retrieve field type for field ' . $id, Analog::ERROR);
             throw $e;
         }
     }
@@ -628,6 +626,10 @@ abstract class DynamicField
     public function store(array $values): bool
     {
         if (!$this->check($values)) {
+            Analog::log(
+                'Store dynamic field #' . ($this->getId() ?? 'new') . ': invalid values. ' . implode(' ', $this->errors),
+                Analog::INFO
+            );
             return false;
         }
 
@@ -673,10 +675,7 @@ abstract class DynamicField
                 }
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing field | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing field', Analog::ERROR);
             $this->errors[] = _T("An error occurred storing the field.");
         }
 
@@ -737,10 +736,7 @@ abstract class DynamicField
                 $duplicated = false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred checking field duplicity' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred checking field duplicity', Analog::ERROR);
             throw $e;
         }
         return $duplicated;
@@ -789,11 +785,7 @@ abstract class DynamicField
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to change field ' . $this->id . ' rank | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to change field ' . $this->id . ' rank', Analog::ERROR);
             return false;
         }
     }
@@ -855,10 +847,7 @@ abstract class DynamicField
                 //because of DROP autocommit on mysql...
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred deleting field | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred deleting field', Analog::ERROR);
             return false;
         }
     }

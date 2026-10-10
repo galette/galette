@@ -125,10 +125,7 @@ class MailingHistory extends History
 
             return $ret;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to get history. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to get history', Analog::WARNING);
             throw $e;
         }
     }
@@ -265,10 +262,7 @@ class MailingHistory extends History
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -298,10 +292,7 @@ class MailingHistory extends History
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count history | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count history', Analog::WARNING);
             throw $e;
         }
     }
@@ -356,11 +347,7 @@ class MailingHistory extends History
 
             return $mailing->loadFromHistory($result, $new);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to load mailing model #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to load mailing model #' . $id, Analog::WARNING);
             throw $e;
         }
     }
@@ -449,10 +436,7 @@ class MailingHistory extends History
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating Mailing | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred updating Mailing', Analog::ERROR);
             throw $e;
         }
     }
@@ -470,10 +454,7 @@ class MailingHistory extends History
             $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing Mailing | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing Mailing', Analog::ERROR);
             throw $e;
         }
     }
@@ -512,11 +493,7 @@ class MailingHistory extends History
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to delete selected mailing history entries |'
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete selected mailing history entries', Analog::ERROR);
             return false;
         }
     }
@@ -569,11 +546,8 @@ class MailingHistory extends History
             } else {
                 $recipients = Galette::jsonDecode($row['mailing_recipients']);
             }
-        } catch (\Throwable) {
-            Analog::log(
-                'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
-                Analog::ERROR
-            );
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Unable to retrieve recipients for mailing history ' . $row['mailing_id'], Analog::ERROR);
         }
         $row['mailing_recipients'] = $recipients;
     }

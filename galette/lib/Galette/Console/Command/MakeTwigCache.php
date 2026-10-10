@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
+use Analog\Analog;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
@@ -111,6 +112,7 @@ class MakeTwigCache extends AbstractCommand
             rmdir($path);
             return true;
         }
+        Analog::log('Remove directory ' . $path . ': not a directory', Analog::INFO);
         return false;
     }
 

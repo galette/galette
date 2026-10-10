@@ -17,6 +17,7 @@ use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Social networks/Contacts
@@ -87,11 +88,7 @@ class Social
             $res = $results->current();
             $this->loadFromRS($res);
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading social #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading social #' . $id);
         }
     }
 
@@ -131,11 +128,7 @@ class Social
             }
             return $socials;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading socials for member #' . $id_adh . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading socials for member #' . $id_adh);
             throw $e;
         }
     }
@@ -186,10 +179,7 @@ class Social
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing social: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing social');
             throw $e;
         }
     }
@@ -215,10 +205,7 @@ class Social
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete social #' . implode(', #', $ids) . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete social #' . implode(', #', $ids));
             throw $e;
         }
     }

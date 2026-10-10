@@ -14,6 +14,7 @@ use ArrayObject;
 use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -152,10 +153,7 @@ class FieldsConfig
             $this->buildLists();
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Fields configuration cannot be loaded!',
-                Analog::URGENT
-            );
+            Logs::exception($e, 'Fields configuration cannot be loaded!', Analog::URGENT);
             throw $e;
         }
     }
@@ -349,11 +347,10 @@ class FieldsConfig
                 }
             }
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 '[' . $class . '] An error occurred while checking update for '
-                . 'fields configuration for table `' . $this->table . '`. '
-                . $e->getMessage(),
-                Analog::ERROR
+                . 'fields configuration for table `' . $this->table . '`.'
             );
             throw $e;
         }
@@ -403,10 +400,7 @@ class FieldsConfig
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default fields configuration.' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to initialize default fields configuration.');
 
             throw $e;
         }
@@ -564,10 +558,7 @@ class FieldsConfig
                 'hiddens'   => $hidden_elements
             ];
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting form elements',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred getting form elements');
             throw $e;
         }
     }
@@ -663,10 +654,7 @@ class FieldsConfig
             }
             return $display_elements;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting display elements',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred getting display elements');
             throw $e;
         }
     }
@@ -791,11 +779,10 @@ class FieldsConfig
             return $this->load();
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
+            Logs::exception(
+                $e,
                 '[' . $class . '] An error occurred while saving fields '
                 . 'configuration for table `' . $this->table . '`.'
-                . $e->getMessage(),
-                Analog::ERROR
             );
             throw $e;
         }
@@ -868,11 +855,7 @@ class FieldsConfig
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'An error occurred migrating old required fields. | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred migrating old required fields.');
             throw $e;
         }
     }

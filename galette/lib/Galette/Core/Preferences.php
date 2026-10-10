@@ -370,10 +370,10 @@ class Preferences
 
         try {
             $this->socials = Social::getListForMember(id_adh: null);
-        } catch (Throwable) {
-            Analog::log(
-                'Preferences cannot be loaded. Galette should not work without '
-                . 'preferences. Exiting.',
+        } catch (Throwable $e) {
+            Logs::exception(
+                $e,
+                'Preferences cannot be loaded. Galette should not work without preferences. Exiting.',
                 Analog::URGENT
             );
             return false;
@@ -639,6 +639,7 @@ class Preferences
         );
 
         if (count($this->errors) > 0) {
+            Analog::log('Set preference ' . $name . ': refused (' . implode(' ', $this->errors) . ')', Analog::INFO);
             return false;
         }
 
@@ -655,6 +656,10 @@ class Preferences
         }
 
         if ($this->getErrors() !== []) {
+            Analog::log(
+                'Set preference ' . $name . ': value refused (' . implode(' ', $this->getErrors()) . ')',
+                Analog::INFO
+            );
             return false;
         }
 
@@ -745,6 +750,7 @@ class Preferences
         }
 
         if ($this->errors !== []) {
+            Analog::log('Store admin credentials: refused (' . implode(' ', $this->errors) . ')', Analog::INFO);
             return false;
         }
 
@@ -838,10 +844,7 @@ class Preferences
                 $this->dynamicsStore(transaction: true);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to store preferences related data | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to store preferences related data', Analog::WARNING);
             return false;
         }
 

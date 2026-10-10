@@ -126,11 +126,7 @@ abstract class Pagination
             $odirection = SQLOrder::from($direction);
             $this->ordered = $odirection;
         } catch (\ValueError $e) {
-            Analog::log(
-                '[' . static::class
-                . '|Pagination] ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, '[' . static::class . '|Pagination] Invalid direction', Analog::INFO);
         }
 
         return $this;

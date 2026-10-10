@@ -20,6 +20,8 @@ use Galette\Repository\PaymentTypes;
 use Galette\Repository\ScheduledPayments;
 use Safe\DateTime;
 use Safe\Exceptions\FilesystemException;
+use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\fclose;
 use function Safe\fopen;
@@ -118,8 +120,8 @@ class ScheduledPaymentsCsv extends CsvOut
                 file: $fp
             );
             fclose($fp);
-        } catch (FilesystemException) {
-            //empty catch
+        } catch (FilesystemException $e) {
+            Logs::exception($e, 'Unable to write scheduled payments CSV export to ' . $this->path, Analog::ERROR);
         }
     }
 

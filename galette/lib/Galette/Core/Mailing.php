@@ -173,11 +173,8 @@ class Mailing extends GaletteMail
             } else {
                 $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
             }
-        } catch (\Throwable) {
-            Analog::log(
-                'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
-                Analog::ERROR
-            );
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Unable to retrieve recipients for mailing ' . $rs->mailing_id, Analog::ERROR);
             $orig_recipients = [];
         }
 
@@ -428,6 +425,10 @@ class Mailing extends GaletteMail
             $to_remove = $this->tmp_path;
         } elseif (file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
             if ($temp === true) {
+                Analog::log(
+                    'Remove temporary attachments of mailing #' . $this->id . ': attachments are stored, kept',
+                    Analog::INFO
+                );
                 return false;
             }
             $to_remove = GALETTE_ATTACHMENTS_PATH . $this->id;

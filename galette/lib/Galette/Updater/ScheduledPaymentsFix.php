@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Updater;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Entity\Contribution;
 use Galette\Entity\PaymentType;
 use Galette\Entity\ScheduledPayment;
@@ -77,8 +78,9 @@ trait ScheduledPaymentsFix
                     self::REPORT_SUCCESS
                 );
             } catch (\Throwable $e) {
-                Analog::log(
-                    sprintf('Unable to convert table %s to InnoDB/utf8mb4: %s', $table_name, $e->getMessage()),
+                Logs::exception(
+                    $e,
+                    sprintf('Unable to convert table %s to InnoDB/utf8mb4', $table_name),
                     Analog::WARNING
                 );
                 $this->addReportEntry(
@@ -155,8 +157,9 @@ trait ScheduledPaymentsFix
                         self::REPORT_SUCCESS
                     );
                 } catch (\Throwable $e) {
-                    Analog::log(
-                        sprintf('Unable to add foreign key on %s.%s: %s', $table_name, $column, $e->getMessage()),
+                    Logs::exception(
+                        $e,
+                        sprintf('Unable to add foreign key on %s.%s', $table_name, $column),
                         Analog::WARNING
                     );
                     $this->addReportEntry(

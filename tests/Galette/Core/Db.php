@@ -64,7 +64,7 @@ class Db extends BaseGaletteTestCase
         $this->assertTrue($exception_thrown);
         $this->expectLogEntry(
             \Analog\Analog::ALERT,
-            '[Db] Error (0|Type DOES_NOT_EXISTS not known'
+            '[Db] Error (0) | Type DOES_NOT_EXISTS not known'
         );
     }
 
@@ -464,7 +464,7 @@ class Db extends BaseGaletteTestCase
         $this->assertFalse($this->zdb->checkDbVersion());
         $this->expectLogEntry(
             \Analog\Analog::ERROR,
-            'Cannot check database version: Error executing query!'
+            'Cannot check database version | Error executing query!'
         );
     }
 

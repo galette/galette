@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Util\Filesize;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\FilesystemException;
@@ -116,7 +117,12 @@ trait FileTrait
             );
             $this->dest_dir = $dest;
             return true;
-        } catch (FilesystemException) {
+        } catch (FilesystemException $e) {
+            Logs::exception(
+                $e,
+                'Unable to copy ' . $this->dest_dir . $this->name . ' to ' . $dest,
+                Analog::WARNING
+            );
             return false;
         }
     }
@@ -312,11 +318,7 @@ trait FileTrait
         try {
             $file->moveTo($new_file);
         } catch (\Throwable $e) {
-            Analog::log(
-                '[' . static::class . '] Unable to write file: '
-                . $e->getMessage() . "\n" . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, '[' . static::class . '] Unable to write file', Analog::ERROR);
             return self::CANT_WRITE;
         }
 

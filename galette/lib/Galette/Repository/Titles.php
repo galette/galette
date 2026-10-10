@@ -14,6 +14,7 @@ use Galette\Core\Db;
 use Throwable;
 use Galette\Entity\Title;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Titles repository management
@@ -123,10 +124,7 @@ class Titles
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default titles. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to initialize default titles.', Analog::WARNING);
             throw $e;
         }
     }

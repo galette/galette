@@ -252,7 +252,8 @@ class Picture
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to restore picture ' . $this->id . ' from database', Analog::WARNING);
             return false;
         }
         return false;
@@ -347,6 +348,7 @@ class Picture
         try {
             [$width, $height] = getimagesize($this->file_path);
         } catch (Throwable) {
+            // no log: reported as MissingAssetException when the picture is used.
             //file went away since its path was resolved; never fail here,
             //pictures are built long before an error page can be rendered.
             //Falling back to the default picture clears this again.
@@ -482,9 +484,9 @@ class Picture
             if ($transaction === true) {
                 $zdb->rollback();
             }
-            Analog::log(
-                'An error occurred attempting to delete picture ' . $this->db_id
-                . 'from database | ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'An error occurred attempting to delete picture ' . $this->db_id . ' from database',
                 Analog::ERROR
             );
             return false;
@@ -547,7 +549,7 @@ class Picture
             $info = getimagesize($file);
             return $info['mime'];
         } catch (ImageException) {
-            //fallback if file is not an image
+            // no log: not an image, fall back to the generic mime type detection
             return static::trait_getMimeType($file);
         }
     }
@@ -627,9 +629,9 @@ class Picture
         try {
             mkdir($this->store_path, 0o755, recursive: true);
         } catch (FilesystemException $e) {
-            Analog::log(
-                '[' . static::class . '] Unable to create pictures directory `' . $this->store_path
-                . '` | ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                '[' . static::class . '] Unable to create pictures directory `' . $this->store_path . '`',
                 Analog::ERROR
             );
             return false;
@@ -699,11 +701,7 @@ class Picture
             $this->has_picture = true;
         } catch (Throwable $e) {
             $zdb->rollback();
-            Analog::log(
-                'An error occurred storing picture in database: '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing picture in database', Analog::ERROR);
             return self::SQL_ERROR;
         }
 
@@ -723,11 +721,7 @@ class Picture
         try {
             $handle = opendir($this->store_path);
         } catch (DirException $e) {
-            Analog::log(
-                'Something went wrong opening images directory '
-                . $this->store_path . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Something went wrong opening images directory ' . $this->store_path, Analog::ERROR);
             return;
         }
 

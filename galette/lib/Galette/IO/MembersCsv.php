@@ -22,6 +22,8 @@ use Galette\Repository\Members;
 use Galette\Entity\FieldsConfig;
 use Galette\Filters\MembersList;
 use Safe\Exceptions\FilesystemException;
+use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\fclose;
 use function Safe\fopen;
@@ -232,8 +234,8 @@ class MembersCsv extends CsvOut
                 file: $fp
             );
             fclose($fp);
-        } catch (FilesystemException) {
-            //empty catch
+        } catch (FilesystemException $e) {
+            Logs::exception($e, 'Unable to write members CSV export to ' . $this->path, Analog::ERROR);
         }
     }
 

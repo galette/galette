@@ -15,6 +15,7 @@ use Galette\Core\Db;
 use Galette\Entity\Attributes\Column;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Title
@@ -106,10 +107,7 @@ class Title extends AbstractEntity
         } catch (\RuntimeException $re) {
             throw $re;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete title ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete title ' . $id);
             throw $e;
         }
     }

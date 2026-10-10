@@ -21,6 +21,7 @@ use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette groups controller
@@ -451,6 +452,7 @@ class GroupsController extends CrudController
                 );
             }
         } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to store group #' . $id, Analog::INFO);
             $this->flash->addMessage(
                 'error_detected',
                 $e->getMessage()

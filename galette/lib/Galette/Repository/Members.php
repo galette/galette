@@ -23,6 +23,7 @@ use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
@@ -241,10 +242,7 @@ class Members
             }
             return $members;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list members', Analog::WARNING);
             throw $e;
         }
     }
@@ -395,11 +393,7 @@ class Members
                 );
                 $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
             } else {
-                Analog::log(
-                    'Unable to delete selected member(s) |'
-                    . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Unable to delete selected member(s)', Analog::ERROR);
                 throw $e;
             }
             return false;
@@ -475,9 +469,10 @@ class Members
                 'members'   => $members
             ];
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Cannot list members with public information (photos: '
-                . $with_photos . ') | ' . $e->getMessage(),
+                . $with_photos . ')',
                 Analog::WARNING
             );
             throw $e;
@@ -538,9 +533,10 @@ class Members
                 'groups' => $groups
             ];
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Cannot list staff with public information (photos: '
-                . $with_photos . ') | ' . $e->getMessage(),
+                . $with_photos . ')',
                 Analog::WARNING
             );
             throw $e;
@@ -652,10 +648,7 @@ class Members
             }
             return $members;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load members form ids array | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load members form ids array', Analog::WARNING);
             throw $e;
         }
     }
@@ -927,10 +920,7 @@ class Members
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for members', Analog::WARNING);
             throw $e;
         }
     }
@@ -978,10 +968,7 @@ class Members
             $this->count = (int)$results->current()->count;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count members', Analog::WARNING);
             throw $e;
         }
     }
@@ -1273,10 +1260,7 @@ class Members
                 $this->buildAdvancedWhereClause($select);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -1742,9 +1726,10 @@ class Members
             return true;
         } catch (Throwable $e) {
             $zdb->rollback();
-            Analog::log(
+            Logs::exception(
+                $e,
                 'An error occurred trying to retrieve members with '
-                . 'empty logins/passwords (' . $e->getMessage(),
+                . 'empty logins/passwords',
                 Analog::ERROR
             );
             throw $e;

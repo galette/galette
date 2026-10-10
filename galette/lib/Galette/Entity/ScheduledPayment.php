@@ -20,6 +20,7 @@ use Laminas\Db\Sql\Predicate\PredicateSet;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Scheduled payment
@@ -82,16 +83,13 @@ class ScheduledPayment
             $rs = $results->current();
 
             if (!$rs) {
+                Analog::log('Load scheduled payment #' . $id . ': not found', Analog::INFO);
                 return false;
             }
             $this->loadFromRS($rs);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading scheduled payment #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading scheduled payment #' . $id);
             throw $e;
         }
     }
@@ -213,11 +211,7 @@ class ScheduledPayment
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing scheduled payment: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
-            );
+            Logs::exception($e, "An error occurred storing scheduled payment:\n" . print_r($data, return: true));
             throw $e;
         }
     }
@@ -239,10 +233,7 @@ class ScheduledPayment
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete scheduled payment ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete scheduled payment ' . $id);
             throw $e;
         }
     }
@@ -280,8 +271,9 @@ class ScheduledPayment
                     throw new \RuntimeException('Cannot load contribution #' . $contribution);
                 }
             } catch (Throwable $e) {
-                Analog::log(
-                    'Unable to load contribution #' . $contribution . ' | ' . $e->getMessage(),
+                Logs::exception(
+                    $e,
+                    'Unable to load contribution #' . $contribution,
                     Analog::ERROR
                 );
                 $this->errors[] = _T('Unable to load contribution');
@@ -318,8 +310,9 @@ class ScheduledPayment
                     throw new \RuntimeException('Cannot load payment type #' . $payment_type);
                 }
             } catch (Throwable $e) {
-                Analog::log(
-                    'Unable to load payment type #' . $payment_type . ' | ' . $e->getMessage(),
+                Logs::exception(
+                    $e,
+                    'Unable to load payment type #' . $payment_type,
                     Analog::ERROR
                 );
                 $this->errors[] = _T('Unable to load payment type');

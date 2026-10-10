@@ -24,6 +24,7 @@ use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Throwable;
 
 use function Safe\file_get_contents;
@@ -352,10 +353,7 @@ class MailingsController extends CrudController
                         $this->zdb->commit();
                     } catch (Throwable $e) {
                         $this->zdb->rollback();
-                        Analog::log(
-                            '[Mailings] Unable to queue mailing | ' . $e->getMessage(),
-                            Analog::ERROR
-                        );
+                        Logs::exception($e, '[Mailings] Unable to queue mailing', Analog::ERROR);
                         $error_detected[] = _T("The mailing could not be queued, nothing has been sent.");
                         $mailing->current_step = Mailing::STEP_START;
                         //what has been composed is kept, so it can be sent again

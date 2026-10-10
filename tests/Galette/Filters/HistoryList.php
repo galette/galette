@@ -59,9 +59,9 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
-            \Analog\Analog::WARNING,
+            \Analog\Analog::INFO,
             sprintf(
-                '[Galette\Filters\HistoryList|Pagination] "abcde" is not a valid backing value for enum %1$s',
+                '[Galette\Filters\HistoryList|Pagination] Invalid direction | "abcde" is not a valid backing value for enum %1$s',
                 \Galette\Enums\SQLOrder::class
             )
         );

@@ -374,10 +374,7 @@ class AuthThrottle
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred listing authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred listing authentication attempts', Analog::WARNING);
         }
 
         return $locks;
@@ -395,10 +392,7 @@ class AuthThrottle
             $delete->where([self::PK => $id]);
             return $this->zdb->execute($delete)->count() > 0;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred releasing authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred releasing authentication attempts', Analog::WARNING);
             return false;
         }
     }
@@ -412,10 +406,7 @@ class AuthThrottle
             $this->zdb->execute($this->zdb->delete(self::TABLE));
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred releasing authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred releasing authentication attempts', Analog::WARNING);
             return false;
         }
     }
@@ -450,10 +441,7 @@ class AuthThrottle
             $this->zdb->execute($delete);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred cleaning authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred cleaning authentication attempts', Analog::WARNING);
             return false;
         }
     }
@@ -483,10 +471,7 @@ class AuthThrottle
             $packed = inet_pton($address);
             return inet_ntop(substr($packed, 0, 8) . str_repeat("\0", 8)) . '/64';
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot group client address ' . $address . '. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot group client address ' . $address, Analog::WARNING);
             return '';
         }
     }
@@ -619,10 +604,7 @@ class AuthThrottle
             );
             return $this->zdb->execute($select)->count() > 0;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot check whether login exists for throttling. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot check whether login exists for throttling', Analog::WARNING);
             //do not open an account counter we are not sure about
             return false;
         }
@@ -676,10 +658,7 @@ class AuthThrottle
                 //a concurrent attempt inserted the row first, its count stands
                 return;
             }
-            Analog::log(
-                'An error occurred recording an authentication failure. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred recording an authentication failure', Analog::WARNING);
         }
     }
 
@@ -794,10 +773,7 @@ class AuthThrottle
             $results = $this->zdb->execute($select);
             return $results->count() > 0 ? $results->current() : null;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred getting authentication attempts', Analog::WARNING);
             return null;
         }
     }
@@ -815,10 +791,7 @@ class AuthThrottle
             $delete->where(['scope' => $scope, 'identifier' => $identifier]);
             $this->zdb->execute($delete);
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred clearing authentication attempts. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred clearing authentication attempts', Analog::WARNING);
         }
     }
 }

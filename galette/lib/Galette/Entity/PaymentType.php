@@ -14,6 +14,7 @@ use ArrayObject;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Features\I18n;
 use Galette\Features\Translatable;
 
@@ -81,11 +82,7 @@ class PaymentType implements \Stringable
             $this->name = $res->type_name;
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading payment type #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading payment type #' . $id);
             throw $e;
         }
     }
@@ -135,11 +132,7 @@ class PaymentType implements \Stringable
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing payment type: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
-            );
+            Logs::exception($e, "An error occurred storing payment type:\n" . print_r($data, return: true));
             throw $e;
         }
     }
@@ -166,10 +159,7 @@ class PaymentType implements \Stringable
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete payment type ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete payment type ' . $id);
             throw $e;
         }
     }
