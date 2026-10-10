@@ -230,6 +230,8 @@ class Groups
     /**
      * Add a member to specified groups
      *
+     * Out of admin and staff, only groups managed by current user are changed.
+     *
      * @param Adherent      $adh         Member
      * @param array<string> $groups      Groups Groups list. Each entry must contain
      *                                   the group id, name each value separated
@@ -242,9 +244,17 @@ class Groups
     {
         global $zdb, $login;
 
-        $managed_groups = [];
+        //null means no restriction; an empty list means nothing to change
+        $managed_groups = null;
         if (!$login->isSuperAdmin() && !$login->isAdmin() && !$login->isStaff()) {
             $managed_groups = $login->getManagedGroups();
+            if (count($managed_groups) === 0) {
+                Analog::log(
+                    'Trying to change groups of member #' . $adh->id . ' without managing any group',
+                    Analog::WARNING
+                );
+                return true;
+            }
         }
 
         try {
@@ -257,7 +267,7 @@ class Groups
             //first, remove current groups members
             $delete = $zdb->delete($table);
             $delete->where([Adherent::PK => $adh->id]);
-            if (count($managed_groups)) {
+            if ($managed_groups !== null) {
                 $delete->where->in(Group::PK, $managed_groups);
             }
             $zdb->execute($delete);
@@ -286,7 +296,7 @@ class Groups
                 foreach ($groups as $group) {
                     [$gid, $gname] = explode('|', $group);
 
-                    if (count($managed_groups) && !in_array($gid, $managed_groups)) {
+                    if ($managed_groups !== null && !in_array($gid, $managed_groups)) {
                         continue;
                     }
 

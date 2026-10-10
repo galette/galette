@@ -239,6 +239,7 @@ class Groups extends GaletteTestCase
         $this->assertSame([], $member->getManagedGroups());
         $this->assertSame([], $member->getGroups());
 
+        $this->logSuperAdmin();
         //add member to France and Allemagne groups, as simple member
         $this->assertTrue(
             \Galette\Repository\Groups::addMemberToGroups(
@@ -303,5 +304,79 @@ class Groups extends GaletteTestCase
         $this->expectLogEntry(Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
         $this->assertSame([], $member->groups);
         $this->expectLogEntry(Analog::WARNING, 'Calling property "groups" directly is discouraged.');
+    }
+
+    /**
+     * Test members/groups changes are limited to managed groups
+     */
+    public function testAddMemberToGroupsScope(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $managed = new \Galette\Entity\Group();
+        $managed->setName('Managed by member one');
+        $this->assertTrue($managed->store());
+        $this->assertTrue($managed->setManagers([$member_one]));
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+        $this->login->logOut();
+
+        $all = [
+            sprintf('%s|%s', $managed->getId(), $managed->getName()),
+            sprintf('%s|%s', $other->getId(), $other->getName())
+        ];
+        $groups_ids = function (): array {
+            $member = $this->getMemberTwo();
+            $member->loadGroups();
+            $ids = array_map(fn($group) => $group->getId(), $member->getGroups());
+            sort($ids);
+            return $ids;
+        };
+
+        //staff changes every group
+        $staff_member = $this->getStaffMember($member_one);
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isStaff());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, $all));
+        $this->assertSame([$managed->getId(), $other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, []));
+        $this->assertSame([], $groups_ids());
+        $this->login->logOut();
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        $this->logSuperAdmin();
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[1]]));
+        $this->login->logOut();
+
+        //group manager changes only the groups they manage
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $this->assertTrue($this->login->isGroupManager($managed->getId()));
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[0]]));
+        //added to managed group, not removed from the other one
+        $this->assertSame([$managed->getId(), $other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, []));
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->login->logOut();
+
+        //simple member changes nothing
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+        $warning = 'Trying to change groups of member #' . $member_two->id . ' without managing any group';
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[0]]));
+        $this->expectLogEntry(Analog::WARNING, $warning);
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [], manager: true));
+        $this->expectLogEntry(Analog::WARNING, $warning);
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->login->logOut();
+        $member_one->loadGroups();
+        $this->assertCount(1, $member_one->getManagedGroups());
     }
 }
