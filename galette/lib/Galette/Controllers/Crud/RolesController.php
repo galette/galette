@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Analog\Analog;
 use DI\Attribute\Inject;
 use Galette\Access\Permissions;
 use Galette\Access\Role;
@@ -17,6 +18,7 @@ use Galette\Access\Roles;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Core\FeatureFlagManager;
+use Galette\Core\Logs;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Slim\Exception\HttpNotFoundException;
@@ -110,7 +112,8 @@ class RolesController extends CrudController
 
         try {
             $stored = $role->getName() !== '' && $role->store($this->zdb);
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to add role `' . $role->getName() . '`', Analog::INFO);
             $stored = false;
         }
 
@@ -270,7 +273,8 @@ class RolesController extends CrudController
             }
             $role->setPermissions(array_keys($post['permissions'] ?? []), $this->permissions);
             $stored = $role->store($this->zdb);
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to store role #' . $id, Analog::INFO);
             $stored = false;
         }
 

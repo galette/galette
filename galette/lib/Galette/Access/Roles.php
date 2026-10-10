@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Access;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Authentication;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
@@ -168,7 +169,7 @@ class Roles
             Analog::log('System roles were successfully stored into database.', Analog::INFO);
             return true;
         } catch (Throwable $e) {
-            Analog::log('Unable to initialize system roles: ' . $e->getMessage(), Analog::WARNING);
+            Logs::exception($e, 'Unable to initialize system roles', Analog::WARNING);
             throw $e;
         }
     }
