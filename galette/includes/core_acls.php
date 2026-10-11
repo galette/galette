@@ -63,6 +63,8 @@ $core_acls = [
     'massAddContributionsChooseType'    => 'staff',
     'massAddContributions'              => 'staff',
     'doMassAddContributions'            => 'staff',
+    //contributions types are for staff only; the addContribution rule below would let groups managers in
+    '/(.+)?contributions?Types?(.+)?/i' => 'staff',
     '/(.*)?addContribution/i'           => 'groupmanager',
     '/(at|de)tach_contribution/i'       => 'groupmanager',
     '/contributionDates/i'              => 'groupmanager',
@@ -94,7 +96,6 @@ $core_acls = [
 
     '/(.+)?text(.+)?/i'                 => 'staff',
     '/(.+)?status(.+)?/i'               => 'staff',
-    '/(.+)?contributions?Types?(.+)?/i' => 'staff',
     '/(.+)?title(.+)?/i'                => 'staff',
     '/(.+)?reminder(.+)?/i'             => 'staff',
     '/(.+)?paymentType(.+)?/i'          => 'staff',
