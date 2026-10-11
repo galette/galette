@@ -3153,4 +3153,37 @@ class MembersController extends GaletteRoutingTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test group managers only list members of groups they manage
+     */
+    public function testAjaxMembersFromGroups(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $this->logSuperAdmin();
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed by member one');
+        $this->assertTrue($other->store());
+        $this->assertTrue($other->setMembers([$member_two]));
+        $this->login->logOut();
+
+        $group = $this->logGroupManager();
+        $this->assertTrue($group->setMembers([$member_two]));
+
+        $request = $this->createRequest('ajaxMembers', [], 'POST')
+            ->withParsedBody(['from' => 'groups', 'gid' => (string)$group->getId()]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString($member_two->sfullname, (string)$test_response->getBody());
+
+        $request = $this->createRequest('ajaxMembers', [], 'POST')
+            ->withParsedBody(['from' => 'groups', 'gid' => (string)$other->getId()]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
+        $this->assertStringNotContainsString($member_two->sfullname, (string)$test_response->getBody());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Trying to list members of group #' . $other->getId() . ' without access'
+        );
+    }
 }
