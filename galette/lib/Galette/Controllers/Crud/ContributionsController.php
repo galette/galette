@@ -232,7 +232,8 @@ class ContributionsController extends CrudController
         ];
         $contrib = new Contribution($this->zdb, $this->login, $args);
 
-        if (!$contrib->canCreate($this->login)) {
+        //the member is checked with posted data, where groups managers are told to select one they manage
+        if (!$this->accessControl->can('contribution:create')) {
             Analog::log(
                 'Trying to add contribution without appropriate ACLs',
                 Analog::WARNING
@@ -506,22 +507,7 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_children = (int)$value;
         }
 
-        $class = '\\Galette\\Entity\\' . ucwords(trim($raw_type, 's'));
-        $contrib = new $class($this->zdb, $this->login);
-
-        if (!$contrib->canShow($this->login)) {
-            Analog::log(
-                'Trying to display contributions without appropriate ACLs',
-                Analog::WARNING
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
-        }
-
+        //any member lists their own, and their children's, contributions; others are filtered above
         $class = '\\Galette\\Repository\\' . ucwords($raw_type);
         $contrib = new $class($this->zdb, $this->login, $filters);
         $contribs_list = $contrib->getList(true);
