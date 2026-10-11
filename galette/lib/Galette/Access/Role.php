@@ -172,6 +172,9 @@ class Role extends AbstractEntity
     /**
      * Set permissions of the role, stored with the role
      *
+     * Stored permissions the catalog does not know, from a disabled plugin
+     * for instance, are kept.
+     *
      * @param array<string> $permissions Permissions names
      * @param Permissions   $catalog     Permissions catalog
      *
@@ -182,6 +185,11 @@ class Role extends AbstractEntity
         foreach ($permissions as $permission) {
             if (!$catalog->has($permission)) {
                 throw new \InvalidArgumentException(sprintf('Unknown permission "%s"', $permission));
+            }
+        }
+        foreach ($this->getPermissions() as $permission) {
+            if (!$catalog->has($permission)) {
+                $permissions[] = $permission;
             }
         }
         $permissions = array_values(array_unique($permissions));

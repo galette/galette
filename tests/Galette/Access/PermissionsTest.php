@@ -12,6 +12,8 @@ namespace Galette\Access\test\units;
 
 use Galette\Access\Permission;
 use Galette\Access\Permissions;
+use Galette\Access\Role;
+use Galette\Access\Roles;
 use Galette\Core\Authentication;
 use Galette\Core\Plugins;
 use Galette\Tests\GaletteTestCase;
@@ -107,5 +109,36 @@ class PermissionsTest extends GaletteTestCase
             \Analog\Analog::WARNING,
             'Plugin "Members plugin" permissions are ignored: "member" is a core domain.'
         );
+    }
+
+    /**
+     * Test a role keeps permissions the catalog does not know, from a disabled plugin
+     */
+    public function testRoleKeepsUnknownPermissions(): void
+    {
+        (new Roles($this->zdb, new Permissions()))->installInit($this->preferences);
+        $catalog = $this->container->get(Permissions::class);
+
+        $role = new Role();
+        $role->setName('Plugin one manager')
+            ->setPermissions(['member:read', 'plugin1:manage'], $catalog);
+        $this->assertTrue($role->store($this->zdb));
+
+        try {
+            //plugin is now disabled
+            $role = new Role($role->getId());
+            $role->setPermissions(['member:edit'], new Permissions());
+            $this->assertTrue($role->store($this->zdb));
+
+            $role = new Role($role->getId());
+            $this->assertSame(['member:edit', 'plugin1:manage'], $role->getPermissions());
+
+            //plugin is back
+            $role->setPermissions(['member:edit'], $catalog);
+            $this->assertTrue($role->store($this->zdb));
+            $this->assertSame(['member:edit'], (new Role($role->getId()))->getPermissions());
+        } finally {
+            $role->delete();
+        }
     }
 }
