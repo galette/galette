@@ -137,10 +137,10 @@ class MailingsController extends GaletteRoutingTestCase
             $this->expectOK($this->app->handle($request));
             $mailing = $this->session->mailing;
             $ids = array_map(
-                fn ($member) => $member->id,
+                fn($member) => $member->id,
                 array_merge($mailing->recipients, $mailing->unreachables)
             );
-            return in_array($member_two->id, $ids, true);
+            return in_array($member_two->id, $ids, strict: true);
         };
 
         //late member is not part of a managed group
