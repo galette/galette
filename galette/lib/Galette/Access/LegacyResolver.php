@@ -237,9 +237,11 @@ class LegacyResolver implements PermissionResolverInterface
             return true;
         }
 
-        //group managers can see transactions - if enabled in preferences
-        //FIXME: whatever group the member belongs to, unlike contributions
-        if ($login->isGroupManager() && $this->preferences->pref_bool_groupsmanagers_see_transactions) {
+        //group managers can see transactions of members of groups they manage - if enabled in preferences
+        if (
+            $this->preferences->pref_bool_groupsmanagers_see_transactions
+            && $this->managesGroupOf($login, new Adherent($this->zdb, (int)$transaction->member, deps: false))
+        ) {
             return true;
         }
 
@@ -261,13 +263,19 @@ class LegacyResolver implements PermissionResolverInterface
             return true;
         }
 
+        if (
+            !$this->preferences->pref_bool_groupsmanagers_create_contributions
+            && !$this->preferences->pref_bool_groupsmanagers_see_contributions
+        ) {
+            return false;
+        }
+
         //no transaction: route check, existing transactions only are checked later
-        return ($transaction === null || $transaction->id !== null)
-            && $login->isGroupManager()
-            && (
-                $this->preferences->pref_bool_groupsmanagers_create_contributions
-                || $this->preferences->pref_bool_groupsmanagers_see_contributions
-            );
+        if ($transaction === null) {
+            return $login->isGroupManager();
+        }
+        return $transaction->id !== null
+            && $this->managesGroupOf($login, new Adherent($this->zdb, (int)$transaction->member, deps: false));
     }
 
     /**

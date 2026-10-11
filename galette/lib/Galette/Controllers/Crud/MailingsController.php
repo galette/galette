@@ -114,12 +114,8 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                if ($this->login->isAdmin() || $this->login->isStaff()) {
-                    $members = $m->getList(as_members: true);
-                } else {
-                    //groups managers can only remind members of groups they manage
-                    $members = $m->getManagedMembersList(as_members: true, count: false);
-                }
+                //remind only members current user can display
+                $members = $m->getVisibleMembersList(as_members: true, count: false);
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
