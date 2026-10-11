@@ -18,6 +18,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
 use Galette\Entity\Transaction;
+use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Interfaces\PermissionResolverInterface;
 
 /**
@@ -62,6 +63,15 @@ class LegacyResolver implements PermissionResolverInterface
 
         if ($login->isLogged() && $permission->isGrantedToMembers($this->preferences)) {
             return true;
+        }
+
+        //plugins objects: owners, and managers of their groups only
+        if ($subject instanceof AccessSubjectInterface) {
+            if ($permission->owner && $this->ownsSubject($login, $subject)) {
+                return true;
+            }
+            return $permission->isGrantedToManagers($this->preferences)
+                && $this->managesGroupOfSubject($login, $subject);
         }
 
         return $login->isGroupManager() && $permission->isGrantedToManagers($this->preferences);
@@ -332,6 +342,45 @@ class LegacyResolver implements PermissionResolverInterface
             }
         }
         return false;
+    }
+
+    /**
+     * Does login own a plugin object, or one of their children?
+     *
+     * @param Login                  $login   Login to check
+     * @param AccessSubjectInterface $subject Plugin object
+     */
+    private function ownsSubject(Login $login, AccessSubjectInterface $subject): bool
+    {
+        $member_id = $subject->getOwnerId();
+        if ($member_id === null || !$login->isLogged()) {
+            return false;
+        }
+        return $member_id === (int)$login->id || $this->isParentOf($login, $member_id);
+    }
+
+    /**
+     * Does login manage a group a plugin object belongs to?
+     *
+     * @param Login                  $login   Login to check
+     * @param AccessSubjectInterface $subject Plugin object
+     */
+    private function managesGroupOfSubject(Login $login, AccessSubjectInterface $subject): bool
+    {
+        if (!$login->isGroupManager()) {
+            return false;
+        }
+
+        $groups = $subject->getGroupsIds();
+        if ($groups === null) {
+            $member_id = $subject->getOwnerId();
+            if ($member_id === null) {
+                return false;
+            }
+            return $this->managesGroupOf($login, new Adherent($this->zdb, $member_id, deps: false));
+        }
+
+        return $groups !== [] && $login->isGroupManager(array_map(intval(...), $groups));
     }
 
     /**

@@ -90,7 +90,8 @@ class PluginGalettePlugin1 extends GalettePlugin implements
                 name: 'plugin1:manage',
                 label: 'Manage plugin one',
                 level: Authentication::ACCESS_STAFF,
-                managers: true
+                managers: true,
+                owner: true
             ),
         ];
     }

@@ -14,6 +14,7 @@ use Galette\Access\AccessControl;
 use Galette\Access\Permissions;
 use Galette\Access\RoleResolver;
 use Galette\Access\Roles;
+use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Tests\GaletteTestCase;
 
 /**
@@ -99,6 +100,45 @@ class RoleResolverTest extends GaletteTestCase
         $insert->values(['id_adh' => $member, Roles::PK => $role, 'id_group' => $group]);
         $this->zdb->execute($insert);
         $this->resolver->reset();
+    }
+
+    /**
+     * Get a plugin object
+     *
+     * @param ?int        $owner  Owner identifier
+     * @param ?array<int> $groups Groups identifiers, those of the owner if null
+     */
+    private function getSubject(?int $owner, ?array $groups = null): AccessSubjectInterface
+    {
+        return new readonly class ($owner, $groups) implements AccessSubjectInterface {
+            /**
+             * Constructor
+             *
+             * @param ?int        $owner  Owner identifier
+             * @param ?array<int> $groups Groups identifiers
+             */
+            public function __construct(private ?int $owner, private ?array $groups)
+            {
+            }
+
+            /**
+             * Get owner identifier
+             */
+            public function getOwnerId(): ?int
+            {
+                return $this->owner;
+            }
+
+            /**
+             * Get groups identifiers
+             *
+             * @return ?array<int>
+             */
+            public function getGroupsIds(): ?array
+            {
+                return $this->groups;
+            }
+        };
     }
 
     /**
@@ -412,5 +452,44 @@ class RoleResolverTest extends GaletteTestCase
             $ids[] = (int)$row->id_cotis;
         }
         return $ids;
+    }
+
+    /**
+     * Test plugins permissions on plugins objects
+     */
+    public function testPluginSubjects(): void
+    {
+        $catalog = $this->container->get(Permissions::class);
+        (new Roles($this->zdb, $catalog))->syncPermissions($this->preferences);
+        $this->resolver->reset();
+        $access = new AccessControl($catalog, $this->resolver, $this->login);
+
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+        $this->login->logOut();
+
+        $this->logMemberOne();
+        $this->assertTrue($access->can('plugin1:read'));
+        //owner
+        $this->assertTrue($access->can('plugin1:manage', $this->getSubject((int)$member_one->id, [])));
+        //groups managers, on their groups
+        $this->assertTrue($access->can('plugin1:manage', $this->getSubject(owner: null, groups: [(int)$group->getId()])));
+        $this->assertFalse($access->can('plugin1:manage', $this->getSubject(owner: null, groups: [(int)$other->getId()])));
+        $this->assertFalse($access->can('plugin1:manage', $this->getSubject((int)$member_two->id)));
+        $this->login->logOut();
+
+        $this->logSuperAdmin();
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        $this->logMemberOne();
+        $this->assertTrue($access->can('plugin1:manage', $this->getSubject((int)$member_two->id)));
     }
 }

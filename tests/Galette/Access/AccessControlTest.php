@@ -18,6 +18,7 @@ use Galette\Access\RoleResolver;
 use Galette\Core\Authentication;
 use Galette\Core\FeatureFlagManager;
 use Galette\Core\Login;
+use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Interfaces\PermissionResolverInterface;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -67,6 +68,13 @@ class AccessControlTest extends GaletteTestCase
                         managers: ['pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_mailings']
                     ),
                     new Permission(
+                        name: 'test:owned',
+                        label: 'Managers and owners',
+                        level: Authentication::ACCESS_STAFF,
+                        managers: true,
+                        owner: true
+                    ),
+                    new Permission(
                         name: 'test:members',
                         label: 'Members if pref is on',
                         level: Authentication::ACCESS_STAFF,
@@ -74,6 +82,54 @@ class AccessControlTest extends GaletteTestCase
                         members: 'pref_bool_create_member'
                     ),
                 ];
+            }
+        };
+    }
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        $this->cleanMembers();
+        parent::tearDown();
+    }
+
+    /**
+     * Get a plugin object
+     *
+     * @param ?int        $owner  Owner identifier
+     * @param ?array<int> $groups Groups identifiers, those of the owner if null
+     */
+    private function getSubject(?int $owner, ?array $groups = null): AccessSubjectInterface
+    {
+        return new readonly class ($owner, $groups) implements AccessSubjectInterface {
+            /**
+             * Constructor
+             *
+             * @param ?int        $owner  Owner identifier
+             * @param ?array<int> $groups Groups identifiers
+             */
+            public function __construct(private ?int $owner, private ?array $groups)
+            {
+            }
+
+            /**
+             * Get owner identifier
+             */
+            public function getOwnerId(): ?int
+            {
+                return $this->owner;
+            }
+
+            /**
+             * Get groups identifiers
+             *
+             * @return ?array<int>
+             */
+            public function getGroupsIds(): ?array
+            {
+                return $this->groups;
             }
         };
     }
@@ -543,5 +599,50 @@ class AccessControlTest extends GaletteTestCase
             $this->container->set(FeatureFlagManager::class, $flags);
         }
         $this->assertInstanceOf(LegacyResolver::class, $this->container->make(PermissionResolverInterface::class));
+    }
+
+    /**
+     * Test plugins objects: owners, and managers of their groups only
+     */
+    public function testLegacyPluginSubjects(): void
+    {
+        $access = $this->getAccessControl();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($access->can('test:owned'));
+        $this->assertTrue($access->can('test:owned', $this->getSubject((int)$member_one->id)));
+        $this->assertFalse($access->can('test:owned', $this->getSubject((int)$member_two->id)));
+        $this->assertFalse($access->can('test:managers', $this->getSubject((int)$member_one->id)));
+        $this->login->logOut();
+
+        $group = $this->logGroupManager();
+        $this->logSuperAdmin();
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+        $this->login->logOut();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        //no object: as before
+        $this->assertTrue($access->can('test:managers'));
+        $this->assertTrue($access->can('test:managers', $this->getSubject(owner: null, groups: [(int)$group->getId()])));
+        $this->assertFalse($access->can('test:managers', $this->getSubject(owner: null, groups: [(int)$other->getId()])));
+        $this->assertFalse($access->can('test:managers', $this->getSubject(owner: null, groups: [])));
+        $this->assertFalse($access->can('test:managers', $this->getSubject((int)$member_two->id)));
+        $exports = $this->preferences->pref_bool_groupsmanagers_exports;
+        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->assertFalse($access->can('test:pref', $this->getSubject(owner: null, groups: [(int)$group->getId()])));
+        $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
+
+        //owner groups
+        $this->login->logOut();
+        $this->logSuperAdmin();
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($access->can('test:managers', $this->getSubject((int)$member_two->id)));
     }
 }

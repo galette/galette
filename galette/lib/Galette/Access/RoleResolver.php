@@ -16,6 +16,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
 use Galette\Entity\Transaction;
+use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Interfaces\PermissionResolverInterface;
 
 /**
@@ -284,15 +285,11 @@ class RoleResolver implements PermissionResolverInterface
             return $subject->hasParent() && (int)$subject->parent_id === (int)$login->id;
         }
 
-        if ($subject instanceof Contribution || $subject instanceof Transaction) {
-            $member_id = $subject->member;
-            if ($member_id === null) {
-                return false;
-            }
-            return (int)$member_id === (int)$login->id || $this->isParentOf($login, (int)$member_id);
+        $member_id = $this->getOwnerIdOf($subject);
+        if ($member_id === null) {
+            return false;
         }
-
-        return false;
+        return $member_id === (int)$login->id || $this->isParentOf($login, $member_id);
     }
 
     /**
@@ -319,6 +316,21 @@ class RoleResolver implements PermissionResolverInterface
     }
 
     /**
+     * Get identifier of the member a subject belongs to, if any
+     *
+     * @param mixed $subject Subject
+     */
+    private function getOwnerIdOf(mixed $subject): ?int
+    {
+        $member_id = match (true) {
+            $subject instanceof Contribution, $subject instanceof Transaction => $subject->member,
+            $subject instanceof AccessSubjectInterface => $subject->getOwnerId(),
+            default => null,
+        };
+        return $member_id === null ? null : (int)$member_id;
+    }
+
+    /**
      * Get identifiers of the groups a subject belongs to
      *
      * @param mixed $subject Subject
@@ -331,20 +343,21 @@ class RoleResolver implements PermissionResolverInterface
             return [(int)$subject->getId()];
         }
 
-        if ($subject instanceof Contribution || $subject instanceof Transaction) {
-            if ($subject->member === null) {
+        if ($subject instanceof AccessSubjectInterface && $subject->getGroupsIds() !== null) {
+            return array_values(array_map(intval(...), $subject->getGroupsIds()));
+        }
+
+        if (!$subject instanceof Adherent) {
+            $member_id = $this->getOwnerIdOf($subject);
+            if ($member_id === null) {
                 return [];
             }
-            $subject = new Adherent($this->zdb, (int)$subject->member, deps: false);
+            $subject = new Adherent($this->zdb, $member_id, deps: false);
         }
 
-        if ($subject instanceof Adherent) {
-            return array_values(array_map(
-                fn(Group $group): int => (int)$group->getId(),
-                $subject->getGroups()
-            ));
-        }
-
-        return [];
+        return array_values(array_map(
+            fn(Group $group): int => (int)$group->getId(),
+            $subject->getGroups()
+        ));
     }
 }
