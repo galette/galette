@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Galette\Tests\GaletteRoutingTestCase;
+use Safe\DateTime;
 
 /**
 * Galette ajax controller tests
@@ -61,7 +62,7 @@ class AjaxControllerTest extends GaletteRoutingTestCase
             'info_cotis' => '',
             'date_enreg' => date('Y-m-d'),
             'date_debut_cotis' => date('Y-m-d'),
-            'date_fin_cotis' => (new \DateTime('+2 years'))->format('Y-m-d')
+            'date_fin_cotis' => (new DateTime('+2 years'))->format('Y-m-d')
         ]);
         $this->zdb->execute($insert);
 
