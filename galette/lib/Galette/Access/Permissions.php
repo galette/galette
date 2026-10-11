@@ -92,6 +92,13 @@ class Permissions
             'group' => _T('Groups'),
             'mailing' => _T('Mailings'),
             'document' => _T('Documents'),
+            'config' => _T('Configuration'),
+            'data' => _T('Exports'),
+            'history' => _T('Logs'),
+            'system' => _T('System information'),
+            'security' => _T('Security'),
+            'plugin' => _T('Plugins'),
+            'role' => _T('Roles'),
             default => ucfirst($domain),
         };
     }
@@ -106,6 +113,7 @@ class Permissions
     protected function getCorePermissions(): array
     {
         $staff = Authentication::ACCESS_STAFF;
+        $admin = Authentication::ACCESS_ADMIN;
 
         return [
             new Permission(
@@ -136,7 +144,7 @@ class Permissions
                 _T('Manage members administrative information (status, exemption, account, parent)'),
                 $staff
             ),
-            new Permission('member:grant-admin', _T('Grant administrator rights to members'), Authentication::ACCESS_ADMIN),
+            new Permission('member:grant-admin', _T('Grant administrator rights to members'), $admin),
             new Permission('member:mass-edit', _T('Change or delete members in mass'), $staff),
             new Permission(
                 'member:credentials',
@@ -210,6 +218,21 @@ class Permissions
             new Permission('mailing:history', _T('Browse and delete sent mailings'), $staff),
 
             new Permission('document:manage', _T('Manage documents'), $staff),
+
+            new Permission(
+                'config:references',
+                _T('Manage statuses, titles, contributions and payment types, labels translations'),
+                $staff
+            ),
+            new Permission('config:templates', _T('Manage emails contents and PDF models'), $staff),
+            new Permission('config:preferences', _T('Change settings'), $admin),
+            new Permission('config:fields', _T('Configure core and dynamic fields, and lists'), $admin),
+            new Permission('data:export', _T('Export data'), $staff),
+            new Permission('history:manage', _T('Browse and flush logs'), $staff),
+            new Permission('system:info', _T('Display system information and charts'), $staff),
+            new Permission('security:manage', _T('Lift authentication restrictions'), $admin),
+            new Permission('plugin:manage', _T('Manage plugins'), $admin),
+            new Permission('role:manage', _T('Manage roles and their permissions'), $admin),
         ];
     }
 }

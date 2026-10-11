@@ -240,6 +240,78 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test administration routes permissions
+     */
+    public function testAdministrationRoutes(): void
+    {
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
+        $expected = [
+            'contributionsTypes' => 'config:references',
+            'addContributionType' => 'config:references',
+            'doAddContributionType' => 'config:references',
+            'editContributionType' => 'config:references',
+            'doEditContributionType' => 'config:references',
+            'removeContributionType' => 'config:references',
+            'doRemoveContributionType' => 'config:references',
+            'status' => 'config:references',
+            'doRemoveStatus' => 'config:references',
+            'titles' => 'config:references',
+            'removeTitle' => 'config:references',
+            'paymentTypes' => 'config:references',
+            'doRemovePaymentType' => 'config:references',
+            'dynamicTranslations' => 'config:references',
+            'texts' => 'config:templates',
+            'storePdfModels' => 'config:templates',
+            'export' => 'data:export',
+            'getCsv' => 'data:export',
+            'doRemoveCsv' => 'data:export',
+            'history' => 'history:manage',
+            'doFlushHistory' => 'history:manage',
+            'sysinfos' => 'system:info',
+            'charts' => 'system:info',
+            'preferences' => 'config:preferences',
+            'store-preferences' => 'config:preferences',
+            'testEmail' => 'config:preferences',
+            'telemetrySend' => 'config:preferences',
+            'configureDynamicFields' => 'config:fields',
+            'storeListFields' => 'config:fields',
+            'doRemoveDynamicField' => 'config:fields',
+            'authAttempts' => 'security:manage',
+            'plugins' => 'plugin:manage',
+            'pluginInitDb' => 'plugin:manage',
+            'roles' => 'role:manage',
+            'giveRole' => 'role:manage',
+            'removeScheduledPayment' => 'contribution:schedule',
+            'doRemoveScheduledPayment' => 'contribution:schedule',
+            'adminTools' => 'superadmin',
+            'advancedConfig' => 'superadmin',
+            'impersonate' => 'superadmin',
+        ];
+        foreach ($expected as $route => $acl) {
+            $this->assertSame($acl, $authenticate->getAclFor($route), $route);
+        }
+
+        $access = new AccessControl(
+            new Permissions(),
+            new LegacyResolver($this->zdb, $this->preferences),
+            $this->login
+        );
+        $admin = $this->getLogin(Authentication::ACCESS_ADMIN);
+        $staff = $this->getLogin(Authentication::ACCESS_STAFF);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        foreach (['config:references', 'config:templates', 'data:export', 'history:manage', 'system:info'] as $permission) {
+            $this->assertTrue($access->can($permission, login: $admin), $permission);
+            $this->assertTrue($access->can($permission, login: $staff), $permission);
+            $this->assertFalse($access->can($permission, login: $manager), $permission);
+        }
+        foreach (['config:preferences', 'config:fields', 'security:manage', 'plugin:manage', 'role:manage'] as $permission) {
+            $this->assertTrue($access->can($permission, login: $admin), $permission);
+            $this->assertFalse($access->can($permission, login: $staff), $permission);
+            $this->assertFalse($access->can($permission, login: $manager), $permission);
+        }
+    }
+
+    /**
      * Test groups managers display the groups they manage only
      */
     public function testLegacyGroupRead(): void

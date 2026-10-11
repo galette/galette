@@ -166,6 +166,25 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
 
+        $this->assertSame(
+            [
+                'preferences',
+                'authAttempts',
+                'plugins',
+                'configureListFields',
+                'configureCoreFields',
+                'configureDynamicFields',
+                'contributionsTypes',
+                'paymentTypes',
+                'status',
+                'titles',
+                'pdfModels',
+                'texts',
+                'dynamicTranslations'
+            ],
+            array_column(array_column($menus['configuration']['items'], 'route'), 'name')
+        );
+
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
             ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
@@ -185,6 +204,11 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('management', $menus);
         $this->assertArrayNotHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
+        //staff members reach some configuration pages, not displayed in menus
+        $this->assertSame(
+            ['groups', 'documentsList', 'mailings', 'charts', 'export', 'import', 'history'],
+            array_column(array_column($menus['management']['items'], 'route'), 'name')
+        );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
@@ -443,7 +467,7 @@ class Galette extends GaletteTestCase
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
-            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager', 'getManagedGroups'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -451,6 +475,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
         $login->method('isGroupManager')->willReturn(true);
+        $login->method('getManagedGroups')->willReturn([1]);
 
         //groups managers cannot see contributions nor transactions
         $preferences->pref_bool_groupsmanagers_see_contributions = false;
