@@ -252,6 +252,33 @@ class RoleResolverTest extends GaletteTestCase
     }
 
     /**
+     * Test new objects, not attached to a member, are checked as no object when creating them only
+     */
+    public function testNewObjects(): void
+    {
+        $this->logGroupManager();
+        $this->login->logOut();
+        $member_two = $this->getMemberTwo();
+
+        foreach (['contribution:create', 'member:edit'] as $permission) {
+            $insert = $this->zdb->insert(Roles::PERMISSIONS_TABLE);
+            $insert->values([Roles::PK => 3, 'permission' => $permission]);
+            $this->zdb->execute($insert);
+        }
+        $this->resolver->reset();
+
+        $this->logMemberOne();
+        $this->assertTrue($this->access->can('contribution:create', new \Galette\Entity\Contribution($this->zdb, $this->login)));
+        //member two is not in the managed group
+        $this->assertFalse($this->access->can(
+            'contribution:create',
+            new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => (int)$member_two->id])
+        ));
+        //a member that could not be loaded is not a new one
+        $this->assertFalse($this->access->can('member:edit', new \Galette\Entity\Adherent($this->zdb)));
+    }
+
+    /**
      * Test roles given explicitly, globally or for a group, and inheritance
      */
     public function testGivenRoles(): void

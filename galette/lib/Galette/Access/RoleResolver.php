@@ -95,7 +95,7 @@ class RoleResolver implements PermissionResolverInterface
             return true;
         }
 
-        $subject_groups = null;
+        $subject_groups = false;
         foreach ($grants['groups'] as $group_id => $permissions) {
             if (!isset($permissions[$permission->name])) {
                 continue;
@@ -103,7 +103,16 @@ class RoleResolver implements PermissionResolverInterface
             if ($subject === null) {
                 return true;
             }
-            $subject_groups ??= $this->getGroupsOf($subject);
+            if ($subject_groups === false) {
+                $subject_groups = $this->getGroupsOf($subject);
+            }
+            if ($subject_groups === null) {
+                //a new object, not attached to a member yet, is checked as no object when creating it
+                if (str_ends_with($permission->name, ':create')) {
+                    return true;
+                }
+                continue;
+            }
             if (in_array($group_id, $subject_groups, strict: true)) {
                 return true;
             }
@@ -366,9 +375,10 @@ class RoleResolver implements PermissionResolverInterface
      *
      * @param mixed $subject Subject
      *
-     * @return array<int>
+     * @return ?array<int> Groups identifiers; null for a new member, contribution
+     *                     or transaction, not attached to a member yet
      */
-    private function getGroupsOf(mixed $subject): array
+    private function getGroupsOf(mixed $subject): ?array
     {
         if ($subject instanceof Group) {
             return [(int)$subject->getId()];
@@ -378,10 +388,14 @@ class RoleResolver implements PermissionResolverInterface
             return array_values(array_map(intval(...), $subject->getGroupsIds()));
         }
 
+        if ($subject instanceof Adherent && $subject->id === null) {
+            return null;
+        }
+
         if (!$subject instanceof Adherent) {
             $member_id = $this->getOwnerIdOf($subject);
             if ($member_id === null) {
-                return [];
+                return $subject instanceof Contribution || $subject instanceof Transaction ? null : [];
             }
             $subject = new Adherent($this->zdb, $member_id, deps: false);
         }
