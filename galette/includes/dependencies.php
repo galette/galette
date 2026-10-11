@@ -171,6 +171,16 @@ $container->set(
     DI\autowire()->constructorParameter('plugins', DI\get(\Galette\Core\Plugins::class))
 );
 
+$container->set(\Galette\Access\RoleResolver::class, function (ContainerInterface $c) {
+    //system roles get default permissions of plugins activated since roles were set up
+    try {
+        $c->get(\Galette\Access\Roles::class)->syncPermissions($c->get(\Galette\Core\Preferences::class));
+    } catch (\Throwable $e) {
+        \Galette\Core\Logs::exception($e, 'Unable to give system roles default permissions of new permissions');
+    }
+    return new \Galette\Access\RoleResolver($c->get(\Galette\Core\Db::class));
+});
+
 //permissions come from roles with the acls feature flag, from legacy access levels otherwise
 $container->set(
     \Galette\Interfaces\PermissionResolverInterface::class,

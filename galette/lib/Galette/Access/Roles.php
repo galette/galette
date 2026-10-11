@@ -32,6 +32,7 @@ class Roles
     public const string PK = Role::PK;
     public const string PERMISSIONS_TABLE = 'roles_permissions';
     public const string MEMBERS_TABLE = 'members_roles';
+    public const string KNOWN_TABLE = 'known_permissions';
 
     public const string MEMBER = 'member';
     public const string UPTODATE = 'uptodate';
@@ -118,7 +119,8 @@ class Roles
     /**
      * Create system roles and their default permissions
      *
-     * Existing roles are dropped.
+     * Existing roles are dropped. Permissions of the catalog are recorded as
+     * known.
      *
      * @param Preferences $preferences Preferences instance
      *
@@ -166,11 +168,94 @@ class Roles
                 }
             }
 
+            $this->zdb->execute($this->zdb->delete(self::KNOWN_TABLE));
+            $this->storeKnown(array_keys($this->permissions->getAll()));
+
             Analog::log('System roles were successfully stored into database.', Analog::INFO);
             return true;
         } catch (Throwable $e) {
             Logs::exception($e, 'Unable to initialize system roles', Analog::WARNING);
             throw $e;
+        }
+    }
+
+    /**
+     * Give system roles the default permissions of new permissions
+     *
+     * Permissions the catalog did not have yet - those of a plugin activated
+     * after roles were set up, or of a newer version - are granted as legacy
+     * access levels and current preferences would grant them, once: removing
+     * them from a role afterwards is not undone.
+     *
+     * @param Preferences $preferences Preferences instance
+     *
+     * @return array<string> New permissions
+     */
+    public function syncPermissions(Preferences $preferences): array
+    {
+        $known = [];
+        $select = $this->zdb->select(self::KNOWN_TABLE);
+        foreach ($this->zdb->execute($select) as $row) {
+            $known[] = (string)$row->permission;
+        }
+
+        $new = array_values(array_diff(array_keys($this->permissions->getAll()), $known));
+        if ($new === []) {
+            return [];
+        }
+
+        $roles_keys = [];
+        $select = $this->zdb->select(self::TABLE);
+        $select->where->isNotNull('role_key');
+        foreach ($this->zdb->execute($select) as $row) {
+            $roles_keys[(string)$row->role_key] = (int)$row->{self::PK};
+        }
+
+        $transaction = !$this->zdb->inTransaction();
+        if ($transaction) {
+            $this->zdb->beginTransaction();
+        }
+        try {
+            foreach ($this->getDefaultPermissions($preferences) as $key => $permissions) {
+                if (!isset($roles_keys[$key])) {
+                    continue;
+                }
+                foreach (array_intersect($permissions, $new) as $permission) {
+                    $insert = $this->zdb->insert(self::PERMISSIONS_TABLE);
+                    $insert->values([self::PK => $roles_keys[$key], 'permission' => $permission]);
+                    $this->zdb->execute($insert);
+                }
+            }
+            $this->storeKnown($new);
+            if ($transaction) {
+                $this->zdb->commit();
+            }
+        } catch (Throwable $e) {
+            if ($transaction) {
+                $this->zdb->rollback();
+            }
+            throw $e;
+        }
+
+        Analog::log(
+            sprintf('System roles got default permissions of %1$s.', implode(', ', $new)),
+            Analog::INFO
+        );
+        return $new;
+    }
+
+    /**
+     * Record permissions as known
+     *
+     * @param array<string> $permissions Permissions names
+     */
+    private function storeKnown(array $permissions): void
+    {
+        $insert = $this->zdb->insert(self::KNOWN_TABLE);
+        $insert->values(['permission' => ':permission']);
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+        foreach ($permissions as $permission) {
+            $stmt->execute([':permission' => $permission]);
         }
     }
 

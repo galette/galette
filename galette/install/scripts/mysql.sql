@@ -328,6 +328,7 @@ CREATE TABLE galette_groups_members (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- tables for roles based access control
+DROP TABLE IF EXISTS galette_known_permissions;
 DROP TABLE IF EXISTS galette_members_roles;
 DROP TABLE IF EXISTS galette_roles_permissions;
 DROP TABLE IF EXISTS galette_roles;
@@ -359,6 +360,11 @@ CREATE TABLE galette_members_roles (
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_role) REFERENCES galette_roles (id_role) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_known_permissions (
+  permission varchar(100) NOT NULL,
+  PRIMARY KEY (permission)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Table for reminders

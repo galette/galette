@@ -34,3 +34,8 @@ CREATE TABLE galette_members_roles (
   FOREIGN KEY (id_role) REFERENCES galette_roles (id_role) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+CREATE TABLE galette_known_permissions (
+  permission varchar(100) NOT NULL,
+  PRIMARY KEY (permission)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

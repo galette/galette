@@ -537,7 +537,8 @@ class Db extends BaseGaletteTestCase
             'galette_twofactor_codes',
             'galette_roles',
             'galette_roles_permissions',
-            'galette_members_roles'
+            'galette_members_roles',
+            'galette_known_permissions'
         ];
 
         $tables = $this->zdb->getTables();

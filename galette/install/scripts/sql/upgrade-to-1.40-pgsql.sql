@@ -29,3 +29,8 @@ CREATE TABLE galette_members_roles (
   PRIMARY KEY (id_member_role),
   UNIQUE (id_adh, id_role, id_group)
 );
+
+CREATE TABLE galette_known_permissions (
+  permission character varying(100) NOT NULL,
+  PRIMARY KEY (permission)
+);

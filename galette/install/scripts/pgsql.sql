@@ -315,6 +315,7 @@ CREATE TABLE galette_groups_members (
 );
 
 -- tables for roles based access control
+DROP TABLE IF EXISTS galette_known_permissions CASCADE;
 DROP TABLE IF EXISTS galette_members_roles CASCADE;
 DROP TABLE IF EXISTS galette_roles_permissions CASCADE;
 DROP TABLE IF EXISTS galette_roles CASCADE;
@@ -341,6 +342,11 @@ CREATE TABLE galette_members_roles (
   id_group integer DEFAULT NULL REFERENCES galette_groups (id_group) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (id_member_role),
   UNIQUE (id_adh, id_role, id_group)
+);
+
+CREATE TABLE galette_known_permissions (
+  permission character varying(100) NOT NULL,
+  PRIMARY KEY (permission)
 );
 
 -- Table for reminders
