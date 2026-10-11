@@ -994,6 +994,17 @@ class MembersController extends CrudController
                         );
                         throw new \Exception('A group id is required.');
                     }
+                    if (!$this->login->isGroupManager((int)$post['gid'])) {
+                        Analog::log(
+                            str_replace(
+                                ['%id', '%login', '%gid'],
+                                [(string)$this->login->id, $this->login->login, (string)$post['gid']],
+                                'Trying to list members of group #%gid without access from #%id (%login)'
+                            ),
+                            Analog::ERROR
+                        );
+                        throw new \Exception('Access denied.');
+                    }
                     if (!isset($post['members'])) {
                         $group = new Group((int)$post['gid']);
                         $selected_members = [];
