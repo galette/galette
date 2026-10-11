@@ -401,6 +401,24 @@ class Transaction extends GaletteTestCase
         $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
         $this->assertTrue($this->preferences->store());
 
+        //transaction member is not part of a managed group
+        $this->assertFalse($transaction->canShow($this->login));
+        $mtransaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $this->assertFalse($mtransaction->load($transaction->id));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'No transaction #' . $transaction->id
+        );
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->assertTrue($this->preferences->store());
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+        $this->assertTrue($this->preferences->store());
+
+        //add transaction member to managed group
+        $this->assertTrue($g1->setMembers([$member_one]));
+        $this->assertTrue($mtransaction->load($transaction->id));
+
         $this->assertFalse($transaction->canCreate($this->login));
         $this->assertTrue($transaction->canShow($this->login));
         $this->assertFalse($transaction->canEdit($this->login));
