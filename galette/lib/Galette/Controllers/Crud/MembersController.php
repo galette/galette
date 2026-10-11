@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use DI\Attribute\Inject;
+use Galette\Access\Roles;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
@@ -52,6 +53,9 @@ class MembersController extends CrudController
 
     #[Inject]
     protected Status $status;
+
+    #[Inject]
+    protected Roles $roles;
 
     // CRUD - Create
 
@@ -326,7 +330,8 @@ class MembersController extends CrudController
                 'time'              => time(),
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
-                'navigate'          => $this->handleNavigationLinks($member->id)
+                'navigate'          => $this->handleNavigationLinks($member->id),
+                'member_roles'      => $this->accessControl->can('role:manage') ? $this->roles->getRolesOf($member) : []
             ]
         );
         return $response;

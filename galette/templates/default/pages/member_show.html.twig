@@ -124,6 +124,26 @@
                                 </td>
                             </tr>
                 {% endif %}
+                {% if loop.first and loop.parent.loop.last and member_roles|length != 0 %}
+                            <tr>
+                                <th scope="row" class="three wide column">{{ _T("Roles:") }}</th>
+                                <td>
+                                    <div class="ui large labels">
+                    {% for member_role in member_roles %}
+                                        <a href="{{ url_for("editRole", {"id": member_role.role.getId()}) }}" class="ui {% if member_role.given %}blue {% endif %}label">
+                        {% if not member_role.given %}
+                                            <i class="ui cog icon tooltip" title="{{ _T("Computed from member's information") }}" aria-hidden="true"></i>
+                        {% endif %}
+                                            {{ member_role.role.getLabel() }}
+                        {% if member_role.group is not null %}
+                                            <span class="detail">{{ member_role.group }}</span>
+                        {% endif %}
+                                        </a>
+                    {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                {% endif %}
                             <tr>
                                 <th scope="row" class="three wide column">{{ element.label }}</th>
                                 <td>

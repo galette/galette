@@ -21,6 +21,17 @@ use Galette\Tests\GaletteTestCase;
  */
 class RolesTest extends GaletteTestCase
 {
+    protected int $seed = 20261011;
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        $this->cleanMembers();
+        parent::tearDown();
+    }
+
     /**
      * Get former rights settings, all on or off
      *
@@ -128,6 +139,41 @@ class RolesTest extends GaletteTestCase
         );
 
         $this->assertSame(['group:read', 'member:read'], $this->getStoredPermissions(3));
+    }
+
+    /**
+     * Test roles of a member, computed and given
+     */
+    public function testGetRolesOf(): void
+    {
+        $roles = new Roles($this->zdb, new Permissions());
+        $this->assertTrue($roles->installInit());
+
+        $member = $this->getMemberOne();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Roles group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setManagers([$member]));
+
+        $role = new \Galette\Access\Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $this->assertTrue($roles->give($member->id, $role->getId(), $group->getId()));
+        $this->assertTrue($roles->give($member->id, $role->getId()));
+
+        $member = new \Galette\Entity\Adherent($this->zdb, $member->id);
+        $list = array_map(
+            fn(array $entry): array => [$entry['role']->getLabel(), $entry['group'], $entry['given']],
+            $roles->getRolesOf($member)
+        );
+        $expected = [['Member', null, false]];
+        if ($member->isUp2Date()) {
+            $expected[] = ['Up to date member', null, false];
+        }
+        $expected[] = ['Group manager', 'Roles group', false];
+        $expected[] = ['Treasurer', null, true];
+        $expected[] = ['Treasurer', 'Roles group', true];
+        $this->assertSame($expected, $list);
     }
 
     /**

@@ -1283,6 +1283,48 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test roles on member card, displayed to those who manage roles only
+     */
+    public function testShowPageRoles(): void
+    {
+        $member_one = $this->getMemberOne();
+        $role = new \Galette\Access\Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $roles = $this->container->get(\Galette\Access\Roles::class);
+        $this->assertTrue($roles->give($member_one->id, $role->getId()));
+
+        $route_name = 'member';
+        $route_arguments = ['id' => (string)$member_one->id];
+
+        $this->logSuperAdmin();
+        $request = $this->createRequest($route_name, $route_arguments);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Roles:', $body);
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
+            $body
+        );
+        $this->assertStringContainsString('Treasurer', $body);
+        $this->login->logout();
+
+        //member does not see roles on their own card
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $request = $this->createRequest($route_name, $route_arguments);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('Roles:', $body);
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
+            $body
+        );
+    }
+
+    /**
      * Test "my" page
      */
     public function testShowMePage(): void

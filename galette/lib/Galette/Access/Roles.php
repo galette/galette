@@ -397,6 +397,65 @@ class Roles
     }
 
     /**
+     * Get roles of a member: system roles computed from the member card, and given roles
+     *
+     * @param \Galette\Entity\Adherent $member Member
+     *
+     * @return array<array{role: Role, group: ?string, given: bool}>
+     */
+    public function getRolesOf(\Galette\Entity\Adherent $member): array
+    {
+        $system = [];
+        foreach ($this->getList() as $role) {
+            if ($role->isSystem()) {
+                $system[$role->getKey()] = $role;
+            }
+        }
+
+        $computed = [self::MEMBER => true];
+        $computed[self::UPTODATE] = $member->isUp2Date();
+        $computed[self::STAFF] = $member->isStaff();
+        $computed[self::ADMIN] = $member->isAdmin();
+
+        $roles = [];
+        foreach (array_keys(array_filter($computed)) as $key) {
+            if (isset($system[$key])) {
+                $roles[] = ['role' => $system[$key], 'group' => null, 'given' => false];
+            }
+        }
+        if (isset($system[self::MANAGER])) {
+            foreach ($member->getManagedGroups() as $group) {
+                $roles[] = ['role' => $system[self::MANAGER], 'group' => $group->getName(), 'given' => false];
+            }
+        }
+
+        $select = $this->zdb->select(self::MEMBERS_TABLE, 'mr');
+        $select->join(
+            ['r' => PREFIX_DB . self::TABLE],
+            'r.' . self::PK . ' = mr.' . self::PK,
+            ['*']
+        )->join(
+            name: ['g' => PREFIX_DB . \Galette\Entity\Group::TABLE],
+            on: 'g.' . \Galette\Entity\Group::PK . ' = mr.id_group',
+            columns: ['group_name'],
+            type: $select::JOIN_LEFT
+        )->where(['mr.id_adh' => $member->id]);
+
+        $given = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $given[] = ['role' => new Role($row), 'group' => $row->group_name, 'given' => true];
+        }
+        //by role name, then all groups first; NULL ordering differs between databases
+        usort(
+            $given,
+            fn(array $a, array $b): int => [$a['role']->getLabel(), $a['group'] !== null, $a['group']]
+                <=> [$b['role']->getLabel(), $b['group'] !== null, $b['group']]
+        );
+
+        return array_merge($roles, $given);
+    }
+
+    /**
      * Give a role to a member, for a group or globally
      *
      * @param int  $member Member identifier
