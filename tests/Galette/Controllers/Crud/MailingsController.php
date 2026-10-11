@@ -114,4 +114,42 @@ class MailingsController extends GaletteRoutingTestCase
         $this->preferences->pref_mail_method = $mail_method;
         $this->login->logOut();
     }
+
+    /**
+     * Test group managers only remind late members of groups they manage
+     */
+    public function testGroupManagerReminder(): void
+    {
+        $mail_method = $this->preferences->pref_mail_method;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+
+        $member_two = $this->getMemberTwo();
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update
+            ->set(['date_echeance' => '2020-01-01'])
+            ->where([\Galette\Entity\Adherent::PK => $member_two->id]);
+        $this->zdb->execute($update);
+
+        $group = $this->logGroupManager();
+        $reminded = function () use ($member_two): bool {
+            $request = $this->createRequest('mailing', query_params: ['reminder' => '1']);
+            $this->expectOK($this->app->handle($request));
+            $mailing = $this->session->mailing;
+            $ids = array_map(
+                fn ($member) => $member->id,
+                array_merge($mailing->recipients, $mailing->unreachables)
+            );
+            return in_array($member_two->id, $ids, true);
+        };
+
+        //late member is not part of a managed group
+        $this->assertFalse($reminded());
+
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->assertTrue($reminded());
+
+        $this->preferences->pref_mail_method = $mail_method;
+        $this->login->logOut();
+    }
 }
