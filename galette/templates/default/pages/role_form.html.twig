@@ -16,8 +16,8 @@
                 {{ _T("This system role is given from members data; only its permissions can be changed.") }}
             </div>
             <div class="field inline">
-                <label>{{ _T("Inherits from") }}</label>
-                <span>{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}</span>
+                <label for="parent">{{ _T("Inherits from") }}</label>
+                <input type="text" id="parent" value="{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}" readonly="readonly"/>
             </div>
     {% else %}
             <div class="required field inline">
@@ -60,7 +60,7 @@
                         <td class="center aligned">
                             <div class="ui fitted checkbox{% if is_inherited %} disabled{% endif %}">
                                 <input type="checkbox" name="permissions[{{ name }}]" id="perm_{{ loop.parent.loop.index }}_{{ loop.index }}" value="1"{% if name in own or is_inherited %} checked="checked"{% endif %}{% if is_inherited %} disabled="disabled"{% endif %}/>
-                                <label for="perm_{{ loop.parent.loop.index }}_{{ loop.index }}"></label>
+                                <label for="perm_{{ loop.parent.loop.index }}_{{ loop.index }}"><span class="visually-hidden">{{ permission.label }}</span></label>
                             </div>
             {% if is_inherited %}
                             <span class="ui mini label">{{ _T("Inherited") }}</span>
@@ -136,14 +136,11 @@
         {% endfor %}
                     </select>
                 </div>
-                <div class="field">
-                    <label class="visually-hidden">{{ _T("Give role") }}</label>
-                    <button type="submit" class="ui labeled icon button">
-                        <i class="plus green icon" aria-hidden="true"></i>
-                        {{ _T("Give role") }}
-                    </button>
-                </div>
             </div>
+            <button type="submit" class="ui labeled icon button">
+                <i class="plus green icon" aria-hidden="true"></i>
+                {{ _T("Give role") }}
+            </button>
         </form>
     </div>
     {% endif %}

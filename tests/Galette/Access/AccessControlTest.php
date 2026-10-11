@@ -124,7 +124,8 @@ class AccessControlTest extends GaletteTestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid permission name "member"');
-        new Permission('member', 'No action');
+        $invalid = new Permission('member', 'No action');
+        $this->fail(sprintf('Permission "%s" should have been refused', $invalid->name));
     }
 
     /**

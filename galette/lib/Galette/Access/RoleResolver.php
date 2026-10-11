@@ -289,24 +289,32 @@ class RoleResolver implements PermissionResolverInterface
             if ($member_id === null) {
                 return false;
             }
-            if ((int)$member_id === (int)$login->id) {
-                return true;
-            }
+            return (int)$member_id === (int)$login->id || $this->isParentOf($login, (int)$member_id);
+        }
 
-            $parent = new Adherent($this->zdb);
-            $parent
-                ->disableAllDeps()
-                ->enableDep('children')
-                ->load((int)$login->id);
-            if ($parent->hasChildren()) {
-                foreach ($parent->children as $child) {
-                    if ((int)$child->id === (int)$member_id) {
-                        return true;
-                    }
+        return false;
+    }
+
+    /**
+     * Is login the parent of a member?
+     *
+     * @param Login $login     Login
+     * @param int   $member_id Member identifier
+     */
+    private function isParentOf(Login $login, int $member_id): bool
+    {
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load((int)$login->id);
+        if ($parent->hasChildren()) {
+            foreach ($parent->children as $child) {
+                if ((int)$child->id === $member_id) {
+                    return true;
                 }
             }
         }
-
         return false;
     }
 
