@@ -598,7 +598,6 @@
             </div>{# /column grid #}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'rights' ? ' active' }} tab segment" data-tab="rights">
-{% if is_feature_enabled('acls') %}
             <div class="ui icon info visible message">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
@@ -612,76 +611,6 @@
             <input type="hidden" name="{{ rights_pref }}" value="1"/>
         {% endif %}
     {% endfor %}
-{% else %}
-            <div class="ui stackable two column grid">
-                <div class="column">
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {% if pref.pref_bool_create_member == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_create_member">{{ _T("Can members create child members?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_edit_groups" id="pref_bool_groupsmanagers_edit_groups" value="1" {% if pref.pref_bool_groupsmanagers_edit_groups == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_edit_groups">{{ _T("Can group managers edit their groups?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_create_member" id="pref_bool_groupsmanagers_create_member" value="1" {% if pref.pref_bool_groupsmanagers_create_member == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_create_member">{{ _T("Can group managers create members?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_edit_member" id="pref_bool_groupsmanagers_edit_member" value="1" {% if pref.pref_bool_groupsmanagers_edit_member == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_edit_member">{{ _T("Can group managers edit members?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_mailings" id="pref_bool_groupsmanagers_mailings" value="1" {% if pref.pref_bool_groupsmanagers_mailings == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_mailings">{{ _T("Can group managers send mailings?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" aria-describedby="pref_bool_groupsmanagers_exports-tip" value="1" {% if pref.pref_bool_groupsmanagers_exports == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_exports">{{ _T("Can group managers do exports?") }}</label>
-                        </div>
-                        {% include "components/forms/tip.html.twig" with {
-                            tip: _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf"),
-                            id: "pref_bool_groupsmanagers_exports"
-                        } only %}
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_see_contributions" id="pref_bool_groupsmanagers_see_contributions" value="1" {% if pref.pref_bool_groupsmanagers_see_contributions == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_see_contributions">{{ _T("Can group managers see contributions?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_create_contributions" id="pref_bool_groupsmanagers_create_contributions" value="1" {% if pref.pref_bool_groupsmanagers_create_contributions == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_create_contributions">{{ _T("Can group managers create contributions?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_see_transactions" id="pref_bool_groupsmanagers_see_transactions" value="1" {% if pref.pref_bool_groupsmanagers_see_transactions == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_see_transactions">{{ _T("Can group managers see transactions?") }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_groupsmanagers_create_transactions" id="pref_bool_groupsmanagers_create_transactions" value="1" {% if pref.pref_bool_groupsmanagers_create_transactions == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_groupsmanagers_create_transactions">{{ _T("Can group managers create transactions?") }}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-{% endif %}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'mail' ? ' active' }} tab segment" data-tab="mail">
     {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}

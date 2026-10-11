@@ -574,9 +574,9 @@ class CsvController extends GaletteRoutingTestCase
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
 
         //exports disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $test_response = $this->app->handle($request);
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->expectFlashData(
             [

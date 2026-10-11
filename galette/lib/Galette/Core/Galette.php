@@ -189,7 +189,7 @@ class Galette
                 ];
             }
 
-            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
+            if (!$login->isSuperAdmin() && $access->can('member:create-child', login: $login)) {
                 $menus['myaccount']['items'][] = [
                     'label' => _T('Add a child member'),
                     'title' => _T('Add new child member in database'),
@@ -232,11 +232,7 @@ class Galette
                 ];
             }
 
-            if (
-                $login->isAdmin()
-                || $login->isStaff()
-                || ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_member)
-            ) {
+            if ($access->can('member:create', login: $login)) {
                 $menus['members']['items'] = array_merge($menus['members']['items'], [
                     [
                         'label' => _T("Add a member"),
@@ -409,125 +405,120 @@ class Galette
                 'items' => self::getGrantedItems($management, $access, $login)
             ];
 
-            $acls_enabled = $container->get(FeatureFlagManager::class)->isEnabled('acls');
-            //without roles, configuration menu is displayed to administrators only,
-            //even if staff members can reach some of its pages
-            if ($acls_enabled || $login->isAdmin()) {
-                $configuration = [
-                    ['config:preferences', [
-                        'label' => _T("Settings"),
-                        'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
-                        'route' => [
-                            'name' => 'preferences'
-                        ]
-                    ]],
-                    ['security:manage', [
-                        'label' => _T("Authentication attempts"),
-                        'title' => _T("See what is being refused after repeated failures, and lift it"),
-                        'route' => [
-                            'name' => 'authAttempts'
-                        ]
-                    ]],
-                    ['plugin:manage', [
-                        'label' => _T("Plugins"),
-                        'title' => _T("Information about available plugins"),
-                        'route' => [
-                            'name' => 'plugins'
-                        ]
-                    ]],
-                    ['config:fields', [
-                        'label' => _T("Core lists"),
-                        'title' => _T("Customize lists fields and order"),
-                        'route' => [
-                            'name' => 'configureListFields',
-                            'args' => ['table' => 'adherents']
-                        ]
-                    ]],
-                    ['config:fields', [
-                        'label' => _T("Core fields"),
-                        'title' => _T("Customize fields order, set which are required, and for who they're visibles"),
-                        'route' => [
-                            'name' => 'configureCoreFields'
-                        ]
-                    ]],
-                    ['config:fields', [
-                        'label' => _T("Dynamic fields"),
-                        'title' => _T("Manage additional fields for various forms"),
-                        'route' => [
-                            'name' => 'configureDynamicFields',
-                            'aliases' => ['editDynamicField'],
-                        ]
-                    ]],
-                    ['config:references', [
-                        'label' => _T("Contributions types"),
-                        'title' => _T("Manage contributions types"),
-                        'route' => [
-                            'name' => 'contributionsTypes',
-                            'aliases' => ['editContributionType']
-                        ]
-                    ]],
-                    ['config:references', [
-                        'label' => _T("Payment types"),
-                        'title' => _T("Manage payment types"),
-                        'route' => [
-                            'name' => 'paymentTypes',
-                            'aliases' => ['editPaymentType']
-                        ]
-                    ]],
-                    ['config:references', [
-                        'label' => _T("User statuses"),
-                        'route' => [
-                            'name' => 'status',
-                            'aliases' => ['editStatus']
-                        ]
-                    ]],
-                    ['config:references', [
-                        'label' => _T("Titles"),
-                        'title' => _T("Manage titles"),
-                        'route' => [
-                            'name' => 'titles',
-                            'aliases' => ['editTitle']
-                        ]
-                    ]],
-                    ['config:templates', [
-                        'label' => _T("PDF models"),
-                        'title' => _T("Manage PDF models"),
-                        'route' => [
-                            'name' => 'pdfModels'
-                        ]
-                    ]],
-                    ['config:templates', [
-                        'label' => _T("Emails content"),
-                        'title' => _T("Manage emails texts and subjects"),
-                        'route' => [
-                            'name' => 'texts'
-                        ]
-                    ]],
-                    ['config:references', [
-                        'label' => _T("Labels translation"),
-                        'title' => _T("Manage translatable labels"),
-                        'route' => [
-                            'name' => 'dynamicTranslations',
-                            'aliases' => ['dynamicTranslation']
-                        ]
-                    ]]
-                ];
+            $configuration = [
+                ['config:preferences', [
+                    'label' => _T("Settings"),
+                    'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
+                    'route' => [
+                        'name' => 'preferences'
+                    ]
+                ]],
+                ['security:manage', [
+                    'label' => _T("Authentication attempts"),
+                    'title' => _T("See what is being refused after repeated failures, and lift it"),
+                    'route' => [
+                        'name' => 'authAttempts'
+                    ]
+                ]],
+                ['plugin:manage', [
+                    'label' => _T("Plugins"),
+                    'title' => _T("Information about available plugins"),
+                    'route' => [
+                        'name' => 'plugins'
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Core lists"),
+                    'title' => _T("Customize lists fields and order"),
+                    'route' => [
+                        'name' => 'configureListFields',
+                        'args' => ['table' => 'adherents']
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Core fields"),
+                    'title' => _T("Customize fields order, set which are required, and for who they're visibles"),
+                    'route' => [
+                        'name' => 'configureCoreFields'
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Dynamic fields"),
+                    'title' => _T("Manage additional fields for various forms"),
+                    'route' => [
+                        'name' => 'configureDynamicFields',
+                        'aliases' => ['editDynamicField'],
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Contributions types"),
+                    'title' => _T("Manage contributions types"),
+                    'route' => [
+                        'name' => 'contributionsTypes',
+                        'aliases' => ['editContributionType']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Payment types"),
+                    'title' => _T("Manage payment types"),
+                    'route' => [
+                        'name' => 'paymentTypes',
+                        'aliases' => ['editPaymentType']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("User statuses"),
+                    'route' => [
+                        'name' => 'status',
+                        'aliases' => ['editStatus']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Titles"),
+                    'title' => _T("Manage titles"),
+                    'route' => [
+                        'name' => 'titles',
+                        'aliases' => ['editTitle']
+                    ]
+                ]],
+                ['config:templates', [
+                    'label' => _T("PDF models"),
+                    'title' => _T("Manage PDF models"),
+                    'route' => [
+                        'name' => 'pdfModels'
+                    ]
+                ]],
+                ['config:templates', [
+                    'label' => _T("Emails content"),
+                    'title' => _T("Manage emails texts and subjects"),
+                    'route' => [
+                        'name' => 'texts'
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Labels translation"),
+                    'title' => _T("Manage translatable labels"),
+                    'route' => [
+                        'name' => 'dynamicTranslations',
+                        'aliases' => ['dynamicTranslation']
+                    ]
+                ]],
+                ['role:manage', [
+                    'label' => _T("Roles"),
+                    'title' => _T("Manage roles and their permissions"),
+                    'route' => [
+                        'name' => 'roles',
+                        'aliases' => ['editRole']
+                    ]
+                ]]
+            ];
 
-                if ($acls_enabled) {
-                    $configuration[] = ['role:manage', [
-                        'label' => _T("Roles"),
-                        'title' => _T("Manage roles and their permissions"),
-                        'route' => [
-                            'name' => 'roles',
-                            'aliases' => ['editRole']
-                        ]
-                    ]];
-                }
-
+            $configuration_items = self::getGrantedItems($configuration, $access, $login);
+            if ($configuration_items !== []) {
                 $menus['configuration'] = [
                     'title' => _T("Configuration"),
                     'icon' => 'tools',
-                    'items' => self::getGrantedItems($configuration, $access, $login)
+                    'items' => $configuration_items
                 ];
             }
 

@@ -192,7 +192,12 @@ class Permissions
                 name: 'member:create',
                 label: _T('Create members'),
                 level: $staff,
-                managers: 'pref_bool_groupsmanagers_create_member',
+                managers: 'pref_bool_groupsmanagers_create_member'
+            ),
+            new Permission(
+                name: 'member:create-child',
+                label: _T('Create child members'),
+                level: Authentication::ACCESS_SUPERADMIN,
                 members: 'pref_bool_create_member'
             ),
             new Permission(

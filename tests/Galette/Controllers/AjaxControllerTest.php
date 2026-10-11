@@ -73,13 +73,11 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($group->getId()));
 
         //groups manager cannot create contributions with default preferences
-        $create_contributions = $this->preferences->pref_bool_groupsmanagers_create_contributions;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:create');
         $this->expectAuthMiddlewareRefused($this->app->handle($request));
 
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
         $test_response = $this->app->handle($request);
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = $create_contributions; //reset
 
         $this->assertSame(200, $test_response->getStatusCode());
         $dates = json_decode((string)$test_response->getBody(), associative: true);
@@ -119,14 +117,12 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $expected = $dates();
         $this->login->logOut();
 
-        $create_contributions = $this->preferences->pref_bool_groupsmanagers_create_contributions;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
         $group = $this->logGroupManager();
         $this->assertNotSame($expected, $dates());
 
         $this->assertTrue($group->setMembers([$member_two]));
         $this->assertSame($expected, $dates());
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = $create_contributions;
         $this->login->logOut();
     }
 }

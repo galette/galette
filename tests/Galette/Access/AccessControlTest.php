@@ -16,7 +16,6 @@ use Galette\Access\Permission;
 use Galette\Access\Permissions;
 use Galette\Access\RoleResolver;
 use Galette\Core\Authentication;
-use Galette\Core\FeatureFlagManager;
 use Galette\Core\Login;
 use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Interfaces\PermissionResolverInterface;
@@ -579,26 +578,15 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
-     * Test container provides access control, resolving from roles with acls flag only
+     * Test container provides access control, resolving from roles
      */
     public function testContainer(): void
     {
         $this->assertInstanceOf(AccessControl::class, $this->container->get(AccessControl::class));
         $this->assertInstanceOf(
-            LegacyResolver::class,
+            RoleResolver::class,
             $this->container->get(PermissionResolverInterface::class)
         );
-
-        $flags = $this->container->get(FeatureFlagManager::class);
-        $acls = $this->createStub(FeatureFlagManager::class);
-        $acls->method('isEnabled')->willReturnCallback(fn(string $flag): bool => $flag === 'acls');
-        $this->container->set(FeatureFlagManager::class, $acls);
-        try {
-            $this->assertInstanceOf(RoleResolver::class, $this->container->make(PermissionResolverInterface::class));
-        } finally {
-            $this->container->set(FeatureFlagManager::class, $flags);
-        }
-        $this->assertInstanceOf(LegacyResolver::class, $this->container->make(PermissionResolverInterface::class));
     }
 
     /**

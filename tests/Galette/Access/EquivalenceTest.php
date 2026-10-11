@@ -276,9 +276,14 @@ class EquivalenceTest extends GaletteTestCase
             $legacy
                 && ($subject === 'none' || str_starts_with($subject, 'new'))
                 && in_array($name, ['contribution:read', 'transaction:read'], true)
-                => 'legacy grants what is not loaded; callers check it has been loaded first',
+                => 'legacy grants what is not loaded; lists no longer check an empty object, others load it first',
             $legacy && in_array($profile, ['member', 'up to date member'], true) && $name === 'member:create' && $subject === 'self'
                 => 'creating a member is checked on new members only',
+            $legacy
+                && $name === 'member:create'
+                && $this->preferences->pref_bool_create_member
+                && in_array($profile, ['member', 'up to date member', 'group manager'], true)
+                => 'members allowed to create their children get member:create-child only',
             $legacy && $manager && $subject !== 'none' && in_array(
                 $name,
                 ['member:create', 'member:export', 'member:print', 'contribution:create', 'transaction:create', 'group:export'],

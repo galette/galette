@@ -79,7 +79,7 @@ class GroupsController extends GaletteRoutingTestCase
      */
     public function testGroupManagerEditScope(): void
     {
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
 
         $group = $this->logGroupManager();
         $this->login->logOut();
@@ -158,7 +158,7 @@ class GroupsController extends GaletteRoutingTestCase
             array_map(fn($m) => (int)$m->id, $group->getMembers())
         );
 
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
     }
 
     /**
@@ -255,9 +255,12 @@ class GroupsController extends GaletteRoutingTestCase
             return (new \Galette\Entity\Group((int)explode('|', $reordered)[0]))->getParentGroup()?->getId();
         };
 
-        $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
         foreach ([false, true] as $allowed) {
-            $this->preferences->pref_bool_groupsmanagers_edit_groups = $allowed;
+            if ($allowed) {
+                $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            } else {
+                $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            }
 
             //group not managed cannot be moved
             $this->assertNull($reorder($other->getId() . '|' . $group->getId()));
@@ -295,7 +298,6 @@ class GroupsController extends GaletteRoutingTestCase
                 );
             }
         }
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups;
         $this->login->logOut();
 
         //staff can move any group anywhere
@@ -309,7 +311,7 @@ class GroupsController extends GaletteRoutingTestCase
      */
     public function testParentScope(): void
     {
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
 
         $group = $this->logGroupManager();
         $this->login->logOut();
@@ -376,7 +378,7 @@ class GroupsController extends GaletteRoutingTestCase
         $this->assertSame($other->getId(), $parent_id());
         $this->login->logOut();
 
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
     }
 
     /**

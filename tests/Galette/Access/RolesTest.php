@@ -94,7 +94,8 @@ class RolesTest extends GaletteTestCase
             (new Permissions())->getAll(),
             fn($permission): bool => $permission->level === \Galette\Core\Authentication::ACCESS_ADMIN
         ));
-        $staff = array_values(array_diff($all, $admin));
+        //members creating their children is granted from preferences only
+        $staff = array_values(array_diff($all, $admin, ['member:create-child']));
 
         $this->setPreferences(value: false);
         $this->assertSame(
@@ -111,9 +112,10 @@ class RolesTest extends GaletteTestCase
         $this->setPreferences(value: true);
         $this->assertSame(
             [
-                Roles::MEMBER => ['member:create'],
+                Roles::MEMBER => ['member:create-child'],
                 Roles::UPTODATE => [],
                 Roles::MANAGER => [
+                    'member:create',
                     'member:read',
                     'member:edit',
                     'member:export',
@@ -128,7 +130,7 @@ class RolesTest extends GaletteTestCase
                     'group:export',
                     'mailing:send',
                 ],
-                Roles::STAFF => array_values(array_diff($staff, ['member:create'])),
+                Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
             $roles->getDefaultPermissions($this->preferences)

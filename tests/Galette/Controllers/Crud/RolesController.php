@@ -13,7 +13,6 @@ namespace Galette\Tests\Controllers\Crud;
 use Galette\Access\Permissions;
 use Galette\Access\Role;
 use Galette\Access\Roles;
-use Galette\Core\FeatureFlagManager;
 use Galette\Tests\GaletteRoutingTestCase;
 
 /**
@@ -44,33 +43,10 @@ class RolesController extends GaletteRoutingTestCase
     }
 
     /**
-     * Turn acls feature flag on
-     */
-    private function enableAcls(): void
-    {
-        $flags = $this->createStub(FeatureFlagManager::class);
-        $flags->method('isEnabled')->willReturnCallback(fn(string $flag): bool => $flag === 'acls');
-        $this->container->set(FeatureFlagManager::class, $flags);
-    }
-
-    /**
-     * Test roles management is not available without acls feature flag
-     */
-    public function testFlagRequired(): void
-    {
-        $this->logSuperAdmin();
-        $request = $this->createRequest('roles');
-
-        $test_response = $this->app->handle($request);
-        $this->assertSame(404, $test_response->getStatusCode());
-    }
-
-    /**
      * Test roles management requires an administrator
      */
     public function testAdminRequired(): void
     {
-        $this->enableAcls();
         $this->getMemberOne();
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
@@ -84,7 +60,6 @@ class RolesController extends GaletteRoutingTestCase
      */
     public function testManageRole(): void
     {
-        $this->enableAcls();
         $member = $this->getMemberOne();
         $this->logSuperAdmin();
 
@@ -170,7 +145,6 @@ class RolesController extends GaletteRoutingTestCase
      */
     public function testSystemRole(): void
     {
-        $this->enableAcls();
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($this->createRequest('editRole', ['id' => '3']));

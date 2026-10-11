@@ -55,7 +55,7 @@ class MailingsController extends GaletteRoutingTestCase
     {
         $mail_method = $this->preferences->pref_mail_method;
         $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
-        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'mailing:send');
 
         $member_two = $this->getMemberTwo();
         $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
@@ -99,7 +99,7 @@ class MailingsController extends GaletteRoutingTestCase
         $this->assertSame(403, $test_response->getStatusCode());
 
         //mailings disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'mailing:send');
         $request = $this->createRequest('mailing', query_params: ['mailing_new' => '1']);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
@@ -121,9 +121,8 @@ class MailingsController extends GaletteRoutingTestCase
     public function testMailingsHistoryAccess(): void
     {
         $mail_method = $this->preferences->pref_mail_method;
-        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
         $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
-        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'mailing:send');
 
         $member_one = $this->getMemberOne();
         $mailing_ids = [];
@@ -181,7 +180,7 @@ class MailingsController extends GaletteRoutingTestCase
         }
 
         //nor preview their own mailings once mailings are disabled for them
-        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'mailing:send');
         $this->expectAuthMiddlewareRefused($this->app->handle(
             $this->createRequest('mailingPreview', ['id' => (string)$mailing_ids['Sent by a group manager']])
         ));
@@ -191,7 +190,6 @@ class MailingsController extends GaletteRoutingTestCase
         $delete->where->in(\Galette\Core\MailingHistory::PK, array_values($mailing_ids));
         $this->zdb->execute($delete);
         $this->preferences->pref_mail_method = $mail_method;
-        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings;
     }
 
     /**
@@ -201,7 +199,7 @@ class MailingsController extends GaletteRoutingTestCase
     {
         $mail_method = $this->preferences->pref_mail_method;
         $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
-        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'mailing:send');
 
         $member_two = $this->getMemberTwo();
         $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);

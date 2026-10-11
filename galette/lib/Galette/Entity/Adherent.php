@@ -1542,7 +1542,7 @@ class Adherent implements AccessManagementInterface
         global $hist, $emitter, $login;
 
         $this->applyDefaultValues();
-        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '' && $this->preferences->pref_bool_create_member) {
+        if ($this->id == '' && !$this->isGranted('member:create', $login) && $this->isGranted('member:create-child', $login)) {
             $this->parent = $login->id;
         }
 

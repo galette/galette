@@ -716,15 +716,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectAuthMiddlewareRefused($test_response);
 
@@ -777,15 +775,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create members
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $this->expectOK($test_response);
         $this->login->logout();
@@ -900,15 +896,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -932,15 +926,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so members can create child members - route is now accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectOK($test_response);
         $body  = (string)$test_response->getBody();
@@ -970,14 +962,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so managers can create child members
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -1124,15 +1114,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($g1->setMembers([]));
 
         //change preferences so managers can edit group members
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         //NOK since member_one is not part of group 1
         $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
@@ -1143,15 +1131,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
 
         //change preferences so managers can edit group members
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -1527,14 +1513,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertCount(0, $result); //no member added
 
         //change preferences so managers can create members - but only attached to a group he owns
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('addMember')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1542,15 +1526,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You have to select a group you own!']]);
 
         //test with group set
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $request = $request->withParsedBody($m3data + ['groups_adh' => [$g1->getId() . '|' . $g1->getName()]]);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -1601,14 +1583,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1631,8 +1611,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so members can create child members - route is now accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $child_data = [
             'nom_adh'       => 'Doe',
@@ -1647,8 +1626,7 @@ class MembersController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -1686,8 +1664,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so managers can create child members
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $child_data = [
             'nom_adh'       => 'Doe',
@@ -1700,8 +1677,7 @@ class MembersController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -2104,14 +2080,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so managers can see and create group members contributions
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],

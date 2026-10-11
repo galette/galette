@@ -328,16 +328,14 @@ class TransactionsController extends GaletteRoutingTestCase
         );
 
         //change preferences so managers can see group members contributions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         unset($this->session->$filter_name);
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -509,14 +507,12 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see group members contributions
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->expectOK($test_response);
 
@@ -556,15 +552,13 @@ class TransactionsController extends GaletteRoutingTestCase
 
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         //change preferences so managers can create transactions
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->expectOK($test_response);
 
@@ -701,18 +695,16 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can access transaction edit page
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $body = (string)$test_response->getBody();
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:create');
 
         //groups manager: allowed to display edit page per configuration - to attach/detach contributions
         $this->expectOK($test_response);
@@ -730,16 +722,14 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->assertStringContainsString('id="contribslist"', $body);
 
         //change preferences so managers cannot create contributions but can see them
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $body = (string)$test_response->getBody();
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
 
         //all attachments features are present
         $this->assertStringNotContainsString($this->routeparser->urlFor('addContribution', ['type' => \Galette\Entity\Contribution::TYPE_FEE]), $body);
@@ -896,14 +886,12 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->assertCount(0, $result); //no transaction added
 
         //change preferences so managers can create group members contributions
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('slash')]],
@@ -919,14 +907,12 @@ class TransactionsController extends GaletteRoutingTestCase
         $request = $request->withParsedBody($transaction_data);
 
         //change preferences so managers can create group members contributions
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor($route_name)]],
@@ -1068,16 +1054,14 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see and create group members contributions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->expectAuthMiddlewareRefused($test_response);
 
@@ -1399,15 +1383,13 @@ class TransactionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         //change preferences so managers can see group members contributions and see transactions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
 
         $test_response = $this->app->handle($request);
         //Reset preferences
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
 
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1511,15 +1493,13 @@ class TransactionsController extends GaletteRoutingTestCase
         //change preferences so managers can see group members contributions and see transactions
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
 
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
 
         $test_response = $this->app->handle($request);
         //Reset preferences
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
 
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());

@@ -78,7 +78,7 @@ class MembersController extends CrudController
     )]
     public function addChild(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+        if (!$this->accessControl->can('member:create-child') || $this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
@@ -192,7 +192,7 @@ class MembersController extends CrudController
     )]
     public function doAddChild(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+        if (!$this->accessControl->can('member:create-child') || $this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
@@ -1117,7 +1117,7 @@ class MembersController extends CrudController
             }
             $can = $member->canEdit($this->login);
         } else {
-            $can = $member->canCreate($this->login);
+            $can = $this->canCreate($member);
         }
 
         if (!$can) {
@@ -1667,7 +1667,7 @@ class MembersController extends CrudController
             }
         } elseif ($member->id != '') {
             $member->load($this->login->id);
-        } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
+        } elseif (!$this->isSelfMembership() && !$this->canCreate($member)) {
             //redirection should have been done before. Just deny access.
             throw new HttpForbiddenException($request, 'No right to store new member!');
         }
@@ -2014,6 +2014,18 @@ class MembersController extends CrudController
     private function isAddChild(): bool
     {
         return $this->add_child;
+    }
+
+    /**
+     * Can current user create a member, or a child member?
+     *
+     * @param Adherent $member New member
+     */
+    private function canCreate(Adherent $member): bool
+    {
+        return $this->isAddChild()
+            ? $this->accessControl->can('member:create-child')
+            : $member->canCreate($this->login);
     }
 
     /**

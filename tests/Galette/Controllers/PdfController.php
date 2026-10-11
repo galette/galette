@@ -370,7 +370,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
 
         //exports disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $requests = [
             $this->createRequest('pdf-members-cards', []),
             $this->createRequest('pdf-members-labels', []),
@@ -389,7 +389,7 @@ class PdfController extends GaletteRoutingTestCase
                 ]
             );
         }
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
 
         unset($this->session->{$controller->getFilterName('members')});
         $this->login->logOut();

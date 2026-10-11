@@ -17,7 +17,6 @@ use Galette\Access\Role;
 use Galette\Access\Roles;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
-use Galette\Core\FeatureFlagManager;
 use Galette\Core\Logs;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -37,22 +36,6 @@ class RolesController extends CrudController
 {
     #[Inject]
     protected Permissions $permissions;
-    #[Inject]
-    protected FeatureFlagManager $feature_flags;
-
-    /**
-     * Roles management requires the acls feature flag
-     *
-     * @param Request $request Request
-     *
-     * @throws HttpNotFoundException
-     */
-    private function checkEnabled(Request $request): void
-    {
-        if (!$this->feature_flags->isEnabled('acls')) {
-            throw new HttpNotFoundException($request);
-        }
-    }
 
     /**
      * Get roles repository
@@ -100,7 +83,6 @@ class RolesController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        $this->checkEnabled($request);
         $post = $request->getParsedBody();
 
         $role = new Role();
@@ -160,7 +142,6 @@ class RolesController extends CrudController
     )]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        $this->checkEnabled($request);
         $roles = $this->getRoles();
 
         $members_count = [];
@@ -204,7 +185,6 @@ class RolesController extends CrudController
     )]
     public function edit(Request $request, Response $response, int $id): Response
     {
-        $this->checkEnabled($request);
         $role = $this->loadRole($request, $id);
         $roles = $this->getRoles();
 
@@ -252,7 +232,6 @@ class RolesController extends CrudController
     )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
-        $this->checkEnabled($request);
         $role = $this->loadRole($request, $id);
         $post = $request->getParsedBody();
         $edit_uri = $this->routeparser->urlFor('editRole', ['id' => (string)$id]);
@@ -324,7 +303,6 @@ class RolesController extends CrudController
     )]
     public function give(Request $request, Response $response, int $id): Response
     {
-        $this->checkEnabled($request);
         $role = $this->loadRole($request, $id);
         $post = $request->getParsedBody();
         $member = (int)($post['id_adh'] ?? 0);
@@ -373,7 +351,6 @@ class RolesController extends CrudController
     )]
     public function take(Request $request, Response $response, int $id, int $assignment): Response
     {
-        $this->checkEnabled($request);
         $role = $this->loadRole($request, $id);
 
         $errors = [];
@@ -409,7 +386,6 @@ class RolesController extends CrudController
     )]
     public function confirmDelete(Request $request, Response $response): Response
     {
-        $this->checkEnabled($request);
         return parent::confirmDelete($request, $response);
     }
 
@@ -423,7 +399,6 @@ class RolesController extends CrudController
     )]
     public function delete(Request $request, Response $response): Response
     {
-        $this->checkEnabled($request);
         return parent::delete($request, $response);
     }
 

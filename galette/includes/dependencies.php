@@ -181,12 +181,10 @@ $container->set(
         ->constructorParameter('preferences', DI\get(\Galette\Core\Preferences::class))
 );
 
-//permissions come from roles with the acls feature flag, from legacy access levels otherwise
+//permissions come from roles
 $container->set(
     \Galette\Interfaces\PermissionResolverInterface::class,
-    fn(ContainerInterface $c) => $c->get(\Galette\Core\FeatureFlagManager::class)->isEnabled('acls')
-        ? $c->get(\Galette\Access\RoleResolver::class)
-        : $c->get(\Galette\Access\LegacyResolver::class)
+    DI\get(\Galette\Access\RoleResolver::class)
 );
 $container->set(\Galette\Access\AccessControl::class, DI\autowire());
 

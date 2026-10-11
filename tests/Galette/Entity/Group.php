@@ -420,45 +420,36 @@ class Group extends GaletteTestCase
     #[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function testCanEdit(): void
     {
-        $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Editable group');
+        $this->assertTrue($group->store());
+        $this->login->logOut();
 
-        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(['isManager'])
-            ->getMock();
+        $getLogin = function (array $methods): \Galette\Core\Login {
+            $login = $this->getMockBuilder(\Galette\Core\Login::class)
+                ->setConstructorArgs([$this->zdb, $this->i18n])
+                ->onlyMethods(array_merge(['isLogged'], array_keys($methods)))
+                ->getMock();
+            $login->method('isLogged')->willReturn(true);
+            foreach ($methods as $method => $value) {
+                $login->method($method)->willReturn($value);
+            }
+            return $login;
+        };
 
         //not a manager
-        $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isAdmin', 'isStaff'])
-            ->getMock();
-        $group->method('isManager')->willReturn(false);
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
-        $this->assertFalse($group->canEdit($login));
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        $this->assertFalse($group->canEdit($getLogin([])));
 
         //admin and staff
-        $admin = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isAdmin'])
-            ->getMock();
-        $admin->method('isAdmin')->willReturn(true);
-        $this->assertTrue($group->canEdit($admin));
+        $this->assertTrue($group->canEdit($getLogin(['isAdmin' => true])));
+        $this->assertTrue($group->canEdit($getLogin(['isStaff' => true])));
 
-        $staff = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isStaff'])
-            ->getMock();
-        $staff->method('isStaff')->willReturn(true);
-        $this->assertTrue($group->canEdit($staff));
-
-        //group manager, only when preference is on
-        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(['isManager'])
-            ->getMock();
-        $group->method('isManager')->willReturn(true);
-        $this->assertTrue($group->canEdit($login));
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
-        $this->assertFalse($group->canEdit($login));
-
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups; //reset
+        //group manager, only when their role allows it
+        $manager = $getLogin(['getManagedGroups' => [(int)$group->getId()]]);
+        $this->assertTrue($group->canEdit($manager));
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        $this->assertFalse($group->canEdit($manager));
     }
 }
