@@ -459,10 +459,10 @@ class RoleResolverTest extends GaletteTestCase
      */
     public function testPluginSubjects(): void
     {
+        //system roles get plugin permissions when roles are first loaded
         $catalog = $this->container->get(Permissions::class);
-        (new Roles($this->zdb, $catalog))->syncPermissions($this->preferences);
-        $this->resolver->reset();
-        $access = new AccessControl($catalog, $this->resolver, $this->login);
+        $resolver = new RoleResolver($this->zdb, new Roles($this->zdb, $catalog), $this->preferences);
+        $access = new AccessControl($catalog, $resolver, $this->login);
 
         $group = $this->logGroupManager();
         $this->login->logOut();

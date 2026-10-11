@@ -12,6 +12,8 @@ namespace Galette\Access;
 
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\Logs;
+use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
@@ -34,6 +36,10 @@ use Galette\Interfaces\PermissionResolverInterface;
  * Roles inherit their parents permissions. The super administrator is
  * granted everything.
  *
+ * With roles and preferences, system roles get default permissions of
+ * permissions not known yet - from plugins activated since roles were set
+ * up - when roles are first loaded.
+ *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class RoleResolver implements PermissionResolverInterface
@@ -47,13 +53,19 @@ class RoleResolver implements PermissionResolverInterface
     /** @var array<string, array{global: array<string, true>, groups: array<int, array<string, true>>}> */
     private array $grants = [];
 
+    private bool $synced = false;
+
     /**
      * Constructor
      *
-     * @param Db $zdb Database instance
+     * @param Db           $zdb         Database instance
+     * @param ?Roles       $repository  Roles, to give system roles default permissions of new permissions
+     * @param ?Preferences $preferences Preferences instance, for default permissions
      */
     public function __construct(
-        private readonly Db $zdb
+        private readonly Db $zdb,
+        private readonly ?Roles $repository = null,
+        private readonly ?Preferences $preferences = null
     ) {
     }
 
@@ -256,6 +268,8 @@ class RoleResolver implements PermissionResolverInterface
             return;
         }
 
+        $this->syncPermissions();
+
         $this->roles = [];
         foreach ($this->zdb->execute($this->zdb->select(Roles::TABLE)) as $row) {
             $this->roles[(int)$row->id_role] = [
@@ -267,6 +281,23 @@ class RoleResolver implements PermissionResolverInterface
         $this->roles_permissions = [];
         foreach ($this->zdb->execute($this->zdb->select(Roles::PERMISSIONS_TABLE)) as $row) {
             $this->roles_permissions[(int)$row->id_role][] = $row->permission;
+        }
+    }
+
+    /**
+     * Give system roles default permissions of new permissions, once
+     */
+    private function syncPermissions(): void
+    {
+        if ($this->synced || $this->repository === null || $this->preferences === null) {
+            return;
+        }
+        $this->synced = true;
+
+        try {
+            $this->repository->syncPermissions($this->preferences);
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Unable to give system roles default permissions of new permissions');
         }
     }
 
