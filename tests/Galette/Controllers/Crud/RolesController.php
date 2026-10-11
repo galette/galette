@@ -30,7 +30,7 @@ class RolesController extends GaletteRoutingTestCase
     public function setUp(): void
     {
         parent::setUp();
-        (new Roles($this->zdb, new Permissions()))->installInit($this->preferences);
+        (new Roles($this->zdb, new Permissions()))->installInit();
     }
 
     /**

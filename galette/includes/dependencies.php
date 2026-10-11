@@ -178,7 +178,6 @@ $container->set(
     \Galette\Access\RoleResolver::class,
     DI\autowire()
         ->constructorParameter('repository', DI\get(\Galette\Access\Roles::class))
-        ->constructorParameter('preferences', DI\get(\Galette\Core\Preferences::class))
 );
 
 //permissions come from roles

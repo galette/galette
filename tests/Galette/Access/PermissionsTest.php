@@ -116,7 +116,7 @@ class PermissionsTest extends GaletteTestCase
      */
     public function testRoleKeepsUnknownPermissions(): void
     {
-        (new Roles($this->zdb, new Permissions()))->installInit($this->preferences);
+        (new Roles($this->zdb, new Permissions()))->installInit();
         $catalog = $this->container->get(Permissions::class);
 
         $role = new Role();

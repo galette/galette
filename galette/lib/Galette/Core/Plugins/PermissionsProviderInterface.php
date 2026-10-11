@@ -32,9 +32,9 @@ interface PermissionsProviderInterface
      * ignored. Names are stored in roles, so they must not change once
      * released.
      *
-     * Level, groups managers and members describe what is granted when the
-     * "acls" feature flag is off, and what system roles get when the
-     * permission is first known.
+     * Level, groups managers and members describe what system roles get when
+     * the permission is first known: staff members and administrators from
+     * the level, groups managers on their groups, every member.
      *
      * This is called once translations are loaded: labels can be translated
      * in the plugin translation domain.

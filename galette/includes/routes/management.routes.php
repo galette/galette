@@ -503,7 +503,7 @@ $app->get(
     [Crud\DocumentsController::class, 'getDocument']
 )->setName('getDocumentFile');
 
-// roles, with acls feature flag
+// roles
 $app->get(
     '/roles',
     [Crud\RolesController::class, 'list']

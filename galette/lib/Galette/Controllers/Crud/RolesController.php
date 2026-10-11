@@ -28,8 +28,6 @@ use Throwable;
 /**
  * Roles controller
  *
- * Only available with the acls feature flag.
- *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class RolesController extends CrudController

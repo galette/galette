@@ -21,55 +21,16 @@ use Galette\Tests\GaletteTestCase;
  */
 class RolesTest extends GaletteTestCase
 {
-    /** @var array<string> */
-    private const array MANAGERS_PREFERENCES = [
-        'pref_bool_groupsmanagers_create_member',
-        'pref_bool_groupsmanagers_edit_member',
-        'pref_bool_groupsmanagers_edit_groups',
-        'pref_bool_groupsmanagers_create_contributions',
-        'pref_bool_groupsmanagers_create_transactions',
-        'pref_bool_groupsmanagers_see_contributions',
-        'pref_bool_groupsmanagers_see_transactions',
-        'pref_bool_groupsmanagers_exports',
-        'pref_bool_groupsmanagers_mailings',
-        'pref_bool_create_member',
-    ];
-
-    /** @var array<string, bool> */
-    private array $saved_preferences = [];
-
     /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-        foreach (self::MANAGERS_PREFERENCES as $preference) {
-            $this->saved_preferences[$preference] = $this->preferences->$preference;
-        }
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        foreach ($this->saved_preferences as $preference => $value) {
-            $this->preferences->$preference = $value;
-        }
-        parent::tearDown();
-    }
-
-    /**
-     * Set all groups managers related preferences
+     * Get former rights settings, all on or off
      *
      * @param bool $value Value
+     *
+     * @return array<string, bool>
      */
-    private function setPreferences(bool $value): void
+    private function getRights(bool $value): array
     {
-        foreach (self::MANAGERS_PREFERENCES as $preference) {
-            $this->preferences->$preference = $value;
-        }
+        return array_fill_keys(array_keys(Roles::LEGACY_RIGHTS), $value);
     }
 
     /**
@@ -84,7 +45,7 @@ class RolesTest extends GaletteTestCase
     }
 
     /**
-     * Test default permissions follow legacy levels and preferences
+     * Test default permissions follow levels and former rights settings
      */
     public function testDefaultPermissions(): void
     {
@@ -94,10 +55,9 @@ class RolesTest extends GaletteTestCase
             (new Permissions())->getAll(),
             fn($permission): bool => $permission->level === \Galette\Core\Authentication::ACCESS_ADMIN
         ));
-        //members creating their children is granted from preferences only
+        //members creating their children is granted from former rights settings only
         $staff = array_values(array_diff($all, $admin, ['member:create-child']));
 
-        $this->setPreferences(value: false);
         $this->assertSame(
             [
                 Roles::MEMBER => [],
@@ -106,10 +66,9 @@ class RolesTest extends GaletteTestCase
                 Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
-            $roles->getDefaultPermissions($this->preferences)
+            $roles->getDefaultPermissions($this->getRights(false))
         );
 
-        $this->setPreferences(value: true);
         $this->assertSame(
             [
                 Roles::MEMBER => ['member:create-child'],
@@ -133,7 +92,13 @@ class RolesTest extends GaletteTestCase
                 Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
-            $roles->getDefaultPermissions($this->preferences)
+            $roles->getDefaultPermissions($this->getRights(true))
+        );
+
+        //groups managers export by default
+        $this->assertSame(
+            ['member:read', 'member:export', 'member:print', 'group:read', 'group:export'],
+            $roles->getDefaultPermissions()[Roles::MANAGER]
         );
     }
 
@@ -142,9 +107,8 @@ class RolesTest extends GaletteTestCase
      */
     public function testInstallInit(): void
     {
-        $this->setPreferences(value: false);
         $roles = new Roles($this->zdb, new Permissions());
-        $this->assertTrue($roles->installInit($this->preferences));
+        $this->assertTrue($roles->installInit($this->getRights(false)));
 
         $select = $this->zdb->select(Roles::TABLE);
         $select->order(Roles::PK);
@@ -190,17 +154,16 @@ class RolesTest extends GaletteTestCase
      */
     public function testSyncPermissions(): void
     {
-        $this->setPreferences(value: false);
         $core = new Permissions();
-        (new Roles($this->zdb, $core))->installInit($this->preferences);
+        (new Roles($this->zdb, $core))->installInit($this->getRights(false));
 
         $select = $this->zdb->select(Roles::KNOWN_TABLE);
         $this->assertCount(count($core->getAll()), $this->zdb->execute($select));
-        $this->assertSame([], (new Roles($this->zdb, $core))->syncPermissions($this->preferences));
+        $this->assertSame([], (new Roles($this->zdb, $core))->syncPermissions());
 
         //test plugin is active
         $roles = new Roles($this->zdb, $this->container->get(Permissions::class));
-        $this->assertSame(['plugin1:read', 'plugin1:manage'], $roles->syncPermissions($this->preferences));
+        $this->assertSame(['plugin1:read', 'plugin1:manage'], $roles->syncPermissions());
 
         $this->assertContains('plugin1:read', $this->getStoredPermissions(1));
         $this->assertNotContains('plugin1:manage', $this->getStoredPermissions(1));
@@ -212,7 +175,7 @@ class RolesTest extends GaletteTestCase
         $delete = $this->zdb->delete(Roles::PERMISSIONS_TABLE);
         $delete->where([Roles::PK => 3, 'permission' => 'plugin1:manage']);
         $this->zdb->execute($delete);
-        $this->assertSame([], $roles->syncPermissions($this->preferences));
+        $this->assertSame([], $roles->syncPermissions());
         $this->assertSame(['group:read', 'member:read'], $this->getStoredPermissions(3));
     }
 }

@@ -14,7 +14,6 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Core\Authentication;
 use Galette\Core\Db;
-use Galette\Core\Preferences;
 use Throwable;
 
 /**
@@ -39,6 +38,27 @@ class Roles
     public const string MANAGER = 'groupmanager';
     public const string STAFF = 'staff';
     public const string ADMIN = 'admin';
+
+    /**
+     * Rights settings of Galette before 1.4, with their default values
+     *
+     * They have been replaced by system roles permissions: their values are
+     * read once, when upgrading.
+     *
+     * @var array<string, bool>
+     */
+    public const array LEGACY_RIGHTS = [
+        'pref_bool_create_member' => false,
+        'pref_bool_groupsmanagers_create_member' => false,
+        'pref_bool_groupsmanagers_edit_member' => false,
+        'pref_bool_groupsmanagers_edit_groups' => false,
+        'pref_bool_groupsmanagers_mailings' => false,
+        'pref_bool_groupsmanagers_exports' => true,
+        'pref_bool_groupsmanagers_create_contributions' => false,
+        'pref_bool_groupsmanagers_create_transactions' => false,
+        'pref_bool_groupsmanagers_see_contributions' => false,
+        'pref_bool_groupsmanagers_see_transactions' => false,
+    ];
 
     /** @var array<string, array{id: int, name: string, parent: ?string}> */
     private const array SYSTEM = [
@@ -81,14 +101,14 @@ class Roles
     /**
      * Default permissions of system roles
      *
-     * What legacy access levels and preferences grant; inherited
-     * permissions are not repeated.
+     * What access levels and rights settings of Galette before 1.4 granted;
+     * inherited permissions are not repeated.
      *
-     * @param Preferences $preferences Preferences instance
+     * @param array<string, bool> $rights Former rights settings values
      *
      * @return array<string, array<string>>
      */
-    public function getDefaultPermissions(Preferences $preferences): array
+    public function getDefaultPermissions(array $rights = self::LEGACY_RIGHTS): array
     {
         $defaults = array_fill_keys(array_keys(self::SYSTEM), []);
 
@@ -100,7 +120,7 @@ class Roles
                 default => null, //super administrator only
             };
 
-            if ($role !== self::MEMBER && $permission->isGrantedToMembers($preferences)) {
+            if ($role !== self::MEMBER && $permission->isGrantedToMembers($rights)) {
                 $role = self::MEMBER;
             }
 
@@ -108,7 +128,7 @@ class Roles
                 $defaults[$role][] = $name;
             }
 
-            if ($role !== self::MEMBER && $permission->isGrantedToManagers($preferences)) {
+            if ($role !== self::MEMBER && $permission->isGrantedToManagers($rights)) {
                 $defaults[self::MANAGER][] = $name;
             }
         }
@@ -122,11 +142,11 @@ class Roles
      * Existing roles are dropped. Permissions of the catalog are recorded as
      * known.
      *
-     * @param Preferences $preferences Preferences instance
+     * @param array<string, bool> $rights Former rights settings values, defaults if not upgrading
      *
      * @throws Throwable
      */
-    public function installInit(Preferences $preferences): bool
+    public function installInit(array $rights = self::LEGACY_RIGHTS): bool
     {
         try {
             $this->zdb->execute($this->zdb->delete(self::TABLE));
@@ -159,7 +179,7 @@ class Roles
             ]);
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-            foreach ($this->getDefaultPermissions($preferences) as $key => $permissions) {
+            foreach ($this->getDefaultPermissions($rights) as $key => $permissions) {
                 foreach ($permissions as $permission) {
                     $stmt->execute([
                         ':id' => self::SYSTEM[$key]['id'],
@@ -183,15 +203,13 @@ class Roles
      * Give system roles the default permissions of new permissions
      *
      * Permissions the catalog did not have yet - those of a plugin activated
-     * after roles were set up, or of a newer version - are granted as legacy
-     * access levels and current preferences would grant them, once: removing
-     * them from a role afterwards is not undone.
-     *
-     * @param Preferences $preferences Preferences instance
+     * after roles were set up, or of a newer version - are granted as their
+     * level and default rights settings grant them, once: removing them from a role
+     * afterwards is not undone.
      *
      * @return array<string> New permissions
      */
-    public function syncPermissions(Preferences $preferences): array
+    public function syncPermissions(): array
     {
         $known = [];
         $select = $this->zdb->select(self::KNOWN_TABLE);
@@ -216,7 +234,7 @@ class Roles
             $this->zdb->beginTransaction();
         }
         try {
-            foreach ($this->getDefaultPermissions($preferences) as $key => $permissions) {
+            foreach ($this->getDefaultPermissions() as $key => $permissions) {
                 if (!isset($roles_keys[$key])) {
                     continue;
                 }

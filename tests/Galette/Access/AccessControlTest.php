@@ -11,13 +11,12 @@ declare(strict_types=1);
 namespace Galette\Access\test\units;
 
 use Galette\Access\AccessControl;
-use Galette\Access\LegacyResolver;
 use Galette\Access\Permission;
 use Galette\Access\Permissions;
 use Galette\Access\RoleResolver;
+use Galette\Access\Roles;
 use Galette\Core\Authentication;
 use Galette\Core\Login;
-use Galette\Interfaces\AccessSubjectInterface;
 use Galette\Interfaces\PermissionResolverInterface;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -53,33 +52,7 @@ class AccessControlTest extends GaletteTestCase
                         level: Authentication::ACCESS_STAFF,
                         managers: true
                     ),
-                    new Permission(
-                        name: 'test:pref',
-                        label: 'Managers if pref is on',
-                        level: Authentication::ACCESS_STAFF,
-                        managers: 'pref_bool_groupsmanagers_exports'
-                    ),
                     new Permission('test:admin', 'Admin', Authentication::ACCESS_ADMIN),
-                    new Permission(
-                        name: 'test:any',
-                        label: 'Managers if any pref is on',
-                        level: Authentication::ACCESS_STAFF,
-                        managers: ['pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_mailings']
-                    ),
-                    new Permission(
-                        name: 'test:owned',
-                        label: 'Managers and owners',
-                        level: Authentication::ACCESS_STAFF,
-                        managers: true,
-                        owner: true
-                    ),
-                    new Permission(
-                        name: 'test:members',
-                        label: 'Members if pref is on',
-                        level: Authentication::ACCESS_STAFF,
-                        managers: null,
-                        members: 'pref_bool_create_member'
-                    ),
                 ];
             }
         };
@@ -95,73 +68,33 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
-     * Get a plugin object
-     *
-     * @param ?int        $owner  Owner identifier
-     * @param ?array<int> $groups Groups identifiers, those of the owner if null
-     */
-    private function getSubject(?int $owner, ?array $groups = null): AccessSubjectInterface
-    {
-        return new readonly class ($owner, $groups) implements AccessSubjectInterface {
-            /**
-             * Constructor
-             *
-             * @param ?int        $owner  Owner identifier
-             * @param ?array<int> $groups Groups identifiers
-             */
-            public function __construct(private ?int $owner, private ?array $groups)
-            {
-            }
-
-            /**
-             * Get owner identifier
-             */
-            public function getOwnerId(): ?int
-            {
-                return $this->owner;
-            }
-
-            /**
-             * Get groups identifiers
-             *
-             * @return ?array<int>
-             */
-            public function getGroupsIds(): ?array
-            {
-                return $this->groups;
-            }
-        };
-    }
-
-    /**
-     * Get access control instance
+     * Get access control instance, with system roles from test permissions
      *
      * @param ?Login $login Current login
      */
     private function getAccessControl(?Login $login = null): AccessControl
     {
-        return new AccessControl(
-            $this->getPermissions(),
-            new LegacyResolver($this->zdb, $this->preferences),
-            $login ?? $this->login
-        );
+        $permissions = $this->getPermissions();
+        (new Roles($this->zdb, $permissions))->installInit();
+        return new AccessControl($permissions, new RoleResolver($this->zdb), $login ?? $this->login);
     }
 
     /**
      * Get a login mock
      *
      * @param int  $level   Access level, one of Authentication::ACCESS_*
-     * @param bool $manager Whether login manages at least one group
+     * @param bool $manager Whether login manages groups
      */
     private function getLogin(int $level, bool $manager = false): Login
     {
         $login = $this->getMockBuilder(Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['getAccessLevel', 'isGroupManager', 'isLogged', 'getManagedGroups'])
+            ->onlyMethods(['isLogged', 'isSuperAdmin', 'isAdmin', 'isStaff', 'getManagedGroups'])
             ->getMock();
-        $login->method('getAccessLevel')->willReturn($level);
         $login->method('isLogged')->willReturn($level > Authentication::ACCESS_PUBLIC);
-        $login->method('isGroupManager')->willReturn($manager);
+        $login->method('isSuperAdmin')->willReturn($level === Authentication::ACCESS_SUPERADMIN);
+        $login->method('isAdmin')->willReturn($level >= Authentication::ACCESS_ADMIN);
+        $login->method('isStaff')->willReturn($level === Authentication::ACCESS_STAFF);
         $login->method('getManagedGroups')->willReturn($manager ? [3, 7] : []);
         return $login;
     }
@@ -288,15 +221,10 @@ class AccessControlTest extends GaletteTestCase
             $this->assertSame($acl, $authenticate->getAclFor($route), $route);
         }
 
-        $access = new AccessControl(
-            new Permissions(),
-            new LegacyResolver($this->zdb, $this->preferences),
-            $this->login
-        );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
+        $defaults = (new Roles($this->zdb, new Permissions()))->getDefaultPermissions();
         foreach (['mailing:history', 'document:manage'] as $permission) {
-            $this->assertTrue($access->can($permission, login: $this->getLogin(Authentication::ACCESS_STAFF)));
-            $this->assertFalse($access->can($permission, login: $manager));
+            $this->assertContains($permission, $defaults[Roles::STAFF]);
+            $this->assertNotContains($permission, $defaults[Roles::MANAGER]);
         }
     }
 
@@ -365,51 +293,16 @@ class AccessControlTest extends GaletteTestCase
             $this->assertSame($acl, $authenticate->getAclFor($route), $route);
         }
 
-        $access = new AccessControl(
-            new Permissions(),
-            new LegacyResolver($this->zdb, $this->preferences),
-            $this->login
-        );
-        $admin = $this->getLogin(Authentication::ACCESS_ADMIN);
-        $staff = $this->getLogin(Authentication::ACCESS_STAFF);
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
+        $defaults = (new Roles($this->zdb, new Permissions()))->getDefaultPermissions();
         foreach (['config:references', 'config:templates', 'data:export', 'history:manage', 'system:info'] as $permission) {
-            $this->assertTrue($access->can($permission, login: $admin), $permission);
-            $this->assertTrue($access->can($permission, login: $staff), $permission);
-            $this->assertFalse($access->can($permission, login: $manager), $permission);
+            $this->assertContains($permission, $defaults[Roles::STAFF], $permission);
+            $this->assertNotContains($permission, $defaults[Roles::MANAGER], $permission);
         }
         foreach (['config:preferences', 'config:fields', 'security:manage', 'plugin:manage', 'role:manage'] as $permission) {
-            $this->assertTrue($access->can($permission, login: $admin), $permission);
-            $this->assertFalse($access->can($permission, login: $staff), $permission);
-            $this->assertFalse($access->can($permission, login: $manager), $permission);
+            $this->assertContains($permission, $defaults[Roles::ADMIN], $permission);
+            $this->assertNotContains($permission, $defaults[Roles::STAFF], $permission);
+            $this->assertNotContains($permission, $defaults[Roles::MANAGER], $permission);
         }
-    }
-
-    /**
-     * Test groups managers display the groups they manage only
-     */
-    public function testLegacyGroupRead(): void
-    {
-        $access = new AccessControl(
-            new Permissions(),
-            new LegacyResolver($this->zdb, $this->preferences),
-            $this->login
-        );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
-        $member = $this->getLogin(Authentication::ACCESS_USER);
-
-        $this->assertTrue($access->can('group:read', login: $manager));
-        $this->assertFalse($access->can('group:read', login: $member));
-        $this->assertTrue($access->can('group:read', login: $this->getLogin(Authentication::ACCESS_STAFF)));
-        $this->assertSame([3, 7], $access->getGroupScope('group:read', $manager));
-        $this->assertFalse($access->can('group:create', login: $manager));
-        $this->assertFalse($access->can('group:delete', login: $manager));
-
-        $group = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(['isManager'])
-            ->getMock();
-        $group->method('isManager')->willReturn(false);
-        $this->assertFalse($access->can('group:read', $group, $manager));
     }
 
     /**
@@ -426,15 +319,14 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
-     * Test permissions granted from legacy access levels
+     * Test permissions granted from access levels, through system roles
      */
-    public function testLegacyLevels(): void
+    public function testLevels(): void
     {
         $access = $this->getAccessControl();
         $expected = [
             Authentication::ACCESS_PUBLIC => false,
             Authentication::ACCESS_USER => false,
-            Authentication::ACCESS_MANAGER => false,
             Authentication::ACCESS_STAFF => true,
             Authentication::ACCESS_ADMIN => true,
             Authentication::ACCESS_SUPERADMIN => true,
@@ -451,115 +343,30 @@ class AccessControlTest extends GaletteTestCase
     /**
      * Test permissions granted to groups managers
      */
-    public function testLegacyManagers(): void
+    public function testManagers(): void
     {
         $access = $this->getAccessControl();
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
+        $manager = $this->getLogin(Authentication::ACCESS_USER, manager: true);
         $member = $this->getLogin(Authentication::ACCESS_USER);
 
         $this->assertFalse($access->can('test:staff', login: $manager));
         $this->assertTrue($access->can('test:managers', login: $manager));
         $this->assertFalse($access->can('test:managers', login: $member));
-
-        $exports = $this->preferences->pref_bool_groupsmanagers_exports;
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
-        $this->assertFalse($access->can('test:pref', login: $manager));
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
-        $this->assertTrue($access->can('test:pref', login: $manager));
-        $this->assertFalse($access->can('test:pref', login: $member));
-
-        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
-        $this->preferences->pref_bool_groupsmanagers_mailings = false;
-        $this->assertFalse($access->can('test:any', login: $manager));
-        $this->preferences->pref_bool_groupsmanagers_mailings = true;
-        $this->assertTrue($access->can('test:any', login: $manager));
-        $this->assertFalse($access->can('test:any', login: $member));
-
-        $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
-        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings; //reset
     }
 
     /**
-     * Test groups scope from legacy levels and groups managers
+     * Test groups scope
      */
-    public function testLegacyGroupScope(): void
+    public function testGroupScope(): void
     {
         $access = $this->getAccessControl();
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
+        $manager = $this->getLogin(Authentication::ACCESS_USER, manager: true);
         $member = $this->getLogin(Authentication::ACCESS_USER);
 
         $this->assertNull($access->getGroupScope('test:staff', $this->getLogin(Authentication::ACCESS_STAFF)));
         $this->assertSame([], $access->getGroupScope('test:staff', $manager));
         $this->assertSame([3, 7], $access->getGroupScope('test:managers', $manager));
         $this->assertSame([], $access->getGroupScope('test:managers', $member));
-
-        $create_member = $this->preferences->pref_bool_create_member;
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertNull($access->getGroupScope('test:members', $member));
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertSame([], $access->getGroupScope('test:members', $member));
-        $this->preferences->pref_bool_create_member = $create_member; //reset
-    }
-
-    /**
-     * Test the exports preference grants every export permission, mailings its own
-     */
-    public function testLegacyExportsAndMailings(): void
-    {
-        $access = new AccessControl(
-            new Permissions(),
-            new LegacyResolver($this->zdb, $this->preferences),
-            $this->login
-        );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
-        $staff = $this->getLogin(Authentication::ACCESS_STAFF);
-        $exports_permissions = ['member:export', 'member:print', 'group:export'];
-
-        $exports = $this->preferences->pref_bool_groupsmanagers_exports;
-        $mailings = $this->preferences->pref_bool_groupsmanagers_mailings;
-
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
-        $this->preferences->pref_bool_groupsmanagers_mailings = false;
-        foreach ([...$exports_permissions, 'mailing:send'] as $permission) {
-            $this->assertFalse($access->can($permission, login: $manager), $permission);
-            $this->assertTrue($access->can($permission, login: $staff), $permission);
-        }
-
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
-        foreach ($exports_permissions as $permission) {
-            $this->assertTrue($access->can($permission, login: $manager), $permission);
-        }
-        $this->assertFalse($access->can('mailing:send', login: $manager));
-
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
-        $this->preferences->pref_bool_groupsmanagers_mailings = true;
-        foreach ($exports_permissions as $permission) {
-            $this->assertFalse($access->can($permission, login: $manager), $permission);
-        }
-        $this->assertTrue($access->can('mailing:send', login: $manager));
-
-        $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
-        $this->preferences->pref_bool_groupsmanagers_mailings = $mailings; //reset
-    }
-
-    /**
-     * Test permissions granted to any member
-     */
-    public function testLegacyMembers(): void
-    {
-        $access = $this->getAccessControl();
-        $member = $this->getLogin(Authentication::ACCESS_USER);
-        $anonymous = $this->getLogin(Authentication::ACCESS_PUBLIC);
-
-        $create_member = $this->preferences->pref_bool_create_member;
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertFalse($access->can('test:members', login: $member));
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($access->can('test:members', login: $member));
-        $this->assertFalse($access->can('test:members', login: $anonymous));
-        $this->assertTrue($access->can('test:members', login: $this->getLogin(Authentication::ACCESS_STAFF)));
-        $this->preferences->pref_bool_create_member = $create_member; //reset
     }
 
     /**
@@ -587,50 +394,5 @@ class AccessControlTest extends GaletteTestCase
             RoleResolver::class,
             $this->container->get(PermissionResolverInterface::class)
         );
-    }
-
-    /**
-     * Test plugins objects: owners, and managers of their groups only
-     */
-    public function testLegacyPluginSubjects(): void
-    {
-        $access = $this->getAccessControl();
-        $member_one = $this->getMemberOne();
-        $member_two = $this->getMemberTwo();
-
-        $mdata = $this->dataAdherentOne();
-        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->assertFalse($access->can('test:owned'));
-        $this->assertTrue($access->can('test:owned', $this->getSubject((int)$member_one->id)));
-        $this->assertFalse($access->can('test:owned', $this->getSubject((int)$member_two->id)));
-        $this->assertFalse($access->can('test:managers', $this->getSubject((int)$member_one->id)));
-        $this->login->logOut();
-
-        $group = $this->logGroupManager();
-        $this->logSuperAdmin();
-        $other = new \Galette\Entity\Group();
-        $other->setName('Not managed');
-        $this->assertTrue($other->store());
-        $this->login->logOut();
-        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-
-        //no object: as before
-        $this->assertTrue($access->can('test:managers'));
-        $this->assertTrue($access->can('test:managers', $this->getSubject(owner: null, groups: [(int)$group->getId()])));
-        $this->assertFalse($access->can('test:managers', $this->getSubject(owner: null, groups: [(int)$other->getId()])));
-        $this->assertFalse($access->can('test:managers', $this->getSubject(owner: null, groups: [])));
-        $this->assertFalse($access->can('test:managers', $this->getSubject((int)$member_two->id)));
-        $exports = $this->preferences->pref_bool_groupsmanagers_exports;
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
-        $this->assertFalse($access->can('test:pref', $this->getSubject(owner: null, groups: [(int)$group->getId()])));
-        $this->preferences->pref_bool_groupsmanagers_exports = $exports; //reset
-
-        //owner groups
-        $this->login->logOut();
-        $this->logSuperAdmin();
-        $this->assertTrue($group->setMembers([$member_two]));
-        $this->login->logOut();
-        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->assertTrue($access->can('test:managers', $this->getSubject((int)$member_two->id)));
     }
 }

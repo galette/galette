@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace Galette\Access;
 
 use Galette\Core\Authentication;
-use Galette\Core\Preferences;
 
 use function Safe\preg_match;
 
 /**
  * A permission, named "domain:action"
  *
- * Level, groups managers and members describe what legacy access levels
- * grant; they are the defaults when there is no more specific rule.
+ * Level, groups managers and members describe what access levels and
+ * rights settings of Galette before 1.4 granted: system roles get their
+ * default permissions from them.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -29,11 +29,12 @@ final readonly class Permission
      * Constructor
      *
      * Groups managers and members are granted always (true), never (null), or
-     * when a preference is on (its name) - or any of them (a list of names).
+     * when a former rights setting was on (its name) - or any of them (a list
+     * of names).
      *
      * @param string                         $name     Permission name, "domain:action"
      * @param string                         $label    Translated label
-     * @param int                            $level    Lowest legacy access level granted,
+     * @param int                            $level    Lowest access level granted,
      *                                                 one of Authentication::ACCESS_*
      * @param string|array<string>|bool|null $managers Whether groups managers are granted, on their groups
      * @param string|bool|null               $members  Whether any member is granted
@@ -62,39 +63,39 @@ final readonly class Permission
     }
 
     /**
-     * Are groups managers granted, on their groups, with current preferences?
+     * Are groups managers granted, on their groups, with given rights settings?
      *
-     * @param Preferences $preferences Preferences instance
+     * @param array<string, bool> $rights Former rights settings values
      */
-    public function isGrantedToManagers(Preferences $preferences): bool
+    public function isGrantedToManagers(array $rights): bool
     {
-        return $this->isOn($this->managers, $preferences);
+        return $this->isOn($this->managers, $rights);
     }
 
     /**
-     * Is any member granted, with current preferences?
+     * Is any member granted, with given rights settings?
      *
-     * @param Preferences $preferences Preferences instance
+     * @param array<string, bool> $rights Former rights settings values
      */
-    public function isGrantedToMembers(Preferences $preferences): bool
+    public function isGrantedToMembers(array $rights): bool
     {
-        return $this->isOn($this->members, $preferences);
+        return $this->isOn($this->members, $rights);
     }
 
     /**
-     * Is a grant on: always (true), or when its preference - or any of them - is on
+     * Is a grant on: always (true), or when its setting - or any of them - is on
      *
-     * @param string|array<string>|bool|null $grant       Grant
-     * @param Preferences                    $preferences Preferences instance
+     * @param string|array<string>|bool|null $grant  Grant
+     * @param array<string, bool>            $rights Former rights settings values
      */
-    private function isOn(string|array|bool|null $grant, Preferences $preferences): bool
+    private function isOn(string|array|bool|null $grant, array $rights): bool
     {
         if (is_bool($grant) || $grant === null) {
             return $grant === true;
         }
 
-        foreach ((array)$grant as $preference) {
-            if ($preferences->$preference) {
+        foreach ((array)$grant as $setting) {
+            if ($rights[$setting] ?? false) {
                 return true;
             }
         }

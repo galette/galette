@@ -36,19 +36,9 @@ class RoleResolverTest extends GaletteTestCase
     {
         parent::setUp();
 
-        //system roles with defaults from preferences all off
-        $saved = [];
-        foreach (array_keys($this->preferences->getDefaults()) as $preference) {
-            if (str_starts_with($preference, 'pref_bool_groupsmanagers_') || $preference === 'pref_bool_create_member') {
-                $saved[$preference] = $this->preferences->$preference;
-                $this->preferences->$preference = false;
-            }
-        }
+        //system roles with former rights settings all off
         $this->roles = new Roles($this->zdb, new Permissions());
-        $this->roles->installInit($this->preferences);
-        foreach ($saved as $preference => $value) {
-            $this->preferences->$preference = $value;
-        }
+        $this->roles->installInit(array_fill_keys(array_keys(Roles::LEGACY_RIGHTS), false));
 
         $this->resolver = new RoleResolver($this->zdb);
         $this->access = new AccessControl(new Permissions(), $this->resolver, $this->login);
@@ -488,7 +478,7 @@ class RoleResolverTest extends GaletteTestCase
     {
         //system roles get plugin permissions when roles are first loaded
         $catalog = $this->container->get(Permissions::class);
-        $resolver = new RoleResolver($this->zdb, new Roles($this->zdb, $catalog), $this->preferences);
+        $resolver = new RoleResolver($this->zdb, new Roles($this->zdb, $catalog));
         $access = new AccessControl($catalog, $resolver, $this->login);
 
         $group = $this->logGroupManager();

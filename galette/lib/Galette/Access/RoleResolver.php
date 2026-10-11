@@ -13,7 +13,6 @@ namespace Galette\Access;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Logs;
-use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
@@ -23,8 +22,6 @@ use Galette\Interfaces\PermissionResolverInterface;
 
 /**
  * Resolves permissions from roles
- *
- * This is how permissions are granted when the "acls" feature flag is on.
  *
  * A member gets permissions:
  * - from system roles, given from their data (logged-in, up to date, staff,
@@ -36,9 +33,8 @@ use Galette\Interfaces\PermissionResolverInterface;
  * Roles inherit their parents permissions. The super administrator is
  * granted everything.
  *
- * With roles and preferences, system roles get default permissions of
- * permissions not known yet - from plugins activated since roles were set
- * up - when roles are first loaded.
+ * System roles get default permissions of permissions not known yet - from
+ * plugins activated since roles were set up - when roles are first loaded.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -58,14 +54,12 @@ class RoleResolver implements PermissionResolverInterface
     /**
      * Constructor
      *
-     * @param Db           $zdb         Database instance
-     * @param ?Roles       $repository  Roles, to give system roles default permissions of new permissions
-     * @param ?Preferences $preferences Preferences instance, for default permissions
+     * @param Db     $zdb        Database instance
+     * @param ?Roles $repository Roles, to give system roles default permissions of new permissions
      */
     public function __construct(
         private readonly Db $zdb,
-        private readonly ?Roles $repository = null,
-        private readonly ?Preferences $preferences = null
+        private readonly ?Roles $repository = null
     ) {
     }
 
@@ -298,13 +292,13 @@ class RoleResolver implements PermissionResolverInterface
      */
     private function syncPermissions(): void
     {
-        if ($this->synced || $this->repository === null || $this->preferences === null) {
+        if ($this->synced || $this->repository === null) {
             return;
         }
         $this->synced = true;
 
         try {
-            $this->repository->syncPermissions($this->preferences);
+            $this->repository->syncPermissions();
         } catch (\Throwable $e) {
             Logs::exception($e, 'Unable to give system roles default permissions of new permissions');
         }

@@ -32,7 +32,7 @@ class RoleTest extends GaletteTestCase
     {
         parent::setUp();
         $this->roles = new Roles($this->zdb, new Permissions());
-        $this->roles->installInit($this->preferences);
+        $this->roles->installInit();
     }
 
     /**
