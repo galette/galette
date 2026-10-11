@@ -10,10 +10,14 @@ declare(strict_types=1);
 
 namespace Galette\Access;
 
+use Analog\Analog;
 use Galette\Core\Authentication;
+use Galette\Core\Plugins;
 
 /**
  * Permissions catalog
+ *
+ * Core permissions, and those active plugins declare in their own domain.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -21,6 +25,19 @@ class Permissions
 {
     /** @var array<string, Permission> */
     private array $permissions;
+
+    /** @var array<string, string> Plugins domains labels */
+    private array $plugins_domains = [];
+
+    /**
+     * Constructor
+     *
+     * @param ?Plugins $plugins Plugins instance, to add permissions they declare
+     */
+    public function __construct(
+        private readonly ?Plugins $plugins = null
+    ) {
+    }
 
     /**
      * Get a permission
@@ -60,6 +77,7 @@ class Permissions
             foreach ($this->getCorePermissions() as $permission) {
                 $this->permissions[$permission->name] = $permission;
             }
+            $this->addPluginsPermissions();
         }
         return $this->permissions;
     }
@@ -85,6 +103,7 @@ class Permissions
      */
     public function getDomainLabel(string $domain): string
     {
+        $this->getAll();
         return match ($domain) {
             'member' => _T('Members'),
             'contribution' => _T('Contributions'),
@@ -99,8 +118,57 @@ class Permissions
             'security' => _T('Security'),
             'plugin' => _T('Plugins'),
             'role' => _T('Roles'),
-            default => ucfirst($domain),
+            default => $this->plugins_domains[$domain] ?? ucfirst($domain),
         };
+    }
+
+    /**
+     * Add permissions active plugins declare
+     *
+     * Plugins permissions must be in their own domain, which cannot be a
+     * core one.
+     */
+    private function addPluginsPermissions(): void
+    {
+        if ($this->plugins === null) {
+            return;
+        }
+
+        $core_domains = [];
+        foreach ($this->permissions as $permission) {
+            $core_domains[$permission->getDomain()] = true;
+        }
+
+        foreach ($this->plugins->getPermissions() as $domain => $plugin) {
+            if (isset($core_domains[$domain])) {
+                Analog::log(
+                    sprintf(
+                        'Plugin "%1$s" permissions are ignored: "%2$s" is a core domain.',
+                        $plugin['label'],
+                        $domain
+                    ),
+                    Analog::WARNING
+                );
+                continue;
+            }
+
+            $this->plugins_domains[$domain] = $plugin['label'];
+            foreach ($plugin['permissions'] as $permission) {
+                if ($permission->getDomain() !== $domain) {
+                    Analog::log(
+                        sprintf(
+                            'Plugin "%1$s" permission "%2$s" is ignored: it must be in the "%3$s" domain.',
+                            $plugin['label'],
+                            $permission->name,
+                            $domain
+                        ),
+                        Analog::WARNING
+                    );
+                    continue;
+                }
+                $this->permissions[$permission->name] = $permission;
+            }
+        }
     }
 
     /**

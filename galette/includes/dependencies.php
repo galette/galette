@@ -166,6 +166,11 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 //code depending on "now" takes a clock rather than calling time() itself
 $container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
 
+$container->set(
+    \Galette\Access\Permissions::class,
+    DI\autowire()->constructorParameter('plugins', DI\get(\Galette\Core\Plugins::class))
+);
+
 //permissions come from roles with the acls feature flag, from legacy access levels otherwise
 $container->set(
     \Galette\Interfaces\PermissionResolverInterface::class,
