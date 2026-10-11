@@ -1169,7 +1169,8 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $res = $status->installInit();
             $this->proceedReport(_T("Status"), $res);
 
-            //Install system roles
+            //Install system roles, from stored preferences defaults
+            $preferences->load();
             $roles = new \Galette\Access\Roles($zdb, new \Galette\Access\Permissions());
             $res = $roles->installInit($preferences);
             $this->proceedReport(_T("Roles"), $res);
