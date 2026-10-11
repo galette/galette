@@ -32,10 +32,13 @@ class Permissions
     /**
      * Constructor
      *
-     * @param ?Plugins $plugins Plugins instance, to add permissions they declare
+     * Plugins can be given lazily, as plugins classes may need the catalog
+     * while plugins are being loaded.
+     *
+     * @param Plugins|(\Closure(): Plugins)|null $plugins Plugins instance, to add permissions they declare
      */
     public function __construct(
-        private readonly ?Plugins $plugins = null
+        private readonly Plugins|\Closure|null $plugins = null
     ) {
     }
 
@@ -133,13 +136,14 @@ class Permissions
         if ($this->plugins === null) {
             return;
         }
+        $plugins = $this->plugins instanceof \Closure ? ($this->plugins)() : $this->plugins;
 
         $core_domains = [];
         foreach ($this->permissions as $permission) {
             $core_domains[$permission->getDomain()] = true;
         }
 
-        foreach ($this->plugins->getPermissions() as $domain => $plugin) {
+        foreach ($plugins->getPermissions() as $domain => $plugin) {
             if (isset($core_domains[$domain])) {
                 Analog::log(
                     sprintf(

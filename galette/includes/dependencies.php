@@ -166,9 +166,12 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 //code depending on "now" takes a clock rather than calling time() itself
 $container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
 
+//plugins classes may need the permissions catalog while plugins are being loaded
 $container->set(
     \Galette\Access\Permissions::class,
-    DI\autowire()->constructorParameter('plugins', DI\get(\Galette\Core\Plugins::class))
+    fn(ContainerInterface $c) => new \Galette\Access\Permissions(
+        fn(): \Galette\Core\Plugins => $c->get(\Galette\Core\Plugins::class)
+    )
 );
 
 $container->set(

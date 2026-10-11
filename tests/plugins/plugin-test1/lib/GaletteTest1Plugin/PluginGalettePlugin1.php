@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace GaletteTest1Plugin;
 
+use DI\Attribute\Inject;
+use Galette\Access\AccessControl;
 use Galette\Access\Permission;
 use Galette\Core\Authentication;
 use Galette\Core\GalettePlugin;
@@ -21,6 +23,7 @@ use Galette\Core\Plugins\PublicPagesProviderInterface;
 /**
  * This fixture also declares preferences, a public page and permissions, so
  * that the registration path is exercised by every test that loads plugins.
+ * It gets access control injected, as plugins checking permissions do.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -29,6 +32,9 @@ class PluginGalettePlugin1 extends GalettePlugin implements
     PublicPagesProviderInterface,
     PermissionsProviderInterface
 {
+    #[Inject]
+    protected AccessControl $accessControl;
+
     /**
      * Get the preferences the plugin declares
      *
