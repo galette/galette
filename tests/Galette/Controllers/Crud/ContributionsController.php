@@ -1431,4 +1431,33 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_see_transactions = $see_transactions;
         $this->login->logOut();
     }
+
+    /**
+     * Test add page does not preselect a member out of reach
+     */
+    public function testAddPageMemberScope(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $create = $this->preferences->pref_bool_groupsmanagers_create_contributions;
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+
+        $group = $this->logGroupManager();
+        $request = $this->createRequest(
+            'addContribution',
+            ['type' => \Galette\Entity\Contribution::TYPE_FEE],
+            query_params: [\Galette\Entity\Adherent::PK => (string)$member_two->id]
+        );
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringNotContainsString($member_two->sname, (string)$test_response->getBody());
+
+        $this->assertTrue($group->setMembers([$member_two]));
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString($member_two->sname, (string)$test_response->getBody());
+
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = $create;
+        $this->login->logOut();
+    }
 }

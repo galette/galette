@@ -323,14 +323,13 @@ class AjaxController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        $contrib = new Contribution(
-            $this->zdb,
-            $this->login,
-            [
-                'type'  => (int)$post['fee_id'],
-                'adh'   => (int)$post['member_id']
-            ]
-        );
+        $args = ['type' => (int)$post['fee_id']];
+        //dates depend on member due date, that must not be disclosed
+        $member = new Adherent($this->zdb, (int)$post['member_id'], deps: false);
+        if ($member->canShow($this->login)) {
+            $args['adh'] = (int)$post['member_id'];
+        }
+        $contrib = new Contribution($this->zdb, $this->login, $args);
 
         return $this->withJson(
             $response,

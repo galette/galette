@@ -173,7 +173,11 @@ class ContributionsController extends CrudController
             $cparams = ['type' => array_keys($contributions_types)[0]];
 
             //member id
-            if (isset($get[Adherent::PK]) && $get[Adherent::PK] > 0) {
+            if (
+                isset($get[Adherent::PK])
+                && $get[Adherent::PK] > 0
+                && (new Adherent($this->zdb, (int)$get[Adherent::PK], deps: false))->canShow($this->login)
+            ) {
                 $cparams['adh'] = (int)$get[Adherent::PK];
             }
 
