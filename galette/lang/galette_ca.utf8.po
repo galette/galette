@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-06 05:58+0000\n"
+"PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -7934,7 +7934,6 @@ msgstr "(almenys caràcters de percentatge)"
 msgid "Ajax page content"
 msgstr "Contingut de la pàgina Ajax"
 
-#, fuzzy
 msgid "Picture"
 msgstr "Imatge"
 
