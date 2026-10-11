@@ -116,7 +116,6 @@ class RolesTest extends GaletteTestCase
                 Roles::MANAGER => [
                     'member:read',
                     'member:edit',
-                    'member:delete',
                     'member:export',
                     'member:print',
                     'contribution:create',

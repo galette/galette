@@ -1932,7 +1932,8 @@ class MembersController extends CrudController
             $adh = new Adherent($this->zdb, (int)$id_adh);
             return sprintf(
                 _T('Remove member %1$s'),
-                $adh->sfullname
+                //do not disclose name of a member that cannot be removed
+                $this->accessControl->can('member:delete', $adh) ? $adh->sfullname : '#' . (int)$id_adh
             );
         } else {
             //batch members removal
@@ -1961,6 +1962,20 @@ class MembersController extends CrudController
         $members = new Members($filters);
 
         $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
+        foreach ($ids as $id) {
+            $member = new Adherent($this->zdb, (int)$id, deps: false);
+            if (!$this->accessControl->can('member:delete', $member)) {
+                Analog::log(
+                    'Trying to remove member #' . (int)$id . ' without appropriate ACLs',
+                    Analog::WARNING
+                );
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("You do not have permission for requested URL.")
+                );
+                return false;
+            }
+        }
 
         return $members->removeMembers($ids);
     }

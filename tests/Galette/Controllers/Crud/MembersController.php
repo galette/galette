@@ -3236,4 +3236,77 @@ class MembersController extends GaletteRoutingTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test members removal is checked against each member, for a role given on a group
+     */
+    public function testDeleteMemberWithGroupRole(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Removal group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        //member one can remove members of the group only
+        $insert = $this->zdb->insert(\Galette\Access\Roles::TABLE);
+        $insert->values(['name' => 'Remover']);
+        $this->zdb->execute($insert);
+        $role = (int)$this->zdb->getLastGeneratedValue(new \Galette\Access\Roles($this->zdb, new \Galette\Access\Permissions()));
+        $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+        $insert->values([\Galette\Access\Roles::PK => $role, 'permission' => 'member:delete']);
+        $this->zdb->execute($insert);
+        $insert = $this->zdb->insert(\Galette\Access\Roles::MEMBERS_TABLE);
+        $insert->values(['id_adh' => $member_one->id, \Galette\Access\Roles::PK => $role, 'id_group' => $group->getId()]);
+        $this->zdb->execute($insert);
+
+        $previous = $this->container->get(\Galette\Access\AccessControl::class);
+        $this->container->set(
+            \Galette\Access\AccessControl::class,
+            new \Galette\Access\AccessControl(
+                new \Galette\Access\Permissions(),
+                new \Galette\Access\RoleResolver($this->zdb),
+                $this->login
+            )
+        );
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+
+            //confirmation page does not disclose name of a member out of reach
+            $test_response = $this->app->handle(
+                $this->createRequest('removeMember', ['id' => (string)$member_one->id])
+            );
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($member_one->sfullname, (string)$test_response->getBody());
+
+            //own card is not part of the group
+            $request = $this->createRequest('doRemoveMember', [], 'POST')
+                ->withParsedBody(['id' => [$member_two->id, $member_one->id], 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to remove member #' . $member_one->id . ' without appropriate ACLs'
+            );
+            $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)
+                ->where([\Galette\Entity\Adherent::PK => [$member_one->id, $member_two->id]]);
+            $this->assertCount(2, $this->zdb->execute($select));
+
+            $request = $request->withParsedBody(['id' => [$member_two->id], 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
+            $this->assertCount(1, $this->zdb->execute($select));
+        } finally {
+            $this->container->set(\Galette\Access\AccessControl::class, $previous);
+            $this->login->logOut();
+        }
+    }
 }

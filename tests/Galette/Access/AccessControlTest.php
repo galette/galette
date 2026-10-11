@@ -246,6 +246,19 @@ class AccessControlTest extends GaletteTestCase
     }
 
     /**
+     * Test members removal routes are checked from their own permission
+     */
+    public function testMembersRemovalRoutes(): void
+    {
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
+        foreach (['removeMember', 'removeMembers', 'doRemoveMember'] as $route) {
+            $this->assertSame('member:delete', $authenticate->getAclFor($route), $route);
+        }
+        //saved searches are removed by their owners
+        $this->assertSame('member', $authenticate->getAclFor('removeSearch'));
+    }
+
+    /**
      * Test administration routes permissions
      */
     public function testAdministrationRoutes(): void

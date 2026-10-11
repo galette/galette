@@ -777,8 +777,9 @@ class Adherent extends GaletteTestCase
         );
         $this->assertFalse($adh->canDelete($login));
 
+        //groups managers cannot delete members, even when they can edit them
         $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($adh->canDelete($login));
+        $this->assertFalse($adh->canDelete($login));
         $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
 
         //groups managers cannot edit members of the groups they do not own
@@ -949,7 +950,8 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($member->canShow($this->login));
         $this->assertTrue($member->canCreate($this->login));
         $this->assertTrue($member->canEdit($this->login));
-        $this->assertTrue($member->canDelete($this->login));
+        //but cannot delete its own card
+        $this->assertFalse($member->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -1006,7 +1008,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($child->canShow($this->login));
         $this->assertFalse($child->canCreate($this->login));
         $this->assertTrue($child->canEdit($this->login));
-        $this->assertTrue($child->canDelete($this->login));
+        $this->assertFalse($child->canDelete($this->login));
 
         //logout
         $this->login->logOut();

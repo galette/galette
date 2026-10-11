@@ -137,14 +137,7 @@ class Permissions
                 managers: 'pref_bool_groupsmanagers_edit_member',
                 owner: true
             ),
-            //FIXME: members can delete their own card, as they can edit it
-            new Permission(
-                name: 'member:delete',
-                label: _T('Delete members'),
-                level: $staff,
-                managers: 'pref_bool_groupsmanagers_edit_member',
-                owner: true
-            ),
+            new Permission('member:delete', _T('Delete members'), $staff),
             new Permission(
                 'member:manage',
                 _T('Manage members administrative information (status, exemption, account, parent)'),

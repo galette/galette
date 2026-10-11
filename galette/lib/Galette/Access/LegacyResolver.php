@@ -110,8 +110,7 @@ class LegacyResolver implements PermissionResolverInterface
         return match ($name) {
             'member:create' => $this->canCreateMember(...),
             'member:read' => $this->canReadMember(...),
-            //FIXME: deleting is granted as widely as editing, too large.
-            'member:edit', 'member:delete' => $this->canEditMember(...),
+            'member:edit' => $this->canEditMember(...),
             'contribution:read' => $this->canReadContribution(...),
             'transaction:read' => $this->canReadTransaction(...),
             'transaction:attach' => $this->canAttachToTransaction(...),
