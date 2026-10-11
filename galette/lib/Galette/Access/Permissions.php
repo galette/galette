@@ -117,26 +117,32 @@ class Permissions
 
         return [
             new Permission(
-                'member:create',
-                _T('Create members'),
-                $staff,
-                'pref_bool_groupsmanagers_create_member',
-                'pref_bool_create_member'
+                name: 'member:create',
+                label: _T('Create members'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_create_member',
+                members: 'pref_bool_create_member'
             ),
-            new Permission('member:read', _T('Display members'), $staff, true, owner: true),
             new Permission(
-                'member:edit',
-                _T('Edit members'),
-                $staff,
-                'pref_bool_groupsmanagers_edit_member',
+                name: 'member:read',
+                label: _T('Display members'),
+                level: $staff,
+                managers: true,
+                owner: true
+            ),
+            new Permission(
+                name: 'member:edit',
+                label: _T('Edit members'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_edit_member',
                 owner: true
             ),
             //FIXME: members can delete their own card, as they can edit it
             new Permission(
-                'member:delete',
-                _T('Delete members'),
-                $staff,
-                'pref_bool_groupsmanagers_edit_member',
+                name: 'member:delete',
+                label: _T('Delete members'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_edit_member',
                 owner: true
             ),
             new Permission(
@@ -153,29 +159,29 @@ class Permissions
             ),
             new Permission('member:import', _T('Import members'), $staff),
             new Permission(
-                'member:export',
-                _T('Export members as CSV'),
-                $staff,
-                'pref_bool_groupsmanagers_exports'
+                name: 'member:export',
+                label: _T('Export members as CSV'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_exports'
             ),
             new Permission(
-                'member:print',
-                _T('Print members cards, labels and attendance sheets'),
-                $staff,
-                'pref_bool_groupsmanagers_exports'
+                name: 'member:print',
+                label: _T('Print members cards, labels and attendance sheets'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_exports'
             ),
 
             new Permission(
-                'contribution:create',
-                _T('Create contributions'),
-                $staff,
-                'pref_bool_groupsmanagers_create_contributions'
+                name: 'contribution:create',
+                label: _T('Create contributions'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_create_contributions'
             ),
             new Permission(
-                'contribution:read',
-                _T('Display contributions'),
-                $staff,
-                'pref_bool_groupsmanagers_see_contributions',
+                name: 'contribution:read',
+                label: _T('Display contributions'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_see_contributions',
                 owner: true
             ),
             new Permission('contribution:mass-create', _T('Add contributions in mass'), $staff),
@@ -186,35 +192,55 @@ class Permissions
             new Permission('contribution:remind', _T('Send reminders to late members'), $staff),
 
             new Permission(
-                'transaction:create',
-                _T('Create transactions'),
-                $staff,
-                'pref_bool_groupsmanagers_create_transactions'
+                name: 'transaction:create',
+                label: _T('Create transactions'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_create_transactions'
             ),
             new Permission(
-                'transaction:read',
-                _T('Display transactions'),
-                $staff,
-                'pref_bool_groupsmanagers_see_transactions',
+                name: 'transaction:read',
+                label: _T('Display transactions'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_see_transactions',
                 owner: true
             ),
             new Permission('transaction:edit', _T('Edit transactions'), $staff),
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
             new Permission('transaction:export', _T('Export transactions as CSV'), $staff),
             new Permission(
-                'transaction:attach',
-                _T('Attach contributions to transactions'),
-                $staff,
-                ['pref_bool_groupsmanagers_create_contributions', 'pref_bool_groupsmanagers_see_contributions']
+                name: 'transaction:attach',
+                label: _T('Attach contributions to transactions'),
+                level: $staff,
+                managers: ['pref_bool_groupsmanagers_create_contributions', 'pref_bool_groupsmanagers_see_contributions']
             ),
 
-            new Permission('group:read', _T('Display groups'), $staff, true),
+            new Permission(
+                name: 'group:read',
+                label: _T('Display groups'),
+                level: $staff,
+                managers: true
+            ),
             new Permission('group:create', _T('Create groups'), $staff),
             new Permission('group:delete', _T('Delete groups'), $staff),
-            new Permission('group:edit', _T('Edit groups'), $staff, 'pref_bool_groupsmanagers_edit_groups'),
-            new Permission('group:export', _T('Export groups as PDF'), $staff, 'pref_bool_groupsmanagers_exports'),
+            new Permission(
+                name: 'group:edit',
+                label: _T('Edit groups'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_edit_groups'
+            ),
+            new Permission(
+                name: 'group:export',
+                label: _T('Export groups as PDF'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_exports'
+            ),
 
-            new Permission('mailing:send', _T('Send mailings'), $staff, 'pref_bool_groupsmanagers_mailings'),
+            new Permission(
+                name: 'mailing:send',
+                label: _T('Send mailings'),
+                level: $staff,
+                managers: 'pref_bool_groupsmanagers_mailings'
+            ),
             new Permission('mailing:history', _T('Browse and delete sent mailings'), $staff),
 
             new Permission('document:manage', _T('Manage documents'), $staff),

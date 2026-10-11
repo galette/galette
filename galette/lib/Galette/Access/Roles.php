@@ -267,10 +267,10 @@ class Roles
             'a.' . \Galette\Entity\Adherent::PK . ' = mr.id_adh',
             ['nom_adh', 'prenom_adh']
         )->join(
-            ['g' => PREFIX_DB . \Galette\Entity\Group::TABLE],
-            'g.' . \Galette\Entity\Group::PK . ' = mr.id_group',
-            ['group_name'],
-            $select::JOIN_LEFT
+            name: ['g' => PREFIX_DB . \Galette\Entity\Group::TABLE],
+            on: 'g.' . \Galette\Entity\Group::PK . ' = mr.id_group',
+            columns: ['group_name'],
+            type: $select::JOIN_LEFT
         )->where(['mr.' . self::PK => $role]);
 
         $members = [];

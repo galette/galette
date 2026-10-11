@@ -408,7 +408,7 @@ class RoleResolverTest extends GaletteTestCase
     private function getContributionsIds(\Galette\Repository\Contributions $contributions): array
     {
         $ids = [];
-        foreach ($contributions->getList(false) as $row) {
+        foreach ($contributions->getList(as_contrib: false) as $row) {
             $ids[] = (int)$row->id_cotis;
         }
         return $ids;

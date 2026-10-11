@@ -82,7 +82,7 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = $create_contributions; //reset
 
         $this->assertSame(200, $test_response->getStatusCode());
-        $dates = json_decode((string)$test_response->getBody(), true);
+        $dates = json_decode((string)$test_response->getBody(), associative: true);
         $this->assertArrayHasKey('date_debut_cotis', $dates);
         $this->assertArrayHasKey('date_fin_cotis', $dates);
     }

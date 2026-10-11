@@ -96,7 +96,7 @@ class RolesTest extends GaletteTestCase
         ));
         $staff = array_values(array_diff($all, $admin));
 
-        $this->setPreferences(false);
+        $this->setPreferences(value: false);
         $this->assertSame(
             [
                 Roles::MEMBER => [],
@@ -108,7 +108,7 @@ class RolesTest extends GaletteTestCase
             $roles->getDefaultPermissions($this->preferences)
         );
 
-        $this->setPreferences(true);
+        $this->setPreferences(value: true);
         $this->assertSame(
             [
                 Roles::MEMBER => ['member:create'],
@@ -141,7 +141,7 @@ class RolesTest extends GaletteTestCase
      */
     public function testInstallInit(): void
     {
-        $this->setPreferences(false);
+        $this->setPreferences(value: false);
         $roles = new Roles($this->zdb, new Permissions());
         $this->assertTrue($roles->installInit($this->preferences));
 

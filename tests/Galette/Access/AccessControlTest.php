@@ -47,26 +47,31 @@ class AccessControlTest extends GaletteTestCase
             {
                 return [
                     new Permission('test:staff', 'Staff only', Authentication::ACCESS_STAFF),
-                    new Permission('test:managers', 'Managers', Authentication::ACCESS_STAFF, true),
                     new Permission(
-                        'test:pref',
-                        'Managers if pref is on',
-                        Authentication::ACCESS_STAFF,
-                        'pref_bool_groupsmanagers_exports'
+                        name: 'test:managers',
+                        label: 'Managers',
+                        level: Authentication::ACCESS_STAFF,
+                        managers: true
+                    ),
+                    new Permission(
+                        name: 'test:pref',
+                        label: 'Managers if pref is on',
+                        level: Authentication::ACCESS_STAFF,
+                        managers: 'pref_bool_groupsmanagers_exports'
                     ),
                     new Permission('test:admin', 'Admin', Authentication::ACCESS_ADMIN),
                     new Permission(
-                        'test:any',
-                        'Managers if any pref is on',
-                        Authentication::ACCESS_STAFF,
-                        ['pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_mailings']
+                        name: 'test:any',
+                        label: 'Managers if any pref is on',
+                        level: Authentication::ACCESS_STAFF,
+                        managers: ['pref_bool_groupsmanagers_exports', 'pref_bool_groupsmanagers_mailings']
                     ),
                     new Permission(
-                        'test:members',
-                        'Members if pref is on',
-                        Authentication::ACCESS_STAFF,
-                        null,
-                        'pref_bool_create_member'
+                        name: 'test:members',
+                        label: 'Members if pref is on',
+                        level: Authentication::ACCESS_STAFF,
+                        managers: null,
+                        members: 'pref_bool_create_member'
                     ),
                 ];
             }
@@ -131,7 +136,7 @@ class AccessControlTest extends GaletteTestCase
         $levels = ['superadmin', 'admin', 'staff', 'groupmanager', 'member'];
         $found = 0;
         foreach ($this->container->get('acls') as $route => $acl) {
-            if (in_array($acl, $levels, true)) {
+            if (in_array($acl, $levels, strict: true)) {
                 continue;
             }
             foreach (explode('|', $acl) as $permission) {
@@ -232,7 +237,7 @@ class AccessControlTest extends GaletteTestCase
             new LegacyResolver($this->zdb, $this->preferences),
             $this->login
         );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         foreach (['mailing:history', 'document:manage'] as $permission) {
             $this->assertTrue($access->can($permission, login: $this->getLogin(Authentication::ACCESS_STAFF)));
             $this->assertFalse($access->can($permission, login: $manager));
@@ -298,7 +303,7 @@ class AccessControlTest extends GaletteTestCase
         );
         $admin = $this->getLogin(Authentication::ACCESS_ADMIN);
         $staff = $this->getLogin(Authentication::ACCESS_STAFF);
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         foreach (['config:references', 'config:templates', 'data:export', 'history:manage', 'system:info'] as $permission) {
             $this->assertTrue($access->can($permission, login: $admin), $permission);
             $this->assertTrue($access->can($permission, login: $staff), $permission);
@@ -321,7 +326,7 @@ class AccessControlTest extends GaletteTestCase
             new LegacyResolver($this->zdb, $this->preferences),
             $this->login
         );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         $member = $this->getLogin(Authentication::ACCESS_USER);
 
         $this->assertTrue($access->can('group:read', login: $manager));
@@ -380,7 +385,7 @@ class AccessControlTest extends GaletteTestCase
     public function testLegacyManagers(): void
     {
         $access = $this->getAccessControl();
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         $member = $this->getLogin(Authentication::ACCESS_USER);
 
         $this->assertFalse($access->can('test:staff', login: $manager));
@@ -412,7 +417,7 @@ class AccessControlTest extends GaletteTestCase
     public function testLegacyGroupScope(): void
     {
         $access = $this->getAccessControl();
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         $member = $this->getLogin(Authentication::ACCESS_USER);
 
         $this->assertNull($access->getGroupScope('test:staff', $this->getLogin(Authentication::ACCESS_STAFF)));
@@ -438,7 +443,7 @@ class AccessControlTest extends GaletteTestCase
             new LegacyResolver($this->zdb, $this->preferences),
             $this->login
         );
-        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, true);
+        $manager = $this->getLogin(Authentication::ACCESS_MANAGER, manager: true);
         $staff = $this->getLogin(Authentication::ACCESS_STAFF);
         $exports_permissions = ['member:export', 'member:print', 'group:export'];
 

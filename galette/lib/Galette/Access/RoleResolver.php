@@ -91,7 +91,7 @@ class RoleResolver implements PermissionResolverInterface
                 return true;
             }
             $subject_groups ??= $this->getGroupsOf($subject);
-            if (in_array($group_id, $subject_groups, true)) {
+            if (in_array($group_id, $subject_groups, strict: true)) {
                 return true;
             }
         }

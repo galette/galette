@@ -75,7 +75,7 @@ class RoleTest extends GaletteTestCase
         $this->assertSame(4, $role->getParentId());
         $this->assertSame(['contribution:create', 'contribution:edit'], $role->getPermissions());
 
-        $role->setPermissions(['member:read'], new Permissions())->setParentId(null);
+        $role->setPermissions(['member:read'], new Permissions())->setParentId(parent: null);
         $this->assertTrue($role->store($this->zdb));
         $role = new Role($role->getId());
         $this->assertNull($role->getParentId());
