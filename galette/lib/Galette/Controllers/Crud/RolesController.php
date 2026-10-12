@@ -303,30 +303,11 @@ class RolesController extends CrudController
     {
         $role = $this->loadRole($request, $id);
         $post = $request->getParsedBody();
-        $member = (int)($post['id_adh'] ?? 0);
-        $group = (int)($post['id_group'] ?? 0);
-
-        $errors = [];
-        $successes = [];
-        if ($member <= 0) {
-            $errors[] = _T('Please choose a member.');
-        } elseif (!$this->getRoles()->give($member, $id, $group > 0 ? $group : null)) {
-            $errors[] = _T('Member already has this role.');
-        } else {
-            $successes[] = sprintf(
-                //TRANS: %1$s is the role name
-                _T('Role \'%1$s\' has been given.'),
-                $role->getLabel()
-            );
-            $this->history->add(
-                sprintf(
-                    //TRANS: %1$s is the role name, %2$d the member identifier
-                    _T('Role \'%1$s\' given to member #%2$d'),
-                    $role->getLabel(),
-                    $member
-                )
-            );
-        }
+        [$successes, $errors] = $this->giveTo(
+            $role,
+            (int)($post['id_adh'] ?? 0),
+            (int)($post['id_group'] ?? 0)
+        );
 
         return $this->redirect(
             response: $response,
@@ -334,6 +315,79 @@ class RolesController extends CrudController
             successes: $successes,
             errors: $errors
         );
+    }
+
+    /**
+     * Give a role to a member, from their card
+     *
+     * @param int $id Member id
+     */
+    #[Route(
+        name: 'giveMemberRole',
+        pattern: '/member/{id:\d+}/roles',
+        methods: ['POST']
+    )]
+    public function giveMember(Request $request, Response $response, int $id): Response
+    {
+        $post = $request->getParsedBody();
+        $role = (int)($post['id_role'] ?? 0);
+        if ($role <= 0) {
+            [$successes, $errors] = [[], [_T('Please choose a role.')]];
+        } else {
+            [$successes, $errors] = $this->giveTo(
+                $this->loadRole($request, $role),
+                $id,
+                (int)($post['id_group'] ?? 0)
+            );
+        }
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('member', ['id' => (string)$id]),
+            successes: $successes,
+            errors: $errors
+        );
+    }
+
+    /**
+     * Give a role to a member, and log it
+     *
+     * @param Role $role   Role
+     * @param int  $member Member identifier
+     * @param int  $group  Group identifier, 0 for all groups
+     *
+     * @return array{0: array<string>, 1: array<string>} successes and errors
+     */
+    private function giveTo(Role $role, int $member, int $group): array
+    {
+        if ($role->isSystem()) {
+            return [[], [_T('System roles are given from members data.')]];
+        }
+        if ($member <= 0) {
+            return [[], [_T('Please choose a member.')]];
+        }
+        if (!$this->getRoles()->give($member, (int)$role->getId(), $group > 0 ? $group : null)) {
+            return [[], [_T('Member already has this role.')]];
+        }
+
+        $this->history->add(
+            sprintf(
+                //TRANS: %1$s is the role name, %2$d the member identifier
+                _T('Role \'%1$s\' given to member #%2$d'),
+                $role->getLabel(),
+                $member
+            )
+        );
+        return [
+            [
+                sprintf(
+                    //TRANS: %1$s is the role name
+                    _T('Role \'%1$s\' has been given.'),
+                    $role->getLabel()
+                )
+            ],
+            []
+        ];
     }
 
     /**
@@ -350,18 +404,7 @@ class RolesController extends CrudController
     public function take(Request $request, Response $response, int $id, int $assignment): Response
     {
         $role = $this->loadRole($request, $id);
-
-        $errors = [];
-        $successes = [];
-        if ($this->getRoles()->take($id, $assignment)) {
-            $successes[] = sprintf(
-                //TRANS: %1$s is the role name
-                _T('Role \'%1$s\' has been taken back.'),
-                $role->getLabel()
-            );
-        } else {
-            $errors[] = _T('This role was not given.');
-        }
+        [$successes, $errors] = $this->takenBack($role, $this->getRoles()->take($id, $assignment));
 
         return $this->redirect(
             response: $response,
@@ -369,6 +412,58 @@ class RolesController extends CrudController
             successes: $successes,
             errors: $errors
         );
+    }
+
+    /**
+     * Take a given role back from a member, from their card
+     *
+     * @param int $id         Member id
+     * @param int $role       Role id
+     * @param int $assignment Assignment id
+     */
+    #[Route(
+        name: 'takeMemberRole',
+        pattern: '/member/{id:\d+}/roles/{role:\d+}/remove/{assignment:\d+}',
+        methods: ['POST']
+    )]
+    public function takeMember(Request $request, Response $response, int $id, int $role, int $assignment): Response
+    {
+        [$successes, $errors] = $this->takenBack(
+            $this->loadRole($request, $role),
+            $this->getRoles()->takeFrom($id, $role, $assignment)
+        );
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('member', ['id' => (string)$id]),
+            successes: $successes,
+            errors: $errors
+        );
+    }
+
+    /**
+     * Messages after a role has been taken back
+     *
+     * @param Role $role  Role
+     * @param bool $taken Whether the role has been taken back
+     *
+     * @return array{0: array<string>, 1: array<string>} successes and errors
+     */
+    private function takenBack(Role $role, bool $taken): array
+    {
+        if (!$taken) {
+            return [[], [_T('This role was not given.')]];
+        }
+        return [
+            [
+                sprintf(
+                    //TRANS: %1$s is the role name
+                    _T('Role \'%1$s\' has been taken back.'),
+                    $role->getLabel()
+                )
+            ],
+            []
+        ];
     }
 
     // /CRUD - Update

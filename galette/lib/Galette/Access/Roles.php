@@ -401,7 +401,7 @@ class Roles
      *
      * @param \Galette\Entity\Adherent $member Member
      *
-     * @return array<array{role: Role, group: ?string, given: bool}>
+     * @return array<array{role: Role, group: ?string, given: bool, assignment: ?int}>
      */
     public function getRolesOf(\Galette\Entity\Adherent $member): array
     {
@@ -420,12 +420,17 @@ class Roles
         $roles = [];
         foreach (array_keys(array_filter($computed)) as $key) {
             if (isset($system[$key])) {
-                $roles[] = ['role' => $system[$key], 'group' => null, 'given' => false];
+                $roles[] = ['role' => $system[$key], 'group' => null, 'given' => false, 'assignment' => null];
             }
         }
         if (isset($system[self::MANAGER])) {
             foreach ($member->getManagedGroups() as $group) {
-                $roles[] = ['role' => $system[self::MANAGER], 'group' => $group->getName(), 'given' => false];
+                $roles[] = [
+                    'role' => $system[self::MANAGER],
+                    'group' => $group->getName(),
+                    'given' => false,
+                    'assignment' => null
+                ];
             }
         }
 
@@ -443,7 +448,12 @@ class Roles
 
         $given = [];
         foreach ($this->zdb->execute($select) as $row) {
-            $given[] = ['role' => new Role($row), 'group' => $row->group_name, 'given' => true];
+            $given[] = [
+                'role' => new Role($row),
+                'group' => $row->group_name,
+                'given' => true,
+                'assignment' => (int)$row->id_member_role
+            ];
         }
         //by role name, then all groups first; NULL ordering differs between databases
         usort(
@@ -497,6 +507,24 @@ class Roles
         $delete = $this->zdb->delete(self::MEMBERS_TABLE);
         $delete->where([
             'id_member_role' => $assignment,
+            self::PK => $role
+        ]);
+        return $this->zdb->execute($delete)->getAffectedRows() > 0;
+    }
+
+    /**
+     * Take a given role back from a member
+     *
+     * @param int $member     Member identifier
+     * @param int $role       Role identifier
+     * @param int $assignment Assignment identifier
+     */
+    public function takeFrom(int $member, int $role, int $assignment): bool
+    {
+        $delete = $this->zdb->delete(self::MEMBERS_TABLE);
+        $delete->where([
+            'id_member_role' => $assignment,
+            'id_adh' => $member,
             self::PK => $role
         ]);
         return $this->zdb->execute($delete)->getAffectedRows() > 0;

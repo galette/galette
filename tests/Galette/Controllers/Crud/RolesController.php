@@ -141,6 +141,90 @@ class RolesController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test giving and taking back a role from the member card
+     */
+    public function testManageFromMemberCard(): void
+    {
+        $member = $this->getMemberOne();
+        $other = $this->getMemberTwo();
+        $role = new Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $roles = new Roles($this->zdb, new Permissions());
+        $member_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+
+        //only roles managers can give
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $request = $this->createRequest('giveMemberRole', ['id' => (string)$member->id], 'POST');
+        $request = $request->withParsedBody(['id_role' => (string)$role->getId()]);
+        $this->expectAuthMiddlewareRefused($this->app->handle($request));
+        $this->assertCount(0, $roles->getMembersOf($role->getId()));
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($this->createRequest('member', ['id' => (string)$member->id]));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('giveMemberRole', ['id' => (string)$member->id]),
+            $body
+        );
+        $this->assertStringContainsString('<option value="' . $role->getId() . '">Treasurer</option>', $body);
+        //system roles cannot be given
+        $this->assertStringNotContainsString('<option value="3">', $body);
+
+        //give
+        $request = $this->createRequest('giveMemberRole', ['id' => (string)$member->id], 'POST');
+        $request = $request->withParsedBody(['id_role' => (string)$role->getId(), 'id_group' => '']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$member_url]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Role \'Treasurer\' has been given.']]);
+        $this->app->handle($request);
+        $this->expectFlashData(['error_detected' => ['Member already has this role.']]);
+        $given = $roles->getMembersOf($role->getId());
+        $this->assertCount(1, $given);
+        $assignment = (string)array_key_first($given);
+
+        $request = $this->createRequest('giveMemberRole', ['id' => (string)$member->id], 'POST');
+        $request = $request->withParsedBody(['id_role' => '', 'id_group' => '']);
+        $this->app->handle($request);
+        $this->expectFlashData(['error_detected' => ['Please choose a role.']]);
+
+        $request = $this->createRequest('giveMemberRole', ['id' => (string)$member->id], 'POST');
+        $request = $request->withParsedBody(['id_role' => '3', 'id_group' => '']);
+        $this->app->handle($request);
+        $this->expectFlashData(['error_detected' => ['System roles are given from members data.']]);
+        $this->assertCount(0, $roles->getMembersOf(3));
+
+        //take back link on the card
+        $take_args = ['id' => (string)$member->id, 'role' => (string)$role->getId(), 'assignment' => $assignment];
+        $test_response = $this->app->handle($this->createRequest('member', ['id' => (string)$member->id]));
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('takeMemberRole', $take_args),
+            (string)$test_response->getBody()
+        );
+
+        //assignment of another member is not taken back
+        $request = $this->createRequest(
+            'takeMemberRole',
+            ['id' => (string)$other->id] + $take_args,
+            'POST'
+        );
+        $this->app->handle($request);
+        $this->expectFlashData(['error_detected' => ['This role was not given.']]);
+        $this->assertCount(1, $roles->getMembersOf($role->getId()));
+
+        $request = $this->createRequest('takeMemberRole', $take_args, 'POST');
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$member_url]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Role \'Treasurer\' has been taken back.']]);
+        $this->assertCount(0, $roles->getMembersOf($role->getId()));
+
+        $this->assertTrue($role->delete());
+    }
+
+    /**
      * Test system roles keep their name and parent
      */
     public function testSystemRole(): void

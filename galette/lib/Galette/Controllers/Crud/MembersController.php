@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use DI\Attribute\Inject;
+use Galette\Access\Role;
 use Galette\Access\Roles;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
@@ -316,6 +317,7 @@ class MembersController extends CrudController
         // flagging fields visibility
         $fc = $this->fields_config;
         $display_elements = $fc->getDisplayElements($this->login);
+        $can_manage_roles = $this->accessControl->can('role:manage');
 
         // display page
         $this->view->render(
@@ -331,7 +333,11 @@ class MembersController extends CrudController
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
                 'navigate'          => $this->handleNavigationLinks($member->id),
-                'member_roles'      => $this->accessControl->can('role:manage') ? $this->roles->getRolesOf($member) : []
+                'member_roles'      => $can_manage_roles ? $this->roles->getRolesOf($member) : [],
+                'assignable_roles'  => $can_manage_roles ? array_filter(
+                    $this->roles->getList(),
+                    fn(Role $role): bool => !$role->isSystem()
+                ) : []
             ]
         );
         return $response;

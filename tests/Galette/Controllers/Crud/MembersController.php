@@ -1322,6 +1322,10 @@ class MembersController extends GaletteRoutingTestCase
             $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
             $body
         );
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('giveMemberRole', ['id' => (string)$member_one->id]),
+            $body
+        );
     }
 
     /**

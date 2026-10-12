@@ -17,7 +17,7 @@ $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',
     'unimpersonate'                     => 'member',
-    //roles, with acls feature flag
+    //roles
     'roles'                             => 'role:manage',
     'storeRole'                         => 'role:manage',
     'editRole'                          => 'role:manage',
@@ -26,6 +26,8 @@ $core_acls = [
     'doRemoveRole'                      => 'role:manage',
     'giveRole'                          => 'role:manage',
     'takeRole'                          => 'role:manage',
+    'giveMemberRole'                    => 'role:manage',
+    'takeMemberRole'                    => 'role:manage',
     'adminCredentials'                  => 'superadmin',
     'storeAdminCredentials'             => 'superadmin',
     'writeDarkCSS'                      => 'staff', //served to every visitor
