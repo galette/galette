@@ -62,11 +62,6 @@ $app->post(
 )->setName('ajax_group')->add(Authenticate::class);
 
 $app->post(
-    '/ajax/groups',
-    [Crud\GroupsController::class, 'simpleList']
-)->setName('ajax_groups')->add(Authenticate::class);
-
-$app->post(
     '/ajax/groups/reorder',
     [Crud\GroupsController::class, 'reorder']
 )->setName('ajax_groups_reorder')->add(Authenticate::class);

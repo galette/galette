@@ -17,11 +17,6 @@
                             {% include "components/forms/picture.html.twig" %}
                         </div>
                     {% endif %}
-                    {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
-                        <div class="sixteen wide field column">
-                            {% include "components/forms/groups.html.twig" %}
-                        </div>
-                    {% endif %}
                     {% for entry in fieldset.elements %}
                         {% if entry.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and entry.width_in_forms == 3) %}
                           {% set columns = '' %}

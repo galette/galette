@@ -461,8 +461,7 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
 --------------------------*/
 .filters .segment .button,
 .infoline .segments .fitted.segment .label,
-.infoline .segments .fitted.segment .tiny.button,
-#groups_field .button {
+.infoline .segments .fitted.segment .tiny.button {
   margin-bottom: 0.75em;
 }
 
