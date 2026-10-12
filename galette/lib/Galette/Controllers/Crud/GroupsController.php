@@ -261,33 +261,6 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Groups list page for ajax calls
-     */
-    #[Route(
-        name: 'ajax_groups',
-        pattern: '/ajax/groups',
-        methods: ['POST']
-    )]
-    public function simpleList(Request $request, Response $response): Response
-    {
-        $post = $request->getParsedBody();
-
-        $groups = new Groups($this->zdb, $this->login);
-
-        // display page
-        $this->view->render(
-            $response,
-            'elements/ajax_groups.html.twig',
-            [
-                'mode'              => 'ajax',
-                'groups_list'       => $groups->getList(),
-                'selected_groups'   => ($post['groups'] ?? [])
-            ]
-        );
-        return $response;
-    }
-
-    /**
      * Group members ajax loader
      */
     #[Route(
