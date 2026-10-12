@@ -131,16 +131,16 @@
                                     <div class="ui large labels">
                     {% for member_role in member_roles %}
                         {% if member_role.given %}
-                                        <span class="ui blue label">
-                                            <a href="{{ url_for("editRole", {"id": member_role.role.getId()}) }}">{{ member_role.role.getLabel() }}</a>
+                                        <a href="{{ url_for("editRole", {"id": member_role.role.getId()}) }}" class="ui blue label">
+                                            {{ member_role.role.getLabel() }}
                             {% if member_role.group is not null %}
                                             <span class="detail">{{ member_role.group }}</span>
                             {% endif %}
-                                            <button type="submit" form="take_role_{{ member_role.assignment }}" class="ui mini compact basic icon button tooltip" title="{{ _T("Take role back") }}">
-                                                <i class="ui times icon" aria-hidden="true"></i>
-                                                <span class="visually-hidden">{{ _T("Take role '%1$s' back")|format(member_role.role.getLabel()) }}</span>
-                                            </button>
-                                        </span>
+                                        </a>
+                                        <button type="submit" form="take_role_{{ member_role.assignment }}" class="ui mini compact basic icon button tooltip" title="{{ _T("Take role back") }}">
+                                            <i class="ui times icon" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ _T("Take role '%1$s' back")|format(member_role.role.getLabel()) }}</span>
+                                        </button>
                         {% else %}
                                         <a href="{{ url_for("editRole", {"id": member_role.role.getId()}) }}" class="ui label">
                                             <i class="ui cog icon tooltip" title="{{ _T("Computed from member's information") }}" aria-hidden="true"></i>
@@ -169,7 +169,7 @@
                                             </div>
                                             <div class="field">
                                                 <label for="id_group">{{ _T("Group") }}</label>
-                                                <select name="id_group" id="id_group" class="ui search dropdown nochosen">
+                                                <select name="id_group" id="id_group" class="ui dropdown nochosen">
                                                     <option value="">{{ _T("All groups") }}</option>
                         {% for group_id, group_name in groups %}
                                                     <option value="{{ group_id }}">{{ group_name }}</option>

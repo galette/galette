@@ -6,3 +6,8 @@
 .ui.ui.ui.primary.label {
     color: @darkGrey;
 }
+
+/* translucent detail does not contrast enough on blue */
+.ui.blue.label > .detail {
+    opacity: 1;
+}
