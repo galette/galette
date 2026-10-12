@@ -25,6 +25,16 @@
     {% endif %}
 {% else %}
     {% set edit = edit is defined and edit %}
+    {% if login.isSuperAdmin() %}
+<a
+    href="{{ url_for("impersonate", {"id": member.id}) }}"
+    class="ui small icon button tooltip"
+    title="{{ _T("Log in as %1$s")|format(member.sname) }}"
+>
+    <i class="user secret icon" aria-hidden="true"></i>
+    <span class="visually-hidden">{{ _T("Log in as %1$s")|format(member.sname) }}</span>
+</a>
+    {% endif %}
 <div class="ui primary small buttons">
     {% if edit %}
     <button type="submit" name="valid" class="action ui labeled icon primary button">
@@ -123,16 +133,6 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
-        {% if login.isSuperAdmin() %}
-            <a
-                href="{{ url_for("impersonate", {"id": member.id}) }}"
-                class="ui item"
-            >
-                <i class="user secret icon" aria-hidden="true"></i>
-                {{ _T("Log in as") }}
-            </a>
-        {% endif %}
-
         {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
         {% for action in actions %}
             {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
