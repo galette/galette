@@ -21,20 +21,7 @@
                     </div>
 
                     <div class="ui right floated basic fitted segment">
-                        <div class="ui small spaced buttons">
-                    {% if member.id %}
-                            <button type="submit" name="valid" class="action ui labeled icon primary button">
-                                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
-                            </button>
-                    {% endif %}
-                            <a
-                                href="{{ url_for("member", {"id": member.id}) }}"
-                                class="ui basic labeled icon button"
-                            >
-                                <i class="eye outline icon" aria-hidden="true"></i>
-                                {{ _T("Display") }}
-                            </a>
-                        </div>
+                        {% include "elements/member_actions.html.twig" with {"edit": true} %}
                     </div>
                 </div>
                 {% include "elements/member_card.html.twig" %}
@@ -215,6 +202,9 @@
 </div>
     {% endif %}
 </form>
+    {% if member.id and not self_adh %}
+        {% include "elements/member_actions.html.twig" with {"forms_only": true} %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

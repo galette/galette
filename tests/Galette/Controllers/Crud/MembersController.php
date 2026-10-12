@@ -1018,6 +1018,13 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($member_one->login, $body);
         $this->assertStringContainsString($member_one->name, $body);
+        //actions menu: display page first, then impersonating for super-admin only
+        $this->assertStringContainsString(
+            'href="' . $this->routeparser->urlFor('member', $route_arguments) . '"',
+            $body
+        );
+        $impersonate_link = 'href="' . $this->routeparser->urlFor('impersonate', $route_arguments) . '"';
+        $this->assertStringContainsString($impersonate_link, $body);
 
         //member that does not exists
         $request = $this->createRequest($route_name, ['id' => '999999']);
@@ -1042,6 +1049,7 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($member_one->login, $body);
         $this->assertStringContainsString($member_one->name, $body);
+        $this->assertStringNotContainsString($impersonate_link, $body);
 
         $this->login->logout();
 
@@ -1089,6 +1097,8 @@ class MembersController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
+        //only super-admin can impersonate
+        $this->assertStringNotContainsString($impersonate_link, (string)$test_response->getBody());
 
         $this->login->logOut();
         //reset admin status
@@ -1182,6 +1192,10 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($member_one->sfullname, $body);
         $this->assertStringContainsString($member_one->getEmail(), $body);
+        $this->assertStringContainsString(
+            'href="' . $this->routeparser->urlFor('impersonate', $route_arguments) . '"',
+            $body
+        );
 
         //member that does not exists
         $request = $this->createRequest($route_name, ['id' => '999999']);
