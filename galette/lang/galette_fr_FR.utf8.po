@@ -942,10 +942,10 @@ msgid "Manage emails texts and subjects"
 msgstr "Gestion des textes et sujets des courriels"
 
 msgid "Labels translation"
-msgstr "Traduction des étiquettes"
+msgstr "Traduction des libellés"
 
 msgid "Manage translatable labels"
-msgstr "Gérer les traductions des étiquettes"
+msgstr "Gérer les traductions des libellés"
 
 msgid "Administration tools"
 msgstr "Outils d'administration"
@@ -1920,11 +1920,11 @@ msgstr "Rien à lever ; il est possible qu'ils aient expirés d'eux-mêmes."
 #, php-format
 msgid "An error occurred saving label `%1$s` for language `%2$s`"
 msgstr ""
-"Une erreur est survenue lors de l'enregistrement de l'étiquette « %1$s » "
+"Une erreur est survenue lors de l'enregistrement du libellé « %1$s » "
 "pour la langue « %2$s »"
 
 msgid "Labels has been successfully translated!"
-msgstr "Les étiquettes ont été traduites avec succès !"
+msgstr "Les libellés ont été traduits avec succès !"
 
 #. TRANS: parameter is the table name
 #, php-format
@@ -2595,7 +2595,7 @@ msgstr "Administrateur"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr "Étiquette du champ dynamique « %s »"
+msgstr "Libellé du champ dynamique « %s »"
 
 #, php-format
 msgid "Form entry for dynamic field \"%s\""
@@ -4076,7 +4076,7 @@ msgid "Close"
 msgstr "Fermer"
 
 msgid "Translate labels"
-msgstr "Traduction de libellés"
+msgstr "Traduction des libellés"
 
 msgid "Simple search"
 msgstr "Recherche simple"
@@ -7326,6 +7326,76 @@ msgstr "Vos informations de télémétrie datent de plus d’un an."
 
 msgid "Do you want to send it again?"
 msgstr "Voulez-vous les envoyer à nouveau ?"
+
+#. TRANS: parameter is the label
+#, php-format
+msgid "Label `%1$s` is translated by Galette, it cannot be translated here."
+msgstr "Le libellé « %1$s » est traduit par Galette, il ne peut pas être traduit ici."
+
+#, php-format
+msgid "This label is provided by Galette and displayed as \"%1$s\" in your language. Changing it will replace its automatic translations."
+msgstr "Ce libellé est fourni par Galette et s'affiche « %1$s » dans votre langue. Le modifier remplacera ses traductions automatiques."
+
+msgid "This label is provided by Galette, its translations come with the software and cannot be changed here. You can help improve them on Weblate."
+msgstr "Ce libellé est fourni par Galette : ses traductions sont livrées avec le logiciel et ne peuvent pas être modifiées ici. Vous pouvez aider à les améliorer sur Weblate."
+
+msgid "When a translation is empty, the original text is displayed."
+msgstr "Lorsqu'une traduction est vide, le texte original est affiché."
+
+msgid "If this label is changed, keep its translations in other languages"
+msgstr "Si ce libellé est modifié, conserver ses traductions dans les autres langues"
+
+msgid "Copied to clipboard."
+msgstr "Copié dans le presse-papiers."
+
+msgid "Unable to copy, please select the text and copy it by hand."
+msgstr "Copie impossible, veuillez sélectionner le texte et le copier manuellement."
+
+msgid "Copy system information"
+msgstr "Copier les informations système"
+
+msgid "Copy the codes"
+msgstr "Copier les codes"
+
+msgid "Copy the key"
+msgstr "Copier la clé"
+
+msgctxt "member groups"
+msgid "added"
+msgstr "ajouté"
+
+msgctxt "member groups"
+msgid "changed"
+msgstr "modifié"
+
+msgctxt "member groups"
+msgid "will be removed"
+msgstr "sera retiré"
+
+msgid "Group you do not manage"
+msgstr "Groupe que vous ne gérez pas"
+
+#, php-format
+msgid "Member of group %1$s"
+msgstr "Membre du groupe %1$s"
+
+#, php-format
+msgid "Manager of group %1$s"
+msgstr "Responsable du groupe %1$s"
+
+#, php-format
+msgid "Remove from group %1$s"
+msgstr "Retirer du groupe %1$s"
+
+#, php-format
+msgid "Keep group %1$s"
+msgstr "Conserver le groupe %1$s"
+
+msgid "Generating dark theme..."
+msgstr "Génération du mode sombre…"
+
+msgid "Unable to store dark theme."
+msgstr "Impossible d'enregistrer le mode sombre."
 
 #~ msgid "Using GMAIL as SMTP server (slower)"
 #~ msgstr "Utilisation de Gmail comme serveur SMTP (plus lent)"
