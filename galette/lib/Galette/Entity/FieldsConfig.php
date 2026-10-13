@@ -98,6 +98,18 @@ class FieldsConfig
         'date_modif_adh'
     ];
 
+    /**
+     * Fields always shown on self subscription, whatever their visibility;
+     * password field holds the captcha.
+     *
+     * @var array<string>
+     */
+    private array $self_shown_fields = [
+        'email_adh',
+        'login_adh',
+        'mdp_adh'
+    ];
+
     /** @var array<string> */
     private array $non_display_elements = [
         'date_echeance',
@@ -487,8 +499,11 @@ class FieldsConfig
                             $o->visible = self::ADMIN;
                         }
 
-                        // skip fields according to access control
-                        if (!self::isGranted((int)$o->visible, $access_level)) {
+                        // skip fields according to access control, except mandatory ones for self subscription
+                        if (
+                            !self::isGranted((int)$o->visible, $access_level)
+                            && !($selfs && in_array($o->field_id, $this->self_shown_fields))
+                        ) {
                             continue;
                         }
 
@@ -531,7 +546,7 @@ class FieldsConfig
                         }
 
                         if ($selfs === true) {
-                            //email, login and password are always required for self subscription
+                            //email and login are always required for self subscription
                             $srequireds = ['email_adh', 'login_adh'];
                             if (in_array($o->field_id, $srequireds)) {
                                 $o->required = true;
@@ -559,12 +574,13 @@ class FieldsConfig
      * Get fields that are allowed for current user
      *
      * @param Login $login Login instance
+     * @param bool  $selfs True if we're called from self subscription
      *
      * @return string[]
      */
-    public function getAllowedFields(Login $login): array
+    public function getAllowedFields(Login $login, bool $selfs = false): array
     {
-        $form_elements = $this->getFormElements($login, new: false);
+        $form_elements = $this->getFormElements($login, new: false, selfs: $selfs);
         $to_check = [];
         foreach ($form_elements['fieldsets'] as $fieldset) {
             $to_check = array_merge($to_check, array_keys($fieldset->elements));

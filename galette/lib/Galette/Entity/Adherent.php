@@ -985,15 +985,17 @@ class Adherent implements AccessManagementInterface
     /**
      * Retrieve fields
      *
+     * @param bool $selfs True if we're called from self subscription
+     *
      * @return array<string>
      */
-    public static function getFields(): array
+    public static function getFields(bool $selfs = false): array
     {
         global $container, $login;
 
         /** @var FieldsConfig $fc */
         $fc = $container->get(FieldsConfig::class);
-        return $fc->getAllowedFields($login);
+        return $fc->getAllowedFields($login, $selfs);
     }
 
     /**
@@ -1067,7 +1069,7 @@ class Adherent implements AccessManagementInterface
             }
         }
 
-        $fields = self::getFields();
+        $fields = self::getFields($this->self_adh);
 
         //reset company name if needed
         if (!isset($values['is_company'])) {
