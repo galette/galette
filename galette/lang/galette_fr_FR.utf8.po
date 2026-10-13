@@ -5333,7 +5333,7 @@ msgid "Visibility"
 msgstr "Visibilité"
 
 msgid "Translate labels"
-msgstr "Traduction des libellés"
+msgstr "Traduire les libellés"
 
 msgid ""
 "This label is provided by Galette, its translations come with the software "
