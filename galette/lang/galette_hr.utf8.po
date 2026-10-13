@@ -2,13 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Marko Puljic <markopuljic.uo@gmail.com>, 2026.
+# Marko Puljic <markopuljic.uo@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-09-30 22:27+0200\n"
-"PO-Revision-Date: 2026-10-10 13:51+0000\n"
-"Last-Translator: Marko Puljic <markopuljic.uo@gmail.com>\n"
+"PO-Revision-Date: 2026-10-13 08:41+0000\n"
+"Last-Translator: Marko Puljic "
+"<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
 "hr/>\n"
 "Language: hr\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 #: ../lib/Galette/IO/CsvIn.php:166 ../lib/Galette/IO/CsvIn.php:214
 #, php-format
@@ -1247,7 +1249,7 @@ msgstr "Dodaj novu donaciju u bazu podataka"
 #: ../templates/default/pages/transactions_list.html.twig:135
 #: ../templates/default/pages/transactions_list.html.twig:165
 msgid "Add a transaction"
-msgstr "Dodaj transakciju"
+msgstr "Dodavanje transakcije"
 
 #: ../lib/Galette/Core/Galette.php:330
 msgid "Add new transaction in database"
@@ -4646,7 +4648,7 @@ msgstr "Status:"
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:20
 #: ../templates/default/elements/group.html.twig:22
 msgid "Name:"
-msgstr "Prezime:"
+msgstr "Naziv:"
 
 #: ../includes/fields_defs/members_fields.php:46
 msgid "First name:"
@@ -7103,7 +7105,7 @@ msgstr[2] "%1$s dokumenata"
 
 #: ../templates/default/pages/documents_list.html.twig:56
 msgid "Add a document"
-msgstr "Dodaj dokument"
+msgstr "Dodavanje dokumenta"
 
 #: ../templates/default/pages/documents_list.html.twig:160
 #: ../templates/default/pages/documents_public_list.html.twig:20
@@ -9001,7 +9003,7 @@ msgstr ""
 
 #: ../templates/default/pages/members_list.html.twig:562
 msgid "New"
-msgstr "Nova"
+msgstr "Novo"
 
 #: ../templates/default/pages/members_list.html.twig:562
 msgid "Resume"
@@ -10196,7 +10198,7 @@ msgstr "Podnožje"
 
 #: ../templates/default/elements/edit_pdf_models.html.twig:44
 msgid "Body"
-msgstr "Sadržaj"
+msgstr "Karoserija"
 
 #: ../templates/default/elements/edit_pdf_models.html.twig:53
 msgid "CSS styles"
