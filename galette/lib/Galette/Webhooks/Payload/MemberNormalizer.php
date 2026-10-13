@@ -219,6 +219,7 @@ class MemberNormalizer implements Normalizer
             $title = new Title((int)$value);
             return ['id' => (int)$value, 'label' => (string)$title->short];
         } catch (Throwable) {
+            // no log: already logged by AbstractEntity::load()
             return ['id' => (int)$value, 'label' => ''];
         }
     }

@@ -167,7 +167,7 @@ class WebhookListener extends GaletteTestCase
         $this->assertSame([], $this->getDeliveries());
         $this->expectLogEntry(
             \Analog\Analog::ERROR,
-            'Unable to queue webhooks for group.created event: Builder is broken'
+            'Unable to queue webhooks for group.created event | Builder is broken'
         );
         $this->assertTrue($webhook->isActive());
     }

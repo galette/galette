@@ -163,6 +163,7 @@ class Webhook extends AbstractEntity
         try {
             $parts = parse_url($url);
         } catch (UrlException) {
+            // no log: an invalid URL is a validation failure, reported to the user
             return false;
         }
         return is_array($parts)

@@ -237,6 +237,7 @@ class WebhooksController extends CrudController
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
             );
         } catch (\JsonException) {
+            // no log: a payload that is not valid JSON is displayed as is
             $delivery['payload_pretty'] = $delivery['payload'];
         }
         return $delivery;
@@ -465,6 +466,7 @@ class WebhooksController extends CrudController
         try {
             return new Webhook($id);
         } catch (EntityException) {
+            // no log: already logged by AbstractEntity::load()
             return null;
         }
     }

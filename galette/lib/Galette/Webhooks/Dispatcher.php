@@ -13,6 +13,7 @@ namespace Galette\Webhooks;
 use Analog\Analog;
 use ArrayObject;
 use Galette\Core\Db;
+use Galette\Core\Logs;
 use Galette\Entity\Webhook;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -164,6 +165,7 @@ class Dispatcher
         try {
             $webhook = new Webhook((int)$row->{Webhook::PK});
         } catch (Throwable $e) {
+            // no log: already logged by AbstractEntity::load(), and stored on the delivery
             return $this->markFailed(
                 row: $row,
                 code: null,
@@ -188,7 +190,8 @@ class Dispatcher
                 RequestOptions::HTTP_ERRORS => false,
             ]);
         } catch (Throwable $e) {
-            //network errors, timeouts, as well as an invalid stored secret
+            // no log: network errors, timeouts and an invalid stored secret are stored on the delivery,
+            // and shown on its deliveries page
             return $this->markFailed($row, code: null, error: $e->getMessage());
         }
 
@@ -347,7 +350,7 @@ class Dispatcher
             $this->zdb->execute($delete);
         } catch (Throwable $e) {
             //housekeeping must never get in the way of a sending
-            Analog::log('Unable to purge webhooks deliveries | ' . $e->getMessage(), Analog::WARNING);
+            Logs::exception($e, 'Unable to purge webhooks deliveries', Analog::WARNING);
         }
     }
 

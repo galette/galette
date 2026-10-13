@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Galette\Webhooks;
 
-use Analog\Analog;
 use Closure;
+use Galette\Core\Logs;
 use Galette\Core\Preferences;
 use Throwable;
 
@@ -85,7 +85,7 @@ class ShutdownDispatcher
                 $dispatcher->processIds($deliveries);
             }
         } catch (Throwable $e) {
-            Analog::log('Unable to send webhooks deliveries | ' . $e->getMessage(), Analog::ERROR);
+            Logs::exception($e, 'Unable to send webhooks deliveries');
         }
     }
 }

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Galette\Events;
 
-use Analog\Analog;
 use Closure;
+use Galette\Core\Logs;
 use Galette\Repository\Webhooks;
 use Galette\Webhooks\DeliveryQueue;
 use Galette\Webhooks\Payload\Envelope;
@@ -96,14 +96,7 @@ class WebhookListener implements ListenerSubscriber
             }
             $this->shutdown?->schedule($this->getEnqueued(...));
         } catch (Throwable $e) {
-            Analog::log(
-                sprintf(
-                    'Unable to queue webhooks for %1$s event: %2$s',
-                    $event->value,
-                    $e->getMessage()
-                ),
-                Analog::ERROR
-            );
+            Logs::exception($e, sprintf('Unable to queue webhooks for %1$s event', $event->value));
         }
     }
 
