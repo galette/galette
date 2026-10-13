@@ -13,7 +13,7 @@
  # exactly the memberships to store.
  #}
 {% set can_edit_members = login.isGroupManager() %}
-{% set can_edit_managers = login.isAdmin() or login.isStaff() %}
+{% set can_edit_managers = can('member:manage') %}
 {% set member_gids = member.id ? member.getGroups()|map(g => g.getId()) : [] %}
 {% set manager_gids = member.id ? member.getManagedGroups()|map(g => g.getId()) : [] %}
 {% set sorted_groups = groups|sort((a, b) => a.getFullName() <=> b.getFullName()) %}
