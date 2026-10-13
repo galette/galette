@@ -1358,19 +1358,61 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Test next year contribution
+     * "Now" dates for next year contribution tests.
+     *
+     * Subtracting one year from February 29th overflows to March 1st, which
+     * used to break those tests on leap days (see https://bugs.galette.eu/issues/1796).
+     *
+     * @return array<string, array{now: string}>
      */
-    public function testNextYear(): void
+    public static function nextYearNowProvider(): array
     {
+        return [
+            //the originally reported failing case
+            'February 29th (leap)'      => ['now' => '2024-02-29'],
+            'end of February, leap year' => ['now' => '2024-02-28'],
+            'end of February'           => ['now' => '2026-02-28'],
+            'beginning of March'        => ['now' => '2026-03-01'],
+            'end of December'           => ['now' => '2026-12-31'],
+            //plain mid-month control case
+            'mid-month control'         => ['now' => '2026-05-15'],
+        ];
+    }
+
+    /**
+     * Same day one year before the given date; clamped to the last day of
+     * the month when it does not exist (2024-02-29 gives 2023-02-28).
+     *
+     * @param DateTime $date Reference date
+     */
+    private function oneYearBefore(DateTime $date): DateTime
+    {
+        $year = (int)$date->format('Y') - 1;
+        $month = (int)$date->format('m');
+        $last_day = (int)(new DateTime(sprintf('%04d-%02d-01', $year, $month)))->format('t');
+        $day = min((int)$date->format('d'), $last_day);
+        return new DateTime(sprintf('%04d-%02d-%02d', $year, $month, $day));
+    }
+
+    /**
+     * Test next year contribution
+     *
+     * @param string $now Date to freeze "now" to
+     */
+    #[DataProvider('nextYearNowProvider')]
+    public function testNextYear(string $now): void
+    {
+        $this->setFakeTime($now . ' 12:00:00');
+
         $this->logSuperAdmin();
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new DateTime(); // 2023-12-30
-        $ny_begin_date = clone $begin_date; // 2023-12-30
+        $ny_begin_date = new DateTime((new DateTime())->format('Y-m-d'));
+        $begin_date = $this->oneYearBefore($ny_begin_date);
         $end_date = clone $begin_date;
-        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
-        $end_date->sub(new \DateInterval('P1D')); // 2023-12-29
+        $end_date->add(new \DateInterval('P12M'));
+        $end_date->sub(new \DateInterval('P1D'));
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -1394,19 +1436,25 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test next year contribution from a 0.9.x
+     *
+     * @param string $now Date to freeze "now" to
      */
-    public function testNextYearFrom096(): void
+    #[DataProvider('nextYearNowProvider')]
+    public function testNextYearFrom096(string $now): void
     {
+        $this->setFakeTime($now . ' 12:00:00');
+
         $this->logSuperAdmin();
         $this->getMemberOne();
 
-        //create contribution for member
-        $begin_date = new DateTime(); // 2023-12-30
-        $ny_begin_date = clone $begin_date; // 2023-12-30
-        $end_date = clone $begin_date;
+        //create contribution for member; 0.9.x ended contributions on the
+        //same day as they began, one year later: that is today, except on
+        //February 29th where it is the day before.
+        $ny_begin_date = new DateTime((new DateTime())->format('Y-m-d'));
+        $begin_date = $this->oneYearBefore($ny_begin_date);
         $due_date = clone $begin_date;
-
-        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
+        $due_date->add(new \DateInterval('P1Y'));
+        $end_date = clone $due_date;
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
