@@ -11,6 +11,11 @@ Changes
 - It is no longer possible to change sender name and address when sending a mailing
 - Self subscription form always shows email, login and captcha, whatever their visibility
 - With membership extension, a contribution added on the last day of membership now starts the day after
+- Copy to clipboard buttons for the two-factor secret, the recovery codes and the system information
+- HTML tags were not removed from titles
+- Groups now send group.add, group.edit and group.remove events
+- Removing a member now sends contribution.remove and transaction.remove events for its contributions and transactions, and removes their dynamic fields values
+- Entities built on AbstractEntity now handle boolean and numeric properties
 
 1.2.1 -> 1.3.0
 
