@@ -1815,6 +1815,75 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Email, login and captcha are on the self subscription form
+     * whatever their visibility
+     */
+    public function testSelfSubscriptionWithRestrictedFields(): void
+    {
+        $this->preferences->pref_bool_selfsubscribe = true;
+        $this->assertTrue($this->preferences->store());
+
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $orig_fields = $fc->getCategorizedFields();
+        $categorized_fields = $orig_fields;
+        foreach ($categorized_fields as &$fieldset) {
+            foreach ($fieldset as &$entry) {
+                if (in_array($entry['field_id'], ['email_adh', 'login_adh', 'mdp_adh'])) {
+                    $entry['visible'] = \Galette\Entity\FieldsConfig::STAFF;
+                }
+            }
+        }
+        unset($fieldset, $entry);
+        $this->assertTrue($fc->setFields($categorized_fields));
+
+        $test_response = $this->app->handle($this->createRequest('subscribe'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('name="gaptcha"', $body);
+        $this->assertStringContainsString('name="login_adh"', $body);
+        $this->assertStringContainsString('name="email_adh"', $body);
+
+        $member_data = $this->dataAdherentOne();
+        unset($member_data['mdp_adh'], $member_data['mdp_adh2']);
+
+        //no captcha sent
+        $this->session->gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
+        $request = $this->createRequest('storeselfmembers', [], 'POST')->withParsedBody($member_data);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('subscribe')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(['Invalid captcha'], $this->flash_data['slimFlash']['error_detected'] ?? []);
+        $this->flash_data = [];
+        $this->assertCount(0, $this->zdb->execute($this->zdb->select(\Galette\Entity\Adherent::TABLE)));
+
+        //login is stored, not replaced with a random one
+        $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
+        $rgaptcha = new \ReflectionClass($gaptcha);
+        $rgaptcha->getProperty('gaptcha')->setValue($gaptcha, 8);
+        $this->session->gaptcha = $gaptcha;
+        $member_data['gaptcha'] = 8;
+        $request = $this->createRequest('storeselfmembers', [], 'POST')->withParsedBody($member_data);
+        $test_response = $this->app->handle($request);
+
+        //reset
+        $this->assertTrue($fc->setFields($orig_fields));
+        $this->preferences->pref_bool_selfsubscribe = false;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('login')]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Your account has been created!']]);
+        $this->expectNoLogEntry();
+
+        $result = $this->zdb->execute($this->zdb->select(\Galette\Entity\Adherent::TABLE));
+        $this->assertCount(1, $result);
+        $stored = $result->current();
+        $this->assertSame($member_data['login_adh'], $stored['login_adh']);
+        $this->assertSame($member_data['email_adh'], $stored['email_adh']);
+    }
+
+    /**
      * Test member duplication route
      */
     public function testMemberDuplicate(): void
