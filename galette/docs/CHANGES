@@ -10,6 +10,7 @@ Changes
 - Fix required textareas display
 - It is no longer possible to change sender name and address when sending a mailing
 - Self subscription form always shows email, login and captcha, whatever their visibility
+- With membership extension, a contribution added on the last day of membership now starts the day after
 
 1.2.1 -> 1.3.0
 

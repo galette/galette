@@ -444,7 +444,9 @@ class Contribution implements AccessManagementInterface
         $this->begin_date = $this->date;
         $due_date = self::getDueDate($this->zdb, $this->member);
         if ($due_date != '') {
+            //compare dates only, see loadWithEndofMembershipDate()
             $now = new DateTime();
+            $now->setTime(0, 0);
             $due_date = new DateTime($due_date);
             if ($due_date < $now) {
                 // Member didn't renew on time
