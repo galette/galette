@@ -16,6 +16,10 @@ Changes
 - Groups now send group.add, group.edit and group.remove events
 - Removing a member now sends contribution.remove and transaction.remove events for its contributions and transactions, and removes their dynamic fields values
 - Entities built on AbstractEntity now handle boolean and numeric properties
+- Labels provided by Galette (default contribution types, status and payment types) now show their translations, read-only, instead of an empty form whose values were ignored; translation window is titled after the label
+- When a label is changed, its translations in other languages can now be kept
+- Removing or renaming a contribution type, status, payment type or dynamic field no longer removes translations of the same label still used elsewhere
+- Saving a payment type no longer resets its translations
 
 1.2.1 -> 1.3.0
 

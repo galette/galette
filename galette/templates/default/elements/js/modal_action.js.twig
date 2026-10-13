@@ -108,6 +108,13 @@
     });
 
     var _actionAjaxMapper = function(){
+        {# a read-only content cannot be saved #}
+        $('.modal-form:has([data-modal-readonly])').find('.actions .approve').remove();
+        {# content may provide a more specific title #}
+        var _content_title = $('.modal-form [data-modal-title]').first().data('modal-title');
+        if (_content_title) {
+            $('.modal-form > .header').text(_content_title);
+        }
         $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
         $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
         $('.modal-form a[title], .modal-form .tooltip').popup({

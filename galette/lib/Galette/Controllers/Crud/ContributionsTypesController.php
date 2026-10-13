@@ -130,6 +130,7 @@ class ContributionsTypesController extends CrudController
 
         $entry = $ctype->get($id);
         $params['entry'] = $entry;
+        $params['label_is_core'] = $entry && $this->l10n->isCoreString($entry->libelle_type_cotis);
 
         $params['html_editor'] = true;
         $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
@@ -198,7 +199,8 @@ class ContributionsTypesController extends CrudController
                 label: $label,
                 description: $description,
                 amount: $amount,
-                extension: $field
+                extension: $field,
+                keep_translations: isset($post['keep_translations'])
             ));
         } else {
             $ret = false;

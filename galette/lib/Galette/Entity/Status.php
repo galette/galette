@@ -378,15 +378,16 @@ class Status
     /**
      * Update in database.
      *
-     * @param int    $id    Entry ID
-     * @param string $label The label
-     * @param int    $extra Extra values (priority for statuses,
-     *                      extension for contributions types,
-     *                      ...)
+     * @param int    $id                Entry ID
+     * @param string $label             The label
+     * @param int    $extra             Extra values (priority for statuses,
+     *                                  extension for contributions types,
+     *                                  ...)
+     * @param bool   $keep_translations Keep existing translations if label changes
      *
      * @return self::ID_NOT_EXITS|bool
      */
-    public function update(int $id, string $label, int $extra): int|bool
+    public function update(int $id, string $label, int $extra, bool $keep_translations = false): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -410,8 +411,7 @@ class Status
             $this->zdb->execute($update);
 
             if ($oldlabel != $label) {
-                $this->deleteTranslation($oldlabel);
-                $this->addTranslation($label);
+                $this->renameTranslation($oldlabel, $label, $keep_translations);
             }
 
             Analog::log(

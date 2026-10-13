@@ -137,6 +137,7 @@ class StatusController extends CrudController
 
         $entry = $status->get($id);
         $params['entry'] = $entry;
+        $params['label_is_core'] = $entry && $this->l10n->isCoreString($entry->libelle_statut);
 
         $params['mode'] = $this->isAjax($request) ? 'ajax' : '';
 
@@ -194,7 +195,12 @@ class StatusController extends CrudController
         $field = (int)trim($post['priorite_statut'] ?? 0);
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $status->add($label, $field) : $status->update($id, $label, $field));
+            $ret = ($action === 'add' ? $status->add($label, $field) : $status->update(
+                id: $id,
+                label: $label,
+                extra: $field,
+                keep_translations: isset($post['keep_translations'])
+            ));
         } else {
             $ret = false;
             $error_detected[] = _T('Missing required status name!');

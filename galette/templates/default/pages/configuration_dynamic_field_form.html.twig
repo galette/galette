@@ -18,8 +18,13 @@
     {% endif %}
                 <div class="{% if df.getType != 0 %} required {% endif %}inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
-                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %}/>
+                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %} aria-describedby="field_name-translation-hint"/>
                 </div>
+                {% include "elements/translatable_label_hint.html.twig" with {
+                    label: df.getName(false),
+                    is_core: label_is_core,
+                    id: "field_name"
+                } only %}
                 <div class="inline field">
                     <label for="field_perm">{{ _T("Permissions:") }}</label>
                     <select name="field_perm" id="field_perm" class="ui dropdown">

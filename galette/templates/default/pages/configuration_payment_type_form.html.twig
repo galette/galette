@@ -22,9 +22,14 @@
                             link: true
                         } only %}
                     </div>
-                    <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" required="required" aria-describedby="name-tip" />
+                    <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" required="required" aria-describedby="name-tip name-translation-hint" />
                 </div>
             </div>
+            {% include "elements/translatable_label_hint.html.twig" with {
+                label: ptype.getName(false),
+                is_core: label_is_core,
+                id: "name"
+            } only %}
     {% if mode != 'ajax' %}
         </div>
         <div class="ui basic center aligned segment">

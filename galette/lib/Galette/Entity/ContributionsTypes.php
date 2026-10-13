@@ -419,16 +419,23 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param int    $id          Entry ID
-     * @param string $label       The label
-     * @param string $description The description
-     * @param ?float $amount      The amount
-     * @param int    $extension   Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param int    $id                Entry ID
+     * @param string $label             The label
+     * @param string $description       The description
+     * @param ?float $amount            The amount
+     * @param int    $extension         Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param bool   $keep_translations Keep existing translations if label changes
      *
      * @return self::ID_NOT_EXITS|bool
      */
-    public function update(int $id, string $label, string $description, ?float $amount, int $extension): int|bool
-    {
+    public function update(
+        int $id,
+        string $label,
+        string $description,
+        ?float $amount,
+        int $extension,
+        bool $keep_translations = false
+    ): int|bool {
         $label = strip_tags($label);
         $description = $this->formatDescription($description);
         $ret = $this->get($id);
@@ -454,8 +461,7 @@ class ContributionsTypes
             $this->zdb->execute($update);
 
             if ($oldlabel != $label) {
-                $this->deleteTranslation($oldlabel);
-                $this->addTranslation($label);
+                $this->renameTranslation($oldlabel, $label, $keep_translations);
             }
 
             Analog::log(

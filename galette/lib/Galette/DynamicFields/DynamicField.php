@@ -635,8 +635,7 @@ abstract class DynamicField
 
         $isnew = (!isset($this->id));
         if ($this->old_name !== null) {
-            $this->deleteTranslation($this->old_name);
-            $this->addTranslation($this->name);
+            $this->renameTranslation($this->old_name, $this->name, !empty($values['keep_translations']));
         }
 
         try {

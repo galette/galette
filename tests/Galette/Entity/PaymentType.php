@@ -56,6 +56,15 @@ class PaymentType extends GaletteTestCase
 
         $id = $type->id;
 
+        //storing without changing name keeps translations
+        global $l10n;
+        $l10n = $this->container->get(\Galette\Core\L10n::class);
+        $this->assertTrue($l10n->updateDynamicTranslation('Test payment type', 'fr_FR.utf8', 'Moyen de paiement de test'));
+        $type = new \Galette\Entity\PaymentType($this->zdb, $id);
+        $type->name = 'Test payment type';
+        $this->assertTrue($type->store());
+        $this->assertSame('Moyen de paiement de test', $l10n->getDynamicTranslation('Test payment type', 'fr_FR.utf8'));
+
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
         $type->name = 'Changed test payment type';
         $this->assertTrue($type->store());

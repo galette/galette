@@ -37,8 +37,8 @@ class DynamicTranslationsController extends AbstractController
     )]
     public function dynamicTranslations(Request $request, Response $response, ?string $text_orig = null): Response
     {
-        if ($text_orig == null && isset($_GET['text_orig'])) {
-            $text_orig = $_GET['text_orig'];
+        if ($text_orig == null) {
+            $text_orig = $request->getQueryParams()['text_orig'] ?? null;
         }
 
         return $this->dynamicTranslation($request, $response, $text_orig ?? '');
@@ -61,25 +61,41 @@ class DynamicTranslationsController extends AbstractController
             'documentation' => 'usermanual/configuration.html#labels-translation'
         ];
 
+        //a single label has been requested
+        $requested = $text_orig_sum !== '';
+
         try {
             $orig = $this->l10n->getStringsToTranslate();
             $text_exists = false;
 
             if ($text_orig_sum === '') {
-                $text_orig_sum = array_key_first($orig);
+                $text_orig_sum = (string)array_key_first($orig);
             }
 
-            if (isset($orig[$text_orig_sum]) || isset($orig[md5((string)$text_orig_sum)])) {
+            $is_core = false;
+            if ($text_orig_sum === '') {
+                //nothing to translate yet
+                $text_trans = [];
+                $text_orig = '';
+            } elseif (isset($orig[$text_orig_sum]) || isset($orig[md5((string)$text_orig_sum)])) {
                 $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5((string)$text_orig_sum);
                 $text_exists = true;
                 $text_trans = $this->l10n->getDynamicTranslations($sum);
                 $text_orig = $orig[$sum];
             } else {
-                $text_trans = $this->l10n->getDynamicTranslations($text_orig_sum);
-                $text_orig = $text_orig_sum;
+                $text_orig = (string)$text_orig_sum;
+                $is_core = $this->l10n->isCoreString($text_orig);
+                $text_trans = $is_core
+                    ? $this->l10n->getCoreTranslations($text_orig)
+                    : $this->l10n->getDynamicTranslations(md5($text_orig));
+            }
+
+            if ($requested && $text_orig !== '') {
+                $params['page_title'] = str_replace('%s', $text_orig, _T("Translate '%s'"));
             }
 
             $params['exists'] = $text_exists;
+            $params['core'] = $is_core;
             $params['orig'] = $orig;
             $params['trans'] = $text_trans;
             $params['text_orig'] = $text_orig;
@@ -122,7 +138,13 @@ class DynamicTranslationsController extends AbstractController
         $error_detected = [];
         $success_detected = [];
 
-        if (isset($post['trans']) && isset($post['text_orig'])) {
+        if (isset($post['trans']) && isset($post['text_orig']) && $this->l10n->isCoreString($post['text_orig'])) {
+            $error_detected[] = sprintf(
+                //TRANS: parameter is the label
+                _T('Label `%1$s` is translated by Galette, it cannot be translated here.'),
+                $post['text_orig']
+            );
+        } elseif (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
                 //create translation if it does not exist yet
                 $res = $this->l10n->addDynamicTranslation(

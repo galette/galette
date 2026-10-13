@@ -9,15 +9,18 @@
 {% block content %}
 {% if trans is defined and trans|length > 0 %}
         <form action="{{ url_for('editDynamicTranslation') }}" method="post" enctype="multipart/form-data" class="ui equal width form">
-    {% if not exists %}
-            <div class="ui icon info visible message">
+            <div class="ui icon info visible message"{% if core %} data-modal-readonly{% endif %} data-modal-title="{{ _T("Translate '%s'")|replace({'%s': text_orig}) }}">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
-                    {{ _T("No translation for '%s'!<br/>Please fill and submit the form below to create it.")|replace({'%s': text_orig|escape})|raw }}
-                </div>
-                <input type="hidden" name="new" value="true"/>
-            </div>
+    {% if core %}
+                    <p>{{ _T("This label is provided by Galette, its translations come with the software and cannot be changed here. You can help improve them on Weblate.") }}</p>
+    {% elseif not exists %}
+                    <p>{{ _T("No translation for '%s'!<br/>Please fill and submit the form below to create it.")|replace({'%s': text_orig|escape})|raw }}</p>
+                    <input type="hidden" name="new" value="true"/>
     {% endif %}
+                    <p id="translations-hint">{{ _T("When a translation is empty, the original text is displayed.") }}</p>
+                </div>
+            </div>
     {% if exists and mode != 'ajax' %}
             <div class="ui basic fitted segment">
                 <strong>{{ _T("Original text:") }}</strong>
@@ -38,21 +41,20 @@
                     </div>
                 </div>
             </div>
-    {% else %}
-            <strong>{{ _T("Original text:") }} {{ text_orig }}</strong>
     {% endif %}
             <table class="ui striped definition table">
     {% for k, text in trans %}
                 <tr lang="{{ text.lang }}"{% if text.rtl %} class="rtl"{% endif %}>
                     <th scope="row" class="collapsing"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></th>
                     <td>
-                        <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
+                        <input type="text"{% if not core %} name="text_trans_{{ text.key }}"{% endif %} id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"{% if core %} readonly="readonly"{% endif %} aria-describedby="translations-hint"/>
                     </td>
                 </tr>
     {% endfor %}
             </table>
             <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
-    {% if mode != 'ajax' %}
+    {% if core %}
+    {% elseif mode != 'ajax' %}
             <div class="ui basic center aligned segment">
                 <button type="submit" name="trans" class="ui labeled icon primary button action">
                     <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}

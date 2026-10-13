@@ -101,17 +101,18 @@ class PaymentType implements \Stringable
 
     /**
      * Store payment type in database
+     *
+     * @param bool $keep_translations Keep existing translations if name changes
      */
-    public function store(): bool
+    public function store(bool $keep_translations = false): bool
     {
         $data = [
             'type_name' => $this->name
         ];
         try {
             if (isset($this->id) && $this->id > 0) {
-                if ($this->old_name !== null) {
-                    $this->deleteTranslation($this->old_name);
-                    $this->addTranslation($this->name);
+                if ($this->old_name !== null && $this->old_name !== $this->name) {
+                    $this->renameTranslation($this->old_name, $this->name, $keep_translations);
                 }
 
                 $update = $this->zdb->update(self::TABLE);

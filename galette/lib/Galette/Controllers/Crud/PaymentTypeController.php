@@ -119,6 +119,7 @@ class PaymentTypeController extends CrudController
             [
                 'page_title' => sprintf('%1$s - %2$s', _T('Payment type'), $ptype->getName()),
                 'ptype' => $ptype,
+                'label_is_core' => $this->l10n->isCoreString($ptype->getName(translated: false)),
                 'mode' => $mode
             ]
         );
@@ -162,7 +163,7 @@ class PaymentTypeController extends CrudController
         $ptype = new PaymentType($this->zdb, $id);
         $ptype->name = $post['name'];
         if (isset($post['name']) && $post['name'] != '') {
-            $res = $ptype->store();
+            $res = $ptype->store(keep_translations: isset($post['keep_translations']));
         } else {
             $res = false;
             $error_detected[] = _T("Missing required payment type's name!");

@@ -71,4 +71,52 @@ class ContributionsTypesController extends GaletteRoutingTestCase
         $select->where(['libelle_type_cotis' => 'Test type by admin', 'cotis_extension' => '0']);
         $this->assertSame(1, $this->zdb->execute($select)->count());
     }
+
+    /**
+     * Test keeping translations when a label changes
+     */
+    public function testRenameKeepsTranslations(): void
+    {
+        $this->logSuperAdmin();
+        $this->i18n->changeLanguage('en_US');
+        $l10n = $this->container->get(\Galette\Core\L10n::class);
+
+        $ctype = new ContributionsTypes($this->zdb);
+        $this->assertTrue($ctype->add(label: 'Test type to rename', description: '', amount: null, extension: 0));
+        $id = $ctype->getIdByLabel('Test type to rename');
+        $this->assertTrue($l10n->updateDynamicTranslation('Test type to rename', 'fr_FR.utf8', 'Type de test à renommer'));
+
+        //edit form proposes to keep translations
+        $test_response = $this->app->handle($this->createRequest('editContributionType', ['id' => (string)$id]));
+        $this->assertStringContainsString(
+            'name="keep_translations" id="libelle_type_cotis-keep-translations" value="1" checked="checked"',
+            (string)$test_response->getBody()
+        );
+
+        $request = $this->createRequest('doEditContributionType', ['id' => (string)$id], 'POST')
+            ->withParsedBody([
+                'libelle_type_cotis' => 'Test type renamed',
+                'cotis_extension' => '0',
+                'keep_translations' => '1'
+            ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame('Type de test à renommer', $l10n->getDynamicTranslation('Test type renamed', 'fr_FR.utf8'));
+
+        //unchecked box: translations are reset
+        $request = $this->createRequest('doEditContributionType', ['id' => (string)$id], 'POST')
+            ->withParsedBody([
+                'libelle_type_cotis' => 'Test type renamed again',
+                'cotis_extension' => '0'
+            ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame('', $l10n->getDynamicTranslation('Test type renamed again', 'fr_FR.utf8'));
+
+        //core labels have no checkbox
+        $test_response = $this->app->handle($this->createRequest('editContributionType', ['id' => '1']));
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('name="keep_translations"', $body);
+        $this->assertStringContainsString('libelle_type_cotis-translation-hint', $body);
+    }
 }

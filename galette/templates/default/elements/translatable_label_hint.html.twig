@@ -1,0 +1,30 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Explain how a translatable label behaves when it is changed.
+ # For labels not translated by Galette, let user choose to keep existing translations.
+ #
+ # Available variables:
+ # - label: original (untranslated) label
+ # - is_core: whether label is translated by Galette itself
+ # - id: id of the related input
+ #}
+{% if is_core %}
+<div class="ui icon info visible message" id="{{ id }}-translation-hint">
+    <i class="info circle blue icon" aria-hidden="true"></i>
+    <div class="content">
+        {{ _T('This label is provided by Galette and displayed as "%1$s" in your language. Changing it will replace its automatic translations.')|format(_T(label)) }}
+    </div>
+</div>
+{% else %}
+<div class="inline field" id="{{ id }}-translation-hint">
+    <div class="ui checkbox">
+        <input type="checkbox" name="keep_translations" id="{{ id }}-keep-translations" value="1" checked="checked"/>
+        <label for="{{ id }}-keep-translations">{{ _T("If this label is changed, keep its translations in other languages") }}</label>
+    </div>
+</div>
+{% endif %}

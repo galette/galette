@@ -376,6 +376,7 @@ class DynamicFieldsController extends CrudController
             'perm_names'    => DynamicField::getPermissionsList(),
             'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'df'            => $df,
+            'label_is_core' => $this->l10n->isCoreString($df->getName(false)),
             'html_editor'   => true,
             'html_editor_active' => $this->preferences->pref_editor_enabled
         ];
