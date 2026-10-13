@@ -318,38 +318,6 @@ class RolesController extends CrudController
     }
 
     /**
-     * Give a role to a member, from their card
-     *
-     * @param int $id Member id
-     */
-    #[Route(
-        name: 'giveMemberRole',
-        pattern: '/member/{id:\d+}/roles',
-        methods: ['POST']
-    )]
-    public function giveMember(Request $request, Response $response, int $id): Response
-    {
-        $post = $request->getParsedBody();
-        $role = (int)($post['id_role'] ?? 0);
-        if ($role <= 0) {
-            [$successes, $errors] = [[], [_T('Please choose a role.')]];
-        } else {
-            [$successes, $errors] = $this->giveTo(
-                $this->loadRole($request, $role),
-                $id,
-                (int)($post['id_group'] ?? 0)
-            );
-        }
-
-        return $this->redirect(
-            response: $response,
-            redirect_url: $this->routeparser->urlFor('member', ['id' => (string)$id]),
-            successes: $successes,
-            errors: $errors
-        );
-    }
-
-    /**
      * Give a role to a member, and log it
      *
      * @param Role $role   Role
@@ -409,33 +377,6 @@ class RolesController extends CrudController
         return $this->redirect(
             response: $response,
             redirect_url: $this->routeparser->urlFor('editRole', ['id' => (string)$id]),
-            successes: $successes,
-            errors: $errors
-        );
-    }
-
-    /**
-     * Take a given role back from a member, from their card
-     *
-     * @param int $id         Member id
-     * @param int $role       Role id
-     * @param int $assignment Assignment id
-     */
-    #[Route(
-        name: 'takeMemberRole',
-        pattern: '/member/{id:\d+}/roles/{role:\d+}/remove/{assignment:\d+}',
-        methods: ['POST']
-    )]
-    public function takeMember(Request $request, Response $response, int $id, int $role, int $assignment): Response
-    {
-        [$successes, $errors] = $this->takenBack(
-            $this->loadRole($request, $role),
-            $this->getRoles()->takeFrom($id, $role, $assignment)
-        );
-
-        return $this->redirect(
-            response: $response,
-            redirect_url: $this->routeparser->urlFor('member', ['id' => (string)$id]),
             successes: $successes,
             errors: $errors
         );

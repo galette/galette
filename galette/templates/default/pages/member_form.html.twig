@@ -119,6 +119,11 @@
                 {% include "components/forms/groups.html.twig" %}
             {% endif %}
 
+            {# Member's roles #}
+            {% if member_roles is defined %}
+                {% include "components/forms/roles.html.twig" %}
+            {% endif %}
+
             {# Dynamic entries #}
             {% include "components/dynamic_fields.html.twig" with {object: member} %}
 
@@ -226,6 +231,8 @@
 {% if not self_adh %}
                 {# Member's groups #}
                 {% include "elements/js/member_groups.js.twig" %}
+                {# Member's roles #}
+                {% include "elements/js/member_roles.js.twig" %}
 
     {% if not self_adh and not member.hasChildren() %}
                 {# Parent selection #}

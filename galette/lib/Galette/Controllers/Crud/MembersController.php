@@ -1212,6 +1212,15 @@ class MembersController extends CrudController
             $route_params['navigate'] = $this->handleNavigationLinks($member->id);
         }
 
+        if ($member->id && $this->accessControl->can('role:manage')) {
+            $route_params['member_roles'] = $this->roles->getRolesOf($member);
+            $route_params['assignable_roles'] = array_filter(
+                $this->roles->getList(),
+                fn(Role $role): bool => !$role->isSystem()
+            );
+            $route_params['groups_names'] = Groups::getSimpleList();
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -1789,6 +1798,26 @@ class MembersController extends CrudController
 
                     if ($add_groups === false) {
                         $error_detected[] = _T("An error occurred adding member to its groups.");
+                    }
+                }
+                if ($member->id && isset($post['roles_sent']) && $this->accessControl->can('role:manage')) {
+                    //given roles
+                    $wanted = [];
+                    foreach ($post['roles_adh'] ?? [] as $given) {
+                        [$role, $group] = array_pad(explode('|', (string)$given), 2, '');
+                        $wanted[] = [(int)$role, (int)$group > 0 ? (int)$group : null];
+                    }
+                    $changes = $this->roles->setGiven((int)$member->id, $wanted);
+                    if ($changes['added'] + $changes['removed'] > 0) {
+                        $this->history->add(
+                            sprintf(
+                                //TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+                                _T('%1$d role(s) given, %2$d taken back for member #%3$d'),
+                                $changes['added'],
+                                $changes['removed'],
+                                $member->id
+                            )
+                        );
                     }
                 }
                 if ($this->accessControl->can('member:manage')) {

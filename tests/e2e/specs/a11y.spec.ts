@@ -387,7 +387,7 @@ test.describe('Accessibility', () => {
       await page.waitForTimeout(animationTimeout);
 
       await page.locator(`a:has-text("${name}")`).first().click();
-      await page.locator('form[action$="/roles"]').waitFor({ state: 'visible' });
+      await page.locator('a.ui.blue.label[href*="/roles/edit/"]').first().waitFor({ state: 'visible' });
 
       const results = await axeBuilder(page).analyze();
       expect(results.violations, formatViolations(results.violations)).toEqual([]);

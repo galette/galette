@@ -1322,10 +1322,99 @@ class MembersController extends GaletteRoutingTestCase
             $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
             $body
         );
-        $this->assertStringNotContainsString(
-            $this->routeparser->urlFor('giveMemberRole', ['id' => (string)$member_one->id]),
-            $body
+    }
+
+    /**
+     * Test giving and taking back roles from the member edition form
+     */
+    public function testEditRoles(): void
+    {
+        $member_one = $this->getMemberOne();
+        $roles = $this->container->get(\Galette\Access\Roles::class);
+        $role = new \Galette\Access\Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $group = new \Galette\Entity\Group();
+        $group->setName('Treasury');
+        $this->assertTrue($group->store());
+
+        $mdata = $this->dataAdherentOne();
+        $mdata['id_adh'] = $member_one->id;
+        $edit_args = ['id' => (string)$member_one->id];
+        $given = function () use ($roles, $role): array {
+            return array_values(array_map(
+                fn(array $assignment): ?int => $assignment['id_group'],
+                $roles->getMembersOf($role->getId())
+            ));
+        };
+
+        //member cannot see nor change their roles
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->assertStringNotContainsString('id="roles_field"', (string)$test_response->getBody());
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + ['roles_sent' => '1', 'roles_adh' => [$role->getId() . '|']]);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([], $given());
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="roles_field"', $body);
+        $this->assertStringContainsString('<option value="' . $role->getId() . '">Treasurer</option>', $body);
+        //system roles are listed, but cannot be given
+        $this->assertStringNotContainsString('>Group manager</option>', $body);
+
+        //give for all groups and for a group; system, unknown roles and groups are ignored
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + [
+            'roles_sent' => '1',
+            'roles_adh' => [
+                $role->getId() . '|',
+                $role->getId() . '|' . $group->getId(),
+                '3|',
+                '999|',
+                $role->getId() . '|999'
+            ]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('member', $edit_args)]],
+            $test_response->getHeaders()
         );
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $given_roles = $given();
+        sort($given_roles);
+        $this->assertSame([null, $group->getId()], $given_roles);
+        $this->assertCount(0, $roles->getMembersOf(3));
+
+        //roles not posted are kept
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertCount(2, $given());
+
+        //take back
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + [
+            'roles_sent' => '1',
+            'roles_adh' => [$role->getId() . '|' . $group->getId()]
+        ]);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([$group->getId()], $given());
+
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + ['roles_sent' => '1']);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([], $given());
+
+        $this->assertTrue($role->delete());
     }
 
     /**

@@ -543,13 +543,3 @@ $app->post(
     '/roles/{id:\d+}/members/remove/{assignment:\d+}',
     [Crud\RolesController::class, 'take']
 )->setName('takeRole')->add(Authenticate::class);
-
-$app->post(
-    '/member/{id:\d+}/roles',
-    [Crud\RolesController::class, 'giveMember']
-)->setName('giveMemberRole')->add(Authenticate::class);
-
-$app->post(
-    '/member/{id:\d+}/roles/{role:\d+}/remove/{assignment:\d+}',
-    [Crud\RolesController::class, 'takeMember']
-)->setName('takeMemberRole')->add(Authenticate::class);

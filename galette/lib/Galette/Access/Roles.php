@@ -401,7 +401,7 @@ class Roles
      *
      * @param \Galette\Entity\Adherent $member Member
      *
-     * @return array<array{role: Role, group: ?string, given: bool, assignment: ?int}>
+     * @return array<array{role: Role, group: ?string, id_group: ?int, given: bool, assignment: ?int}>
      */
     public function getRolesOf(\Galette\Entity\Adherent $member): array
     {
@@ -420,7 +420,13 @@ class Roles
         $roles = [];
         foreach (array_keys(array_filter($computed)) as $key) {
             if (isset($system[$key])) {
-                $roles[] = ['role' => $system[$key], 'group' => null, 'given' => false, 'assignment' => null];
+                $roles[] = [
+                    'role' => $system[$key],
+                    'group' => null,
+                    'id_group' => null,
+                    'given' => false,
+                    'assignment' => null
+                ];
             }
         }
         if (isset($system[self::MANAGER])) {
@@ -428,6 +434,7 @@ class Roles
                 $roles[] = [
                     'role' => $system[self::MANAGER],
                     'group' => $group->getName(),
+                    'id_group' => $group->getId(),
                     'given' => false,
                     'assignment' => null
                 ];
@@ -451,6 +458,7 @@ class Roles
             $given[] = [
                 'role' => new Role($row),
                 'group' => $row->group_name,
+                'id_group' => $row->id_group === null ? null : (int)$row->id_group,
                 'given' => true,
                 'assignment' => (int)$row->id_member_role
             ];
@@ -528,5 +536,49 @@ class Roles
             self::PK => $role
         ]);
         return $this->zdb->execute($delete)->getAffectedRows() > 0;
+    }
+
+    /**
+     * Set the roles given to a member, replacing the ones they had
+     *
+     * System roles, unknown roles and unknown groups are ignored.
+     *
+     * @param int                     $member Member identifier
+     * @param array<array{int, ?int}> $wanted Role and group identifiers, null group for all groups
+     *
+     * @return array{added: int, removed: int}
+     */
+    public function setGiven(int $member, array $wanted): array
+    {
+        $roles = array_filter($this->getList(), fn(Role $role): bool => !$role->isSystem());
+        $groups = \Galette\Repository\Groups::getSimpleList();
+
+        $keep = [];
+        foreach ($wanted as [$role, $group]) {
+            if (isset($roles[$role]) && ($group === null || isset($groups[$group]))) {
+                $keep[$role . '|' . $group] = [$role, $group];
+            }
+        }
+
+        $removed = 0;
+        $select = $this->zdb->select(self::MEMBERS_TABLE);
+        $select->where(['id_adh' => $member]);
+        foreach ($this->zdb->execute($select) as $row) {
+            $key = $row->{self::PK} . '|' . $row->id_group;
+            if (isset($keep[$key])) {
+                unset($keep[$key]);
+            } elseif ($this->takeFrom($member, (int)$row->{self::PK}, (int)$row->id_member_role)) {
+                ++$removed;
+            }
+        }
+
+        $added = 0;
+        foreach ($keep as [$role, $group]) {
+            if ($this->give($member, $role, $group)) {
+                ++$added;
+            }
+        }
+
+        return ['added' => $added, 'removed' => $removed];
     }
 }

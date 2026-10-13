@@ -137,10 +137,6 @@
                                             <span class="detail">{{ member_role.group }}</span>
                             {% endif %}
                                         </a>
-                                        <button type="submit" form="take_role_{{ member_role.assignment }}" class="ui mini compact basic icon button tooltip" title="{{ _T("Take role back") }}">
-                                            <i class="ui times icon" aria-hidden="true"></i>
-                                            <span class="visually-hidden">{{ _T("Take role '%1$s' back")|format(member_role.role.getLabel()) }}</span>
-                                        </button>
                         {% else %}
                                         <a href="{{ url_for("editRole", {"id": member_role.role.getId()}) }}" class="ui label">
                                             <i class="ui cog icon tooltip" title="{{ _T("Computed from member's information") }}" aria-hidden="true"></i>
@@ -152,37 +148,6 @@
                         {% endif %}
                     {% endfor %}
                                     </div>
-                    {% for member_role in member_roles|filter(r => r.given) %}
-                                    <form action="{{ url_for("takeMemberRole", {"id": member.id, "role": member_role.role.getId(), "assignment": member_role.assignment}) }}" method="post" id="take_role_{{ member_role.assignment }}"></form>
-                    {% endfor %}
-                    {% if assignable_roles|length != 0 %}
-                                    <form action="{{ url_for("giveMemberRole", {"id": member.id}) }}" method="post" class="ui small form">
-                                        <div class="two fields">
-                                            <div class="field">
-                                                <label for="id_role">{{ _T("Role") }}</label>
-                                                <select name="id_role" id="id_role" class="ui dropdown nochosen" required="required">
-                                                    <option value="">{{ _T("Choose a role") }}</option>
-                        {% for assignable_role in assignable_roles %}
-                                                    <option value="{{ assignable_role.getId() }}">{{ assignable_role.getLabel() }}</option>
-                        {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="field">
-                                                <label for="id_group">{{ _T("Group") }}</label>
-                                                <select name="id_group" id="id_group" class="ui dropdown nochosen">
-                                                    <option value="">{{ _T("All groups") }}</option>
-                        {% for group_id, group_name in groups %}
-                                                    <option value="{{ group_id }}">{{ group_name }}</option>
-                        {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="ui small labeled icon button">
-                                            <i class="plus green icon" aria-hidden="true"></i>
-                                            {{ _T("Give role") }}
-                                        </button>
-                                    </form>
-                    {% endif %}
                                 </td>
                             </tr>
                 {% endif %}
