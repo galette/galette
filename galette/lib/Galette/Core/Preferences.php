@@ -1193,6 +1193,35 @@ class Preferences
     }
 
     /**
+     * Start of the current membership period
+     *
+     * Only defined when memberships share a fixed beginning date
+     * (pref_beg_membership); a rolling membership (pref_membership_ext)
+     * has no common period.
+     *
+     * The period starts on the most recent beginning date on or before $now.
+     * We step back from the current year candidate instead of subtracting a
+     * year from now, which would overflow on February 29th.
+     *
+     * @param ?\DateTimeInterface $now Reference date, defaults to today
+     */
+    public function getMembershipPeriodStart(?\DateTimeInterface $now = null): ?\Safe\DateTimeImmutable
+    {
+        if ($this->pref_beg_membership == '') {
+            return null;
+        }
+
+        $now = \Safe\DateTimeImmutable::createFromInterface($now ?? new \Safe\DateTimeImmutable())->setTime(0, 0);
+        [$j, $m] = explode('/', (string)$this->pref_beg_membership);
+        $start = $now->setDate((int)$now->format('Y'), (int)$m, (int)$j);
+        while ($start > $now) {
+            $start = $start->modify('-1 year');
+        }
+
+        return $start;
+    }
+
+    /**
      * Get errors
      *
      * @return array<string>
