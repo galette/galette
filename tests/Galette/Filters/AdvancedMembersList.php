@@ -20,6 +20,30 @@ use Galette\Tests\GaletteTestCase;
 class AdvancedMembersList extends GaletteTestCase
 {
     /**
+     * Test groups as stored in saved searches
+     */
+    public function testSavedGroups(): void
+    {
+        $group = new \Galette\Entity\Group();
+        $group->setName('Relative dates group');
+        $this->assertTrue($group->store());
+        $gid = $group->getId();
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        //shape sent by the form
+        $filters->groups_search = ['idx' => 0, 'group' => (string)$gid];
+        $saved = $filters->groups_search;
+        $this->assertSame([0 => ['group' => (string)$gid]], $saved);
+
+        //shape stored in saved searches
+        $replayed = new \Galette\Filters\AdvancedMembersList();
+        $replayed->groups_search = $saved;
+        $this->assertSame([0 => ['group' => (string)$gid]], $replayed->groups_search);
+
+        $this->assertTrue($group->remove());
+    }
+
+    /**
      * Test reinit resets every date
      */
     public function testReinit(): void
