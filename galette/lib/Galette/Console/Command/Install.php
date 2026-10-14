@@ -277,6 +277,13 @@ class Install extends AbstractCommand
         }
 
         $displayed_sa_pass = str_pad('', mb_strlen($galette_sa_pass), '*');
+        //only a warning: automated installs (CI, demo, tests) rely on short passwords
+        if (mb_strlen($galette_sa_pass) < \Galette\Core\Install::getAdminPasswordMinLength()) {
+            $io->warning(sprintf(
+                'Superadmin password is shorter than %1$s characters; web installer would have refused it.',
+                \Galette\Core\Install::getAdminPasswordMinLength()
+            ));
+        }
 
         $io->definitionList(
             'Database information',

@@ -8,6 +8,8 @@
 
 declare(strict_types=1);
 
+use Galette\Core\Install as GaletteInstall;
+
 /**
  * @var \Galette\Core\I18n $i18n
  */
@@ -20,11 +22,15 @@ declare(strict_types=1);
     </div>
     <div class="field required inline">
         <label for="install_adminpass"><?php echo _T("Password:"); ?></label>
-        <input type="password" name="install_adminpass" id="install_adminpass" value="" required/>
+        <input type="password" name="install_adminpass" id="install_adminpass" value="" minlength="<?php echo GaletteInstall::getAdminPasswordMinLength(); ?>" aria-describedby="install_adminpass-description" autocomplete="new-password" required/>
+        <div class="field-description" id="install_adminpass-description">
+            <?php echo sprintf(_T('(at least %1$s characters)'), GaletteInstall::getAdminPasswordMinLength()); ?>
+            <?php echo _T("For a stronger password, mix lowercase and uppercase letters, numbers and special characters."); ?>
+        </div>
     </div>
     <div class="field required inline">
         <label for="install_adminpass_verif"><?php echo _T("Retype password:"); ?></label>
-        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
+        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" autocomplete="new-password" required/>
     </div>
 
     <div class="ui section divider"></div>
