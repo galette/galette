@@ -763,6 +763,16 @@ class Install
     }
 
     /**
+     * Minimum length for super administrator password
+     *
+     * Same as the default one for all passwords; preferences do not exist yet at installation.
+     */
+    public static function getAdminPasswordMinLength(): int
+    {
+        return (int)PreferencesSchema::getCore()['pref_password_length']['default'];
+    }
+
+    /**
      * Set super administrator information
      *
      * @param string $login Login

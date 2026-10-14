@@ -472,4 +472,12 @@ class Install extends BaseGaletteTestCase
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
     }
+
+    /**
+     * Superadmin password minimum length follows passwords default one
+     */
+    public function testAdminPasswordMinLength(): void
+    {
+        $this->assertSame(6, \Galette\Core\Install::getAdminPasswordMinLength());
+    }
 }

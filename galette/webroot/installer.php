@@ -204,6 +204,12 @@ if ($install_disabled) {
     }
     if ($_POST['install_adminpass'] == '') {
         $error_detected[] = _T("No password");
+    } elseif (mb_strlen((string)$_POST['install_adminpass']) < GaletteInstall::getAdminPasswordMinLength()) {
+        $error_detected[] = sprintf(
+            _T('Too short (%1$s characters minimum, %2$s found)'),
+            (string)GaletteInstall::getAdminPasswordMinLength(),
+            (string)mb_strlen((string)$_POST['install_adminpass'])
+        );
     }
     if (
         !isset($_POST['install_passwdverified'])
