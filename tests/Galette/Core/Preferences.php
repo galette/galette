@@ -1804,4 +1804,29 @@ class Preferences extends GaletteTestCase
         $this->assertSame(42, $this->preferences->pref_session_timeout);
         $this->assertSame(2, $this->preferences->pref_x_forwarded_for_index);
     }
+
+    /**
+     * Test start of current membership period
+     */
+    public function testMembershipPeriodStart(): void
+    {
+        $this->setRawPreference('pref_beg_membership', '01/09');
+        $this->assertSame(
+            '2024-09-01',
+            $this->preferences->getMembershipPeriodStart(new \Safe\DateTime('2025-03-15 18:00:00'))?->format('Y-m-d')
+        );
+        //period begins on reference day
+        $this->assertSame(
+            '2025-09-01',
+            $this->preferences->getMembershipPeriodStart(new \Safe\DateTime('2025-09-01'))?->format('Y-m-d')
+        );
+        $this->assertSame(
+            '2025-08-31',
+            $this->preferences->getMembershipPeriodStart(new \Safe\DateTime('2025-08-31'))?->modify('+1 year -1 day')->format('Y-m-d')
+        );
+
+        //rolling memberships have no common period
+        $this->setRawPreference('pref_beg_membership', '');
+        $this->assertNull($this->preferences->getMembershipPeriodStart());
+    }
 }

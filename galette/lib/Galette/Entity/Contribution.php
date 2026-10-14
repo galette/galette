@@ -484,14 +484,8 @@ class Contribution implements AccessManagementInterface
             //no current membership (new member or membership expired):
             //align begin date to the start of the current membership period,
             //that is the most recent membership begin date on or before now.
-            //Note: we step back from the current year candidate instead of
-            //cloning now and subtracting a year, which would overflow on
-            //February 29th (2024-02-29 minus one year is not a valid date).
-            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
-            $next_begin_date = new DateTime($now->format('Y') . '-' . $m . '-' . $j);
-            while ($next_begin_date > $now) {
-                $next_begin_date->sub(new DateInterval('P1Y'));
-            }
+            $next_begin_date = $preferences->getMembershipPeriodStart($now)
+                ?? throw new \RuntimeException('Beginning of membership date is not defined!');
         }
         $this->begin_date = $next_begin_date->format('Y-m-d');
     }
