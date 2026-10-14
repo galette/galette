@@ -9,12 +9,14 @@
  #
  # Takes `max_size`, a number of Ko, and `input_id`, the identifier of the file
  # input it describes. `label` (and `for`) draw the field label around the icon;
- # `icon` can be set to false where a tooltip already carries the information.
+ # `icon` can be set to false where a tooltip already carries the information;
+ # `small` to false for the bigger icon of a corner label.
  #}
 {% include "components/forms/tip.html.twig" with {
     tip: _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', max_size)),
     id: input_id,
     label: label ?? null,
     for: for ?? null,
-    icon: icon ?? true
+    icon: icon ?? true,
+    small: small ?? true
 } only %}
