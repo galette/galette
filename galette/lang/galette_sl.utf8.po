@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-09 10:41+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -648,6 +648,16 @@ msgstr "Iskanje je bilo shranjeno."
 msgid "Saved searches"
 msgstr "Shranjena iskanja"
 
+#, fuzzy
+#| msgid "Label does not exist"
+msgid "Saved search does not exist."
+msgstr "Oznaka ne obstaja"
+
+#, fuzzy
+#| msgid "Load saved search"
+msgid "Edit saved search"
+msgstr "Naloži shranjeno iskanje"
+
 msgid "Remove saved search"
 msgstr "Odstrani shranjeno iskanje"
 
@@ -655,11 +665,18 @@ msgstr "Odstrani shranjeno iskanje"
 msgid "You are about to remove %1$s searches."
 msgstr "Odstranili boste %1$s iskanj."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "Shranjeno iskanje je naloženo"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "Med nalaganjem iskanja je prišlo do napake SQL."
 
 msgid "Contribution is fully scheduled!"
 msgstr "Prispevek je v celoti načrtovan!"
@@ -2551,6 +2568,69 @@ msgstr "Končni datum"
 msgid "Member information"
 msgstr "Informacije o članih"
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "Status %1$s ne obstaja!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Contribution type #%1$s has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "Vrsta prispevka #%1$s ni bila posodobljena"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "Vrsta plačila '%1$s' ni bila dodana!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "Spol %1$s ne obstaja!"
+
+msgid "Creation date"
+msgstr "Datum vpisa"
+
+msgid "Modification date"
+msgstr "Datum spremembe"
+
+msgid "Due date"
+msgstr "Rok"
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "Contribution creation date"
+msgstr "Informacije o prispevkih"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution begin date"
+msgstr "Prispevek posodobljen"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution end date"
+msgstr "Prispevek posodobljen"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr "E-pošta, URL, neposredno sporočilo"
 
@@ -2922,6 +3002,101 @@ msgstr "Ne vsebuje številk"
 
 msgid "Does not contains special characters"
 msgstr "Ne vsebuje posebnih znakov"
+
+#, fuzzy, php-format
+#| msgid "%1$s entry"
+#| msgid_plural "%1$s entries"
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "Vnos %1$s"
+msgstr[1] "%1$s vnosa"
+msgstr[2] "%1$s vnosov"
+msgstr[3] "%1$s vnosov"
+
+#, fuzzy, php-format
+#| msgid "%1$s member"
+#| msgid_plural "%1$s members"
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "Član %1$s"
+msgstr[1] "%1$sčlana"
+msgstr[2] "%1$s članov"
+msgstr[3] "%1$s člani"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s mesec"
+msgstr[1] "%1$s meseca"
+msgstr[2] "%1$s mesecev"
+msgstr[3] "%1$s mesecev"
+
+#, fuzzy, php-format
+#| msgid "%1$s search"
+#| msgid_plural "%1$s searches"
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "Iskanje %1$s"
+msgstr[1] "Iskanje %1$s"
+msgstr[2] "%1$s iskanj"
+msgstr[3] "%1$s iskanj"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "Koliko je %1$s plus %2$s?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "Koliko je %1$s minus %2$s?"
+
+#, fuzzy
+#| msgid "Today"
+msgid "today"
+msgstr "Danes"
+
+#, fuzzy
+#| msgid "Total contributions for the month"
+msgid "start of the month"
+msgstr "Skupni prispevki za mesec"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+#| msgid "start date filter"
+msgid "start of the year"
+msgstr "filter začetnega datuma"
+
+#, fuzzy
+#| msgid "Send a test email"
+msgid "end of the year"
+msgstr "Pošlji testno e-pošto"
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "Datum začetka članstva:"
+
+#, fuzzy
+#| msgid "Details of membership fee"
+msgid "end of the membership period"
+msgstr "Podrobnosti o članarini"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "mesecev"
+
+msgid "years"
+msgstr ""
 
 msgid "No host"
 msgstr "Brez gostitelja"
@@ -4347,6 +4522,25 @@ msgstr "Geslo ni veljavno!"
 msgid "An error occurred checking password :("
 msgstr "Pri preverjanju gesla je prišlo do napake :("
 
+#, fuzzy
+#| msgid "Reference:"
+msgid "Reference date"
+msgstr "Referenca:"
+
+#, fuzzy
+#| msgid "Duration"
+msgid "Direction"
+msgstr "Trajanje"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -4994,15 +5188,6 @@ msgstr "Brez"
 msgid "between"
 msgstr "med"
 
-msgid "Creation date"
-msgstr "Datum vpisa"
-
-msgid "Modification date"
-msgstr "Datum spremembe"
-
-msgid "Due date"
-msgstr "Rok"
-
 msgid "Show public infos"
 msgstr "Prikaži javne informacije"
 
@@ -5386,9 +5571,6 @@ msgstr ""
 "primeru mora biti znesek prispevka na tem obrazcu enak vsoti vseh "
 "načrtovanih plačil, ki jih boste določili v nadaljevanju."
 
-msgid "months"
-msgstr "mesecev"
-
 msgid "Notify member"
 msgstr "Obvesti člana"
 
@@ -5410,14 +5592,6 @@ msgstr "Znesek prispevka ne sme biti večji od %1$s"
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "Pri prikazu načrtovanih plačil je prišlo do napake :("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "%1$s mesec"
-msgstr[1] "%1$s meseca"
-msgstr[2] "%1$s mesecev"
-msgstr[3] "%1$s mesecev"
 
 msgid "Membership extension"
 msgstr "Podaljšanje članstva"
@@ -6943,6 +7117,12 @@ msgstr "Ni izbranega opomnika"
 msgid "Please make sure to select at least one reminder."
 msgstr "Prosimo, izberite vsaj en opomnik."
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr "Prikaži parametre"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -6953,9 +7133,6 @@ msgstr[3] "%1$s iskanj"
 
 msgid "Search parameters"
 msgstr "Iskalni parametri"
-
-msgid "Show parameters"
-msgstr "Prikaži parametre"
 
 msgid "Load saved search"
 msgstr "Naloži shranjeno iskanje"
@@ -7255,6 +7432,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Vsebina javne strani"
+
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "Med nalaganjem iskanja je prišlo do napake SQL."
 
 #~ msgid "An error occurred displaying groups interface :("
 #~ msgstr "Pri prikazu vmesnika skupin je prišlo do napake :("

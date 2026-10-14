@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -755,6 +755,14 @@ msgstr "S'ha desat la cerca."
 msgid "Saved searches"
 msgstr "Recerques guardades"
 
+#, fuzzy
+msgid "Saved search does not exist."
+msgstr "L'etiqueta no existeix"
+
+#, fuzzy
+msgid "Edit saved search"
+msgstr "Carrega la cerca desada"
+
 msgid "Remove saved search"
 msgstr "Elimina la cerca desada"
 
@@ -762,11 +770,18 @@ msgstr "Elimina la cerca desada"
 msgid "You are about to remove %1$s searches."
 msgstr "Esteu a punt d'eliminar %1$s cerques."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "S'ha carregat la cerca emmagatzemada"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "S'ha produït un error SQL durant la carrega de la cerca."
 
 msgid "Contribution is fully scheduled!"
 msgstr "La contribució s'ha desat correctament!"
@@ -3001,6 +3016,68 @@ msgstr "Data de finalització"
 msgid "Member information"
 msgstr "Informació del membre"
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "L'estat %1$s no existeix!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "%type #%id has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "%type #%1$s no s'ha actualitzat"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "No s'ha afegit el tipus de pagament «%1$s»!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "El gènere %1$s no existeix!"
+
+msgid "Creation date"
+msgstr "Data de creació"
+
+#, fuzzy
+msgid "Modification date"
+msgstr "Data de modificació"
+
+#, fuzzy
+msgid "Due date"
+msgstr "Data de venciment"
+
+#, fuzzy
+msgid "Contribution creation date"
+msgstr "Informació de contribució"
+
+#, fuzzy
+msgid "Contribution begin date"
+msgstr "Contribució actualitzada"
+
+#, fuzzy
+msgid "Contribution end date"
+msgstr "Contribució actualitzada"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 #, fuzzy
 msgid "Email,URL,IM"
 msgstr "EmailURLIM"
@@ -3444,6 +3521,85 @@ msgstr "No conté números"
 #, fuzzy
 msgid "Does not contains special characters"
 msgstr "No conté caràcters especials"
+
+#, fuzzy, php-format
+#| msgid "%1$s entry"
+#| msgid_plural "%1$s entries"
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "%1$s entrada"
+msgstr[1] "%1$s entrades"
+
+#, fuzzy, php-format
+#| msgid "%1$s member"
+#| msgid_plural "%1$s members"
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "%1$s membre"
+msgstr[1] "%1$s membres"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s mes"
+msgstr[1] "%1$s mesos"
+
+#, fuzzy, php-format
+#| msgid "%1$s search"
+#| msgid_plural "%1$s searches"
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "%1$s cerques"
+msgstr[1] "%1$s cerca"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+msgid "%1$s plus %2$s"
+msgstr "Quant és el %1$s més el %2$s?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+msgid "%1$s minus %2$s"
+msgstr "Quant és el %1$s menys el %2$s?"
+
+msgid "today"
+msgstr ""
+
+#, fuzzy
+msgid "start of the month"
+msgstr "Separa la contribució d'aquesta operació"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+msgid "start of the year"
+msgstr "filtre de data d'inici"
+
+#, fuzzy
+msgid "end of the year"
+msgstr "Envia un correu electrònic"
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "Data d'inici de la membresia:"
+
+#, fuzzy
+msgid "end of the membership period"
+msgstr "Detalls de la quota de pertinença"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "mesos"
+
+msgid "years"
+msgstr ""
 
 #, fuzzy
 msgid "No host"
@@ -5105,6 +5261,24 @@ msgid "An error occurred checking password :("
 msgstr "S'ha produït un error en comprovar la contrasenya ("
 
 #, fuzzy
+#| msgid "Reference:"
+msgid "Reference date"
+msgstr "Referència:"
+
+#, fuzzy
+msgid "Direction"
+msgstr "Durada"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
+#, fuzzy
 msgid "Remove"
 msgstr "Elimina"
 
@@ -5849,17 +6023,6 @@ msgstr "Sense"
 msgid "between"
 msgstr "entre"
 
-msgid "Creation date"
-msgstr "Data de creació"
-
-#, fuzzy
-msgid "Modification date"
-msgstr "Data de modificació"
-
-#, fuzzy
-msgid "Due date"
-msgstr "Data de venciment"
-
 #, fuzzy
 msgid "Show public infos"
 msgstr "Mostra informació pública"
@@ -6311,9 +6474,6 @@ msgid ""
 "define next."
 msgstr ""
 
-msgid "months"
-msgstr "mesos"
-
 #, fuzzy
 msgid "Notify member"
 msgstr "membre del FreeBSD"
@@ -6342,12 +6502,6 @@ msgstr "L'import de la contribució hauria de ser superior al màxim d'un %1$s"
 #, fuzzy
 msgid "An error occurred displaying scheduled payments :("
 msgstr "S'ha produït un error en mostrar la vista prèvia ("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "%1$s mes"
-msgstr[1] "%1$s mesos"
 
 #, fuzzy
 msgid "Membership extension"
@@ -8193,6 +8347,13 @@ msgstr "No s'ha seleccionat cap recordatori"
 msgid "Please make sure to select at least one reminder."
 msgstr "Assegureu-vos de seleccionar almenys un recordatori."
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+#, fuzzy
+msgid "Show parameters"
+msgstr "Mostra els paràmetres"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -8202,10 +8363,6 @@ msgstr[1] "%1$s cerca"
 #, fuzzy
 msgid "Search parameters"
 msgstr "Cerca paràmetres"
-
-#, fuzzy
-msgid "Show parameters"
-msgstr "Mostra els paràmetres"
 
 #, fuzzy
 msgid "Load saved search"
@@ -8526,6 +8683,9 @@ msgstr ""
 #, fuzzy
 msgid "Public page content"
 msgstr "Contingut de la pàgina pública"
+
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "S'ha produït un error SQL durant la carrega de la cerca."
 
 #, fuzzy
 #~ msgid "An error occurred displaying groups interface :("

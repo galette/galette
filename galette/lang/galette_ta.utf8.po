@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -676,6 +676,16 @@ msgstr "தேடல் சேமிக்கப்பட்டுள்ளத�
 msgid "Saved searches"
 msgstr "சேமித்த தேடல்கள்"
 
+#, fuzzy
+#| msgid "Label does not exist"
+msgid "Saved search does not exist."
+msgstr "சிட்டை இல்லை"
+
+#, fuzzy
+#| msgid "Load saved search"
+msgid "Edit saved search"
+msgstr "சேமித்த தேடலை ஏற்றவும்"
+
 msgid "Remove saved search"
 msgstr "சேமித்த தேடலை அகற்று"
 
@@ -683,11 +693,18 @@ msgstr "சேமித்த தேடலை அகற்று"
 msgid "You are about to remove %1$s searches."
 msgstr "நீங்கள் %1$s தேடல்களை அகற்ற உள்ளீர்கள்."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "சேமிக்கப்பட்ட தேடல் ஏற்றப்பட்டது"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "தேடலை ஏற்றும்போது ஒரு கவிமொ பிழை ஏற்பட்டது."
 
 msgid "Contribution is fully scheduled!"
 msgstr "பங்களிப்பு முழுமையாக திட்டமிடப்பட்டுள்ளது!"
@@ -2587,6 +2604,69 @@ msgstr "முடிவு தேதி"
 msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "நிலை %1$s இல்லை!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Contribution type #%1$s has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "பங்களிப்பு வகை #%1$s புதுப்பிக்கப்படவில்லை"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "கட்டண வகை '%1$s' சேர்க்கப்படவில்லை!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "பாலினம் %1$s இல்லை!"
+
+msgid "Creation date"
+msgstr "உருவாக்கும் தேதி"
+
+msgid "Modification date"
+msgstr "மாற்றும் தேதி"
+
+msgid "Due date"
+msgstr "இரண்டு தேதிகள்"
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "Contribution creation date"
+msgstr "பங்களிப்பு செய்தி"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution begin date"
+msgstr "பங்களிப்பு புதுப்பிக்கப்பட்டது"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution end date"
+msgstr "பங்களிப்பு புதுப்பிக்கப்பட்டது"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr "மின்னஞ்சல், முகவரி, im"
 
@@ -2954,6 +3034,93 @@ msgstr "எண்கள் இல்லை"
 
 msgid "Does not contains special characters"
 msgstr "சிறப்பு எழுத்துக்கள் இல்லை"
+
+#, fuzzy, php-format
+#| msgid "%1$s entry"
+#| msgid_plural "%1$s entries"
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "%1$s நுழைவு"
+msgstr[1] "%1$s உள்ளீடுகள்"
+
+#, fuzzy, php-format
+#| msgid "%1$s member"
+#| msgid_plural "%1$s members"
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "%1$s உறுப்பினர்"
+msgstr[1] "%1$s உறுப்பினர்கள்"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s மாதம்"
+msgstr[1] "%1$s மாதங்கள்"
+
+#, fuzzy, php-format
+#| msgid "%1$s search"
+#| msgid_plural "%1$s searches"
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "%1$s தேடல்"
+msgstr[1] "%1$s தேடல்கள்"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "%1$s பிளச் %2$s எவ்வளவு?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "%1$s கழித்தல் %2$s எவ்வளவு?"
+
+#, fuzzy
+#| msgid "Today"
+msgid "today"
+msgstr "இன்று"
+
+#, fuzzy
+#| msgid "Total contributions for the month"
+msgid "start of the month"
+msgstr "மாதத்திற்கான மொத்த பங்களிப்புகள்"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+#| msgid "start date filter"
+msgid "start of the year"
+msgstr "தொடக்க தேதி வடிகட்டி"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "end of the year"
+msgstr "மின்னஞ்சல் அனுப்புங்கள்"
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "உறுப்பினர் தொடக்க தேதி:"
+
+#, fuzzy
+#| msgid "Details of membership fee"
+msgid "end of the membership period"
+msgstr "உறுப்பினர் கட்டணம் விவரங்கள்"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "மாதங்கள்"
+
+msgid "years"
+msgstr ""
 
 msgid "No host"
 msgstr "புரவலன் இல்லை"
@@ -4362,6 +4529,25 @@ msgstr "கடவுச்சொல் செல்லுபடியாகா�
 msgid "An error occurred checking password :("
 msgstr "கடவுச்சொல்லைச் சரிபார்ப்பதில் பிழை ஏற்பட்டது :("
 
+#, fuzzy
+#| msgid "Reference:"
+msgid "Reference date"
+msgstr "குறிப்பு:"
+
+#, fuzzy
+#| msgid "Duration"
+msgid "Direction"
+msgstr "காலம்"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr "அகற்று"
 
@@ -5018,15 +5204,6 @@ msgstr "இல்லாமல்"
 msgid "between"
 msgstr "கடி"
 
-msgid "Creation date"
-msgstr "உருவாக்கும் தேதி"
-
-msgid "Modification date"
-msgstr "மாற்றும் தேதி"
-
-msgid "Due date"
-msgstr "இரண்டு தேதிகள்"
-
 msgid "Show public infos"
 msgstr "பொது இன்போசைக் காட்டு"
 
@@ -5412,9 +5589,6 @@ msgstr ""
 "அப்படியானால், தற்போதைய படிவத்தில் உள்ள பங்களிப்பின் அளவு, நீங்கள் அடுத்து வரையறுக்கும் "
 "அனைத்து திட்டமிடப்பட்ட கட்டணங்களின் மொத்தத்திற்கு சமமாக இருக்க வேண்டும்."
 
-msgid "months"
-msgstr "மாதங்கள்"
-
 msgid "Notify member"
 msgstr "உறுப்பினருக்கு அறிவிக்கவும்"
 
@@ -5436,12 +5610,6 @@ msgstr "பங்களிப்பு தொகை %1$s விட அதிக�
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளைக் காண்பிப்பதில் பிழை ஏற்பட்டது :("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "%1$s மாதம்"
-msgstr[1] "%1$s மாதங்கள்"
 
 msgid "Membership extension"
 msgstr "உறுப்பினர் நீட்டிப்பு"
@@ -6976,6 +7144,12 @@ msgstr "எந்த நினைவூட்டலும் தேர்ந்�
 msgid "Please make sure to select at least one reminder."
 msgstr "குறைந்தது ஒரு நினைவூட்டலைத் தேர்ந்தெடுக்கவும்."
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr "அளவுருக்களைக் காட்டு"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -6984,9 +7158,6 @@ msgstr[1] "%1$s தேடல்கள்"
 
 msgid "Search parameters"
 msgstr "அளவுருக்களைத் தேடுங்கள்"
-
-msgid "Show parameters"
-msgstr "அளவுருக்களைக் காட்டு"
 
 msgid "Load saved search"
 msgstr "சேமித்த தேடலை ஏற்றவும்"
@@ -7271,6 +7442,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "பொது பக்க உள்ளடக்கம்"
+
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "தேடலை ஏற்றும்போது ஒரு கவிமொ பிழை ஏற்பட்டது."
 
 #~ msgid "An error occurred displaying groups interface :("
 #~ msgstr "குழுக்களின் இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -699,6 +699,16 @@ msgstr "Пошук збережено."
 msgid "Saved searches"
 msgstr "Збережені пошукові запити"
 
+#, fuzzy
+#| msgid "Label does not exist"
+msgid "Saved search does not exist."
+msgstr "Мітки не існує"
+
+#, fuzzy
+#| msgid "Load saved search"
+msgid "Edit saved search"
+msgstr "Завантажити збережений пошук"
+
 msgid "Remove saved search"
 msgstr "Видалити збережений пошук"
 
@@ -706,11 +716,18 @@ msgstr "Видалити збережений пошук"
 msgid "You are about to remove %1$s searches."
 msgstr "Ви збираєтеся видалити %1$s запит(ів)."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "Збережений пошук завантажено"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "Під час завантаження пошуку сталася помилка SQL."
 
 msgid "Contribution is fully scheduled!"
 msgstr "Внесок повністю запланований!"
@@ -2629,6 +2646,69 @@ msgstr "Дата завершення"
 msgid "Member information"
 msgstr "Відомості про члена"
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "Стану %1$s не існує!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Contribution type #%1$s has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "Тип внеску #%1$s не оновлено"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "Вид оплати \"%1$s\" не додано!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "Статі %1$s не існує!"
+
+msgid "Creation date"
+msgstr "Дата створення"
+
+msgid "Modification date"
+msgstr "Дата змінення"
+
+msgid "Due date"
+msgstr "Кінцева дата"
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "Contribution creation date"
+msgstr "Відомості про внесок"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution begin date"
+msgstr "Внесок оновлено"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution end date"
+msgstr "Внесок оновлено"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr "Е-пошта, URL-адреса, переписник (месенджер)"
 
@@ -2998,6 +3078,97 @@ msgstr "Не містить чисел"
 
 msgid "Does not contains special characters"
 msgstr "Не містить спеціальних знаків"
+
+#, fuzzy, php-format
+#| msgid "%1$s entry"
+#| msgid_plural "%1$s entries"
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "%1$s запис"
+msgstr[1] "%1$s записи"
+msgstr[2] "%1$s записів"
+
+#, fuzzy, php-format
+#| msgid "%1$s member"
+#| msgid_plural "%1$s members"
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "%1$s член"
+msgstr[1] "%1$s члени"
+msgstr[2] "%1$s членів"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s місяць"
+msgstr[1] "%1$s місяців"
+msgstr[2] "%1$s місяців"
+
+#, fuzzy, php-format
+#| msgid "%1$s search"
+#| msgid_plural "%1$s searches"
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "%1$s пошук"
+msgstr[1] "%1$s пошуки"
+msgstr[2] "%1$s пошуків"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "Скільки дорівнюватиме %1$s дoдaти %2$s?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "Скільки дорівнюватиме %1$s вiдняти %2$s?"
+
+#, fuzzy
+#| msgid "Today"
+msgid "today"
+msgstr "Сьогодні"
+
+#, fuzzy
+#| msgid "Total contributions for the month"
+msgid "start of the month"
+msgstr "Всього внесків за місяць"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+#| msgid "start date filter"
+msgid "start of the year"
+msgstr "добірка дати початку"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "end of the year"
+msgstr "Надіслати повідомлення на е-пошту"
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "Дата початку членства:"
+
+#, fuzzy
+#| msgid "Details of membership fee"
+msgid "end of the membership period"
+msgstr "Подробиці членського внеску"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "місяців"
+
+msgid "years"
+msgstr ""
 
 msgid "No host"
 msgstr "Немає хосту"
@@ -4424,6 +4595,27 @@ msgstr "Пароль не дійсний!"
 msgid "An error occurred checking password :("
 msgstr "Під час перевірки пароля сталася помилка :("
 
+#, fuzzy
+#| msgid "Reference:"
+msgid "Reference date"
+msgstr "Посилання:"
+
+#, fuzzy
+#| msgid "Duration"
+msgid "Direction"
+msgstr "Тривалість"
+
+msgid "Unit"
+msgstr ""
+
+#, fuzzy
+#| msgid "Use paid flag"
+msgid "Use a fixed date"
+msgstr "Використовувати платний прапор"
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr "Вилучити"
 
@@ -5090,15 +5282,6 @@ msgstr "Без"
 msgid "between"
 msgstr "між"
 
-msgid "Creation date"
-msgstr "Дата створення"
-
-msgid "Modification date"
-msgstr "Дата змінення"
-
-msgid "Due date"
-msgstr "Кінцева дата"
-
 msgid "Show public infos"
 msgstr "Показати загальнодоступні дані"
 
@@ -5489,9 +5672,6 @@ msgstr ""
 "такому разі сума внеску в цій формі має дорівнювати загальній сумі всіх "
 "запланованих платежів, які ви визначите далі."
 
-msgid "months"
-msgstr "місяців"
-
 msgid "Notify member"
 msgstr "Повідомити члена"
 
@@ -5513,13 +5693,6 @@ msgstr "Сума внеску повинна бути меншою, ніж %1$s"
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "Під час відображення запланованих платежів сталася помилка :("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "%1$s місяць"
-msgstr[1] "%1$s місяців"
-msgstr[2] "%1$s місяців"
 
 msgid "Membership extension"
 msgstr "Подовження членства"
@@ -7088,6 +7261,12 @@ msgstr "Нагадування не вибрано"
 msgid "Please make sure to select at least one reminder."
 msgstr "Будь ласка, обов’язково виберіть хоча б одне нагадування."
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr "Показати настройки"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -7097,9 +7276,6 @@ msgstr[2] "%1$s пошуків"
 
 msgid "Search parameters"
 msgstr "Параметри пошуку"
-
-msgid "Show parameters"
-msgstr "Показати настройки"
 
 msgid "Load saved search"
 msgstr "Завантажити збережений пошук"
@@ -7389,6 +7565,9 @@ msgstr ""
 msgid "Public page content"
 msgstr "Зміст загальнодоступної сторінки"
 
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "Під час завантаження пошуку сталася помилка SQL."
+
 #~ msgid "An error occurred displaying groups interface :("
 #~ msgstr "Під час відображення інтерфейсу груп сталася помилка :("
 
@@ -7574,9 +7753,6 @@ msgstr "Зміст загальнодоступної сторінки"
 
 #~ msgid "Display database identifiers in related windows"
 #~ msgstr "Відображення ідентифікаторів бази даних у відповідних вікнах"
-
-#~ msgid "Use paid flag"
-#~ msgstr "Використовувати платний прапор"
 
 #~ msgid "Use paid flag on contributions"
 #~ msgstr "Використовуйте позначку «Плачено» для внесків"
