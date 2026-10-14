@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-07 08:51+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -852,6 +852,13 @@ msgstr "Imports"
 msgid "An error occurred importing the file :("
 msgstr "Une erreur est survenue lors de l'import du fichier :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+"Le fichier « %1$s » peut être importé, rien n'a été enregistré (galop "
+"d’essai)."
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Le fichier « %1$s » a été importé avec succès :)"
@@ -880,6 +887,9 @@ msgstr "Impossible de supprimer « %1$s » du disque :/"
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr "%1$s (occurrence %2$s)"
+
+msgid "Managed groups"
+msgstr "Groupes gérés"
 
 msgid "CSV import model"
 msgstr "Modèle d’import CSV"
@@ -2808,12 +2818,33 @@ msgstr "L’adresse courriel %1$s est déjà utilisée ! (%2$s)"
 msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, php-format
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Le groupe « %1$s » n'existe pas (ligne %2$s)"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+"Plusieurs groupes s'appellent « %1$s » (ligne %2$s), utilisez le nom complet "
+"de l'un d'eux : %3$s"
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %1$s "
 "(%2$s) :"
+
+#. TRANS: first parameter is row, second member name
+#, php-format
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
+msgstr ""
+"Une erreur est survenue lors de l'ajout de l'adhérent ligne %1$s (%2$s) à "
+"ses groupes"
 
 msgid "An error occurred while importing members"
 msgstr "Une erreur est survenue lors de l'enregistrement des adhérents"
@@ -3771,6 +3802,17 @@ msgstr "Impossible de migrer les choix du champ %d : %s"
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Veuillez choisir les paramètres du compte administrateur Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(au moins %1$s caractères)"
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"Pour un mot de passe plus robuste, mélangez minuscules, majuscules, chiffres "
+"et caractères spéciaux."
+
 msgid "Retype password:"
 msgstr "Retaper le mot de passe :"
 
@@ -4194,10 +4236,6 @@ msgstr ""
 "désactiver les pages publiques ; dans ce cas, ce paramètre n’aura aucun "
 "effet."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(au moins %1$s caractères)"
-
 msgid "(numbers only)"
 msgstr "(chiffres uniquement)"
 
@@ -4473,20 +4511,27 @@ msgstr "Informations"
 msgid "Parent group:"
 msgstr "Groupe parent :"
 
+#, php-format
+msgid "%1$s is member of the group"
+msgstr "%1$s est membre du groupe"
+
+#, php-format
+msgid "%1$s is manager of the group"
+msgstr "%1$s est responsable du groupe"
+
+#, php-format
+msgid "Remove %1$s from the group"
+msgstr "Retirer %1$s du groupe"
+
+#, php-format
+msgid "Keep %1$s in the group"
+msgstr "Conserver %1$s dans le groupe"
+
 msgid "Managers"
 msgstr "Responsables"
 
-msgid "Manage managers"
-msgstr "Gestion des responsables"
-
-msgid "Manage members"
-msgstr "Gestion des membres"
-
 msgid "No member attached"
 msgstr "Aucun adhérent attaché"
-
-msgid "No manager attached"
-msgstr "Aucun responsable attaché"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "D,L,M,M,J,V,S"
@@ -4574,6 +4619,10 @@ msgstr "Fermer"
 
 msgid "An error occurred retrieving dates :("
 msgstr "Une erreur est survenue lors de la récupération des dates :("
+
+msgid "An error occurred displaying members interface :("
+msgstr ""
+"Une erreur est survenue lors de l'affichage de l'interface des membres :("
 
 msgid "Loading..."
 msgstr "Chargement..."
@@ -5896,19 +5945,6 @@ msgstr "Additionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 msgid "Table name"
 msgstr "Nom de la table"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-"Une erreur est survenue lors de l'affichage de l'interface des membres :("
-
-msgid "Group members selection"
-msgstr "Sélection des membres du groupe"
-
-msgid "Group managers selection"
-msgstr "Sélection des responsables du groupe"
-
-msgid "Click on a row to select a member"
-msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6119,6 +6155,9 @@ msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
 msgid "Members selection"
 msgstr "Sélection d’adhérents"
+
+msgid "Click on a row to select a member"
+msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Voulez-vous vraiment effacer cette pièce jointe ?"
@@ -7527,6 +7566,21 @@ msgstr ""
 msgid "Public page content"
 msgstr "Contenu page publique"
 
+#~ msgid "Manage managers"
+#~ msgstr "Gestion des responsables"
+
+#~ msgid "Manage members"
+#~ msgstr "Gestion des membres"
+
+#~ msgid "No manager attached"
+#~ msgstr "Aucun responsable attaché"
+
+#~ msgid "Group members selection"
+#~ msgstr "Sélection des membres du groupe"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Sélection des responsables du groupe"
+
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Une erreur SQL est survenue lors du chargement de la recherche."
 
@@ -7804,9 +7858,6 @@ msgstr "Contenu page publique"
 
 #~ msgid "Automatic emails texts edition"
 #~ msgstr "Édition des courriels automatiques"
-
-#~ msgid "Manage groups"
-#~ msgstr "Gestion des groupes"
 
 #~ msgid "Manage mailings"
 #~ msgstr "Gestion des envois"
