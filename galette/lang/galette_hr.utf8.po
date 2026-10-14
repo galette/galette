@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-13 19:45+0200\n"
-"PO-Revision-Date: 2026-10-13 08:41+0000\n"
+"PO-Revision-Date: 2026-10-14 07:50+0000\n"
 "Last-Translator: Marko Puljic "
 "<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
@@ -872,10 +872,9 @@ msgid "Translate '%s'"
 msgstr "Prevedi '%s'"
 
 #. TRANS: parameter is the label
-#, fuzzy, php-format
-#| msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
+#, php-format
 msgid "Label `%1$s` is translated by Galette, it cannot be translated here."
-msgstr "Postavkom '%1$s' upravlja Galette i ne može se mijenjati!"
+msgstr "Oznaku %1$s automatski prevodi Galette i nije ju moguće prevesti ovdje."
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -3874,10 +3873,10 @@ msgid "Ajax page content"
 msgstr "Sadržaj AJAX stranice"
 
 msgid "Copied to clipboard."
-msgstr ""
+msgstr "Kopirano u međuspremnik."
 
 msgid "Unable to copy, please select the text and copy it by hand."
-msgstr ""
+msgstr "Nije moguće kopirati. Označite tekst i kopirajte ga ručno."
 
 msgid "Additionnal fields:"
 msgstr "Dodatna polja:"
@@ -3973,48 +3972,36 @@ msgstr "Član grupe"
 msgid "Actions"
 msgstr "Radnje"
 
-#, fuzzy
-#| msgid "Group added"
 msgctxt "member groups"
 msgid "added"
-msgstr "Grupa je dodana"
+msgstr "dodano"
 
-#, fuzzy
-#| msgid "Mass change"
 msgctxt "member groups"
 msgid "changed"
-msgstr "Skupna izmjena"
+msgstr "Promjenjeno"
 
-#, fuzzy
-#| msgid "Parent removed"
 msgctxt "member groups"
 msgid "will be removed"
-msgstr "Nadređena grupa je uklonjena"
+msgstr "biti će promjenjeno"
 
-#, fuzzy
-#| msgid "Group manager"
 msgid "Group you do not manage"
-msgstr "Voditelj grupe"
+msgstr "Grupa koju ne vodite"
 
-#, fuzzy, php-format
-#| msgid "Member of group"
+#, php-format
 msgid "Member of group %1$s"
-msgstr "Član grupe"
+msgstr "Član grupe %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Manager of group %1$s"
-msgstr "Ukloni grupu %1$s"
+msgstr "Voditelj grupe %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove from group %1$s"
-msgstr "Ukloni iz grupe"
+msgstr "Ukloni iz grupe %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Keep group %1$s"
-msgstr "Ukloni grupu %1$s"
+msgstr "Zadrži grupu %1$s"
 
 msgid "no group"
 msgstr "nema grupa"
@@ -4520,12 +4507,10 @@ msgid "Register"
 msgstr "Registracija"
 
 msgid "Generating dark theme..."
-msgstr ""
+msgstr "Generiranje tamne teme..."
 
-#, fuzzy
-#| msgid "Unable to reach the SMTP server."
 msgid "Unable to store dark theme."
-msgstr "Nije moguće povezati se sa SMTP poslužiteljem."
+msgstr "Nije moguće spremiti tamnu temu."
 
 msgid "Deactivate HTML editor"
 msgstr "Isključi HTML uređivač"
@@ -4538,9 +4523,12 @@ msgid ""
 "This label is provided by Galette and displayed as \"%1$s\" in your "
 "language. Changing it will replace its automatic translations."
 msgstr ""
+"Ovu oznaku pruža Galette i na vašem se jeziku prikazuje kao „%1$s”. Njezina "
+"izmjena zamijenit će automatske prijevode."
 
 msgid "If this label is changed, keep its translations in other languages"
 msgstr ""
+"Ako je ova oznaka promijenjena, zadrži njezine prijevode na drugim jezicima"
 
 msgid "For the selection:"
 msgstr "Za odabrane:"
@@ -5235,6 +5223,9 @@ msgid ""
 "This label is provided by Galette, its translations come with the software "
 "and cannot be changed here. You can help improve them on Weblate."
 msgstr ""
+"Ovu oznaku pruža Galette, a njezini prijevodi sastavni su dio aplikacije i "
+"ne mogu se mijenjati ovdje. Poboljšanju prijevoda možete pridonijeti putem "
+"Weblatea."
 
 #, php-format
 msgid ""
@@ -5245,7 +5236,7 @@ msgstr ""
 "biste ga stvorili."
 
 msgid "When a translation is empty, the original text is displayed."
-msgstr ""
+msgstr "Kada je prijevod prazan, prikazuje se originalni tekst."
 
 msgid "Original text:"
 msgstr "Izvorni tekst:"
@@ -6500,8 +6491,6 @@ msgid ""
 msgstr ""
 "Unesite puni URL RSS izvora. Prikazivat će se na nadzornoj ploči Galettea."
 
-#, fuzzy
-#| msgid "Can members create child?"
 msgid "Can members create child members?"
 msgstr "Mogu li članovi dodavati povezane članove?"
 
@@ -7027,10 +7016,8 @@ msgstr "Prioritet"
 msgid "New status"
 msgstr "Novi status"
 
-#, fuzzy
-#| msgid "System information"
 msgid "Copy system information"
-msgstr "Podaci o sustavu"
+msgstr "Kopiraj podatke o sustavu"
 
 msgid "Transaction details"
 msgstr "Pojedinosti transakcije"
@@ -7123,7 +7110,7 @@ msgstr ""
 "jednu prijavu i omogućuje prijavu ako više nemate svoj uređaj."
 
 msgid "Copy the codes"
-msgstr ""
+msgstr "Kopiraj kodove"
 
 msgid "I have written them down"
 msgstr "Kodovi su zapisani"
@@ -7148,7 +7135,7 @@ msgid "Key, to type in by hand:"
 msgstr "Ključ za ručni unos:"
 
 msgid "Copy the key"
-msgstr ""
+msgstr "Kopiraj ključ"
 
 msgid "Code shown by the application:"
 msgstr "Kod prikazan u aplikaciji:"
