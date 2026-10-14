@@ -493,9 +493,9 @@
                                             </div>
                                         </div>
                                         <div class="data inline fields">
-                                            <input type="hidden" name="free_type[]" value="{% if cur_field is not null %}{{ cur_field.getType() }}{% endif %}"/>
+                                            <input type="hidden" name="free_type[]" value="{% if cur_field is not null %}{{ cur_field.getType() }}{% else %}{{ type }}{% endif %}"/>
                                             <label for="free_query_operator_{{ loop.index }}" class="visually-hidden">{{ _T('Query operator') }}</label>
-    {% if cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
+    {% if (cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Choice") or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE") %}
                                             <select id="free_query_operator_{{ loop.index }}" name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
@@ -512,7 +512,7 @@
             {% endfor %}
         {% endif %}
                                             </select>
-    {% elseif cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Date" or type == constant("Galette\\DynamicFields\\DynamicField::DATE")) %}
+    {% elseif (cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Date") or type == constant("Galette\\DynamicFields\\DynamicField::DATE") %}
                                             <select id="free_query_operator_{{ loop.index }}" name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
@@ -520,7 +520,7 @@
                                             </select>
                                             <label for="free_text_{{ loop.index }}" class="visually-hidden">{{ _T('Date') }}</label>
                                             <input id="free_text_{{ loop.index }}" type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10" placeholder="{{ _T('yyyy-mm-dd format') }}"/>
-    {% elseif cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
+    {% elseif (cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Boolean") or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN") %}
                                             <select id="free_query_operator_{{ loop.index }}" name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                             </select>
