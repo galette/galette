@@ -1,0 +1,51 @@
+<?php
+
+namespace Slim\Flash;
+
+use ArrayAccess;
+
+/**
+ * Slim documents messages as lists of strings, while each key holds a list of messages
+ */
+class Messages
+{
+    /**
+     * @var array<string, array<int, mixed>>
+     */
+    protected $fromPrevious = [];
+
+    /**
+     * @var array<string, array<int, mixed>>
+     */
+    protected $forNow = [];
+
+    /**
+     * @var array<string, array<int, mixed>>
+     */
+    protected $forNext = [];
+
+    /**
+     * @var null|array<mixed>|ArrayAccess<mixed, mixed>
+     */
+    protected $storage;
+
+    /**
+     * @var string
+     */
+    protected $storageKey = 'slimFlash';
+
+    /**
+     * @param null|array<mixed>|ArrayAccess<mixed, mixed> $storage
+     * @param null|string                                 $storageKey
+     */
+    public function __construct(&$storage = null, $storageKey = null)
+    {
+    }
+
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    public function getMessages()
+    {
+    }
+}

@@ -5,6 +5,8 @@ parameters:
     level: 6
     bootstrapFiles:
         - stubs/constants.php
+    stubFiles:
+        - stubs/SlimFlashMessages.stub
     paths:
         - bin/
         # extensionless, so not picked up by the directory above
