@@ -165,6 +165,11 @@ class SavedSearch
     public function store(): bool
     {
         $parameters = json_encode($this->parameters);
+
+        if (isset($this->id)) {
+            return $this->update($parameters);
+        }
+
         $data = [
             'name'              => $this->name,
             'parameters'        => $parameters,
@@ -185,6 +190,38 @@ class SavedSearch
             return true;
         } catch (Throwable $e) {
             Logs::exception($e, "An error occurred storing saved search:\n" . print_r($data, return: true));
+            throw $e;
+        }
+    }
+
+    /**
+     * Update saved search in database
+     *
+     * Only name and parameters can change; author and creation date are kept.
+     *
+     * @param string $parameters JSON encoded parameters
+     */
+    private function update(string $parameters): bool
+    {
+        try {
+            $update = $this->zdb->update(self::TABLE);
+            $update->set(
+                [
+                    'name'          => $this->name,
+                    'parameters'    => $parameters
+                ]
+            );
+            $update->where([self::PK => $this->id]);
+            if ($this->login->isSuperAdmin()) {
+                $update->where(Adherent::PK . ' IS NULL');
+            } else {
+                $update->where([Adherent::PK => $this->login->id]);
+            }
+            //no affected rows count check: MySQL reports 0 when nothing changed
+            $this->zdb->execute($update);
+            return true;
+        } catch (Throwable $e) {
+            Logs::exception($e, 'An error occurred updating saved search #' . $this->id);
             throw $e;
         }
     }

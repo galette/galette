@@ -182,9 +182,37 @@ class SavedSearchesController extends CrudController
      *
      * @param int $id Record id
      */
+    #[Route(
+        name: 'editSearch',
+        pattern: '/search/edit/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: true
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
-        //no edition
+        try {
+            $sco = new SavedSearch($this->zdb, $this->login, $id);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::WARNING);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/saved_search_form.html.twig',
+            [
+                'page_title'        => _T("Edit saved search"),
+                'search'            => $sco,
+                'can_replace'       => $this->getCurrentSearchParameters() !== null
+            ]
+        );
         return $response;
     }
 
@@ -193,10 +221,65 @@ class SavedSearchesController extends CrudController
      *
      * @param int $id Record id
      */
+    #[Route(
+        name: 'doEditSearch',
+        pattern: '/search/edit/{id:\d+}',
+        methods: ['POST'],
+        requiresAuth: true
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
-        //no edition
-        return $response;
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        try {
+            $sco = new SavedSearch($this->zdb, $this->login, $id);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::WARNING);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        $values = [
+            'form'  => $sco->form,
+            'name'  => $post['name'] ?? ''
+        ];
+        if (isset($post['replace_parameters'])) {
+            $parameters = $this->getCurrentSearchParameters();
+            if ($parameters !== null) {
+                $values['parameters'] = $parameters;
+            }
+        }
+
+        if ($sco->check($values) && $sco->store()) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Search has been saved.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        foreach ($sco->getErrors() as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('editSearch', ['id' => (string)$id]));
     }
 
     /**

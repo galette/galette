@@ -1,0 +1,42 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends "page.html.twig" %}
+
+{% block content %}
+    <form action="{{ url_for('doEditSearch', {'id': search.id}) }}" method="post" class="ui form">
+        <div class="ui segment">
+            <div class="required field">
+                <label for="name">{{ _T("Name") }}</label>
+                <input type="text" name="name" id="name" value="{{ search.name }}" maxlength="100" required="required" />
+            </div>
+    {% if can_replace %}
+            <div class="field">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="replace_parameters" id="replace_parameters" value="1"/>
+                    <label for="replace_parameters">{{ _T("Replace parameters with the current advanced search") }}</label>
+                </div>
+            </div>
+    {% endif %}
+            <details class="ui basic styled accordion">
+                <summary class="title">
+                    <i class="caret down icon" aria-hidden="true"></i> {{ _T("Show parameters") }}
+                </summary>
+                <div class="content">
+    {% for key, parameter in search.sparameters %}
+                    <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
+    {% endfor %}
+                </div>
+            </details>
+        </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate="formnovalidate" />
+        </div>
+    </form>
+{% endblock %}
