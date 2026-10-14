@@ -61,6 +61,14 @@
                 </a>
 
                 <a
+                        href="{{ url_for("editSearch", {"id": search.id}) }}"
+                        class="icon-only"
+                >
+                    <i class="ui edit icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("Edit saved search") }}</span>
+                </a>
+
+                <a
                         href="{{ url_for("removeSearch", {"id": search.id}) }}"
                         class="delete icon-only"
                 >

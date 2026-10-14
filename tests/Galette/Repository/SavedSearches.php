@@ -67,12 +67,16 @@ class SavedSearches extends GaletteTestCase
 
         //another one
         $post['name'] = 'Another search';
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $this->assertTrue($saved->check($post));
         $this->assertTrue($saved->store());
         $sid_2 = $saved->id;
         $this->assertCount(2, $searches->getList(as_search: true));
         $this->assertSame(2, $searches->getCount());
 
         $post['name'] = 'Last one';
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $this->assertTrue($saved->check($post));
         $this->assertTrue($saved->store());
         $sid_3 = $saved->id;
         $this->assertCount(3, $searches->getList(as_search: true));
