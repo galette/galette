@@ -98,29 +98,11 @@ abstract class AbstractController
     }
 
     /**
-     * Reinject flash messages so they're not lost
-     *
-     * Loading flash messages consumes them; a request that does not display
-     * them (a redirection, an ajax call) must keep them for the next one.
-     */
-    protected function keepFlashMessages(): void
-    {
-        $flashes = $this->flash->getMessages();
-        foreach ($flashes as $type => $messages) {
-            foreach ($messages as $message) {
-                $this->container->get(Messages::class)->addMessage($type, $message);
-            }
-        }
-    }
-
-    /**
      * Galette redirection workflow
      * Each user have a default homepage depending on it status (logged in or not, its credentials, etc.
      */
     protected function galetteRedirect(Request $request, Response $response): Response
     {
-        $this->keepFlashMessages();
-
         if ($this->login->isLogged()) {
             $urlRedirect = null;
             if ($this->session->urlRedirect !== null) {

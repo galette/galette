@@ -111,7 +111,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 });
 
 // Flash messages
-$container->set(\Slim\Flash\Messages::class, DI\autowire());
+$container->set(\Slim\Flash\Messages::class, DI\autowire(\Galette\Core\FlashMessages::class));
 
 /** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {

@@ -404,9 +404,6 @@ class AjaxController extends AbstractController
     )]
     public function passwordStrength(Request $request, Response $response): Response
     {
-        //checked while typing: may run between a form submission and the page it redirects to
-        $this->keepFlashMessages();
-
         //post params may be passed from security tab test password
         $post = $request->getParsedBody();
 
