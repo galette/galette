@@ -560,6 +560,53 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test search on relative dates
+     */
+    public function testGetListRelativeDates(): void
+    {
+        //contribution begun yesterday
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_begin_date_begin = '@today+2d';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(0, $members->getList()->count());
+
+        $filters->contrib_begin_date_begin = '@today-3d';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(1, $members->getList()->count());
+
+        //and ends in about a year
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_end_date_begin = '@today+11m';
+        $filters->contrib_end_date_end = '@today+1y';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(1, $members->getList()->count());
+
+        //free search on birth date: members born more than 18 years ago
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@today-18y',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_BEFORE
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(8, $members->getList()->count());
+
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@today-18y',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_AFTER
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(2, $members->getList()->count());
+    }
+
+    /**
      * Test advanced free search cannot inject SQL
      *
      * Field names are concatenated in the query as identifiers, and values

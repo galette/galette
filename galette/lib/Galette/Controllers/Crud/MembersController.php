@@ -29,6 +29,7 @@ use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
+use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -914,6 +915,10 @@ class MembersController extends CrudController
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
                 'payments_types'        => $ptlist,
+                'relative_anchors'      => RelativeDate::getAnchors(
+                    $this->preferences->getMembershipPeriodStart() !== null
+                ),
+                'relative_units'        => RelativeDate::getUnits(),
                 'documentation'         => 'usermanual/recherche.html#advanced-search'
             ]
         );

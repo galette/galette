@@ -34,6 +34,7 @@ use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Galette\Filters\AdvancedMembersList;
+use Galette\Util\RelativeDate;
 use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
@@ -1443,6 +1444,13 @@ class Members
             foreach ($this->filters->contrib_dynamic as $k => $cd) {
                 $qop = ' LIKE ';
 
+                if (RelativeDate::isRelative($cd)) {
+                    $cd = $this->filters->resolveDate($cd);
+                    if ($cd === null) {
+                        continue;
+                    }
+                }
+
                 if (is_array($cd)) {
                     //dynamic choice spotted!
                     $select->where
@@ -1559,6 +1567,13 @@ class Members
                         Analog::WARNING
                     );
                     continue;
+                }
+
+                if (RelativeDate::isRelative($fs['search'])) {
+                    $fs['search'] = $this->filters->resolveDate($fs['search']);
+                    if ($fs['search'] === null) {
+                        continue;
+                    }
                 }
 
                 if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {

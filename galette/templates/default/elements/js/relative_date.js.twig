@@ -1,0 +1,95 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Relative dates: each ".relative-date" block holds a regular date input
+ # (within a ".ui.calendar"), and gets a switch to a relative date instead:
+ # an anchor, shifted by a number of days, weeks, months or years.
+ # The relative date is sent as an expression ("@today+30d"), under the name
+ # of the regular input, which is disabled meanwhile.
+ #}
+    var _relativeAnchors = {{ relative_anchors|json_encode|raw }};
+    var _relativeUnits = {{ relative_units|json_encode|raw }};
+    var _relativePattern = /^@([a-z_]+)(?:([+-])(\d+)([dwmy]))?$/;
+
+    var _relativeOptions = function(options, selected) {
+        var _html = '';
+        for (var key in options) {
+            var _option = $('<option/>').attr('value', key).text(options[key]);
+            if (key === selected) {
+                _option.attr('selected', 'selected');
+            }
+            _html += _option[0].outerHTML;
+        }
+        return _html;
+    };
+
+    function _relativeDateWidget(selector) {
+        $(selector).not('.relative-date-ready').each(function() {
+            var _block = $(this).addClass('relative-date-ready');
+            var _fixed = _block.find('.ui.calendar input[type=text]').first();
+            var _name = _fixed.attr('name');
+            var _id = (_fixed.attr('id') || _name.replace(/\W/g, '')) + '_relative';
+            var _value = String(_block.data('value') || '');
+            var _parts = _value.match(_relativePattern) || [null, 'today', '+', '0', 'd'];
+            if (_relativeAnchors[_parts[1]] === undefined) {
+                _parts[1] = 'today';
+            }
+
+            var _controls = $(
+                '<div class="relative-controls displaynone">'
+                + '<label for="' + _id + '_anchor" class="visually-hidden">{{ _T("Reference date")|e('js') }}</label>'
+                + '<select id="' + _id + '_anchor" class="relative-anchor">' + _relativeOptions(_relativeAnchors, _parts[1]) + '</select>'
+                + '<label for="' + _id + '_sign" class="visually-hidden">{{ _T("Direction")|e('js') }}</label>'
+                + '<select id="' + _id + '_sign" class="relative-sign">'
+                + _relativeOptions({'+': '+', '-': '-'}, _parts[2] || '+')
+                + '</select>'
+                + '<label for="' + _id + '_amount" class="visually-hidden">{{ _T("Amount")|e('js') }}</label>'
+                + '<input id="' + _id + '_amount" class="relative-amount" type="number" min="0" max="9999" size="4"/>'
+                + '<label for="' + _id + '_unit" class="visually-hidden">{{ _T("Unit")|e('js') }}</label>'
+                + '<select id="' + _id + '_unit" class="relative-unit">' + _relativeOptions(_relativeUnits, _parts[4] || 'd') + '</select>'
+                + '<input type="hidden" disabled="disabled"/>'
+                + '</div>'
+            );
+            _controls.find('.relative-amount').val(_parts[3] || 0);
+            _controls.find('input[type=hidden]').attr('name', _name);
+
+            var _toggle = $(
+                '<button type="button" class="ui basic icon button relative-toggle">'
+                + '<i class="history icon" aria-hidden="true"></i>'
+                + '<span class="visually-hidden"></span>'
+                + '</button>'
+            );
+
+            var _update = function() {
+                var _amount = parseInt(_controls.find('.relative-amount').val(), 10) || 0;
+                var _expression = '@' + _controls.find('.relative-anchor').val();
+                if (_amount > 0) {
+                    _expression += _controls.find('.relative-sign').val() + _amount + _controls.find('.relative-unit').val();
+                }
+                _controls.find('input[type=hidden]').val(_expression);
+            };
+
+            var _setMode = function(relative) {
+                _block.find('.ui.calendar').toggleClass('displaynone', relative);
+                _fixed.prop('disabled', relative);
+                _controls.toggleClass('displaynone', !relative);
+                _controls.find('input[type=hidden]').prop('disabled', !relative);
+                var _label = relative ? '{{ _T("Use a fixed date")|e('js') }}' : '{{ _T("Use a date relative to the search day")|e('js') }}';
+                _toggle.attr('title', _label).toggleClass('active', relative);
+                _toggle.find('.visually-hidden').text(_label);
+                _update();
+            };
+
+            _controls.on('change input', 'select, input', _update);
+            _toggle.on('click', function() {
+                _setMode(_fixed.prop('disabled') === false);
+            });
+
+            _block.append(_controls).append(_toggle);
+            _setMode(_value.match(_relativePattern) !== null);
+        });
+    };
