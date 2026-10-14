@@ -63,12 +63,55 @@ class AdvancedMembersList extends GaletteTestCase
         $saved = $filters->groups_search;
         $this->assertSame([0 => ['group' => (string)$gid]], $saved);
 
-        //shape stored in saved searches
+        //shape stored in saved searches, with a removed group
         $replayed = new \Galette\Filters\AdvancedMembersList();
-        $replayed->groups_search = $saved;
+        $replayed->groups_search = $saved + [1 => ['group' => '999999']];
         $this->assertSame([0 => ['group' => (string)$gid]], $replayed->groups_search);
+        $this->assertSame(['group #999999 no longer exists'], $replayed->getDiscarded());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Group #999999 does not exists!');
 
         $this->assertTrue($group->remove());
+    }
+
+    /**
+     * Test removed references are reported
+     */
+    public function testDiscarded(): void
+    {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->status = [999];
+        $filters->contributions_types = [999];
+        $filters->payments_types = [999];
+        $filters->group_filter = 999999;
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'dyn_999',
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => 'value',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $filters->contrib_dynamic = [999 => 'value'];
+
+        $this->assertSame(
+            [
+                'status #999 no longer exists',
+                'contribution type #999 no longer exists',
+                'payment type #999 no longer exists',
+                'group #999999 no longer exists',
+                'dynamic field #999 no longer exists',
+                'dynamic field #999 no longer exists',
+            ],
+            $filters->getDiscarded()
+        );
+        $this->assertArrayNotHasKey(1, $filters->getSearchParameters()['free_search']);
+        $this->assertSame([], $filters->contrib_dynamic);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Status #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Contribution type #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Payment type #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Group #999999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Dynamic field dyn_999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Contribution dynamic field #999 does not exists!');
     }
 
     /**

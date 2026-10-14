@@ -18,6 +18,7 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Members;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\PaymentTypes;
+use Galette\Entity\Group;
 
 /**
  * Members list filters and paginator
@@ -445,6 +446,8 @@ class AdvancedMembersList extends MembersList
                                     'Status #' . $v . ' does not exists!',
                                     Analog::WARNING
                                 );
+                                //TRANS: %1$s is the status identifier
+                                $this->discard(sprintf(_T('status #%1$s no longer exists'), $v));
                             }
                         } else {
                             Analog::log(
@@ -472,6 +475,8 @@ class AdvancedMembersList extends MembersList
                                     'Contribution type #' . $v . ' does not exists!',
                                     Analog::WARNING
                                 );
+                                //TRANS: %1$s is the contribution type identifier
+                                $this->discard(sprintf(_T('contribution type #%1$s no longer exists'), $v));
                             }
                         } else {
                             Analog::log(
@@ -504,6 +509,8 @@ class AdvancedMembersList extends MembersList
                                     'Payment type #' . $v . ' does not exists!',
                                     Analog::WARNING
                                 );
+                                //TRANS: %1$s is the payment type identifier
+                                $this->discard(sprintf(_T('payment type #%1$s no longer exists'), $v));
                             }
                         } else {
                             Analog::log(
@@ -534,6 +541,19 @@ class AdvancedMembersList extends MembersList
                         if (static::isValidFreeSearch($value)) {
                             $id = $value['idx'];
 
+                            if (
+                                str_starts_with((string)$value['field'], 'dyn_')
+                                && DynamicField::loadFieldType($zdb, (int)substr((string)$value['field'], 4)) === false
+                            ) {
+                                Analog::log(
+                                    'Dynamic field ' . $value['field'] . ' does not exists!',
+                                    Analog::WARNING
+                                );
+                                //TRANS: %1$s is the dynamic field identifier
+                                $this->discard(sprintf(_T('dynamic field #%1$s no longer exists'), substr((string)$value['field'], 4)));
+                                continue;
+                            }
+
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
@@ -562,7 +582,19 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'contrib_dynamic':
                     if (is_array($value)) {
-                        $this->contrib_dynamic = $value;
+                        $this->contrib_dynamic = [];
+                        foreach ($value as $id => $cd) {
+                            $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
+                            if ($dyn_field === false) {
+                                Analog::log(
+                                    'Contribution dynamic field #' . $id . ' does not exists!',
+                                    Analog::WARNING
+                                );
+                                $this->discard(sprintf(_T('dynamic field #%1$s no longer exists'), $id));
+                                continue;
+                            }
+                            $this->contrib_dynamic[$id] = $cd;
+                        }
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
@@ -594,7 +626,16 @@ class AdvancedMembersList extends MembersList
                                     //placeholder for the form, not a criteria
                                     continue;
                                 }
-                                $this->groups_search[$id] = ['group' => $gs['group']];
+                                $group = new Group();
+                                if ($group->load((int)$gs['group']) === true) {
+                                    $this->groups_search[$id] = ['group' => $gs['group']];
+                                } else {
+                                    Analog::log(
+                                        'Group #' . $gs['group'] . ' does not exists!',
+                                        Analog::WARNING
+                                    );
+                                    $this->discard(sprintf(_T('group #%1$s no longer exists'), $gs['group']));
+                                }
                             }
                             if ($this->groups_search === []) {
                                 //form needs a first row to work on
