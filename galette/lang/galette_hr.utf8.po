@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-14 07:50+0000\n"
 "Last-Translator: Marko Puljic "
 "<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
@@ -2299,6 +2299,18 @@ msgstr "Dodavanje nove transakcije nije uspjelo."
 msgid "Transaction updated"
 msgstr "Transakcija je ažurirana"
 
+msgid "Weak"
+msgstr "Slaba"
+
+msgid "Medium"
+msgstr "Srednja"
+
+msgid "Strong"
+msgstr "Jaka"
+
+msgid "Very strong"
+msgstr "Vrlo jaka"
+
 msgid "Inherit"
 msgstr "Naslijedi"
 
@@ -3008,6 +3020,30 @@ msgstr "Ne sadrži brojeve"
 
 msgid "Does not contains special characters"
 msgstr "Ne sadrži posebne znakove"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Ne sadrži velika slova"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Članovi"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Parametri pretrage"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(najmanje %1$s znakova)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4498,6 +4534,10 @@ msgstr "Lozinka je valjana :)"
 
 msgid "Password is not valid!"
 msgstr "Lozinka nije valjana!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Došlo je do pogreške pri provjeri lozinke :("
@@ -6993,18 +7033,6 @@ msgstr "Jakost lozinke:"
 
 msgid "None (default)"
 msgstr "Bez provjere (zadano)"
-
-msgid "Weak"
-msgstr "Slaba"
-
-msgid "Medium"
-msgstr "Srednja"
-
-msgid "Strong"
-msgstr "Jaka"
-
-msgid "Very strong"
-msgstr "Vrlo jaka"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Zahtijevaj najmanju određenu jakost za sve lozinke."

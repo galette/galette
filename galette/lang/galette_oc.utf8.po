@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -2389,6 +2389,18 @@ msgstr "La transaccion novèla a pas capitat."
 msgid "Transaction updated"
 msgstr "Transaccion actualizada"
 
+msgid "Weak"
+msgstr "Feble"
+
+msgid "Medium"
+msgstr "Mejan"
+
+msgid "Strong"
+msgstr "Fòrt"
+
+msgid "Very strong"
+msgstr ""
+
 msgid "Inherit"
 msgstr ""
 
@@ -3103,6 +3115,30 @@ msgstr "Conten ges de nombre"
 
 msgid "Does not contains special characters"
 msgstr "Conten ges de caractèr particular"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Conten ges de letra majuscula"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Membres"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Recercar lei paramètres"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(aumens %1$s caractèrs)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4626,6 +4662,10 @@ msgstr "Senhau valide :)"
 
 msgid "Password is not valid!"
 msgstr "Senhau invalide !"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Pecaire ! Una error capitèt per la verificacion dau senhau :("
@@ -7163,18 +7203,6 @@ msgid "Password strength:"
 msgstr "Complexitat dau senhau :"
 
 msgid "None (default)"
-msgstr ""
-
-msgid "Weak"
-msgstr "Feble"
-
-msgid "Medium"
-msgstr "Mejan"
-
-msgid "Strong"
-msgstr "Fòrt"
-
-msgid "Very strong"
 msgstr ""
 
 msgid "Enforce minimal password strength for all password."

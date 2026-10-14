@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -2683,6 +2683,21 @@ msgstr "No s'ha pogut afegir una operació nova."
 msgid "Transaction updated"
 msgstr "Transacció actualitzada"
 
+msgid "Weak"
+msgstr "Feble"
+
+#, fuzzy
+msgid "Medium"
+msgstr "Mitjana"
+
+#, fuzzy
+msgid "Strong"
+msgstr "Fort"
+
+#, fuzzy
+msgid "Very strong"
+msgstr "Molt fort"
+
 msgid "Inherit"
 msgstr ""
 
@@ -3521,6 +3536,26 @@ msgstr "No conté números"
 #, fuzzy
 msgid "Does not contains special characters"
 msgstr "No conté caràcters especials"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+msgid "Lowercase and uppercase letters"
+msgstr "No conté lletres majúscules"
+
+#, fuzzy
+msgid "Numbers"
+msgstr "Membres"
+
+#, fuzzy
+msgid "Special characters"
+msgstr "Cerca paràmetres"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+msgid "At least %1$s characters"
+msgstr "(almenys caràcters de percentatge)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -5255,6 +5290,10 @@ msgstr "La contrasenya és vàlida )"
 #, fuzzy
 msgid "Password is not valid!"
 msgstr "La contrasenya no és vàlida!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 #, fuzzy
 msgid "An error occurred checking password :("
@@ -8225,21 +8264,6 @@ msgstr "Força de la contrasenya"
 #, fuzzy
 msgid "None (default)"
 msgstr "Cap (per defecte)"
-
-msgid "Weak"
-msgstr "Feble"
-
-#, fuzzy
-msgid "Medium"
-msgstr "Mitjana"
-
-#, fuzzy
-msgid "Strong"
-msgstr "Fort"
-
-#, fuzzy
-msgid "Very strong"
-msgstr "Molt fort"
 
 #, fuzzy
 msgid "Enforce minimal password strength for all password."
