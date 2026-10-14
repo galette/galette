@@ -526,7 +526,11 @@ class AdvancedMembersList extends MembersList
                         $values = $value;
                     }
 
-                    foreach ($values as $value) {
+                    foreach ($values as $key => $value) {
+                        if ($key === 'empty') {
+                            //placeholder for the form, not a criteria
+                            continue;
+                        }
                         if (static::isValidFreeSearch($value)) {
                             $id = $value['idx'];
 
@@ -572,13 +576,30 @@ class AdvancedMembersList extends MembersList
                         unset($this->groups_search['empty']);
                     }
                     if (is_array($value)) {
-                        if (
-                            isset($value['group'])
-                            && isset($value['idx'])
-                        ) {
+                        if (isset($value['group']) && isset($value['idx'])) {
                             $id = $value['idx'];
                             unset($value['idx']);
-                            $this->groups_search[$id] = $value;
+                            $value = [$id => $value];
+                        }
+
+                        //a whole list, as stored in saved searches
+                        $valid = $value !== [];
+                        foreach ($value as $gs) {
+                            $valid = $valid && is_array($gs) && isset($gs['group']);
+                        }
+
+                        if ($valid) {
+                            foreach ($value as $id => $gs) {
+                                if ($id === 'empty' || trim((string)$gs['group']) === '') {
+                                    //placeholder for the form, not a criteria
+                                    continue;
+                                }
+                                $this->groups_search[$id] = ['group' => $gs['group']];
+                            }
+                            if ($this->groups_search === []) {
+                                //form needs a first row to work on
+                                $this->groups_search = ['empty' => ['group' => '']];
+                            }
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] bad construct for group filter',
