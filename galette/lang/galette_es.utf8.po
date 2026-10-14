@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-11 06:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -2404,6 +2404,18 @@ msgstr "Error al añadir una nueva transacción."
 msgid "Transaction updated"
 msgstr "Transacción actualizada"
 
+msgid "Weak"
+msgstr "Débil"
+
+msgid "Medium"
+msgstr "Medio"
+
+msgid "Strong"
+msgstr "Fuerte"
+
+msgid "Very strong"
+msgstr "Muy fuerte"
+
 msgid "Inherit"
 msgstr "Heredado"
 
@@ -3121,6 +3133,30 @@ msgstr "No contiene números"
 
 msgid "Does not contains special characters"
 msgstr "No contiene carácteres especiales"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "No contiene letras mayúsculas"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Miembros"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Parámetros de búsqueda"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(al menos %1$s caracteres)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4643,6 +4679,10 @@ msgstr "Contraseña válida :)"
 
 msgid "Password is not valid!"
 msgstr "¡La contraseña no es válida!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Se ha producido un error al verificar la contraseña :("
@@ -7209,18 +7249,6 @@ msgstr "Complejidad de la contraseña:"
 
 msgid "None (default)"
 msgstr "Ninguno (default)"
-
-msgid "Weak"
-msgstr "Débil"
-
-msgid "Medium"
-msgstr "Medio"
-
-msgid "Strong"
-msgstr "Fuerte"
-
-msgid "Very strong"
-msgstr "Muy fuerte"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Reforzar el nivel mínimo de seguridad para todas las contraseñas."

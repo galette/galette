@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -2431,6 +2431,18 @@ msgstr ""
 msgid "Transaction updated"
 msgstr "تحديث الصفقة"
 
+msgid "Weak"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Strong"
+msgstr ""
+
+msgid "Very strong"
+msgstr ""
+
 msgid "Inherit"
 msgstr ""
 
@@ -3135,6 +3147,27 @@ msgid "Does not contains numbers"
 msgstr ""
 
 msgid "Does not contains special characters"
+msgstr ""
+
+msgid "Letters"
+msgstr ""
+
+msgid "Lowercase and uppercase letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "الأعضاء"
+
+#, fuzzy
+#| msgid "Security parameters"
+msgid "Special characters"
+msgstr "إعدادات الحماية"
+
+#. TRANS: %1$s is the minimum number of characters
+#, php-format
+msgid "At least %1$s characters"
 msgstr ""
 
 #, php-format
@@ -4588,6 +4621,10 @@ msgid "Password is valid :)"
 msgstr ""
 
 msgid "Password is not valid!"
+msgstr ""
+
+#, php-format
+msgid "At least %1$s of the following rules:"
 msgstr ""
 
 msgid "An error occurred checking password :("
@@ -7088,18 +7125,6 @@ msgid "Password strength:"
 msgstr ""
 
 msgid "None (default)"
-msgstr ""
-
-msgid "Weak"
-msgstr ""
-
-msgid "Medium"
-msgstr ""
-
-msgid "Strong"
-msgstr ""
-
-msgid "Very strong"
 msgstr ""
 
 msgid "Enforce minimal password strength for all password."

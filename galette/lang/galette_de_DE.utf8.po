@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -2395,6 +2395,18 @@ msgstr "Neue Transaktion konnte nicht hinzugefügt werden."
 msgid "Transaction updated"
 msgstr "Transaktion aktualisiert"
 
+msgid "Weak"
+msgstr "Schwach"
+
+msgid "Medium"
+msgstr "Mittel"
+
+msgid "Strong"
+msgstr "Stark"
+
+msgid "Very strong"
+msgstr "Sehr stark"
+
 msgid "Inherit"
 msgstr "Erben"
 
@@ -3111,6 +3123,30 @@ msgstr "Enthält keine Zahlen"
 
 msgid "Does not contains special characters"
 msgstr "Enthält keine Sonderzeichen"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Enthält keine Großbuchstaben"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Mitglieder"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Suchparameter"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(mindestens %1$s Zeichen)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4634,6 +4670,10 @@ msgstr "Passwort ist gültig :)"
 
 msgid "Password is not valid!"
 msgstr "Passwort ist ungültig!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Beim Überprüfen des Passworts ist ein Fehler aufgetreten :("
@@ -7193,18 +7233,6 @@ msgstr "Passwortstärke:"
 
 msgid "None (default)"
 msgstr "Kein Level (Standard)"
-
-msgid "Weak"
-msgstr "Schwach"
-
-msgid "Medium"
-msgstr "Mittel"
-
-msgid "Strong"
-msgstr "Stark"
-
-msgid "Very strong"
-msgstr "Sehr stark"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Erzwinge minimal Passwortstärke für alle Passwörter."

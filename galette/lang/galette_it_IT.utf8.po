@@ -33,7 +33,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -2398,6 +2398,18 @@ msgstr "Impossibile aggiungere una nuova transazione."
 msgid "Transaction updated"
 msgstr "Transazione aggiornata"
 
+msgid "Weak"
+msgstr "Debole"
+
+msgid "Medium"
+msgstr "Media"
+
+msgid "Strong"
+msgstr "Forte"
+
+msgid "Very strong"
+msgstr "Molto forte"
+
 msgid "Inherit"
 msgstr "Eredita"
 
@@ -3117,6 +3129,30 @@ msgstr "Non contiene numeri"
 
 msgid "Does not contains special characters"
 msgstr "Non contiene caratteri speciali"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Non contiene lettere maiuscole"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Membri"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Parametri di ricerca"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(almeno %1$s caratteri)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4640,6 +4676,10 @@ msgstr "La password è valida :)"
 
 msgid "Password is not valid!"
 msgstr "La password non è valida!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Si è verificato un errore durante la verifica della password :("
@@ -7212,18 +7252,6 @@ msgstr "Robustezza password:"
 
 msgid "None (default)"
 msgstr "Nessuna (predefinita)"
-
-msgid "Weak"
-msgstr "Debole"
-
-msgid "Medium"
-msgstr "Media"
-
-msgid "Strong"
-msgstr "Forte"
-
-msgid "Very strong"
-msgstr "Molto forte"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Impone la sicurezza minima password per tutte le password."

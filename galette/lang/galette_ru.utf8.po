@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -2348,6 +2348,18 @@ msgstr "Не удалось добавить новую транзакцию."
 msgid "Transaction updated"
 msgstr "Транзакция обновлена"
 
+msgid "Weak"
+msgstr "Слабый"
+
+msgid "Medium"
+msgstr "Средний"
+
+msgid "Strong"
+msgstr "Сильный"
+
+msgid "Very strong"
+msgstr "Очень сильный"
+
 msgid "Inherit"
 msgstr "Наследовать"
 
@@ -3060,6 +3072,30 @@ msgstr "Не содержит цифр"
 
 msgid "Does not contains special characters"
 msgstr "Не содержит специальных символов"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Не содержит заглавных букв"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Пользователи"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Параметры поиска"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(не менее %1$s символов)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4575,6 +4611,10 @@ msgstr "Пароль действителен :)"
 
 msgid "Password is not valid!"
 msgstr "Пароль недействителен!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Произошла ошибка при проверке пароля :("
@@ -7127,18 +7167,6 @@ msgstr "Сложность пароля:"
 
 msgid "None (default)"
 msgstr "Нет (по умолчанию)"
-
-msgid "Weak"
-msgstr "Слабый"
-
-msgid "Medium"
-msgstr "Средний"
-
-msgid "Strong"
-msgstr "Сильный"
-
-msgid "Very strong"
-msgstr "Очень сильный"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Применять минимальную сложность пароля для всех паролей."

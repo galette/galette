@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-09 10:41+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -2296,6 +2296,18 @@ msgstr "Dodajanje nove transakcije ni uspelo."
 msgid "Transaction updated"
 msgstr "Transakcija posodobljena"
 
+msgid "Weak"
+msgstr "Šibko"
+
+msgid "Medium"
+msgstr "Srednje"
+
+msgid "Strong"
+msgstr "Močan"
+
+msgid "Very strong"
+msgstr "Zelo močan"
+
 msgid "Inherit"
 msgstr "Podedovanje"
 
@@ -3002,6 +3014,30 @@ msgstr "Ne vsebuje številk"
 
 msgid "Does not contains special characters"
 msgstr "Ne vsebuje posebnih znakov"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Ne vsebuje velikih črk"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Člani"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Iskalni parametri"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(vsaj %1$s znakov)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4518,6 +4554,10 @@ msgstr "Geslo je veljavno :)"
 
 msgid "Password is not valid!"
 msgstr "Geslo ni veljavno!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Pri preverjanju gesla je prišlo do napake :("
@@ -7021,18 +7061,6 @@ msgstr "Moč gesla:"
 
 msgid "None (default)"
 msgstr "Brez (privzeto)"
-
-msgid "Weak"
-msgstr "Šibko"
-
-msgid "Medium"
-msgstr "Srednje"
-
-msgid "Strong"
-msgstr "Močan"
-
-msgid "Very strong"
-msgstr "Zelo močan"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Za vsa gesla uveljavi minimalno moč gesla."

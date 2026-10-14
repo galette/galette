@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -2361,6 +2361,18 @@ msgstr "Не вдалося додати новий переказ."
 msgid "Transaction updated"
 msgstr "Переказ оновлено"
 
+msgid "Weak"
+msgstr "Слабкий"
+
+msgid "Medium"
+msgstr "Середній"
+
+msgid "Strong"
+msgstr "Сильний"
+
+msgid "Very strong"
+msgstr "Дуже сильний"
+
 msgid "Inherit"
 msgstr "Успадкувати"
 
@@ -3078,6 +3090,30 @@ msgstr "Не містить чисел"
 
 msgid "Does not contains special characters"
 msgstr "Не містить спеціальних знаків"
+
+msgid "Letters"
+msgstr ""
+
+#, fuzzy
+#| msgid "Does not contains uppercase letters"
+msgid "Lowercase and uppercase letters"
+msgstr "Не містить великих букв"
+
+#, fuzzy
+#| msgid "Members"
+msgid "Numbers"
+msgstr "Членів"
+
+#, fuzzy
+#| msgid "Search parameters"
+msgid "Special characters"
+msgstr "Параметри пошуку"
+
+#. TRANS: %1$s is the minimum number of characters
+#, fuzzy, php-format
+#| msgid "(at least %1$s characters)"
+msgid "At least %1$s characters"
+msgstr "(принаймні %1$s знаків)"
 
 #, fuzzy, php-format
 #| msgid "%1$s entry"
@@ -4591,6 +4627,10 @@ msgstr "Пароль дійсний :)"
 
 msgid "Password is not valid!"
 msgstr "Пароль не дійсний!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr ""
 
 msgid "An error occurred checking password :("
 msgstr "Під час перевірки пароля сталася помилка :("
@@ -7160,18 +7200,6 @@ msgstr "Надійність паролю:"
 
 msgid "None (default)"
 msgstr "Немає (типово)"
-
-msgid "Weak"
-msgstr "Слабкий"
-
-msgid "Medium"
-msgstr "Середній"
-
-msgid "Strong"
-msgstr "Сильний"
-
-msgid "Very strong"
-msgstr "Дуже сильний"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Забезпечте щонайменшу надійність пароля для всіх паролів."
