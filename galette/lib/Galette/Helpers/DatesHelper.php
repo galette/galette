@@ -100,6 +100,13 @@ trait DatesHelper
 
         try {
             if ($value !== '') {
+                //ISO format first, as stored in saved searches whatever the language
+                $iso = \DateTime::createFromFormat('!Y-m-d', $value);
+                if ($iso !== false && $iso->format('Y-m-d') === $value) {
+                    $this->$field = $value;
+                    return $this;
+                }
+
                 $y = \DateTime::createFromFormat(__("Y"), $value);
                 if ($y !== false) {
                     $month = 1;

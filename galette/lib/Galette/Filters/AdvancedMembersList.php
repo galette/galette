@@ -651,6 +651,27 @@ class AdvancedMembersList extends MembersList
     }
 
     /**
+     * Get search parameters, to be saved
+     *
+     * Dates are kept language neutral, in ISO format.
+     *
+     * @return array<string, mixed>
+     */
+    public function getSearchParameters(): array
+    {
+        $parameters = [];
+        foreach ($this->search_fields as $field) {
+            if (str_ends_with($field, '_date_begin') || str_ends_with($field, '_date_end')) {
+                $parameters[$field] = $this->getDate($field, formatted: true, translated: false);
+            } else {
+                $parameters[$field] = $this->$field;
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
      * Validate free search internal array
      *
      * Only the shape is checked here; the field name itself is checked against

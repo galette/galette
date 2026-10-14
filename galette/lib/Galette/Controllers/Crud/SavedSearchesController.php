@@ -63,11 +63,7 @@ class SavedSearchesController extends CrudController
 
         //when using advanced search, no parameters are sent
         if (isset($post['advanced_search'])) {
-            $post = [];
-            $filters = $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())};
-            foreach ($filters->search_fields as $field) {
-                $post[$field] = $filters->$field;
-            }
+            $post = $this->getCurrentSearchParameters() ?? [];
         }
 
         //reformat, add required infos
@@ -199,6 +195,21 @@ class SavedSearchesController extends CrudController
     {
         //no edition
         return $response;
+    }
+
+    /**
+     * Parameters of the advanced search currently in use on members list
+     *
+     * @return ?array<string, mixed>
+     */
+    private function getCurrentSearchParameters(): ?array
+    {
+        $filters = $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} ?? null;
+        if (!$filters instanceof AdvancedMembersList) {
+            return null;
+        }
+
+        return $filters->getSearchParameters();
     }
 
     // /CRUD - Update
