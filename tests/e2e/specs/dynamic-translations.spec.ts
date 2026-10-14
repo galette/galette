@@ -66,9 +66,11 @@ test.describe('Dynamic translations', () => {
     const saved = page.waitForResponse(
       response => response.url().includes('/dynamic-translations') && response.request().method() === 'POST'
     );
+    //saving redirects to the list: links are not handled until the page has been fully reloaded
+    const reloaded = page.waitForEvent('load');
     await modal.locator('.actions .approve').click();
     await saved;
-    await modal.waitFor({ state: 'hidden' });
+    await reloaded;
 
     //translation has been stored
     await row.locator('a.single-translate').click();
