@@ -94,4 +94,62 @@ class SavedSearches extends GaletteTestCase
         $list = $searches->getList(as_search: true);
         $this->assertCount(0, $list);
     }
+
+    /**
+     * Test a member cannot remove searches from someone else
+     *
+     * @throws \Throwable
+     */
+    public function testRemoveOthersSearches(): void
+    {
+        global $i18n; // globals :(
+        $i18n = $this->i18n;
+        $i18n->changeLanguage('en_US');
+
+        $this->getMemberOne();
+        $this->getMemberTwo();
+
+        $post = [
+            'parameters'    => ['filter_str' => ''],
+            'form'          => 'Adherent',
+            'name'          => 'Member one search'
+        ];
+
+        //first member stores a search
+        $m1data = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($m1data['login_adh'], $m1data['mdp_adh']));
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $this->assertTrue($saved->check($post));
+        $this->assertTrue($saved->store());
+        $sid_one = $saved->id;
+        $this->login->logOut();
+
+        //second member stores a search
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $post['name'] = 'Member two search';
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $this->assertTrue($saved->check($post));
+        $this->assertTrue($saved->store());
+        $sid_two = $saved->id;
+
+        //second member cannot remove first member search, even along with its own
+        $searches = new \Galette\Repository\SavedSearches($this->zdb, $this->login);
+        $this->assertFalse($searches->remove($sid_one, $this->history));
+        $this->assertFalse($searches->remove([$sid_one, $sid_two], $this->history));
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Asking to remove searches that do not exist or are not owned by current user.'
+        );
+
+        $select = $this->zdb->select(\Galette\Entity\SavedSearch::TABLE);
+        $select->where->in(\Galette\Entity\SavedSearch::PK, [$sid_one, $sid_two]);
+        $this->assertSame(2, $this->zdb->execute($select)->count());
+
+        //but can remove its own
+        $this->assertTrue($searches->remove($sid_two, $this->history));
+        $this->assertSame(1, $this->zdb->execute($select)->count());
+
+        $this->login->logOut();
+    }
 }

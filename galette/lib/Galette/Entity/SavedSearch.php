@@ -196,7 +196,19 @@ class SavedSearch
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
-            $this->zdb->execute($delete);
+            if ($this->login->isSuperAdmin()) {
+                $delete->where(Adherent::PK . ' IS NULL');
+            } else {
+                $delete->where([Adherent::PK => $this->login->id]);
+            }
+            $result = $this->zdb->execute($delete);
+            if ($result->count() !== 1) {
+                Analog::log(
+                    'Saved search #' . $id . ' has not been deleted.',
+                    Analog::WARNING
+                );
+                return false;
+            }
             Analog::log(
                 'Saved search #' . $id . ' (' . $this->name
                 . ') deleted successfully.',
