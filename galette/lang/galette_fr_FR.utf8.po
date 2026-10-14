@@ -5089,7 +5089,7 @@ msgstr "Avec"
 msgid "Without"
 msgstr "Sans"
 
-msgid "beetween"
+msgid "between"
 msgstr "entre"
 
 msgid "Creation date"

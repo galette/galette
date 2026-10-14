@@ -7456,8 +7456,8 @@ msgstr "Without"
 #: ../templates/default/pages/advanced_search.html.twig:302
 #: ../templates/default/pages/advanced_search.html.twig:327
 #: ../templates/default/pages/advanced_search.html.twig:350
-msgid "beetween"
-msgstr "beetween"
+msgid "between"
+msgstr "between"
 
 #: ../templates/default/pages/advanced_search.html.twig:110
 #: ../templates/default/pages/advanced_search.html.twig:276

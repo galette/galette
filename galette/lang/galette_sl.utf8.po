@@ -4991,7 +4991,7 @@ msgstr "Z"
 msgid "Without"
 msgstr "Brez"
 
-msgid "beetween"
+msgid "between"
 msgstr "med"
 
 msgid "Creation date"

@@ -5135,7 +5135,7 @@ msgstr "Mit"
 msgid "Without"
 msgstr "Ohne"
 
-msgid "beetween"
+msgid "between"
 msgstr "zwischen"
 
 msgid "Creation date"

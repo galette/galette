@@ -4925,7 +4925,7 @@ msgstr ""
 msgid "Without"
 msgstr ""
 
-msgid "beetween"
+msgid "between"
 msgstr ""
 
 msgid "Creation date"

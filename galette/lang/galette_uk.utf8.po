@@ -5087,7 +5087,7 @@ msgstr "З"
 msgid "Without"
 msgstr "Без"
 
-msgid "beetween"
+msgid "between"
 msgstr "між"
 
 msgid "Creation date"

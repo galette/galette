@@ -5015,7 +5015,7 @@ msgstr "உடன்"
 msgid "Without"
 msgstr "இல்லாமல்"
 
-msgid "beetween"
+msgid "between"
 msgstr "கடி"
 
 msgid "Creation date"

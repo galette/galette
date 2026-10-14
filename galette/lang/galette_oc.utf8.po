@@ -5130,7 +5130,7 @@ msgstr "Amb"
 msgid "Without"
 msgstr "Sensa"
 
-msgid "beetween"
+msgid "between"
 msgstr "entre"
 
 msgid "Creation date"

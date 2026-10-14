@@ -4985,7 +4985,7 @@ msgstr "S"
 msgid "Without"
 msgstr "Bez"
 
-msgid "beetween"
+msgid "between"
 msgstr "između"
 
 msgid "Creation date"

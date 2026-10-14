@@ -7247,7 +7247,7 @@ msgstr ""
 #: ../templates/default/pages/advanced_search.html.twig:302
 #: ../templates/default/pages/advanced_search.html.twig:327
 #: ../templates/default/pages/advanced_search.html.twig:350
-msgid "beetween"
+msgid "between"
 msgstr ""
 
 #: ../templates/default/pages/advanced_search.html.twig:110
