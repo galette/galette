@@ -81,11 +81,11 @@ test.describe('Group Fixtures', () => {
       const formPage = new GroupFormPage(page);
 
       // Check if the group has members or shows "No member attached"
-      const membersSection = page.locator('#group_members');
+      const membersSection = page.locator('#group_persons');
       await expect(membersSection).toBeVisible({ timeout: 10000 });
 
       // Either there are members in the table or a "no members" message
-      const hasMembersTable = await membersSection.locator('table.listing tbody tr').count();
+      const hasMembersTable = await membersSection.locator('table.listing tbody tr[data-person]').count();
       const hasNoMembersMessage = await membersSection.locator('text=/No member|Aucun membre/i').count();
 
       const hasValidContent = hasMembersTable > 0 || hasNoMembersMessage > 0;

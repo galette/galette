@@ -991,47 +991,6 @@ class MembersController extends CrudController
             }
         } else {
             switch ($post['from']) {
-                case 'groups':
-                    if (!isset($post['gid'])) {
-                        Analog::log(
-                            'Trying to list group members with no group id provided',
-                            Analog::ERROR
-                        );
-                        throw new \Exception('A group id is required.');
-                    }
-                    if (!$this->login->isGroupManager((int)$post['gid'])) {
-                        Analog::log(
-                            str_replace(
-                                ['%id', '%login', '%gid'],
-                                [(string)$this->login->id, $this->login->login, (string)$post['gid']],
-                                'Trying to list members of group #%gid without access from #%id (%login)'
-                            ),
-                            Analog::ERROR
-                        );
-                        throw new \Exception('Access denied.');
-                    }
-                    if (!isset($post['members'])) {
-                        $group = new Group((int)$post['gid']);
-                        $selected_members = [];
-                        if (!isset($post['mode']) || $post['mode'] == 'members') {
-                            $selected_members = $group->getMembers();
-                        } elseif ($post['mode'] == 'managers') {
-                            $selected_members = $group->getManagers();
-                        } else {
-                            Analog::log(
-                                'Trying to list group members with unknown mode',
-                                Analog::ERROR
-                            );
-                            throw new \Exception('Unknown mode.');
-                        }
-                    } else {
-                        $m = new Members();
-                        $selected_members = $m->getArrayList($post['members']);
-                        if (isset($post['unreachables']) && is_array($post['unreachables'])) {
-                            $unreachables_members = $m->getArrayList($post['unreachables']);
-                        }
-                    }
-                    break;
                 case 'attach':
                     if (!isset($post['id_adh'])) {
                         throw new \RuntimeException(
@@ -1051,10 +1010,6 @@ class MembersController extends CrudController
 
         if (isset($post['multiple'])) {
             $params['multiple'] = true;
-        }
-
-        if (isset($post['gid'])) {
-            $params['the_id'] = (int)$post['gid'];
         }
 
         if (isset($post['id_adh'])) {

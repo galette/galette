@@ -229,39 +229,7 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Group page
-     */
-    #[Route(
-        name: 'ajax_group',
-        pattern: '/ajax/group',
-        methods: ['POST']
-    )]
-    public function getGroup(Request $request, Response $response): Response
-    {
-        $post = $request->getParsedBody();
-        $id = $post['id_group'];
-        $group = new Group((int)$id);
-        if (!$group->canEdit($this->login)) {
-            throw new \RuntimeException('Trying to edit group without appropriate permissions');
-        }
-
-        $groups = new Groups($this->zdb, $this->login);
-
-        // display page
-        $this->view->render(
-            $response,
-            'elements/group.html.twig',
-            [
-                'mode'      => 'ajax',
-                'groups'    => $groups->getList(),
-                'group'     => $group
-            ]
-        );
-        return $response;
-    }
-
-    /**
-     * Group members ajax loader
+     * Group person row ajax loader, for a person added from the group page
      */
     #[Route(
         name: 'ajaxGroupMembers',
@@ -271,28 +239,26 @@ class GroupsController extends CrudController
     public function ajaxMembers(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-
-        $ids = $post['persons'];
-        $mode = $post['person_mode'];
-
-        if (!$ids || !$mode) {
+        $m = new Members();
+        $persons = $m->getArrayList([(int)($post['id_adh'] ?? 0)]);
+        if (!is_array($persons) || count($persons) === 0) {
             Analog::log(
-                'Missing persons and mode for ajaxGroupMembers',
+                'Missing or unknown person for ajaxGroupMembers',
                 Analog::INFO
             );
-            die();
+            return $response->withStatus(404);
         }
-
-        $m = new Members();
-        $persons = $m->getArrayList($ids);
 
         // display page
         $this->view->render(
             $response,
-            'elements/group_persons.html.twig',
+            'elements/group_person_row.html.twig',
             [
-                'persons'       => $persons,
-                'person_mode'   => $mode
+                'person'            => reset($persons),
+                'is_member'         => true,
+                'is_manager'        => false,
+                'linked'            => false,
+                'can_edit_persons'  => true
             ]
         );
         return $response;
@@ -345,15 +311,27 @@ class GroupsController extends CrudController
             }
         }
 
+        $params = [
+            'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
+            'parent_groups'         => $parent_groups,
+            'group'                 => $group
+        ];
+
+        //members that can be added to the group
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            $m = new Members();
+            $list = $m->getDropdownMembers($this->zdb, $this->login);
+            $params['members'] = [
+                'filters'   => $m->getFilters(),
+                'list'      => $list
+            ];
+        }
+
         // display page
         $this->view->render(
             $response,
             'pages/group_form.html.twig',
-            [
-                'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
-                'parent_groups'         => $parent_groups,
-                'group'                 => $group
-            ]
+            $params
         );
         return $response;
     }
@@ -593,8 +571,9 @@ class GroupsController extends CrudController
      *
      * Only admin and staff can change managers and members from the group page,
      * as the user interface does. Group managers change members of their groups
-     * from member pages. The group form always posts current persons back, so
-     * a warning is logged only if a group manager tries to change them.
+     * from member pages. For admin and staff, the group form always posts an
+     * empty value, so that an emptied list is stored; a warning is logged only
+     * if a group manager tries to change them.
      *
      * @param Group        $group Group instance, before changes
      * @param array<mixed> $ids   Posted persons ids
@@ -604,14 +583,21 @@ class GroupsController extends CrudController
      */
     private function getPostedPersons(Group $group, array $ids, int $type): array|false
     {
+        $ids = array_values(array_unique(array_filter(
+            array_map(intval(...), $ids),
+            fn(int $id): bool => $id > 0
+        )));
+
         if ($this->login->isAdmin() || $this->login->isStaff()) {
+            if (count($ids) === 0) {
+                return [];
+            }
             $m = new Members();
             return $m->getArrayList($ids);
         }
 
         $current = $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers();
         $current = array_map(fn(Adherent $person): int => (int)$person->id, $current);
-        $ids = array_unique(array_map(intval(...), $ids));
         sort($current);
         sort($ids);
         if ($ids !== $current) {

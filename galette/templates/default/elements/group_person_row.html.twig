@@ -1,0 +1,106 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # One person of the group, see elements/group.html.twig.
+ #
+ # Expects person, is_member, is_manager, linked (already attached to the
+ # group when the page was loaded) and can_edit_persons.
+ #}
+{% set pid = person.id %}
+                            <tr id="person_row_{{ pid }}" data-person="{{ pid }}" data-member="{{ is_member ? 1 : 0 }}" data-manager="{{ is_manager ? 1 : 0 }}" data-linked="{{ linked ? 1 : 0 }}">
+                                <td class="username_row" data-col-label="{{ _T("Name") }}">
+                                {% if person.isCompany() %}
+                                    <span>
+                                        <i class="ui building outline icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Company") }}</span>
+                                    </span>
+                                {% elseif person.isMan() %}
+                                    <span>
+                                        <i class="ui male icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Man") }}</span>
+                                    </span>
+                                {% elseif person.isWoman() %}
+                                    <span>
+                                        <i class="ui female icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Woman") }}</span>
+                                    </span>
+                                {% else %}
+                                    <i class="ui icon" aria-hidden="true"></i>
+                                {% endif %}
+                                {% if person.isAdmin() %}
+                                    <span>
+                                        <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Administrator") }}</span>
+                                    </span>
+                                {% elseif person.isStaff() %}
+                                    <span>
+                                        <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Staff member") }}</span>
+                                    </span>
+                                {% elseif person.getManagedGroups() %}
+                                    <span>
+                                        <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T('Group manager') }}</span>
+                                    </span>
+                                {% else %}
+                                    <i class="ui icon" aria-hidden="true"></i>
+                                {% endif %}
+                                    <a href="{{ url_for("member", {"id": pid}) }}">{{ person.sfullname }}</a>
+                                    <span class="ui mini orange basic label person-state displaynone" data-state="added">{{ _Tx("member groups", "added") }}</span>
+                                    <span class="ui mini orange basic label person-state displaynone" data-state="changed">{{ _Tx("member groups", "changed") }}</span>
+                                    <span class="ui mini orange basic label person-state displaynone" data-state="removed">{{ _Tx("member groups", "will be removed") }}</span>
+                                </td>
+                                <td data-col-label="{{ _T("Nickname") }}">{{ person.nickname|escape }}</td>
+                                <td class="center aligned" data-col-label="{{ _T("Member of group") }}">
+                                    <div class="ui fitted toggle checkbox{% if not can_edit_persons %} disabled{% endif %}">
+                                        <input
+                                            type="checkbox"
+                                            name="members[]"
+                                            id="person_member_{{ pid }}"
+                                            class="person-member"
+                                            value="{{ pid }}"
+                                            {% if is_member %}checked="checked"{% endif %}
+                                            {% if not can_edit_persons %}disabled="disabled"{% endif %}
+                                        />
+                                        <label for="person_member_{{ pid }}"><span class="visually-hidden">{{ _T("%1$s is member of the group")|format(person.sname) }}</span></label>
+                                    </div>
+                                </td>
+                                <td class="center aligned" data-col-label="{{ _T("Group manager") }}">
+                                    <div class="ui fitted toggle checkbox{% if not can_edit_persons %} disabled{% endif %}">
+                                        <input
+                                            type="checkbox"
+                                            name="managers[]"
+                                            id="person_manager_{{ pid }}"
+                                            class="person-manager"
+                                            value="{{ pid }}"
+                                            {% if is_manager %}checked="checked"{% endif %}
+                                            {% if not can_edit_persons %}disabled="disabled"{% endif %}
+                                        />
+                                        <label for="person_manager_{{ pid }}"><span class="visually-hidden">{{ _T("%1$s is manager of the group")|format(person.sname) }}</span></label>
+                                    </div>
+                                </td>
+                                <td class="right aligned collapsing actions_row">
+    {% if login.isSuperAdmin() %}
+                                    <a
+                                            href="{{ url_for("impersonate", {"id": pid}) }}"
+                                            class="icon-only"
+                                    >
+                                        <i class="ui user secret grey icon tooltip" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ _T('Log in as %1$s')|format(person.sname) }}</span>
+                                    </a>
+    {% endif %}
+    {% if can_edit_persons %}
+                                    <button type="button" class="ui mini basic icon button person-remove" aria-label="{{ _T("Remove %1$s from the group")|format(person.sname) }}">
+                                        <i class="times icon" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="ui mini basic labeled icon button person-undo displaynone" aria-label="{{ _T("Keep %1$s in the group")|format(person.sname) }}">
+                                        <i class="undo icon" aria-hidden="true"></i>
+                                        {{ _T("Cancel") }}
+                                    </button>
+    {% endif %}
+                                </td>
+                            </tr>
