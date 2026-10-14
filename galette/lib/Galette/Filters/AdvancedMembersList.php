@@ -256,7 +256,7 @@ class AdvancedMembersList extends MembersList
         $this->contrib_begin_date_begin = null;
         $this->contrib_begin_date_end = null;
         $this->contrib_end_date_begin = null;
-        $this->contrib_begin_date_end = null;
+        $this->contrib_end_date_end = null;
         $this->contributions_types = [];
         $this->payments_types = [];
 
