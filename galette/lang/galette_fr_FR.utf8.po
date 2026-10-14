@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
 "PO-Revision-Date: 2026-10-07 08:51+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -2348,6 +2348,18 @@ msgstr "Échec de l’ajout d’une nouvelle transaction."
 msgid "Transaction updated"
 msgstr "Transaction mise à jour"
 
+msgid "Weak"
+msgstr "Faible"
+
+msgid "Medium"
+msgstr "Moyenne"
+
+msgid "Strong"
+msgstr "Fort"
+
+msgid "Very strong"
+msgstr "Très fort"
+
 msgid "Inherit"
 msgstr "Hérite"
 
@@ -3062,6 +3074,23 @@ msgstr "Ne contient pas de chiffres"
 
 msgid "Does not contains special characters"
 msgstr "Ne contient pas de caractères spéciaux"
+
+msgid "Letters"
+msgstr "Lettres"
+
+msgid "Lowercase and uppercase letters"
+msgstr "Lettres minuscules et majuscules"
+
+msgid "Numbers"
+msgstr "Chiffres"
+
+msgid "Special characters"
+msgstr "Caractères spéciaux"
+
+#. TRANS: %1$s is the minimum number of characters
+#, php-format
+msgid "At least %1$s characters"
+msgstr "Au moins %1$s caractères"
 
 #, php-format
 msgid "%1$s day"
@@ -4557,6 +4586,10 @@ msgstr "Mot de passe valide :)"
 
 msgid "Password is not valid!"
 msgstr "Mot de passe invalide !"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr "Au moins %1$s des règles suivantes :"
 
 msgid "An error occurred checking password :("
 msgstr "Une erreur est survenue lors de la vérification du mot de passe :("
@@ -7091,18 +7124,6 @@ msgstr "Complexité du mot de passe :"
 
 msgid "None (default)"
 msgstr "Aucun (défaut)"
-
-msgid "Weak"
-msgstr "Faible"
-
-msgid "Medium"
-msgstr "Moyenne"
-
-msgid "Strong"
-msgstr "Fort"
-
-msgid "Very strong"
-msgstr "Très fort"
 
 msgid "Enforce minimal password strength for all password."
 msgstr "Respect de la longueur minimale du mot de passe pour tous les comptes."
