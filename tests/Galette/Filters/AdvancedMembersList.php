@@ -20,6 +20,34 @@ use Galette\Tests\GaletteTestCase;
 class AdvancedMembersList extends GaletteTestCase
 {
     /**
+     * Test saved parameters are language neutral
+     */
+    public function testSearchParameters(): void
+    {
+        $this->i18n->changeLanguage('fr_FR');
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->creation_date_begin = '15/03/2024';
+
+        //displayed in user language...
+        $this->assertSame('15/03/2024', $filters->creation_date_begin);
+
+        //... but saved in ISO format
+        $parameters = $filters->getSearchParameters();
+        $this->assertSame('2024-03-15', $parameters['creation_date_begin']);
+        $this->assertNull($parameters['birth_date_begin']);
+
+        //ISO format is accepted whatever the language
+        $replayed = new \Galette\Filters\AdvancedMembersList();
+        foreach ($parameters as $key => $value) {
+            $replayed->$key = $value;
+        }
+        $this->assertSame('2024-03-15', $replayed->rcreation_date_begin);
+
+        $this->i18n->changeLanguage('en_US');
+    }
+
+    /**
      * Test groups as stored in saved searches
      */
     public function testSavedGroups(): void
