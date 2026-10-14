@@ -98,11 +98,7 @@ class SavedSearches
 
             $select = $this->zdb->select(self::TABLE, 's');
             $select->columns($fieldsList);
-            if (0 === $this->login->id) {
-                $select->where->isNull(Adherent::PK);
-            } else {
-                $select->where([Adherent::PK => $this->login->id]);
-            }
+            $this->restrictToOwner($select);
 
             $select->order(self::buildOrderClause());
 
@@ -112,6 +108,20 @@ class SavedSearches
         } catch (Throwable $e) {
             Logs::exception($e, 'Cannot build SELECT clause for saved searches', Analog::WARNING);
             throw $e;
+        }
+    }
+
+    /**
+     * Restrict query to searches owned by current user
+     *
+     * @param Select $select Select to restrict
+     */
+    private function restrictToOwner(Select $select): void
+    {
+        if (0 === $this->login->id) {
+            $select->where->isNull(Adherent::PK);
+        } else {
+            $select->where([Adherent::PK => $this->login->id]);
         }
     }
 
@@ -184,13 +194,22 @@ class SavedSearches
         }
 
         if (count($list)) {
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
+            $this->restrictToOwner($select);
+            $searches = $this->zdb->execute($select);
+            if ($searches->count() !== count(array_unique($list))) {
+                Analog::log(
+                    'Asking to remove searches that do not exist or are not owned by current user.',
+                    Analog::WARNING
+                );
+                return false;
+            }
+
             try {
                 if ($transaction) {
                     $this->zdb->beginTransaction();
                 }
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
-                $searches = $this->zdb->execute($select);
                 foreach ($searches as $search) {
                     $s = new SavedSearch($this->zdb, $this->login, $search);
                     $res = $s->remove();
