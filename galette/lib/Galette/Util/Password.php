@@ -38,6 +38,18 @@ class Password
      * @var array<int, string>
      */
     protected array $strength_errors = [];
+    /**
+     * Strength rules, with their state
+     *
+     * @var array<string, bool>
+     */
+    protected array $strength_rules = [];
+    /**
+     * Errors that are neither about length nor strength
+     *
+     * @var array<int, string>
+     */
+    protected array $other_errors = [];
     protected ?int $strength = null;
     protected bool $blacklisted = false;
     /**
@@ -64,10 +76,14 @@ class Password
     public function isValid(string $password): bool
     {
         $this->errors = []; //reset
+        $this->other_errors = [];
 
         if ($this->isBlacklisted($password)) {
             $this->errors[] = _T('Password is blacklisted!');
-            //no need here to check length/strength
+            $this->other_errors[] = _T('Password is blacklisted!');
+            //no need here to check length/strength; rules are still
+            //computed so they can be displayed
+            $this->calculateStrength($password);
             $this->strength = 0;
             return false;
         }
@@ -90,6 +106,7 @@ class Password
         $strength = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength);
         if ($strength !== PasswordStrength::None && in_array(mb_strtolower($password), $this->personal_infos)) {
             $this->errors[] = _T('Do not use any of your personal information as password!');
+            $this->other_errors[] = _T('Do not use any of your personal information as password!');
         }
 
         return count($this->errors) === 0;
@@ -119,15 +136,21 @@ class Password
      */
     public function calculateStrength(string $password): int
     {
-        $strength = 0;
+        $this->strength_errors = []; //reset
+        $this->strength_rules = [
+            'letters' => false,
+            'cases' => false,
+            'numbers' => false,
+            'specials' => false,
+        ];
 
         if (preg_match('/\p{L}/u', $password)) {
-            ++$strength;
+            $this->strength_rules['letters'] = true;
 
             if (!preg_match('/\p{Ll}/u', $password)) {
                 $this->strength_errors[] = _T('Does not contains lowercase letters');
             } elseif (preg_match('/\p{Lu}/u', $password)) {
-                ++$strength;
+                $this->strength_rules['cases'] = true;
             } else {
                 $this->strength_errors[] = _T('Does not contains uppercase letters');
             }
@@ -136,18 +159,18 @@ class Password
         }
 
         if (preg_match('/\p{N}/u', $password)) {
-            ++$strength;
+            $this->strength_rules['numbers'] = true;
         } else {
             $this->strength_errors[] = _T('Does not contains numbers');
         }
 
         if (preg_match('/[^\p{L}\p{N}]/u', $password)) {
-            ++$strength;
+            $this->strength_rules['specials'] = true;
         } else {
             $this->strength_errors[] = _T('Does not contains special characters');
         }
 
-        return $strength;
+        return count(array_filter($this->strength_rules));
     }
 
     /**
@@ -176,6 +199,61 @@ class Password
     public function getStrenghtErrors(): array
     {
         return $this->strength_errors;
+    }
+
+    /**
+     * Get errors that are neither about length nor strength
+     * (blacklist, personal information)
+     *
+     * @return array<int, string>
+     */
+    public function getOtherErrors(): array
+    {
+        return $this->other_errors;
+    }
+
+    /**
+     * Get rules a password is checked against, with their state
+     *
+     * Must be called after isValid().
+     *
+     * @param string $password Password to check
+     *
+     * @return array{length: ?array{label: string, met: bool}, strength: array<int, array{label: string, met: bool}>}
+     */
+    public function getRules(string $password): array
+    {
+        $labels = [
+            'letters' => _T('Letters'),
+            'cases' => _T('Lowercase and uppercase letters'),
+            'numbers' => _T('Numbers'),
+            'specials' => _T('Special characters'),
+        ];
+
+        $strength = [];
+        foreach ($this->strength_rules as $rule => $met) {
+            $strength[] = [
+                'label' => $labels[$rule],
+                'met' => $met,
+            ];
+        }
+
+        $length = null;
+        if ($this->preferences->pref_password_length > 0) {
+            $length = [
+                'label' => sprintf(
+                    //TRANS: %1$s is the minimum number of characters
+                    _T('At least %1$s characters'),
+                    (string)$this->preferences->pref_password_length
+                ),
+                'met' => mb_strlen($password) >= $this->preferences->pref_password_length,
+            ];
+        }
+
+        return [
+            'length' => $length,
+            'strength' => $strength,
+        ];
     }
 
     /**

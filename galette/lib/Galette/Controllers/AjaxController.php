@@ -16,6 +16,7 @@ use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Enums\PasswordStrength;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Galette\Util\Password;
@@ -403,6 +404,9 @@ class AjaxController extends AbstractController
     )]
     public function passwordStrength(Request $request, Response $response): Response
     {
+        //checked while typing: may run between a form submission and the page it redirects to
+        $this->keepFlashMessages();
+
         //post params may be passed from security tab test password
         $post = $request->getParsedBody();
 
@@ -420,13 +424,20 @@ class AjaxController extends AbstractController
 
         $pass = new Password($this->preferences);
         $valid = $pass->isValid($post['value']);
+        $score = $pass->getStrenght();
+        $required = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength)
+            ?? PasswordStrength::None;
 
         return $this->withJson(
             $response,
             [
                 'valid'     => $valid,
-                'score'     => $pass->getStrenght(),
+                'score'     => $score,
+                'level'     => PasswordStrength::from($score)->getLabel(),
+                'required'  => $required->value,
+                'rules'     => $pass->getRules($post['value']),
                 'errors'    => $pass->getErrors(),
+                'others'    => $pass->getOtherErrors(),
                 'warnings'  => ($valid ? $pass->getStrenghtErrors() : null)
             ]
         );

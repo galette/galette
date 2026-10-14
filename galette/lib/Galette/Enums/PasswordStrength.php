@@ -35,4 +35,18 @@ enum PasswordStrength: int
     {
         return $this->value >= $level->value;
     }
+
+    /**
+     * Get translated label
+     */
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::None => _T('None'),
+            self::Weak => _T('Weak'),
+            self::Medium => _T('Medium'),
+            self::Strong => _T('Strong'),
+            self::VeryStrong => _T('Very strong'),
+        };
+    }
 }
