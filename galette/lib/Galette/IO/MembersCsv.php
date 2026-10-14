@@ -16,6 +16,8 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Status;
 use Galette\Entity\Adherent;
+use Galette\Entity\Group;
+use Galette\Repository\Groups;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
 use Galette\Entity\FieldsConfig;
@@ -106,6 +108,20 @@ class MembersCsv extends CsvOut
             $labels[] = $f['label'];
         }
 
+        //groups pseudo fields, same names and format as import
+        $groups_fields = [];
+        $groups_columns = [
+            CsvIn::GROUPS_FIELD         => [Group::GROUPSUSERS_TABLE, _T('Groups')],
+            CsvIn::MANAGED_GROUPS_FIELD => [Group::GROUPSMANAGERS_TABLE, _T('Managed groups')]
+        ];
+        foreach ($groups_columns as $k => [$table, $label]) {
+            if ($export_fields !== null && is_array($export_fields) && !in_array($k, $export_fields)) {
+                continue;
+            }
+            $groups_fields[$k] = $table;
+            $labels[] = $label;
+        }
+
         $members = new Members($filters);
         $members_list = $members->getArrayList(
             ids: $filters->selected,
@@ -114,6 +130,11 @@ class MembersCsv extends CsvOut
             as_members: false,
             fields: $fields,
             export: true
+        );
+
+        $members_groups = $this->getMembersGroups(
+            is_array($members_list) ? array_map(fn($member) => (int)$member->{Adherent::PK}, $members_list) : [],
+            $groups_fields
         );
 
         $statuses = $this->status->getList();
@@ -213,6 +234,13 @@ class MembersCsv extends CsvOut
                 $member->bool_display_info
                     = ($member->bool_display_info) ? _T("Yes") : _T("No");
             }
+
+            foreach (array_keys($groups_fields) as $k) {
+                $member->$k = implode(
+                    CsvIn::GROUPS_SEPARATOR,
+                    $members_groups[$k][(int)$member->{Adherent::PK}] ?? []
+                );
+            }
         }
 
         try {
@@ -228,6 +256,56 @@ class MembersCsv extends CsvOut
         } catch (FilesystemException $e) {
             Logs::exception($e, 'Unable to write members CSV export to ' . $this->path, Analog::ERROR);
         }
+    }
+
+    /**
+     * Get groups full names of members, limited to groups current user manages
+     * if they are not admin nor staff
+     *
+     * @param array<int>            $ids    Members ids
+     * @param array<string, string> $fields Groups pseudo fields and their table
+     *
+     * @return array<string, array<int, array<string>>> full names per field and member id
+     */
+    private function getMembersGroups(array $ids, array $fields): array
+    {
+        $members_groups = [];
+        if (count($ids) === 0 || count($fields) === 0) {
+            return $members_groups;
+        }
+
+        $managed = null;
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $managed = array_map(
+                fn($group) => $group instanceof Group ? (int)$group->getId() : (int)$group,
+                $this->login->getManagedGroups()
+            );
+            if (count($managed) === 0) {
+                return $members_groups;
+            }
+        }
+
+        $names = Groups::getNames($this->zdb);
+        foreach ($fields as $k => $table) {
+            $select = $this->zdb->select($table);
+            $select->columns([Adherent::PK, Group::PK]);
+            $select->where->in(Adherent::PK, $ids);
+            if ($managed !== null) {
+                $select->where->in(Group::PK, $managed);
+            }
+
+            foreach ($this->zdb->execute($select) as $row) {
+                $gid = (int)$row->{Group::PK};
+                if (isset($names[$gid])) {
+                    $members_groups[$k][(int)$row->{Adherent::PK}][] = $names[$gid]['full_name'];
+                }
+            }
+            foreach (array_keys($members_groups[$k] ?? []) as $id) {
+                sort($members_groups[$k][$id]);
+            }
+        }
+
+        return $members_groups;
     }
 
     /**

@@ -409,6 +409,17 @@ class CsvController extends GaletteRoutingTestCase
             'CSV import model',
             $body
         );
+        //no group, groups cannot be imported
+        $this->assertStringNotContainsString('id="field_groups"', $body);
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A group');
+        $this->assertTrue($group->store());
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="field_groups"', $body);
+        $this->assertStringContainsString('id="field_groups_managed"', $body);
         $this->login->logOut();
     }
 
@@ -573,6 +584,68 @@ class CsvController extends GaletteRoutingTestCase
                     'You do not have permission for requested URL.'
                 ]
             ]
+        );
+
+        unset($this->session->$filter_name);
+        $this->login->logOut();
+    }
+
+    /**
+     * Test members groups in CSV export
+     */
+    public function testMembersExportGroups(): void
+    {
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $fc->installInit();
+        $controller = $this->container->get(\Galette\Controllers\CsvController::class);
+        $filter_name = $controller->getFilterName(\Galette\Controllers\Crud\MembersController::getDefaultFilterName());
+
+        $managed = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+
+        $this->logSuperAdmin();
+        $parent = new \Galette\Entity\Group();
+        $parent->setName('Fédé');
+        $this->assertTrue($parent->store());
+        $child = new \Galette\Entity\Group();
+        $child->setName('Section 33');
+        $child->setParentGroup((int)$parent->getId());
+        $this->assertTrue($child->store());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups(
+            $member_one,
+            [
+                $child->getId() . '|' . $child->getName(),
+                $managed->getId() . '|' . $managed->getName()
+            ]
+        ));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_one->id];
+        $this->session->$filter_name = $filters;
+        $request = $this->createRequest('csv-memberslist', [], 'POST');
+
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('"Member number";"Groups";"Managed groups"' . "\r\n", $body);
+        $this->assertStringEndsWith(
+            '"Fédé / Section 33|Managed by member one";"Managed by member one"' . "\r\n",
+            $body
+        );
+        $this->login->logOut();
+
+        //group manager only sees groups they manage
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('Section 33', $body);
+        $this->assertStringEndsWith(
+            '"Managed by member one";"Managed by member one"' . "\r\n",
+            $body
         );
 
         unset($this->session->$filter_name);

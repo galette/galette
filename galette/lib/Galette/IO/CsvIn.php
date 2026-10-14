@@ -23,6 +23,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
+use Galette\Repository\Groups;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
 
@@ -41,6 +42,10 @@ class CsvIn extends Csv
 
     public const string DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
     public const int DATA_IMPORT_ERROR = -10;
+    //pseudo fields, members are attached to the groups they name
+    public const string GROUPS_FIELD = 'groups';
+    public const string MANAGED_GROUPS_FIELD = 'groups_managed';
+    public const string GROUPS_SEPARATOR = '|';
 
     /** @var array<string> */
     protected array $extensions = ['csv', 'txt'];
@@ -85,6 +90,8 @@ class CsvIn extends Csv
     private array $langs;
     /** @var array<string,int> */
     private array $emails;
+    /** @var array<int, array{name: string, full_name: string}> */
+    private array $groups;
     private Preferences $preferences;
     private History $history;
 
@@ -175,9 +182,7 @@ class CsvIn extends Csv
         $this->zdb = $zdb;
         $this->preferences = $preferences;
         $this->history = $history;
-        if ($dryrun === false) {
-            $this->dryrun = false;
-        }
+        $this->dryrun = $dryrun;
 
         $this->loadFields();
         $this->members_fields = $members_fields;
@@ -203,6 +208,7 @@ class CsvIn extends Csv
     {
         $this->resetErrors();
         unset($this->emails);
+        unset($this->groups);
         try {
             $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
         } catch (FilesystemException $e) {
@@ -286,6 +292,14 @@ class CsvIn extends Csv
                             )
                         );
                         return false;
+                    }
+
+                    if ($this->isGroupsField($this->fields[$col])) {
+                        if ($this->resolveGroups($column, $row) === false) {
+                            return false;
+                        }
+                        $col++;
+                        continue;
                     }
 
                     //check for statuses
@@ -433,6 +447,69 @@ class CsvIn extends Csv
     }
 
     /**
+     * Is field one of the groups pseudo fields
+     *
+     * @param string $field Import model column name
+     */
+    private function isGroupsField(string $field): bool
+    {
+        return $field === self::GROUPS_FIELD || $field === self::MANAGED_GROUPS_FIELD;
+    }
+
+    /**
+     * Resolve groups names from a column
+     *
+     * @param string $column Column value, groups separated with GROUPS_SEPARATOR
+     * @param int    $row    Row number, for error messages
+     *
+     * @return array<int, string>|false groups full names, indexed by id; false if one cannot be found
+     */
+    private function resolveGroups(string $column, int $row): array|false
+    {
+        if (!isset($this->groups)) {
+            $this->groups = Groups::getNames($this->zdb);
+        }
+
+        $resolved = [];
+        foreach (explode(self::GROUPS_SEPARATOR, $column) as $name) {
+            $name = trim($name);
+            if ($name === '') {
+                continue;
+            }
+
+            $found = Groups::findByName($name, $this->groups);
+            if (count($found) === 0) {
+                $this->addError(
+                    sprintf(
+                        //TRANS: first parameter is a group name, second the row in error
+                        _T('Group "%1$s" does not exist (row %2$s)'),
+                        $name,
+                        (string)$row
+                    )
+                );
+                return false;
+            }
+
+            if (count($found) > 1) {
+                $this->addError(
+                    sprintf(
+                        //TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+                        _T('Several groups are named "%1$s" (row %2$s), use the full name of one of them: %3$s'),
+                        $name,
+                        (string)$row,
+                        implode(', ', $found)
+                    )
+                );
+                return false;
+            }
+
+            $resolved += $found;
+        }
+
+        return $resolved;
+    }
+
+    /**
      * Get the occurrence a dynamic field import column targets
      *
      * A column may name its occurrence (`dynfield_<id>_<n>`); one that does not
@@ -474,7 +551,15 @@ class CsvIn extends Csv
                 if ($row > 0) {
                     $col = 0;
                     $values = [];
+                    $groups = [self::GROUPS_FIELD => [], self::MANAGED_GROUPS_FIELD => []];
                     foreach ($data as $column) {
+                        if ($this->isGroupsField($this->fields[$col])) {
+                            //already checked, cannot fail
+                            $groups[$this->fields[$col]] += $this->resolveGroups((string)$column, $row) ?: [];
+                            $col++;
+                            continue;
+                        }
+
                         if (str_starts_with($this->fields[$col], 'dynfield_')) {
                             //dynamic field, keep to check later
                             $key = $this->getDynamicFieldKey($this->fields[$col]);
@@ -539,6 +624,19 @@ class CsvIn extends Csv
                                 $this->zdb->rollback();
                                 return false;
                             }
+
+                            if (!$this->storeGroups($member, $groups)) {
+                                $this->addError(
+                                    sprintf(
+                                        //TRANS: first parameter is row, second member name
+                                        _T('An error occurred attaching member at row %1$s (%2$s) to its groups'),
+                                        (string)$row,
+                                        $member->sname
+                                    )
+                                );
+                                $this->zdb->rollback();
+                                return false;
+                            }
                         }
                     } else {
                         $this->addError(
@@ -571,6 +669,43 @@ class CsvIn extends Csv
         }
 
         return false;
+    }
+
+    /**
+     * Attach a newly stored member to groups
+     *
+     * @param Adherent                          $member Member
+     * @param array<string, array<int, string>> $groups Groups full names indexed by id, per pseudo field
+     */
+    private function storeGroups(Adherent $member, array $groups): bool
+    {
+        $types = [
+            self::GROUPS_FIELD          => false,
+            self::MANAGED_GROUPS_FIELD  => true
+        ];
+        foreach ($types as $field => $manager) {
+            if (count($groups[$field]) === 0) {
+                continue;
+            }
+
+            $list = [];
+            foreach ($groups[$field] as $id => $full_name) {
+                $list[] = $id . '|' . $full_name;
+            }
+            //import already runs in a transaction: a nested one would roll back everything on its own
+            if (
+                !Groups::addMemberToGroups(
+                    adh: $member,
+                    groups: $list,
+                    manager: $manager,
+                    transaction: true
+                )
+            ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

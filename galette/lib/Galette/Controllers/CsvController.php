@@ -28,6 +28,7 @@ use Galette\IO\CsvIn;
 use Galette\IO\CsvOut;
 use Galette\IO\MembersCsv;
 use Galette\Repository\DynamicFieldsSet;
+use Galette\Repository\Groups;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Slim\Psr7\Stream;
@@ -300,13 +301,24 @@ class CsvController extends AbstractController
             if ($this->session->import_file && !$dryrun) {
                 $this->session->import_file = null;
             }
-            $this->flash->addMessage(
-                'success_detected',
-                sprintf(
-                    _T('File \'%1$s\' has been successfully imported :)'),
-                    $post['import_file']
-                )
-            );
+            if ($dryrun) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    sprintf(
+                        //TRANS: %1$s is the file name
+                        _T('File \'%1$s\' can be imported, nothing has been stored (dry run).'),
+                        $post['import_file']
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    sprintf(
+                        _T('File \'%1$s\' has been successfully imported :)'),
+                        $post['import_file']
+                    )
+                );
+            }
         }
         return $response
             ->withStatus(301)
@@ -544,6 +556,18 @@ class CsvController extends AbstractController
         //we do not want to import id_adh. Never.
         unset($import_fields['id_adh']);
         $import_fields += $dynamic_import_fields;
+
+        //groups pseudo fields, when there are groups to attach members to
+        $groups_fields = [
+            CsvIn::GROUPS_FIELD         => _T('Groups'),
+            CsvIn::MANAGED_GROUPS_FIELD => _T('Managed groups')
+        ];
+        $has_groups = count(Groups::getNames($this->zdb)) > 0;
+        foreach ($groups_fields as $key => $label) {
+            if ($has_groups || in_array($key, $fields, strict: true)) {
+                $import_fields[$key] = ['label' => $label];
+            }
+        }
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'current';
