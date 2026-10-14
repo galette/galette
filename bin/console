@@ -10,7 +10,6 @@
 declare(strict_types=1);
 
 use function Safe\define;
-use function Safe\session_start;
 
 //relative to this script, not to the current directory, which may be
 //anything from a cron job or a script - or another Galette checkout
@@ -50,9 +49,10 @@ if (!getenv('GALETTE_TESTS') && ($installer || !file_exists($basepath . 'config/
 }
 require_once $basepath . 'includes/galette.inc.php';
 
-session_start();
-$session_name = 'galette_cli_' . str_replace('.', '_', GALETTE_VERSION);
-$session = &$_SESSION['galette'][$session_name]; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
+//no session on CLI: nothing would carry its id from one run to the next, and
+//starting one fails whenever the configured handler (redis, a sessions directory
+//the cron user cannot write...) is not available to the CLI
+$_SESSION = [];
 
 /** @var \Galette\Core\Plugins $plugins */
 $gapp = new \Galette\Core\SlimApp($plugins);
