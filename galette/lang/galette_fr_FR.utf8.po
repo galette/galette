@@ -1904,8 +1904,7 @@ msgstr "Dernier jour !"
 msgid "Late since today!"
 msgstr "En retard depuis aujourd'hui !"
 
-#. TRANS: first parameter is number of remaining days, second is end membership
-#. date
+#. TRANS: first parameter is number of remaining days, second is end membership date
 #, php-format
 msgid "%1$s days remaining (ending on %2$s)"
 msgstr "%1$s jours restants (fin le %2$s)"
@@ -2680,8 +2679,7 @@ msgstr "Date de fin de contribution"
 msgid "%1$s: invalid date \"%2$s\""
 msgstr "%1$s : date « %2$s » invalide"
 
-#. TRANS: %1$s is the field label, %2$s the relative date (start of the
-#. membership period, ...)
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
 #, php-format
 msgid "%1$s: \"%2$s\" is not available"
 msgstr "%1$s : « %2$s » n’est pas disponible"
@@ -2790,8 +2788,7 @@ msgstr "depuis un autre adhérent de l’import"
 msgid "from member %1$s"
 msgstr "depuis l’adhérent %1$s"
 
-#. TRANS: first parameter is the email address, second tells where it is
-#. already used
+#. TRANS: first parameter is the email address, second tells where it is already used
 #, php-format
 msgid "Email address %1$s is already used! (%2$s)"
 msgstr "L’adresse courriel %1$s est déjà utilisée ! (%2$s)"
@@ -3090,14 +3087,12 @@ msgid_plural "%1$s years"
 msgstr[0] "%1$s an"
 msgstr[1] "%1$s ans"
 
-#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a
-#. duration (30 days, ...)
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
 #, php-format
 msgid "%1$s plus %2$s"
 msgstr "%1$s plus %2$s"
 
-#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a
-#. duration (30 days, ...)
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
 #, php-format
 msgid "%1$s minus %2$s"
 msgstr "%1$s moins %2$s"
@@ -3195,9 +3190,7 @@ msgstr "Installation de la base de données"
 msgid "Documentation"
 msgstr "Documentation"
 
-#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format -
-#. must be the same as Y-m-d for PHP
-#. https://www.php.net/manual/datetime.format.php
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
 msgstr "DD/MM/YYYY"
 

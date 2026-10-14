@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -726,6 +726,16 @@ msgstr "تم حفظ البحث."
 msgid "Saved searches"
 msgstr "عمليات البحث المحفوظة"
 
+#, fuzzy
+#| msgid "Saved searches"
+msgid "Saved search does not exist."
+msgstr "عمليات البحث المحفوظة"
+
+#, fuzzy
+#| msgid "Delete saved search"
+msgid "Edit saved search"
+msgstr "حذف البحث المحفوظ"
+
 msgid "Remove saved search"
 msgstr "إزالة البحث المحفوظ"
 
@@ -733,11 +743,18 @@ msgstr "إزالة البحث المحفوظ"
 msgid "You are about to remove %1$s searches."
 msgstr ""
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "تم تحميل البحث المحفوظ"
-
-msgid "An SQL error has occurred while loading search."
-msgstr ""
 
 #, fuzzy
 #| msgid "Contribution has been successfully stored"
@@ -2690,6 +2707,67 @@ msgstr ""
 msgid "Member information"
 msgstr "معلومات العضو"
 
+#. TRANS: %1$s is the status identifier
+#, php-format
+msgid "status #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "%type #%id has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "%type #%1$s لم يتم تحديثه"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "لم يتم إضافة وسيلة الدفع \"%s\"!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, php-format
+msgid "group #%1$s no longer exists"
+msgstr ""
+
+msgid "Creation date"
+msgstr "تاريخ الإنشاء"
+
+msgid "Modification date"
+msgstr "تاريخ التعديل"
+
+msgid "Due date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "Contribution creation date"
+msgstr "معلومات عن المساهمة"
+
+#, fuzzy
+#| msgid "Contribution type"
+msgid "Contribution begin date"
+msgstr "نوع المساهمة"
+
+#, fuzzy
+#| msgid "Contribution type"
+msgid "Contribution end date"
+msgstr "نوع المساهمة"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr ""
 
@@ -3057,6 +3135,100 @@ msgid "Does not contains numbers"
 msgstr ""
 
 msgid "Does not contains special characters"
+msgstr ""
+
+#, php-format
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#, php-format
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#, fuzzy, php-format
+#| msgid "months"
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "أشهر"
+msgstr[1] "أشهر"
+msgstr[2] "أشهر"
+msgstr[3] "أشهر"
+msgstr[4] "أشهر"
+msgstr[5] "أشهر"
+
+#, php-format
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "كم يساوي %1$s زائد %2$s؟"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "كم يساوي %1$s ناقص %2$s؟"
+
+#, fuzzy
+#| msgid "Today"
+msgid "today"
+msgstr "اليوم"
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "start of the month"
+msgstr "معلومات عن المساهمة"
+
+msgid "end of the month"
+msgstr ""
+
+msgid "start of the year"
+msgstr ""
+
+msgid "end of the year"
+msgstr ""
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "تاريخ بداية العضوية:"
+
+#, fuzzy
+#| msgid "Details of membership fee"
+msgid "end of the membership period"
+msgstr "تفاصيل مستحقات العضوية"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "أشهر"
+
+msgid "years"
 msgstr ""
 
 msgid "No host"
@@ -4421,6 +4593,25 @@ msgstr ""
 msgid "An error occurred checking password :("
 msgstr "حدث خطأ أثناء التحقق من كلمة المرور :("
 
+#, fuzzy
+#| msgid "Release date"
+msgid "Reference date"
+msgstr "تاريخ النشر"
+
+#, fuzzy
+#| msgid "creation"
+msgid "Direction"
+msgstr "إنشاء"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -5066,15 +5257,6 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Creation date"
-msgstr "تاريخ الإنشاء"
-
-msgid "Modification date"
-msgstr "تاريخ التعديل"
-
-msgid "Due date"
-msgstr ""
-
 msgid "Show public infos"
 msgstr ""
 
@@ -5461,9 +5643,6 @@ msgid ""
 "define next."
 msgstr ""
 
-msgid "months"
-msgstr "أشهر"
-
 msgid "Notify member"
 msgstr "إشعار العضو"
 
@@ -5488,17 +5667,6 @@ msgstr "لا يجب أن يكون مبلغ المساهمة أكبر من %1$s"
 #| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred displaying scheduled payments :("
 msgstr "حدث خطأ اثناء اضافة الحقل"
-
-#, fuzzy, php-format
-#| msgid "months"
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "أشهر"
-msgstr[1] "أشهر"
-msgstr[2] "أشهر"
-msgstr[3] "أشهر"
-msgstr[4] "أشهر"
-msgstr[5] "أشهر"
 
 #, fuzzy
 #| msgid "Membership fee"
@@ -7018,6 +7186,12 @@ msgstr ""
 msgid "Please make sure to select at least one reminder."
 msgstr ""
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr "اظهر الخيارات"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -7030,9 +7204,6 @@ msgstr[5] ""
 
 msgid "Search parameters"
 msgstr ""
-
-msgid "Show parameters"
-msgstr "اظهر الخيارات"
 
 msgid "Load saved search"
 msgstr ""
@@ -7360,9 +7531,6 @@ msgstr ""
 #~ msgid "modification"
 #~ msgstr "تعديل"
 
-#~ msgid "creation"
-#~ msgstr "إنشاء"
-
 #~ msgid "Edit payment type"
 #~ msgstr "تعديل نوع الدفع"
 
@@ -7459,9 +7627,6 @@ msgstr ""
 
 #~ msgid "status"
 #~ msgstr "الحالة"
-
-#~ msgid "Delete saved search"
-#~ msgstr "حذف البحث المحفوظ"
 
 #~ msgid "Status label"
 #~ msgstr "عنوان الحالة"

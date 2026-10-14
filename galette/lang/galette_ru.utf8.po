@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -695,6 +695,16 @@ msgstr "Поиск сохранен."
 msgid "Saved searches"
 msgstr "История поиска"
 
+#, fuzzy
+#| msgid "Label does not exist"
+msgid "Saved search does not exist."
+msgstr "Метка не существует"
+
+#, fuzzy
+#| msgid "Load saved search"
+msgid "Edit saved search"
+msgstr "Загрузить сохранённый поиск"
+
 msgid "Remove saved search"
 msgstr "Удалить историю поиска"
 
@@ -702,11 +712,18 @@ msgstr "Удалить историю поиска"
 msgid "You are about to remove %1$s searches."
 msgstr "Вы собираетесь удалить %1$s поисковых запросов."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "История поиска загружена"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "При загрузке истории поиска произошла ошибка SQL."
 
 msgid "Contribution is fully scheduled!"
 msgstr "Взнос полностью запланирован!"
@@ -2607,6 +2624,69 @@ msgstr "Дата окончания"
 msgid "Member information"
 msgstr "Информация об участнике"
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "Статус %1$s не существует!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Contribution type #%1$s has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "Тип взноса #%1$s не был обновлен"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "Тип платежа '%1$s' не был добавлен!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "Пол %1$s не существует!"
+
+msgid "Creation date"
+msgstr "Дата создания"
+
+msgid "Modification date"
+msgstr "Дата изменения"
+
+msgid "Due date"
+msgstr "Срок уплаты"
+
+#, fuzzy
+#| msgid "Contribution information"
+msgid "Contribution creation date"
+msgstr "Информация о взносе"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution begin date"
+msgstr "Взнос обновлён"
+
+#, fuzzy
+#| msgid "Contribution updated"
+msgid "Contribution end date"
+msgstr "Взнос обновлён"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr "Email, URL, IM"
 
@@ -2980,6 +3060,97 @@ msgstr "Не содержит цифр"
 
 msgid "Does not contains special characters"
 msgstr "Не содержит специальных символов"
+
+#, fuzzy, php-format
+#| msgid "%1$s entry"
+#| msgid_plural "%1$s entries"
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "%1$s заход"
+msgstr[1] "%1$s заходов"
+msgstr[2] "%1$s заходов"
+
+#, fuzzy, php-format
+#| msgid "%1$s member"
+#| msgid_plural "%1$s members"
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "%1$s участник"
+msgstr[1] "%1$s участники"
+msgstr[2] "%1$s участники"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s месяц"
+msgstr[1] "%1$s месяца"
+msgstr[2] "%1$s месяцев"
+
+#, fuzzy, php-format
+#| msgid "%1$s search"
+#| msgid_plural "%1$s searches"
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "%1$s поиск"
+msgstr[1] "%1$s поисков"
+msgstr[2] "%1$s поисков"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "Сколько будет %1$s плюс %2$s?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "Сколько будет %1$s минус %2$s?"
+
+#, fuzzy
+#| msgid "Today"
+msgid "today"
+msgstr "Сегодня"
+
+#, fuzzy
+#| msgid "Total contributions for the month"
+msgid "start of the month"
+msgstr "Общая сумма взносов за месяц"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+#| msgid "start date filter"
+msgid "start of the year"
+msgstr "фильтр по дате начала"
+
+#, fuzzy
+#| msgid "Send an email"
+msgid "end of the year"
+msgstr "Отправить письмо"
+
+#, fuzzy
+#| msgid "Start date of membership:"
+msgid "start of the membership period"
+msgstr "Дата начала членства:"
+
+#, fuzzy
+#| msgid "Details of membership fee"
+msgid "end of the membership period"
+msgstr "Детали членского взноса"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr "месяцев"
+
+msgid "years"
+msgstr ""
 
 msgid "No host"
 msgstr "Нет хоста"
@@ -4408,6 +4579,25 @@ msgstr "Пароль недействителен!"
 msgid "An error occurred checking password :("
 msgstr "Произошла ошибка при проверке пароля :("
 
+#, fuzzy
+#| msgid "Reference:"
+msgid "Reference date"
+msgstr "Ссылка:"
+
+#, fuzzy
+#| msgid "Duration"
+msgid "Direction"
+msgstr "Продолжительность"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr "Убрать"
 
@@ -5069,15 +5259,6 @@ msgstr "Без"
 msgid "between"
 msgstr "между"
 
-msgid "Creation date"
-msgstr "Дата создания"
-
-msgid "Modification date"
-msgstr "Дата изменения"
-
-msgid "Due date"
-msgstr "Срок уплаты"
-
 msgid "Show public infos"
 msgstr "Показать публичную информацию"
 
@@ -5466,9 +5647,6 @@ msgstr ""
 "равняться общей сумме всех запланированных платежей, которые вы определите "
 "далее."
 
-msgid "months"
-msgstr "месяцев"
-
 msgid "Notify member"
 msgstr "Уведомить участника"
 
@@ -5491,13 +5669,6 @@ msgstr "Сумма взноса не должна превышать %1$s"
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "Произошла ошибка при отображении запланированных платежей :("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] "%1$s месяц"
-msgstr[1] "%1$s месяца"
-msgstr[2] "%1$s месяцев"
 
 msgid "Membership extension"
 msgstr "Продление членства"
@@ -7058,6 +7229,12 @@ msgstr "Не выбрано ни одного напоминания"
 msgid "Please make sure to select at least one reminder."
 msgstr "Пожалуйста, выберите хотя бы одно напоминание."
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr "Показать параметры"
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -7067,9 +7244,6 @@ msgstr[2] "%1$s поисков"
 
 msgid "Search parameters"
 msgstr "Параметры поиска"
-
-msgid "Show parameters"
-msgstr "Показать параметры"
 
 msgid "Load saved search"
 msgstr "Загрузить сохранённый поиск"
@@ -7357,6 +7531,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Содержание публичной страницы"
+
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "При загрузке истории поиска произошла ошибка SQL."
 
 #~ msgid "An error occurred displaying groups interface :("
 #~ msgstr "Произошла ошибка при отображении интерфейса групп :("

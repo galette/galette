@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -630,6 +630,12 @@ msgstr ""
 msgid "Saved searches"
 msgstr ""
 
+msgid "Saved search does not exist."
+msgstr ""
+
+msgid "Edit saved search"
+msgstr ""
+
 msgid "Remove saved search"
 msgstr ""
 
@@ -637,10 +643,17 @@ msgstr ""
 msgid "You are about to remove %1$s searches."
 msgstr ""
 
-msgid "Saved search loaded"
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
 msgstr ""
 
-msgid "An SQL error has occurred while loading search."
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
+msgid "Saved search loaded"
 msgstr ""
 
 msgid "Contribution is fully scheduled!"
@@ -2484,6 +2497,59 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
+#. TRANS: %1$s is the status identifier
+#, php-format
+msgid "status #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the contribution type identifier
+#, php-format
+msgid "contribution type #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the payment type identifier
+#, php-format
+msgid "payment type #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, php-format
+msgid "group #%1$s no longer exists"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Modification date"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+msgid "Contribution creation date"
+msgstr ""
+
+msgid "Contribution begin date"
+msgstr ""
+
+msgid "Contribution end date"
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr ""
 
@@ -2843,6 +2909,73 @@ msgid "Does not contains numbers"
 msgstr ""
 
 msgid "Does not contains special characters"
+msgstr ""
+
+#, php-format
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, php-format
+msgid "%1$s plus %2$s"
+msgstr ""
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, php-format
+msgid "%1$s minus %2$s"
+msgstr ""
+
+msgid "today"
+msgstr ""
+
+msgid "start of the month"
+msgstr ""
+
+msgid "end of the month"
+msgstr ""
+
+msgid "start of the year"
+msgstr ""
+
+msgid "end of the year"
+msgstr ""
+
+msgid "start of the membership period"
+msgstr ""
+
+msgid "end of the membership period"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr ""
+
+msgid "years"
 msgstr ""
 
 msgid "No host"
@@ -4161,6 +4294,21 @@ msgstr ""
 msgid "An error occurred checking password :("
 msgstr ""
 
+msgid "Reference date"
+msgstr ""
+
+msgid "Direction"
+msgstr ""
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -4762,15 +4910,6 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Creation date"
-msgstr ""
-
-msgid "Modification date"
-msgstr ""
-
-msgid "Due date"
-msgstr ""
-
 msgid "Show public infos"
 msgstr ""
 
@@ -5141,9 +5280,6 @@ msgid ""
 "define next."
 msgstr ""
 
-msgid "months"
-msgstr ""
-
 msgid "Notify member"
 msgstr ""
 
@@ -5165,12 +5301,6 @@ msgstr ""
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr ""
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
 
 msgid "Membership extension"
 msgstr ""
@@ -6598,6 +6728,12 @@ msgstr ""
 msgid "Please make sure to select at least one reminder."
 msgstr ""
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr ""
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -6605,9 +6741,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 msgid "Search parameters"
-msgstr ""
-
-msgid "Show parameters"
 msgstr ""
 
 msgid "Load saved search"

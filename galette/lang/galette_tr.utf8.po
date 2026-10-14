@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -714,6 +714,16 @@ msgstr "Arama kaydedildi."
 msgid "Saved searches"
 msgstr "Kayıtlı aramalar"
 
+#, fuzzy
+#| msgid "Status %1$s does not exists!"
+msgid "Saved search does not exist."
+msgstr "Durum %1$s mevcut değil!"
+
+#, fuzzy
+#| msgid "Remove saved search"
+msgid "Edit saved search"
+msgstr "Kayıtlı aramayı kaldır"
+
 msgid "Remove saved search"
 msgstr "Kayıtlı aramayı kaldır"
 
@@ -721,11 +731,18 @@ msgstr "Kayıtlı aramayı kaldır"
 msgid "You are about to remove %1$s searches."
 msgstr "%1$s tane aramayı kaldırmak üzeresiniz."
 
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
 msgid "Saved search loaded"
 msgstr "Kayıtlı aramalar yüklendi"
-
-msgid "An SQL error has occurred while loading search."
-msgstr "Aramayı yüklerken SQL hatası oluştu."
 
 msgid "Contribution is fully scheduled!"
 msgstr "Katılım zamanı başarıyla planlandı!"
@@ -2631,6 +2648,69 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
+#. TRANS: %1$s is the status identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "status #%1$s no longer exists"
+msgstr "Durum %1$s mevcut değil!"
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Contribution type #%1$s has not been updated"
+msgid "contribution type #%1$s no longer exists"
+msgstr "Katkı türü #%1$s güncellenemedi"
+
+#. TRANS: %1$s is the payment type identifier
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "payment type #%1$s no longer exists"
+msgstr "Ödeme tipi '%1$s' eklenemedi!"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "group #%1$s no longer exists"
+msgstr "Durum %1$s mevcut değil!"
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Modification date"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Contribution type"
+msgid "Contribution creation date"
+msgstr "Katılım tipi"
+
+#, fuzzy
+#| msgid "Contribution type"
+msgid "Contribution begin date"
+msgstr "Katılım tipi"
+
+#, fuzzy
+#| msgid "Contribution type"
+msgid "Contribution end date"
+msgstr "Katılım tipi"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr ""
 
@@ -2999,6 +3079,83 @@ msgid "Does not contains numbers"
 msgstr ""
 
 msgid "Does not contains special characters"
+msgstr ""
+
+#, php-format
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "Remove %1$s %2$s"
+msgid "%1$s plus %2$s"
+msgstr "%1$s %2$s 'ı kaldır"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "Edit status"
+msgid "%1$s minus %2$s"
+msgstr "Durumu Güncelle"
+
+msgid "today"
+msgstr ""
+
+#, fuzzy
+#| msgid "Edit contribution type"
+msgid "start of the month"
+msgstr "Katılım türünü güncelle"
+
+msgid "end of the month"
+msgstr ""
+
+#, fuzzy
+#| msgid "start date filter"
+msgid "start of the year"
+msgstr "başlangıç tarihi filtresi"
+
+#, fuzzy
+#| msgid "end date filter"
+msgid "end of the year"
+msgstr "bitiş tarihi filtresi"
+
+msgid "start of the membership period"
+msgstr ""
+
+#, fuzzy
+#| msgid "Add a membership fee"
+msgid "end of the membership period"
+msgstr "Üyelik ücreti ekle"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr ""
+
+msgid "years"
 msgstr ""
 
 msgid "No host"
@@ -4329,6 +4486,23 @@ msgstr ""
 msgid "An error occurred checking password :("
 msgstr ""
 
+msgid "Reference date"
+msgstr ""
+
+#, fuzzy
+#| msgid "creation"
+msgid "Direction"
+msgstr "oluşum"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -4952,15 +5126,6 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Creation date"
-msgstr ""
-
-msgid "Modification date"
-msgstr ""
-
-msgid "Due date"
-msgstr ""
-
 msgid "Show public infos"
 msgstr ""
 
@@ -5343,9 +5508,6 @@ msgid ""
 "define next."
 msgstr ""
 
-msgid "months"
-msgstr ""
-
 msgid "Notify member"
 msgstr ""
 
@@ -5369,12 +5531,6 @@ msgstr ""
 #| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred displaying scheduled payments :("
 msgstr "Dinamik alan eklenirken bir hata oluştu :("
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
 
 #, fuzzy
 #| msgid "Membership fee"
@@ -6845,6 +7001,12 @@ msgstr ""
 msgid "Please make sure to select at least one reminder."
 msgstr ""
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr ""
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -6852,9 +7014,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 msgid "Search parameters"
-msgstr ""
-
-msgid "Show parameters"
 msgstr ""
 
 msgid "Load saved search"
@@ -7152,11 +7311,11 @@ msgstr ""
 msgid "Public page content"
 msgstr ""
 
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "Aramayı yüklerken SQL hatası oluştu."
+
 #~ msgid "There are no member to proceed."
 #~ msgstr "Devam edilecek üye yok."
-
-#~ msgid "creation"
-#~ msgstr "oluşum"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Ödeme türünü düzenle"

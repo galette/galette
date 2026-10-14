@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-13 19:45+0200\n"
+"POT-Creation-Date: 2026-10-14 10:30+0200\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -702,6 +702,16 @@ msgstr ""
 msgid "Saved searches"
 msgstr ""
 
+#, fuzzy
+#| msgid "Login %s does not exist"
+msgid "Saved search does not exist."
+msgstr "Ne 'z eus ket anaouder %s ebet"
+
+#, fuzzy
+#| msgid "Advanced search"
+msgid "Edit saved search"
+msgstr "Klask araokaet"
+
 msgid "Remove saved search"
 msgstr ""
 
@@ -709,10 +719,17 @@ msgstr ""
 msgid "You are about to remove %1$s searches."
 msgstr ""
 
-msgid "Saved search loaded"
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
 msgstr ""
 
-msgid "An SQL error has occurred while loading search."
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr ""
+
+msgid "Saved search loaded"
 msgstr ""
 
 #, fuzzy
@@ -2618,6 +2635,66 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
+#. TRANS: %1$s is the status identifier
+#, php-format
+msgid "status #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the contribution type identifier
+#, fuzzy, php-format
+#| msgid "Title '%s' has not been added!"
+msgid "contribution type #%1$s no longer exists"
+msgstr "N'eo ket bet ouzhpennet an titl \"%1$s\"!"
+
+#. TRANS: %1$s is the payment type identifier
+#, php-format
+msgid "payment type #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr ""
+
+#. TRANS: %1$s is the group identifier
+#, php-format
+msgid "group #%1$s no longer exists"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Modification date"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+#, fuzzy
+#| msgid "Contribution types"
+msgid "Contribution creation date"
+msgstr "Doare kendeurel"
+
+#, fuzzy
+#| msgid "Contribution types"
+msgid "Contribution begin date"
+msgstr "Doare kendeurel"
+
+#, fuzzy
+#| msgid "Contribution types"
+msgid "Contribution end date"
+msgstr "Doare kendeurel"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr ""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr ""
+
 msgid "Email,URL,IM"
 msgstr ""
 
@@ -2983,6 +3060,91 @@ msgid "Does not contains numbers"
 msgstr ""
 
 msgid "Does not contains special characters"
+msgstr ""
+
+#, php-format
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#, php-format
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#, php-format
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s plus %2$s?"
+msgid "%1$s plus %2$s"
+msgstr "Pegement eo %1$s ha %2$s ?"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, fuzzy, php-format
+#| msgid "How much is %1$s minus %2$s?"
+msgid "%1$s minus %2$s"
+msgstr "Pegement eo %1$s nemet %2$s ?"
+
+msgid "today"
+msgstr ""
+
+#, fuzzy
+#| msgid "Edit contribution type"
+msgid "start of the month"
+msgstr "Aozañ an doare kendeurel"
+
+msgid "end of the month"
+msgstr ""
+
+msgid "start of the year"
+msgstr ""
+
+msgid "end of the year"
+msgstr ""
+
+msgid "start of the membership period"
+msgstr ""
+
+#, fuzzy
+#| msgid "Membership fee"
+msgid "end of the membership period"
+msgstr "Skodenn"
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr ""
+
+msgid "years"
 msgstr ""
 
 msgid "No host"
@@ -4315,6 +4477,25 @@ msgstr ""
 msgid "An error occurred checking password :("
 msgstr ""
 
+#, fuzzy
+#| msgid "Preferences"
+msgid "Reference date"
+msgstr "Dibaboù"
+
+#, fuzzy
+#| msgid "creation"
+msgid "Direction"
+msgstr "krouadur"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use a fixed date"
+msgstr ""
+
+msgid "Use a date relative to the search day"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -4928,15 +5109,6 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Creation date"
-msgstr ""
-
-msgid "Modification date"
-msgstr ""
-
-msgid "Due date"
-msgstr ""
-
 msgid "Show public infos"
 msgstr ""
 
@@ -5315,9 +5487,6 @@ msgid ""
 "define next."
 msgstr ""
 
-msgid "months"
-msgstr ""
-
 msgid "Notify member"
 msgstr ""
 
@@ -5341,15 +5510,6 @@ msgstr ""
 #| msgid "An error occurred while saving the transaction."
 msgid "An error occurred displaying scheduled payments :("
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
-
-#, php-format
-msgid "%1$s month"
-msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
 
 #, fuzzy
 #| msgid "Membership fee"
@@ -6830,6 +6990,12 @@ msgstr ""
 msgid "Please make sure to select at least one reminder."
 msgstr ""
 
+msgid "Replace parameters with the current advanced search"
+msgstr ""
+
+msgid "Show parameters"
+msgstr ""
+
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
@@ -6840,9 +7006,6 @@ msgstr[3] ""
 msgstr[4] ""
 
 msgid "Search parameters"
-msgstr ""
-
-msgid "Show parameters"
 msgstr ""
 
 msgid "Load saved search"
@@ -7141,9 +7304,6 @@ msgstr ""
 msgid "Public page content"
 msgstr ""
 
-#~ msgid "creation"
-#~ msgstr "krouadur"
-
 #~ msgid "Edit contribution type"
 #~ msgstr "Aozañ an doare kendeurel"
 
@@ -7201,9 +7361,6 @@ msgstr ""
 #~| msgid "Download document"
 #~ msgid "Comments"
 #~ msgstr "Pellgargañ an teul"
-
-#~ msgid "Preferences"
-#~ msgstr "Dibaboù"
 
 #, fuzzy
 #~| msgid "Members management"
