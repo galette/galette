@@ -409,6 +409,81 @@ class Groups
     }
 
     /**
+     * Get every group name and full name, the latter built in memory
+     * from a single query
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return array<int, array{name: string, full_name: string}> indexed by group id
+     */
+    public static function getNames(Db $zdb): array
+    {
+        try {
+            $select = $zdb->select(Group::TABLE);
+            $select->columns([Group::PK, 'group_name', 'parent_group'])
+                ->order(Group::PK);
+
+            $rows = [];
+            foreach ($zdb->execute($select) as $row) {
+                $rows[(int)$row->{Group::PK}] = [
+                    'name'      => (string)$row->group_name,
+                    'parent'    => $row->parent_group !== null ? (int)$row->parent_group : null
+                ];
+            }
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Cannot list groups names', Analog::WARNING);
+            throw $e;
+        }
+
+        $names = [];
+        foreach ($rows as $id => $row) {
+            $full_name = $row['name'];
+            $parent = $row['parent'];
+            //keep track of visited groups, a broken hierarchy must not loop forever
+            $seen = [$id => true];
+            while ($parent !== null && isset($rows[$parent]) && !isset($seen[$parent])) {
+                $seen[$parent] = true;
+                $full_name = $rows[$parent]['name'] . ' / ' . $full_name;
+                $parent = $rows[$parent]['parent'];
+            }
+            $names[$id] = [
+                'name'      => $row['name'],
+                'full_name' => $full_name
+            ];
+        }
+
+        return $names;
+    }
+
+    /**
+     * Find groups by their full name or, failing that, their name
+     *
+     * A name is only reliable when a single group matches: names are unique
+     * among siblings only.
+     *
+     * @param string                                             $name  Name to look for
+     * @param array<int, array{name: string, full_name: string}> $names As returned by getNames()
+     *
+     * @return array<int, string> matching groups full names, indexed by group id
+     */
+    public static function findByName(string $name, array $names): array
+    {
+        $name = trim($name);
+        $by_full_name = [];
+        $by_name = [];
+        foreach ($names as $id => $group) {
+            if ($group['full_name'] === $name) {
+                $by_full_name[$id] = $group['full_name'];
+            }
+            if ($group['name'] === $name) {
+                $by_name[$id] = $group['full_name'];
+            }
+        }
+
+        return count($by_full_name) ? $by_full_name : $by_name;
+    }
+
+    /**
      * Get managed users id list
      *
      * @param array<int, Group|int> $groups List of managed groups.

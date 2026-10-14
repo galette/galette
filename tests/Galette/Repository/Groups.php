@@ -219,6 +219,53 @@ class Groups extends GaletteTestCase
     }
 
     /**
+     * Test groups names and lookup by name
+     */
+    public function testFindByName(): void
+    {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
+        $names = \Galette\Repository\Groups::getNames($this->zdb);
+        $this->assertCount(22, $names);
+        $full_names = array_column($names, 'full_name');
+        $this->assertContains('Europe / France / Nord / Lille', $full_names);
+        $this->assertContains('Afrique', $full_names);
+
+        //short name, unique
+        $found = \Galette\Repository\Groups::findByName(' Lille ', $names);
+        $this->assertSame(['Europe / France / Nord / Lille'], array_values($found));
+        $this->assertSame('Lille', $names[array_key_first($found)]['name']);
+
+        //unknown
+        $this->assertSame([], \Galette\Repository\Groups::findByName('Creuse', $names));
+        $this->assertSame([], \Galette\Repository\Groups::findByName('France / Creuse', $names));
+
+        //same name under another parent
+        $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
+        $select->where(['group_name' => 'Belgique']);
+        $belgique = (int)$this->zdb->execute($select)->current()->{\Galette\Entity\Group::PK};
+        $group = new \Galette\Entity\Group();
+        $group->setName('Nord');
+        $group->setParentGroup($belgique);
+        $this->assertTrue($group->store());
+
+        $names = \Galette\Repository\Groups::getNames($this->zdb);
+        $found = \Galette\Repository\Groups::findByName('Nord', $names);
+        $this->assertCount(2, $found);
+        $this->assertEqualsCanonicalizing(
+            ['Europe / France / Nord', 'Europe / Belgique / Nord'],
+            array_values($found)
+        );
+
+        //full name is not ambiguous
+        $found = \Galette\Repository\Groups::findByName('Europe / Belgique / Nord', $names);
+        $this->assertSame([$group->getId() => 'Europe / Belgique / Nord'], $found);
+    }
+
+    /**
      * Test members/groups
      */
     public function testMembersGroups(): void
