@@ -874,7 +874,8 @@ msgstr "Prevedi '%s'"
 #. TRANS: parameter is the label
 #, php-format
 msgid "Label `%1$s` is translated by Galette, it cannot be translated here."
-msgstr "Oznaku %1$s automatski prevodi Galette i nije ju moguće prevesti ovdje."
+msgstr ""
+"Oznaku %1$s automatski prevodi Galette i nije ju moguće prevesti ovdje."
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
