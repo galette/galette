@@ -1069,6 +1069,48 @@ class CsvIn extends GaletteTestCase
     }
 
     /**
+     * Test a failure while storing rolls back the whole file
+     */
+    public function testImportRollback(): void
+    {
+        //both rows pass the file check, the second one fails once the first is stored
+        $fields = ['nom_adh', 'login_adh', 'fingerprint'];
+        $file_name = 'test-import-rollback.csv';
+        $members_list = [
+            'FAKER_ROLLBACK_1' => [
+                'nom_adh' => 'First',
+                'login_adh' => 'samelogin',
+                'fingerprint' => 'FAKER_ROLLBACK_1'
+            ],
+            'FAKER_ROLLBACK_2' => [
+                'nom_adh' => 'Second',
+                'login_adh' => 'samelogin',
+                'fingerprint' => 'FAKER_ROLLBACK_2'
+            ]
+        ];
+        $flash_messages = [
+            'error_detected' => [
+                'An error occurred while importing members',
+                'An error occurred storing member at row 2 (SECOND ):',
+                '- This username is already in use, please choose another one!'
+            ]
+        ];
+
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: $flash_messages,
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 0
+        );
+        $this->assertFalse($this->zdb->inTransaction());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred storing member at row 2 (SECOND ):');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- This username is already in use, please choose another one!');
+    }
+
+    /**
      * Test missing columns
      */
     public function testMissingColumn(): void

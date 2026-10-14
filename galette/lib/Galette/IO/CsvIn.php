@@ -536,6 +536,7 @@ class CsvIn extends Csv
                                         $member->sname
                                     )
                                 );
+                                $this->zdb->rollback();
                                 return false;
                             }
                         }
@@ -551,6 +552,7 @@ class CsvIn extends Csv
                         foreach ($valid as $e) {
                             $this->addError($e);
                         }
+                        $this->zdb->rollback();
                         return false;
                     }
                 }
