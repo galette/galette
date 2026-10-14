@@ -23,6 +23,8 @@ use Galette\Repository\SavedSearches;
 use Analog\Analog;
 use Galette\Core\Logs;
 
+use function Safe\json_encode;
+
 /**
  * Galette saved searches controller
  *
@@ -294,28 +296,56 @@ class SavedSearchesController extends CrudController
     {
         try {
             $sco = new SavedSearch($this->zdb, $this->login, $id);
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Saved search loaded")
-            );
-
-            $parameters = $sco->parameters;
-
-            if (isset($parameters['free_search'])) {
-                $filters = new AdvancedMembersList();
-            } else {
-                $filters = new MembersList();
-            }
-
-            foreach ($parameters as $key => $value) {
-                $filters->$key = $value;
-            }
-            $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
         } catch (Throwable $e) {
             Logs::exception($e, 'Unable to load saved search #' . $id, Analog::ERROR);
             $this->flash->addMessage(
                 'error_detected',
-                _T("An SQL error has occurred while loading search.")
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        $parameters = $sco->parameters;
+
+        if (isset($parameters['free_search'])) {
+            $filters = new AdvancedMembersList();
+        } else {
+            $filters = new MembersList();
+        }
+
+        //a criteria that cannot be set must not prevent the others to load
+        $invalid = [];
+        foreach ($parameters as $key => $value) {
+            try {
+                $filters->$key = $value;
+            } catch (Throwable $e) {
+                Logs::exception($e, 'Unable to set `' . $key . '` from saved search #' . $id, Analog::WARNING);
+                $invalid[] = sprintf(
+                    //TRANS: %1$s is the search criteria name, %2$s its value
+                    _T('%1$s: invalid value "%2$s"'),
+                    $key,
+                    is_scalar($value) ? (string)$value : json_encode($value)
+                );
+            }
+        }
+        $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
+
+        $discarded = array_merge($filters->getDiscarded(), $invalid);
+        if (count($discarded)) {
+            $this->flash->addMessage(
+                'warning_detected',
+                sprintf(
+                    //TRANS: %1$s is the list of ignored criteria
+                    _T('Saved search loaded, but some of its criteria have been ignored: %1$s'),
+                    implode(', ', $discarded)
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Saved search loaded")
             );
         }
 
