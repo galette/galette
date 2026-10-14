@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
-"PO-Revision-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"PO-Revision-Date: 2026-10-15 00:43+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -33,19 +33,19 @@ msgstr ""
 msgid "Two-factor authentication reset for %1$s"
 msgstr "Two-factor authentication reset for %1$s"
 
-#: ../lib/Galette/Controllers/AbstractController.php:362
+#: ../lib/Galette/Controllers/AbstractController.php:354
 #: ../lib/Galette/Controllers/AuthController.php:124
 msgid "Authentication throttled"
 msgstr "Authentication throttled"
 
-#: ../lib/Galette/Controllers/AbstractController.php:367
+#: ../lib/Galette/Controllers/AbstractController.php:359
 #: ../lib/Galette/Controllers/AuthController.php:122
 #: ../lib/Galette/Controllers/TwoFactorController.php:92
 #: ../lib/Galette/Controllers/TwoFactorController.php:471
 msgid "Too many failed attempts. Please try again later."
 msgstr "Too many failed attempts. Please try again later."
 
-#: ../lib/Galette/Controllers/AbstractController.php:373
+#: ../lib/Galette/Controllers/AbstractController.php:365
 msgid "Wrong password!"
 msgstr "Wrong password!"
 
@@ -120,7 +120,7 @@ msgid "Preference '%1$s' has been reset to its default."
 msgstr "Preference '%1$s' has been reset to its default."
 
 #: ../lib/Galette/Controllers/AjaxController.php:57
-#: ../webroot/installer.php:344
+#: ../webroot/installer.php:350
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -365,8 +365,8 @@ msgstr "Donation"
 #: ../lib/Galette/IO/ContributionsCsv.php:103
 #: ../lib/Galette/IO/ContributionsCsv.php:115
 #: ../lib/Galette/IO/ContributionsCsv.php:127
-#: ../lib/Galette/IO/MembersCsv.php:142 ../lib/Galette/IO/MembersCsv.php:154
-#: ../lib/Galette/IO/MembersCsv.php:166 ../lib/Galette/IO/MembersCsv.php:178
+#: ../lib/Galette/IO/MembersCsv.php:163 ../lib/Galette/IO/MembersCsv.php:175
+#: ../lib/Galette/IO/MembersCsv.php:187 ../lib/Galette/IO/MembersCsv.php:199
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:52
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:97
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:89
@@ -462,7 +462,7 @@ msgid "transaction"
 msgstr "transaction"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:78
-#: ../lib/Galette/Core/Galette.php:466 ../lib/Galette/Core/Install.php:1156
+#: ../lib/Galette/Core/Galette.php:466 ../lib/Galette/Core/Install.php:1166
 msgid "Contributions types"
 msgstr "Contributions types"
 
@@ -530,8 +530,8 @@ msgstr "Documents"
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:929
 #: ../lib/Galette/Controllers/Crud/MembersController.php:294
 #: ../lib/Galette/Controllers/Crud/MembersController.php:348
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1172
-#: ../lib/Galette/Controllers/CsvController.php:655
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
+#: ../lib/Galette/Controllers/CsvController.php:679
 #: ../lib/Galette/Controllers/PdfController.php:83
 #: ../lib/Galette/Controllers/PdfController.php:102
 #: ../lib/Galette/Controllers/PdfController.php:165
@@ -632,7 +632,9 @@ msgid "Group added"
 msgstr "Group added"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:157
+#: ../lib/Galette/Controllers/CsvController.php:562
 #: ../lib/Galette/Core/Galette.php:357 ../lib/Galette/Core/Galette.php:799
+#: ../lib/Galette/IO/MembersCsv.php:114
 #: ../templates/default/components/forms/groups.html.twig:24
 #: ../templates/default/components/forms/groups.html.twig:28
 msgid "Groups"
@@ -654,33 +656,33 @@ msgid ""
 msgstr ""
 "The parent of the following groups has been successfully modified : %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:353
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:315
 #: ../templates/default/components/forms/groups.html.twig:31
 #: ../templates/default/pages/advanced_search.html.twig:262
 msgid "Group"
 msgstr "Group"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:384
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:362
 #: ../lib/Galette/Entity/Group.php:747
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "Group `%1$s` cannot be set as parent!"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:416
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:394
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Group `%1$s` has been successfully saved."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:424
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:402
 msgid "An error occurred while saving the group."
 msgstr "An error occurred while saving the group."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:518
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:496
 #, php-format
 msgid "Remove group %1$s"
 msgstr "Remove group %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:544
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:522
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr "Group is not empty, it cannot be deleted. Use cascade delete instead."
 
@@ -788,7 +790,8 @@ msgstr "Profile"
 #: ../lib/Galette/Core/Galette.php:202 ../lib/Galette/Core/Galette.php:599
 #: ../lib/Galette/Core/Galette.php:791
 #: ../lib/Galette/DynamicFields/DynamicField.php:437
-#: ../templates/default/elements/group.html.twig:93
+#: ../templates/default/elements/group_persons.html.twig:25
+#: ../templates/default/elements/group_persons.html.twig:33
 msgid "Members"
 msgstr "Members"
 
@@ -819,125 +822,125 @@ msgstr "List of members"
 msgid "Advanced search"
 msgstr "Advanced search"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1121
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1076
 #: ../lib/Galette/Controllers/PdfController.php:112
 #: ../lib/Galette/Controllers/PdfController.php:191
 msgid "No member was selected, please check at least one name."
 msgstr "No member was selected, please check at least one name."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1210
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1165
 msgid "Edit profile"
 msgstr "Edit profile"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1211
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1166
 msgid "New member"
 msgstr "New member"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1330
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1285
 #, php-format
 msgid "Mass change %1$s members"
 msgstr "Mass change %1$s members"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1363
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1480
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1318
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1435
 msgid "Mass changes has not been confirmed!"
 msgstr "Mass changes has not been confirmed!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1388
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1343
 #: ../templates/default/components/forms/groups.html.twig:114
 #: ../templates/default/components/forms/mass_groups.html.twig:19
 msgid "Add to group"
 msgstr "Add to group"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1398
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1353
 #: ../templates/default/components/forms/mass_groups.html.twig:31
 msgid "Remove from group"
 msgstr "Remove from group"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1447
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1402
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Review mass change %1$s members"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1546
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1501
 msgid "Nothing to do!"
 msgstr "Nothing to do!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1571
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1845
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1526
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1800
 msgid "An error occurred while saving the member."
 msgstr "An error occurred while saving the member."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1606
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1826
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1561
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1781
 msgid "An error occurred adding member to its groups."
 msgstr "An error occurred adding member to its groups."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1624
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1579
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s member has been changed successfully!"
 msgstr[1] "%1$s members has been changed successfully!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1632
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1587
 msgid "Something went wrong during mass edition!"
 msgstr "Something went wrong during mass edition!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1619
 #: ../lib/Galette/Middleware/Authenticate.php:79
 msgid "Login required"
 msgstr "Login required"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1691
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1646
 msgid "Invalid captcha"
 msgstr "Invalid captcha"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1803
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1758
 msgid "Your account has been created!"
 msgstr "Your account has been created!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1808
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1763
 msgid "An email has been sent to you, check your inbox."
 msgstr "An email has been sent to you, check your inbox."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1811
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1766
 msgid "New member has been successfully added."
 msgstr "New member has been successfully added."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1814
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1769
 msgid "Member account has been modified."
 msgstr "Member account has been modified."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1840
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1795
 msgid "An error occurred adding member to its groups as manager."
 msgstr "An error occurred adding member to its groups as manager."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1862
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1817
 #: ../lib/Galette/Controllers/GaletteController.php:276
 #: ../lib/Galette/Controllers/GaletteController.php:287
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1980
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1935
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Remove member %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1988
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1943
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "You are about to remove %1$s members."
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2125
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2080
 #, php-format
 msgid "No member #%1$s."
 msgstr "No member #%1$s."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:80
-#: ../lib/Galette/Core/Galette.php:474 ../lib/Galette/Core/Install.php:1180
-#: ../lib/Galette/Core/Install.php:1199
+#: ../lib/Galette/Core/Galette.php:474 ../lib/Galette/Core/Install.php:1190
+#: ../lib/Galette/Core/Install.php:1209
 msgid "Payment types"
 msgstr "Payment types"
 
@@ -1121,7 +1124,7 @@ msgid "Remove status '%1$s'"
 msgstr "Remove status '%1$s'"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:75
-#: ../lib/Galette/Core/Galette.php:489 ../lib/Galette/Core/Install.php:1172
+#: ../lib/Galette/Core/Galette.php:489 ../lib/Galette/Core/Install.php:1182
 msgid "Titles"
 msgstr "Titles"
 
@@ -1199,7 +1202,7 @@ msgid "Unable to detach contribution from transaction"
 msgstr "Unable to detach contribution from transaction"
 
 #: ../lib/Galette/Controllers/CrudController.php:353
-#: ../lib/Galette/Controllers/CsvController.php:447
+#: ../lib/Galette/Controllers/CsvController.php:459
 #: ../lib/Galette/Controllers/HistoryController.php:158
 msgid "Removal has not been confirmed!"
 msgstr "Removal has not been confirmed!"
@@ -1212,19 +1215,19 @@ msgstr "Successfully deleted!"
 msgid "An error occurred trying to delete :("
 msgstr "An error occurred trying to delete :("
 
-#: ../lib/Galette/Controllers/CsvController.php:113
+#: ../lib/Galette/Controllers/CsvController.php:114
 #: ../lib/Galette/Core/Galette.php:392 ../install/steps/check.php:47
 msgid "Exports"
 msgstr "Exports"
 
 #. TRANS: parameter is the table name
-#: ../lib/Galette/Controllers/CsvController.php:167
+#: ../lib/Galette/Controllers/CsvController.php:168
 #, php-format
 msgid "Table %1$s is empty, and has not been exported."
 msgstr "Table %1$s is empty, and has not been exported."
 
 #. TRANS: parameter is the export name
-#: ../lib/Galette/Controllers/CsvController.php:185
+#: ../lib/Galette/Controllers/CsvController.php:186
 #, php-format
 msgid ""
 "Export file could not be write on disk for '%1$s'. Make sure web server can "
@@ -1234,69 +1237,80 @@ msgstr ""
 "write in the exports directory."
 
 #. TRANS: parameter is the export name
-#: ../lib/Galette/Controllers/CsvController.php:195
+#: ../lib/Galette/Controllers/CsvController.php:196
 #, php-format
 msgid "An error occurred running parameted export '%1$s'."
 msgstr "An error occurred running parameted export '%1$s'."
 
-#: ../lib/Galette/Controllers/CsvController.php:243
+#: ../lib/Galette/Controllers/CsvController.php:244
 #: ../lib/Galette/Core/Galette.php:399 ../install/steps/check.php:48
 msgid "Imports"
 msgstr "Imports"
 
-#: ../lib/Galette/Controllers/CsvController.php:296
+#: ../lib/Galette/Controllers/CsvController.php:297
 msgid "An error occurred importing the file :("
 msgstr "An error occurred importing the file :("
 
-#: ../lib/Galette/Controllers/CsvController.php:306
+#. TRANS: %1$s is the file name
+#: ../lib/Galette/Controllers/CsvController.php:309
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr "File '%1$s' can be imported, nothing has been stored (dry run)."
+
+#: ../lib/Galette/Controllers/CsvController.php:317
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "File '%1$s' has been successfully imported :)"
 
-#: ../lib/Galette/Controllers/CsvController.php:338
+#: ../lib/Galette/Controllers/CsvController.php:350
 msgid "No file has been uploaded!"
 msgstr "No file has been uploaded!"
 
-#: ../lib/Galette/Controllers/CsvController.php:343
+#: ../lib/Galette/Controllers/CsvController.php:355
 msgid "Your file has been successfully uploaded!"
 msgstr "Your file has been successfully uploaded!"
 
-#: ../lib/Galette/Controllers/CsvController.php:407
+#: ../lib/Galette/Controllers/CsvController.php:419
 #, php-format
 msgid "Remove %1$s file %2$s"
 msgstr "Remove %1$s file %2$s"
 
 #. TRANS: parameter is the export name
-#: ../lib/Galette/Controllers/CsvController.php:459
+#: ../lib/Galette/Controllers/CsvController.php:471
 #, php-format
 msgid "'%1$s' file has been removed from disk."
 msgstr "'%1$s' file has been removed from disk."
 
 #. TRANS: parameter is the export name
-#: ../lib/Galette/Controllers/CsvController.php:468
+#: ../lib/Galette/Controllers/CsvController.php:480
 #, php-format
 msgid "Cannot remove '%1$s' from disk :/"
 msgstr "Cannot remove '%1$s' from disk :/"
 
 #. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
-#: ../lib/Galette/Controllers/CsvController.php:540
+#: ../lib/Galette/Controllers/CsvController.php:552
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr "%1$s (occurrence %2$s)"
 
-#: ../lib/Galette/Controllers/CsvController.php:556
+#: ../lib/Galette/Controllers/CsvController.php:563
+#: ../lib/Galette/IO/MembersCsv.php:115
+msgid "Managed groups"
+msgstr "Managed groups"
+
+#: ../lib/Galette/Controllers/CsvController.php:580
 msgid "CSV import model"
 msgstr "CSV import model"
 
-#: ../lib/Galette/Controllers/CsvController.php:593
+#: ../lib/Galette/Controllers/CsvController.php:617
 msgid "galette_import_model.csv"
 msgstr "galette_import_model.csv"
 
-#: ../lib/Galette/Controllers/CsvController.php:628
+#: ../lib/Galette/Controllers/CsvController.php:652
 msgid "Import model has been successfully stored :)"
 msgstr "Import model has been successfully stored :)"
 
-#: ../lib/Galette/Controllers/CsvController.php:633
+#: ../lib/Galette/Controllers/CsvController.php:657
 msgid "Import model has not been stored :("
 msgstr "Import model has not been stored :("
 
@@ -1350,7 +1364,7 @@ msgstr "Dashboard"
 
 #: ../lib/Galette/Controllers/GaletteController.php:208
 #: ../lib/Galette/Core/Galette.php:422 ../lib/Galette/Core/Galette.php:900
-#: ../lib/Galette/Core/Install.php:1152
+#: ../lib/Galette/Core/Install.php:1162
 #: ../lib/Galette/DynamicFields/DynamicField.php:440
 #: ../templates/default/pages/preferences.html.twig:1150
 msgid "Settings"
@@ -1391,7 +1405,7 @@ msgid "My information"
 msgstr "My information"
 
 #: ../lib/Galette/Controllers/GaletteController.php:374
-#: ../webroot/installer.php:215
+#: ../webroot/installer.php:221
 msgid "Passwords mismatch"
 msgstr "Passwords mismatch"
 
@@ -1532,7 +1546,7 @@ msgid "Unable to get groups list."
 msgstr "Unable to get groups list."
 
 #: ../lib/Galette/Controllers/PdfController.php:496
-#: ../lib/Galette/Core/Galette.php:497 ../lib/Galette/Core/Install.php:1176
+#: ../lib/Galette/Core/Galette.php:497 ../lib/Galette/Core/Install.php:1186
 msgid "PDF models"
 msgstr "PDF models"
 
@@ -1736,8 +1750,8 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1780
 #: ../lib/Galette/Entity/Adherent.php:1782
 #: ../lib/Galette/Features/Replacements.php:775
-#: ../lib/Galette/IO/MembersCsv.php:202 ../lib/Galette/IO/MembersCsv.php:206
-#: ../lib/Galette/IO/MembersCsv.php:210 ../lib/Galette/IO/MembersCsv.php:214
+#: ../lib/Galette/IO/MembersCsv.php:223 ../lib/Galette/IO/MembersCsv.php:227
+#: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/IO/MembersCsv.php:235
 #: ../templates/default/elements/edit_core_fields.html.twig:59
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:20
@@ -1763,8 +1777,8 @@ msgstr "Yes"
 #: ../lib/Galette/Entity/Adherent.php:1780
 #: ../lib/Galette/Entity/Adherent.php:1782
 #: ../lib/Galette/Features/Replacements.php:775
-#: ../lib/Galette/IO/MembersCsv.php:202 ../lib/Galette/IO/MembersCsv.php:206
-#: ../lib/Galette/IO/MembersCsv.php:210 ../lib/Galette/IO/MembersCsv.php:214
+#: ../lib/Galette/IO/MembersCsv.php:223 ../lib/Galette/IO/MembersCsv.php:227
+#: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/IO/MembersCsv.php:235
 #: ../templates/default/elements/edit_core_fields.html.twig:65
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:26
@@ -1863,6 +1877,7 @@ msgid "Perform advanced search into members list"
 msgstr "Perform advanced search into members list"
 
 #: ../lib/Galette/Core/Galette.php:240
+#: ../templates/default/elements/group_persons.html.twig:58
 #: ../templates/default/pages/members_list.html.twig:50
 msgid "Add a member"
 msgstr "Add a member"
@@ -2082,7 +2097,7 @@ msgstr "%1$s: remove from database"
 
 #. TRANS: parameter is the member name
 #: ../lib/Galette/Core/Galette.php:1027 ../lib/Galette/Core/Galette.php:1032
-#: ../templates/default/elements/group_persons.html.twig:75
+#: ../templates/default/elements/group_person_row.html.twig:93
 #: ../templates/default/elements/member_actions.html.twig:32
 #: ../templates/default/elements/member_actions.html.twig:35
 #: ../templates/default/pages/members_list.html.twig:260
@@ -2211,8 +2226,8 @@ msgstr ""
 #: ../lib/Galette/Enums/PasswordStrength.php:45
 #: ../lib/Galette/Features/Replacements.php:653
 #: ../lib/Galette/Features/Replacements.php:654
-#: ../templates/default/elements/group.html.twig:43
-#: ../templates/default/elements/group.html.twig:58
+#: ../templates/default/elements/group.html.twig:40
+#: ../templates/default/elements/group.html.twig:55
 #: ../templates/default/pages/preferences.html.twig:1222
 #: ../templates/default/pages/transaction_form.html.twig:48
 msgid "None"
@@ -2228,13 +2243,13 @@ msgstr ""
 "Translation file %1$s is missing or outdated; run bin/console "
 "galette:compile-locales."
 
-#: ../lib/Galette/Core/I18n.php:262 ../lib/Galette/IO/CsvIn.php:378
+#: ../lib/Galette/Core/I18n.php:262 ../lib/Galette/IO/CsvIn.php:392
 #, php-format
 msgid "Unknown lang (%1$s)"
 msgstr "Unknown lang (%1$s)"
 
 #. TRANS: installation step title, where the system requirements are verified
-#: ../lib/Galette/Core/Install.php:103 ../webroot/installer.php:369
+#: ../lib/Galette/Core/Install.php:103 ../webroot/installer.php:375
 msgctxt "installation step"
 msgid "Checks"
 msgstr "Checks"
@@ -2244,11 +2259,11 @@ msgstr "Checks"
 msgid "Installation mode"
 msgstr "Installation mode"
 
-#: ../lib/Galette/Core/Install.php:111 ../webroot/installer.php:380
+#: ../lib/Galette/Core/Install.php:111 ../webroot/installer.php:386
 msgid "Database"
 msgstr "Database"
 
-#: ../lib/Galette/Core/Install.php:115 ../webroot/installer.php:391
+#: ../lib/Galette/Core/Install.php:115 ../webroot/installer.php:397
 msgid "Database access and permissions"
 msgstr "Database access and permissions"
 
@@ -2256,7 +2271,7 @@ msgstr "Database access and permissions"
 msgid "Previous version selection"
 msgstr "Previous version selection"
 
-#: ../lib/Galette/Core/Install.php:123 ../webroot/installer.php:416
+#: ../lib/Galette/Core/Install.php:123 ../webroot/installer.php:422
 #: ../templates/default/modals/plugin_initdb.html.twig:171
 msgid "Database upgrade"
 msgstr "Database upgrade"
@@ -2265,20 +2280,20 @@ msgstr "Database upgrade"
 msgid "Tables Creation"
 msgstr "Tables Creation"
 
-#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:446
+#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:452
 msgid "Admin parameters"
 msgstr "Admin parameters"
 
-#: ../lib/Galette/Core/Install.php:135 ../webroot/installer.php:460
+#: ../lib/Galette/Core/Install.php:135 ../webroot/installer.php:466
 #: ../templates/default/pages/desktop.html.twig:28
 msgid "Telemetry"
 msgstr "Telemetry"
 
-#: ../lib/Galette/Core/Install.php:139 ../webroot/installer.php:471
+#: ../lib/Galette/Core/Install.php:139 ../webroot/installer.php:477
 msgid "Galette initialization"
 msgstr "Galette initialization"
 
-#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:482
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:488
 #: ../templates/default/modals/plugin_initdb.html.twig:177
 #: ../templates/default/pages/mailing_queue.html.twig:128
 msgid "End!"
@@ -2300,29 +2315,29 @@ msgstr "%1$s script has been successfully executed :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Unable to run %1$s update script :("
 
-#: ../lib/Galette/Core/Install.php:884
+#: ../lib/Galette/Core/Install.php:894
 msgid "No configuration file found!"
 msgstr "No configuration file found!"
 
-#: ../lib/Galette/Core/Install.php:897 ../lib/Galette/Core/Install.php:908
+#: ../lib/Galette/Core/Install.php:907 ../lib/Galette/Core/Install.php:918
 msgid "Existing configuration file is incomplete or unreadable!"
 msgstr "Existing configuration file is incomplete or unreadable!"
 
-#: ../lib/Galette/Core/Install.php:1038
+#: ../lib/Galette/Core/Install.php:1048
 msgid "Write configuration file"
 msgstr "Write configuration file"
 
-#: ../lib/Galette/Core/Install.php:1067
+#: ../lib/Galette/Core/Install.php:1077
 msgid "Config file already exists and is up to date"
 msgstr "Config file already exists and is up to date"
 
 #. TRANS: parameter is the file path
-#: ../lib/Galette/Core/Install.php:1087
+#: ../lib/Galette/Core/Install.php:1097
 #, php-format
 msgid "Unable to create configuration file (%1$s)"
 msgstr "Unable to create configuration file (%1$s)"
 
-#: ../lib/Galette/Core/Install.php:1160
+#: ../lib/Galette/Core/Install.php:1170
 #: ../templates/default/pages/advanced_config.html.twig:39
 #: ../templates/default/pages/advanced_config.html.twig:52
 #: ../templates/default/pages/advanced_config.html.twig:137
@@ -2332,19 +2347,19 @@ msgstr "Unable to create configuration file (%1$s)"
 msgid "Status"
 msgstr "Status"
 
-#: ../lib/Galette/Core/Install.php:1164
+#: ../lib/Galette/Core/Install.php:1174
 msgid "Fields config and categories"
 msgstr "Fields config and categories"
 
-#: ../lib/Galette/Core/Install.php:1168 ../lib/Galette/Core/Install.php:1194
+#: ../lib/Galette/Core/Install.php:1178 ../lib/Galette/Core/Install.php:1204
 msgid "Mails texts"
 msgstr "Mails texts"
 
-#: ../lib/Galette/Core/Install.php:1186
+#: ../lib/Galette/Core/Install.php:1196
 msgid "Update preferences"
 msgstr "Update preferences"
 
-#: ../lib/Galette/Core/Install.php:1190
+#: ../lib/Galette/Core/Install.php:1200
 msgid "Update models"
 msgstr "Update models"
 
@@ -2840,10 +2855,10 @@ msgstr "Inactive"
 
 #: ../lib/Galette/Entity/Adherent.php:1807
 #: ../lib/Galette/Features/Replacements.php:645
-#: ../lib/Galette/IO/MembersCsv.php:188
+#: ../lib/Galette/IO/MembersCsv.php:209
 #: ../templates/default/components/forms/gender.html.twig:33
 #: ../templates/default/elements/ajax_members.html.twig:35
-#: ../templates/default/elements/group_persons.html.twig:37
+#: ../templates/default/elements/group_person_row.html.twig:24
 #: ../templates/default/modals/mass_change_members.html.twig:62
 #: ../templates/default/pages/advanced_search.html.twig:494
 #: ../templates/default/pages/advanced_search.html.twig:655
@@ -2852,10 +2867,10 @@ msgstr "Man"
 
 #: ../lib/Galette/Entity/Adherent.php:1808
 #: ../lib/Galette/Features/Replacements.php:647
-#: ../lib/Galette/IO/MembersCsv.php:191
+#: ../lib/Galette/IO/MembersCsv.php:212
 #: ../templates/default/components/forms/gender.html.twig:39
 #: ../templates/default/elements/ajax_members.html.twig:40
-#: ../templates/default/elements/group_persons.html.twig:42
+#: ../templates/default/elements/group_person_row.html.twig:29
 #: ../templates/default/modals/mass_change_members.html.twig:59
 #: ../templates/default/pages/advanced_search.html.twig:494
 #: ../templates/default/pages/advanced_search.html.twig:655
@@ -2864,7 +2879,7 @@ msgstr "Woman"
 
 #: ../lib/Galette/Entity/Adherent.php:1809
 #: ../lib/Galette/Features/Replacements.php:649
-#: ../lib/Galette/IO/MembersCsv.php:194
+#: ../lib/Galette/IO/MembersCsv.php:215
 #: ../templates/default/components/forms/gender.html.twig:27
 #: ../templates/default/modals/mass_change_members.html.twig:56
 #: ../templates/default/pages/advanced_search.html.twig:494
@@ -3154,8 +3169,8 @@ msgstr "Unknown type %1$s!"
 #: ../templates/default/elements/ajax_members.html.twig:14
 #: ../templates/default/elements/edit_core_fields.html.twig:12
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:21
-#: ../templates/default/elements/group_persons.html.twig:12
-#: ../templates/default/elements/group_persons.html.twig:27
+#: ../templates/default/elements/group_person_row.html.twig:15
+#: ../templates/default/elements/group_persons.html.twig:36
 #: ../templates/default/pages/advanced_config.html.twig:37
 #: ../templates/default/pages/advanced_config.html.twig:46
 #: ../templates/default/pages/advanced_config.html.twig:136
@@ -3615,7 +3630,9 @@ msgstr "User, read/write"
 #: ../lib/Galette/Features/Permissions.php:52
 #: ../templates/default/components/forms/groups.html.twig:33
 #: ../templates/default/elements/ajax_members.html.twig:60
-#: ../templates/default/elements/group_persons.html.twig:60
+#: ../templates/default/elements/group_person_row.html.twig:47
+#: ../templates/default/elements/group_person_row.html.twig:72
+#: ../templates/default/elements/group_persons.html.twig:39
 #: ../templates/default/pages/member_show.html.twig:116
 #: ../templates/default/pages/members_list.html.twig:293
 #: ../templates/default/pages/members_list.html.twig:360
@@ -3625,7 +3642,7 @@ msgstr "Group manager"
 
 #: ../lib/Galette/Features/Permissions.php:53
 #: ../templates/default/elements/ajax_members.html.twig:55
-#: ../templates/default/elements/group_persons.html.twig:55
+#: ../templates/default/elements/group_person_row.html.twig:42
 #: ../templates/default/pages/members_list.html.twig:289
 #: ../templates/default/pages/members_list.html.twig:355
 #: ../templates/default/pages/status_list.html.twig:65
@@ -3634,7 +3651,7 @@ msgstr "Staff member"
 
 #: ../lib/Galette/Features/Permissions.php:54
 #: ../templates/default/elements/ajax_members.html.twig:50
-#: ../templates/default/elements/group_persons.html.twig:50
+#: ../templates/default/elements/group_person_row.html.twig:37
 msgid "Administrator"
 msgstr "Administrator"
 
@@ -3726,8 +3743,8 @@ msgid "First name"
 msgstr "First name"
 
 #: ../lib/Galette/Features/Replacements.php:261
-#: ../templates/default/elements/group_persons.html.twig:15
-#: ../templates/default/elements/group_persons.html.twig:67
+#: ../templates/default/elements/group_person_row.html.twig:57
+#: ../templates/default/elements/group_persons.html.twig:37
 #: ../templates/default/pages/preferences.html.twig:1079
 #: ../templates/default/pages/public/list.html.twig:58
 #: ../templates/default/pages/public/list.html.twig:47
@@ -4044,12 +4061,12 @@ msgstr "Individuals"
 msgid "Companies"
 msgstr "Companies"
 
-#: ../lib/Galette/IO/CsvIn.php:167 ../lib/Galette/IO/CsvIn.php:212
+#: ../lib/Galette/IO/CsvIn.php:174 ../lib/Galette/IO/CsvIn.php:218
 #, php-format
 msgid "File %1$s cannot be open!"
 msgstr "File %1$s cannot be open!"
 
-#: ../lib/Galette/IO/CsvIn.php:260
+#: ../lib/Galette/IO/CsvIn.php:266
 #, php-format
 msgid ""
 "Fields count mismatch... There should be %1$s fields and there are %2$s (row "
@@ -4059,50 +4076,72 @@ msgstr ""
 "%3$s)"
 
 #. TRANS: first parameter is a field name, second the row in error
-#: ../lib/Galette/IO/CsvIn.php:283
+#: ../lib/Galette/IO/CsvIn.php:289
 #, php-format
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "Field %1$s is required, but missing in row %2$s"
 
 #. TRANS: parameter is the status
-#: ../lib/Galette/IO/CsvIn.php:305
+#: ../lib/Galette/IO/CsvIn.php:319
 #, php-format
 msgid "Status %1$s does not exists!"
 msgstr "Status %1$s does not exists!"
 
 #. TRANS: parameter is the title
-#: ../lib/Galette/IO/CsvIn.php:325
+#: ../lib/Galette/IO/CsvIn.php:339
 #, php-format
 msgid "Title %1$s does not exists!"
 msgstr "Title %1$s does not exists!"
 
-#: ../lib/Galette/IO/CsvIn.php:343
+#: ../lib/Galette/IO/CsvIn.php:357
 msgid "from another member in import"
 msgstr "from another member in import"
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/IO/CsvIn.php:346
+#: ../lib/Galette/IO/CsvIn.php:360
 #, php-format
 msgid "from member %1$s"
 msgstr "from member %1$s"
 
 #. TRANS: first parameter is the email address, second tells where it is already used
-#: ../lib/Galette/IO/CsvIn.php:353
+#: ../lib/Galette/IO/CsvIn.php:367
 #, php-format
 msgid "Email address %1$s is already used! (%2$s)"
 msgstr "Email address %1$s is already used! (%2$s)"
 
-#: ../lib/Galette/IO/CsvIn.php:427
+#: ../lib/Galette/IO/CsvIn.php:441
 msgid "File is empty!"
 msgstr "File is empty!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#: ../lib/Galette/IO/CsvIn.php:485
+#, php-format
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Group \"%1$s\" does not exist (row %2$s)"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#: ../lib/Galette/IO/CsvIn.php:497
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+
 #. TRANS: first parameter is row, second member name
-#: ../lib/Galette/IO/CsvIn.php:534 ../lib/Galette/IO/CsvIn.php:546
+#: ../lib/Galette/IO/CsvIn.php:619 ../lib/Galette/IO/CsvIn.php:645
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "An error occurred storing member at row %1$s (%2$s):"
 
-#: ../lib/Galette/IO/CsvIn.php:586
+#. TRANS: first parameter is row, second member name
+#: ../lib/Galette/IO/CsvIn.php:632
+#, php-format
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
+msgstr "An error occurred attaching member at row %1$s (%2$s) to its groups"
+
+#: ../lib/Galette/IO/CsvIn.php:723
 msgid "An error occurred while importing members"
 msgstr "An error occurred while importing members"
 
@@ -4174,7 +4213,7 @@ msgstr "File upload stopped by extension"
 msgid "Unknown upload error"
 msgstr "Unknown upload error"
 
-#: ../lib/Galette/IO/MembersCsv.php:58
+#: ../lib/Galette/IO/MembersCsv.php:60
 msgid "filtered_memberslist"
 msgstr "filtered_memberslist"
 
@@ -4420,7 +4459,7 @@ msgstr "Photo has not been copied!"
 msgid "Password is blacklisted!"
 msgstr "Password is blacklisted!"
 
-#: ../lib/Galette/Util/Password.php:93
+#: ../lib/Galette/Util/Password.php:93 ../webroot/installer.php:209
 #, php-format
 msgid "Too short (%1$s characters minimum, %2$s found)"
 msgstr "Too short (%1$s characters minimum, %2$s found)"
@@ -4585,48 +4624,48 @@ msgstr "No table prefix"
 msgid "The username cannot contain the @ character"
 msgstr "The username cannot contain the @ character"
 
-#: ../webroot/installer.php:251
+#: ../webroot/installer.php:257
 msgid "Galette Installation"
 msgstr "Galette Installation"
 
-#: ../webroot/installer.php:259 ../templates/default/page.html.twig:14
+#: ../webroot/installer.php:265 ../templates/default/page.html.twig:14
 #: ../templates/default/public_page.html.twig:27
 msgid "Skip to content"
 msgstr "Skip to content"
 
-#: ../webroot/installer.php:263
+#: ../webroot/installer.php:269
 msgid "Galette installation"
 msgstr "Galette installation"
 
-#: ../webroot/installer.php:266 ../webroot/installer.php:268
+#: ../webroot/installer.php:272 ../webroot/installer.php:274
 #: ../templates/default/page.html.twig:58
 #: ../templates/default/page.html.twig:60
 msgid "Read the manual"
 msgstr "Read the manual"
 
-#: ../webroot/installer.php:273
+#: ../webroot/installer.php:279
 #: ../templates/default/elements/language.html.twig:24
 msgid "Choose your language"
 msgstr "Choose your language"
 
-#: ../webroot/installer.php:283
+#: ../webroot/installer.php:289
 #: ../templates/default/elements/language.html.twig:38
 #, php-format
 msgid "Current locale '%1$s'"
 msgstr "Current locale '%1$s'"
 
-#: ../webroot/installer.php:301
+#: ../webroot/installer.php:307
 #: ../templates/default/elements/language.html.twig:46
 #, php-format
 msgid "Switch locale to '%1$s'"
 msgstr "Switch locale to '%1$s'"
 
-#: ../webroot/installer.php:327
+#: ../webroot/installer.php:333
 #: ../templates/default/elements/noscript.html.twig:12
 msgid "Galette requires JavaScript"
 msgstr "Galette requires JavaScript"
 
-#: ../webroot/installer.php:328
+#: ../webroot/installer.php:334
 #: ../templates/default/elements/noscript.html.twig:13
 msgid ""
 "JavaScript is disabled in your browser, and Galette requires it to work "
@@ -4635,17 +4674,17 @@ msgstr ""
 "JavaScript is disabled in your browser, and Galette requires it to work "
 "correctly."
 
-#: ../webroot/installer.php:405
+#: ../webroot/installer.php:411
 #: ../templates/default/modals/plugin_initdb.html.twig:164
 msgid "Version selection"
 msgstr "Version selection"
 
-#: ../webroot/installer.php:430
+#: ../webroot/installer.php:436
 #: ../templates/default/modals/plugin_initdb.html.twig:171
 msgid "Database installation"
 msgstr "Database installation"
 
-#: ../webroot/installer.php:523
+#: ../webroot/installer.php:529
 #: ../templates/default/elements/footer.html.twig:25
 msgid "Documentation"
 msgstr "Documentation"
@@ -4664,7 +4703,7 @@ msgid "Status:"
 msgstr "Status:"
 
 #: ../includes/fields_defs/members_fields.php:38
-#: ../templates/default/elements/group.html.twig:22
+#: ../templates/default/elements/group.html.twig:19
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:20
 #: ../templates/default/pages/configuration_payment_type_form.html.twig:15
 #: ../templates/default/pages/contribution_type_form.html.twig:15
@@ -4750,14 +4789,14 @@ msgstr "Other information:"
 msgid "Profession:"
 msgstr "Profession:"
 
-#: ../includes/fields_defs/members_fields.php:184 ../install/steps/admin.php:18
+#: ../includes/fields_defs/members_fields.php:184 ../install/steps/admin.php:20
 #: ../templates/default/pages/admin_credentials.html.twig:27
 #: ../templates/default/pages/index.html.twig:21
 #: ../templates/default/pages/index.html.twig:22
 msgid "Username:"
 msgstr "Username:"
 
-#: ../includes/fields_defs/members_fields.php:192 ../install/steps/admin.php:22
+#: ../includes/fields_defs/members_fields.php:192 ../install/steps/admin.php:24
 #: ../install/steps/db.php:61
 #: ../templates/default/pages/admin_credentials.html.twig:31
 #: ../templates/default/pages/advanced_config_confirm.html.twig:20
@@ -4767,7 +4806,7 @@ msgid "Password:"
 msgstr "Password:"
 
 #: ../includes/fields_defs/members_fields.php:200
-#: ../templates/default/elements/group.html.twig:17
+#: ../templates/default/elements/group.html.twig:14
 msgid "Creation date:"
 msgstr "Creation date:"
 
@@ -5361,16 +5400,30 @@ msgstr "Choices for field %d have been migrated."
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Unable to migrate choices for field %d: %s"
 
-#: ../install/steps/admin.php:16
+#: ../install/steps/admin.php:18
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Please chose the parameters of the admin account on Galette"
 
-#: ../install/steps/admin.php:26
+#: ../install/steps/admin.php:27
+#: ../templates/default/components/form.html.twig:101
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(at least %1$s characters)"
+
+#: ../install/steps/admin.php:28
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+
+#: ../install/steps/admin.php:32
 #: ../templates/default/pages/admin_credentials.html.twig:37
 msgid "Retype password:"
 msgstr "Retype password:"
 
-#: ../install/steps/admin.php:34 ../install/steps/check.php:142
+#: ../install/steps/admin.php:40 ../install/steps/check.php:142
 #: ../install/steps/db.php:83 ../install/steps/db_checks.php:225
 #: ../install/steps/db_install.php:59
 #: ../install/steps/db_select_version.php:136
@@ -5381,7 +5434,7 @@ msgstr "Retype password:"
 msgid "Next step"
 msgstr "Next step"
 
-#: ../install/steps/admin.php:44
+#: ../install/steps/admin.php:50
 msgid "Password mismatch!"
 msgstr "Password mismatch!"
 
@@ -5743,6 +5796,7 @@ msgstr "and"
 
 #: ../install/steps/db_select_version.php:135
 #: ../templates/default/components/forms/groups.html.twig:99
+#: ../templates/default/elements/group_person_row.html.twig:102
 #: ../templates/default/elements/js/modal.js.twig:120
 #: ../templates/default/modals/confirm_removal.html.twig:49
 #: ../templates/default/modals/mass_add_contributions.html.twig:30
@@ -5915,7 +5969,7 @@ msgstr "Enter up to %1$s more occurrences."
 #: ../templates/default/components/dynamic_fields.html.twig:125
 #: ../templates/default/components/forms/picture.html.twig:28
 #: ../templates/default/pages/document_form.html.twig:32
-#: ../templates/default/pages/import.html.twig:99
+#: ../templates/default/pages/import.html.twig:104
 #: ../templates/default/pages/preferences.html.twig:71
 #: ../templates/default/pages/preferences.html.twig:1041
 msgid "Choose a file"
@@ -5925,6 +5979,7 @@ msgstr "Choose a file"
 #: ../templates/default/components/forms/groups.html.twig:126
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:13
 #: ../templates/default/elements/edit_socials.html.twig:47
+#: ../templates/default/elements/group_persons.html.twig:68
 #: ../templates/default/pages/configuration_core_lists.html.twig:49
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:175
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:58
@@ -6024,11 +6079,6 @@ msgstr ""
 "gallery page.<br/>Note that administrators can disabled public pages, this "
 "setting will have no effect in that case."
 
-#: ../templates/default/components/form.html.twig:101
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(at least %1$s characters)"
-
 #: ../templates/default/components/forms/captcha.html.twig:15
 msgid "(numbers only)"
 msgstr "(numbers only)"
@@ -6062,6 +6112,8 @@ msgstr ""
 "the box, and then enter its name in the field that will appear."
 
 #: ../templates/default/components/forms/groups.html.twig:32
+#: ../templates/default/elements/group_person_row.html.twig:58
+#: ../templates/default/elements/group_persons.html.twig:38
 #: ../templates/default/pages/advanced_search.html.twig:47
 #: ../templates/default/pages/member_show.html.twig:113
 msgid "Member of group"
@@ -6069,7 +6121,7 @@ msgstr "Member of group"
 
 #: ../templates/default/components/forms/groups.html.twig:34
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:28
-#: ../templates/default/elements/group_persons.html.twig:19
+#: ../templates/default/elements/group_persons.html.twig:40
 #: ../templates/default/elements/list.html.twig:110
 #: ../templates/default/elements/member_actions.html.twig:54
 #: ../templates/default/pages/authentication_attempts.html.twig:31
@@ -6091,16 +6143,19 @@ msgid "Actions"
 msgstr "Actions"
 
 #: ../templates/default/components/forms/groups.html.twig:52
+#: ../templates/default/elements/group_person_row.html.twig:53
 msgctxt "member groups"
 msgid "added"
 msgstr "added"
 
 #: ../templates/default/components/forms/groups.html.twig:53
+#: ../templates/default/elements/group_person_row.html.twig:54
 msgctxt "member groups"
 msgid "changed"
 msgstr "changed"
 
 #: ../templates/default/components/forms/groups.html.twig:54
+#: ../templates/default/elements/group_person_row.html.twig:55
 msgctxt "member groups"
 msgid "will be removed"
 msgstr "will be removed"
@@ -6141,7 +6196,7 @@ msgid "Select a group"
 msgstr "Select a group"
 
 #: ../templates/default/components/forms/groups.html.twig:134
-#: ../templates/default/pages/group_form.html.twig:108
+#: ../templates/default/elements/group_persons.html.twig:76
 #: ../templates/default/pages/groups_list.html.twig:246
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -6161,7 +6216,7 @@ msgstr "Select a group to add selected members to"
 msgid "Select a group to remove selected members from"
 msgstr "Select a group to remove selected members from"
 
-#: ../templates/default/components/forms/max_size.html.twig:14
+#: ../templates/default/components/forms/max_size.html.twig:15
 #: ../templates/default/pages/mailing_form.html.twig:79
 #, php-format
 msgid "Maximum allowed size is %1$s"
@@ -6253,7 +6308,7 @@ msgid "Zip - Town"
 msgstr "Zip - Town"
 
 #: ../templates/default/elements/ajax_members.html.twig:30
-#: ../templates/default/elements/group_persons.html.twig:32
+#: ../templates/default/elements/group_person_row.html.twig:19
 msgid "Company"
 msgstr "Company"
 
@@ -6449,7 +6504,7 @@ msgid "Receipt"
 msgstr "Receipt"
 
 #: ../templates/default/elements/edit_pdf_models.html.twig:77
-#: ../templates/default/elements/group.html.twig:112
+#: ../templates/default/elements/group.html.twig:71
 #: ../templates/default/elements/js/modal_action.js.twig:59
 #: ../templates/default/elements/member_actions.html.twig:42
 #: ../templates/default/pages/admin_credentials.html.twig:47
@@ -6501,7 +6556,7 @@ msgstr "Choose or enter your own..."
 msgid "Social network"
 msgstr "Social network"
 
-#: ../templates/default/elements/group.html.twig:17
+#: ../templates/default/elements/group.html.twig:14
 #: ../templates/default/pages/public/list.html.twig:69
 #: ../templates/default/pages/public/list.html.twig:53
 #: ../templates/default/pages/public/members_list.html.twig:37
@@ -6509,30 +6564,37 @@ msgstr "Social network"
 msgid "Information"
 msgstr "Information"
 
-#: ../templates/default/elements/group.html.twig:36
+#: ../templates/default/elements/group.html.twig:33
 msgid "Parent group:"
 msgstr "Parent group:"
 
-#: ../templates/default/elements/group.html.twig:73
+#: ../templates/default/elements/group_person_row.html.twig:69
+#, php-format
+msgid "%1$s is member of the group"
+msgstr "%1$s is member of the group"
+
+#: ../templates/default/elements/group_person_row.html.twig:83
+#, php-format
+msgid "%1$s is manager of the group"
+msgstr "%1$s is manager of the group"
+
+#: ../templates/default/elements/group_person_row.html.twig:97
+#, php-format
+msgid "Remove %1$s from the group"
+msgstr "Remove %1$s from the group"
+
+#: ../templates/default/elements/group_person_row.html.twig:100
+#, php-format
+msgid "Keep %1$s in the group"
+msgstr "Keep %1$s in the group"
+
+#: ../templates/default/elements/group_persons.html.twig:25
 msgid "Managers"
 msgstr "Managers"
 
-#: ../templates/default/elements/group.html.twig:80
-msgid "Manage managers"
-msgstr "Manage managers"
-
-#: ../templates/default/elements/group.html.twig:100
-msgid "Manage members"
-msgstr "Manage members"
-
-#: ../templates/default/elements/group_persons.html.twig:84
-#: ../templates/default/pages/group_form.html.twig:115
+#: ../templates/default/elements/group_persons.html.twig:52
 msgid "No member attached"
 msgstr "No member attached"
-
-#: ../templates/default/elements/group_persons.html.twig:86
-msgid "No manager attached"
-msgstr "No manager attached"
 
 #: ../templates/default/elements/js/calendar.js.twig:11
 msgid "S,M,T,W,T,F,S"
@@ -6648,6 +6710,7 @@ msgstr "An error occurred retrieving members :("
 #: ../templates/default/elements/js/choose_adh.js.twig:131
 #: ../templates/default/elements/js/choose_adh.js.twig:161
 #: ../templates/default/elements/js/choose_adh.js.twig:198
+#: ../templates/default/elements/js/group_persons.js.twig:125
 #: ../templates/default/elements/js/modal_action.js.twig:61
 #: ../templates/default/elements/js/modal_action.js.twig:98
 #: ../templates/default/elements/js/pwdcheck.js.twig:129
@@ -6672,16 +6735,12 @@ msgstr "An error occurred retrieving members :("
 #: ../templates/default/pages/contribution_form.html.twig:514
 #: ../templates/default/pages/contributions_list.html.twig:523
 #: ../templates/default/pages/contributions_types_list.html.twig:188
-#: ../templates/default/pages/group_form.html.twig:45
-#: ../templates/default/pages/group_form.html.twig:65
-#: ../templates/default/pages/group_form.html.twig:124
-#: ../templates/default/pages/group_form.html.twig:191
 #: ../templates/default/pages/groups_list.html.twig:364
 #: ../templates/default/pages/groups_list.html.twig:391
 #: ../templates/default/pages/groups_list.html.twig:402
 #: ../templates/default/pages/groups_list.html.twig:418
-#: ../templates/default/pages/import.html.twig:133
-#: ../templates/default/pages/import.html.twig:148
+#: ../templates/default/pages/import.html.twig:137
+#: ../templates/default/pages/import.html.twig:152
 #: ../templates/default/pages/import_model.html.twig:109
 #: ../templates/default/pages/mailing_form.html.twig:241
 #: ../templates/default/pages/mailing_form.html.twig:255
@@ -6726,6 +6785,13 @@ msgstr "Close"
 #: ../templates/default/elements/js/choose_adh.js.twig:198
 msgid "An error occurred retrieving dates :("
 msgstr "An error occurred retrieving dates :("
+
+#: ../templates/default/elements/js/group_persons.js.twig:125
+#: ../templates/default/pages/mailing_form.html.twig:280
+#: ../templates/default/pages/mailing_form.html.twig:328
+#: ../templates/default/pages/mailing_form.html.twig:396
+msgid "An error occurred displaying members interface :("
+msgstr "An error occurred displaying members interface :("
 
 #: ../templates/default/elements/js/loader.js.twig:25
 #: ../templates/default/elements/js/loader.js.twig:32
@@ -8702,28 +8768,6 @@ msgstr "Additionnaly, which table(s) do you want to export?"
 msgid "Table name"
 msgstr "Table name"
 
-#: ../templates/default/pages/group_form.html.twig:45
-#: ../templates/default/pages/group_form.html.twig:124
-#: ../templates/default/pages/group_form.html.twig:191
-#: ../templates/default/pages/mailing_form.html.twig:280
-#: ../templates/default/pages/mailing_form.html.twig:328
-#: ../templates/default/pages/mailing_form.html.twig:396
-msgid "An error occurred displaying members interface :("
-msgstr "An error occurred displaying members interface :("
-
-#: ../templates/default/pages/group_form.html.twig:61
-msgid "Group members selection"
-msgstr "Group members selection"
-
-#: ../templates/default/pages/group_form.html.twig:63
-msgid "Group managers selection"
-msgstr "Group managers selection"
-
-#: ../templates/default/pages/group_form.html.twig:162
-#: ../templates/default/pages/mailing_form.html.twig:364
-msgid "Click on a row to select a member"
-msgstr "Click on a row to select a member"
-
 #: ../templates/default/pages/groups_list.html.twig:75
 #: ../templates/default/pages/history.html.twig:20
 #: ../templates/default/pages/mailings_list.html.twig:50
@@ -8848,24 +8892,24 @@ msgstr ""
 msgid "Upload new file"
 msgstr "Upload new file"
 
-#: ../templates/default/pages/import.html.twig:111
+#: ../templates/default/pages/import.html.twig:115
 msgid "Upload file"
 msgstr "Upload file"
 
-#: ../templates/default/pages/import.html.twig:118
+#: ../templates/default/pages/import.html.twig:122
 msgid "Configure import model"
 msgstr "Configure import model"
 
-#: ../templates/default/pages/import.html.twig:133
-#: ../templates/default/pages/import.html.twig:148
+#: ../templates/default/pages/import.html.twig:137
+#: ../templates/default/pages/import.html.twig:152
 msgid "No file selected"
 msgstr "No file selected"
 
-#: ../templates/default/pages/import.html.twig:133
+#: ../templates/default/pages/import.html.twig:137
 msgid "Please make sure to select one file to import."
 msgstr "Please make sure to select one file to import."
 
-#: ../templates/default/pages/import.html.twig:148
+#: ../templates/default/pages/import.html.twig:152
 msgid "Please make sure to select one file to upload."
 msgstr "Please make sure to select one file to upload."
 
@@ -9009,6 +9053,10 @@ msgstr "An error occurred displaying preview :("
 #: ../templates/default/pages/mailing_form.html.twig:294
 msgid "Members selection"
 msgstr "Members selection"
+
+#: ../templates/default/pages/mailing_form.html.twig:364
+msgid "Click on a row to select a member"
+msgstr "Click on a row to select a member"
 
 #: ../templates/default/pages/mailing_form.html.twig:414
 msgid "Are you sure you want to remove this attachment?"
