@@ -162,6 +162,66 @@ class GroupsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test persons table of the group page: added rows, and emptied lists
+     */
+    public function testEditPersons(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Persons of the group page');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setManagers([$member_one]));
+        $this->assertTrue($group->setMembers([$member_one, $member_two]));
+
+        //page lists each person once, with both toggles
+        $request = $this->createRequest('editGroup', ['id' => (string)$group->getId()]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertSame(1, substr_count($body, 'id="person_row_' . $member_one->id . '"'));
+        $this->assertStringContainsString('id="person_manager_' . $member_one->id . '"', $body);
+        $this->assertStringContainsString('id="person_add"', $body);
+
+        //row of a person added from the page
+        $request = $this->createRequest('ajaxGroupMembers', [], 'POST')
+            ->withParsedBody(['id_adh' => (string)$member_two->id]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="person_row_' . $member_two->id . '"', $body);
+        $this->assertStringContainsString('data-linked="0"', $body);
+
+        $request = $this->createRequest('ajaxGroupMembers', [], 'POST')
+            ->withParsedBody(['id_adh' => '0']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(404, $test_response->getStatusCode());
+
+        //only the empty values are posted when every person is removed
+        $request = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST');
+        $request = $request->withParsedBody([
+            'group_name' => 'Persons of the group page',
+            'parent_group' => '',
+            'managers' => [''],
+            'members' => ['', (string)$member_two->id]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->flash_data = [];
+
+        $group = new \Galette\Entity\Group($group->getId());
+        $this->assertSame([], $group->getManagers());
+        $this->assertSame(
+            [(int)$member_two->id],
+            array_map(fn($m) => (int)$m->id, $group->getMembers())
+        );
+
+        $this->login->logOut();
+    }
+
+    /**
      * Test groups are reordered only by those who can edit them
      */
     public function testReorderPermissions(): void

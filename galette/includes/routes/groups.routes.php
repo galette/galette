@@ -57,11 +57,6 @@ $app->get(
 )->setName('pdf_groups')->add(Authenticate::class);
 
 $app->post(
-    '/ajax/group',
-    [Crud\GroupsController::class, 'getGroup']
-)->setName('ajax_group')->add(Authenticate::class);
-
-$app->post(
     '/ajax/groups/reorder',
     [Crud\GroupsController::class, 'reorder']
 )->setName('ajax_groups_reorder')->add(Authenticate::class);

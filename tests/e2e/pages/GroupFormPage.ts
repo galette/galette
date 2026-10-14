@@ -14,16 +14,14 @@ export class GroupFormPage {
   readonly groupNameInput: Locator;
   readonly saveButton: Locator;
   readonly cancelButton: Locator;
-  readonly membersButton: Locator;
-  readonly managersButton: Locator;
+  readonly addMemberButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.groupNameInput = page.locator('input[name="group_name"]');
     this.saveButton = page.locator('button[type="submit"][name="valid"]');
     this.cancelButton = page.locator('a:has-text("Cancel"), a:has-text("Annuler")').first();
-    this.membersButton = page.locator('#btnusers_small');
-    this.managersButton = page.locator('#btnmanagers_small');
+    this.addMemberButton = page.locator('#person_add_btn');
   }
 
   /**
@@ -66,70 +64,40 @@ export class GroupFormPage {
   }
 
   /**
-   * Open the members selection modal
+   * Add a member to the group, through the search dropdown and the add button
    */
-  async openMembersSelection(): Promise<void> {
-    await this.membersButton.click();
-    await this.page.locator('.ui.modal.members-selection.visible').waitFor({ state: 'visible' });
+  async addMember(search: string): Promise<void> {
+    await this.page.locator('#person_add input.search').fill(search);
+    const item = this.page.locator('#person_add .menu .item').first();
+    await item.waitFor({ state: 'visible' });
+    await item.click();
+    await this.addMemberButton.click();
+    await this.page.locator('#group_persons_list tr[data-linked="0"]').filter({ hasText: search }).waitFor({ state: 'visible' });
   }
 
   /**
-   * Open the managers selection modal
+   * Row of a person in the group, by its displayed name
    */
-  async openManagersSelection(): Promise<void> {
-    await this.managersButton.click();
-    await this.page.locator('.ui.modal.members-selection.visible').waitFor({ state: 'visible' });
-  }
-
-  /**
-   * Add a member in the members selection modal
-   * Assumes modal is already open
-   */
-  async addMemberInModal(memberName: string): Promise<void> {
-    await this.page.getByRole('link', { name: '2', exact: true }).click();
-    // Click on the row containing the member name
-    const memberRow = this.page.locator('#listing tbody tr').filter({ hasText: memberName });
-    await memberRow.nth(1).click();
-
-    // Verify the member was added to the selected list
-    await this.page.locator(`#selected_members li:has-text("${memberName}")`).waitFor({ state: 'visible' });
-  }
-
-  /**
-   * Remove a member from the selected list in the modal
-   * Assumes modal is already open
-   */
-  async removeMemberInModal(memberName: string): Promise<void> {
-    const memberItem = this.page.locator(`#selected_members li:has-text("${memberName}")`);
-    await memberItem.click();
-    await memberItem.waitFor({ state: 'hidden' });
-  }
-
-  /**
-   * Validate the members selection modal
-   */
-  async validateMembersModal(): Promise<void> {
-    await this.page.locator('#btnvalid').click();
-
-    // Wait for modal to close
-    await this.page.locator('.ui.modal.members-selection.visible').waitFor({ state: 'hidden' });
-
-    // Wait for the yellow warning message indicating unsaved changes
-    await this.page.locator('.ui.icon.yellow.message').waitFor({ state: 'visible', timeout: 5000 });
+  getPersonRow(name: string): Locator {
+    return this.page.locator('#group_persons_list tbody tr[data-person]').filter({ hasText: name });
   }
 
   /**
    * Get the list of current members in the group
    */
   getMembersList(): Locator {
-    return this.page.locator('#group_members table.listing tbody tr');
+    return this.page.locator('#group_persons_list tbody tr[data-person]').filter({
+      has: this.page.locator('.person-member:checked'),
+    });
   }
 
   /**
    * Get the list of current managers in the group
    */
   getManagersList(): Locator {
-    return this.page.locator('#group_managers table.listing tbody tr');
+    return this.page.locator('#group_persons_list tbody tr[data-person]').filter({
+      has: this.page.locator('.person-manager:checked'),
+    });
   }
 
   /**
