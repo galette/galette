@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -865,6 +865,11 @@ msgstr "இறக்குமதிகள்"
 msgid "An error occurred importing the file :("
 msgstr "கோப்பை இறக்குமதி செய்வதில் பிழை ஏற்பட்டது :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "கோப்பு '%1$s' வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது :)"
@@ -893,6 +898,11 @@ msgstr "வட்டில் இருந்து '%1$s' அகற்ற ம�
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "நிர்வகிக்கப்பட்ட குழு அல்ல"
 
 msgid "CSV import model"
 msgstr "சி.எச்.வி இறக்குமதி மாதிரி"
@@ -2790,9 +2800,28 @@ msgstr "மின்னஞ்சல் முகவரி %1$s ஏற்கன�
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "பாலினம் %1$s இல்லை!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "வரிசை %1$s (%2$s) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "வரிசை %1$s (%2$s) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
 
 msgid "An error occurred while importing members"
@@ -3757,6 +3786,21 @@ msgstr "%d: %s புலத்திற்கான தேர்வுகளை 
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "கேலட்டில் நிர்வாகக் கணக்கின் அளவுருக்களைத் தேர்வுசெய்க"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(குறைந்தது %1$s எழுத்துக்கள்)"
+
+#, fuzzy
+#| msgid ""
+#| "Rules include lower case characters, upper case characters, numbers, and "
+#| "special characters."
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"விதிகளில் சிறிய எழுத்துக்கள், மேல் வழக்கு எழுத்துக்கள், எண்கள் மற்றும் சிறப்பு எழுத்துக்கள் "
+"அடங்கும்."
+
 msgid "Retype password:"
 msgstr "கடவுச்சொல்லை மீண்டும் தட்டச்சு செய்க:"
 
@@ -4158,10 +4202,6 @@ msgstr ""
 "டிராம்பினோச்கோப் பக்கம். <br> நிர்வாகிகள் பொது பக்கங்களை முடக்க முடியும் என்பதை நினைவில் "
 "கொள்க, இந்த அமைப்பு அந்த விசயத்தில் எந்த விளைவையும் ஏற்படுத்தாது."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(குறைந்தது %1$s எழுத்துக்கள்)"
-
 msgid "(numbers only)"
 msgstr "(எண்கள் மட்டும்)"
 
@@ -4448,20 +4488,33 @@ msgstr "தகவல்"
 msgid "Parent group:"
 msgstr "பெற்றோர் குழு:"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "குழு உறுப்பினர்"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "%1$s is manager of the group"
+msgstr "%1$s நிர்வகிக்கப்படும் குழு"
+
+#, fuzzy, php-format
+#| msgid "Remove from group"
+msgid "Remove %1$s from the group"
+msgstr "குழுவிலிருந்து அகற்று"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in the group"
+msgstr "%1$s நிர்வகிக்கப்படும் குழு"
+
 msgid "Managers"
 msgstr "மேலாளர்கள்"
 
-msgid "Manage managers"
-msgstr "மேலாளர்களை நிர்வகிக்கவும்"
-
-msgid "Manage members"
-msgstr "உறுப்பினர்களை நிர்வகிக்கவும்"
-
 msgid "No member attached"
 msgstr "எந்த உறுப்பினரும் இணைக்கப்படவில்லை"
-
-msgid "No manager attached"
-msgstr "மேலாளர் இணைக்கப்படவில்லை"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "எச், எம், டி, டபிள்யூ, டி, எஃப், கள்"
@@ -4549,6 +4602,9 @@ msgstr "மூடு"
 
 msgid "An error occurred retrieving dates :("
 msgstr "தேதிகளை மீட்டெடுப்பதில் பிழை ஏற்பட்டது :("
+
+msgid "An error occurred displaying members interface :("
+msgstr "உறுப்பினர்களின் இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
 msgid "Loading..."
 msgstr "ஏற்றுகிறது ..."
@@ -5862,18 +5918,6 @@ msgstr "கூடுதலாக, எந்த அட்டவணை) நீங�
 msgid "Table name"
 msgstr "அட்டவணை பெயர்"
 
-msgid "An error occurred displaying members interface :("
-msgstr "உறுப்பினர்களின் இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
-
-msgid "Group members selection"
-msgstr "குழு உறுப்பினர்கள் தேர்வு"
-
-msgid "Group managers selection"
-msgstr "குழு மேலாளர்கள் தேர்வு"
-
-msgid "Click on a row to select a member"
-msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6080,6 +6124,9 @@ msgstr "முன்னோட்டத்தைக் காண்பிக்�
 
 msgid "Members selection"
 msgstr "உறுப்பினர்கள் தேர்வு"
+
+msgid "Click on a row to select a member"
+msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "இந்த இணைப்பை அகற்ற விரும்புகிறீர்களா?"
@@ -7470,6 +7517,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "பொது பக்க உள்ளடக்கம்"
+
+#~ msgid "Manage managers"
+#~ msgstr "மேலாளர்களை நிர்வகிக்கவும்"
+
+#~ msgid "Manage members"
+#~ msgstr "உறுப்பினர்களை நிர்வகிக்கவும்"
+
+#~ msgid "No manager attached"
+#~ msgstr "மேலாளர் இணைக்கப்படவில்லை"
+
+#~ msgid "Group members selection"
+#~ msgstr "குழு உறுப்பினர்கள் தேர்வு"
+
+#~ msgid "Group managers selection"
+#~ msgstr "குழு மேலாளர்கள் தேர்வு"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "தேடலை ஏற்றும்போது ஒரு கவிமொ பிழை ஏற்பட்டது."

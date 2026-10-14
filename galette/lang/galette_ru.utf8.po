@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -883,6 +883,11 @@ msgstr "Импорт"
 msgid "An error occurred importing the file :("
 msgstr "Произошла ошибка при импортировании файла :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Файл '%1$s' был успешно импортирован :)"
@@ -911,6 +916,11 @@ msgstr "Не удалось удалить '%1$s' с диска :/"
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "Неуправляемая группа"
 
 msgid "CSV import model"
 msgstr "Импорт модель CSV"
@@ -2810,9 +2820,28 @@ msgstr "Адрес электронной почты %1$s уже использ�
 msgid "File is empty!"
 msgstr "Файл пуст!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Пол %1$s не существует!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Произошла ошибка при сохранении элемента в строке %1$s (%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "Произошла ошибка при сохранении элемента в строке %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
@@ -3797,6 +3826,21 @@ msgstr "Не удалось перенести варианты выбора д�
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Пожалуйста, выберите параметры учётной записи администратора в Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(не менее %1$s символов)"
+
+#, fuzzy
+#| msgid ""
+#| "Rules include lower case characters, upper case characters, numbers, and "
+#| "special characters."
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"Правила включают строчные буквы, заглавные буквы, цифры и специальные "
+"символы."
+
 msgid "Retype password:"
 msgstr "Повторите пароль:"
 
@@ -4208,10 +4252,6 @@ msgstr ""
 "<br>Обратите внимание, что администраторы могут отключить публичные "
 "страницы, в этом случае данная настройка не будет иметь эффекта."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(не менее %1$s символов)"
-
 msgid "(numbers only)"
 msgstr "(только цифры)"
 
@@ -4498,20 +4538,33 @@ msgstr "Информация"
 msgid "Parent group:"
 msgstr "Родительская группа:"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "Участник группы"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "%1$s is manager of the group"
+msgstr "%1$s управляемая группа"
+
+#, fuzzy, php-format
+#| msgid "Remove from group"
+msgid "Remove %1$s from the group"
+msgstr "Удалить из группы"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in the group"
+msgstr "%1$s управляемая группа"
+
 msgid "Managers"
 msgstr "Менеджеры"
 
-msgid "Manage managers"
-msgstr "Управление менеджерами"
-
-msgid "Manage members"
-msgstr "Управление участниками"
-
 msgid "No member attached"
 msgstr "Участник не прикреплён"
-
-msgid "No manager attached"
-msgstr "Менеджер не прикреплён"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "П,В,С,Ч,П,С,В"
@@ -4599,6 +4652,9 @@ msgstr "Закрыть"
 
 msgid "An error occurred retrieving dates :("
 msgstr "Произошла ошибка при получении дат :("
+
+msgid "An error occurred displaying members interface :("
+msgstr "Произошла ошибка при отображении интерфейса участников :("
 
 msgid "Loading..."
 msgstr "Загрузка..."
@@ -5924,18 +5980,6 @@ msgstr "Дополнительно, какие таблицы вы хотите 
 msgid "Table name"
 msgstr "Имя таблицы"
 
-msgid "An error occurred displaying members interface :("
-msgstr "Произошла ошибка при отображении интерфейса участников :("
-
-msgid "Group members selection"
-msgstr "Выбор участников группы"
-
-msgid "Group managers selection"
-msgstr "Выбор менеджеров группы"
-
-msgid "Click on a row to select a member"
-msgstr "Нажмите на строку, чтобы выбрать участника"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6146,6 +6190,9 @@ msgstr "Произошла ошибка при отображении предп
 
 msgid "Members selection"
 msgstr "Выбор участников"
+
+msgid "Click on a row to select a member"
+msgstr "Нажмите на строку, чтобы выбрать участника"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Вы уверены, что хотите удалить это вложение?"
@@ -7559,6 +7606,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Содержание публичной страницы"
+
+#~ msgid "Manage managers"
+#~ msgstr "Управление менеджерами"
+
+#~ msgid "Manage members"
+#~ msgstr "Управление участниками"
+
+#~ msgid "No manager attached"
+#~ msgstr "Менеджер не прикреплён"
+
+#~ msgid "Group members selection"
+#~ msgstr "Выбор участников группы"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Выбор менеджеров группы"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "При загрузке истории поиска произошла ошибка SQL."

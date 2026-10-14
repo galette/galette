@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-09 10:41+0000\n"
 "Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -837,6 +837,11 @@ msgstr "Uvozi"
 msgid "An error occurred importing the file :("
 msgstr "Pri uvozu datoteke je prišlo do napake :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Datoteka '%1$s' je bila uspešno uvožena :)"
@@ -865,6 +870,11 @@ msgstr "Datoteke '%1$s' ni mogoče odstraniti z diska :/"
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr "%1$s (pojavi se %2$s)"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "Ni upravljana skupina"
 
 msgid "CSV import model"
 msgstr "CSV import model"
@@ -2754,9 +2764,28 @@ msgstr "E-poštni naslov %1$s je že uporabljen! (%2$s)"
 msgid "File is empty!"
 msgstr "Datoteka je prazna!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Spol %1$s ne obstaja!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Pri shranjevanju člana v vrstici %1$s (%2$s) je prišlo do napake:"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "Pri shranjevanju člana v vrstici %1$s (%2$s) je prišlo do napake:"
 
 msgid "An error occurred while importing members"
@@ -3739,6 +3768,19 @@ msgstr "Izbir za polje %d ni mogoče preseliti: %s"
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Prosimo, izberite parametre skrbniškega računa na Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(vsaj %1$s znakov)"
+
+#, fuzzy
+#| msgid ""
+#| "Rules include lower case characters, upper case characters, numbers, and "
+#| "special characters."
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr "Pravila vključujejo male črke, velike črke, številke in posebne znake."
+
 msgid "Retype password:"
 msgstr "Ponovno vnesite geslo:"
 
@@ -4151,10 +4193,6 @@ msgstr ""
 "skrbniki onemogočijo javne strani, ta nastavitev v tem primeru ne bo imela "
 "učinka."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(vsaj %1$s znakov)"
-
 msgid "(numbers only)"
 msgstr "(samo številke)"
 
@@ -4441,20 +4479,33 @@ msgstr "Informacije"
 msgid "Parent group:"
 msgstr "Starševska skupina:"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "Član skupine"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "%1$s is manager of the group"
+msgstr "Skupina, ki jo upravlja %1$s"
+
+#, fuzzy, php-format
+#| msgid "Remove from group"
+msgid "Remove %1$s from the group"
+msgstr "Odstrani iz skupine"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in the group"
+msgstr "Skupina, ki jo upravlja %1$s"
+
 msgid "Managers"
 msgstr "Vodje"
 
-msgid "Manage managers"
-msgstr "Upravljanje upraviteljev"
-
-msgid "Manage members"
-msgstr "Upravljanje članov"
-
 msgid "No member attached"
 msgstr "Ni priloženega člana"
-
-msgid "No manager attached"
-msgstr "Ni priloženega upravitelja"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "N,P,T,S,Č,P,S"
@@ -4542,6 +4593,9 @@ msgstr "Zapri"
 
 msgid "An error occurred retrieving dates :("
 msgstr "Pri pridobivanju datumov je prišlo do napake :("
+
+msgid "An error occurred displaying members interface :("
+msgstr "Pri prikazu vmesnika za člane je prišlo do napake :("
 
 msgid "Loading..."
 msgstr "Nalaganje ..."
@@ -5843,18 +5897,6 @@ msgstr "Poleg tega, katere tabele želite izvoziti?"
 msgid "Table name"
 msgstr "Ime tabele"
 
-msgid "An error occurred displaying members interface :("
-msgstr "Pri prikazu vmesnika za člane je prišlo do napake :("
-
-msgid "Group members selection"
-msgstr "Izbira članov skupine"
-
-msgid "Group managers selection"
-msgstr "Izbira vodij skupin"
-
-msgid "Click on a row to select a member"
-msgstr "Kliknite na vrstico, da izberete člana"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6066,6 +6108,9 @@ msgstr "Pri prikazu predogleda je prišlo do napake :("
 
 msgid "Members selection"
 msgstr "Izbira članov"
+
+msgid "Click on a row to select a member"
+msgstr "Kliknite na vrstico, da izberete člana"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ali ste prepričani, da želite odstraniti to prilogo?"
@@ -7460,6 +7505,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Vsebina javne strani"
+
+#~ msgid "Manage managers"
+#~ msgstr "Upravljanje upraviteljev"
+
+#~ msgid "Manage members"
+#~ msgstr "Upravljanje članov"
+
+#~ msgid "No manager attached"
+#~ msgstr "Ni priloženega upravitelja"
+
+#~ msgid "Group members selection"
+#~ msgstr "Izbira članov skupine"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Izbira vodij skupin"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Med nalaganjem iskanja je prišlo do napake SQL."

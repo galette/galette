@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -837,6 +837,11 @@ msgstr ""
 msgid "An error occurred importing the file :("
 msgstr ""
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr ""
@@ -865,6 +870,11 @@ msgstr ""
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Managers:"
+msgid "Managed groups"
+msgstr "Gestores:"
 
 msgid "CSV import model"
 msgstr ""
@@ -2722,9 +2732,28 @@ msgstr "O endereço de Email %1$s já está sendo usado! (%2$s)"
 msgid "File is empty!"
 msgstr "O arquivo está vazio!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Status %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Status%1$s não existe!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Um erro ocorreu ao salvar o membro na linha%1$s(%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "Um erro ocorreu ao salvar o membro na linha%1$s(%2$s):"
 
 msgid "An error occurred while importing members"
@@ -3624,6 +3653,15 @@ msgstr ""
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr ""
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+
 msgid "Retype password:"
 msgstr ""
 
@@ -4002,10 +4040,6 @@ msgid ""
 "setting will have no effect in that case."
 msgstr ""
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr ""
-
 msgid "(numbers only)"
 msgstr ""
 
@@ -4276,19 +4310,27 @@ msgstr ""
 msgid "Parent group:"
 msgstr ""
 
+#, php-format
+msgid "%1$s is member of the group"
+msgstr ""
+
+#, php-format
+msgid "%1$s is manager of the group"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "Remove %1$s from the group"
+msgstr "Remover pagamento tipo %1$s"
+
+#, php-format
+msgid "Keep %1$s in the group"
+msgstr ""
+
 msgid "Managers"
 msgstr ""
 
-msgid "Manage managers"
-msgstr ""
-
-msgid "Manage members"
-msgstr ""
-
 msgid "No member attached"
-msgstr ""
-
-msgid "No manager attached"
 msgstr ""
 
 msgid "S,M,T,W,T,F,S"
@@ -4376,6 +4418,9 @@ msgid "Close"
 msgstr ""
 
 msgid "An error occurred retrieving dates :("
+msgstr ""
+
+msgid "An error occurred displaying members interface :("
 msgstr ""
 
 msgid "Loading..."
@@ -5623,18 +5668,6 @@ msgstr ""
 msgid "Table name"
 msgstr ""
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
-msgstr ""
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -5834,6 +5867,9 @@ msgstr ""
 
 msgid "Members selection"
 msgstr "Seleção de membros"
+
+msgid "Click on a row to select a member"
+msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""

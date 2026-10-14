@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -908,6 +908,11 @@ msgstr "Importe"
 msgid "An error occurred importing the file :("
 msgstr "Fehler beim Import der Datei aufgetreten :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Die Datei '%1$s' wurde erfolgreich importiert :)"
@@ -937,6 +942,11 @@ msgstr "Kann '%1$s' nicht von der Festplatte löschen :/"
 #| msgid "New occurrence"
 msgid "%1$s (occurrence %2$s)"
 msgstr "Neue Instanz"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "Kein Gruppen"
 
 msgid "CSV import model"
 msgstr "CSV Importmodell"
@@ -2859,9 +2869,28 @@ msgstr "Die E-Mail-Adresse %1$s wird schon genutzt! (%2$s)"
 msgid "File is empty!"
 msgstr "Datei ist leer!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Geschlecht %1$s existiert nicht!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Fehler beim Speichern eines Eintrages in Zeile %1$s (%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "Fehler beim Speichern eines Eintrages in Zeile %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
@@ -3850,6 +3879,20 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Bitte wählen Sie die Einstellungen für das Administratorenkonte in Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(mindestens %1$s Zeichen)"
+
+#, fuzzy
+#| msgid ""
+#| "Rules include lower case characters, upper case characters, numbers, and "
+#| "special characters."
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"Regeln beinhalten Kleinbuchstaben, Großbuchstaben, Nummern und Sonderzeichen."
+
 msgid "Retype password:"
 msgstr "Passwort erneut eingeben:"
 
@@ -4263,10 +4306,6 @@ msgstr ""
 "es in der Mitgliederliste gezeigt.<br>Die öffentlichen Seiten können von "
 "einem Administrator deaktiviert werden, dann hat diese Option keinen Effekt."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(mindestens %1$s Zeichen)"
-
 msgid "(numbers only)"
 msgstr "(Nur Zahlen)"
 
@@ -4557,19 +4596,32 @@ msgstr "Informationen"
 msgid "Parent group:"
 msgstr "Übergeordnete Gruppe:"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "Mitglied der Gruppe"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "%1$s is manager of the group"
+msgstr "Von %1$s verwaltete Gruppe"
+
+#, fuzzy, php-format
+#| msgid "Remove from group"
+msgid "Remove %1$s from the group"
+msgstr "Von der Gruppe entfernen"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in the group"
+msgstr "Von %1$s verwaltete Gruppe"
+
 msgid "Managers"
 msgstr "Manager"
 
-msgid "Manage managers"
-msgstr "Manager verwalten"
-
-msgid "Manage members"
-msgstr "Mitglieder verwalten"
-
 msgid "No member attached"
-msgstr "Kein Mitglied hinzugefügt"
-
-msgid "No manager attached"
 msgstr "Kein Mitglied hinzugefügt"
 
 msgid "S,M,T,W,T,F,S"
@@ -4658,6 +4710,10 @@ msgstr "Schließen"
 
 msgid "An error occurred retrieving dates :("
 msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
+
+msgid "An error occurred displaying members interface :("
+msgstr ""
+"Bei der Anzeige der Mitglieder-Schnittstelle ist ein fehler aufgetreten :("
 
 msgid "Loading..."
 msgstr "Lade .."
@@ -5989,19 +6045,6 @@ msgstr "Welche Tabelle(n) wollen Sie zusätzlich exportieren?"
 msgid "Table name"
 msgstr "Tabellenname"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-"Bei der Anzeige der Mitglieder-Schnittstelle ist ein fehler aufgetreten :("
-
-msgid "Group members selection"
-msgstr "Auswahl der Gruppenmitglieder"
-
-msgid "Group managers selection"
-msgstr "Auswahl der Gruppenmanager"
-
-msgid "Click on a row to select a member"
-msgstr "Auf eine Zeile klicken, um ein Mitglied auszuwählen"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6209,6 +6252,9 @@ msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
 
 msgid "Members selection"
 msgstr "Mitgliedsauswahl"
+
+msgid "Click on a row to select a member"
+msgstr "Auf eine Zeile klicken, um ein Mitglied auszuwählen"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
@@ -7623,6 +7669,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Inhalt der öffentlichen Seite"
+
+#~ msgid "Manage managers"
+#~ msgstr "Manager verwalten"
+
+#~ msgid "Manage members"
+#~ msgstr "Mitglieder verwalten"
+
+#~ msgid "No manager attached"
+#~ msgstr "Kein Mitglied hinzugefügt"
+
+#~ msgid "Group members selection"
+#~ msgstr "Auswahl der Gruppenmitglieder"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Auswahl der Gruppenmanager"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Beim Laden der Suche ist ein SQL-Fehler aufgetreten."

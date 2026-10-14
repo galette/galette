@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -889,6 +889,11 @@ msgstr "Імпорти"
 msgid "An error occurred importing the file :("
 msgstr "Під час імпортування файлу сталася помилка :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Файл '%1$s' успішно імпортовано :)"
@@ -918,6 +923,11 @@ msgstr "Не вдається видалити '%1$s' з диска :/"
 #| msgid "New occurrence"
 msgid "%1$s (occurrence %2$s)"
 msgstr "Новий випадок"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "Група, що не управляється"
 
 msgid "CSV import model"
 msgstr "Модель імпорту CSV"
@@ -2830,9 +2840,28 @@ msgstr "Адреса е-пошти %1$s вже використовується!
 msgid "File is empty!"
 msgstr "Файл порожній!"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Статі %1$s не існує!"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Сталася помилка під час зберігання члена в рядку %1$s (%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "Сталася помилка під час зберігання члена в рядку %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
@@ -3814,6 +3843,21 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Будь ласка, оберіть параметри облікового запису адміністратора на Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(принаймні %1$s знаків)"
+
+#, fuzzy
+#| msgid ""
+#| "Rules include lower case characters, upper case characters, numbers, and "
+#| "special characters."
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"Правила включають знаки нижнього регістру, великого регістру, цифр та "
+"спеціальних символів."
+
 msgid "Retype password:"
 msgstr "Введіть пароль ще раз:"
 
@@ -4222,10 +4266,6 @@ msgstr ""
 "<br> Примітка: адміністратори можуть вимкнути прилюдні сторінки, в цьому "
 "випадку дане налаштування не матиме жодного ефекту."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(принаймні %1$s знаків)"
-
 msgid "(numbers only)"
 msgstr "(лише цифри)"
 
@@ -4514,20 +4554,33 @@ msgstr "Відомості"
 msgid "Parent group:"
 msgstr "Батьківська група:"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "Член групи"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "%1$s is manager of the group"
+msgstr "Керована група %1$s"
+
+#, fuzzy, php-format
+#| msgid "Remove from group"
+msgid "Remove %1$s from the group"
+msgstr "Видалити з групи"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in the group"
+msgstr "Керована група %1$s"
+
 msgid "Managers"
 msgstr "Менеджери"
 
-msgid "Manage managers"
-msgstr "Управління менеджерами"
-
-msgid "Manage members"
-msgstr "Управління членами"
-
 msgid "No member attached"
 msgstr "Не долучено жодного члена"
-
-msgid "No manager attached"
-msgstr "Менеджера не долучено"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "S,M,T,W,T,F,S"
@@ -4615,6 +4668,9 @@ msgstr "Закрити"
 
 msgid "An error occurred retrieving dates :("
 msgstr "Під час отримання дат сталася помилка :("
+
+msgid "An error occurred displaying members interface :("
+msgstr "Під час відображення інтерфейсу членів сталася помилка :("
 
 msgid "Loading..."
 msgstr "Завантаження..."
@@ -5949,18 +6005,6 @@ msgstr "Крім того, яку таблицю ви бажаєте експо�
 msgid "Table name"
 msgstr "Назва таблиці"
 
-msgid "An error occurred displaying members interface :("
-msgstr "Під час відображення інтерфейсу членів сталася помилка :("
-
-msgid "Group members selection"
-msgstr "Вибір учасників групи"
-
-msgid "Group managers selection"
-msgstr "Вибір менеджерів групи"
-
-msgid "Click on a row to select a member"
-msgstr "Натисніть рядок, щоб вибрати учасника"
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6172,6 +6216,9 @@ msgstr "Під час відображення попереднього пере
 
 msgid "Members selection"
 msgstr "Вибір членів"
+
+msgid "Click on a row to select a member"
+msgstr "Натисніть рядок, щоб вибрати учасника"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
@@ -7592,6 +7639,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Зміст загальнодоступної сторінки"
+
+#~ msgid "Manage managers"
+#~ msgstr "Управління менеджерами"
+
+#~ msgid "Manage members"
+#~ msgstr "Управління членами"
+
+#~ msgid "No manager attached"
+#~ msgstr "Менеджера не долучено"
+
+#~ msgid "Group members selection"
+#~ msgstr "Вибір учасників групи"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Вибір менеджерів групи"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Під час завантаження пошуку сталася помилка SQL."

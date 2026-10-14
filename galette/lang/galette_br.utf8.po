@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -914,6 +914,11 @@ msgstr ""
 msgid "An error occurred importing the file :("
 msgstr ""
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Enporzhiet mat eo bet ar restr \"%1$s\" :)"
@@ -942,6 +947,11 @@ msgstr ""
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Remove group %1$s"
+msgid "Managed groups"
+msgstr "Dilemel ar strollad %1$s"
 
 msgid "CSV import model"
 msgstr ""
@@ -2818,10 +2828,29 @@ msgstr ""
 msgid "File is empty!"
 msgstr ""
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Login %s does not exist"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Ne 'z eus ket anaouder %s ebet"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, fuzzy, php-format
 #| msgid "An error occurred while saving the transaction."
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred while saving the transaction."
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
 msgid "An error occurred while importing members"
@@ -3731,6 +3760,15 @@ msgstr ""
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr ""
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+
 msgid "Retype password:"
 msgstr ""
 
@@ -4109,10 +4147,6 @@ msgid ""
 "setting will have no effect in that case."
 msgstr ""
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr ""
-
 msgid "(numbers only)"
 msgstr ""
 
@@ -4389,19 +4423,28 @@ msgstr "krouadur"
 msgid "Parent group:"
 msgstr ""
 
+#, php-format
+msgid "%1$s is member of the group"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "%1$s is manager of the group"
+msgstr "Dilemel ar strollad %1$s"
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from the group"
+msgstr "Dilemel ar strollad %1$s"
+
+#, php-format
+msgid "Keep %1$s in the group"
+msgstr ""
+
 msgid "Managers"
 msgstr ""
 
-msgid "Manage managers"
-msgstr ""
-
-msgid "Manage members"
-msgstr ""
-
 msgid "No member attached"
-msgstr ""
-
-msgid "No manager attached"
 msgstr ""
 
 msgid "S,M,T,W,T,F,S"
@@ -4491,6 +4534,9 @@ msgid "Close"
 msgstr ""
 
 msgid "An error occurred retrieving dates :("
+msgstr ""
+
+msgid "An error occurred displaying members interface :("
 msgstr ""
 
 msgid "Loading..."
@@ -5763,18 +5809,6 @@ msgstr ""
 msgid "Table name"
 msgstr ""
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
-msgstr ""
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -5979,6 +6013,9 @@ msgid "An error occurred displaying preview :("
 msgstr ""
 
 msgid "Members selection"
+msgstr ""
+
+msgid "Click on a row to select a member"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
