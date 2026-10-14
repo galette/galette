@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Core\Logs;
 use Galette\Helpers\DatesHelper;
 use Throwable;
 use Analog\Analog;
@@ -19,6 +20,9 @@ use Galette\Repository\Members;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\Group;
+use Galette\Util\RelativeDate;
+
+use function Safe\preg_replace;
 
 /**
  * Members list filters and paginator
@@ -314,6 +318,9 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_begin_date_end':
                 case 'contrib_end_date_begin':
                 case 'contrib_end_date_end':
+                    if (RelativeDate::isRelative($this->$name)) {
+                        return $this->$name;
+                    }
                     return $this->getDate($name);
                 case 'rcreation_date_begin':
                 case 'rcreation_date_end':
@@ -330,6 +337,9 @@ class AdvancedMembersList extends MembersList
                 case 'rcontrib_end_date_begin':
                 case 'rcontrib_end_date_end':
                     $rname = substr($name, 1);
+                    if (RelativeDate::isRelative($this->$rname)) {
+                        return $this->resolveDate($this->$rname);
+                    }
                     return $this->getDate($rname, formatted: true, translated: false);
                 case 'search_fields':
                     $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
@@ -404,7 +414,11 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_begin_date_end':
                 case 'contrib_end_date_begin':
                 case 'contrib_end_date_end':
-                    $this->setFilterDate($name, (string)$value, str_contains($name, 'begin'));
+                    if (RelativeDate::isRelative($value)) {
+                        $this->setRelativeDate($name, $value);
+                    } else {
+                        $this->setFilterDate($name, (string)$value, str_contains($name, 'begin'));
+                    }
                     break;
                 case 'contrib_min_amount':
                 case 'contrib_max_amount':
@@ -557,7 +571,11 @@ class AdvancedMembersList extends MembersList
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
-                                    if ($value['search'] !== null && trim((string)$value['search']) !== '') {
+                                    if (RelativeDate::isRelative($value['search'])) {
+                                        if (!$this->isUsableRelativeDate($value['search'], (string)$value['field'])) {
+                                            continue 2;
+                                        }
+                                    } elseif ($value['search'] !== null && trim((string)$value['search']) !== '') {
                                         try {
                                             $value['search'] = $this->buildDate($value['search']);
                                         } catch (Throwable) {
@@ -591,6 +609,12 @@ class AdvancedMembersList extends MembersList
                                     Analog::WARNING
                                 );
                                 $this->discard(sprintf(_T('dynamic field #%1$s no longer exists'), $id));
+                                continue;
+                            }
+                            if (
+                                RelativeDate::isRelative($cd)
+                                && !$this->isUsableRelativeDate($cd, $dyn_field->getName())
+                            ) {
                                 continue;
                             }
                             $this->contrib_dynamic[$id] = $cd;
@@ -675,7 +699,13 @@ class AdvancedMembersList extends MembersList
                             $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
-                                $value = $this->buildDate($value);
+                                if (RelativeDate::isRelative($value)) {
+                                    if (!$this->isUsableRelativeDate($value, $dyn_field->getName())) {
+                                        break;
+                                    }
+                                } else {
+                                    $value = $this->buildDate($value);
+                                }
                             }
                             $this->contrib_dynamic[$id] = $value;
                         }
@@ -692,9 +722,97 @@ class AdvancedMembersList extends MembersList
     }
 
     /**
+     * Store a relative date bound
+     *
+     * @param string $name  Property name
+     * @param string $value Relative date expression
+     */
+    private function setRelativeDate(string $name, string $value): void
+    {
+        $labels = [
+            'birth_date' => _T('Birth date'),
+            'creation_date' => _T('Creation date'),
+            'modif_date' => _T('Modification date'),
+            'due_date' => _T('Due date'),
+            'contrib_creation_date' => _T('Contribution creation date'),
+            'contrib_begin_date' => _T('Contribution begin date'),
+            'contrib_end_date' => _T('Contribution end date'),
+        ];
+        $label = $labels[preg_replace('/_(begin|end)$/', '', $name)] ?? $name;
+
+        if ($this->isUsableRelativeDate($value, $label)) {
+            $this->$name = $value;
+        } else {
+            $this->$name = null;
+        }
+    }
+
+    /**
+     * Can a relative date expression be resolved?
+     *
+     * Reports the criteria as discarded if not.
+     *
+     * @param string $value Relative date expression
+     * @param string $label Field label, for reporting
+     */
+    private function isUsableRelativeDate(string $value, string $label): bool
+    {
+        global $preferences;
+
+        if (!RelativeDate::isValid($value)) {
+            Analog::log('Invalid relative date `' . $value . '` for ' . $label, Analog::WARNING);
+            //TRANS: %1$s is the field label, %2$s the date
+            $this->discard(sprintf(_T('%1$s: invalid date "%2$s"'), $label, $value));
+            return false;
+        }
+
+        try {
+            RelativeDate::resolve($value, $preferences);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to resolve `' . $value . '`', Analog::WARNING);
+            $this->discard(
+                sprintf(
+                    //TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+                    _T('%1$s: "%2$s" is not available'),
+                    $label,
+                    RelativeDate::describe($value)
+                )
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Resolve a date filter value
+     *
+     * A relative date is computed against today; a regular date is returned
+     * as is.
+     *
+     * @param ?string $value Date filter value
+     */
+    public function resolveDate(?string $value): ?string
+    {
+        global $preferences;
+
+        if (!RelativeDate::isRelative($value)) {
+            return $value;
+        }
+
+        try {
+            return RelativeDate::resolve((string)$value, $preferences)->format('Y-m-d');
+        } catch (Throwable $e) {
+            //membership period may have been changed since the filter has been set
+            Logs::exception($e, 'Unable to resolve date `' . $value . '`', Analog::WARNING);
+            return null;
+        }
+    }
+
+    /**
      * Get search parameters, to be saved
      *
-     * Dates are kept language neutral, in ISO format.
+     * Dates are kept language neutral: ISO format, or relative expression.
      *
      * @return array<string, mixed>
      */
@@ -703,7 +821,9 @@ class AdvancedMembersList extends MembersList
         $parameters = [];
         foreach ($this->search_fields as $field) {
             if (str_ends_with($field, '_date_begin') || str_ends_with($field, '_date_end')) {
-                $parameters[$field] = $this->getDate($field, formatted: true, translated: false);
+                $parameters[$field] = RelativeDate::isRelative($this->$field)
+                    ? $this->$field
+                    : $this->getDate($field, formatted: true, translated: false);
             } else {
                 $parameters[$field] = $this->$field;
             }

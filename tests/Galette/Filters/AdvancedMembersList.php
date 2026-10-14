@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Filters;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Advanced members filters tests class
@@ -20,6 +21,98 @@ use Galette\Tests\GaletteTestCase;
 class AdvancedMembersList extends GaletteTestCase
 {
     /**
+     * Test relative date bounds
+     */
+    public function testRelativeDates(): void
+    {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+
+        $filters->due_date_begin = '@today';
+        $filters->due_date_end = '@today+30d';
+
+        //expression is kept as is...
+        $this->assertSame('@today', $filters->due_date_begin);
+        $this->assertSame('@today+30d', $filters->due_date_end);
+        //... and resolved for queries
+        $today = new DateTime();
+        $this->assertSame($today->format('Y-m-d'), $filters->rdue_date_begin);
+        $this->assertSame($today->modify('+30 days')->format('Y-m-d'), $filters->rdue_date_end);
+        $this->assertSame([], $filters->getDiscarded());
+
+        //invalid expression is dropped, and reported
+        $filters->birth_date_end = '@tomorrow';
+        $this->assertNull($filters->birth_date_end);
+        $this->assertNull($filters->rbirth_date_end);
+        $this->assertSame(['Birth date: invalid date "@tomorrow"'], $filters->getDiscarded());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid relative date `@tomorrow` for Birth date');
+
+        //regular dates still work
+        $filters->creation_date_begin = '2024-03-15';
+        $this->assertSame('2024-03-15', $filters->rcreation_date_begin);
+    }
+
+    /**
+     * Test membership period anchors are reported when unavailable
+     */
+    public function testUnavailablePeriod(): void
+    {
+        $this->setRawPreference('pref_beg_membership', '');
+        $this->setRawPreference('pref_membership_ext', 12);
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_begin_date_begin = '@period_start';
+        $this->assertNull($filters->contrib_begin_date_begin);
+        $this->assertSame(
+            ['Contribution begin date: "start of the membership period" is not available'],
+            $filters->getDiscarded()
+        );
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to resolve `@period_start`');
+
+        //available once memberships share a beginning date
+        $this->setRawPreference('pref_beg_membership', '01/01');
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_begin_date_begin = '@period_start';
+        $this->assertSame('@period_start', $filters->contrib_begin_date_begin);
+        $this->assertSame((new DateTime())->format('Y') . '-01-01', $filters->rcontrib_begin_date_begin);
+    }
+
+    /**
+     * Test relative date in free search
+     */
+    public function testFreeSearchRelativeDate(): void
+    {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@today-18y',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_BEFORE
+        ];
+        $free_search = $filters->getSearchParameters()['free_search'];
+        $this->assertIsArray($free_search);
+        $this->assertSame('@today-18y', $free_search[1]['search']);
+        $this->assertSame(
+            (new DateTime())->modify('-18 years')->format('Y-m-d'),
+            $filters->resolveDate($free_search[1]['search'])
+        );
+
+        //invalid one is not kept
+        $filters->free_search = [
+            'idx' => 2,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@yesterday',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_BEFORE
+        ];
+        $this->assertArrayNotHasKey(2, $filters->free_search);
+        $this->assertCount(1, $filters->getDiscarded());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid relative date `@yesterday` for ddn_adh');
+    }
+
+    /**
      * Test saved parameters are language neutral
      */
     public function testSearchParameters(): void
@@ -28,6 +121,7 @@ class AdvancedMembersList extends GaletteTestCase
 
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->creation_date_begin = '15/03/2024';
+        $filters->due_date_end = '@today+1m';
 
         //displayed in user language...
         $this->assertSame('15/03/2024', $filters->creation_date_begin);
@@ -35,6 +129,7 @@ class AdvancedMembersList extends GaletteTestCase
         //... but saved in ISO format
         $parameters = $filters->getSearchParameters();
         $this->assertSame('2024-03-15', $parameters['creation_date_begin']);
+        $this->assertSame('@today+1m', $parameters['due_date_end']);
         $this->assertNull($parameters['birth_date_begin']);
 
         //ISO format is accepted whatever the language
@@ -43,6 +138,7 @@ class AdvancedMembersList extends GaletteTestCase
             $replayed->$key = $value;
         }
         $this->assertSame('2024-03-15', $replayed->rcreation_date_begin);
+        $this->assertSame('@today+1m', $replayed->due_date_end);
 
         $this->i18n->changeLanguage('en_US');
     }

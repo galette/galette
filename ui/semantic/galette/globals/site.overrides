@@ -621,6 +621,44 @@ tfoot .note-editor .note-editable,
 /*-------------------------
     Print stylesheet
 --------------------------*/
+/* Relative dates (advanced search): switch next to the date, relative
+   controls wrapping on narrow columns */
+.relative-date {
+  display: flex;
+  align-items: flex-start;
+  gap: .25em;
+
+  > .ui.calendar,
+  > .relative-controls {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  > .relative-toggle.ui.button {
+    margin: 0;
+  }
+
+  > .relative-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25em;
+
+    > .relative-anchor {
+      flex: 1 1 100%;
+    }
+    > .relative-sign {
+      flex: 0 0 4.5em;
+    }
+    > .relative-amount {
+      flex: 1 1 4em;
+      width: auto;
+    }
+    > .relative-unit {
+      flex: 2 1 6em;
+    }
+  }
+}
+
 @media print {
   html,
   body.pushable,

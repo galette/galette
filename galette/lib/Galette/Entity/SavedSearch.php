@@ -19,6 +19,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
 use Galette\Core\Logs;
+use Galette\Util\RelativeDate;
 
 use function Safe\json_encode;
 
@@ -27,12 +28,13 @@ use function Safe\json_encode;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int                  $id
- * @property string               $name
- * @property array<string, mixed> $parameters
- * @property int                  $author_id
- * @property string               $creation_date
- * @property string               $form
+ * @property      int                  $id
+ * @property      string               $name
+ * @property      array<string, mixed> $parameters
+ * @property      int                  $author_id
+ * @property      string               $creation_date
+ * @property      string               $form
+ * @property-read array<string, mixed> $sparameters
  */
 
 class SavedSearch
@@ -263,6 +265,8 @@ class SavedSearch
                         }
                         if (is_array($parameter) || is_object($parameter)) {
                             $parameter = json_encode($parameter);
+                        } elseif (RelativeDate::isRelative($parameter)) {
+                            $parameter = $this->describeRelativeDate($parameter);
                         }
                         $parameters[$key] = $parameter;
                     }
@@ -354,6 +358,25 @@ class SavedSearch
                 );
                 break;
         }
+    }
+
+    /**
+     * Human readable relative date, with the date it currently resolves to
+     *
+     * @param string $value Relative date expression
+     */
+    private function describeRelativeDate(string $value): string
+    {
+        global $preferences;
+
+        $description = RelativeDate::describe($value);
+        try {
+            $date = RelativeDate::resolve($value, $preferences);
+            $description .= ' (' . $date->format(__('Y-m-d')) . ')';
+        } catch (Throwable) { // no log: not resolvable (any more), keep description only
+        }
+
+        return $description;
     }
 
     /**
