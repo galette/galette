@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 10:30+0200\n"
-"PO-Revision-Date: 2026-10-14 10:30+0200\n"
+"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"PO-Revision-Date: 2026-10-14 13:23+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -119,21 +119,21 @@ msgstr "Preference '%1$s' has been stored."
 msgid "Preference '%1$s' has been reset to its default."
 msgstr "Preference '%1$s' has been reset to its default."
 
-#: ../lib/Galette/Controllers/AjaxController.php:56
+#: ../lib/Galette/Controllers/AjaxController.php:57
 #: ../webroot/installer.php:344
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
-#: ../lib/Galette/Controllers/AjaxController.php:67
+#: ../lib/Galette/Controllers/AjaxController.php:68
 #: ../templates/default/pages/advanced_config.html.twig:17
 msgid "- WARNING -"
 msgstr "- WARNING -"
 
-#: ../lib/Galette/Controllers/AjaxController.php:285
+#: ../lib/Galette/Controllers/AjaxController.php:286
 msgid "Telemetry information has been sent. Thank you!"
 msgstr "Telemetry information has been sent. Thank you!"
 
-#: ../lib/Galette/Controllers/AjaxController.php:311
+#: ../lib/Galette/Controllers/AjaxController.php:312
 msgid "Thank you for registering!"
 msgstr "Thank you for registering!"
 
@@ -371,7 +371,7 @@ msgstr "Donation"
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:97
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:89
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:101
-#: ../lib/Galette/Util/Password.php:250
+#: ../lib/Galette/Util/Password.php:328
 #: ../templates/default/pages/advanced_search.html.twig:557
 #: ../templates/default/pages/member_form.html.twig:283
 msgid "Y-m-d"
@@ -2208,6 +2208,7 @@ msgstr ""
 "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 
 #: ../lib/Galette/Core/History.php:202 ../lib/Galette/Core/History.php:283
+#: ../lib/Galette/Enums/PasswordStrength.php:45
 #: ../lib/Galette/Features/Replacements.php:653
 #: ../lib/Galette/Features/Replacements.php:654
 #: ../templates/default/elements/group.html.twig:43
@@ -3428,6 +3429,30 @@ msgstr "Fail to add new transaction."
 msgid "Transaction updated"
 msgstr "Transaction updated"
 
+#: ../lib/Galette/Enums/PasswordStrength.php:46
+#: ../templates/default/pages/preferences.html.twig:1213
+#: ../templates/default/pages/preferences.html.twig:1223
+msgid "Weak"
+msgstr "Weak"
+
+#: ../lib/Galette/Enums/PasswordStrength.php:47
+#: ../templates/default/pages/preferences.html.twig:1214
+#: ../templates/default/pages/preferences.html.twig:1224
+msgid "Medium"
+msgstr "Medium"
+
+#: ../lib/Galette/Enums/PasswordStrength.php:48
+#: ../templates/default/pages/preferences.html.twig:1215
+#: ../templates/default/pages/preferences.html.twig:1225
+msgid "Strong"
+msgstr "Strong"
+
+#: ../lib/Galette/Enums/PasswordStrength.php:49
+#: ../templates/default/pages/preferences.html.twig:1216
+#: ../templates/default/pages/preferences.html.twig:1226
+msgid "Very strong"
+msgstr "Very strong"
+
 #: ../lib/Galette/Enums/PublicPageVisibility.php:50
 msgid "Inherit"
 msgstr "Inherit"
@@ -4391,38 +4416,60 @@ msgstr "Photo has not been stored!"
 msgid "Photo has not been copied!"
 msgstr "Photo has not been copied!"
 
-#: ../lib/Galette/Util/Password.php:69
+#: ../lib/Galette/Util/Password.php:82 ../lib/Galette/Util/Password.php:83
 msgid "Password is blacklisted!"
 msgstr "Password is blacklisted!"
 
-#: ../lib/Galette/Util/Password.php:77
+#: ../lib/Galette/Util/Password.php:93
 #, php-format
 msgid "Too short (%1$s characters minimum, %2$s found)"
 msgstr "Too short (%1$s characters minimum, %2$s found)"
 
-#: ../lib/Galette/Util/Password.php:92
+#: ../lib/Galette/Util/Password.php:108 ../lib/Galette/Util/Password.php:109
 msgid "Do not use any of your personal information as password!"
 msgstr "Do not use any of your personal information as password!"
 
-#: ../lib/Galette/Util/Password.php:128
+#: ../lib/Galette/Util/Password.php:151
 msgid "Does not contains lowercase letters"
 msgstr "Does not contains lowercase letters"
 
-#: ../lib/Galette/Util/Password.php:132
+#: ../lib/Galette/Util/Password.php:155
 msgid "Does not contains uppercase letters"
 msgstr "Does not contains uppercase letters"
 
-#: ../lib/Galette/Util/Password.php:135
+#: ../lib/Galette/Util/Password.php:158
 msgid "Does not contains letters"
 msgstr "Does not contains letters"
 
-#: ../lib/Galette/Util/Password.php:141
+#: ../lib/Galette/Util/Password.php:164
 msgid "Does not contains numbers"
 msgstr "Does not contains numbers"
 
-#: ../lib/Galette/Util/Password.php:147
+#: ../lib/Galette/Util/Password.php:170
 msgid "Does not contains special characters"
 msgstr "Does not contains special characters"
+
+#: ../lib/Galette/Util/Password.php:227
+msgid "Letters"
+msgstr "Letters"
+
+#: ../lib/Galette/Util/Password.php:228
+msgid "Lowercase and uppercase letters"
+msgstr "Lowercase and uppercase letters"
+
+#: ../lib/Galette/Util/Password.php:229
+msgid "Numbers"
+msgstr "Numbers"
+
+#: ../lib/Galette/Util/Password.php:230
+msgid "Special characters"
+msgstr "Special characters"
+
+#. TRANS: %1$s is the minimum number of characters
+#: ../lib/Galette/Util/Password.php:246
+#, php-format
+msgid "At least %1$s characters"
+msgstr "At least %1$s characters"
 
 #: ../lib/Galette/Util/RelativeDate.php:218
 #, php-format
@@ -5789,7 +5836,7 @@ msgstr "Remember to remove it manually to re-secure the installer."
 #: ../templates/default/pages/members_list.html.twig:809
 #: ../templates/default/pages/members_list.html.twig:830
 #: ../templates/default/pages/plugins.html.twig:256
-#: ../templates/default/pages/preferences.html.twig:1513
+#: ../templates/default/pages/preferences.html.twig:1512
 #: ../templates/default/pages/status_list.html.twig:154
 msgid "An error occurred :("
 msgstr "An error occurred :("
@@ -6603,7 +6650,7 @@ msgstr "An error occurred retrieving members :("
 #: ../templates/default/elements/js/choose_adh.js.twig:198
 #: ../templates/default/elements/js/modal_action.js.twig:61
 #: ../templates/default/elements/js/modal_action.js.twig:98
-#: ../templates/default/elements/js/pwdcheck.js.twig:71
+#: ../templates/default/elements/js/pwdcheck.js.twig:129
 #: ../templates/default/elements/js/removal.js.twig:92
 #: ../templates/default/elements/js/removal.js.twig:118
 #: ../templates/default/elements/list.html.twig:163
@@ -6662,7 +6709,7 @@ msgstr "An error occurred retrieving members :("
 #: ../templates/default/pages/plugins.html.twig:256
 #: ../templates/default/pages/preferences.html.twig:1416
 #: ../templates/default/pages/preferences.html.twig:1453
-#: ../templates/default/pages/preferences.html.twig:1513
+#: ../templates/default/pages/preferences.html.twig:1512
 #: ../templates/default/pages/reminder.html.twig:72
 #: ../templates/default/pages/reminder.html.twig:90
 #: ../templates/default/pages/scheduledpayments_list.html.twig:412
@@ -6692,15 +6739,20 @@ msgstr "Loading..."
 msgid "Continue"
 msgstr "Continue"
 
-#: ../templates/default/elements/js/pwdcheck.js.twig:41
+#: ../templates/default/elements/js/pwdcheck.js.twig:63
 msgid "Password is valid :)"
 msgstr "Password is valid :)"
 
-#: ../templates/default/elements/js/pwdcheck.js.twig:44
+#: ../templates/default/elements/js/pwdcheck.js.twig:66
 msgid "Password is not valid!"
 msgstr "Password is not valid!"
 
-#: ../templates/default/elements/js/pwdcheck.js.twig:71
+#: ../templates/default/elements/js/pwdcheck.js.twig:90
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr "At least %1$s of the following rules:"
+
+#: ../templates/default/elements/js/pwdcheck.js.twig:129
 msgid "An error occurred checking password :("
 msgstr "An error occurred checking password :("
 
@@ -8029,7 +8081,7 @@ msgstr "Visibility"
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
 #: ../templates/default/pages/configuration_payment_types.html.twig:132
 #: ../templates/default/pages/contributions_types_list.html.twig:188
-#: ../templates/default/pages/preferences.html.twig:1513
+#: ../templates/default/pages/preferences.html.twig:1512
 #: ../templates/default/pages/status_list.html.twig:154
 msgid "Translate labels"
 msgstr "Translate labels"
@@ -10278,26 +10330,6 @@ msgstr "Password strength:"
 #: ../templates/default/pages/preferences.html.twig:1212
 msgid "None (default)"
 msgstr "None (default)"
-
-#: ../templates/default/pages/preferences.html.twig:1213
-#: ../templates/default/pages/preferences.html.twig:1223
-msgid "Weak"
-msgstr "Weak"
-
-#: ../templates/default/pages/preferences.html.twig:1214
-#: ../templates/default/pages/preferences.html.twig:1224
-msgid "Medium"
-msgstr "Medium"
-
-#: ../templates/default/pages/preferences.html.twig:1215
-#: ../templates/default/pages/preferences.html.twig:1225
-msgid "Strong"
-msgstr "Strong"
-
-#: ../templates/default/pages/preferences.html.twig:1216
-#: ../templates/default/pages/preferences.html.twig:1226
-msgid "Very strong"
-msgstr "Very strong"
 
 #: ../templates/default/pages/preferences.html.twig:1219
 msgid "Enforce minimal password strength for all password."
