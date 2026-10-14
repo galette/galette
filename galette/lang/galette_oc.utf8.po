@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -894,6 +894,11 @@ msgstr "Importacions"
 msgid "An error occurred importing the file :("
 msgstr "Una error capitèt per l'importacion dau fichier :("
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr "Lo fichier '%1$s' es estat importat correctament :)"
@@ -922,6 +927,11 @@ msgstr "Impossible de levar '%1$s' dau disc :/"
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Managed groups"
+msgstr "Grope non administrat"
 
 msgid "CSV import model"
 msgstr "Modèle d'impòrt CSV"
@@ -2854,9 +2864,29 @@ msgstr "L'adreiça de corrier electronic %1$s es ja utilizada ! (%2$s)"
 msgid "File is empty!"
 msgstr "Lo fichier es vuege !"
 
+#. TRANS: first parameter is a group name, second the row in error
+#, fuzzy, php-format
+#| msgid "Gender %1$s does not exists!"
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Lo genre %1$s existís pas !"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr ""
+"Capitèt una error per l'enregistrament dau membre a la linha %1$s (%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr ""
 "Capitèt una error per l'enregistrament dau membre a la linha %1$s (%2$s):"
 
@@ -3839,6 +3869,15 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Siatz pregat de chausir lei paramètres dau còmpte administrator de Galette"
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(aumens %1$s caractèrs)"
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+
 msgid "Retype password:"
 msgstr "Confirmacion dau senhau :"
 
@@ -4255,10 +4294,6 @@ msgstr ""
 "desactivar lei paginas publicas; lo cas tombant, aquesta chausida servirà de "
 "ren."
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr "(aumens %1$s caractèrs)"
-
 msgid "(numbers only)"
 msgstr ""
 
@@ -4549,20 +4584,31 @@ msgstr "Informacions"
 msgid "Parent group:"
 msgstr "Grope parent :"
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "Membre dau grope"
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s is manager of the group"
+msgstr "Grope non administrat"
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from the group"
+msgstr "Levar lo grope %1$s"
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "Keep %1$s in the group"
+msgstr "Grope non administrat"
+
 msgid "Managers"
 msgstr "Administrators"
 
-msgid "Manage managers"
-msgstr "Governar leis administrators"
-
-msgid "Manage members"
-msgstr "Governar lei membres"
-
 msgid "No member attached"
 msgstr "Ges de membre restacat"
-
-msgid "No manager attached"
-msgstr "Ges de responsable/a designat-da"
 
 msgid "S,M,T,W,T,F,S"
 msgstr "D,L,M,M,J,V,S"
@@ -4649,6 +4695,9 @@ msgid "Close"
 msgstr "Plegar"
 
 msgid "An error occurred retrieving dates :("
+msgstr ""
+
+msgid "An error occurred displaying members interface :("
 msgstr ""
 
 msgid "Loading..."
@@ -5988,18 +6037,6 @@ msgstr ""
 msgid "Table name"
 msgstr ""
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-
-msgid "Group members selection"
-msgstr "Seleccion dei membres dau grope"
-
-msgid "Group managers selection"
-msgstr "Chausir lei responsables dau grope"
-
-msgid "Click on a row to select a member"
-msgstr ""
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6206,6 +6243,9 @@ msgstr ""
 
 msgid "Members selection"
 msgstr "Seleccion de membres"
+
+msgid "Click on a row to select a member"
+msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
@@ -7603,6 +7643,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr ""
+
+#~ msgid "Manage managers"
+#~ msgstr "Governar leis administrators"
+
+#~ msgid "Manage members"
+#~ msgstr "Governar lei membres"
+
+#~ msgid "No manager attached"
+#~ msgstr "Ges de responsable/a designat-da"
+
+#~ msgid "Group members selection"
+#~ msgstr "Seleccion dei membres dau grope"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Chausir lei responsables dau grope"
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Una error SQL a capitat per lo cargament de la recèrca."

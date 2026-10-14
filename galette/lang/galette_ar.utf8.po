@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-14 13:23+0200\n"
+"POT-Creation-Date: 2026-10-15 00:43+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -947,6 +947,11 @@ msgstr "الاستيرادات"
 msgid "An error occurred importing the file :("
 msgstr ""
 
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr ""
+
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
 msgstr ""
@@ -975,6 +980,11 @@ msgstr ""
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "Manage user's groups"
+msgid "Managed groups"
+msgstr "إدارة فِرق المستخدِمين"
 
 msgid "CSV import model"
 msgstr ""
@@ -2891,10 +2901,28 @@ msgstr ""
 msgid "File is empty!"
 msgstr ""
 
+#. TRANS: first parameter is a group name, second the row in error
+#, php-format
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr ""
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+
 #. TRANS: first parameter is row, second member name
 #, fuzzy, php-format
 #| msgid "An error occurred."
 msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "وقع هناك خطأ."
+
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred."
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
 msgstr "وقع هناك خطأ."
 
 msgid "An error occurred while importing members"
@@ -3821,6 +3849,15 @@ msgstr ""
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr ""
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+
 msgid "Retype password:"
 msgstr "تأكيد الكلمة السرية:"
 
@@ -4199,10 +4236,6 @@ msgid ""
 "setting will have no effect in that case."
 msgstr ""
 
-#, php-format
-msgid "(at least %1$s characters)"
-msgstr ""
-
 msgid "(numbers only)"
 msgstr ""
 
@@ -4489,19 +4522,30 @@ msgstr "معلومات عن النظام"
 msgid "Parent group:"
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Member of group"
+msgid "%1$s is member of the group"
+msgstr "عضو في فريق"
+
+#, fuzzy, php-format
+#| msgid "Manage groups"
+msgid "%1$s is manager of the group"
+msgstr "إدارة الفِرَق"
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from the group"
+msgstr "حذف الفريق %1$s"
+
+#, fuzzy, php-format
+#| msgid "Manage groups"
+msgid "Keep %1$s in the group"
+msgstr "إدارة الفِرَق"
+
 msgid "Managers"
 msgstr ""
 
-msgid "Manage managers"
-msgstr ""
-
-msgid "Manage members"
-msgstr "إدارة الأعضاء"
-
 msgid "No member attached"
-msgstr ""
-
-msgid "No manager attached"
 msgstr ""
 
 msgid "S,M,T,W,T,F,S"
@@ -4609,6 +4653,9 @@ msgid "Close"
 msgstr ""
 
 msgid "An error occurred retrieving dates :("
+msgstr ""
+
+msgid "An error occurred displaying members interface :("
 msgstr ""
 
 msgid "Loading..."
@@ -5934,18 +5981,6 @@ msgstr ""
 msgid "Table name"
 msgstr "اسم الجدول"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
-msgstr ""
-
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
@@ -6155,6 +6190,9 @@ msgid "An error occurred displaying preview :("
 msgstr ""
 
 msgid "Members selection"
+msgstr ""
+
+msgid "Click on a row to select a member"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -7541,11 +7579,11 @@ msgstr ""
 msgid "Public page content"
 msgstr ""
 
+#~ msgid "Manage members"
+#~ msgstr "إدارة الأعضاء"
+
 #~ msgid "other"
 #~ msgstr "آخَر"
-
-#~ msgid "Manage user's groups"
-#~ msgstr "إدارة فِرق المستخدِمين"
 
 #~ msgid "Manager(s)"
 #~ msgstr "مدير"
