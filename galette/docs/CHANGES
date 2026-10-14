@@ -29,6 +29,7 @@ Changes
 - Member actions menu is the same on display and edit pages
 - A loader is displayed while the dark mode stylesheet is generated
 - Some improvements have been done on logging; some information were often missing
+- Password strength indicator lists rules and which ones are met, and is displayed on member form as well
 
 1.2.1 -> 1.3.0
 
