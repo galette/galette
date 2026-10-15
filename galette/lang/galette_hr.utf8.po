@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-10-14 07:50+0000\n"
 "Last-Translator: Marko Puljic "
 "<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
@@ -1027,6 +1027,57 @@ msgstr "Došlo je do pogreške pri čišćenju zapisnika :("
 msgid "Flush the logs"
 msgstr "Očisti zapisnike"
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Karte"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Lokacija glavnog administratora ne može se postaviti."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+"Pretraživanje mjesta trenutno nije dostupno. I dalje možete pretraživati "
+"kartu ili kliknuti na nju."
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Geografska lokacija člana %1$s"
+
+msgid "Maps settings"
+msgstr "Postavke karata"
+
+msgid "Unknown position precision."
+msgstr "Nepoznata preciznost položaja."
+
+msgid "An address is required to use your own background map."
+msgstr "Za vlastitu kartografsku podlogu potrebna je adresa."
+
+msgid "Maps settings have been saved."
+msgstr "Postavke karata su spremljene."
+
+msgid "Coordinates have been removed!"
+msgstr "Koordinate su uklonjene!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Koordinate nisu uklonjene :("
+
+msgid "Invalid coordinates."
+msgstr "Koordinate nisu valjane."
+
+msgid "New coordinates have been stored!"
+msgstr "Nove koordinate su spremljene!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Koordinate nisu spremljene :("
+
 msgid "Unable to get members list."
 msgstr "Nije moguće dohvatiti popis članova."
 
@@ -1251,6 +1302,12 @@ msgstr "Promijeni moje korisničko ime i lozinku"
 msgid "Manage my two-factor authentication"
 msgstr "Upravljaj mojom dvofaktorskom autentifikacijom"
 
+msgid "My localization"
+msgstr "Moja lokacija"
+
+msgid "Set my position on the members map"
+msgstr ""
+
 msgid "Add a child member"
 msgstr "Dodaj povezanog člana"
 
@@ -1346,6 +1403,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr "Pregledaj blokade nakon ponovljenih neuspjelih prijava i ukloni ih"
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr "Podaci o dostupnim dodacima"
 
@@ -1393,6 +1453,9 @@ msgstr "Galerije"
 msgid "View documents related to your association"
 msgstr "Pregledaj dokumente udruge"
 
+msgid "See where members live"
+msgstr ""
+
 msgid "Public pages"
 msgstr "Javne stranice"
 
@@ -1418,6 +1481,14 @@ msgstr "%1$s: ukloni iz baze podataka"
 #, php-format
 msgid "Log in as %1$s"
 msgstr "Prijavi se kao %1$s"
+
+msgid "Geolocalize"
+msgstr "Postavi lokaciju"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Postavi lokaciju člana %1$s"
 
 msgid "Mass change"
 msgstr "Skupna izmjena"
@@ -2908,6 +2979,48 @@ msgstr "Adresne naljepnice članova"
 msgid "Labels"
 msgstr "Adresne naljepnice"
 
+msgid "About 100 km"
+msgstr "Oko 100 km"
+
+msgid "About 50 km"
+msgstr "Oko 50 km"
+
+msgid "About 5 km"
+msgstr "Oko 5 km"
+
+msgid "About 500 m"
+msgstr "Oko 500 m"
+
+msgid "About 50 m"
+msgstr "Oko 50 m"
+
+msgid "Exact position"
+msgstr "Točan položaj"
+
+msgid "OpenFreeMap, light grey"
+msgstr "OpenFreeMap, svijetlosiva"
+
+msgid "OpenFreeMap, colours"
+msgstr "OpenFreeMap, u boji"
+
+msgid "OpenStreetMap"
+msgstr "OpenStreetMap"
+
+msgid "OpenStreetMap France"
+msgstr "OpenStreetMap France"
+
+msgid "Humanitarian OSM Team"
+msgstr "Humanitarian OSM Team"
+
+msgid "OpenStreetMap Germany"
+msgstr "OpenStreetMap Germany"
+
+msgid "Esri, light grey"
+msgstr "Esri, svijetlosiva"
+
+msgid "Your own values"
+msgstr "Vlastite vrijednosti"
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -3766,6 +3879,11 @@ msgstr "Mogućnosti odabira za polje %d su migrirane."
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Nije moguće migrirati mogućnosti odabira za polje %d: %s"
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
 
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Odaberite postavke administratorskog računa u Galetteu"
@@ -4689,6 +4807,67 @@ msgstr ""
 "Neki odabrani članovi nemaju adresu e-pošte. Možete izraditi adresne "
 "naljepnice za omotnice i kontaktirati ih poštom."
 
+msgid "Member (company)"
+msgstr "Član (pravna osoba)"
+
+msgid "Search result"
+msgstr "Rezultat pretrage"
+
+msgid "Legend"
+msgstr "Legenda"
+
+msgid "Display map in full screen"
+msgstr "Prikaži kartu preko cijelog zaslona"
+
+msgid "Exit full screen"
+msgstr "Izađi iz prikaza preko cijelog zaslona"
+
+msgid "Search your town..."
+msgstr "Pretražite svoje mjesto…"
+
+msgid "Search a town..."
+msgstr "Pretražite mjesto…"
+
+msgid "Sorry, that town could not be found."
+msgstr "Mjesto nije pronađeno."
+
+msgid "Search"
+msgstr "Pretraživanje"
+
+msgid "Show me where I am"
+msgstr "Prikaži gdje se nalazim"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Čini se da ste izvan granica karte"
+
+msgid "aka"
+msgstr "poznat/a kao"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Kliknuli ste na %1$s"
+
+msgid "I live here!"
+msgstr "Ovdje živim!"
+
+msgid "Member lives here!"
+msgstr "Član ovdje živi!"
+
+msgid "Remove my coordinates"
+msgstr "Ukloni moje koordinate"
+
+msgid "Remove member coordinates"
+msgstr "Ukloni koordinate člana"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Želite li zaista ukloniti koordinate iz baze podataka?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Došlo je do pogreške pri postavljanju lokacije „Ovdje živim” :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Došlo je do pogreške pri uklanjanju koordinata :("
+
 msgid "Modification"
 msgstr "Izmjena"
 
@@ -5166,9 +5345,6 @@ msgstr "definirano"
 #, php-format
 msgid "Go to %s"
 msgstr "Idi na %s"
-
-msgid "Legend"
-msgstr "Legenda"
 
 msgid "Statuses"
 msgstr "Statusi"
@@ -6198,6 +6374,60 @@ msgstr "Nije poslano"
 msgid "Follow the sending"
 msgstr "Prati slanje"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr "Preciznost položaja članova"
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+"Koliko udaljeno od spremljenog položaja član može biti prikazan na karti. "
+"Uprava, administratori i sami članovi uvijek vide točan položaj."
+
+msgid "Background map provider"
+msgstr "Pružatelj kartografske podloge"
+
+msgid "Vector tiles"
+msgstr "Vektorske pločice"
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+"Označite za MapLibre stil; ostavite neoznačeno za klasične rasterske pločice."
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+"Adresa stila za vektorske pločice ili adresa pločica za rasterske, "
+"primjerice:"
+
+msgid "Attribution"
+msgstr "Navođenje izvora"
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+"Tekst navođenja izvora koji pružatelj zahtijeva. HTML je dopušten. Licence "
+"podataka obvezuju na navođenje izvora."
+
+msgid "Maximum zoom"
+msgstr "Najveće povećanje"
+
+msgid "Subdomains"
+msgstr "Poddomene"
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+"Slova kojima se zamjenjuje oznaka {s} u adresi, primjerice abc. Samo za "
+"rasterske pločice."
+
 msgid "Attached to:"
 msgstr "Povezano s:"
 
@@ -6253,6 +6483,20 @@ msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
 "Član će e-poštom primiti korisničko ime i lozinku ako ima adresu e-pošte."
+
+msgid "Choose your location"
+msgstr "Odaberite svoju lokaciju"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Odaberite lokaciju člana %1$s"
+
+msgid "Select your town."
+msgstr "Odaberite svoje mjesto."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "U bazi podataka mjesto je postavljeno na: '%1$s'"
 
 msgid "Family"
 msgstr "Obitelj"
@@ -6456,6 +6700,9 @@ msgstr "Nije instalirano"
 
 msgid "Need update"
 msgstr "Potrebna je nadogradnja"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Izričito isključeno"

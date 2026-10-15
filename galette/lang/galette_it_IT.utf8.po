@@ -33,7 +33,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -1098,6 +1098,55 @@ msgstr "Si è verificato un errore nella pulizia degli accessi :("
 msgid "Flush the logs"
 msgstr "Elimina gli accessi"
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Mappe"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Il Super-amministratore non può essere localizzato."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Posizione geografica del %1$s"
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "Le coordinate sono state rimosse!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Le coordinate non sono state rimosse :("
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr "Nuove coordinate sono state memorizzate!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Le coordinate non sono state memorizzate :("
+
 msgid "Unable to get members list."
 msgstr "Lista dei membri non ottenuta."
 
@@ -1316,6 +1365,12 @@ msgstr "Compila tutti i login e le password vuoti"
 msgid "Manage my two-factor authentication"
 msgstr ""
 
+msgid "My localization"
+msgstr "La mia localizzazione"
+
+msgid "Set my position on the members map"
+msgstr ""
+
 msgid "Add a child member"
 msgstr "Aggiungi socio minorenne"
 
@@ -1414,6 +1469,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr "Informazioni sui plugin disponibili"
 
@@ -1462,6 +1520,9 @@ msgstr "Gallerie"
 msgid "View documents related to your association"
 msgstr "Visualizza i documenti relativi alla tua associazione"
 
+msgid "See where members live"
+msgstr ""
+
 msgid "Public pages"
 msgstr "Pagine pubbliche"
 
@@ -1487,6 +1548,14 @@ msgstr "%1$s: rimuovi dal database"
 #, php-format
 msgid "Log in as %1$s"
 msgstr "Accedi come %1$s"
+
+msgid "Geolocalize"
+msgstr "Geolocalizza"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Geolocalizza %1$s"
 
 msgid "Mass change"
 msgstr "Cambiamenti massivi"
@@ -3020,6 +3089,48 @@ msgstr "Etichette dei membri"
 msgid "Labels"
 msgstr "Etichette"
 
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -3881,6 +3992,11 @@ msgstr "Le scelte per il campo %d sono state migrate."
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Non è stato possibile migrare le scelte per il campo %d: %s"
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
 
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Prego scegliere i parametri dell'account admin su Galette"
@@ -4837,6 +4953,67 @@ msgstr ""
 "Alcuni soci selezionati non hanno indirizzo e-mail. Tuttavia, è possibile "
 "generare etichette per buste per contattarli tramite posta ordinaria."
 
+msgid "Member (company)"
+msgstr "Utente (Azienda)"
+
+msgid "Search result"
+msgstr "Risultato di ricerca"
+
+msgid "Legend"
+msgstr "Legenda"
+
+msgid "Display map in full screen"
+msgstr "Visualizza la mappa a schermo intero"
+
+msgid "Exit full screen"
+msgstr "Esci da schermo intero"
+
+msgid "Search your town..."
+msgstr "Cerca la tua città ..."
+
+msgid "Search a town..."
+msgstr "Cerca una città ..."
+
+msgid "Sorry, that town could not be found."
+msgstr "Spiacente, quella città non è stata trovata."
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Show me where I am"
+msgstr "Mostrami dove mi trovo"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Sembra che ti trovi al di fuori dei confini della mappa"
+
+msgid "aka"
+msgstr "Alias"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Hai fatto clic su %1$s"
+
+msgid "I live here!"
+msgstr "Io vivo qui!"
+
+msgid "Member lives here!"
+msgstr "L'utente vive qui!"
+
+msgid "Remove my coordinates"
+msgstr "Rimuovi le mie coordinate"
+
+msgid "Remove member coordinates"
+msgstr "Rimuovi le coordinate dell'utente"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Sei sicuro di voler rimuovere le coordinate dal database?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Si è verificato un errore durante il processo \"Io vivo qui\" :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Si è verificato un errore durante la rimozione delle coordinate :("
+
 msgid "Modification"
 msgstr "Modifica"
 
@@ -5346,9 +5523,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-msgid "Legend"
-msgstr "Legenda"
 
 #, fuzzy
 #| msgid "Status"
@@ -6391,6 +6565,51 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Per la selezione:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "Collegato a:"
 
@@ -6449,6 +6668,20 @@ msgid ""
 msgstr ""
 "Il socio riceverà il suo nome utente e la password via e-mail, se ha un "
 "indirizzo."
+
+msgid "Choose your location"
+msgstr "Scegli la tua posizione"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Scegli posizione del %1$s"
+
+msgid "Select your town."
+msgstr "Seleziona la tua città."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "Nel database, la città è impostata su: '%1$s'"
 
 msgid "Family"
 msgstr "Famiglia"
@@ -6664,6 +6897,9 @@ msgstr "Non registrato"
 #| msgid "Member card updated"
 msgid "Need update"
 msgstr "Tessera socio aggiornata"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Disabilitati esplicitamente"

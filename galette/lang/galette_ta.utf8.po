@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -1057,6 +1057,55 @@ msgstr "பதிவுகளை பறிக்க முயற்சிக்�
 msgid "Flush the logs"
 msgstr "பதிவுகளை பறிக்கவும்"
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "வரைபடங்கள்"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "சூப்பர் ஏட்மின் உள்ளூர்மயமாக்க முடியாது."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "%1$s புவியியல் நிலை"
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "ஆயத்தொகுப்புகள் அகற்றப்பட்டன!"
+
+msgid "Coordinates have not been removed :("
+msgstr "ஆயத்தொகுப்புகள் அகற்றப்படவில்லை :("
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr "புதிய ஆயத்தொகுப்புகள் சேமிக்கப்பட்டுள்ளன!"
+
+msgid "Coordinates have not been stored :("
+msgstr "ஒருங்கிணைப்புகள் சேமிக்கப்படவில்லை :("
+
 msgid "Unable to get members list."
 msgstr "உறுப்பினர்கள் பட்டியலைப் பெற முடியவில்லை."
 
@@ -1275,6 +1324,12 @@ msgstr "அனைத்து வெற்று உள்நுழைவு ம
 msgid "Manage my two-factor authentication"
 msgstr ""
 
+msgid "My localization"
+msgstr "எனது உள்ளூராக்கல்"
+
+msgid "Set my position on the members map"
+msgstr ""
+
 msgid "Add a child member"
 msgstr "ஒரு குழந்தை உறுப்பினரைச் சேர்க்கவும்"
 
@@ -1371,6 +1426,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr "கிடைக்கக்கூடிய செருகுநிரல்கள் பற்றிய செய்தி"
 
@@ -1419,6 +1477,9 @@ msgstr "காட்சியகங்கள்"
 msgid "View documents related to your association"
 msgstr "உங்கள் சங்கம் தொடர்பான ஆவணங்களைக் காண்க"
 
+msgid "See where members live"
+msgstr ""
+
 msgid "Public pages"
 msgstr "பொது பக்கங்கள்"
 
@@ -1444,6 +1505,14 @@ msgstr "%1$s: தரவுத்தளத்திலிருந்து அ�
 #, php-format
 msgid "Log in as %1$s"
 msgstr "%1$s உள்நுழைக"
+
+msgid "Geolocalize"
+msgstr "சியோலோகலைச்"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Jeolocalize %1$s"
 
 msgid "Mass change"
 msgstr "வெகுசன மாற்றம்"
@@ -2936,6 +3005,48 @@ msgstr "உறுப்பினரின் லேபிள்கள்"
 msgid "Labels"
 msgstr "சிட்டைகள்"
 
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -3782,6 +3893,11 @@ msgstr "%d புலத்திற்கான தேர்வுகள் ந�
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "%d: %s புலத்திற்கான தேர்வுகளை நகர்த்த முடியவில்லை"
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
 
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "கேலட்டில் நிர்வாகக் கணக்கின் அளவுருக்களைத் தேர்வுசெய்க"
@@ -4718,6 +4834,67 @@ msgstr ""
 "நீங்கள் தேர்ந்தெடுத்த சில உறுப்பினர்களுக்கு மின்னஞ்சல் முகவரி இல்லை. இருப்பினும், நத்தை அஞ்சல் "
 "மூலம் அவற்றை தொடர்பு கொள்ள உறை லேபிள்களை உருவாக்கலாம்."
 
+msgid "Member (company)"
+msgstr "உறுப்பினர் (நிறுவனம்)"
+
+msgid "Search result"
+msgstr "தேடல் முடிவு"
+
+msgid "Legend"
+msgstr "புராணக்கதை"
+
+msgid "Display map in full screen"
+msgstr "வரைபடத்தை முழுத் திரையில் காண்பி"
+
+msgid "Exit full screen"
+msgstr "முழுத் திரை வெளியேறு"
+
+msgid "Search your town..."
+msgstr "உங்கள் ஊரைத் தேடுங்கள் ..."
+
+msgid "Search a town..."
+msgstr "ஒரு ஊரைத் தேடுங்கள் ..."
+
+msgid "Sorry, that town could not be found."
+msgstr "மன்னிக்கவும், அந்த நகரத்தைக் கண்டுபிடிக்க முடியவில்லை."
+
+msgid "Search"
+msgstr "தேடல்"
+
+msgid "Show me where I am"
+msgstr "நான் இருக்கும் இடத்தை எனக்குக் காட்டு"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "நீங்கள் வரைபடத்தின் எல்லைகளுக்கு வெளியே அமைந்திருக்கிறீர்கள்"
+
+msgid "aka"
+msgstr "அகா"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "நீங்கள் %1$s"
+
+msgid "I live here!"
+msgstr "நான் இங்கே வாழ்கிறேன்!"
+
+msgid "Member lives here!"
+msgstr "உறுப்பினர் இங்கே வசிக்கிறார்!"
+
+msgid "Remove my coordinates"
+msgstr "எனது ஆயங்களை அகற்றவும்"
+
+msgid "Remove member coordinates"
+msgstr "உறுப்பினர் ஆயங்களை அகற்று"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "தரவுத்தளத்திலிருந்து ஆயங்களை அகற்ற விரும்புகிறீர்களா?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "'நான் இங்கே வாழ்கிறேன்' செயல்முறையின் போது பிழை ஏற்பட்டது :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "ஒருங்கிணைப்புகளை அகற்றுவதில் பிழை ஏற்பட்டது :("
+
 msgid "Modification"
 msgstr "மாற்றம்"
 
@@ -5212,9 +5389,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-msgid "Legend"
-msgstr "புராணக்கதை"
 
 #, fuzzy
 #| msgid "Status"
@@ -6246,6 +6420,51 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "தேர்வுக்கு:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "இணைக்கப்பட்டுள்ளது:"
 
@@ -6302,6 +6521,20 @@ msgid ""
 msgstr ""
 "உறுப்பினர் தனது முகவரி இருந்தால், அவரது பயனர்பெயர் மற்றும் கடவுச்சொல்லை மின்னஞ்சல் மூலம் "
 "பெறுவார்."
+
+msgid "Choose your location"
+msgstr "உங்கள் இருப்பிடத்தைத் தேர்வுசெய்க"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "%1$s இருப்பிடத்தைத் தேர்வுசெய்க"
+
+msgid "Select your town."
+msgstr "உங்கள் ஊரைத் தேர்ந்தெடுக்கவும்."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "தரவுத்தளத்தில், நகரம் இதற்கு அமைக்கப்பட்டுள்ளது: '%1$s'"
 
 msgid "Family"
 msgstr "குடும்பம்"
@@ -6504,6 +6737,9 @@ msgstr "நிறுவப்படவில்லை"
 
 msgid "Need update"
 msgstr "அப்டேட் வேண்டும்"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "வெளிப்படையாக முடக்கப்பட்டது"

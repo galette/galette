@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -1050,6 +1050,55 @@ msgstr ""
 msgid "Flush the logs"
 msgstr ""
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr ""
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr ""
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr ""
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr ""
+
+msgid "Coordinates have not been removed :("
+msgstr ""
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr ""
+
+msgid "Coordinates have not been stored :("
+msgstr ""
+
 msgid "Unable to get members list."
 msgstr ""
 
@@ -1256,6 +1305,12 @@ msgstr ""
 msgid "Manage my two-factor authentication"
 msgstr ""
 
+msgid "My localization"
+msgstr ""
+
+msgid "Set my position on the members map"
+msgstr ""
+
 msgid "Add a child member"
 msgstr ""
 
@@ -1350,6 +1405,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr ""
 
@@ -1396,6 +1454,9 @@ msgstr ""
 msgid "View documents related to your association"
 msgstr ""
 
+msgid "See where members live"
+msgstr ""
+
 msgid "Public pages"
 msgstr ""
 
@@ -1420,6 +1481,14 @@ msgstr ""
 #. TRANS: parameter is the member name
 #, php-format
 msgid "Log in as %1$s"
+msgstr ""
+
+msgid "Geolocalize"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
 msgstr ""
 
 msgid "Mass change"
@@ -2897,6 +2966,48 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -3665,6 +3776,11 @@ msgstr ""
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
 msgstr ""
 
 msgid "Please chose the parameters of the admin account on Galette"
@@ -4547,6 +4663,67 @@ msgid ""
 "generate envelope labels to contact them by snail mail."
 msgstr ""
 
+msgid "Member (company)"
+msgstr ""
+
+msgid "Search result"
+msgstr ""
+
+msgid "Legend"
+msgstr ""
+
+msgid "Display map in full screen"
+msgstr ""
+
+msgid "Exit full screen"
+msgstr ""
+
+msgid "Search your town..."
+msgstr ""
+
+msgid "Search a town..."
+msgstr ""
+
+msgid "Sorry, that town could not be found."
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Show me where I am"
+msgstr ""
+
+msgid "You seem located outside the boundaries of the map"
+msgstr ""
+
+msgid "aka"
+msgstr ""
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr ""
+
+msgid "I live here!"
+msgstr ""
+
+msgid "Member lives here!"
+msgstr ""
+
+msgid "Remove my coordinates"
+msgstr ""
+
+msgid "Remove member coordinates"
+msgstr ""
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr ""
+
+msgid "An error occurred during 'I live here' process :("
+msgstr ""
+
+msgid "An error occurred removing coordinates :("
+msgstr ""
+
 msgid "Modification"
 msgstr ""
 
@@ -4999,9 +5176,6 @@ msgstr ""
 
 #, php-format
 msgid "Go to %s"
-msgstr ""
-
-msgid "Legend"
 msgstr ""
 
 msgid "Statuses"
@@ -5991,6 +6165,51 @@ msgstr ""
 msgid "Follow the sending"
 msgstr ""
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
 msgid "Attached to:"
 msgstr ""
 
@@ -6042,6 +6261,20 @@ msgstr ""
 
 msgid ""
 "Member will receive his username and password by email, if he has an address."
+msgstr ""
+
+msgid "Choose your location"
+msgstr ""
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr ""
+
+msgid "Select your town."
+msgstr ""
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
 msgstr ""
 
 msgid "Family"
@@ -6245,6 +6478,9 @@ msgid "Not installed"
 msgstr ""
 
 msgid "Need update"
+msgstr ""
+
+msgid "Part of Galette now, can be removed"
 msgstr ""
 
 msgid "Explicitly disabled"

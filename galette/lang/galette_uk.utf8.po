@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -1082,6 +1082,55 @@ msgstr "Сталася помилка під час спроби очистит�
 msgid "Flush the logs"
 msgstr "Очистити журнали"
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Maps"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Суперадмін не може бути локалізований."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Географічне положення %1$s"
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "Координати видалено!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Координати не видалено :("
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr "Збережено нові координати!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Координати не зберігаються :("
+
 msgid "Unable to get members list."
 msgstr "Не вдається отримати список членів."
 
@@ -1300,6 +1349,12 @@ msgstr "Заповніть всі порожні логіни та паролі"
 msgid "Manage my two-factor authentication"
 msgstr ""
 
+msgid "My localization"
+msgstr "Моя локалізація"
+
+msgid "Set my position on the members map"
+msgstr ""
+
 msgid "Add a child member"
 msgstr "Додати дочірнього члена"
 
@@ -1398,6 +1453,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr "Відомості про доступні втулки"
 
@@ -1444,6 +1502,9 @@ msgstr "Галереї"
 msgid "View documents related to your association"
 msgstr "Перегляньте документи, що стосуються вашої асоціації"
 
+msgid "See where members live"
+msgstr ""
+
 msgid "Public pages"
 msgstr "Загальнодоступні сторінки"
 
@@ -1469,6 +1530,14 @@ msgstr "%1$s: видалити з бази даних"
 #, php-format
 msgid "Log in as %1$s"
 msgstr "Увійти як %1$s"
+
+msgid "Geolocalize"
+msgstr "Геолокалізувати"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Геолокалізувати %1$s"
 
 msgid "Mass change"
 msgstr "Масова зміна"
@@ -2979,6 +3048,48 @@ msgstr "Мітки члена"
 msgid "Labels"
 msgstr "Мітки"
 
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -3837,6 +3948,11 @@ msgstr ""
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
 msgstr ""
 
 msgid "Please chose the parameters of the admin account on Galette"
@@ -4786,6 +4902,67 @@ msgstr ""
 "Деякі вибрані члени не мають адрес е-пошти. Однак ви можете створити "
 "конвертові мітки, щоб зв'язатися з ними поштою."
 
+msgid "Member (company)"
+msgstr "Член (компанія)"
+
+msgid "Search result"
+msgstr "Підсумки пошуку"
+
+msgid "Legend"
+msgstr "Умовне позначення"
+
+msgid "Display map in full screen"
+msgstr "Відкрити мапу на весь екран"
+
+msgid "Exit full screen"
+msgstr "Вийти з повноекранного режиму"
+
+msgid "Search your town..."
+msgstr "Пошук вашого міста..."
+
+msgid "Search a town..."
+msgstr "Пошук міста..."
+
+msgid "Sorry, that town could not be found."
+msgstr "На жаль, цього міста не вдалося знайти."
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "Show me where I am"
+msgstr "Показати де я"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Здається, ви знаходитесь поза межами мапи"
+
+msgid "aka"
+msgstr "він же"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Ви натиснули на %1$s"
+
+msgid "I live here!"
+msgstr "Я живу тут!"
+
+msgid "Member lives here!"
+msgstr "Член живе тут!"
+
+msgid "Remove my coordinates"
+msgstr "Видалити мої координати"
+
+msgid "Remove member coordinates"
+msgstr "Видалити координати члена"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Ви впевнені, що хочете видалити координати з бази даних?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Помилка під час процесу \"Я живу тут\" :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Під час видалення координат сталася помилка :("
+
 msgid "Modification"
 msgstr "Змінення"
 
@@ -5290,9 +5467,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-msgid "Legend"
-msgstr "Умовне позначення"
 
 #, fuzzy
 #| msgid "Status"
@@ -6340,6 +6514,51 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Для вибору:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "Долучено до:"
 
@@ -6395,6 +6614,20 @@ msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
 "Член отримає своє ім'я користувача і пароль е-оштою, якщо у нього є адреса."
+
+msgid "Choose your location"
+msgstr "Виберіть своє місцеперебування"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Оберіть розташування %1$s"
+
+msgid "Select your town."
+msgstr "Виберіть своє місто."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "У базі даних установлено місто: '%1$s'"
 
 msgid "Family"
 msgstr "Родина"
@@ -6610,6 +6843,9 @@ msgstr "Не зареєстровано"
 #| msgid "Member card updated"
 msgid "Need update"
 msgstr "Картку члена оновлено"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Явно вимкнено"

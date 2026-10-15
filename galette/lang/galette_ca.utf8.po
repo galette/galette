@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-15 17:31+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -1187,6 +1187,55 @@ msgstr "S'ha produït un error en intentar buidar els registres ("
 msgid "Flush the logs"
 msgstr "Neteja els registres"
 
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Mapes"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr ""
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr ""
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr ""
+
+msgid "Coordinates have not been removed :("
+msgstr ""
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr ""
+
+msgid "Coordinates have not been stored :("
+msgstr ""
+
 #, fuzzy
 msgid "Unable to get members list."
 msgstr "No s'ha pogut obtenir la llista de membres."
@@ -1419,6 +1468,12 @@ msgstr "Omple tots els inicis de sessió i contrasenyes buits"
 msgid "Manage my two-factor authentication"
 msgstr ""
 
+msgid "My localization"
+msgstr "La meva localització"
+
+msgid "Set my position on the members map"
+msgstr ""
+
 #, fuzzy
 msgid "Add a child member"
 msgstr "Afegeix un membre"
@@ -1542,6 +1597,9 @@ msgstr ""
 msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
 msgid "Information about available plugins"
 msgstr "Informació quant als connectors disponibles"
 
@@ -1602,6 +1660,9 @@ msgstr "Trombinoscopi"
 msgid "View documents related to your association"
 msgstr ""
 
+msgid "See where members live"
+msgstr ""
+
 #, fuzzy
 msgid "Public pages"
 msgstr "Pàgines públiques"
@@ -1628,6 +1689,14 @@ msgstr "Elimina de la base de dades el nom d'un membre de la base de dades"
 #, fuzzy, php-format
 msgid "Log in as %1$s"
 msgstr "Inicia sessió com a nomdepermembre"
+
+msgid "Geolocalize"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr ""
 
 #, fuzzy
 msgid "Mass change"
@@ -3402,6 +3471,48 @@ msgstr "Etiquetes dels membres"
 msgid "Labels"
 msgstr "Etiquetes"
 
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
+
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
 "account."
@@ -4372,6 +4483,11 @@ msgstr ""
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
 msgstr ""
 
 #, fuzzy
@@ -5453,6 +5569,68 @@ msgstr ""
 "obstant això podeu generar etiquetes d'envolupant per contactar-los per "
 "correu de caragol."
 
+msgid "Member (company)"
+msgstr ""
+
+msgid "Search result"
+msgstr ""
+
+#, fuzzy
+msgid "Legend"
+msgstr "Llegenda"
+
+msgid "Display map in full screen"
+msgstr ""
+
+msgid "Exit full screen"
+msgstr ""
+
+msgid "Search your town..."
+msgstr ""
+
+msgid "Search a town..."
+msgstr "Buscar una localitat…"
+
+msgid "Sorry, that town could not be found."
+msgstr ""
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Show me where I am"
+msgstr ""
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Sembla que estàs fora dels límits del mapa"
+
+msgid "aka"
+msgstr ""
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr ""
+
+msgid "I live here!"
+msgstr "Visc aquí!"
+
+msgid "Member lives here!"
+msgstr ""
+
+msgid "Remove my coordinates"
+msgstr "Esborra les meves coordenades"
+
+msgid "Remove member coordinates"
+msgstr ""
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Segur que vols esborrar aquestes coordenades de la base de dades?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr ""
+
+msgid "An error occurred removing coordinates :("
+msgstr ""
+
 #, fuzzy
 msgid "Modification"
 msgstr "Modificació"
@@ -6017,10 +6195,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-#, fuzzy
-msgid "Legend"
-msgstr "Llegenda"
 
 #, fuzzy
 #| msgid "Status"
@@ -7239,6 +7413,51 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Per a la selecció:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
 #, fuzzy
 msgid "Attached to:"
 msgstr "Adjuntat a"
@@ -7309,6 +7528,20 @@ msgid ""
 msgstr ""
 "El diputat rebrà el seu nom d'usuari i contrasenya per correu electrònic si "
 "té una adreça."
+
+msgid "Choose your location"
+msgstr ""
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr ""
+
+msgid "Select your town."
+msgstr ""
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr ""
 
 #, fuzzy
 msgid "Family"
@@ -7566,6 +7799,9 @@ msgstr "No registrat"
 #, fuzzy
 msgid "Need update"
 msgstr "Targeta de soci actualitzada"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 #, fuzzy
 msgid "Explicitly disabled"
