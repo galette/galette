@@ -187,6 +187,17 @@ class Galette
                 ];
             }
 
+            if (!$login->isSuperAdmin() && $preferences->pref_maps_enabled) {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('My localization'),
+                    'title' => _T('Set my position on the members map'),
+                    'route' => [
+                        'name' => 'mapsLocalizeMe',
+                        'args' => []
+                    ]
+                ];
+            }
+
             if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
                 $menus['myaccount']['items'][] = [
                     'label' => _T('Add a child member'),
@@ -433,6 +444,13 @@ class Galette
                                 ]
                             ],
                             [
+                                'label' => _T("Maps settings"),
+                                'title' => _T("Display members positions on maps, and choose the background map"),
+                                'route' => [
+                                    'name' => 'mapsSettings'
+                                ]
+                            ],
+                            [
                                 'label' => _T("Plugins"),
                                 'title' => _T("Information about available plugins"),
                                 'route' => [
@@ -667,6 +685,20 @@ class Galette
             ];
         }
 
+        if (
+            $preferences->pref_maps_enabled
+            && $preferences->showPublicPage($login, 'pref_publicpages_visibility_maps')
+        ) {
+            $items[] = [
+                'label' => _T("Maps"),
+                'title' => _T("See where members live"),
+                'route' => [
+                    'name' => 'maps'
+                ],
+                'icon' => 'map'
+            ];
+        }
+
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins public menus entries
             $plugin_class = $plugins->getClassName($module_id, full: true);
@@ -706,8 +738,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var ContainerInterface $container
+         * @var Preferences $preferences
          */
-        global $login, $plugins, $container;
+        global $login, $plugins, $container, $preferences;
 
         $dashboards = [];
         if ($login->isLogged() && !$login->isSuperAdmin()) {
@@ -743,6 +776,17 @@ class Galette
                     ]
                 ]
             );
+        }
+
+        if ($login->isLogged() && !$login->isSuperAdmin() && $preferences->pref_maps_enabled) {
+            $dashboards[] = [
+                'label' => _T("My localization"),
+                'title' => _T('Set my position on the members map'),
+                'route' => [
+                    'name' => 'mapsLocalizeMe'
+                ],
+                'icon' => 'round_pushpin'
+            ];
         }
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
@@ -1020,6 +1064,8 @@ class Galette
             ]);
         }
 
+        $actions = array_merge($actions, static::getLocalizeActions($member));
+
         if ($login->isSuperAdmin()) {
             $actions[] = [
                 'label' => sprintf(
@@ -1062,6 +1108,40 @@ class Galette
     }
 
     /**
+     * Get member position action, when maps are enabled
+     *
+     * @param Adherent $member Current member
+     *
+     * @return array<int, array<string,mixed>>
+     */
+    private static function getLocalizeActions(Adherent $member): array
+    {
+        /** @var Preferences $preferences */
+        global $preferences;
+
+        //listed or displayed members can already be shown: the page checks it again
+        if (!$preferences->pref_maps_enabled) {
+            return [];
+        }
+
+        return [
+            [
+                'label' => _T("Geolocalize"),
+                'title' => sprintf(
+                    //TRANS: parameter is the member name
+                    _T('Geolocalize %1$s'),
+                    $member->sname
+                ),
+                'route' => [
+                    'name' => 'mapsLocalizeMember',
+                    'args' => ['id' => $member->id]
+                ],
+                'icon' => 'map marker alternate grey'
+            ]
+        ];
+    }
+
+    /**
      * Get member show actions
      *
      * @param Adherent $member Current member
@@ -1076,9 +1156,7 @@ class Galette
          */
         global $plugins, $container;
 
-        $actions = [];
-
-        //TODO: add core detailed actions
+        $actions = static::getLocalizeActions($member);
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
