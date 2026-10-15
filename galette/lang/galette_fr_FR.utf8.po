@@ -1071,7 +1071,7 @@ msgid "%1$s geographic position"
 msgstr "Position géographique de %1$s"
 
 msgid "Maps settings"
-msgstr "Préférences de Maps"
+msgstr "Préférences des cartes"
 
 msgid "Unknown position precision."
 msgstr "Précision de position inconnue."
@@ -1080,7 +1080,7 @@ msgid "An address is required to use your own background map."
 msgstr "Une adresse est requise pour utiliser votre propre fond de carte."
 
 msgid "Maps settings have been saved."
-msgstr "Les préférences de Maps ont été enregistrées."
+msgstr "Les préférences des cartes ont été enregistrées."
 
 msgid "Coordinates have been removed!"
 msgstr "Les coordonnées ont été supprimées !"
