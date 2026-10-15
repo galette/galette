@@ -1,0 +1,57 @@
+/*!
+ * This file is part of Galette (https://galette.eu).
+ * SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.map-container { height: 85vh; }
+
+#map {
+    min-height: 100%;
+}
+
+#possible_towns ul,
+#map .maps-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#possible_towns li {
+    margin-bottom: .5em;
+}
+
+#map .maps-legend li {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    margin: .2em 0;
+}
+
+#map .maps-legend img {
+    height: 25px;
+}
+
+#map #legend {
+    padding: 6px 8px;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    text-align: left;
+}
+
+.legend-container .legend-toggle {
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+}
+
+.legend-collapsed .legend-toggle {
+    text-align: right;
+    background: white;
+    background: #fff;
+    border: 2px solid rgba(0,0,0,.2);
+    padding: 3px 8px 3px 3px;
+}

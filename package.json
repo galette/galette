@@ -40,6 +40,7 @@
     "css-loader": "^7.1.5",
     "del": "^6.1.1",
     "dotenv": "^18.0.7",
+    "esbuild": "^0.28.2",
     "file-loader": "^6.2.0",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
@@ -54,6 +55,7 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
+    "@maplibre/maplibre-gl-leaflet": "^0.1.4",
     "chart.js": "^4.5.1",
     "chartjs-plugin-autocolors": "^0.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -61,6 +63,14 @@
     "fomantic-ui": "^2.9.4",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.8",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^4.0.0",
+    "leaflet-gesture-handling": "^1.2.2",
+    "leaflet-legend": "^1.0.2",
+    "leaflet.fullscreen": "^5.3.3",
+    "leaflet.locatecontrol": "^0.90.1",
+    "leaflet.markercluster": "^1.5.3",
+    "maplibre-gl": "^6.14.0",
     "sortablejs": "^1.15.7",
     "summernote": "^0.9.1",
     "twemoji-emojis": "^14.1.0"

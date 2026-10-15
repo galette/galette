@@ -23,6 +23,7 @@ var gulp = require('gulp'),
   replace = require('gulp-replace'),
   download = require("gulp-download2"),
   browserSync = require('browser-sync').create(),
+  esbuild = require('esbuild'),
   build = require('./semantic/tasks/build'),
   buildJS = require('./semantic/tasks/build/javascript'),
   buildCSS = require('./semantic/tasks/build/css'),
@@ -77,6 +78,22 @@ var paths = {
     ],
     codemirror: [
       'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/codemirror.css'
+    ],
+    maps: [
+      './node_modules/leaflet/dist/leaflet.css',
+      './node_modules/leaflet.fullscreen/dist/Control.FullScreen.css',
+      './node_modules/leaflet-gesture-handling/dist/leaflet-gesture-handling.css',
+      './node_modules/leaflet.markercluster/dist/MarkerCluster.css',
+      './node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
+      './node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css',
+      './node_modules/leaflet-legend/leaflet-legend.css',
+      './ui/css/maps.css'
+    ],
+    mapslocate: [
+      './node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css'
+    ],
+    mapsgl: [
+      './node_modules/maplibre-gl/dist/maplibre-gl.css'
     ]
   },
   scripts: {
@@ -110,7 +127,33 @@ var paths = {
     ],
     darkreader: [
       './node_modules/darkreader/darkreader.js'
+    ],
+    maps: [
+      './node_modules/leaflet/dist/leaflet.js',
+      './node_modules/leaflet.fullscreen/dist/Control.FullScreen.umd.js',
+      './node_modules/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.js',
+      './node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
+      './node_modules/leaflet-control-geocoder/dist/Control.Geocoder.js',
+      './node_modules/leaflet-legend/leaflet-legend.js',
+      './ui/js/maps.js'
+    ],
+    mapslocate: [
+      './node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js'
     ]
+  },
+  // maplibre-gl ships ES modules only since 6.x, so its bundle cannot be built
+  // by concatenation like the others: esbuild rolls it up, along with the
+  // Leaflet binding, into a classic script still exposing the `maplibregl` global.
+  mapsgl: {
+    entry: './ui/js/maps/maps-gl.js',
+    // Leaflet comes from maps.min.js, so the bundle must reuse the one on the
+    // page instead of embedding a second copy.
+    aliases: {
+      'leaflet': './ui/js/maps/leaflet-global.js'
+    },
+    // maplibre-gl runs its tile parsing in a worker it fetches at runtime; it
+    // has to be a file of its own, next to the bundle.
+    worker: './node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'
   },
   extras: [
     {
@@ -123,6 +166,15 @@ var paths = {
     }, {
       src: './node_modules/jquery/dist/jquery.min.js',
       dest: 'js/'
+    }, {
+      // maps stylesheets refer to their images relatively
+      src: './node_modules/leaflet/dist/images/*',
+      dest: 'css/images/',
+      encoding: false
+    }, {
+      src: './ui/images/maps/*',
+      dest: 'images/maps/',
+      encoding: false
     }
   ]
 };
@@ -194,7 +246,25 @@ function styles() {
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  return merge(summernote, codemirror);
+  maps = gulp.src(paths.styles.maps)
+    .pipe(cleanCSS())
+    .pipe(concat('maps.min.css'))
+    .pipe(gulp.dest(paths.assets.css))
+    .pipe(browserSync.stream());
+
+  mapslocate = gulp.src(paths.styles.mapslocate)
+    .pipe(cleanCSS())
+    .pipe(concat('maps-locate.min.css'))
+    .pipe(gulp.dest(paths.assets.css))
+    .pipe(browserSync.stream());
+
+  mapsgl = gulp.src(paths.styles.mapsgl)
+    .pipe(cleanCSS())
+    .pipe(concat('maps-gl.min.css'))
+    .pipe(gulp.dest(paths.assets.css))
+    .pipe(browserSync.stream());
+
+  return merge(summernote, codemirror, maps, mapslocate, mapsgl);
 }
 
 function scripts() {
@@ -255,7 +325,43 @@ function scripts() {
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  return merge(main, masschanges, chartjs, sortablejs, summernote, codemirror, codemirrorxml, codemirrorformatting, darkreader);
+  maps = gulp.src(paths.scripts.maps)
+    .pipe(concat('maps.min.js'))
+    .pipe(uglify({
+      output: {
+        comments: /^!/
+      }
+    }))
+    .pipe(gulp.dest(paths.assets.js))
+    .pipe(browserSync.stream());
+
+  mapslocate = gulp.src(paths.scripts.mapslocate)
+    .pipe(concat('maps-locate.min.js'))
+    .pipe(gulp.dest(paths.assets.js))
+    .pipe(browserSync.stream());
+
+  return merge(main, masschanges, chartjs, sortablejs, summernote, codemirror, codemirrorxml, codemirrorformatting, darkreader, maps, mapslocate);
+}
+
+function mapsgl() {
+  return Promise.all([
+    esbuild.build({
+      entryPoints: [paths.mapsgl.entry],
+      outfile: paths.assets.js + 'maps-gl.min.js',
+      bundle: true,
+      minify: true,
+      format: 'iife',
+      globalName: 'maplibregl',
+      alias: paths.mapsgl.aliases
+    }),
+    esbuild.build({
+      entryPoints: [paths.mapsgl.worker],
+      outfile: paths.assets.js + 'maps-gl.worker.min.js',
+      bundle: true,
+      minify: true,
+      format: 'esm'
+    })
+  ]);
 }
 
 function movefiles() {
@@ -281,6 +387,7 @@ function watch() {
   gulp.watch([paths.src.theme, paths.src.config], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
   gulp.watch([paths.src.css], gulp.series(styles)).on('change', browserSync.reload)
   gulp.watch([paths.src.js], gulp.series(scripts)).on('change', browserSync.reload)
+  gulp.watch(['./ui/js/maps/*.js'], gulp.series(mapsgl)).on('change', browserSync.reload)
   gulp.watch([paths.assets.theme.css, paths.assets.theme.js, paths.assets.theme.images]).on('change', browserSync.reload)
 }
 
@@ -289,8 +396,9 @@ exports.theme = theme;
 exports.clean = clean;
 exports.styles = styles;
 exports.scripts = scripts;
+exports.mapsgl = mapsgl;
 exports.movefiles = movefiles;
 exports.watch = watch;
 
-var build = gulp.series(theme, clean, styles, scripts, movefiles, 'build ui', galette);
+var build = gulp.series(theme, clean, styles, scripts, mapsgl, movefiles, 'build ui', galette);
 exports.default = build;
