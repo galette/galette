@@ -460,13 +460,23 @@ CREATE TABLE galette_auth_attempts (
   UNIQUE KEY galette_auth_attempts_scope (scope, identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+-- table for members geographic positions
+DROP TABLE IF EXISTS galette_maps_coordinates;
+CREATE TABLE galette_maps_coordinates (
+  id_adh int unsigned NOT NULL,
+  latitude decimal(9,6) NOT NULL,
+  longitude decimal(9,6) NOT NULL,
+  PRIMARY KEY (id_adh),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-INSERT INTO galette_database(version) VALUES(1.300);
+INSERT INTO galette_database(version) VALUES(1.400);
 
 
 SET FOREIGN_KEY_CHECKS=1;

@@ -534,7 +534,8 @@ class Db extends BaseGaletteTestCase
             'galette_documents',
             'galette_auth_attempts',
             'galette_twofactor',
-            'galette_twofactor_codes'
+            'galette_twofactor_codes',
+            'galette_maps_coordinates'
         ];
 
         $tables = $this->zdb->getTables();
