@@ -66,13 +66,6 @@ td[dir=rtl]#pdf_logo {
 td[dir=rtl]#pdf_assoname {
     width: 100%;
     margin-left: 25%;
-}
-
-hr {
-    cap:\'\';
-    join:\'\';
-    dash:1;
-    phase:\'\';
 }',
         'model_parent'  => null
     ],
@@ -206,31 +199,31 @@ hr {
 <table class="member">
     <tr>
         <td class="label">_T("Politeness")</td>
-        <td class="input">{TITLE_ADH}</td>
+        <td class="input" colspan="3">{TITLE_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Name")</td>
-        <td class="input">{LAST_NAME_ADH}</td>
+        <td class="input" colspan="3">{LAST_NAME_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("First name")</td>
-        <td class="input">{FIRST_NAME_ADH}</td>
+        <td class="input" colspan="3">{FIRST_NAME_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Company name") *</td>
-        <td class="input">{COMPANY_ADH}</td>
+        <td class="input" colspan="3">{COMPANY_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Address")</td>
-        <td class="input">{ADDRESS_ADH}</td>
+        <td class="input" colspan="3">{ADDRESS_ADH}</td>
     </tr>
     <tr>
         <td class="label"></td>
-        <td class="input"></td>
+        <td class="input" colspan="3"></td>
     </tr>
     <tr>
         <td class="label"></td>
-        <td class="input"></td>
+        <td class="input" colspan="3"></td>
     </tr>
     <tr>
         <td class="label">_T("Zip Code")</td>
@@ -240,22 +233,22 @@ hr {
     </tr>
     <tr>
         <td class="label">_T("Country")</td>
-        <td class="input">{COUNTRY_ADH}</td>
+        <td class="input" colspan="3">{COUNTRY_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Email address")</td>
-        <td class="input">{EMAIL_ADH}</td>
+        <td class="input" colspan="3">{EMAIL_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Username") **</td>
-        <td class="input">{LOGIN_ADH}</td>
+        <td class="input" colspan="3">{LOGIN_ADH}</td>
     </tr>
     <tr>
-        <td colspan="2" height="10"></td>
+        <td colspan="4" height="10"></td>
     </tr>
     <tr>
         <td class="label">_T("Amount")</td>
-        <td class="input"></td>
+        <td class="input" colspan="3"></td>
     </tr>
 </table>
 <p>str_replace(\'%s\', \'{ASSO_NAME}\', \'_T("Hereby, I agree to comply to %s association statutes and its rules.")\')</p><p>_T("At ................................................")</p><p>_T("On .......... / .......... / .......... ")</p><p>_T("Signature")</p>
@@ -289,8 +282,8 @@ p.notes {
 }
 
 .member td {
-    line-height: 20px;
-    height: 20px;
+    height: 7mm;
+    vertical-align: bottom;
 }
 
 td.boxlabel {
