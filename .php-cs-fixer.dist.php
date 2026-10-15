@@ -24,6 +24,8 @@ return (new PhpCsFixer\Config())
         'cast_spaces' => ['space' => 'none'],
         'single_line_empty_body' => false,
         'no_unused_imports' => true,
+        // spaces around multiple catch types only, as phpcs expects - https://mlocati.github.io/php-cs-fixer-configurator/#version:3.90|fixer:types_spaces
+        'types_spaces' => ['space' => 'none', 'space_multiple_catch' => 'single'],
         // rules for phpdoc
         // Removes @param, @return and @var tags that don't provide any useful information - https://mlocati.github.io/php-cs-fixer-configurator/#version:3.90|fixer:no_superfluous_phpdoc_tags
         'no_superfluous_phpdoc_tags' => [
