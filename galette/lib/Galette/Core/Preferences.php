@@ -127,6 +127,7 @@ use function Safe\preg_replace;
  * @property      int      $pref_publicpages_visibility_membersgallery
  * @property      int      $pref_publicpages_visibility_stafflist
  * @property      int      $pref_publicpages_visibility_staffgallery
+ * @property      int      $pref_publicpages_visibility_maps
  * @property      bool     $pref_bool_groupsmanagers_are_staff
  * @property      bool     $pref_bool_selfsubscribe
  * @property      bool     $pref_bool_empty_form_link

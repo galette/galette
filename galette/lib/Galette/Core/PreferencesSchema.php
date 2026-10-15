@@ -689,6 +689,9 @@ final class PreferencesSchema
             'pref_publicpages_visibility_staffgallery' => [
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
             ] + $visibility,
+            'pref_publicpages_visibility_maps' => [
+                'default' => PublicPageVisibility::Inherit->value,
+            ] + $visibility,
             'pref_bool_groupsmanagers_are_staff' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_mail_sign' => [
                 //a signature may carry a link, and getMailSignature() hands
