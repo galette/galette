@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Galette\Controllers\Crud;
+use Galette\Controllers\MapsController;
 use Galette\Middleware\PublicPages;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteCollectorProxy;
@@ -58,6 +59,12 @@ $app->group('/public', function (RouteCollectorProxy $app): void {
         '/documents[/{option:page|order}/{value:\d+|\w+}]',
         [Crud\DocumentsController::class, 'publicList']
     )->setName('documentsPublicList');
+
+    //members map
+    $app->get(
+        '/maps',
+        [MapsController::class, 'map']
+    )->setName('maps');
 
     $app->get(
         '/{orig:list|members}[/{option:page|order}/{value:\d+|\w+}]',
