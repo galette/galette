@@ -75,7 +75,7 @@ class PdfAdhesionForm extends Pdf
     {
         if (file_exists($path) && is_dir($path) && is_writable($path)) {
             $this->path = $path . '/' . $this->filename;
-            $this->Output($this->path, 'F');
+            $this->storeAs($this->path);
             return true;
         } else {
             Analog::log(

@@ -16,6 +16,8 @@ use Safe\DateTime;
 use Galette\DynamicFields\DynamicField;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\preg_match;
+
 /**
  * PDF model tests
  *
@@ -357,9 +359,13 @@ class PdfModel extends GaletteTestCase
             $model->hheader
         );
 
-        $this->assertMatchesRegularExpression(
-            '/<td id="pdf_logo"><img src="@.+" width="\d+" height="\d+" alt="" \/><\/td>/',
-            $model->hheader
+        //logo is embedded, PHPUnit regular expression constraint fails on such a long subject
+        $this->assertSame(
+            1,
+            preg_match(
+                '/<td id="pdf_logo"><img src="data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]++" width="\d+" height="\d+" alt="" \/><\/td>/',
+                $model->hheader
+            )
         );
 
         $this->assertSame(

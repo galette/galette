@@ -197,8 +197,8 @@ class PdfController extends GaletteRoutingTestCase
             $this->preferences->pref_card_self = true;
         }
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -227,8 +227,8 @@ class PdfController extends GaletteRoutingTestCase
         $controller = new \Galette\Controllers\PdfController($this->container);
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         unset($this->session->{$controller->getFilterName('members')});
         $expected_headers = [
@@ -275,8 +275,8 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -310,8 +310,8 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -340,10 +340,10 @@ class PdfController extends GaletteRoutingTestCase
             $this->expectOK($test_response);
             $this->assertStringContainsString('Generate Member Card', (string)$test_response->getBody());
 
-            $this->expectOutputRegex($this->is_pdf_regexp);
             $test_response = $this->app->handle(
                 $this->createRequest('pdf-members-cards', [\Galette\Entity\Adherent::PK => (string)$member_one->id])
             );
+            $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
             $this->expectOK(
                 $test_response,
                 [
@@ -376,8 +376,8 @@ class PdfController extends GaletteRoutingTestCase
             $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
             $this->assertFalse($this->login->isGroupManager());
 
-            $this->expectOutputRegex($this->is_pdf_regexp);
             $test_response = $this->app->handle($this->createRequest('pdf_groups', ['id' => (string)$group->getId()]));
+            $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
             $this->expectOK(
                 $test_response,
                 [
@@ -409,8 +409,8 @@ class PdfController extends GaletteRoutingTestCase
             $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
             $this->assertFalse($this->login->isGroupManager());
 
-            $this->expectOutputRegex($this->is_pdf_regexp);
             $test_response = $this->app->handle($this->createRequest('pdf_groups', ['id' => (string)$group->getId()]));
+            $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
             $this->expectOK(
                 $test_response,
                 [
@@ -617,8 +617,8 @@ class PdfController extends GaletteRoutingTestCase
         //test logged-in as member one
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
         $expected_headers = [
             'Content-type' => ['application/pdf'],
             'Content-Disposition' => ['attachment;filename="adherent_form.' . $member_one->id . '.pdf"']
@@ -664,8 +664,8 @@ class PdfController extends GaletteRoutingTestCase
             ]
         );
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -761,8 +761,8 @@ class PdfController extends GaletteRoutingTestCase
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
 
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -786,7 +786,6 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         //no groups, no pdf
@@ -799,6 +798,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($g1->store());
 
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
         $expected_headers = [
             'Content-type' => ['application/pdf'],
             'Content-Disposition' => ['attachment;filename="groups_list.pdf"']
@@ -834,8 +834,8 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
         $this->expectNoLogEntry();
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -865,8 +865,8 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
+        $this->assertMatchesRegularExpression($this->is_pdf_regexp, (string)$test_response->getBody());
         $expected_headers = [
             'Content-type' => ['application/pdf'],
             'Content-Disposition' => ['attachment;filename="contribution_' . $contribution_one->id . '_receipt.pdf"']

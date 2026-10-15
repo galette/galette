@@ -46,10 +46,21 @@ class PdfController extends AbstractController
      */
     protected function sendResponse(Response $response, Pdf $pdf): Response
     {
+        try {
+            $contents = $pdf->getContents();
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to generate PDF ' . $pdf->getFilename(), Analog::ERROR);
+            return $this->redirectWithErrors(
+                $response,
+                [_T('Unable to generate PDF file.')],
+                $_SERVER['HTTP_REFERER'] ?? $this->routeparser->urlFor('slash')
+            );
+        }
+
         $response = $response
             ->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->getBody()->write($pdf->download());
+            ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFilename() . '"');
+        $response->getBody()->write($contents);
         return $response;
     }
 

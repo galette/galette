@@ -26,7 +26,6 @@ parameters:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
         - galette/config/config.inc.php.dist
-        - galette/includes/sys_config/galette_tcpdf_config.php
     scanDirectories:
         - galette/includes/
     dynamicConstantNames:
@@ -76,7 +75,6 @@ parameters:
         -
             identifier: theCodingMachineSafe.function
             paths:
-                - tests/config/*/galette_tcpdf_config.php
                 - tests/config/*/config.inc.php
                 - tests/config/*/local_config.inc.php
                 - tests/TestsBootstrap.php

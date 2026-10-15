@@ -21,11 +21,12 @@ if (file_exists(GALETTE_ROOT . 'config/local_paths.inc.php')) {
 }
 
 //3rd party libs paths
-if (!defined('GALETTE_TCPDF_PATH')) {
+if (!defined('GALETTE_FONTS_PATH')) {
+    //PDF fonts, built by tc-lib-pdf-font on composer install
     //@phpstan-ignore theCodingMachineSafe.function
     define(
-        'GALETTE_TCPDF_PATH',
-        GALETTE_ROOT . '/vendor/tecnickcom/tcpdf'
+        'GALETTE_FONTS_PATH',
+        GALETTE_ROOT . 'vendor/tecnickcom/tc-lib-pdf-font/target/fonts/'
     );
 }
 if (!defined('GALETTE_XHPROF_PATH')) {

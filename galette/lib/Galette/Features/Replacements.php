@@ -22,6 +22,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Document;
 use Galette\Entity\Texts;
+use Galette\IO\Pdf;
 use Galette\Repository\Documents;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
@@ -32,7 +33,6 @@ use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
 
-use function Safe\file_get_contents;
 use function Safe\preg_match;
 use function Safe\preg_replace;
 use function Safe\preg_replace_callback;
@@ -516,7 +516,7 @@ trait Replacements
      * Convert address line breaks to HTML ones
      *
      * Unlike nl2br(), original line breaks are dropped; kept ones would be
-     * rendered as an extra leading space by TCPDF.
+     * rendered as an extra leading space by the PDF engine.
      *
      * @param string $address Postal address
      */
@@ -557,7 +557,7 @@ trait Replacements
         if ($this->mail !== null) {
             $logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('logo');
         } else {
-            $logo_content = '@' . base64_encode(file_get_contents($logo->getPath()));
+            $logo_content = Pdf::getDataUri($logo->getPath());
         }
         $logo_elt = sprintf(
             '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',
@@ -570,7 +570,7 @@ trait Replacements
         if ($this->mail !== null) {
             $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
         } else {
-            $print_logo_content = '@' . base64_encode(file_get_contents($print_logo->getPath()));
+            $print_logo_content = Pdf::getDataUri($print_logo->getPath());
         }
         $print_logo_elt = sprintf(
             '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',

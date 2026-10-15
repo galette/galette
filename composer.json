@@ -52,7 +52,6 @@
         "laminas/laminas-stdlib": "^3.3",
         "analog/analog": "^1.0",
         "phpmailer/phpmailer": "^7.0",
-        "tecnickcom/tcpdf": "^6.6",
         "akrabat/rka-slim-session-middleware": "^3.0",
         "laminas/laminas-i18n": "^2.11",
         "slim/flash": "^0.4.0",
@@ -80,7 +79,8 @@
         "thecodingmachine/safe": "^3.3",
         "spomky-labs/otphp": "^11.5",
         "psr/clock": "^1.0",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "tecnickcom/tc-lib-pdf": "^8.84"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
@@ -107,11 +107,15 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch",
+            "@tc-lib-pdf-fonts",
             "@compile-locales"
         ],
         "post-update-cmd": [
+            "@tc-lib-pdf-fonts",
             "@compile-locales"
+        ],
+        "tc-lib-pdf-fonts": [
+            "@php galette/vendor/tecnickcom/tc-lib-pdf-font/util/build_fonts.php"
         ],
         "compile-locales": [
             "bin/console galette:compile-locales || echo 'Translations have not been compiled, see above.'"

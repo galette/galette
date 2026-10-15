@@ -19,7 +19,6 @@
     <file>tests/plugins/</file>
 
     <exclude-pattern>/.git/</exclude-pattern>
-    <exclude-pattern type="relative">^galette_tcpdf_config.php$</exclude-pattern>
 
     <arg name="warning-severity" value="0" /><!-- no warning -->
     <arg value="p" /><!-- show progress -->

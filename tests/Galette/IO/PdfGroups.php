@@ -52,4 +52,69 @@ class PdfGroups extends GaletteTestCase
             $this->login->logOut();
         }
     }
+
+    /**
+     * Test a group heading is never separated from its members table
+     */
+    public function testHeadingKeptWithTable(): void
+    {
+        $this->logSuperAdmin();
+        $groups = [];
+        for ($i = 1; $i <= 40; ++$i) {
+            $group = new \Galette\Entity\Group();
+            $group->setName('Kept together ' . $i);
+            $this->assertTrue($group->store());
+            $groups[] = $group;
+        }
+
+        $access = $this->container->get(\Galette\Access\AccessControl::class);
+        $pdf = new class ($this->preferences, $access) extends \Galette\IO\PdfGroups {
+            /** @var array<int, int> */
+            public array $headings = [];
+            /** @var array<int, int> */
+            public array $tables = [];
+
+            /**
+             * Record the page each group heading is drawn on
+             */
+            public function text(
+                string $text,
+                float $w = 0,
+                float $h = 0,
+                string $align = '',
+                bool $ln = true,
+                string $valign = 'T',
+                ?string $fill = null,
+                string $border = '',
+                ?float $x = null,
+                ?float $y = null,
+                bool $wrap = true
+            ): float {
+                if (str_starts_with($text, 'Kept together ')) {
+                    $this->headings[] = $this->getNumPages();
+                }
+                return parent::text($text, $w, $h, $align, $ln, $valign, $fill, $border, $x, $y, $wrap);
+            }
+
+            /**
+             * Record the page each members table ends on
+             */
+            public function writeHTML(
+                string $html,
+                ?float $x = null,
+                ?float $y = null,
+                float $w = 0,
+                float $h = 0
+            ): void {
+                //tables of empty groups are a single row: they stay on one page
+                parent::writeHTML($html, $x, $y, $w, $h);
+                $this->tables[] = $this->getNumPages();
+            }
+        };
+        $pdf->draw($groups);
+
+        $this->assertCount(40, $pdf->headings);
+        $this->assertGreaterThan(1, $pdf->getNumPages());
+        $this->assertSame($pdf->headings, $pdf->tables);
+    }
 }

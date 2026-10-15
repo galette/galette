@@ -312,12 +312,39 @@ foreach ($plugins->getProviders(MenuProviderInterface::class) as $plugin) {
 }
 ```
 
-## Coming changes
+## PDF
 
-The following changes are not merged yet. Each of them will complete its
-section when it is.
+TCPDF is replaced by [tc-lib-pdf](https://github.com/tecnickcom/tc-lib-pdf).
+`Galette\IO\Pdf` now extends `Com\Tecnick\Pdf\Tcpdf`: TCPDF methods are gone,
+and there is no compatibility layer. Classes extending `Galette\IO\Pdf` must be
+ported to the methods it provides.
 
-### PDF
+Positions are absolute, in millimeters from the top left corner of the page.
+tc-lib-pdf has no current position; `Galette\IO\Pdf` keeps one, so documents
+can still be written sequentially.
 
-TCPDF is replaced by tc-lib-pdf. Plugin classes extending `Galette\IO\Pdf`
-or calling TCPDF methods will have to be ported.
+| TCPDF | Galette 1.4 |
+|-------|-------------|
+| `AddPage()` | `newPage(?string $orientation = null)` |
+| `SetMargins()`, `setPageOrientation()` | `setPageMargins()`, `$this->orientation`, in `init()` |
+| `SetAutoPageBreak()` | `setAutoPageBreak(bool)`; text cells never break pages, call `checkPageBreak(?float $height)` |
+| `SetFont($family, $style, $size)` | `setFont(?string $style, ?float $size)`, the font is always DejaVu Sans |
+| `SetTextColor(r, g, b)`, `SetDrawColor()`, `SetFillColor()` | `setTextColor('#rrggbb')`, `setDrawColor('#rrggbb')`, `fill` argument of `text()` |
+| `Cell()`, `MultiCell()`, `Write()` | `text()`; `wrap: false` keeps it on a single line, as `Cell()` did |
+| `writeHTML()`, `writeHTMLCell()`, `MultiCell(..., ishtml: true)` | `writeHTML(string $html, ?float $x, ?float $y, float $w, float $h)` |
+| `Image()`, `Rect()`, `Line()` | `image()`, `rect()`, `line()` |
+| `GetStringWidth()` | `stringWidth()` |
+| `GetX()`, `GetY()`, `SetX()`, `SetY()`, `SetXY()`, `Ln()` | `getX()`, `getY()`, `setXY()`, `ln()` |
+| `getNumPages()` | `getNumPages()` |
+| `Header()`, `Footer()` overrides | `drawPageHeader(int $page, int $total)`, drawn once all pages exist; the footer comes from the models |
+| `Output($name, 'D')`, `Output($name, 'S')` | `getContents()`, the controller writes it in the response |
+| `Output($path, 'F')` | `storeAs(string $path)` |
+
+Mind PHP methods names are case insensitive: a private `addHtmlCell()` in a
+plugin class now clashes with tc-lib-pdf's `addHTMLCell()`.
+
+In HTML contents, images must be given as `data:` URIs (see `Pdf::getDataUri()`);
+TCPDF `@` prefixed sources are not supported. Tables are not mirrored for
+right-to-left languages, `Pdf::getHTMLTable()` builds a table that is.
+
+The `fullcard` plugin is deprecated and has not been ported.

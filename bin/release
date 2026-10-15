@@ -532,6 +532,11 @@ def add_libs(rel_name, galette_archive):
     if os.path.exists(os.path.join(src_dir, rel_name, 'tests')):
         shutil.rmtree(os.path.join(src_dir, rel_name, 'tests'))
 
+    # PDF fonts are built on composer install
+    font = os.path.join(composer_dir, 'galette', 'vendor', 'tecnickcom', 'tc-lib-pdf-font', 'target', 'fonts', 'dejavu', 'dejavusans.json')
+    if not os.path.exists(font):
+        print_err('Missing PDF font: %s' % font)
+        exit(1)
     if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
         shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
@@ -563,10 +568,13 @@ def add_libs(rel_name, galette_archive):
             if root.endswith('src/Faker/Provider'):
                 if dirname not in ['en_US', 'fr_FR', 'de_DE']:
                     shutil.rmtree(os.path.join(root, dirname))
-            # begin to remove tcpdf not used fonts
-            if root.endswith('tcpdf/fonts'):
-                if dirname != 'dejavu-fonts-ttf-2.34':
+            # PDF fonts: only DejaVu Sans is used, core fonts are fallbacks
+            if root.endswith('tc-lib-pdf-font/target/fonts'):
+                if dirname not in ['core', 'dejavu']:
                     shutil.rmtree(os.path.join(root, dirname))
+            # fonts sources, downloaded to build them
+            if root.endswith('tc-lib-pdf-font/util') and dirname == 'vendor':
+                shutil.rmtree(os.path.join(root, dirname))
             if root.endswith('vendor'):
                 if dirname == 'bin':
                     shutil.rmtree(os.path.join(root, dirname))
@@ -574,24 +582,9 @@ def add_libs(rel_name, galette_archive):
         for filename in filenames:
             if os.path.islink(os.path.join(root, filename)):
                 os.remove(os.path.join(root, filename))
-            # remove tcpdf not used fonts
-            if root.endswith('tcpdf/fonts'):
-                if filename not in [
-                    'dejavusansbi.ctg.z',
-                    'dejavusansbi.z',
-                    'dejavusansb.z',
-                    'dejavusansi.ctg.z',
-                    'dejavusansi.z',
-                    'dejavusans.z',
-                    'zapfdingbats.php',
-                    'dejavusansb.ctg.z',
-                    'dejavusansbi.php',
-                    'dejavusansb.php',
-                    'dejavusans.ctg.z',
-                    'dejavusansi.php',
-                    'dejavusans.php',
-                    'helvetica.php'
-                ]:
+            # remove not used PDF fonts
+            if root.endswith('tc-lib-pdf-font/target/fonts/dejavu'):
+                if not re.match(r'^dejavusans(b|i|bi)?\.', filename):
                     os.remove(os.path.join(root, filename))
 
     galette = tarfile.open(galette_archive, 'w|bz2', format=tarfile.GNU_FORMAT)
