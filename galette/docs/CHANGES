@@ -26,6 +26,7 @@ Changes
 - A warning is displayed when saved search criteria refer to something that no longer exists
 - Saved searches can use dates relative to the search day - and can now be renamed or updated
 - Member's groups are managed from a dedicated table instead of modals
+- Group's members and managers are managed from a single table instead of modals
 - Member actions menu is the same on display and edit pages
 - A loader is displayed while the dark mode stylesheet is generated
 - Some improvements have been done on logging; some information were often missing
@@ -35,6 +36,10 @@ Changes
 - Members can be attached to groups on CSV imports
 - Member CSV export now carries dynamic fields
 - Configure member picture like other fields: configurable visibility and can be mandatory
+- Preview features can be turned on from advanced configuration, or with the new galette:feature:enable and galette:feature:disable console commands; debug mode is no longer required
+- Required fields are enforced on titles and dropdowns in the browser, and on dynamic files fields on the server
+- Read-only required fields were reported as missing
+- Dynamic fields visible to nobody were still displayed, and could be used in advanced search
 
 1.2.1 -> 1.3.0
 

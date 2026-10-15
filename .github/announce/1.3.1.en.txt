@@ -1,0 +1,12 @@
+Galette 1.3.1 is fresh out of the oven! 🥞
+
+👥 Groups managed from tables, on member and group forms; groups in CSV import and export
+🔎 Saved searches with dates relative to the search day, and renaming
+🔑 Password strength indicator listing its rules
+🐛 And a nice set of fixes
+
+No database change, upgrade recommended.
+
+https://galette.eu/site/post/2026/10/18/galette-1-3-1/
+
+#Galette #FreeSoftware #OpenSource #NonProfit

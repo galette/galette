@@ -1,0 +1,12 @@
+Galette 1.3.1 sort du four, encore toute chaude ! 🥞
+
+👥 Groupes gérés depuis des tableaux, sur les fiches adhérent et groupe ; groupes dans l'import et l'export CSV
+🔎 Recherches sauvegardées avec des dates relatives au jour de la recherche, et renommage
+🔑 Indicateur de robustesse du mot de passe avec ses règles
+🐛 Et une belle série de corrections
+
+Pas de changement de base, mise à jour recommandée.
+
+https://galette.eu/site/fr/post/2026/10/18/galette-1-3-1/
+
+#Galette #LogicielLibre #Associations
