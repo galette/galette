@@ -120,7 +120,7 @@ class MapsController extends AbstractController
             Analog::log('Unable to list coordinates | ' . $e->getMessage(), Analog::ERROR);
             $this->flash->addMessageNow(
                 'error_detected',
-                _T('Members positions have not been loaded.')
+                _T('Coordinates have not been loaded.')
             );
         }
 
@@ -226,6 +226,7 @@ class MapsController extends AbstractController
                 $member->sfullname
             ),
             'require_maps'      => true,
+            'maps_locate'       => true,
             'member'            => $member,
             'can_edit'          => $can_edit,
             'tiles'             => TileProviders::resolve($this->preferences)
@@ -414,13 +415,13 @@ class MapsController extends AbstractController
             if (isset($post['remove'])) {
                 try {
                     $this->coordinates->remove($id);
-                    $message = _T('Position has been removed!');
+                    $message = _T('Coordinates have been removed!');
                 } catch (\Throwable $e) {
                     Analog::log(
                         'Unable to remove coordinates of member #' . $id . ' | ' . $e->getMessage(),
                         Analog::ERROR
                     );
-                    $error = _T('Position has not been removed :(');
+                    $error = _T('Coordinates have not been removed :(');
                     $status = 500;
                 }
             } else {
@@ -437,13 +438,13 @@ class MapsController extends AbstractController
                 } else {
                     try {
                         $this->coordinates->set($id, $latitude, $longitude);
-                        $message = _T('New position has been stored!');
+                        $message = _T('New coordinates have been stored!');
                     } catch (\Throwable $e) {
                         Analog::log(
                             'Unable to store coordinates of member #' . $id . ' | ' . $e->getMessage(),
                             Analog::ERROR
                         );
-                        $error = _T('Position has not been stored :(');
+                        $error = _T('Coordinates have not been stored :(');
                         $status = 500;
                     }
                 }

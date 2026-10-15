@@ -1,0 +1,57 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+<section class="map-container">
+    <div id="map"></div>
+{% if towns is defined and towns|length > 0 %}
+    <div id="possible_towns" class="ui tiny modal" role="dialog" aria-modal="true" aria-labelledby="possible_towns_title">
+        <div class="header" id="possible_towns_title">
+        {% if mymap is defined %}
+            {{ _T("Choose your location") }}
+        {% else %}
+            {{ _T("Choose %1$s location")|format(member.sname) }}
+        {% endif %}
+        </div>
+        <div class="content">
+            <div class="description">
+                <p>{{ _T("Select your town.") }}<br/>
+                {{ _T("In the database, town is set to: '%1$s'")|format(member.town) }}</p>
+            </div>
+        </div>
+        <div class="actions">
+            <ul>
+        {% for t in towns %}
+                <li>
+                    <button type="button" class="ui labeled button maps-town" data-name="{{ t.full_name }}" data-lat="{{ t.latitude }}" data-lng="{{ t.longitude }}">
+                        <span class="ui green button city">{{ t.full_name }}</span>
+                        <span class="ui basic label">{{ t.latitude }}/{{ t.longitude }}</span>
+                    </button>
+                </li>
+        {% endfor %}
+            </ul>
+            <button type="button" class="ui button cancel">{{ _T("Close") }}</button>
+        </div>
+    </div>
+{% endif %}
+</section>
+{% include 'elements/maps/legend.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'elements/maps/scripts.html.twig' with {
+        page_config: {
+            member: {
+                name: member.sfullname,
+                can_edit: can_edit,
+                position: town ?? null,
+                store_url: mymap is defined ? url_for("mapsStorePosition") : url_for("mapsStorePosition", {"id": member.id})
+            }
+        }
+    } %}
+{% endblock %}

@@ -87,6 +87,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('html_editor', value: false);
     $view->getEnvironment()->addGlobal('require_charts', value: false);
     $view->getEnvironment()->addGlobal('require_mass', value: false);
+    $view->getEnvironment()->addGlobal('require_maps', value: false);
     $view->getEnvironment()->addGlobal('autocomplete', value: false);
     if ($c->get(\Galette\Core\Login::class)->isAdmin() && $c->get(\Galette\Core\Preferences::class)->pref_telemetry_date) {
         $telemetry = new \Galette\Util\Telemetry(

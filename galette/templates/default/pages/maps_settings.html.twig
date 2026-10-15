@@ -1,0 +1,102 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form id="maps_settings" action="{{ url_for("doMapsSettings") }}" method="post" class="ui form">
+        <div class="ui segment">
+            {% include "components/forms/checkbox.html.twig" with {
+                id: 'pref_maps_enabled',
+                value: '1',
+                checked: enabled,
+                label: _T("Display members positions on maps"),
+                tip: _T("Members can then set their position, and a map is added to public pages.")
+            } %}
+        </div>
+
+        <div class="ui segment">
+            {% include "components/forms/select.html.twig" with {
+                id: 'pref_maps_public_precision',
+                value: precision,
+                values: precisions,
+                label: _T("Members positions precision"),
+                description: _T("How far from their stored position members may appear on the map. Staff, administrators and members themselves always see the exact position.")|e,
+                required: true
+            } %}
+        </div>
+
+        <div class="ui segment">
+            {% include "components/forms/select.html.twig" with {
+                id: 'pref_maps_tiles_provider',
+                value: provider,
+                values: providers,
+                label: _T("Background map provider"),
+                required: true
+            } %}
+        </div>
+
+        <div class="ui segment{% if provider != custom %} displaynone{% endif %}" id="maps_custom_tiles" data-custom="{{ custom }}">
+            <h3 class="ui header">{{ _T("Your own values") }}</h3>
+
+            {% include "components/forms/checkbox.html.twig" with {
+                id: 'pref_maps_tiles_vector',
+                value: '1',
+                checked: vector,
+                label: _T("Vector tiles"),
+                tip: _T("Tick for a MapLibre style, leave unticked for classic raster tiles.")
+            } %}
+
+            {# the example is kept out of the translatable string, as gettext advises #}
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_url',
+                value: url,
+                label: _T("Address"),
+                tip: _T("Style address for vector tiles, tiles address for raster ones, such as:") ~ ' https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+            } %}
+
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_attribution',
+                value: attribution,
+                label: _T("Attribution"),
+                tip: _T("Credit the provider requires, HTML allowed. Data licences make it mandatory.")
+            } %}
+
+            {% include "components/forms/number.html.twig" with {
+                id: 'pref_maps_tiles_maxzoom',
+                value: maxzoom,
+                label: _T("Maximum zoom"),
+                min: 0,
+                max: 22
+            } %}
+
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_subdomains',
+                value: subdomains,
+                label: _T("Subdomains"),
+                tip: _T("Letters the {s} token in the address is replaced with, such as abc. Raster tiles only.")
+            } %}
+        </div>
+
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon"></i>
+                {{ _T("Save") }}
+            </button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function () {
+            const custom = $('#maps_custom_tiles');
+            $('#pref_maps_tiles_provider').on('change', function () {
+                custom.toggleClass('displaynone', this.value !== custom.data('custom'));
+            });
+        });
+    </script>
+{% endblock %}

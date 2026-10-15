@@ -14,6 +14,15 @@
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/codemirror.css">
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/summernote.min.css" />
     {% endif %}
+    {% if require_maps %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/maps.min.css" />
+        {% if tiles.vector %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/maps-gl.min.css" />
+        {% endif %}
+        {% if maps_locate ?? false %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/maps-locate.min.css" />
+        {% endif %}
+    {% endif %}
     {% include 'elements/inline_styles.html.twig' %}
     {# Let's see if a local CSS exists and include it #}
     {% set localstylesheet = constant('_CURRENT_THEME_PATH') ~ "galette_local.css" %}

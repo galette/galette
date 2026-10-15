@@ -1,0 +1,46 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% set locate = maps_locate ?? false %}
+    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps.min.js"></script>
+{% if tiles.vector %}
+    {# a megabyte of MapLibre, only worth loading for a vector background #}
+    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps-gl.min.js"></script>
+{% endif %}
+{% if locate %}
+    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps-locate.min.js"></script>
+{% endif %}
+
+{% set maps_config = {
+    icons: {
+        member: base_path() ~ "/assets/images/maps/marker-galette.png",
+        company: base_path() ~ "/assets/images/maps/marker-galette-pro.png"
+    },
+    tiles: tiles,
+    center: town is defined ? {lat: town['latitude'], lng: town['longitude'], zoom: 12} : {lat: 46.830133640447386, lng: 2.4609375, zoom: 6},
+    locate: locate,
+    strings: {
+        close: _T("Close"),
+        legend: _T("Legend"),
+        remove: _T("Remove"),
+        fullscreen: _T("Display map in full screen"),
+        fullscreen_exit: _T("Exit full screen"),
+        search_placeholder: (locate and town is not defined) ? _T("Search your town...") : _T("Search a town..."),
+        search_error: _T("Sorry, that town could not be found."),
+        search: _T("Search"),
+        locate: _T("Show me where I am"),
+        locate_outside: _T("You seem located outside the boundaries of the map"),
+        aka: _T("aka"),
+        clicked_at: _T("You clicked at %1$s"),
+        lives_here: mymap is defined ? _T("I live here!") : _T("Member lives here!"),
+        remove_title: mymap is defined ? _T("Remove my coordinates") : _T("Remove member coordinates"),
+        remove_confirm: _T("Are you sure you want to remove coordinates from the database?"),
+        store_error: _T("An error occurred during 'I live here' process :("),
+        remove_error: _T("An error occurred removing coordinates :(")
+    }
+}|merge(page_config ?? {}) %}
+{# HEX flags keep "</script>" and friends harmless inside the script element #}
+<script type="application/json" id="maps-config">{{ maps_config|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}</script>

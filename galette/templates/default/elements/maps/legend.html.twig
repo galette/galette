@@ -1,0 +1,23 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{# images are decorative: each one comes with its text #}
+<div id="legend">
+    <ul class="maps-legend">
+        <li>
+            <img src="{{ base_path() }}/assets/images/maps/marker-galette.png" alt=""/>
+            {{ _T("Member") }}
+        </li>
+        <li>
+            <img src="{{ base_path() }}/assets/images/maps/marker-galette-pro.png" alt=""/>
+            {{ _T("Member (company)") }}
+        </li>
+        <li>
+            <img src="{{ base_path() }}/assets/css/images/marker-icon.png" alt=""/>
+            {{ _T("Search result") }}
+        </li>
+    </ul>
+</div>
