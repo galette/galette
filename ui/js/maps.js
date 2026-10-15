@@ -334,9 +334,6 @@
         });
     }
 
-    /**
-     * Preferences page: own values are only meaningful with the custom provider
-     */
     let config = null;
     let icons = null;
 
