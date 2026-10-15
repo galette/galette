@@ -168,7 +168,12 @@ class SeedFixtures extends GaletteTestCase
         $select = $this->zdb->select(Roles::MEMBERS_TABLE, 'mr');
         $select->join(['r' => PREFIX_DB . Role::TABLE], 'r.' . Role::PK . ' = mr.' . Role::PK, ['name'])
             ->join(['a' => PREFIX_DB . Adherent::TABLE], 'a.id_adh = mr.id_adh', ['login_adh'])
-            ->join(['g' => PREFIX_DB . Group::TABLE], 'g.id_group = mr.id_group', ['group_name'], $select::JOIN_LEFT)
+            ->join(
+                name: ['g' => PREFIX_DB . Group::TABLE],
+                on: 'g.id_group = mr.id_group',
+                columns: ['group_name'],
+                type: $select::JOIN_LEFT
+            )
             ->where->isNull('r.role_key');
         $given = [];
         foreach ($this->zdb->execute($select) as $row) {

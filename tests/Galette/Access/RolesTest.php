@@ -77,7 +77,7 @@ class RolesTest extends GaletteTestCase
                 Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
-            $roles->getDefaultPermissions($this->getRights(false))
+            $roles->getDefaultPermissions($this->getRights(value: false))
         );
 
         $this->assertSame(
@@ -103,7 +103,7 @@ class RolesTest extends GaletteTestCase
                 Roles::STAFF => $staff,
                 Roles::ADMIN => $admin,
             ],
-            $roles->getDefaultPermissions($this->getRights(true))
+            $roles->getDefaultPermissions($this->getRights(value: true))
         );
 
         //groups managers export by default
@@ -119,7 +119,7 @@ class RolesTest extends GaletteTestCase
     public function testInstallInit(): void
     {
         $roles = new Roles($this->zdb, new Permissions());
-        $this->assertTrue($roles->installInit($this->getRights(false)));
+        $this->assertTrue($roles->installInit($this->getRights(value: false)));
 
         $select = $this->zdb->select(Roles::TABLE);
         $select->order(Roles::PK);
@@ -201,7 +201,7 @@ class RolesTest extends GaletteTestCase
     public function testSyncPermissions(): void
     {
         $core = new Permissions();
-        (new Roles($this->zdb, $core))->installInit($this->getRights(false));
+        (new Roles($this->zdb, $core))->installInit($this->getRights(value: false));
 
         $select = $this->zdb->select(Roles::KNOWN_TABLE);
         $this->assertCount(count($core->getAll()), $this->zdb->execute($select));

@@ -38,7 +38,7 @@ class RoleResolverTest extends GaletteTestCase
 
         //system roles with former rights settings all off
         $this->roles = new Roles($this->zdb, new Permissions());
-        $this->roles->installInit(array_fill_keys(array_keys(Roles::LEGACY_RIGHTS), false));
+        $this->roles->installInit(array_fill_keys(array_keys(Roles::LEGACY_RIGHTS), value: false));
 
         $this->resolver = new RoleResolver($this->zdb);
         $this->access = new AccessControl(new Permissions(), $this->resolver, $this->login);

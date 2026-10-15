@@ -1341,12 +1341,10 @@ class MembersController extends GaletteRoutingTestCase
         $mdata = $this->dataAdherentOne();
         $mdata['id_adh'] = $member_one->id;
         $edit_args = ['id' => (string)$member_one->id];
-        $given = function () use ($roles, $role): array {
-            return array_values(array_map(
-                fn(array $assignment): ?int => $assignment['id_group'],
-                $roles->getMembersOf($role->getId())
-            ));
-        };
+        $given = (fn(): array => array_values(array_map(
+            fn(array $assignment): ?int => $assignment['id_group'],
+            $roles->getMembersOf($role->getId())
+        )));
 
         //member cannot see nor change their roles
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
