@@ -268,6 +268,26 @@ class CsvController extends AbstractController
         //store selected file to display again in UI
         $this->session->import_file = $post['import_file'];
 
+        //making members groups managers is not granted by imports permission
+        $model = new ImportModel();
+        if (
+            $model->load()
+            && in_array(CsvIn::MANAGED_GROUPS_FIELD, $model->getFields() ?? [], strict: true)
+            && !$this->accessControl->can('member:manage')
+        ) {
+            Analog::log(
+                'Trying to import groups managers without appropriate permissions',
+                Analog::WARNING
+            );
+            $this->flash->addMessage(
+                'error_detected',
+                _T('You are not allowed to import groups managers; remove that column from the import model.')
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('import'));
+        }
+
         $res = $csv->import(
             zdb: $this->zdb,
             preferences: $this->preferences,
