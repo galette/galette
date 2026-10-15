@@ -117,7 +117,7 @@ final class Precision
         if ($snapped == 0) {
             $snapped = 0.0;
         }
-        return number_format($snapped, $decimals, '.', '');
+        return number_format(num: $snapped, decimals: $decimals, decimal_separator: '.', thousands_separator: '');
     }
 
     /**

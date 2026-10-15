@@ -1064,7 +1064,7 @@ class Galette
             ]);
         }
 
-        $actions = array_merge($actions, static::getLocalizeActions($member));
+        $actions = array_merge($actions, self::getLocalizeActions($member));
 
         if ($login->isSuperAdmin()) {
             $actions[] = [
@@ -1156,7 +1156,7 @@ class Galette
          */
         global $plugins, $container;
 
-        $actions = static::getLocalizeActions($member);
+        $actions = self::getLocalizeActions($member);
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries

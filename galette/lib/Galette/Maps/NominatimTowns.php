@@ -25,9 +25,7 @@ use GuzzleHttp\Exception\GuzzleException;
 class NominatimTowns
 {
     private const string URI = 'https://nominatim.openstreetmap.org/search';
-
-    private Preferences $preferences;
-    private ClientInterface $client;
+    private readonly ClientInterface $client;
 
     /**
      * Constructor
@@ -35,9 +33,8 @@ class NominatimTowns
      * @param Preferences      $preferences Preferences instance
      * @param ?ClientInterface $client      HTTP client, a default one is built if null
      */
-    public function __construct(Preferences $preferences, ?ClientInterface $client = null)
+    public function __construct(private readonly Preferences $preferences, ?ClientInterface $client = null)
     {
-        $this->preferences = $preferences;
         //a slow answer must not hold the page
         $this->client = $client ?? new Client(['timeout' => 5.0, 'connect_timeout' => 2.0]);
     }
@@ -83,12 +80,9 @@ class NominatimTowns
                     ]
                 ]
             );
-            $places = json_decode((string)$response->getBody(), true, flags: JSON_THROW_ON_ERROR);
+            $places = json_decode((string)$response->getBody(), associative: true, flags: JSON_THROW_ON_ERROR);
         } catch (GuzzleException | \JsonException $e) {
-            throw new \RuntimeException(
-                'Error on nominatim request for "' . $town . '": ' . $e->getMessage(),
-                previous: $e
-            );
+            throw new \RuntimeException('Error on nominatim request for "' . $town . '": ' . $e->getMessage(), $e->getCode(), previous: $e);
         }
 
         if (!is_array($places)) {

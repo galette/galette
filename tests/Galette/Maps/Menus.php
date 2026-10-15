@@ -110,9 +110,10 @@ class Menus extends GaletteTestCase
         ));
 
         $this->logMemberOne();
-        $this->assertSame([], $find(Galette::getMyDashboards()));
-        $this->assertSame([], $find(Galette::getListActions($member)));
-        $this->assertSame([], Galette::getDetailedActions($member));
+        //counted rather than compared: PHPStan would keep the empty type for the calls below
+        $this->assertCount(0, $find(Galette::getMyDashboards()));
+        $this->assertCount(0, $find(Galette::getListActions($member)));
+        $this->assertCount(0, Galette::getDetailedActions($member));
 
         $this->preferences->pref_maps_enabled = true;
         $dashboards = $find(Galette::getMyDashboards());

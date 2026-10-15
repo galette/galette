@@ -19,6 +19,8 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
+use function Safe\json_encode;
+
 /**
  * Nominatim towns search tests
  *

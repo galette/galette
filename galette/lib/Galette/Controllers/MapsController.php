@@ -13,6 +13,7 @@ namespace Galette\Controllers;
 use Analog\Analog;
 use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
+use Galette\Core\Logs;
 use Galette\Entity\Adherent;
 use Galette\Maps\Coordinates;
 use Galette\Maps\NominatimTowns;
@@ -113,11 +114,11 @@ class MapsController extends AbstractController
         try {
             $params['list'] = $this->coordinates->listVisible(Precision::getStep($precision));
             //zooming further would suggest a precision snapped positions have not
-            if (in_array(true, array_column($params['list'], 'approximate'), true)) {
+            if (in_array(needle: true, haystack: array_column($params['list'], 'approximate'), strict: true)) {
                 $params['max_zoom'] = Precision::getMaxZoom($precision);
             }
         } catch (\Throwable $e) {
-            Analog::log('Unable to list coordinates | ' . $e->getMessage(), Analog::ERROR);
+            Logs::exception($e, 'Unable to list coordinates');
             $this->flash->addMessageNow(
                 'error_detected',
                 _T('Coordinates have not been loaded.')
@@ -208,10 +209,7 @@ class MapsController extends AbstractController
                     $member->country
                 );
             } catch (\RuntimeException $e) {
-                Analog::log(
-                    'Unable to search towns for member #' . $member->id . ' | ' . $e->getMessage(),
-                    Analog::WARNING
-                );
+                Logs::exception($e, 'Unable to search towns for member #' . $member->id, Analog::WARNING);
                 $this->flash->addMessageNow(
                     'warning_detected',
                     _T('Town search is not available for now, you can still search or click on the map.')
@@ -417,10 +415,7 @@ class MapsController extends AbstractController
                     $this->coordinates->remove($id);
                     $message = _T('Coordinates have been removed!');
                 } catch (\Throwable $e) {
-                    Analog::log(
-                        'Unable to remove coordinates of member #' . $id . ' | ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    Logs::exception($e, 'Unable to remove coordinates of member #' . $id);
                     $error = _T('Coordinates have not been removed :(');
                     $status = 500;
                 }
@@ -440,10 +435,7 @@ class MapsController extends AbstractController
                         $this->coordinates->set($id, $latitude, $longitude);
                         $message = _T('New coordinates have been stored!');
                     } catch (\Throwable $e) {
-                        Analog::log(
-                            'Unable to store coordinates of member #' . $id . ' | ' . $e->getMessage(),
-                            Analog::ERROR
-                        );
+                        Logs::exception($e, 'Unable to store coordinates of member #' . $id);
                         $error = _T('Coordinates have not been stored :(');
                         $status = 500;
                     }

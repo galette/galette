@@ -110,7 +110,11 @@ class TileProviders extends GaletteTestCase
     public function testOwnValues(): void
     {
         $this->preferences->setValue(Providers::PREF_PROVIDER, Providers::CUSTOM, $this->login);
-        $this->preferences->setValue(Providers::PREF_VECTOR, false, $this->login);
+        $this->preferences->setValue(
+            Providers::PREF_VECTOR,
+            value: false,
+            login: $this->login
+        );
         //the {s} token is why the address is stored as a string: Galette's URL
         //validation rejects a host that starts with a brace
         $this->assertTrue(
@@ -119,7 +123,7 @@ class TileProviders extends GaletteTestCase
                 'https://{s}.tile.example.org/{z}/{x}/{y}.png',
                 $this->login
             ),
-            print_r($this->preferences->getErrors(), true)
+            print_r($this->preferences->getErrors(), return: true)
         );
         $this->preferences->setValue(Providers::PREF_SUBDOMAINS, 'abc', $this->login);
         $this->preferences->setValue(Providers::PREF_MAXZOOM, 17, $this->login);

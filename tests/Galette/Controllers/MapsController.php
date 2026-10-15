@@ -12,10 +12,15 @@ namespace Galette\Tests\Controllers;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
-use Galette\Tests\GaletteRoutingTestCase;
 use Galette\Maps\Coordinates;
 use Galette\Maps\Precision;
 use Galette\Maps\TileProviders;
+use Galette\Tests\GaletteRoutingTestCase;
+
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\preg_match;
+use function Safe\putenv;
 
 /**
  * Maps controller tests
@@ -87,7 +92,7 @@ class MapsController extends GaletteRoutingTestCase
             1,
             preg_match('@<script type="application/json" id="maps-config">(.*?)</script>@s', $body, $matches)
         );
-        $config = json_decode($matches[1], true, flags: JSON_THROW_ON_ERROR);
+        $config = json_decode($matches[1], associative: true, flags: JSON_THROW_ON_ERROR);
         $this->assertIsArray($config);
         return $config;
     }
@@ -120,7 +125,7 @@ class MapsController extends GaletteRoutingTestCase
         $this->assertSame(
             //message comes in the language of the logged-in member
             ['res' => false, 'message' => _T('You do not have permission for requested URL.')],
-            json_decode((string)$test_response->getBody(), true)
+            json_decode((string)$test_response->getBody(), associative: true)
         );
         $this->expectLogEntry(
             Analog::WARNING,
@@ -163,7 +168,7 @@ class MapsController extends GaletteRoutingTestCase
             $this->assertSame(200, $test_response->getStatusCode());
             $this->assertSame(
                 ['res' => true, 'message' => 'New coordinates have been stored!'],
-                json_decode((string)$test_response->getBody(), true)
+                json_decode((string)$test_response->getBody(), associative: true)
             );
         }
         $this->assertNotNull((new Coordinates($this->zdb, $this->login))->get($member_one->id));
@@ -203,17 +208,17 @@ class MapsController extends GaletteRoutingTestCase
             [],
         ];
         foreach ($invalid as $data) {
-            $test_response = $this->postCoords(null, $data);
-            $this->assertSame(400, $test_response->getStatusCode(), print_r($data, true));
+            $test_response = $this->postCoords(id_adh: null, data: $data);
+            $this->assertSame(400, $test_response->getStatusCode(), print_r($data, return: true));
             $this->assertSame(
                 ['res' => false, 'message' => 'Invalid coordinates.'],
-                json_decode((string)$test_response->getBody(), true)
+                json_decode((string)$test_response->getBody(), associative: true)
             );
         }
         $this->assertNull((new Coordinates($this->zdb, $this->login))->get($member_one->id));
 
         //bounds are included
-        $test_response = $this->postCoords(null, ['latitude' => '-90', 'longitude' => '180']);
+        $test_response = $this->postCoords(id_adh: null, data: ['latitude' => '-90', 'longitude' => '180']);
         $this->assertSame(200, $test_response->getStatusCode());
     }
 
@@ -224,11 +229,11 @@ class MapsController extends GaletteRoutingTestCase
     {
         $this->getMemberOne();
         $this->logMember($this->dataAdherentOne());
-        $test_response = $this->postCoords(null, ['remove' => '1']);
+        $test_response = $this->postCoords(id_adh: null, data: ['remove' => '1']);
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame(
             ['res' => true, 'message' => 'Coordinates have been removed!'],
-            json_decode((string)$test_response->getBody(), true)
+            json_decode((string)$test_response->getBody(), associative: true)
         );
     }
 
@@ -611,11 +616,11 @@ class MapsController extends GaletteRoutingTestCase
         $this->login->logout();
 
         $this->logMember($this->dataAdherentOne());
-        $test_response = $this->postCoords(null);
+        $test_response = $this->postCoords(id_adh: null);
         $this->assertSame(404, $test_response->getStatusCode());
         $this->assertSame(
             ['res' => false, 'message' => 'Maps are not enabled.'],
-            json_decode((string)$test_response->getBody(), true)
+            json_decode((string)$test_response->getBody(), associative: true)
         );
         $this->assertNull((new Coordinates($this->zdb, $this->login))->get($member_one->id));
     }
@@ -655,7 +660,7 @@ class MapsController extends GaletteRoutingTestCase
         $this->assertSame(404, $test_response->getStatusCode());
         $this->assertSame(
             ['res' => false, 'message' => 'No member #999999.'],
-            json_decode((string)$test_response->getBody(), true)
+            json_decode((string)$test_response->getBody(), associative: true)
         );
         $this->expectLogEntry(Analog::ERROR, 'No member #999999');
         $this->expectNoLogEntry();
@@ -673,11 +678,11 @@ class MapsController extends GaletteRoutingTestCase
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertNotNull((new Coordinates($this->zdb, $this->login))->get($member_one->id));
 
-        $test_response = $this->postCoords(null);
+        $test_response = $this->postCoords(id_adh: null);
         $this->assertSame(400, $test_response->getStatusCode());
         $this->assertSame(
             ['res' => false, 'message' => 'Superadmin cannot be localized.'],
-            json_decode((string)$test_response->getBody(), true)
+            json_decode((string)$test_response->getBody(), associative: true)
         );
         $this->expectLogEntry(Analog::INFO, 'SuperAdmin does not live anywhere!');
     }

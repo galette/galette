@@ -12,6 +12,8 @@ namespace Galette\Tests\Maps;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\strtotime;
+
 /**
  * Members positions tests
  *
@@ -131,8 +133,8 @@ class Coordinates extends GaletteTestCase
         $coords->set($member_one->id, 50.36, 3.47);
         $coords->set($member_two->id, 48.85, 2.35);
 
-        $this->setVisibility($member_one->id, active: true, public: false, uptodate: false);
-        $this->setVisibility($member_two->id, active: true, public: true, uptodate: true);
+        $this->setVisibility(id_adh: $member_one->id, active: true, public: false, uptodate: false);
+        $this->setVisibility(id_adh: $member_two->id, active: true, public: true, uptodate: true);
         $this->assertSame([$member_two->id], $this->listedIds());
 
         $this->assertTrue($this->login->login($this->dataAdherentOne()['login_adh'], $this->dataAdherentOne()['mdp_adh']));
@@ -141,10 +143,10 @@ class Coordinates extends GaletteTestCase
         $this->assertSame($expected, $this->listedIds());
 
         //an inactive member is never listed, not even to itself
-        $this->setVisibility($member_one->id, active: false, public: false, uptodate: false);
+        $this->setVisibility(id_adh: $member_one->id, active: false, public: false, uptodate: false);
         $this->assertSame([$member_two->id], $this->listedIds());
 
-        $this->setVisibility($member_two->id, active: false, public: true, uptodate: true);
+        $this->setVisibility(id_adh: $member_two->id, active: false, public: true, uptodate: true);
         $this->assertSame([], $this->listedIds());
         $this->login->logout();
     }
@@ -211,8 +213,8 @@ class Coordinates extends GaletteTestCase
         $coords = new \Galette\Maps\Coordinates($this->zdb, $this->login);
         $coords->set($member_one->id, 50.362038, 3.472998);
         $coords->set($member_two->id, 48.856614, 2.352222);
-        $this->setVisibility($member_one->id, active: true, public: true, uptodate: true);
-        $this->setVisibility($member_two->id, active: true, public: true, uptodate: true);
+        $this->setVisibility(id_adh: $member_one->id, active: true, public: true, uptodate: true);
+        $this->setVisibility(id_adh: $member_two->id, active: true, public: true, uptodate: true);
 
         $exact_one = ['50.362038', '3.472998', false];
         $exact_two = ['48.856614', '2.352222', false];
@@ -222,7 +224,7 @@ class Coordinates extends GaletteTestCase
         //visitor
         $this->assertSame($this->sorted([$member_one->id => $snapped_one, $member_two->id => $snapped_two]), $this->listedPositions(0.01));
         //exact positions required
-        $this->assertSame($this->sorted([$member_one->id => $exact_one, $member_two->id => $exact_two]), $this->listedPositions(null));
+        $this->assertSame($this->sorted([$member_one->id => $exact_one, $member_two->id => $exact_two]), $this->listedPositions(step: null));
 
         //member sees its own position as is
         $this->assertTrue($this->login->login($this->dataAdherentOne()['login_adh'], $this->dataAdherentOne()['mdp_adh']));

@@ -15,6 +15,8 @@ use Galette\Core\Preferences;
 use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
+use function Safe\file_get_contents;
+
 /**
  * 1.40 upgrade script tests: maps plugin positions are taken over
  *
@@ -50,7 +52,7 @@ class UpgradeTo140 extends GaletteTestCase
             $this->assertTrue(
                 $this->getInstall()->executeSql(
                     $this->zdb,
-                    (string)file_get_contents($this->getSqlScript())
+                    file_get_contents($this->getSqlScript())
                 )
             );
             $this->deleteEnabledPreference();
