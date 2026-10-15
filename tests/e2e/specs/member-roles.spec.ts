@@ -13,9 +13,12 @@ import { test, expect } from '../fixtures/auth.fixture';
 import { axeBuilder, formatViolations } from '../fixtures/a11y.fixture';
 import { MemberListPage } from '../pages/MemberListPage';
 
-// Roles seeded by fixtures; sally.ragdoll has the second one for a group
-const ROLE_TO_ADD = 'Trésorerie';
-const GIVEN_ROLE = 'Secrétariat de groupe';
+// Roles seeded by fixtures; hermione.granger has the second one for all groups.
+// Not sally.ragdoll: member-groups.spec.ts edits her card, and files run in parallel,
+// so saving one form would overwrite what the other just stored.
+const MEMBER = 'GRANGER';
+const ROLE_TO_ADD = 'Secrétariat de groupe';
+const GIVEN_ROLE = 'Trésorerie';
 
 /**
  * Open the edition form of the only member matching the filter
@@ -53,7 +56,7 @@ async function save(page: Page): Promise<void> {
 test.describe.serial('Member roles', () => {
 
   test('Member roles - Give a role, then take it back', async ({ loggedInPage: page }) => {
-    await editMember(page, 'RAGDOLL');
+    await editMember(page, MEMBER);
     await expect(roleRow(page, ROLE_TO_ADD)).toHaveCount(0);
 
     await addRole(page, ROLE_TO_ADD);
@@ -66,7 +69,7 @@ test.describe.serial('Member roles', () => {
     await expect(page.locator(`a.ui.blue.label:has-text("${ROLE_TO_ADD}")`)).toBeVisible();
 
     //take it back, so the fixtures stay as they were
-    await editMember(page, 'RAGDOLL');
+    await editMember(page, MEMBER);
     await row.locator('.role-remove').click();
     await expect(row.locator('.role-state[data-state="removed"]')).toBeVisible();
     await expect(row.locator('.role-undo')).toBeFocused();
@@ -77,7 +80,7 @@ test.describe.serial('Member roles', () => {
   });
 
   test('Member roles - Cancel a removal', async ({ loggedInPage: page }) => {
-    await editMember(page, 'RAGDOLL');
+    await editMember(page, MEMBER);
 
     const row = roleRow(page, GIVEN_ROLE);
     await row.locator('.role-remove').click();
@@ -99,14 +102,14 @@ test.describe.serial('Member roles', () => {
   });
 
   test('Member roles - Accessibility', async ({ loggedInPage: page }) => {
-    await editMember(page, 'RAGDOLL');
+    await editMember(page, MEMBER);
 
     const results = await axeBuilder(page).include('#roles_field').analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
   test('Member roles - Accessibility, with pending changes', async ({ loggedInPage: page }) => {
-    await editMember(page, 'RAGDOLL');
+    await editMember(page, MEMBER);
 
     await roleRow(page, GIVEN_ROLE).locator('.role-remove').click();
     await addRole(page, ROLE_TO_ADD);
