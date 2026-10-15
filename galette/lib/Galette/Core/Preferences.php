@@ -185,6 +185,14 @@ use function Safe\preg_replace;
  * @property      int      $pref_throttle_subscribe_window
  * @property      int      $pref_throttle_second_factor_attempts
  * @property      int      $pref_throttle_second_factor_window
+ * @property      bool     $pref_maps_enabled                             Display members positions on maps
+ * @property      string   $pref_maps_tiles_provider                      Background map provider
+ * @property      bool     $pref_maps_tiles_vector                        Own background map uses vector tiles
+ * @property      string   $pref_maps_tiles_url                           Own background map URL
+ * @property      string   $pref_maps_tiles_attribution                   Own background map attribution
+ * @property      int      $pref_maps_tiles_maxzoom                       Own background map maximum zoom
+ * @property      string   $pref_maps_tiles_subdomains                    Own background map subdomains
+ * @property      string   $pref_maps_public_precision                    Members positions precision
  */
 class Preferences
 {

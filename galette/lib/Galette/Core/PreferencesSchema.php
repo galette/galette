@@ -18,6 +18,8 @@ use Galette\Entity\Status;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
+use Galette\Maps\Precision;
+use Galette\Maps\TileProviders;
 use Galette\Repository\Members;
 
 use function Safe\preg_match;
@@ -934,7 +936,9 @@ final class PreferencesSchema
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'advanced' => true,
             ],
-        ];
+            /* Members positions on a map */
+            'pref_maps_enabled' => ['type' => self::TYPE_BOOL, 'default' => false],
+        ] + TileProviders::getSchema() + Precision::getSchema();
     }
 
     /**
