@@ -17,6 +17,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Group;
 use Galette\Entity\Transaction;
+use Galette\Maps\Coordinates;
 use Galette\Tests\GaletteTestCase;
 use Safe\DateTime;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -309,6 +310,28 @@ class SeedFixtures extends GaletteTestCase
     }
 
     /**
+     * Test that seeding locates two members out of three, around known towns
+     */
+    public function testSeedCreatesPositions(): void
+    {
+        $this->runSeed();
+
+        $member_ids = $this->getFixtureMemberIds();
+        $select = $this->zdb->select(Coordinates::TABLE);
+        $select->where->in(Coordinates::PK, $member_ids);
+        $rows = $this->zdb->execute($select)->toArray();
+
+        $this->assertCount(count($member_ids) - intdiv(count($member_ids), 3), $rows);
+        foreach ($rows as $row) {
+            //in France, a few kilometers around a town
+            $this->assertGreaterThan(43, (float)$row['latitude']);
+            $this->assertLessThan(51, (float)$row['latitude']);
+            $this->assertGreaterThan(-2, (float)$row['longitude']);
+            $this->assertLessThan(8, (float)$row['longitude']);
+        }
+    }
+
+    /**
      * Test that clean removes all fixture data
      */
     public function testCleanRemovesFixtures(): void
@@ -337,6 +360,9 @@ class SeedFixtures extends GaletteTestCase
         // Verify mailings are gone as well (FK on mailing_sender is RESTRICT)
         $select = $this->zdb->select(MailingHistory::TABLE);
         $select->where->in('mailing_sender', $member_ids);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+        $select = $this->zdb->select(Coordinates::TABLE);
+        $select->where->in(Coordinates::PK, $member_ids);
         $this->assertSame(0, $this->zdb->execute($select)->count());
     }
 

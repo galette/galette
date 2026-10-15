@@ -26,6 +26,7 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Title;
 use Galette\Entity\Transaction;
+use Galette\Maps\Coordinates;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Safe\DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -155,6 +156,9 @@ class SeedFixtures extends AbstractCommand
         $io->section('Setting dynamic field values');
         $this->setDynamicFieldValues($io);
 
+        $io->section('Locating members');
+        $this->createPositions($io);
+
         $this->seedPlugins($io);
 
         $io->success(sprintf(
@@ -235,6 +239,11 @@ class SeedFixtures extends AbstractCommand
             // Delete group managers
             $delete = $this->zdb->delete(Group::GROUPSMANAGERS_TABLE);
             $delete->where->in('id_adh', $member_ids);
+            $this->zdb->execute($delete);
+
+            // Delete positions
+            $delete = $this->zdb->delete(Coordinates::TABLE);
+            $delete->where->in(Coordinates::PK, $member_ids);
             $this->zdb->execute($delete);
 
             // Delete pictures
@@ -797,6 +806,49 @@ class SeedFixtures extends AbstractCommand
         }
 
         $io->text(sprintf('  Created %d contributions.', $count));
+    }
+
+    /**
+     * Locate two members out of three
+     *
+     * No geocoding: towns positions are known, members are spread around them.
+     */
+    private function createPositions(SymfonyStyle $io): void
+    {
+        //towns latitude and longitude
+        $towns = [
+            [48.856614, 2.352222],  //Paris
+            [45.764043, 4.835659],  //Lyon
+            [43.296482, 5.369780],  //Marseille
+            [50.629250, 3.057256],  //Lille
+            [44.837789, -0.579180], //Bordeaux
+            [47.218371, -1.553621], //Nantes
+            [48.573405, 7.752111],  //Strasbourg
+            [43.604652, 1.444209],  //Toulouse
+            [48.117266, -1.677793], //Rennes
+            [47.322047, 5.041480],  //Dijon
+            [43.710173, 7.261953],  //Nice
+            [45.188529, 5.724524],  //Grenoble
+        ];
+
+        $coordinates = new Coordinates($this->zdb, $this->login);
+        $count = 0;
+        foreach (array_values($this->members) as $position => $member) {
+            if ($position % 3 === 2) {
+                continue;
+            }
+
+            [$latitude, $longitude] = $towns[$position % count($towns)];
+            //spread members of a same town, within a few kilometers
+            $coordinates->set(
+                (int)$member->id,
+                $latitude + ((($position * 37) % 21) - 10) / 300,
+                $longitude + ((($position * 53) % 21) - 10) / 300
+            );
+            ++$count;
+        }
+
+        $io->text(sprintf('Located %d members', $count));
     }
 
     /**
