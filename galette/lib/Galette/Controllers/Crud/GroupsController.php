@@ -316,7 +316,7 @@ class GroupsController extends CrudController
         ];
 
         //members that can be added to the group
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($group->canEdit($this->login) && $this->accessControl->getGroupScope('member:read') === null) {
             $m = new Members();
             $list = $m->getDropdownMembers($this->zdb, $this->login);
             $params['members'] = [
@@ -567,11 +567,11 @@ class GroupsController extends CrudController
     /**
      * Get persons posted for a group.
      *
-     * Only admin and staff can change managers and members from the group page,
-     * as the user interface does. Group managers change members of their groups
-     * from member pages. For admin and staff, the group form always posts an
-     * empty value, so that an emptied list is stored; a warning is logged only
-     * if a group manager tries to change them.
+     * Only those who can read every member can change managers and members from
+     * the group page, as the user interface does. Others, like group managers,
+     * change members of their groups from member pages. For the former, the
+     * group form always posts an empty value, so that an emptied list is stored;
+     * a warning is logged only if someone else tries to change them.
      *
      * @param Group        $group Group instance, before changes
      * @param array<mixed> $ids   Posted persons ids

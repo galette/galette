@@ -508,4 +508,38 @@ class GroupsController extends GaletteRoutingTestCase
         $this->flash_data = [];
         $this->login->logOut();
     }
+
+    /**
+     * Test group managers allowed to edit groups do not change persons from the group page
+     */
+    public function testEditPersonsAsGroupManager(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        try {
+            $group = $this->logGroupManager();
+            $request = $this->createRequest('editGroup', ['id' => (string)$group->getId()]);
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('id="group_persons_list"', $body);
+            $this->assertStringNotContainsString('id="person_add"', $body);
+            $this->assertStringNotContainsString('name="members[]" value=""', $body);
+            $this->login->logOut();
+
+            //a role reading every member, without staff status
+            $this->grantToRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read', 'group:edit']);
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('id="person_add"', $body);
+            $this->assertStringContainsString('name="members[]" value=""', $body);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read', 'group:edit']);
+            $this->login->logOut();
+        }
+    }
 }

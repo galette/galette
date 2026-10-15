@@ -12,7 +12,7 @@
 
 {% block javascripts %}
 <script type="text/javascript">
-    {% if login.isAdmin() or login.isStaff() %}
+    {% if group.canEdit(login) and permission_scope('member:read') == 'all' %}
         {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#person_add"} %}
     {% endif %}
 
