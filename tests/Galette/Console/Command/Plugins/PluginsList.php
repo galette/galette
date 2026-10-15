@@ -216,6 +216,9 @@ class PluginsList extends GaletteTestCase
         $this->assertStringContainsString('plugin-unversionned', $output);
         $this->assertStringContainsString('Incompatible with current version', $output);
 
+        $this->assertStringContainsString('plugin-integrated', $output);
+        $this->assertStringContainsString('Part of Galette now, can be removed', $output);
+
         $this->assertStringContainsString('Galette Noclass Plugin (plugin-noclass)', $output);
         $this->assertStringContainsString('A required file is missing', $output);
     }

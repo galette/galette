@@ -24,7 +24,7 @@ use function Safe\unlink;
  */
 class Plugins extends GaletteTestCase
 {
-    private int $count_modules = 9;
+    private int $count_modules = 10;
     private int $active_modules = 3;
 
     /** @var array<string, mixed> */
@@ -82,6 +82,7 @@ class Plugins extends GaletteTestCase
                 'plugin-db-noversion',
                 'plugin-db',
                 'plugin-disabled',
+                'plugin-integrated',
                 'plugin-news',
                 'plugin-noclass',
                 'plugin-oldversion',
@@ -150,6 +151,10 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-db-noversion',
                 'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
+            ],
+            [
+                'module' => 'plugin-integrated',
+                'cause' => \Galette\Core\Plugins::DISABLED_INTEGRATED
             ]
         ];
     }

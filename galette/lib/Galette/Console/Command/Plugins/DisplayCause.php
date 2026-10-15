@@ -31,6 +31,7 @@ trait DisplayCause
             Plugins::DISABLED_DBVERSION => 'Database version missing',
             Plugins::DISABLED_NOT_INSTALLED => 'Not installed',
             Plugins::DISABLED_NOT_UP2DATE => 'Need update',
+            Plugins::DISABLED_INTEGRATED => 'Part of Galette now, can be removed',
             default => 'Unknown cause (' . $cause . ')',
         };
     }

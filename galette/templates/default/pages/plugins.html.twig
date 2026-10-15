@@ -25,6 +25,8 @@
             {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_UP2DATE') %}
                 {{ _T('Need update') }}
                 {% set show_db_button = true %}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_INTEGRATED') %}
+                {{ _T('Part of Galette now, can be removed') }}
             {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
                 {{ _T('Explicitly disabled') }}
                 {% set show_activate = true %}
