@@ -427,7 +427,7 @@ trait FileTrait
      */
     protected function getErrorMessageFromCode(int $code): string
     {
-        $error = _T("An error occurred.");
+        $error = _T("An error occurred :(");
 
         $error = match ($code) {
             self::INVALID_FILENAME => _T("File name is invalid, it should not contain any special character or space."),

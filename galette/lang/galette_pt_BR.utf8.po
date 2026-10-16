@@ -3953,7 +3953,7 @@ msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
 msgid "An error occurred :("
-msgstr ""
+msgstr "Um erro ocorreu :("
 
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
