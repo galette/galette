@@ -2,13 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Jože Felicijan <joze@felicijan.com>, 2026.
+# Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-15 00:43+0200\n"
-"PO-Revision-Date: 2026-10-09 10:41+0000\n"
-"Last-Translator: Jože Felicijan <joze@felicijan.com>\n"
+"PO-Revision-Date: 2026-10-16 21:43+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -648,15 +650,11 @@ msgstr "Iskanje je bilo shranjeno."
 msgid "Saved searches"
 msgstr "Shranjena iskanja"
 
-#, fuzzy
-#| msgid "Label does not exist"
 msgid "Saved search does not exist."
-msgstr "Oznaka ne obstaja"
+msgstr "Shranjeno iskanje ne obstaja."
 
-#, fuzzy
-#| msgid "Load saved search"
 msgid "Edit saved search"
-msgstr "Naloži shranjeno iskanje"
+msgstr "Uredi shranjeno iskanje"
 
 msgid "Remove saved search"
 msgstr "Odstrani shranjeno iskanje"
@@ -668,12 +666,14 @@ msgstr "Odstranili boste %1$s iskanj."
 #. TRANS: %1$s is the search criteria name, %2$s its value
 #, php-format
 msgid "%1$s: invalid value \"%2$s\""
-msgstr ""
+msgstr "%1$s: neveljavna vrednost »%2$s«"
 
 #. TRANS: %1$s is the list of ignored criteria
 #, php-format
 msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
 msgstr ""
+"Shranjeno iskanje je bilo naloženo, vendar so bili nekateri njegovi "
+"kriteriji prezrti: %1$s"
 
 msgid "Saved search loaded"
 msgstr "Shranjeno iskanje je naloženo"
@@ -841,6 +841,8 @@ msgstr "Pri uvozu datoteke je prišlo do napake :("
 #, php-format
 msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
 msgstr ""
+"Datoteko »%1$s« je mogoče uvoziti, vendar ni bilo ničesar shranjeno "
+"(poskusni zagon)."
 
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
@@ -871,10 +873,8 @@ msgstr "Datoteke '%1$s' ni mogoče odstraniti z diska :/"
 msgid "%1$s (occurrence %2$s)"
 msgstr "%1$s (pojavi se %2$s)"
 
-#, fuzzy
-#| msgid "Not managed group"
 msgid "Managed groups"
-msgstr "Ni upravljana skupina"
+msgstr "Upravljane skupine"
 
 msgid "CSV import model"
 msgstr "CSV import model"
@@ -896,10 +896,9 @@ msgid "Translate '%s'"
 msgstr "Prevedi '%s'"
 
 #. TRANS: parameter is the label
-#, fuzzy, php-format
-#| msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
+#, php-format
 msgid "Label `%1$s` is translated by Galette, it cannot be translated here."
-msgstr "Prednost '%1$s' vzdržuje Galette in je ni mogoče spremeniti!"
+msgstr "Oznako `%1$s` je prevedla Galette, tukaj je ni mogoče prevesti."
 
 #. TRANS: first parameter is the label, second parameter is the language ID
 #, php-format
@@ -2591,33 +2590,29 @@ msgid "Member information"
 msgstr "Informacije o članih"
 
 #. TRANS: %1$s is the status identifier
-#, fuzzy, php-format
-#| msgid "Status %1$s does not exists!"
+#, php-format
 msgid "status #%1$s no longer exists"
-msgstr "Status %1$s ne obstaja!"
+msgstr "stanje #%1$s ne obstaja več"
 
 #. TRANS: %1$s is the contribution type identifier
-#, fuzzy, php-format
-#| msgid "Contribution type #%1$s has not been updated"
+#, php-format
 msgid "contribution type #%1$s no longer exists"
-msgstr "Vrsta prispevka #%1$s ni bila posodobljena"
+msgstr "vrsta prispevka #%1$s ne obstaja več"
 
 #. TRANS: %1$s is the payment type identifier
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has not been added!"
+#, php-format
 msgid "payment type #%1$s no longer exists"
-msgstr "Vrsta plačila '%1$s' ni bila dodana!"
+msgstr "vrsta plačila #%1$s ne obstaja več"
 
 #. TRANS: %1$s is the dynamic field identifier
 #, php-format
 msgid "dynamic field #%1$s no longer exists"
-msgstr ""
+msgstr "dinamično polje #%1$s ne obstaja več"
 
 #. TRANS: %1$s is the group identifier
-#, fuzzy, php-format
-#| msgid "Gender %1$s does not exists!"
+#, php-format
 msgid "group #%1$s no longer exists"
-msgstr "Spol %1$s ne obstaja!"
+msgstr "skupina #%1$s ne obstaja več"
 
 msgid "Creation date"
 msgstr "Datum vpisa"
@@ -2628,30 +2623,24 @@ msgstr "Datum spremembe"
 msgid "Due date"
 msgstr "Rok"
 
-#, fuzzy
-#| msgid "Contribution information"
 msgid "Contribution creation date"
-msgstr "Informacije o prispevkih"
+msgstr "Datum ustvarjanja prispevka"
 
-#, fuzzy
-#| msgid "Contribution updated"
 msgid "Contribution begin date"
-msgstr "Prispevek posodobljen"
+msgstr "Datum začetka prispevka"
 
-#, fuzzy
-#| msgid "Contribution updated"
 msgid "Contribution end date"
-msgstr "Prispevek posodobljen"
+msgstr "Končni datum prispevka"
 
 #. TRANS: %1$s is the field label, %2$s the date
 #, php-format
 msgid "%1$s: invalid date \"%2$s\""
-msgstr ""
+msgstr "%1$s: neveljaven datum »%2$s«"
 
 #. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
 #, php-format
 msgid "%1$s: \"%2$s\" is not available"
-msgstr ""
+msgstr "%1$s: »%2$s« ni na voljo"
 
 msgid "Email,URL,IM"
 msgstr "E-pošta, URL, neposredno sporočilo"
@@ -2765,10 +2754,9 @@ msgid "File is empty!"
 msgstr "Datoteka je prazna!"
 
 #. TRANS: first parameter is a group name, second the row in error
-#, fuzzy, php-format
-#| msgid "Gender %1$s does not exists!"
+#, php-format
 msgid "Group \"%1$s\" does not exist (row %2$s)"
-msgstr "Spol %1$s ne obstaja!"
+msgstr "Skupina »%1$s« ne obstaja (vrstica %2$s)"
 
 #. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
 #, php-format
@@ -2776,6 +2764,8 @@ msgid ""
 "Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
 "them: %3$s"
 msgstr ""
+"Več skupin nosi ime »%1$s« (vrstica %2$s); uporabite polno ime ene izmed "
+"njih: %3$s"
 
 #. TRANS: first parameter is row, second member name
 #, php-format
@@ -2783,10 +2773,11 @@ msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "Pri shranjevanju člana v vrstici %1$s (%2$s) je prišlo do napake:"
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred storing member at row %1$s (%2$s):"
+#, php-format
 msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
-msgstr "Pri shranjevanju člana v vrstici %1$s (%2$s) je prišlo do napake:"
+msgstr ""
+"Pri dodajanju člana v vrstici %1$s (%2$s) v njegove skupine je prišlo do "
+"napake"
 
 msgid "An error occurred while importing members"
 msgstr "Pri uvozu članov je prišlo do napake"
@@ -3045,48 +3036,37 @@ msgid "Does not contains special characters"
 msgstr "Ne vsebuje posebnih znakov"
 
 msgid "Letters"
-msgstr ""
+msgstr "Pisma"
 
-#, fuzzy
-#| msgid "Does not contains uppercase letters"
 msgid "Lowercase and uppercase letters"
-msgstr "Ne vsebuje velikih črk"
+msgstr "Male in velike črke"
 
-#, fuzzy
-#| msgid "Members"
 msgid "Numbers"
-msgstr "Člani"
+msgstr "Številke"
 
-#, fuzzy
-#| msgid "Search parameters"
 msgid "Special characters"
-msgstr "Iskalni parametri"
+msgstr "Posebni znaki"
 
 #. TRANS: %1$s is the minimum number of characters
-#, fuzzy, php-format
-#| msgid "(at least %1$s characters)"
+#, php-format
 msgid "At least %1$s characters"
-msgstr "(vsaj %1$s znakov)"
+msgstr "Vsaj %1$s znakov"
 
-#, fuzzy, php-format
-#| msgid "%1$s entry"
-#| msgid_plural "%1$s entries"
+#, php-format
 msgid "%1$s day"
 msgid_plural "%1$s days"
-msgstr[0] "Vnos %1$s"
-msgstr[1] "%1$s vnosa"
-msgstr[2] "%1$s vnosov"
-msgstr[3] "%1$s vnosov"
+msgstr[0] "%1$s. dan"
+msgstr[1] "%1$s. dneva"
+msgstr[2] "%1$s dni"
+msgstr[3] "%1$s dni"
 
-#, fuzzy, php-format
-#| msgid "%1$s member"
-#| msgid_plural "%1$s members"
+#, php-format
 msgid "%1$s week"
 msgid_plural "%1$s weeks"
-msgstr[0] "Član %1$s"
-msgstr[1] "%1$sčlana"
-msgstr[2] "%1$s članov"
-msgstr[3] "%1$s člani"
+msgstr[0] "%1$s teden"
+msgstr[1] "%1$s tedena"
+msgstr[2] "%1$s tedeni"
+msgstr[3] "%1$s tedenov"
 
 #, php-format
 msgid "%1$s month"
@@ -3096,72 +3076,56 @@ msgstr[1] "%1$s meseca"
 msgstr[2] "%1$s mesecev"
 msgstr[3] "%1$s mesecev"
 
-#, fuzzy, php-format
-#| msgid "%1$s search"
-#| msgid_plural "%1$s searches"
+#, php-format
 msgid "%1$s year"
 msgid_plural "%1$s years"
-msgstr[0] "Iskanje %1$s"
-msgstr[1] "Iskanje %1$s"
-msgstr[2] "%1$s iskanj"
-msgstr[3] "%1$s iskanj"
+msgstr[0] "%1$s leto"
+msgstr[1] "%1$s leti"
+msgstr[2] "%1$s leta"
+msgstr[3] "%1$s let"
 
 #. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
-#, fuzzy, php-format
-#| msgid "How much is %1$s plus %2$s?"
+#, php-format
 msgid "%1$s plus %2$s"
-msgstr "Koliko je %1$s plus %2$s?"
+msgstr "%1$s in %2$s"
 
 #. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
-#, fuzzy, php-format
-#| msgid "How much is %1$s minus %2$s?"
+#, php-format
 msgid "%1$s minus %2$s"
-msgstr "Koliko je %1$s minus %2$s?"
+msgstr "%1$s minus %2$s"
 
-#, fuzzy
-#| msgid "Today"
 msgid "today"
-msgstr "Danes"
+msgstr "danes"
 
-#, fuzzy
-#| msgid "Total contributions for the month"
 msgid "start of the month"
-msgstr "Skupni prispevki za mesec"
+msgstr "začetek meseca"
 
 msgid "end of the month"
-msgstr ""
+msgstr "konec meseca"
 
-#, fuzzy
-#| msgid "start date filter"
 msgid "start of the year"
-msgstr "filter začetnega datuma"
+msgstr "začetek leta"
 
-#, fuzzy
-#| msgid "Send a test email"
 msgid "end of the year"
-msgstr "Pošlji testno e-pošto"
+msgstr "konec leta"
 
-#, fuzzy
-#| msgid "Start date of membership:"
 msgid "start of the membership period"
-msgstr "Datum začetka članstva:"
+msgstr "začetek obdobja članstva"
 
-#, fuzzy
-#| msgid "Details of membership fee"
 msgid "end of the membership period"
-msgstr "Podrobnosti o članarini"
+msgstr "konec obdobja članstva"
 
 msgid "days"
-msgstr ""
+msgstr "dnevi"
 
 msgid "weeks"
-msgstr ""
+msgstr "tedni"
 
 msgid "months"
 msgstr "mesecev"
 
 msgid "years"
-msgstr ""
+msgstr "leta"
 
 msgid "No host"
 msgstr "Brez gostitelja"
@@ -3772,14 +3736,12 @@ msgstr "Prosimo, izberite parametre skrbniškega računa na Galette"
 msgid "(at least %1$s characters)"
 msgstr "(vsaj %1$s znakov)"
 
-#, fuzzy
-#| msgid ""
-#| "Rules include lower case characters, upper case characters, numbers, and "
-#| "special characters."
 msgid ""
 "For a stronger password, mix lowercase and uppercase letters, numbers and "
 "special characters."
-msgstr "Pravila vključujejo male črke, velike črke, številke in posebne znake."
+msgstr ""
+"Za močnejše geslo kombinirajte male in velike črke, številke ter posebne "
+"znake."
 
 msgid "Retype password:"
 msgstr "Ponovno vnesite geslo:"
@@ -4129,10 +4091,10 @@ msgid "Ajax page content"
 msgstr "Vsebina strani Ajax"
 
 msgid "Copied to clipboard."
-msgstr ""
+msgstr "Kopirano v odložišče."
 
 msgid "Unable to copy, please select the text and copy it by hand."
-msgstr ""
+msgstr "Kopiranje ni mogoče; prosimo, izberite besedilo in ga kopirajte ročno."
 
 msgid "Additionnal fields:"
 msgstr "Dodatna polja:"
@@ -4225,48 +4187,36 @@ msgstr "Član skupine"
 msgid "Actions"
 msgstr "Dejanja"
 
-#, fuzzy
-#| msgid "Group added"
 msgctxt "member groups"
 msgid "added"
-msgstr "Skupina je bila dodana"
+msgstr "dodano"
 
-#, fuzzy
-#| msgid "Mass change"
 msgctxt "member groups"
 msgid "changed"
-msgstr "Sprememba mase"
+msgstr "spremenjeno"
 
-#, fuzzy
-#| msgid "Parent removed"
 msgctxt "member groups"
 msgid "will be removed"
-msgstr "Starš je bil odstranjen"
+msgstr "bo odstranjeno"
 
-#, fuzzy
-#| msgid "Group manager"
 msgid "Group you do not manage"
-msgstr "Vodja skupine"
+msgstr "Skupina, ki je ne upravljate"
 
-#, fuzzy, php-format
-#| msgid "Member of group"
+#, php-format
 msgid "Member of group %1$s"
-msgstr "Član skupine"
+msgstr "Član skupine %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Manager of group %1$s"
-msgstr "Odstrani skupino %1$s"
+msgstr "Vodja skupine %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove from group %1$s"
-msgstr "Odstrani iz skupine"
+msgstr "Odstrani iz skupine %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Keep group %1$s"
-msgstr "Odstrani skupino %1$s"
+msgstr "Obdrži skupino %1$s"
 
 msgid "no group"
 msgstr "brez skupine"
@@ -4479,27 +4429,21 @@ msgstr "Informacije"
 msgid "Parent group:"
 msgstr "Starševska skupina:"
 
-#, fuzzy, php-format
-#| msgid "Member of group"
+#, php-format
 msgid "%1$s is member of the group"
-msgstr "Član skupine"
+msgstr "%1$s je član skupine"
 
-#, fuzzy, php-format
-#| msgid "%1$s managed group"
-#| msgid_plural "%1$s managed groups"
+#, php-format
 msgid "%1$s is manager of the group"
-msgstr "Skupina, ki jo upravlja %1$s"
+msgstr "%1$s je upravitelj skupine"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove %1$s from the group"
-msgstr "Odstrani iz skupine"
+msgstr "Odstrani %1$s iz skupine"
 
-#, fuzzy, php-format
-#| msgid "%1$s managed group"
-#| msgid_plural "%1$s managed groups"
+#, php-format
 msgid "Keep %1$s in the group"
-msgstr "Skupina, ki jo upravlja %1$s"
+msgstr "Obdrži %1$s v skupini"
 
 msgid "Managers"
 msgstr "Vodje"
@@ -4611,29 +4555,25 @@ msgstr "Geslo ni veljavno!"
 
 #, php-format
 msgid "At least %1$s of the following rules:"
-msgstr ""
+msgstr "Vsaj %1$s od naslednjih pravil:"
 
 msgid "An error occurred checking password :("
 msgstr "Pri preverjanju gesla je prišlo do napake :("
 
-#, fuzzy
-#| msgid "Reference:"
 msgid "Reference date"
-msgstr "Referenca:"
+msgstr "Referenčni datum"
 
-#, fuzzy
-#| msgid "Duration"
 msgid "Direction"
-msgstr "Trajanje"
+msgstr "Smer"
 
 msgid "Unit"
-msgstr ""
+msgstr "Enota"
 
 msgid "Use a fixed date"
-msgstr ""
+msgstr "Uporabite določen datum"
 
 msgid "Use a date relative to the search day"
-msgstr ""
+msgstr "Uporabite datum, določen glede na dan iskanja"
 
 msgid "Remove"
 msgstr "Odstrani"
@@ -4814,12 +4754,10 @@ msgid "Register"
 msgstr "Naročite se"
 
 msgid "Generating dark theme..."
-msgstr ""
+msgstr "Ustvarjanje temne teme..."
 
-#, fuzzy
-#| msgid "Unable to reach the SMTP server."
 msgid "Unable to store dark theme."
-msgstr "Strežnika SMTP ni mogoče doseči."
+msgstr "Temne teme ni mogoče shraniti."
 
 msgid "Deactivate HTML editor"
 msgstr "Deaktiviraj urejevalnik HTML"
@@ -4832,9 +4770,11 @@ msgid ""
 "This label is provided by Galette and displayed as \"%1$s\" in your "
 "language. Changing it will replace its automatic translations."
 msgstr ""
+"To oznako zagotavlja Galette in je v vašem jeziku prikazana kot »%1$s«. Če "
+"jo spremenite, bodo njeni samodejni prevodi nadomeščeni."
 
 msgid "If this label is changed, keep its translations in other languages"
-msgstr ""
+msgstr "Če se ta oznaka spremeni, ohranite njene prevode v drugih jezikih"
 
 msgid "For the selection:"
 msgstr "Za izbor:"
@@ -5519,6 +5459,9 @@ msgid ""
 "This label is provided by Galette, its translations come with the software "
 "and cannot be changed here. You can help improve them on Weblate."
 msgstr ""
+"To oznako zagotavlja Galette; njeni prevodi so vključeni v programsko opremo "
+"in jih tukaj ni mogoče spremeniti. K njihovemu izboljšanju lahko prispevate "
+"na platformi Weblate."
 
 #, php-format
 msgid ""
@@ -5529,7 +5472,7 @@ msgstr ""
 "ustvarite."
 
 msgid "When a translation is empty, the original text is displayed."
-msgstr ""
+msgstr "Ko je prevod prazen, se prikaže izvirno besedilo."
 
 msgid "Original text:"
 msgstr "Izvirno besedilo:"
@@ -6774,10 +6717,8 @@ msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr "Vnesite celoten URL vira RSS. Prikazan bo na namizju Galette."
 
-#, fuzzy
-#| msgid "Can members create child?"
 msgid "Can members create child members?"
-msgstr "Ali lahko člani ustvarijo otroka?"
+msgstr "Ali lahko člani ustvarijo podrejene člane?"
 
 msgid "Can group managers edit their groups?"
 msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
@@ -7191,7 +7132,7 @@ msgid "Please make sure to select at least one reminder."
 msgstr "Prosimo, izberite vsaj en opomnik."
 
 msgid "Replace parameters with the current advanced search"
-msgstr ""
+msgstr "Zamenjajte parametre s trenutnim naprednim iskanjem"
 
 msgid "Show parameters"
 msgstr "Prikaži parametre"
@@ -7294,10 +7235,8 @@ msgstr "Prednost"
 msgid "New status"
 msgstr "Novo stanje"
 
-#, fuzzy
-#| msgid "System information"
 msgid "Copy system information"
-msgstr "Informacije o sistemu"
+msgstr "Kopiraj sistemske informacije"
 
 msgid "Transaction details"
 msgstr "Podrobnosti transakcije"
@@ -7391,7 +7330,7 @@ msgstr ""
 "enkrat in vam omogoča prijavo, ko nimate več svoje naprave."
 
 msgid "Copy the codes"
-msgstr ""
+msgstr "Kopiraj kode"
 
 msgid "I have written them down"
 msgstr "Zapisal sem jih"
@@ -7416,7 +7355,7 @@ msgid "Key, to type in by hand:"
 msgstr "Ključ za ročno vnašanje:"
 
 msgid "Copy the key"
-msgstr ""
+msgstr "Kopiraj ključ"
 
 msgid "Code shown by the application:"
 msgstr "Koda, ki jo prikaže aplikacija:"
