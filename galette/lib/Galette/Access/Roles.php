@@ -303,18 +303,33 @@ class Roles
      */
     public function getInheritedPermissions(Role $role): array
     {
+        $permissions = array_keys($this->getInheritedPermissionsOrigins($role));
+        sort($permissions);
+        return $permissions;
+    }
+
+    /**
+     * Get permissions a role inherits from its parents, with the nearest
+     * parent granting each of them
+     *
+     * @param Role $role Role
+     *
+     * @return array<string, Role>
+     */
+    public function getInheritedPermissionsOrigins(Role $role): array
+    {
         $roles = $this->getList();
-        $permissions = [];
+        $origins = [];
         $seen = $role->isLoaded() ? [$role->getId() => true] : [];
         $parent = $role->getParentId();
         while ($parent !== null && isset($roles[$parent]) && !isset($seen[$parent])) {
             $seen[$parent] = true;
-            $permissions = array_merge($permissions, $roles[$parent]->getPermissions());
+            foreach ($roles[$parent]->getPermissions() as $permission) {
+                $origins[$permission] ??= $roles[$parent];
+            }
             $parent = $roles[$parent]->getParentId();
         }
-        $permissions = array_values(array_unique($permissions));
-        sort($permissions);
-        return $permissions;
+        return $origins;
     }
 
     /**

@@ -139,6 +139,13 @@ class RoleTest extends GaletteTestCase
         $this->assertContains('contribution:delete', $inherited);
         $this->assertSame([], $this->roles->getInheritedPermissions(new Role(1)));
 
+        $origins = $this->roles->getInheritedPermissionsOrigins($assistant);
+        $this->assertSame($deputy->getId(), $origins['member:create']->getId());
+        $this->assertSame(4, $origins['contribution:delete']->getId());
+        $names = array_keys($origins);
+        sort($names);
+        $this->assertSame($inherited, $names);
+
         $parents = array_keys($this->roles->getPossibleParents($deputy));
         $this->assertNotContains($deputy->getId(), $parents);
         $this->assertNotContains($assistant->getId(), $parents);

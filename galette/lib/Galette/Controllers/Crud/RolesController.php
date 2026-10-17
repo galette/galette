@@ -212,7 +212,7 @@ class RolesController extends CrudController
                 'all_roles'     => $roles->getList(),
                 'parents'       => $roles->getPossibleParents($role),
                 'catalog'       => $this->permissions,
-                'inherited'     => $roles->getInheritedPermissions($role),
+                'inherited'     => $roles->getInheritedPermissionsOrigins($role),
                 'given'         => $roles->getMembersOf($id),
                 'computed'      => $role->isSystem() ? $roles->getComputedMembersOf($role) : null,
                 'computed_count' => $role->isSystem() ? $roles->countComputedMembersOf($role) : null,
