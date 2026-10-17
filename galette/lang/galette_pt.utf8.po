@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
@@ -25,6 +25,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2026.10.1.dev0\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -103,6 +113,27 @@ msgstr "As preferências foram guardadas."
 #| msgid "Preferences has been saved."
 msgid "Preference '%1$s' has been reset to its default."
 msgstr "As preferências foram guardadas."
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "An error occurred :("
+msgstr "Um erro ocorreu :("
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "- ERROR -"
 msgstr "- ERRO -"
@@ -1207,8 +1238,8 @@ msgid "Dump every SQL query to the logs."
 msgstr ""
 
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 
 msgid "Yes"
@@ -2817,9 +2848,6 @@ msgstr "Ocorreu um erro ao armazenar o membro na linha %1$s (%2$s):"
 msgid "An error occurred while importing members"
 msgstr "Um erro ocorreu enquanto importava os membros"
 
-msgid "An error occurred."
-msgstr "Um erro ocorreu."
-
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
@@ -4011,9 +4039,6 @@ msgstr "Não foi possível criar o arquivo de configuração (%1$s)"
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
-msgid "An error occurred :("
-msgstr "Um erro ocorreu :("
-
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
 
@@ -4962,6 +4987,12 @@ msgstr ""
 msgid "This page can break your installation, be very careful."
 msgstr ""
 
+msgid "Experimental features"
+msgstr ""
+
+msgid "Constants"
+msgstr ""
+
 #, fuzzy
 #| msgid "Settings"
 msgid "Filter settings"
@@ -4979,10 +5010,6 @@ msgid ""
 msgstr ""
 
 msgid "unknown"
-msgstr ""
-
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
 msgstr ""
 
 msgid "locked"
@@ -5033,7 +5060,27 @@ msgstr ""
 msgid "Reset '%s' to its default"
 msgstr ""
 
-msgid "Constants behavior.inc.php understands"
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr "Descrição"
+
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Obrigatório"
+
+msgid "Disable"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
 msgstr ""
 
 #, php-format
@@ -5042,9 +5089,6 @@ msgid ""
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
 msgstr ""
-
-msgid "Description"
-msgstr "Descrição"
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
@@ -7228,9 +7272,6 @@ msgid ""
 "device. Keep an access to the database at hand."
 msgstr ""
 
-msgid "Disable"
-msgstr ""
-
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
@@ -7259,6 +7300,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr ""
+
+#~ msgid "An error occurred."
+#~ msgstr "Um erro ocorreu."
 
 #~ msgid "An SQL error has occurred while loading search."
 #~ msgstr "Ocorreu um erro de SQL ao carregar a pesquisa."
