@@ -1151,7 +1151,7 @@ class Adherent implements AccessManagementInterface
         foreach (array_keys($required) as $key) {
             $prop = $this->fields[$key]['propname'];
 
-            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
+            if (!in_array($key, $disabled) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
                 $this->errors[] = sprintf(
                     //TRANS: parameter is an HTML link to the field with its name
                     _T('- Mandatory field %1$s empty.'),
