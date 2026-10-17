@@ -15,13 +15,6 @@
     (constant('Galette\\Access\\Roles::MANAGER')): _T("Given to managers of a group, on that group only; choose managers from the group page.")
 } %}
 
-{% block page_title %}
-    {{ page_title }}
-    {% if role.isSystem() %}
-    <span class="ui label">{{ _T("System") }}</span>
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <form action="{{ url_for('doEditRole', {'id': role.getId()}) }}" method="post" class="ui form">
         <div class="ui segment">
@@ -31,9 +24,14 @@
                 {{ origins[role.getKey()] ?? _T("Computed from member's information") }}
                 {{ _T("Only its permissions can be changed.") }}
             </div>
-            <div class="field inline">
-                <label for="parent">{{ _T("Inherits from") }}</label>
-                <input type="text" id="parent" value="{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}" readonly="readonly"/>
+            <div class="inline fields">
+                <div class="field">
+                    <label for="parent">{{ _T("Inherits from") }}</label>
+                    <input type="text" id="parent" value="{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}" readonly="readonly"/>
+                </div>
+                <div class="field">
+                    <span class="ui label">{{ _T("System") }}</span>
+                </div>
             </div>
     {% else %}
             <div class="inline fields">
