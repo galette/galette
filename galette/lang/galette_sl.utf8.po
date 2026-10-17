@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-16 21:43+0000\n"
-"Last-Translator: Jože Felicijan "
-"<felicijan@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-18 05:29+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -23,10 +23,10 @@ msgstr ""
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Funkcija vklopljena"
+msgstr[1] "Funkciji vklopljeni"
+msgstr[2] "Funkcije vklopljene"
+msgstr[3] "Funkcij vklopljenih"
 
 msgid "Feature turned off"
 msgid_plural "Features turned off"
@@ -116,14 +116,13 @@ msgid "An error occurred :("
 msgstr "Prišlo je do napake :("
 
 #. TRANS: parameter is a comma separated list of feature names
-#, fuzzy, php-format
-#| msgid "Model parameted on %1$s"
+#, php-format
 msgid "Feature turned on: %1$s."
 msgid_plural "Features turned on: %1$s."
-msgstr[0] "Model parametriran na %1$s"
-msgstr[1] "Model parametriran na %1$s"
-msgstr[2] "Model parametriran na %1$s"
-msgstr[3] "Model parametriran na %1$s"
+msgstr[0] "Model parametriran na %1$s."
+msgstr[1] "Modela parametrirana na %1$s."
+msgstr[2] "Modeli parametrirani na %1$s."
+msgstr[3] "Modelov parametriranih na %1$s."
 
 #. TRANS: parameter is a comma separated list of feature names
 #, php-format
