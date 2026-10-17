@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: ../lib/Galette/Console/Command/AbstractFeature.php:93
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:285
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../lib/Galette/Console/Command/AbstractFeature.php:94
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:286
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../lib/Galette/Console/Command/ProcessMailingQueue.php:85
-#: ../lib/Galette/Core/Preferences.php:1156
+#: ../lib/Galette/Core/Preferences.php:1157
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
@@ -95,28 +109,78 @@ msgstr ""
 msgid "An error occurred fixing dynamic dates :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:51
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:116
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:57
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:148
 #: ../lib/Galette/Core/Galette.php:530
 msgid "Advanced configuration"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:135
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:174
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:169
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:208
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:245
 msgid "Please confirm your password again."
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:153
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:187
 #, php-format
 msgid "Preference '%1$s' has been stored."
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Controllers/AdvancedConfigController.php:188
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:222
 #, php-format
 msgid "Preference '%1$s' has been reset to its default."
 msgstr ""
+
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:261
+#: ../templates/default/pages/advanced_config.html.twig:65
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:264
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:277
+#: ../lib/Galette/IO/FileTrait.php:430 ../install/steps/galette.php:42
+#: ../templates/default/elements/js/choose_adh.js.twig:161
+#: ../templates/default/elements/js/modal_action.js.twig:98
+#: ../templates/default/elements/js/removal.js.twig:92
+#: ../templates/default/elements/js/removal.js.twig:118
+#: ../templates/default/elements/scripts.html.twig:148
+#: ../templates/default/elements/scripts.html.twig:170
+#: ../templates/default/elements/scripts.html.twig:192
+#: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
+#: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
+#: ../templates/default/pages/configuration_payment_types.html.twig:132
+#: ../templates/default/pages/contributions_types_list.html.twig:188
+#: ../templates/default/pages/groups_list.html.twig:402
+#: ../templates/default/pages/members_list.html.twig:680
+#: ../templates/default/pages/members_list.html.twig:701
+#: ../templates/default/pages/members_list.html.twig:722
+#: ../templates/default/pages/members_list.html.twig:790
+#: ../templates/default/pages/members_list.html.twig:809
+#: ../templates/default/pages/members_list.html.twig:830
+#: ../templates/default/pages/plugins.html.twig:256
+#: ../templates/default/pages/preferences.html.twig:1512
+#: ../templates/default/pages/status_list.html.twig:154
+msgid "An error occurred :("
+msgstr ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:297
+#, php-format
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#: ../lib/Galette/Controllers/AdvancedConfigController.php:299
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../lib/Galette/Controllers/AjaxController.php:57
 #: ../webroot/installer.php:350
@@ -1355,6 +1419,7 @@ msgstr ""
 #: ../lib/Galette/Core/Galette.php:422 ../lib/Galette/Core/Galette.php:900
 #: ../lib/Galette/Core/Install.php:1162
 #: ../lib/Galette/DynamicFields/DynamicField.php:440
+#: ../templates/default/pages/advanced_config.html.twig:23
 #: ../templates/default/pages/preferences.html.twig:1150
 msgid "Settings"
 msgstr ""
@@ -1375,7 +1440,7 @@ msgid "Inactive accounts"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:261
-#: ../lib/Galette/Core/Preferences.php:765
+#: ../lib/Galette/Core/Preferences.php:766
 msgid ""
 "An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
@@ -1707,8 +1772,8 @@ msgstr ""
 
 #: ../lib/Galette/Core/BehaviorConstants.php:132
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 
 #: ../lib/Galette/Core/BehaviorConstants.php:165
@@ -2294,10 +2359,10 @@ msgid "Unable to create configuration file (%1$s)"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1170
-#: ../templates/default/pages/advanced_config.html.twig:39
-#: ../templates/default/pages/advanced_config.html.twig:52
-#: ../templates/default/pages/advanced_config.html.twig:137
-#: ../templates/default/pages/advanced_config.html.twig:151
+#: ../templates/default/pages/advanced_config.html.twig:48
+#: ../templates/default/pages/advanced_config.html.twig:61
+#: ../templates/default/pages/advanced_config.html.twig:212
+#: ../templates/default/pages/advanced_config.html.twig:226
 #: ../templates/default/pages/advanced_search.html.twig:222
 #: ../templates/default/pages/advanced_search.html.twig:224
 msgid "Status"
@@ -2378,33 +2443,33 @@ msgid "File not found!"
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:595
-#: ../lib/Galette/Core/Preferences.php:682
+#: ../lib/Galette/Core/Preferences.php:596
+#: ../lib/Galette/Core/Preferences.php:683
 #, php-format
 msgid "Unknown preference '%1$s'!"
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:604
-#: ../lib/Galette/Core/Preferences.php:691
+#: ../lib/Galette/Core/Preferences.php:605
+#: ../lib/Galette/Core/Preferences.php:692
 #, php-format
 msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:616
-#: ../lib/Galette/Core/Preferences.php:728
+#: ../lib/Galette/Core/Preferences.php:617
+#: ../lib/Galette/Core/Preferences.php:729
 #, php-format
 msgid "You are not allowed to change preference '%1$s'!"
 msgstr ""
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:701
+#: ../lib/Galette/Core/Preferences.php:702
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:735
+#: ../lib/Galette/Core/Preferences.php:736
 #: ../templates/default/pages/admin_credentials.html.twig:17
 #: ../templates/default/pages/plugins.html.twig:141
 #: ../templates/default/pages/preferences.html.twig:675
@@ -2412,8 +2477,8 @@ msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1175
-#: ../lib/Galette/Core/Preferences.php:1189
+#: ../lib/Galette/Core/Preferences.php:1176
+#: ../lib/Galette/Core/Preferences.php:1190
 #: ../lib/Galette/Entity/Document.php:324 ../lib/Galette/Entity/Texts.php:188
 #: ../lib/Galette/IO/Csv.php:90
 #: ../templates/default/pages/authentication_attempts.html.twig:10
@@ -2422,16 +2487,16 @@ msgstr ""
 msgid "Y-m-d H:i:s"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1177
+#: ../lib/Galette/Core/Preferences.php:1178
 msgid "Never"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1244
+#: ../lib/Galette/Core/Preferences.php:1245
 #: ../lib/Galette/Features/Replacements.php:831
 msgid "Main information"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1251
+#: ../lib/Galette/Core/Preferences.php:1252
 #: ../templates/default/elements/display_socials.html.twig:12
 #: ../templates/default/elements/edit_socials.html.twig:66
 #: ../templates/default/pages/preferences.html.twig:14
@@ -2505,80 +2570,80 @@ msgstr ""
 msgid "- Mandatory field %1$s empty."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1157
+#: ../lib/Galette/Core/PreferencesSchema.php:1171
 msgid "- The numbers and measures have to be integers!"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1158
+#: ../lib/Galette/Core/PreferencesSchema.php:1172
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1159
+#: ../lib/Galette/Core/PreferencesSchema.php:1173
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1160
+#: ../lib/Galette/Core/PreferencesSchema.php:1174
 msgid "- Invalid number of months of membership extension."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1161
+#: ../lib/Galette/Core/PreferencesSchema.php:1175
 msgid "- Invalid number of offered months."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1162
+#: ../lib/Galette/Core/PreferencesSchema.php:1176
 msgid "- The username must be composed of at least 4 characters!"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1163
+#: ../lib/Galette/Core/PreferencesSchema.php:1177
 msgid "- This username is already used by another member !"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1164
+#: ../lib/Galette/Core/PreferencesSchema.php:1178
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1165
+#: ../lib/Galette/Core/PreferencesSchema.php:1179
 msgid "- Invalid date for beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1166
+#: ../lib/Galette/Core/PreferencesSchema.php:1180
 msgid "- Invalid year for cards."
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1167
+#: ../lib/Galette/Core/PreferencesSchema.php:1181
 msgid "- Invalid website URL."
 msgstr ""
 
 #. TRANS: first parameter is the address, second the setting holding it
-#: ../lib/Galette/Core/PreferencesSchema.php:1169
+#: ../lib/Galette/Core/PreferencesSchema.php:1183
 #, php-format
 msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr ""
 
 #. TRANS: parameter is the setting name
-#: ../lib/Galette/Core/PreferencesSchema.php:1171
+#: ../lib/Galette/Core/PreferencesSchema.php:1185
 #, php-format
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr ""
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:1174
+#: ../lib/Galette/Core/PreferencesSchema.php:1188
 msgid "- Unknown two-factor authentication mode!"
 msgstr ""
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1175
+#: ../lib/Galette/Core/PreferencesSchema.php:1189
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:1177
+#: ../lib/Galette/Core/PreferencesSchema.php:1191
 #, php-format
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
 #. TRANS: parameter is the setting name
-#: ../lib/Galette/Core/PreferencesSchema.php:1179
+#: ../lib/Galette/Core/PreferencesSchema.php:1193
 #, php-format
 msgid "- Unknown visibility for '%1$s'!"
 msgstr ""
@@ -3122,10 +3187,12 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:21
 #: ../templates/default/elements/group_person_row.html.twig:15
 #: ../templates/default/elements/group_persons.html.twig:36
-#: ../templates/default/pages/advanced_config.html.twig:37
 #: ../templates/default/pages/advanced_config.html.twig:46
-#: ../templates/default/pages/advanced_config.html.twig:136
-#: ../templates/default/pages/advanced_config.html.twig:145
+#: ../templates/default/pages/advanced_config.html.twig:55
+#: ../templates/default/pages/advanced_config.html.twig:146
+#: ../templates/default/pages/advanced_config.html.twig:155
+#: ../templates/default/pages/advanced_config.html.twig:211
+#: ../templates/default/pages/advanced_config.html.twig:220
 #: ../templates/default/pages/configuration_payment_types.html.twig:16
 #: ../templates/default/pages/configuration_payment_types.html.twig:29
 #: ../templates/default/pages/configuration_payment_types.html.twig:48
@@ -4086,10 +4153,6 @@ msgstr ""
 msgid "An error occurred while importing members"
 msgstr ""
 
-#: ../lib/Galette/IO/FileTrait.php:430
-msgid "An error occurred."
-msgstr ""
-
 #: ../lib/Galette/IO/FileTrait.php:433
 msgid ""
 "File name is invalid, it should not contain any special character or space."
@@ -4722,7 +4785,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:192 ../install/steps/admin.php:24
 #: ../install/steps/db.php:61
 #: ../templates/default/pages/admin_credentials.html.twig:31
-#: ../templates/default/pages/advanced_config_confirm.html.twig:20
+#: ../templates/default/pages/advanced_config_confirm.html.twig:21
 #: ../templates/default/pages/index.html.twig:27
 #: ../templates/default/pages/index.html.twig:28
 msgid "Password:"
@@ -5718,31 +5781,6 @@ msgstr ""
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
-#: ../install/steps/galette.php:42
-#: ../templates/default/elements/js/choose_adh.js.twig:161
-#: ../templates/default/elements/js/modal_action.js.twig:98
-#: ../templates/default/elements/js/removal.js.twig:92
-#: ../templates/default/elements/js/removal.js.twig:118
-#: ../templates/default/elements/scripts.html.twig:148
-#: ../templates/default/elements/scripts.html.twig:170
-#: ../templates/default/elements/scripts.html.twig:192
-#: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
-#: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
-#: ../templates/default/pages/configuration_payment_types.html.twig:132
-#: ../templates/default/pages/contributions_types_list.html.twig:188
-#: ../templates/default/pages/groups_list.html.twig:402
-#: ../templates/default/pages/members_list.html.twig:680
-#: ../templates/default/pages/members_list.html.twig:701
-#: ../templates/default/pages/members_list.html.twig:722
-#: ../templates/default/pages/members_list.html.twig:790
-#: ../templates/default/pages/members_list.html.twig:809
-#: ../templates/default/pages/members_list.html.twig:830
-#: ../templates/default/pages/plugins.html.twig:256
-#: ../templates/default/pages/preferences.html.twig:1512
-#: ../templates/default/pages/status_list.html.twig:154
-msgid "An error occurred :("
-msgstr ""
-
 #: ../install/steps/telemetry.php:31 ../templates/default/pages/desktop.html.twig:26
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
@@ -6247,8 +6285,8 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:23
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:37
 #: ../templates/default/elements/edit_pdf_models.html.twig:60
-#: ../templates/default/pages/advanced_config.html.twig:38
-#: ../templates/default/pages/advanced_config.html.twig:49
+#: ../templates/default/pages/advanced_config.html.twig:47
+#: ../templates/default/pages/advanced_config.html.twig:58
 #: ../templates/default/pages/advanced_search.html.twig:390
 #: ../templates/default/pages/advanced_search.html.twig:392
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:152
@@ -6338,7 +6376,7 @@ msgstr ""
 #: ../templates/default/elements/js/modal_action.js.twig:59
 #: ../templates/default/elements/member_actions.html.twig:42
 #: ../templates/default/pages/admin_credentials.html.twig:47
-#: ../templates/default/pages/advanced_config.html.twig:101
+#: ../templates/default/pages/advanced_config.html.twig:110
 #: ../templates/default/pages/configuration_core_fields.html.twig:30
 #: ../templates/default/pages/configuration_core_lists.html.twig:82
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:119
@@ -6554,7 +6592,7 @@ msgstr ""
 #: ../templates/default/modals/telemetry.html.twig:49
 #: ../templates/default/modals/telemetry.html.twig:58
 #: ../templates/default/modals/telemetry.html.twig:159
-#: ../templates/default/pages/advanced_config.html.twig:224
+#: ../templates/default/pages/advanced_config.html.twig:300
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:58
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
@@ -6709,7 +6747,7 @@ msgid "Selecting an item from the list will automatically reload the table"
 msgstr ""
 
 #: ../templates/default/elements/list.html.twig:177
-#: ../templates/default/pages/advanced_config.html.twig:31
+#: ../templates/default/pages/advanced_config.html.twig:40
 msgid "Show legend"
 msgstr ""
 
@@ -7302,120 +7340,120 @@ msgstr ""
 msgid "This page can break your installation, be very careful."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:24
+#: ../templates/default/pages/advanced_config.html.twig:25
+msgid "Experimental features"
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:27
+msgid "Constants"
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:33
 msgid "Filter settings"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:25
+#: ../templates/default/pages/advanced_config.html.twig:34
 msgid "Search a setting..."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:40
-#: ../templates/default/pages/advanced_config.html.twig:73
-#: ../templates/default/pages/advanced_config.html.twig:138
-#: ../templates/default/pages/advanced_config.html.twig:158
+#: ../templates/default/pages/advanced_config.html.twig:49
+#: ../templates/default/pages/advanced_config.html.twig:82
+#: ../templates/default/pages/advanced_config.html.twig:213
+#: ../templates/default/pages/advanced_config.html.twig:233
 #: ../templates/default/pages/advanced_search.html.twig:534
 #: ../templates/default/pages/advanced_search.html.twig:576
 #: ../templates/default/pages/advanced_search.html.twig:730
 msgid "Value"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:54
+#: ../templates/default/pages/advanced_config.html.twig:63
 msgid ""
 "This setting is not known by Galette. It may come from an older version or "
 "from a plugin."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:54
-#: ../templates/default/pages/advanced_config.html.twig:208
+#: ../templates/default/pages/advanced_config.html.twig:63
+#: ../templates/default/pages/advanced_config.html.twig:284
 msgid "unknown"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:56
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
-msgstr ""
-
-#: ../templates/default/pages/advanced_config.html.twig:56
-#: ../templates/default/pages/advanced_config.html.twig:204
+#: ../templates/default/pages/advanced_config.html.twig:65
+#: ../templates/default/pages/advanced_config.html.twig:190
+#: ../templates/default/pages/advanced_config.html.twig:280
 msgid "locked"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:58
+#: ../templates/default/pages/advanced_config.html.twig:67
 msgid "Galette maintains this value itself; it is shown for information only."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:58
-#: ../templates/default/pages/advanced_config.html.twig:196
+#: ../templates/default/pages/advanced_config.html.twig:67
+#: ../templates/default/pages/advanced_config.html.twig:272
 msgid "read-only"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:60
+#: ../templates/default/pages/advanced_config.html.twig:69
 msgid ""
 "Held as a secret: its value is never displayed, nor changed from this page."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:60
-#: ../templates/default/pages/advanced_config.html.twig:200
+#: ../templates/default/pages/advanced_config.html.twig:69
+#: ../templates/default/pages/advanced_config.html.twig:276
 msgid "secret"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:62
-#: ../templates/default/pages/advanced_config.html.twig:188
+#: ../templates/default/pages/advanced_config.html.twig:71
+#: ../templates/default/pages/advanced_config.html.twig:264
 msgid "default"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:64
-#: ../templates/default/pages/advanced_config.html.twig:192
+#: ../templates/default/pages/advanced_config.html.twig:73
+#: ../templates/default/pages/advanced_config.html.twig:268
 msgid "modified"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:67
+#: ../templates/default/pages/advanced_config.html.twig:76
 #, php-format
 msgid "Declared by the %s plugin, and only while it stays active."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:77
+#: ../templates/default/pages/advanced_config.html.twig:86
 msgid "set"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:77
-#: ../templates/default/pages/advanced_config.html.twig:155
+#: ../templates/default/pages/advanced_config.html.twig:86
+#: ../templates/default/pages/advanced_config.html.twig:230
 msgid "not set"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:88
+#: ../templates/default/pages/advanced_config.html.twig:97
 msgid "Enabled"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:103
+#: ../templates/default/pages/advanced_config.html.twig:112
 #, php-format
 msgid "Save '%s'"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:109
+#: ../templates/default/pages/advanced_config.html.twig:118
 msgid "Reset to default"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:111
+#: ../templates/default/pages/advanced_config.html.twig:120
 #, php-format
 msgid "Reset '%s' to its default"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:124
-msgid "Constants behavior.inc.php understands"
-msgstr ""
-
-#: ../templates/default/pages/advanced_config.html.twig:129
-#, php-format
-msgid ""
-"Galette reads these from %s, so they cannot be edited from here. One marked "
-"deprecated is still declared there although a setting above replaces it, and "
-"overrides that setting until you remove it."
-msgstr ""
-
 #: ../templates/default/pages/advanced_config.html.twig:139
-#: ../templates/default/pages/advanced_config.html.twig:163
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:147
+#: ../templates/default/pages/advanced_config.html.twig:158
+#: ../templates/default/pages/advanced_config.html.twig:214
+#: ../templates/default/pages/advanced_config.html.twig:238
 #: ../templates/default/pages/contributions_types_list.html.twig:17
 #: ../templates/default/pages/contributions_types_list.html.twig:36
 #: ../templates/default/pages/contributions_types_list.html.twig:38
@@ -7432,24 +7470,51 @@ msgid "Description"
 msgstr ""
 
 #: ../templates/default/pages/advanced_config.html.twig:148
+#: ../templates/default/pages/advanced_config.html.twig:161
+msgid "Requirements"
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:179
+#: ../templates/default/pages/two_factor_manage.html.twig:46
+msgid "Disable"
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:185
+msgid "Enable"
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:190
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:204
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+
+#: ../templates/default/pages/advanced_config.html.twig:223
 #, php-format
 msgid "Replaced by the \"%s\" setting."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:148
+#: ../templates/default/pages/advanced_config.html.twig:223
 msgid "deprecated"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:153
+#: ../templates/default/pages/advanced_config.html.twig:228
 msgid "defined"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:168
+#: ../templates/default/pages/advanced_config.html.twig:243
 #, php-format
 msgid "Go to %s"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:178
+#: ../templates/default/pages/advanced_config.html.twig:254
 #: ../templates/default/pages/contributions_list.html.twig:439
 #: ../templates/default/pages/mailings_list.html.twig:234
 #: ../templates/default/pages/members_list.html.twig:202
@@ -7459,48 +7524,48 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:183
+#: ../templates/default/pages/advanced_config.html.twig:259
 msgid "Statuses"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:189
+#: ../templates/default/pages/advanced_config.html.twig:265
 msgid "Never changed: the value Galette ships with."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:193
+#: ../templates/default/pages/advanced_config.html.twig:269
 msgid ""
 "Changed from the default, here or from the settings form. It can be reset."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:197
+#: ../templates/default/pages/advanced_config.html.twig:273
 msgid ""
 "Galette maintains this value itself, such as a generated identifier or a "
 "date it records. It is shown for information only."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:201
+#: ../templates/default/pages/advanced_config.html.twig:277
 msgid ""
 "A password or a token. Its value is never displayed, only whether one is "
 "set, and it is not changed from this page."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:205
+#: ../templates/default/pages/advanced_config.html.twig:281
 msgid ""
 "A constant defined in behavior.inc.php takes precedence over the stored "
 "value. Remove it from that file to manage the setting from here."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:209
+#: ../templates/default/pages/advanced_config.html.twig:285
 msgid ""
 "A row found in database that Galette does not describe. It may come from an "
 "older version, or from a plugin that is no longer active."
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:212
+#: ../templates/default/pages/advanced_config.html.twig:288
 msgid "plugin name"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config.html.twig:213
+#: ../templates/default/pages/advanced_config.html.twig:289
 msgid ""
 "Declared by that plugin rather than by Galette. Deactivate the plugin and "
 "the setting becomes unknown again, keeping its value until the plugin comes "
@@ -7511,7 +7576,7 @@ msgstr ""
 msgid "Confirm your super admin password"
 msgstr ""
 
-#: ../templates/default/pages/advanced_config_confirm.html.twig:25
+#: ../templates/default/pages/advanced_config_confirm.html.twig:26
 msgid "Confirm"
 msgstr ""
 
@@ -10518,10 +10583,6 @@ msgid ""
 "The super administrator is not a member: its second factor lives in the "
 "preferences, which is also where it is cleared from should you lose your "
 "device. Keep an access to the database at hand."
-msgstr ""
-
-#: ../templates/default/pages/two_factor_manage.html.twig:46
-msgid "Disable"
 msgstr ""
 
 #: ../templates/default/pages/two_factor_manage.html.twig:49
