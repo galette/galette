@@ -156,7 +156,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $this->assertSame(301, $test_response->getStatusCode());
         $this->assertSame($redirect, $test_response->getHeaders());
-        $this->expectFlashData(['success_detected' => ['Turned on: two-factor-required.']]);
+        $this->expectFlashData(['success_detected' => ['Feature turned on: two-factor-required.']]);
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame(['two-factor-required'], $prefs->getFeatureFlags());
@@ -170,7 +170,7 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectFlashData(['success_detected' => ['Turned off: two-factor-required.']]);
+        $this->expectFlashData(['success_detected' => ['Feature turned off: two-factor-required.']]);
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame([], $prefs->getFeatureFlags());

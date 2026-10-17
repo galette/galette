@@ -281,7 +281,9 @@ class AdvancedConfigController extends AbstractController
         $changed = $turn_on ? $change['added'] : $change['removed'];
         if ($changed !== []) {
             $this->history->add(
-                $turn_on ? _T("Experimental feature turned on") : _T("Experimental feature turned off"),
+                $turn_on
+                    ? _Tn("Feature turned on", "Features turned on", count($changed))
+                    : _Tn("Feature turned off", "Features turned off", count($changed)),
                 implode(', ', $changed)
             );
         }
@@ -291,10 +293,10 @@ class AdvancedConfigController extends AbstractController
             redirect_url: $redirect_url,
             successes: $changed === [] ? [] : [sprintf(
                 $turn_on
-                    //TRANS: parameter is a list of features
-                    ? _T('Turned on: %1$s.')
-                    //TRANS: parameter is a list of features
-                    : _T('Turned off: %1$s.'),
+                    //TRANS: parameter is a comma separated list of feature names
+                    ? _Tn('Feature turned on: %1$s.', 'Features turned on: %1$s.', count($changed))
+                    //TRANS: parameter is a comma separated list of feature names
+                    : _Tn('Feature turned off: %1$s.', 'Features turned off: %1$s.', count($changed)),
                 implode(', ', $changed)
             )]
         );

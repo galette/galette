@@ -89,7 +89,9 @@ abstract class AbstractFeature extends AbstractCommand
         //super administrator
         $container->get(Login::class)->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
         $container->get(History::class)->add(
-            $turn_on ? _T("Experimental feature turned on") : _T("Experimental feature turned off"),
+            $turn_on
+                ? _Tn("Feature turned on", "Features turned on", count($changed))
+                : _Tn("Feature turned off", "Features turned off", count($changed)),
             implode(', ', $changed)
         );
         Analog::log(
