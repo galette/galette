@@ -1830,6 +1830,19 @@ class Adherent extends GaletteTestCase
 
         $this->getMemberOne();
         $this->assertSame('Mrs.', $this->adh->stitle);
+
+        //required title, "Not supplied" selected
+        $expected = ['- Mandatory field <a href="#titre_adh">Title</a> empty.'];
+        foreach (['', '-1'] as $value) {
+            $check = $this->adh->check(['titre_adh' => $value], ['titre_adh' => true], []);
+            $this->assertSame($expected, $check);
+            $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
+        }
+
+        //not required title can be left empty
+        $check = $this->adh->check(['titre_adh' => ''], [], []);
+        $this->assertTrue($check);
+        $this->assertNull($this->adh->title);
     }
 
     /**
