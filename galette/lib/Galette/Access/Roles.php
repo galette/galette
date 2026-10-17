@@ -583,6 +583,41 @@ class Roles
     }
 
     /**
+     * Count members a system role is computed for, including roles that are not listed
+     *
+     * @param Role $role System role
+     *
+     * @return ?int null for a role that is not a system one
+     */
+    public function countComputedMembersOf(Role $role): ?int
+    {
+        $computed = $this->getComputedMembersOf($role);
+        if ($computed !== null) {
+            return count($computed);
+        }
+
+        //the ones who can log in, see Login
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->columns(['count' => new \Laminas\Db\Sql\Expression('COUNT(*)')]);
+        $select->where(['a.activite_adh' => true]);
+        switch ($role->getKey()) {
+            case self::MEMBER:
+                break;
+            case self::UPTODATE:
+                //see Adherent::isUp2Date()
+                $select->where->nest()
+                    ->equalTo('a.bool_exempt_adh', true)
+                    ->or->greaterThanOrEqualTo('a.date_echeance', date('Y-m-d'))
+                    ->unnest();
+                break;
+            default:
+                return null;
+        }
+
+        return (int)$this->zdb->execute($select)->current()->count;
+    }
+
+    /**
      * Get members a system role is computed for
      *
      * Member and up to date member roles are not listed: nearly everyone has them.

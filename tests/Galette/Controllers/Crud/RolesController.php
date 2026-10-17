@@ -169,9 +169,14 @@ class RolesController extends GaletteRoutingTestCase
             $counts[$match[1]] = $match[2];
         }
         $this->assertSame('1', $counts['Administrator']);
-        //nearly everyone has them, not counted
-        $this->assertSame('&mdash;', $counts['Member']);
-        $this->assertSame('&mdash;', $counts['Up to date member']);
+        $this->assertSame('1', $counts['Member']);
+
+        //nearly everyone has it: counted, not listed
+        $test_response = $this->app->handle($this->createRequest('editRole', ['id' => '1']));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('1 member has this role.', $body);
+        $this->assertStringContainsString('they are not listed', $body);
     }
 
     /**

@@ -127,6 +127,11 @@
             {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p>
+            {{ _Tn('%1$s member has this role.', '%1$s members have this role.', computed_count)|format(computed_count) }}
+            {{ _T("Nearly every member has it, they are not listed.") }}
+        </p>
         {% endif %}
     </div>
     {% endif %}

@@ -66,11 +66,7 @@
                         </td>
                         <td class="center" data-col-label="{{ _T("Permissions") }}">{{ role.getPermissions()|length }}</td>
                         <td class="center" data-col-label="{{ _T("Members") }}">
-            {% if members_count[role.getId()] is null %}
-                            &mdash;
-            {% else %}
                             {{ members_count[role.getId()] }}
-            {% endif %}
                         </td>
                         <td class="center actions_row collapsing">
                             <a

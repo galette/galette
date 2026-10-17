@@ -142,15 +142,12 @@ class RolesController extends CrudController
     {
         $roles = $this->getRoles();
 
-        //system roles are computed from members data, null when nearly everyone has them
+        //system roles are computed from members data
         $members_count = [];
         foreach ($roles->getList() as $id => $role) {
-            if ($role->isSystem()) {
-                $computed = $roles->getComputedMembersOf($role);
-                $members_count[$id] = $computed === null ? null : count($computed);
-            } else {
-                $members_count[$id] = count($roles->getMembersOf($id));
-            }
+            $members_count[$id] = $role->isSystem()
+                ? $roles->countComputedMembersOf($role)
+                : count($roles->getMembersOf($id));
         }
 
         $this->view->render(
@@ -218,6 +215,7 @@ class RolesController extends CrudController
                 'inherited'     => $roles->getInheritedPermissions($role),
                 'given'         => $roles->getMembersOf($id),
                 'computed'      => $role->isSystem() ? $roles->getComputedMembersOf($role) : null,
+                'computed_count' => $role->isSystem() ? $roles->countComputedMembersOf($role) : null,
                 'groups'        => Groups::getSimpleList(),
                 'members'       => $dropdown
             ]

@@ -215,6 +215,36 @@ class RolesTest extends GaletteTestCase
         );
         $this->assertNull($roles->getComputedMembersOf($system[Roles::MEMBER]));
         $this->assertNull($roles->getComputedMembersOf($system[Roles::UPTODATE]));
+
+        //not listed, but counted
+        $this->assertSame(1, $roles->countComputedMembersOf($system[Roles::ADMIN]));
+        $this->assertSame(1, $roles->countComputedMembersOf($system[Roles::MANAGER]));
+        $this->assertNull($roles->countComputedMembersOf(new \Galette\Access\Role()));
+
+        //member one late, member two up to date
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['activite_adh' => true, 'bool_exempt_adh' => false, 'date_echeance' => null])
+            ->where([\Galette\Entity\Adherent::PK => $member_one->id]);
+        $this->zdb->execute($update);
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['activite_adh' => true, 'bool_exempt_adh' => false, 'date_echeance' => date('Y-m-d')])
+            ->where([\Galette\Entity\Adherent::PK => $member_two->id]);
+        $this->zdb->execute($update);
+        $this->assertSame(2, $roles->countComputedMembersOf($system[Roles::MEMBER]));
+        $this->assertSame(1, $roles->countComputedMembersOf($system[Roles::UPTODATE]));
+
+        //due free members are up to date
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['bool_exempt_adh' => true])->where([\Galette\Entity\Adherent::PK => $member_one->id]);
+        $this->zdb->execute($update);
+        $this->assertSame(2, $roles->countComputedMembersOf($system[Roles::UPTODATE]));
+
+        //inactive accounts cannot log in
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['activite_adh' => false])->where([\Galette\Entity\Adherent::PK => $member_two->id]);
+        $this->zdb->execute($update);
+        $this->assertSame(1, $roles->countComputedMembersOf($system[Roles::MEMBER]));
+        $this->assertSame(1, $roles->countComputedMembersOf($system[Roles::UPTODATE]));
     }
 
     /**
