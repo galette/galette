@@ -1268,6 +1268,23 @@ class Members
     }
 
     /**
+     * Can current user search on a dynamic field?
+     *
+     * @param DynamicField|false $field Dynamic field, false if it does not exist
+     * @param string             $form  Expected form name
+     */
+    private function canSearchDynamicField(DynamicField|false $field, string $form): bool
+    {
+        /** @var ?Login $login */
+        global $login;
+
+        return $field !== false
+            && $field->getForm() === $form
+            && $login instanceof Login
+            && $field->isAccessible($login->getAccessLevel());
+    }
+
+    /**
      * Builds where clause, for advanced filtering on simple list mode
      *
      * @param Select $select Original select
@@ -1444,6 +1461,16 @@ class Members
             foreach ($this->filters->contrib_dynamic as $k => $cd) {
                 $qop = ' LIKE ';
 
+                $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
+                if (!$this->canSearchDynamicField($dyn_field, 'contrib')) {
+                    Analog::log(
+                        'Advanced search on unknown or forbidden contribution dynamic field `'
+                        . $k . '`, criteria has been discarded.',
+                        Analog::WARNING
+                    );
+                    continue;
+                }
+
                 if (RelativeDate::isRelative($cd)) {
                     $cd = $this->filters->resolveDate($cd);
                     if ($cd === null) {
@@ -1465,8 +1492,6 @@ class Members
                     $select->where
                         ->equalTo('dfc.field_form', 'contrib')
                         ->equalTo('dfc.field_id', $k);
-
-                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
 
                     if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                         if ($cd == 1) {
@@ -1543,11 +1568,11 @@ class Members
                     $index = (int)str_replace('dyn_', '', (string)$fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, $index);
                     if (
-                        $dyn_field !== false
+                        $this->canSearchDynamicField($dyn_field, 'adh')
                         && !$dyn_field instanceof Separator
                         && !$dyn_field instanceof File
                     ) {
-                        //field does exist and is searchable, alias is set in buildSelect()
+                        //field does exist, current user can see it and it is searchable, alias is set in buildSelect()
                         $column = 'df' . $index . '.val';
                     }
                 } elseif (str_starts_with((string)$fs['field'], 'socials_')) {

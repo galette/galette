@@ -934,6 +934,121 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test advanced search ignores dynamic fields current user cannot see
+     */
+    public function testDynamicSearchPermissions(): void
+    {
+        $staff = $this->createSearchField('adh', 'Staff note', \Galette\Entity\FieldsConfig::STAFF);
+        $nobody = $this->createSearchField('adh', 'Nobody note', \Galette\Entity\FieldsConfig::NOBODY);
+        $contrib_staff = $this->createSearchField('contrib', 'Staff contribution note', \Galette\Entity\FieldsConfig::STAFF);
+
+        $this->logSuperAdmin();
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $begin_date = new DateTime();
+        $due_date = clone $begin_date;
+        $due_date->add(new \DateInterval('P1Y'));
+        $this->assertTrue($contrib->check([
+            \Galette\Entity\Adherent::PK    => $this->mids[0],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => 4
+        ], [], []));
+        $this->assertTrue($contrib->store());
+        $this->login->logout();
+
+        $values = [
+            [$this->mids[0], $staff, 'adh'],
+            [$this->mids[0], $nobody, 'adh'],
+            [$contrib->id, $contrib_staff, 'contrib'],
+        ];
+        foreach ($values as [$item, $field, $form]) {
+            $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+            $insert->values([
+                'item_id'       => $item,
+                'field_id'      => $field,
+                'field_form'    => $form,
+                'val_index'     => 1,
+                'field_val'     => 'needle'
+            ]);
+            $this->zdb->execute($insert);
+        }
+
+        $all = (new \Galette\Repository\Members(new \Galette\Filters\AdvancedMembersList()))->getList()->count();
+        $this->assertGreaterThan(1, $all);
+
+        $searches = [
+            'staff field' => ['free', $staff],
+            'inaccessible field' => ['free', $nobody],
+            'staff contribution field' => ['contrib', $contrib_staff],
+        ];
+
+        //staff sees staff fields, nobody sees inaccessible ones
+        $this->logSuperAdmin();
+        $expected = ['staff field' => 1, 'inaccessible field' => $all, 'staff contribution field' => 1];
+        foreach ($searches as $label => [$kind, $field]) {
+            $this->assertSame($expected[$label], $this->countDynamicSearch($kind, $field), $label);
+        }
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Advanced search on unknown or forbidden');
+        $this->login->logout();
+
+        //criteria on fields a simple member cannot see are discarded
+        foreach ($searches as $label => [$kind, $field]) {
+            $this->assertSame($all, $this->countDynamicSearch($kind, $field), $label);
+        }
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Advanced search on unknown or forbidden');
+    }
+
+    /**
+     * Count members found searching 'needle' in a dynamic field
+     *
+     * @param string $kind  'free' for a members field, 'contrib' for a contributions one
+     * @param int    $field Field id
+     */
+    private function countDynamicSearch(string $kind, int $field): int
+    {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        if ($kind === 'free') {
+            $filters->free_search = [
+                'idx' => 1,
+                'field' => 'dyn_' . $field,
+                'type' => \Galette\DynamicFields\DynamicField::LINE,
+                'search' => 'needle',
+                'log_op' => $filters::OP_AND,
+                'qry_op' => $filters::OP_CONTAINS
+            ];
+        } else {
+            $filters->contrib_dynamic = [$field => 'needle'];
+        }
+        return (new \Galette\Repository\Members($filters))->getList()->count();
+    }
+
+    /**
+     * Create a line dynamic field
+     *
+     * @param string $form Form name
+     * @param string $name Field name
+     * @param int    $perm Field permission
+     *
+     * @return int Field id
+     */
+    private function createSearchField(string $form, string $name, int $perm): int
+    {
+        $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::LINE);
+        $this->assertTrue($field->store([
+            'form_name'         => $form,
+            'field_name'        => $name,
+            'field_perm'        => $perm,
+            'field_type'        => \Galette\DynamicFields\DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ]), implode(' ', $field->getErrors()));
+        return (int)$field->getId();
+    }
+
+    /**
      * Test getPublicList
      */
     public function testGetPublicList(): void
