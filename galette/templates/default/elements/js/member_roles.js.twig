@@ -15,8 +15,18 @@
                     var $roleAdd = $('#role_add'),
                         $roleScope = $('#role_scope_add');
 
+                    var $adminRow = $('#role_admin_row'),
+                        $adminToggle = $('#role_admin_toggle'),
+                        $adminField = $('#bool_admin_adh');
+
                     var _refreshRoles = function() {
                         var _pending = $memberRoles.find('tr[data-linked="0"]').length > 0;
+                        if ($adminRow.length) {
+                            var _changed = $adminToggle.is(':checked') != ($adminRow.data('admin') == 1);
+                            $adminRow.toggleClass('warning', _changed);
+                            $adminRow.find('.role-state').toggleClass('displaynone', !_changed);
+                            _pending = _pending || _changed;
+                        }
                         $memberRoles.find('tr[data-linked="1"]').each(function() {
                             var $row = $(this),
                                 _removed = $row.data('removed') == 1;
@@ -27,6 +37,22 @@
                         $memberRoles.find('tr[data-linked="0"]').addClass('warning');
                         $('#member_roles_status .message').toggleClass('displaynone', !_pending);
                     };
+
+                    //the toggle mirrors the administrator field, which is the one posted
+                    if ($adminToggle.length) {
+                        if (!$adminField.length || $adminField.is(':disabled')) {
+                            $adminToggle.closest('.ui.checkbox').checkbox('set disabled');
+                        } else {
+                            $adminToggle.on('change', function() {
+                                $adminField.closest('.ui.checkbox').checkbox($adminToggle.is(':checked') ? 'set checked' : 'set unchecked');
+                                _refreshRoles();
+                            });
+                            $adminField.on('change', function() {
+                                $adminToggle.closest('.ui.checkbox').checkbox($adminField.is(':checked') ? 'set checked' : 'set unchecked');
+                                _refreshRoles();
+                            });
+                        }
+                    }
 
                     $memberRoles.on('click', '.role-remove', function() {
                         var $row = $(this).closest('tr');

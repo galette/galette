@@ -93,6 +93,36 @@ test.describe.serial('Member roles', () => {
     await expect(page.locator('#member_roles_status .message')).toBeHidden();
   });
 
+  test('Member roles - Administrator toggle mirrors the administrator field', async ({ loggedInPage: page }) => {
+    await editMember(page, MEMBER);
+
+    const toggle = page.locator('#role_admin_toggle');
+    const field = page.locator('#bool_admin_adh');
+    await expect(toggle).not.toBeChecked();
+    await expect(field).not.toBeChecked();
+
+    await toggle.locator('xpath=..').click();
+    await expect(field).toBeChecked();
+    await expect(page.locator('#role_admin_row .role-state[data-state="changed"]')).toBeVisible();
+    await expect(page.locator('#member_roles_status .message')).toBeVisible();
+
+    await field.locator('xpath=..').click();
+    await expect(toggle).not.toBeChecked();
+    await expect(page.locator('#member_roles_status .message')).toBeHidden();
+
+    //stored with the member, then given back
+    await toggle.locator('xpath=..').click();
+    await save(page);
+    await expect(page.locator('a.ui.label[href$="/roles/edit/5"]')).toBeVisible();
+
+    await editMember(page, MEMBER);
+    await expect(toggle).toBeChecked();
+    await toggle.locator('xpath=..').click();
+    await expect(field).not.toBeChecked();
+    await save(page);
+    await expect(page.locator('a.ui.label[href$="/roles/edit/5"]')).toHaveCount(0);
+  });
+
   test('Member roles - Hidden from group managers', async ({ loggedInAs }) => {
     const page = await loggedInAs('groupManager');
     await page.goto('/member/me');

@@ -1219,6 +1219,10 @@ class MembersController extends CrudController
                 fn(Role $role): bool => !$role->isSystem()
             );
             $route_params['groups_names'] = Groups::getSimpleList();
+            $route_params['admin_role'] = array_values(array_filter(
+                $this->roles->getList(),
+                fn(Role $role): bool => $role->getKey() === Roles::ADMIN
+            ))[0] ?? null;
         }
 
         // display page

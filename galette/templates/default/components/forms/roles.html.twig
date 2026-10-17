@@ -7,7 +7,9 @@
 {#
  # Roles of the member, one row per role, see components/forms/groups.html.twig.
  #
- # Computed roles are displayed only. Each given role posts a roles_adh[]
+ # Computed roles are displayed only, with where they come from. The
+ # administrator one is a toggle mirroring the administrator field of the
+ # form, which is what gets posted. Each given role posts a roles_adh[]
  # "role|group" value, disabled once removed; roles_sent tells the list has
  # been posted, even empty.
  #}
@@ -28,11 +30,51 @@
                 </tr>
             </thead>
             <tbody>
-{% for member_role in member_roles %}
+{% set admin_key = constant('Galette\\Access\\Roles::ADMIN') %}
+{% set admin_toggle = admin_role is not null and can('member:grant-admin') %}
+{% set origins = {
+    (constant('Galette\\Access\\Roles::MEMBER')): _T("Every logged in member"),
+    (constant('Galette\\Access\\Roles::UPTODATE')): _T("Active account, up to date membership"),
+    (constant('Galette\\Access\\Roles::STAFF')): _T("From their status: %1$s")|format(member.sstatus),
+    (admin_key): _T("Marked as administrator"),
+    (constant('Galette\\Access\\Roles::MANAGER')): _T("Manager of the group, see groups above")
+} %}
+{% for member_role in member_roles|filter(r => not r.given and not (admin_toggle and r.role.getKey() == admin_key)) %}
+                <tr>
+                    <th scope="row">
+                        {{ member_role.role.getLabel() }}
+                        <div class="ui small grey text">
+                            <i class="cog icon" aria-hidden="true"></i>
+                            {{ origins[member_role.role.getKey()] ?? _T("Computed from member's information") }}
+                        </div>
+                    </th>
+                    <td>{{ member_role.group ?? _T("All groups") }}</td>
+                    <td></td>
+                </tr>
+{% endfor %}
+{% if admin_toggle %}
+                <tr id="role_admin_row" data-admin="{{ member.isAdmin() ? 1 : 0 }}">
+                    <th scope="row">
+                        {{ admin_role.getLabel() }}
+                        <span class="ui mini orange basic label role-state displaynone" data-state="changed">{{ _Tx("member roles", "changed") }}</span>
+                        <div class="ui small grey text">
+                            <i class="cog icon" aria-hidden="true"></i>
+                            {{ _T("Same as the administrator field of the member") }}
+                        </div>
+                    </th>
+                    <td>{{ _T("All groups") }}</td>
+                    <td class="right aligned">
+                        <div class="ui fitted toggle checkbox">
+                            <input type="checkbox" id="role_admin_toggle"{% if member.isAdmin() %} checked="checked"{% endif %}/>
+                            <label for="role_admin_toggle"><span class="visually-hidden">{{ admin_role.getLabel() }}</span></label>
+                        </div>
+                    </td>
+                </tr>
+{% endif %}
+{% for member_role in member_roles|filter(r => r.given) %}
     {% set label = member_role.role.getLabel() %}
     {% set scope = member_role.group ?? _T("All groups") %}
-    {% if member_role.given %}
-        {% set value = member_role.role.getId() ~ '|' ~ (member_role.id_group ?? '') %}
+    {% set value = member_role.role.getId() ~ '|' ~ (member_role.id_group ?? '') %}
                 <tr data-role="{{ value }}" data-linked="1">
                     <th scope="row">
                         {{ label }}
@@ -50,19 +92,6 @@
                         </button>
                     </td>
                 </tr>
-    {% else %}
-                <tr>
-                    <th scope="row">
-                        {{ label }}
-                        <div class="ui small grey text">
-                            <i class="cog icon" aria-hidden="true"></i>
-                            {{ _T("Computed from member's information") }}
-                        </div>
-                    </th>
-                    <td>{{ scope }}</td>
-                    <td></td>
-                </tr>
-    {% endif %}
 {% endfor %}
             </tbody>
         </table>

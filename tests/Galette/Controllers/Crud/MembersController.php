@@ -1365,6 +1365,9 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertStringContainsString('<option value="' . $role->getId() . '">Treasurer</option>', $body);
         //system roles are listed, but cannot be given
         $this->assertStringNotContainsString('>Group manager</option>', $body);
+        //administrator role mirrors the administrator field
+        $this->assertStringContainsString('id="role_admin_toggle"', $body);
+        $this->assertStringContainsString('Every logged in member', $body);
 
         //give for all groups and for a group; system, unknown roles and groups are ignored
         $request = $this->createRequest('doEditMember', $edit_args, 'POST');
