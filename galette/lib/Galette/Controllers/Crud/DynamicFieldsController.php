@@ -176,7 +176,7 @@ class DynamicFieldsController extends CrudController
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
-        $fields_list = $fields->getList($form_name);
+        $fields_list = $fields->getList($form_name, inaccessible: true);
 
         $params = [
             'fields_list'       => $fields_list,

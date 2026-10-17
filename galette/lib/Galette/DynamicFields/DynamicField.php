@@ -17,7 +17,9 @@ use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Core\Db;
+use Galette\Core\Authentication;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Entity\FieldsConfig;
 use Galette\Features\Translatable;
 use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
@@ -317,6 +319,26 @@ abstract class DynamicField
     public function hasPermissions(): bool
     {
         return $this->has_permissions;
+    }
+
+    /**
+     * Can the field be seen at given access level?
+     *
+     * @param int $access_level Access level
+     */
+    public function isAccessible(int $access_level): bool
+    {
+        if (!$this->hasPermissions()) {
+            return true;
+        }
+
+        return match ($this->permission) {
+            FieldsConfig::NOBODY => false,
+            FieldsConfig::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            FieldsConfig::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            FieldsConfig::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            default => true
+        };
     }
 
     /**

@@ -19,7 +19,6 @@ use Galette\Core\Logs;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\Util\Html;
@@ -548,18 +547,9 @@ class DynamicFieldsHandle
         $access_level = $this->login->getAccessLevel();
 
         foreach ($this->dynamic_fields as $field) {
-            $perm = $field->getPermission();
-            if (
-                ($perm == FieldsConfig::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-                || ($perm == FieldsConfig::STAFF
-                        && $access_level < Authentication::ACCESS_STAFF)
-                || ($perm == FieldsConfig::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-            ) {
-                continue;
+            if ($field->isAccessible($access_level)) {
+                $accessible_fields[] = $field->getId();
             }
-            $accessible_fields[] = $field->getId();
         }
 
         if (!count($accessible_fields)) {

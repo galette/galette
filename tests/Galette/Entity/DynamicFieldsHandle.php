@@ -153,6 +153,46 @@ class DynamicFieldsHandle extends GaletteTestCase
     }
 
     /**
+     * Test inaccessible fields are neither listed nor loaded, and their values survive
+     */
+    public function testInaccessibleFieldsAreHidden(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::LINE,
+            name: 'Nobody',
+            repeat: null,
+            perm: \Galette\Entity\FieldsConfig::NOBODY
+        );
+        $fid = $field->getId();
+
+        $this->getMemberOne();
+        $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $insert->values([
+            'item_id'       => $this->adh->id,
+            'field_id'      => $fid,
+            'field_form'    => 'adh',
+            'val_index'     => 1,
+            'field_val'     => 'Hidden value'
+        ]);
+        $this->zdb->execute($insert);
+
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
+        $this->assertArrayNotHasKey($fid, $fields->getList('adh'));
+        $this->assertArrayHasKey($fid, $fields->getList('adh', inaccessible: true));
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertArrayNotHasKey($fid, $adh->getDynamicFields()->getFields());
+
+        //storing the member does not drop the value
+        $this->assertTrue($adh->check($this->dataAdherentOne(), [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+        $select = $this->zdb->select(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $select->where(['item_id' => $this->adh->id, 'field_id' => $fid]);
+        $this->assertSame('Hidden value', $this->zdb->execute($select)->current()->field_val);
+    }
+
+    /**
      * Test several occurrences of a repeatable field are stored and renumbered
      */
     public function testRepeatableOccurrences(): void
