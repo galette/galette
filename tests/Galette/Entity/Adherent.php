@@ -1954,4 +1954,23 @@ class Adherent extends GaletteTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test a required field the user cannot change is not reported as missing
+     */
+    public function testRequiredDisabledField(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        $expected = ['- Mandatory field <a href="#gpgid">Id GNUpg (GPG)</a> empty.'];
+        $check = $this->adh->check([], ['gpgid' => true], []);
+        $this->assertSame($expected, $check);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
+
+        $check = $this->adh->check([], ['gpgid' => true], ['gpgid']);
+        $this->assertTrue($check);
+
+        $this->login->logOut();
+    }
 }
