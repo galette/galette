@@ -12,7 +12,6 @@ namespace Galette\Repository;
 
 use ArrayObject;
 use Galette\Core\Db;
-use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\FieldsConfig;
@@ -53,11 +52,12 @@ class DynamicFieldsSet
     /**
      * Get fields list for one form
      *
-     * @param string $form_name Form name
+     * @param string $form_name    Form name
+     * @param bool   $inaccessible Include fields nobody can see, for configuration
      *
      * @return DynamicField[]
      */
-    public function getList(string $form_name): array
+    public function getList(string $form_name, bool $inaccessible = false): array
     {
         $select = $this->zdb->select(DynamicField::TABLE);
         $where = ['field_form' => $form_name];
@@ -73,19 +73,14 @@ class DynamicFieldsSet
         if ($results->count() > 0) {
             foreach ($results as $r) {
                 /** @var ArrayObject<string, int|string> $r */
-                $perm = $r['field_perm'];
+                $df = DynamicField::getFieldType($this->zdb, (int)$r['field_type']);
+                $df->loadFromRS($r);
                 if (
-                    ($perm == FieldsConfig::MANAGER
-                        && $access_level < Authentication::ACCESS_MANAGER)
-                    || ($perm == FieldsConfig::STAFF
-                         && $access_level < Authentication::ACCESS_STAFF)
-                    || ($perm == FieldsConfig::ADMIN
-                        && $access_level < Authentication::ACCESS_ADMIN)
+                    !$df->isAccessible($access_level)
+                    && !($inaccessible && $df->getPermission() === FieldsConfig::NOBODY)
                 ) {
                     continue;
                 }
-                $df = DynamicField::getFieldType($this->zdb, (int)$r['field_type']);
-                $df->loadFromRS($r);
                 $fields[$r[DynamicField::PK]] = $df;
             }
         }
