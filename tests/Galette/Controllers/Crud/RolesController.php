@@ -15,6 +15,8 @@ use Galette\Access\Role;
 use Galette\Access\Roles;
 use Galette\Tests\GaletteRoutingTestCase;
 
+use function Safe\preg_match_all;
+
 /**
  * Roles controller tests
  *
@@ -138,6 +140,38 @@ class RolesController extends GaletteRoutingTestCase
         $select->where([Roles::PK => $role->getId()]);
         $this->assertCount(0, $this->zdb->execute($select));
         $this->flash_data = [];
+    }
+
+    /**
+     * Test members are counted for system roles computed from members data
+     */
+    public function testListCounts(): void
+    {
+        $member = $this->getMemberOne();
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['bool_admin_adh' => true])->where([\Galette\Entity\Adherent::PK => $member->id]);
+        $this->zdb->execute($update);
+        $this->logSuperAdmin();
+
+        $test_response = $this->app->handle($this->createRequest('roles'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $body = substr($body, (int)strpos($body, '<tbody>'));
+
+        $counts = [];
+        preg_match_all(
+            '/<td class="left" data-col-label="Name">\s*(.+?)\s*<.*?data-col-label="Members">\s*(.+?)\s*<\/td>/s',
+            $body,
+            $matches,
+            PREG_SET_ORDER
+        );
+        foreach ($matches as $match) {
+            $counts[$match[1]] = $match[2];
+        }
+        $this->assertSame('1', $counts['Administrator']);
+        //nearly everyone has them, not counted
+        $this->assertSame('&mdash;', $counts['Member']);
+        $this->assertSame('&mdash;', $counts['Up to date member']);
     }
 
     /**

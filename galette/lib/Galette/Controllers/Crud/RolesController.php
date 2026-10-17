@@ -142,9 +142,15 @@ class RolesController extends CrudController
     {
         $roles = $this->getRoles();
 
+        //system roles are computed from members data, null when nearly everyone has them
         $members_count = [];
-        foreach (array_keys($roles->getList()) as $id) {
-            $members_count[$id] = count($roles->getMembersOf($id));
+        foreach ($roles->getList() as $id => $role) {
+            if ($role->isSystem()) {
+                $computed = $roles->getComputedMembersOf($role);
+                $members_count[$id] = $computed === null ? null : count($computed);
+            } else {
+                $members_count[$id] = count($roles->getMembersOf($id));
+            }
         }
 
         $this->view->render(
