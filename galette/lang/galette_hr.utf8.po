@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: 2026-10-16 21:43+0000\n"
 "Last-Translator: Marko Puljic "
 "<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
@@ -20,6 +20,18 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 2026.11.dev0\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -95,6 +107,31 @@ msgstr "Postavka '%1$s' je spremljena."
 #, php-format
 msgid "Preference '%1$s' has been reset to its default."
 msgstr "Postavka '%1$s' vraćena je na zadanu vrijednost."
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+"Postavljeno konstantom %s u datoteci behavior.inc.php, koja ima prednost."
+
+msgid "An error occurred :("
+msgstr "Došlo je do pogreške :("
+
+#. TRANS: parameter is a comma separated list of feature names
+#, fuzzy, php-format
+#| msgid "Model parameted on %1$s"
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] "Predložak postavljen %1$s"
+msgstr[1] "Predložak postavljen %1$s"
+msgstr[2] "Predložak postavljen %1$s"
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "- ERROR -"
 msgstr "- POGREŠKA -"
@@ -1184,9 +1221,13 @@ msgstr ""
 msgid "Dump every SQL query to the logs."
 msgstr "Zapiši svaki SQL upit u zapisnike."
 
+#, fuzzy
+#| msgid ""
+#| "Development features to activate, among those declared in the feature "
+#| "flags registry. They only apply in debug mode."
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 "Razvojne značajke koje treba uključiti među onima u registru oznaka "
 "značajki. Primjenjuju se samo u načinu otklanjanja pogrešaka."
@@ -2780,9 +2821,6 @@ msgstr ""
 msgid "An error occurred while importing members"
 msgstr "Došlo je do pogreške pri uvozu članova"
 
-msgid "An error occurred."
-msgstr "Došlo je do pogreške."
-
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
@@ -4048,9 +4086,6 @@ msgstr ""
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr "Uklonite je ručno kako biste ponovno zaštitili instalacijski program."
 
-msgid "An error occurred :("
-msgstr "Došlo je do pogreške :("
-
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr "Pošalji anonimne i približne podatke o svojoj instalaciji Galettea"
 
@@ -5011,6 +5046,14 @@ msgstr "Pokreni"
 msgid "This page can break your installation, be very careful."
 msgstr "Ova stranica može poremetiti rad instalacije. Budite vrlo oprezni."
 
+#, fuzzy
+#| msgid "Experimental"
+msgid "Experimental features"
+msgstr "Eksperimentalno"
+
+msgid "Constants"
+msgstr ""
+
 msgid "Filter settings"
 msgstr "Filtriraj postavke"
 
@@ -5029,11 +5072,6 @@ msgstr ""
 
 msgid "unknown"
 msgstr "nepoznato"
-
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
-msgstr ""
-"Postavljeno konstantom %s u datoteci behavior.inc.php, koja ima prednost."
 
 msgid "locked"
 msgstr "zaključano"
@@ -5083,8 +5121,33 @@ msgstr "Vrati na zadano"
 msgid "Reset '%s' to its default"
 msgstr "Vrati '%s' na zadanu vrijednost"
 
-msgid "Constants behavior.inc.php understands"
-msgstr "Konstante koje prepoznaje behavior.inc.php"
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr "Opis"
+
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Obvezno"
+
+msgid "Disable"
+msgstr "Isključi"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Uključeno"
+
+#, fuzzy
+#| msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
+msgstr ""
+"Postavljeno konstantom %s u datoteci behavior.inc.php, koja ima prednost."
 
 #, php-format
 msgid ""
@@ -5095,9 +5158,6 @@ msgstr ""
 "Galette ih čita iz %s pa se ovdje ne mogu uređivati. Zastarjela konstanta "
 "još je definirana ondje, premda ju zamjenjuje gore navedena postavka, i ima "
 "prednost pred tom postavkom dok je ne uklonite."
-
-msgid "Description"
-msgstr "Opis"
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
@@ -7375,9 +7435,6 @@ msgstr ""
 "Glavni administrator nije član: njegov drugi faktor sprema se u postavkama, "
 "gdje se i briše ako izgubite uređaj. Osigurajte pristup bazi podataka."
 
-msgid "Disable"
-msgstr "Isključi"
-
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
@@ -7414,6 +7471,12 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Sadržaj javne stranice"
+
+#~ msgid "An error occurred."
+#~ msgstr "Došlo je do pogreške."
+
+#~ msgid "Constants behavior.inc.php understands"
+#~ msgstr "Konstante koje prepoznaje behavior.inc.php"
 
 #~ msgid "Manage managers"
 #~ msgstr "Upravljaj voditeljima"

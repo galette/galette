@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -27,6 +27,24 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 2026.10.1.dev0\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -106,6 +124,35 @@ msgstr "وسيلة الدفع '%s' لم تعدل بعد!"
 #, php-format
 msgid "Preference '%1$s' has been reset to its default."
 msgstr ""
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "An error occurred :("
+msgstr "وقع هناك خطأ :("
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid "- ERROR -"
 msgstr ""
@@ -1288,8 +1335,8 @@ msgid "Dump every SQL query to the logs."
 msgstr ""
 
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 
 msgid "Yes"
@@ -2928,9 +2975,6 @@ msgstr "وقع هناك خطأ."
 msgid "An error occurred while importing members"
 msgstr ""
 
-msgid "An error occurred."
-msgstr "وقع هناك خطأ."
-
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
@@ -4147,9 +4191,6 @@ msgstr ""
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
-msgid "An error occurred :("
-msgstr "وقع هناك خطأ :("
-
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
 
@@ -5152,6 +5193,12 @@ msgstr ""
 msgid "This page can break your installation, be very careful."
 msgstr ""
 
+msgid "Experimental features"
+msgstr ""
+
+msgid "Constants"
+msgstr ""
+
 #, fuzzy
 #| msgid "Mail settings"
 msgid "Filter settings"
@@ -5169,10 +5216,6 @@ msgid ""
 msgstr ""
 
 msgid "unknown"
-msgstr ""
-
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
 msgstr ""
 
 msgid "locked"
@@ -5227,7 +5270,29 @@ msgstr ""
 msgid "Reset '%s' to its default"
 msgstr ""
 
-msgid "Constants behavior.inc.php understands"
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr "الوصف"
+
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "مطلوب"
+
+msgid "Disable"
+msgstr ""
+
+#, fuzzy
+#| msgid "Table name"
+msgid "Enable"
+msgstr "اسم الجدول"
+
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
 msgstr ""
 
 #, php-format
@@ -5236,9 +5301,6 @@ msgid ""
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
 msgstr ""
-
-msgid "Description"
-msgstr "الوصف"
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
@@ -7547,9 +7609,6 @@ msgid ""
 "device. Keep an access to the database at hand."
 msgstr ""
 
-msgid "Disable"
-msgstr ""
-
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
@@ -7578,6 +7637,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr ""
+
+#~ msgid "An error occurred."
+#~ msgstr "وقع هناك خطأ."
 
 #~ msgid "Manage members"
 #~ msgstr "إدارة الأعضاء"

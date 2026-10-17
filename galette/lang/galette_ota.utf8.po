@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -18,6 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.1-dev\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -88,6 +98,27 @@ msgstr ""
 #, php-format
 msgid "Preference '%1$s' has been reset to its default."
 msgstr ""
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "An error occurred :("
+msgstr ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "- ERROR -"
 msgstr ""
@@ -1136,8 +1167,8 @@ msgid "Dump every SQL query to the logs."
 msgstr ""
 
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 
 msgid "Yes"
@@ -2704,9 +2735,6 @@ msgstr ""
 msgid "An error occurred while importing members"
 msgstr ""
 
-msgid "An error occurred."
-msgstr ""
-
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
@@ -3881,9 +3909,6 @@ msgstr ""
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
-msgid "An error occurred :("
-msgstr ""
-
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
 
@@ -4808,6 +4833,12 @@ msgstr ""
 msgid "This page can break your installation, be very careful."
 msgstr ""
 
+msgid "Experimental features"
+msgstr ""
+
+msgid "Constants"
+msgstr ""
+
 msgid "Filter settings"
 msgstr ""
 
@@ -4823,10 +4854,6 @@ msgid ""
 msgstr ""
 
 msgid "unknown"
-msgstr ""
-
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
 msgstr ""
 
 msgid "locked"
@@ -4875,7 +4902,25 @@ msgstr ""
 msgid "Reset '%s' to its default"
 msgstr ""
 
-msgid "Constants behavior.inc.php understands"
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Requirements"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
 msgstr ""
 
 #, php-format
@@ -4883,9 +4928,6 @@ msgid ""
 "Galette reads these from %s, so they cannot be edited from here. One marked "
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
-msgstr ""
-
-msgid "Description"
 msgstr ""
 
 #, php-format
@@ -7030,9 +7072,6 @@ msgid ""
 "The super administrator is not a member: its second factor lives in the "
 "preferences, which is also where it is cleared from should you lose your "
 "device. Keep an access to the database at hand."
-msgstr ""
-
-msgid "Disable"
 msgstr ""
 
 msgid ""

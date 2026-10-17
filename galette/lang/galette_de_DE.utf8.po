@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-15 00:43+0200\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -56,6 +56,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2026.10.1.dev0\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -139,6 +149,28 @@ msgstr "Einstellungen wurden gespeichert."
 #| msgid "Preferences has been saved."
 msgid "Preference '%1$s' has been reset to its default."
 msgstr "Einstellungen wurden gespeichert."
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+
+msgid "An error occurred :("
+msgstr "Ein Fehler ist aufgetreten :("
+
+#. TRANS: parameter is a comma separated list of feature names
+#, fuzzy, php-format
+#| msgid "Model parameted on %1$s"
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] "Modelparameter am %1$s"
+msgstr[1] "Modelparameter am %1$s"
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "- ERROR -"
 msgstr "- FEHLER -"
@@ -1263,8 +1295,8 @@ msgid "Dump every SQL query to the logs."
 msgstr ""
 
 msgid ""
-"Development features to activate, among those declared in the feature flags "
-"registry. They only apply in debug mode."
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
 msgstr ""
 
 msgid "Yes"
@@ -2896,9 +2928,6 @@ msgstr "Fehler beim Speichern eines Eintrages in Zeile %1$s (%2$s):"
 msgid "An error occurred while importing members"
 msgstr "Fehler beim Import der Einträge"
 
-msgid "An error occurred."
-msgstr "Ein Fehler ist aufgetreten."
-
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
@@ -4207,9 +4236,6 @@ msgstr "Konfigurationsdatei konnte nicht erstellt werden (%1$s)"
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
 
-msgid "An error occurred :("
-msgstr "Ein Fehler ist aufgetreten :("
-
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr "Send anonyme und unscharfe Daten über die Galette Installation"
 
@@ -5214,6 +5240,14 @@ msgid "This page can break your installation, be very careful."
 msgstr ""
 
 #, fuzzy
+#| msgid "Experimental"
+msgid "Experimental features"
+msgstr "Experimentell"
+
+msgid "Constants"
+msgstr ""
+
+#, fuzzy
 #| msgid "Date settings"
 msgid "Filter settings"
 msgstr "Datumseinstellungen"
@@ -5233,10 +5267,6 @@ msgstr ""
 #| msgid "Unknown"
 msgid "unknown"
 msgstr "Unbekannt"
-
-#, php-format
-msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
-msgstr ""
 
 msgid "locked"
 msgstr ""
@@ -5302,7 +5332,31 @@ msgstr "All Filter auf ihren Standard zurücksetzen"
 msgid "Reset '%s' to its default"
 msgstr "All Filter auf ihren Standard zurücksetzen"
 
-msgid "Constants behavior.inc.php understands"
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr "Beschreibung"
+
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Benötigt"
+
+#, fuzzy
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Deaktiviert"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Aktiviert"
+
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
 msgstr ""
 
 #, php-format
@@ -5311,9 +5365,6 @@ msgid ""
 "deprecated is still declared there although a setting above replaces it, and "
 "overrides that setting until you remove it."
 msgstr ""
-
-msgid "Description"
-msgstr "Beschreibung"
 
 #, php-format
 msgid "Replaced by the \"%s\" setting."
@@ -7634,11 +7685,6 @@ msgid ""
 "device. Keep an access to the database at hand."
 msgstr ""
 
-#, fuzzy
-#| msgid "Disabled"
-msgid "Disable"
-msgstr "Deaktiviert"
-
 msgid ""
 "Two-factor authentication is required on this instance: disabling it will be "
 "asked for again at your next login."
@@ -7669,6 +7715,9 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Inhalt der öffentlichen Seite"
+
+#~ msgid "An error occurred."
+#~ msgstr "Ein Fehler ist aufgetreten."
 
 #~ msgid "Manage managers"
 #~ msgstr "Manager verwalten"
