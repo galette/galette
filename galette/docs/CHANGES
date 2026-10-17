@@ -33,6 +33,7 @@ Changes
 - Web installer gives advice for super administrator password, and refuses it under 6 characters
 - Messages were lost when a background request ran before the page they were meant for
 - Members can be attached to groups on CSV imports
+- Member CSV export now carries dynamic fields
 
 1.2.1 -> 1.3.0
 

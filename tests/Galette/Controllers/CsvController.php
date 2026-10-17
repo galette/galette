@@ -653,6 +653,144 @@ class CsvController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test members dynamic fields in CSV export
+     */
+    public function testMembersExportDynamics(): void
+    {
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $fc->installInit();
+        $controller = $this->container->get(\Galette\Controllers\CsvController::class);
+        $filter_name = $controller->getFilterName(\Galette\Controllers\Crud\MembersController::getDefaultFilterName());
+
+        $managed = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups(
+            $member_one,
+            [$managed->getId() . '|' . $managed->getName()]
+        ));
+
+        $this->createDynamicField(\Galette\DynamicFields\DynamicField::SEPARATOR, 'Extra');
+        $phones = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Phones', ['field_repeat' => 0]);
+        $size = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::CHOICE,
+            'Size',
+            ['fixed_values' => "S\nM\nL"]
+        );
+        $certificate = $this->createDynamicField(\Galette\DynamicFields\DynamicField::DATE, 'Certificate');
+        $volunteer = $this->createDynamicField(\Galette\DynamicFields\DynamicField::BOOLEAN, 'Volunteer');
+        $notes = $this->createDynamicField(\Galette\DynamicFields\DynamicField::TEXT, 'Notes');
+        $id_card = $this->createDynamicField(\Galette\DynamicFields\DynamicField::FILE, 'ID card');
+        $internal = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Internal',
+            ['field_perm' => \Galette\Entity\FieldsConfig::STAFF]
+        );
+        $nobody = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Nobody',
+            ['field_perm' => \Galette\Entity\FieldsConfig::NOBODY]
+        );
+
+        $values = [
+            [$member_one->id, $phones, 1, '0102030405'],
+            [$member_one->id, $phones, 2, '0607080910'],
+            [$member_one->id, $size, 1, '1'],
+            [$member_one->id, $certificate, 1, '2026-03-01'],
+            [$member_one->id, $volunteer, 1, '1'],
+            [$member_one->id, $notes, 1, "First line\nSecond line"],
+            [$member_one->id, $id_card, 1, 'id.pdf'],
+            [$member_one->id, $internal, 1, 'secret'],
+            [$member_one->id, $nobody, 1, 'hidden'],
+            //imported choices may be stored as text
+            [$member_two->id, $size, 1, 'XL'],
+        ];
+        foreach ($values as [$item, $field, $index, $value]) {
+            $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+            $insert->values([
+                'item_id'       => $item,
+                'field_id'      => $field,
+                'field_form'    => 'adh',
+                'val_index'     => $index,
+                'field_val'     => $value
+            ]);
+            $this->zdb->execute($insert);
+        }
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_one->id, $member_two->id];
+        $this->session->$filter_name = $filters;
+        $request = $this->createRequest('csv-memberslist', [], 'POST');
+
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            '"Managed groups";"Phones (occurrence 1)";"Phones (occurrence 2)";"Size";"Certificate";'
+            . '"Volunteer";"Notes";"ID card";"Internal"' . "\r\n",
+            $body
+        );
+        $this->assertStringNotContainsString('"Extra"', $body);
+        $this->assertStringNotContainsString('Nobody', $body);
+        $this->assertStringNotContainsString('hidden', $body);
+        $this->assertStringContainsString(
+            '"0102030405";"0607080910";"M";"2026-03-01";"Yes";"First line' . "\n" . 'Second line";"id.pdf";"secret"'
+            . "\r\n",
+            $body
+        );
+        $this->assertStringContainsString('"";"";"XL";"";"";"";"";""' . "\r\n", $body);
+        $this->login->logOut();
+
+        //group manager does not see staff fields, nor members out of their groups
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('Internal', $body);
+        $this->assertStringNotContainsString('secret', $body);
+        $this->assertStringNotContainsString('XL', $body);
+        $this->assertStringEndsWith(
+            '"0102030405";"0607080910";"M";"2026-03-01";"Yes";"First line' . "\n" . 'Second line";"id.pdf"'
+            . "\r\n",
+            $body
+        );
+
+        unset($this->session->$filter_name);
+        $this->login->logOut();
+    }
+
+    /**
+     * Create a members dynamic field
+     *
+     * @param int                 $type  Field type
+     * @param string              $name  Field name
+     * @param array<string,mixed> $extra Extra field data
+     *
+     * @return int Field id
+     */
+    private function createDynamicField(int $type, string $name, array $extra = []): int
+    {
+        $field_data = $extra + [
+            'form_name'         => 'adh',
+            'field_name'        => $name,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => $type,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
+        $this->assertTrue($df->store($field_data), implode(' ', $df->getErrors()));
+        return (int)$df->getId();
+    }
+
+    /**
      * Test contributions CSV export
      */
     public function testContributionExport(): void
