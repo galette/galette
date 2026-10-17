@@ -296,7 +296,12 @@ class TransactionsController extends ContributionsController
         );
 
         // regular fields
-        $valid = $trans->check($post, $required, $disabled);
+        $valid = $trans->check(
+            values: $post,
+            required: $required,
+            disabled: $disabled,
+            files: $request->getUploadedFiles()
+        );
         //store entity in session
         $this->session->transaction = $trans;
 

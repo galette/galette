@@ -1737,7 +1737,12 @@ class MembersController extends CrudController
         $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
 
         // regular fields
-        $valid = $member->check($post, $required, $disabled);
+        $valid = $member->check(
+            values: $post,
+            required: $required,
+            disabled: $disabled,
+            files: $request->getUploadedFiles()
+        );
         if ($valid !== true) {
             $error_detected = array_merge($error_detected, $valid);
         }

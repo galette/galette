@@ -359,7 +359,12 @@ class ContributionsController extends CrudController
             $contrib->disableEvents();
 
             // regular fields
-            $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+            $valid = $contrib->check(
+                values: $post,
+                required: $contrib->getRequired(),
+                disabled: $disabled,
+                files: $request->getUploadedFiles()
+            );
             if ($valid !== true) {
                 $error_detected = array_merge($error_detected, $valid);
             }
@@ -855,7 +860,12 @@ class ContributionsController extends CrudController
         $disabled = [];
 
         // regular fields
-        $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+        $valid = $contrib->check(
+            values: $post,
+            required: $contrib->getRequired(),
+            disabled: $disabled,
+            files: $request->getUploadedFiles()
+        );
         //store entity in session
         $this->session->contribution = $contrib;
         $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
