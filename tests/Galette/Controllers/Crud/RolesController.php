@@ -171,6 +171,9 @@ class RolesController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringNotContainsString('name="name"', $body);
         $this->assertStringNotContainsString('giveRole', $body);
+        //where the role comes from, and who has it
+        $this->assertStringContainsString('choose managers from the group page', $body);
+        $this->assertStringContainsString('id="role_members"', $body);
 
         $request = $this->createRequest('doEditRole', ['id' => '3'], 'POST');
         $request = $request->withParsedBody(['name' => 'Bosses', 'permissions' => ['group:edit' => '1']]);

@@ -177,6 +177,47 @@ class RolesTest extends GaletteTestCase
     }
 
     /**
+     * Test members system roles are computed for
+     */
+    public function testGetComputedMembersOf(): void
+    {
+        $roles = new Roles($this->zdb, new Permissions());
+        $this->assertTrue($roles->installInit());
+        $system = [];
+        foreach ($roles->getList() as $role) {
+            if ($role->isSystem()) {
+                $system[$role->getKey()] = $role;
+            }
+        }
+
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Computed group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setManagers([$member_one]));
+
+        //member two is an administrator, member one has a staff status
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['bool_admin_adh' => true])->where([\Galette\Entity\Adherent::PK => $member_two->id]);
+        $this->zdb->execute($update);
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set([\Galette\Entity\Status::PK => 1])->where([\Galette\Entity\Adherent::PK => $member_one->id]);
+        $this->zdb->execute($update);
+
+        $one = ['id_adh' => (int)$member_one->id, 'member' => $member_one->name . ' ' . $member_one->surname];
+        $two = ['id_adh' => (int)$member_two->id, 'member' => $member_two->name . ' ' . $member_two->surname];
+        $this->assertSame([$two + ['group' => null]], $roles->getComputedMembersOf($system[Roles::ADMIN]));
+        $this->assertSame([$one + ['group' => null]], $roles->getComputedMembersOf($system[Roles::STAFF]));
+        $this->assertSame(
+            [$one + ['group' => 'Computed group']],
+            $roles->getComputedMembersOf($system[Roles::MANAGER])
+        );
+        $this->assertNull($roles->getComputedMembersOf($system[Roles::MEMBER]));
+        $this->assertNull($roles->getComputedMembersOf($system[Roles::UPTODATE]));
+    }
+
+    /**
      * Get stored permissions of a role
      *
      * @param int $role Role identifier

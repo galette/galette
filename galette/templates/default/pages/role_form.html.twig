@@ -81,6 +81,51 @@
         </div>
     </form>
 
+    {% if role.isSystem() %}
+        {% set origins = {
+            (constant('Galette\\Access\\Roles::MEMBER')): _T("Given to every logged in member."),
+            (constant('Galette\\Access\\Roles::UPTODATE')): _T("Given to members whose account is active and whose membership is up to date."),
+            (constant('Galette\\Access\\Roles::STAFF')): _T("Given to members with a staff status; change their status to give or take it back."),
+            (constant('Galette\\Access\\Roles::ADMIN')): _T("Given to members marked as administrators; change it from the roles of their card, when editing them."),
+            (constant('Galette\\Access\\Roles::MANAGER')): _T("Given to managers of a group, on that group only; choose managers from the group page.")
+        } %}
+    <div class="ui segment" id="role_members">
+        <h2 class="ui header">{{ _T("Members") }}</h2>
+        <p>
+            <i class="cog icon" aria-hidden="true"></i>
+            {{ origins[role.getKey()] ?? _T("Computed from member's information") }}
+        </p>
+        {% if computed is not null %}
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th scope="col">{{ _T("Member") }}</th>
+            {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
+                    <th scope="col">{{ _T("Group") }}</th>
+            {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for computed_member in computed %}
+                <tr>
+                    <td data-col-label="{{ _T("Member") }}">
+                        <a href="{{ url_for('member', {'id': computed_member.id_adh}) }}">{{ computed_member.member }}</a>
+                    </td>
+                {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
+                    <td data-col-label="{{ _T("Group") }}">{{ computed_member.group }}</td>
+                {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">{{ _T("No member has this role.") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    {% endif %}
+
     {% if not role.isSystem() %}
     <div class="ui segment">
         <h2 class="ui header">{{ _T("Members") }}</h2>

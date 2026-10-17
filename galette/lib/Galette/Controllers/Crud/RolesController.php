@@ -211,6 +211,7 @@ class RolesController extends CrudController
                 'catalog'       => $this->permissions,
                 'inherited'     => $roles->getInheritedPermissions($role),
                 'given'         => $roles->getMembersOf($id),
+                'computed'      => $role->isSystem() ? $roles->getComputedMembersOf($role) : null,
                 'groups'        => Groups::getSimpleList(),
                 'members'       => $dropdown
             ]

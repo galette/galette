@@ -581,4 +581,60 @@ class Roles
 
         return ['added' => $added, 'removed' => $removed];
     }
+
+    /**
+     * Get members a system role is computed for
+     *
+     * Member and up to date member roles are not listed: nearly everyone has them.
+     *
+     * @param Role $role System role
+     *
+     * @return ?array<array{id_adh: int, member: string, group: ?string}> null when not listed
+     */
+    public function getComputedMembersOf(Role $role): ?array
+    {
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->columns([\Galette\Entity\Adherent::PK, 'nom_adh', 'prenom_adh']);
+        switch ($role->getKey()) {
+            case self::ADMIN:
+                $select->where(['a.bool_admin_adh' => true]);
+                break;
+            case self::STAFF:
+                $select->join(
+                    name: ['s' => PREFIX_DB . \Galette\Entity\Status::TABLE],
+                    on: 's.' . \Galette\Entity\Status::PK . ' = a.' . \Galette\Entity\Status::PK,
+                    columns: []
+                )->where->lessThan('s.priorite_statut', \Galette\Repository\Members::NON_STAFF_MEMBERS);
+                break;
+            case self::MANAGER:
+                $select->join(
+                    name: ['gm' => PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE],
+                    on: 'gm.' . \Galette\Entity\Adherent::PK . ' = a.' . \Galette\Entity\Adherent::PK,
+                    columns: []
+                )->join(
+                    name: ['g' => PREFIX_DB . \Galette\Entity\Group::TABLE],
+                    on: 'g.' . \Galette\Entity\Group::PK . ' = gm.' . \Galette\Entity\Group::PK,
+                    columns: ['group_name']
+                );
+                break;
+            default:
+                return null;
+        }
+
+        $members = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $members[] = [
+                'id_adh' => (int)$row->id_adh,
+                'member' => trim($row->nom_adh . ' ' . $row->prenom_adh),
+                'group' => $row->group_name ?? null
+            ];
+        }
+
+        //by member, then group
+        usort(
+            $members,
+            fn(array $a, array $b): int => [$a['member'], $a['group']] <=> [$b['member'], $b['group']]
+        );
+        return $members;
+    }
 }
