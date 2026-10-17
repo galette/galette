@@ -7,31 +7,49 @@
 {% extends 'page.html.twig' %}
 
 {% set own = role.getPermissions() %}
+{% set origins = {
+    (constant('Galette\\Access\\Roles::MEMBER')): _T("Given to every logged in member."),
+    (constant('Galette\\Access\\Roles::UPTODATE')): _T("Given to members whose account is active and whose membership is up to date."),
+    (constant('Galette\\Access\\Roles::STAFF')): _T("Given to members with a staff status; change their status to give or take it back."),
+    (constant('Galette\\Access\\Roles::ADMIN')): _T("Given to members marked as administrators; change it from the roles of their card, when editing them."),
+    (constant('Galette\\Access\\Roles::MANAGER')): _T("Given to managers of a group, on that group only; choose managers from the group page.")
+} %}
+
+{% block page_title %}
+    {{ page_title }}
+    {% if role.isSystem() %}
+    <span class="ui label">{{ _T("System") }}</span>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <form action="{{ url_for('doEditRole', {'id': role.getId()}) }}" method="post" class="ui form">
         <div class="ui segment">
     {% if role.isSystem() %}
-            <div class="ui info message">
-                {{ _T("This system role is given from members data; only its permissions can be changed.") }}
+            <div class="ui visible info message">
+                <i class="cog icon" aria-hidden="true"></i>
+                {{ origins[role.getKey()] ?? _T("Computed from member's information") }}
+                {{ _T("Only its permissions can be changed.") }}
             </div>
             <div class="field inline">
                 <label for="parent">{{ _T("Inherits from") }}</label>
                 <input type="text" id="parent" value="{% if role.getParentId() is not null and all_roles[role.getParentId()] is defined %}{{ all_roles[role.getParentId()].getLabel() }}{% else %}{{ _T("None") }}{% endif %}" readonly="readonly"/>
             </div>
     {% else %}
-            <div class="required field inline">
-                <label for="name">{{ _T("Name") }}</label>
-                <input type="text" name="name" id="name" value="{{ role.getName() }}" required="required" maxlength="100"/>
-            </div>
-            <div class="field inline">
-                <label for="parent">{{ _T("Inherits from") }}</label>
-                <select name="parent" id="parent" class="ui search dropdown nochosen">
-                    <option value="">{{ _T("None") }}</option>
+            <div class="inline fields">
+                <div class="required field">
+                    <label for="name">{{ _T("Name") }}</label>
+                    <input type="text" name="name" id="name" value="{{ role.getName() }}" required="required" maxlength="100"/>
+                </div>
+                <div class="field">
+                    <label for="parent">{{ _T("Inherits from") }}</label>
+                    <select name="parent" id="parent" class="ui search dropdown nochosen">
+                        <option value="">{{ _T("None") }}</option>
         {% for parent in parents %}
-                    <option value="{{ parent.getId() }}"{% if parent.getId() == role.getParentId() %} selected="selected"{% endif %}>{{ parent.getLabel() }}</option>
+                        <option value="{{ parent.getId() }}"{% if parent.getId() == role.getParentId() %} selected="selected"{% endif %}>{{ parent.getLabel() }}</option>
         {% endfor %}
-                </select>
+                    </select>
+                </div>
             </div>
     {% endif %}
         </div>
@@ -82,19 +100,8 @@
     </form>
 
     {% if role.isSystem() %}
-        {% set origins = {
-            (constant('Galette\\Access\\Roles::MEMBER')): _T("Given to every logged in member."),
-            (constant('Galette\\Access\\Roles::UPTODATE')): _T("Given to members whose account is active and whose membership is up to date."),
-            (constant('Galette\\Access\\Roles::STAFF')): _T("Given to members with a staff status; change their status to give or take it back."),
-            (constant('Galette\\Access\\Roles::ADMIN')): _T("Given to members marked as administrators; change it from the roles of their card, when editing them."),
-            (constant('Galette\\Access\\Roles::MANAGER')): _T("Given to managers of a group, on that group only; choose managers from the group page.")
-        } %}
     <div class="ui segment" id="role_members">
         <h2 class="ui header">{{ _T("Members") }}</h2>
-        <p>
-            <i class="cog icon" aria-hidden="true"></i>
-            {{ origins[role.getKey()] ?? _T("Computed from member's information") }}
-        </p>
         {% if computed is not null %}
         <table class="listing ui celled striped table">
             <thead>
