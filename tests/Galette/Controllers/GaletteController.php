@@ -644,7 +644,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertFalse($town['required']);
         $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $town['visible']);
 
-        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][13];
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][14];
         $this->assertSame($gsm, $gsm2);
     }
 

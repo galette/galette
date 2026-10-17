@@ -12,11 +12,6 @@
                 </div>
                 <div class="active content field">
                     <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
-                    {% if masschange is not defined and not self_adh and fieldset.id == '1' %}
-                        <div class="sixteen wide field column">
-                            {% include "components/forms/picture.html.twig" %}
-                        </div>
-                    {% endif %}
                     {% for entry in fieldset.elements %}
                         {% if entry.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and entry.width_in_forms == 3) %}
                           {% set columns = '' %}
@@ -74,6 +69,10 @@
                         {% endif %}
                         {% if entry.field_id == 'activite_adh' %}
                             {% set template = "account.html.twig" %}
+                        {% endif %}
+                        {% if entry.type == constant('Galette\\Entity\\FieldsConfig::TYPE_PICTURE') %}
+                            {% set template = "picture.html.twig" %}
+                            {% set value = member.picture %}
                         {% endif %}
                         {% if entry.field_id == 'id_statut' %}
                             {% set template = "status.html.twig" %}

@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 
+use function Safe\filesize;
+
 /**
  * Adherent tests class
  *
@@ -499,7 +501,9 @@ class Adherent extends GaletteTestCase
         $fields = [];
         foreach ($orig_fields as $fieldset) {
             foreach ($fieldset as $field) {
-                $fields[] = $field['field_id'];
+                if (\Galette\Entity\FieldsConfig::isColumn($this->members_fields[$field['field_id']])) {
+                    $fields[] = $field['field_id'];
+                }
             }
         }
         $fc->method('getAllowedFields')->willReturn($fields);
@@ -1984,6 +1988,67 @@ class Adherent extends GaletteTestCase
         $check = $this->adh->check([], ['gpgid' => true], ['gpgid']);
         $this->assertTrue($check);
 
+        $this->login->logOut();
+    }
+
+    /**
+     * Test required picture
+     */
+    public function testRequiredPicture(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->assertFalse($this->adh->hasPicture());
+
+        $required = ['photo' => true];
+        $expected = ['- Mandatory field <a href="#photo_new">Picture</a> empty.'];
+        $log = 'Some errors has been thew attempting to edit/store a member';
+
+        //files are not known: not checked
+        $this->assertTrue($this->adh->check([], $required, []));
+
+        //no file
+        $this->assertSame($expected, $this->adh->check(values: [], required: $required, disabled: [], files: []));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //picture field cannot be changed
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: ['photo'], files: []));
+
+        //a failed upload is not a picture
+        $files = ['photo' => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: 'php://memory',
+            name: 'big.png',
+            size: 0,
+            error: UPLOAD_ERR_INI_SIZE
+        )];
+        $this->assertSame($expected, $this->adh->check(values: [], required: $required, disabled: [], files: $files));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //a picture is sent
+        $files = ['photo' => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: GALETTE_TESTS_PATH . '/fixtures/galette_pro.png',
+            name: 'galette_pro.png',
+            type: 'image/png',
+            size: filesize(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png'),
+            error: UPLOAD_ERR_OK
+        )];
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: [], files: $files));
+
+        //a picture is stored
+        $fakedata = new \Galette\Util\FakeData();
+        $this->assertTrue($fakedata->addPhoto($this->adh));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
+        $this->assertTrue($this->adh->hasPicture());
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: [], files: []));
+
+        //stored picture is deleted, and not replaced
+        $this->assertSame($expected, $this->adh->check(values: ['del_photo' => '1'], required: $required, disabled: [], files: []));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //stored picture is deleted, and replaced
+        $this->assertTrue($this->adh->check(values: ['del_photo' => '1'], required: $required, disabled: [], files: $files));
+
+        $this->assertTrue($this->adh->picture->delete());
         $this->login->logOut();
     }
 }

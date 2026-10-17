@@ -97,6 +97,7 @@ class ImagesController extends AbstractController
 
         if (
             $adh->canEdit($this->login)
+                && $this->fields_config->isVisibleFor('photo', $this->login->getAccessLevel())
             || ($this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_membersgallery')
                 || $this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_staffgallery'))
             && $adh->appearsInMembersList()

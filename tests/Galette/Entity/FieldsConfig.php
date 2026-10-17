@@ -129,7 +129,7 @@ class FieldsConfig extends GaletteTestCase
     private function countCategorizedFields(array $categorized): void
     {
         $this->assertCount(3, $categorized);
-        $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
+        $this->assertCount(14, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
     }
@@ -262,7 +262,7 @@ class FieldsConfig extends GaletteTestCase
         $this->assertFalse($town['required']);
         $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $town['visible']);
 
-        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][13];
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][14];
         $this->assertSame($gsm, $gsm2);
     }
 
@@ -372,7 +372,7 @@ class FieldsConfig extends GaletteTestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->assertSame(
-            12,
+            13,
             count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
         );
 
@@ -501,7 +501,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(12, $elements['fieldsets'][0]->elements);
+        $this->assertCount(13, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -529,7 +529,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(11, $elements['fieldsets'][0]->elements);
+        $this->assertCount(12, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -564,7 +564,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(11, $elements['fieldsets'][0]->elements);
+        $this->assertCount(12, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -588,5 +588,45 @@ class FieldsConfig extends GaletteTestCase
     {
         $list = \Galette\Entity\FieldsConfig::getPermissionsList();
         $this->assertArrayNotHasKey(\Galette\Entity\FieldsConfig::ALL, $list);
+    }
+
+    /**
+     * Test picture is configured as a field, but is not a column
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testPictureField(): void
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->installInit();
+        $fields_config->load();
+
+        $this->assertFalse(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['photo']));
+        $this->assertFalse(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['list_adh_name']));
+        $this->assertTrue(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['nom_adh']));
+
+        //can be set as required
+        $this->assertNotContains('photo', $fields_config->getNonRequired());
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $fields_config->getVisibility('photo'));
+
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
+
+        //first field of the form
+        $elements = $fields_config->getFormElements($admin_login, false);
+        $identity = $elements['fieldsets'][0]->elements;
+        $this->assertSame('photo', array_key_first($identity));
+        $this->assertSame(\Galette\Entity\FieldsConfig::TYPE_PICTURE, $identity['photo']->type);
+
+        //not a value to check
+        $this->assertNotContains('photo', $fields_config->getAllowedFields($admin_login));
+        $this->assertContains('nom_adh', $fields_config->getAllowedFields($admin_login));
+
+        //displayed on member card, not among other values
+        foreach ($fields_config->getDisplayElements($admin_login) as $fieldset) {
+            $this->assertArrayNotHasKey('photo', $fieldset->elements);
+        }
     }
 }

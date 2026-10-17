@@ -317,6 +317,7 @@ class MembersController extends CrudController
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
                 'display_elements'  => $display_elements,
+                'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'navigate'          => $this->handleNavigationLinks($member->id)
             ]
@@ -865,7 +866,7 @@ class MembersController extends CrudController
         $groups_list = $groups->getList();
 
         //we want only visible fields
-        $fields = $this->members_fields;
+        $fields = array_filter($this->members_fields, FieldsConfig::isColumn(...));
         $fc = $this->fields_config;
         $fc->filterVisible($this->login, $fields);
 
@@ -1221,6 +1222,7 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
                 'addchild'          => ($action === 'addchild'),
+                'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'documentation'     => 'usermanual/adherents.html'
             ] + $route_params
@@ -1707,8 +1709,12 @@ class MembersController extends CrudController
         $fieldsets     = $form_elements['fieldsets'];
         $required      = [];
         $disabled      = [];
+        $photo_editable = false;
 
         foreach ($fieldsets as $category) {
+            if (isset($category->elements['photo']) && !$category->elements['photo']->disabled) {
+                $photo_editable = true;
+            }
             foreach ($category->elements as $field) {
                 if ($field->required) {
                     $required[$field->field_id] = true;
@@ -1736,12 +1742,18 @@ class MembersController extends CrudController
         // Validation
         $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
 
+        //picture can only be changed if its field is in the form
+        $files = $request->getUploadedFiles();
+        if (!$photo_editable) {
+            unset($files['photo'], $post['del_photo']);
+        }
+
         // regular fields
         $valid = $member->check(
             values: $post,
             required: $required,
             disabled: $disabled,
-            files: $request->getUploadedFiles()
+            files: $files
         );
         if ($valid !== true) {
             $error_detected = array_merge($error_detected, $valid);
@@ -1813,12 +1825,14 @@ class MembersController extends CrudController
                 $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
                 $cropping['focus'] = $post['crop_focus'] ?? 'center';
             }
-            $files_res = $member->handleFiles($request->getUploadedFiles(), $cropping);
+            $files_res = $member->handleFiles($files, $cropping);
             if (is_array($files_res)) {
                 $error_detected = array_merge($error_detected, $files_res);
             }
 
-            if (isset($post['del_photo']) && !$member->picture->delete()) {
+            //a new picture replaces the deleted one
+            $new_photo = isset($files['photo']) && $files['photo']->getError() === UPLOAD_ERR_OK;
+            if (isset($post['del_photo']) && !$new_photo && !$member->picture->delete()) {
                 $error_detected[] = _T("Delete failed");
                 $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
                 Analog::log(

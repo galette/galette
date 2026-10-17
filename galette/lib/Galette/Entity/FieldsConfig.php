@@ -45,6 +45,7 @@ class FieldsConfig
     public const int TYPE_URL = 9;
     public const int TYPE_RADIO = 10;
     public const int TYPE_SELECT = 11;
+    public const int TYPE_PICTURE = 12;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -113,6 +114,7 @@ class FieldsConfig
     /** @var array<string> */
     private array $non_display_elements = [
         'date_echeance',
+        'photo',
         'mdp_adh',
         'titre_adh',
         'sexe_adh',
@@ -519,6 +521,8 @@ class FieldsConfig
                             $o->type = self::TYPE_SELECT;
                         } elseif ($o->field_id == 'sexe_adh') {
                             $o->type = self::TYPE_RADIO;
+                        } elseif ($o->field_id == 'photo') {
+                            $o->type = self::TYPE_PICTURE;
                         } else {
                             $o->type = self::TYPE_STR;
                         }
@@ -585,7 +589,25 @@ class FieldsConfig
         foreach ($form_elements['fieldsets'] as $fieldset) {
             $to_check = array_merge($to_check, array_keys($fieldset->elements));
         }
-        return array_merge($to_check, array_keys($form_elements['hiddens']));
+        $to_check = array_merge($to_check, array_keys($form_elements['hiddens']));
+
+        //fields stored apart are handled on their own
+        return array_values(array_filter(
+            $to_check,
+            fn(string $field): bool => self::isColumn($this->defaults[$field])
+        ));
+    }
+
+    /**
+     * Is a field definition a column of the table?
+     *
+     * Some fields are only listed (name, state of dues), others are stored apart (picture).
+     *
+     * @param array<string, mixed> $definition Field definition
+     */
+    public static function isColumn(array $definition): bool
+    {
+        return (int)$definition['position'] !== -1 && ($definition['db_column'] ?? true);
     }
 
     /**

@@ -6,7 +6,7 @@
 
 {% set qrcodes = member.getQrCodes() %}
 <div id="member_card" class="ui horizontal fluid card">
-    {% if not (member.picture.path ends with '/default/images/default.png') %}
+    {% if (show_photo ?? true) and not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
         <img
             id="photo_adh"

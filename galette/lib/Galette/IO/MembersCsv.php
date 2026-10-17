@@ -98,6 +98,7 @@ class MembersCsv extends CsvOut
             // skip fields blacklisted for export
             if (
                 $k === 'mdp_adh'
+                || !FieldsConfig::isColumn($f)
                 || ($export_fields !== null
                     && (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {

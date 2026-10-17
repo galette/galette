@@ -202,7 +202,7 @@ $container->set('members_fields', function () {
 $container->set('members_form_fields', function (ContainerInterface $c) {
     $fields = $c->get('members_fields');
     foreach ($fields as $k => $field) {
-        if ($field['position'] == -1) {
+        if (!\Galette\Entity\FieldsConfig::isColumn($field)) {
             unset($fields[$k]);
         }
     }

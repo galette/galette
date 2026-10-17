@@ -1150,6 +1150,10 @@ class Adherent implements AccessManagementInterface
 
         // missing required fields?
         foreach (array_keys($required) as $key) {
+            if ($key === 'photo') {
+                //stored apart, checked against files
+                continue;
+            }
             $prop = $this->fields[$key]['propname'];
 
             if (!in_array($key, $disabled) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
@@ -1159,6 +1163,19 @@ class Adherent implements AccessManagementInterface
                     '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                 );
             }
+        }
+
+        if (
+            isset($required['photo'])
+            && $files !== null
+            && !in_array('photo', $disabled)
+            && !$this->keepsPicture($values, $files)
+        ) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is an HTML link to the field with its name
+                _T('- Mandatory field %1$s empty.'),
+                '<a href="#photo_new">' . $this->getFieldLabel('photo') . '</a>',
+            );
         }
 
         //attach to/detach from parent
@@ -1605,7 +1622,7 @@ class Adherent implements AccessManagementInterface
                 foreach ($this->getDefaultValues() as $prop => $value) {
                     foreach ($this->fields as $mkey => $mfield) {
                         if ($mfield['propname'] == $prop) {
-                            if (!isset($values[$mkey]) && $value !== null) {
+                            if (!isset($values[$mkey]) && $value !== null && FieldsConfig::isColumn($mfield)) {
                                 $values[$mkey] = $value;
                             }
                             break;
@@ -2070,6 +2087,20 @@ class Adherent implements AccessManagementInterface
         } else {
             return true;
         }
+    }
+
+    /**
+     * Will member have a picture once posted values and files are handled?
+     *
+     * @param array<string,mixed>                 $values Posted values
+     * @param array<string,UploadedFileInterface> $files  Uploaded files
+     */
+    private function keepsPicture(array $values, array $files): bool
+    {
+        if (isset($files['photo']) && $files['photo']->getError() === UPLOAD_ERR_OK) {
+            return true;
+        }
+        return isset($this->picture) && $this->picture->hasPicture() && !isset($values['del_photo']);
     }
 
     /**

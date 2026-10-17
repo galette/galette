@@ -29,6 +29,7 @@ use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
@@ -1665,7 +1666,7 @@ class Members
 
         $allowed = [];
         foreach ($fields as $name => $field) {
-            if ((int)$field['position'] === -1) {
+            if (!FieldsConfig::isColumn($field)) {
                 //not a database column
                 continue;
             }

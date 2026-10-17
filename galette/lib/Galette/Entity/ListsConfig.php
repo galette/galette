@@ -37,6 +37,7 @@ class ListsConfig extends FieldsConfig
      */
     private array $non_list_elements = [
         'mdp_adh',
+        'photo',
         'info_adh',
         'info_public_adh',
         'nom_adh',

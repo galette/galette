@@ -34,6 +34,7 @@ Changes
 - Messages were lost when a background request ran before the page they were meant for
 - Members can be attached to groups on CSV imports
 - Member CSV export now carries dynamic fields
+- Configure member picture like other fields: configurable visibility and can be mandatory
 
 1.2.1 -> 1.3.0
 

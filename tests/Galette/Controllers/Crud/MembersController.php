@@ -14,6 +14,7 @@ use Galette\Tests\GaletteRoutingTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 use function Safe\copy;
+use function Safe\file_get_contents;
 use function Safe\filesize;
 
 /**
@@ -866,6 +867,7 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('<title>Registration', $body);
         $this->assertStringContainsString('name="gaptcha"', $body);
+        $this->assertStringContainsString('name="photo"', $body);
     }
 
     /**
@@ -3213,6 +3215,9 @@ class MembersController extends GaletteRoutingTestCase
             if ($field === 'login_adh' || $field == 'mdp_adh') {
                 //login and password are mandatory, they takes an automatic value if not set
                 $this->assertNotEmpty($adh->login);
+            } elseif ($field === 'photo') {
+                //picture is stored apart
+                $this->assertFalse($adh->hasPicture());
             } else {
                 //check for expected default values
                 $propname = $this->members_fields[$field]['propname'];
@@ -3235,5 +3240,175 @@ class MembersController extends GaletteRoutingTestCase
         $fc->setFields($orig_fields);
 
         $this->login->logOut();
+    }
+
+    /**
+     * Configure picture field
+     *
+     * @param int  $visible  Visibility
+     * @param bool $required Is picture required
+     */
+    private function setPhotoField(int $visible, bool $required): void
+    {
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $fields = $fc->getCategorizedFields();
+        foreach ($fields as &$fieldset) {
+            foreach ($fieldset as &$field) {
+                if ($field['field_id'] === 'photo') {
+                    $field['visible'] = $visible;
+                    $field['required'] = $required;
+                }
+            }
+        }
+        $this->assertTrue($fc->setFields($fields));
+    }
+
+    /**
+     * Get an uploaded picture
+     */
+    private function getUploadedPhoto(): \Slim\Psr7\UploadedFile
+    {
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
+        return new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+            name: 'galette_pro.png',
+            type: 'image/png',
+            size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+            error: UPLOAD_ERR_OK
+        );
+    }
+
+    /**
+     * Test required member picture
+     */
+    public function testRequiredPhoto(): void
+    {
+        $member_one = $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $mdata['id_adh'] = $member_one->id;
+        $photo = GALETTE_PHOTOS_PATH . '/' . $member_one->id . '.png';
+        $this->assertFalse($member_one->hasPicture());
+
+        $route_name = 'doEditMember';
+        $route_arguments = ['id' => (string)$member_one->id];
+        $edit_url = $this->routeparser->urlFor('editMember', $route_arguments);
+        $show_url = $this->routeparser->urlFor('member', $route_arguments);
+        $missing = ['- Mandatory field <a href="#photo_new">Picture</a> empty.'];
+
+        $this->logSuperAdmin();
+        $this->setPhotoField(\Galette\Entity\FieldsConfig::USER_WRITE, required: true);
+
+        //no picture sent
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$edit_url]], $test_response->getHeaders());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member');
+        $this->expectFlashData(['error_detected' => $missing]);
+        $this->assertFileDoesNotExist($photo);
+
+        //picture sent
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $request = $request->withUploadedFiles(['photo' => $this->getUploadedPhoto()]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$show_url]], $test_response->getHeaders());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertFileExists($photo);
+
+        //picture is kept on its own
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$show_url]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertFileExists($photo);
+
+        //picture cannot be deleted
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata + ['del_photo' => '1']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$edit_url]], $test_response->getHeaders());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member');
+        $this->expectFlashData(['error_detected' => $missing]);
+        $this->assertFileExists($photo);
+
+        //picture can be replaced
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata + ['del_photo' => '1']);
+        $request = $request->withUploadedFiles(['photo' => $this->getUploadedPhoto()]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$show_url]], $test_response->getHeaders());
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertFileExists($photo);
+
+        $this->setPhotoField(\Galette\Entity\FieldsConfig::USER_WRITE, required: false);
+        $this->assertTrue((new \Galette\Core\Picture($member_one->id))->delete());
+        $this->login->logout();
+    }
+
+    /**
+     * Test member picture follows its field visibility
+     */
+    public function testPhotoVisibility(): void
+    {
+        $member_one = $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $mdata['id_adh'] = $member_one->id;
+
+        $fakedata = new \Galette\Util\FakeData();
+        $this->assertTrue($fakedata->addPhoto($member_one));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
+        $this->assertTrue($member_one->hasPicture());
+        $photo = (new \Galette\Core\Picture($member_one->id))->getPath();
+
+        $route_arguments = ['id' => (string)$member_one->id];
+        $this->logSuperAdmin();
+
+        //shown per default
+        $test_response = $this->app->handle($this->createRequest('member', $route_arguments));
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('id="photo_adh"', (string)$test_response->getBody());
+
+        $this->setPhotoField(\Galette\Entity\FieldsConfig::NOBODY, required: false);
+
+        $test_response = $this->app->handle($this->createRequest('member', $route_arguments));
+        $this->expectOK($test_response);
+        $this->assertStringNotContainsString('id="photo_adh"', (string)$test_response->getBody());
+
+        $test_response = $this->app->handle($this->createRequest('editMember', $route_arguments));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('id="photo_adh"', $body);
+        $this->assertStringNotContainsString('name="photo"', $body);
+
+        //picture cannot be changed
+        $request = $this->createRequest('doEditMember', $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata + ['del_photo' => '1']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('member', $route_arguments)]],
+            $test_response->getHeaders()
+        );
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertFileExists($photo);
+
+        //nor sent, out of public pages
+        $this->preferences->pref_bool_publicpages = false;
+        $this->assertTrue($this->preferences->store());
+        $test_response = $this->app->handle($this->createRequest('photo', $route_arguments));
+        $this->assertNotSame(file_get_contents($photo), (string)$test_response->getBody());
+
+        $this->setPhotoField(\Galette\Entity\FieldsConfig::USER_WRITE, required: false);
+
+        $test_response = $this->app->handle($this->createRequest('photo', $route_arguments));
+        $this->assertSame(file_get_contents($photo), (string)$test_response->getBody());
+
+        $this->preferences->pref_bool_publicpages = true;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertTrue((new \Galette\Core\Picture($member_one->id))->delete());
+        $this->login->logout();
     }
 }
