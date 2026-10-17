@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Galette\Controllers\Crud;
 
 use DI\Attribute\Inject;
+use Galette\Access\Role;
+use Galette\Access\Roles;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
@@ -53,6 +55,9 @@ class MembersController extends CrudController
     #[Inject]
     protected Status $status;
 
+    #[Inject]
+    protected Roles $roles;
+
     // CRUD - Create
 
     /**
@@ -78,7 +83,7 @@ class MembersController extends CrudController
     )]
     public function addChild(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+        if (!$this->accessControl->can('member:create-child') || $this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
@@ -192,7 +197,7 @@ class MembersController extends CrudController
     )]
     public function doAddChild(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+        if (!$this->accessControl->can('member:create-child') || $this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
@@ -256,6 +261,14 @@ class MembersController extends CrudController
     )]
     public function duplicate(Response $response, int $id_adh): Response
     {
+        if (!$this->accessControl->can('member:create')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
@@ -304,6 +317,7 @@ class MembersController extends CrudController
         // flagging fields visibility
         $fc = $this->fields_config;
         $display_elements = $fc->getDisplayElements($this->login);
+        $can_manage_roles = $this->accessControl->can('role:manage');
 
         // display page
         $this->view->render(
@@ -318,7 +332,12 @@ class MembersController extends CrudController
                 'time'              => time(),
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
-                'navigate'          => $this->handleNavigationLinks($member->id)
+                'navigate'          => $this->handleNavigationLinks($member->id),
+                'member_roles'      => $can_manage_roles ? $this->roles->getRolesOf($member) : [],
+                'assignable_roles'  => $can_manage_roles ? array_filter(
+                    $this->roles->getList(),
+                    fn(Role $role): bool => !$role->isSystem()
+                ) : []
             ]
         );
         return $response;
@@ -669,11 +688,7 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(as_members: true);
-        } else {
-            $members_list = $members->getManagedMembersList(as_members: true);
-        }
+        $members_list = $members->getVisibleMembersList(as_members: true);
 
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
@@ -952,23 +967,18 @@ class MembersController extends CrudController
         }
 
         $members = new Members($filters);
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            if ($this->login->isGroupManager()) {
-                $members_list = $members->getManagedMembersList(as_members: true);
-            } else {
-                Analog::log(
-                    str_replace(
-                        ['%id', '%login'],
-                        [(string)$this->login->id, $this->login->login],
-                        'Trying to list group members without access from #%id (%login)'
-                    ),
-                    Analog::ERROR
-                );
-                throw new \Exception('Access denied.');
-            }
-        } else {
-            $members_list = $members->getMembersList(as_members: true);
+        if ($this->accessControl->getGroupScope('member:read') === []) {
+            Analog::log(
+                str_replace(
+                    ['%id', '%login'],
+                    [(string)$this->login->id, $this->login->login],
+                    'Trying to list group members without access from #%id (%login)'
+                ),
+                Analog::ERROR
+            );
+            throw new \Exception('Access denied.');
         }
+        $members_list = $members->getVisibleMembersList(as_members: true);
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
@@ -1118,7 +1128,7 @@ class MembersController extends CrudController
             }
             $can = $member->canEdit($this->login);
         } else {
-            $can = $member->canCreate($this->login);
+            $can = $this->canCreate($member);
         }
 
         if (!$can) {
@@ -1155,7 +1165,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1200,6 +1210,15 @@ class MembersController extends CrudController
 
         if ($action === 'edit') {
             $route_params['navigate'] = $this->handleNavigationLinks($member->id);
+        }
+
+        if ($member->id && $this->accessControl->can('role:manage')) {
+            $route_params['member_roles'] = $this->roles->getRolesOf($member);
+            $route_params['assignable_roles'] = array_filter(
+                $this->roles->getList(),
+                fn(Role $role): bool => !$role->isSystem()
+            );
+            $route_params['groups_names'] = Groups::getSimpleList();
         }
 
         // display page
@@ -1668,7 +1687,7 @@ class MembersController extends CrudController
             }
         } elseif ($member->id != '') {
             $member->load($this->login->id);
-        } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
+        } elseif (!$this->isSelfMembership() && !$this->canCreate($member)) {
             //redirection should have been done before. Just deny access.
             throw new HttpForbiddenException($request, 'No right to store new member!');
         }
@@ -1694,7 +1713,7 @@ class MembersController extends CrudController
         }
 
         // flagging required fields invisible to members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($this->accessControl->can('member:manage')) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1781,7 +1800,27 @@ class MembersController extends CrudController
                         $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
                 }
-                if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                if ($member->id && isset($post['roles_sent']) && $this->accessControl->can('role:manage')) {
+                    //given roles
+                    $wanted = [];
+                    foreach ($post['roles_adh'] ?? [] as $given) {
+                        [$role, $group] = array_pad(explode('|', (string)$given), 2, '');
+                        $wanted[] = [(int)$role, (int)$group > 0 ? (int)$group : null];
+                    }
+                    $changes = $this->roles->setGiven((int)$member->id, $wanted);
+                    if ($changes['added'] + $changes['removed'] > 0) {
+                        $this->history->add(
+                            sprintf(
+                                //TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+                                _T('%1$d role(s) given, %2$d taken back for member #%3$d'),
+                                $changes['added'],
+                                $changes['removed'],
+                                $member->id
+                            )
+                        );
+                    }
+                }
+                if ($this->accessControl->can('member:manage')) {
                     //add/remove manager from groups
                     $managed_groups_adh = $post['groups_managed_adh'] ?? [];
                     $add_groups = Groups::addMemberToGroups(
@@ -1933,7 +1972,8 @@ class MembersController extends CrudController
             $adh = new Adherent($this->zdb, (int)$id_adh);
             return sprintf(
                 _T('Remove member %1$s'),
-                $adh->sfullname
+                //do not disclose name of a member that cannot be removed
+                $this->accessControl->can('member:delete', $adh) ? $adh->sfullname : '#' . (int)$id_adh
             );
         } else {
             //batch members removal
@@ -1962,6 +2002,20 @@ class MembersController extends CrudController
         $members = new Members($filters);
 
         $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
+        foreach ($ids as $id) {
+            $member = new Adherent($this->zdb, (int)$id, deps: false);
+            if (!$this->accessControl->can('member:delete', $member)) {
+                Analog::log(
+                    'Trying to remove member #' . (int)$id . ' without appropriate ACLs',
+                    Analog::WARNING
+                );
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("You do not have permission for requested URL.")
+                );
+                return false;
+            }
+        }
 
         return $members->removeMembers($ids);
     }
@@ -2003,6 +2057,18 @@ class MembersController extends CrudController
     }
 
     /**
+     * Can current user create a member, or a child member?
+     *
+     * @param Adherent $member New member
+     */
+    private function canCreate(Adherent $member): bool
+    {
+        return $this->isAddChild()
+            ? $this->accessControl->can('member:create-child')
+            : $member->canCreate($this->login);
+    }
+
+    /**
      * Handle navigation links
      *
      * @param int $id_adh Current member ID
@@ -2021,19 +2087,11 @@ class MembersController extends CrudController
         //we must navigate between all members
         $filters->show = 0;
 
-        if (
-            $this->login->isAdmin()
-            || $this->login->isStaff()
-            || $this->login->isGroupManager()
-        ) {
+        if ($this->accessControl->getGroupScope('member:read') !== []) {
             $m = new Members($filters);
 
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
-            if ($this->login->isAdmin() || $this->login->isStaff()) {
-                $ids = $m->getMembersList(as_members: false, fields: $fields);
-            } else {
-                $ids = $m->getManagedMembersList(as_members: false, fields: $fields);
-            }
+            $ids = $m->getVisibleMembersList(as_members: false, fields: $fields);
 
             $ids = $ids->toArray();
             foreach ($ids as $k => $m) {

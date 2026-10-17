@@ -1232,9 +1232,6 @@ class Contribution extends GaletteTestCase
      */
     public function testCan(): void
     {
-        global $preferences;
-        $this->assertFalse($preferences->pref_bool_groupsmanagers_see_contributions);
-
         $this->logSuperAdmin();
         $this->getMemberOne();
         //create contribution for member
@@ -1351,10 +1348,8 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($contrib->canShow($this->login));
 
-        $preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $can_show = $contrib->canShow($this->login);
-        $preferences->pref_bool_groupsmanagers_see_contributions = $this->preferences->getDefaults()['pref_bool_groupsmanagers_see_contributions'];
-        $this->assertTrue($can_show); //@phpstan-ignore method.impossibleType (class handle that)
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
+        $this->assertTrue($contrib->canShow($this->login));
     }
 
     /**

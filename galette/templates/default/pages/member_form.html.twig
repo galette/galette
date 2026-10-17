@@ -44,7 +44,7 @@
                             <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
             {% endif %}
                         </div>
-            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
+            {% if can('member:manage') and (addchild is not defined or not addchild) %}
                         <div class="field">
                             <div class="ui toggle checkbox">
                                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
             {% endif %}
-        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() %}
+        {% elseif can('member:manage') and not member.hasChildren() %}
                         <div class="field">
                             <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
                                 <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
@@ -119,6 +119,11 @@
                 {% include "components/forms/groups.html.twig" %}
             {% endif %}
 
+            {# Member's roles #}
+            {% if member_roles is defined %}
+                {% include "components/forms/roles.html.twig" %}
+            {% endif %}
+
             {# Dynamic entries #}
             {% include "components/dynamic_fields.html.twig" with {object: member} %}
 
@@ -128,10 +133,10 @@
                 <div class="inline field">
                     <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
                     <select name="redirect_on_create" id="redirect_on_create" class="ui search dropdown">
-            {% if login.isAdmin() or login.isStaff() or preferences.pref_bool_groupsmanagers_create_contributions %}
+            {% if can('contribution:create') %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
             {% endif %}
-            {% if login.isAdmin() or login.isStaff() or preferences.pref_bool_groupsmanagers_create_transactions %}
+            {% if can('transaction:create') %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
             {% endif %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
@@ -226,6 +231,8 @@
 {% if not self_adh %}
                 {# Member's groups #}
                 {% include "elements/js/member_groups.js.twig" %}
+                {# Member's roles #}
+                {% include "elements/js/member_roles.js.twig" %}
 
     {% if not self_adh and not member.hasChildren() %}
                 {# Parent selection #}

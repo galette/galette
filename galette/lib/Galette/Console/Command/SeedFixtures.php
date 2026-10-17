@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
+use Galette\Access\Permissions;
+use Galette\Access\Role;
+use Galette\Access\Roles;
 use Galette\Core\Db;
 use Galette\Core\Galette;
 use Galette\Core\History;
@@ -67,6 +70,7 @@ class SeedFixtures extends AbstractCommand
     private Preferences $preferences;
     private History $history;
     private Plugins $plugins;
+    private Permissions $permissions;
     /** @var array<string,mixed> */
     private array $members_fields;
 
@@ -112,6 +116,7 @@ class SeedFixtures extends AbstractCommand
         $container = $GLOBALS['container'];
         $this->members_fields = $container->get('members_fields');
         $this->plugins = $container->get(Plugins::class);
+        $this->permissions = $container->get(Permissions::class);
 
         // Ensure HTTP_HOST is set for CLI context (used by Preferences::getURL())
         $_SERVER['HTTP_HOST'] ??= 'localhost';
@@ -142,6 +147,9 @@ class SeedFixtures extends AbstractCommand
 
         $io->section('Creating groups');
         $this->createGroups($io);
+
+        $io->section('Creating roles');
+        $this->createRoles($io);
 
         $io->section('Creating transactions');
         $this->createTransactions($io);
@@ -262,6 +270,12 @@ class SeedFixtures extends AbstractCommand
             $delete->where(['fingerprint' => self::FIXTURE_FINGERPRINT]);
             $this->zdb->execute($delete);
         }
+
+        // Delete fixture roles; permissions and assignments cascade
+        $delete = $this->zdb->delete(Role::TABLE);
+        $delete->where->in('name', array_column($this->getRoleDefinitions(), 'name'));
+        $delete->where->isNull('role_key');
+        $this->zdb->execute($delete);
 
         // Delete fixture groups (children first to respect FK)
         $group_defs = array_reverse($this->getGroupDefinitions());
@@ -712,6 +726,51 @@ class SeedFixtures extends AbstractCommand
                 $group_def['name'],
                 count($managers),
                 count($group_members)
+            ));
+        }
+    }
+
+    /**
+     * Create roles and give them to members
+     */
+    private function createRoles(SymfonyStyle $io): void
+    {
+        $roles = new Roles($this->zdb, $this->permissions);
+        $system = [];
+        foreach ($roles->getList() as $role) {
+            if ($role->isSystem()) {
+                $system[$role->getKey()] = $role->getId();
+            }
+        }
+
+        foreach ($this->getRoleDefinitions() as $role_def) {
+            $role = new Role();
+            $role->setName($role_def['name']);
+            $role->setParentId($system[$role_def['parent']] ?? null);
+            $role->setPermissions($role_def['permissions'], $this->permissions);
+            if (!$role->store($this->zdb)) {
+                $io->error('Failed to create role: ' . $role_def['name']);
+                continue;
+            }
+
+            foreach ($role_def['members'] as $login => $group_name) {
+                if (!isset($this->members[$login])) {
+                    continue;
+                }
+                $group_id = null;
+                if ($group_name !== null) {
+                    $select = $this->zdb->select(Group::TABLE);
+                    $select->columns([Group::PK])->where(['group_name' => $group_name]);
+                    $group_id = (int)$this->zdb->execute($select)->current()->{Group::PK};
+                }
+                $roles->give($this->members[$login]->id, $role->getId(), $group_id);
+            }
+
+            $io->text(sprintf(
+                '  Created role "%s" (%d permissions, %d members)',
+                $role_def['name'],
+                count($role_def['permissions']),
+                count($role_def['members'])
             ));
         }
     }
@@ -1584,6 +1643,46 @@ class SeedFixtures extends AbstractCommand
                 'name' => 'Les Âmes Errantes',
                 'managers' => ['jack.skellington'],
                 'members' => ['sally.ragdoll', 'victor.vandort', 'emily.lamariee'],
+            ],
+        ];
+    }
+
+    /**
+     * Get role definitions; members are given the role for a group, or globally when group is null
+     *
+     * @return array<array{name: string, parent: string, permissions: array<string>, members: array<string, ?string>}>
+     */
+    private function getRoleDefinitions(): array
+    {
+        return [
+            [
+                'name' => 'Trésorerie',
+                'parent' => Roles::MEMBER,
+                'permissions' => [
+                    'contribution:create',
+                    'contribution:edit',
+                    'contribution:export',
+                    'contribution:read',
+                    'contribution:remind',
+                    'member:read',
+                    'transaction:attach',
+                    'transaction:create',
+                    'transaction:edit',
+                    'transaction:export',
+                    'transaction:read',
+                ],
+                'members' => ['hermione.granger' => null],
+            ],
+            [
+                'name' => 'Secrétariat de groupe',
+                'parent' => Roles::MEMBER,
+                'permissions' => [
+                    'group:read',
+                    'mailing:send',
+                    'member:edit',
+                    'member:read',
+                ],
+                'members' => ['sally.ragdoll' => 'Les Âmes Errantes'],
             ],
         ];
     }

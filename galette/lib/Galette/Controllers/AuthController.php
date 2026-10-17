@@ -427,7 +427,7 @@ class AuthController extends AbstractController
     ): Response {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
-        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
+        if ($id_adh !== null && $this->accessControl->can('member:credentials')) {
             $from_admin = true;
             $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
         }
@@ -448,7 +448,7 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $redirect_url);
         }
 
-        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
+        if ($from_admin) {
             $adh = new Adherent($this->zdb, $id_adh);
             $login_adh = $adh->login;
         } else {

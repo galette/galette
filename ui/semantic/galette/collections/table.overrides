@@ -18,7 +18,7 @@
 
 .ui.basic.striped.table > tbody > tr:nth-child(2n),
 .ui.basic.striped.table > tr:nth-child(2n) {
-    a {
+    a:not(.label):not(.button) {
         color: darken(@linkColor, 5);
     }
 }

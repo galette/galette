@@ -326,8 +326,8 @@ class TransactionsController extends ContributionsController
 
         //get back to transactions list
         $redirect_url = $this->routeparser->urlFor('contributions', ['type' => 'transactions']);
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            //or slash URL for non staff nor admin
+        if ($this->accessControl->getGroupScope('transaction:read') !== null) {
+            //or slash URL for those not allowed to see all transactions
             $redirect_url = $this->routeparser->urlFor('slash');
         }
 

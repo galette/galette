@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Entity\Status;
 use Galette\Entity\Adherent;
 use Galette\Entity\Group;
+use Galette\Features\AccessControlled;
 use Galette\Repository\Groups;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
@@ -37,6 +38,8 @@ use function Safe\fopen;
 
 class MembersCsv extends CsvOut
 {
+    use AccessControlled;
+
     private readonly string $filename;
     private readonly string $path;
 
@@ -274,15 +277,10 @@ class MembersCsv extends CsvOut
             return $members_groups;
         }
 
-        $managed = null;
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            $managed = array_map(
-                fn($group) => $group instanceof Group ? (int)$group->getId() : (int)$group,
-                $this->login->getManagedGroups()
-            );
-            if (count($managed) === 0) {
-                return $members_groups;
-            }
+        //null when every group can be read
+        $managed = $this->getGroupScope('group:read', $this->login);
+        if ($managed === []) {
+            return $members_groups;
         }
 
         $names = Groups::getNames($this->zdb);

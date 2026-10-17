@@ -38,7 +38,7 @@
                                 <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>
                                 <div class="menu">
                                     <div class="item" data-value="">{{ _T("None") }}</div>
-                                {% if pgroup is defined and not login.isGroupManager(pgroup.getId()) %}
+                                {% if pgroup is defined and not can('group:read', pgroup) %}
                                     <div class="item" data-value="{{ pgroup.getId() }}">{{ pgroup.getIndentName()|raw }}</div>
                                 {% endif %}
                                 {% for g in parent_groups %}

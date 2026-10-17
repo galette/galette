@@ -574,9 +574,9 @@ class CsvController extends GaletteRoutingTestCase
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
 
         //exports disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $test_response = $this->app->handle($request);
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->expectFlashData(
             [
@@ -839,5 +839,35 @@ class CsvController extends GaletteRoutingTestCase
         //remove file
         unlink(GALETTE_IMPORTS_PATH . '/uploaded_file.csv');
         $this->login->logOut();
+    }
+
+    /**
+     * Test importing groups managers requires to manage members
+     */
+    public function testImportManagersRequiresMemberManage(): void
+    {
+        $model = new \Galette\Entity\ImportModel();
+        $model->setFields(['nom_adh', 'prenom_adh', \Galette\IO\CsvIn::MANAGED_GROUPS_FIELD]);
+        $this->assertTrue($model->store($this->zdb));
+
+        $this->getMemberOne();
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:import');
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $request = $this->createRequest('doImport', [], 'POST');
+            $request = $request->withParsedBody(['import_file' => 'uploaded_file.csv']);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to import groups managers without appropriate permissions');
+            $this->expectFlashData([
+                'error_detected' => ['You are not allowed to import groups managers; remove that column from the import model.']
+            ]);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:import');
+            $this->assertTrue($model->remove($this->zdb));
+            $this->login->logOut();
+        }
     }
 }

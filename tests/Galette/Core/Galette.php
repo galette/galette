@@ -166,6 +166,26 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
 
+        $this->assertSame(
+            [
+                'preferences',
+                'authAttempts',
+                'plugins',
+                'configureListFields',
+                'configureCoreFields',
+                'configureDynamicFields',
+                'contributionsTypes',
+                'paymentTypes',
+                'status',
+                'titles',
+                'pdfModels',
+                'texts',
+                'dynamicTranslations',
+                'roles'
+            ],
+            array_column(array_column($menus['configuration']['items'], 'route'), 'name')
+        );
+
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
             ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
@@ -177,14 +197,23 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $menus = \Galette\Core\Galette::getMenus(public: true);
-        $this->assertCount(5, $menus);
+        $this->assertCount(6, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
         $this->assertArrayHasKey('members', $menus);
         $this->assertArrayHasKey('contributions', $menus);
         $this->assertArrayHasKey('management', $menus);
-        $this->assertArrayNotHasKey('configuration', $menus);
+        $this->assertArrayHasKey('configuration', $menus);
         $this->assertArrayHasKey('public', $menus);
+        $this->assertSame(
+            ['groups', 'documentsList', 'mailings', 'charts', 'export', 'import', 'history'],
+            array_column(array_column($menus['management']['items'], 'route'), 'name')
+        );
+        //staff members get configuration pages their role allows
+        $this->assertSame(
+            ['contributionsTypes', 'paymentTypes', 'status', 'titles', 'pdfModels', 'texts', 'dynamicTranslations'],
+            array_column(array_column($menus['configuration']['items'], 'route'), 'name')
+        );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
@@ -443,7 +472,7 @@ class Galette extends GaletteTestCase
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$db, new \Galette\Core\I18n()])
-            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager'])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin', 'isGroupManager', 'getManagedGroups'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -451,10 +480,11 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
         $login->method('isGroupManager')->willReturn(true);
+        $login->method('getManagedGroups')->willReturn([1]);
 
         //groups managers cannot see contributions nor transactions
-        $preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $dashboards = \Galette\Core\Galette::getDashboards();
         $this->assertSame(
@@ -464,8 +494,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(3, \Galette\Core\Galette::getMyDashboards());
 
         //groups managers can see contributions
-        $preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $dashboards = \Galette\Core\Galette::getDashboards();
         $this->assertSame(
@@ -474,8 +504,8 @@ class Galette extends GaletteTestCase
         );
 
         //groups managers can see transactions
-        $preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $dashboards = \Galette\Core\Galette::getDashboards();
         $this->assertSame(
@@ -484,8 +514,8 @@ class Galette extends GaletteTestCase
         );
 
         //groups managers can see both contributions and transactions
-        $preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $preferences->pref_bool_groupsmanagers_see_transactions = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $dashboards = \Galette\Core\Galette::getDashboards();
         $this->assertSame(
@@ -509,8 +539,8 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
         $login->method('isGroupManager')->willReturn(true);
 
-        $preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         $dashboards = \Galette\Core\Galette::getDashboards();
         $this->assertSame(

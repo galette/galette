@@ -10,19 +10,31 @@ declare(strict_types=1);
 
 namespace GaletteTest1Plugin;
 
+use DI\Attribute\Inject;
+use Galette\Access\AccessControl;
+use Galette\Access\Permission;
+use Galette\Core\Authentication;
 use Galette\Core\GalettePlugin;
 use Galette\Core\PreferencesSchema;
+use Galette\Core\Plugins\PermissionsProviderInterface;
 use Galette\Core\Plugins\PreferencesProviderInterface;
 use Galette\Core\Plugins\PublicPagesProviderInterface;
 
 /**
- * This fixture also declares preferences and a public page, so that the
- * registration path is exercised by every test that loads plugins.
+ * This fixture also declares preferences, a public page and permissions, so
+ * that the registration path is exercised by every test that loads plugins.
+ * It gets access control injected, as plugins checking permissions do.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderInterface, PublicPagesProviderInterface
+class PluginGalettePlugin1 extends GalettePlugin implements
+    PreferencesProviderInterface,
+    PublicPagesProviderInterface,
+    PermissionsProviderInterface
 {
+    #[Inject]
+    protected AccessControl $accessControl;
+
     /**
      * Get the preferences the plugin declares
      *
@@ -69,6 +81,25 @@ class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderI
     public function getPublicPageLabel(string $id): string
     {
         return 'Plugin one page';
+    }
+
+    /**
+     * Get the permissions the plugin declares
+     *
+     * @return array<Permission>
+     */
+    public function getPermissions(): array
+    {
+        return [
+            new Permission('plugin1:read', 'Display plugin one', Authentication::ACCESS_USER),
+            new Permission(
+                name: 'plugin1:manage',
+                label: 'Manage plugin one',
+                level: Authentication::ACCESS_STAFF,
+                managers: true,
+                owner: true
+            ),
+        ];
     }
 
     /**

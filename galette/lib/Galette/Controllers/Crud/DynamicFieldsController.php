@@ -334,7 +334,7 @@ class DynamicFieldsController extends CrudController
             //contributions and transactions have no display page
             'contrib' => $this->routeparser->urlFor('contributions', ['type' => 'contributions']),
             'trans' => $this->routeparser->urlFor('contributions', ['type' => 'transactions']),
-            'prefs' => $this->routeparser->urlFor($this->login->isAdmin() ? 'preferences' : 'slash'),
+            'prefs' => $this->routeparser->urlFor($this->accessControl->can('config:preferences') ? 'preferences' : 'slash'),
             default => $this->routeparser->urlFor('member', ['id' => (string)$id])
         };
     }

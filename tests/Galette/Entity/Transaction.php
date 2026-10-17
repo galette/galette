@@ -398,8 +398,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //change preferences so managers can see group members contributions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         //transaction member is not part of a managed group
         $this->assertFalse($transaction->canShow($this->login));
@@ -409,11 +408,9 @@ class Transaction extends GaletteTestCase
             \Analog\Analog::ERROR,
             'No transaction #' . $transaction->id
         );
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
         $this->assertFalse($transaction->canAttachAndDetach($this->login));
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         //add transaction member to managed group
         $this->assertTrue($g1->setMembers([$member_one]));
@@ -426,8 +423,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //can create && can see
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->assertTrue($transaction->canCreate($this->login));
         $this->assertTrue($transaction->canShow($this->login));
@@ -436,8 +432,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //can attach and detach
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         $this->assertTrue($transaction->canAttachAndDetach($this->login));
     }

@@ -12,7 +12,6 @@ namespace Galette\Repository;
 
 use ArrayObject;
 use Exception;
-use Galette\Entity\Group;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
@@ -21,6 +20,8 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
+use Galette\Access\MembersScope;
+use Galette\Features\AccessControlled;
 use Galette\Entity\Adherent;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -35,6 +36,8 @@ use Safe\DateTime;
  */
 class Transactions
 {
+    use AccessControlled;
+
     public const string TABLE = Transaction::TABLE;
     public const string PK = Transaction::PK;
 
@@ -196,8 +199,6 @@ class Transactions
      */
     private function buildWhereClause(Select $select): void
     {
-        global $preferences;
-
         try {
             if ($this->filters->start_date_filter != null) {
                 $d = new DateTime($this->filters->rstart_date_filter);
@@ -215,43 +216,25 @@ class Transactions
                 );
             }
 
+            $scope = new MembersScope(
+                $this->zdb,
+                $this->login,
+                $this->getGroupScope('transaction:read', $this->login)
+            );
             $member_clause = null;
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if (!$scope->isGlobal()) {
                 //default case, only display transactions for current member
                 $member_clause = [$this->login->id];
             }
             if ($this->filters->filtre_cotis_adh != null) {
                 //handle case when list is filtered on a single member id
-                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
-                    $member = new Adherent(
-                        $this->zdb,
-                        (int)$this->filters->filtre_cotis_adh,
-                        [
-                            'picture' => false,
-                            'groups' => false,
-                            'dues' => false,
-                            'parent' => true
-                        ]
+                if (!$scope->allows((int)$this->filters->filtre_cotis_adh)) {
+                    Analog::log(
+                        'Trying to display transactions for member #' . $this->filters->filtre_cotis_adh
+                        . ' without appropriate ACLs',
+                        Analog::WARNING
                     );
-                    if (
-                        !$member->hasParent()
-                        || $member->parent->id != $this->login->id
-                    ) {
-                        //check if member is part of logged-in user managed groups, when managers are allowed to
-                        $mgroup = $this->login->getManagedGroups();
-                        $groups = $member->getGroups();
-                        if (
-                            !$preferences->pref_bool_groupsmanagers_see_transactions
-                            || count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0
-                        ) {
-                            Analog::log(
-                                'Trying to display transactions for member #' . $member->id
-                                . ' without appropriate ACLs',
-                                Analog::WARNING
-                            );
-                            $this->filters->filtre_cotis_adh = $this->login->id;
-                        }
-                    }
+                    $this->filters->filtre_cotis_adh = $this->login->id;
                 }
                 $member_clause = [$this->filters->filtre_cotis_adh];
             } elseif ($this->filters->filtre_cotis_children !== false) {
@@ -271,27 +254,10 @@ class Transactions
                 }
             }
 
-            if (
-                $this->filters->filtre_cotis_adh == null
-                && !$this->login->isAdmin()
-                && !$this->login->isStaff()
-                && $this->login->isGroupManager()
-                && $preferences->pref_bool_groupsmanagers_see_transactions
-            ) {
-                //limit to managed members from managed groups
-                $mgroups = $this->login->getManagedGroups();
-
-                //use a subquery rather than a join, so a member belonging to
-                //several managed groups does not duplicate its transactions
-                $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
-                $groups_select->columns([Adherent::PK]);
-                $groups_select->where->in(
-                    'users_groups.' . Group::PK,
-                    array_values($mgroups)
-                );
-
+            if ($this->filters->filtre_cotis_adh == null && $scope->hasGroups()) {
+                //limit to members of the groups permission is granted on
                 $select->where->nest()
-                    ->in('t.' . Adherent::PK, $groups_select)
+                    ->in('t.' . Adherent::PK, $scope->getGroupsMembersSelect())
                     ->or
                     ->in('t.' . Adherent::PK, $member_clause);
 

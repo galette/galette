@@ -12,6 +12,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Safe\DateTime;
+use Galette\Access\AccessControl;
 use Galette\Entity\Adherent;
 use Galette\Repository\Documents;
 use Galette\IO\News;
@@ -118,6 +119,7 @@ class Galette
         global $login, $preferences, $plugins, $container;
 
         $menus = [];
+        $access = $container->get(AccessControl::class);
 
         if ($login->isLogged()) {
             $menus['myaccount'] = [
@@ -187,7 +189,7 @@ class Galette
                 ];
             }
 
-            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
+            if (!$login->isSuperAdmin() && $access->can('member:create-child', login: $login)) {
                 $menus['myaccount']['items'][] = [
                     'label' => _T('Add a child member'),
                     'title' => _T('Add new child member in database'),
@@ -204,7 +206,7 @@ class Galette
                 'items' => []
             ];
 
-            if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
+            if ($access->getGroupScope('member:read', $login) !== []) {
                 $menus['members']['items'] = [
                     [
                         'label' => _T("List of members"),
@@ -230,11 +232,7 @@ class Galette
                 ];
             }
 
-            if (
-                $login->isAdmin()
-                || $login->isStaff()
-                || ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_member)
-            ) {
+            if ($access->can('member:create', login: $login)) {
                 $menus['members']['items'] = array_merge($menus['members']['items'], [
                     [
                         'label' => _T("Add a member"),
@@ -254,287 +252,291 @@ class Galette
             }
 
             // Contributions
-            if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
-                $menus['contributions'] = [
-                    'title' => _T('Contributions'),
-                    'icon' => 'receipt',
-                    'items' => []
-                ];
+            $menus['contributions'] = [
+                'title' => _T('Contributions'),
+                'icon' => 'receipt',
+                'items' => []
+            ];
 
-                if ($preferences->pref_bool_groupsmanagers_see_contributions || $login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("List of contributions"),
-                            'title' => _T("View and filter contributions"),
-                            'route' => [
-                                'name' => 'contributions',
-                                'args' => ['type' => 'contributions'],
-                                'aliases' => ['editContribution']
-                            ]
-                        ]
-                    ]);
-                }
-
-                if ($login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("List of scheduled payments"),
-                            'title' => _T("View and filter scheduled payments"),
-                            'route' => [
-                                'name' => 'scheduledPayments',
-                                'aliases' => ['addScheduledPayment', 'editScheduledPayment']
-                            ]
-                        ]
-                    ]);
-                }
-
-                if ($preferences->pref_bool_groupsmanagers_see_transactions || $login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("List of transactions"),
-                            'title' => _T("View and filter transactions"),
-                            'route' => [
-                                'name' => 'contributions',
-                                'args' => ['type' => 'transactions'],
-                                'aliases' => ['editTransaction']
-                            ]
-                        ]
-                    ]);
-                }
-
-                if ($preferences->pref_bool_groupsmanagers_create_contributions || $login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("Add a membership fee"),
-                            'title' => _T("Add new membership fee in database"),
-                            'route' => [
-                                'name' => 'addContribution',
-                                'args' => ['type' => \Galette\Entity\Contribution::TYPE_FEE]
-                            ]
-                        ],
-                        [
-                            'label' => _T("Add a donation"),
-                            'title' => _T("Add new donation in database"),
-                            'route' => [
-                                'name' => 'addContribution',
-                                'args' => ['type' => \Galette\Entity\Contribution::TYPE_DONATION]
-                            ]
-                        ]
-                    ]);
-                }
-
-                if ($preferences->pref_bool_groupsmanagers_create_transactions || $login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("Add a transaction"),
-                            'title' => _T("Add new transaction in database"),
-                            'route' => [
-                                'name' => 'addTransaction'
-                            ]
-                        ]
-                    ]);
-                }
-
-                if ($login->isAdmin() || $login->isStaff()) {
-                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
-                        [
-                            'label' => _T("Reminders"),
-                            'title' => _T("Send reminders to late members"),
-                            'route' => [
-                                'name' => 'reminders'
-                            ]
-                        ]
-                    ]);
-                }
-            } // /Contributions
-
-            if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
-                $menus['management'] = [
-                    'title' => _T("Management"),
-                    'icon' => 'dharmachakra',
-                    'items' => [
-                        [
-                            'label' => _T("Groups"),
-                            'title' => _T("View and manage groups"),
-                            'route' => [
-                                'name' => 'groups',
-                                'aliases' => ['editGroup']
-                            ]
+            if ($access->getGroupScope('contribution:read', $login) !== []) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("List of contributions"),
+                        'title' => _T("View and filter contributions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'contributions'],
+                            'aliases' => ['editContribution']
                         ]
                     ]
+                ]);
+            }
+
+            if ($access->can('contribution:schedule', login: $login)) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("List of scheduled payments"),
+                        'title' => _T("View and filter scheduled payments"),
+                        'route' => [
+                            'name' => 'scheduledPayments',
+                            'aliases' => ['addScheduledPayment', 'editScheduledPayment']
+                        ]
+                    ]
+                ]);
+            }
+
+            if ($access->getGroupScope('transaction:read', $login) !== []) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("List of transactions"),
+                        'title' => _T("View and filter transactions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'transactions'],
+                            'aliases' => ['editTransaction']
+                        ]
+                    ]
+                ]);
+            }
+
+            if ($access->can('contribution:create', login: $login)) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("Add a membership fee"),
+                        'title' => _T("Add new membership fee in database"),
+                        'route' => [
+                            'name' => 'addContribution',
+                            'args' => ['type' => \Galette\Entity\Contribution::TYPE_FEE]
+                        ]
+                    ],
+                    [
+                        'label' => _T("Add a donation"),
+                        'title' => _T("Add new donation in database"),
+                        'route' => [
+                            'name' => 'addContribution',
+                            'args' => ['type' => \Galette\Entity\Contribution::TYPE_DONATION]
+                        ]
+                    ]
+                ]);
+            }
+
+            if ($access->can('transaction:create', login: $login)) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("Add a transaction"),
+                        'title' => _T("Add new transaction in database"),
+                        'route' => [
+                            'name' => 'addTransaction'
+                        ]
+                    ]
+                ]);
+            }
+
+            if ($access->can('contribution:remind', login: $login)) {
+                $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
+                    [
+                        'label' => _T("Reminders"),
+                        'title' => _T("Send reminders to late members"),
+                        'route' => [
+                            'name' => 'reminders'
+                        ]
+                    ]
+                ]);
+            }
+            // /Contributions
+
+            $management = [
+                ['group:read', [
+                    'label' => _T("Groups"),
+                    'title' => _T("View and manage groups"),
+                    'route' => [
+                        'name' => 'groups',
+                        'aliases' => ['editGroup']
+                    ]
+                ]],
+                ['document:manage', [
+                    'label' => _T("Documents"),
+                    'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
+                    'route' => [
+                        'name' => 'documentsList',
+                        'aliases' => ['editDocument', 'addDocument']
+                    ]
+                ]],
+                ['mailing:history', [
+                    'label' => _T("Mailings"),
+                    'title' => _T("Manage mailings that has been sent"),
+                    'route' => [
+                        'name' => 'mailings'
+                    ]
+                ]],
+                ['system:info', [
+                    'label' => _T("Charts"),
+                    'title' => _T("Various charts"),
+                    'route' => [
+                        'name' => 'charts'
+                    ]
+                ]],
+                ['data:export', [
+                    'label' => _T("Exports"),
+                    'title' => _T("Export some data in various formats"),
+                    'route' => [
+                        'name' => 'export'
+                    ]
+                ]],
+                ['member:import', [
+                    'label' => _T("Imports"),
+                    'title' => _T("Import members from CSV files"),
+                    'route' => [
+                        'name' => 'import',
+                        'aliases' => ['importModel']
+                    ]
+                ]],
+                ['history:manage', [
+                    'label' => _T("Logs"),
+                    'title' => _T("View application's logs"),
+                    'route' => [
+                        'name' => 'history'
+                    ]
+                ]]
+            ];
+            $menus['management'] = [
+                'title' => _T("Management"),
+                'icon' => 'dharmachakra',
+                'items' => self::getGrantedItems($management, $access, $login)
+            ];
+
+            $configuration = [
+                ['config:preferences', [
+                    'label' => _T("Settings"),
+                    'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
+                    'route' => [
+                        'name' => 'preferences'
+                    ]
+                ]],
+                ['security:manage', [
+                    'label' => _T("Authentication attempts"),
+                    'title' => _T("See what is being refused after repeated failures, and lift it"),
+                    'route' => [
+                        'name' => 'authAttempts'
+                    ]
+                ]],
+                ['plugin:manage', [
+                    'label' => _T("Plugins"),
+                    'title' => _T("Information about available plugins"),
+                    'route' => [
+                        'name' => 'plugins'
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Core lists"),
+                    'title' => _T("Customize lists fields and order"),
+                    'route' => [
+                        'name' => 'configureListFields',
+                        'args' => ['table' => 'adherents']
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Core fields"),
+                    'title' => _T("Customize fields order, set which are required, and for who they're visibles"),
+                    'route' => [
+                        'name' => 'configureCoreFields'
+                    ]
+                ]],
+                ['config:fields', [
+                    'label' => _T("Dynamic fields"),
+                    'title' => _T("Manage additional fields for various forms"),
+                    'route' => [
+                        'name' => 'configureDynamicFields',
+                        'aliases' => ['editDynamicField'],
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Contributions types"),
+                    'title' => _T("Manage contributions types"),
+                    'route' => [
+                        'name' => 'contributionsTypes',
+                        'aliases' => ['editContributionType']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Payment types"),
+                    'title' => _T("Manage payment types"),
+                    'route' => [
+                        'name' => 'paymentTypes',
+                        'aliases' => ['editPaymentType']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("User statuses"),
+                    'route' => [
+                        'name' => 'status',
+                        'aliases' => ['editStatus']
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Titles"),
+                    'title' => _T("Manage titles"),
+                    'route' => [
+                        'name' => 'titles',
+                        'aliases' => ['editTitle']
+                    ]
+                ]],
+                ['config:templates', [
+                    'label' => _T("PDF models"),
+                    'title' => _T("Manage PDF models"),
+                    'route' => [
+                        'name' => 'pdfModels'
+                    ]
+                ]],
+                ['config:templates', [
+                    'label' => _T("Emails content"),
+                    'title' => _T("Manage emails texts and subjects"),
+                    'route' => [
+                        'name' => 'texts'
+                    ]
+                ]],
+                ['config:references', [
+                    'label' => _T("Labels translation"),
+                    'title' => _T("Manage translatable labels"),
+                    'route' => [
+                        'name' => 'dynamicTranslations',
+                        'aliases' => ['dynamicTranslation']
+                    ]
+                ]],
+                ['role:manage', [
+                    'label' => _T("Roles"),
+                    'title' => _T("Manage roles and their permissions"),
+                    'route' => [
+                        'name' => 'roles',
+                        'aliases' => ['editRole']
+                    ]
+                ]]
+            ];
+
+            $configuration_items = self::getGrantedItems($configuration, $access, $login);
+            if ($configuration_items !== []) {
+                $menus['configuration'] = [
+                    'title' => _T("Configuration"),
+                    'icon' => 'tools',
+                    'items' => $configuration_items
                 ];
+            }
 
-                if ($login->isAdmin() || $login->isStaff()) {
-                    $menus['management']['items'] = array_merge($menus['management']['items'], [
-                        [
-                            'label' => _T("Documents"),
-                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
-                            'route' => [
-                                'name' => 'documentsList',
-                                'aliases' => ['editDocument', 'addDocument']
-                            ]
-                        ],
-                        [
-                            'label' => _T("Mailings"),
-                            'title' => _T("Manage mailings that has been sent"),
-                            'route' => [
-                                'name' => 'mailings'
-                            ]
-                        ],
-                        [
-                            'label' => _T("Charts"),
-                            'title' => _T("Various charts"),
-                            'route' => [
-                                'name' => 'charts'
-                            ]
-                        ],
-                        [
-                            'label' => _T("Exports"),
-                            'title' => _T("Export some data in various formats"),
-                            'route' => [
-                                'name' => 'export'
-                            ]
-                        ],
-                        [
-                            'label' => _T("Imports"),
-                            'title' => _T("Import members from CSV files"),
-                            'route' => [
-                                'name' => 'import',
-                                'aliases' => ['importModel']
-                            ]
-                        ],
-                        [
-                            'label' => _T("Logs"),
-                            'title' => _T("View application's logs"),
-                            'route' => [
-                                'name' => 'history'
-                            ]
-                        ]
-                    ]);
-                }//admin or staff
-
-                if ($login->isAdmin()) {
-                    $menus['configuration'] = [
-                        'title' => _T("Configuration"),
-                        'icon' => 'tools',
-                        'items' => [
-                            [
-                                'label' => _T("Settings"),
-                                'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
-                                'route' => [
-                                    'name' => 'preferences'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Authentication attempts"),
-                                'title' => _T("See what is being refused after repeated failures, and lift it"),
-                                'route' => [
-                                    'name' => 'authAttempts'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Plugins"),
-                                'title' => _T("Information about available plugins"),
-                                'route' => [
-                                    'name' => 'plugins'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Core lists"),
-                                'title' => _T("Customize lists fields and order"),
-                                'route' => [
-                                    'name' => 'configureListFields',
-                                    'args' => ['table' => 'adherents']
-                                ]
-                            ],
-                            [
-                                'label' => _T("Core fields"),
-                                'title' => _T("Customize fields order, set which are required, and for who they're visibles"),
-                                'route' => [
-                                    'name' => 'configureCoreFields'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Dynamic fields"),
-                                'title' => _T("Manage additional fields for various forms"),
-                                'route' => [
-                                    'name' => 'configureDynamicFields',
-                                    'aliases' => ['editDynamicField'],
-                                ]
-                            ],
-                            [
-                                'label' => _T("Contributions types"),
-                                'title' => _T("Manage contributions types"),
-                                'route' => [
-                                    'name' => 'contributionsTypes',
-                                    'aliases' => ['editContributionType']
-                                ]
-                            ],
-                            [
-                                'label' => _T("Payment types"),
-                                'title' => _T("Manage payment types"),
-                                'route' => [
-                                    'name' => 'paymentTypes',
-                                    'aliases' => ['editPaymentType']
-                                ]
-                            ],
-                            [
-                                'label' => _T("User statuses"),
-                                'route' => [
-                                    'name' => 'status',
-                                    'aliases' => ['editStatus']
-                                ]
-                            ],
-                            [
-                                'label' => _T("Titles"),
-                                'title' => _T("Manage titles"),
-                                'route' => [
-                                    'name' => 'titles',
-                                    'aliases' => ['editTitle']
-                                ]
-                            ],
-                            [
-                                'label' => _T("PDF models"),
-                                'title' => _T("Manage PDF models"),
-                                'route' => [
-                                    'name' => 'pdfModels'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Emails content"),
-                                'title' => _T("Manage emails texts and subjects"),
-                                'route' => [
-                                    'name' => 'texts'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Labels translation"),
-                                'title' => _T("Manage translatable labels"),
-                                'route' => [
-                                    'name' => 'dynamicTranslations',
-                                    'aliases' => ['dynamicTranslation']
-                                ]
-                            ]
-                        ]
-                    ];
-
-                    if ($login->isSuperAdmin()) {
-                        $menus['configuration']['items'][] = [
-                            'label' => _T("Administration tools"),
-                            'title' => _T("Various administrative tools"),
-                            'route' => [
-                                'name' => 'adminTools'
-                            ]
-                        ];
-                        $menus['configuration']['items'][] = [
-                            'label' => _T("Advanced configuration"),
-                            'title' => _T("Edit every setting, including those the settings form does not show"),
-                            'route' => [
-                                'name' => 'advancedConfig'
-                            ]
-                        ];
-                    }
-                }
+            if ($login->isSuperAdmin()) {
+                $menus['configuration']['items'][] = [
+                    'label' => _T("Administration tools"),
+                    'title' => _T("Various administrative tools"),
+                    'route' => [
+                        'name' => 'adminTools'
+                    ]
+                ];
+                $menus['configuration']['items'][] = [
+                    'label' => _T("Advanced configuration"),
+                    'title' => _T("Edit every setting, including those the settings form does not show"),
+                    'route' => [
+                        'name' => 'advancedConfig'
+                    ]
+                ];
             }
         } // /isLogged
 
@@ -567,6 +569,26 @@ class Galette
         }
 
         return $menus;
+    }
+
+    /**
+     * Get menu entries granted to login
+     *
+     * @param array<array{0: string, 1: array<string, mixed>}> $items  Permission and menu entry pairs
+     * @param AccessControl                                    $access Access control
+     * @param Login                                            $login  Login to check
+     *
+     * @return array<array<string, mixed>>
+     */
+    private static function getGrantedItems(array $items, AccessControl $access, Login $login): array
+    {
+        $granted = [];
+        foreach ($items as [$permission, $item]) {
+            if ($access->can($permission, login: $login)) {
+                $granted[] = $item;
+            }
+        }
+        return $granted;
     }
 
     /**
@@ -777,13 +799,13 @@ class Galette
          * @var Plugins $plugins
          * @var Db $zdb
          * @var ContainerInterface $container
-         * @var Preferences $preferences
          */
-        global $login, $plugins, $zdb, $container, $preferences;
+        global $login, $plugins, $zdb, $container;
 
         $dashboards = [];
+        $access = $container->get(AccessControl::class);
 
-        if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
+        if ($access->getGroupScope('member:read', $login) !== []) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -795,6 +817,14 @@ class Galette
                         ],
                         'icon' => 'card_box'
                     ],
+                ]
+            );
+        }
+
+        if ($access->can('group:read', login: $login)) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
                     [
                         'label' => _T("Groups"),
                         'title' => _T("View and manage groups"),
@@ -807,7 +837,7 @@ class Galette
             );
         }
 
-        if ($login->isAdmin() || $login->isStaff()) {
+        if ($access->can('mailing:history', login: $login)) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -823,7 +853,7 @@ class Galette
             );
         }
 
-        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_contributions) || $login->isAdmin() || $login->isStaff()) {
+        if ($access->getGroupScope('contribution:read', $login) !== []) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -840,7 +870,7 @@ class Galette
             );
         }
 
-        if (($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_transactions) || $login->isAdmin() || $login->isStaff()) {
+        if ($access->getGroupScope('transaction:read', $login) !== []) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -857,7 +887,7 @@ class Galette
             );
         }
 
-        if ($login->isAdmin() || $login->isStaff()) {
+        if ($access->can('contribution:remind', login: $login)) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -892,28 +922,26 @@ class Galette
             );
         }
 
-        if ($login->isAdmin()) {
-            $dashboards = array_merge(
-                $dashboards,
-                [
-                    [
-                        'label' => _T("Settings"),
-                        'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
-                        'route' => [
-                            'name' => 'preferences'
-                        ],
-                        'icon' => 'control_knobs'
-                    ],
-                    [
-                        'label' => _T("Plugins"),
-                        'title' => _T("Information about available plugins"),
-                        'route' => [
-                            'name' => 'plugins'
-                        ],
-                        'icon' => 'package'
-                    ],
-                ]
-            );
+        if ($access->can('config:preferences', login: $login)) {
+            $dashboards[] = [
+                'label' => _T("Settings"),
+                'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
+                'route' => [
+                    'name' => 'preferences'
+                ],
+                'icon' => 'control_knobs'
+            ];
+        }
+
+        if ($access->can('plugin:manage', login: $login)) {
+            $dashboards[] = [
+                'label' => _T("Plugins"),
+                'title' => _T("Information about available plugins"),
+                'route' => [
+                    'name' => 'plugins'
+                ],
+                'icon' => 'package'
+            ];
         }
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {
@@ -1116,37 +1144,31 @@ class Galette
 
         $actions = [];
 
-        if (
-            $login->isAdmin()
-            || $login->isStaff()
-        ) {
-            $actions = array_merge(
-                $actions,
-                [
-                    [
-                        'name' => 'masschange',
-                        'label' => _T('Mass change'),
-                        'icon' => 'user edit blue'
-                    ],
-                    [
-                        'name' => 'masscontributions',
-                        'label' => _T('Mass add contributions'),
-                        'icon' => 'receipt bite green'
-                    ],
-                    [
-                        'name' => 'delete',
-                        'label' => _T('Delete'),
-                        'icon' => 'user times red'
-                    ]
-                ]
-            );
+        $access = $container->get(AccessControl::class);
+        if ($access->can('member:mass-edit', login: $login)) {
+            $actions[] = [
+                'name' => 'masschange',
+                'label' => _T('Mass change'),
+                'icon' => 'user edit blue'
+            ];
+        }
+        if ($access->can('contribution:mass-create', login: $login)) {
+            $actions[] = [
+                'name' => 'masscontributions',
+                'label' => _T('Mass add contributions'),
+                'icon' => 'receipt bite green'
+            ];
+        }
+        if ($access->can('member:mass-edit', login: $login) && $access->can('member:delete', login: $login)) {
+            $actions[] = [
+                'name' => 'delete',
+                'label' => _T('Delete'),
+                'icon' => 'user times red'
+            ];
         }
 
         if (
-            ($login->isAdmin()
-                || $login->isStaff()
-                || $login->isGroupManager()
-                && $preferences->pref_bool_groupsmanagers_mailings)
+            $access->can('mailing:send', login: $login)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
         ) {
             $actions[] = [
@@ -1156,12 +1178,7 @@ class Galette
             ];
         }
 
-        if (
-            $login->isGroupManager()
-            && $preferences->pref_bool_groupsmanagers_exports
-            || $login->isAdmin()
-            || $login->isStaff()
-        ) {
+        if ($access->can('member:print', login: $login)) {
             $actions = array_merge(
                 $actions,
                 [
@@ -1180,13 +1197,16 @@ class Galette
                         'label' => _T('Generate Member Cards'),
                         'icon' => 'id badge'
                     ],
-                    [
-                        'name' => 'csv__directdownload',
-                        'label' => _T('Export as CSV'),
-                        'icon' => 'file csv'
-                    ],
                 ]
             );
+        }
+
+        if ($access->can('member:export', login: $login)) {
+            $actions[] = [
+                'name' => 'csv__directdownload',
+                'label' => _T('Export as CSV'),
+                'icon' => 'file csv'
+            ];
         }
 
         foreach (array_keys($plugins->getActiveModules()) as $module_id) {

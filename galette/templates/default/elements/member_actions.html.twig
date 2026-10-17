@@ -16,7 +16,7 @@
 
 {% import "macros.twig" as macros %}
 
-{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and can('member:credentials') %}
 
 {% if forms_only is defined and forms_only %}
     {% if two_factor_reset %}
@@ -63,7 +63,7 @@
                 {{ _T("Display") }}
             </a>
     {% endif %}
-    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('member:credentials') %}
             <a
                 href="{{ url_for("retrieve-pass", {"id_adh": member.id}) }}"
                 id="btn_lostpassword"
@@ -101,7 +101,7 @@
                 {{ _T("Adhesion form") }}
             </a>
     {% endif %}
-    {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
+    {% if permission_scope('contribution:read') == 'all' or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
             <a
                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
                 class="ui item"
@@ -110,7 +110,7 @@
                 {{ _T("View contributions") }}
             </a>
     {% endif %}
-    {% if login.isAdmin() or login.isStaff() %}
+    {% if permission_scope('contribution:create') == 'all' %}
             <a
                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
                 class="ui item"
@@ -125,6 +125,9 @@
                 <i class="gift icon" aria-hidden="true"></i>
                 {{ _T("Add a donation") }}
             </a>
+    {% endif %}
+    {% if login.isAdmin() or login.isStaff() %}
+        {% if can('member:create') and can('member:manage') %}
             <a
                 href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"
                 title="{{ _T("Create a new member with %1$s information.")|format(member.sfullname) }}"
@@ -133,6 +136,7 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
+        {% endif %}
         {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
         {% for action in actions %}
             {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}

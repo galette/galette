@@ -41,33 +41,33 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property      string   $pref_admin_login                              Super admin login
- * @property      string   $pref_admin_pass                               Super admin password
- * @property      string   $pref_nom                                      Association name
- * @property      string   $pref_slogan                                   Association slogan
- * @property      string   $pref_adresse                                  Address
- * @property      string   $pref_adresse2                                 Address continuation
- * @property      string   $pref_cp                                       Association zipcode
- * @property      string   $pref_ville                                    Association
- * @property      string   $pref_region                                   Region
- * @property      string   $pref_pays                                     Country
- * @property      int      $pref_postal_address                           Postal address to use, one of self::POSTAL_ADDRESS*
- * @property      int      $pref_postal_staff_member                      Staff member ID from which retrieve postal address
- * @property      string   $pref_org_phone_number                         Phone number
- * @property      int      $pref_org_phone                                Phone number to use, one of self::PHONE_NUMBER*
- * @property      int      $pref_org_phone_staff_member                   Staff member ID from which retrieve phone number
- * @property      string   $pref_org_email                                Email address
- * @property      bool     $pref_disable_members_socials                  Disable social networks for members
- * @property      string   $pref_lang                                     Default instance language
- * @property      int      $pref_numrows                                  Default number of rows in lists
- * @property      int      $pref_statut                                   Default status for new members
+ * @property      string   $pref_admin_login                           Super admin login
+ * @property      string   $pref_admin_pass                            Super admin password
+ * @property      string   $pref_nom                                   Association name
+ * @property      string   $pref_slogan                                Association slogan
+ * @property      string   $pref_adresse                               Address
+ * @property      string   $pref_adresse2                              Address continuation
+ * @property      string   $pref_cp                                    Association zipcode
+ * @property      string   $pref_ville                                 Association
+ * @property      string   $pref_region                                Region
+ * @property      string   $pref_pays                                  Country
+ * @property      int      $pref_postal_address                        Postal address to use, one of self::POSTAL_ADDRESS*
+ * @property      int      $pref_postal_staff_member                   Staff member ID from which retrieve postal address
+ * @property      string   $pref_org_phone_number                      Phone number
+ * @property      int      $pref_org_phone                             Phone number to use, one of self::PHONE_NUMBER*
+ * @property      int      $pref_org_phone_staff_member                Staff member ID from which retrieve phone number
+ * @property      string   $pref_org_email                             Email address
+ * @property      bool     $pref_disable_members_socials               Disable social networks for members
+ * @property      string   $pref_lang                                  Default instance language
+ * @property      int      $pref_numrows                               Default number of rows in lists
+ * @property      int      $pref_statut                                Default status for new members
  * @property      string   $pref_email_nom
  * @property      string   $pref_email
  * @property      string   $pref_email_newadh
  * @property      bool     $pref_bool_mailadh
  * @property      bool     $pref_bool_mailowner
  * @property      bool     $pref_editor_enabled
- * @property      int      $pref_mail_method                              Mail method, see GaletteMail::METHOD_*
+ * @property      int      $pref_mail_method                           Mail method, see GaletteMail::METHOD_*
  * @property      string   $pref_mail_smtp
  * @property      string   $pref_mail_smtp_host
  * @property      bool     $pref_mail_smtp_auth
@@ -75,11 +75,11 @@ use function Safe\preg_replace;
  * @property      int      $pref_mail_smtp_port
  * @property      string   $pref_mail_smtp_user
  * @property      string   $pref_mail_smtp_password
- * @property      bool     $pref_mail_smtp_keepalive                      Reuse SMTP connection across messages (SMTP only)
- * @property      int      $pref_mail_batch_size                          Max recipients (BCC) per message, 0 = single message
- * @property      int      $pref_mail_batch_delay                         Delay (seconds) between messages
- * @property      int      $pref_mail_hourly_limit                        Max emails sent per hour, 0 = unlimited
- * @property      int      $pref_mail_daily_limit                         Max emails sent per day, 0 = unlimited
+ * @property      bool     $pref_mail_smtp_keepalive                   Reuse SMTP connection across messages (SMTP only)
+ * @property      int      $pref_mail_batch_size                       Max recipients (BCC) per message, 0 = single message
+ * @property      int      $pref_mail_batch_delay                      Delay (seconds) between messages
+ * @property      int      $pref_mail_hourly_limit                     Max emails sent per hour, 0 = unlimited
+ * @property      int      $pref_mail_daily_limit                      Max emails sent per day, 0 = unlimited
  * @property      int      $pref_membership_ext
  * @property      string   $pref_beg_membership
  * @property      int      $pref_membership_offermonths
@@ -113,7 +113,7 @@ use function Safe\preg_replace;
  * @property      bool     $pref_card_self
  * @property      int      $pref_card_hsize
  * @property      int      $pref_card_vsize
- * @property      string   $pref_theme                                    Preferred theme
+ * @property      string   $pref_theme                                 Preferred theme
  * @property      bool     $pref_hide_bg_image
  * @property      bool     $pref_enable_custom_colors
  * @property      string   $pref_cc_primary
@@ -149,17 +149,7 @@ use function Safe\preg_replace;
  * @property      bool     $pref_password_blacklist
  * @property      int      $pref_password_strength
  * @property      int      $pref_default_paymenttype
- * @property      bool     $pref_bool_create_member
- * @property      bool     $pref_bool_groupsmanagers_create_member
- * @property      bool     $pref_bool_groupsmanagers_edit_member
- * @property      bool     $pref_bool_groupsmanagers_edit_groups
- * @property      bool     $pref_bool_groupsmanagers_mailings
- * @property      bool     $pref_bool_groupsmanagers_exports
- * @property      bool     $pref_bool_groupsmanagers_create_contributions
- * @property      bool     $pref_bool_groupsmanagers_create_transactions
- * @property      bool     $pref_bool_groupsmanagers_see_contributions
- * @property      bool     $pref_bool_groupsmanagers_see_transactions
- * @property-read string[] $vpref_email_newadh                            list of mail senders
+ * @property-read string[] $vpref_email_newadh                         list of mail senders
  * @property      bool     $pref_noindex
  * @property      int      $pref_x_forwarded_for_index
  * @property      int      $pref_session_timeout
