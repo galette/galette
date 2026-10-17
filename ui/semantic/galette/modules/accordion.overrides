@@ -50,3 +50,52 @@ details.ui.basic.styled.accordion .title {
         color: @black;
      }
 }
+
+/*--------------------------------------------------
+     Role permissions, one accordion per domain
+---------------------------------------------------*/
+.ui.styled.accordion.role-permissions {
+    margin-bottom: 1em;
+
+    > .title {
+        display: flex;
+        align-items: center;
+        gap: .75em;
+    }
+    .role-domain {
+        flex: 1 1 auto;
+    }
+    /* title colors change on hover and when active: follow their text */
+    .permissions-meter {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 2px;
+
+        i {
+            width: .6em;
+            height: .6em;
+            border: 1px solid currentColor;
+            border-radius: 2px;
+            opacity: .6;
+        }
+        i.granted {
+            background: currentColor;
+            opacity: 1;
+        }
+        i.inherited {
+            background: currentColor;
+        }
+    }
+    .permissions-count {
+        min-width: 3em;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+/* Long lists of members stay scrollable in the sticky panel */
+#role_members .role-members-list {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 1em;
+}
