@@ -606,7 +606,7 @@ class Roles
             case self::UPTODATE:
                 //see Adherent::isUp2Date()
                 $select->where->nest()
-                    ->equalTo('a.bool_exempt_adh', true)
+                    ->equalTo('a.bool_exempt_adh', right: true)
                     ->or->greaterThanOrEqualTo('a.date_echeance', date('Y-m-d'))
                     ->unnest();
                 break;

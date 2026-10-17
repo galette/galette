@@ -160,10 +160,10 @@ class RolesController extends GaletteRoutingTestCase
 
         $counts = [];
         preg_match_all(
-            '/<td class="left" data-col-label="Name">\s*(.+?)\s*<.*?data-col-label="Members">\s*(.+?)\s*<\/td>/s',
-            $body,
-            $matches,
-            PREG_SET_ORDER
+            pattern: '/<td class="left" data-col-label="Name">\s*(.+?)\s*<.*?data-col-label="Members">\s*(.+?)\s*<\/td>/s',
+            subject: $body,
+            matches: $matches,
+            flags: PREG_SET_ORDER
         );
         foreach ($matches as $match) {
             $counts[$match[1]] = $match[2];
