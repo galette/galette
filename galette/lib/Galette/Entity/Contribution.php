@@ -493,14 +493,15 @@ class Contribution implements AccessManagementInterface
     /**
      * Check posted values validity
      *
-     * @param array<string,mixed> $values   All values to check, basically the $_POST array
-     *                                      after sending the form
-     * @param array<string,int>   $required Array of required fields
-     * @param array<string>       $disabled Array of disabled fields
+     * @param array<string,mixed>                  $values   All values to check, basically the $_POST array
+     *                                                       after sending the form
+     * @param array<string,int>                    $required Array of required fields
+     * @param array<string>                        $disabled Array of disabled fields
+     * @param ?array<string,UploadedFileInterface> $files    Uploaded files, to check required files
      *
      * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): bool|array
+    public function check(array $values, array $required, array $disabled, ?array $files = null): bool|array
     {
         global $preferences;
         $this->errors = [];
@@ -638,7 +639,7 @@ class Contribution implements AccessManagementInterface
             }
         }
 
-        $this->dynamicsCheck($values, $required, $disabled);
+        $this->dynamicsCheck(post: $values, required: $required, disabled: $disabled, files: $files);
 
         if (count($this->errors) > 0) {
             Analog::log(
