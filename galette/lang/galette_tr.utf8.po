@@ -315,7 +315,7 @@ msgstr "Bağış"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr "d-m-Y"
+msgstr "d.m.Y"
 
 #, fuzzy
 #| msgid "Membership fee"

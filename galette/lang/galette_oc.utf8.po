@@ -377,7 +377,7 @@ msgid "Missing required contribution type name!"
 msgstr "Lo mòde de pagament manca !"
 
 msgid "Contribution type has not been added :("
-msgstr "La mena %type es pas estat ajustada :("
+msgstr "La mena de contribucion es pas estada ajustada :("
 
 #. TRANS: parameter is the contribution type identifier
 #, fuzzy, php-format
@@ -385,7 +385,7 @@ msgid "Contribution type #%1$s has not been updated"
 msgstr "Lo mòde de pagament «%1$s» se deu actualizar !"
 
 msgid "Contribution type has been successfully added!"
-msgstr "%type es estat ajustat !"
+msgstr "La mena de contribucion es estada ajustada !"
 
 #. TRANS: parameter is the contribution type identifier
 #, php-format
@@ -819,7 +819,7 @@ msgid "Status #%1$s has not been updated"
 msgstr "L'estatut #%1$s es pas estat actualizat"
 
 msgid "Status has been successfully added!"
-msgstr "%type es estat ajustat !"
+msgstr "L'estatut es estat ajustat !"
 
 #. TRANS: parameter is the status identifier
 #, php-format
@@ -2627,7 +2627,7 @@ msgstr "Lo lògo de vòstra associacion particular per estampar"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Current date (Y-m-d)"
-msgstr "Data correnta (d/m/Y)"
+msgstr "Data correnta (Y/m/d)"
 
 msgid "Galette's login URI"
 msgstr "L'URL de connexion de Galeta"
@@ -3525,7 +3525,7 @@ msgid "Receipt send for new contribution"
 msgstr "Accusat de recepcion de cotizacion"
 
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr "[ASSO_NAME] Enregistrament novèu de {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Enregistrament novèu de {NAME_ADH}"
 
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
@@ -4292,7 +4292,7 @@ msgid "Select an option"
 msgstr ""
 
 msgid "yyyy-mm-dd format"
-msgstr "format jj/mm/aaaa"
+msgstr "format aaaa/mm/jj"
 
 msgid "Choose another file"
 msgstr "Chausissètz un autre fichier"
@@ -7480,7 +7480,7 @@ msgid "Not paid and due"
 msgstr "Non indicat"
 
 msgid "Delete scheduled payment"
-msgstr "Suprimir lo pagament a escasenças « %s »"
+msgstr "Suprimir lo pagament a escasenças"
 
 msgid "No scheduled payment"
 msgstr "Ges de pagament a escasenças"

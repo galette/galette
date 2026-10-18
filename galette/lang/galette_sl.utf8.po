@@ -4165,7 +4165,7 @@ msgid "Select an option"
 msgstr "Izberite možnost"
 
 msgid "yyyy-mm-dd format"
-msgstr "oblika dd-mm-yyyy"
+msgstr "oblika dd.mm.yyyy"
 
 msgid "Choose another file"
 msgstr "Izberite drugo datoteko"
@@ -4884,7 +4884,7 @@ msgid "Generate"
 msgstr "Ustvari"
 
 msgid "New installation"
-msgstr "Izbire za polje %d ni bilo mogoče preseliti: %s"
+msgstr "Nova namestitev"
 
 #, php-format
 msgid "you're installing %1$s for the first time"
@@ -6654,7 +6654,7 @@ msgid "Beginning of membership:"
 msgstr "Začetek članstva:"
 
 msgid "(dd/mm)"
-msgstr "(dd.mm.)"
+msgstr "(dd/mm)"
 
 msgid "Number of months offered:"
 msgstr "Število ponujenih mesecev:"

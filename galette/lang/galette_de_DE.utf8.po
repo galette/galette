@@ -2545,7 +2545,8 @@ msgstr ""
 "aufgetreten."
 
 msgid "A problem happened while sending account email to admin"
-msgstr "Beim Senden einer E-Mail an das Konto „%s“ ist ein Problem aufgetreten"
+msgstr ""
+"Beim Senden der Konto-E-Mail an den Administrator ist ein Problem aufgetreten"
 
 #. TRANS: parameter is a field name
 #, php-format
@@ -3510,7 +3511,7 @@ msgid "Lost password email"
 msgstr "E-Mail bei vergessenem Passwort"
 
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr "Ihre Beiträge"
+msgstr "[{ASSO_NAME}] Ihr Beitrag"
 
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
@@ -4306,7 +4307,7 @@ msgid "Select an option"
 msgstr "Bitte wähle eine Option"
 
 msgid "yyyy-mm-dd format"
-msgstr "JJJJ-MM-TT Format"
+msgstr "Format TT/MM/JJJJ"
 
 msgid "Choose another file"
 msgstr "Wählen Sie eine weitere Datei"

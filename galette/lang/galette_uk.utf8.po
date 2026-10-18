@@ -2608,7 +2608,7 @@ msgstr "Логотип вашої організації (спеціальний
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Current date (Y-m-d)"
-msgstr "Поточна дата (Y-m-d)"
+msgstr "Поточна дата (d.m.Y)"
 
 msgid "Galette's login URI"
 msgstr "URI логіну Galette"
@@ -2800,7 +2800,7 @@ msgid "Non members"
 msgstr "Не члени"
 
 msgid "Y"
-msgstr "РР"
+msgstr "Y"
 
 msgid "Y-m"
 msgstr "Y-m"
@@ -4271,7 +4271,7 @@ msgid "Select an option"
 msgstr "Виберіть опцію"
 
 msgid "yyyy-mm-dd format"
-msgstr "формат рррр-мм-дд"
+msgstr "формат дд.мм.рррр"
 
 msgid "Choose another file"
 msgstr "Виберіть інший файл"

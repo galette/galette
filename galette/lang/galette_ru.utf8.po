@@ -2778,7 +2778,7 @@ msgid "Non members"
 msgstr "Не участники"
 
 msgid "Y"
-msgstr "Г"
+msgstr "Y"
 
 msgid "Y-m"
 msgstr "Y-m"
@@ -3317,7 +3317,7 @@ msgstr "Документация"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr "ГГГГ-ММ-ДД"
+msgstr "YYYY-MM-DD"
 
 msgid "Member id:"
 msgstr "ID участника:"

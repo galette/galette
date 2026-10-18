@@ -598,7 +598,7 @@ msgid "Edit profile"
 msgstr "Editar perfil"
 
 msgid "New member"
-msgstr "Novo membro #%id"
+msgstr "Novo membro"
 
 #, php-format
 msgid "Mass change %1$s members"

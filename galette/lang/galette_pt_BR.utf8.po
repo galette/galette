@@ -3190,7 +3190,7 @@ msgstr "Documentação"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD-MM-YYYY"
 
 msgid "Member id:"
 msgstr ""

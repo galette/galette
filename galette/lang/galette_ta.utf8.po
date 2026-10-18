@@ -1736,7 +1736,7 @@ msgstr ""
 "பயன்பாடு டெமோ பயன்முறையின் கீழ் இயங்குகிறது. இந்த செயல்பாடு இயக்கப்படவில்லை, மன்னிக்கவும்."
 
 msgid "Y-m-d H:i:s"
-msgstr "Y-m-d h: i: s"
+msgstr "Y-m-d H:i:s"
 
 msgid "Never"
 msgstr "ஒருபோதும்"
@@ -2754,7 +2754,7 @@ msgid "Non members"
 msgstr "உறுப்பினர்கள் அல்லாதவர்கள்"
 
 msgid "Y"
-msgstr "ஒய்"
+msgstr "Y"
 
 msgid "Y-m"
 msgstr "Y-m"
@@ -3396,6 +3396,7 @@ msgstr "நிலுவைத் தொகை"
 msgid "[{ASSO_NAME}] Your identifiers"
 msgstr "[{ASSO_NAME}] உங்கள் அடையாளங்காட்டிகள்"
 
+#, fuzzy
 msgid ""
 "Hello,{NEWLINE}You've just been registered on the members management system "
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
@@ -3434,6 +3435,7 @@ msgstr "கடவுச்சொல் மின்னஞ்சல் இழந�
 msgid "[{ASSO_NAME}] Your contribution"
 msgstr "[{ASSO_NAME}] உங்கள் பங்களிப்பு"
 
+#, fuzzy
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
 "{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
@@ -3447,6 +3449,7 @@ msgstr ""
 msgid "Receipt send for new contribution"
 msgstr "புதிய பங்களிப்புக்கு ரசீது அனுப்பவும்"
 
+#, fuzzy
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
 msgstr "[{ASSO_NAME}] {name_adh இருந்து இலிருந்து புதிய பதிவு"
 
@@ -3465,6 +3468,7 @@ msgstr "புதிய பயனர் பதிவு (நிர்வாக�
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
 msgstr "[{ASSO_NAME}] {NAME_ADH}"
 
+#, fuzzy
 msgid ""
 "Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been "
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
@@ -3477,6 +3481,7 @@ msgstr ""
 msgid "New contribution (sent to admin)"
 msgstr "புதிய பங்களிப்பு (நிர்வாகிக்கு அனுப்பப்பட்டது)"
 
+#, fuzzy
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
 msgstr "[{ASSO_NAME}] {name_adh இருந்து இலிருந்து புதிய தன்வய பதிவு"
 
@@ -3495,6 +3500,7 @@ msgstr "புதிய தன்வய பதிவு (நிர்வாக�
 msgid "[{ASSO_NAME}] Your account has been modified"
 msgstr "[{ASSO_NAME}] உங்கள் கணக்கு மாற்றியமைக்கப்பட்டுள்ளது"
 
+#, fuzzy
 msgid ""
 "Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
 "been modified by an administrator or a staff member.{NEWLINE}You can log "
@@ -3511,6 +3517,7 @@ msgstr "தனது கணக்கு மாற்றியமைக்கப�
 msgid "[{ASSO_NAME}] Your membership is about to expire"
 msgstr "[{ASSO_NAME}] உங்கள் உறுப்பினர் காலாவதியாகிறது"
 
+#, fuzzy
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
@@ -3526,6 +3533,7 @@ msgstr "வரவிருக்கும் தேதி"
 msgid "[{ASSO_NAME}] Your membership has expired"
 msgstr "[{ASSO_NAME}] உங்கள் உறுப்பினர் காலாவதியானது"
 
+#, fuzzy
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
@@ -3540,6 +3548,7 @@ msgstr "தாமதமான தேதி"
 msgid "[{ASSO_NAME}] Your donation"
 msgstr "[{ASSO_NAME}] உங்கள் நன்கொடை"
 
+#, fuzzy
 msgid ""
 "Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored."
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
@@ -3549,9 +3558,11 @@ msgstr "அலோ, {NEWLINE} உங்கள் நன்கொடை {ASSO_NAME
 msgid "Receipt send for new donations"
 msgstr "புதிய நன்கொடைகளுக்கு ரசீது அனுப்பவும்"
 
+#, fuzzy
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
 msgstr "[{ASSO_NAME}] {name_adh க்கு க்கான புதிய நன்கொடை"
 
+#, fuzzy
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
@@ -3566,6 +3577,7 @@ msgstr "புதிய நன்கொடை (நிர்வாகிக்க
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
 msgstr "[{ASSO_NAME}] கணக்கு {NAME_ADH} மாற்றியமைக்கப்பட்டுள்ளது"
 
+#, fuzzy
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
@@ -3579,6 +3591,7 @@ msgstr "நிர்வாகி ஒரு உறுப்பினர் தன
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
 msgstr "[{ASSO_NAME}] கணக்கு {NAME_ADH} செயலற்றது"
 
+#, fuzzy
 msgid ""
 "Hello!{NEWLINE}A password recovery request has been made on your account on "
 "{ASSO_NAME}, but it is currently inactive and therefore cannot be processed."
@@ -4203,7 +4216,7 @@ msgid "Select an option"
 msgstr "ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்"
 
 msgid "yyyy-mm-dd format"
-msgstr "YYYYY-MM-DD வடிவம்"
+msgstr "YYYY-MM-DD வடிவம்"
 
 msgid "Choose another file"
 msgstr "மற்றொரு கோப்பைத் தேர்வுசெய்க"
@@ -6831,6 +6844,7 @@ msgstr ""
 msgid "Post new contribution script URI"
 msgstr "புதிய பங்களிப்பு ச்கிரிப்ட் யூரி ஐ இடுங்கள்"
 
+#, fuzzy
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
