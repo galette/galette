@@ -12,13 +12,15 @@
 # Максим Горпиніч <gorpinicmaksim5@gmail.com>, 2025.
 # Максим Горпиніч <gorpinicmaksim0@gmail.com>, 2025.
 # Женя <prikhodkozheka2011@gmail.com>, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-06 05:58+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-10-18 05:50+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -27,7 +29,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -695,7 +697,7 @@ msgstr "Ви збираєтеся видалити %1$s членів."
 #. TRANS: parameter is the member identifier
 #, php-format
 msgid "No member #%1$s."
-msgstr "Нема члена з ID #%1$s."
+msgstr "Нема члена з #%1$s."
 
 msgid "Payment types"
 msgstr "Види оплат"
@@ -5536,10 +5538,8 @@ msgstr "Автентифікація не вдалася"
 msgid "What is counted"
 msgstr "Вміст е-пошти"
 
-#, fuzzy
-#| msgid "Account:"
 msgid "Account"
-msgstr "Обліковий запис:"
+msgstr "Обліковий запис"
 
 msgid "Failures"
 msgstr ""
