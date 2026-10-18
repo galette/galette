@@ -31,7 +31,11 @@ var _bindFomanticComponents = function() {
      * Keep them hoverable only when js is disabled.
      */
     $('.simple.dropdown').removeClass('simple');
+    /* Fomantic drops the required attribute of the selects it replaces;
+     * put it back so the browser still refuses an empty value. */
+    var $requiredSelects = $dropdown.filter('select[required]');
     $dropdown.dropdown();
+    $requiredSelects.prop('required', true);
 
     /* Required for keyboard accessibility on dropdowns used in navigation.
      */
@@ -128,6 +132,31 @@ var _bindFomanticComponents = function() {
             addTouchEvents: false,
         })
     ;
+}
+
+/* A select replaced by a Fomantic dropdown is hidden: the browser refuses
+ * to send the form when it is empty, but has nothing to point at. Show it.
+ */
+var _bindRequiredDropdowns = function() {
+    var _pointed = false;
+    document.addEventListener('invalid', function(event) {
+        var $dropdown = $(event.target).filter('select').closest('.ui.dropdown');
+        if (!$dropdown.length) {
+            return;
+        }
+        $dropdown.closest('.field').addClass('error');
+        // only the first invalid control of a submission gets the focus
+        if (!_pointed) {
+            _pointed = true;
+            $dropdown.trigger('focus');
+            setTimeout(function() { _pointed = false; });
+        }
+    }, true);
+    $(document).on('change', '.ui.dropdown > select', function() {
+        if (this.checkValidity()) {
+            $(this).closest('.field').removeClass('error');
+        }
+    });
 }
 
 /* Required for keyboard navigation accessibility.
@@ -251,6 +280,43 @@ var _bind_messages = function() {
     $('.message.with-transition').transition('flash');
 }
 
+/* Copy to clipboard buttons (components/copy_button.html.twig).
+ * They stay hidden where the clipboard API is not available, that is outside
+ * of secure contexts: the value can still be selected and copied by hand.
+ */
+var _bindCopyButtons = function() {
+    if (!navigator.clipboard) {
+        return;
+    }
+
+    $('.copy-to-clipboard')
+        .removeAttr('hidden')
+        .on('click', function() {
+            var
+                $button = $(this),
+                $target = $($button.data('copy-target')),
+                text    = $target.is('input, textarea') ? $target.val() : $target[0].innerText.trim()
+            ;
+
+            navigator.clipboard.writeText(text).then(
+                function() {
+                    $('body').toast({
+                        class: 'success',
+                        message: $button.data('copied'),
+                        showProgress: 'bottom'
+                    });
+                },
+                function() {
+                    $('body').toast({
+                        class: 'error',
+                        message: $button.data('copy-failed'),
+                        displayTime: 0
+                    });
+                }
+            );
+        });
+}
+
 $(function() {
     /* First, so that a failure further down never costs the user a message. */
     _bind_messages();
@@ -263,6 +329,10 @@ $(function() {
     _dropdownA11y.install();
 
     _keyboardNavigation();
+
+    _bindRequiredDropdowns();
+
+    _bindCopyButtons();
 
     var _back2Top = document.getElementById("back2top");
     if (_back2Top) {

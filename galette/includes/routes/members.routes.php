@@ -281,6 +281,16 @@ $app->post(
 )->setName('doRemoveSearch')->add(Authenticate::class);
 
 $app->get(
+    '/search/edit/{id:\d+}',
+    [Crud\SavedSearchesController::class, 'edit']
+)->setName('editSearch')->add(Authenticate::class);
+
+$app->post(
+    '/search/edit/{id:\d+}',
+    [Crud\SavedSearchesController::class, 'doEdit']
+)->setName('doEditSearch')->add(Authenticate::class);
+
+$app->get(
     '/save-search/{id}',
     [Crud\SavedSearchesController::class, 'load']
 )->setName('loadSearch')->add(Authenticate::class);

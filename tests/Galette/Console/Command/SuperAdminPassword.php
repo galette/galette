@@ -12,6 +12,8 @@ namespace Galette\Tests\Console\Command;
 
 use Galette\Console\Command\SuperAdminPassword as SuperAdminPasswordCommand;
 use Galette\Core\Preferences;
+use Galette\Core\TwoFactorAuth;
+use Galette\Core\TwoFactorSuperAdmin;
 use Galette\Tests\GaletteTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -72,6 +74,26 @@ class SuperAdminPassword extends GaletteTestCase
         $stored = $this->getStoredPassword();
         $this->assertNotSame($password, $stored);
         $this->assertTrue(password_verify($password, $stored));
+    }
+
+    /**
+     * Test the password is changed when the super administrator holds a
+     * second factor: access to the server stands for it
+     */
+    public function testChangesPasswordDespiteSecondFactor(): void
+    {
+        $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_OPTIONAL;
+        $superadmin = new TwoFactorSuperAdmin($this->preferences);
+        $this->assertTrue($superadmin->create('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'));
+        $this->assertTrue($superadmin->enable());
+
+        $password = 'Str0ng!Passw0rd';
+        $commandTester = $this->runCommand([$password, $password]);
+
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode(), $commandTester->getDisplay());
+        $this->assertTrue(password_verify($password, $this->getStoredPassword()));
+        //the second factor itself is left alone
+        $this->assertTrue($superadmin->isEnabled());
     }
 
     /**

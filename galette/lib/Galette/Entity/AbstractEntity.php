@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use ArrayObject;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
@@ -126,7 +127,7 @@ abstract class AbstractEntity
     private function insert(): bool
     {
         $zdb = $this->getDB();
-        $data = $this->toColumnData(ColumnMapping::SCOPE_INSERT);
+        $data = [];
         try {
             $zdb->beginTransaction();
 
@@ -136,6 +137,8 @@ abstract class AbstractEntity
                 return false;
             }
 
+            //collected once preInsert() had a chance to change values
+            $data = $this->toColumnData(ColumnMapping::SCOPE_INSERT);
             unset($data['id'], $data[static::PK]);
 
             $insert = $zdb->insert(static::TABLE);
@@ -164,7 +167,10 @@ abstract class AbstractEntity
                 $e->getMessage(),
                 var_export($data, return: true)
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception(
+                $e,
+                sprintf("An error occurred inserting %s, data: %s", static::class, var_export($data, return: true))
+            );
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }
@@ -199,7 +205,7 @@ abstract class AbstractEntity
                 $id,
                 $e->getMessage()
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception($e, sprintf('An error occurred loading %s #%s', static::class, $id));
             throw new EntityException($msg, $e->getCode(), $e);
         }
 
@@ -223,7 +229,9 @@ abstract class AbstractEntity
         unset($data['id'], $data[static::PK]);
         foreach ($data as $property => $column) {
             $prop = $reflection->getProperty($property);
-            $prop->setValue($this, $rs->{$column->columnName});
+            /** @var ReflectionNamedType $type */
+            $type = $prop->getType();
+            $prop->setValue($this, $this->fromDbValue($rs->{$column->columnName}, $type));
         }
 
         return $this;
@@ -244,7 +252,7 @@ abstract class AbstractEntity
     private function update(): bool
     {
         $zdb = $this->getDB();
-        $data = $this->toColumnData(ColumnMapping::SCOPE_UPDATE);
+        $data = [];
         try {
             $zdb->beginTransaction();
             if (!$this->preUpdate()) {
@@ -252,6 +260,8 @@ abstract class AbstractEntity
                 $zdb->rollBack();
                 return false;
             }
+            //collected once preUpdate() had a chance to change values
+            $data = $this->toColumnData(ColumnMapping::SCOPE_UPDATE);
             unset($data['id'], $data[static::PK]);
 
             $update = $zdb->update(static::TABLE);
@@ -274,7 +284,10 @@ abstract class AbstractEntity
                 $e->getMessage(),
                 var_export($data, return: true)
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception(
+                $e,
+                sprintf("An error occurred updating %s, data: %s", static::class, var_export($data, return: true))
+            );
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }
@@ -332,7 +345,7 @@ abstract class AbstractEntity
                 static::class,
                 $id
             );
-            Analog::log($msg, Analog::ERROR);
+            Logs::exception($e, $msg);
             throw new EntityException($msg, $e->getCode(), $e);
         }
     }
@@ -433,9 +446,52 @@ abstract class AbstractEntity
         $mappings = $this->getColumnMapping($scope);
         $data = [];
         foreach ($mappings as $mapping) {
-            $data[$mapping->columnName] = $mapping->value;
+            $data[$mapping->columnName] = $this->toDbValue($mapping->value);
         }
         return $data;
+    }
+
+    /**
+     * Convert a database value to the type of the property it is loaded in.
+     *
+     * Drivers return booleans and numbers in various forms (native types,
+     * strings when fetches are stringified, 't'/'f' from PostgreSQL),
+     * while properties are strictly typed.
+     *
+     * @param mixed               $value Raw database value
+     * @param ReflectionNamedType $type  Property type
+     */
+    private function fromDbValue(mixed $value, ReflectionNamedType $type): mixed
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return match ($type->getName()) {
+            'bool' => in_array($value, [true, 1, '1', 't', 'true'], strict: true),
+            'int' => (int)$value,
+            'float' => (float)$value,
+            default => $value
+        };
+    }
+
+    /**
+     * Convert a property value to a value both database engines accept.
+     *
+     * A false boolean would be sent as an empty string, which neither
+     * MySQL integer columns nor PostgreSQL boolean ones accept.
+     *
+     * @param mixed $value Property value
+     */
+    private function toDbValue(mixed $value): mixed
+    {
+        if (!is_bool($value)) {
+            return $value;
+        }
+        if ($this->getDB()->isPostgres()) {
+            return $value ? 'true' : 'false';
+        }
+        return (int)$value;
     }
 
     /**

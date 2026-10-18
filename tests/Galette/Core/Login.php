@@ -121,8 +121,10 @@ class Login extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $this->assertFalse($login->impersonate(1));
-        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred: Error executing query!');
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Galette\Core\Login->impersonate()');
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'An error occurred impersonating member `1` | Error executing query!'
+        );
     }
 
     /**

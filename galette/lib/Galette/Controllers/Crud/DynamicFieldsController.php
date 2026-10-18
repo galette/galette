@@ -21,6 +21,7 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\file_get_contents;
 use function Safe\fopen;
@@ -106,11 +107,7 @@ class DynamicFieldsController extends CrudController
             $warning_detected = $df->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new dynamic field.';
-            Analog::log(
-                $msg . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, $msg, Analog::ERROR);
             if (Galette::isDebugEnabled()) {
                 throw $e;
             }
@@ -179,7 +176,7 @@ class DynamicFieldsController extends CrudController
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
-        $fields_list = $fields->getList($form_name);
+        $fields_list = $fields->getList($form_name, inaccessible: true);
 
         $params = [
             'fields_list'       => $fields_list,
@@ -379,6 +376,7 @@ class DynamicFieldsController extends CrudController
             'perm_names'    => DynamicField::getPermissionsList(),
             'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),
             'df'            => $df,
+            'label_is_core' => $this->l10n->isCoreString($df->getName(false)),
             'html_editor'   => true,
             'html_editor_active' => $this->preferences->pref_editor_enabled
         ];
@@ -424,11 +422,7 @@ class DynamicFieldsController extends CrudController
             $error_detected = $df->getErrors();
         } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
-            Analog::log(
-                $msg . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, $msg, Analog::ERROR);
             if (Galette::isDebugEnabled()) {
                 throw $e;
             }
@@ -532,6 +526,7 @@ class DynamicFieldsController extends CrudController
                 'error_detected',
                 _T("Requested field does not exists!")
             );
+            Analog::log('Delete dynamic field #' . $field_id . ': field not found', Analog::INFO);
             return false;
         }
         return $field->remove();

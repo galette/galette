@@ -50,6 +50,18 @@ interface TwoFactorStore
     public function setLastTimeslice(int $timeslice): bool;
 
     /**
+     * Forget the last accepted time slice, for a server clock that went
+     * backwards: every code would fall in a slice already used until it
+     * catches up
+     */
+    public function forgetTimeslice(): bool;
+
+    /**
+     * Drop the second factor
+     */
+    public function remove(): bool;
+
+    /**
      * Who the loaded second factor belongs to, for logs
      */
     public function getOwner(): string;

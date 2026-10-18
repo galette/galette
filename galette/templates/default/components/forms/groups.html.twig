@@ -4,56 +4,135 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-<div id="groups_field" class="field">
-    <label>{{ _T("Groups:") }}</label>
-    <span id="usergroups_form">
-    {% if member.id %}
-        {% for group in groups %}
-            {% if member.isGroupMember(group.getName()) %}
-            <input type="hidden" name="groups_adh[]" value="{{ group.getId() }}|{{ group.getName() }}"/>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    </span>
-    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-    <span id="managedgroups_form">
-        {% if member.id %}
-            {% for group in groups %}
-                {% if member.isGroupManager(group.getName()) %}
-                <input type="hidden" name="groups_managed_adh[]" value="{{ group.getId() }}|{{ group.getName() }}"/>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </span>
-    {% endif %}
-    {% if member.id %}
-    <div class="ui large labels">
-        {% for group in groups %}
-            {% if member.isGroupMember(group.getName()) or member.isGroupManager(group.getName()) %}
-                {% if member.isGroupMember(group.getName()) %}
-                <span class="ui label member">
-                    <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}" aria-hidden="true"></i>
-                {% endif %}
-                {% if member.isGroupManager(group.getName()) %}
-                <span class="ui label manager">
-                    <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}" aria-hidden="true"></i>
-                {% endif %}
-                    {{ group.getName() }}
-                </span>
-            {% endif %}
-        {% endfor %}
+{#
+ # Groups of the member, one row per group.
+ #
+ # Groups the current user may add are rendered as hidden rows with disabled
+ # inputs; adding one only reveals and enables it. Unchecked or disabled
+ # checkboxes are not posted, so groups_adh[] and groups_managed_adh[] carry
+ # exactly the memberships to store.
+ #}
+{% set can_edit_members = login.isGroupManager() %}
+{% set can_edit_managers = login.isAdmin() or login.isStaff() %}
+{% set member_gids = member.id ? member.getGroups()|map(g => g.getId()) : [] %}
+{% set manager_gids = member.id ? member.getManagedGroups()|map(g => g.getId()) : [] %}
+{% set sorted_groups = groups|sort((a, b) => a.getFullName() <=> b.getFullName()) %}
+{% set addable_groups = can_edit_members ? sorted_groups|filter(g => login.isGroupManager(g.getId()) and g.getId() not in member_gids and g.getId() not in manager_gids) : [] %}
+<div id="groups_field" class="ui styled fluid accordion field">
+    <div class="active title">
+        <i class="dropdown icon" aria-hidden="true"></i>
+        {{ _T("Groups") }}
     </div>
+    <div class="active content">
+        <table class="ui very basic unstackable table" id="member_groups">
+            <caption class="visually-hidden">{{ _T("Groups") }}</caption>
+            <thead>
+                <tr>
+                    <th scope="col">{{ _T("Group") }}</th>
+                    <th scope="col" class="center aligned collapsing">{{ _T("Member of group") }}</th>
+                    <th scope="col" class="center aligned collapsing">{{ _T("Group manager") }}</th>
+                    <th scope="col" class="collapsing"><span class="visually-hidden">{{ _T("Actions") }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+{% for group in sorted_groups %}
+    {% set gid = group.getId() %}
+    {% set is_member = gid in member_gids %}
+    {% set is_manager = gid in manager_gids %}
+    {% set linked = is_member or is_manager %}
+    {% set row_editable = can_edit_members and login.isGroupManager(gid) %}
+    {% if linked or row_editable %}
+        {% set full_name = group.getFullName() %}
+                <tr id="group_row_{{ gid }}" data-group="{{ gid }}" data-member="{{ is_member ? 1 : 0 }}" data-manager="{{ is_manager ? 1 : 0 }}" data-linked="{{ linked ? 1 : 0 }}"{% if not linked %} hidden{% endif %}>
+                    <th scope="row">
+        {% for parent in group.getParents() %}
+                        <span class="ui grey text">{{ parent }} /</span>
+        {% endfor %}
+                        {{ group.getName() }}
+                        <span class="ui mini orange basic label group-state displaynone" data-state="added">{{ _Tx("member groups", "added") }}</span>
+                        <span class="ui mini orange basic label group-state displaynone" data-state="changed">{{ _Tx("member groups", "changed") }}</span>
+                        <span class="ui mini orange basic label group-state displaynone" data-state="removed">{{ _Tx("member groups", "will be removed") }}</span>
+        {% if linked and can_edit_members and not row_editable %}
+                        <div class="ui small grey text">
+                            <i class="lock icon" aria-hidden="true"></i>
+                            {{ _T("Group you do not manage") }}
+                        </div>
+        {% endif %}
+                    </th>
+                    <td class="center aligned">
+                        <div class="ui fitted toggle checkbox{% if not (row_editable and linked) %} disabled{% endif %}">
+                            <input
+                                type="checkbox"
+                                name="groups_adh[]"
+                                id="group_member_{{ gid }}"
+                                class="group-member"
+                                value="{{ gid }}|{{ group.getName() }}"
+                                {% if is_member %}checked="checked"{% endif %}
+                                {% if not (row_editable and linked) %}disabled="disabled"{% endif %}
+                                {% if row_editable %}data-editable="1"{% endif %}
+                            />
+                            <label for="group_member_{{ gid }}"><span class="visually-hidden">{{ _T("Member of group %1$s")|format(full_name) }}</span></label>
+                        </div>
+                    </td>
+                    <td class="center aligned">
+                        <div class="ui fitted toggle checkbox{% if not (can_edit_managers and linked) %} disabled{% endif %}">
+                            <input
+                                type="checkbox"
+                                name="groups_managed_adh[]"
+                                id="group_manager_{{ gid }}"
+                                class="group-manager"
+                                value="{{ gid }}|{{ group.getName() }}"
+                                {% if is_manager %}checked="checked"{% endif %}
+                                {% if not (can_edit_managers and linked) %}disabled="disabled"{% endif %}
+                                {% if can_edit_managers %}data-editable="1"{% endif %}
+                            />
+                            <label for="group_manager_{{ gid }}"><span class="visually-hidden">{{ _T("Manager of group %1$s")|format(full_name) }}</span></label>
+                        </div>
+                    </td>
+                    <td class="right aligned">
+        {% if row_editable %}
+                        <button type="button" class="ui mini basic icon button group-remove" aria-label="{{ _T("Remove from group %1$s")|format(full_name) }}">
+                            <i class="times icon" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Keep group %1$s")|format(full_name) }}">
+                            <i class="undo icon" aria-hidden="true"></i>
+                            {{ _T("Cancel") }}
+                        </button>
+        {% endif %}
+                    </td>
+                </tr>
     {% endif %}
-    {% if login.isGroupManager() %}
-    <button type="button" class="ui icon button" id="btngroups">
-        <i class="user tag icon" aria-hidden="true"></i>
-        {{ _T("Manage user's groups") }}
-    </button>
-    {% endif %}
-    {% if login.isAdmin() or login.isStaff() %}
-    <button type="button" class="ui icon button" id="btnmanagedgroups">
-        <i class="user shield icon" aria-hidden="true"></i>
-        {{ _T("Manage user's managed groups") }}
-    </button>
-    {% endif %}
+{% endfor %}
+                <tr id="member_groups_empty"{% if member_gids|length > 0 or manager_gids|length > 0 %} hidden{% endif %}>
+                    <td colspan="4" class="emptylist">{{ _T("no group") }}</td>
+                </tr>
+            </tbody>
+        </table>
+{% if addable_groups|length > 0 %}
+        <div class="fields">
+            <div class="twelve wide field">
+                <label for="group_add">{{ _T("Add to group") }}</label>
+                <select id="group_add" class="ui search dropdown">
+                    <option value="">{{ _T("Select a group") }}</option>
+    {% for group in addable_groups %}
+                    <option value="{{ group.getId() }}">{{ group.getFullName() }}</option>
+    {% endfor %}
+                </select>
+            </div>
+            <div class="four wide field">
+                <label aria-hidden="true">&nbsp;</label>
+                <button type="button" id="group_add_btn" class="ui fluid labeled icon button">
+                    <i class="plus green icon" aria-hidden="true"></i>
+                    {{ _T("Add") }}
+                </button>
+            </div>
+        </div>
+{% endif %}
+        <div id="member_groups_status" aria-live="polite">
+            <div class="ui small visible warning message displaynone">
+                <i class="info circle icon" aria-hidden="true"></i>
+                {{ _T("Items in this list have been modified. Don't forget to save your changes.") }}
+            </div>
+        </div>
+    </div>
 </div>

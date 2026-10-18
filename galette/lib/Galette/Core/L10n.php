@@ -27,11 +27,61 @@ class L10n
     /**
      * Default constructor.
      *
-     * @param Db   $zdb  Database instance
-     * @param I18n $i18n I18n instance
+     * @param Db         $zdb        Database instance
+     * @param I18n       $i18n       I18n instance
+     * @param Translator $translator Translator instance
      */
-    public function __construct(private readonly Db $zdb, private readonly I18n $i18n)
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly I18n $i18n,
+        private readonly Translator $translator
+    ) {
+    }
+
+    /**
+     * Is text translated by Galette itself (gettext)?
+     *
+     * Such a text will never use dynamic translations.
+     *
+     * @param string $text Text to check
+     */
+    public function isCoreString(string $text): bool
     {
+        if (trim($text) === '') {
+            return false;
+        }
+
+        foreach ($this->i18n->getList() as $lang) {
+            if ($this->translator->translationExists($text, 'galette', $lang->getLongID())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get translations provided by Galette itself (gettext) for a text
+     * Text is empty for languages without translation.
+     *
+     * @param string $text Text to translate
+     *
+     * @return array<int, array{key: string, lang: string, rtl: bool, name: string, text: string}>
+     */
+    public function getCoreTranslations(string $text): array
+    {
+        $results = [];
+        foreach ($this->i18n->getList() as $l) {
+            $results[] = [
+                'key'  => $l->getLongID(),
+                'lang' => $l->getWebID(),
+                'rtl' => $l->isRTL(),
+                'name' => ucwords($l->getName()),
+                'text' => $this->translator->translationExists($text, 'galette', $l->getLongID())
+                    ? $this->translator->translate($text, 'galette', $l->getLongID())
+                    : ''
+            ];
+        }
+        return $results;
     }
 
     /**
@@ -41,6 +91,14 @@ class L10n
      */
     public function addDynamicTranslation(string $text_orig): bool
     {
+        if ($this->isCoreString($text_orig)) {
+            Analog::log(
+                '`' . $text_orig . '` is translated by Galette, no dynamic translation added.',
+                Analog::INFO
+            );
+            return true;
+        }
+
         try {
             foreach ($this->i18n->getList() as $lang) {
                 //check if translation already exists
@@ -97,23 +155,91 @@ class L10n
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred adding dynamic translation for `'
-                . $text_orig . '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred adding dynamic translation for `' . $text_orig . '`', Analog::ERROR);
             return false;
         }
     }
 
     /**
-     * Delete a translation stored in the database
+     * Rename a translation stored in the database, keeping existing translations
+     *
+     * New text is supposed to be written in current language; translations of
+     * other languages are copied, unless new text already has its own.
+     *
+     * @param string $text_orig Old text
+     * @param string $text_new  New text
+     */
+    public function renameDynamicTranslation(string $text_orig, string $text_new): bool
+    {
+        try {
+            $select = $this->zdb->select(self::TABLE);
+            $select->columns(['text_locale', 'text_trans'])
+                ->where(['text_orig_sum' => md5($text_orig)]);
+            $old_translations = [];
+            foreach ($this->zdb->execute($select) as $row) {
+                $old_translations[$row->text_locale] = $row->text_trans;
+            }
+        } catch (Throwable $e) {
+            Logs::exception(
+                $e,
+                'An error occurred renaming dynamic translation for `' . $text_orig . '`',
+                Analog::ERROR
+            );
+            return false;
+        }
+
+        if (!$this->deleteDynamicTranslation($text_orig) || !$this->addDynamicTranslation($text_new)) {
+            return false;
+        }
+
+        if ($this->isCoreString($text_new)) {
+            //Galette translations will be used
+            return true;
+        }
+
+        $result = true;
+        foreach ($old_translations as $locale => $translation) {
+            if (
+                $locale === $this->i18n->getLongID()
+                || $translation === ''
+                || $this->getDynamicTranslation($text_new, $locale) !== ''
+            ) {
+                continue;
+            }
+            $result = $this->updateDynamicTranslation($text_new, $locale, $translation) && $result;
+        }
+        return $result;
+    }
+
+    /**
+     * Release a translation stored in the database
+     *
+     * Same text may be used by several objects: translations are only removed
+     * once the last of them has been released.
      *
      * @param string $text_orig Text to translate
      */
     public function deleteDynamicTranslation(string $text_orig): bool
     {
         try {
+            $update = $this->zdb->update(self::TABLE);
+            $update->set(['text_nref' => new Expression('text_nref-1')])
+                ->where(['text_orig_sum' => md5($text_orig)]);
+            $this->zdb->execute($update);
+
+            //rows may have been added later for new languages, with a lower count
+            $select = $this->zdb->select(self::TABLE);
+            $select->columns(['text_nref']);
+            $select->where->equalTo('text_orig_sum', md5($text_orig))
+                ->greaterThan('text_nref', 0);
+            if ($this->zdb->execute($select)->count() > 0) {
+                Analog::log(
+                    'Dynamic translation for `' . $text_orig . '` is still in use, kept.',
+                    Analog::INFO
+                );
+                return true;
+            }
+
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 [
@@ -123,10 +249,9 @@ class L10n
             $this->zdb->execute($delete);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred deleting dynamic translation for `'
-                . $text_orig . '` | '
-                . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'An error occurred deleting dynamic translation for `' . $text_orig . '`',
                 Analog::ERROR
             );
             return false;
@@ -182,9 +307,9 @@ class L10n
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating dynamic translation for `'
-                . $text_orig . '` | ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'An error occurred updating dynamic translation for `' . $text_orig . '`',
                 Analog::ERROR
             );
             return false;
@@ -217,9 +342,9 @@ class L10n
                 return '';
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving l10n entry. text_orig=' . $text_orig
-                . ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'An error occurred retrieving l10n entry. text_orig=' . $text_orig . ', text_locale=' . $text_locale,
                 Analog::WARNING
             );
             throw $e;
@@ -231,7 +356,7 @@ class L10n
      *
      * @param string $text_orig_sum Original text hash
      *
-     * @return array<int, array{key: string, name: string, text: string}>
+     * @return array<int, array{key: string, lang: string, rtl: bool, name: string, text: string}>
      */
     public function getDynamicTranslations(string $text_orig_sum): array
     {
@@ -261,9 +386,9 @@ class L10n
             }
             return $results;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving l10n entries. text_orig_sum=' . $text_orig_sum
-                . ' | ' . $e->getMessage(),
+            Logs::exception(
+                $e,
+                'An error occurred retrieving l10n entries. text_orig_sum=' . $text_orig_sum,
                 Analog::WARNING
             );
             throw $e;

@@ -130,8 +130,8 @@ class GaletteMailBatch extends GaletteTestCase
         $this->assertCount(1, $mail->recorder->sent);
         $this->assertSame(5, $mail->recorder->sent[0]['bcc']);
         $this->assertSame(1, $mail->recorder->sent[0]['to']);
-        //single path does not use the explicit keep-alive close
-        $this->assertSame(0, $mail->recorder->close_count);
+        //the connection is closed once, when the mailer is released
+        $this->assertSame(1, $mail->recorder->close_count);
     }
 
     /**
@@ -149,10 +149,10 @@ class GaletteMailBatch extends GaletteTestCase
         $res = $mail->send();
         $this->assertSame(\Galette\Core\GaletteMail::MAIL_SENT, $res);
 
-        //3 <= 10 => single message, no chunking, no explicit close
+        //3 <= 10 => single message, no chunking, a single close
         $this->assertCount(1, $mail->recorder->sent);
         $this->assertSame(3, $mail->recorder->sent[0]['bcc']);
-        $this->assertSame(0, $mail->recorder->close_count);
+        $this->assertSame(1, $mail->recorder->close_count);
 
         $this->preferences->pref_mail_batch_size = 0;
     }

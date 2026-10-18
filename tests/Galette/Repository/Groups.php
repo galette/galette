@@ -26,7 +26,7 @@ class Groups extends GaletteTestCase
     /**
      * Groups provider
      *
-     * @return array<int, array{parent_name: string, children: array<string, array<string>>}>
+     * @return array<int, array{parent_name: string, children: array<string, array<string|string[]>>}>
      */
     public static function groupsProvider(): array
     {
@@ -35,8 +35,15 @@ class Groups extends GaletteTestCase
                 'parent_name' => 'Europe',
                 'children' => [
                     'France' => [
-                        'Nord',
-                        'Hérault',
+                        'Nord' => [
+                            'Lille',
+                            'Wimereux'
+                        ],
+                        'Hérault' => [
+                            'Béziers',
+                            'Agde',
+                            'Montpellier'
+                        ],
                         'Vaucluse',
                         'Gironde'
                     ],
@@ -66,29 +73,39 @@ class Groups extends GaletteTestCase
     /**
      * Create groups for tests
      *
-     * @param string                       $parent_name Parent name
-     * @param array<string, array<string>> $children    Children
+     * @param string                                $parent_name Parent name
+     * @param array<string, array<string|string[]>> $children    Children
      */
     #[DataProvider('groupsProvider')]
     public function testCreateGroups(string $parent_name, array $children): void
     {
-        $group = new \Galette\Entity\Group();
-        $group->setName($parent_name);
-        $this->assertTrue($group->store());
-        $parent_id = $group->getId();
+        $parent_group = new \Galette\Entity\Group();
+        $parent_group->setName($parent_name);
+        $this->assertTrue($parent_group->store());
+        $parent_id = $parent_group->getId();
 
-        foreach ($children as $child => $subchildren) {
-            $group = new \Galette\Entity\Group();
-            $group->setName($child);
-            $group->setParentGroup($parent_id);
-            $this->assertTrue($group->store());
-            $sub_id = $group->getId();
+        foreach ($children as $child => $firstchildren) {
+            $first_child_group = new \Galette\Entity\Group();
+            $first_child_group->setName($child);
+            $first_child_group->setParentGroup($parent_id);
+            $this->assertTrue($first_child_group->store());
+            $first_child_id = $first_child_group->getId();
 
-            foreach ($subchildren as $subchild) {
-                $group = new \Galette\Entity\Group();
-                $group->setName($subchild);
-                $group->setParentGroup($sub_id);
-                $this->assertTrue($group->store());
+            foreach ($firstchildren as $firstchild => $secondchildren) {
+                $second_child_group = new \Galette\Entity\Group();
+                $firstname = is_array($secondchildren) ? $firstchild : $secondchildren;
+                $second_child_group->setName($firstname);
+                $second_child_group->setParentGroup($first_child_id);
+                $this->assertTrue($second_child_group->store());
+                $second_child_id = $second_child_group->getId();
+                if (is_array($secondchildren)) {
+                    foreach ($secondchildren as $secondchild) {
+                        $third_child_group = new \Galette\Entity\Group();
+                        $third_child_group->setName($secondchild);
+                        $third_child_group->setParentGroup($second_child_id);
+                        $this->assertTrue($third_child_group->store());
+                    }
+                }
             }
         }
     }
@@ -104,14 +121,14 @@ class Groups extends GaletteTestCase
         }
 
         $list = \Galette\Repository\Groups::getSimpleList();
-        $this->assertCount(17, $list);
+        $this->assertCount(22, $list);
 
         foreach ($list as $group_name) {
             $this->assertNotEmpty($group_name);
         }
 
         $list = \Galette\Repository\Groups::getSimpleList(as_groups: true);
-        $this->assertCount(17, $list);
+        $this->assertCount(22, $list);
         foreach ($list as $group) {
             $this->assertInstanceOf(\Galette\Entity\Group::class, $group);
         }
@@ -135,15 +152,15 @@ class Groups extends GaletteTestCase
         $this->assertCount(3, $parents_list);
 
         $parents_list = $groups->getList(full: true);
-        $this->assertCount(17, $parents_list);
+        $this->assertCount(22, $parents_list);
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
         $europe = (int)$result->{\Galette\Entity\Group::PK};
 
-        $children_list = $groups->getList(full: true, id: $europe);
-        $this->assertCount(4, $children_list);
+        $children_list = $groups->getList(full: false, id: $europe);
+        $this->assertCount(15, $children_list);
 
         //set manager on one group, impersonate him, and check it gets only one group
         $this->getMemberOne();
@@ -202,6 +219,53 @@ class Groups extends GaletteTestCase
     }
 
     /**
+     * Test groups names and lookup by name
+     */
+    public function testFindByName(): void
+    {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
+        $names = \Galette\Repository\Groups::getNames($this->zdb);
+        $this->assertCount(22, $names);
+        $full_names = array_column($names, 'full_name');
+        $this->assertContains('Europe / France / Nord / Lille', $full_names);
+        $this->assertContains('Afrique', $full_names);
+
+        //short name, unique
+        $found = \Galette\Repository\Groups::findByName(' Lille ', $names);
+        $this->assertSame(['Europe / France / Nord / Lille'], array_values($found));
+        $this->assertSame('Lille', $names[array_key_first($found)]['name']);
+
+        //unknown
+        $this->assertSame([], \Galette\Repository\Groups::findByName('Creuse', $names));
+        $this->assertSame([], \Galette\Repository\Groups::findByName('France / Creuse', $names));
+
+        //same name under another parent
+        $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
+        $select->where(['group_name' => 'Belgique']);
+        $belgique = (int)$this->zdb->execute($select)->current()->{\Galette\Entity\Group::PK};
+        $group = new \Galette\Entity\Group();
+        $group->setName('Nord');
+        $group->setParentGroup($belgique);
+        $this->assertTrue($group->store());
+
+        $names = \Galette\Repository\Groups::getNames($this->zdb);
+        $found = \Galette\Repository\Groups::findByName('Nord', $names);
+        $this->assertCount(2, $found);
+        $this->assertEqualsCanonicalizing(
+            ['Europe / France / Nord', 'Europe / Belgique / Nord'],
+            array_values($found)
+        );
+
+        //full name is not ambiguous
+        $found = \Galette\Repository\Groups::findByName('Europe / Belgique / Nord', $names);
+        $this->assertSame([$group->getId() => 'Europe / Belgique / Nord'], $found);
+    }
+
+    /**
      * Test members/groups
      */
     public function testMembersGroups(): void
@@ -222,6 +286,7 @@ class Groups extends GaletteTestCase
         $this->assertSame([], $member->getManagedGroups());
         $this->assertSame([], $member->getGroups());
 
+        $this->logSuperAdmin();
         //add member to France and Allemagne groups, as simple member
         $this->assertTrue(
             \Galette\Repository\Groups::addMemberToGroups(
@@ -286,5 +351,79 @@ class Groups extends GaletteTestCase
         $this->expectLogEntry(Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
         $this->assertSame([], $member->groups);
         $this->expectLogEntry(Analog::WARNING, 'Calling property "groups" directly is discouraged.');
+    }
+
+    /**
+     * Test members/groups changes are limited to managed groups
+     */
+    public function testAddMemberToGroupsScope(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $managed = new \Galette\Entity\Group();
+        $managed->setName('Managed by member one');
+        $this->assertTrue($managed->store());
+        $this->assertTrue($managed->setManagers([$member_one]));
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+        $this->login->logOut();
+
+        $all = [
+            sprintf('%s|%s', $managed->getId(), $managed->getName()),
+            sprintf('%s|%s', $other->getId(), $other->getName())
+        ];
+        $groups_ids = function (): array {
+            $member = $this->getMemberTwo();
+            $member->loadGroups();
+            $ids = array_map(fn($group) => $group->getId(), $member->getGroups());
+            sort($ids);
+            return $ids;
+        };
+
+        //staff changes every group
+        $staff_member = $this->getStaffMember($member_one);
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isStaff());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, $all));
+        $this->assertSame([$managed->getId(), $other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, []));
+        $this->assertSame([], $groups_ids());
+        $this->login->logOut();
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        $this->logSuperAdmin();
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[1]]));
+        $this->login->logOut();
+
+        //group manager changes only the groups they manage
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $this->assertTrue($this->login->isGroupManager($managed->getId()));
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[0]]));
+        //added to managed group, not removed from the other one
+        $this->assertSame([$managed->getId(), $other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, []));
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->login->logOut();
+
+        //simple member changes nothing
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+        $warning = 'Trying to change groups of member #' . $member_two->id . ' without managing any group';
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [$all[0]]));
+        $this->expectLogEntry(Analog::WARNING, $warning);
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups($member_two, [], manager: true));
+        $this->expectLogEntry(Analog::WARNING, $warning);
+        $this->assertSame([$other->getId()], $groups_ids());
+        $this->login->logOut();
+        $member_one->loadGroups();
+        $this->assertCount(1, $member_one->getManagedGroups());
     }
 }

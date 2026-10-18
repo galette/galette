@@ -15,6 +15,7 @@ use Safe\DateTime;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\GaletteMail;
 use Galette\Core\Db;
 use Galette\Core\History;
@@ -83,11 +84,7 @@ class Reminder
             $results = $zdb->execute($select);
             $this->loadFromRS($results->current());
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading reminder #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading reminder #' . $id);
             throw $e;
         }
     }
@@ -109,10 +106,7 @@ class Reminder
             $this->nomail = $rs->reminder_nomail == 1;
             $this->comment = $rs->reminder_comment;
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ': incorrect ResultSet. Error: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, __METHOD__ . ': incorrect ResultSet.');
             throw $e;
         }
     }
@@ -129,12 +123,8 @@ class Reminder
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->success)
-                ? true
-                : ($zdb->isPostgres() ? 'false' : 0),
-            'reminder_nomail'   => ($this->nomail)
-                ? true
-                : ($zdb->isPostgres() ? 'false' : 0)
+            'reminder_success'  => $this->success,
+            'reminder_nomail'   => $this->nomail
         ];
         try {
             $insert = $zdb->insert(self::TABLE);
@@ -147,11 +137,7 @@ class Reminder
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing reminder: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
-            );
+            Logs::exception($e, "An error occurred storing reminder:\n" . print_r($data, return: true));
             throw $e;
         }
     }

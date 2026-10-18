@@ -17,6 +17,7 @@ use Slim\Psr7\Response;
 use Galette\Core\History;
 use Galette\Filters\HistoryList;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette history controller
@@ -170,10 +171,7 @@ class HistoryController extends AbstractController
                 );
                 $success = true;
             } catch (Throwable $e) {
-                Analog::log(
-                    'An error occurred flushing logs | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'An error occurred flushing logs', Analog::ERROR);
 
                 $this->flash->addMessage(
                     'error_detected',

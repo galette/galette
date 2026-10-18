@@ -20,6 +20,7 @@ use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
 use Galette\Util\Html;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 
 use function Safe\preg_replace_callback;
@@ -131,11 +132,7 @@ abstract class PdfModel
                 $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading model #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading model #' . $id);
             throw $e;
         }
     }
@@ -217,11 +214,7 @@ abstract class PdfModel
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing model: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
-            );
+            Logs::exception($e, "An error occurred storing model:\n" . print_r($data, return: true));
             throw $e;
         }
     }

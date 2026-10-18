@@ -23,7 +23,7 @@
     }
 ] %}
 
-{% macro group_item(login, can_export, can_edit, group, level, parent_id) %}
+{% macro group_item(login, can_export, can_edit, group, level, parent_id, visible_groups) %}
     <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if login.isGroupManager(group.getId()) %}1{% else %}0{% endif %}">
         <td class="left{% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
             {% for i in 0..level %}{% if not loop.first %}<i class="icon group-indent" aria-hidden="true"></i>{% endif %}{% endfor %}
@@ -62,8 +62,10 @@
     {% if group.getGroups()|length > 0 %}
         {% set sublevel = level + 1 %}
         {% for child_group in group.getGroups() %}
-            {% set level = child_group.getParents()|length %}
-            {{ _self.group_item(login, can_export, can_edit, child_group, level, group.getId()) }}
+            {% if visible_groups is null or child_group.getId() in visible_groups %}
+                {% set level = child_group.getParents()|length %}
+                {{ _self.group_item(login, can_export, can_edit, child_group, level, group.getId(), visible_groups) }}
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endmacro %}
@@ -109,7 +111,7 @@
 {% block body %}
     {% for group in groups_root %}
         {% set level = group.getParents()|length %}
-        {{ _self.group_item(login, can_export, can_edit, group, level, 0) }}
+        {{ _self.group_item(login, can_export, can_edit, group, level, 0, visible_groups) }}
     {% endfor %}
 {% endblock %}
 

@@ -14,6 +14,7 @@ use Galette\Entity\Group;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
@@ -124,10 +125,7 @@ class Contributions
             }
             return $contributions;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list contributions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list contributions', Analog::WARNING);
             throw $e;
         }
     }
@@ -165,10 +163,7 @@ class Contributions
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for contributions', Analog::WARNING);
             throw $e;
         }
     }
@@ -201,10 +196,7 @@ class Contributions
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count contributions | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count contributions', Analog::WARNING);
             throw $e;
         }
     }
@@ -232,10 +224,7 @@ class Contributions
                 $this->sum = round((float)$result->contribsum, 2);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot calculate contributions sum | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot calculate contributions sum', Analog::WARNING);
             throw $e;
         }
     }
@@ -368,10 +357,13 @@ class Contributions
                         !$member->hasParent()
                         || $member->parent->id != $this->login->id
                     ) {
-                        //check if member is part of logged-in user managed groups
+                        //check if member is part of logged-in user managed groups, when managers are allowed to
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
-                        if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
+                        if (
+                            !$preferences->pref_bool_groupsmanagers_see_contributions
+                            || count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0
+                        ) {
                             Analog::log(
                                 'Trying to display contributions for member #' . $member->id
                                 . ' without appropriate ACLs',
@@ -439,10 +431,7 @@ class Contributions
                 $select->where('c.trans_id IS NULL');
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -506,11 +495,7 @@ class Contributions
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove contributions | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove contributions', Analog::ERROR);
             throw $e;
         }
     }

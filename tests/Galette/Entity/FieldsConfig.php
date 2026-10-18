@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use Galette\Core\Authentication;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Preferences tests class
@@ -127,7 +129,7 @@ class FieldsConfig extends GaletteTestCase
     private function countCategorizedFields(array $categorized): void
     {
         $this->assertCount(3, $categorized);
-        $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
+        $this->assertCount(14, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
     }
@@ -174,6 +176,58 @@ class FieldsConfig extends GaletteTestCase
     }
 
     /**
+     * Visibilities and access levels provider
+     *
+     * @return array<string, array{int, int, bool}>
+     */
+    public static function grantedProvider(): array
+    {
+        $fc = \Galette\Entity\FieldsConfig::class;
+        return [
+            'nobody, superadmin' => [$fc::NOBODY, Authentication::ACCESS_SUPERADMIN, false],
+            'admin, admin' => [$fc::ADMIN, Authentication::ACCESS_ADMIN, true],
+            'admin, staff' => [$fc::ADMIN, Authentication::ACCESS_STAFF, false],
+            'staff, staff' => [$fc::STAFF, Authentication::ACCESS_STAFF, true],
+            'staff, manager' => [$fc::STAFF, Authentication::ACCESS_MANAGER, false],
+            'manager, manager' => [$fc::MANAGER, Authentication::ACCESS_MANAGER, true],
+            'manager, user' => [$fc::MANAGER, Authentication::ACCESS_USER, false],
+            'user read, user' => [$fc::USER_READ, Authentication::ACCESS_USER, true],
+            'user write, public' => [$fc::USER_WRITE, Authentication::ACCESS_PUBLIC, true],
+            'public, public' => [$fc::ALL, Authentication::ACCESS_PUBLIC, true],
+        ];
+    }
+
+    /**
+     * Test isGranted
+     */
+    #[DataProvider('grantedProvider')]
+    public function testIsGranted(int $visibility, int $access_level, bool $expected): void
+    {
+        $this->assertSame(
+            $expected,
+            \Galette\Entity\FieldsConfig::isGranted($visibility, $access_level)
+        );
+    }
+
+    /**
+     * Test isVisibleFor
+     */
+    public function testIsVisibleFor(): void
+    {
+        $this->fields_config->load();
+
+        //info_adh is staff only
+        $this->assertTrue($this->fields_config->isVisibleFor('info_adh', Authentication::ACCESS_STAFF));
+        $this->assertFalse($this->fields_config->isVisibleFor('info_adh', Authentication::ACCESS_MANAGER));
+        //id_adh is not visible
+        $this->assertFalse($this->fields_config->isVisibleFor('id_adh', Authentication::ACCESS_SUPERADMIN));
+        //nom_adh is visible for everyone
+        $this->assertTrue($this->fields_config->isVisibleFor('nom_adh', Authentication::ACCESS_USER));
+        //unknown fields are never visible
+        $this->assertFalse($this->fields_config->isVisibleFor('does_not_exist', Authentication::ACCESS_SUPERADMIN));
+    }
+
+    /**
      * Test setFields and storage
      */
     public function testSetFields(): void
@@ -208,8 +262,71 @@ class FieldsConfig extends GaletteTestCase
         $this->assertFalse($town['required']);
         $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $town['visible']);
 
-        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][13];
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][14];
         $this->assertSame($gsm, $gsm2);
+    }
+
+    /**
+     * Test admin information visibility cannot be opened to members
+     */
+    public function testAdminInfoVisibility(): void
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->installInit();
+        $fields_config->load();
+
+        $set_visibility = function (int $visible) use ($fields_config): void {
+            $fields = $fields_config->getCategorizedFields();
+            foreach ($fields as &$category) {
+                foreach ($category as &$field) {
+                    if ($field['field_id'] === 'info_adh') {
+                        $field['visible'] = $visible;
+                    }
+                }
+            }
+            $this->assertTrue($fields_config->setFields($fields));
+            $fields_config->load();
+        };
+
+        $allowed = [
+            \Galette\Entity\FieldsConfig::NOBODY,
+            \Galette\Entity\FieldsConfig::ADMIN,
+            \Galette\Entity\FieldsConfig::STAFF,
+        ];
+        foreach ($allowed as $visible) {
+            $set_visibility($visible);
+            $this->assertSame($visible, $fields_config->getVisibility('info_adh'));
+        }
+
+        $restricted = [
+            \Galette\Entity\FieldsConfig::USER_WRITE,
+            \Galette\Entity\FieldsConfig::MANAGER,
+            \Galette\Entity\FieldsConfig::USER_READ,
+            \Galette\Entity\FieldsConfig::ALL,
+        ];
+        foreach ($restricted as $visible) {
+            $set_visibility($visible);
+            $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $fields_config->getVisibility('info_adh'));
+        }
+
+        //a value already stored in database is restricted as well
+        $update = $this->zdb->update(\Galette\Entity\FieldsConfig::TABLE);
+        $update
+            ->set(['visible' => \Galette\Entity\FieldsConfig::USER_READ])
+            ->where([
+                'field_id' => 'info_adh',
+                'table_name' => \Galette\Entity\Adherent::TABLE
+            ]);
+        $this->zdb->execute($update);
+        $stored_config = new \Galette\Entity\FieldsConfig(
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
+        );
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $stored_config->getVisibility('info_adh'));
+
+        $fields_config->installInit();
     }
 
     /**
@@ -255,7 +372,7 @@ class FieldsConfig extends GaletteTestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->assertSame(
-            12,
+            13,
             count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
         );
 
@@ -384,7 +501,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(12, $elements['fieldsets'][0]->elements);
+        $this->assertCount(13, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -412,7 +529,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(11, $elements['fieldsets'][0]->elements);
+        $this->assertCount(12, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -447,7 +564,7 @@ class FieldsConfig extends GaletteTestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(11, $elements['fieldsets'][0]->elements);
+        $this->assertCount(12, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -471,5 +588,45 @@ class FieldsConfig extends GaletteTestCase
     {
         $list = \Galette\Entity\FieldsConfig::getPermissionsList();
         $this->assertArrayNotHasKey(\Galette\Entity\FieldsConfig::ALL, $list);
+    }
+
+    /**
+     * Test picture is configured as a field, but is not a column
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testPictureField(): void
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->installInit();
+        $fields_config->load();
+
+        $this->assertFalse(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['photo']));
+        $this->assertFalse(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['list_adh_name']));
+        $this->assertTrue(\Galette\Entity\FieldsConfig::isColumn($this->members_fields['nom_adh']));
+
+        //can be set as required
+        $this->assertNotContains('photo', $fields_config->getNonRequired());
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $fields_config->getVisibility('photo'));
+
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
+
+        //first field of the form
+        $elements = $fields_config->getFormElements($admin_login, false);
+        $identity = $elements['fieldsets'][0]->elements;
+        $this->assertSame('photo', array_key_first($identity));
+        $this->assertSame(\Galette\Entity\FieldsConfig::TYPE_PICTURE, $identity['photo']->type);
+
+        //not a value to check
+        $this->assertNotContains('photo', $fields_config->getAllowedFields($admin_login));
+        $this->assertContains('nom_adh', $fields_config->getAllowedFields($admin_login));
+
+        //displayed on member card, not among other values
+        foreach ($fields_config->getDisplayElements($admin_login) as $fieldset) {
+            $this->assertArrayNotHasKey('photo', $fieldset->elements);
+        }
     }
 }

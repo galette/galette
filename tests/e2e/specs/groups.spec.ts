@@ -78,20 +78,19 @@ test.describe('Groups', () => {
       const formPage = new GroupFormPage(page);
       await formPage.goto(parseInt(createdGroupId));
 
-      // Open members selection modal
-      await formPage.openMembersSelection();
-
       // Add a member (using fixture member Luke Skywalker)
-      await formPage.addMemberInModal('SKYWALKER');
-
-      // Validate the modal
-      await formPage.validateMembersModal();
+      await formPage.addMember('SKYWALKER Luke');
+      const row = formPage.getPersonRow('SKYWALKER Luke');
+      await expect(row.locator('.person-member')).toBeChecked();
+      await expect(row.locator('.person-state[data-state="added"]')).toBeVisible();
+      await expect(page.locator('#group_persons_status .message')).toBeVisible();
 
       // Save the form
       await formPage.save();
 
-      // Verify we're back on groups list or edit page
-      await page.waitForLoadState('networkidle');
+      // Verify the member has been stored
+      await formPage.goto(parseInt(createdGroupId));
+      expect(await formPage.hasMember('SKYWALKER Luke')).toBeTruthy();
     });
 
     test('Groups - Delete group', async ({ loggedInPage: page }) => {

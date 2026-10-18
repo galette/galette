@@ -68,6 +68,7 @@ class TwoFactorSecret implements TwoFactorStore
             $results = $this->zdb->execute($select);
 
             if ($results->count() === 0) {
+                Analog::log('Load second factor of member #' . $id_adh . ': none configured', Analog::DEBUG);
                 return false;
             }
 
@@ -78,10 +79,7 @@ class TwoFactorSecret implements TwoFactorStore
             $this->last_timeslice = $row->last_timeslice === null ? null : (int)$row->last_timeslice;
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load second factor for member ' . $id_adh . '. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot load second factor for member ' . $id_adh, Analog::ERROR);
             throw $e;
         }
     }
@@ -105,7 +103,7 @@ class TwoFactorSecret implements TwoFactorStore
                 [
                     self::PK    => $id_adh,
                     'secret'    => $secret,
-                    'enabled'   => $this->zdb->isPostgres() ? 'false' : 0,
+                    'enabled'   => false,
                     'date_crea' => date('Y-m-d H:i:s')
                 ]
             );
@@ -117,10 +115,7 @@ class TwoFactorSecret implements TwoFactorStore
             $this->last_timeslice = null;
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot store second factor for member ' . $id_adh . '. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot store second factor for member ' . $id_adh, Analog::ERROR);
             throw $e;
         }
     }
@@ -138,7 +133,7 @@ class TwoFactorSecret implements TwoFactorStore
         $update = $this->zdb->update(self::TABLE);
         $update->set(
             [
-                'enabled'      => $this->zdb->isPostgres() ? 'true' : 1,
+                'enabled'      => true,
                 'date_confirm' => date('Y-m-d H:i:s')
             ]
         )->where([self::PK => $this->id_adh]);
@@ -173,6 +168,24 @@ class TwoFactorSecret implements TwoFactorStore
     }
 
     /**
+     * Forget the last accepted time slice
+     */
+    public function forgetTimeslice(): bool
+    {
+        if ($this->id_adh === null) {
+            throw new \RuntimeException('No second factor loaded!');
+        }
+
+        $update = $this->zdb->update(self::TABLE);
+        $update->set(['last_timeslice' => null])
+            ->where([self::PK => $this->id_adh]);
+        $this->zdb->execute($update);
+
+        $this->last_timeslice = null;
+        return true;
+    }
+
+    /**
      * Drop the second factor of a member, recovery codes included
      *
      * @param int|null $id_adh Member identifier, the loaded one by default
@@ -200,10 +213,7 @@ class TwoFactorSecret implements TwoFactorStore
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot remove second factor for member ' . $id_adh . '. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot remove second factor for member ' . $id_adh, Analog::ERROR);
             throw $e;
         }
     }

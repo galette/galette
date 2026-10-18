@@ -16,7 +16,9 @@ declare(strict_types=1);
  * IMPORTANT:
  * - Adding a flag to this registry is MANDATORY when developing a new feature
  * - Flags should be removed from this registry only when the feature is considered stable
- * - Users activate flags via GALETTE_FEATURE_FLAGS in behavior.inc.php
+ * - Every registered flag can be turned on by the super administrator, from
+ *   the advanced configuration page or the console; GALETTE_FEATURE_FLAGS in
+ *   behavior.inc.php takes precedence
  *
  * Format (simple flag without dependencies):
  *   'flag_name' => 'Description of the feature'
@@ -26,6 +28,13 @@ declare(strict_types=1);
  *       'description' => 'Description of the feature',
  *       'requires' => ['dependency1', 'dependency2'], // Optional
  *   ]
+ *
+ * Existing statuses (informal):
+ * - Planning: The feature is planned but not yet implemented.
+ * - In Development: The feature is currently being developed (not available).
+ * - Experimental: The feature is implemented but not yet stable; it may have bugs or incomplete functionality (can be enabled).
+ * - Testing: The feature is implemented and considered stable for testing purposes; it may still have some issues (can be enabled).
+ * - Stable: The feature is fully implemented and considered stable for production use (cannot be disabled).
  */
 
 /** @var array<string, string|array{description: string, requires?: array<string>}> $feature_flags_registry */
@@ -58,17 +67,6 @@ $feature_flags_registry = [
     ],*/
 
     /**
-     * New Dashboard - Redesigned admin dashboard
-     *
-     * Modern dashboard with improved UX and better data visualization.
-     *
-     * Status: Planning
-     * Added: 2026-04-08
-     * Target: 1.3.0
-     */
-    /*'new-dashboard' => 'Redesigned admin dashboard with modern UI',*/
-
-    /**
      * API v2 - RESTful API with OAuth2
      *
      * New REST API version with OAuth2 authentication support.
@@ -88,17 +86,16 @@ $feature_flags_registry = [
      *
      * The second factor itself ships in 1.3.0, disabled by default and marked
      * experimental. Making it compulsory -- for administrators and staff, or
-     * for everyone -- is held back one version: under a mandatory policy a
-     * clock that drifts or a botched enrolment puts a whole association outside
-     * its own instance, and the way back is a SQL statement. Without this flag
-     * both policies read as "optional", so a member already enrolled keeps
-     * being asked for their code.
+     * for everyone.
+     * The galette:twofactor:reset console command is the way back.
+     * Without this flag both policies read as "optional", so a member already
+     * enrolled keeps being asked for their code.
      *
-     * Status: In Development
+     * Status: Testing
      * Added: 2026-09-06
      * Target: 1.4.0
      */
-    'two-factor-required' => 'Mandatory two-factor authentication policies (staff, everyone)',
+    'two-factor-required' => 'Mandatory two-factor authentication policies',
 
     /**
      * Add new feature flags below following this format:

@@ -12,6 +12,8 @@ namespace Galette\Util;
 
 use Galette\Entity\Adherent;
 use Safe\Exceptions\FilesystemException;
+use Analog\Analog;
+use Galette\Core\Logs;
 use Slim\Psr7\UploadedFile;
 
 use function Safe\copy;
@@ -60,7 +62,8 @@ class FakeData
             } else {
                 return true;
             }
-        } catch (FilesystemException) {
+        } catch (FilesystemException $e) {
+            Logs::exception($e, 'Unable to copy fake photo for member #' . $member->id, Analog::WARNING);
             $this->addError(
                 _T("Photo has not been copied!")
             );

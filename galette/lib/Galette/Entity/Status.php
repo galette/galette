@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
 use ArrayObject;
@@ -103,11 +104,7 @@ class Status
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load status #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load status #' . $id, Analog::WARNING);
             throw $e;
         }
     }
@@ -170,11 +167,7 @@ class Status
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize defaults status '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to initialize defaults status', Analog::WARNING);
             throw $e;
         }
     }
@@ -210,10 +203,7 @@ class Status
             }
             return $list;
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, __METHOD__);
             throw $e;
         }
     }
@@ -249,11 +239,7 @@ class Status
             }
             return $list;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list status '
-                . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list status', Analog::WARNING);
             throw $e;
         }
     }
@@ -281,10 +267,7 @@ class Status
 
             return $result;
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -325,14 +308,11 @@ class Status
             if ($result) {
                 return (int)$result->{self::PK};
             } else {
+                Analog::log('Get status id from label `' . $label . '`: label not found', Analog::INFO);
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to retrieve status from label `'
-                . $label . '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to retrieve status from label `' . $label . '`');
             throw $e;
         }
     }
@@ -390,11 +370,7 @@ class Status
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to add new status `' . $label . '` | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to add new status `' . $label . '`');
             throw $e;
         }
     }
@@ -402,15 +378,16 @@ class Status
     /**
      * Update in database.
      *
-     * @param int    $id    Entry ID
-     * @param string $label The label
-     * @param int    $extra Extra values (priority for statuses,
-     *                      extension for contributions types,
-     *                      ...)
+     * @param int    $id                Entry ID
+     * @param string $label             The label
+     * @param int    $extra             Extra values (priority for statuses,
+     *                                  extension for contributions types,
+     *                                  ...)
+     * @param bool   $keep_translations Keep existing translations if label changes
      *
      * @return self::ID_NOT_EXITS|bool
      */
-    public function update(int $id, string $label, int $extra): int|bool
+    public function update(int $id, string $label, int $extra, bool $keep_translations = false): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -434,8 +411,7 @@ class Status
             $this->zdb->execute($update);
 
             if ($oldlabel != $label) {
-                $this->deleteTranslation($oldlabel);
-                $this->addTranslation($label);
+                $this->renameTranslation($oldlabel, $label, $keep_translations);
             }
 
             Analog::log(
@@ -446,11 +422,7 @@ class Status
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to update status #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to update status #' . $id);
             throw $e;
         }
     }
@@ -496,11 +468,7 @@ class Status
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to delete status  #' . $id
-                . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete status  #' . $id);
             throw $e;
         }
     }
@@ -521,11 +489,7 @@ class Status
 
             return $result !== null;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to check if status #' . $id
-                . ' is used. | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to check if status #' . $id . ' is used.');
             //in case of error, we consider that it is used, to avoid errors
             return true;
         }

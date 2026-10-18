@@ -125,10 +125,7 @@ class MailingHistory extends History
 
             return $ret;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to get history. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to get history', Analog::WARNING);
             throw $e;
         }
     }
@@ -265,10 +262,7 @@ class MailingHistory extends History
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -298,12 +292,37 @@ class MailingHistory extends History
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count history | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count history', Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Can current user access a mailing from history?
+     * Admin and staff can access all mailings, others only the ones they sent.
+     *
+     * @param Db    $zdb   Database instance
+     * @param int   $id    Mailing identifier
+     * @param Login $login Login instance
+     */
+    public static function canAccess(Db $zdb, int $id, Login $login): bool
+    {
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        $select = $zdb->select(self::TABLE);
+        $select->columns([self::PK]);
+        $select->where([
+            self::PK => $id,
+            'mailing_sender' => $login->id
+        ]);
+
+        return $zdb->execute($select)->count() > 0;
     }
 
     /**
@@ -328,11 +347,7 @@ class MailingHistory extends History
 
             return $mailing->loadFromHistory($result, $new);
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to load mailing model #' . $id . ' | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to load mailing model #' . $id, Analog::WARNING);
             throw $e;
         }
     }
@@ -405,9 +420,7 @@ class MailingHistory extends History
             'mailing_body'              => $this->message,
             'mailing_date'              => $this->date,
             'mailing_recipients'        => Galette::jsonEncode($_recipients),
-            'mailing_sent'              => ($this->sent)
-                ? true
-                : ($this->zdb->isPostgres() ? 'false' : 0)
+            'mailing_sent'              => $this->sent
         ];
     }
 
@@ -423,10 +436,7 @@ class MailingHistory extends History
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating Mailing | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred updating Mailing', Analog::ERROR);
             throw $e;
         }
     }
@@ -444,10 +454,7 @@ class MailingHistory extends History
             $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing Mailing | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing Mailing', Analog::ERROR);
             throw $e;
         }
     }
@@ -486,11 +493,7 @@ class MailingHistory extends History
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to delete selected mailing history entries |'
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete selected mailing history entries', Analog::ERROR);
             return false;
         }
     }
@@ -543,11 +546,8 @@ class MailingHistory extends History
             } else {
                 $recipients = Galette::jsonDecode($row['mailing_recipients']);
             }
-        } catch (\Throwable) {
-            Analog::log(
-                'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
-                Analog::ERROR
-            );
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Unable to retrieve recipients for mailing history ' . $row['mailing_id'], Analog::ERROR);
         }
         $row['mailing_recipients'] = $recipients;
     }

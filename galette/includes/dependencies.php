@@ -111,7 +111,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 });
 
 // Flash messages
-$container->set(\Slim\Flash\Messages::class, DI\autowire());
+$container->set(\Slim\Flash\Messages::class, DI\autowire(\Galette\Core\FlashMessages::class));
 
 /** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
@@ -202,7 +202,7 @@ $container->set('members_fields', function () {
 $container->set('members_form_fields', function (ContainerInterface $c) {
     $fields = $c->get('members_fields');
     foreach ($fields as $k => $field) {
-        if ($field['position'] == -1) {
+        if (!\Galette\Entity\FieldsConfig::isColumn($field)) {
             unset($fields[$k]);
         }
     }

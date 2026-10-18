@@ -4,91 +4,78 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-                <div class="ui basic fitted segment loader_selector">
-                    <table class="listing ui celled striped table">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="left">
-                                    {{ _T("Name") }}
-                                </th>
-                                <th scope="col" class="left">
-                                    {{ _T("Nickname") }}
-                                </th>
-                                {% if login.isSuperAdmin() %}
-                                <th scope="col" class="collapsing">
-                                    {{ _T("Actions") }}
-                                </th>
-                                {% endif %}
-                            </tr>
-                        </thead>
-                        <tbody>
+{#
+ # Members and managers of the group, one row per person.
+ #
+ # Persons are added to the table without being stored; unchecked or disabled
+ # checkboxes are not posted, so members[] and managers[] carry exactly the
+ # persons to store. The empty values are always posted, so that an emptied
+ # list is stored as such.
+ #}
+{% set can_edit_persons = login.isAdmin() or login.isStaff() %}
+{% set group_managers = group.getManagers() %}
+{% set group_members = group.getMembers() %}
+{% set manager_ids = group_managers|map(p => p.id) %}
+{% set member_ids = group_members|map(p => p.id) %}
+{% set persons = group_managers|merge(group_members|filter(p => p.id not in manager_ids))|sort((a, b) => a.sname|lower <=> b.sname|lower) %}
+    <div id="group_persons" class="ui basic fitted segment">
+        <div class="ui styled fluid accordion row">
+            <div class="active title">
+                <i class="icon dropdown" aria-hidden="true"></i>
+                {{ _T("Members") }} ({{ group_members|length }}) - {{ _T("Managers") }} ({{ group_managers|length }})
+            </div>
+            <div class="active content field">
+{% if can_edit_persons %}
+                <input type="hidden" name="members[]" value=""/>
+                <input type="hidden" name="managers[]" value=""/>
+{% endif %}
+                <table class="listing ui celled striped table" id="group_persons_list">
+                    <caption class="visually-hidden">{{ _T("Members") }}</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="left">{{ _T("Name") }}</th>
+                            <th scope="col" class="left">{{ _T("Nickname") }}</th>
+                            <th scope="col" class="center aligned collapsing">{{ _T("Member of group") }}</th>
+                            <th scope="col" class="center aligned collapsing">{{ _T("Group manager") }}</th>
+                            <th scope="col" class="collapsing"><span class="visually-hidden">{{ _T("Actions") }}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 {% for person in persons %}
-                            <tr>
-                                <td class="username_row" data-col-label="{{ _T("Name") }}">
-                                <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
-                                {% if person.isCompany() %}
-                                    <span>
-                                        <i class="ui building outline icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("Company") }}</span>
-                                    </span>
-                                {% elseif person.isMan() %}
-                                    <span>
-                                        <i class="ui male icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("Man") }}</span>
-                                    </span>
-                                {% elseif person.isWoman() %}
-                                    <span>
-                                        <i class="ui female icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("Woman") }}</span>
-                                    </span>
-                                {% else %}
-                                    <i class="ui icon" aria-hidden="true"></i>
-                                {% endif %}
-                                {% if person.isAdmin() %}
-                                    <span>
-                                        <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("Administrator") }}</span>
-                                    </span>
-                                {% elseif person.isStaff() %}
-                                    <span>
-                                        <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T("Staff member") }}</span>
-                                    </span>
-                                {% elseif person.getManagedGroups() %}
-                                    <span>
-                                        <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
-                                        <span class="ui special popup">{{ _T('Group manager') }}</span>
-                                    </span>
-                                {% else %}
-                                    <i class="ui icon" aria-hidden="true"></i>
-                                {% endif %}
-                                <a href="{{ url_for("member", {"id": person.id}) }}">{{ person.sfullname }}</a>
-                                </td>
-                                <td data-col-label="{{ _T("Nickname") }}">{{ person.nickname|escape }}</td>
-    {% if login.isSuperAdmin() %}
-                                <td class="actions_row collapsing">
-                                    <a
-                                            href="{{ url_for("impersonate", {"id": person.id}) }}"
-                                            class="icon-only"
-                                    >
-                                        <i class="ui user secret grey icon tooltip" aria-hidden="true"></i>
-                                        <span class="visually-hidden">{{ _T('Log in as %1$s')|format(person.sname) }}</span>
-                                    </a>
-                                </td>
-                            </tr>
-    {% endif %}
-{% else %}
-                            <tr>
-                                <td colspan="{% if login.isSuperAdmin() %}3{% else %}2{% endif %}">
-    {% if person_mode == 'members' %}
-                                    {{ _T("No member attached") }}
-    {% else %}
-                                    {{ _T("No manager attached") }}
-    {% endif %}
-                                </td>
-                            </tr>
+    {% include "elements/group_person_row.html.twig" with {
+        'is_member': person.id in member_ids,
+        'is_manager': person.id in manager_ids,
+        'linked': true
+    } %}
 {% endfor %}
-                        </tbody>
-                    </table>
+                        <tr id="group_persons_empty"{% if persons|length > 0 %} hidden{% endif %}>
+                            <td colspan="5" class="emptylist">{{ _T("No member attached") }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+{% if can_edit_persons %}
+                <div class="fields">
+                    {% include 'components/forms/member_dropdown.html.twig' with {
+                        'label': _T("Add a member"),
+                        'id': 'person_add',
+                        'value': null,
+                        'component_class': 'twelve wide field'
+                    } %}
+                    <div class="four wide field">
+                        <label aria-hidden="true">&nbsp;</label>
+                        <button type="button" id="person_add_btn" class="ui fluid labeled icon button">
+                            <i class="plus green icon" aria-hidden="true"></i>
+                            {{ _T("Add") }}
+                        </button>
+                    </div>
                 </div>
-
+{% endif %}
+                <div id="group_persons_status" aria-live="polite">
+                    <div class="ui small visible warning message displaynone">
+                        <i class="info circle icon" aria-hidden="true"></i>
+                        {{ _T("Items in this list have been modified. Don't forget to save your changes.") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

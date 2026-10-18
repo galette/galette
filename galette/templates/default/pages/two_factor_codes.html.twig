@@ -16,6 +16,7 @@
             <li><code>{{ code }}</code></li>
     {% endfor %}
         </ul>
+        {% include "components/copy_button.html.twig" with {target: "#tfa_recovery_codes", label: _T("Copy the codes")} only %}
 
         <a href="{{ url_for('two-factor-manage') }}" class="ui primary button">
             <i class="check icon" aria-hidden="true"></i>

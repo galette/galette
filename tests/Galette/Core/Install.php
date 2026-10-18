@@ -426,6 +426,16 @@ class Install extends BaseGaletteTestCase
     }
 
     /**
+     * Test reading existing database password alone
+     */
+    public function testGetExistingDbPass(): void
+    {
+        $errors = [];
+        $this->install->loadExistingConfigForUpdate($errors);
+        $this->assertSame($this->install->getDbPass(), $this->install->getExistingDbPass());
+    }
+
+    /**
      * Test database constants are defined only once (idempotent)
      */
     public function testInitDbConstantsIdempotent(): void
@@ -461,5 +471,13 @@ class Install extends BaseGaletteTestCase
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
+    }
+
+    /**
+     * Superadmin password minimum length follows passwords default one
+     */
+    public function testAdminPasswordMinLength(): void
+    {
+        $this->assertSame(6, \Galette\Core\Install::getAdminPasswordMinLength());
     }
 }

@@ -60,11 +60,7 @@ class Password extends AbstractPassword
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error has occurred removing old tmppasswords '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error has occurred removing old tmppasswords', Analog::ERROR);
             return false;
         }
     }
@@ -103,11 +99,7 @@ class Password extends AbstractPassword
             $this->setHash($hash);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred trying to add temporary password entry. "
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to add temporary password entry', Analog::ERROR);
             return false;
         }
     }
@@ -133,11 +125,7 @@ class Password extends AbstractPassword
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred deleting expired temporary passwords. '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred deleting expired temporary passwords', Analog::WARNING);
             return false;
         }
     }
@@ -180,10 +168,7 @@ class Password extends AbstractPassword
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting requested token. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred getting requested token', Analog::WARNING);
             return false;
         }
     }
@@ -208,11 +193,7 @@ class Password extends AbstractPassword
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred attempting to delete used token'
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred attempting to delete used token', Analog::WARNING);
             return false;
         }
     }

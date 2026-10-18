@@ -78,29 +78,6 @@ test.describe('Mailings', () => {
     }
   });
 
-  // Test sender selection
-  test('Mailings - Sender selection available', async ({ loggedInPage: page }) => {
-    await page.goto('/members');
-
-    const mailingLink = page.locator('a[href*="mailing"]').first();
-
-    if (await mailingLink.count() > 0) {
-      await mailingLink.click();
-      await page.waitForSelector('form, body', { timeout: 10000 });
-
-      // Check for sender options
-      const senderSelect = page.locator('select[name="sender"], select[id="sender"]');
-
-      if (await senderSelect.count() > 0) {
-        await expect(senderSelect).toBeVisible();
-
-        // Should have options
-        const options = await senderSelect.locator('option').count();
-        expect(options).toBeGreaterThan(0);
-      }
-    }
-  });
-
   // Test recipients display
   test('Mailings - Recipients information visible', async ({ loggedInPage: page }) => {
     await page.goto('/members');

@@ -21,6 +21,7 @@ use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette groups controller
@@ -132,6 +133,22 @@ class GroupsController extends CrudController
         $groups_root = $groups->getList(full: false);
         $groups_list = $groups->getList();
 
+        //group managers only see the groups they manage, and their ancestors to keep the tree readable
+        $visible_groups = null;
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $visible_groups = [];
+            foreach ($groups_list as $visible_group) {
+                do {
+                    $visible_groups[] = $visible_group->getId();
+                } while ($visible_group = $visible_group->getParentGroup());
+            }
+            $visible_groups = array_values(array_unique($visible_groups));
+            $groups_root = array_filter(
+                $groups_root,
+                fn(Group $root): bool => in_array($root->getId(), $visible_groups, strict: true)
+            );
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -139,6 +156,7 @@ class GroupsController extends CrudController
             [
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
+                'visible_groups'        => $visible_groups,
                 'is_paginated'          => false,
                 'form'                  => true,
                 'table'                 => [
@@ -172,6 +190,16 @@ class GroupsController extends CrudController
                 $id = $item[0];
                 $parentId = $item[1];
                 $group = new Group((int)$id);
+                if (!$group->canEdit($this->login)) {
+                    Analog::log(
+                        'Trying to reorder group ' . $id . ' without appropriate permissions',
+                        Analog::WARNING
+                    );
+                    continue;
+                }
+                if (!$this->canMoveUnder($group, (int)$parentId)) {
+                    continue;
+                }
                 $parentGroup = new Group((int)$parentId);
                 if ($parentId != '0') {
                     $group->setParentGroup((int)$parentId);
@@ -201,66 +229,7 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Group page
-     */
-    #[Route(
-        name: 'ajax_group',
-        pattern: '/ajax/group',
-        methods: ['POST']
-    )]
-    public function getGroup(Request $request, Response $response): Response
-    {
-        $post = $request->getParsedBody();
-        $id = $post['id_group'];
-        $group = new Group((int)$id);
-        if (!$group->canEdit($this->login)) {
-            throw new \RuntimeException('Trying to edit group without appropriate permissions');
-        }
-
-        $groups = new Groups($this->zdb, $this->login);
-
-        // display page
-        $this->view->render(
-            $response,
-            'elements/group.html.twig',
-            [
-                'mode'      => 'ajax',
-                'groups'    => $groups->getList(),
-                'group'     => $group
-            ]
-        );
-        return $response;
-    }
-
-    /**
-     * Groups list page for ajax calls
-     */
-    #[Route(
-        name: 'ajax_groups',
-        pattern: '/ajax/groups',
-        methods: ['POST']
-    )]
-    public function simpleList(Request $request, Response $response): Response
-    {
-        $post = $request->getParsedBody();
-
-        $groups = new Groups($this->zdb, $this->login);
-
-        // display page
-        $this->view->render(
-            $response,
-            'elements/ajax_groups.html.twig',
-            [
-                'mode'              => 'ajax',
-                'groups_list'       => $groups->getList(),
-                'selected_groups'   => ($post['groups'] ?? [])
-            ]
-        );
-        return $response;
-    }
-
-    /**
-     * Group members ajax loader
+     * Group person row ajax loader, for a person added from the group page
      */
     #[Route(
         name: 'ajaxGroupMembers',
@@ -270,28 +239,26 @@ class GroupsController extends CrudController
     public function ajaxMembers(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-
-        $ids = $post['persons'];
-        $mode = $post['person_mode'];
-
-        if (!$ids || !$mode) {
+        $m = new Members();
+        $persons = $m->getArrayList([(int)($post['id_adh'] ?? 0)]);
+        if (!is_array($persons) || count($persons) === 0) {
             Analog::log(
-                'Missing persons and mode for ajaxGroupMembers',
+                'Missing or unknown person for ajaxGroupMembers',
                 Analog::INFO
             );
-            die();
+            return $response->withStatus(404);
         }
-
-        $m = new Members();
-        $persons = $m->getArrayList($ids);
 
         // display page
         $this->view->render(
             $response,
-            'elements/group_persons.html.twig',
+            'elements/group_person_row.html.twig',
             [
-                'persons'       => $persons,
-                'person_mode'   => $mode
+                'person'            => reset($persons),
+                'is_member'         => true,
+                'is_manager'        => false,
+                'linked'            => false,
+                'can_edit_persons'  => true
             ]
         );
         return $response;
@@ -344,15 +311,27 @@ class GroupsController extends CrudController
             }
         }
 
+        $params = [
+            'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
+            'parent_groups'         => $parent_groups,
+            'group'                 => $group
+        ];
+
+        //members that can be added to the group
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            $m = new Members();
+            $list = $m->getDropdownMembers($this->zdb, $this->login);
+            $params['members'] = [
+                'filters'   => $m->getFilters(),
+                'list'      => $list
+            ];
+        }
+
         // display page
         $this->view->render(
             $response,
             'pages/group_form.html.twig',
-            [
-                'page_title'            => sprintf('%1$s - %2$s', _T('Group'), $group->getName()),
-                'parent_groups'         => $parent_groups,
-                'group'                 => $group
-            ]
+            $params
         );
         return $response;
     }
@@ -377,18 +356,23 @@ class GroupsController extends CrudController
 
         $group->setName($post['group_name']);
         try {
+            if (!$this->canMoveUnder($group, (int)$post['parent_group'])) {
+                throw new \RuntimeException(
+                    sprintf(
+                        _T('Group `%1$s` cannot be set as parent!'),
+                        (new Group((int)$post['parent_group']))->getName()
+                    )
+                );
+            }
             if ($post['parent_group'] !== '') {
                 $group->setParentGroup((int)$post['parent_group']);
             } else {
                 $group->detach();
             }
 
-            $m = new Members();
-
             //handle group managers
             if (isset($post['managers'])) {
-                $managers_id = $post['managers'];
-                $managers = $m->getArrayList($managers_id);
+                $managers = $this->getPostedPersons($group, $post['managers'], Group::MANAGER_TYPE);
                 if (is_array($managers)) {
                     $group->setManagers($managers);
                 }
@@ -396,8 +380,7 @@ class GroupsController extends CrudController
 
             //handle group members
             if (isset($post['members'])) {
-                $members_id = $post['members'];
-                $members = $m->getArrayList($members_id);
+                $members = $this->getPostedPersons($group, $post['members'], Group::MEMBER_TYPE);
                 if (is_array($members)) {
                     $group->setMembers($members);
                 }
@@ -420,6 +403,7 @@ class GroupsController extends CrudController
                 );
             }
         } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to store group #' . $id, Analog::INFO);
             $this->flash->addMessage(
                 'error_detected',
                 $e->getMessage()
@@ -441,14 +425,6 @@ class GroupsController extends CrudController
     )]
     public function reorder(Request $request, Response $response): Response
     {
-        if (
-            !$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && !($this->login->isGroupManager() && $this->preferences->pref_bool_groupsmanagers_edit_groups)
-        ) {
-            throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
-        }
-
         $post = $request->getParsedBody();
         if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {
             Analog::log(
@@ -459,12 +435,19 @@ class GroupsController extends CrudController
         } else {
             $id = $post['id_group'];
             $group = new Group((int)$id);
-            if (!empty($post['to'])) {
-                $group->setParentGroup((int)$post['to']);
-            } else {
-                $group->detach();
+            if (!$group->canEdit($this->login)) {
+                throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
             }
-            $result = $group->store();
+            if (!$this->canMoveUnder($group, (int)$post['to'])) {
+                $result = false;
+            } else {
+                if (!empty($post['to'])) {
+                    $group->setParentGroup((int)$post['to']);
+                } else {
+                    $group->detach();
+                }
+                $result = $group->store();
+            }
         }
 
         return $this->withJson(
@@ -555,4 +538,79 @@ class GroupsController extends CrudController
     }
 
     // CRUD - Delete
+
+    /**
+     * Can current user move a group under given parent?
+     *
+     * As on the groups list, group managers can only move a group under a group
+     * they manage. Moving at the top, or keeping current parent, is always allowed.
+     *
+     * @param Group $group     Group to move
+     * @param int   $parent_id Parent group id, 0 for none
+     */
+    private function canMoveUnder(Group $group, int $parent_id): bool
+    {
+        if (
+            $parent_id === 0
+            || $parent_id === $group->getParentGroup()?->getId()
+            || $this->login->isGroupManager($parent_id)
+        ) {
+            return true;
+        }
+
+        Analog::log(
+            'Trying to move group ' . $group->getId() . ' under group ' . $parent_id
+                . ' without appropriate permissions',
+            Analog::WARNING
+        );
+        return false;
+    }
+
+    /**
+     * Get persons posted for a group.
+     *
+     * Only admin and staff can change managers and members from the group page,
+     * as the user interface does. Group managers change members of their groups
+     * from member pages. For admin and staff, the group form always posts an
+     * empty value, so that an emptied list is stored; a warning is logged only
+     * if a group manager tries to change them.
+     *
+     * @param Group        $group Group instance, before changes
+     * @param array<mixed> $ids   Posted persons ids
+     * @param int          $type  Either Group::MEMBER_TYPE or Group::MANAGER_TYPE
+     *
+     * @return array<int, Adherent>|false
+     */
+    private function getPostedPersons(Group $group, array $ids, int $type): array|false
+    {
+        $ids = array_values(array_unique(array_filter(
+            array_map(intval(...), $ids),
+            fn(int $id): bool => $id > 0
+        )));
+
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            if (count($ids) === 0) {
+                return [];
+            }
+            $m = new Members();
+            return $m->getArrayList($ids);
+        }
+
+        $current = $type === Group::MANAGER_TYPE ? $group->getManagers() : $group->getMembers();
+        $current = array_map(fn(Adherent $person): int => (int)$person->id, $current);
+        sort($current);
+        sort($ids);
+        if ($ids !== $current) {
+            Analog::log(
+                sprintf(
+                    'Trying to change %1$s of group %2$s without appropriate permissions',
+                    $type === Group::MANAGER_TYPE ? 'managers' : 'members',
+                    $group->getId()
+                ),
+                Analog::WARNING
+            );
+        }
+
+        return false;
+    }
 }

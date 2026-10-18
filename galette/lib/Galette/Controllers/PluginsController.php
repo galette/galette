@@ -22,6 +22,7 @@ use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\file_get_contents;
 use function Safe\ob_end_clean;
@@ -89,6 +90,7 @@ class PluginsController extends AbstractController
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
+                    Logs::exception($e, 'Unable to activate plugin ' . $module_id, Analog::ERROR);
                     $error_detected[] = $e->getMessage();
                 }
             } elseif ($action == 'deactivate') {
@@ -100,6 +102,7 @@ class PluginsController extends AbstractController
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
+                    Logs::exception($e, 'Unable to deactivate plugin ' . $module_id, Analog::ERROR);
                     $error_detected[] = $e->getMessage();
                 }
             }

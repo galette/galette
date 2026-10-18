@@ -7,3 +7,22 @@
 /bin/serve export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+
+# Development tooling, read neither by the release build nor at runtime.
+/.claude export-ignore
+/.claudeignore export-ignore
+/.clinerules export-ignore
+/.cursorrules export-ignore
+/.windsurfrules export-ignore
+/AGENTS.md export-ignore
+/CLAUDE.md export-ignore
+/.licence-header export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/composer-dependency-analyser.php export-ignore
+/compose.yaml export-ignore
+/phpunit.xml.dist export-ignore
+/playwright.config.ts export-ignore
+/README.tests.md export-ignore
+/rector.php export-ignore
+/stubs export-ignore
+/tsconfig.json export-ignore

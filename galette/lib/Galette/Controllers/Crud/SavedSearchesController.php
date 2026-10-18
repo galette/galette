@@ -21,6 +21,9 @@ use Galette\Filters\MembersList;
 use Galette\Filters\SavedSearchesList;
 use Galette\Repository\SavedSearches;
 use Analog\Analog;
+use Galette\Core\Logs;
+
+use function Safe\json_encode;
 
 /**
  * Galette saved searches controller
@@ -62,11 +65,7 @@ class SavedSearchesController extends CrudController
 
         //when using advanced search, no parameters are sent
         if (isset($post['advanced_search'])) {
-            $post = [];
-            $filters = $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())};
-            foreach ($filters->search_fields as $field) {
-                $post[$field] = $filters->$field;
-            }
+            $post = $this->getCurrentSearchParameters() ?? [];
         }
 
         //reformat, add required infos
@@ -183,9 +182,37 @@ class SavedSearchesController extends CrudController
      *
      * @param int $id Record id
      */
+    #[Route(
+        name: 'editSearch',
+        pattern: '/search/edit/{id:\d+}',
+        methods: ['GET'],
+        requiresAuth: true
+    )]
     public function edit(Request $request, Response $response, int $id): Response
     {
-        //no edition
+        try {
+            $sco = new SavedSearch($this->zdb, $this->login, $id);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::WARNING);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/saved_search_form.html.twig',
+            [
+                'page_title'        => _T("Edit saved search"),
+                'search'            => $sco,
+                'can_replace'       => $this->getCurrentSearchParameters() !== null
+            ]
+        );
         return $response;
     }
 
@@ -194,10 +221,80 @@ class SavedSearchesController extends CrudController
      *
      * @param int $id Record id
      */
+    #[Route(
+        name: 'doEditSearch',
+        pattern: '/search/edit/{id:\d+}',
+        methods: ['POST'],
+        requiresAuth: true
+    )]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
-        //no edition
-        return $response;
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        try {
+            $sco = new SavedSearch($this->zdb, $this->login, $id);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::WARNING);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        $values = [
+            'form'  => $sco->form,
+            'name'  => $post['name'] ?? ''
+        ];
+        if (isset($post['replace_parameters'])) {
+            $parameters = $this->getCurrentSearchParameters();
+            if ($parameters !== null) {
+                $values['parameters'] = $parameters;
+            }
+        }
+
+        if ($sco->check($values) && $sco->store()) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Search has been saved.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        foreach ($sco->getErrors() as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('editSearch', ['id' => (string)$id]));
+    }
+
+    /**
+     * Parameters of the advanced search currently in use on members list
+     *
+     * @return ?array<string, mixed>
+     */
+    private function getCurrentSearchParameters(): ?array
+    {
+        $filters = $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} ?? null;
+        if (!$filters instanceof AdvancedMembersList) {
+            return null;
+        }
+
+        return $filters->getSearchParameters();
     }
 
     // /CRUD - Update
@@ -282,28 +379,56 @@ class SavedSearchesController extends CrudController
     {
         try {
             $sco = new SavedSearch($this->zdb, $this->login, $id);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::ERROR);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Saved search does not exist.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('searches'));
+        }
+
+        $parameters = $sco->parameters;
+
+        if (isset($parameters['free_search'])) {
+            $filters = new AdvancedMembersList();
+        } else {
+            $filters = new MembersList();
+        }
+
+        //a criteria that cannot be set must not prevent the others to load
+        $invalid = [];
+        foreach ($parameters as $key => $value) {
+            try {
+                $filters->$key = $value;
+            } catch (Throwable $e) {
+                Logs::exception($e, 'Unable to set `' . $key . '` from saved search #' . $id, Analog::WARNING);
+                $invalid[] = sprintf(
+                    //TRANS: %1$s is the search criteria name, %2$s its value
+                    _T('%1$s: invalid value "%2$s"'),
+                    $key,
+                    is_scalar($value) ? (string)$value : json_encode($value)
+                );
+            }
+        }
+        $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
+
+        $discarded = array_merge($filters->getDiscarded(), $invalid);
+        if (count($discarded)) {
+            $this->flash->addMessage(
+                'warning_detected',
+                sprintf(
+                    //TRANS: %1$s is the list of ignored criteria
+                    _T('Saved search loaded, but some of its criteria have been ignored: %1$s'),
+                    implode(', ', $discarded)
+                )
+            );
+        } else {
             $this->flash->addMessage(
                 'success_detected',
                 _T("Saved search loaded")
-            );
-
-            $parameters = $sco->parameters;
-
-            if (isset($parameters['free_search'])) {
-                $filters = new AdvancedMembersList();
-            } else {
-                $filters = new MembersList();
-            }
-
-            foreach ($parameters as $key => $value) {
-                $filters->$key = $value;
-            }
-            $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
-        } catch (Throwable $e) {
-            Analog::log($e->getMessage(), Analog::ERROR);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("An SQL error has occurred while loading search.")
             );
         }
 

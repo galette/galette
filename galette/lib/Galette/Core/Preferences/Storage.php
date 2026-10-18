@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Core\Preferences;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Db;
 use Throwable;
 
@@ -54,10 +55,10 @@ final readonly class Storage
             }
 
             return $values;
-        } catch (Throwable) {
-            Analog::log(
-                'Preferences cannot be loaded. Galette should not work without '
-                . 'preferences. Exiting.',
+        } catch (Throwable $e) {
+            Logs::exception(
+                $e,
+                'Preferences cannot be loaded. Galette should not work without preferences. Exiting.',
                 Analog::URGENT
             );
             return null;
@@ -79,10 +80,7 @@ final readonly class Storage
             $this->zdb->handleSequence(self::TABLE, self::PK, self::LEGACY_ROWS);
             $this->insertAll($values);
         } catch (Throwable $e) {
-            Analog::log(
-                sprintf('Unable to add missing preferences. %s', $e->getMessage()),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to add missing preferences.', Analog::WARNING);
             return false;
         }
 
@@ -116,10 +114,7 @@ final readonly class Storage
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default preferences.' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to initialize default preferences', Analog::WARNING);
             throw $e;
         }
     }
@@ -142,10 +137,7 @@ final readonly class Storage
             Analog::log(sprintf('%s updated.', $name), Analog::INFO);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                sprintf('Unable to store update field %s | %s', $name, print_r($this->messages($e), return: true)),
-                Analog::WARNING
-            );
+            Logs::exception($e, sprintf('Unable to store update field %s', $name), Analog::WARNING);
             return false;
         }
     }
@@ -180,10 +172,7 @@ final readonly class Storage
                 $this->zdb->rollback();
             }
 
-            Analog::log(
-                'Unable to store preferences | ' . print_r($this->messages($e), return: true),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to store preferences', Analog::WARNING);
             return false;
         }
     }
@@ -204,22 +193,5 @@ final readonly class Storage
         foreach ($values as $name => $value) {
             $stmt->execute(['nom_pref' => $name, 'val_pref' => $value]);
         }
-    }
-
-    /**
-     * Flatten an exception chain into readable messages
-     *
-     * @param Throwable $e Exception to walk
-     *
-     * @return array<string>
-     */
-    private function messages(Throwable $e): array
-    {
-        $messages = [];
-        do {
-            $messages[] = $e->getMessage();
-        } while ($e = $e->getPrevious());
-
-        return $messages;
     }
 }

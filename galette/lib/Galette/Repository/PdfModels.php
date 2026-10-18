@@ -13,6 +13,7 @@ namespace Galette\Repository;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Entity\PdfModel;
 
 /**
@@ -41,10 +42,7 @@ class PdfModels extends Repository
             }
             return $models;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list pdf models | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list pdf models', Analog::WARNING);
             throw $e;
         }
     }

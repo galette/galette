@@ -603,7 +603,7 @@
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
                             <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {% if pref.pref_bool_create_member == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_bool_create_member">{{ _T("Can members create child?") }}</label>
+                            <label for="pref_bool_create_member">{{ _T("Can members create child members?") }}</label>
                         </div>
                     </div>
                     <div class="field inline">
@@ -1467,7 +1467,6 @@
 
                 {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
-                        loader: "inline mini",
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                 } %}
 

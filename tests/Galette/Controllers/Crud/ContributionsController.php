@@ -1343,4 +1343,121 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->expectAuthMiddlewareRefused($test_response);
     }
+
+    /**
+     * Test mass contributions are refused to group managers
+     */
+    public function testMassAddContributionsGroupManager(): void
+    {
+        $this->logGroupManager();
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+
+        $requests = [
+            $this->createRequest('massAddContributionsChooseType', []),
+            $this->createRequest('massAddContributions', [], 'POST'),
+            $this->createRequest('doMassAddContributions', [], 'POST'),
+        ];
+        foreach ($requests as $request) {
+            $test_response = $this->app->handle($request);
+            $this->expectAuthMiddlewareRefused($test_response);
+        }
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+
+        $this->login->logOut();
+    }
+
+    /**
+     * Test groups managers see their groups members contributions and transactions
+     * only when preferences allow it
+     */
+    public function testListGroupManagerPreferences(): void
+    {
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+        $this->logSuperAdmin();
+        $member_two = $this->getMemberTwo();
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->createContribution();
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $this->assertTrue(
+            $transaction->check(
+                [
+                    'id_adh' => $member_two->id,
+                    'trans_date' => date('Y-m-d'),
+                    'trans_amount' => 77,
+                    'trans_desc' => 'FAKER' . $this->seed,
+                    'type_paiement_trans' => 6,
+                ],
+                [],
+                []
+            )
+        );
+        $this->assertTrue($transaction->store($this->history));
+        $this->login->logOut();
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        $see_contributions = $this->preferences->pref_bool_groupsmanagers_see_contributions;
+        $see_transactions = $this->preferences->pref_bool_groupsmanagers_see_transactions;
+
+        foreach (['contributions', 'transactions'] as $type) {
+            foreach ([false, true] as $allowed) {
+                $this->preferences->pref_bool_groupsmanagers_see_contributions = $allowed;
+                $this->preferences->pref_bool_groupsmanagers_see_transactions = $allowed;
+                unset($this->session->{$type . '_filter'});
+
+                $request = $this->createRequest(
+                    'contributions',
+                    ['type' => $type],
+                    query_params: [\Galette\Entity\Adherent::PK => (string)$member_two->id]
+                );
+                $test_response = $this->app->handle($request);
+                $this->assertSame(200, $test_response->getStatusCode());
+                $body = (string)$test_response->getBody();
+                if ($allowed) {
+                    $this->assertStringContainsString($member_two->sname, $body);
+                } else {
+                    $this->assertStringNotContainsString($member_two->sname, $body);
+                    $this->expectLogEntry(
+                        \Analog\Analog::WARNING,
+                        'Trying to display ' . $type . ' for member #' . $member_two->id
+                        . ' without appropriate ACLs'
+                    );
+                }
+            }
+        }
+
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = $see_contributions;
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = $see_transactions;
+        $this->login->logOut();
+    }
+
+    /**
+     * Test add page does not preselect a member out of reach
+     */
+    public function testAddPageMemberScope(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $create = $this->preferences->pref_bool_groupsmanagers_create_contributions;
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+
+        $group = $this->logGroupManager();
+        $request = $this->createRequest(
+            'addContribution',
+            ['type' => \Galette\Entity\Contribution::TYPE_FEE],
+            query_params: [\Galette\Entity\Adherent::PK => (string)$member_two->id]
+        );
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringNotContainsString($member_two->sname, (string)$test_response->getBody());
+
+        $this->assertTrue($group->setMembers([$member_two]));
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString($member_two->sname, (string)$test_response->getBody());
+
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = $create;
+        $this->login->logOut();
+    }
 }

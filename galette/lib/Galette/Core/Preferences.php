@@ -174,6 +174,7 @@ use function Safe\preg_replace;
  * @property      string   $pref_2fa_superadmin_secret
  * @property      bool     $pref_2fa_superadmin_enabled
  * @property      int      $pref_2fa_superadmin_timeslice
+ * @property      string   $pref_feature_flags
  * @property      int      $pref_throttle_ip_attempts
  * @property      int      $pref_throttle_ip_window
  * @property      int      $pref_throttle_account_attempts
@@ -370,10 +371,10 @@ class Preferences
 
         try {
             $this->socials = Social::getListForMember(id_adh: null);
-        } catch (Throwable) {
-            Analog::log(
-                'Preferences cannot be loaded. Galette should not work without '
-                . 'preferences. Exiting.',
+        } catch (Throwable $e) {
+            Logs::exception(
+                $e,
+                'Preferences cannot be loaded. Galette should not work without preferences. Exiting.',
                 Analog::URGENT
             );
             return false;
@@ -639,6 +640,7 @@ class Preferences
         );
 
         if (count($this->errors) > 0) {
+            Analog::log('Set preference ' . $name . ': refused (' . implode(' ', $this->errors) . ')', Analog::INFO);
             return false;
         }
 
@@ -655,6 +657,10 @@ class Preferences
         }
 
         if ($this->getErrors() !== []) {
+            Analog::log(
+                'Set preference ' . $name . ': value refused (' . implode(' ', $this->getErrors()) . ')',
+                Analog::INFO
+            );
             return false;
         }
 
@@ -745,6 +751,7 @@ class Preferences
         }
 
         if ($this->errors !== []) {
+            Analog::log('Store admin credentials: refused (' . implode(' ', $this->errors) . ')', Analog::INFO);
             return false;
         }
 
@@ -838,10 +845,7 @@ class Preferences
                 $this->dynamicsStore(transaction: true);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to store preferences related data | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to store preferences related data', Analog::WARNING);
             return false;
         }
 
@@ -1190,6 +1194,35 @@ class Preferences
     }
 
     /**
+     * Start of the current membership period
+     *
+     * Only defined when memberships share a fixed beginning date
+     * (pref_beg_membership); a rolling membership (pref_membership_ext)
+     * has no common period.
+     *
+     * The period starts on the most recent beginning date on or before $now.
+     * We step back from the current year candidate instead of subtracting a
+     * year from now, which would overflow on February 29th.
+     *
+     * @param ?\DateTimeInterface $now Reference date, defaults to today
+     */
+    public function getMembershipPeriodStart(?\DateTimeInterface $now = null): ?\Safe\DateTimeImmutable
+    {
+        if ($this->pref_beg_membership == '') {
+            return null;
+        }
+
+        $now = \Safe\DateTimeImmutable::createFromInterface($now ?? new \Safe\DateTimeImmutable())->setTime(0, 0);
+        [$j, $m] = explode('/', (string)$this->pref_beg_membership);
+        $start = $now->setDate((int)$now->format('Y'), (int)$m, (int)$j);
+        while ($start > $now) {
+            $start = $start->modify('-1 year');
+        }
+
+        return $start;
+    }
+
+    /**
      * Get errors
      *
      * @return array<string>
@@ -1361,6 +1394,43 @@ class Preferences
             'pref_registration_date',
             date('Y-m-d H:i:s')
         );
+    }
+
+    /**
+     * Get the experimental features the super administrator turned on
+     *
+     * @return array<string> Lowercased flag names
+     */
+    public function getFeatureFlags(): array
+    {
+        $stored = (string)($this->prefs['pref_feature_flags'] ?? '');
+        if (trim($stored) === '') {
+            return [];
+        }
+
+        return array_values(array_unique(array_filter(array_map(
+            fn(string $flag): string => strtolower(trim($flag)),
+            explode(',', $stored)
+        ))));
+    }
+
+    /**
+     * Store the experimental features turned on
+     *
+     * Checking that each flag may be turned on from here is up to the caller:
+     * the registry, not the preferences, knows what a flag is.
+     *
+     * @param array<string> $flags Flag names
+     */
+    public function storeFeatureFlags(array $flags): bool
+    {
+        $flags = array_values(array_unique(array_map(
+            fn(string $flag): string => strtolower(trim($flag)),
+            $flags
+        )));
+        sort($flags);
+
+        return $this->updateOneField('pref_feature_flags', implode(',', $flags));
     }
 
     /**

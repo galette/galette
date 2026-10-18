@@ -59,9 +59,9 @@ class TransactionsList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
-            \Analog\Analog::WARNING,
+            \Analog\Analog::INFO,
             sprintf(
-                '[Galette\Filters\TransactionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
+                '[Galette\Filters\TransactionsList|Pagination] Invalid direction | "abcde" is not a valid backing value for enum %1$s',
                 \Galette\Enums\SQLOrder::class
             )
         );

@@ -17,6 +17,7 @@ use Galette\Repository\PaymentTypes;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Repository\Contributions;
 use Galette\Core\Db;
@@ -148,12 +149,23 @@ class Transaction implements AccessManagementInterface
             );
 
             //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
-                $select->where
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                $where = $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
                         ->or
-                        ->equalTo('a.parent_id', $this->login->id)
+                        ->equalTo('a.parent_id', $this->login->id);
+                if ($this->login->isGroupManager()) {
+                    //groups managers can also load transactions of members from managed groups
+                    $groups_select = $this->zdb->select(Group::GROUPSUSERS_TABLE, 'users_groups');
+                    $groups_select->columns([Adherent::PK]);
+                    $groups_select->where->in(
+                        'users_groups.' . Group::PK,
+                        array_values($this->login->getManagedGroups())
+                    );
+                    $where->or->in('a.' . Adherent::PK, $groups_select);
+                }
+                $where
                     ->unnest()
                     ->and
                     ->equalTo('t.' . self::PK, $id)
@@ -176,11 +188,7 @@ class Transaction implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred attempting to load contribution #' . $id
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred attempting to load transaction #' . $id);
             throw $e;
         }
     }
@@ -235,11 +243,7 @@ class Transaction implements AccessManagementInterface
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove transaction #'
-                . $this->id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove transaction #' . $this->id);
             throw $e;
         }
     }
@@ -270,14 +274,15 @@ class Transaction implements AccessManagementInterface
     /**
      * Check posted values validity
      *
-     * @param array<string,mixed> $values   All values to check, basically the $_POST array
-     *                                      after sending the form
-     * @param array<string,int>   $required Array of required fields
-     * @param array<string>       $disabled Array of disabled fields
+     * @param array<string,mixed>                  $values   All values to check, basically the $_POST array
+     *                                                       after sending the form
+     * @param array<string,int>                    $required Array of required fields
+     * @param array<string>                        $disabled Array of disabled fields
+     * @param ?array<string,UploadedFileInterface> $files    Uploaded files, to check required files
      *
      * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): bool|array
+    public function check(array $values, array $required, array $disabled, ?array $files = null): bool|array
     {
         global $preferences;
         $this->errors = [];
@@ -375,7 +380,7 @@ class Transaction implements AccessManagementInterface
             }
         }
 
-        $this->dynamicsCheck($values, $required, $disabled);
+        $this->dynamicsCheck(post: $values, required: $required, disabled: $disabled, files: $files);
 
         if (count($this->errors) > 0) {
             Analog::log(
@@ -461,11 +466,7 @@ class Transaction implements AccessManagementInterface
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing transaction #' . ($this->id ?? 'new'));
             throw $e;
         }
     }
@@ -492,11 +493,7 @@ class Transaction implements AccessManagementInterface
             $dispatched_amount = $result->sum;
             return (float)$dispatched_amount;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving dispatched amounts | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred retrieving dispatched amounts');
             throw $e;
         }
     }
@@ -523,11 +520,7 @@ class Transaction implements AccessManagementInterface
             $dispatched_amount = $result->sum;
             return (float)$this->amount - (float)$dispatched_amount;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred retrieving missing amounts | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred retrieving missing amounts');
             throw $e;
         }
     }
@@ -676,8 +669,8 @@ class Transaction implements AccessManagementInterface
             return true;
         }
 
-        //group managers can see contributions of members of groups they manage - if enabled in preferences
-        if ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_transactions) {
+        //group managers can see transactions of members of groups they manage - if enabled in preferences
+        if ($preferences->pref_bool_groupsmanagers_see_transactions && $this->isManagedBy($login)) {
             return true;
         }
 
@@ -722,7 +715,23 @@ class Transaction implements AccessManagementInterface
         }
 
         global $preferences;
-        return isset($this->id) && $login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions);
+        return isset($this->id)
+            && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions)
+            && $this->isManagedBy($login);
+    }
+
+    /**
+     * Is transaction member part of a group managed by logged-in user?
+     *
+     * @param Login $login Login instance
+     */
+    private function isManagedBy(Login $login): bool
+    {
+        if (!$login->isGroupManager()) {
+            return false;
+        }
+        $member = new Adherent($this->zdb, (int)$this->member, deps: false);
+        return $login->isGroupManager(array_keys($member->getGroups()));
     }
 
     /**

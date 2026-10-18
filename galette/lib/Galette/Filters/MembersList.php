@@ -49,6 +49,13 @@ class MembersList extends Pagination
 
     protected string $query = '';
 
+    /**
+     * Criteria that have been dropped while setting values; never saved
+     *
+     * @var array<string>
+     */
+    private array $discarded = [];
+
     /** @var array<string> */
     protected array $memberslist_fields = [
         'filter_str',
@@ -206,6 +213,8 @@ class MembersList extends Pagination
                                 'Group #' . $value . ' does not exists!',
                                 Analog::WARNING
                             );
+                            //TRANS: %1$s is the group identifier
+                            $this->discard(sprintf(_T('group #%1$s no longer exists'), $value));
                         }
                     } elseif ($value === null) {
                         $this->group_filter = null;
@@ -228,6 +237,29 @@ class MembersList extends Pagination
                     break;
             }
         }
+    }
+
+    /**
+     * Report a criteria that has been dropped
+     *
+     * Silently dropping a criteria widens the search, which may not be noticed
+     * before a mailing is sent.
+     *
+     * @param string $criteria Human readable description
+     */
+    protected function discard(string $criteria): void
+    {
+        $this->discarded[] = $criteria;
+    }
+
+    /**
+     * Get criteria that have been dropped
+     *
+     * @return array<string>
+     */
+    public function getDiscarded(): array
+    {
+        return $this->discarded;
     }
 
     /**

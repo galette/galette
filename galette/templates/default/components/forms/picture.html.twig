@@ -4,9 +4,11 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-<div class="field ui items">
+{% set required = required ?? false %}
+{% set disabled = disabled ?? false %}
+<div class="field ui items{% if required %} required{% endif %}">
     {% include "components/forms/max_size.html.twig" with {
-        label: _T("Picture:"),
+        label: label ?? _T("Picture:"),
         max_size: preferences.pref_upload_size_images,
         input_id: "photo_new"
     } %}
@@ -15,14 +17,14 @@
     {% if member.hasPicture() == 1 %}
             <div class="extra ui basic fitted segment">
                 <div class="ui toggle checkbox">
-                    <input type="checkbox" name="del_photo" id="del_photo" value="1"/>
+                    <input type="checkbox" name="del_photo" id="del_photo" value="1"{% if disabled %} disabled="disabled"{% endif %}/>
                     <label for="del_photo" class="labelalign">{{ _T("Delete image") }}</label>
                 </div>
             </div>
     {% endif %}
             <div class="description">
                 <div class="ui file action input">
-                    <input id="photo_new" type="file" name="photo" aria-describedby="photo_new-tip"/>
+                    <input id="photo_new" type="file" name="photo" aria-describedby="photo_new-tip"{% if required and member.hasPicture() != 1 %} required="required"{% endif %}{% if disabled %} disabled="disabled"{% endif %}/>
                     <label for="photo_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                         <i class="blue upload icon" aria-hidden="true"></i>
                         {% if member.hasPicture() == 1 %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}

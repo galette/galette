@@ -414,6 +414,11 @@ $app->post(
 )->setName('resetAdvancedConfig')->add(Authenticate::class);
 
 $app->post(
+    '/advanced-config/feature',
+    [AdvancedConfigController::class, 'saveFeatureFlagAdvancedConfig']
+)->setName('saveFeatureFlagAdvancedConfig')->add(Authenticate::class);
+
+$app->post(
     '/advanced-config/confirm',
     [AdvancedConfigController::class, 'confirmAdvancedConfig']
 )->setName('confirmAdvancedConfig')->add(Authenticate::class);

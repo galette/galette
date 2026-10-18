@@ -15,6 +15,7 @@ use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Links;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
@@ -95,6 +96,12 @@ class PdfController extends AbstractController
             }
             // If we are called from a member's card, get unique id value
             $unique = $id_adh;
+        } elseif (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
         } elseif (count($filters->selected) == 0) {
             Analog::log(
                 'No member selected to generate members cards',
@@ -152,12 +159,21 @@ class PdfController extends AbstractController
     )]
     public function membersLabels(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $get = $request->getQueryParams();
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
-
-        $filters = $this->session->$session_var ?? new MembersList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName(Crud\MembersController::getDefaultFilterName()),
+            MembersList::class
+        );
 
         if (
             isset($get['from'])
@@ -247,6 +263,14 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
 
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
@@ -296,6 +320,14 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheet(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
 
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
@@ -392,6 +424,14 @@ class PdfController extends AbstractController
     )]
     public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $groups_list = $id !== null ? $groups->getList(full: true, id: $id) : $groups->getList();
 
         if (count($groups_list) < 1) {
@@ -522,6 +562,7 @@ class PdfController extends AbstractController
                     $error_detected[] = _T("Model has not been stored :(");
                 }
             } catch (Throwable $e) {
+                Logs::exception($e, 'Unable to store PDF model of type ' . $type, Analog::ERROR);
                 $error_detected[] = $e->getMessage();
             }
         }
@@ -582,10 +623,12 @@ class PdfController extends AbstractController
         $login->setId((int)$row['id_adh']);
 
         if ($target === Links::TARGET_MEMBERCARD) {
+            //access is granted by the direct link hash, not by current session
             $members = $m->getArrayList(
-                [$id],
-                ['nom_adh', 'prenom_adh'],
-                with_photos: true
+                ids: [$id],
+                orderby: ['nom_adh', 'prenom_adh'],
+                with_photos: true,
+                unscoped: true
             );
 
             if (!is_array($members) || count($members) < 1) {

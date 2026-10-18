@@ -246,4 +246,17 @@ class ListsConfig extends GaletteTestCase
             }
         }
     }
+
+    /**
+     * Test picture cannot be added to lists
+     */
+    public function testPictureNotListed(): void
+    {
+        $lists_config = $this->lists_config;
+        $lists_config->load();
+
+        $remainings = $lists_config->getRemainingFields();
+        $this->assertArrayNotHasKey('photo', $remainings);
+        $this->assertArrayHasKey('ville_adh', $remainings);
+    }
 }

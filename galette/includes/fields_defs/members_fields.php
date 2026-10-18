@@ -19,7 +19,7 @@ $members_fields = [
         'propname' => 'id',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
-        'position' => 0,
+        'position' => 1,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
         'list_visible'  => true,
         'list_position' => 0
@@ -29,7 +29,7 @@ $members_fields = [
         'propname' => 'status',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 27,
+        'position' => 28,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 3
@@ -39,7 +39,7 @@ $members_fields = [
         'propname' => 'name',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 3,
+        'position' => 4,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'prenom_adh' => [
@@ -47,7 +47,7 @@ $members_fields = [
         'propname' => 'surname',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 4,
+        'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'societe_adh' => [
@@ -55,7 +55,7 @@ $members_fields = [
         'propname' => 'company_name',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 5,
+        'position' => 6,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'pseudo_adh' => [
@@ -63,7 +63,7 @@ $members_fields = [
         'propname' => 'nickname',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 6,
+        'position' => 7,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
         'list_visible'  => true,
         'list_position' => 2
@@ -73,7 +73,7 @@ $members_fields = [
         'propname' => 'title',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 1,
+        'position' => 2,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'ddn_adh' => [
@@ -81,7 +81,7 @@ $members_fields = [
         'propname' => 'birthdate',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 7,
+        'position' => 8,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'sexe_adh' => [
@@ -89,7 +89,7 @@ $members_fields = [
         'propname' => 'gender',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 2,
+        'position' => 3,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'adresse_adh' => [
@@ -97,7 +97,7 @@ $members_fields = [
         'propname' => 'address',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 11,
+        'position' => 12,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'cp_adh' => [
@@ -105,7 +105,7 @@ $members_fields = [
         'propname' => 'zipcode',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 13,
+        'position' => 14,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'ville_adh' => [
@@ -113,7 +113,7 @@ $members_fields = [
         'propname' => 'town',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 14,
+        'position' => 15,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'region_adh' => [
@@ -121,7 +121,7 @@ $members_fields = [
         'propname' => 'region',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 15,
+        'position' => 16,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'pays_adh' => [
@@ -129,7 +129,7 @@ $members_fields = [
         'propname' => 'country',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 16,
+        'position' => 17,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'tel_adh' => [
@@ -137,7 +137,7 @@ $members_fields = [
         'propname' => 'phone',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 17,
+        'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'gsm_adh' => [
@@ -145,7 +145,7 @@ $members_fields = [
         'propname' => 'gsm',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 18,
+        'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'email_adh' => [
@@ -153,7 +153,7 @@ $members_fields = [
         'propname' => 'email',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 19,
+        'position' => 20,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'info_adh' => [
@@ -161,7 +161,7 @@ $members_fields = [
         'propname' => 'others_infos_admin',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 33,
+        'position' => 34,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'info_public_adh' => [
@@ -169,7 +169,7 @@ $members_fields = [
         'propname' => 'others_infos',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 34,
+        'position' => 35,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'prof_adh' => [
@@ -177,7 +177,7 @@ $members_fields = [
         'propname' => 'job',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 9,
+        'position' => 10,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'login_adh' => [
@@ -185,7 +185,7 @@ $members_fields = [
         'propname' => 'login',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 30,
+        'position' => 31,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'mdp_adh' => [
@@ -193,7 +193,7 @@ $members_fields = [
         'propname' => 'password',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 31,
+        'position' => 32,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'date_crea_adh' => [
@@ -201,7 +201,7 @@ $members_fields = [
         'propname' => 'creation_date',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 32,
+        'position' => 33,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'date_modif_adh' => [
@@ -209,7 +209,7 @@ $members_fields = [
         'propname' => 'modification_date',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 35,
+        'position' => 36,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 5
@@ -219,7 +219,7 @@ $members_fields = [
         'propname' => 'active',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 26,
+        'position' => 27,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'bool_admin_adh' => [
@@ -227,7 +227,7 @@ $members_fields = [
         'propname' => 'admin',
         'required' => false,
         'visible'  => FieldsConfig::ADMIN,
-        'position' => 28,
+        'position' => 29,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'bool_exempt_adh' => [
@@ -235,7 +235,7 @@ $members_fields = [
         'propname' => 'due_free',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 29,
+        'position' => 30,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'bool_display_info' => [
@@ -243,7 +243,7 @@ $members_fields = [
         'propname' => 'appears_in_list',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 25,
+        'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ],
     'date_echeance' => [
@@ -251,7 +251,7 @@ $members_fields = [
         'propname' => 'due_date',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
-        'position' => 36,
+        'position' => 37,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'pref_lang' => [
@@ -259,7 +259,7 @@ $members_fields = [
         'propname' => 'language',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 10,
+        'position' => 11,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'lieu_naissance' => [
@@ -267,7 +267,7 @@ $members_fields = [
         'propname' => 'birth_place',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 8,
+        'position' => 9,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ],
     'gpgid' => [
@@ -275,7 +275,7 @@ $members_fields = [
         'propname' => 'gnupgid',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 23,
+        'position' => 24,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'fingerprint' => [
@@ -283,7 +283,7 @@ $members_fields = [
         'propname' => 'fingerprint',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
-        'position' => 24,
+        'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'parent_id'     => [
@@ -291,7 +291,7 @@ $members_fields = [
         'propname' => 'parent',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
-        'position' => 25,
+        'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ],
     'num_adh'       => [
@@ -299,8 +299,18 @@ $members_fields = [
         'propname' => 'number',
         'required' => false,
         'visible'  => FieldsConfig::MANAGER,
-        'position' => 26,
+        'position' => 27,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+    ],
+    'photo'         => [
+        'label'    => _T("Picture:"),
+        'propname' => 'picture',
+        'required' => false,
+        'visible'  => FieldsConfig::USER_WRITE,
+        'position' => 0,
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
+        'width_in_forms' => 2,
+        'db_column' => false //stored apart
     ],
     'list_adh_name' => [
         'label'    => _T("Name"),

@@ -21,6 +21,7 @@ use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\file_get_contents;
 use function Safe\fopen;
@@ -427,11 +428,7 @@ class DocumentsController extends CrudController
             $warning_detected = $document->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new document.';
-            Analog::log(
-                $msg . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, $msg, Analog::ERROR);
             if (Galette::isDebugEnabled()) {
                 throw $e;
             }

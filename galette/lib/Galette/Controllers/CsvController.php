@@ -28,7 +28,9 @@ use Galette\IO\CsvIn;
 use Galette\IO\CsvOut;
 use Galette\IO\MembersCsv;
 use Galette\Repository\DynamicFieldsSet;
+use Galette\Repository\Groups;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Slim\Psr7\Stream;
 
 use function Safe\file_get_contents;
@@ -155,8 +157,8 @@ class CsvController extends AbstractController
                             'name' => $table,
                             'file' => $filename
                         ];
-                    } catch (FilesystemException) {
-                        //empty catch
+                    } catch (FilesystemException $e) {
+                        Logs::exception($e, 'Unable to write CSV export of table ' . $table, Analog::ERROR);
                     }
                 } else {
                     $this->flash->addMessage(
@@ -299,13 +301,24 @@ class CsvController extends AbstractController
             if ($this->session->import_file && !$dryrun) {
                 $this->session->import_file = null;
             }
-            $this->flash->addMessage(
-                'success_detected',
-                sprintf(
-                    _T('File \'%1$s\' has been successfully imported :)'),
-                    $post['import_file']
-                )
-            );
+            if ($dryrun) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    sprintf(
+                        //TRANS: %1$s is the file name
+                        _T('File \'%1$s\' can be imported, nothing has been stored (dry run).'),
+                        $post['import_file']
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    sprintf(
+                        _T('File \'%1$s\' has been successfully imported :)'),
+                        $post['import_file']
+                    )
+                );
+            }
         }
         return $response
             ->withStatus(301)
@@ -544,6 +557,18 @@ class CsvController extends AbstractController
         unset($import_fields['id_adh']);
         $import_fields += $dynamic_import_fields;
 
+        //groups pseudo fields, when there are groups to attach members to
+        $groups_fields = [
+            CsvIn::GROUPS_FIELD         => _T('Groups'),
+            CsvIn::MANAGED_GROUPS_FIELD => _T('Managed groups')
+        ];
+        $has_groups = count(Groups::getNames($this->zdb)) > 0;
+        foreach ($groups_fields as $key => $label) {
+            if ($has_groups || in_array($key, $fields, strict: true)) {
+                $import_fields[$key] = ['label' => $label];
+            }
+        }
+
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'current';
 
@@ -648,11 +673,19 @@ class CsvController extends AbstractController
     )]
     public function membersExport(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
-        $filters = $this->session->$session_var ?? new MembersList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName(Crud\MembersController::getDefaultFilterName()),
+            MembersList::class
+        );
 
         $this->members_csv->exportMembers($filters);
         $filepath = $this->members_csv->getPath();
@@ -678,12 +711,11 @@ class CsvController extends AbstractController
     )]
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
-
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type, ['suffix' => 'csvexport']);
-
-        $filters = $this->session->$session_var ?? new ContributionsList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName($type, ['suffix' => 'csvexport']),
+            ContributionsList::class
+        );
 
         $csv = new ContributionsCsv(
             $this->zdb,
@@ -713,12 +745,11 @@ class CsvController extends AbstractController
     )]
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
-        $get = $request->getQueryParams();
-
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']);
-
-        $filters = $this->session->$session_var ?? new ScheduledPaymentsList();
+        $filters = $this->getRequestedSessionFilter(
+            $request,
+            $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']),
+            ScheduledPaymentsList::class
+        );
 
         $this->scheduled_payments_csv->exportScheduledPayments($filters);
         $filepath = $this->scheduled_payments_csv->getPath();

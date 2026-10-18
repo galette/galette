@@ -77,6 +77,14 @@ class TwoFactorSuperAdmin implements TwoFactorStore
     }
 
     /**
+     * Forget the last accepted time slice
+     */
+    public function forgetTimeslice(): bool
+    {
+        return $this->setLastTimeslice(0);
+    }
+
+    /**
      * Who this second factor belongs to
      */
     public function getOwner(): string

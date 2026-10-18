@@ -6,44 +6,78 @@
 
         <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
-    {% if login.isDarkModeEnabled() %}
+    {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
+    {% set darkcss_missing = not file_exists(darkcssfile) %}
+    {# The generated stylesheet is served to every visitor: only staff may store it #}
+    {% set darkcss_writer = login.isSuperAdmin() or login.isAdmin() or login.isStaff() %}
+    {% if login.isDarkModeEnabled() and darkcss_missing %}
         <script type="text/javascript" src="{{ base_path() }}/assets/js/darkreader.min.js"></script>
     {% endif %}
 
         <script type="text/javascript">
             $(function(){
+                function _darkModeLoader() {
+                    $('body').append('<div class="ui active page dimmer darkmode-loader"><div class="ui text loader">{{ _T("Generating dark theme...")|e('js') }}</div></div>');
+                }
                 function _darkMode() {
                     var _dark_enabled = Cookies.get('galette_dark_mode');
                     var _cookie_value = 1;
                     if (_dark_enabled && _dark_enabled == 1) {
                         var _cookie_value = 0;
-    {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
-    {% if not file_exists(darkcssfile) %}
-                        function writeDarkTheme() {
+    {% if darkcss_missing %}
+                        var _darkReaderEnable = function() {
                             DarkReader.enable({
                                 brightness: 100,
                                 contrast: 90,
                                 sepia: 10
                             });
+                        };
+        {% if not darkcss_writer %}
+                        _darkReaderEnable();
+        {% else %}
+                        _darkModeLoader();
+                        //enabling blocks the page: let the loader be painted first
+                        new Promise(function(resolve) {
+                            requestAnimationFrame(function() {
+                                setTimeout(resolve, 0);
+                            });
+                        }).then(function() {
+                            _darkReaderEnable();
                             return DarkReader.exportGeneratedCSS();
-                        }
-                        writeDarkTheme().then(function(cssdata) {
-                            $.ajax({
+                        }).then(function(cssdata) {
+                            return $.ajax({
                                 url: '{{ url_for("writeDarkCSS") }}',
                                 method: 'post',
-                                data: cssdata.replaceAll('themes/galette/assets', 'themes/default/ui/themes/galette/assets'),
-                                success: function(res) {
-                                    console.log('Dark theme CSS stored');
-                                },
-                                error: function() {
-                                    console.log('Error storing dark theme CSS');
-                                }
+                                contentType: 'text/css',
+                                processData: false,
+                                data: cssdata.replaceAll('themes/galette/assets', 'themes/default/ui/themes/galette/assets')
                             });
+                        }).then(function() {
+                            console.log('Dark theme CSS stored');
+                        }, function() {
+                            $('body').toast({
+                                displayTime: 'auto',
+                                minDisplayTime: 5000,
+                                showProgress: 'bottom',
+                                closeIcon: true,
+                                position: 'top attached',
+                                message: '{{ _T("Unable to store dark theme.")|e('js') }}',
+                                showIcon: 'exclamation triangle',
+                                class: 'error'
+                            });
+                        }).finally(function() {
+                            $('.darkmode-loader').remove();
                         });
+        {% endif %}
     {% endif %}
                     }
                     $('.darkmode').on('click', function(e) {
                         e.preventDefault();
+    {% if darkcss_missing and darkcss_writer %}
+                        if (_cookie_value == 1) {
+                            _darkModeLoader();
+                        }
+    {% endif %}
                         Cookies.set(
                             'galette_dark_mode',
                             _cookie_value,

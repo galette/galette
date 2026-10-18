@@ -63,6 +63,9 @@ class GaletteApplication extends Application
                 new Command\Plugins\PluginInstallDb($this->basepath),
                 new Command\SeedFixtures($this->basepath),
                 new Command\SuperAdminPassword($this->basepath),
+                new Command\TwoFactorReset($this->basepath),
+                new Command\FeatureEnable($this->basepath),
+                new Command\FeatureDisable($this->basepath),
                 new Command\ProcessMailingQueue($this->basepath)
             ]);
         }

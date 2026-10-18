@@ -40,6 +40,7 @@ use Galette\Repository\Reminders;
 use function Safe\dir;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
+use function Safe\rename;
 
 /**
  * Galette main controller
@@ -49,6 +50,9 @@ use function Safe\file_put_contents;
 
 class GaletteController extends AbstractController
 {
+    /** Largest dark mode stylesheet accepted, in bytes */
+    private const int DARK_CSS_MAX_SIZE = 5 * 1024 * 1024;
+
     #[Inject]
     protected Status $status;
 
@@ -966,17 +970,31 @@ class GaletteController extends AbstractController
 
     /**
      * Store dark mode CSS in cache directory.
+     *
+     * The stylesheet is served to every visitor, so only staff may write it.
      */
     #[Route(
         name: 'writeDarkCSS',
         pattern: '/write-dark-css',
-        methods: ['POST'],
-        requiresAuth: false
+        methods: ['POST']
     )]
     public function writeDarkCss(Request $request, Response $response): Response
     {
-        $post = $request->getParsedBody();
-        file_put_contents(GALETTE_CACHE_DIR . '/dark.css', $post);
+        //raw body: a parsed form body would mangle the CSS
+        $css = (string)$request->getBody();
+        if (trim($css) === '') {
+            return $response->withStatus(400);
+        }
+        if (strlen($css) > self::DARK_CSS_MAX_SIZE) {
+            return $response->withStatus(413);
+        }
+
+        //never let a reader get a partially written file
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        $tmpfile = $cssfile . '.' . bin2hex(random_bytes(4)) . '.tmp';
+        file_put_contents($tmpfile, $css);
+        rename($tmpfile, $cssfile);
+
         return $response->withStatus(200);
     }
 

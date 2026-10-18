@@ -18,6 +18,8 @@ use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
+use Galette\Core\Logs;
+use Galette\Util\RelativeDate;
 
 use function Safe\json_encode;
 
@@ -26,12 +28,13 @@ use function Safe\json_encode;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int                  $id
- * @property string               $name
- * @property array<string, mixed> $parameters
- * @property int                  $author_id
- * @property string               $creation_date
- * @property string               $form
+ * @property      int                  $id
+ * @property      string               $name
+ * @property      array<string, mixed> $parameters
+ * @property      int                  $author_id
+ * @property      string               $creation_date
+ * @property      string               $form
+ * @property-read array<string, mixed> $sparameters
  */
 
 class SavedSearch
@@ -93,11 +96,7 @@ class SavedSearch
 
             $this->loadFromRS($res);
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading saved search #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading saved search #' . $id);
             throw $e;
         }
     }
@@ -115,11 +114,7 @@ class SavedSearch
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
         } catch (RuntimeException $e) {
-            Analog::log(
-                'Unable to decode parameters for saved search #' . $this->id
-                . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to decode parameters for saved search #' . $this->id);
             $this->parameters = [];
         }
         if ($rs->id_adh !== null) {
@@ -170,6 +165,11 @@ class SavedSearch
     public function store(): bool
     {
         $parameters = json_encode($this->parameters);
+
+        if (isset($this->id)) {
+            return $this->update($parameters);
+        }
+
         $data = [
             'name'              => $this->name,
             'parameters'        => $parameters,
@@ -189,11 +189,39 @@ class SavedSearch
             $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing saved search: ' . $e->getMessage()
-                . "\n" . print_r($data, return: true),
-                Analog::ERROR
+            Logs::exception($e, "An error occurred storing saved search:\n" . print_r($data, return: true));
+            throw $e;
+        }
+    }
+
+    /**
+     * Update saved search in database
+     *
+     * Only name and parameters can change; author and creation date are kept.
+     *
+     * @param string $parameters JSON encoded parameters
+     */
+    private function update(string $parameters): bool
+    {
+        try {
+            $update = $this->zdb->update(self::TABLE);
+            $update->set(
+                [
+                    'name'          => $this->name,
+                    'parameters'    => $parameters
+                ]
             );
+            $update->where([self::PK => $this->id]);
+            if ($this->login->isSuperAdmin()) {
+                $update->where(Adherent::PK . ' IS NULL');
+            } else {
+                $update->where([Adherent::PK => $this->login->id]);
+            }
+            //no affected rows count check: MySQL reports 0 when nothing changed
+            $this->zdb->execute($update);
+            return true;
+        } catch (Throwable $e) {
+            Logs::exception($e, 'An error occurred updating saved search #' . $this->id);
             throw $e;
         }
     }
@@ -207,7 +235,19 @@ class SavedSearch
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
-            $this->zdb->execute($delete);
+            if ($this->login->isSuperAdmin()) {
+                $delete->where(Adherent::PK . ' IS NULL');
+            } else {
+                $delete->where([Adherent::PK => $this->login->id]);
+            }
+            $result = $this->zdb->execute($delete);
+            if ($result->count() !== 1) {
+                Analog::log(
+                    'Saved search #' . $id . ' has not been deleted.',
+                    Analog::WARNING
+                );
+                return false;
+            }
             Analog::log(
                 'Saved search #' . $id . ' (' . $this->name
                 . ') deleted successfully.',
@@ -217,10 +257,7 @@ class SavedSearch
         } catch (RuntimeException $re) {
             throw $re;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete saved search ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete saved search ' . $id);
             throw $e;
         }
     }
@@ -247,9 +284,9 @@ class SavedSearch
                             return $d->format(__("Y-m-d"));
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$name . ') | '
-                                . $e->getMessage(),
+                            Logs::exception(
+                                $e,
+                                'Bad date (' . $this->$name . ')',
                                 Analog::INFO
                             );
                             return $this->$name;
@@ -265,6 +302,8 @@ class SavedSearch
                         }
                         if (is_array($parameter) || is_object($parameter)) {
                             $parameter = json_encode($parameter);
+                        } elseif (RelativeDate::isRelative($parameter)) {
+                            $parameter = $this->describeRelativeDate($parameter);
                         }
                         $parameters[$key] = $parameter;
                     }
@@ -356,6 +395,25 @@ class SavedSearch
                 );
                 break;
         }
+    }
+
+    /**
+     * Human readable relative date, with the date it currently resolves to
+     *
+     * @param string $value Relative date expression
+     */
+    private function describeRelativeDate(string $value): string
+    {
+        global $preferences;
+
+        $description = RelativeDate::describe($value);
+        try {
+            $date = RelativeDate::resolve($value, $preferences);
+            $description .= ' (' . $date->format(__('Y-m-d')) . ')';
+        } catch (Throwable) { // no log: not resolvable (any more), keep description only
+        }
+
+        return $description;
     }
 
     /**

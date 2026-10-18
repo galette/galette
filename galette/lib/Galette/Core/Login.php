@@ -167,10 +167,7 @@ class Login extends Authentication
                 return true;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred logging in `' . $user . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -303,10 +300,7 @@ class Login extends Authentication
                 return TwoFactorAuth::clampMode((int)$results->current()->val_pref);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot read second factor policy. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot read second factor policy', Analog::WARNING);
         }
 
         //a member holding an enabled secret expects to be asked for it, so an
@@ -347,11 +341,7 @@ class Login extends Authentication
                 return true;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred: ' . $e->getMessage(),
-                Analog::WARNING
-            );
-            Analog::log($e->getTraceAsString(), Analog::ERROR);
+            Logs::exception($e, 'An error occurred impersonating member `' . $id . '`', Analog::WARNING);
             return false;
         }
     }
@@ -370,10 +360,7 @@ class Login extends Authentication
             /* We got results: user already exists */
             return $results->count() > 0;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot check if login exists | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot check if login exists', Analog::WARNING);
             /* If an error occurs, we consider that username already exists */
             return true;
         }

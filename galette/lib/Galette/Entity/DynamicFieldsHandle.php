@@ -15,10 +15,10 @@ use Galette\DynamicFields\Separator;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\Util\Html;
@@ -127,10 +127,7 @@ class DynamicFieldsHandle
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }
@@ -306,11 +303,7 @@ class DynamicFieldsHandle
             if (!$transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred storing dynamic field. Form name: ' . $this->form_name
-                . ' | Error was: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing dynamic field. Form name: ' . $this->form_name);
             throw $e;
         } finally {
             unset(
@@ -527,11 +520,7 @@ class DynamicFieldsHandle
             if (!$transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred removing dynamic field. Form name: ' . $this->form_name
-                . ' | Error was: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred removing dynamic field. Form name: ' . $this->form_name);
             throw $e;
         }
     }
@@ -558,18 +547,9 @@ class DynamicFieldsHandle
         $access_level = $this->login->getAccessLevel();
 
         foreach ($this->dynamic_fields as $field) {
-            $perm = $field->getPermission();
-            if (
-                ($perm == FieldsConfig::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-                || ($perm == FieldsConfig::STAFF
-                        && $access_level < Authentication::ACCESS_STAFF)
-                || ($perm == FieldsConfig::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-            ) {
-                continue;
+            if ($field->isAccessible($access_level)) {
+                $accessible_fields[] = $field->getId();
             }
-            $accessible_fields[] = $field->getId();
         }
 
         if (!count($accessible_fields)) {

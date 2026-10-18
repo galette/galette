@@ -1,0 +1,7534 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Marko Puljic <markopuljic.uo@gmail.com>, 2026.
+# Marko Puljic <markopuljic.uo@users.noreply.hosted.weblate.org>, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"PO-Revision-Date: 2026-10-18 05:50+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
+"Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
+"hr/>\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.11.dev0\n"
+
+msgid "Feature turned on"
+msgid_plural "Features turned on"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Feature turned off"
+msgid_plural "Features turned off"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid ""
+"Please set your instance URL from the advanced configuration, or define the "
+"\"GALETTE_URI\" constant."
+msgstr ""
+"Postavite URL svoje instalacije u naprednim postavkama ili definirajte "
+"konstantu „GALETTE_URI”."
+
+#. TRANS: %1$s is the member name
+#, php-format
+msgid "Two-factor authentication reset for %1$s"
+msgstr "Dvofaktorska autentifikacija za člana %1$s je poništena"
+
+msgid "Authentication throttled"
+msgstr "Prijava je privremeno ograničena"
+
+msgid "Too many failed attempts. Please try again later."
+msgstr "Previše neuspjelih pokušaja. Pokušajte ponovno kasnije."
+
+msgid "Wrong password!"
+msgstr "Pogrešna lozinka!"
+
+msgid "Administration tools"
+msgstr "Administratorski alati"
+
+msgid "Texts has been successfully reinitialized."
+msgstr "Tekstovi su uspješno vraćeni na zadane vrijednosti."
+
+msgid "An error occurred reinitializing texts :("
+msgstr "Došlo je do pogreške pri vraćanju tekstova na zadane vrijednosti :("
+
+msgid "Fields configuration has been successfully reinitialized."
+msgstr "Postavke polja uspješno su vraćene na zadane vrijednosti."
+
+msgid "An error occurred reinitializing fields configuration :("
+msgstr ""
+"Došlo je do pogreške pri vraćanju postavki polja na zadane vrijednosti :("
+
+msgid "PDF models has been successfully reinitialized."
+msgstr "PDF predlošci uspješno su vraćeni na zadane vrijednosti."
+
+msgid "An error occurred reinitializing PDF models :("
+msgstr ""
+"Došlo je do pogreške pri vraćanju PDF predložaka na zadane vrijednosti :("
+
+#. TRANS: parameter is the number of processed members
+#, php-format
+msgid "Logins and passwords have been successfully filled (%1$s processed)."
+msgstr "Korisnička imena i lozinke uspješno su popunjeni (obrađeno: %1$s)."
+
+msgid "An error occurred filling empty logins and passwords :("
+msgstr ""
+"Došlo je do pogreške pri popunjavanju praznih korisničkih imena i lozinki :("
+
+msgid "Dynamic dates has been fixed."
+msgstr "Datumi u dinamičkim poljima su ispravljeni."
+
+msgid "An error occurred fixing dynamic dates :("
+msgstr "Došlo je do pogreške pri ispravljanju datuma u dinamičkim poljima :("
+
+msgid "Advanced configuration"
+msgstr "Napredne postavke"
+
+msgid "Please confirm your password again."
+msgstr "Ponovno potvrdite svoju lozinku."
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' has been stored."
+msgstr "Postavka '%1$s' je spremljena."
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' has been reset to its default."
+msgstr "Postavka '%1$s' vraćena je na zadanu vrijednost."
+
+#, php-format
+msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgstr ""
+"Postavljeno konstantom %s u datoteci behavior.inc.php, koja ima prednost."
+
+msgid "An error occurred :("
+msgstr "Došlo je do pogreške :("
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned on: %1$s."
+msgid_plural "Features turned on: %1$s."
+msgstr[0] "Predložak postavljen : %1$s."
+msgstr[1] "Predložak postavljen : %1$s."
+msgstr[2] "Predložak postavljen : %1$s."
+
+#. TRANS: parameter is a comma separated list of feature names
+#, php-format
+msgid "Feature turned off: %1$s."
+msgid_plural "Features turned off: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "- ERROR -"
+msgstr "- POGREŠKA -"
+
+msgid "- WARNING -"
+msgstr "- UPOZORENJE -"
+
+msgid "Telemetry information has been sent. Thank you!"
+msgstr "Telemetrijski podaci su poslani. Hvala!"
+
+msgid "Thank you for registering!"
+msgstr "Hvala na registraciji!"
+
+msgid "Login"
+msgstr "Prijava"
+
+msgid "You must provide both login and password."
+msgstr "Morate navesti korisničko ime i lozinku."
+
+msgid "A new Galette release is available."
+msgstr "Dostupna je nova verzija Galettea."
+
+#, php-format
+msgid "You currently use Galette %1$s, and %2$s is available."
+msgstr "Trenutno koristite Galette %1$s, a dostupna je verzija %2$s."
+
+msgid "Your password is too weak! Please consider updating it."
+msgstr "Vaša lozinka preslaba je! Razmislite o njezinoj promjeni."
+
+msgid "Login failed."
+msgstr "Prijava nije uspjela."
+
+msgid "Authentication failed"
+msgstr "Autentifikacija nije uspjela"
+
+msgid "Log off"
+msgstr "Odjava"
+
+#. TRANS: parameter is the login
+#, php-format
+msgid "Impersonating as %1$s"
+msgstr "Prijava u ime korisnika %1$s"
+
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "Unable to impersonate as %1$s"
+msgstr "Nije moguće prijaviti se u ime korisnika %1$s"
+
+msgid "Attempt to unimpersonate from a non impersonated session"
+msgstr "Pokušaj završetka prijave u tuđe ime u sesiji u kojoj ona nije aktivna"
+
+msgid "Impersonating ended"
+msgstr "Prijava u tuđe ime je završena"
+
+msgid "Password recovery"
+msgstr "Oporavak lozinke"
+
+msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgstr ""
+"Slanje e-pošte isključeno je u postavkama. Obratite se administratoru "
+"Galettea"
+
+msgid "Too many requests. Please try again later."
+msgstr "Previše zahtjeva. Pokušajte ponovno kasnije."
+
+msgid "Password recovery throttled"
+msgstr "Oporavak lozinke privremeno je ograničen"
+
+#, php-format
+msgid "Email sent to '%s' for password recovery."
+msgstr "Poruka za oporavak lozinke poslana je na adresu '%s'."
+
+msgid "An email has been sent to the member."
+msgstr "Članu je poslana poruka e-pošte."
+
+#, php-format
+msgid "A problem happened while sending password for account '%s'"
+msgstr "Došlo je do pogreške pri slanju lozinke za račun '%s'"
+
+#, php-format
+msgid ""
+"An error occurred storing temporary password for %s. Please inform an admin."
+msgstr ""
+"Došlo je do pogreške pri spremanju privremene lozinke za %s. Obavijestite "
+"administratora."
+
+#, php-format
+msgid "Your account (%s) do not contain any valid email address"
+msgstr "Vaš račun (%s) ne sadrži valjanu adresu e-pošte"
+
+#, php-format
+msgid "Mails address %s does not exist"
+msgstr "Adresa e-pošte %s ne postoji"
+
+#, php-format
+msgid "Login %s does not exist"
+msgstr "Korisničko ime %s ne postoji"
+
+msgid ""
+"If an account matches, an email has been sent to its address.<br/>Please "
+"check your inbox and follow the instructions."
+msgstr ""
+"Ako postoji odgovarajući račun, na njegovu adresu poslana je poruka e-pošte."
+"<br>Provjerite pristiglu poštu i slijedite upute."
+
+msgid ""
+"This link is no longer valid. You should ask to retrieve your password again."
+msgstr "Ova poveznica više nije valjana. Ponovno zatražite oporavak lozinke."
+
+msgid "No password"
+msgstr "Nema lozinke"
+
+msgid "- The passwords don't match!"
+msgstr "- Lozinke se ne podudaraju!"
+
+msgid "Your password is too weak!"
+msgstr "Vaša lozinka preslaba je!"
+
+msgid "An error occurred while updating your password."
+msgstr "Došlo je do pogreške pri promjeni vaše lozinke."
+
+#, php-format
+msgid "Password changed for member '%s'."
+msgstr "Lozinka člana '%s' je promijenjena."
+
+msgid "Your password has been changed!"
+msgstr "Vaša lozinka je promijenjena!"
+
+msgid "Authentication attempts"
+msgstr "Pokušaji prijave"
+
+msgid "All authentication counters have been lifted."
+msgstr "Svi brojači neuspjelih prijava su poništeni."
+
+msgid "The counter has been lifted."
+msgstr "Brojač neuspjelih prijava je poništen."
+
+msgid "Authentication counters lifted"
+msgstr "Brojači neuspjelih prijava su poništeni"
+
+msgid "Nothing to lift; it may have expired on its own."
+msgstr "Nema blokade za uklanjanje; možda je već sama istekla."
+
+msgid "Membership fee"
+msgstr "Članarina"
+
+msgid "Donation"
+msgstr "Donacija"
+
+#. TRANS: see https://www.php.net/manual/datetime.format.php
+msgid "Y-m-d"
+msgstr "d.m.Y"
+
+msgid "New membership fee"
+msgstr "Nova članarina"
+
+msgid "New donation"
+msgstr "Nova donacija"
+
+msgid "No related contribution type available, please create a new one."
+msgstr "Nema odgovarajuće vrste uplate. Stvorite novu."
+
+#, php-format
+msgid "Mass add contribution on %1$s members"
+msgstr "Skupno dodaj uplatu za %1$s članova"
+
+msgid "List of contributions"
+msgstr "Popis uplata"
+
+msgid "List of transactions"
+msgstr "Popis transakcija"
+
+msgid "- Unknown payment type!"
+msgstr "- Nepoznat način plaćanja!"
+
+msgid "- Unknown contribution type!"
+msgstr "- Nepoznata vrsta uplate!"
+
+msgid "No contribution was selected, please check at least one."
+msgstr "Nijedna uplata nije odabrana. Označite barem jednu."
+
+#. TRANS: parameter is the contribution identifier
+#, php-format
+msgid "Unable to load contribution #%1$s!"
+msgstr "Nije moguće učitati uplatu #%1$s!"
+
+msgid "An error occurred while saving the contribution."
+msgstr "Došlo je do pogreške pri spremanju uplate."
+
+msgid "Contribution has been successfully stored"
+msgstr "Uplata je uspješno spremljena"
+
+#, php-format
+msgid "Remove %1$s %2$s"
+msgstr "Ukloni %1$s %2$s"
+
+msgid "contributions"
+msgstr "uplate"
+
+msgid "transactions"
+msgstr "transakcije"
+
+#, php-format
+msgid "Remove %1$s #%2$s"
+msgstr "Ukloni %1$s #%2$s"
+
+msgid "contribution"
+msgstr "uplata"
+
+msgid "transaction"
+msgstr "transakcija"
+
+msgid "Contributions types"
+msgstr "Vrste uplata"
+
+msgid "Contribution type"
+msgstr "Vrsta uplate"
+
+msgid "Missing required contribution type name!"
+msgstr "Nedostaje obvezni naziv vrste uplate!"
+
+msgid "Contribution type has not been added :("
+msgstr "Vrsta uplate nije dodana :("
+
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has not been updated"
+msgstr "Vrsta uplate #%1$s nije ažurirana"
+
+msgid "Contribution type has been successfully added!"
+msgstr "Vrsta uplate uspješno je dodana!"
+
+#. TRANS: parameter is the contribution type identifier
+#, php-format
+msgid "Contribution type #%1$s has been successfully updated!"
+msgstr "Vrsta uplate #%1$s uspješno je ažurirana!"
+
+#. TRANS: parameter is the contribution type label
+#, php-format
+msgid "Remove contribution type '%1$s'"
+msgstr "Ukloni vrstu uplate '%1$s'"
+
+msgid "New document"
+msgstr "Novi dokument"
+
+msgid "Documents"
+msgstr "Dokumenti"
+
+msgid "You do not have permission for requested URL."
+msgstr "Nemate ovlasti za traženi URL."
+
+msgid "The file does not exists or cannot be read :("
+msgstr "Datoteka ne postoji ili se ne može pročitati :("
+
+msgid "Edit document"
+msgstr "Uredi dokument"
+
+msgid "An error occurred adding document :("
+msgstr "Došlo je do pogreške pri dodavanju dokumenta :("
+
+msgid "Document has been successfully stored!"
+msgstr "Dokument je uspješno spremljen!"
+
+msgid "Delete document"
+msgstr "Izbriši dokument"
+
+msgid "Add field"
+msgstr "Dodaj polje"
+
+msgid "An error occurred adding dynamic field :("
+msgstr "Došlo je do pogreške pri dodavanju dinamičkog polja :("
+
+msgid "Dynamic field has been successfully stored!"
+msgstr "Dinamičko polje uspješno je spremljeno!"
+
+msgid "Dynamic fields"
+msgstr "Dinamička polja"
+
+msgid "Unable to retrieve field information."
+msgstr "Nije moguće dohvatiti podatke o polju."
+
+msgid "Edit field"
+msgstr "Uredi polje"
+
+msgid "An error occurred editing dynamic field :("
+msgstr "Došlo je do pogreške pri uređivanju dinamičkog polja :("
+
+msgid "Requested field does not exists!"
+msgstr "Traženo polje ne postoji!"
+
+#, php-format
+msgid "Remove dynamic field %1$s"
+msgstr "Ukloni dinamičko polje %1$s"
+
+msgid "Field has been successfully moved"
+msgstr "Polje je uspješno premješteno"
+
+msgid "An error occurred moving field :("
+msgstr "Došlo je do pogreške pri premještanju polja :("
+
+msgid "Group name is missing!"
+msgstr "Nedostaje naziv grupe!"
+
+msgid "Group name already exists!"
+msgstr "Naziv grupe već postoji!"
+
+msgid "Group added"
+msgstr "Grupa je dodana"
+
+msgid "Groups"
+msgstr "Grupe"
+
+#, php-format
+msgid "New parent is %1$s"
+msgstr "Nova nadređena grupa je %1$s"
+
+msgid "Parent removed"
+msgstr "Nadređena grupa je uklonjena"
+
+#, php-format
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
+msgstr "Nadređena grupa uspješno je izmijenjena za sljedeće grupe: %1$s"
+
+msgid "Group"
+msgstr "Grupa"
+
+#, php-format
+msgid "Group `%1$s` cannot be set as parent!"
+msgstr "Grupa `%1$s` ne može biti nadređena!"
+
+#, php-format
+msgid "Group `%1$s` has been successfully saved."
+msgstr "Grupa `%1$s` uspješno je spremljena."
+
+msgid "An error occurred while saving the group."
+msgstr "Došlo je do pogreške pri spremanju grupe."
+
+#, php-format
+msgid "Remove group %1$s"
+msgstr "Ukloni grupu %1$s"
+
+msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
+msgstr ""
+"Grupa nije prazna pa se ne može izbrisati. Upotrijebite kaskadno brisanje."
+
+msgid "Trying to load mailing while email is disabled in preferences."
+msgstr ""
+"Pokušaj učitavanja skupne poruke dok je slanje e-pošte isključeno u "
+"postavkama."
+
+msgid "No member selected for mailing!"
+msgstr "Nijedan član nije odabran za skupnu poruku!"
+
+msgid "Mailing"
+msgstr "Skupna poruka"
+
+msgid "Please type an object for the message."
+msgstr "Unesite predmet poruke."
+
+msgid "Please enter a message."
+msgstr "Unesite tekst poruke."
+
+msgid "The mailing could not be queued, nothing has been sent."
+msgstr ""
+"Skupnu poruku nije bilo moguće dodati u red za slanje. Ništa nije poslano."
+
+#. TRANS: first parameter is the number of recipients reached, second the total
+#, php-format
+msgid ""
+"The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
+"stored, unsent, so you can check what has been delivered before sending it "
+"again."
+msgstr ""
+"Skupna poruka poslana je samo primateljima: %1$s od ukupno %2$s. Spremljena "
+"je kao neposlana kako biste mogli provjeriti isporučene poruke prije "
+"ponovnog slanja."
+
+msgid "Mailing has been successfully sent!"
+msgstr "Skupna poruka uspješno je poslana!"
+
+msgid "Mailing has been successfully saved."
+msgstr "Skupna poruka uspješno je spremljena."
+
+msgid "Mailings"
+msgstr "Skupne poruke"
+
+#, php-format
+msgid "Remove mailing #%1$s"
+msgstr "Ukloni skupnu poruku #%1$s"
+
+msgid "Mailing preview"
+msgstr "Pregled skupne poruke"
+
+msgid "Sending mailing"
+msgstr "Slanje skupne poruke"
+
+msgid "Back to members list"
+msgstr "Natrag na popis članova"
+
+msgid "Mailings history"
+msgstr "Povijest skupnih poruka"
+
+msgid "Sending reminders"
+msgstr "Slanje podsjetnika"
+
+msgid "Reminders"
+msgstr "Podsjetnici"
+
+msgid "Registration"
+msgstr "Registracija"
+
+msgid "Self registration throttled"
+msgstr "Samostalna registracija privremeno je ograničena"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Members"
+msgstr "Članovi"
+
+msgid "Gallery"
+msgstr "Galerija"
+
+msgid "Staff"
+msgstr "Osoblje"
+
+msgid "Staff gallery"
+msgstr "Galerija uprave"
+
+msgid "List of members"
+msgstr "Popis članova"
+
+msgid "Advanced search"
+msgstr "Napredno pretraživanje"
+
+msgid "No member was selected, please check at least one name."
+msgstr "Nijedan član nije odabran. Označite barem jedno ime."
+
+msgid "Edit profile"
+msgstr "Uredi profil"
+
+msgid "New member"
+msgstr "Novi član"
+
+#, php-format
+msgid "Mass change %1$s members"
+msgstr "Skupno izmijeni %1$s članova"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Skupne izmjene nisu potvrđene!"
+
+msgid "Add to group"
+msgstr "Dodaj u grupu"
+
+msgid "Remove from group"
+msgstr "Ukloni iz grupe"
+
+#, php-format
+msgid "Review mass change %1$s members"
+msgstr "Pregledaj skupne izmjene za %1$s članova"
+
+msgid "Nothing to do!"
+msgstr "Nema izmjena za izvršavanje!"
+
+msgid "An error occurred while saving the member."
+msgstr "Došlo je do pogreške pri spremanju člana."
+
+msgid "An error occurred adding member to its groups."
+msgstr "Došlo je do pogreške pri dodavanju člana u njegove grupe."
+
+#, php-format
+msgid "%1$s member has been changed successfully!"
+msgid_plural "%1$s members has been changed successfully!"
+msgstr[0] "Uspješno su izmijenjeni podaci za %1$s člana!"
+msgstr[1] "Uspješno su izmijenjeni podaci za %1$s člana!"
+msgstr[2] "Uspješno su izmijenjeni podaci za %1$s članova!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Došlo je do pogreške tijekom skupnog uređivanja!"
+
+msgid "Login required"
+msgstr "Prijava je obvezna"
+
+msgid "Invalid captcha"
+msgstr "CAPTCHA nije valjana"
+
+msgid "Your account has been created!"
+msgstr "Vaš račun je stvoren!"
+
+msgid "An email has been sent to you, check your inbox."
+msgstr "Poslana vam je poruka e-pošte. Provjerite pristiglu poštu."
+
+msgid "New member has been successfully added."
+msgstr "Novi član uspješno je dodan."
+
+msgid "Member account has been modified."
+msgstr "Članski račun je izmijenjen."
+
+msgid "An error occurred adding member to its groups as manager."
+msgstr ""
+"Došlo je do pogreške pri dodavanju člana kao voditelja u njegove grupe."
+
+msgid "Delete failed"
+msgstr "Brisanje nije uspjelo"
+
+#, php-format
+msgid "Remove member %1$s"
+msgstr "Ukloni člana %1$s"
+
+#, php-format
+msgid "You are about to remove %1$s members."
+msgstr "Uklonit ćete %1$s članova."
+
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "No member #%1$s."
+msgstr "Član #%1$s ne postoji."
+
+msgid "Payment types"
+msgstr "Načini plaćanja"
+
+msgid "Payment type"
+msgstr "Način plaćanja"
+
+msgid "Missing required payment type's name!"
+msgstr "Nedostaje obvezni naziv načina plaćanja!"
+
+#, php-format
+msgid "Payment type '%1$s' has not been added!"
+msgstr "Način plaćanja '%1$s' nije dodan!"
+
+#, php-format
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "Način plaćanja '%1$s' nije izmijenjen!"
+
+#, php-format
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "Način plaćanja '%1$s' uspješno je dodan."
+
+#, php-format
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "Način plaćanja '%1$s' uspješno je izmijenjen."
+
+#, php-format
+msgid "Remove payment type %1$s"
+msgstr "Ukloni način plaćanja %1$s"
+
+msgid "This search is already saved."
+msgstr "Ova pretraga već je spremljena."
+
+msgid "Search has been saved."
+msgstr "Pretraga je spremljena."
+
+msgid "Saved searches"
+msgstr "Spremljene pretrage"
+
+msgid "Saved search does not exist."
+msgstr "Spremljena pretraga ne postoji."
+
+msgid "Edit saved search"
+msgstr "Uredi spremljenu pretragu"
+
+msgid "Remove saved search"
+msgstr "Ukloni spremljenu pretragu"
+
+#, php-format
+msgid "You are about to remove %1$s searches."
+msgstr "Uklonit ćete %1$s pretraga."
+
+#. TRANS: %1$s is the search criteria name, %2$s its value
+#, php-format
+msgid "%1$s: invalid value \"%2$s\""
+msgstr "%1$s: nepravilna vrijednost \"%2$s\""
+
+#. TRANS: %1$s is the list of ignored criteria
+#, php-format
+msgid "Saved search loaded, but some of its criteria have been ignored: %1$s"
+msgstr "Spremljena pretraga je učitana, ali neki kriterij su ignorirani: %1$s"
+
+msgid "Saved search loaded"
+msgstr "Spremljena pretraga je učitana"
+
+msgid "Contribution is fully scheduled!"
+msgstr "Za cijeli iznos uplate već su zakazana plaćanja!"
+
+msgid "Add scheduled payment"
+msgstr "Dodaj zakazano plaćanje"
+
+msgid "List of scheduled payments"
+msgstr "Popis zakazanih plaćanja"
+
+msgid "No scheduled payment was selected, please check at least one."
+msgstr "Nijedno zakazano plaćanje nije odabrano. Označite barem jedno."
+
+msgid "Edit scheduled payment"
+msgstr "Uredi zakazano plaćanje"
+
+msgid "Scheduled payment has not been added!"
+msgstr "Zakazano plaćanje nije dodano!"
+
+msgid "Scheduled payment has not been modified!"
+msgstr "Zakazano plaćanje nije izmijenjeno!"
+
+msgid "Scheduled payment has been successfully added."
+msgstr "Zakazano plaćanje uspješno je dodano."
+
+msgid "Scheduled payment has been successfully modified."
+msgstr "Zakazano plaćanje uspješno je izmijenjeno."
+
+msgid "Remove scheduled payment"
+msgid_plural "Remove scheduled payments"
+msgstr[0] "Ukloni zakazano plaćanje"
+msgstr[1] "Ukloni zakazana plaćanja"
+msgstr[2] "Ukloni zakazana plaćanja"
+
+msgid "User statuses"
+msgstr "Statusi korisnika"
+
+msgid "Edit status"
+msgstr "Uredi status"
+
+msgid "Missing required status name!"
+msgstr "Nedostaje obvezni naziv statusa!"
+
+msgid "Status has not been added :("
+msgstr "Status nije dodan :("
+
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s has not been updated"
+msgstr "Status #%1$s nije ažuriran"
+
+msgid "Status has been successfully added!"
+msgstr "Status je uspješno dodan!"
+
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s has been successfully updated!"
+msgstr "Status #%1$s uspješno je ažuriran!"
+
+#. TRANS: parameter is the status label
+#, php-format
+msgid "Remove status '%1$s'"
+msgstr "Ukloni status '%1$s'"
+
+msgid "Titles"
+msgstr "Oslovljavanja"
+
+msgid "Edit title"
+msgstr "Uredi oslovljavanje"
+
+msgid "Missing required title's short or long form!"
+msgstr "Nedostaje obvezni kratki ili dugi oblik oslovljavanja!"
+
+#, php-format
+msgid "Title '%1$s' has not been added!"
+msgstr "Oslovljavanje '%1$s' nije dodano!"
+
+#, php-format
+msgid "Title '%1$s' has not been modified!"
+msgstr "Oslovljavanje '%1$s' nije izmijenjeno!"
+
+#, php-format
+msgid "Title '%1$s' has been successfully added."
+msgstr "Oslovljavanje '%1$s' uspješno je dodano."
+
+#, php-format
+msgid "Title '%1$s' has been successfully modified."
+msgstr "Oslovljavanje '%1$s' uspješno je izmijenjeno."
+
+#, php-format
+msgid "Remove title %1$s"
+msgstr "Ukloni oslovljavanje %1$s"
+
+#. TRANS: parameter is the transaction identifier
+#, php-format
+msgid "Unable to load transaction #%1$s!"
+msgstr "Nije moguće učitati transakciju #%1$s!"
+
+msgid "Transaction"
+msgstr "Transakcija"
+
+msgid "New transaction"
+msgstr "Nova transakcija"
+
+msgid "An error occurred while saving the transaction."
+msgstr "Došlo je do pogreške pri spremanju transakcije."
+
+msgid "Transaction has been successfully stored"
+msgstr "Transakcija je uspješno spremljena"
+
+msgid "Contribution has been successfully attached to current transaction"
+msgstr "Uplata je uspješno povezana s trenutnom transakcijom"
+
+msgid "Unable to attach contribution to transaction"
+msgstr "Nije moguće povezati uplatu s transakcijom"
+
+msgid "Contribution has been successfully detached from current transaction"
+msgstr "Uplata je uspješno odvojena od trenutne transakcije"
+
+msgid "Unable to detach contribution from transaction"
+msgstr "Nije moguće odvojiti uplatu od transakcije"
+
+msgid "Removal has not been confirmed!"
+msgstr "Brisanje nije potvrđeno!"
+
+msgid "Successfully deleted!"
+msgstr "Uspješno izbrisano!"
+
+msgid "An error occurred trying to delete :("
+msgstr "Došlo je do pogreške pri brisanju :("
+
+msgid "Exports"
+msgstr "Izvozi"
+
+#. TRANS: parameter is the table name
+#, php-format
+msgid "Table %1$s is empty, and has not been exported."
+msgstr "Tablica %1$s prazna je i nije izvezena."
+
+#. TRANS: parameter is the export name
+#, php-format
+msgid ""
+"Export file could not be write on disk for '%1$s'. Make sure web server can "
+"write in the exports directory."
+msgstr ""
+"Izvoznu datoteku za '%1$s' nije moguće zapisati na disk. Provjerite ima li "
+"mrežni poslužitelj pravo zapisivanja u mapu za izvoz."
+
+#. TRANS: parameter is the export name
+#, php-format
+msgid "An error occurred running parameted export '%1$s'."
+msgstr "Došlo je do pogreške pri izvršavanju parametriziranog izvoza '%1$s'."
+
+msgid "Imports"
+msgstr "Uvozi"
+
+msgid "An error occurred importing the file :("
+msgstr "Došlo je do pogreške pri uvozu datoteke :("
+
+#. TRANS: %1$s is the file name
+#, php-format
+msgid "File '%1$s' can be imported, nothing has been stored (dry run)."
+msgstr "Datoteka '%1$s se može učitati, ništa nije spremljeno (dry run)."
+
+#, php-format
+msgid "File '%1$s' has been successfully imported :)"
+msgstr "Datoteka '%1$s' uspješno je uvezena :)"
+
+msgid "No file has been uploaded!"
+msgstr "Nijedna datoteka nije prenesena!"
+
+msgid "Your file has been successfully uploaded!"
+msgstr "Vaša datoteka uspješno je prenesena!"
+
+#, php-format
+msgid "Remove %1$s file %2$s"
+msgstr "Ukloni %1$s datoteku %2$s"
+
+#. TRANS: parameter is the export name
+#, php-format
+msgid "'%1$s' file has been removed from disk."
+msgstr "Datoteka '%1$s' uklonjena je s diska."
+
+#. TRANS: parameter is the export name
+#, php-format
+msgid "Cannot remove '%1$s' from disk :/"
+msgstr "Nije moguće ukloniti '%1$s' s diska :/"
+
+#. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+#, php-format
+msgid "%1$s (occurrence %2$s)"
+msgstr "%1$s (pojavljivanje %2$s)"
+
+msgid "Managed groups"
+msgstr "Grupa kojom upravljate"
+
+msgid "CSV import model"
+msgstr "Predložak CSV uvoza"
+
+msgid "galette_import_model.csv"
+msgstr "galette_predlozak_uvoza.csv"
+
+msgid "Import model has been successfully stored :)"
+msgstr "Predložak uvoza uspješno je spremljen :)"
+
+msgid "Import model has not been stored :("
+msgstr "Predložak uvoza nije spremljen :("
+
+msgid "Labels translation"
+msgstr "Prijevod naziva"
+
+#, php-format
+msgid "Translate '%s'"
+msgstr "Prevedi '%s'"
+
+#. TRANS: parameter is the label
+#, php-format
+msgid "Label `%1$s` is translated by Galette, it cannot be translated here."
+msgstr ""
+"Oznaku %1$s automatski prevodi Galette i nije ju moguće prevesti ovdje."
+
+#. TRANS: first parameter is the label, second parameter is the language ID
+#, php-format
+msgid "An error occurred saving label `%1$s` for language `%2$s`"
+msgstr "Došlo je do pogreške pri spremanju oznake `%1$s` za jezik `%2$s`"
+
+msgid "Labels has been successfully translated!"
+msgstr "Oznake su uspješno prevedene!"
+
+msgid "System information"
+msgstr "Podaci o sustavu"
+
+msgid "Dashboard"
+msgstr "Nadzorna ploča"
+
+msgid "Settings"
+msgstr "Postavke"
+
+msgid "All accounts"
+msgstr "Svi računi"
+
+msgid "Active accounts"
+msgstr "Aktivni računi"
+
+msgid "Inactive accounts"
+msgstr "Neaktivni računi"
+
+msgid ""
+"An SQL error has occurred while saving preferences. Please try again, and "
+"contact the administrator if the problem persists."
+msgstr ""
+"Došlo je do SQL pogreške pri spremanju postavki. Pokušajte ponovno. Ako se "
+"problem nastavi, obratite se administratoru."
+
+msgid "Preferences has been saved."
+msgstr "Postavke su spremljene."
+
+msgid "My information"
+msgstr "Moji podaci"
+
+msgid "Passwords mismatch"
+msgstr "Lozinke se ne podudaraju"
+
+msgid "Your credentials have been saved."
+msgstr "Vaši pristupni podaci su spremljeni."
+
+msgid ""
+"You asked Galette to send a test email, but email has been disabled in the "
+"preferences."
+msgstr ""
+"Zatražili ste od Galettea slanje probne poruke, ali slanje e-pošte "
+"isključeno je u postavkama."
+
+msgid "Test message"
+msgstr "Probna poruka"
+
+msgid "Galette admin"
+msgstr "Administrator Galettea"
+
+msgid "Test message."
+msgstr "Probna poruka."
+
+#, php-format
+msgid "An email has been sent to %1$s"
+msgstr "Poruka e-pošte poslana je na adresu %1$s"
+
+#, php-format
+msgid "No email sent to %1$s"
+msgstr "Poruka e-pošte nije poslana na adresu %1$s"
+
+msgid "Invalid email adress!"
+msgstr "Adresa e-pošte nije valjana!"
+
+msgid "Those emailing settings work."
+msgstr "Ove postavke e-pošte rade."
+
+msgid "Those emailing settings do not work."
+msgstr "Ove postavke e-pošte ne rade."
+
+msgid "Charts"
+msgstr "Grafikoni"
+
+msgid "Core fields"
+msgstr "Osnovna polja"
+
+msgid "Fields configuration has been successfully stored"
+msgstr "Postavke polja uspješno su spremljene"
+
+msgid "An error occurred while saving fields configuration :("
+msgstr "Došlo je do pogreške pri spremanju postavki polja :("
+
+msgid "Core lists"
+msgstr "Osnovni popisi"
+
+msgid "List configuration has been successfully stored"
+msgstr "Postavke popisa uspješno su spremljene"
+
+msgid "An error occurred while saving list configuration :("
+msgstr "Došlo je do pogreške pri spremanju postavki popisa :("
+
+msgid "No reminder to send for now."
+msgstr "Trenutno nema podsjetnika za slanje."
+
+msgid "Reminder has not been sent:"
+msgstr "Podsjetnik nije poslan:"
+
+msgid "Sent reminders:"
+msgstr "Poslani podsjetnici:"
+
+msgid "Download document"
+msgstr "Preuzmi dokument"
+
+msgid "Logs"
+msgstr "Zapisnici"
+
+msgid "Logs have been flushed!"
+msgstr "Zapisnici su očišćeni!"
+
+msgid "An error occurred trying to flush logs :("
+msgstr "Došlo je do pogreške pri čišćenju zapisnika :("
+
+msgid "Flush the logs"
+msgstr "Očisti zapisnike"
+
+msgid "Unable to get members list."
+msgstr "Nije moguće dohvatiti popis članova."
+
+msgid "Attendance sheet configuration"
+msgstr "Postavke evidencije prisutnosti"
+
+msgid "No member selected to generate attendance sheet"
+msgstr "Nijedan član nije odabran za izradu evidencije prisutnosti"
+
+msgid "Attendance sheet"
+msgstr "Evidencija prisutnosti"
+
+msgid "Unable to get groups list."
+msgstr "Nije moguće dohvatiti popis grupa."
+
+msgid "PDF models"
+msgstr "PDF predlošci"
+
+msgid "Missing PDF model type!"
+msgstr "Nedostaje vrsta PDF predloška!"
+
+msgid "Model has been successfully stored!"
+msgstr "Predložak je uspješno spremljen!"
+
+msgid "Model has not been stored :("
+msgstr "Predložak nije spremljen :("
+
+msgid "Invalid link!"
+msgstr "Poveznica nije valjana!"
+
+msgid "Plugins"
+msgstr "Dodaci"
+
+#, php-format
+msgid "Plugin %1$s has been enabled"
+msgstr "Dodatak %1$s je uključen"
+
+#, php-format
+msgid "Plugin %1$s has been disabled"
+msgstr "Dodatak %1$s je isključen"
+
+msgid "Emails content"
+msgstr "Sadržaj poruka e-pošte"
+
+#, php-format
+msgid "Email: '%1$s' has not been modified!"
+msgstr "Poruka e-pošte '%1$s' nije izmijenjena!"
+
+#, php-format
+msgid "Email: '%1$s' has been successfully modified."
+msgstr "Poruka e-pošte '%1$s' uspješno je izmijenjena."
+
+msgid "Two-factor authentication"
+msgstr "Dvofaktorska autentifikacija"
+
+msgid "Two-factor authentication failed."
+msgstr "Dvofaktorska autentifikacija nije uspjela."
+
+msgid "Second factor failed"
+msgstr "Provjera drugog faktora nije uspjela"
+
+msgid ""
+"Two-factor authentication is already enabled. Disable it first to enrol "
+"again."
+msgstr ""
+"Dvofaktorska autentifikacija već je uključena. Najprije je isključite kako "
+"biste je ponovno postavili."
+
+msgid "Enable two-factor authentication"
+msgstr "Uključi dvofaktorsku autentifikaciju"
+
+msgid "That code does not match. Check your application clock, then try again."
+msgstr ""
+"Kod se ne podudara. Provjerite vrijeme u svojoj aplikaciji pa pokušajte "
+"ponovno."
+
+msgid "Two-factor authentication enabled"
+msgstr "Dvofaktorska autentifikacija je uključena"
+
+msgid ""
+"Two-factor authentication is now enabled for the super administrator account."
+msgstr ""
+"Dvofaktorska autentifikacija sada je uključena za račun glavnog "
+"administratora."
+
+msgid "Two-factor authentication disabled"
+msgstr "Dvofaktorska autentifikacija je isključena"
+
+msgid "Two-factor authentication has been disabled."
+msgstr "Dvofaktorska autentifikacija je isključena."
+
+msgid "Two-factor recovery codes renewed"
+msgstr "Kodovi za oporavak dvofaktorske autentifikacije su obnovljeni"
+
+msgid "Use your own two-factor authentication page to disable it."
+msgstr "Isključite je na svojoj stranici za dvofaktorsku autentifikaciju."
+
+msgid ""
+"Only the super administrator may reset an administrator's two-factor "
+"authentication."
+msgstr ""
+"Samo glavni administrator može poništiti dvofaktorsku autentifikaciju "
+"administratora."
+
+msgid ""
+"Only an administrator may reset a staff member's two-factor authentication."
+msgstr ""
+"Samo administrator može poništiti dvofaktorsku autentifikaciju člana uprave."
+
+msgid "This member has no two-factor authentication to reset."
+msgstr ""
+"Ovaj član nema postavljenu dvofaktorsku autentifikaciju koju bi trebalo "
+"poništiti."
+
+msgid "Two-factor authentication has been reset for this member."
+msgstr "Dvofaktorska autentifikacija za ovog člana je poništena."
+
+msgid "Two-factor authentication is not enabled on this instance."
+msgstr "Dvofaktorska autentifikacija nije uključena u ovoj instalaciji."
+
+msgid "Two-factor authentication is not enabled."
+msgstr "Dvofaktorska autentifikacija nije uključena."
+
+msgid "Recovery codes"
+msgstr "Kodovi za oporavak"
+
+#. TRANS: parameter is the logged in user name
+#, php-format
+msgid "Logged in as:<br/>%1$s"
+msgstr "Prijavljeni ste kao:<br/>%1$s"
+
+#, php-format
+msgid ""
+"You may want to set it from the \"%s\" setting listed above and remove "
+"declared constant."
+msgstr ""
+"Vrijednost možete postaviti u gore navedenoj postavci „%s” i ukloniti "
+"deklariranu konstantu."
+
+msgid ""
+"Enable debug mode: verbose logs, no cache, Twig strict variables and "
+"detailed errors."
+msgstr ""
+"Uključi način otklanjanja pogrešaka: detaljni zapisnici, bez predmemorije, "
+"stroga provjera Twig varijabli i detaljne poruke o pogreškama."
+
+msgid ""
+"PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
+"credentials and mail settings."
+msgstr ""
+"PROD, MAINT za prijavu samo glavnog administratora ili DEMO za zaključavanje "
+"pristupnih podataka glavnog administratora i postavki e-pošte."
+
+msgid ""
+"Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
+"debug mode."
+msgstr ""
+"Razina detalja u zapisnicima, prema razinama biblioteke Analog. Zadano je "
+"WARNING ili DEBUG u načinu otklanjanja pogrešaka."
+
+msgid "Dump every SQL query to the logs."
+msgstr "Zapiši svaki SQL upit u zapisnike."
+
+#, fuzzy
+#| msgid ""
+#| "Development features to activate, among those declared in the feature "
+#| "flags registry. They only apply in debug mode."
+msgid ""
+"Features to activate, among those declared in the feature flags registry. "
+"Takes precedence over the features turned on from this page."
+msgstr ""
+"Razvojne značajke koje treba uključiti među onima u registru oznaka "
+"značajki. Primjenjuju se samo u načinu otklanjanja pogrešaka."
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Ne"
+
+#, php-format
+msgid "'%s' module"
+msgstr "modul '%s'"
+
+msgid "either 'mysql' or 'pgsql' PDO driver"
+msgstr "PDO upravljački program 'mysql' ili 'pgsql'"
+
+msgid "Ko"
+msgstr "Neuspješno"
+
+msgid "Ok"
+msgstr "U redu"
+
+#, php-format
+msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
+msgstr ""
+"Najmanja podržana verzija sustava %1$s je %2$s, a pronađena je %1$s %3$s!"
+
+msgid "My Account"
+msgstr "Moj račun"
+
+msgid "My contributions"
+msgstr "Moje uplate"
+
+msgid "View and filter all my contributions"
+msgstr "Pregledaj i filtriraj sve moje uplate"
+
+msgid "My scheduled payments"
+msgstr "Moja zakazana plaćanja"
+
+msgid "View and filter all my scheduled payments"
+msgstr "Pregledaj i filtriraj sva moja zakazana plaćanja"
+
+msgid "My transactions"
+msgstr "Moje transakcije"
+
+msgid "View and filter all my transactions"
+msgstr "Pregledaj i filtriraj sve moje transakcije"
+
+msgid "View my member card"
+msgstr "Pregledaj moj članski karton"
+
+msgid "Modify my login and password"
+msgstr "Promijeni moje korisničko ime i lozinku"
+
+msgid "Manage my two-factor authentication"
+msgstr "Upravljaj mojom dvofaktorskom autentifikacijom"
+
+msgid "Add a child member"
+msgstr "Dodaj povezanog člana"
+
+msgid "Add new child member in database"
+msgstr "Dodaj novog povezanog člana u bazu podataka"
+
+msgid "View, search into and filter member's list"
+msgstr "Pregledaj, pretraži i filtriraj popis članova"
+
+msgid "Perform advanced search into members list"
+msgstr "Napredno pretraži popis članova"
+
+msgid "Add a member"
+msgstr "Dodaj člana"
+
+msgid "Add new member in database"
+msgstr "Dodaj novog člana u bazu podataka"
+
+msgid "Empty adhesion form"
+msgstr "Prazna pristupnica"
+
+msgid "Download empty adhesion form"
+msgstr "Preuzmi praznu pristupnicu"
+
+msgid "Contributions"
+msgstr "Uplate"
+
+msgid "View and filter contributions"
+msgstr "Pregledaj i filtriraj uplate"
+
+msgid "View and filter scheduled payments"
+msgstr "Pregledaj i filtriraj zakazana plaćanja"
+
+msgid "View and filter transactions"
+msgstr "Pregledaj i filtriraj transakcije"
+
+msgid "Add a membership fee"
+msgstr "Dodaj članarinu"
+
+msgid "Add new membership fee in database"
+msgstr "Dodaj novu članarinu u bazu podataka"
+
+msgid "Add a donation"
+msgstr "Dodaj donaciju"
+
+msgid "Add new donation in database"
+msgstr "Dodaj novu donaciju u bazu podataka"
+
+msgid "Add a transaction"
+msgstr "Dodavanje transakcije"
+
+msgid "Add new transaction in database"
+msgstr "Dodaj novu transakciju u bazu podataka"
+
+msgid "Send reminders to late members"
+msgstr "Pošalji podsjetnike članovima s nepodmirenom članarinom"
+
+msgid "Management"
+msgstr "Upravljanje"
+
+msgid "View and manage groups"
+msgstr "Pregledaj grupe i upravljaj njima"
+
+msgid ""
+"Add documents to share related to your association (status, rules of "
+"procedure, ...)"
+msgstr "Dodaj dokumente udruge za dijeljenje (statut, poslovnik i sl.)"
+
+msgid "Manage mailings that has been sent"
+msgstr "Upravljaj poslanim skupnim porukama"
+
+msgid "Various charts"
+msgstr "Razni grafikoni"
+
+msgid "Export some data in various formats"
+msgstr "Izvezi podatke u različitim formatima"
+
+msgid "Import members from CSV files"
+msgstr "Uvezi članove iz CSV datoteka"
+
+msgid "View application's logs"
+msgstr "Pregledaj zapisnike aplikacije"
+
+msgid "Configuration"
+msgstr "Konfiguracija"
+
+msgid ""
+"Set applications preferences (address, website, member's cards "
+"configuration, ...)"
+msgstr ""
+"Postavi aplikaciju (adresa, mrežno mjesto, postavke članskih iskaznica i sl.)"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr "Pregledaj blokade nakon ponovljenih neuspjelih prijava i ukloni ih"
+
+msgid "Information about available plugins"
+msgstr "Podaci o dostupnim dodacima"
+
+msgid "Customize lists fields and order"
+msgstr "Prilagodi polja popisa i njihov redoslijed"
+
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr "Prilagodi redoslijed polja, odredi obvezna polja i njihovu vidljivost"
+
+msgid "Manage additional fields for various forms"
+msgstr "Upravljaj dodatnim poljima u različitim obrascima"
+
+msgid "Manage contributions types"
+msgstr "Upravljaj vrstama uplata"
+
+msgid "Manage payment types"
+msgstr "Upravljaj načinima plaćanja"
+
+msgid "Manage titles"
+msgstr "Upravljaj oslovljavanjima"
+
+msgid "Manage PDF models"
+msgstr "Upravljaj PDF predlošcima"
+
+msgid "Manage emails texts and subjects"
+msgstr "Upravljaj tekstovima i predmetima poruka e-pošte"
+
+msgid "Manage translatable labels"
+msgstr "Upravljaj oznakama koje se mogu prevoditi"
+
+msgid "Various administrative tools"
+msgstr "Razni administracijski alati"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
+"Uredi sve postavke, uključujući one koje nisu prikazane u obrascu postavki"
+
+msgid "Directories"
+msgstr "Imenici"
+
+msgid "Galleries"
+msgstr "Galerije"
+
+msgid "View documents related to your association"
+msgstr "Pregledaj dokumente udruge"
+
+msgid "Public pages"
+msgstr "Javne stranice"
+
+msgid "Transactions"
+msgstr "Transakcije"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: uredi podatke"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: uplate"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: ukloni iz baze podataka"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
+msgstr "Prijavi se kao %1$s"
+
+msgid "Mass change"
+msgstr "Skupna izmjena"
+
+msgid "Mass add contributions"
+msgstr "Skupno dodavanje uplata"
+
+msgid "Delete"
+msgstr "Izbriši"
+
+msgid "Mail"
+msgstr "E-pošta"
+
+msgid "Generate labels"
+msgstr "Izradi adresne naljepnice"
+
+msgid "Generate Member Cards"
+msgstr "Izradi članske iskaznice"
+
+msgid "Export as CSV"
+msgstr "Izvezi u CSV"
+
+msgid "Galette news"
+msgstr "Novosti o Galetteu"
+
+msgid "Association news"
+msgstr "Novosti udruge"
+
+msgid "Emailing has been disabled in the preferences."
+msgstr "Slanje e-pošte isključeno je u postavkama."
+
+#, php-format
+msgid "Unknown emailing method '%s'."
+msgstr "Nepoznat način slanja e-pošte '%s'."
+
+msgid "Unable to reach the SMTP server."
+msgstr "Nije moguće povezati se sa SMTP poslužiteljem."
+
+#, php-format
+msgid "'%s' does not exist, or cannot be run."
+msgstr "'%s' ne postoji ili se ne može pokrenuti."
+
+msgid "The PHP mail() function is not available on this server."
+msgstr "PHP funkcija mail() nije dostupna na ovom poslužitelju."
+
+msgid ""
+"PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
+"to."
+msgstr ""
+"PHP postavka 'sendmail_path' prazna je; funkcija mail() nema programu kojem "
+"bi predala poruke."
+
+msgid "Sending quota has been reached, message has not been sent."
+msgstr "Dosegnuto je ograničenje slanja. Poruka nije poslana."
+
+#, php-format
+msgid "How much is %1$s plus %2$s?"
+msgstr "Koliko je %1$s plus %2$s?"
+
+#, php-format
+msgid "How much is %1$s added to %2$s?"
+msgstr "Koliko je %1$s kada dodamo %2$s?"
+
+#, php-format
+msgid ""
+"I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
+"have?"
+msgstr "Imam %1$s kolača, a prijatelj mi daje još %2$s. Koliko kolača imam?"
+
+#, php-format
+msgid "How much is %1$s minus %2$s?"
+msgstr "Koliko je %1$s minus %2$s?"
+
+#, php-format
+msgid "How much is %1$s on which we retire %2$s?"
+msgstr "Koliko je %1$s kada oduzmemo %2$s?"
+
+#, php-format
+msgid "How much is %2$s retired to %1$s?"
+msgstr "Koliko je kada od %1$s oduzmemo %2$s?"
+
+#, php-format
+msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
+msgstr "Imam %1$s kolača i dajem %2$s. Koliko kolača imam?"
+
+msgid "None"
+msgstr "Nema"
+
+#. TRANS: %1$s is the path to a translation file
+#, php-format
+msgid ""
+"Translation file %1$s is missing or outdated; run bin/console "
+"galette:compile-locales."
+msgstr ""
+"Datoteka prijevoda %1$s nedostaje ili je zastarjela; pokrenite bin/console "
+"galette:compile-locales."
+
+#, php-format
+msgid "Unknown lang (%1$s)"
+msgstr "Nepoznat jezik (%1$s)"
+
+#. TRANS: installation step title, where the system requirements are verified
+msgctxt "installation step"
+msgid "Checks"
+msgstr "Provjere"
+
+msgid "Installation mode"
+msgstr "Način instalacije"
+
+msgid "Database"
+msgstr "Baza podataka"
+
+msgid "Database access and permissions"
+msgstr "Pristup bazi podataka i ovlasti"
+
+msgid "Previous version selection"
+msgstr "Odabir prethodne verzije"
+
+msgid "Database upgrade"
+msgstr "Nadogradnja baze podataka"
+
+msgid "Tables Creation"
+msgstr "Stvaranje tablica"
+
+msgid "Admin parameters"
+msgstr "Postavke administratora"
+
+msgid "Telemetry"
+msgstr "Telemetrija"
+
+msgid "Galette initialization"
+msgstr "Inicijalizacija Galettea"
+
+msgid "End!"
+msgstr "Gotovo!"
+
+msgid "Database type unknown"
+msgstr "Nepoznata vrsta baze podataka"
+
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "%1$s script has been successfully executed :)"
+msgstr "Skripta %1$s uspješno je izvršena :)"
+
+#. TRANS: parameter is the update script version
+#, php-format
+msgid "Unable to run %1$s update script :("
+msgstr "Nije moguće pokrenuti skriptu za nadogradnju %1$s :("
+
+msgid "No configuration file found!"
+msgstr "Nije pronađena konfiguracijska datoteka!"
+
+msgid "Existing configuration file is incomplete or unreadable!"
+msgstr ""
+"Postojeća konfiguracijska datoteka nije potpuna ili se ne može pročitati!"
+
+msgid "Write configuration file"
+msgstr "Zapiši konfiguracijsku datoteku"
+
+msgid "Config file already exists and is up to date"
+msgstr "Konfiguracijska datoteka već postoji i ažurna je"
+
+#. TRANS: parameter is the file path
+#, php-format
+msgid "Unable to create configuration file (%1$s)"
+msgstr "Nije moguće stvoriti konfiguracijsku datoteku (%1$s)"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Fields config and categories"
+msgstr "Postavke i kategorije polja"
+
+msgid "Mails texts"
+msgstr "Tekstovi poruka e-pošte"
+
+msgid "Update preferences"
+msgstr "Ažuriraj postavke"
+
+msgid "Update models"
+msgstr "Ažuriraj predloške"
+
+msgid "Delete mailing entries"
+msgstr "Izbriši zapise skupnih poruka"
+
+msgid "First page"
+msgstr "Prva stranica"
+
+#, php-format
+msgid "Previous page (%1$s)"
+msgstr "Prethodna stranica (%1$s)"
+
+#, php-format
+msgid "Current page (%1$s)"
+msgstr "Trenutna stranica (%1$s)"
+
+#, php-format
+msgid "Page %1$s"
+msgstr "Stranica %1$s"
+
+#, php-format
+msgid "Next page (%1$s)"
+msgstr "Sljedeća stranica (%1$s)"
+
+#, php-format
+msgid "Last page (%1$s)"
+msgstr "Posljednja stranica (%1$s)"
+
+msgid "All"
+msgstr "Sve"
+
+msgid "An SQL error has occurred."
+msgstr "Došlo je do SQL pogreške."
+
+msgid "No such module."
+msgstr "Takav modul ne postoji."
+
+msgid "Cannot deactivate plugin."
+msgstr "Nije moguće isključiti dodatak."
+
+msgid "Cannot activate plugin."
+msgstr "Nije moguće uključiti dodatak."
+
+msgid "File not found!"
+msgstr "Datoteka nije pronađena!"
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Unknown preference '%1$s'!"
+msgstr "Nepoznata postavka '%1$s'!"
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
+msgstr "Postavkom '%1$s' upravlja Galette i ne može se mijenjati!"
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "You are not allowed to change preference '%1$s'!"
+msgstr "Nemate ovlasti za promjenu postavke '%1$s'!"
+
+#. TRANS: parameter is the preference name
+#, php-format
+msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
+msgstr ""
+"Postavka '%1$s' sadrži tajni podatak i ne može se vratiti na zadanu "
+"vrijednost!"
+
+msgid ""
+"Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+"Aplikacija radi u demonstracijskom načinu. Ova funkcija nije omogućena."
+
+msgid "Y-m-d H:i:s"
+msgstr "d.m.Y H:i:s"
+
+msgid "Never"
+msgstr "Nikada"
+
+msgid "Main information"
+msgstr "Osnovni podaci"
+
+msgid "Social networks"
+msgstr "Društvene mreže"
+
+msgid "Dark mode CSS file has been reset."
+msgstr "CSS datoteka tamnog načina vraćena je na zadane postavke."
+
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%2$s udruge %1$s"
+
+msgid "You have to select a staff member to retrieve its address"
+msgstr "Za preuzimanje adrese morate odabrati člana uprave"
+
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr "Za preuzimanje telefonskog broja morate odabrati člana uprave"
+
+msgid "- You must indicate a sender name for emails!"
+msgstr "- Morate navesti ime pošiljatelja poruka e-pošte!"
+
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr "- Morate navesti adresu e-pošte s koje će Galette slati poruke!"
+
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr "- Morate navesti SMTP poslužitelj koji želite koristiti!"
+
+msgid "- You must provide a login for SMTP authentication."
+msgstr "- Morate navesti korisničko ime za SMTP autentifikaciju."
+
+msgid "- You must provide a password for SMTP authentication."
+msgstr "- Morate navesti lozinku za SMTP autentifikaciju."
+
+msgid ""
+"- You must indicate a membership extension or a beginning of membership."
+msgstr ""
+"- Morate navesti trajanje produljenja članstva ili datum početka članstva."
+
+msgid ""
+"- Default membership extension and beginning of membership are mutually "
+"exclusive."
+msgstr ""
+"- Zadano produljenje članstva i početak članstva ne mogu se koristiti "
+"istodobno."
+
+msgid "- Offering months is only compatible with beginning of membership."
+msgstr "- Darovani mjeseci mogu se koristiti samo uz datum početka članstva."
+
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
+#. TRANS: parameter is an hTML link to the field with its name
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#, php-format
+msgid "- Mandatory field %1$s empty."
+msgstr "- Obvezno polje %1$s je prazno."
+
+msgid "- The numbers and measures have to be integers!"
+msgstr "- Brojevi i mjere moraju biti cijeli brojevi!"
+
+msgid "- The card height have to be an integer between 40 and 55!"
+msgstr "- Visina iskaznice mora biti cijeli broj između 40 i 55!"
+
+msgid "- The card width have to be an integer between 70 and 95!"
+msgstr "- Širina iskaznice mora biti cijeli broj između 70 i 95!"
+
+msgid "- Invalid number of months of membership extension."
+msgstr "- Broj mjeseci produljenja članstva nije valjan."
+
+msgid "- Invalid number of offered months."
+msgstr "- Broj darovanih mjeseci nije valjan."
+
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- Korisničko ime mora sadržavati najmanje 4 znaka!"
+
+msgid "- This username is already used by another member !"
+msgstr "- Ovo korisničko ime već koristi drugi član!"
+
+msgid "- Invalid format of beginning of membership."
+msgstr "- Format datuma početka članstva nije valjan."
+
+msgid "- Invalid date for beginning of membership."
+msgstr "- Datum početka članstva nije valjan."
+
+msgid "- Invalid year for cards."
+msgstr "- Godina za iskaznice nije valjana."
+
+msgid "- Invalid website URL."
+msgstr "- URL mrežnog mjesta nije valjan."
+
+#. TRANS: first parameter is the address, second the setting holding it
+#, php-format
+msgid "- Invalid E-Mail address %1$s (%2$s)"
+msgstr "- Adresa e-pošte %1$s nije valjana (%2$s)"
+
+#. TRANS: parameter is the setting name
+#, php-format
+msgid "- Value for '%1$s' must be a positive number!"
+msgstr "- Vrijednost postavke '%1$s' mora biti pozitivan broj!"
+
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+msgid "- Unknown two-factor authentication mode!"
+msgstr "- Nepoznat način dvofaktorske autentifikacije!"
+
+#, php-format
+msgid "- Value for '%1$s' must be %2$s attempts or more!"
+msgstr "- Vrijednost postavke '%1$s' mora biti najmanje %2$s pokušaja!"
+
+#. TRANS: first parameter is the setting name, second the lowest value it takes
+#, php-format
+msgid "- Value for '%1$s' must be %2$s seconds or more!"
+msgstr "- Vrijednost postavke '%1$s' mora biti najmanje %2$s sekundi!"
+
+#. TRANS: parameter is the setting name
+#, php-format
+msgid "- Unknown visibility for '%1$s'!"
+msgstr "- Nepoznata vidljivost postavke '%1$s'!"
+
+msgid "Missing required field name!"
+msgstr "Nedostaje obvezni naziv polja!"
+
+msgid "Missing required field permissions!"
+msgstr "Nedostaju obvezne ovlasti polja!"
+
+msgid "Unknown permission!"
+msgstr "Nepoznata ovlast!"
+
+msgid "Missing required form!"
+msgstr "Nedostaje obvezni obrazac!"
+
+msgid "Unknown form!"
+msgstr "Nepoznat obrazac!"
+
+msgid "- Field name already used."
+msgstr "- Naziv polja već se koristi."
+
+msgid "- Width must be a positive integer!"
+msgstr "- Širina mora biti pozitivan cijeli broj!"
+
+msgid "- Height must be a positive integer!"
+msgstr "- Visina mora biti pozitivan cijeli broj!"
+
+msgid "- Size must be a positive integer!"
+msgstr "- Veličina mora biti pozitivan cijeli broj!"
+
+msgid "- Min size must be a positive integer!"
+msgstr "- Najmanja veličina mora biti pozitivan cijeli broj!"
+
+msgid "- Min size must be lower than size!"
+msgstr "- Najmanja veličina mora biti manja od veličine!"
+
+msgid "- Repeat must be an integer!"
+msgstr "- Broj ponavljanja mora biti cijeli broj!"
+
+msgid "An error occurred storing the field."
+msgstr "Došlo je do pogreške pri spremanju polja."
+
+msgid "separator"
+msgstr "razdjelnik"
+
+msgid "free text"
+msgstr "slobodan tekst"
+
+msgid "single line"
+msgstr "jedan redak"
+
+msgid "choice"
+msgstr "odabir"
+
+msgid "date"
+msgstr "datum"
+
+msgid "boolean"
+msgstr "logička vrijednost"
+
+msgid "file"
+msgstr "datoteka"
+
+msgid "Freed of dues"
+msgstr "Oslobođen članarine"
+
+#. TRANS: first parameter is number of late days, second is registration date
+#, php-format
+msgid "Never contributed: Registered %1$s days ago (since %2$s)"
+msgstr "Nema uplata: registriran prije %1$s dana (%2$s)"
+
+msgid "Never contributed"
+msgstr "Nema uplata"
+
+msgid "Last day!"
+msgstr "Posljednji dan!"
+
+msgid "Late since today!"
+msgstr "Članarina nije podmirena od danas!"
+
+#. TRANS: first parameter is number of remaining days, second is end membership date
+#, php-format
+msgid "%1$s days remaining (ending on %2$s)"
+msgstr "Preostalo dana: %1$s (članstvo istječe %2$s)"
+
+#. TRANS: first parameter is number of late days, second is end membership date
+#, php-format
+msgid "Late of %1$s days (since %2$s)"
+msgstr "Članarina nije podmirena %1$s dana (od %2$s)"
+
+msgid "No longer member"
+msgstr "Više nije član"
+
+msgid "You have to select a group you own!"
+msgstr "Morate odabrati grupu kojom upravljate!"
+
+msgid "- Birthdate must be set in the past!"
+msgstr "- Datum rođenja mora biti u prošlosti!"
+
+#. TRANS: parameter is the computed age
+#, php-format
+msgid "- Members must be less than 200 years old (currently %1$s)!"
+msgstr "- Članovi moraju biti mlađi od 200 godina (trenutno %1$s)!"
+
+#. TRANS %1$s is the expected dat format, %2$s the field label
+#. TRANS: %1$s date format, %2$s is the field name
+#. TRANS: %1$s is the date format, %2$s is the field name
+#, php-format
+msgid "- Wrong date format (%1$s) for %2$s!"
+msgstr "- Pogrešan format datuma (%1$s) za polje %2$s!"
+
+msgid "- Non-valid E-Mail address!"
+msgstr "- Adresa e-pošte nije valjana!"
+
+msgid "- This E-Mail address is already used by another member!"
+msgstr "- Ovu adresu e-pošte već koristi drugi član!"
+
+msgid "An error has occurred while looking if login already exists."
+msgstr "Došlo je do pogreške pri provjeri postoji li korisničko ime."
+
+#. TRANS: parameter is the minimum number of characters
+#, php-format
+msgid "- The username must be composed of at least %1$s characters!"
+msgstr "- Korisničko ime mora sadržavati najmanje %1$s znakova!"
+
+msgid "- The username cannot contain the @ character"
+msgstr "- Korisničko ime ne smije sadržavati znak @"
+
+msgid "- This username is already in use, please choose another one!"
+msgstr "- Ovo korisničko ime već se koristi. Odaberite drugo!"
+
+msgid "Password misrepeated: "
+msgstr "Ponovljena lozinka nije jednaka: "
+
+#. TRANS: parameter is the status identifier
+#, php-format
+msgid "Status #%1$s does not exists in database."
+msgstr "Status #%1$s ne postoji u bazi podataka."
+
+#. TRANS: parameter is the gender
+#, php-format
+msgid "Gender %1$s does not exists!"
+msgstr "Spol %1$s ne postoji!"
+
+msgid "A member cannot be its own parent!"
+msgstr "Član ne može biti sam sebi nadređeni član!"
+
+msgid "Self registration as a member:"
+msgstr "Samostalna registracija člana:"
+
+msgid "Member card added"
+msgstr "Članski karton je dodan"
+
+msgid "Fail to add new member."
+msgstr "Dodavanje novog člana nije uspjelo."
+
+msgid "Member card updated"
+msgstr "Članski karton je ažuriran"
+
+msgid "Active"
+msgstr "Aktivan"
+
+msgid "Inactive"
+msgstr "Neaktivan"
+
+msgid "Man"
+msgstr "Muškarac"
+
+msgid "Woman"
+msgstr "Žena"
+
+msgid "Unspecified"
+msgstr "Nije navedeno"
+
+#. TRANS: parameter is the age
+#, php-format
+msgid " (%1$s years old)"
+msgstr " (%1$s godina)"
+
+#. TRANS: first parameter is member name, second his id
+#, php-format
+msgid "Duplicated from %1$s (%2$s)"
+msgstr "Kopirano iz člana %1$s (%2$s)"
+
+msgid "Contribution id"
+msgstr "ID uplate"
+
+msgid "Contributor:"
+msgstr "Uplatitelj:"
+
+msgid "Contribution type:"
+msgstr "Vrsta uplate:"
+
+msgid "Amount:"
+msgstr "Iznos:"
+
+msgid "Payment type:"
+msgstr "Način plaćanja:"
+
+msgid "Comments:"
+msgstr "Napomene:"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Date of contribution:"
+msgstr "Datum uplate:"
+
+msgid "Start date of membership:"
+msgstr "Datum početka članstva:"
+
+msgid "End date of membership:"
+msgstr "Datum isteka članstva:"
+
+msgid "Transaction ID"
+msgstr "ID transakcije"
+
+msgid "Membership extension:"
+msgstr "Produljenje članstva:"
+
+msgid "- Please select a member from a group you manage."
+msgstr "- Odaberite člana iz grupe kojom upravljate."
+
+msgid "- The amount must be an integer!"
+msgstr "- Iznos mora biti cijeli broj!"
+
+msgid "- The duration must be a positive integer!"
+msgstr "- Trajanje mora biti pozitivan cijeli broj!"
+
+msgid "- The end date must be after the start date!"
+msgstr "- Datum završetka mora biti nakon datuma početka!"
+
+msgid "- Sum of all contributions exceed corresponding transaction amount."
+msgstr "- Zbroj svih uplata premašuje iznos pripadajuće transakcije."
+
+msgid "- Membership period overlaps period starting at "
+msgstr "- Razdoblje članstva preklapa se s razdobljem koje počinje "
+
+msgid "Contribution added"
+msgstr "Uplata je dodana"
+
+msgid "Fail to add new contribution."
+msgstr "Dodavanje nove uplate nije uspjelo."
+
+msgid "Contribution updated"
+msgstr "Uplata je ažurirana"
+
+msgid "Contribution information"
+msgstr "Podaci o uplati"
+
+msgid "Script output"
+msgstr "Izlaz skripte"
+
+msgid "Membership"
+msgstr "Članarina"
+
+msgid "Cannot change payment type if there is an attached scheduled payment"
+msgstr ""
+"Način plaćanja ne može se promijeniti ako postoji povezano zakazano plaćanje"
+
+msgid "- Unknown payment type"
+msgstr "- Nepoznat način plaćanja"
+
+msgid "Label does not exist"
+msgstr "Oznaka ne postoji"
+
+msgid "Cannot delete this label: it's still used"
+msgstr "Ovu oznaku nije moguće izbrisati jer se još koristi"
+
+msgid "Document type"
+msgstr "Vrsta dokumenta"
+
+msgid "No file was uploaded"
+msgstr "Nijedna datoteka nije prenesena"
+
+msgid "Group has been detached from its parent"
+msgstr "Grupa je odvojena od nadređene grupe"
+
+msgid "Fail to add new group."
+msgstr "Dodavanje nove grupe nije uspjelo."
+
+msgid "Group updated"
+msgstr "Grupa je ažurirana"
+
+msgid "Is admin"
+msgstr "Administrator"
+
+msgid "Modified"
+msgstr "Izmijenjeno"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Public"
+msgstr "Javno"
+
+msgid "You cannot delete system payment types!"
+msgstr "Sistemske načine plaćanja ne možete izbrisati!"
+
+msgid "Other"
+msgstr "Ostalo"
+
+msgid "Cash"
+msgstr "Gotovina"
+
+msgid "Credit card"
+msgstr "Platna kartica"
+
+#. TRANS: payment method, a bank cheque
+msgid "Check"
+msgstr "Ček"
+
+msgid "Transfer"
+msgstr "Bankovni prijenos"
+
+msgid "Paypal"
+msgstr "Paypal"
+
+msgid "Stripe"
+msgstr "Stripe"
+
+msgid "HelloAsso"
+msgstr "HelloAsso"
+
+msgid "Payment schedule"
+msgstr "Raspored plaćanja"
+
+#. TRANS: first parameter is a field name, second its maximum length
+#, php-format
+msgid "%1$s should be less than %2$s characters long."
+msgstr "Polje %1$s mora sadržavati manje od %2$s znakova."
+
+#. TRANS: parameter is a field name
+#, php-format
+msgid "%1$s should not be empty!"
+msgstr "Polje %1$s ne smije biti prazno!"
+
+#. TRANS: parameter is the PDF model type
+#, php-format
+msgid "Unknown type %1$s!"
+msgstr "Nepoznata vrsta %1$s!"
+
+msgid "Name"
+msgstr "Prezime"
+
+msgid "Title"
+msgstr "Naslov"
+
+msgid "Subtitle"
+msgstr "Podnaslov"
+
+msgid "header and footer should not be empty!"
+msgstr "Zaglavlje i podnožje ne smiju biti prazni!"
+
+msgid "body should not be empty!"
+msgstr "Sadržaj ne smije biti prazan!"
+
+#. TRANS first param is name, second email, third days interval
+#, php-format
+msgid "%1$s <%2$s> (%3$s days)"
+msgstr "%1$s <%2$s> (%3$s dana)"
+
+msgid "Sent reminder email for late membership"
+msgstr "Poslan je podsjetnik e-poštom za isteklo članstvo"
+
+msgid "Sent reminder email for impending membership"
+msgstr "Poslan je podsjetnik e-poštom za članstvo koje uskoro istječe"
+
+msgid "A problem happened while sending late membership email"
+msgstr "Došlo je do pogreške pri slanju poruke za isteklo članstvo"
+
+msgid "A problem happened while sending impending membership email"
+msgstr "Došlo je do pogreške pri slanju poruke za članstvo koje uskoro istječe"
+
+#. TRANS: parameter is the membership type
+#, php-format
+msgid "Unable to send %1$s reminder (no email address)."
+msgstr "Nije moguće poslati podsjetnik %1$s (nema adrese e-pošte)."
+
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
+msgid "%1$s (#%2$s - %3$s days)"
+msgstr "%1$s (#%2$s - %3$s dana)"
+
+msgid "Form is mandatory!"
+msgstr "Obrazac je obvezan!"
+
+#. TRANS: parameter is the form name
+#, php-format
+msgid "Unknown form %1$s!"
+msgstr "Nepoznat obrazac %1$s!"
+
+msgid "Name cannot be empty!"
+msgstr "Naziv ne smije biti prazan!"
+
+msgid "Contribution is required"
+msgstr "Uplata je obvezna"
+
+msgid "Unable to load contribution"
+msgstr "Nije moguće učitati uplatu"
+
+msgid "Amount must be a positive number"
+msgstr "Iznos mora biti pozitivan broj"
+
+msgid "Amount cannot be greater than non allocated amount"
+msgstr "Iznos ne može biti veći od neraspoređenog iznosa"
+
+msgid "Payment type for contribution must be set to scheduled"
+msgstr "Način plaćanja uplate mora biti postavljen na zakazano plaćanje"
+
+msgid "Payment type is required"
+msgstr "Način plaćanja je obvezan"
+
+msgid "Cannot schedule a scheduled payment!"
+msgstr "Zakazano plaćanje nije moguće ponovno zakazati!"
+
+msgid "Scheduled date is required"
+msgstr "Zakazani datum je obvezan"
+
+msgid "Unable to load payment type"
+msgstr "Nije moguće učitati način plaćanja"
+
+msgid "Scheduled payment ID"
+msgstr "ID zakazanog plaćanja"
+
+msgid "Contribution ID"
+msgstr "ID uplate"
+
+msgid "Record date:"
+msgstr "Datum unosa:"
+
+msgid "Scheduled date:"
+msgstr "Zakazani datum:"
+
+msgid "Paid"
+msgstr "Plaćeno"
+
+msgid "Mastodon"
+msgstr "Mastodon"
+
+msgid "Twitter"
+msgstr "Twitter"
+
+msgid "Facebook"
+msgstr "Facebook"
+
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+msgid "Viadeo"
+msgstr "Viadeo"
+
+msgid "Jabber"
+msgstr "Jabber"
+
+msgid "ICQ"
+msgstr "ICQ"
+
+msgid "Website"
+msgstr "Mrežno mjesto"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "Discord"
+msgstr "Discord"
+
+msgid "You cannot delete default status!"
+msgstr "Zadani status ne možete izbrisati!"
+
+msgid "Insert a carriage return"
+msgstr "Umetni prijelom retka"
+
+msgid "Insert a new blank line"
+msgstr "Umetni novi prazan redak"
+
+msgid "Link validity"
+msgstr "Valjanost poveznice"
+
+msgid "Direct link for member card download"
+msgstr "Izravna poveznica za preuzimanje članske iskaznice"
+
+msgid "Direct link for invoice/receipt download"
+msgstr "Izravna poveznica za preuzimanje računa/potvrde o uplati"
+
+msgid "Galette's change password URI"
+msgstr "URI za promjenu lozinke u Galetteu"
+
+msgid "Mail specific"
+msgstr "Samo za e-poštu"
+
+msgid "You cannot delete Mr. or Mrs. titles!"
+msgstr "Oslovljavanja g. i gđa ne možete izbrisati!"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Description:"
+msgstr "Opis:"
+
+msgid "Originator:"
+msgstr "Uplatitelj:"
+
+msgid "- Transaction description must be 150 characters long maximum."
+msgstr "- Opis transakcije može sadržavati najviše 150 znakova."
+
+msgid "Transaction added"
+msgstr "Transakcija je dodana"
+
+msgid "Fail to add new transaction."
+msgstr "Dodavanje nove transakcije nije uspjelo."
+
+msgid "Transaction updated"
+msgstr "Transakcija je ažurirana"
+
+msgid "Weak"
+msgstr "Slaba"
+
+msgid "Medium"
+msgstr "Srednja"
+
+msgid "Strong"
+msgstr "Jaka"
+
+msgid "Very strong"
+msgstr "Vrlo jaka"
+
+msgid "Inherit"
+msgstr "Naslijedi"
+
+msgid "Hidden"
+msgstr "Skriveno"
+
+msgid "Everyone"
+msgstr "Svi"
+
+msgid "Up to date members"
+msgstr "Članovi s podmirenom članarinom"
+
+msgid "Admin and staff only"
+msgstr "Samo administratori i uprava"
+
+msgid ""
+"You asked Galette to send a confirmation email to the member, but email has "
+"been disabled in the preferences."
+msgstr ""
+"Zatražili ste od Galettea slanje potvrdne poruke članu, ali slanje e-pošte "
+"isključeno je u postavkama."
+
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr "- Ne možete poslati potvrdu e-poštom ako član nema adresu e-pošte!"
+
+#. TRANS: first parameter is the use name, second his email address
+#, php-format
+msgid "Email sent to user %1$s (%2$s)"
+msgstr "Poruka e-pošte poslana je korisniku %1$s (%2$s)"
+
+#. TRANS: first parameter is the use name, second his email address
+#, php-format
+msgid ""
+"A problem happened while sending contribution receipt to user %1$s (%2$s)"
+msgstr "Došlo je do pogreške pri slanju potvrde o uplati korisniku %1$s (%2$s)"
+
+#. TRANS: first parameter is member name, second his email address
+#, php-format
+msgid "Email sent to admin for user %1$s (%2$s)"
+msgstr "Administratoru je poslana poruka o korisniku %1$s (%2$s)"
+
+#. TRANS: first parameter is member name, second his email address
+#, php-format
+msgid ""
+"A problem happened while sending to admin notification for user %1$s (%2$s) "
+"contribution"
+msgstr ""
+"Došlo je do pogreške pri slanju obavijesti administratoru o uplati korisnika "
+"%1$s (%2$s)"
+
+msgid "Post contribution script failed"
+msgstr "Skripta nakon uplate nije uspjela"
+
+msgid "The configured post contribution script has failed."
+msgstr "Izvršavanje postavljene skripte nakon uplate nije uspjelo."
+
+msgid "You can find contribution information and script output below."
+msgstr "Podatke o uplati i izlaz skripte možete pronaći u nastavku."
+
+msgid "Post contribution script has failed."
+msgstr "Izvršavanje skripte nakon uplate nije uspjelo."
+
+#, php-format
+msgid "New account email sent to '%s'."
+msgstr "Obavijest o novom računu poslana je na adresu '%s'."
+
+#, php-format
+msgid "Account modification email sent to '%s'."
+msgstr "Obavijest o izmjeni računa poslana je na adresu '%s'."
+
+#, php-format
+msgid "A problem happened while sending account email to '%s'"
+msgstr "Došlo je do pogreške pri slanju obavijesti o računu na adresu '%s'"
+
+#, php-format
+msgid "New account email sent to admin for '%s'."
+msgstr "Administratoru je poslana obavijest o novom računu za '%s'."
+
+msgid "Account modification email sent to admin."
+msgstr "Administratoru je poslana obavijest o izmjeni računa."
+
+#, php-format
+msgid "A problem happened while sending email to admin for account '%s'."
+msgstr ""
+"Došlo je do pogreške pri slanju obavijesti administratoru za račun '%s'."
+
+msgid "A problem happened while sending account email to admin"
+msgstr "Došlo je do pogreške pri slanju obavijesti o računu administratoru"
+
+#. TRANS: parameter is a field name
+#, php-format
+msgid "Missing required field %1$s"
+msgstr "Nedostaje obvezno polje %1$s"
+
+#. TRANS: parameter is the maximum allowed size, units included
+#, php-format
+msgid "File is too big. Maximum allowed size is %1$s"
+msgstr "Datoteka je prevelika. Najveća dopuštena veličina je %1$s"
+
+#. TRANS: paramter is a field name
+#, php-format
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "Nije moguće dodati dinamički prijevod za %1$s :("
+
+#. TRANS: paramter is a field name
+#. TRANS: parameter is a field name
+#, php-format
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "Nije moguće ažurirati dinamički prijevod za %1$s :("
+
+#. TRANS: paramter is a field name
+#, php-format
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "Nije moguće ukloniti stari dinamički prijevod za %1$s :("
+
+msgid "Inaccessible"
+msgstr "Nedostupno"
+
+msgid "User, read only"
+msgstr "Korisnik, samo čitanje"
+
+msgid "User, read/write"
+msgstr "Korisnik, čitanje i pisanje"
+
+msgid "Group manager"
+msgstr "Voditelj grupe"
+
+msgid "Staff member"
+msgstr "Član uprave"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+#, php-format
+msgid "Label for dynamic field \"%s\""
+msgstr "Oznaka dinamičkog polja „%s”"
+
+#, php-format
+msgid "Form entry for dynamic field \"%s\""
+msgstr "Stavka obrasca za dinamičko polje „%s”"
+
+#, php-format
+msgid "Value for dynamic field \"%s\""
+msgstr "Vrijednost dinamičkog polja „%s”"
+
+msgid "Your organisation name"
+msgstr "Naziv vaše organizacije"
+
+msgid "Your organisation slogan"
+msgstr "Slogan vaše organizacije"
+
+msgid "Your organisation address"
+msgstr "Adresa vaše organizacije"
+
+msgid "with break lines"
+msgstr "s prijelomima redaka"
+
+msgid "Your organisation phone number"
+msgstr "Telefonski broj vaše organizacije"
+
+msgid "Your organisation email address"
+msgstr "Adresa e-pošte vaše organizacije"
+
+msgid "Your organisation website"
+msgstr "Mrežno mjesto vaše organizacije"
+
+msgid "Your organisation logo"
+msgstr "Logotip vaše organizacije"
+
+msgid "Your organisation logo (print specific)"
+msgstr "Logotip vaše organizacije (za ispis)"
+
+#. TRANS: see https://www.php.net/manual/datetime.format.php
+msgid "Current date (Y-m-d)"
+msgstr "Trenutni datum (d.m.Y)"
+
+msgid "Galette's login URI"
+msgstr "URI za prijavu u Galette"
+
+msgid "Footer text:"
+msgstr "Tekst podnožja:"
+
+msgid "Member's ID"
+msgstr "ID člana"
+
+msgid "Member number"
+msgstr "Članski broj"
+
+msgid "Last name"
+msgstr "Prezime"
+
+msgid "First name"
+msgstr "Ime"
+
+msgid "Nickname"
+msgstr "Nadimak"
+
+msgid "Gender"
+msgstr "Spol"
+
+msgid "Birth date"
+msgstr "Datum rođenja"
+
+msgid "Birth place"
+msgstr "Mjesto rođenja"
+
+msgid "Profession"
+msgstr "Zanimanje"
+
+msgid "Company name"
+msgstr "Naziv tvrtke"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Zipcode"
+msgstr "Poštanski broj"
+
+msgid "Town"
+msgstr "Mjesto"
+
+msgid "Country"
+msgstr "Država"
+
+msgid "GSM"
+msgstr "Mobitel"
+
+msgid "Email"
+msgstr "E-pošta"
+
+msgid "Member's main group"
+msgstr "Glavna grupa člana"
+
+msgid "Member's groups (as list)"
+msgstr "Grupe člana (kao popis)"
+
+msgid "Member state of dues"
+msgstr "Stanje članarine člana"
+
+msgid "Membership remaining days"
+msgstr "Preostali dani članstva"
+
+msgid "Membership expired since"
+msgstr "Članstvo isteklo prije"
+
+msgid "Contribution label"
+msgstr "Oznaka uplate"
+
+msgid "Amount"
+msgstr "Iznos"
+
+msgid "Amount (in letters)"
+msgstr "Iznos slovima"
+
+msgid "Full date"
+msgstr "Puni datum"
+
+msgid "Contribution year"
+msgstr "Godina uplate"
+
+msgid "Comment"
+msgstr "Napomena"
+
+msgid "Begin date"
+msgstr "Datum početka"
+
+msgid "End date"
+msgstr "Datum završetka"
+
+msgid "Member information"
+msgstr "Podaci o članu"
+
+#. TRANS: %1$s is the status identifier
+#, php-format
+msgid "status #%1$s no longer exists"
+msgstr "Status %1$s više ne postoji"
+
+#. TRANS: %1$s is the contribution type identifier
+#, php-format
+msgid "contribution type #%1$s no longer exists"
+msgstr "Vrsta uplate #%1$s više ne postoji"
+
+#. TRANS: %1$s is the payment type identifier
+#, php-format
+msgid "payment type #%1$s no longer exists"
+msgstr "Način plaćanja '%1$s' više ne postoji"
+
+#. TRANS: %1$s is the dynamic field identifier
+#, php-format
+msgid "dynamic field #%1$s no longer exists"
+msgstr "dinamičko polje #%1$s više ne postoji"
+
+#. TRANS: %1$s is the group identifier
+#, php-format
+msgid "group #%1$s no longer exists"
+msgstr "grupa %1$s ne postoji"
+
+msgid "Creation date"
+msgstr "Datum stvaranja"
+
+msgid "Modification date"
+msgstr "Datum izmjene"
+
+msgid "Due date"
+msgstr "Datum isteka članstva"
+
+msgid "Contribution creation date"
+msgstr "Datum nastanka uplate"
+
+msgid "Contribution begin date"
+msgstr "Datum početka uplate"
+
+msgid "Contribution end date"
+msgstr "Datum kraja uplete"
+
+#. TRANS: %1$s is the field label, %2$s the date
+#, php-format
+msgid "%1$s: invalid date \"%2$s\""
+msgstr "%1$s: neispravan datum \"%2$s\""
+
+#. TRANS: %1$s is the field label, %2$s the relative date (start of the membership period, ...)
+#, php-format
+msgid "%1$s: \"%2$s\" is not available"
+msgstr "%1$s: \"%2$s\" nije dostupan"
+
+msgid "Email,URL,IM"
+msgstr "E-pošta,URL,IM"
+
+msgid "Job"
+msgstr "Posao"
+
+msgid "Infos"
+msgstr "Podaci"
+
+msgid "Member ID"
+msgstr "ID člana"
+
+msgid "All members"
+msgstr "Svi članovi"
+
+msgid "Close expiries"
+msgstr "Članstvo uskoro istječe"
+
+msgid "Latecomers"
+msgstr "Članovi s nepodmirenom članarinom"
+
+msgid "Staff members"
+msgstr "Članovi uprave"
+
+msgid "Administrators"
+msgstr "Administratori"
+
+msgid "Non members"
+msgstr "Osobe koje nisu članovi"
+
+msgid "Y"
+msgstr "Y"
+
+msgid "Y-m"
+msgstr "m.Y"
+
+msgid "start date filter"
+msgstr "filtar početnog datuma"
+
+msgid "end date filter"
+msgstr "filtar završnog datuma"
+
+#. TRANS: %1$s is field name, %2$s is list of known date formats
+#, php-format
+msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
+msgstr "Nepoznat format datuma za %1$s.<br/>Poznati formati: %2$s"
+
+msgid "Due free"
+msgstr "Oslobođeni članarine"
+
+msgid "Never contribute"
+msgstr "Nikad nisu uplatili"
+
+msgid "Impending due dates"
+msgstr "Članstvo uskoro istječe"
+
+msgid "Up to date"
+msgstr "Članarina podmirena"
+
+msgid "Late"
+msgstr "Članarina nije podmirena"
+
+msgid "Individuals"
+msgstr "Fizičke osobe"
+
+msgid "Companies"
+msgstr "Pravne osobe"
+
+#, php-format
+msgid "File %1$s cannot be open!"
+msgstr "Datoteka %1$s ne može biti otvorena!"
+
+#, php-format
+msgid ""
+"Fields count mismatch... There should be %1$s fields and there are %2$s (row "
+"%3$s)"
+msgstr ""
+"Broj polja ne odgovara… Očekivano je %1$s polja, a pronađeno %2$s (redak "
+"%3$s)"
+
+#. TRANS: first parameter is a field name, second the row in error
+#, php-format
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "Polje %1$s obvezno je, ali nedostaje u retku %2$s"
+
+#. TRANS: parameter is the status
+#, php-format
+msgid "Status %1$s does not exists!"
+msgstr "Status %1$s ne postoji!"
+
+#. TRANS: parameter is the title
+#, php-format
+msgid "Title %1$s does not exists!"
+msgstr "Oslovljavanje %1$s ne postoji!"
+
+msgid "from another member in import"
+msgstr "kod drugog člana u uvozu"
+
+#. TRANS: parameter is the member identifier
+#, php-format
+msgid "from member %1$s"
+msgstr "kod člana %1$s"
+
+#. TRANS: first parameter is the email address, second tells where it is already used
+#, php-format
+msgid "Email address %1$s is already used! (%2$s)"
+msgstr "Adresa e-pošte %1$s već se koristi! (%2$s)"
+
+msgid "File is empty!"
+msgstr "Datoteka je prazna!"
+
+#. TRANS: first parameter is a group name, second the row in error
+#, php-format
+msgid "Group \"%1$s\" does not exist (row %2$s)"
+msgstr "Grupa %1$s ne postoji!( red %2$s)"
+
+#. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
+#, php-format
+msgid ""
+"Several groups are named \"%1$s\" (row %2$s), use the full name of one of "
+"them: %3$s"
+msgstr ""
+"Nekoliko grupa je nazvano \"%1$s\"(red%2$s), koristi puno ime jedne od njih: "
+"%3$s"
+
+#. TRANS: first parameter is row, second member name
+#, php-format
+msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Došlo je do pogreške pri spremanju člana u retku %1$s (%2$s):"
+
+#. TRANS: first parameter is row, second member name
+#, php-format
+msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
+msgstr ""
+"Došlo je do pogreške pri dodavanju člana u retku %1$s (%2$s)u njegovu grupu"
+
+msgid "An error occurred while importing members"
+msgstr "Došlo je do pogreške pri uvozu članova"
+
+msgid ""
+"File name is invalid, it should not contain any special character or space."
+msgstr ""
+"Naziv datoteke nije valjan. Ne smije sadržavati posebne znakove ni razmake."
+
+#, php-format
+msgid "File extension is not allowed, only %s files are."
+msgstr "Nastavak datoteke nije dopušten. Dopuštene su samo datoteke %s."
+
+#, php-format
+msgid "Image is too small. The minimum image side size allowed is %1$spx"
+msgstr "Slika je premala. Najmanja dopuštena duljina stranice slike je %1$spx"
+
+msgid "Mime-Type not allowed"
+msgstr "MIME vrsta nije dopuštena"
+
+msgid "A file with that name already exists!"
+msgstr "Datoteka s tim nazivom već postoji!"
+
+msgid "File does not comply with requirements."
+msgstr "Datoteka ne ispunjava zahtjeve."
+
+msgid "Unable to write file or temporary file"
+msgstr "Nije moguće zapisati datoteku ili privremenu datoteku"
+
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+"Prenesena datoteka premašuje ograničenje upload_max_filesize u datoteci "
+"php.ini"
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+"Prenesena datoteka premašuje ograničenje MAX_FILE_SIZE navedeno u HTML "
+"obrascu"
+
+msgid "The uploaded file was only partially uploaded"
+msgstr "Datoteka je prenesena samo djelomično"
+
+msgid "Missing a temporary folder"
+msgstr "Nedostaje privremena mapa"
+
+msgid "Failed to write file to disk"
+msgstr "Zapisivanje datoteke na disk nije uspjelo"
+
+msgid "File upload stopped by extension"
+msgstr "PHP proširenje zaustavilo je prijenos datoteke"
+
+msgid "Unknown upload error"
+msgstr "Nepoznata pogreška pri prijenosu"
+
+msgid "filtered_memberslist"
+msgstr "filtrirani_popis_clanova"
+
+#, php-format
+msgid "Association %s"
+msgstr "Udruga %s"
+
+msgid "adherent_form"
+msgstr "pristupnica"
+
+msgid "attendance_sheet"
+msgstr "evidencija_prisutnosti"
+
+msgid "Generated by Galette"
+msgstr "Izrađeno u Galetteu"
+
+msgid "MMMM, EEEE d y"
+msgstr "EEEE, d. MMMM y."
+
+msgid "Signature"
+msgstr "Potpis"
+
+msgid "receipt"
+msgstr "potvrda_o_uplati"
+
+msgid "invoice"
+msgstr "racun"
+
+msgid "groups_list"
+msgstr "popis_grupa"
+
+msgid "Members by groups"
+msgstr "Članovi po grupama"
+
+msgid "Managers:"
+msgstr "Voditelji:"
+
+msgid "cards"
+msgstr "iskaznice"
+
+msgid "Member's Cards"
+msgstr "Članske iskaznice"
+
+msgid "Cards"
+msgstr "Iskaznice"
+
+msgid "Member"
+msgstr "Član"
+
+msgid "labels_print_filename"
+msgstr "adresne_naljepnice"
+
+msgid "Member's Labels"
+msgstr "Adresne naljepnice članova"
+
+msgid "Labels"
+msgstr "Adresne naljepnice"
+
+msgid ""
+"Two-factor authentication is required. Please enable it to keep using your "
+"account."
+msgstr ""
+"Dvofaktorska autentifikacija je obvezna. Uključite je kako biste nastavili "
+"koristiti svoj račun."
+
+#. TRANS: parameter is the ACL rule name
+#, php-format
+msgid "Unknown ACL rule '%1$s'!"
+msgstr "Nepoznato ACL pravilo '%1$s'!"
+
+#, php-format
+msgid "Route '%1$s' is not registered in ACLs!"
+msgstr "Ruta '%1$s' nije registrirana u ACL pravilima!"
+
+msgid "Failed CSRF check!"
+msgstr "Provjera CSRF zaštite nije uspjela!"
+
+msgid "Unauthorized"
+msgstr "Neovlašten pristup"
+
+msgid "Galette is currently under maintenance!"
+msgstr "Galette se trenutno održava!"
+
+msgid ""
+"The Galette instance you are requesting is currently under maintenance. "
+"Please come back later."
+msgstr ""
+"Galette kojem pokušavate pristupiti trenutno se održava. Vratite se kasnije."
+
+msgid "Galette needs update!"
+msgstr "Galette treba nadograditi!"
+
+msgid "Your Galette database is not present, or not up to date."
+msgstr "Vaša baza podataka Galettea ne postoji ili nije ažurna."
+
+msgid "Please run install or upgrade procedure (check the documentation)"
+msgstr ""
+"Pokrenite postupak instalacije ili nadogradnje (pogledajte dokumentaciju)"
+
+msgid "Galette error"
+msgstr "Pogreška Galettea"
+
+msgid "Page not found"
+msgstr "Stranica nije pronađena"
+
+msgid "Access denied"
+msgstr "Pristup odbijen"
+
+#. TRANS: parameter is the list of deleted contributions
+#, php-format
+msgid "Contributions deleted (%1$s)"
+msgstr "Uplate su izbrisane (%1$s)"
+
+msgid "Association status"
+msgstr "Statut udruge"
+
+msgid "Rules of procedure"
+msgstr "Poslovnik"
+
+msgid "Adhesion form"
+msgstr "Pristupnica"
+
+msgid "Meeting minutes"
+msgstr "Zapisnik sastanka"
+
+msgid "Votes results"
+msgstr "Rezultati glasanja"
+
+msgid "Member Picture deleted"
+msgstr "Fotografija člana je izbrisana"
+
+msgid "Delete members cards, transactions and dues"
+msgstr "Izbriši članske kartone, transakcije i članarine"
+
+msgid "Cannot remove a member who still have dependencies (mailings, ...)"
+msgstr ""
+"Nije moguće ukloniti člana koji još ima povezane zapise (skupne poruke i sl.)"
+
+#. TRANS: parameter is the list of deleted searches
+#, php-format
+msgid "Searches deleted (%1$s)"
+msgstr "Pretrage su izbrisane (%1$s)"
+
+#. TRANS: parameter is the list of deleted scheduled payments
+#, php-format
+msgid "Scheduled payments deleted (%1$s)"
+msgstr "Zakazana plaćanja su izbrisana (%1$s)"
+
+#, php-format
+msgid "Table %1$s has been converted to InnoDB/utf8mb4."
+msgstr "Tablica %1$s pretvorena je u InnoDB/utf8mb4."
+
+#, php-format
+msgid "Unable to convert table %1$s to InnoDB/utf8mb4: %2$s"
+msgstr "Nije moguće pretvoriti tablicu %1$s u InnoDB/utf8mb4: %2$s"
+
+#, php-format
+msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
+msgstr ""
+"Iz tablice %3$s uklonjeno je %1$s nepovezanih redaka (nepoznato: %2$s)."
+
+#, php-format
+msgid "Foreign key on %1$s.%2$s has been added."
+msgstr "Strani ključ za %1$s.%2$s je dodan."
+
+#, php-format
+msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
+msgstr "Nije moguće dodati strani ključ za %1$s.%2$s: %3$s"
+
+msgid "Photo has not been stored!"
+msgstr "Fotografija nije spremljena!"
+
+msgid "Photo has not been copied!"
+msgstr "Fotografija nije kopirana!"
+
+msgid "Password is blacklisted!"
+msgstr "Lozinka je na popisu zabranjenih lozinki!"
+
+#, php-format
+msgid "Too short (%1$s characters minimum, %2$s found)"
+msgstr "Prekratka (najmanje %1$s znakova, pronađeno %2$s)"
+
+msgid "Do not use any of your personal information as password!"
+msgstr "Nemojte koristiti svoje osobne podatke kao lozinku!"
+
+msgid "Does not contains lowercase letters"
+msgstr "Ne sadrži mala slova"
+
+msgid "Does not contains uppercase letters"
+msgstr "Ne sadrži velika slova"
+
+msgid "Does not contains letters"
+msgstr "Ne sadrži slova"
+
+msgid "Does not contains numbers"
+msgstr "Ne sadrži brojeve"
+
+msgid "Does not contains special characters"
+msgstr "Ne sadrži posebne znakove"
+
+msgid "Letters"
+msgstr "Slova"
+
+msgid "Lowercase and uppercase letters"
+msgstr "Mala i velika slova"
+
+msgid "Numbers"
+msgstr "Brojevi"
+
+msgid "Special characters"
+msgstr "Specijalni znakovi"
+
+#. TRANS: %1$s is the minimum number of characters
+#, php-format
+msgid "At least %1$s characters"
+msgstr "Najmanje %1$s znakova"
+
+#, php-format
+msgid "%1$s day"
+msgid_plural "%1$s days"
+msgstr[0] "%1$s dan"
+msgstr[1] "%1$s dana"
+msgstr[2] "%1$s dana"
+
+#, php-format
+msgid "%1$s week"
+msgid_plural "%1$s weeks"
+msgstr[0] "%1$s tjedan"
+msgstr[1] "%1$s tjedana"
+msgstr[2] "%1$s tjedana"
+
+#, php-format
+msgid "%1$s month"
+msgid_plural "%1$s months"
+msgstr[0] "%1$s mjesec"
+msgstr[1] "%1$s mjeseca"
+msgstr[2] "%1$s mjeseci"
+
+#, php-format
+msgid "%1$s year"
+msgid_plural "%1$s years"
+msgstr[0] "%1$s godina"
+msgstr[1] "%1$s godine"
+msgstr[2] "%1$s godina"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, php-format
+msgid "%1$s plus %2$s"
+msgstr "%1$s plus %2$s"
+
+#. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
+#, php-format
+msgid "%1$s minus %2$s"
+msgstr "%1$s minus %2$s"
+
+msgid "today"
+msgstr "danas"
+
+msgid "start of the month"
+msgstr "Početak mjeseca"
+
+msgid "end of the month"
+msgstr "kraj mjeseca"
+
+msgid "start of the year"
+msgstr "početak godine"
+
+msgid "end of the year"
+msgstr "kraj godine"
+
+msgid "start of the membership period"
+msgstr "Početak članstva"
+
+msgid "end of the membership period"
+msgstr "kraj razdoblja članarine"
+
+msgid "days"
+msgstr "dana"
+
+msgid "weeks"
+msgstr "tjedni"
+
+msgid "months"
+msgstr "mjeseci"
+
+msgid "years"
+msgstr "godine"
+
+msgid "No host"
+msgstr "Nema adrese poslužitelja"
+
+msgid "No port"
+msgstr "Nema priključka"
+
+msgid "No user name"
+msgstr "Nema korisničkog imena"
+
+msgid "No database name"
+msgstr "Nema naziva baze podataka"
+
+msgid "No table prefix"
+msgstr "Nema prefiksa tablica"
+
+msgid "The username cannot contain the @ character"
+msgstr "Korisničko ime ne smije sadržavati znak @"
+
+msgid "Galette Installation"
+msgstr "Instalacija Galettea"
+
+msgid "Skip to content"
+msgstr "Prijeđi na sadržaj"
+
+msgid "Galette installation"
+msgstr "Instalacija Galettea"
+
+msgid "Read the manual"
+msgstr "Pročitaj priručnik"
+
+msgid "Choose your language"
+msgstr "Odaberite jezik"
+
+#, php-format
+msgid "Current locale '%1$s'"
+msgstr "Trenutni jezik i regionalne postavke '%1$s'"
+
+#, php-format
+msgid "Switch locale to '%1$s'"
+msgstr "Promijeni jezik i regionalne postavke na '%1$s'"
+
+msgid "Galette requires JavaScript"
+msgstr "Galette zahtijeva JavaScript"
+
+msgid ""
+"JavaScript is disabled in your browser, and Galette requires it to work "
+"correctly."
+msgstr ""
+"JavaScript je isključen u vašem pregledniku, a Galette ga zahtijeva za "
+"pravilan rad."
+
+msgid "Version selection"
+msgstr "Odabir verzije"
+
+msgid "Database installation"
+msgstr "Instalacija baze podataka"
+
+msgid "Documentation"
+msgstr "Dokumentacija"
+
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+msgid "YYYY-MM-DD"
+msgstr "DD.MM.YYYY"
+
+msgid "Member id:"
+msgstr "ID člana:"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Name:"
+msgstr "Naziv:"
+
+msgid "First name:"
+msgstr "Ime:"
+
+msgid "Company:"
+msgstr "Tvrtka:"
+
+msgid "Nickname:"
+msgstr "Nadimak:"
+
+msgid "Title:"
+msgstr "Oslovljavanje:"
+
+msgid "Birth date:"
+msgstr "Datum rođenja:"
+
+msgid "Gender:"
+msgstr "Spol:"
+
+msgid "Address:"
+msgstr "Adresa:"
+
+msgid "Zip Code:"
+msgstr "Poštanski broj:"
+
+msgid "City:"
+msgstr "Grad:"
+
+msgid "Region:"
+msgstr "Regija:"
+
+msgid "Country:"
+msgstr "Država:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Mobile phone:"
+msgstr "Mobitel:"
+
+msgid "E-Mail:"
+msgstr "E-pošta:"
+
+msgid "Other information (admin):"
+msgstr "Dodatni podaci (administrator):"
+
+msgid "Other information:"
+msgstr "Dodatni podaci:"
+
+msgid "Profession:"
+msgstr "Zanimanje:"
+
+msgid "Username:"
+msgstr "Korisničko ime:"
+
+msgid "Password:"
+msgstr "Lozinka:"
+
+msgid "Creation date:"
+msgstr "Datum stvaranja:"
+
+msgid "Modification date:"
+msgstr "Datum izmjene:"
+
+msgid "Account:"
+msgstr "Račun:"
+
+msgid "Galette Admin:"
+msgstr "Administrator Galettea:"
+
+msgid "Freed of dues:"
+msgstr "Oslobođen članarine:"
+
+msgid "Be visible on public pages:"
+msgstr "Vidljiv na javnim stranicama:"
+
+msgid "Due date:"
+msgstr "Datum isteka članstva:"
+
+msgid "Language:"
+msgstr "Jezik:"
+
+msgid "Birthplace:"
+msgstr "Mjesto rođenja:"
+
+msgid "Id GNUpg (GPG):"
+msgstr "GNUpg (GPG) ID:"
+
+msgid "fingerprint:"
+msgstr "Otisak ključa:"
+
+msgid "Parent:"
+msgstr "Nadređeni član:"
+
+msgid "Member number:"
+msgstr "Članski broj:"
+
+msgid "State of dues"
+msgstr "Stanje članarine"
+
+msgid "[{ASSO_NAME}] Your identifiers"
+msgstr "[{ASSO_NAME}] Vaši pristupni podaci"
+
+msgid ""
+"Hello,{NEWLINE}You've just been registered on the members management system "
+"of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
+"of your membership and to update your preferences from the web interface."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}upravo ste registrirani u sustavu za upravljanje članovima "
+"organizacije {ASSO_NAME}.{NEWLINE}Sada možete u svakom trenutku pratiti "
+"stanje svojeg članstva i ažurirati postavke putem mrežnog sučelja.{NEWLINE}"
+"Otvorite ovu adresu kako biste postavili novu lozinku:{BR}{CHG_PWD_URI}"
+"{NEWLINE}Korisničko ime: {LOGIN}{BR}Poveznica vrijedi do {LINK_VALIDITY}."
+"{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka poslana automatski)"
+
+msgid "New user registration"
+msgstr "Registracija novog korisnika"
+
+msgid ""
+"Hello,{NEWLINE}Someone (probably you) asked to recover your password."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}netko (vjerojatno vi) zatražio je oporavak vaše lozinke."
+"{NEWLINE}Otvorite ovu adresu kako biste postavili novu lozinku:{BR}"
+"{CHG_PWD_URI}{NEWLINE}Korisničko ime: {LOGIN}{BR}Poveznica vrijedi do "
+"{LINK_VALIDITY}.{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka poslana "
+"automatski)"
+
+msgid "Lost password email"
+msgstr "Poruka za oporavak lozinke"
+
+msgid "[{ASSO_NAME}] Your contribution"
+msgstr "[{ASSO_NAME}] Vaša uplata"
+
+msgid ""
+"Hello,{NEWLINE}Your contribution has successfully been taken into account by "
+"{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
+"and browse or modify your personal data using your galette identifiers at "
+"this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}vaša uplata za {ASSO_NAME} uspješno je evidentirana."
+"{NEWLINE}Članstvo vrijedi do {DEADLINE}.{NEWLINE}Sada se možete prijaviti "
+"svojim pristupnim podacima za Galette te pregledavati ili mijenjati osobne "
+"podatke na ovoj adresi:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Do "
+"skorog viđenja!{NEWLINE}(ova je poruka poslana automatski)"
+
+msgid "Receipt send for new contribution"
+msgstr "Slanje potvrde za novu uplatu"
+
+msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Nova registracija: {NAME_ADH}"
+
+msgid ""
+"Hello dear Administrator,{NEWLINE}A new member has been registered with the "
+"following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
+"mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
+msgstr ""
+"Poštovani administratore,{NEWLINE}registriran je novi član sa sljedećim "
+"podacima:{BR}* Ime i prezime: {NAME_ADH}{BR}* Korisničko ime: {LOGIN}{BR}* E-"
+"pošta: {MAIL_ADH}{NEWLINE}Srdačan pozdrav,{BR}Galette"
+
+msgid "New user registration (sent to admin)"
+msgstr "Registracija novog korisnika (poruka administratoru)"
+
+msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Nova uplata za {NAME_ADH}"
+
+msgid ""
+"Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been "
+"registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
+"sincerly,{BR}Galette"
+msgstr ""
+"Poštovani administratore,{NEWLINE}evidentirana je uplata člana {NAME_ADH} "
+"(novi datum isteka članstva: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Srdačan "
+"pozdrav,{BR}Galette"
+
+msgid "New contribution (sent to admin)"
+msgstr "Nova uplata (poruka administratoru)"
+
+msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Nova samostalna registracija: {NAME_ADH}"
+
+msgid ""
+"Hello dear Administrator,{NEWLINE}A new member has self registered on line "
+"with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
+"* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
+msgstr ""
+"Poštovani administratore,{NEWLINE}novi član samostalno se registrirao putem "
+"interneta sa sljedećim podacima:{BR}* Ime i prezime: {NAME_ADH}{BR}* "
+"Korisničko ime: {LOGIN}{BR}* E-pošta: {MAIL_ADH}{NEWLINE}Srdačan pozdrav,{BR}"
+"Galette"
+
+msgid "New self registration (sent to admin)"
+msgstr "Nova samostalna registracija (poruka administratoru)"
+
+msgid "[{ASSO_NAME}] Your account has been modified"
+msgstr "[{ASSO_NAME}] Vaš račun je izmijenjen"
+
+msgid ""
+"Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
+"been modified by an administrator or a staff member.{NEWLINE}You can log "
+"into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
+"soon!{NEWLINE}(this email was sent automatically)"
+msgstr ""
+"Pozdrav!{NEWLINE}Vaš račun u organizaciji {ASSO_NAME} (s korisničkim imenom "
+"'{LOGIN}') izmijenio je administrator ili član uprave.{NEWLINE}Možete se "
+"prijaviti na {LOGIN_URI} kako biste pregledali i/ili promijenili podatke."
+"{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka poslana automatski)"
+
+msgid "Informs user that his account has been modified"
+msgstr "Obavijest korisniku o izmjeni njegova računa"
+
+msgid "[{ASSO_NAME}] Your membership is about to expire"
+msgstr "[{ASSO_NAME}] Vaše članstvo uskoro istječe"
+
+msgid ""
+"Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
+"{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}vaše članstvo u organizaciji {ASSO_NAME} istječe za "
+"{DAYS_REMAINING} dana.{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka "
+"poslana automatski)"
+
+msgid "Impending due date"
+msgstr "Članstvo uskoro istječe"
+
+msgid "[{ASSO_NAME}] Your membership has expired"
+msgstr "[{ASSO_NAME}] Vaše članstvo je isteklo"
+
+msgid ""
+"Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
+"days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}vaše članstvo u organizaciji {ASSO_NAME} isteklo je prije "
+"{DAYS_EXPIRED} dana.{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka "
+"poslana automatski)"
+
+msgid "Late due date"
+msgstr "Članstvo je isteklo"
+
+msgid "[{ASSO_NAME}] Your donation"
+msgstr "[{ASSO_NAME}] Vaša donacija"
+
+msgid ""
+"Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Pozdrav,{NEWLINE}vaša donacija organizaciji {ASSO_NAME} uspješno je "
+"evidentirana.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Hvala!{NEWLINE}(ova je poruka "
+"poslana automatski)"
+
+msgid "Receipt send for new donations"
+msgstr "Slanje potvrde za nove donacije"
+
+msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
+msgstr "[{ASSO_NAME}] Nova donacija za {NAME_ADH}"
+
+msgid ""
+"Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
+"registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
+msgstr ""
+"Poštovani administratore,{NEWLINE}evidentirana je donacija člana {NAME_ADH}"
+"{BR}{CONTRIB_INFO}{NEWLINE}Srdačan pozdrav,{BR}Galette"
+
+msgid "New donation (sent to admin)"
+msgstr "Nova donacija (poruka administratoru)"
+
+msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
+msgstr "[{ASSO_NAME}] Račun člana {NAME_ADH} je izmijenjen"
+
+msgid ""
+"Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
+msgstr ""
+"Pozdrav!{NEWLINE}Član {NAME_ADH} izmijenio je svoj račun.{NEWLINE}Do skorog "
+"viđenja!{NEWLINE}(ova je poruka poslana automatski)"
+
+msgid "Informs admin a member edit his information"
+msgstr "Obavijest administratoru da je član uredio svoje podatke"
+
+msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
+msgstr "[{ASSO_NAME}] Račun člana {NAME_ADH} nije aktivan"
+
+msgid ""
+"Hello!{NEWLINE}A password recovery request has been made on your account on "
+"{ASSO_NAME}, but it is currently inactive and therefore cannot be processed."
+"{NEWLINE}Please contact an administrator or a staff member if you think this "
+"is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Pozdrav!{NEWLINE}Zatražen je oporavak lozinke za vaš račun u organizaciji "
+"{ASSO_NAME}, ali račun trenutno nije aktivan pa se zahtjev ne može obraditi."
+"{NEWLINE}Ako mislite da je riječ o pogrešci, obratite se administratoru ili "
+"članu uprave.{NEWLINE}Do skorog viđenja!{NEWLINE}(ova je poruka poslana "
+"automatski)"
+
+msgid "Lost password email (disabled)"
+msgstr "Poruka za oporavak lozinke (neaktivan račun)"
+
+msgid "Realization:"
+msgstr "Izrada:"
+
+msgid "Graphics:"
+msgstr "Grafičko oblikovanje:"
+
+msgid "Publisher:"
+msgstr "Izdavač:"
+
+msgid "President"
+msgstr "Predsjednik"
+
+msgid "Vice-president"
+msgstr "Potpredsjednik"
+
+msgid "Treasurer"
+msgstr "Blagajnik"
+
+msgid "Vice-treasurer"
+msgstr "Zamjenik blagajnika"
+
+msgid "Secretary"
+msgstr "Tajnik"
+
+msgid "Vice-secretary"
+msgstr "Zamjenik tajnika"
+
+msgid "Active member"
+msgstr "Aktivni član"
+
+msgid "Benefactor member"
+msgstr "Član dobročinitelj"
+
+msgid "Founder member"
+msgstr "Član osnivač"
+
+msgid "Old-timer"
+msgstr "Dugogodišnji član"
+
+msgid "Legal entity"
+msgstr "Pravna osoba"
+
+msgid "Non-member"
+msgstr "Osoba koja nije član"
+
+msgid "Reduced annual contribution"
+msgstr "Umanjena godišnja članarina"
+
+msgid "Company fee"
+msgstr "Članarina za tvrtke"
+
+msgid "Donation in kind"
+msgstr "Donacija u naravi"
+
+msgid "Donation in money"
+msgstr "Novčana donacija"
+
+msgid "Partnership"
+msgstr "Partnerstvo"
+
+msgid "french"
+msgstr "francuski"
+
+msgid "english"
+msgstr "engleski"
+
+msgid "spanish"
+msgstr "španjolski"
+
+msgid "annual fee"
+msgstr "godišnja članarina"
+
+msgid "annual fee (to be paid)"
+msgstr "godišnja članarina (za platiti)"
+
+msgid "company fee"
+msgstr "članarina za tvrtke"
+
+msgid "donation in kind"
+msgstr "donacija u naravi"
+
+msgid "donation in money"
+msgstr "novčana donacija"
+
+msgid "partnership"
+msgstr "partnerstvo"
+
+msgid "reduced annual fee"
+msgstr "umanjena godišnja članarina"
+
+msgid "Identity"
+msgstr "Osobni podaci"
+
+msgid "Galette-related data"
+msgstr "Podaci vezani uz Galette"
+
+msgid "Contact information"
+msgstr "Podaci za kontakt"
+
+msgid "Mr."
+msgstr "g."
+
+msgid "Mrs."
+msgstr "gđa"
+
+msgid "Miss"
+msgstr "gđica"
+
+msgid "Identity:"
+msgstr "Osobni podaci:"
+
+msgid "Galette-related data:"
+msgstr "Podaci vezani uz Galette:"
+
+msgid "Contact information:"
+msgstr "Podaci za kontakt:"
+
+msgid "Society"
+msgstr "Tvrtka"
+
+msgid "Politeness"
+msgstr "Oslovljavanje"
+
+msgid "Main"
+msgstr "Osnovno"
+
+msgid "** Galette identifier, if applicable"
+msgstr "** Identifikator u Galetteu, ako postoji"
+
+msgid "* Only for compagnies"
+msgstr "* Samo za tvrtke"
+
+#, php-format
+msgid "Hereby, I agree to comply to %s association statutes and its rules."
+msgstr "Ovime prihvaćam statut udruge %s i njezina pravila."
+
+msgid "At ................................................"
+msgstr "U ................................................"
+
+msgid "On .......... / .......... / .......... "
+msgstr "Dana .......... / .......... / .......... "
+
+msgid "Username"
+msgstr "Korisničko ime"
+
+msgid "Email address"
+msgstr "Adresa e-pošte"
+
+msgid "City"
+msgstr "Grad"
+
+msgid "Zip Code"
+msgstr "Poštanski broj"
+
+msgid ""
+"The minimum contribution for each type of membership are defined on the "
+"website of the association. The amount of donations are free to be decided "
+"by the generous donor."
+msgstr ""
+"Najniži iznos članarine za svaku vrstu članstva naveden je na mrežnom mjestu "
+"udruge. Iznos donacije slobodno određuje darovatelj."
+
+msgid "Required membership:"
+msgstr "Traženo članstvo:"
+
+msgid ""
+"Complete the following form and send it with your funds, in order to "
+"complete your membership."
+msgstr ""
+"Ispunite sljedeći obrazac i pošaljite ga uz uplatu kako biste dovršili "
+"učlanjenje."
+
+msgid "on"
+msgstr "na"
+
+msgid "from"
+msgstr "od"
+
+msgid "to"
+msgstr "do"
+
+msgid "Association"
+msgstr "Udruga"
+
+#. TRANS: parameter is the path
+#, php-format
+msgid "Unable to create main datadir in %1$s!"
+msgstr "Nije moguće stvoriti glavnu mapu podataka u %1$s!"
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Unable to create datadir in %1$s!"
+msgstr "Nije moguće stvoriti mapu podataka u %1$s!"
+
+#, php-format
+msgid "File %1$s has not been moved :-/"
+msgstr "Datoteka %1$s nije premještena :-/"
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Directory %1$s has been moved!"
+msgstr "Mapa %1$s je premještena!"
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Directory %1$s has not been moved :("
+msgstr "Mapa %1$s nije premještena :("
+
+#. TRANS: parameter is the directory
+#, php-format
+msgid "Directory %1$s is not in its original path and will not be moved."
+msgstr "Mapa %1$s nije na izvornoj putanji i neće biti premještena."
+
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr "Mogućnosti odabira za polje %d su migrirane."
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr "Nije moguće migrirati mogućnosti odabira za polje %d: %s"
+
+msgid "Please chose the parameters of the admin account on Galette"
+msgstr "Odaberite postavke administratorskog računa u Galetteu"
+
+#, php-format
+msgid "(at least %1$s characters)"
+msgstr "(najmanje %1$s znakova)"
+
+msgid ""
+"For a stronger password, mix lowercase and uppercase letters, numbers and "
+"special characters."
+msgstr ""
+"Za jaču lozinku, napravite lozinku koja uključuje velika i mala slova, "
+"brojeve i posebne znakove."
+
+msgid "Retype password:"
+msgstr "Ponovite lozinku:"
+
+msgid "Next step"
+msgstr "Sljedeći korak"
+
+msgid "Password mismatch!"
+msgstr "Lozinke se ne podudaraju!"
+
+msgid "Photos"
+msgstr "Fotografije"
+
+msgid "Cache"
+msgstr "Predmemorija"
+
+msgid "Temporary images"
+msgstr "Privremene slike"
+
+msgid "Attachments"
+msgstr "Privici"
+
+msgid "Files"
+msgstr "Datoteke"
+
+msgid "Welcome to the Galette Install!"
+msgstr "Dobro došli u instalaciju Galettea!"
+
+msgid "Galette requirements are met :)"
+msgstr "Zahtjevi Galettea su ispunjeni :)"
+
+msgid ""
+"Your PHP date settings are not correct. Maybe you've missed the timezone "
+"settings that is mandatory since PHP 5.3?"
+msgstr ""
+"Postavke datuma u PHP-u nisu ispravne. Možda niste postavili vremensku zonu, "
+"koja je obvezna od PHP-a 5.3?"
+
+msgid "PHP version"
+msgstr "Verzija PHP-a"
+
+msgid "Date settings"
+msgstr "Postavke datuma"
+
+msgid "PHP Modules"
+msgstr "PHP moduli"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"Neki PHP moduli nedostaju. Instalirajte ih ili se obratite podršci.<br/>Više "
+"informacija o potrebnim modulima pronaći ćete u dokumentaciji."
+
+msgid "Files permissions"
+msgstr "Ovlasti za datoteke"
+
+msgid "Files permissions are not OK!"
+msgstr "Ovlasti za datoteke nisu ispravne!"
+
+msgid ""
+"To work as excpected, Galette needs write permission on files listed above."
+msgstr ""
+"Za pravilan rad Galette treba ovlasti za zapisivanje u gore navedene "
+"datoteke."
+
+msgid ""
+"In order to be updated, Galette needs write permission on files listed above."
+msgstr ""
+"Za nadogradnju Galette treba ovlasti za zapisivanje u gore navedene datoteke."
+
+msgid "Under UNIX/Linux, you can give the permissions using those commands"
+msgstr "U sustavima UNIX/Linux ovlasti možete dodijeliti sljedećim naredbama"
+
+msgid "apache_user"
+msgstr "apache_user"
+
+msgid "file_name"
+msgstr "file_name"
+
+msgid "directory_name"
+msgstr "directory_name"
+
+msgid ""
+"Under Windows, check these directories are not in Read-Only mode in their "
+"property panel."
+msgstr ""
+"U sustavu Windows provjerite u svojstvima ovih mapa da nisu postavljene samo "
+"za čitanje."
+
+msgid "Retry"
+msgstr "Pokušaj ponovno"
+
+msgid "If it hadn't been made, create a database and a user for Galette."
+msgstr "Ako još niste, stvorite bazu podataka i korisnika za Galette."
+
+msgid ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr "Potrebne su ovlasti CREATE, DROP, DELETE, UPDATE, SELECT i INSERT."
+
+msgid "Enter connection data for the existing database."
+msgstr "Unesite podatke za povezivanje s postojećom bazom podataka."
+
+msgid "Database type:"
+msgstr "Vrsta baze podataka:"
+
+msgid "Host:"
+msgstr "Poslužitelj:"
+
+msgid "Port:"
+msgstr "Priključak:"
+
+msgid "User:"
+msgstr "Korisnik:"
+
+msgid "Database:"
+msgstr "Baza podataka:"
+
+msgid "Table prefix:"
+msgstr "Prefiks tablica:"
+
+msgid "(Indicate the CURRENT prefix of your Galette tables)"
+msgstr "(Navedite TRENUTNI prefiks svojih Galetteovih tablica)"
+
+msgid "Back"
+msgstr "Natrag"
+
+msgid "CREATE operation not allowed"
+msgstr "Operacija CREATE nije dopuštena"
+
+msgid "CREATE operation allowed"
+msgstr "Operacija CREATE je dopuštena"
+
+msgid "INSERT operation not allowed"
+msgstr "Operacija INSERT nije dopuštena"
+
+msgid "INSERT operation allowed"
+msgstr "Operacija INSERT je dopuštena"
+
+msgid "UPDATE operation not allowed"
+msgstr "Operacija UPDATE nije dopuštena"
+
+msgid "UPDATE operation allowed"
+msgstr "Operacija UPDATE je dopuštena"
+
+msgid "SELECT operation not allowed"
+msgstr "Operacija SELECT nije dopuštena"
+
+msgid "SELECT operation allowed"
+msgstr "Operacija SELECT je dopuštena"
+
+msgid "DELETE operation not allowed"
+msgstr "Operacija DELETE nije dopuštena"
+
+msgid "DELETE operation allowed"
+msgstr "Operacija DELETE je dopuštena"
+
+msgid "DROP operation not allowed"
+msgstr "Operacija DROP nije dopuštena"
+
+msgid "DROP operation allowed"
+msgstr "Operacija DROP je dopuštena"
+
+msgid "ALTER operation not allowed"
+msgstr "Operacija ALTER nije dopuštena"
+
+msgid "ALTER operation allowed"
+msgstr "Operacija ALTER je dopuštena"
+
+msgid "Check of the database"
+msgstr "Provjera baze podataka"
+
+msgid "Database exists and connection parameters are OK."
+msgstr "Baza podataka postoji i parametri povezivanja su ispravni."
+
+msgid "Incompatible database version."
+msgstr "Verzija baze podataka nije kompatibilna."
+
+msgid "Connection to database successfull"
+msgstr "Povezivanje s bazom podataka je uspjelo"
+
+msgid "Permissions to database are OK."
+msgstr "Ovlasti za bazu podataka su ispravne."
+
+msgid "Unable to connect to the database"
+msgstr "Nije moguće povezati se s bazom podataka"
+
+msgid ""
+"Database can't be reached. Please go back to enter the connection parameters "
+"again."
+msgstr ""
+"Baza podataka nije dostupna. Vratite se i ponovno unesite parametre "
+"povezivanja."
+
+msgid "Permissions on the base"
+msgstr "Ovlasti za bazu podataka"
+
+msgid ""
+"GALETTE hasn't got enough permissions on the database to continue the "
+"installation."
+msgstr ""
+"GALETTE nema dovoljno ovlasti za bazu podataka da bi nastavio instalaciju."
+
+msgid ""
+"GALETTE hasn't got enough permissions on the database to continue the update."
+msgstr ""
+"GALETTE nema dovoljno ovlasti za bazu podataka da bi nastavio nadogradnju."
+
+msgid "Database has not been installed!"
+msgstr "Baza podataka nije instalirana!"
+
+msgid "Database has not been upgraded!"
+msgstr "Baza podataka nije nadograđena!"
+
+msgid "Database has been installed :)"
+msgstr "Baza podataka je instalirana :)"
+
+msgid "Database has been upgraded :)"
+msgstr "Baza podataka je nadograđena :)"
+
+msgid "It seems you already use latest Galette version!"
+msgstr "Čini se da već koristite najnoviju verziju Galettea!"
+
+msgid "Are you sure you want to upgrade?"
+msgstr "Želite li zaista pokrenuti nadogradnju?"
+
+msgid "Home"
+msgstr "Početna"
+
+msgid "Update"
+msgstr "Nadogradnja"
+
+msgid "Select your previous Galette version below, and then click next."
+msgstr "U nastavku odaberite prethodnu verziju Galettea pa kliknite Dalje."
+
+msgid "No update script found!"
+msgstr "Nije pronađena skripta za nadogradnju!"
+
+msgid ""
+"Previous version is older than 0.7. <strong>Make sure you select the right "
+"version</strong>."
+msgstr ""
+"Prethodna verzija starija je od 0.7. <strong>Provjerite jeste li odabrali "
+"ispravnu verziju</strong>."
+
+msgid ""
+"Your previous version should be selected and <strong>displayed in bold</"
+"strong>."
+msgstr ""
+"Vaša prethodna verzija trebala bi biti odabrana i <strong>prikazana "
+"podebljano</strong>."
+
+msgid "Your current Galette version is..."
+msgstr "Vaša trenutna verzija Galettea je…"
+
+#. TRANS: parameter is the version
+#, php-format
+msgid "older than %1$s"
+msgstr "starija od %1$s"
+
+msgid "comprised between"
+msgstr "između"
+
+msgid "and"
+msgstr "i"
+
+msgid "Cancel"
+msgstr "Odustani"
+
+msgid "The installer is disabled."
+msgstr "Instalacijski program je isključen."
+
+msgid "For security reasons, Galette installer is disabled by default."
+msgstr "Zbog sigurnosti instalacijski program Galettea zadano je isključen."
+
+#, php-format
+msgid ""
+"To enable installer, create the empty %1$s file in Galette data directory, "
+"then reload this page:"
+msgstr ""
+"Za uključivanje instalacijskog programa stvorite praznu datoteku %1$s u "
+"Galetteovoj mapi podataka pa ponovno učitajte ovu stranicu:"
+
+msgid "I have created the file, reload"
+msgstr "Datoteka je stvorena, učitaj ponovno"
+
+msgid "Homepage"
+msgstr "Početna stranica"
+
+msgid "Galette has been successfully installed!"
+msgstr "Galette je uspješno instaliran!"
+
+msgid "Galette has been successfully updated!"
+msgstr "Galette je uspješno nadograđen!"
+
+msgid "Configuration file created!"
+msgstr "Konfiguracijska datoteka je stvorena!"
+
+msgid "Data initialized."
+msgstr "Podaci su inicijalizirani."
+
+#. TRANS: parameter is the file path
+#, php-format
+msgid "Unable to remove installer enable file (%1$s)"
+msgstr ""
+"Nije moguće ukloniti datoteku koja omogućuje instalacijski program (%1$s)"
+
+msgid "Remember to remove it manually to re-secure the installer."
+msgstr "Uklonite je ručno kako biste ponovno zaštitili instalacijski program."
+
+msgid "Send anonymous and imprecise data about your Galette instance"
+msgstr "Pošalji anonimne i približne podatke o svojoj instalaciji Galettea"
+
+msgid "Send telemetry information"
+msgstr "Pošalji telemetrijske podatke"
+
+msgid "Register your organization as a Galette user"
+msgstr "Registriraj svoju organizaciju kao korisnika Galettea"
+
+msgid "Register"
+msgstr "Registriraj"
+
+msgid ""
+"Telemetry data are <strong>anonymous</strong>; nothing about your "
+"organization or its members will be sent."
+msgstr ""
+"Telemetrijski podaci su <strong>anonimni</strong>; podaci o vašoj "
+"organizaciji i njezinim članovima neće se slati."
+
+msgid ""
+"Also note that all data are sent over a <strong>HTTPS secured connection</"
+"strong>."
+msgstr "Svi se podaci šalju putem <strong>sigurne HTTPS veze</strong>."
+
+msgid "Ajax page content"
+msgstr "Sadržaj AJAX stranice"
+
+msgid "Copied to clipboard."
+msgstr "Kopirano u međuspremnik."
+
+msgid "Unable to copy, please select the text and copy it by hand."
+msgstr "Nije moguće kopirati. Označite tekst i kopirajte ga ručno."
+
+msgid "Additionnal fields:"
+msgstr "Dodatna polja:"
+
+msgid "Enter as many occurrences you want."
+msgstr "Unesite koliko god vrijednosti želite."
+
+#, php-format
+msgid "Add an occurrence of %1$s"
+msgstr "Dodaj vrijednost polja %1$s"
+
+#, php-format
+msgid "Enter up to %1$s more occurrences."
+msgstr "Unesite još najviše %1$s vrijednosti."
+
+msgid "Choose a file"
+msgstr "Odaberite datoteku"
+
+msgid "Add"
+msgstr "Dodaj"
+
+#, php-format
+msgid "Delete the file and remove this occurrence of %1$s"
+msgstr "Izbriši datoteku i ukloni ovu vrijednost polja %1$s"
+
+#, php-format
+msgid "Remove this occurrence of %1$s"
+msgstr "Ukloni ovu vrijednost polja %1$s"
+
+msgid "Select an option"
+msgstr "Odaberite mogućnost"
+
+msgid "yyyy-mm-dd format"
+msgstr "format dd.mm.gggg"
+
+msgid "Choose another file"
+msgstr "Odaberite drugu datoteku"
+
+msgid "This comment is only displayed for admins and staff members."
+msgstr "Ova je napomena vidljiva samo administratorima i članovima uprave."
+
+msgid "This comment is reserved to the member."
+msgstr "Ova je napomena namijenjena članu."
+
+msgid "Do member want to appear publically?"
+msgstr "Želi li član biti javno vidljiv?"
+
+msgid ""
+"If you check this box (and if you are up to date with your contributions), "
+"your full name and other information will be publically visible on the "
+"members list.<br/>If you've uploaded a photo, it will be displayed on the "
+"gallery page.<br/>Note that administrators can disabled public pages, this "
+"setting will have no effect in that case."
+msgstr ""
+"Ako označite ovaj okvir (i ako je vaša članarina podmirena), vaše ime i "
+"prezime te drugi podaci bit će javno vidljivi na popisu članova.<br>Ako ste "
+"prenijeli fotografiju, prikazivat će se u galeriji.<br>Administratori mogu "
+"isključiti javne stranice; u tom slučaju ova postavka nema učinka."
+
+msgid "(numbers only)"
+msgstr "(samo brojevi)"
+
+msgid ""
+"This field is required trying to avoid registration spam. We are sorry for "
+"the inconvennience."
+msgstr ""
+"Ovo je polje obvezno radi sprječavanja neželjenih registracija. Hvala na "
+"razumijevanju."
+
+msgid "Captcha"
+msgstr "CAPTCHA"
+
+msgid "Is company?"
+msgstr "Pravna osoba?"
+
+msgid "Is member a company?"
+msgstr "Je li član pravna osoba?"
+
+msgid ""
+"Do you manage a non profit organization, or a company? If you do so, check "
+"the box, and then enter its name in the field that will appear."
+msgstr ""
+"Predstavljate li neprofitnu organizaciju ili tvrtku? Ako da, označite okvir "
+"i unesite njezin naziv u polje koje će se pojaviti."
+
+msgid "Member of group"
+msgstr "Član grupe"
+
+msgid "Actions"
+msgstr "Radnje"
+
+msgctxt "member groups"
+msgid "added"
+msgstr "dodano"
+
+msgctxt "member groups"
+msgid "changed"
+msgstr "Promjenjeno"
+
+msgctxt "member groups"
+msgid "will be removed"
+msgstr "biti će promjenjeno"
+
+msgid "Group you do not manage"
+msgstr "Grupa koju ne vodite"
+
+#, php-format
+msgid "Member of group %1$s"
+msgstr "Član grupe %1$s"
+
+#, php-format
+msgid "Manager of group %1$s"
+msgstr "Voditelj grupe %1$s"
+
+#, php-format
+msgid "Remove from group %1$s"
+msgstr "Ukloni iz grupe %1$s"
+
+#, php-format
+msgid "Keep group %1$s"
+msgstr "Zadrži grupu %1$s"
+
+msgid "no group"
+msgstr "nema grupa"
+
+msgid "Select a group"
+msgstr "Odaberite grupu"
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr "Stavke na ovom popisu su izmijenjene. Ne zaboravite spremiti izmjene."
+
+msgid "Groups:"
+msgstr "Grupe:"
+
+msgid "Select a group to add selected members to"
+msgstr "Odaberite grupu u koju želite dodati odabrane članove"
+
+msgid "Select a group to remove selected members from"
+msgstr "Odaberite grupu iz koje želite ukloniti odabrane članove"
+
+#, php-format
+msgid "Maximum allowed size is %1$s"
+msgstr "Najveća dopuštena veličina je %1$s"
+
+msgid "Load previous members..."
+msgstr "Učitaj prethodne članove…"
+
+msgid "Load following members..."
+msgstr "Učitaj sljedeće članove…"
+
+msgid "Search for name or ID and pick member"
+msgstr "Pretražite po imenu ili ID-u i odaberite člana"
+
+msgid "Password confirmation:"
+msgstr "Potvrda lozinke:"
+
+msgid "Picture:"
+msgstr "Fotografija:"
+
+msgid "Delete image"
+msgstr "Izbriši sliku"
+
+msgid "Square (1:1)"
+msgstr "Kvadrat (1:1)"
+
+msgid "Portrait (3:4)"
+msgstr "Okomito (3:4)"
+
+msgid "Landscape (4:3)"
+msgstr "Vodoravno (4:3)"
+
+msgid "Cropping focus"
+msgstr "Područje obrezivanja"
+
+#, php-format
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %1$s"
+msgstr ""
+"Odaberite dio izvorne slike koji će se sačuvati nakon obrezivanja na konačni "
+"omjer iz postavki: %1$s"
+
+msgid "Center"
+msgstr "Sredina"
+
+msgid "Top"
+msgstr "Vrh"
+
+msgid "Bottom"
+msgstr "Dno"
+
+msgid "Left"
+msgstr "Lijevo"
+
+msgid "Right"
+msgstr "Desno"
+
+msgid "Not supplied"
+msgstr "Nije navedeno"
+
+msgid "Zip - Town"
+msgstr "Poštanski broj - mjesto"
+
+msgid "Company"
+msgstr "Tvrtka"
+
+msgid "no member"
+msgstr "nema članova"
+
+msgid "Pages:"
+msgstr "Stranice:"
+
+msgid "Selected members"
+msgstr "Odabrani članovi"
+
+msgid "No members has been selected yet."
+msgstr "Još nije odabran nijedan član."
+
+msgid "Validate"
+msgstr "Potvrdi"
+
+#, php-format
+msgid "Open '%s' in a new window"
+msgstr "Otvori '%s' u novom prozoru"
+
+msgid "Permissions"
+msgstr "Ovlasti"
+
+msgid "Required"
+msgstr "Obvezno"
+
+msgid "Width in forms"
+msgstr "Širina u obrascima"
+
+#, php-format
+msgid "Change '%1$s' permissions"
+msgstr "Promijeni ovlasti za '%1$s'"
+
+#, php-format
+msgid "Field '%1$s' cannot be set as required."
+msgstr "Polje '%1$s' ne može biti obvezno."
+
+#, php-format
+msgid "Mark '%1$s' as (not) required"
+msgstr "Označi '%1$s' kao (ne)obvezno"
+
+msgid "Change field's width with in forms"
+msgstr "Promijeni širinu polja u obrascima"
+
+msgid "Default"
+msgstr "Zadano"
+
+msgid "Full"
+msgstr "Puna"
+
+msgid "Half"
+msgstr "Polovica"
+
+msgid "Type"
+msgstr "Vrsta"
+
+#, php-format
+msgid "Edit '%s' field"
+msgstr "Uredi polje '%s'"
+
+#, php-format
+msgid "Translate '%s' field"
+msgstr "Prevedi polje '%s'"
+
+#, php-format
+msgid "Delete '%s' field"
+msgstr "Izbriši polje '%s'"
+
+#, php-format
+msgid "Move up '%s' field"
+msgstr "Pomakni polje '%s' gore"
+
+#, php-format
+msgid "Move down '%s' field"
+msgstr "Pomakni polje '%s' dolje"
+
+#, php-format
+msgid "There is not yet any dynamic field configured for '%1$s'"
+msgstr "Za '%1$s' još nisu postavljena dinamička polja"
+
+msgid "Header"
+msgstr "Zaglavlje"
+
+msgid "Footer"
+msgstr "Podnožje"
+
+msgid "Body"
+msgstr "Karoserija"
+
+msgid "CSS styles"
+msgstr "CSS stilovi"
+
+msgid "Select"
+msgstr "Odaberi"
+
+msgid "Invoice"
+msgstr "Račun"
+
+msgid "Receipt"
+msgstr "Potvrda o uplati"
+
+msgid "Save"
+msgstr "Spremi"
+
+msgid "Disable social networks on member form"
+msgstr "Isključi društvene mreže u obrascu člana"
+
+#, php-format
+msgid "Remove %1$s"
+msgstr "Ukloni %1$s"
+
+msgid "Add new social network"
+msgstr "Dodaj novu društvenu mrežu"
+
+msgid "Choose or enter your own..."
+msgstr "Odaberite ili unesite vlastito…"
+
+msgid "Social network"
+msgstr "Društvena mreža"
+
+msgid "Information"
+msgstr "Podaci"
+
+msgid "Parent group:"
+msgstr "Nadređena grupa:"
+
+#, php-format
+msgid "%1$s is member of the group"
+msgstr "%1$s je član grupe"
+
+#, php-format
+msgid "%1$s is manager of the group"
+msgstr "%1$s upravlja grupom"
+
+#, php-format
+msgid "Remove %1$s from the group"
+msgstr "Ukloni %1$s iz grupe"
+
+#, php-format
+msgid "Keep %1$s in the group"
+msgstr "Zadrži %1$s u grupi"
+
+msgid "Managers"
+msgstr "Voditelji"
+
+msgid "No member attached"
+msgstr "Nema povezanih članova"
+
+msgid "S,M,T,W,T,F,S"
+msgstr "N,P,U,S,Č,P,S"
+
+msgid "January"
+msgstr "siječanj"
+
+msgid "February"
+msgstr "veljača"
+
+msgid "March"
+msgstr "ožujak"
+
+msgid "April"
+msgstr "travanj"
+
+msgid "May"
+msgstr "svibanj"
+
+msgid "June"
+msgstr "lipanj"
+
+msgid "July"
+msgstr "srpanj"
+
+msgid "August"
+msgstr "kolovoz"
+
+msgid "September"
+msgstr "rujan"
+
+msgid "October"
+msgstr "listopad"
+
+msgid "November"
+msgstr "studeni"
+
+msgid "December"
+msgstr "prosinac"
+
+msgid "Jan"
+msgstr "sij"
+
+msgid "Feb"
+msgstr "velj"
+
+msgid "Mar"
+msgstr "ožu"
+
+msgid "Apr"
+msgstr "tra"
+
+msgid "Jun"
+msgstr "lip"
+
+msgid "Jul"
+msgstr "srp"
+
+msgid "Aug"
+msgstr "kol"
+
+msgid "Sep"
+msgstr "ruj"
+
+msgid "Oct"
+msgstr "lis"
+
+msgid "Nov"
+msgstr "stu"
+
+msgid "Dec"
+msgstr "pro"
+
+msgid "Today"
+msgstr "Danas"
+
+msgid "Now"
+msgstr "Sada"
+
+msgid "An error occurred retrieving members :("
+msgstr "Došlo je do pogreške pri dohvaćanju članova :("
+
+msgid "Close"
+msgstr "Zatvori"
+
+msgid "An error occurred retrieving dates :("
+msgstr "Došlo je do pogreške pri dohvaćanju datuma :("
+
+msgid "An error occurred displaying members interface :("
+msgstr "Došlo je do pogreške pri prikazu sučelja za članove :("
+
+msgid "Loading..."
+msgstr "Učitavanje…"
+
+msgid "Continue"
+msgstr "Nastavi"
+
+msgid "Password is valid :)"
+msgstr "Lozinka je valjana :)"
+
+msgid "Password is not valid!"
+msgstr "Lozinka nije valjana!"
+
+#, php-format
+msgid "At least %1$s of the following rules:"
+msgstr "Najmanje jedno od %1$s sljedećih pravila:"
+
+msgid "An error occurred checking password :("
+msgstr "Došlo je do pogreške pri provjeri lozinke :("
+
+msgid "Reference date"
+msgstr "Referentni datum"
+
+msgid "Direction"
+msgstr "Smjer"
+
+msgid "Unit"
+msgstr "Jedinica"
+
+msgid "Use a fixed date"
+msgstr "Koristi fiksni datum"
+
+msgid "Use a date relative to the search day"
+msgstr "Koristi datum relativan u odnosu na dan pretrage"
+
+msgid "Remove"
+msgstr "Ukloni"
+
+msgid "Two-factor authentication is available"
+msgstr "Dvofaktorska autentifikacija je dostupna"
+
+msgid ""
+"A code from an application on your telephone, on top of your password, means "
+"a stolen password is not enough on its own to reach your account. Do you "
+"want to set it up?"
+msgstr ""
+"Kod iz aplikacije na vašem telefonu, uz lozinku, znači da ukradena lozinka "
+"sama nije dovoljna za pristup računu. Želite li to postaviti?"
+
+msgid "Later"
+msgstr "Kasnije"
+
+msgid "Records per page:"
+msgstr "Zapisa po stranici:"
+
+msgid "Selecting an item from the list will automatically reload the page"
+msgstr "Odabir stavke s popisa automatski će ponovno učitati stranicu"
+
+msgid "Selecting an item from the list will automatically reload the table"
+msgstr "Odabir stavke s popisa automatski će ponovno učitati tablicu"
+
+msgid "Show legend"
+msgstr "Prikaži legendu"
+
+msgid "(Un)Check all"
+msgstr "Označi/odznači sve"
+
+msgid "Invert selection"
+msgstr "Obrni odabir"
+
+msgid "Disable dark mode"
+msgstr "Isključi tamni način"
+
+msgid "Enable dark mode"
+msgstr "Uključi tamni način"
+
+msgid "Unimpersonate"
+msgstr "Završi prijavu u tuđe ime"
+
+msgid "User menu"
+msgstr "Korisnički izbornik"
+
+#, php-format
+msgid "Your message has been sent to <strong>%s members</strong>"
+msgstr "Vaša je poruka poslana na adrese <strong>%s članova</strong>"
+
+#, php-format
+msgid "You are about to send an e-mail to <strong>%s members</strong>"
+msgstr "Poslat ćete poruku e-pošte na adrese <strong>%s članova</strong>"
+
+msgid "None of the selected members has an email address."
+msgstr "Nijedan odabrani član nema adresu e-pošte."
+
+msgid "No member selected (yet)."
+msgstr "Nijedan član (još) nije odabran."
+
+msgid "unreachable members:"
+msgstr "članovi bez dostupne e-pošte:"
+
+msgid "unreachable member:"
+msgstr "član bez dostupne e-pošte:"
+
+msgid ""
+"Some members you have selected have no e-mail address. However, you can "
+"generate envelope labels to contact them by snail mail."
+msgstr ""
+"Neki odabrani članovi nemaju adresu e-pošte. Možete izraditi adresne "
+"naljepnice za omotnice i kontaktirati ih poštom."
+
+msgid "Modification"
+msgstr "Izmjena"
+
+msgid "Display"
+msgstr "Prikaži"
+
+msgid ""
+"Send member a link to generate a new password, as if had used the 'lost "
+"password' functionality."
+msgstr ""
+"Pošalji članu poveznicu za postavljanje nove lozinke, kao da je upotrijebio "
+"funkciju za oporavak lozinke."
+
+msgid "New password"
+msgstr "Nova lozinka"
+
+msgid ""
+"Clear this member's two-factor authentication, for instance after they lost "
+"both their device and their recovery codes."
+msgstr ""
+"Poništi dvofaktorsku autentifikaciju ovog člana, primjerice ako je izgubio i "
+"uređaj i kodove za oporavak."
+
+msgid "Reset two-factor authentication"
+msgstr "Poništi dvofaktorsku autentifikaciju"
+
+msgid "Generate Member Card"
+msgstr "Izradi člansku iskaznicu"
+
+msgid "View contributions"
+msgstr "Pregledaj uplate"
+
+#, php-format
+msgid "Create a new member with %1$s information."
+msgstr "Stvori novog člana s podacima člana %1$s."
+
+msgid "Duplicate"
+msgstr "Kopiraj"
+
+msgid "Picture"
+msgstr "Fotografija"
+
+msgid "Download VCard"
+msgstr "Preuzmi vCard"
+
+msgid "Display QR Code"
+msgstr "Prikaži QR kod"
+
+msgid ""
+"You are actually logged-in as superadmin. Some functionnalities may not be "
+"available since this is *not* a regular member."
+msgstr ""
+"Trenutno ste prijavljeni kao glavni administrator. Neke funkcije možda nisu "
+"dostupne jer to *nije* obični članski račun."
+
+msgid "Superadmin"
+msgstr "Glavni administrator"
+
+msgid ""
+"This application runs under DEMO mode, all features may not be available."
+msgstr "Aplikacija radi u DEMO načinu. Neke značajke možda nisu dostupne."
+
+msgid "Demonstration"
+msgstr "Demonstracija"
+
+msgid "Maintenance"
+msgstr "Održavanje"
+
+msgid "Pagination"
+msgstr "Straničenje"
+
+msgid "Previous"
+msgstr "Prethodno"
+
+msgid "Next"
+msgstr "Sljedeće"
+
+msgid "Main menu"
+msgstr "Glavni izbornik"
+
+msgid "Compact menu"
+msgstr "Sažeti izbornik"
+
+msgid "Go to Galette's dashboard"
+msgstr "Idi na nadzornu ploču Galettea"
+
+msgid "Mobile main menu"
+msgstr "Glavni izbornik za mobilne uređaje"
+
+msgid "Go back to Galette homepage"
+msgstr "Natrag na početnu stranicu Galettea"
+
+msgid "Menu"
+msgstr "Izbornik"
+
+msgid "Public pages menu"
+msgstr "Izbornik javnih stranica"
+
+msgctxt "self registration"
+msgid "Register"
+msgstr "Registracija"
+
+msgid "Generating dark theme..."
+msgstr "Generiranje tamne teme..."
+
+msgid "Unable to store dark theme."
+msgstr "Nije moguće spremiti tamnu temu."
+
+msgid "Deactivate HTML editor"
+msgstr "Isključi HTML uređivač"
+
+msgid "Activate HTML editor"
+msgstr "Uključi HTML uređivač"
+
+#, php-format
+msgid ""
+"This label is provided by Galette and displayed as \"%1$s\" in your "
+"language. Changing it will replace its automatic translations."
+msgstr ""
+"Ovu oznaku pruža Galette i na vašem se jeziku prikazuje kao „%1$s”. Njezina "
+"izmjena zamijenit će automatske prijevode."
+
+msgid "If this label is changed, keep its translations in other languages"
+msgstr ""
+"Ako je ova oznaka promijenjena, zadrži njezine prijevode na drugim jezicima"
+
+msgid "For the selection:"
+msgstr "Za odabrane:"
+
+msgid "Experimental feature. Be careful using it."
+msgstr "Eksperimentalna značajka. Koristite je oprezno."
+
+msgid "Experimental"
+msgstr "Eksperimentalno"
+
+msgid "Delete all associated data"
+msgstr "Izbriši sve povezane podatke"
+
+msgid "Cascade delete"
+msgstr "Kaskadno brisanje"
+
+msgid "Are you sure you want to proceed?"
+msgstr "Želite li zaista nastaviti?"
+
+msgid "This can't be undone."
+msgstr "Ovo se ne može poništiti."
+
+msgid "Headers"
+msgstr "Zaglavlja"
+
+msgid "From:"
+msgstr "Od:"
+
+msgid "To:"
+msgstr "Za:"
+
+msgid "Subject:"
+msgstr "Predmet:"
+
+msgid "Attachments:"
+msgstr "Privici:"
+
+msgid "Mail body"
+msgstr "Sadržaj poruke"
+
+msgid "Edit"
+msgstr "Uredi"
+
+msgid "OK"
+msgstr "U redu"
+
+msgid "Only checked fields will be updated."
+msgstr "Ažurirat će se samo označena polja."
+
+msgid "No changes selected"
+msgstr "Nijedna izmjena nije odabrana"
+
+msgid "You are about to proceed following changes for selected members:"
+msgstr "Izvršit ćete sljedeće izmjene za odabrane članove:"
+
+msgid "Some details about your attendance sheet..."
+msgstr "Navedite pojedinosti svoje evidencije prisutnosti…"
+
+#, php-format
+msgid "%s attendees"
+msgstr "%s sudionika"
+
+msgid "Sheet type"
+msgstr "Vrsta evidencije"
+
+msgid "With photos?"
+msgstr "S fotografijama?"
+
+msgid "Generate"
+msgstr "Izradi"
+
+msgid "New installation"
+msgstr "Nova instalacija"
+
+#, php-format
+msgid "you're installing %1$s for the first time"
+msgstr "prvi put instalirate %1$s"
+
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
+msgstr "želite izbrisati stariju verziju %1$s bez zadržavanja podataka"
+
+#, php-format
+msgid ""
+"you already have installed %1$s, and you want to upgrade to the latest "
+"version"
+msgstr "već imate instaliran %1$s i želite nadograditi na najnoviju verziju"
+
+msgid "Warning: Don't forget to backup your current database."
+msgstr ""
+"Upozorenje: ne zaboravite napraviti sigurnosnu kopiju trenutne baze podataka."
+
+#, php-format
+msgid "You current %1$s version is..."
+msgstr "Vaša trenutna verzija %1$s je…"
+
+msgid "(Errors on DROP and RENAME operations can be ignored)"
+msgstr "(Pogreške operacija DROP i RENAME mogu se zanemariti)"
+
+msgid "The tables are not totally created, it may be a permission problem."
+msgstr "Tablice nisu u cijelosti stvorene. Mogući uzrok su ovlasti."
+
+msgid ""
+"The tables have not been totally created, it may be a permission problem."
+msgstr "Tablice nisu u cijelosti stvorene. Mogući uzrok su ovlasti."
+
+msgid "Your database is maybe not usable, try to restore the older version."
+msgstr ""
+"Vaša baza podataka možda nije upotrebljiva. Pokušajte vratiti stariju "
+"verziju."
+
+#, php-format
+msgid "Plugin '%1$s' has been successfully installed!"
+msgstr "Dodatak '%1$s' uspješno je instaliran!"
+
+#, php-format
+msgid "Plugin '%1$s' has been successfully updated!"
+msgstr "Dodatak '%1$s' uspješno je nadograđen!"
+
+msgid "Back to plugins management page"
+msgstr "Natrag na stranicu za upravljanje dodacima"
+
+msgid "Access permissions to database"
+msgstr "Ovlasti pristupa bazi podataka"
+
+msgid "Existing variables"
+msgstr "Postojeće varijable"
+
+msgid "Show existing variables"
+msgstr "Prikaži postojeće varijable"
+
+msgid ""
+"Nothing is automated in the process; it's up to you to send (or resend) data."
+msgstr ""
+"U ovom postupku ništa nije automatsko; podatke šaljete ili ponovno šaljete "
+"sami."
+
+msgid ""
+"You can review below the raw data that would be send if you press the 'Send' "
+"button."
+msgstr ""
+"U nastavku možete pregledati izvorne podatke koji će se poslati ako kliknete "
+"gumb 'Pošalji'."
+
+msgid "An error occurred sending telemetry information :("
+msgstr "Došlo je do pogreške pri slanju telemetrijskih podataka :("
+
+msgid "Send"
+msgstr "Pošalji"
+
+msgid "Your telemetry data are more than one year old."
+msgstr "Vaši telemetrijski podaci stariji su od godinu dana."
+
+msgid "Do you want to send it again?"
+msgstr "Želite li ih ponovno poslati?"
+
+msgid "Language menu"
+msgstr "Izbornik jezika"
+
+msgid "Back to top"
+msgstr "Natrag na vrh"
+
+msgid "Page content"
+msgstr "Sadržaj stranice"
+
+msgid "You don’t have permission to access this resource."
+msgstr "Nemate ovlasti za pristup ovom resursu."
+
+msgid "Sorry, the page you are looking for could not be found."
+msgstr "Tražena stranica nije pronađena."
+
+msgid "Application error"
+msgstr "Pogreška aplikacije"
+
+msgid "Details"
+msgstr "Pojedinosti"
+
+msgid "Type:"
+msgstr "Vrsta:"
+
+msgid "Code:"
+msgstr "Kod:"
+
+msgid "Message:"
+msgstr "Poruka:"
+
+msgid "File:"
+msgstr "Datoteka:"
+
+msgid "Line:"
+msgstr "Redak:"
+
+msgid "Trace"
+msgstr "Trag izvršavanja"
+
+msgid "Leave empty to keep the current one"
+msgstr "Ostavite prazno kako biste zadržali postojeću vrijednost"
+
+msgid "Current password:"
+msgstr "Trenutna lozinka:"
+
+msgid ""
+"Make sure you've done a backup of the database before using any of the "
+"following tools!"
+msgstr ""
+"Prije korištenja sljedećih alata obavezno napravite sigurnosnu kopiju baze "
+"podataka!"
+
+msgid "Select actions(s)"
+msgstr "Odaberite radnje"
+
+msgid "Reset all emails contents to their default values"
+msgstr "Vrati sadržaj svih poruka e-pošte na zadane vrijednosti"
+
+msgid "Reset emails contents"
+msgstr "Vrati sadržaj poruka e-pošte"
+
+msgid "(all existing values will be removed)"
+msgstr "(sve postojeće vrijednosti bit će uklonjene)"
+
+msgid ""
+"This includes fields positions, order, visibility, access levels and "
+"mandatory marks."
+msgstr ""
+"To uključuje položaje i redoslijed polja, vidljivost, razine pristupa i "
+"oznake obveznih polja."
+
+msgid "Reset fields configuration"
+msgstr "Vrati postavke polja"
+
+msgid "Reset all PDF models to their default values"
+msgstr "Vrati sve PDF predloške na zadane vrijednosti"
+
+msgid "Reinitialize PDF models"
+msgstr "Vrati PDF predloške"
+
+msgid "Fill all empty login and passwords"
+msgstr "Popuni sva prazna korisnička imena i lozinke"
+
+msgid "Generate empty logins and passwords"
+msgstr "Generiraj korisnička imena i lozinke gdje nedostaju"
+
+msgid "Fix dynamic fields dates format"
+msgstr "Ispravi format datuma u dinamičkim poljima"
+
+msgid "Go"
+msgstr "Pokreni"
+
+msgid "This page can break your installation, be very careful."
+msgstr "Ova stranica može poremetiti rad instalacije. Budite vrlo oprezni."
+
+#, fuzzy
+#| msgid "Experimental"
+msgid "Experimental features"
+msgstr "Eksperimentalno"
+
+msgid "Constants"
+msgstr ""
+
+msgid "Filter settings"
+msgstr "Filtriraj postavke"
+
+msgid "Search a setting..."
+msgstr "Pretraži postavku…"
+
+msgid "Value"
+msgstr "Vrijednost"
+
+msgid ""
+"This setting is not known by Galette. It may come from an older version or "
+"from a plugin."
+msgstr ""
+"Galette ne prepoznaje ovu postavku. Možda potječe iz starije verzije ili "
+"dodatka."
+
+msgid "unknown"
+msgstr "nepoznato"
+
+msgid "locked"
+msgstr "zaključano"
+
+msgid "Galette maintains this value itself; it is shown for information only."
+msgstr "Galette sam održava ovu vrijednost; prikazana je samo informativno."
+
+msgid "read-only"
+msgstr "samo za čitanje"
+
+msgid ""
+"Held as a secret: its value is never displayed, nor changed from this page."
+msgstr ""
+"Spremljeno kao tajni podatak: vrijednost se nikad ne prikazuje niti mijenja "
+"na ovoj stranici."
+
+msgid "secret"
+msgstr "tajno"
+
+msgid "default"
+msgstr "zadano"
+
+msgid "modified"
+msgstr "izmijenjeno"
+
+#, php-format
+msgid "Declared by the %s plugin, and only while it stays active."
+msgstr "Definira dodatak %s i vrijedi samo dok je dodatak uključen."
+
+msgid "set"
+msgstr "postavljeno"
+
+msgid "not set"
+msgstr "nije postavljeno"
+
+msgid "Enabled"
+msgstr "Uključeno"
+
+#, php-format
+msgid "Save '%s'"
+msgstr "Spremi '%s'"
+
+msgid "Reset to default"
+msgstr "Vrati na zadano"
+
+#, php-format
+msgid "Reset '%s' to its default"
+msgstr "Vrati '%s' na zadanu vrijednost"
+
+msgid ""
+"These features are meant to be tested. Enable one to try it on this "
+"instance, and tell us how it goes; disable it again at any time."
+msgstr ""
+
+msgid "Description"
+msgstr "Opis"
+
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Obvezno"
+
+msgid "Disable"
+msgstr "Isključi"
+
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Uključeno"
+
+#, fuzzy
+#| msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
+msgid ""
+"Declared in behavior.inc.php or in the environment, which takes precedence."
+msgstr ""
+"Postavljeno konstantom %s u datoteci behavior.inc.php, koja ima prednost."
+
+#, php-format
+msgid ""
+"Galette reads these from %s, so they cannot be edited from here. One marked "
+"deprecated is still declared there although a setting above replaces it, and "
+"overrides that setting until you remove it."
+msgstr ""
+"Galette ih čita iz %s pa se ovdje ne mogu uređivati. Zastarjela konstanta "
+"još je definirana ondje, premda ju zamjenjuje gore navedena postavka, i ima "
+"prednost pred tom postavkom dok je ne uklonite."
+
+#, php-format
+msgid "Replaced by the \"%s\" setting."
+msgstr "Zamijenjeno postavkom „%s”."
+
+msgid "deprecated"
+msgstr "zastarjelo"
+
+msgid "defined"
+msgstr "definirano"
+
+#, php-format
+msgid "Go to %s"
+msgstr "Idi na %s"
+
+msgid "Legend"
+msgstr "Legenda"
+
+msgid "Statuses"
+msgstr "Statusi"
+
+msgid "Never changed: the value Galette ships with."
+msgstr "Nikad nije promijenjeno: izvorna vrijednost isporučena s Galetteom."
+
+msgid ""
+"Changed from the default, here or from the settings form. It can be reset."
+msgstr ""
+"Izmijenjeno u odnosu na zadano, ovdje ili u obrascu postavki. Može se "
+"vratiti na zadanu vrijednost."
+
+msgid ""
+"Galette maintains this value itself, such as a generated identifier or a "
+"date it records. It is shown for information only."
+msgstr ""
+"Galette sam održava ovu vrijednost, primjerice generirani identifikator ili "
+"zabilježeni datum. Prikazana je samo informativno."
+
+msgid ""
+"A password or a token. Its value is never displayed, only whether one is "
+"set, and it is not changed from this page."
+msgstr ""
+"Lozinka ili token. Vrijednost se nikad ne prikazuje, samo je li postavljena, "
+"i ne mijenja se na ovoj stranici."
+
+msgid ""
+"A constant defined in behavior.inc.php takes precedence over the stored "
+"value. Remove it from that file to manage the setting from here."
+msgstr ""
+"Konstanta definirana u behavior.inc.php ima prednost pred spremljenom "
+"vrijednošću. Uklonite je iz datoteke kako biste postavkom upravljali ovdje."
+
+msgid ""
+"A row found in database that Galette does not describe. It may come from an "
+"older version, or from a plugin that is no longer active."
+msgstr ""
+"Zapis pronađen u bazi podataka koji Galette ne prepoznaje. Možda potječe iz "
+"starije verzije ili dodatka koji više nije uključen."
+
+msgid "plugin name"
+msgstr "naziv dodatka"
+
+msgid ""
+"Declared by that plugin rather than by Galette. Deactivate the plugin and "
+"the setting becomes unknown again, keeping its value until the plugin comes "
+"back."
+msgstr ""
+"Definira taj dodatak, a ne Galette. Isključivanjem dodatka postavka ponovno "
+"postaje nepoznata, ali zadržava svoju vrijednost do ponovnog uključivanja "
+"dodatka."
+
+msgid "Confirm your super admin password"
+msgstr "Potvrdite lozinku glavnog administratora"
+
+msgid "Confirm"
+msgstr "Potvrdi"
+
+msgid "Simple search"
+msgstr "Jednostavno pretraživanje"
+
+msgid "Search:"
+msgstr "Pretraži:"
+
+msgid "Enter a value"
+msgstr "Unesite vrijednost"
+
+msgid "in:"
+msgstr "u:"
+
+msgid "Membership status"
+msgstr "Status članstva"
+
+msgid "Account activity"
+msgstr "Aktivnost računa"
+
+msgid "With email:"
+msgstr "S e-poštom:"
+
+msgid "Don't care"
+msgstr "Nije važno"
+
+msgid "With"
+msgstr "S"
+
+msgid "Without"
+msgstr "Bez"
+
+msgid "between"
+msgstr "između"
+
+msgid "Show public infos"
+msgstr "Prikaži javne podatke"
+
+msgid "Advanced groups search"
+msgstr "Napredno pretraživanje grupa"
+
+msgid "Add new group search criteria"
+msgstr "Dodaj novi kriterij pretraživanja grupa"
+
+msgid "Logical operator"
+msgstr "Logički operator"
+
+msgid "In all selected groups"
+msgstr "U svim odabranim grupama"
+
+msgid "In any of selected groups"
+msgstr "U bilo kojoj od odabranih grupa"
+
+msgid "Remove criteria"
+msgstr "Ukloni kriterij"
+
+msgid "Within contributions"
+msgstr "Među uplatama"
+
+msgid "Free search"
+msgstr "Slobodno pretraživanje"
+
+msgid "Add new free search criteria"
+msgstr "Dodaj novi kriterij slobodnog pretraživanja"
+
+msgid "or"
+msgstr "ili"
+
+msgid "Select a field"
+msgstr "Odaberite polje"
+
+msgid "Query operator"
+msgstr "Operator upita"
+
+msgid "is"
+msgstr "jest"
+
+msgid "is not"
+msgstr "nije"
+
+msgid "before"
+msgstr "prije"
+
+msgid "after"
+msgstr "nakon"
+
+msgid "contains"
+msgstr "sadrži"
+
+msgid "do not contains"
+msgstr "ne sadrži"
+
+msgid "starts with"
+msgstr "počinje s"
+
+msgid "ends with"
+msgstr "završava s"
+
+msgid "Filter"
+msgstr "Filtriraj"
+
+msgid "Clear filter"
+msgstr "Ukloni filtar"
+
+msgid "Choice"
+msgstr "Odabir"
+
+msgid ""
+"Repeated failures get further attempts refused for a while. What is refused "
+"right now is listed below; lifting a line lets whoever it stands for try "
+"again at once."
+msgstr ""
+"Nakon ponovljenih neuspjeha daljnji se pokušaji privremeno blokiraju. "
+"Trenutne blokade navedene su u nastavku; uklanjanjem pojedinog retka odmah "
+"omogućujete novi pokušaj za pripadajući račun ili adresu."
+
+msgid "Thresholds and durations are in the advanced configuration."
+msgstr "Pragovi i trajanja nalaze se u naprednim postavkama."
+
+msgid "Nothing is being refused"
+msgstr "Nema aktivnih blokada"
+
+msgid ""
+"No account and no address is waiting; counters that can no longer refuse "
+"anyone are dropped on their own."
+msgstr ""
+"Nijedan račun ni adresa nisu blokirani; brojači koji više ne mogu nikoga "
+"blokirati automatski se uklanjaju."
+
+msgid "Authentication attempts currently refused"
+msgstr "Trenutačno blokirani pokušaji prijave"
+
+msgid "What is counted"
+msgstr "Što se broji"
+
+msgid "Account"
+msgstr "Račun"
+
+msgid "Failures"
+msgstr "Neuspjesi"
+
+msgid "Refused until"
+msgstr "Blokirano do"
+
+msgid "Failed attempts on one account, from one address"
+msgstr "Neuspjeli pokušaji za jedan račun s jedne adrese"
+
+msgid "Failed attempts from one address, on any account"
+msgstr "Neuspjeli pokušaji s jedne adrese za bilo koji račun"
+
+msgid "Failed attempts on one account, from anywhere"
+msgstr "Neuspjeli pokušaji za jedan račun s bilo koje adrese"
+
+msgid "Password recovery requests for one account"
+msgstr "Zahtjevi za oporavak lozinke za jedan račun"
+
+msgid "Password recovery requests from one address"
+msgstr "Zahtjevi za oporavak lozinke s jedne adrese"
+
+msgid "Self registrations from one address"
+msgstr "Samostalne registracije s jedne adrese"
+
+msgid "Lift"
+msgstr "Ukloni blokadu"
+
+msgid "Lift them all"
+msgstr "Ukloni sve blokade"
+
+msgid "Members by status"
+msgstr "Članovi po statusu"
+
+msgid "Members by state of dues"
+msgstr "Članovi prema stanju članarine"
+
+msgid "Contributions types repartition"
+msgstr "Raspodjela po vrstama uplata"
+
+msgid "Individuals and Companies"
+msgstr "Fizičke i pravne osobe"
+
+msgid "Contributions over time"
+msgstr "Uplate kroz vrijeme"
+
+msgid "Total contributions for the month"
+msgstr "Ukupne uplate za mjesec"
+
+msgid "Some warnings has been thrown:"
+msgstr "Pojavila su se upozorenja:"
+
+msgid "Please correct above warnings to continue."
+msgstr "Za nastavak ispravite gore navedene probleme."
+
+msgid "Warning"
+msgstr "Upozorenje"
+
+msgid "Field name"
+msgstr "Naziv polja"
+
+msgid "Available fields"
+msgstr "Dostupna polja"
+
+msgid ""
+"Deleting the last field is not possible. There must be at least one field in "
+"the list."
+msgstr ""
+"Posljednje polje nije moguće izbrisati. Na popisu mora ostati barem jedno "
+"polje."
+
+#, php-format
+msgid "Edit field %1$s"
+msgstr "Uredi polje %1$s"
+
+msgid "Permissions:"
+msgstr "Ovlasti:"
+
+msgid "Required:"
+msgstr "Obvezno:"
+
+msgid "Width:"
+msgstr "Širina:"
+
+msgid "Height:"
+msgstr "Visina:"
+
+msgid "Min Size:"
+msgstr "Najmanja veličina:"
+
+msgid "Minimum number of characters."
+msgstr "Najmanji broj znakova."
+
+msgid "Size:"
+msgstr "Veličina:"
+
+msgid "Maximum file size, in Ko."
+msgstr "Najveća veličina datoteke u kB."
+
+msgid "Maximum number of characters."
+msgstr "Najveći broj znakova."
+
+msgid "Repeat:"
+msgstr "Ponavljanja:"
+
+msgid "Number of values or zero if infinite."
+msgstr "Broj vrijednosti ili nula za neograničeno."
+
+msgid "Values:"
+msgstr "Vrijednosti:"
+
+msgid "Choice list (one entry per line)."
+msgstr "Popis mogućnosti (jedna stavka u retku)."
+
+msgid "Information:"
+msgstr "Podaci:"
+
+msgid "Extra information displayed along with dynamic field."
+msgstr "Dodatne informacije prikazane uz dinamičko polje."
+
+msgid "Display information above input"
+msgstr "Prikaži informacije iznad polja za unos"
+
+msgid "New dynamic field"
+msgstr "Novo dinamičko polje"
+
+msgid "Visibility"
+msgstr "Vidljivost"
+
+msgid "Translate labels"
+msgstr "Prevedi oznake"
+
+msgid ""
+"This label is provided by Galette, its translations come with the software "
+"and cannot be changed here. You can help improve them on Weblate."
+msgstr ""
+"Ovu oznaku pruža Galette, a njezini prijevodi sastavni su dio aplikacije i "
+"ne mogu se mijenjati ovdje. Poboljšanju prijevoda možete pridonijeti putem "
+"Weblatea."
+
+#, php-format
+msgid ""
+"No translation for '%s'!<br/>Please fill and submit the form below to create "
+"it."
+msgstr ""
+"Nema prijevoda za '%s'!<br>Ispunite i pošaljite obrazac u nastavku kako "
+"biste ga stvorili."
+
+msgid "When a translation is empty, the original text is displayed."
+msgstr "Kada je prijevod prazan, prikazuje se originalni tekst."
+
+msgid "Original text:"
+msgstr "Izvorni tekst:"
+
+msgid "Choose label to translate"
+msgstr "Odaberite oznaku za prijevod"
+
+msgid "No fields to translate."
+msgstr "Nema polja za prijevod."
+
+msgid "Original string for name, that will be used for translations."
+msgstr "Izvorni tekst naziva koji će se koristiti za prijevode."
+
+msgid "Add payment type"
+msgstr "Dodaj način plaćanja"
+
+msgid "Label"
+msgstr "Oznaka"
+
+msgid "ID"
+msgstr "ID"
+
+#, php-format
+msgid "Edit '%s' payment type"
+msgstr "Uredi način plaćanja '%s'"
+
+#, php-format
+msgid "Delete '%s' payment type"
+msgstr "Izbriši način plaćanja '%s'"
+
+msgid "Choose an entry"
+msgstr "Odaberite zapis"
+
+msgid "Reference:"
+msgstr "Referenca:"
+
+msgid "Email Subject"
+msgstr "Predmet poruke e-pošte"
+
+msgid "(Max 255 characters)"
+msgstr "(najviše 255 znakova)"
+
+msgid "Email Body:"
+msgstr "Sadržaj poruke e-pošte:"
+
+msgid "Short form:"
+msgstr "Kratki oblik:"
+
+msgid "Long form:"
+msgstr "Dugi oblik:"
+
+msgid "Short form"
+msgstr "Kratki oblik"
+
+msgid "Long form"
+msgstr "Dugi oblik"
+
+msgid "Add title"
+msgstr "Dodaj oslovljavanje"
+
+#, php-format
+msgid "Edit '%s' title"
+msgstr "Uredi oslovljavanje '%s'"
+
+#, php-format
+msgid "Delete '%s' title"
+msgstr "Izbriši oslovljavanje '%s'"
+
+msgid "Select contributor and membership fee type"
+msgstr "Odaberite uplatitelja i vrstu članarine"
+
+msgid "Select contributor and donation type"
+msgstr "Odaberite uplatitelja i vrstu donacije"
+
+msgid "Transaction related"
+msgstr "Povezano s transakcijom"
+
+msgid "Has scheduled payments"
+msgstr "Ima zakazana plaćanja"
+
+msgid "Switch to fee"
+msgstr "Prebaci na članarinu"
+
+msgid "Switch to donation"
+msgstr "Prebaci na donaciju"
+
+msgid "View transaction"
+msgstr "Pregledaj transakciju"
+
+msgid "Related transaction information"
+msgstr "Podaci o povezanoj transakciji"
+
+msgid "Not dispatched amount"
+msgstr "Neraspoređeni iznos"
+
+msgid "Create a new fee that will be attached to the current transaction"
+msgstr "Stvori novu članarinu povezanu s trenutnom transakcijom"
+
+msgid "Create a new donation that will be attached to the current transaction"
+msgstr "Stvori novu donaciju povezanu s trenutnom transakcijom"
+
+msgid "Dispatch type:"
+msgstr "Vrsta raspodjele:"
+
+msgid "Select a contribution type to create for dispatch transaction"
+msgstr "Odaberite vrstu uplate koju želite stvoriti pri raspodjeli transakcije"
+
+msgid "View scheduled payments"
+msgstr "Pregledaj zakazana plaćanja"
+
+msgid "Scheduled payments"
+msgstr "Zakazana plaćanja"
+
+msgid "Create a new scheduled payment"
+msgstr "Stvori novo zakazano plaćanje"
+
+msgid "Details of membership fee"
+msgstr "Pojedinosti članarine"
+
+msgid "Details of donation"
+msgstr "Pojedinosti donacije"
+
+msgid ""
+"When selecting the type <strong>scheduled payment</strong>, a contribution "
+"will be added and you will be asked to create the corresponding scheduled "
+"payments afterwards. In that case the amount of the contribution on the "
+"present form must equal the total of all the scheduled payments you will "
+"define next."
+msgstr ""
+"Ako odaberete način <strong>zakazano plaćanje</strong>, dodat će se uplata, "
+"a zatim ćete trebati stvoriti pripadajuća zakazana plaćanja. U tom slučaju "
+"iznos uplate u ovom obrascu mora biti jednak zbroju svih zakazanih plaćanja "
+"koja ćete zatim definirati."
+
+msgid "Notify member"
+msgstr "Obavijesti člana"
+
+msgid "Member will receive a notification by email, if he has an address."
+msgstr "Član će primiti obavijest e-poštom ako ima adresu e-pošte."
+
+msgid "No member registered!"
+msgstr "Nema registriranih članova!"
+
+msgid "Unfortunately, there is no member in your database yet,"
+msgstr "U vašoj bazi podataka još nema članova,"
+
+msgid "please create a member"
+msgstr "dodajte člana"
+
+#, php-format
+msgid "Contribution amount should not be greater than %1$s"
+msgstr "Iznos uplate ne smije biti veći od %1$s"
+
+msgid "An error occurred displaying scheduled payments :("
+msgstr "Došlo je do pogreške pri prikazu zakazanih plaćanja :("
+
+msgid "Membership extension"
+msgstr "Produljenje članstva"
+
+msgid "No contribution selected"
+msgstr "Nijedna uplata nije odabrana"
+
+msgid ""
+"Please make sure to select at least one contribution from the list to "
+"perform this action."
+msgstr "Za ovu radnju odaberite barem jednu uplatu s popisa."
+
+msgid "Begin"
+msgstr "Početak"
+
+msgid "End"
+msgstr "Završetak"
+
+msgid "Duration"
+msgstr "Trajanje"
+
+msgid "Show contributions by"
+msgstr "Prikaži uplate prema"
+
+msgid "Record"
+msgstr "Unos"
+
+msgid "since"
+msgstr "od"
+
+msgid "until"
+msgstr "do"
+
+msgid "Apply filters"
+msgstr "Primijeni filtre"
+
+msgid "Reset all filters to defaults"
+msgstr "Vrati sve filtre na zadane vrijednosti"
+
+msgid "Show all your contributions"
+msgstr "Prikaži sve svoje uplate"
+
+msgid "Show all members contributions"
+msgstr "Prikaži uplate svih članova"
+
+msgid "See member profile"
+msgstr "Pogledaj profil člana"
+
+#, php-format
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
+msgstr[0] "%1$s uplata"
+msgstr[1] "%1$s uplate"
+msgstr[2] "%1$s uplata"
+
+#, php-format
+msgid "Found contributions total %f"
+msgstr "Ukupan iznos pronađenih uplata: %f"
+
+#, php-format
+msgid "Edit transaction #%1$s"
+msgstr "Uredi transakciju #%1$s"
+
+msgid "Amount is not fully dispatched"
+msgstr "Iznos nije u cijelosti raspoređen"
+
+msgid "Is part of a transaction"
+msgstr "Dio je transakcije"
+
+#, php-format
+msgid "Show only '%1$s' contributions"
+msgstr "Prikaži samo uplate za '%1$s'"
+
+#, php-format
+msgid "Show '%1$s' card"
+msgstr "Prikaži karton člana '%1$s'"
+
+msgid "Print an invoice or a receipt (depending on contribution type)"
+msgstr "Ispiši račun ili potvrdu o uplati (ovisno o vrsti uplate)"
+
+msgid "Edit the contribution"
+msgstr "Uredi uplatu"
+
+msgid "Delete the contribution"
+msgstr "Izbriši uplatu"
+
+msgid "no contribution"
+msgstr "nema uplata"
+
+msgid "Reading the list"
+msgstr "Tumačenje popisa"
+
+msgid "Contribution"
+msgstr "Uplata"
+
+msgid "Gift"
+msgstr "Dar"
+
+msgid "Deletion"
+msgstr "Brisanje"
+
+msgid "Statuses and interactions"
+msgstr "Statusi i radnje"
+
+msgid "Filter on corresponding member"
+msgstr "Filtriraj prema pripadajućem članu"
+
+msgid "New contribution type"
+msgstr "Nova vrsta uplate"
+
+msgid "Help us know about you!"
+msgstr "Pomozite nam upoznati vas!"
+
+msgid ""
+"Take a moment to share some information with us so we can know better "
+"Galette's uses."
+msgstr ""
+"Odvojite trenutak i podijelite s nama neke informacije kako bismo bolje "
+"razumjeli kako se Galette koristi."
+
+msgid ""
+"The panel will be automatically hidden once you have registered and send "
+"telemetry data. Check the box if you want to hide it anyways."
+msgstr ""
+"Ova će se ploča automatski sakriti nakon registracije i slanja "
+"telemetrijskih podataka. Označite okvir ako je želite sakriti i bez toga."
+
+msgid "Hide this panel"
+msgstr "Sakrij ovu ploču"
+
+msgid "My activities"
+msgstr "Moje aktivnosti"
+
+msgid "Activities"
+msgstr "Aktivnosti"
+
+msgid "Show dashboard on login"
+msgstr "Prikaži nadzornu ploču pri prijavi"
+
+msgid "An error occurred displaying news :("
+msgstr "Došlo je do pogreške pri prikazu novosti :("
+
+msgid "Please confirm your email address:"
+msgstr "Potvrdite svoju adresu e-pošte:"
+
+msgid "Get my document"
+msgstr "Preuzmi moj dokument"
+
+msgid "Extra information displayed along with document."
+msgstr "Dodatne informacije prikazane uz dokument."
+
+msgid "Filename"
+msgstr "Naziv datoteke"
+
+#, php-format
+msgid "%1$s document"
+msgid_plural "%1$s documents"
+msgstr[0] "%1$s dokument"
+msgstr[1] "%1$s dokumenta"
+msgstr[2] "%1$s dokumenata"
+
+msgid "Add a document"
+msgstr "Dodavanje dokumenta"
+
+msgid "No document"
+msgstr "Nema dokumenata"
+
+msgid ""
+"Each selected export will be stored into a separate file in the exports "
+"directory."
+msgstr ""
+"Svaki odabrani izvoz bit će spremljen u zasebnu datoteku u mapi za izvoz."
+
+msgid "The following files have been written on disk:"
+msgstr "Sljedeće datoteke zapisane su na disk:"
+
+msgid "Existing exports"
+msgstr "Postojeći izvozi"
+
+msgid "The following exports already seems to exist on the disk:"
+msgstr "Čini se da sljedeći izvozi već postoje na disku:"
+
+msgid "Size"
+msgstr "Veličina"
+
+#, php-format
+msgid "Remove '%1$s' from disk"
+msgstr "Ukloni '%1$s' s diska"
+
+msgid "Parameted exports"
+msgstr "Parametrizirani izvozi"
+
+msgid "Which parameted export(s) do you want to run?"
+msgstr "Koje parametrizirane izvoze želite pokrenuti?"
+
+msgid "Selection"
+msgstr "Odabir"
+
+msgid "No parameted exports are available."
+msgstr "Nema dostupnih parametriziranih izvoza."
+
+msgid "Galette tables exports"
+msgstr "Izvozi Galetteovih tablica"
+
+msgid "Additionnaly, which table(s) do you want to export?"
+msgstr "Koje tablice dodatno želite izvesti?"
+
+msgid "Table name"
+msgstr "Naziv tablice"
+
+#, php-format
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
+msgstr[0] "%1$s zapis"
+msgstr[1] "%1$s zapisa"
+msgstr[2] "%1$s zapisa"
+
+#, php-format
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "%1$s grupa kojom upravljat"
+msgstr[1] "%1$s grupe kojima upravljate"
+msgstr[2] "%1$s grupa kojima upravljate"
+
+msgid "Export all groups and their members as PDF"
+msgstr "Izvezi sve grupe i njihove članove u PDF"
+
+msgid "All groups PDF"
+msgstr "PDF svih grupa"
+
+msgid "New group"
+msgstr "Nova grupa"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+"Premjestite stavku na vrh popisa kako biste uklonili njezinu nadređenu stavku"
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+"Neke vaše izmjene (gore označene crvenom bojom) nisu dopuštene. Izmjene "
+"popisa možete spremiti samo ako su sve dopuštene."
+
+msgid "Create"
+msgstr "Stvori"
+
+msgid "Export as PDF"
+msgstr "Izvezi u PDF"
+
+msgid "IP"
+msgstr "IP"
+
+msgid "User"
+msgstr "Korisnik"
+
+msgid "Action"
+msgstr "Radnja"
+
+msgid "Select an user"
+msgstr "Odaberite korisnika"
+
+msgid "Select an action"
+msgstr "Odaberite radnju"
+
+msgid "Show associated query"
+msgstr "Prikaži pripadajući upit"
+
+msgid "logs are empty"
+msgstr "zapisnici su prazni"
+
+msgid "Existing files"
+msgstr "Postojeće datoteke"
+
+msgid "The following files seems ready to import on the disk:"
+msgstr "Sljedeće datoteke na disku izgledaju spremne za uvoz:"
+
+msgid "see"
+msgstr "pogledaj"
+
+msgid "Run the import process, but do *not* store anything in the database"
+msgstr "Pokreni uvoz, ali *nemoj* ništa spremati u bazu podataka"
+
+msgid "Dry run"
+msgstr "Probni uvoz"
+
+msgid "Import"
+msgstr "Uvoz"
+
+msgid "No import file actually exists."
+msgstr "Trenutno nema datoteka za uvoz."
+
+msgid ""
+"Use upload form below to send a new file on server, or copy it directly in "
+"the imports directory."
+msgstr ""
+"Obrascem u nastavku prenesite novu datoteku na poslužitelj ili je kopirajte "
+"izravno u mapu za uvoz."
+
+msgid "Upload new file"
+msgstr "Prenesi novu datoteku"
+
+msgid "Upload file"
+msgstr "Prenesi datoteku"
+
+msgid "Configure import model"
+msgstr "Postavi predložak uvoza"
+
+msgid "No file selected"
+msgstr "Nijedna datoteka nije odabrana"
+
+msgid "Please make sure to select one file to import."
+msgstr "Odaberite datoteku za uvoz."
+
+msgid "Please make sure to select one file to upload."
+msgstr "Odaberite datoteku za prijenos."
+
+msgid "Current model"
+msgstr "Trenutni predložak"
+
+msgid "Change model"
+msgstr "Promijeni predložak"
+
+msgid "Default fields"
+msgstr "Zadana polja"
+
+#, php-format
+msgid "Model parameted on %1$s"
+msgstr "Predložak postavljen %1$s"
+
+msgid "Field"
+msgstr "Polje"
+
+#, php-format
+msgid "Missing field '%1$s'"
+msgstr "Nedostaje polje '%1$s'"
+
+msgid "Generate empty CSV file"
+msgstr "Izradi praznu CSV datoteku"
+
+msgid "Remove model and back to defaults"
+msgstr "Ukloni predložak i vrati zadane postavke"
+
+msgid "Remove model"
+msgstr "Ukloni predložak"
+
+msgid "Store new model"
+msgstr "Spremi novi predložak"
+
+msgid "Go back to import page"
+msgstr "Natrag na stranicu za uvoz"
+
+msgid "No field selected"
+msgstr "Nijedno polje nije odabrano"
+
+msgid ""
+"Please make sure to select at least one field from the list to perform this "
+"action."
+msgstr "Za ovu radnju odaberite barem jedno polje s popisa."
+
+msgid "Lost your password?"
+msgstr "Zaboravili ste lozinku?"
+
+msgid "Mailing information"
+msgstr "Podaci o skupnoj poruci"
+
+msgid "Recipients"
+msgstr "Primatelji"
+
+msgid "Go back to members list"
+msgstr "Natrag na popis članova"
+
+msgid "Manage selected members"
+msgstr "Upravljaj odabranim članovima"
+
+msgid "Existing attachments:"
+msgstr "Postojeći privici:"
+
+msgid "Remove attachment"
+msgstr "Ukloni privitak"
+
+msgid ""
+"Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
+"or 'shift' keys are only available on compatible browsers."
+msgstr ""
+"Odaberite datoteke koje želite priložiti.<br/>Odabir više datoteka tipkama "
+"'ctrl' ili 'shift' dostupan je samo u preglednicima koji to podržavaju."
+
+msgid "Add attachment"
+msgstr "Dodaj privitak"
+
+msgid "Write your mailing"
+msgstr "Napišite skupnu poruku"
+
+msgid "Object:"
+msgstr "Predmet:"
+
+msgid "Interpret HTML"
+msgstr "Prikaži HTML"
+
+msgid "Preview"
+msgstr "Pregled"
+
+msgid "Cancel mailing"
+msgstr "Odustani od skupne poruke"
+
+msgid "Preview your mailing"
+msgstr "Pregledaj svoju skupnu poruku"
+
+msgid "Modifiy mailing"
+msgstr "Izmijeni skupnu poruku"
+
+msgid "An error occurred displaying preview :("
+msgstr "Došlo je do pogreške pri prikazu pregleda :("
+
+msgid "Members selection"
+msgstr "Odabir članova"
+
+msgid "Click on a row to select a member"
+msgstr "Kliknite redak kako biste odabrali člana"
+
+msgid "Are you sure you want to remove this attachment?"
+msgstr "Želite li zaista ukloniti ovaj privitak?"
+
+msgid "This will immediately remove attachment from disk and cannot be undone."
+msgstr "Privitak će se odmah ukloniti s diska. To se ne može poništiti."
+
+msgid "Sending in progress…"
+msgstr "Slanje je u tijeku…"
+
+msgid "Sent"
+msgstr "Poslano"
+
+msgid "Remaining"
+msgstr "Preostalo"
+
+msgid "Failed"
+msgstr "Neuspješno"
+
+#, php-format
+msgid "Sent in the last hour: %1$s of %2$s"
+msgstr "Poslano u posljednjem satu: %1$s od %2$s"
+
+#, php-format
+msgid "Sent in the last day: %1$s of %2$s"
+msgstr "Poslano u posljednjem danu: %1$s od %2$s"
+
+#, php-format
+msgid "Sending is over, but %1$s recipient(s) could not be reached."
+msgstr ""
+"Slanje je završeno, ali poruku nije bilo moguće isporučiti primateljima: "
+"%1$s."
+
+msgid "Sending has been successfully completed!"
+msgstr "Slanje je uspješno završeno!"
+
+msgid ""
+"Sending rate limit reached. Sending will resume later (reopen this page or "
+"drain the queue from a cron job)."
+msgstr ""
+"Dosegnuto je ograničenje slanja. Slanje će se nastaviti kasnije (ponovno "
+"otvorite ovu stranicu ili obradite red slanja putem cron zadatka)."
+
+msgid "An error occurred while sending. You may retry."
+msgstr "Došlo je do pogreške pri slanju. Možete pokušati ponovno."
+
+msgid "Sender"
+msgstr "Pošiljatelj"
+
+msgid "Subject"
+msgstr "Predmet"
+
+msgid "Att."
+msgstr "Priv."
+
+msgid "Create new mailing"
+msgstr "Stvori novu skupnu poruku"
+
+msgid ""
+"A mailing exists in the current session. Click here if you want to resume or "
+"cancel it."
+msgstr ""
+"U trenutnoj sesiji postoji skupna poruka. Kliknite ovdje za nastavak ili "
+"odustajanje."
+
+msgid "Existing mailing"
+msgstr "Postojeća skupna poruka"
+
+msgid "Sent mailings:"
+msgstr "Poslane skupne poruke:"
+
+msgid "In progress"
+msgstr "U tijeku"
+
+msgid "Not sent"
+msgstr "Nije poslano"
+
+#, php-format
+msgid "Display mailing '%1$s' details in preview window"
+msgstr "Prikaži pojedinosti skupne poruke '%1$s' u prozoru pregleda"
+
+#, php-format
+msgid "Follow the sending of mailing '%1$s'"
+msgstr "Prati slanje skupne poruke '%1$s'"
+
+#, php-format
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "Upotrijebi skupnu poruku '%1$s' kao predložak za novu"
+
+#, php-format
+msgid "Edit mailing '%1$s'"
+msgstr "Uredi skupnu poruku '%1$s'"
+
+#, php-format
+msgid "Delete mailing '%1$s'"
+msgstr "Izbriši skupnu poruku '%1$s'"
+
+msgid "No sent mailing has been stored in the database yet."
+msgstr "U bazi podataka još nema spremljenih poslanih skupnih poruka."
+
+msgid "Use as a template for a new mailing"
+msgstr "Upotrijebi kao predložak za novu skupnu poruku"
+
+msgid "No sent"
+msgstr "Nije poslano"
+
+msgid "Follow the sending"
+msgstr "Prati slanje"
+
+msgid "Attached to:"
+msgstr "Povezano s:"
+
+msgid "Detach?"
+msgstr "Odvojiti?"
+
+msgid "Attach member"
+msgstr "Poveži člana"
+
+msgid "Parent member"
+msgstr "Nadređeni član"
+
+msgid "Parent of:"
+msgstr "Nadređen članovima:"
+
+msgid ""
+"If you'd rather not register online, you can download an empty adhesion form"
+msgstr ""
+"Ako se ne želite registrirati putem interneta, možete preuzeti praznu "
+"pristupnicu"
+
+msgid "After member creation:"
+msgstr "Nakon dodavanja člana:"
+
+msgid "create a new contribution (default action)"
+msgstr "dodaj novu uplatu (zadana radnja)"
+
+msgid "create a new transaction"
+msgstr "dodaj novu transakciju"
+
+msgid "create another new member"
+msgstr "dodaj drugog novog člana"
+
+msgid "show member"
+msgstr "prikaži člana"
+
+msgid "go to members list"
+msgstr "idi na popis članova"
+
+msgid "go to main page"
+msgstr "idi na početnu stranicu"
+
+msgid "Notify member his account has been modified"
+msgstr "Obavijesti člana o izmjeni njegova računa"
+
+msgid "Notify member his account has been created"
+msgstr "Obavijesti člana o stvaranju njegova računa"
+
+msgid "Member will be notified by email his account has been modified."
+msgstr "Član će e-poštom biti obaviješten o izmjeni računa."
+
+msgid ""
+"Member will receive his username and password by email, if he has an address."
+msgstr ""
+"Član će e-poštom primiti korisničko ime i lozinku ako ima adresu e-pošte."
+
+msgid "Family"
+msgstr "Obitelj"
+
+msgid "Not managed group"
+msgstr "Grupa kojom ne upravljate"
+
+msgid "You are not part of managers for the requested group."
+msgstr "Niste među voditeljima tražene grupe."
+
+msgid "No member selected"
+msgstr "Nijedan član nije odabran"
+
+msgid ""
+"Please make sure to select at least one member from the list to perform this "
+"action."
+msgstr "Za ovu radnju odaberite barem jednog člana s popisa."
+
+#, php-format
+msgid "%1$s member"
+msgid_plural "%1$s members"
+msgstr[0] "%1$s član"
+msgstr[1] "%1$s člana"
+msgstr[2] "%1$s članova"
+
+msgid "among:"
+msgstr "među:"
+
+msgid "All groups"
+msgstr "Sve grupe"
+
+msgid "Members that have an email address:"
+msgstr "Članovi s adresom e-pošte:"
+
+msgid "Save selected criteria"
+msgstr "Spremi odabrane kriterije"
+
+msgid "Advanced search mode"
+msgstr "Način naprednog pretraživanja"
+
+msgid "Save current advanced search criteria"
+msgstr "Spremi trenutne kriterije naprednog pretraživanja"
+
+msgid "Change search criteria"
+msgstr "Promijeni kriterije pretraživanja"
+
+msgid "Change criteria"
+msgstr "Promijeni kriterije"
+
+msgid "Show/hide query"
+msgstr "Prikaži/sakrij upit"
+
+msgid "Active account"
+msgstr "Aktivan račun"
+
+msgid "Inactive account"
+msgstr "Neaktivan račun"
+
+msgid "Membership in order"
+msgstr "Članstvo je važeće"
+
+msgid "Membership will expire soon (<30d)"
+msgstr "Članstvo uskoro istječe (<30 dana)"
+
+msgid "Lateness in fee"
+msgstr "Nepodmirena članarina"
+
+msgid "Send an email"
+msgstr "Pošalji poruku e-pošte"
+
+msgid "Is a company"
+msgstr "Pravna osoba"
+
+msgid "Is a man"
+msgstr "Muškarac"
+
+msgid "Is a woman"
+msgstr "Žena"
+
+msgid "Admin"
+msgstr "Administrator"
+
+msgid "Is a sponsor"
+msgstr "Sponzor"
+
+msgid "No member"
+msgstr "Nema članova"
+
+msgid "Search title"
+msgstr "Naziv pretrage"
+
+msgid ""
+"A mailing already exists. Do you want to create a new one or resume the "
+"existing?"
+msgstr ""
+"Skupna poruka već postoji. Želite li stvoriti novu ili nastaviti postojeću?"
+
+msgid "New"
+msgstr "Novo"
+
+msgid "Resume"
+msgstr "Nastavi"
+
+msgid "An error occurred displaying attendance sheet details interface :("
+msgstr "Došlo je do pogreške pri prikazu postavki evidencije prisutnosti :("
+
+msgid "Required field!"
+msgstr "Obvezno polje!"
+
+msgid "Username or email:"
+msgstr "Korisničko ime ili e-pošta:"
+
+msgid "Recover password"
+msgstr "Oporavi lozinku"
+
+msgid "New password:"
+msgstr "Nova lozinka:"
+
+msgid "Confirmation:"
+msgstr "Potvrda:"
+
+msgid "Change my password"
+msgstr "Promijeni moju lozinku"
+
+#, php-format
+msgid "By %1$s"
+msgstr "Autor: %1$s"
+
+msgid "Version:"
+msgstr "Verzija:"
+
+msgid "Author:"
+msgstr "Autor:"
+
+msgid "Path:"
+msgstr "Putanja:"
+
+msgid "Main route:"
+msgstr "Glavna ruta:"
+
+msgid "ACLs"
+msgstr "ACL pravila"
+
+msgid "Route"
+msgstr "Ruta"
+
+msgid "ACL"
+msgstr "ACL"
+
+msgid "No ACLs!"
+msgstr "Nema ACL pravila!"
+
+msgid "Raw information"
+msgstr "Izvorni podaci"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Version"
+msgstr "Verzija"
+
+msgid "Release date"
+msgstr "Datum izdanja"
+
+msgid "Active plugins"
+msgstr "Uključeni dodaci"
+
+msgid "No active plugin."
+msgstr "Nema uključenih dodataka."
+
+msgid "Inactive plugins"
+msgstr "Isključeni dodaci"
+
+msgid "No inactive plugin."
+msgstr "Nema isključenih dodataka."
+
+msgid ""
+"An error occurred displaying plugin database initialization interface :("
+msgstr ""
+"Došlo je do pogreške pri prikazu sučelja za inicijalizaciju baze podataka "
+"dodatka :("
+
+#, php-format
+msgid "Plugin database initialization: %1$s"
+msgstr "Inicijalizacija baze podataka dodatka: %1$s"
+
+msgid "An error occurred on plugin database initialization :("
+msgstr "Došlo je do pogreške pri inicijalizaciji baze podataka dodatka :("
+
+msgid "A required file is missing"
+msgstr "Nedostaje potrebna datoteka"
+
+msgid "Incompatible with current version"
+msgstr "Nije kompatibilno s trenutnom verzijom"
+
+msgid "Database version missing"
+msgstr "Nedostaje verzija baze podataka"
+
+msgid "Not installed"
+msgstr "Nije instalirano"
+
+msgid "Need update"
+msgstr "Potrebna je nadogradnja"
+
+msgid "Explicitly disabled"
+msgstr "Izričito isključeno"
+
+msgid "Unknown"
+msgstr "Nepoznato"
+
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Kliknite ovdje za isključivanje dodatka '%1$s'"
+
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Inicijaliziraj bazu podataka dodatka '%1$s'"
+
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Uključi dodatak '%1$s'"
+
+msgid "General"
+msgstr "Općenito"
+
+msgid "Parameters"
+msgstr "Parametri"
+
+msgid "Rights"
+msgstr "Ovlasti"
+
+msgid "E-Mail"
+msgstr "E-pošta"
+
+msgid "Security parameters"
+msgstr "Sigurnosne postavke"
+
+msgid "Name of the association:"
+msgstr "Naziv udruge:"
+
+msgid "Association's short description:"
+msgstr "Kratki opis udruge:"
+
+msgid ""
+"Enter here a short description for your association, it will be displayed on "
+"the index page and into pages' title."
+msgstr ""
+"Unesite kratki opis udruge. Prikazivat će se na početnoj stranici i u "
+"naslovima stranica."
+
+msgid "Logo:"
+msgstr "Logotip:"
+
+msgid "Current logo"
+msgstr "Trenutni logotip"
+
+msgid " (continuation)"
+msgstr " (nastavak)"
+
+msgid "Postal address:"
+msgstr "Poštanska adresa:"
+
+msgid ""
+"Use either the address set above or select a staff member to retrieve its "
+"address."
+msgstr ""
+"Upotrijebite gore postavljenu adresu ili odaberite člana uprave čiju adresu "
+"želite preuzeti."
+
+msgid "from preferences"
+msgstr "iz postavki"
+
+msgid "from a staff user"
+msgstr "od člana uprave"
+
+msgid "Staff member whose address needs to be retrieved"
+msgstr "Član uprave čiju adresu treba preuzeti"
+
+msgid "-- Choose a staff member --"
+msgstr "-- Odaberite člana uprave --"
+
+msgid ""
+"Either use the phone number set below or select a staff member to retrieve "
+"its phone number."
+msgstr ""
+"Upotrijebite dolje postavljeni broj ili odaberite člana uprave čiji "
+"telefonski broj želite preuzeti."
+
+msgid "phone from a staff user"
+msgstr "telefon člana uprave"
+
+msgid "mobile phone from a staff user"
+msgstr "mobitel člana uprave"
+
+msgid "Staff member whose phone number needs to be retrieved"
+msgstr "Član uprave čiji telefonski broj treba preuzeti"
+
+msgid "Website:"
+msgstr "Mrežno mjesto:"
+
+msgid ""
+"Enter a text (HTML allowed) that will be displayed in the footer of every "
+"page"
+msgstr "Unesite tekst (HTML je dopušten) za prikaz u podnožju svake stranice"
+
+msgid "Prevent search engines indexation"
+msgstr "Spriječi indeksiranje u tražilicama"
+
+msgid "Telemetry date:"
+msgstr "Datum telemetrije:"
+
+msgid "Last telemetry sent date."
+msgstr "Datum posljednjeg slanja telemetrijskih podataka."
+
+msgid "send"
+msgstr "pošalji"
+
+msgid "Registration date:"
+msgstr "Datum registracije:"
+
+msgid "Date on which you registered your Galette instance."
+msgstr "Datum registracije vaše instalacije Galettea."
+
+msgid "Update your information"
+msgstr "Ažuriraj svoje podatke"
+
+msgid "Not registered"
+msgstr "Nije registrirano"
+
+msgid "Default language:"
+msgstr "Zadani jezik:"
+
+msgid "Default payment type:"
+msgstr "Zadani način plaćanja:"
+
+msgid "Default account filter:"
+msgstr "Zadani filtar računa:"
+
+msgid "Number of columns on the member form"
+msgstr "Broj stupaca u obrascu člana"
+
+msgid "Lines / Page:"
+msgstr "Redaka po stranici:"
+
+msgid "Default membership status:"
+msgstr "Zadani status članstva:"
+
+msgid "Force member picture ratio"
+msgstr "Nametni omjer stranica fotografije člana"
+
+msgid ""
+"If checked, the members's picture will be resized and cropped to the ratio "
+"selected below."
+msgstr ""
+"Ako je uključeno, fotografije članova promijenit će veličinu i biti obrezane "
+"prema dolje odabranom omjeru."
+
+msgid "Select a ratio"
+msgstr "Odaberite omjer"
+
+msgid "Default membership extension:"
+msgstr "Zadano produljenje članstva:"
+
+msgid "(Months)"
+msgstr "(mjeseci)"
+
+msgid "Beginning of membership:"
+msgstr "Početak članstva:"
+
+msgid "(dd/mm)"
+msgstr "(dd/mm)"
+
+msgid "Number of months offered:"
+msgstr "Broj darovanih mjeseci:"
+
+msgid ""
+"When using the beginning of membership option; you can offer the last months "
+"of the year."
+msgstr ""
+"Ako koristite datum početka članstva, možete darovati posljednje mjesece u "
+"godini."
+
+msgid ""
+"Let's say you offer last 2 months, and have a renewal on 31th of December. "
+"All created contributions in current year will be valid until this date, but "
+"as of October, they will be valid for the entire next year."
+msgstr ""
+"Primjerice, darujete posljednja 2 mjeseca, a članstvo se obnavlja 31. "
+"prosinca. Sve članarine evidentirane u tekućoj godini vrijede do tog datuma, "
+"ali od listopada vrijede i za cijelu sljedeću godinu."
+
+msgid "Self registration enabled?"
+msgstr "Omogućiti samostalnu registraciju?"
+
+msgid "Display the link to download the empty adhesion form"
+msgstr "Prikaži poveznicu za preuzimanje prazne pristupnice"
+
+msgid "Public pages enabled?"
+msgstr "Omogućiti javne stranice?"
+
+msgid ""
+"Will apply for all public pages that are not listed here, including plugin "
+"ones."
+msgstr ""
+"Primjenjuje se na sve javne stranice koje ovdje nisu navedene, uključujući "
+"stranice dodataka."
+
+msgid "Members list"
+msgstr "Popis članova"
+
+msgid "Members gallery"
+msgstr "Galerija članova"
+
+msgid "Staff list"
+msgstr "Popis uprave"
+
+msgid "Include groups managers with staff?"
+msgstr "Uključiti voditelje grupa među upravu?"
+
+msgid "Appearance"
+msgstr "Izgled"
+
+msgid "Hide default background image"
+msgstr "Sakrij zadanu pozadinsku sliku"
+
+msgid "Apply custom colors"
+msgstr "Primijeni prilagođene boje"
+
+msgid "Primary color"
+msgstr "Primarna boja"
+
+msgid ""
+"Color applied to primary buttons, checkboxes, labels, headers, borders, and "
+"menus."
+msgstr ""
+"Boja glavnih gumba, potvrdnih okvira, oznaka, zaglavlja, obruba i izbornika."
+
+msgid "Text on primary color"
+msgstr "Tekst na primarnoj boji"
+
+msgid "Color applied to text displayed over the Primary color."
+msgstr "Boja teksta prikazanog na primarnoj boji."
+
+msgid "Secondary color"
+msgstr "Sekundarna boja"
+
+msgid ""
+"Color applied to active items in menus, paginations, and accordions views."
+msgstr ""
+"Boja aktivnih stavki u izbornicima, oznakama stranica i sklopivim prikazima."
+
+msgid "Text on secondary color"
+msgstr "Tekst na sekundarnoj boji"
+
+msgid "Color applied to text displayed over the Secondary color."
+msgstr "Boja teksta prikazanog na sekundarnoj boji."
+
+msgid "Advanced parameters"
+msgstr "Napredni parametri"
+
+msgid "Galette base URL"
+msgstr "Osnovni URL Galettea"
+
+#, php-format
+msgid ""
+"Enter the base URL to your Galette instance. You should only change this "
+"parameter if the current page URL is not:<br/>%1$s"
+msgstr ""
+"Unesite osnovni URL svoje instalacije Galettea. Ovu postavku promijenite "
+"samo ako URL trenutne stranice nije:<br/>%1$s"
+
+msgid "Post new contribution script URI"
+msgstr "URI skripte nakon nove uplate"
+
+msgid ""
+"Enter a script URI that would be called after adding a new contribution.<br/"
+">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
+"internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' "
+"or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
+"those cases)."
+msgstr ""
+"Unesite URI skripte koja će se pozivati nakon dodavanja nove uplate.<br/>URI "
+"skripte mora imati jedan od prefiksa: '<em>galette://</em>' za interni poziv "
+"Galettea, '<em>file://</em>' za izravan poziv datoteke ili '<em>get://</em>' "
+"odnosno '<em>post://</em>' za HTTP pozive (u tim se slučajevima prefiks "
+"zamjenjuje s http://)."
+
+msgid "RSS feed URL"
+msgstr "URL RSS izvora"
+
+msgid ""
+"Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
+msgstr ""
+"Unesite puni URL RSS izvora. Prikazivat će se na nadzornoj ploči Galettea."
+
+msgid "Can members create child members?"
+msgstr "Mogu li članovi dodavati povezane članove?"
+
+msgid "Can group managers edit their groups?"
+msgstr "Mogu li voditelji grupa uređivati svoje grupe?"
+
+msgid "Can group managers create members?"
+msgstr "Mogu li voditelji grupa dodavati članove?"
+
+msgid "Can group managers edit members?"
+msgstr "Mogu li voditelji grupa uređivati članove?"
+
+msgid "Can group managers send mailings?"
+msgstr "Mogu li voditelji grupa slati skupne poruke?"
+
+msgid "Can group managers do exports?"
+msgstr "Mogu li voditelji grupa izvoziti podatke?"
+
+msgid ""
+"Groups managers will be allowed to export members as csv, pdf cards, "
+"attendence sheetss and groups pdf"
+msgstr ""
+"Voditeljima grupa bit će dopušten izvoz članova u CSV, PDF iskaznice, "
+"evidencije prisutnosti i PDF popise grupa"
+
+msgid "Can group managers see contributions?"
+msgstr "Mogu li voditelji grupa pregledavati uplate?"
+
+msgid "Can group managers create contributions?"
+msgstr "Mogu li voditelji grupa dodavati uplate?"
+
+msgid "Can group managers see transactions?"
+msgstr "Mogu li voditelji grupa pregledavati transakcije?"
+
+msgid "Can group managers create transactions?"
+msgstr "Mogu li voditelji grupa dodavati transakcije?"
+
+msgid "Sender name:"
+msgstr "Ime pošiljatelja:"
+
+msgid "Sender Email:"
+msgstr "E-pošta pošiljatelja:"
+
+msgid "Reply-To Email:"
+msgstr "Adresa za odgovor:"
+
+msgid "Leave empty to use Sender Email as reply address"
+msgstr ""
+"Ostavite prazno za korištenje adrese pošiljatelja kao adrese za odgovor"
+
+msgid "Members administrator's Email:"
+msgstr "E-pošta administratora članova:"
+
+msgid "Recipient of new online registation and edition emails"
+msgstr ""
+"Primatelj obavijesti o novim registracijama i izmjenama računa putem "
+"interneta"
+
+msgid ""
+"(You can enter several emails separated with a comma. First address will be "
+"the default one.)"
+msgstr ""
+"(Možete unijeti više adresa odvojenih zarezima. Prva adresa bit će zadana.)"
+
+msgid "Send email to administrators?"
+msgstr "Slati poruke administratorima?"
+
+msgid ""
+"Sends an email each time a new member registers online or edit his/her "
+"account"
+msgstr ""
+"Šalje poruku svaki put kada se novi član registrira putem interneta ili "
+"izmijeni svoj račun"
+
+msgid "Wrap emails text?"
+msgstr "Prelamati tekst poruka e-pošte?"
+
+msgid ""
+"Automatically wrap emails texts before sending. Make sure to wrap yourself "
+"if you disable that. Please note that current editing mailing will not be "
+"affected by a change."
+msgstr ""
+"Automatski prelomi tekst poruka prije slanja. Ako ovo isključite, tekst "
+"prelomite sami. Promjena neće utjecati na skupnu poruku koju trenutno "
+"uređujete."
+
+msgid "Send email to members?"
+msgstr "Slati poruke članovima?"
+
+msgid ""
+"Sends an email each time a member card or a contribution has been added or "
+"edited. This can be disabled for each case."
+msgstr ""
+"Šalje poruku svaki put kada se članski karton ili uplata doda ili izmijeni. "
+"To se može isključiti za svaki pojedinačni slučaj."
+
+msgid "Activate HTML editor?"
+msgstr "Uključiti HTML uređivač?"
+
+msgid "Should HTML editor be activated on page load ?"
+msgstr "Treba li se HTML uređivač uključiti pri učitavanju stranice?"
+
+msgid "Mail signature"
+msgstr "Potpis e-pošte"
+
+msgid "Emailing method:"
+msgstr "Način slanja e-pošte:"
+
+msgid "Emailing disabled"
+msgstr "Slanje e-pošte isključeno"
+
+msgid "PHP mail() function"
+msgstr "PHP funkcija mail()"
+
+msgid "Using a SMTP server (slower)"
+msgstr "Putem SMTP poslužitelja (sporije)"
+
+msgid "Using Sendmail server"
+msgstr "Putem Sendmail poslužitelja"
+
+msgid "SMTP server:"
+msgstr "SMTP poslužitelj:"
+
+msgid "SMTP port:"
+msgstr "SMTP priključak:"
+
+msgid "Use SMTP authentication?"
+msgstr "Koristiti SMTP autentifikaciju?"
+
+msgid ""
+"Would emailing use any SMTP authentication? You'll have to provide username "
+"and password below."
+msgstr ""
+"Treba li slanje e-pošte koristiti SMTP autentifikaciju? U nastavku ćete "
+"morati navesti korisničko ime i lozinku."
+
+msgid "Use TLS for SMTP?"
+msgstr "Koristiti TLS za SMTP?"
+
+msgid "Do you want to use server's TLS capabilities?"
+msgstr "Želite li koristiti TLS podršku poslužitelja?"
+
+msgid "Allow unsecure TLS?"
+msgstr "Dopustiti nesigurni TLS?"
+
+msgid ""
+"Do you want to allow 'unsecure' connections? This may be usefull if you "
+"server uses a self-signed certificate, and on some other cases."
+msgstr ""
+"Želite li dopustiti „nesigurne” veze? To može biti korisno ako poslužitelj "
+"koristi samopotpisani certifikat i u nekim drugim slučajevima."
+
+msgid "SMTP user:"
+msgstr "SMTP korisnik:"
+
+msgid "SMTP password:"
+msgstr "SMTP lozinka:"
+
+msgid "Emailing is disabled: pick a sending method to run a test."
+msgstr ""
+"Slanje e-pošte isključeno je: odaberite način slanja kako biste pokrenuli "
+"provjeru."
+
+msgid "Tests run on the settings displayed above, even those not saved yet."
+msgstr ""
+"Provjere koriste gore prikazane postavke, čak i ako još nisu spremljene."
+
+msgid "Test connection"
+msgstr "Provjeri vezu"
+
+msgid "Send a test email"
+msgstr "Pošalji probnu poruku"
+
+msgid "Vertical margins:"
+msgstr "Okomite margine:"
+
+msgid "Horizontal margins:"
+msgstr "Vodoravne margine:"
+
+msgid "Horizontal spacing:"
+msgstr "Vodoravni razmak:"
+
+msgid "Vertical spacing:"
+msgstr "Okomiti razmak:"
+
+msgid "Print border"
+msgstr "Ispiši obrub"
+
+msgid "Check this box to print a grey border around each label."
+msgstr ""
+"Označite ovaj okvir za ispis sivog obruba oko svake adresne naljepnice."
+
+msgid "Label width:"
+msgstr "Širina naljepnice:"
+
+msgid "Label height:"
+msgstr "Visina naljepnice:"
+
+msgid "Number of label columns:"
+msgstr "Broj stupaca naljepnica:"
+
+msgid "Number of label lines:"
+msgstr "Broj redaka naljepnica:"
+
+msgid "Font size:"
+msgstr "Veličina slova:"
+
+#, php-format
+msgid "Each page contains %1$s columns and  %2$s rows."
+msgstr "Svaka stranica sadrži %1$s stupaca i %2$s redaka."
+
+msgid "Short Text (Card Center):"
+msgstr "Kratki tekst (sredina iskaznice):"
+
+msgid "(10 characters max)"
+msgstr "(najviše 10 znakova)"
+
+msgid "Long Text (Bottom Line):"
+msgstr "Dugi tekst (donji redak):"
+
+msgid "(65 characters max)"
+msgstr "(najviše 65 znakova)"
+
+msgid "Strip Text Color:"
+msgstr "Boja teksta na traci:"
+
+msgid "Hexadecimal color notation: #RRGGBB"
+msgstr "Heksadekadski zapis boje: #RRGGBB"
+
+msgid "Active Member Color:"
+msgstr "Boja aktivnih članova:"
+
+msgid "Board Members Color:"
+msgstr "Boja članova uprave:"
+
+msgid "Honor Members Color:"
+msgstr "Boja počasnih članova:"
+
+msgid "Current logo for printing"
+msgstr "Trenutni logotip za ispis"
+
+msgid "Allow members to print card ?"
+msgstr "Dopustiti članovima ispis iskaznice?"
+
+msgid "Show title ?"
+msgstr "Prikazati oslovljavanje?"
+
+msgid "(Show or not title in front of name)"
+msgstr "(Prikaz oslovljavanja ispred imena)"
+
+msgid "Address type:"
+msgstr "Vrsta adrese:"
+
+msgid "(Choose address printed below name)"
+msgstr "(Odaberite adresu koja se ispisuje ispod imena)"
+
+msgid "Year:"
+msgstr "Godina:"
+
+msgid ""
+"You can enter either:<br/>- a year,<br/>- two years with a slash as "
+"separator,<br/>- the string 'DEADLINE' to use member deadline"
+msgstr ""
+"Možete unijeti:<br/>- godinu,<br/>- dvije godine odvojene kosom crtom,<br/>- "
+"niz 'DEADLINE' za datum isteka članstva"
+
+msgid "Card width from 70 to 95mm:"
+msgstr "Širina iskaznice od 70 do 95 mm:"
+
+msgid "Card height from 40 to 55mm:"
+msgstr "Visina iskaznice od 40 do 55 mm:"
+
+msgid "Configure dynamic fields"
+msgstr "Postavi dinamička polja"
+
+msgid ""
+"Asks for a code from an application on the member's phone in addition to "
+"their password, so that a stolen password is not enough on its own. Members "
+"who have to hold one are sent to enrolment at their next login; switching "
+"back to disabled lets everyone in again without a code."
+msgstr ""
+"Uz lozinku traži kod iz aplikacije na telefonu člana, tako da ukradena "
+"lozinka sama nije dovoljna za prijavu. Članovi za koje je to obvezno pri "
+"sljedećoj se prijavi upućuju na postavljanje. Isključivanjem ove mogućnosti "
+"ponovno se svima dopušta prijava bez koda."
+
+msgid "Two-factor authentication:"
+msgstr "Dvofaktorska autentifikacija:"
+
+msgid "Disabled (default)"
+msgstr "Isključena (zadano)"
+
+msgid "Optional, each member decides"
+msgstr "Neobvezna, svaki član odlučuje"
+
+msgid "Required for administrators and staff"
+msgstr "Obvezna za administratore i upravu"
+
+msgid "Required for everyone"
+msgstr "Obvezna za sve"
+
+msgid "Password length:"
+msgstr "Duljina lozinke:"
+
+msgid "Minimum password length required for all accounts. Minimal size is 6."
+msgstr ""
+"Najmanja potrebna duljina lozinke za sve račune. Najmanja dopuštena "
+"vrijednost je 6."
+
+msgid "Enable password blacklists"
+msgstr "Uključi popise zabranjenih lozinki"
+
+msgid "Enable blacklists:"
+msgstr "Uključiti popise zabranjenih lozinki:"
+
+msgid ""
+"If you enable blacklists; it will not be possible to use any of blacklisted "
+"passwords. A list is provided along with Galette, but you can add you owns."
+msgstr ""
+"Ako uključite popise zabranjenih lozinki, nijedna lozinka s tih popisa neće "
+"se moći koristiti. Galette sadrži jedan popis, a možete dodati i vlastite."
+
+msgid "Enforce password strength"
+msgstr "Zahtijevaj određenu jakost lozinke"
+
+msgid "Password strength:"
+msgstr "Jakost lozinke:"
+
+msgid "None (default)"
+msgstr "Bez provjere (zadano)"
+
+msgid "Enforce minimal password strength for all password."
+msgstr "Zahtijevaj najmanju određenu jakost za sve lozinke."
+
+msgid "Levels are:"
+msgstr "Razine su:"
+
+msgid "for no strength enforcement"
+msgstr "bez provjere jakosti"
+
+msgid "require at least one matched rule"
+msgstr "mora ispunjavati barem jedno pravilo"
+
+msgid "require at least two matched rules"
+msgstr "mora ispunjavati barem dva pravila"
+
+msgid "require at least three matched rules (recommended for most usages)"
+msgstr "mora ispunjavati barem tri pravila (preporučeno za većinu namjena)"
+
+msgid "requires all rules."
+msgstr "mora ispunjavati sva pravila."
+
+msgid ""
+"Rules include lower case characters, upper case characters, numbers, and "
+"special characters."
+msgstr "Pravila uključuju mala slova, velika slova, brojeve i posebne znakove."
+
+msgid ""
+"Note that with any enforcement level, user cannot use his personal "
+"information (name, login, ...) as password."
+msgstr ""
+"Pri bilo kojoj razini provjere korisnik ne može kao lozinku koristiti svoje "
+"osobne podatke (ime, korisničko ime i sl.)."
+
+msgid "Test a password:"
+msgstr "Provjeri lozinku:"
+
+msgid "Test a password with current selected values."
+msgstr "Provjeri lozinku s trenutno odabranim postavkama."
+
+msgid ""
+"Do not forget to save your preferences if you're happy with the result ;)"
+msgstr "Ako ste zadovoljni rezultatom, ne zaboravite spremiti postavke ;)"
+
+msgid "Enter the email adress"
+msgstr "Unesite adresu e-pošte"
+
+msgid "An error occurred sending test email :("
+msgstr "Došlo je do pogreške pri slanju probne poruke :("
+
+msgid "An error occurred testing mail server connection :("
+msgstr "Došlo je do pogreške pri provjeri veze s poslužiteljem e-pošte :("
+
+msgid "Manages:"
+msgstr "Upravlja:"
+
+#, php-format
+msgid "\"%1$s\" group managers"
+msgstr "Voditelji grupe „%1$s”"
+
+msgid "Choose wich reminder(s) you want to send:"
+msgstr "Odaberite podsjetnike koje želite poslati:"
+
+msgid "preview"
+msgstr "pregled"
+
+#, php-format
+msgid "%s members with an email address"
+msgstr "%s članova s adresom e-pošte"
+
+#, php-format
+msgid "%s members without email address"
+msgstr "%s članova bez adrese e-pošte"
+
+msgid "Generate labels for members without email address"
+msgstr "Izradi adresne naljepnice za članove bez adrese e-pošte"
+
+msgid "No reminder selected"
+msgstr "Nijedan podsjetnik nije odabran"
+
+msgid "Please make sure to select at least one reminder."
+msgstr "Odaberite barem jedan podsjetnik."
+
+msgid "Replace parameters with the current advanced search"
+msgstr "Zamjeni parametre sa trenutnom naprednom pretragom"
+
+msgid "Show parameters"
+msgstr "Prikaži parametre"
+
+#, php-format
+msgid "%1$s search"
+msgid_plural "%1$s searches"
+msgstr[0] "%1$spretraga"
+msgstr[1] "%1$spretrage"
+msgstr[2] "%1$spretraga"
+
+msgid "Search parameters"
+msgstr "Parametri pretrage"
+
+msgid "Load saved search"
+msgstr "Učitaj spremljenu pretragu"
+
+msgid "no search"
+msgstr "nema pretraga"
+
+msgid "Scheduled payment"
+msgstr "Zakazano plaćanje"
+
+msgid "View contribution"
+msgstr "Pregledaj uplatu"
+
+msgid "Related contribution information"
+msgstr "Podaci o povezanoj uplati"
+
+msgid "No entry selected"
+msgstr "Nijedan zapis nije odabran"
+
+msgid ""
+"Please make sure to select at least one entry from the list to perform this "
+"action."
+msgstr "Za ovu radnju odaberite barem jedan zapis s popisa."
+
+msgid "Scheduled date"
+msgstr "Zakazani datum"
+
+msgid "Show payments by"
+msgstr "Prikaži plaćanja prema"
+
+msgid "Paid scheduled payments:"
+msgstr "Podmirena zakazana plaćanja:"
+
+msgid "Not paid"
+msgstr "Nije plaćeno"
+
+msgid "Show all your scheduled payments"
+msgstr "Prikaži sva svoja zakazana plaćanja"
+
+msgid "Show all members scheduled payments"
+msgstr "Prikaži zakazana plaćanja svih članova"
+
+#, php-format
+msgid "%1$s scheduled payment"
+msgid_plural "%1$s scheduled payments"
+msgstr[0] "%1$s zakazano plaćanje"
+msgstr[1] "%1$s zakazana plaćanja"
+msgstr[2] "%1$s zakazanih plaćanja"
+
+#, php-format
+msgid "Found total scheduled %f"
+msgstr "Ukupno zakazano: %f"
+
+#, php-format
+msgid "Edit membership fee %1$s"
+msgstr "Uredi članarinu %1$s"
+
+#, php-format
+msgid "Edit donation %1$s"
+msgstr "Uredi donaciju %1$s"
+
+#, php-format
+msgid "Show only '%1$s' scheduled payments"
+msgstr "Prikaži samo zakazana plaćanja za '%1$s'"
+
+msgid "Not paid and due"
+msgstr "Neplaćeno i dospjelo"
+
+msgid "Delete scheduled payment"
+msgstr "Izbriši zakazano plaćanje"
+
+msgid "No scheduled payment"
+msgstr "Nema zakazanih plaćanja"
+
+msgid "Priority:"
+msgstr "Prioritet:"
+
+#, php-format
+msgid "Note: members with a status priority lower than %1$s are staff members."
+msgstr ""
+"Napomena: članovi čiji status ima prioritet manji od %1$s članovi su uprave."
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "New status"
+msgstr "Novi status"
+
+msgid "Copy system information"
+msgstr "Kopiraj podatke o sustavu"
+
+msgid "Transaction details"
+msgstr "Pojedinosti transakcije"
+
+msgid "Attached contributions"
+msgstr "Povezane uplate"
+
+msgid "Dispatched amount:"
+msgstr "Raspoređeni iznos:"
+
+msgid "Not dispatched amount:"
+msgstr "Neraspoređeni iznos:"
+
+msgid ""
+"Select an existing contribution in the database, and attach it to the "
+"current transaction"
+msgstr ""
+"Odaberi postojeću uplatu u bazi podataka i poveži je s trenutnom transakcijom"
+
+msgid "Detach contribution from this transaction"
+msgstr "Odvoji uplatu od ove transakcije"
+
+msgid "An error occurred displaying contributions :("
+msgstr "Došlo je do pogreške pri prikazu uplata :("
+
+msgid "Contributions selection"
+msgstr "Odabir uplata"
+
+msgid "Click on a contribution row to attach it to the current transaction"
+msgstr "Kliknite redak uplate kako biste je povezali s trenutnom transakcijom"
+
+msgid "Originator"
+msgstr "Uplatitelj"
+
+msgid "Show transactions since"
+msgstr "Prikaži transakcije od"
+
+msgid "Show all your transactions"
+msgstr "Prikaži sve svoje transakcije"
+
+msgid "Show all members transactions"
+msgstr "Prikaži transakcije svih članova"
+
+#, php-format
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
+msgstr[0] "%1$s transakcija"
+msgstr[1] "%1$s transakcije"
+msgstr[2] "%1$s transakcija"
+
+#, php-format
+msgid "Show only '%1$s' transactions"
+msgstr "Prikaži samo transakcije za '%1$s'"
+
+#, php-format
+msgid "Remove transaction #%1$s"
+msgstr "Ukloni transakciju #%1$s"
+
+msgid "no transaction"
+msgstr "nema transakcija"
+
+msgid "Completely dispatched transaction"
+msgstr "Potpuno raspoređena transakcija"
+
+msgid "Uncomplete dispatched transaction"
+msgstr "Djelomično raspoređena transakcija"
+
+msgid "View corresponding contributions"
+msgstr "Pregledaj pripadajuće uplate"
+
+msgid "Enter the code shown by your authentication application."
+msgstr "Unesite kod prikazan u svojoj aplikaciji za autentifikaciju."
+
+msgid "Lost your device? Enter one of your recovery codes above instead."
+msgstr ""
+"Izgubili ste uređaj? Umjesto koda iz aplikacije unesite jedan od svojih "
+"kodova za oporavak."
+
+msgid "Cancel and log off"
+msgstr "Odustani i odjavi se"
+
+msgid "Write these codes down now"
+msgstr "Sada zapišite ove kodove"
+
+msgid ""
+"They are shown this once and cannot be displayed again. Each one works a "
+"single time, and lets you log in when you no longer have your device."
+msgstr ""
+"Prikazuju se samo jednom i više ih nećete moći vidjeti. Svaki vrijedi za "
+"jednu prijavu i omogućuje prijavu ako više nemate svoj uređaj."
+
+msgid "Copy the codes"
+msgstr "Kopiraj kodove"
+
+msgid "I have written them down"
+msgstr "Kodovi su zapisani"
+
+msgid ""
+"Install an authentication application, for instance FreeOTP, Aegis or "
+"KeePassXC."
+msgstr ""
+"Instalirajte aplikaciju za autentifikaciju, primjerice FreeOTP, Aegis ili "
+"KeePassXC."
+
+msgid "Scan the code below with it, or type the key in by hand."
+msgstr "Skenirajte njome kod u nastavku ili ručno unesite ključ."
+
+msgid "Enter the code it then shows, to confirm it works."
+msgstr "Unesite kod koji aplikacija prikaže kako biste potvrdili da radi."
+
+msgid "QR code to register the key in an authentication application"
+msgstr "QR kod za unos ključa u aplikaciju za autentifikaciju"
+
+msgid "Key, to type in by hand:"
+msgstr "Ključ za ručni unos:"
+
+msgid "Copy the key"
+msgstr "Kopiraj ključ"
+
+msgid "Code shown by the application:"
+msgstr "Kod prikazan u aplikaciji:"
+
+msgid "Confirm and enable"
+msgstr "Potvrdi i uključi"
+
+msgid "Two-factor authentication is enabled"
+msgstr "Dvofaktorska autentifikacija je uključena"
+
+msgid ""
+"A code from your authentication application is asked for at every login."
+msgstr "Pri svakoj prijavi traži se kod iz vaše aplikacije za autentifikaciju."
+
+msgid ""
+"Recovery codes let you log in when you no longer have your device. Each one "
+"works once."
+msgstr ""
+"Kodovi za oporavak omogućuju prijavu ako više nemate svoj uređaj. Svaki se "
+"može upotrijebiti samo jednom."
+
+#, php-format
+msgid "You have %1$s recovery code left."
+msgid_plural "You have %1$s recovery codes left."
+msgstr[0] "Preostao vam je %1$s kod za oporavak."
+msgstr[1] "Preostala su vam %1$s koda za oporavak."
+msgstr[2] "Preostalo vam je %1$s kodova za oporavak."
+
+msgid "Current code:"
+msgstr "Trenutni kod:"
+
+msgid "Renew recovery codes"
+msgstr "Obnovi kodove za oporavak"
+
+msgid "No recovery codes for this account"
+msgstr "Za ovaj račun nema kodova za oporavak"
+
+msgid ""
+"The super administrator is not a member: its second factor lives in the "
+"preferences, which is also where it is cleared from should you lose your "
+"device. Keep an access to the database at hand."
+msgstr ""
+"Glavni administrator nije član: njegov drugi faktor sprema se u postavkama, "
+"gdje se i briše ako izgubite uređaj. Osigurajte pristup bazi podataka."
+
+msgid ""
+"Two-factor authentication is required on this instance: disabling it will be "
+"asked for again at your next login."
+msgstr ""
+"Dvofaktorska autentifikacija obvezna je u ovoj instalaciji: ako je "
+"isključite, pri sljedećoj prijavi ponovno će se tražiti njezino uključivanje."
+
+msgid ""
+"A code is required to disable it, so that nobody else can turn it off from "
+"your session."
+msgstr ""
+"Za isključivanje je potreban kod kako nitko drugi ne bi mogao isključiti "
+"zaštitu u vašoj sesiji."
+
+msgid "Disable two-factor authentication"
+msgstr "Isključi dvofaktorsku autentifikaciju"
+
+msgid "Two-factor authentication is not enabled"
+msgstr "Dvofaktorska autentifikacija nije uključena"
+
+msgid ""
+"It is required on this instance: you will be asked to enable it to keep "
+"using your account."
+msgstr ""
+"Obvezna je u ovoj instalaciji: za nastavak korištenja računa morat ćete je "
+"uključiti."
+
+msgid ""
+"Adding a code from an application on your phone makes a stolen password "
+"useless on its own."
+msgstr ""
+"Dodavanjem koda iz aplikacije na telefonu ukradena lozinka sama po sebi više "
+"nije dovoljna za prijavu."
+
+msgid "Public page content"
+msgstr "Sadržaj javne stranice"
+
+#~ msgid "An error occurred."
+#~ msgstr "Došlo je do pogreške."
+
+#~ msgid "Constants behavior.inc.php understands"
+#~ msgstr "Konstante koje prepoznaje behavior.inc.php"
+
+#~ msgid "Manage managers"
+#~ msgstr "Upravljaj voditeljima"
+
+#~ msgid "Manage members"
+#~ msgstr "Upravljaj članovima"
+
+#~ msgid "No manager attached"
+#~ msgstr "Nema dodijeljenih voditelja"
+
+#~ msgid "Group members selection"
+#~ msgstr "Odabir članova grupe"
+
+#~ msgid "Group managers selection"
+#~ msgstr "Odabir voditelja grupe"
+
+#~ msgid "An SQL error has occurred while loading search."
+#~ msgstr "Došlo je do SQL pogreške pri učitavanju pretrage."
+
+#~ msgid "An error occurred displaying groups interface :("
+#~ msgstr "Došlo je do pogreške pri prikazu sučelja za grupe :("
+
+#~ msgid "Groups selection"
+#~ msgstr "Odabir grupa"
+
+#~ msgid "Managed groups selection"
+#~ msgstr "Odabir grupa kojima se upravlja"
+
+#~ msgid "Click on a row to select a group"
+#~ msgstr "Kliknite redak kako biste odabrali grupu"
+
+#~ msgid "current logged in user"
+#~ msgstr "trenutno prijavljeni korisnik"
+
+#~ msgid "other"
+#~ msgstr "drugo"
+
+#~ msgid "Manage user's groups"
+#~ msgstr "Upravljaj grupama korisnika"
+
+#~ msgid "Manage user's managed groups"
+#~ msgstr "Upravljaj grupama koje korisnik vodi"
+
+#~ msgid "Manager(s)"
+#~ msgstr "Voditelji"
+
+#, php-format
+#~ msgid "%1$s members"
+#~ msgstr "%1$s članova"
+
+#~ msgid "Selected groups"
+#~ msgstr "Odabrane grupe"
+
+#~ msgid "No groups has been selected yet."
+#~ msgstr "Još nije odabrana nijedna grupa."

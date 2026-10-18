@@ -21,6 +21,7 @@ use Laminas\Db\Sql\Select;
 use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Documents class for galette
@@ -152,11 +153,7 @@ class Documents
             }
             return $documents;
         } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred loading documents. Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading documents', Analog::ERROR);
             throw $e;
         }
     }
@@ -207,10 +204,7 @@ class Documents
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for documents | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for documents', Analog::WARNING);
             throw $e;
         }
     }
@@ -239,10 +233,7 @@ class Documents
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count documents | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count documents', Analog::WARNING);
             throw $e;
         }
     }
@@ -324,10 +315,7 @@ class Documents
                 );
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
     }

@@ -72,3 +72,8 @@ button.ui.icon-only.link.button,
     color: @linkHoverColor;
   }
 }
+
+/* Copy to clipboard buttons are only displayed when the clipboard can be used */
+.ui.button.copy-to-clipboard[hidden] {
+  display: none;
+}

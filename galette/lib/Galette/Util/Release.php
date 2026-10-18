@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Features\Cacheable;
 use GuzzleHttp\Client;
 
@@ -113,10 +114,7 @@ class Release
 
             return $latest;
         } catch (\Throwable $e) {
-            Analog::log(
-                'Error while trying to get latest release: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Error while trying to get latest release', Analog::ERROR);
             return null;
         }
     }

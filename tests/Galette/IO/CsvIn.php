@@ -32,6 +32,15 @@ class CsvIn extends GaletteTestCase
      */
     public function tearDown(): void
     {
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $delete->where('parent_group IS NOT NULL');
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
@@ -65,6 +74,7 @@ class CsvIn extends GaletteTestCase
      * @param ?int                                               $count_before   Count before insertions. Defaults to 0 if null.
      * @param ?int                                               $count_after    Count after insertions. Default to $count_before + count $members_list
      * @param string[]                                           $values         Textual values for dynamic choices fields
+     * @param bool                                               $dryrun         Run import in dry run mode
      */
     private function doImportFileTest(
         array $fields,
@@ -73,7 +83,8 @@ class CsvIn extends GaletteTestCase
         array $members_list,
         ?int $count_before = null,
         ?int $count_after = null,
-        array $values = []
+        array $values = [],
+        bool $dryrun = false
     ): void {
         $count_before ??= 0;
         $count_after ??= $count_before + count($members_list);
@@ -137,6 +148,9 @@ class CsvIn extends GaletteTestCase
         $post = [
             'import_file'   => $file_name
         ];
+        if ($dryrun) {
+            $post['dryrun'] = 1;
+        }
 
         $rfactory = new \Slim\Psr7\Factory\RequestFactory();
         /** @var \Slim\Psr7\Request $request */
@@ -159,6 +173,10 @@ class CsvIn extends GaletteTestCase
                 }
                 $created = $members_list[$member->fingerprint];
                 foreach ($fields as $field) {
+                    if (in_array($field, [\Galette\IO\CsvIn::GROUPS_FIELD, \Galette\IO\CsvIn::MANAGED_GROUPS_FIELD])) {
+                        //checked by the test itself
+                        continue;
+                    }
                     if (property_exists($member, $field)) {
                         if ($field === \Galette\Entity\Status::PK && $created[$field] === null) {
                             $this->assertNotNull($member->$field);
@@ -1066,6 +1084,230 @@ class CsvIn extends GaletteTestCase
             count_after: $count_after
         );
         $this->expectLogEntry(\Analog\Analog::ERROR, 'File is empty!');
+    }
+
+    /**
+     * Test members are attached to groups
+     */
+    public function testImportGroups(): void
+    {
+        $fede = $this->createGroup('Fédé');
+        $fede_33 = $this->createGroup('Section 33', $fede);
+        $fede_47 = $this->createGroup('Section 47', $fede);
+        $other = $this->createGroup('Other');
+        $other_33 = $this->createGroup('Section 33', $other);
+
+        $fields = ['nom_adh', 'fingerprint', 'groups', 'groups_managed'];
+
+        //same name under two parents
+        $file_name = 'test-import-groups-ambiguous.csv';
+        $error = 'Several groups are named "Section 33" (row 1), use the full name of one of them: '
+            . 'Fédé / Section 33, Other / Section 33';
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: [
+                'error_detected' => [
+                    'File does not comply with requirements.',
+                    $error
+                ]
+            ],
+            members_list: [
+                'FAKER_GROUPS_1' => [
+                    'nom_adh' => 'Ambiguous',
+                    'fingerprint' => 'FAKER_GROUPS_1',
+                    'groups' => 'Section 33',
+                    'groups_managed' => ''
+                ]
+            ],
+            count_before: 0,
+            count_after: 0
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, $error);
+
+        //unknown group
+        $file_name = 'test-import-groups-unknown.csv';
+        $error = 'Group "Section 99" does not exist (row 2)';
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: [
+                'error_detected' => [
+                    'File does not comply with requirements.',
+                    $error
+                ]
+            ],
+            members_list: [
+                'FAKER_GROUPS_1' => [
+                    'nom_adh' => 'Known',
+                    'fingerprint' => 'FAKER_GROUPS_1',
+                    'groups' => 'Section 47',
+                    'groups_managed' => ''
+                ],
+                'FAKER_GROUPS_2' => [
+                    'nom_adh' => 'Unknown',
+                    'fingerprint' => 'FAKER_GROUPS_2',
+                    'groups' => 'Section 47|Section 99',
+                    'groups_managed' => ''
+                ]
+            ],
+            count_before: 0,
+            count_after: 0
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, $error);
+
+        $members_list = [
+            'FAKER_GROUPS_1' => [
+                'nom_adh' => 'Two groups',
+                'fingerprint' => 'FAKER_GROUPS_1',
+                'groups' => 'Fédé / Section 33 | Section 47',
+                'groups_managed' => ''
+            ],
+            'FAKER_GROUPS_2' => [
+                'nom_adh' => 'Manager',
+                'fingerprint' => 'FAKER_GROUPS_2',
+                'groups' => 'Other / Section 33',
+                'groups_managed' => 'Other / Section 33|Other'
+            ],
+            'FAKER_GROUPS_3' => [
+                'nom_adh' => 'No group',
+                'fingerprint' => 'FAKER_GROUPS_3',
+                'groups' => '',
+                'groups_managed' => ''
+            ]
+        ];
+
+        //dry run stores nothing
+        $file_name = 'test-import-groups-dryrun.csv';
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: [
+                'success_detected' => [
+                    "File '$file_name' can be imported, nothing has been stored (dry run)."
+                ]
+            ],
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 0,
+            dryrun: true
+        );
+        $this->assertSame([], $this->getGroupsMembers(\Galette\Entity\Group::GROUPSUSERS_TABLE));
+        $this->assertSame([], $this->getGroupsMembers(\Galette\Entity\Group::GROUPSMANAGERS_TABLE));
+
+        $file_name = 'test-import-groups.csv';
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: [
+                'success_detected' => [
+                    "File '$file_name' has been successfully imported :)"
+                ]
+            ],
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 3
+        );
+
+        $this->assertSame(
+            [
+                'Manager' => [$other_33],
+                'Two groups' => [$fede_33, $fede_47]
+            ],
+            $this->getGroupsMembers(\Galette\Entity\Group::GROUPSUSERS_TABLE)
+        );
+        $this->assertSame(
+            ['Manager' => [$other, $other_33]],
+            $this->getGroupsMembers(\Galette\Entity\Group::GROUPSMANAGERS_TABLE)
+        );
+    }
+
+    /**
+     * Create a group
+     *
+     * @param string $name   Group name
+     * @param ?int   $parent Parent group id
+     *
+     * @return int Created group id
+     */
+    private function createGroup(string $name, ?int $parent = null): int
+    {
+        $group = new \Galette\Entity\Group();
+        $group->setName($name);
+        if ($parent !== null) {
+            $group->setParentGroup($parent);
+        }
+        $this->assertTrue($group->store());
+        return (int)$group->getId();
+    }
+
+    /**
+     * Get groups ids per member name from a groups members or managers table
+     *
+     * @param string $table Table name
+     *
+     * @return array<string, int[]>
+     */
+    private function getGroupsMembers(string $table): array
+    {
+        $select = $this->zdb->select($table, 'g');
+        $select->join(
+            ['a' => PREFIX_DB . Adherent::TABLE],
+            'a.' . Adherent::PK . '=g.' . Adherent::PK,
+            ['nom_adh']
+        );
+
+        $list = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $list[$row->nom_adh][] = (int)$row->{\Galette\Entity\Group::PK};
+        }
+        foreach ($list as &$ids) {
+            sort($ids);
+        }
+        ksort($list);
+        return $list;
+    }
+
+    /**
+     * Test a failure while storing rolls back the whole file
+     */
+    public function testImportRollback(): void
+    {
+        //both rows pass the file check, the second one fails once the first is stored
+        $fields = ['nom_adh', 'login_adh', 'fingerprint'];
+        $file_name = 'test-import-rollback.csv';
+        $members_list = [
+            'FAKER_ROLLBACK_1' => [
+                'nom_adh' => 'First',
+                'login_adh' => 'samelogin',
+                'fingerprint' => 'FAKER_ROLLBACK_1'
+            ],
+            'FAKER_ROLLBACK_2' => [
+                'nom_adh' => 'Second',
+                'login_adh' => 'samelogin',
+                'fingerprint' => 'FAKER_ROLLBACK_2'
+            ]
+        ];
+        $flash_messages = [
+            'error_detected' => [
+                'An error occurred while importing members',
+                'An error occurred storing member at row 2 (SECOND ):',
+                '- This username is already in use, please choose another one!'
+            ]
+        ];
+
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: $flash_messages,
+            members_list: $members_list,
+            count_before: 0,
+            count_after: 0
+        );
+        $this->assertFalse($this->zdb->inTransaction());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred storing member at row 2 (SECOND ):');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- This username is already in use, please choose another one!');
     }
 
     /**

@@ -1,0 +1,119 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Member's groups table, see components/forms/groups.html.twig.
+ #
+ # Nothing is stored here: rows are revealed, hidden, checked and unchecked,
+ # and the form posts the checkboxes that are left checked and enabled.
+ #}
+                var $memberGroups = $('#member_groups');
+                if ($memberGroups.length) {
+                    var $groupAdd = $('#group_add'),
+                        _groupAddDropdown = function() {
+                            return $groupAdd.closest('.ui.dropdown');
+                        };
+
+                    var _setToggle = function($input, checked, enabled) {
+                        var $toggle = $input.closest('.ui.checkbox');
+                        $toggle.checkbox(checked ? 'set checked' : 'set unchecked');
+                        $toggle.checkbox(enabled ? 'set enabled' : 'set disabled');
+                    };
+
+                    var _rowState = function($row) {
+                        if ($row.prop('hidden')) {
+                            return null;
+                        }
+                        if ($row.data('linked') != 1) {
+                            return 'added';
+                        }
+                        if ($row.data('removed') == 1) {
+                            return 'removed';
+                        }
+                        var _member = $row.find('.group-member').is(':checked'),
+                            _manager = $row.find('.group-manager').is(':checked');
+                        if (_member != ($row.data('member') == 1) || _manager != ($row.data('manager') == 1)) {
+                            return 'changed';
+                        }
+                        return null;
+                    };
+
+                    var _refreshGroups = function() {
+                        var _pending = false,
+                            _shown = 0;
+                        $memberGroups.find('tr[data-group]').each(function() {
+                            var $row = $(this),
+                                _state = _rowState($row);
+                            if (!$row.prop('hidden')) {
+                                _shown++;
+                            }
+                            if (_state !== null) {
+                                _pending = true;
+                            }
+                            $row.toggleClass('warning', _state !== null);
+                            $row.find('.group-state').each(function() {
+                                $(this).toggleClass('displaynone', $(this).data('state') !== _state);
+                            });
+                        });
+                        $('#member_groups_empty').prop('hidden', _shown > 0);
+                        $('#member_groups_status .message').toggleClass('displaynone', !_pending);
+                    };
+
+                    var _setRowEditable = function($row, enabled) {
+                        $row.find('input[data-editable]').each(function() {
+                            var $input = $(this);
+                            _setToggle($input, enabled ? $input.is(':checked') : false, enabled);
+                        });
+                    };
+
+                    $memberGroups.on('change', 'input[type=checkbox]', _refreshGroups);
+
+                    $memberGroups.on('click', '.group-remove', function() {
+                        var $row = $(this).closest('tr'),
+                            _gid = $row.data('group');
+                        _setRowEditable($row, false);
+                        if ($row.data('linked') == 1) {
+                            $row.data('removed', 1);
+                            $(this).addClass('displaynone');
+                            $row.find('.group-undo').removeClass('displaynone').trigger('focus');
+                        } else {
+                            //a group added during this edition simply goes back to the list
+                            $row.prop('hidden', true);
+                            _groupAddDropdown().find('.menu .item[data-value="' + _gid + '"]').removeClass('disabled');
+                            _groupAddDropdown().find('input.search').trigger('focus');
+                        }
+                        _refreshGroups();
+                    });
+
+                    $memberGroups.on('click', '.group-undo', function() {
+                        var $row = $(this).closest('tr');
+                        $row.data('removed', 0);
+                        $row.find('input[data-editable]').each(function() {
+                            var $input = $(this),
+                                _initial = $row.data($input.hasClass('group-member') ? 'member' : 'manager') == 1;
+                            _setToggle($input, _initial, true);
+                        });
+                        $(this).addClass('displaynone');
+                        $row.find('.group-remove').removeClass('displaynone').trigger('focus');
+                        _refreshGroups();
+                    });
+
+                    $('#group_add_btn').on('click', function() {
+                        var _gid = $groupAdd.val();
+                        if (!_gid) {
+                            _groupAddDropdown().find('input.search').trigger('focus');
+                            return;
+                        }
+                        var $row = $('#group_row_' + _gid);
+                        $row.prop('hidden', false);
+                        _setRowEditable($row, true);
+                        _setToggle($row.find('.group-member'), true, true);
+                        _groupAddDropdown().dropdown('clear');
+                        _groupAddDropdown().find('.menu .item[data-value="' + _gid + '"]').addClass('disabled');
+                        _refreshGroups();
+                        $row.find('.group-member').trigger('focus');
+                    });
+                }

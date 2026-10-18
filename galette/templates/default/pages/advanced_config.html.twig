@@ -11,14 +11,23 @@
     {# labels that are used #}
     {% set alpha_label = _T("Experimental feature. Be careful using it.") %}
 
-        <div class="ui icon error message">
-            <i class="exclamation triangle icon" aria-hidden="true"></i>
-            <div class="content">
-                <div class="header">{{ _T("- WARNING -") }}</div>
-                <p>{{ _T("This page can break your installation, be very careful.") }}</p>
-            </div>
+    <div class="ui icon error message">
+        <i class="exclamation triangle icon" aria-hidden="true"></i>
+        <div class="content">
+            <div class="header">{{ _T("- WARNING -") }}</div>
+            <p>{{ _T("This page can break your installation, be very careful.") }}</p>
         </div>
+    </div>
 
+    <div class="ui stackable pointing inverted wrapping centered fluid menu tabbed">
+        <a href="{{ url_for('advancedConfig') }}?tab=settings" class="item{{ tab == 'settings' ? ' active' }}" data-tab="settings">{{ _T("Settings") }}</a>
+{% if previews|length > 0 %}
+        <a href="{{ url_for('advancedConfig') }}?tab=features" class="item{{ tab == 'features' ? ' active' }}" data-tab="features">{{ _T("Experimental features") }}</a>
+{% endif %}
+        <a href="{{ url_for('advancedConfig') }}?tab=constants" class="item{{ tab == 'constants' ? ' active' }}" data-tab="constants">{{ _T("Constants") }}</a>
+    </div>
+
+    <div class="ui{{ tab == 'settings' ? ' active' }} tab segment" data-tab="settings">
         <div class="ui basic fitted segment">
             <div class="ui fluid icon input">
                 <label for="config_filter" class="visually-hidden">{{ _T("Filter settings") }}</label>
@@ -47,7 +56,7 @@
                         <code>{{ entry.name }}</code>
                     </td>
                     <td class="collapsing" data-col-label="{{ _T("Type") }}">
-                        {% if entry.known %}{{ entry.type }}{% else %}&mdash;{% endif %}
+                        {% if entry.known %}{{ entry.type }}{% else %}-{% endif %}
                     </td>
                     <td class="collapsing" data-col-label="{{ _T("Status") }}">
     {% if not entry.known %}
@@ -120,9 +129,75 @@
 {% endfor %}
             </tbody>
         </table>
+    </div>
 
-        <h2 class="ui dividing header">{{ _T("Constants behavior.inc.php understands") }}</h2>
+{% if previews|length > 0 %}
+    <div class="ui{{ tab == 'features' ? ' active' }} tab segment" data-tab="features">
+        <div class="ui icon info message">
+            <i class="flask icon" aria-hidden="true"></i>
+            <div class="content">
+                <p>{{ _T("These features are meant to be tested. Enable one to try it on this instance, and tell us how it goes; disable it again at any time.") }}</p>
+            </div>
+        </div>
 
+        <table class="listing ui celled striped table">
+            <thead>
+            <tr>
+                <th>{{ _T("Name") }}</th>
+                <th>{{ _T("Description") }}</th>
+                <th class="collapsing">{{ _T("Requirements") }}</th>
+                <th class="collapsing"></th>
+            </tr>
+            </thead>
+            <tbody>
+    {% for preview in previews %}
+        <tr data-name="{{ preview.name }}" id="{{ preview.name }}">
+            <td data-scope="row" data-col-label="{{ _T("Name") }}">
+                <code>{{ preview.name }}</code>
+            </td>
+            <td data-col-label="{{ _T("Description") }}">
+                {{ preview.label }}
+            </td>
+            <td class="collapsing" data-col-label="{{ _T("Requirements") }}">
+        {% if preview.requires|length > 0 %}
+                    <div class="extra">
+            {% for requirement in preview.requires %}
+                        <code>{{ requirement }}</code>
+                {% if not loop.last %}, {% endif %}
+            {% endfor %}
+                    </div>
+        {%- endif %}
+            </td>
+            <td class="collapsing">
+        {% if not preview.locked %}
+                <form action="{{ url_for('saveFeatureFlagAdvancedConfig') }}" method="post" class="ui form">
+                    <input type="hidden" name="flag" value="{{ preview.name }}"/>
+                    {% if preview.stored %}
+                        <input type="hidden" name="value" value="0"/>
+                        <button type="submit" class="ui button">
+                            <i class="power off icon" aria-hidden="true"></i>
+                            {{ _T("Disable") }}
+                        </button>
+                    {% else %}
+                        <input type="hidden" name="value" value="1"/>
+                        <button type="submit" class="ui primary button">
+                            <i class="flask icon" aria-hidden="true"></i>
+                            {{ _T("Enable") }}
+                        </button>
+                    {% endif %}
+                </form>
+        {% else %}
+            <span class="ui red label" title="{{ _T("Declared in behavior.inc.php or in the environment, which takes precedence.") }}">{{ _T("locked") }}</span>
+        {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+    <div class="ui{{ tab == 'constants' ? ' active' }} tab segment" data-tab="constants">
         <div class="ui icon info message">
             <i class="file code icon" aria-hidden="true"></i>
             <div class="content">
@@ -173,6 +248,7 @@
 {% endfor %}
             </tbody>
         </table>
+    </div>
 
         <div id="legende" class="ui modal">
             <div class="header">{{ _T("Legend") }}</div>
@@ -241,6 +317,16 @@
             // page does not extend
             $(function() {
                 _bind_legend();
+
+                // Keep the tab in the address, so a reload - or the password
+                // asked again once the confirmation expired - lands back on it
+                $('.tabbed .item').tab({
+                    onVisible: function(tabPath) {
+                        var url = new URL(window.location.href);
+                        url.searchParams.set('tab', tabPath);
+                        history.replaceState(null, '', url);
+                    }
+                });
             });
 
             // A jump from the constants table must not land on a row the
@@ -256,6 +342,8 @@
                 }
                 var row = document.getElementById(window.location.hash.slice(1));
                 if (row) {
+                    // jumped to from the constants tab
+                    $('.tabbed .item').tab('change tab', 'settings');
                     row.scrollIntoView({ block: 'center' });
                 }
             };

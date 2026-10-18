@@ -16,8 +16,9 @@ use Exception;
 use Galette\Core\Db;
 use Galette\Core\Galette;
 use Throwable;
-use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Adapter;
+use Analog\Analog;
 
 /**
  * Import model entity
@@ -54,14 +55,11 @@ class ImportModel
                 $this->loadFromRS($result);
                 return true;
             } else {
+                Analog::log('Load import model: no model stored', Analog::INFO);
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load import model | ' . $e->getMessage()
-                . "\n" . $e->__toString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Cannot load import model');
             throw $e;
         }
     }
@@ -100,10 +98,7 @@ class ImportModel
             $this->creation_date = null;
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to remove import model ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to remove import model');
             throw $e;
         }
     }
@@ -146,11 +141,7 @@ class ImportModel
                 return true;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong storing import model :\'( | '
-                . $e->getMessage() . "\n" . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Something went wrong storing import model');
             throw $e;
         }
     }

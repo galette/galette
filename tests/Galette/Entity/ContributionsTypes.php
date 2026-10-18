@@ -410,4 +410,70 @@ class ContributionsTypes extends GaletteTestCase
             $this->assertNotEquals($payload, $test_ctype[$field], "Payload should not be stored as is in $field");
         }
     }
+
+    /**
+     * Test translations of a label shared with another object
+     */
+    public function testSharedLabelTranslations(): void
+    {
+        global $i18n, $l10n; // globals :(
+        $i18n = $this->i18n;
+        $l10n = $this->container->get(\Galette\Core\L10n::class);
+        $label = 'Shared label for test';
+
+        $status = new \Galette\Entity\Status($this->zdb);
+        $this->assertTrue($status->add($label, 100));
+        $status_id = $status->getIdByLabel($label);
+
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
+        $this->assertTrue(
+            $ctype->add(
+                label: $label,
+                description: '',
+                amount: null,
+                extension: \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+        $ctype_id = $ctype->getIdByLabel($label);
+        $this->assertTrue($l10n->updateDynamicTranslation($label, 'fr_FR.utf8', 'Libellé partagé de test'));
+
+        //removing contribution type keeps translations used by status
+        $this->assertTrue($ctype->delete($ctype_id));
+        $this->assertSame('Libellé partagé de test', $l10n->getDynamicTranslation($label, 'fr_FR.utf8'));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Dynamic translation for `' . $label . '` is still in use, kept.');
+
+        //removing status, last user, removes translations
+        $this->assertTrue($status->delete($status_id));
+        $this->assertSame('', $l10n->getDynamicTranslation($label, 'fr_FR.utf8'));
+    }
+
+    /**
+     * Test translations when label changes
+     */
+    public function testRenameLabelTranslations(): void
+    {
+        global $i18n, $l10n; // globals :(
+        $i18n = $this->i18n;
+        $i18n->changeLanguage('en_US');
+        $l10n = $this->container->get(\Galette\Core\L10n::class);
+
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
+        $this->assertTrue($ctype->add(label: 'Label to rename', description: '', amount: null, extension: 0));
+        $id = $ctype->getIdByLabel('Label to rename');
+        $this->assertTrue($l10n->updateDynamicTranslation('Label to rename', 'fr_FR.utf8', 'Libellé à renommer'));
+
+        //keep translations
+        $this->assertTrue(
+            $ctype->update(id: $id, label: 'Renamed label', description: '', amount: null, extension: 0, keep_translations: true)
+        );
+        $this->assertSame('Libellé à renommer', $l10n->getDynamicTranslation('Renamed label', 'fr_FR.utf8'));
+        $this->assertSame('', $l10n->getDynamicTranslation('Label to rename', 'fr_FR.utf8'));
+
+        //reset translations
+        $this->assertTrue(
+            $ctype->update(id: $id, label: 'Renamed again label', description: '', amount: null, extension: 0)
+        );
+        $this->assertSame('Renamed again label', $l10n->getDynamicTranslation('Renamed again label', 'en_US'));
+        $this->assertSame('', $l10n->getDynamicTranslation('Renamed again label', 'fr_FR.utf8'));
+    }
 }

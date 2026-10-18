@@ -170,6 +170,8 @@ class PreferencesSchema extends GaletteTestCase
                 'pref_2fa_superadmin_secret',
                 'pref_2fa_superadmin_enabled',
                 'pref_2fa_superadmin_timeslice',
+                //preview features, which may lift what the instance allows
+                'pref_feature_flags',
             ],
             $superadmin
         );
@@ -203,7 +205,9 @@ class PreferencesSchema extends GaletteTestCase
             'pref_2fa_superadmin_enabled',
             'pref_2fa_superadmin_timeslice',
             'pref_throttle_second_factor_attempts',
-            'pref_throttle_second_factor_window'
+            'pref_throttle_second_factor_window',
+            //preview features turned on
+            'pref_feature_flags',
         ];
         foreach ($alpha as $name) {
             $this->assertTrue(Schema::isAlpha($name), $name . ' should be flagged as alpha');

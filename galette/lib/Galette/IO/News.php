@@ -16,6 +16,7 @@ use Galette\IO\News\Post;
 use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\file_get_contents;
 use function Safe\ini_get;
@@ -103,10 +104,7 @@ class News
             }
         } catch (Throwable $e) {
             //cache is unusable, it will be rebuilt from the feed
-            Analog::log(
-                'Unable to load news from cache :( | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to load news from cache', Analog::WARNING);
             $this->posts = [];
             return false;
         }
@@ -148,6 +146,7 @@ class News
         try {
             return trim(file_get_contents($cfile)) === '[]';
         } catch (Throwable) {
+            // no log: an unreadable cache is not an empty one, it is handled (and logged) when loaded
             return false;
         }
     }
@@ -216,9 +215,10 @@ class News
             }
             $this->posts = $posts;
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Unable to load feed from "' . ($this->feed_url ?? $this->requested_url)
-                . '" :( | ' . $e->getMessage(),
+                . '"',
                 Analog::ERROR
             );
         }
@@ -287,9 +287,10 @@ class News
 
             return is_array($langs) ? $langs : [];
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Unable to load feed languages from "' . $url
-                . '" :( | ' . $e->getMessage(),
+                . '"',
                 Analog::ERROR
             );
             return [];

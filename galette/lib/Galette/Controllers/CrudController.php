@@ -15,6 +15,7 @@ use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Galette CRUD controller
@@ -363,10 +364,7 @@ abstract class CrudController extends AbstractController
                     $success = true;
                 }
             } catch (Throwable $e) {
-                Analog::log(
-                    'An error occurred on delete | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'An error occurred on delete', Analog::ERROR);
 
                 $this->flash->addMessage(
                     'error_detected',

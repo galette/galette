@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use DateInterval;
 use Safe\DateTime;
 use Galette\Core\Galette;
@@ -74,8 +75,9 @@ trait Cacheable
                 $now = new DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch (Throwable) {
-                Analog::log(
+            } catch (Throwable $e) {
+                Logs::exception(
+                    $e,
                     'Unable check cache expiry. Are you sure you have '
                     . 'properly configured PHP timezone settings on your server?',
                     Analog::WARNING

@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 
+use function Safe\filesize;
+
 /**
  * Adherent tests class
  *
@@ -499,7 +501,9 @@ class Adherent extends GaletteTestCase
         $fields = [];
         foreach ($orig_fields as $fieldset) {
             foreach ($fieldset as $field) {
-                $fields[] = $field['field_id'];
+                if (\Galette\Entity\FieldsConfig::isColumn($this->members_fields[$field['field_id']])) {
+                    $fields[] = $field['field_id'];
+                }
             }
         }
         $fc->method('getAllowedFields')->willReturn($fields);
@@ -556,6 +560,74 @@ class Adherent extends GaletteTestCase
         //not even when the form posts back the groups they belong to,
         //none of which they own
         $this->assertTrue($member->check(['groups_adh' => ['0|Another group']], [], []));
+
+        $this->cleanMembers();
+    }
+
+    /**
+     * Test checking admin information
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testCheckAdminInfo(): void
+    {
+        global $login;
+
+        $this->logSuperAdmin();
+        $member = $this->getMemberOne();
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+        $this->assertTrue($member->store());
+        $this->assertSame('Admin note', $member->others_infos_admin);
+
+        //staff can store a card with admin information
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+        $this->assertFalse($login->isAdmin());
+
+        $this->assertTrue($member->check([], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Staff note'], [], []));
+        $this->assertSame('Staff note', $member->others_infos_admin);
+        $this->assertTrue($member->load($member->id));
+
+        //force admin information to be allowed for everyone
+        $fc = $this->getMockBuilder(\Galette\Entity\FieldsConfig::class)
+            ->setConstructorArgs([
+                $this->zdb,
+                \Galette\Entity\Adherent::TABLE,
+                $this->members_fields,
+                $this->members_fields_cats
+            ])
+            ->onlyMethods(['getAllowedFields'])
+            ->getMock();
+        $fc->method('getAllowedFields')->willReturn(['info_adh']);
+        $this->container->set(\Galette\Entity\FieldsConfig::class, $fc);
+
+        //other members cannot change it
+        $login = new \Galette\Core\Login($this->zdb, $this->i18n);
+        $login->setId($member->id);
+        $this->assertTrue($member->check([], [], []));
+        $this->assertTrue($member->check(['info_adh' => 'Admin note'], [], []));
+
+        $exception_thrown = false;
+        try {
+            $member->check(['info_adh' => 'Member note'], [], []);
+        } catch (\RuntimeException $e) {
+            $exception_thrown = true;
+            $this->assertSame('No right to store member #' . $member->id, $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->assertSame('Admin note', $member->others_infos_admin);
+        $this->expectLogEntry(
+            \Analog\Analog::CRITICAL,
+            sprintf(
+                'Non allowed user %1$s attempting to change member %2$s admin information',
+                $member->id,
+                $member->id
+            )
+        );
 
         $this->cleanMembers();
     }
@@ -1762,6 +1834,19 @@ class Adherent extends GaletteTestCase
 
         $this->getMemberOne();
         $this->assertSame('Mrs.', $this->adh->stitle);
+
+        //required title, "Not supplied" selected
+        $expected = ['- Mandatory field <a href="#titre_adh">Title</a> empty.'];
+        foreach (['', '-1'] as $value) {
+            $check = $this->adh->check(['titre_adh' => $value], ['titre_adh' => true], []);
+            $this->assertSame($expected, $check);
+            $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
+        }
+
+        //not required title can be left empty
+        $check = $this->adh->check(['titre_adh' => ''], [], []);
+        $this->assertTrue($check);
+        $this->assertNull($this->adh->title);
     }
 
     /**
@@ -1884,6 +1969,86 @@ class Adherent extends GaletteTestCase
         $this->assertNotEmpty($adh->login);
         $this->assertNotEquals($this->dataAdherentOne()['login_adh'], $adh->login);
 
+        $this->login->logOut();
+    }
+
+    /**
+     * Test a required field the user cannot change is not reported as missing
+     */
+    public function testRequiredDisabledField(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        $expected = ['- Mandatory field <a href="#gpgid">Id GNUpg (GPG)</a> empty.'];
+        $check = $this->adh->check([], ['gpgid' => true], []);
+        $this->assertSame($expected, $check);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
+
+        $check = $this->adh->check([], ['gpgid' => true], ['gpgid']);
+        $this->assertTrue($check);
+
+        $this->login->logOut();
+    }
+
+    /**
+     * Test required picture
+     */
+    public function testRequiredPicture(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->assertFalse($this->adh->hasPicture());
+
+        $required = ['photo' => true];
+        $expected = ['- Mandatory field <a href="#photo_new">Picture</a> empty.'];
+        $log = 'Some errors has been thew attempting to edit/store a member';
+
+        //files are not known: not checked
+        $this->assertTrue($this->adh->check([], $required, []));
+
+        //no file
+        $this->assertSame($expected, $this->adh->check(values: [], required: $required, disabled: [], files: []));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //picture field cannot be changed
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: ['photo'], files: []));
+
+        //a failed upload is not a picture
+        $files = ['photo' => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: 'php://memory',
+            name: 'big.png',
+            size: 0,
+            error: UPLOAD_ERR_INI_SIZE
+        )];
+        $this->assertSame($expected, $this->adh->check(values: [], required: $required, disabled: [], files: $files));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //a picture is sent
+        $files = ['photo' => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: GALETTE_TESTS_PATH . '/fixtures/galette_pro.png',
+            name: 'galette_pro.png',
+            type: 'image/png',
+            size: filesize(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png'),
+            error: UPLOAD_ERR_OK
+        )];
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: [], files: $files));
+
+        //a picture is stored
+        $fakedata = new \Galette\Util\FakeData();
+        $this->assertTrue($fakedata->addPhoto($this->adh));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
+        $this->assertTrue($this->adh->hasPicture());
+        $this->assertTrue($this->adh->check(values: [], required: $required, disabled: [], files: []));
+
+        //stored picture is deleted, and not replaced
+        $this->assertSame($expected, $this->adh->check(values: ['del_photo' => '1'], required: $required, disabled: [], files: []));
+        $this->expectLogEntry(\Analog\Analog::ERROR, $log);
+
+        //stored picture is deleted, and replaced
+        $this->assertTrue($this->adh->check(values: ['del_photo' => '1'], required: $required, disabled: [], files: $files));
+
+        $this->assertTrue($this->adh->picture->delete());
         $this->login->logOut();
     }
 }

@@ -15,6 +15,7 @@ use Galette\Core\Preferences;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
 use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Db\Sql\Predicate\In;
 use Laminas\Db\Sql\Predicate\IsNull;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
@@ -22,16 +23,19 @@ use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Galette\Filters\AdvancedMembersList;
+use Galette\Util\RelativeDate;
 use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
@@ -240,10 +244,7 @@ class Members
             }
             return $members;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list members', Analog::WARNING);
             throw $e;
         }
     }
@@ -255,7 +256,7 @@ class Members
      */
     public function removeMembers(int|array $ids): bool
     {
-        global $zdb, $hist, $emitter;
+        global $zdb, $hist, $emitter, $login;
 
         $processed = [];
         $list = (is_array($ids) ? $ids : [$ids]);
@@ -304,42 +305,43 @@ class Members
                 $emitter->dispatch(new GaletteEvent('member.before_remove', $p));
             }
 
-            //delete contributions
-            $del_qry = $zdb->delete(Contribution::TABLE);
-            $del_qry->where->in(
-                self::PK,
-                $list
-            );
-            $zdb->execute($del_qry);
+            //delete contributions, through entities so their events are dispatched
+            $select = $zdb->select(Contribution::TABLE);
+            $select->where->in(self::PK, $list);
+            foreach ($zdb->execute($select) as $row) {
+                $contribution = new Contribution($zdb, $login, $row);
+                if (!$contribution->remove(transaction: false)) {
+                    throw new \Exception('Unable to remove contribution #' . $contribution->id);
+                }
+            }
 
             //get transactions
             $select = $zdb->select(Transaction::TABLE);
             $select->where->in(self::PK, $list);
-            $results = $zdb->execute($select);
+            $transactions = [];
+            foreach ($zdb->execute($select) as $row) {
+                $transactions[] = new Transaction($zdb, $login, $row);
+            }
 
-            //if members has transactions;
-            //reset link with other contributions
-            //and remove them
-            if ($results->count() > 0) {
-                $transactions = [];
-                foreach ($results as $transaction) {
-                    $transactions[] = $transaction[Transaction::PK];
-                }
-
+            if ($transactions !== []) {
+                //contributions left on members transactions belong to other members:
+                //unlink them, so removing transactions does not remove them
                 $update = $zdb->update(Contribution::TABLE);
                 $update->set([
                     Transaction::PK => new Expression('NULL')
                 ])->where->in(
                     Transaction::PK,
-                    $transactions
+                    array_map(fn(Transaction $transaction): int => $transaction->id, $transactions)
                 );
                 $zdb->execute($update);
-            }
 
-            //delete transactions
-            $del_qry = $zdb->delete(Transaction::TABLE);
-            $del_qry->where->in(self::PK, $list);
-            $zdb->execute($del_qry);
+                //delete transactions, through entities so their events are dispatched
+                foreach ($transactions as $transaction) {
+                    if (!$transaction->remove($hist, transaction: false)) {
+                        throw new \Exception('Unable to remove transaction #' . $transaction->id);
+                    }
+                }
+            }
 
             //delete groups membership/mamagmentship
             Groups::removeMembersFromGroups($list);
@@ -394,11 +396,7 @@ class Members
                 );
                 $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
             } else {
-                Analog::log(
-                    'Unable to delete selected member(s) |'
-                    . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Unable to delete selected member(s)', Analog::ERROR);
                 throw $e;
             }
             return false;
@@ -474,9 +472,10 @@ class Members
                 'members'   => $members
             ];
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Cannot list members with public information (photos: '
-                . $with_photos . ') | ' . $e->getMessage(),
+                . $with_photos . ')',
                 Analog::WARNING
             );
             throw $e;
@@ -537,9 +536,10 @@ class Members
                 'groups' => $groups
             ];
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 'Cannot list staff with public information (photos: '
-                . $with_photos . ') | ' . $e->getMessage(),
+                . $with_photos . ')',
                 Analog::WARNING
             );
             throw $e;
@@ -549,14 +549,16 @@ class Members
     /**
      * Get list of members that has been selected
      *
-     * @param int|array<int> $ids         an array of members id that has been selected
-     * @param ?array<string> $orderby     SQL order clause (optional)
-     * @param bool           $with_photos Should photos be loaded?
-     * @param bool           $as_members  Return Adherent[] or simple ResultSet
-     * @param ?array<string> $fields      Fields to use
-     * @param bool           $export      True if we are exporting
-     * @param bool           $dues        True if load dues as Adherent dependency
-     * @param bool           $parent      True if load parent as Adherent dependency
+     * @param int|array<int|string> $ids         an array of members id that has been selected
+     * @param ?array<string>        $orderby     SQL order clause (optional)
+     * @param bool                  $with_photos Should photos be loaded?
+     * @param bool                  $as_members  Return Adherent[] or simple ResultSet
+     * @param ?array<string>        $fields      Fields to use
+     * @param bool                  $export      True if we are exporting
+     * @param bool                  $dues        True if load dues as Adherent dependency
+     * @param bool                  $parent      True if load parent as Adherent dependency
+     * @param bool                  $unscoped    Do not restrict to members current user is allowed to see.
+     *                                           For internal use only, never with ids coming from a request.
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -568,12 +570,36 @@ class Members
         ?array $fields = null,
         bool $export = false,
         bool $dues = false,
-        bool $parent = false
+        bool $parent = false,
+        bool $unscoped = false
     ): array|false {
-        global $zdb;
+        /**
+         * @var Db $zdb
+         * @var ?Login $login
+         */
+        global $zdb, $login;
 
         if (!is_array($ids) || count($ids) < 1) {
             Analog::log('No member selected for labels.', Analog::INFO);
+            return false;
+        }
+
+        $ids = array_values(array_unique(array_filter(
+            array_map(intval(...), $ids),
+            fn(int $id): bool => $id > 0
+        )));
+        if (count($ids) < 1) {
+            Analog::log('No valid member selected.', Analog::INFO);
+            return false;
+        }
+
+        $scoped = $unscoped === false
+            && !(
+                $login instanceof Login
+                && ($login->isAdmin() || $login->isStaff() || $login->isCron())
+            );
+        if ($scoped && (!$login instanceof Login || !$login->isLogged())) {
+            Analog::log('Trying to list members without being logged in.', Analog::WARNING);
             return false;
         }
 
@@ -589,6 +615,9 @@ class Members
                 count: false
             );
             $select->where->in('a.' . self::PK, $ids);
+            if ($scoped) {
+                $select->where($this->getAccessibleMembersPredicate($login));
+            }
             if (is_array($orderby) && count($orderby) > 0) {
                 foreach ($orderby as $o) {
                     $select->order($o);
@@ -607,14 +636,56 @@ class Members
             foreach ($results as $o) {
                 $members[] = $as_members === true ? new Adherent($zdb, $o, $deps) : $o;
             }
+
+            if ($scoped && count($members) < count($ids)) {
+                Analog::log(
+                    sprintf(
+                        'User #%1$d (%2$s) requested %3$d member(s), only %4$d are accessible or exist.',
+                        $login->id,
+                        $login->login,
+                        count($ids),
+                        count($members)
+                    ),
+                    Analog::WARNING
+                );
+            }
             return $members;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load members form ids array | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot load members form ids array', Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Restrict members to the ones current user is allowed to see:
+     * themselves, their children, and members of the groups they manage.
+     * This is the list equivalent of Adherent::canShow().
+     *
+     * @param Login $login Login instance
+     */
+    private function getAccessibleMembersPredicate(Login $login): PredicateSet
+    {
+        /** @var Db $zdb */
+        global $zdb;
+
+        $predicates = [
+            new Operator('a.' . self::PK, '=', $login->id),
+            new Operator('a.parent_id', '=', $login->id)
+        ];
+
+        if ($login->isGroupManager()) {
+            $managed = $zdb->select(Group::GROUPSUSERS_TABLE, 'gr');
+            $managed->columns([Adherent::PK]);
+            $managed->join(
+                ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
+                'gr.' . Group::PK . '=m.' . Group::PK,
+                []
+            );
+            $managed->where(['m.' . Adherent::PK => $login->id]);
+            $predicates[] = new In('a.' . self::PK, $managed);
+        }
+
+        return new PredicateSet($predicates, PredicateSet::OP_OR);
     }
 
     /**
@@ -852,10 +923,7 @@ class Members
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for members', Analog::WARNING);
             throw $e;
         }
     }
@@ -903,10 +971,7 @@ class Members
             $this->count = (int)$results->current()->count;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count members | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count members', Analog::WARNING);
             throw $e;
         }
     }
@@ -1198,12 +1263,26 @@ class Members
                 $this->buildAdvancedWhereClause($select);
             }
         } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Can current user search on a dynamic field?
+     *
+     * @param DynamicField|false $field Dynamic field, false if it does not exist
+     * @param string             $form  Expected form name
+     */
+    private function canSearchDynamicField(DynamicField|false $field, string $form): bool
+    {
+        /** @var ?Login $login */
+        global $login;
+
+        return $field !== false
+            && $field->getForm() === $form
+            && $login instanceof Login
+            && $field->isAccessible($login->getAccessLevel());
     }
 
     /**
@@ -1383,6 +1462,23 @@ class Members
             foreach ($this->filters->contrib_dynamic as $k => $cd) {
                 $qop = ' LIKE ';
 
+                $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
+                if (!$this->canSearchDynamicField($dyn_field, 'contrib')) {
+                    Analog::log(
+                        'Advanced search on unknown or forbidden contribution dynamic field `'
+                        . $k . '`, criteria has been discarded.',
+                        Analog::WARNING
+                    );
+                    continue;
+                }
+
+                if (RelativeDate::isRelative($cd)) {
+                    $cd = $this->filters->resolveDate($cd);
+                    if ($cd === null) {
+                        continue;
+                    }
+                }
+
                 if (is_array($cd)) {
                     //dynamic choice spotted!
                     $select->where
@@ -1397,8 +1493,6 @@ class Members
                     $select->where
                         ->equalTo('dfc.field_form', 'contrib')
                         ->equalTo('dfc.field_id', $k);
-
-                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
 
                     if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                         if ($cd == 1) {
@@ -1475,11 +1569,11 @@ class Members
                     $index = (int)str_replace('dyn_', '', (string)$fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, $index);
                     if (
-                        $dyn_field !== false
+                        $this->canSearchDynamicField($dyn_field, 'adh')
                         && !$dyn_field instanceof Separator
                         && !$dyn_field instanceof File
                     ) {
-                        //field does exist and is searchable, alias is set in buildSelect()
+                        //field does exist, current user can see it and it is searchable, alias is set in buildSelect()
                         $column = 'df' . $index . '.val';
                     }
                 } elseif (str_starts_with((string)$fs['field'], 'socials_')) {
@@ -1499,6 +1593,13 @@ class Members
                         Analog::WARNING
                     );
                     continue;
+                }
+
+                if (RelativeDate::isRelative($fs['search'])) {
+                    $fs['search'] = $this->filters->resolveDate($fs['search']);
+                    if ($fs['search'] === null) {
+                        continue;
+                    }
                 }
 
                 if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
@@ -1565,7 +1666,7 @@ class Members
 
         $allowed = [];
         foreach ($fields as $name => $field) {
-            if ((int)$field['position'] === -1) {
+            if (!FieldsConfig::isColumn($field)) {
                 //not a database column
                 continue;
             }
@@ -1667,9 +1768,10 @@ class Members
             return true;
         } catch (Throwable $e) {
             $zdb->rollback();
-            Analog::log(
+            Logs::exception(
+                $e,
                 'An error occurred trying to retrieve members with '
-                . 'empty logins/passwords (' . $e->getMessage(),
+                . 'empty logins/passwords',
                 Analog::ERROR
             );
             throw $e;

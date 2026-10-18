@@ -52,4 +52,22 @@ class Title extends GaletteTestCase
         $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
         $title->remove($this->zdb);
     }
+
+    /**
+     * Test values changed in preInsert() are the ones stored
+     */
+    public function testPreInsertChangesAreStored(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $title = new \Galette\Entity\Title();
+        $title->short = '<b>Te.</b>';
+        $title->long = '<i>Test</i>';
+        $this->assertTrue($title->save());
+
+        $title = new \Galette\Entity\Title($title->id); //reload
+        $this->assertSame('Te.', $title->short);
+        $this->assertSame('Test', $title->long);
+    }
 }

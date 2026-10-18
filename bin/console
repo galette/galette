@@ -10,23 +10,19 @@
 declare(strict_types=1);
 
 use function Safe\define;
-use function Safe\session_start;
 
-if (!isset($basepath)) {
-    if (file_exists('../galette/index.php')) {
-        $basepath = '../galette/';
-    } elseif (file_exists('galette/index.php')) {
-        $basepath = 'galette/';
-    } else {
-        die('Unable to define GALETTE_BASE_PATH :\'(');
-    }
-}
+//relative to this script, not to the current directory, which may be
+//anything from a cron job or a script - or another Galette checkout
+$basepath ??= \dirname(__DIR__) . '/galette/';
 
 \define('GALETTE_ENV', 'CLI'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 if (getenv('GALETTE_TESTS')) {
     require_once __DIR__ . '/../tests/test_env.inc.php';
 }
-\define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
+//test environment already defines it
+if (!\defined('GALETTE_ROOT')) {
+    \define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
+}
 
 //specific logfile for console, read back by includes/galette.inc.php through the
 //scope of the require below, hence unused as far as the sniff can tell
@@ -35,9 +31,13 @@ $logfile = 'galette_cli'; // phpcs:ignore SlevomatCodingStandard.Variables.Unuse
 require_once $basepath . 'vendor/autoload.php';
 require_once $basepath . 'includes/sys_config/versions.inc.php';
 
-$args = $_SERVER['argv'] ?? [];
-// Compiling locales only works on files; boot without database, like the installer
-$installer = is_array($args) && in_array($args[1] ?? null, ['galette:install', 'galette:compile-locales'], strict: true);
+// Compiling locales only works on files; boot without database, like the installer.
+// Options may come before the command name, look for it rather than at argv[1]
+$installer = in_array(
+    (new \Symfony\Component\Console\Input\ArgvInput())->getFirstArgument(),
+    ['galette:install', 'galette:compile-locales'],
+    strict: true
+);
 
 // In test mode, GALETTE_CONFIG_PATH is already set to the test config directory,
 // so skip the production config file check to allow all commands to be registered.
@@ -49,9 +49,10 @@ if (!getenv('GALETTE_TESTS') && ($installer || !file_exists($basepath . 'config/
 }
 require_once $basepath . 'includes/galette.inc.php';
 
-session_start();
-$session_name = 'galette_cli_' . str_replace('.', '_', GALETTE_VERSION);
-$session = &$_SESSION['galette'][$session_name]; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
+//no session on CLI: nothing would carry its id from one run to the next, and
+//starting one fails whenever the configured handler (redis, a sessions directory
+//the cron user cannot write...) is not available to the CLI
+$_SESSION = [];
 
 /** @var \Galette\Core\Plugins $plugins */
 $gapp = new \Galette\Core\SlimApp($plugins);

@@ -15,15 +15,14 @@ use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
 use Galette\Core\MailingQueue;
-use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Throwable;
 
 use function Safe\file_get_contents;
@@ -48,6 +47,14 @@ class MailingsController extends CrudController
     )]
     public function add(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $get = $request->getQueryParams();
 
         //We're done :-)
@@ -92,6 +99,13 @@ class MailingsController extends CrudController
             ) {
                 $mailing = $this->session->mailing;
             } elseif (isset($get['from']) && is_numeric($get['from'])) {
+                if (!MailingHistory::canAccess($this->zdb, (int)$get['from'], $this->login)) {
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        errors: [_T("You do not have permission for requested URL.")],
+                        redirect_url: $this->routeparser->urlFor('slash')
+                    );
+                }
                 $mailing = new Mailing($this->preferences, [], (int)$get['from']);
                 MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
             } elseif (isset($get['reminder'])) {
@@ -100,7 +114,12 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                $members = $m->getList(as_members: true);
+                if ($this->login->isAdmin() || $this->login->isStaff()) {
+                    $members = $m->getList(as_members: true);
+                } else {
+                    //groups managers can only remind members of groups they manage
+                    $members = $m->getManagedMembersList(as_members: true, count: false);
+                }
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
@@ -135,14 +154,6 @@ class MailingsController extends CrudController
 
             /** TODO: replace that... */
             $this->session->labels = $mailing->unreachables;
-
-            if (!$this->login->isSuperAdmin()) {
-                $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                $params['sender_current'] = [
-                    'name'  => $member->sname,
-                    'email' => $member->getEmail()
-                ];
-            }
 
             $params = array_merge(
                 $params,
@@ -180,6 +191,14 @@ class MailingsController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
         $error_detected = [];
         $success_detected = [];
@@ -261,26 +280,6 @@ class MailingsController extends CrudController
                     $mailing->message = $post['mailing_corps'];
                 }
 
-                switch ($post['sender'] ?? false) {
-                    case GaletteMail::SENDER_CURRENT:
-                        $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                        $mailing->setSender(
-                            $member->sname,
-                            $member->getEmail()
-                        );
-                        break;
-                    case GaletteMail::SENDER_OTHER:
-                        $mailing->setSender(
-                            $post['sender_name'],
-                            $post['sender_address']
-                        );
-                        break;
-                    case GaletteMail::SENDER_PREFS:
-                    default:
-                        //nothing to do; this is the default :)
-                        break;
-                }
-
                 $mailing->html = isset($post['mailing_html']);
 
                 //handle attachments
@@ -329,10 +328,7 @@ class MailingsController extends CrudController
                         $this->zdb->commit();
                     } catch (Throwable $e) {
                         $this->zdb->rollback();
-                        Analog::log(
-                            '[Mailings] Unable to queue mailing | ' . $e->getMessage(),
-                            Analog::ERROR
-                        );
+                        Logs::exception($e, '[Mailings] Unable to queue mailing', Analog::ERROR);
                         $error_detected[] = _T("The mailing could not be queued, nothing has been sent.");
                         $mailing->current_step = Mailing::STEP_START;
                         //what has been composed is kept, so it can be sent again
@@ -695,6 +691,14 @@ class MailingsController extends CrudController
     )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $post = $request->getParsedBody();
         // check for ajax mode
         $ajax = false;
@@ -707,31 +711,17 @@ class MailingsController extends CrudController
         }
 
         if ($id !== null) {
+            if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T("You do not have permission for requested URL.")],
+                    redirect_url: $this->routeparser->urlFor('slash')
+                );
+            }
             $mailing = new Mailing($this->preferences);
             MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         } else {
             $mailing = $this->session->mailing;
-
-            switch ($post['sender']) {
-                case GaletteMail::SENDER_CURRENT:
-                    $member = new Adherent($this->zdb, (int)$this->login->id, deps: false);
-                    $mailing->setSender(
-                        $member->sname,
-                        $member->getEmail()
-                    );
-                    break;
-                case GaletteMail::SENDER_OTHER:
-                    $mailing->setSender(
-                        $post['sender_name'],
-                        $post['sender_address']
-                    );
-                    break;
-                case GaletteMail::SENDER_PREFS:
-                default:
-                    //nothing to do; this is the default :)
-                    break;
-            }
-
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
@@ -748,8 +738,7 @@ class MailingsController extends CrudController
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' <'
-                    . $mailing->getSenderAddress() . '>',
+                'sender'        => $mailing->getSender(stored: $id !== null),
                 'attachments'   => $attachments
 
             ]
@@ -770,6 +759,21 @@ class MailingsController extends CrudController
     )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
+        if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
         $mailing = new Mailing($this->preferences);
         MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         $attachments = $mailing->attachments;
@@ -793,6 +797,14 @@ class MailingsController extends CrudController
     )]
     public function setRecipients(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
+
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;
 
@@ -839,6 +851,22 @@ class MailingsController extends CrudController
     )]
     public function queue(Request $request, Response $response, int $id): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
+        if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $queue = new MailingQueue($this->zdb, $this->preferences);
 
         // display page
@@ -878,10 +906,30 @@ class MailingsController extends CrudController
     )]
     public function processQueue(Request $request, Response $response): Response
     {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
+
         $post = $request->getParsedBody();
         $mailing_id = isset($post['id']) && is_numeric($post['id'])
             ? (int)$post['id']
             : null;
+
+        if (
+            !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && ($mailing_id === null || !MailingHistory::canAccess($this->zdb, $mailing_id, $this->login))
+        ) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
 
         $queue = new MailingQueue($this->zdb, $this->preferences);
         $progress = $queue->processBatch($mailing_id, MailingQueue::KIND_MAILING);

@@ -13,6 +13,7 @@ namespace Galette\Repository;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\PaymentType;
 
@@ -62,10 +63,7 @@ class PaymentTypes extends Repository
             }
             return $types;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list payment types | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list payment types', Analog::WARNING);
             throw $e;
         }
     }

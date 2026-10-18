@@ -1,0 +1,136 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Group's persons table, see elements/group_persons.html.twig.
+ #
+ # Nothing is stored here: rows are added, hidden, checked and unchecked,
+ # and the form posts the checkboxes that are left checked and enabled.
+ #}
+        var $groupPersons = $('#group_persons_list');
+        if ($groupPersons.length) {
+            var _setToggle = function($input, checked, enabled) {
+                var $toggle = $input.closest('.ui.checkbox');
+                $toggle.checkbox(checked ? 'set checked' : 'set unchecked');
+                $toggle.checkbox(enabled ? 'set enabled' : 'set disabled');
+            };
+
+            var _rowState = function($row) {
+                if ($row.data('linked') != 1) {
+                    return 'added';
+                }
+                if ($row.data('removed') == 1) {
+                    return 'removed';
+                }
+                var _member = $row.find('.person-member').is(':checked'),
+                    _manager = $row.find('.person-manager').is(':checked');
+                if (_member != ($row.data('member') == 1) || _manager != ($row.data('manager') == 1)) {
+                    return 'changed';
+                }
+                return null;
+            };
+
+            var _refreshPersons = function() {
+                var _pending = false,
+                    _rows = $groupPersons.find('tr[data-person]');
+                _rows.each(function() {
+                    var $row = $(this),
+                        _state = _rowState($row);
+                    if (_state !== null) {
+                        _pending = true;
+                    }
+                    $row.toggleClass('warning', _state !== null);
+                    $row.find('.person-state').each(function() {
+                        $(this).toggleClass('displaynone', $(this).data('state') !== _state);
+                    });
+                });
+                $('#group_persons_empty').prop('hidden', _rows.length > 0);
+                $('#group_persons_status .message').toggleClass('displaynone', !_pending);
+            };
+
+            var _initRow = function($row) {
+                $row.find('.ui.checkbox').checkbox();
+                $row.find('.tooltip').popup();
+            };
+
+            $groupPersons.on('change', 'input[type=checkbox]', _refreshPersons);
+
+            $groupPersons.on('click', '.person-remove', function() {
+                var $row = $(this).closest('tr');
+                if ($row.data('linked') == 1) {
+                    $row.data('removed', 1);
+                    $row.find('input[type=checkbox]').each(function() {
+                        _setToggle($(this), false, false);
+                    });
+                    $(this).addClass('displaynone');
+                    $row.find('.person-undo').removeClass('displaynone').trigger('focus');
+                } else {
+                    //a person added during this edition is simply dropped
+                    $row.remove();
+                    $('#person_add').find('input.search').trigger('focus');
+                }
+                _refreshPersons();
+            });
+
+            $groupPersons.on('click', '.person-undo', function() {
+                var $row = $(this).closest('tr');
+                $row.data('removed', 0);
+                _setToggle($row.find('.person-member'), $row.data('member') == 1, true);
+                _setToggle($row.find('.person-manager'), $row.data('manager') == 1, true);
+                $(this).addClass('displaynone');
+                $row.find('.person-remove').removeClass('displaynone').trigger('focus');
+                _refreshPersons();
+            });
+
+            $('#person_add_btn').on('click', function() {
+                var _pid = $('#person_add_input').val();
+                if (!_pid) {
+                    $('#person_add').find('input.search').trigger('focus');
+                    return;
+                }
+                var $existing = $('#person_row_' + _pid);
+                if ($existing.length) {
+                    //already listed: make it a member again
+                    if ($existing.data('removed') == 1) {
+                        $existing.find('.person-undo').trigger('click');
+                    }
+                    _setToggle($existing.find('.person-member'), true, true);
+                    $('#person_add').dropdown('clear');
+                    _refreshPersons();
+                    $existing.find('.person-member').trigger('focus');
+                    return;
+                }
+                $.ajax({
+                    url: '{{ url_for('ajaxGroupMembers') }}',
+                    type: 'POST',
+                    data: {
+                        id_adh: _pid
+                    },
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: "#person_add_btn",
+                        loader: "button"
+                    } %},
+                    success: function(res) {
+                        var $row = $($.parseHTML($.trim(res))).filter('tr');
+                        $('#group_persons_empty').before($row);
+                        _initRow($row);
+                        $('#person_add').dropdown('clear');
+                        _refreshPersons();
+                        $row.find('.person-member').trigger('focus');
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+            });
+        }

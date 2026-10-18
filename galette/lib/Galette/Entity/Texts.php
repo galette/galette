@@ -20,6 +20,7 @@ use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Galette\Util\Html;
@@ -277,9 +278,9 @@ class Texts
                         $this->insert([$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (Throwable $e) {
-                        Analog::log(
-                            'Unable to add missing requested text "' . $ref
-                            . ' (' . $lang . ') | ' . $e->getMessage(),
+                        Logs::exception(
+                            $e,
+                            'Unable to add missing requested text "' . $ref . ' (' . $lang . ')',
                             Analog::WARNING
                         );
                     }
@@ -305,11 +306,7 @@ class Texts
             );
             return $this->all_texts;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot get text `' . $ref . '` for lang `' . $lang . '` | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot get text `' . $ref . '` for lang `' . $lang . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -342,11 +339,7 @@ class Texts
 
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error has occurred while saving email text. | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error has occurred while saving email text.');
             throw $e;
         }
     }
@@ -373,11 +366,7 @@ class Texts
             }
             return $refs;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot get refs for lang `' . $lang . '` | '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot get refs for lang `' . $lang . '`', Analog::WARNING);
             throw $e;
         }
     }
@@ -418,10 +407,7 @@ class Texts
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default texts.' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Unable to initialize default texts.', Analog::WARNING);
             throw $e;
         }
     }
@@ -475,10 +461,7 @@ class Texts
                 return true;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred checking missing texts.' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred checking missing texts.', Analog::WARNING);
             throw $e;
         }
         return false;

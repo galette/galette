@@ -10,15 +10,19 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
+use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
+use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Entity\FieldsConfig;
 use Galette\IO\UploadSize;
 use Galette\Util\Filesize;
 
@@ -43,12 +47,19 @@ trait Dynamics
      */
     private function loadDynamicFields(): void
     {
+        $this->dynamics = new DynamicFieldsHandle($this->zdb, $this->getDynamicsLogin(), $this);
+    }
+
+    /**
+     * Get login dynamic fields are checked against
+     */
+    private function getDynamicsLogin(): Login
+    {
         if (($this->login ?? null) instanceof Login) {
-            $login = $this->login;
-        } else {
-            global $login;
+            return $this->login;
         }
-        $this->dynamics = new DynamicFieldsHandle($this->zdb, $login, $this);
+        global $login;
+        return $login;
     }
 
     /**
@@ -65,11 +76,12 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array<string, mixed>   $post     Posted values
-     * @param array<string,int|bool> $required Array of required fields
-     * @param array<string>          $disabled Array of disabled fields
+     * @param array<string, mixed>                  $post     Posted values
+     * @param array<string,int|bool>                $required Array of required fields
+     * @param array<string>                         $disabled Array of disabled fields
+     * @param ?array<string, UploadedFileInterface> $files    Uploaded files; required files are not checked when null
      */
-    protected function dynamicsCheck(array $post, array $required, array $disabled): bool
+    protected function dynamicsCheck(array $post, array $required, array $disabled, ?array $files = null): bool
     {
         if (!isset($this->dynamics)) {
             $this->loadDynamicFields();
@@ -134,7 +146,8 @@ trait Dynamics
             }
 
             foreach ($posted_values as $field_id => $values) {
-                if (!$fields[$field_id]->isRequired()) {
+                //a posted file value is its delete control, not a value
+                if (!$fields[$field_id]->isRequired() || $fields[$field_id] instanceof File) {
                     continue;
                 }
                 foreach ($values as $value) {
@@ -148,6 +161,25 @@ trait Dynamics
                     _T('Missing required field %1$s'),
                     $fields[$field_id]->getName(),
                 );
+            }
+
+            if ($files !== null) {
+                foreach ($fields as $field_id => $field) {
+                    if (
+                        !$field instanceof File
+                        || !$field->isRequired()
+                        || $this->isReadOnlyDynamicField($field)
+                        || $this->hasDynamicFile($field_id, $posted_values[$field_id] ?? [], $files)
+                    ) {
+                        continue;
+                    }
+                    $missing[$field_id] = true;
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is a field name
+                        _T('Missing required field %1$s'),
+                        $field->getName(),
+                    );
+                }
             }
 
             foreach ($dynamic_fields as $dfield_values) {
@@ -184,10 +216,11 @@ trait Dynamics
                             $value = $d->format('Y-m-d');
                         } catch (Throwable $e) {
                             $valid = false;
-                            Analog::log(
+                            Logs::exception(
+                                $e,
                                 'Wrong date format. field: ' . $field_id
                                 . ', value: ' . $value . ', expected fmt: '
-                                . __("Y-m-d") . ' | ' . $e->getMessage(),
+                                . __("Y-m-d"),
                                 Analog::INFO
                             );
                             $this->errors[] = sprintf(
@@ -214,6 +247,46 @@ trait Dynamics
 
             return $valid;
         }
+        return false;
+    }
+
+    /**
+     * Is a dynamic field read only for current login?
+     *
+     * @param DynamicField $field Dynamic field
+     */
+    private function isReadOnlyDynamicField(DynamicField $field): bool
+    {
+        return $field->getPermission() == FieldsConfig::USER_READ
+            && $this->getDynamicsLogin()->getAccessLevel() == Authentication::ACCESS_USER;
+    }
+
+    /**
+     * Does a file field hold a file once the form is stored?
+     *
+     * @param int                                  $field_id Field ID
+     * @param array<int, mixed>                    $deleted  Posted delete controls, by occurrence
+     * @param array<string, UploadedFileInterface> $files    Uploaded files
+     */
+    private function hasDynamicFile(int $field_id, array $deleted, array $files): bool
+    {
+        foreach ($files as $key => $file) {
+            if (
+                str_starts_with((string)$key, $this->name_pattern . $field_id . '_')
+                && $file->getError() === UPLOAD_ERR_OK
+            ) {
+                return true;
+            }
+        }
+
+        if (count($this->dynamics->getValueIndexes($field_id))) {
+            foreach ($this->dynamics->getValues($field_id) as $value) {
+                if ((string)$value['field_val'] !== '' && !isset($deleted[(int)$value['val_index']])) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 

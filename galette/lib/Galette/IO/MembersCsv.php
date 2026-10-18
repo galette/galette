@@ -14,14 +14,22 @@ use Safe\DateTime;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\Entity\Status;
 use Galette\Entity\Adherent;
+use Galette\Entity\Group;
+use Galette\Entity\DynamicFieldsHandle;
+use Galette\DynamicFields\Choice;
+use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\Text;
+use Galette\Repository\DynamicFieldsSet;
+use Galette\Repository\Groups;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
 use Galette\Entity\FieldsConfig;
 use Galette\Filters\MembersList;
 use Safe\Exceptions\FilesystemException;
+use Analog\Analog;
+use Galette\Core\Logs;
 
 use function Safe\fclose;
 use function Safe\fopen;
@@ -90,6 +98,7 @@ class MembersCsv extends CsvOut
             // skip fields blacklisted for export
             if (
                 $k === 'mdp_adh'
+                || !FieldsConfig::isColumn($f)
                 || ($export_fields !== null
                     && (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {
@@ -97,20 +106,40 @@ class MembersCsv extends CsvOut
             }
 
             // skip fields according to access control
-            if (
-                $visibles[$k] == FieldsConfig::NOBODY
-                || ($visibles[$k] == FieldsConfig::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == FieldsConfig::STAFF
-                    && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == FieldsConfig::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-            ) {
+            if (!FieldsConfig::isGranted((int)$visibles[$k], $access_level)) {
                 continue;
             }
 
             $fields[] = $k;
             $labels[] = $f['label'];
+        }
+
+        //groups pseudo fields, same names and format as import
+        $groups_fields = [];
+        $groups_columns = [
+            CsvIn::GROUPS_FIELD         => [Group::GROUPSUSERS_TABLE, _T('Groups')],
+            CsvIn::MANAGED_GROUPS_FIELD => [Group::GROUPSMANAGERS_TABLE, _T('Managed groups')]
+        ];
+        foreach ($groups_columns as $k => [$table, $label]) {
+            if ($export_fields !== null && is_array($export_fields) && !in_array($k, $export_fields)) {
+                continue;
+            }
+            $groups_fields[$k] = $table;
+            $labels[] = $label;
+        }
+
+        //dynamic fields the current user can see, same names as import
+        $dynamic_fields = [];
+        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
+        foreach ($fieldset->getList('adh') as $field) {
+            if (
+                !$field->hasData()
+                || ($export_fields !== null && is_array($export_fields)
+                    && !in_array('dynfield_' . $field->getId(), $export_fields))
+            ) {
+                continue;
+            }
+            $dynamic_fields[(int)$field->getId()] = $field;
         }
 
         $members = new Members($filters);
@@ -122,6 +151,31 @@ class MembersCsv extends CsvOut
             fields: $fields,
             export: true
         );
+
+        $ids = is_array($members_list) ? array_map(fn($member) => (int)$member->{Adherent::PK}, $members_list) : [];
+        $members_groups = $this->getMembersGroups($ids, $groups_fields);
+        $members_dynamics = $this->getMembersDynamics($ids, array_keys($dynamic_fields));
+
+        //one column per occurrence of repeatable fields, as many as the exported members use
+        $dynamic_columns = [];
+        foreach ($dynamic_fields as $fid => $field) {
+            $label = __($field->getName());
+            if (!$field->isRepeatable()) {
+                $dynamic_columns['dynfield_' . $fid] = [$field, 0];
+                $labels[] = $label;
+                continue;
+            }
+
+            $occurrences = max([1, ...array_map(count(...), $members_dynamics[$fid] ?? [])]);
+            if ($field->getRepeat() > 0) {
+                $occurrences = min($occurrences, $field->getRepeat());
+            }
+            for ($i = 1; $i <= $occurrences; $i++) {
+                $dynamic_columns['dynfield_' . $fid . '_' . $i] = [$field, $i - 1];
+                //TRANS: %1$s is a dynamic field name, %2$s the occurrence number
+                $labels[] = sprintf(_T('%1$s (occurrence %2$s)'), $label, (string)$i);
+            }
+        }
 
         $statuses = $this->status->getList();
 
@@ -220,6 +274,18 @@ class MembersCsv extends CsvOut
                 $member->bool_display_info
                     = ($member->bool_display_info) ? _T("Yes") : _T("No");
             }
+
+            foreach (array_keys($groups_fields) as $k) {
+                $member->$k = implode(
+                    CsvIn::GROUPS_SEPARATOR,
+                    $members_groups[$k][(int)$member->{Adherent::PK}] ?? []
+                );
+            }
+
+            foreach ($dynamic_columns as $k => [$field, $pos]) {
+                $value = $members_dynamics[(int)$field->getId()][(int)$member->{Adherent::PK}][$pos] ?? null;
+                $member->$k = $value === null ? '' : $this->getDynamicValue($field, $value);
+            }
         }
 
         try {
@@ -232,9 +298,111 @@ class MembersCsv extends CsvOut
                 file: $fp
             );
             fclose($fp);
-        } catch (FilesystemException) {
-            //empty catch
+        } catch (FilesystemException $e) {
+            Logs::exception($e, 'Unable to write members CSV export to ' . $this->path, Analog::ERROR);
         }
+    }
+
+    /**
+     * Get groups full names of members, limited to groups current user manages
+     * if they are not admin nor staff
+     *
+     * @param array<int>            $ids    Members ids
+     * @param array<string, string> $fields Groups pseudo fields and their table
+     *
+     * @return array<string, array<int, array<string>>> full names per field and member id
+     */
+    private function getMembersGroups(array $ids, array $fields): array
+    {
+        $members_groups = [];
+        if (count($ids) === 0 || count($fields) === 0) {
+            return $members_groups;
+        }
+
+        $managed = null;
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $managed = array_map(
+                fn($group) => $group instanceof Group ? (int)$group->getId() : (int)$group,
+                $this->login->getManagedGroups()
+            );
+            if (count($managed) === 0) {
+                return $members_groups;
+            }
+        }
+
+        $names = Groups::getNames($this->zdb);
+        foreach ($fields as $k => $table) {
+            $select = $this->zdb->select($table);
+            $select->columns([Adherent::PK, Group::PK]);
+            $select->where->in(Adherent::PK, $ids);
+            if ($managed !== null) {
+                $select->where->in(Group::PK, $managed);
+            }
+
+            foreach ($this->zdb->execute($select) as $row) {
+                $gid = (int)$row->{Group::PK};
+                if (isset($names[$gid])) {
+                    $members_groups[$k][(int)$row->{Adherent::PK}][] = $names[$gid]['full_name'];
+                }
+            }
+            foreach (array_keys($members_groups[$k] ?? []) as $id) {
+                sort($members_groups[$k][$id]);
+            }
+        }
+
+        return $members_groups;
+    }
+
+    /**
+     * Get dynamic fields values of members, occurrences in their order
+     *
+     * @param array<int> $ids    Members ids
+     * @param array<int> $fields Dynamic fields ids
+     *
+     * @return array<int, array<int, array<int, string>>> values per field and member id
+     */
+    private function getMembersDynamics(array $ids, array $fields): array
+    {
+        $members_dynamics = [];
+        if (count($ids) === 0 || count($fields) === 0) {
+            return $members_dynamics;
+        }
+
+        $select = $this->zdb->select(DynamicFieldsHandle::TABLE);
+        $select->columns([DynamicFieldsHandle::PK, DynamicField::PK, 'field_val']);
+        $select->where(['field_form' => 'adh']);
+        $select->where->in(DynamicField::PK, $fields);
+        $select->where->in(DynamicFieldsHandle::PK, $ids);
+        $select->order([DynamicFieldsHandle::PK, DynamicField::PK, 'val_index']);
+
+        foreach ($this->zdb->execute($select) as $row) {
+            $members_dynamics[(int)$row->{DynamicField::PK}][(int)$row->{DynamicFieldsHandle::PK}][]
+                = (string)$row->field_val;
+        }
+
+        return $members_dynamics;
+    }
+
+    /**
+     * Get the CSV value of a dynamic field
+     *
+     * @param DynamicField $field Dynamic field
+     * @param string       $value Stored value
+     */
+    private function getDynamicValue(DynamicField $field, string $value): string
+    {
+        if ($field instanceof Text) {
+            //raw text, display value is HTML
+            return $value;
+        }
+
+        if ($field instanceof Choice) {
+            //imported values may have been stored as text instead of an index
+            $choices = $field->getValues();
+            return is_array($choices) && isset($choices[$value]) ? (string)$choices[$value] : $value;
+        }
+
+        return $field->getDisplayValue($value);
     }
 
     /**

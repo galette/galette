@@ -16,6 +16,7 @@
         </div>
 
         <form action="{{ url_for('confirmAdvancedConfig') }}" method="post" class="ui form">
+            <input type="hidden" name="tab" value="{{ tab }}"/>
             <div class="required field">
                 <label for="password">{{ _T("Password:") }}</label>
                 <input type="password" name="password" id="password" required="required" autocomplete="current-password" autofocus="autofocus"/>

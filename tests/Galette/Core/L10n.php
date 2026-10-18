@@ -30,7 +30,8 @@ class L10n extends GaletteTestCase
         parent::setUp();
         $this->l10n = new \Galette\Core\L10n(
             $this->zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
     }
 
@@ -108,6 +109,31 @@ class L10n extends GaletteTestCase
         $this->assertCount(2, $to_translate);
         $this->assertArrayHasKey(md5('A text for test'), $to_translate);
         $this->assertArrayHasKey(md5('Un texte de test'), $to_translate);
+    }
+
+    /**
+     * Test core strings detection and translations
+     */
+    public function testCoreStrings(): void
+    {
+        $this->assertTrue($this->l10n->isCoreString('annual fee'));
+        $this->assertTrue($this->l10n->isCoreString('President'));
+        $this->assertFalse($this->l10n->isCoreString('A text for core test'));
+        $this->assertFalse($this->l10n->isCoreString(''));
+
+        $translations = $this->l10n->getCoreTranslations('annual fee');
+        $this->assertCount(count($this->i18n->getList()), $translations);
+        $by_lang = array_column($translations, 'text', 'key');
+        $this->assertSame('annual fee', $by_lang['en_US']);
+        $this->assertSame('cotisation annuelle', $by_lang['fr_FR.utf8']);
+        $translations = $this->l10n->getCoreTranslations('A text for core test');
+        $this->assertSame([''], array_unique(array_column($translations, 'text')));
+
+        //no dynamic translation is stored for core strings
+        $this->assertTrue($this->l10n->addDynamicTranslation('annual fee'));
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->where(['text_orig_sum' => md5('annual fee')]);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
     }
 
     /**
@@ -207,6 +233,78 @@ class L10n extends GaletteTestCase
     }
 
     /**
+     * Test a translation shared by several objects
+     */
+    public function testSharedDynamicTranslation(): void
+    {
+        $this->i18n->changeLanguage('en_US');
+        $text = 'A shared text for test';
+
+        $this->assertTrue($this->l10n->addDynamicTranslation($text));
+        $this->assertTrue($this->l10n->updateDynamicTranslation($text, 'fr_FR.utf8', 'Un texte partagé'));
+        //second object using the same text
+        $this->assertTrue($this->l10n->addDynamicTranslation($text));
+        //language with no row yet: created with a lower count
+        $this->zdb->execute(
+            $this->zdb->delete(\Galette\Core\L10n::TABLE)->where(['text_orig_sum' => md5($text), 'text_locale' => 'de_DE.utf8'])
+        );
+        $this->assertTrue($this->l10n->updateDynamicTranslation($text, 'de_DE.utf8', 'Ein geteilter Text'));
+
+        //first object released: translations are kept for the second one
+        $this->assertTrue($this->l10n->deleteDynamicTranslation($text));
+        $this->assertSame('Un texte partagé', $this->l10n->getDynamicTranslation($text, 'fr_FR.utf8'));
+        $this->assertSame('Ein geteilter Text', $this->l10n->getDynamicTranslation($text, 'de_DE.utf8'));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Dynamic translation for `' . $text . '` is still in use, kept.');
+
+        //last object released: translations are removed
+        $this->assertTrue($this->l10n->deleteDynamicTranslation($text));
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->where(['text_orig_sum' => md5($text)]);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+    }
+
+    /**
+     * Test renaming a translation, keeping existing translations
+     */
+    public function testRenameDynamicTranslation(): void
+    {
+        $this->i18n->changeLanguage('en_US');
+        $old = 'A text to rename';
+        $new = 'A renamed text';
+
+        $this->assertTrue($this->l10n->addDynamicTranslation($old));
+        $this->assertTrue($this->l10n->updateDynamicTranslation($old, 'fr_FR.utf8', 'Un texte à renommer'));
+        $this->assertTrue($this->l10n->updateDynamicTranslation($old, 'de_DE.utf8', 'Ein umzubenennender Text'));
+
+        $this->assertTrue($this->l10n->renameDynamicTranslation($old, $new));
+
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->where(['text_orig_sum' => md5($old)]);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+
+        //new text is in current language, other translations are kept
+        $this->assertSame($new, $this->l10n->getDynamicTranslation($new, 'en_US'));
+        $this->assertSame('Un texte à renommer', $this->l10n->getDynamicTranslation($new, 'fr_FR.utf8'));
+        $this->assertSame('Ein umzubenennender Text', $this->l10n->getDynamicTranslation($new, 'de_DE.utf8'));
+        $this->assertSame('', $this->l10n->getDynamicTranslation($new, 'es.utf8'));
+
+        //existing translations of the new text are not overwritten
+        $other = 'Another existing text';
+        $this->assertTrue($this->l10n->addDynamicTranslation($other));
+        $this->assertTrue($this->l10n->updateDynamicTranslation($other, 'fr_FR.utf8', 'Un autre texte existant'));
+        $this->assertTrue($this->l10n->renameDynamicTranslation($new, $other));
+        $this->assertSame('Un autre texte existant', $this->l10n->getDynamicTranslation($other, 'fr_FR.utf8'));
+        $this->assertSame('Ein umzubenennender Text', $this->l10n->getDynamicTranslation($other, 'de_DE.utf8'));
+
+        //renaming to a Galette label stores nothing
+        $this->assertTrue($this->l10n->renameDynamicTranslation($other, 'annual fee'));
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->where(['text_orig_sum' => md5('annual fee')]);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Dynamic translation for `' . $other . '` is still in use, kept.');
+    }
+
+    /**
      * Test add dynamic translation with exception
      */
     #[AllowMockObjectsWithoutExpectations]
@@ -225,7 +323,8 @@ class L10n extends GaletteTestCase
 
         $l10n = new \Galette\Core\L10n(
             $zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
         $this->assertFalse($l10n->addDynamicTranslation('A text that will not be added'));
         $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred adding dynamic translation for `A text that will not be added` | Error executing query!');
@@ -250,7 +349,8 @@ class L10n extends GaletteTestCase
 
         $l10n = new \Galette\Core\L10n(
             $zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
         $this->assertFalse(
             $l10n->updateDynamicTranslation(
@@ -281,7 +381,8 @@ class L10n extends GaletteTestCase
 
         $l10n = new \Galette\Core\L10n(
             $zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
         $this->assertFalse($l10n->deleteDynamicTranslation('A text that will not be deleted'));
         $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred deleting dynamic translation for `A text that will not be deleted` | Error executing query!');
@@ -306,7 +407,8 @@ class L10n extends GaletteTestCase
 
         $l10n = new \Galette\Core\L10n(
             $zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
 
         $exception_thrown = false;
@@ -339,7 +441,8 @@ class L10n extends GaletteTestCase
 
         $l10n = new \Galette\Core\L10n(
             $zdb,
-            $this->i18n
+            $this->i18n,
+            $this->container->get(\Galette\Core\Translator::class)
         );
 
         $exception_thrown = false;

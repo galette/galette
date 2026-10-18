@@ -5,79 +5,146 @@
  #}
 
 {% set selector = (selector is defined) ? selector %}
-{% set loader = (loader is defined) ? loader %}
 {% set extra_data = (extra_data is defined) ? extra_data : '' %}
 
+(function() {
+    var _input = $('{{ selector }}');
+    //input is not always wrapped into an .ui.input
+    var _field = _input.closest('{{ selector ~ '_field'|e('js') }}');
+    var _wrapper = _input.closest('.ui.input').length ? _input.closest('.ui.input') : _input;
+    var _block = $(
+        '<div class="password-strength" hidden>'
+        + '<div class="password-strength-summary">'
+        + '<div class="password-strength-bar" aria-hidden="true"><span></span><span></span><span></span><span></span></div>'
+        + '<output class="password-strength-text" aria-live="polite"></output>'
+        + '</div>'
+        + '<ul class="password-strength-rules"></ul>'
+        + '</div>'
+    );
+    _field.append(_block);
 
-$('{{ selector }}').parent('.input').parent('{{ selector ~ '_field'|e('js') }}').append($('<meter max="4" class="password-strength-meter"></meter><span class="password-strength-text"></span>'));
-$('{{ selector }}').on('keyup', function() {
-    var _this = $(this);
-    $.ajax({
-        url: '{{ url_for("checkPassword") }}',
-        type: 'POST',
-        data: {
-            value: $('{{ selector }}').val(),
-            {{ extra_data|raw }}
-        },
-        {% include "elements/js/loader.js.twig" with {
-                selector: selector ~ '_field',
-                loader: loader
-        } %},
-        success: function(res) {
-            var _field = _this.parent('.input').parent('{{ selector ~ '_field'|e('js') }}');
-            var _meter = _field.find('.password-strength-meter');
+    var _timer = null;
+    var _sequence = 0;
 
-            _meter.val(res.score);
-            var _txt = _field.find('span.password-strength-text');
+    var _rule = function(label, state) {
+        var _icons = {
+            met: 'check circle green',
+            missing: 'times circle red',
+            optional: 'circle outline grey'
+        };
+        var _li = $('<li></li>').addClass(state);
+        _li.append($('<i class="ui icon" aria-hidden="true"></i>').addClass(_icons[state]));
+        _li.append($('<span></span>').text(label));
+        return _li;
+    };
 
-            //reset
-            _field.find('.passtips').remove();
-            _txt.attr('class', 'password-strength-text');
-            _txt.html('');
-            _meter.attr('class', 'password-strength-meter');
-            _meter.attr('title', '');
+    var _render = function(res) {
+        var _bar = _block.find('.password-strength-bar');
+        var _txt = _block.find('.password-strength-text');
+        var _rules = _block.find('.password-strength-rules');
 
-            if (res.valid) {
-                _txt.append($('<i class="ui check circle green icon" aria-hidden="true"></i> <span>{{ _T("Password is valid :)")|e('js') }}</span>'));
-                _txt.addClass('use');
-            } else {
-                _txt.append($('<i class="ui times circle red icon" aria-hidden="true"></i> <span>{{ _T("Password is not valid!")|e('js') }}</span>'));
-
-                _txt.append(' (');
-                for (i = 0; i < res.errors.length; i++) {
-                    if (i > 0) {
-                        _txt.append(', ');
-                    }
-                    _txt.append(res.errors[i]);
-                }
-                _txt.append(')');
-                _txt.addClass('delete');
-            }
-
-            if (res.warnings) {
-                _meter.addClass('tooltip');
-                var _tip = $('<span class="passtips tip"></span>');
-                _tip.hide();
-                for (i = 0; i < res.warnings.length; i++) {
-                    if (i > 0) {
-                        _tip.append('<br/>');
-                    }
-                    _tip.append(res.warnings[i]);
-                }
-                _meter.after(_tip);
-            }
-        },
-        error: function () {
-            {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("An error occurred checking password :(")|e("js"),
-                        modal_without_content: true,
-                        modal_class: "mini",
-                        modal_deny_only: true,
-                        modal_cancel_text: _T("Close")|e("js"),
-                        modal_classname: "redalert",
-                    } %}
+        //a valid password is "good" once it reaches the required level, and at least 3 rules
+        var _status = 'bad';
+        if (res.valid) {
+            _status = res.score >= Math.max(res.required, 3) ? 'good' : 'fair';
         }
+
+        _bar.attr('class', 'password-strength-bar ' + _status);
+        _bar.find('span').each(function(index) {
+            $(this).toggleClass('filled', index < res.score);
+            $(this).toggleClass('threshold', index + 1 === res.required);
+        });
+
+        _txt.empty();
+        _txt.append($('<strong class="password-strength-level"></strong>').addClass(_status).text(res.level));
+        var _message = $('<span></span>');
+        if (res.valid) {
+            _message.append($('<i class="ui check circle green icon" aria-hidden="true"></i>'));
+            _message.append(document.createTextNode('{{ _T("Password is valid :)")|e('js') }}'));
+        } else {
+            _message.append($('<i class="ui times circle red icon" aria-hidden="true"></i>'));
+            _message.append(document.createTextNode('{{ _T("Password is not valid!")|e('js') }}'));
+        }
+        _txt.append(_message);
+
+        _rules.empty();
+        for (var i = 0; i < res.others.length; i++) {
+            _rules.append(_rule(res.others[i], 'missing'));
+        }
+        if (res.rules.length) {
+            _rules.append(_rule(res.rules.length.label, res.rules.length.met ? 'met' : 'missing'));
+        }
+
+        var _strength = res.rules.strength;
+        if (_strength.length) {
+            var _enough = res.score >= res.required;
+            var _list = $('<ul></ul>');
+            for (var j = 0; j < _strength.length; j++) {
+                var _state = _strength[j].met ? 'met' : (_enough ? 'optional' : 'missing');
+                _list.append(_rule(_strength[j].label, _state));
+            }
+
+            if (res.required > 0) {
+                var _head = $('<li class="password-strength-group"></li>');
+                _head.append($('<span></span>').text(
+                    '{{ _T("At least %1$s of the following rules:")|e('js') }}'.replace('%1$s', res.required)
+                ));
+                _head.append(_list);
+                _rules.append(_head);
+            } else {
+                _rules.append(_list.children());
+            }
+        }
+
+        _block.prop('hidden', false);
+
+        //on inline fields, align with the input rather than with the label
+        _block.css('padding-left', '');
+        if (_field.hasClass('inline')) {
+            _block.css('padding-left', Math.max(0, _wrapper.offset().left - _field.offset().left));
+        }
+    };
+
+    var _check = function() {
+        var _current = ++_sequence;
+        if (_input.val() === '') {
+            _block.prop('hidden', true);
+            return;
+        }
+
+        $.ajax({
+            url: '{{ url_for("checkPassword") }}',
+            type: 'POST',
+            data: {
+                value: _input.val(),
+                {{ extra_data|raw }}
+            },
+            success: function(res) {
+                //ignore responses to outdated values
+                if (_current === _sequence) {
+                    _render(res);
+                }
+            },
+            error: function () {
+                {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred checking password :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+            }
+        });
+    };
+
+    _input.on('input', function() {
+        clearTimeout(_timer);
+        _timer = setTimeout(_check, 300);
     });
 
-});
-
+    //no need to check a password that is being submitted
+    _input.closest('form').on('submit', function() {
+        clearTimeout(_timer);
+    });
+})();

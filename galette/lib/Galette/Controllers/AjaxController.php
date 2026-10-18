@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Enums\PasswordStrength;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Galette\Util\Password;
@@ -159,10 +161,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in towns suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in towns suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -201,10 +200,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in countries suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in countries suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -243,10 +239,7 @@ class AjaxController extends AbstractController
                 ];
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong in regions suggestion: ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Something went wrong in regions suggestion', Analog::WARNING);
             throw $e;
         }
 
@@ -296,6 +289,7 @@ class AjaxController extends AbstractController
                 'message'   => $message
             ];
         } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to send telemetry data', Analog::WARNING);
             $result = [
                 'success'   => false,
                 'message'   => $e->getMessage()
@@ -330,14 +324,13 @@ class AjaxController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        $contrib = new Contribution(
-            $this->zdb,
-            $this->login,
-            [
-                'type'  => (int)$post['fee_id'],
-                'adh'   => (int)$post['member_id']
-            ]
-        );
+        $args = ['type' => (int)$post['fee_id']];
+        //dates depend on member due date, that must not be disclosed
+        $member = new Adherent($this->zdb, (int)$post['member_id'], deps: false);
+        if ($member->canShow($this->login)) {
+            $args['adh'] = (int)$post['member_id'];
+        }
+        $contrib = new Contribution($this->zdb, $this->login, $args);
 
         return $this->withJson(
             $response,
@@ -428,13 +421,20 @@ class AjaxController extends AbstractController
 
         $pass = new Password($this->preferences);
         $valid = $pass->isValid($post['value']);
+        $score = $pass->getStrenght();
+        $required = PasswordStrength::tryFrom((int)$this->preferences->pref_password_strength)
+            ?? PasswordStrength::None;
 
         return $this->withJson(
             $response,
             [
                 'valid'     => $valid,
-                'score'     => $pass->getStrenght(),
+                'score'     => $score,
+                'level'     => PasswordStrength::from($score)->getLabel(),
+                'required'  => $required->value,
+                'rules'     => $pass->getRules($post['value']),
                 'errors'    => $pass->getErrors(),
+                'others'    => $pass->getOtherErrors(),
                 'warnings'  => ($valid ? $pass->getStrenghtErrors() : null)
             ]
         );

@@ -13,6 +13,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
 
@@ -36,6 +37,7 @@ class ListsConfig extends FieldsConfig
      */
     private array $non_list_elements = [
         'mdp_adh',
+        'photo',
         'info_adh',
         'info_public_adh',
         'nom_adh',
@@ -153,10 +155,7 @@ class ListsConfig extends FieldsConfig
 
             return $display_elements;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting list elements to display',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred getting list elements to display');
             throw $e;
         }
     }
@@ -277,7 +276,7 @@ class ListsConfig extends FieldsConfig
 
             foreach (array_keys($this->getRemainingFields()) as $field) {
                 $params = [
-                    'list_visible'  => $this->zdb->isPostgres() ? 'false' : 0,
+                    'list_visible'  => false,
                     'list_position' => -1,
                     'field_id'      => $field
                 ];
@@ -298,11 +297,10 @@ class ListsConfig extends FieldsConfig
             return $this->load();
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
+            Logs::exception(
+                $e,
                 '[' . $class . '] An error occurred while saving list '
                 . 'configuration for table `' . $this->table . '`.'
-                . $e->getMessage(),
-                Analog::ERROR
             );
             throw $e;
         }

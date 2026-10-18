@@ -24,6 +24,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
+use Galette\Core\Logs;
 
 /**
  * Documents
@@ -89,11 +90,7 @@ class Document
             $res = $results->current();
             $this->loadFromRS($res);
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading document #' . $id . "Message:\n"
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred loading document #' . $id);
         }
     }
 
@@ -197,10 +194,7 @@ class Document
             return true;
         } catch (Throwable $e) {
             $this->removeFile();
-            Analog::log(
-                'An error occurred storing document: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing document');
             throw $e;
         }
     }
@@ -233,10 +227,7 @@ class Document
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'Unable to delete document #' . implode(', #', $ids) . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to delete document #' . implode(', #', $ids));
             throw $e;
         }
     }

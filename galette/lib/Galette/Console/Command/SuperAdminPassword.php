@@ -85,8 +85,9 @@ class SuperAdminPassword extends AbstractCommand
             return Command::FAILURE;
         }
 
-        //pref_admin_pass is restricted to the super administrator
-        $login->logAdmin($preferences->pref_admin_login, $preferences);
+        //pref_admin_pass is restricted to the super administrator. Access to the
+        //server stands for its second factor, as it does for its password
+        $login->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
 
         if (!$preferences->setValue('pref_admin_pass', $password, $login)) {
             $this->io->error(

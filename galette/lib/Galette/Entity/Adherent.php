@@ -23,6 +23,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Sabre\VObject\Component\VCard;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Picture;
@@ -355,6 +356,7 @@ class Adherent implements AccessManagementInterface
 
         $results = $this->zdb->execute($select);
         if ($results->count() === 0) {
+            Analog::log('Load member from login or email `' . $login . '`: no member found', Analog::INFO);
             return false;
         }
 
@@ -983,15 +985,17 @@ class Adherent implements AccessManagementInterface
     /**
      * Retrieve fields
      *
+     * @param bool $selfs True if we're called from self subscription
+     *
      * @return array<string>
      */
-    public static function getFields(): array
+    public static function getFields(bool $selfs = false): array
     {
         global $container, $login;
 
         /** @var FieldsConfig $fc */
         $fc = $container->get(FieldsConfig::class);
-        return $fc->getAllowedFields($login);
+        return $fc->getAllowedFields($login, $selfs);
     }
 
     /**
@@ -1045,14 +1049,15 @@ class Adherent implements AccessManagementInterface
     /**
      * Check posted values validity
      *
-     * @param array<string,mixed> $values   All values to check, basically the $_POST array
-     *                                      after sending the form
-     * @param array<string,bool>  $required Array of required fields
-     * @param array<string>       $disabled Array of disabled fields
+     * @param array<string,mixed>                  $values   All values to check, basically the $_POST array
+     *                                                       after sending the form
+     * @param array<string,bool>                   $required Array of required fields
+     * @param array<string>                        $disabled Array of disabled fields
+     * @param ?array<string,UploadedFileInterface> $files    Uploaded files, to check required files
      *
      * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): bool|array
+    public function check(array $values, array $required, array $disabled, ?array $files = null): bool|array
     {
         global $login;
 
@@ -1065,7 +1070,7 @@ class Adherent implements AccessManagementInterface
             }
         }
 
-        $fields = self::getFields();
+        $fields = self::getFields($this->self_adh);
 
         //reset company name if needed
         if (!isset($values['is_company'])) {
@@ -1145,15 +1150,32 @@ class Adherent implements AccessManagementInterface
 
         // missing required fields?
         foreach (array_keys($required) as $key) {
+            if ($key === 'photo') {
+                //stored apart, checked against files
+                continue;
+            }
             $prop = $this->fields[$key]['propname'];
 
-            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
+            if (!in_array($key, $disabled) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
                 $this->errors[] = sprintf(
                     //TRANS: parameter is an HTML link to the field with its name
                     _T('- Mandatory field %1$s empty.'),
                     '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                 );
             }
+        }
+
+        if (
+            isset($required['photo'])
+            && $files !== null
+            && !in_array('photo', $disabled)
+            && !$this->keepsPicture($values, $files)
+        ) {
+            $this->errors[] = sprintf(
+                //TRANS: parameter is an HTML link to the field with its name
+                _T('- Mandatory field %1$s empty.'),
+                '<a href="#photo_new">' . $this->getFieldLabel('photo') . '</a>',
+            );
         }
 
         //attach to/detach from parent
@@ -1192,7 +1214,7 @@ class Adherent implements AccessManagementInterface
             }
         }
 
-        $this->dynamicsCheck($values, $required, $disabled);
+        $this->dynamicsCheck(post: $values, required: $required, disabled: $disabled, files: $files);
         $this->checkSocials($values);
 
         if (count($this->errors) > 0) {
@@ -1301,10 +1323,11 @@ class Adherent implements AccessManagementInterface
                     }
                     $this->$prop = $d->format('Y-m-d');
                 } catch (Throwable $e) {
-                    Analog::log(
+                    Logs::exception(
+                        $e,
                         'Wrong date format. field: ' . $field
                         . ', value: ' . $value . ', expected fmt: '
-                        . __("Y-m-d") . ' | ' . $e->getMessage(),
+                        . __("Y-m-d"),
                         Analog::INFO
                     );
                     $this->errors[] = sprintf(
@@ -1349,11 +1372,8 @@ class Adherent implements AccessManagementInterface
                     if ($results->count() !== 0) {
                         $this->errors[] = _T("- This E-Mail address is already used by another member!");
                     }
-                } catch (Throwable) {
-                    Analog::log(
-                        'An error occurred checking member email uniqueness.',
-                        Analog::ERROR
-                    );
+                } catch (Throwable $e) {
+                    Logs::exception($e, 'An error occurred checking member email uniqueness.');
                     $this->errors[] = _T("An error has occurred while looking if login already exists.");
                 }
                 break;
@@ -1390,11 +1410,8 @@ class Adherent implements AccessManagementInterface
                         ) {
                             $this->errors[] = _T("- This username is already in use, please choose another one!");
                         }
-                    } catch (Throwable) {
-                        Analog::log(
-                            'An error occurred checking member login uniqueness.',
-                            Analog::ERROR
-                        );
+                    } catch (Throwable $e) {
+                        Logs::exception($e, 'An error occurred checking member login uniqueness.');
                         $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
                 }
@@ -1467,10 +1484,7 @@ class Adherent implements AccessManagementInterface
                     }
                     $this->$prop = $value;
                 } catch (Throwable $e) {
-                    Analog::log(
-                        'An error occurred checking status existence: ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    Logs::exception($e, 'An error occurred checking status existence');
                     throw $e;
                 }
                 break;
@@ -1510,8 +1524,8 @@ class Adherent implements AccessManagementInterface
                 }
                 $this->$prop = $value;
                 break;
-            case 'others_infos_admin':
-                if ($value !== $this->$prop && !$login->isStaff() || !$login->isAdmin()) {
+            case 'info_adh':
+                if ($value !== $this->$prop && !$login->isStaff() && !$login->isAdmin()) {
                     Analog::log(
                         sprintf(
                             'Non allowed user %1$s attempting to change member %2$s admin information',
@@ -1559,16 +1573,7 @@ class Adherent implements AccessManagementInterface
                     || empty($this->id)
                 ) {
                     $prop = $this->fields[$field]['propname'];
-                    if (
-                        ($field === 'bool_admin_adh'
-                        || $field === 'bool_exempt_adh'
-                        || $field === 'bool_display_info'
-                        || $field === 'activite_adh')
-                        && $this->$prop === false
-                    ) {
-                        //Handle booleans for postgres ; bugs #18899 and #19354
-                        $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
-                    } elseif ($field === 'parent_id') {
+                    if ($field === 'parent_id') {
                         //handle parents
                         if (!isset($this->parent)) {
                             $values['parent_id'] = new Expression('NULL');
@@ -1617,7 +1622,7 @@ class Adherent implements AccessManagementInterface
                 foreach ($this->getDefaultValues() as $prop => $value) {
                     foreach ($this->fields as $mkey => $mfield) {
                         if ($mfield['propname'] == $prop) {
-                            if (!isset($values[$mkey]) && $value !== null) {
+                            if (!isset($values[$mkey]) && $value !== null && FieldsConfig::isColumn($mfield)) {
                                 $values[$mkey] = $value;
                             }
                             break;
@@ -1696,11 +1701,7 @@ class Adherent implements AccessManagementInterface
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
-                . $e->getTraceAsString(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred storing member #' . ($this->id ?? 'new'));
             throw $e;
         }
     }
@@ -1864,9 +1865,9 @@ class Adherent implements AccessManagementInterface
                         return $d->format(__("Y-m-d"));
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$name . ') | '
-                            . $e->getMessage(),
+                        Logs::exception(
+                            $e,
+                            'Bad date (' . $this->$name . ')',
                             Analog::INFO
                         );
                         return $this->$name;
@@ -2086,6 +2087,20 @@ class Adherent implements AccessManagementInterface
         } else {
             return true;
         }
+    }
+
+    /**
+     * Will member have a picture once posted values and files are handled?
+     *
+     * @param array<string,mixed>                 $values Posted values
+     * @param array<string,UploadedFileInterface> $files  Uploaded files
+     */
+    private function keepsPicture(array $values, array $files): bool
+    {
+        if (isset($files['photo']) && $files['photo']->getError() === UPLOAD_ERR_OK) {
+            return true;
+        }
+        return isset($this->picture) && $this->picture->hasPicture() && !isset($values['del_photo']);
     }
 
     /**

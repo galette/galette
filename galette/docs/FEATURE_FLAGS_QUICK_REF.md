@@ -17,10 +17,32 @@
 ```
 
 ### Activate
+
+Every registered flag can be turned on by the super administrator, from the
+*Experimental features* tab of *Advanced configuration*.
+Turning a flag on turns on the ones it requires; turning it off turns off the
+ones requiring it.
+
+It can also be declared in a file or the environment:
 ```php
 // galette/config/behavior.inc.php
 define('GALETTE_FEATURE_FLAGS', ['my-flag']);
 ```
+
+When defined, the constant takes precedence over the features turned on from
+the interface, which can then no longer be changed there.
+
+Lifecycle: registered → stable (flag removed from the registry).
+
+### Turn features on or off from the command line
+```bash
+bin/console galette:feature:enable my-flag
+bin/console galette:feature:disable my-flag
+bin/console galette:feature:disable --all
+```
+
+Both need an installed Galette: like every command using the database, they
+are not listed while `config.inc.php` is missing.
 
 ### Usage in code
 ```php
@@ -78,7 +100,6 @@ if ($featureFlags->isEnabled('api-v2')) {
 ## ⚠️ Important
 
 - ✅ **ALWAYS** ajouter au registry avant utilisation
-- ✅ **Flags = development** only (disabled in production environment)
 - ✅ **Dependencies** = automatic checks
 - ❌ **Do not** forget to activate dependencies
 
@@ -92,17 +113,6 @@ $ bin/console galette:feature:status
  Galette Feature Flags Status
 ===================================
 
-
-Environment
------------
-
- --------------- ------------ 
-  Setting         Value       
- --------------- ------------ 
-  Debug Mode      ✗ Disabled  
-  GALETTE_DEBUG   false       
-  GALETTE_MODE    PROD        
- --------------- ------------ 
 
 All Feature Flags
 -----------------

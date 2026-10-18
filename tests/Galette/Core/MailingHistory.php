@@ -52,10 +52,6 @@ class MailingHistory extends GaletteTestCase
 
         $mailing->subject = 'Test mailing';
         $mailing->message = 'This is a test mailing';
-        $mailing->setSender(
-            name: 'Galette unit tests',
-            address: 'test@galette.eu'
-        );
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
         $mh = new \Galette\Core\MailingHistory(
@@ -92,7 +88,6 @@ class MailingHistory extends GaletteTestCase
 
         $this->assertSame('Test mailing', $mailing->subject);
         $this->assertCount(2, $entry->mailing_recipients);
-        $this->assertEquals(0, $entry->mailing_sent);
         $this->assertSame(0, $entry->attachments);
 
         //change and store again (still not send yet)
@@ -135,15 +130,11 @@ class MailingHistory extends GaletteTestCase
         $this->assertSame(0, $entry->attachments);
         $this->assertSame($second_not_sent_id, (int)$entry->mailing_id);
 
-        //add antoher mailing in history
+        //add another mailing in history
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
 
         $mailing->subject = 'Filter subject test';
         $mailing->message = 'This is a test mailing for filters';
-        $mailing->setSender(
-            name: 'Galette admin unit tests',
-            address: 'test+admin@galette.eu'
-        );
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
         $filters = new \Galette\Filters\MailingsList();
@@ -313,5 +304,71 @@ class MailingHistory extends GaletteTestCase
             ['Draft one', 'Queued one'],
             $subjects(\Galette\Core\MailingHistory::FILTER_NOT_SENT)
         );
+    }
+
+    /**
+     * Test sender stored in history is only used for display, never for sending.
+     */
+    public function testStoredSender(): void
+    {
+        $this->logSuperAdmin();
+
+        $this->zdb->execute($this->zdb->delete(\Galette\Core\MailingHistory::TABLE));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$this->getMemberOne()->id];
+        $members = (new \Galette\Repository\Members())->getArrayList($filters->selected);
+
+        $mailing = new \Galette\Core\Mailing($this->preferences, $members);
+        $mailing->subject = 'Sender mailing';
+        $mailing->message = 'Which sender?';
+
+        $mh = new \Galette\Core\MailingHistory(
+            zdb: $this->zdb,
+            login: $this->login,
+            preferences: $this->preferences,
+            filters: null,
+            mailing: $mailing
+        );
+        $this->assertTrue($mh->storeMailing());
+        $mailing_id = (int)$mailing->id;
+
+        $prefs_sender = sprintf(
+            '%s <%s>',
+            $this->preferences->pref_email_nom,
+            $this->preferences->pref_email
+        );
+
+        //entry from former versions, with a custom sender
+        $update = $this->zdb->update(\Galette\Core\MailingHistory::TABLE);
+        $update->set(
+            [
+                'mailing_sender_name'       => 'Former sender',
+                'mailing_sender_address'    => 'former@galette.eu'
+            ]
+        );
+        $update->where(['mailing_id' => $mailing_id]);
+        $this->zdb->execute($update);
+
+        $mailing = new \Galette\Core\Mailing($this->preferences);
+        $this->assertTrue(\Galette\Core\MailingHistory::loadFrom(zdb: $this->zdb, id: $mailing_id, mailing: $mailing, new: false));
+        $this->assertSame('Former sender <former@galette.eu>', $mailing->getSender(stored: true));
+        $this->assertSame($prefs_sender, $mailing->getSender());
+        $this->assertSame($this->preferences->pref_email, $mailing->getSenderAddress());
+
+        //entry without any stored sender
+        $update = $this->zdb->update(\Galette\Core\MailingHistory::TABLE);
+        $update->set(
+            [
+                'mailing_sender_name'       => new \Laminas\Db\Sql\Expression('NULL'),
+                'mailing_sender_address'    => new \Laminas\Db\Sql\Expression('NULL')
+            ]
+        );
+        $update->where(['mailing_id' => $mailing_id]);
+        $this->zdb->execute($update);
+
+        $mailing = new \Galette\Core\Mailing($this->preferences);
+        $this->assertTrue(\Galette\Core\MailingHistory::loadFrom(zdb: $this->zdb, id: $mailing_id, mailing: $mailing, new: false));
+        $this->assertSame($prefs_sender, $mailing->getSender(stored: true));
     }
 }

@@ -15,6 +15,7 @@ use Galette\Util\Html;
 use PHPMailer\PHPMailer\SMTP;
 use Throwable;
 use Analog\Analog;
+use Analog\Logger;
 use PHPMailer\PHPMailer\PHPMailer;
 
 use function Safe\ini_get;
@@ -39,15 +40,16 @@ class GaletteMail
     //value 4 (former METHOD_GMAIL) is no longer used, do not reuse it
     public const int METHOD_SENDMAIL = 5;
 
-    public const int SENDER_PREFS = 0;
-    public const int SENDER_CURRENT = 1;
-    public const int SENDER_OTHER = 2;
-
     /** Timeout, in seconds, a connection test is given */
     public const int CONNECTION_TIMEOUT = 10;
 
-    private string $sender_name;
-    private string $sender_address;
+    private readonly string $sender_name;
+    private readonly string $sender_address;
+    /** Sender stored in database */
+    private ?string $db_sender_name = null;
+    /** Sender mail stored in database */
+    private ?string $db_sender_address = null;
+
     private string $subject;
     private string $message;
     private bool $html = false;
@@ -75,10 +77,8 @@ class GaletteMail
      */
     public function __construct(protected readonly Preferences $preferences)
     {
-        $this->setSender(
-            $preferences->pref_email_nom,
-            $preferences->pref_email
-        );
+        $this->sender_name = $preferences->pref_email_nom;
+        $this->sender_address = $preferences->pref_email;
         if (!$this->preferences->pref_bool_wrap_mails) {
             $this->word_wrap = 0;
         }
@@ -113,7 +113,10 @@ class GaletteMail
                     $this->mail->SMTPDebug = SMTP::DEBUG_CONNECTION;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468
-                    $this->mail->Debugoutput = 'error_log';
+                    //a PSR-3 logger holds no closure, and brings the SMTP
+                    //exchange to Galette logs; credentials are kept hidden
+                    //below SMTP::DEBUG_LOWLEVEL
+                    $this->mail->Debugoutput = new Logger();
                 }
 
                 $this->mail->Host = $this->preferences->pref_mail_smtp_host;
@@ -270,7 +273,7 @@ class GaletteMail
                     . "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
-                unset($this->mail);
+                $this->releaseMailer();
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
@@ -283,16 +286,13 @@ class GaletteMail
                 );
                 $this->sent_recipients = $this->recipients;
                 $this->recordQuota($this->recipients);
-                unset($this->mail);
+                $this->releaseMailer();
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Error sending message: ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Error sending message', Analog::ERROR);
             $this->errors[] = $e->getMessage();
-            unset($this->mail);
+            $this->releaseMailer();
             return self::MAIL_ERROR;
         }
     }
@@ -325,7 +325,7 @@ class GaletteMail
             default => $this->unknownMethod()
         };
 
-        unset($this->mail);
+        $this->releaseMailer();
 
         return $connected;
     }
@@ -361,6 +361,7 @@ class GaletteMail
                 return false;
             }
         } catch (Throwable $e) {
+            Logs::exception($e, 'Cannot connect to SMTP server', Analog::WARNING);
             $this->errors[] = $e->getMessage();
             return false;
         }
@@ -553,10 +554,7 @@ class GaletteMail
             } catch (Throwable $e) {
                 $has_error = true;
                 $this->errors[] = $e->getMessage();
-                Analog::log(
-                    'Error sending mailing batch: ' . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'Error sending mailing batch', Analog::ERROR);
             }
 
             //pause between two messages, but not after the last one
@@ -565,9 +563,7 @@ class GaletteMail
             }
         }
 
-        //close the (possibly kept-alive) SMTP connection
-        $this->mail->smtpClose();
-        unset($this->mail);
+        $this->releaseMailer();
 
         if (!$has_error) {
             return self::MAIL_SENT;
@@ -745,11 +741,38 @@ class GaletteMail
     }
 
     /**
+     * Get sender in the format "Name <address>"
+     *
+     * @param bool $stored Get sender stored in database, falls back to the one from preferences if none
+     */
+    public function getSender(bool $stored = false): string
+    {
+        return sprintf(
+            '%s <%s>',
+            ($stored ? $this->db_sender_name : null) ?? $this->sender_name,
+            ($stored ? $this->db_sender_address : null) ?? $this->sender_address
+        );
+    }
+
+    /**
      * Get sender name
      */
     public function getSenderName(): string
     {
         return $this->sender_name;
+    }
+
+    /**
+     * Let the PHPMailer instance go
+     *
+     * Preferences keep a reference to it for the signature replacements, so it
+     * outlives this object: close a kept alive SMTP connection now, while it
+     * can still be logged, rather than when the request ends.
+     */
+    private function releaseMailer(): void
+    {
+        $this->mail->smtpClose();
+        unset($this->mail);
     }
 
     /**
@@ -834,15 +857,15 @@ class GaletteMail
     }
 
     /**
-     * Sets the sender
+     * Sets the sender stored in database
      *
-     * @param string $name    Sender name
-     * @param string $address Sender address
+     * @param ?string $name    Sender name
+     * @param ?string $address Sender address
      */
-    public function setSender(string $name, string $address): self
+    public function setStoredSender(?string $name, ?string $address): self
     {
-        $this->sender_name = $name;
-        $this->sender_address = $address;
+        $this->db_sender_name = $name;
+        $this->db_sender_address = $address;
         return $this;
     }
 

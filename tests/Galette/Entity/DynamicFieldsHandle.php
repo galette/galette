@@ -14,6 +14,7 @@ use Galette\Tests\GaletteTestCase;
 
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
+use function Safe\tempnam;
 use function Safe\unlink;
 
 /**
@@ -46,16 +47,18 @@ class DynamicFieldsHandle extends GaletteTestCase
     /**
      * Create a dynamic field on members form
      *
-     * @param int    $type   Field type
-     * @param string $name   Field name
-     * @param ?int   $repeat Number of occurrences
-     * @param int    $perm   Field permission
+     * @param int    $type     Field type
+     * @param string $name     Field name
+     * @param ?int   $repeat   Number of occurrences
+     * @param int    $perm     Field permission
+     * @param bool   $required Is field required
      */
     private function createField(
         int $type,
         string $name,
         ?int $repeat,
-        int $perm = \Galette\Entity\FieldsConfig::USER_WRITE
+        int $perm = \Galette\Entity\FieldsConfig::USER_WRITE,
+        bool $required = false
     ): \Galette\DynamicFields\DynamicField {
         $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
         $stored = $field->store([
@@ -63,7 +66,7 @@ class DynamicFieldsHandle extends GaletteTestCase
             'field_name'        => $name,
             'field_perm'        => $perm,
             'field_type'        => $type,
-            'field_required'    => 0,
+            'field_required'    => (int)$required,
             'field_repeat'      => $repeat
         ]);
         $this->assertTrue(
@@ -147,6 +150,46 @@ class DynamicFieldsHandle extends GaletteTestCase
         $this->logSuperAdmin();
         $adh = $this->getMemberWithDynamics();
         $this->assertSame([1 => 'Staff note'], $this->getStoredOccurrences($adh, $fid));
+    }
+
+    /**
+     * Test inaccessible fields are neither listed nor loaded, and their values survive
+     */
+    public function testInaccessibleFieldsAreHidden(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::LINE,
+            name: 'Nobody',
+            repeat: null,
+            perm: \Galette\Entity\FieldsConfig::NOBODY
+        );
+        $fid = $field->getId();
+
+        $this->getMemberOne();
+        $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $insert->values([
+            'item_id'       => $this->adh->id,
+            'field_id'      => $fid,
+            'field_form'    => 'adh',
+            'val_index'     => 1,
+            'field_val'     => 'Hidden value'
+        ]);
+        $this->zdb->execute($insert);
+
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
+        $this->assertArrayNotHasKey($fid, $fields->getList('adh'));
+        $this->assertArrayHasKey($fid, $fields->getList('adh', inaccessible: true));
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertArrayNotHasKey($fid, $adh->getDynamicFields()->getFields());
+
+        //storing the member does not drop the value
+        $this->assertTrue($adh->check($this->dataAdherentOne(), [], []), implode(' ', $adh->getErrors()));
+        $this->assertTrue($adh->store());
+        $select = $this->zdb->select(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $select->where(['item_id' => $this->adh->id, 'field_id' => $fid]);
+        $this->assertSame('Hidden value', $this->zdb->execute($select)->current()->field_val);
     }
 
     /**
@@ -324,5 +367,108 @@ class DynamicFieldsHandle extends GaletteTestCase
         $this->assertFileExists($first);
         $this->assertSame('second', file_get_contents($first));
         $this->assertFileDoesNotExist($second);
+    }
+
+    /**
+     * Test a required file field is checked against uploaded and stored files
+     */
+    public function testRequiredFileField(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            name: 'Required file',
+            repeat: null,
+            required: true
+        );
+        $fid = $field->getId();
+        $key = 'info_field_' . $fid . '_1';
+
+        $this->getMemberOne();
+        $data = $this->dataAdherentOne();
+        $missing = ['Missing required field Required file'];
+
+        //files are not known: not checked
+        $adh = $this->getMemberWithDynamics();
+        $this->assertTrue($adh->check($data, [], []), implode(' ', $adh->getErrors()));
+
+        //no file sent, none stored
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame($missing, $adh->check(values: $data, required: [], disabled: [], files: []));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Some errors has been thew attempting to edit/store a member'
+        );
+
+        //an empty file input, or a failed upload, is not a file
+        foreach ([UPLOAD_ERR_NO_FILE, UPLOAD_ERR_INI_SIZE] as $error) {
+            $adh = $this->getMemberWithDynamics();
+            $files = [$key => new \Slim\Psr7\UploadedFile(
+                fileNameOrStream: 'php://memory',
+                name: '',
+                size: 0,
+                error: $error
+            )];
+            $this->assertSame($missing, $adh->check(values: $data, required: [], disabled: [], files: $files));
+            $this->expectLogEntry(
+                \Analog\Analog::ERROR,
+                'Some errors has been thew attempting to edit/store a member'
+            );
+        }
+
+        //a file is sent
+        $tmp = tempnam(sys_get_temp_dir(), 'galette');
+        $this->files[] = $tmp;
+        file_put_contents($tmp, 'content');
+        $files = [$key => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $tmp,
+            name: 'sent.txt',
+            type: 'text/plain',
+            size: 7,
+            error: UPLOAD_ERR_OK
+        )];
+        $adh = $this->getMemberWithDynamics();
+        $this->assertTrue($adh->check(values: $data, required: [], disabled: [], files: $files), implode(' ', $adh->getErrors()));
+
+        //a file is stored
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 1, value: 'stored.txt');
+        $this->assertTrue($dynamics->storeValues($adh->id));
+
+        $adh = $this->getMemberWithDynamics();
+        $this->assertTrue($adh->check(values: $data, required: [], disabled: [], files: []), implode(' ', $adh->getErrors()));
+
+        //the stored file is deleted, and nothing replaces it: it is kept
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame($missing, $adh->check(values: $data + [$key => '1'], required: [], disabled: [], files: []));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Some errors has been thew attempting to edit/store a member'
+        );
+        $this->assertSame([1 => 'stored.txt'], $this->getStoredOccurrences($adh, $fid));
+    }
+
+    /**
+     * Test a required file field a member cannot change is not checked
+     */
+    public function testRequiredReadOnlyFileField(): void
+    {
+        $this->logSuperAdmin();
+        $this->createField(
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            name: 'Read only file',
+            repeat: null,
+            perm: \Galette\Entity\FieldsConfig::USER_READ,
+            required: true
+        );
+        $this->getMemberOne();
+        $this->login->logout();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $adh = $this->getMemberWithDynamics();
+        $this->assertTrue($adh->check(values: $mdata, required: [], disabled: [], files: []), implode(' ', $adh->getErrors()));
+        $this->login->logout();
     }
 }

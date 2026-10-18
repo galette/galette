@@ -20,6 +20,7 @@ use Galette\Interfaces\AccessManagementInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -288,6 +289,7 @@ class Contribution implements AccessManagementInterface
         global $preferences;
 
         if (!$this->login->isLogged() && $this->login->id == '') {
+            Analog::log('Load contribution #' . $id . ': refused, no logged in user', Analog::INFO);
             return false;
         }
 
@@ -347,11 +349,7 @@ class Contribution implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred attempting to load contribution #' . $id
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred attempting to load contribution #' . $id);
             throw $e;
         }
     }
@@ -446,7 +444,9 @@ class Contribution implements AccessManagementInterface
         $this->begin_date = $this->date;
         $due_date = self::getDueDate($this->zdb, $this->member);
         if ($due_date != '') {
+            //compare dates only, see loadWithEndofMembershipDate()
             $now = new DateTime();
+            $now->setTime(0, 0);
             $due_date = new DateTime($due_date);
             if ($due_date < $now) {
                 // Member didn't renew on time
@@ -484,14 +484,8 @@ class Contribution implements AccessManagementInterface
             //no current membership (new member or membership expired):
             //align begin date to the start of the current membership period,
             //that is the most recent membership begin date on or before now.
-            //Note: we step back from the current year candidate instead of
-            //cloning now and subtracting a year, which would overflow on
-            //February 29th (2024-02-29 minus one year is not a valid date).
-            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
-            $next_begin_date = new DateTime($now->format('Y') . '-' . $m . '-' . $j);
-            while ($next_begin_date > $now) {
-                $next_begin_date->sub(new DateInterval('P1Y'));
-            }
+            $next_begin_date = $preferences->getMembershipPeriodStart($now)
+                ?? throw new \RuntimeException('Beginning of membership date is not defined!');
         }
         $this->begin_date = $next_begin_date->format('Y-m-d');
     }
@@ -499,14 +493,15 @@ class Contribution implements AccessManagementInterface
     /**
      * Check posted values validity
      *
-     * @param array<string,mixed> $values   All values to check, basically the $_POST array
-     *                                      after sending the form
-     * @param array<string,int>   $required Array of required fields
-     * @param array<string>       $disabled Array of disabled fields
+     * @param array<string,mixed>                  $values   All values to check, basically the $_POST array
+     *                                                       after sending the form
+     * @param array<string,int>                    $required Array of required fields
+     * @param array<string>                        $disabled Array of disabled fields
+     * @param ?array<string,UploadedFileInterface> $files    Uploaded files, to check required files
      *
      * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): bool|array
+    public function check(array $values, array $required, array $disabled, ?array $files = null): bool|array
     {
         global $preferences;
         $this->errors = [];
@@ -644,7 +639,7 @@ class Contribution implements AccessManagementInterface
             }
         }
 
-        $this->dynamicsCheck($values, $required, $disabled);
+        $this->dynamicsCheck(post: $values, required: $required, disabled: $disabled, files: $files);
 
         if (count($this->errors) > 0) {
             Analog::log(
@@ -710,10 +705,7 @@ class Contribution implements AccessManagementInterface
             }
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred checking overlapping fee. ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred checking overlapping fee.');
             throw $e;
         }
     }
@@ -836,12 +828,7 @@ class Contribution implements AccessManagementInterface
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating member ' . $this->member
-                . '\'s deadline |'
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred updating member ' . $this->member . '\'s deadline');
             throw $e;
         }
     }
@@ -882,11 +869,7 @@ class Contribution implements AccessManagementInterface
             if ($transaction) {
                 $this->zdb->rollback();
             }
-            Analog::log(
-                'An error occurred trying to remove contribution #'
-                . $this->id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to remove contribution #' . $this->id);
             throw $e;
         }
     }
@@ -969,10 +952,7 @@ class Contribution implements AccessManagementInterface
             }
             return $due_date;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred trying to retrieve member\'s due date',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to retrieve member\'s due date');
             throw $e;
         }
     }
@@ -1005,10 +985,9 @@ class Contribution implements AccessManagementInterface
                 return false;
             }
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to detach contribution #' . $this->id
-                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to detach contribution #' . $this->id . ' to transaction #' . $trans_id
             );
             throw $e;
         }
@@ -1030,10 +1009,9 @@ class Contribution implements AccessManagementInterface
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to attach contribution #' . $this->id
-                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                Analog::ERROR
+            Logs::exception(
+                $e,
+                'Unable to attach contribution #' . $this->id . ' to transaction #' . $trans_id
             );
             throw $e;
         }

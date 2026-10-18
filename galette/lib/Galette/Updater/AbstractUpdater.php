@@ -164,6 +164,7 @@ abstract class AbstractUpdater
             return $installer->executeSql($zdb, $sql_query);
         }
 
+        Analog::log('Execute SQL script ' . $script . ': empty or unreadable', Analog::WARNING);
         return false;
     }
 
@@ -231,7 +232,7 @@ abstract class AbstractUpdater
             }
             closedir($dh);
         } catch (DirException) {
-            //empty catch
+            // no log: no SQL scripts directory, there is no SQL script to run
         }
 
         return $scripts;

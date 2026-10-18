@@ -592,6 +592,25 @@ declaring its type, never adding a call.
 - Test migrations on both empty and populated databases
 - Include rollback capability when possible
 
+### Errors and logs
+Every error reaches the logs: production logs must be enough to understand a
+failure, without asking to enable debug mode.
+- Log an exception with `Galette\Core\Logs::exception($e, 'what was being done', $level)`,
+  never with `Analog::log($msg . $e->getMessage())`: from WARNING up, the helper writes
+  the previous exceptions, the request and a stack trace without arguments.
+- The level decides the format: expected cases (bad user input, not found, duplicate)
+  use INFO and get a single line, without trace.
+- A catch that handles the error (returns false/null, fills `$errors`, flashes a
+  message, continues) logs it with the helper.
+- A catch that rethrows may log it too: an exception already logged only gets a
+  one-line reminder afterwards, uncaught ones included (`Galette\Handlers\ErrorHandler`).
+- A catch that intentionally logs nothing starts with a `// no log: <reason>` comment.
+  PHPStan enforces these three cases in `galette/lib` (`tests/lib/PHPStan/CatchMustLogRule.php`).
+- A method returning `false` on failure logs why before returning (WARNING for a
+  technical failure, INFO for an expected case); predicates do not.
+- Log a failure where it is detected, not where it is shown: flash messages are not
+  logged, an error reaching the user must already be in the logs.
+
 ### Frontend
 - Edit source files in `ui/`, not built files
 - Always run `npm run build` after changes

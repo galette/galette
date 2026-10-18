@@ -21,20 +21,7 @@
                     </div>
 
                     <div class="ui right floated basic fitted segment">
-                        <div class="ui small spaced buttons">
-                    {% if member.id %}
-                            <button type="submit" name="valid" class="action ui labeled icon primary button">
-                                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
-                            </button>
-                    {% endif %}
-                            <a
-                                href="{{ url_for("member", {"id": member.id}) }}"
-                                class="ui basic labeled icon button"
-                            >
-                                <i class="eye outline icon" aria-hidden="true"></i>
-                                {{ _T("Display") }}
-                            </a>
-                        </div>
+                        {% include "elements/member_actions.html.twig" with {"edit": true} %}
                     </div>
                 </div>
                 {% include "elements/member_card.html.twig" %}
@@ -127,6 +114,11 @@
             {# Main form entries #}
             {% include "components/form.html.twig" %}
 
+            {# Member's groups #}
+            {% if groups is defined and groups|length != 0 %}
+                {% include "components/forms/groups.html.twig" %}
+            {% endif %}
+
             {# Dynamic entries #}
             {% include "components/dynamic_fields.html.twig" with {object: member} %}
 
@@ -215,6 +207,9 @@
 </div>
     {% endif %}
 </form>
+    {% if member.id and not self_adh %}
+        {% include "elements/member_actions.html.twig" with {"forms_only": true} %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -229,151 +224,8 @@
                 });
 
 {% if not self_adh %}
-                {# Groups popup #}
-                $('#btngroups, #btnmanagedgroups').click(function(){
-                    var _managed = false;
-                    if ( $(this).attr('id') == 'btnmanagedgroups' ) {
-                        _managed = true;
-                    }
-                    var _groups = [];
-                    var _form = (_managed) ? 'managed' : 'user';
-                    $('#' + _form + 'groups_form input').each(function(){
-                        _group = $(this).val().split('|');
-                        _groups[_groups.length] = {
-                            id: _group[0],
-                            name: _group[1]
-                        };
-                    });
-                    $.ajax({
-                        url: '{{ url_for("ajax_groups") }}',
-                        type: "POST",
-                        data: {
-                            ajax: true,
-                            groups: _groups,
-                            managed: _managed
-                        },
-                        {% include "elements/js/loader.js.twig" with {
-                            selector: '#groups_field'
-                        } %},
-                        success: function(res){
-                            _groups_dialog(res, _groups, _managed);
-                        },
-                        error: function() {
-                            {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying groups interface :(")|e("js"),
-                                modal_without_content: true,
-                                modal_class: "mini",
-                                modal_deny_only: true,
-                                modal_cancel_text: _T("Close")|e("js"),
-                                modal_classname: "redalert",
-                            } %}
-                        }
-                    });
-                    return false;
-                });
-
-                var _groups_dialog = function(res, _groups, _managed){
-                    var _title = '{{ _T("Groups selection")|e('js') }}';
-                    if ( _managed ) {
-                        _title = '{{ _T("Managed groups selection")|e('js') }}';
-                    }
-                    {% include "elements/js/modal.js.twig" with {
-                        modal_title: "_title",
-                        modal_content: "res",
-                        modal_class: "groups-selection fullscreen",
-                        modal_content_class: "scrolling",
-                        modal_deny_only: true,
-                        modal_cancel_text: _T("Close")|e("js")
-                    } %}
-                    _groups_ajax_mapper(res, _groups, _managed);
-                }
-
-                var _groups_ajax_mapper = function(res, _groups, _managed){
-                    $('#btnvalid').click(function(){
-                        //remove actual groups
-                        var _form = (_managed) ? 'managed' : 'user';
-                        $('#' + _form + 'groups_form').empty();
-                        var _existing_labels = $('#groups_field .labels').children().length;
-                        var _new_labels = 0;
-                        if ($('#groups_field .labels').length === 0) {
-                            var _labels_container = '<div class="ui large labels"></div>';
-                            $('#btngroups').before(_labels_container);
-                        } else {
-                            if (_managed) {
-                                $('#groups_field .labels').find('.label.manager').remove();
-                            } else {
-                                $('#groups_field .labels').find('.label.member').remove();
-                            }
-                        }
-                        var _groups = new Array();
-                        var _groups_str = '';
-
-                        $('li[id^="group_"]').each(function(){
-                            //get group values
-                            _gid = this.id.substring(6, this.id.length);
-                            _gname = $(this).text();
-                            _groups[_groups.length] = this.id.substring(6, this.id.length);
-                            var _iname = (_managed) ? 'groups_managed_adh' : 'groups_adh';
-                            $('#' + _form + 'groups_form').append(
-                                '<input type="hidden" value="' +
-                                _gid + '|' + _gname + '|' +
-                                '" name="' + _iname + '[]">'
-                            );
-                            if (_managed) {
-                                _groups_str += '<span class="ui orange basic label manager">';
-                                _groups_str += '<i class="ui shield icon tooltip" title="' + '{{ _T("Group manager")|e('js') }}' + '" aria-hidden="true"></i>';
-                            } else {
-                                _groups_str += '<span class="ui orange basic label member">';
-                                _groups_str += '<i class="ui tag icon tooltip" title="' + '{{ _T("Member of group")|e('js') }}' + '" aria-hidden="true"></i>';
-                            }
-                            _groups_str += _gname;
-                            _groups_str += '</span>';
-                            _new_labels += 1;
-                        });
-                        $('#groups_field .labels').append(_groups_str);
-                        var _modified = '<div class="ui yellow tiny message with-transition">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div>';
-                        if (_existing_labels != _new_labels) {
-                            $('#groups_field').find('.message').remove();
-                            $('#groups_field').append(_modified);
-                        }
-                        $('.message.with-transition').transition('flash');
-                        $('.groups-selection').modal('hide');
-                    });
-
-                    //Remap links
-                    var _none = $('#none_selected').clone();
-                    $('li input[type=checkbox]').click(function(e){
-                        e.stopPropagation();
-                    });
-                    $('li[id^="group_"]').click(function(){
-                        $(this).remove();
-                        if ( $('#selected_groups ul li').length == 0 ) {
-                            $('#selected_groups ul').append(_none);
-                        }
-                    });
-
-                    //Select a row
-                    $('#listing tbody tr').click(function(event){
-                        event.preventDefault();
-                        var _glink = $(this).find('.username_row a');
-                        var _gid = _glink[0].href.match(/.*\/(\d+)$/)[1];
-                        var _gname = _glink.text();
-                        $('#none_selected').remove()
-                        if ( $('#group_' + _gid).length == 0 ) {
-                            var _li = '<li id="group_' + _gid + '" class="item">'
-                                    + '<i class="icons" aria-hidden="true"><i class="users icon"><i class="top right corner minus icon"></i></i></i>'
-                                    + '<span class="ui content">' + _gname + '</span></li>';
-                            $('#selected_groups ul').append(_li);
-                            $('#group_' + _gid).click(function(){
-                                $(this).remove();
-                                if ( $('#selected_groups ul li').length == 0 ) {
-                                    $('#selected_groups ul').append(_none);
-                                }
-                            });
-                        }
-                        return false;
-                    }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a group")|e('js') }}');
-                }
+                {# Member's groups #}
+                {% include "elements/js/member_groups.js.twig" %}
 
     {% if not self_adh and not member.hasChildren() %}
                 {# Parent selection #}
@@ -445,19 +297,30 @@
                     }
                 });
 
-    {% if preferences.pref_force_picture_ratio == 1 %}
-                // Show photo cropping preferences on file selection
-                let _photo_new = document.getElementById('photo_new');
-                _photo_new.addEventListener('change', function () {
-                    if (_photo_new.files.length > 0) {
-                        let _crop_focus = document.getElementById('crop_focus_field');
-                        _crop_focus.classList.remove('displaynone');
-                        $('#crop_focus_field').transition('glow');
-                        return;
-                    }
-                });
-    {% endif %}
 {% endif %}
+
+                {# the picture is not part of the form when its field is hidden #}
+                let _photo_new = document.getElementById('photo_new');
+                if (_photo_new) {
+    {% if preferences.pref_force_picture_ratio == 1 %}
+                    // Show photo cropping preferences on file selection
+                    _photo_new.addEventListener('change', function () {
+                        if (_photo_new.files.length > 0) {
+                            let _crop_focus = document.getElementById('crop_focus_field');
+                            _crop_focus.classList.remove('displaynone');
+                            $('#crop_focus_field').transition('glow');
+                            return;
+                        }
+                    });
+    {% endif %}
+                    // a required picture that is deleted must be replaced
+                    let _del_photo = document.getElementById('del_photo');
+                    if (_del_photo && _photo_new.closest('.field').classList.contains('required')) {
+                        _del_photo.addEventListener('change', function () {
+                            _photo_new.required = _del_photo.checked;
+                        });
+                    }
+                }
             });
         </script>
 {% endblock %}

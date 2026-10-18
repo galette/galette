@@ -47,18 +47,6 @@ class FeatureStatus extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
         $featureFlags = new FeatureFlagManager();
 
-        // Display current mode
-        $debugMode = $featureFlags->isDebugMode();
-        $io->section('Environment');
-        $io->table(
-            ['Setting', 'Value'],
-            [
-                ['Debug Mode', $debugMode ? '<info>✓ Enabled</info>' : '<error>✗ Disabled</error>'],
-                ['GALETTE_DEBUG', defined('GALETTE_DEBUG') && GALETTE_DEBUG ? 'true' : 'false'],
-                ['GALETTE_MODE', defined('GALETTE_MODE') ? GALETTE_MODE : '-'],
-            ]
-        );
-
         // Get all flags with their status
         $allFlags = $featureFlags->getAllFlagsWithStatus();
         $registryFlags = $featureFlags->getRegistryFlags();
@@ -95,9 +83,7 @@ class FeatureStatus extends AbstractCommand
             $badges_str = $badges !== [] ? implode(' ', $badges) : '<fg=gray>[available]</>';
 
             $reason = '';
-            if (!$debugMode && $info['declared']) {
-                $reason = '<comment>(requires debug mode)</comment>';
-            } elseif (!empty($info['requires']) && !$info['dependencies_satisfied']) {
+            if (!empty($info['requires']) && !$info['dependencies_satisfied']) {
                 $missing = $info['requires'];
                 // Filter to show only missing dependencies
                 $actuallyMissing = array_filter($missing, fn($dep) => !($allFlags[$dep]['enabled'] ?? false));
@@ -118,6 +104,7 @@ class FeatureStatus extends AbstractCommand
             $tableRows[] = [
                 $flag,
                 $status,
+                $info['source'] ?? '-',
                 $info['description'],
                 $dependencies,
                 $badges_str,
@@ -126,7 +113,7 @@ class FeatureStatus extends AbstractCommand
         }
 
         $io->table(
-            ['Flag Name', 'Status', 'Description', 'Dependencies', 'State', 'Note'],
+            ['Flag Name', 'Status', 'Source', 'Description', 'Dependencies', 'State', 'Note'],
             $tableRows
         );
 
@@ -141,7 +128,7 @@ class FeatureStatus extends AbstractCommand
             '<info>Statistics:</info>',
             sprintf('  - Total registered flags: %d', $registeredCount),
             sprintf('  - Enabled flags: %d', $enabledCount),
-            sprintf('  - Declared in config: %d', $declaredCount),
+            sprintf('  - Declared (config, environment, database): %d', $declaredCount),
             sprintf('  - Used in code: %d', $accessedCount),
             ''
         ]);
@@ -158,15 +145,10 @@ class FeatureStatus extends AbstractCommand
         }
 
         // Display usage information
-        if (!$debugMode) {
-            $io->warning(
-                'Feature flags are only enabled when GALETTE_DEBUG is set to true. '
-                . 'They are automatically disabled in production mode for security.'
-            );
-        } elseif ($enabledCount > 0) {
+        if ($enabledCount > 0) {
             $io->success(sprintf('%d feature flag(s) currently active.', $enabledCount));
         } else {
-            $io->note('No flags are currently enabled. Enable them in behavior.inc.php to use experimental features.');
+            $io->note('No flags are currently enabled. Turn them on from the advanced configuration page or with galette:feature:enable.');
         }
 
         return Command::SUCCESS;

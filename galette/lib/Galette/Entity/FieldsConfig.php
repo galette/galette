@@ -14,6 +14,7 @@ use ArrayObject;
 use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -44,6 +45,7 @@ class FieldsConfig
     public const int TYPE_URL = 9;
     public const int TYPE_RADIO = 10;
     public const int TYPE_SELECT = 11;
+    public const int TYPE_PICTURE = 12;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -97,9 +99,22 @@ class FieldsConfig
         'date_modif_adh'
     ];
 
+    /**
+     * Fields always shown on self subscription, whatever their visibility;
+     * password field holds the captcha.
+     *
+     * @var array<string>
+     */
+    private array $self_shown_fields = [
+        'email_adh',
+        'login_adh',
+        'mdp_adh'
+    ];
+
     /** @var array<string> */
     private array $non_display_elements = [
         'date_echeance',
+        'photo',
         'mdp_adh',
         'titre_adh',
         'sexe_adh',
@@ -152,10 +167,7 @@ class FieldsConfig
             $this->buildLists();
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Fields configuration cannot be loaded!',
-                Analog::URGENT
-            );
+            Logs::exception($e, 'Fields configuration cannot be loaded!', Analog::URGENT);
             throw $e;
         }
     }
@@ -190,13 +202,30 @@ class FieldsConfig
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
-            'visible'        => (int)$rset->visible,
+            'visible'        => $this->restrictVisibility((string)$rset->field_id, (int)$rset->visible),
             'required'       => (bool)$rset->required,
             'propname'       => $this->defaults[$rset->field_id]['propname'],
             'position'       => (int)$rset->position,
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
         ];
+    }
+
+    /**
+     * Restrict visibility of fields that must never be exposed to members
+     *
+     * @param string $field_id Field name
+     * @param int    $visible  Configured visibility
+     */
+    private function restrictVisibility(string $field_id, int $visible): int
+    {
+        if (
+            $field_id === 'info_adh'
+            && !in_array($visible, [self::NOBODY, self::ADMIN, self::STAFF], strict: true)
+        ) {
+            return self::STAFF;
+        }
+        return $visible;
     }
 
     /**
@@ -332,11 +361,10 @@ class FieldsConfig
                 }
             }
         } catch (Throwable $e) {
-            Analog::log(
+            Logs::exception(
+                $e,
                 '[' . $class . '] An error occurred while checking update for '
-                . 'fields configuration for table `' . $this->table . '`. '
-                . $e->getMessage(),
-                Analog::ERROR
+                . 'fields configuration for table `' . $this->table . '`.'
             );
             throw $e;
         }
@@ -386,10 +414,7 @@ class FieldsConfig
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'Unable to initialize default fields configuration.' . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'Unable to initialize default fields configuration.');
 
             throw $e;
         }
@@ -476,20 +501,10 @@ class FieldsConfig
                             $o->visible = self::ADMIN;
                         }
 
-                        // enforce access control on other info admin field
-                        if ($o->field_id === 'others_infos_admin') {
-                            $o->visible = self::STAFF;
-                        }
-
-                        // skip fields according to access control
+                        // skip fields according to access control, except mandatory ones for self subscription
                         if (
-                            $o->visible == self::NOBODY
-                            || ($o->visible == self::ADMIN
-                                && $access_level < Authentication::ACCESS_ADMIN)
-                            || ($o->visible == self::STAFF
-                                && $access_level < Authentication::ACCESS_STAFF)
-                            || ($o->visible == self::MANAGER
-                                && $access_level < Authentication::ACCESS_MANAGER)
+                            !self::isGranted((int)$o->visible, $access_level)
+                            && !($selfs && in_array($o->field_id, $this->self_shown_fields))
                         ) {
                             continue;
                         }
@@ -506,6 +521,8 @@ class FieldsConfig
                             $o->type = self::TYPE_SELECT;
                         } elseif ($o->field_id == 'sexe_adh') {
                             $o->type = self::TYPE_RADIO;
+                        } elseif ($o->field_id == 'photo') {
+                            $o->type = self::TYPE_PICTURE;
                         } else {
                             $o->type = self::TYPE_STR;
                         }
@@ -533,7 +550,7 @@ class FieldsConfig
                         }
 
                         if ($selfs === true) {
-                            //email, login and password are always required for self subscription
+                            //email and login are always required for self subscription
                             $srequireds = ['email_adh', 'login_adh'];
                             if (in_array($o->field_id, $srequireds)) {
                                 $o->required = true;
@@ -552,10 +569,7 @@ class FieldsConfig
                 'hiddens'   => $hidden_elements
             ];
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting form elements',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred getting form elements');
             throw $e;
         }
     }
@@ -564,17 +578,36 @@ class FieldsConfig
      * Get fields that are allowed for current user
      *
      * @param Login $login Login instance
+     * @param bool  $selfs True if we're called from self subscription
      *
      * @return string[]
      */
-    public function getAllowedFields(Login $login): array
+    public function getAllowedFields(Login $login, bool $selfs = false): array
     {
-        $form_elements = $this->getFormElements($login, new: false);
+        $form_elements = $this->getFormElements($login, new: false, selfs: $selfs);
         $to_check = [];
         foreach ($form_elements['fieldsets'] as $fieldset) {
             $to_check = array_merge($to_check, array_keys($fieldset->elements));
         }
-        return array_merge($to_check, array_keys($form_elements['hiddens']));
+        $to_check = array_merge($to_check, array_keys($form_elements['hiddens']));
+
+        //fields stored apart are handled on their own
+        return array_values(array_filter(
+            $to_check,
+            fn(string $field): bool => self::isColumn($this->defaults[$field])
+        ));
+    }
+
+    /**
+     * Is a field definition a column of the table?
+     *
+     * Some fields are only listed (name, state of dues), others are stored apart (picture).
+     *
+     * @param array<string, mixed> $definition Field definition
+     */
+    public static function isColumn(array $definition): bool
+    {
+        return (int)$definition['position'] !== -1 && ($definition['db_column'] ?? true);
     }
 
     /**
@@ -629,15 +662,7 @@ class FieldsConfig
                         }
 
                         // skip fields according to access control
-                        if (
-                            $o->visible == self::NOBODY
-                            || ($o->visible == self::ADMIN
-                                && $access_level < Authentication::ACCESS_ADMIN)
-                            || ($o->visible == self::STAFF
-                                && $access_level < Authentication::ACCESS_STAFF)
-                            || ($o->visible == self::MANAGER
-                                && $access_level < Authentication::ACCESS_MANAGER)
-                        ) {
+                        if (!self::isGranted((int)$o->visible, $access_level)) {
                             continue;
                         }
 
@@ -651,10 +676,7 @@ class FieldsConfig
             }
             return $display_elements;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting display elements',
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred getting display elements');
             throw $e;
         }
     }
@@ -687,6 +709,39 @@ class FieldsConfig
     public function getVisibility(string $field): int
     {
         return $this->all_visibles[$field];
+    }
+
+    /**
+     * Is specified field visible at given access level?
+     *
+     * Unknown fields are never visible.
+     *
+     * @param string $field        Field name
+     * @param int    $access_level Access level, one of Authentication::ACCESS_* constants
+     */
+    public function isVisibleFor(string $field, int $access_level): bool
+    {
+        return self::isGranted((int)($this->all_visibles[$field] ?? self::NOBODY), $access_level);
+    }
+
+    /**
+     * Does given access level grant access to a field with specified visibility?
+     *
+     * User related visibilities (read, write) and public ones do not restrict
+     * anything here: they only matter on the member own pages.
+     *
+     * @param int $visibility   Field visibility, one of Permissions constants
+     * @param int $access_level Access level, one of Authentication::ACCESS_* constants
+     */
+    public static function isGranted(int $visibility, int $access_level): bool
+    {
+        return match ($visibility) {
+            self::NOBODY => false,
+            self::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            self::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            self::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            default => true
+        };
     }
 
     /**
@@ -740,12 +795,13 @@ class FieldsConfig
             foreach ($this->categorized_fields as $cat) {
                 foreach ($cat as $pos => $field) {
                     if (in_array($field['field_id'], $this->non_required)) {
-                        $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
+                        $field['required'] = false;
                     }
 
                     if ($field['field_id'] === 'parent_id') {
                         $field['visible'] = 0;
                     }
+                    $field['visible'] = $this->restrictVisibility($field['field_id'], (int)$field['visible']);
 
                     $params = [
                         'required'              => $field['required'],
@@ -778,11 +834,10 @@ class FieldsConfig
             return $this->load();
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
+            Logs::exception(
+                $e,
                 '[' . $class . '] An error occurred while saving fields '
                 . 'configuration for table `' . $this->table . '`.'
-                . $e->getMessage(),
-                Analog::ERROR
             );
             throw $e;
         }
@@ -829,8 +884,7 @@ class FieldsConfig
             foreach ($old_required as $or) {
                 $stmt->execute(
                     [
-                        'required'  => ($or->required === false)
-                            ? ($this->zdb->isPostgres() ? 'false' : 0) : true,
+                        'required'  => $or->required !== false,
                         'field_id'  => $or->field_id
                     ]
                 );
@@ -856,11 +910,7 @@ class FieldsConfig
             return true;
         } catch (Throwable $e) {
             $this->zdb->rollback();
-            Analog::log(
-                'An error occurred migrating old required fields. | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred migrating old required fields.');
             throw $e;
         }
     }
@@ -888,25 +938,15 @@ class FieldsConfig
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
-            $required = $d['required'];
-            if ($required === false) {
-                $required = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
-            $list_visible = $d['list_visible'] ?? false;
-            if ($list_visible === false) {
-                $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
-            }
-
             $stmt->execute(
                 [
                     'field_id'              => $d['field_id'],
                     'table_name'            => $d['table_name'],
-                    'required'              => $required,
+                    'required'              => $d['required'],
                     'visible'               => $d['visible'],
                     'category'              => $d['category'],
                     'position'              => $d['position'],
-                    'list_visible'          => $list_visible,
+                    'list_visible'          => $d['list_visible'] ?? false,
                     'list_position'         => $d['list_position'] ?? -1,
                     'width_in_forms'        => $d['width_in_forms'] ?? 1
                 ]
@@ -945,15 +985,7 @@ class FieldsConfig
         unset($fields['mdp_adh']);
 
         foreach (array_keys($fields) as $k) {
-            if (
-                $visibles[$k] == self::NOBODY
-                || ($visibles[$k] == self::ADMIN
-                    && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == self::STAFF
-                    && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == self::MANAGER
-                    && $access_level < Authentication::ACCESS_MANAGER)
-            ) {
+            if (!self::isGranted((int)$visibles[$k], $access_level)) {
                 unset($fields[$k]);
             }
         }

@@ -72,7 +72,7 @@ abstract class BaseGaletteTestCase extends TestCase
         $_SESSION = [];
         $flash_data = [];
         $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
+        $this->flash = new \Galette\Core\FlashMessages($flash_data);
 
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;

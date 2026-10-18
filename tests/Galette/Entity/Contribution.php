@@ -1358,19 +1358,61 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Test next year contribution
+     * "Now" dates for next year contribution tests.
+     *
+     * Subtracting one year from February 29th overflows to March 1st, which
+     * used to break those tests on leap days (see https://bugs.galette.eu/issues/1796).
+     *
+     * @return array<string, array{now: string}>
      */
-    public function testNextYear(): void
+    public static function nextYearNowProvider(): array
     {
+        return [
+            //the originally reported failing case
+            'February 29th (leap)'      => ['now' => '2024-02-29'],
+            'end of February, leap year' => ['now' => '2024-02-28'],
+            'end of February'           => ['now' => '2026-02-28'],
+            'beginning of March'        => ['now' => '2026-03-01'],
+            'end of December'           => ['now' => '2026-12-31'],
+            //plain mid-month control case
+            'mid-month control'         => ['now' => '2026-05-15'],
+        ];
+    }
+
+    /**
+     * Same day one year before the given date; clamped to the last day of
+     * the month when it does not exist (2024-02-29 gives 2023-02-28).
+     *
+     * @param DateTime $date Reference date
+     */
+    private function oneYearBefore(DateTime $date): DateTime
+    {
+        $year = (int)$date->format('Y') - 1;
+        $month = (int)$date->format('m');
+        $last_day = (int)(new DateTime(sprintf('%04d-%02d-01', $year, $month)))->format('t');
+        $day = min((int)$date->format('d'), $last_day);
+        return new DateTime(sprintf('%04d-%02d-%02d', $year, $month, $day));
+    }
+
+    /**
+     * Test next year contribution
+     *
+     * @param string $now Date to freeze "now" to
+     */
+    #[DataProvider('nextYearNowProvider')]
+    public function testNextYear(string $now): void
+    {
+        $this->setFakeTime($now . ' 12:00:00');
+
         $this->logSuperAdmin();
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new DateTime(); // 2023-12-30
-        $ny_begin_date = clone $begin_date; // 2023-12-30
+        $ny_begin_date = new DateTime((new DateTime())->format('Y-m-d'));
+        $begin_date = $this->oneYearBefore($ny_begin_date);
         $end_date = clone $begin_date;
-        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
-        $end_date->sub(new \DateInterval('P1D')); // 2023-12-29
+        $end_date->add(new \DateInterval('P12M'));
+        $end_date->sub(new \DateInterval('P1D'));
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -1394,19 +1436,25 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test next year contribution from a 0.9.x
+     *
+     * @param string $now Date to freeze "now" to
      */
-    public function testNextYearFrom096(): void
+    #[DataProvider('nextYearNowProvider')]
+    public function testNextYearFrom096(string $now): void
     {
+        $this->setFakeTime($now . ' 12:00:00');
+
         $this->logSuperAdmin();
         $this->getMemberOne();
 
-        //create contribution for member
-        $begin_date = new DateTime(); // 2023-12-30
-        $ny_begin_date = clone $begin_date; // 2023-12-30
-        $end_date = clone $begin_date;
+        //create contribution for member; 0.9.x ended contributions on the
+        //same day as they began, one year later: that is today, except on
+        //February 29th where it is the day before.
+        $ny_begin_date = new DateTime((new DateTime())->format('Y-m-d'));
+        $begin_date = $this->oneYearBefore($ny_begin_date);
         $due_date = clone $begin_date;
-
-        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
+        $due_date->add(new \DateInterval('P1Y'));
+        $end_date = clone $due_date;
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
@@ -1438,10 +1486,30 @@ class Contribution extends GaletteTestCase
         $this->assertSame(100.00, $contrib->amount);
         $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
 
+        //next contribution starts the day after due date: tomorrow when member
+        //is still up to date today, today when membership ended yesterday
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => $this->adh->id, 'payment_type' => 1]);
+        $ny_begin_date = clone $due_date;
+        $ny_begin_date->add(new \DateInterval('P1D'));
         $this->assertSame($ny_begin_date->format('Y-m-d'), $contrib->begin_date);
 
-        $check = $contrib->check(['type_paiement_cotis' => 1, 'montant_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
+        //0.9.x contributions ended on the next begin date; starting the new one
+        //on that very day must not be considered as an overlap
+        //see https://bugs.galette.eu/issues/1762
+        $ny_end_date = clone $due_date;
+        $ny_end_date->add(new \DateInterval('P1Y'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+        $check = $contrib->check(
+            [
+                'type_paiement_cotis' => 1,
+                'montant_cotis' => 1,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_debut_cotis' => $due_date->format(_T('Y-m-d')),
+                'date_fin_cotis' => $ny_end_date->format(_T('Y-m-d')),
+            ],
+            [],
+            []
+        );
         if (is_array($check)) {
             var_dump($check);
         }
@@ -1449,6 +1517,7 @@ class Contribution extends GaletteTestCase
 
         $store = $contrib->store();
         $this->assertTrue($store);
+        $this->assertSame($due_date->format('Y-m-d'), $contrib->begin_date);
     }
 
     /**
@@ -1711,6 +1780,73 @@ class Contribution extends GaletteTestCase
             'Renewal on the last valid day must start on the next membership begin date'
         );
         $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
+    }
+
+    /**
+     * Same as testRenewalOnLastMembershipDay, with a membership extension
+     * instead of a beginning of membership date: a member renewing on their
+     * very last valid day must get a contribution starting the day after,
+     * not one starting today and overlapping the current period.
+     *
+     * @param string $now Date to freeze "now" to (last valid membership day)
+     */
+    #[DataProvider('lastMembershipDayProvider')]
+    public function testRenewalOnLastMembershipDayWithExtension(string $now): void
+    {
+        //freeze the clock at noon on the given day
+        $this->setFakeTime($now . ' 12:00:00');
+
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //today is the last valid day; the next period begins tomorrow
+        $today = new DateTime((new DateTime())->format('Y-m-d'));
+        $next_begin_date = clone $today;
+        $next_begin_date->add(new \DateInterval('P1D'));
+
+        //any begin date in the past will do
+        $begin_date = clone $today;
+        $begin_date->sub(new \DateInterval('P6M'));
+
+        //existing contribution ending today
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $today->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+
+        //the renewal must cover the next full period
+        $ny_end_date = clone $next_begin_date;
+        $ny_end_date->add(new \DateInterval('P12M'));
+        $ny_end_date->sub(new \DateInterval('P1D'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1, 'adh' => $this->adh->id, 'payment_type' => 1]
+        );
+
+        $this->assertSame(
+            $next_begin_date->format('Y-m-d'),
+            $contrib->begin_date,
+            'Renewal on the last valid day must start the day after'
+        );
+        $this->assertSame($ny_end_date->format('Y-m-d'), $contrib->end_date);
+
+        $check = $contrib->check(['type_paiement_cotis' => 1, 'montant_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
+        $this->assertTrue($check);
+        $this->assertTrue($contrib->store());
     }
 
     /**

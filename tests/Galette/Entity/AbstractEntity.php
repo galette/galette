@@ -70,4 +70,65 @@ class AbstractEntity extends GaletteTestCase
             "Entity validation errors:\n" . implode("\n", $errors)
         );
     }
+
+    /**
+     * Raw database values provider
+     *
+     * @return array<string, array{mixed, bool}>
+     */
+    public static function booleansProvider(): array
+    {
+        return [
+            'native true' => [true, true],
+            'native false' => [false, false],
+            'mysql true' => [1, true],
+            'mysql false' => [0, false],
+            'stringified true' => ['1', true],
+            'stringified false' => ['0', false],
+            'empty string' => ['', false],
+            'pgsql true' => ['t', true],
+            'pgsql false' => ['f', false],
+        ];
+    }
+
+    /**
+     * Test database values are converted to property types on load
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('booleansProvider')]
+    public function testLoadBooleans(mixed $raw, bool $expected): void
+    {
+        $entity = new \Galette\Tests\Fixtures\TypedEntity();
+        $entity->loadFromRS(new \ArrayObject(
+            ['id_typed' => '3', 'flag' => $raw, 'number' => '42', 'optional' => null, 'label' => 'A label'],
+            \ArrayObject::ARRAY_AS_PROPS
+        ));
+
+        $this->assertSame(3, $entity->getId());
+        $this->assertSame($expected, $entity->flag);
+        $this->assertSame(42, $entity->number);
+        $this->assertNull($entity->optional);
+        $this->assertSame('A label', $entity->label);
+    }
+
+    /**
+     * Test booleans are sent in a form the current database engine accepts
+     */
+    public function testBooleansToDb(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $entity = new \Galette\Tests\Fixtures\TypedEntity();
+        $method = new \ReflectionMethod(\Galette\Entity\AbstractEntity::class, 'toColumnData');
+
+        $entity->flag = false;
+        $data = $method->invoke($entity, \Galette\Entity\DTO\ColumnMapping::SCOPE_INSERT);
+        $this->assertSame($this->zdb->isPostgres() ? 'false' : 0, $data['flag']);
+        $this->assertSame(0, $data['number']);
+        $this->assertSame('', $data['label']);
+
+        $entity->flag = true;
+        $data = $method->invoke($entity, \Galette\Entity\DTO\ColumnMapping::SCOPE_INSERT);
+        $this->assertSame($this->zdb->isPostgres() ? 'true' : 1, $data['flag']);
+    }
 }

@@ -12,6 +12,7 @@ namespace Galette\Tests\Util;
 
 use Galette\Tests\GaletteTestCase;
 use Galette\Core\Preferences;
+use Galette\Enums\PasswordStrength;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -104,6 +105,62 @@ class Password extends GaletteTestCase
         $this->assertTrue($password->isValid($pass), implode(', ', $password->getErrors()));
         $this->assertSame([], $password->getErrors());
         $this->assertEquals($errors, $password->getStrenghtErrors());
+    }
+
+    /**
+     * Password strength levels have a label
+     */
+    public function testPasswordStrengthLabel(): void
+    {
+        $this->assertSame('None', PasswordStrength::None->getLabel());
+        $this->assertSame('Strong', PasswordStrength::Strong->getLabel());
+        $this->assertSame('Very strong', PasswordStrength::VeryStrong->getLabel());
+    }
+
+    /**
+     * Test rules, reported to the strength indicator
+     */
+    public function testGetRules(): void
+    {
+        $this->preferences->pref_password_length = 6;
+        $this->preferences->pref_password_strength = Preferences::PWD_STRONG;
+        $this->preferences->pref_password_blacklist = true;
+
+        //valid with the strong policy, but without any special character
+        $password = new \Galette\Util\Password($this->preferences);
+        $this->assertTrue($password->isValid('Kawa42'));
+        $this->assertSame(3, $password->getStrenght());
+        $this->assertSame([], $password->getOtherErrors());
+        $this->assertSame(
+            [
+                'length' => ['label' => 'At least 6 characters', 'met' => true],
+                'strength' => [
+                    ['label' => 'Letters', 'met' => true],
+                    ['label' => 'Lowercase and uppercase letters', 'met' => true],
+                    ['label' => 'Numbers', 'met' => true],
+                    ['label' => 'Special characters', 'met' => false],
+                ]
+            ],
+            $password->getRules('Kawa42')
+        );
+
+        //strength errors are not cumulated across checks
+        $this->assertTrue($password->isValid('Kawa42'));
+        $this->assertSame(['Does not contains special characters'], $password->getStrenghtErrors());
+
+        //rules are still reported for a blacklisted password
+        $this->assertFalse($password->isValid('starwars'));
+        $this->assertSame(['Password is blacklisted!'], $password->getOtherErrors());
+        $rules = $password->getRules('starwars');
+        $this->assertTrue($rules['length']['met']);
+        $this->assertTrue($rules['strength'][0]['met']);
+        $this->assertFalse($rules['strength'][1]['met']);
+
+        //no length rule when there is no minimum
+        $this->preferences->pref_password_length = 0;
+        $password = new \Galette\Util\Password($this->preferences);
+        $password->isValid('abc');
+        $this->assertNull($password->getRules('abc')['length']);
     }
 
     /**

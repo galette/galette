@@ -29,6 +29,7 @@ use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
+use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -316,6 +317,7 @@ class MembersController extends CrudController
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
                 'display_elements'  => $display_elements,
+                'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'navigate'          => $this->handleNavigationLinks($member->id)
             ]
@@ -864,7 +866,7 @@ class MembersController extends CrudController
         $groups_list = $groups->getList();
 
         //we want only visible fields
-        $fields = $this->members_fields;
+        $fields = array_filter($this->members_fields, FieldsConfig::isColumn(...));
         $fc = $this->fields_config;
         $fc->filterVisible($this->login, $fields);
 
@@ -914,6 +916,10 @@ class MembersController extends CrudController
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
                 'payments_types'        => $ptlist,
+                'relative_anchors'      => RelativeDate::getAnchors(
+                    $this->preferences->getMembershipPeriodStart() !== null
+                ),
+                'relative_units'        => RelativeDate::getUnits(),
                 'documentation'         => 'usermanual/recherche.html#advanced-search'
             ]
         );
@@ -986,36 +992,6 @@ class MembersController extends CrudController
             }
         } else {
             switch ($post['from']) {
-                case 'groups':
-                    if (!isset($post['gid'])) {
-                        Analog::log(
-                            'Trying to list group members with no group id provided',
-                            Analog::ERROR
-                        );
-                        throw new \Exception('A group id is required.');
-                    }
-                    if (!isset($post['members'])) {
-                        $group = new Group((int)$post['gid']);
-                        $selected_members = [];
-                        if (!isset($post['mode']) || $post['mode'] == 'members') {
-                            $selected_members = $group->getMembers();
-                        } elseif ($post['mode'] == 'managers') {
-                            $selected_members = $group->getManagers();
-                        } else {
-                            Analog::log(
-                                'Trying to list group members with unknown mode',
-                                Analog::ERROR
-                            );
-                            throw new \Exception('Unknown mode.');
-                        }
-                    } else {
-                        $m = new Members();
-                        $selected_members = $m->getArrayList($post['members']);
-                        if (isset($post['unreachables']) && is_array($post['unreachables'])) {
-                            $unreachables_members = $m->getArrayList($post['unreachables']);
-                        }
-                    }
-                    break;
                 case 'attach':
                     if (!isset($post['id_adh'])) {
                         throw new \RuntimeException(
@@ -1035,10 +1011,6 @@ class MembersController extends CrudController
 
         if (isset($post['multiple'])) {
             $params['multiple'] = true;
-        }
-
-        if (isset($post['gid'])) {
-            $params['the_id'] = (int)$post['gid'];
         }
 
         if (isset($post['id_adh'])) {
@@ -1250,6 +1222,7 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
                 'addchild'          => ($action === 'addchild'),
+                'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'documentation'     => 'usermanual/adherents.html'
             ] + $route_params
@@ -1671,7 +1644,7 @@ class MembersController extends CrudController
             //check captcha
             /** @var Gaptcha $gaptcha */
             $gaptcha = $this->session->gaptcha;
-            if (!$gaptcha->check((int)$post['gaptcha'])) {
+            if (!isset($post['gaptcha']) || !$gaptcha->check((int)$post['gaptcha'])) {
                 $error_detected[] = _T('Invalid captcha');
             }
         }
@@ -1736,8 +1709,12 @@ class MembersController extends CrudController
         $fieldsets     = $form_elements['fieldsets'];
         $required      = [];
         $disabled      = [];
+        $photo_editable = false;
 
         foreach ($fieldsets as $category) {
+            if (isset($category->elements['photo']) && !$category->elements['photo']->disabled) {
+                $photo_editable = true;
+            }
             foreach ($category->elements as $field) {
                 if ($field->required) {
                     $required[$field->field_id] = true;
@@ -1765,8 +1742,19 @@ class MembersController extends CrudController
         // Validation
         $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
 
+        //picture can only be changed if its field is in the form
+        $files = $request->getUploadedFiles();
+        if (!$photo_editable) {
+            unset($files['photo'], $post['del_photo']);
+        }
+
         // regular fields
-        $valid = $member->check($post, $required, $disabled);
+        $valid = $member->check(
+            values: $post,
+            required: $required,
+            disabled: $disabled,
+            files: $files
+        );
         if ($valid !== true) {
             $error_detected = array_merge($error_detected, $valid);
         }
@@ -1837,12 +1825,14 @@ class MembersController extends CrudController
                 $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
                 $cropping['focus'] = $post['crop_focus'] ?? 'center';
             }
-            $files_res = $member->handleFiles($request->getUploadedFiles(), $cropping);
+            $files_res = $member->handleFiles($files, $cropping);
             if (is_array($files_res)) {
                 $error_detected = array_merge($error_detected, $files_res);
             }
 
-            if (isset($post['del_photo']) && !$member->picture->delete()) {
+            //a new picture replaces the deleted one
+            $new_photo = isset($files['photo']) && $files['photo']->getError() === UPLOAD_ERR_OK;
+            if (isset($post['del_photo']) && !$new_photo && !$member->picture->delete()) {
                 $error_detected[] = _T("Delete failed");
                 $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
                 Analog::log(

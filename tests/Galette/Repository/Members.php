@@ -560,6 +560,53 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test search on relative dates
+     */
+    public function testGetListRelativeDates(): void
+    {
+        //contribution begun yesterday
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_begin_date_begin = '@today+2d';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(0, $members->getList()->count());
+
+        $filters->contrib_begin_date_begin = '@today-3d';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(1, $members->getList()->count());
+
+        //and ends in about a year
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_end_date_begin = '@today+11m';
+        $filters->contrib_end_date_end = '@today+1y';
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(1, $members->getList()->count());
+
+        //free search on birth date: members born more than 18 years ago
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@today-18y',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_BEFORE
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(8, $members->getList()->count());
+
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'ddn_adh',
+            'type' => \Galette\DynamicFields\DynamicField::DATE,
+            'search' => '@today-18y',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_AFTER
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(2, $members->getList()->count());
+    }
+
+    /**
      * Test advanced free search cannot inject SQL
      *
      * Field names are concatenated in the query as identifiers, and values
@@ -884,6 +931,121 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
+    }
+
+    /**
+     * Test advanced search ignores dynamic fields current user cannot see
+     */
+    public function testDynamicSearchPermissions(): void
+    {
+        $staff = $this->createSearchField('adh', 'Staff note', \Galette\Entity\FieldsConfig::STAFF);
+        $nobody = $this->createSearchField('adh', 'Nobody note', \Galette\Entity\FieldsConfig::NOBODY);
+        $contrib_staff = $this->createSearchField('contrib', 'Staff contribution note', \Galette\Entity\FieldsConfig::STAFF);
+
+        $this->logSuperAdmin();
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $begin_date = new DateTime();
+        $due_date = clone $begin_date;
+        $due_date->add(new \DateInterval('P1Y'));
+        $this->assertTrue($contrib->check([
+            \Galette\Entity\Adherent::PK    => $this->mids[0],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => 4
+        ], [], []));
+        $this->assertTrue($contrib->store());
+        $this->login->logout();
+
+        $values = [
+            [$this->mids[0], $staff, 'adh'],
+            [$this->mids[0], $nobody, 'adh'],
+            [$contrib->id, $contrib_staff, 'contrib'],
+        ];
+        foreach ($values as [$item, $field, $form]) {
+            $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+            $insert->values([
+                'item_id'       => $item,
+                'field_id'      => $field,
+                'field_form'    => $form,
+                'val_index'     => 1,
+                'field_val'     => 'needle'
+            ]);
+            $this->zdb->execute($insert);
+        }
+
+        $all = (new \Galette\Repository\Members(new \Galette\Filters\AdvancedMembersList()))->getList()->count();
+        $this->assertGreaterThan(1, $all);
+
+        $searches = [
+            'staff field' => ['free', $staff],
+            'inaccessible field' => ['free', $nobody],
+            'staff contribution field' => ['contrib', $contrib_staff],
+        ];
+
+        //staff sees staff fields, nobody sees inaccessible ones
+        $this->logSuperAdmin();
+        $expected = ['staff field' => 1, 'inaccessible field' => $all, 'staff contribution field' => 1];
+        foreach ($searches as $label => [$kind, $field]) {
+            $this->assertSame($expected[$label], $this->countDynamicSearch($kind, $field), $label);
+        }
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Advanced search on unknown or forbidden');
+        $this->login->logout();
+
+        //criteria on fields a simple member cannot see are discarded
+        foreach ($searches as $label => [$kind, $field]) {
+            $this->assertSame($all, $this->countDynamicSearch($kind, $field), $label);
+        }
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Advanced search on unknown or forbidden');
+    }
+
+    /**
+     * Count members found searching 'needle' in a dynamic field
+     *
+     * @param string $kind  'free' for a members field, 'contrib' for a contributions one
+     * @param int    $field Field id
+     */
+    private function countDynamicSearch(string $kind, int $field): int
+    {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        if ($kind === 'free') {
+            $filters->free_search = [
+                'idx' => 1,
+                'field' => 'dyn_' . $field,
+                'type' => \Galette\DynamicFields\DynamicField::LINE,
+                'search' => 'needle',
+                'log_op' => $filters::OP_AND,
+                'qry_op' => $filters::OP_CONTAINS
+            ];
+        } else {
+            $filters->contrib_dynamic = [$field => 'needle'];
+        }
+        return (new \Galette\Repository\Members($filters))->getList()->count();
+    }
+
+    /**
+     * Create a line dynamic field
+     *
+     * @param string $form Form name
+     * @param string $name Field name
+     * @param int    $perm Field permission
+     *
+     * @return int Field id
+     */
+    private function createSearchField(string $form, string $name, int $perm): int
+    {
+        $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::LINE);
+        $this->assertTrue($field->store([
+            'form_name'         => $form,
+            'field_name'        => $name,
+            'field_perm'        => $perm,
+            'field_type'        => \Galette\DynamicFields\DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ]), implode(' ', $field->getErrors()));
+        return (int)$field->getId();
     }
 
     /**
@@ -1265,6 +1427,7 @@ class Members extends GaletteTestCase
     public function testGetArrayList(): void
     {
         $members = new \Galette\Repository\Members();
+        $this->logSuperAdmin();
 
         $this->assertFalse($members->getArrayList($this->mids[0]));
 
@@ -1276,6 +1439,108 @@ class Members extends GaletteTestCase
         ];
         $list = $members->getArrayList($selected, ['nom_adh', 'prenom_adh']);
         $this->assertCount(4, $list);
+
+        //invalid and duplicated ids are dropped
+        $list = $members->getArrayList(['abc', -1, 0, $this->mids[0], (string)$this->mids[0]]);
+        $this->assertCount(1, $list);
+        $this->assertFalse($members->getArrayList(['abc', -1, 0]));
+
+        //anonymous users cannot get anything...
+        $this->login->logOut();
+        $this->assertFalse($members->getArrayList($selected));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to list members without being logged in.');
+
+        //...unless explicitly unscoped (internal use)
+        $list = $members->getArrayList($selected, unscoped: true);
+        $this->assertCount(4, $list);
+    }
+
+    /**
+     * Test getArrayList is restricted to members current user can see
+     */
+    public function testGetArrayListScope(): void
+    {
+        global $login;
+
+        $members = new \Galette\Repository\Members();
+        $this->logSuperAdmin();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Scoped');
+        $this->assertTrue($group->store());
+        $gid = $group->getId();
+        $this->assertTrue($group->setMembers([
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[0]),
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[1])
+        ]));
+        $this->assertTrue($group->setManagers([
+            new \Galette\Entity\Adherent($this->zdb, $this->mids[2])
+        ]));
+
+        //mids[5] is a child of mids[4]
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['parent_id' => $this->mids[4]]);
+        $update->where([\Galette\Entity\Adherent::PK => $this->mids[5]]);
+        $this->zdb->execute($update);
+        $this->login->logOut();
+
+        $all = $this->mids;
+
+        //group manager: members of managed groups, and themselves
+        $login = $this->getFakeLogin($this->mids[2], [$gid]);
+        $ids = array_map(
+            fn($member) => (int)$member->id,
+            $members->getArrayList($all)
+        );
+        sort($ids);
+        $this->assertSame([$this->mids[0], $this->mids[1], $this->mids[2]], $ids);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 10 member(s), only 3 are accessible or exist.');
+
+        $this->assertCount(0, $members->getArrayList([$this->mids[3], $this->mids[9]]));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 0 are accessible or exist.');
+
+        //simple member: themselves and their children
+        $login = $this->getFakeLogin($this->mids[4]);
+        $ids = array_map(
+            fn($member) => (int)$member->id,
+            $members->getArrayList($all)
+        );
+        sort($ids);
+        $this->assertSame([$this->mids[4], $this->mids[5]], $ids);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 10 member(s), only 2 are accessible or exist.');
+
+        //unscoped
+        $this->assertCount(10, $members->getArrayList($all, unscoped: true));
+
+        $login = $this->login;
+    }
+
+    /**
+     * Get a logged in login instance, without going through authentication
+     *
+     * @param int        $id             Member id
+     * @param array<int> $managed_groups Managed groups ids
+     */
+    private function getFakeLogin(int $id, array $managed_groups = []): \Galette\Core\Login
+    {
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Log in as a regular member
+             *
+             * @param array<int> $managed_groups Managed groups ids
+             */
+            public function fakeLogin(array $managed_groups): void
+            {
+                $this->logged = true;
+                $this->managed_groups = $managed_groups;
+            }
+        };
+        $login->setId($id);
+        $login->fakeLogin($managed_groups);
+        $this->assertTrue($login->isLogged());
+        $this->assertFalse($login->isStaff());
+        $this->assertSame(count($managed_groups) > 0, $login->isGroupManager());
+        return $login;
     }
 
     /**
@@ -1402,6 +1667,59 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test removing a member removes its contributions and transactions through their entities
+     */
+    public function testRemoveMembersEmitsContributionsAndTransactionsEvents(): void
+    {
+        $this->logSuperAdmin();
+        $member_two = $this->getMemberTwo();
+        $member_one = $this->getMemberOne();
+
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $this->assertTrue($transaction->check([
+            'id_adh' => $member_one->id,
+            'trans_date' => date('Y-m-d'),
+            'trans_amount' => 92,
+            'trans_desc' => 'FAKER' . $this->seed,
+            'type_paiement_trans' => 6,
+        ], [], []));
+        $this->assertTrue($transaction->store($this->history));
+
+        $data = ['montant_cotis' => 46, \Galette\Entity\Transaction::PK => $transaction->id] + $this->getContribData();
+        $own_contrib = $this->createContrib($data);
+        $other_contrib = $this->createContrib(
+            [\Galette\Entity\Adherent::PK => $member_two->id] + $data,
+            new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => $data['id_type_cotis']])
+        );
+
+        $removed = [];
+        $emitter = $this->container->get(\League\Event\EventDispatcher::class);
+        foreach (['contribution.remove', 'transaction.remove'] as $event_name) {
+            $emitter->subscribeOnceTo(
+                $event_name,
+                function (\Galette\Events\GaletteEvent $event) use (&$removed): void {
+                    $removed[] = [$event->eventName(), $event->getObject()->id];
+                }
+            );
+        }
+
+        $members = new \Galette\Repository\Members();
+        $this->assertTrue($members->removeMembers((int)$member_one->id));
+        $this->assertSame(
+            [['contribution.remove', $own_contrib->id], ['transaction.remove', $transaction->id]],
+            $removed
+        );
+
+        //contribution of another member is kept, without its link to the removed transaction
+        $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE);
+        $select->where([\Galette\Entity\Contribution::PK => $other_contrib->id]);
+        $row = $this->zdb->execute($select)->current();
+        $this->assertNotNull($row);
+        $this->assertNull($row->{\Galette\Entity\Transaction::PK});
+        $this->login->logOut();
+    }
+
+    /**
      * Test a failing member.before_remove listener cancels removal
      */
     public function testRemoveMembersBeforeRemoveFailure(): void
@@ -1424,7 +1742,7 @@ class Members extends GaletteTestCase
         } catch (\RuntimeException $e) {
             $this->assertSame('Plugin refuses', $e->getMessage());
         }
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) |Plugin refuses');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) | Plugin refuses');
         //rollback also cancels the test transaction, member cannot be checked
         $this->assertFalse($this->zdb->inTransaction());
     }

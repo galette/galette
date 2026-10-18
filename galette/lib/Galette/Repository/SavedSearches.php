@@ -14,6 +14,7 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -75,10 +76,7 @@ class SavedSearches
             }
             return $searches;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list saved searches | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot list saved searches', Analog::WARNING);
             throw $e;
         }
     }
@@ -100,11 +98,7 @@ class SavedSearches
 
             $select = $this->zdb->select(self::TABLE, 's');
             $select->columns($fieldsList);
-            if (0 === $this->login->id) {
-                $select->where->isNull(Adherent::PK);
-            } else {
-                $select->where([Adherent::PK => $this->login->id]);
-            }
+            $this->restrictToOwner($select);
 
             $select->order(self::buildOrderClause());
 
@@ -112,11 +106,22 @@ class SavedSearches
 
             return $select;
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot build SELECT clause for saved searches | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot build SELECT clause for saved searches', Analog::WARNING);
             throw $e;
+        }
+    }
+
+    /**
+     * Restrict query to searches owned by current user
+     *
+     * @param Select $select Select to restrict
+     */
+    private function restrictToOwner(Select $select): void
+    {
+        if (0 === $this->login->id) {
+            $select->where->isNull(Adherent::PK);
+        } else {
+            $select->where([Adherent::PK => $this->login->id]);
         }
     }
 
@@ -145,10 +150,7 @@ class SavedSearches
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
-            Analog::log(
-                'Cannot count saved searches | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'Cannot count saved searches', Analog::WARNING);
             throw $e;
         }
     }
@@ -192,13 +194,22 @@ class SavedSearches
         }
 
         if (count($list)) {
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
+            $this->restrictToOwner($select);
+            $searches = $this->zdb->execute($select);
+            if ($searches->count() !== count(array_unique($list))) {
+                Analog::log(
+                    'Asking to remove searches that do not exist or are not owned by current user.',
+                    Analog::WARNING
+                );
+                return false;
+            }
+
             try {
                 if ($transaction) {
                     $this->zdb->beginTransaction();
                 }
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
-                $searches = $this->zdb->execute($select);
                 foreach ($searches as $search) {
                     $s = new SavedSearch($this->zdb, $this->login, $search);
                     $res = $s->remove();
@@ -221,11 +232,7 @@ class SavedSearches
                 if ($transaction) {
                     $this->zdb->rollback();
                 }
-                Analog::log(
-                    'An error occurred trying to remove searches | '
-                    . $e->getMessage(),
-                    Analog::ERROR
-                );
+                Logs::exception($e, 'An error occurred trying to remove searches', Analog::ERROR);
                 throw $e;
             }
         } else {

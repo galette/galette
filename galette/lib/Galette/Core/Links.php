@@ -70,11 +70,7 @@ class Links
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error has occurred removing old temporary link '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error has occurred removing old temporary link', Analog::ERROR);
             throw $e;
         }
     }
@@ -129,11 +125,7 @@ class Links
             );
             return base64_encode($hash);
         } catch (Throwable $e) {
-            Analog::log(
-                "An error occurred trying to add temporary link entry. "
-                . $e->getMessage(),
-                Analog::ERROR
-            );
+            Logs::exception($e, 'An error occurred trying to add temporary link entry', Analog::ERROR);
             throw $e;
         }
     }
@@ -167,11 +159,7 @@ class Links
             );
             return true;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred deleting expired temporary links. '
-                . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred deleting expired temporary links', Analog::WARNING);
             throw $e;
         }
     }
@@ -207,10 +195,7 @@ class Links
             }
             return false;
         } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred getting requested hash. ' . $e->getMessage(),
-                Analog::WARNING
-            );
+            Logs::exception($e, 'An error occurred getting requested hash', Analog::WARNING);
             throw $e;
         }
     }

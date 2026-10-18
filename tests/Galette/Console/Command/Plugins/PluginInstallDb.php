@@ -13,6 +13,7 @@ namespace Galette\Tests\Console\Command\Plugins;
 use Galette\Core\Plugins;
 use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -305,10 +306,24 @@ class PluginInstallDb extends GaletteTestCase
     }
 
     /**
+     * Interactive and non-interactive (cron jobs, scripts) runs
+     *
+     * @return array<string, array{0: bool}>
+     */
+    public static function interactiveProvider(): array
+    {
+        return [
+            'interactive' => [true],
+            'non-interactive' => [false],
+        ];
+    }
+
+    /**
      * The wildcard (*) argument must handle each plugin according to its cause:
      * DISABLED_NOT_INSTALLED → install, DISABLED_NOT_UP2DATE → upgrade.
      */
-    public function testAllPluginsHandledByCorrectMode(): void
+    #[DataProvider('interactiveProvider')]
+    public function testAllPluginsHandledByCorrectMode(bool $interactive): void
     {
         // Seed version 0.1 for the upgrade plugin before loading
         $this->seedUpgradePluginOldVersion();
@@ -316,9 +331,10 @@ class PluginInstallDb extends GaletteTestCase
 
         $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
         $tester = new CommandTester($command);
-        // Use --all flag instead of ['*'] argument: interact() converts it to
-        // plugins=['*'] which execute() recognises as "all relevant plugins".
-        $tester->execute(['--all' => true]);
+        // Use --all flag instead of ['*'] argument: initialize() converts it to
+        // plugins=['*'] which execute() recognises as "all relevant plugins",
+        // including when interact() is never called.
+        $tester->execute(['--all' => true], ['interactive' => $interactive]);
 
         $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
         $output = $tester->getDisplay();
@@ -328,5 +344,35 @@ class PluginInstallDb extends GaletteTestCase
 
         $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
         $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+    }
+
+    /**
+     * Unknown plugins are rejected, even when interact() is never called
+     */
+    #[DataProvider('interactiveProvider')]
+    public function testUnknownPlugin(bool $interactive): void
+    {
+        $this->loadTestPlugins();
+
+        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $tester = new CommandTester($command);
+
+        $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown plugin(s): plugin-does-not-exist');
+        $tester->execute(['plugins' => ['plugin-does-not-exist']], ['interactive' => $interactive]);
+    }
+
+    /**
+     * --all and a plugins list cannot be used together
+     */
+    public function testAllWithPlugins(): void
+    {
+        $this->loadTestPlugins();
+
+        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $tester = new CommandTester($command);
+
+        $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
+        $tester->execute(['--all' => true, 'plugins' => [self::PLUGIN_INSTALL_ID]], ['interactive' => false]);
     }
 }

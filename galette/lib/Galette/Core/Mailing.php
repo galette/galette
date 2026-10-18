@@ -16,6 +16,7 @@ use Galette\Entity\Adherent;
 use Galette\IO\File;
 use Galette\IO\FileTrait;
 use Galette\IO\UploadSize;
+use Galette\Repository\Members;
 use Galette\Util\Html;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -172,26 +173,25 @@ class Mailing extends GaletteMail
             } else {
                 $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
             }
-        } catch (\Throwable) {
-            Analog::log(
-                'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
-                Analog::ERROR
-            );
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Unable to retrieve recipients for mailing ' . $rs->mailing_id, Analog::ERROR);
             $orig_recipients = [];
         }
 
         $_recipients = [];
-        $mdeps = ['parent' => true];
-        foreach (array_keys($orig_recipients) as $k) {
-            $m = new Adherent($zdb, $k, $mdeps);
-            $_recipients[] = $m;
+        if (count($orig_recipients) > 0) {
+            $members = new Members();
+            $_recipients = $members->getArrayList(
+                ids: array_keys($orig_recipients),
+                parent: true
+            );
         }
-        $this->setRecipients($_recipients);
+        $this->setRecipients($_recipients !== false ? $_recipients : []);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
         $this->html = $this->message != strip_tags($this->message);
         if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
-            $this->setSender(
+            $this->setStoredSender(
                 $rs->mailing_sender_name,
                 $rs->mailing_sender_address
             );
@@ -425,6 +425,10 @@ class Mailing extends GaletteMail
             $to_remove = $this->tmp_path;
         } elseif (file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
             if ($temp === true) {
+                Analog::log(
+                    'Remove temporary attachments of mailing #' . $this->id . ': attachments are stored, kept',
+                    Analog::INFO
+                );
                 return false;
             }
             $to_remove = GALETTE_ATTACHMENTS_PATH . $this->id;

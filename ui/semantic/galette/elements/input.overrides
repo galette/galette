@@ -35,33 +35,81 @@
 }
 
 /*----------------------
-     Password meter
+     Password strength
 -----------------------*/
-.password-strength-text {
-    vertical-align: middle;
-    padding-left: .2em;
-}
-meter {
-    /* Reset the default appearance */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+.password-strength {
+  margin-top: .5em;
 
-    /* Applicable only to Firefox */
-    background: none;
-    background-color: rgba(0, 0, 0, 0.1);
+  &[hidden] {
+    display: none;
+  }
 }
-meter::-webkit-meter-bar {
-    background: none;
-    background-color: rgba(0, 0, 0, 0.1);
+.password-strength-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .3em .7em;
 }
-/* Webkit based browsers */
-meter[value="1"]::-webkit-meter-optimum-value { background: red; }
-meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
-meter[value="3"]::-webkit-meter-optimum-value { background: yellow; }
-meter[value="4"]::-webkit-meter-optimum-value { background: green; }
-/* Gecko based browsers */
-meter[value="1"]::-moz-meter-bar { background: red; }
-meter[value="2"]::-moz-meter-bar { background: orange; }
-meter[value="3"]::-moz-meter-bar { background: yellow}
-meter[value="4"]::-moz-meter-bar { background: green ; }
+.password-strength-bar {
+  display: inline-flex;
+  gap: 3px;
+
+  span {
+    position: relative;
+    width: 2.2em;
+    height: .4em;
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, .1);
+  }
+  &.bad span.filled { background-color: @red; }
+  &.fair span.filled { background-color: @orange; }
+  &.good span.filled { background-color: @green; }
+
+  /* required level marker */
+  span.threshold::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: -.3em;
+    bottom: -.3em;
+    width: 1px;
+    background-color: @mutedTextColor;
+  }
+}
+.password-strength-text {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  font-size: .92em;
+
+  .password-strength-level {
+    &.bad { color: @red; }
+    &.fair { color: @orange; }
+    &.good { color: @green; }
+  }
+  i.icon {
+    margin: 0 .2em 0 0;
+  }
+}
+.password-strength-rules {
+  margin: .5em 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: .88em;
+  line-height: 1.6;
+  color: @mutedTextColor;
+
+  ul {
+    margin: 0;
+    padding-left: 1.4em;
+    list-style: none;
+  }
+  li.met,
+  li.missing {
+    color: @textColor;
+  }
+  i.icon {
+    width: 1.2em;
+    margin: 0 .2em 0 0;
+  }
+}

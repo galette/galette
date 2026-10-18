@@ -13,8 +13,13 @@
 {% endif %}
             <div class="required field inline">
                 <label for="libelle_type_cotis">{{ _T("Name:") }}</label>
-                <input type="text" name="libelle_type_cotis" id="libelle_type_cotis" value="{{ entry.libelle_type_cotis }}" required="required" />
+                <input type="text" name="libelle_type_cotis" id="libelle_type_cotis" value="{{ entry.libelle_type_cotis }}" required="required" aria-describedby="libelle_type_cotis-translation-hint" />
             </div>
+            {% include "elements/translatable_label_hint.html.twig" with {
+                label: entry.libelle_type_cotis,
+                is_core: label_is_core,
+                id: "libelle_type_cotis"
+            } only %}
             <div class="field inline">
                 <label for="description">{{ _T("Description:") }}</label>
                 <textarea name="description" id="description" cols="100" rows="3">{{ entry.description }}</textarea>

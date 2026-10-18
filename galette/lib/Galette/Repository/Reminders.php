@@ -178,13 +178,10 @@ class Reminders
 
         $limit_now = new DateTime();
         $limit_now->setTime(23, 59, 59);
-        if ($preferences->pref_beg_membership != '') {
+        $period_start = $preferences->getMembershipPeriodStart($limit_now);
+        if ($period_start !== null) {
             //case beginning of membership
-            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
-            $limit_date = new DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
-            while ($limit_now <= $limit_date) {
-                $limit_date->sub(new DateInterval('P1Y'));
-            }
+            $limit_date = DateTime::createFromImmutable($period_start);
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
             $limit_date = clone $limit_now;

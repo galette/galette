@@ -173,7 +173,11 @@ class ContributionsController extends CrudController
             $cparams = ['type' => array_keys($contributions_types)[0]];
 
             //member id
-            if (isset($get[Adherent::PK]) && $get[Adherent::PK] > 0) {
+            if (
+                isset($get[Adherent::PK])
+                && $get[Adherent::PK] > 0
+                && (new Adherent($this->zdb, (int)$get[Adherent::PK], deps: false))->canShow($this->login)
+            ) {
                 $cparams['adh'] = (int)$get[Adherent::PK];
             }
 
@@ -355,7 +359,12 @@ class ContributionsController extends CrudController
             $contrib->disableEvents();
 
             // regular fields
-            $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+            $valid = $contrib->check(
+                values: $post,
+                required: $contrib->getRequired(),
+                disabled: $disabled,
+                files: $request->getUploadedFiles()
+            );
             if ($valid !== true) {
                 $error_detected = array_merge($error_detected, $valid);
             }
@@ -851,7 +860,12 @@ class ContributionsController extends CrudController
         $disabled = [];
 
         // regular fields
-        $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+        $valid = $contrib->check(
+            values: $post,
+            required: $contrib->getRequired(),
+            disabled: $disabled,
+            files: $request->getUploadedFiles()
+        );
         //store entity in session
         $this->session->contribution = $contrib;
         $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
