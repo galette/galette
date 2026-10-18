@@ -18,7 +18,7 @@ Changes
 - Dynamic translations have been improved a bit
 - Session on command line failed with redis
 - bin/console can be run from another directory, or with options before the command
-- galette:install no longer reuses database user and password from an existing configuration
+- galette:install did not reuse database user and password from an existing configuration
 - Plugins console commands ignored --all, and skipped checks in non-interactive mode
 - Saved searches dates are stored in ISO format, so they can be loaded in any language
 - Groups criteria were lost when a saved search was loaded
