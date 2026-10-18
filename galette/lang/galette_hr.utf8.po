@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Marko Puljic <markopuljic.uo@gmail.com>, 2026.
 # Marko Puljic <markopuljic.uo@users.noreply.hosted.weblate.org>, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-16 21:43+0000\n"
-"Last-Translator: Marko Puljic "
-"<markopuljic.uo@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-18 05:50+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/galette/galette/"
 "hr/>\n"
 "Language: hr\n"
@@ -117,13 +118,12 @@ msgid "An error occurred :("
 msgstr "Došlo je do pogreške :("
 
 #. TRANS: parameter is a comma separated list of feature names
-#, fuzzy, php-format
-#| msgid "Model parameted on %1$s"
+#, php-format
 msgid "Feature turned on: %1$s."
 msgid_plural "Features turned on: %1$s."
-msgstr[0] "Predložak postavljen %1$s"
-msgstr[1] "Predložak postavljen %1$s"
-msgstr[2] "Predložak postavljen %1$s"
+msgstr[0] "Predložak postavljen : %1$s."
+msgstr[1] "Predložak postavljen : %1$s."
+msgstr[2] "Predložak postavljen : %1$s."
 
 #. TRANS: parameter is a comma separated list of feature names
 #, php-format
