@@ -21,13 +21,15 @@
 # H B <habibbktr@gmail.com>, 2026.
 # Ahmet Güneş <a.gunes55@gmail.com>, 2026.
 # Cahit OK <cahitok333@gmail.com>, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-06 05:58+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-10-18 05:50+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -35,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -1766,7 +1768,7 @@ msgid ""
 msgstr ""
 
 msgid "Y-m-d H:i:s"
-msgstr "Y-a-g S:d:sn"
+msgstr "Y-m-d H:i:s"
 
 msgid "Never"
 msgstr ""
