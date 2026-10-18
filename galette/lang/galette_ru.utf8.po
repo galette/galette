@@ -24,13 +24,15 @@
 # Тырцев Леонид <tleonid2018.pro@gmail.com>, 2026.
 # Andrei Stepanov <adem4ik@gmail.com>, 2026.
 # Артур <atter192837@gmail.com>, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-06 05:58+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-10-18 05:50+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -39,7 +41,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -319,7 +321,7 @@ msgstr "Пожертвование"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr "ГГГГ-ММ-ДД"
+msgstr "Y-m-d"
 
 msgid "New membership fee"
 msgstr "Новый членский взнос"
@@ -2584,7 +2586,7 @@ msgstr "Логотип вашей организации (для печати)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Current date (Y-m-d)"
-msgstr "Текущая дата (ГГГГ-ММ-ДД)"
+msgstr "Текущая дата (Y-m-d)"
 
 msgid "Galette's login URI"
 msgstr "URI входа в Galette"
@@ -2779,7 +2781,7 @@ msgid "Y"
 msgstr "Г"
 
 msgid "Y-m"
-msgstr "ГГГГ-ММ"
+msgstr "Y-m"
 
 msgid "start date filter"
 msgstr "фильтр по дате начала"
@@ -5507,10 +5509,8 @@ msgstr "Ошибка аутентификации"
 msgid "What is counted"
 msgstr "Содержимое писем"
 
-#, fuzzy
-#| msgid "Account:"
 msgid "Account"
-msgstr "Аккаунт:"
+msgstr "Аккаунт"
 
 msgid "Failures"
 msgstr ""
