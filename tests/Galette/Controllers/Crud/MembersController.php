@@ -3411,4 +3411,37 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue((new \Galette\Core\Picture($member_one->id))->delete());
         $this->login->logout();
     }
+
+    /**
+     * Test public gallery shows pictures whatever the picture field visibility
+     *
+     * Gallery follows its own preferences and members consent; the field visibility
+     * only applies to member card and form.
+     */
+    public function testPhotoInPublicGallery(): void
+    {
+        $member_one = $this->getMemberOne();
+        $this->assertTrue($member_one->appearsInMembersList());
+
+        $fakedata = new \Galette\Util\FakeData();
+        $this->assertTrue($fakedata->addPhoto($member_one));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
+        $photo = (new \Galette\Core\Picture($member_one->id))->getPath();
+        $route_arguments = ['id' => (string)$member_one->id];
+
+        $gallery_visibility = $this->preferences->pref_publicpages_visibility_membersgallery;
+        $this->preferences->pref_publicpages_visibility_membersgallery = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
+        $this->assertTrue($this->preferences->store());
+
+        foreach ([\Galette\Entity\FieldsConfig::STAFF, \Galette\Entity\FieldsConfig::NOBODY] as $visible) {
+            $this->setPhotoField($visible, required: false);
+            $test_response = $this->app->handle($this->createRequest('photo', $route_arguments));
+            $this->assertSame(file_get_contents($photo), (string)$test_response->getBody());
+        }
+
+        $this->setPhotoField(\Galette\Entity\FieldsConfig::USER_WRITE, required: false);
+        $this->preferences->pref_publicpages_visibility_membersgallery = $gallery_visibility;
+        $this->assertTrue($this->preferences->store());
+        $this->assertTrue((new \Galette\Core\Picture($member_one->id))->delete());
+    }
 }
