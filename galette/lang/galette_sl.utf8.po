@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-18 10:18+0000\n"
+"PO-Revision-Date: 2026-10-20 05:48+0000\n"
 "Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
 "\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -30,10 +30,10 @@ msgstr[3] "Funkcij vklopljenih"
 
 msgid "Feature turned off"
 msgid_plural "Features turned off"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Funkcija je izklopljena"
+msgstr[1] "Funkciji izklopljeni"
+msgstr[2] "Funkcije izklopljene"
+msgstr[3] "Funkcij izklopljenih"
 
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
@@ -541,7 +541,7 @@ msgid "Reminders"
 msgstr "Opomniki"
 
 msgid "Registration"
-msgstr "Naročnina"
+msgstr "Vpis"
 
 msgid "Self registration throttled"
 msgstr "Samonaročnina zavrnjena"
@@ -1221,16 +1221,12 @@ msgstr ""
 msgid "Dump every SQL query to the logs."
 msgstr "Iznesite vsako poizvedbo SQL v dnevnike."
 
-#, fuzzy
-#| msgid ""
-#| "Development features to activate, among those declared in the feature "
-#| "flags registry. They only apply in debug mode."
 msgid ""
 "Features to activate, among those declared in the feature flags registry. "
 "Takes precedence over the features turned on from this page."
 msgstr ""
-"Razvojne funkcije za aktiviranje med tistimi, ki so navedene v registru "
-"zastavic funkcij. Uporabljajo se samo v načinu za odpravljanje napak."
+"Funkcije za aktiviranje med tistimi, ki so navedene v registru zastavic "
+"funkcij. Ima prednost pred funkcijami, vklopljenimi na tej strani."
 
 msgid "Yes"
 msgstr "Da"
@@ -4788,7 +4784,7 @@ msgstr "Meni javnih strani"
 
 msgctxt "self registration"
 msgid "Register"
-msgstr "Naročite se"
+msgstr "Vpišite se"
 
 msgid "Generating dark theme..."
 msgstr "Ustvarjanje temne teme..."
@@ -5064,13 +5060,11 @@ msgstr "Pojdi"
 msgid "This page can break your installation, be very careful."
 msgstr "Ta stran lahko prekine vašo namestitev, bodite zelo previdni."
 
-#, fuzzy
-#| msgid "Experimental"
 msgid "Experimental features"
-msgstr "Eksperimentalno"
+msgstr "Eksperimentalne lastnosti"
 
 msgid "Constants"
-msgstr ""
+msgstr "Konstante"
 
 msgid "Filter settings"
 msgstr "Nastavitve filtra"
@@ -5143,28 +5137,24 @@ msgid ""
 "These features are meant to be tested. Enable one to try it on this "
 "instance, and tell us how it goes; disable it again at any time."
 msgstr ""
+"Te funkcije so namenjene testiranju. Omogočite enemu, da ga preizkusi na tem "
+"primeru, in nam povejte, kako gre; kadar koli znova onemogočite."
 
 msgid "Description"
 msgstr "Opis"
 
-#, fuzzy
-#| msgid "Required"
 msgid "Requirements"
-msgstr "Zahtevano"
+msgstr "Zahteve"
 
 msgid "Disable"
 msgstr "Onemogoči"
 
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Omogočeno"
+msgstr "Omogoči"
 
-#, fuzzy
-#| msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
 msgid ""
 "Declared in behavior.inc.php or in the environment, which takes precedence."
-msgstr "Nastavljeno s konstanto %s v behavior.inc.php, ki ima prednost."
+msgstr "Navedeno v behavior.inc.php ali v okolju, ki ima prednost."
 
 #, php-format
 msgid ""
