@@ -1,0 +1,60 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends "modals/mass_change.html.twig" %}
+
+{% macro mass_checkbox(name) %}
+    {# Add a checkbox for fields to change on mass edition #}
+    <span class="ui checkbox masschange">
+        <input type="checkbox" name="mass_{{ name }}" class="mass_checkbox"/>
+    </span>
+{% endmacro %}
+
+{% block mass_form %}
+                <div class="ui styled fluid accordion field">
+                    <div class="active title">
+                        <i class="icon dropdown" aria-hidden="true"></i>
+                        {{ _T("Contribution information") }}
+                    </div>
+                    <div class="active content field">
+                        {% include 'components/forms/payment_types.html.twig' with {
+                            current: preferences.pref_default_paymenttype,
+                            varname: 'type_paiement_cotis',
+                            label: mass_fields.type_paiement_cotis,
+                            masschange: true
+                        } %}
+                    </div>
+                    <div class="active content field">
+                        {{ _self.mass_checkbox('date_enreg') }}
+                        <label for="date_enreg">{{ mass_fields.date_enreg }}</label>
+                        <div class="ui calendar" id="contribution-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon" aria-hidden="true"></i>
+                                <input type="text" name="date_enreg" id="date_enreg" value="" maxlength="10" placeholder="{{ _T('yyyy-mm-dd format') }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="active content field">
+                        {{ _self.mass_checkbox('info_cotis') }}
+                        <label for="info_cotis">{{ mass_fields.info_cotis }}</label>
+                        <textarea name="info_cotis" id="info_cotis" cols="61" rows="4"></textarea>
+                    </div>
+                </div>
+                {# Dynamic entries #}
+                {% include "components/dynamic_fields.html.twig" with {object: contribution, masschange: true} %}
+{% endblock %}
+
+{% block mass_review %}
+                <p>{{ _T("You are about to proceed following changes for selected contributions:") }}</p>
+                <ul>
+                {% for field, change in changes %}
+                    <li>
+                        <input type="hidden" name="{{ field }}" value="{{ change.value }}"/>
+                        {{ change.label }} {{ change.display_value ?? change.value }}
+                    </li>
+                {% endfor %}
+                </ul>
+{% endblock %}

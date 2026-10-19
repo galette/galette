@@ -19,7 +19,7 @@ var _massCheckboxes = function(selector) {
         .off().on('change', function() {
             //fields may be wrapped (dropdowns, calendars, inputs with icons):
             //look for the closest ancestor holding a mass checkbox
-            var _checkbox = $(this).parents().filter(function() {
+            const _checkbox = $(this).parents().filter(function() {
                 return $(this).find('.mass_checkbox').length > 0;
             }).first().find('.mass_checkbox');
             if (_checkbox.length === 1) {

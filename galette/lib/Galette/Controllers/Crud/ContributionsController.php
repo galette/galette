@@ -13,6 +13,7 @@ namespace Galette\Controllers\Crud;
 use Galette\Entity\PaymentType;
 use Galette\Entity\ScheduledPayment;
 use Analog\Analog;
+use Galette\DynamicFields\Boolean;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Filters\ContributionsList;
@@ -546,7 +547,8 @@ class ContributionsController extends CrudController
             'nb'                => $contrib->getCount(),
             'filters'           => $filters,
             'mode'              => ($ajax === true ? 'ajax' : 'std'),
-            'documentation'     => $documentation
+            'documentation'     => $documentation,
+            'require_mass'      => $raw_type === 'contributions' && $ajax !== true
         ];
 
         if ($filters->filtre_cotis_adh != null) {
@@ -740,6 +742,13 @@ class ContributionsController extends CrudController
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('removeContributions', ['type' => $type]));
+            }
+
+            if (isset($post['masschange']) && $type === 'contributions') {
+                $this->session->{$this->getFilterName($type, ['suffix' => 'masschange'])} = $filters;
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor('masschangeContributions'));
             }
 
             throw new \RuntimeException('Does not know what to batch :(');
@@ -939,6 +948,254 @@ class ContributionsController extends CrudController
             successes: $success_detected,
             errors: $error_detected
         );
+    }
+
+    /**
+     * Fields that can be changed at once on several contributions
+     *
+     * Member, amount, type, period dates and transaction are left out:
+     * they would affect membership deadlines, overlapping periods or transactions amounts.
+     *
+     * @return array<string,string> Field name as key, label as value
+     */
+    private function getMassiveFields(): array
+    {
+        return [
+            'type_paiement_cotis'   => _T("Payment type:"),
+            'date_enreg'            => _T("Record date:"),
+            'info_cotis'            => _T("Comments:")
+        ];
+    }
+
+    /**
+     * Massive change page
+     */
+    #[Route(
+        name: 'masschangeContributions',
+        pattern: '/contributions/mass-change',
+        methods: ['GET']
+    )]
+    public function massChange(Request $request, Response $response): Response
+    {
+        $filters = $this->session->{$this->getFilterName('contributions', ['suffix' => 'masschange'])} ?? new ContributionsList();
+
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->routeparser->urlFor('contributions', ['type' => 'contributions'])
+        ];
+
+        //dynamic fields
+        $contribution = new Contribution($this->zdb, $this->login);
+
+        // display page
+        $this->view->render(
+            $response,
+            'modals/mass_change_contributions.html.twig',
+            [
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    //TRANS: %1$s is the number of selected contributions
+                    _T('Mass change %1$s contributions'),
+                    (string)count($data['id'])
+                ),
+                'form_url'      => $this->routeparser->urlFor('masschangeContributionsReview'),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data,
+                'contribution'  => $contribution,
+                'mass_fields'   => $this->getMassiveFields(),
+                'require_mass'  => true
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Massive changes validation page
+     */
+    #[Route(
+        name: 'masschangeContributionsReview',
+        pattern: '/contributions/mass-change/validate',
+        methods: ['POST']
+    )]
+    public function validateMassChange(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $changes = [];
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Mass changes has not been confirmed!")
+            );
+        } else {
+            foreach ($this->getMassiveFields() as $field => $label) {
+                if (isset($post['mass_' . $field], $post[$field])) {
+                    $changes[$field] = [
+                        'label' => $label,
+                        'value' => $post[$field]
+                    ];
+                }
+            }
+
+            if (isset($changes['type_paiement_cotis'])) {
+                $ptype = new PaymentType($this->zdb, (int)$changes['type_paiement_cotis']['value']);
+                $changes['type_paiement_cotis']['display_value'] = $ptype->getName();
+            }
+
+            //handle dynamic fields
+            $contribution = new Contribution($this->zdb, $this->login);
+            $dynamic_fields = $contribution->getDynamicFields()->getFields();
+            foreach ($dynamic_fields as $field) {
+                $mass_id = 'mass_info_field_' . $field->getId();
+                $field_id = 'info_field_' . $field->getId() . '_1';
+                if (
+                    isset($post[$mass_id])
+                    && (isset($post[$field_id]) || $field instanceof Boolean)
+                ) {
+                    $changes[$field_id] = [
+                        'label' => $field->getName(),
+                        'value' => $post[$field_id] ?? 0
+                    ];
+                }
+            }
+        }
+
+        $filters = $this->session->{$this->getFilterName('contributions', ['suffix' => 'masschange'])} ?? new ContributionsList();
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->routeparser->urlFor('contributions', ['type' => 'contributions'])
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'modals/mass_change_contributions.html.twig',
+            [
+                'mode'          => ($this->isAjax($request)) ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    //TRANS: %1$s is the number of selected contributions
+                    _T('Review mass change %1$s contributions'),
+                    (string)count($data['id'])
+                ),
+                'form_url'      => $this->routeparser->urlFor('massstorecontributions'),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data,
+                'changes'       => $changes
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Do massive changes
+     */
+    #[Route(
+        name: 'massstorecontributions',
+        pattern: '/contributions/mass-change',
+        methods: ['POST']
+    )]
+    public function doMassChange(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $redirect_url = $post['redirect_uri'] ?? $this->routeparser->urlFor('contributions', ['type' => 'contributions']);
+        $error_detected = [];
+        $mass = 0;
+
+        unset($post['redirect_uri']);
+        if (!isset($post['confirm'])) {
+            $error_detected[] = _T("Mass changes has not been confirmed!");
+        } else {
+            $ids = $post['id'] ?? [];
+            unset($post['confirm'], $post['id'], $post['ajax']);
+
+            $contribution = new Contribution($this->zdb, $this->login);
+            $dynamic_fields = [];
+            foreach ($contribution->getDynamicFields()->getFields() as $field) {
+                $dynamic_fields['info_field_' . $field->getId() . '_1'] = true;
+            }
+            $allowed = array_merge($this->getMassiveFields(), $dynamic_fields);
+
+            foreach (array_keys($post) as $key) {
+                if (!isset($allowed[$key])) {
+                    Analog::log(
+                        'Permission issue mass editing field ' . $key,
+                        Analog::WARNING
+                    );
+                    unset($post[$key]);
+                }
+            }
+
+            if (!count($post)) {
+                $error_detected[] = _T("Nothing to do!");
+            } else {
+                //every field that has not been posted must be left untouched
+                $disabled = array_keys(array_diff_key(
+                    array_merge($contribution->fields, $dynamic_fields),
+                    $post
+                ));
+                $disabled = array_combine($disabled, $disabled);
+
+                foreach ($ids as $id) {
+                    $contrib = new Contribution($this->zdb, $this->login);
+                    $contrib->disableEvents();
+                    if (!$contrib->load((int)$id) || !$contrib->canEdit($this->login)) {
+                        continue;
+                    }
+
+                    $valid = $contrib->check($post, [], $disabled);
+                    if ($valid === true) {
+                        $contrib->store();
+                        ++$mass;
+                    } else {
+                        foreach ($valid as $error) {
+                            $error_detected[] = sprintf(
+                                //TRANS: %1$s is the contribution id, %2$s the error message
+                                _T('Contribution #%1$s: %2$s'),
+                                $id,
+                                ltrim($error, '- ')
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($mass !== 0) {
+            $this->flash->addMessage(
+                'success_detected',
+                sprintf(
+                    //TRANS: first parameter is the number of edited contributions
+                    _Tn(
+                        '%1$s contribution has been changed successfully!',
+                        '%1$s contributions have been changed successfully!',
+                        $mass
+                    ),
+                    $mass
+                )
+            );
+        } elseif (!count($error_detected)) {
+            $error_detected[] = _T('Something went wrong during mass edition!');
+        }
+
+        foreach ($error_detected as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        if (!$this->isAjax($request)) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $redirect_url);
+        } else {
+            return $this->withJson(
+                $response,
+                [
+                    'success' => count($error_detected) === 0
+                ]
+            );
+        }
     }
 
     // /CRUD - Update

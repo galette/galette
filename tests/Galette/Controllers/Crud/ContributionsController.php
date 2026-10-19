@@ -1460,4 +1460,337 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = $create;
         $this->login->logOut();
     }
+
+    /**
+     * Create one contribution for members one and two, and select both for mass change
+     *
+     * @return array<int,\Galette\Entity\Contribution>
+     */
+    private function prepareMassChange(): array
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createContribution();
+        $contrib_one = $this->contrib;
+        $member_two = $this->getMemberTwo();
+        //change language
+        $this->assertTrue($member_two->check(['pref_lang' => 'en_US'], [], []));
+        $this->assertTrue($member_two->store());
+        $this->createContribution();
+        $contrib_two = $this->contrib;
+        $this->login->logOut();
+
+        $filters = new \Galette\Filters\ContributionsList();
+        $filters->selected = [$contrib_one->id, $contrib_two->id];
+        $controller = new \Galette\Controllers\Crud\ContributionsController($this->container);
+        $this->session->{$controller->getFilterName('contributions', ['suffix' => 'masschange'])} = $filters;
+
+        return [$contrib_one, $contrib_two];
+    }
+
+    /**
+     * Test batch action redirecting to mass change
+     */
+    public function testBatchMassChange(): void
+    {
+        [$contrib_one, $contrib_two] = $this->prepareMassChange();
+
+        $this->logSuperAdmin();
+        $request = $this->createRequest('batch-contributionslist', ['type' => 'contributions'], 'POST');
+        $request = $request->withParsedBody([
+            'masschange' => true,
+            'entries_sel' => [$contrib_one->id, $contrib_two->id]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('masschangeContributions')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+
+        $controller = new \Galette\Controllers\Crud\ContributionsController($this->container);
+        $filters = $this->session->{$controller->getFilterName('contributions', ['suffix' => 'masschange'])};
+        $this->assertSame([$contrib_one->id, $contrib_two->id], $filters->selected);
+
+        //mass change is not available on transactions
+        $request = $this->createRequest('batch-contributionslist', ['type' => 'transactions'], 'POST');
+        $request = $request->withParsedBody([
+            'masschange' => true,
+            'entries_sel' => [1]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(500, $test_response->getStatusCode());
+    }
+
+    /**
+     * Test mass change page
+     */
+    public function testMassChangePage(): void
+    {
+        $this->prepareMassChange();
+        $expected_title = 'Mass change 2 contributions';
+
+        //login is required to access this page
+        $request = $this->createRequest('masschangeContributions');
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        //super-admin can access page
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('name="mass_type_paiement_cotis"', $body);
+        $this->assertStringContainsString('name="mass_date_enreg"', $body);
+        $this->assertStringContainsString('name="mass_info_cotis"', $body);
+        //fields that cannot be mass changed
+        $this->assertStringNotContainsString('name="montant_cotis"', $body);
+        $this->assertStringNotContainsString('name="id_adh"', $body);
+        $this->login->logout();
+
+        //member cannot access page
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+        $this->login->logout();
+
+        //staff can access page
+        $member_one = $this->getMemberOne();
+        $staff_member = $this->getStaffMember($member_one);
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isStaff());
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString($expected_title, (string)$test_response->getBody());
+        $this->login->logout();
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        //group manager cannot access page
+        $member_two = $this->getMemberTwo();
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager($g1->getId()));
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+    }
+
+    /**
+     * Test mass change review page
+     */
+    public function testValidateMassChange(): void
+    {
+        [$contrib_one, $contrib_two] = $this->prepareMassChange();
+        $expected_title = 'Review mass change 2 contributions';
+
+        //login is required to access this page
+        $request = $this->createRequest('masschangeContributionsReview', [], 'POST');
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+
+        //confirmation is expected
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['Mass changes has not been confirmed!']]);
+
+        $request = $request->withParsedBody(['confirm' => 1]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('No changes selected', $body);
+
+        //value without its mass checkbox is ignored
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'info_cotis' => 'Not checked'
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('No changes selected', (string)$test_response->getBody());
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'mass_info_cotis' => 'on',
+            'info_cotis' => 'Mass comment',
+            'mass_type_paiement_cotis' => 'on',
+            'type_paiement_cotis' => \Galette\Entity\PaymentType::CASH,
+            'mass_montant_cotis' => 'on',
+            'montant_cotis' => 1000
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringNotContainsString('No changes selected', $body);
+        $this->assertStringContainsString('<input type="hidden" name="info_cotis" value="Mass comment"/>', $body);
+        $this->assertStringContainsString('Comments: Mass comment', $body);
+        $this->assertStringContainsString(
+            sprintf('<input type="hidden" name="type_paiement_cotis" value="%1$s"/>', \Galette\Entity\PaymentType::CASH),
+            $body
+        );
+        $this->assertStringContainsString('Payment type: Cash', $body);
+        $this->assertStringNotContainsString('name="montant_cotis"', $body);
+        foreach ([$contrib_one->id, $contrib_two->id] as $id) {
+            $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $id), $body);
+        }
+    }
+
+    /**
+     * Test mass change storage
+     */
+    public function testDoMassChange(): void
+    {
+        [$contrib_one, $contrib_two] = $this->prepareMassChange();
+
+        //a boolean dynamic field, set on first contribution
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::BOOLEAN);
+        $this->assertTrue(
+            $df->store([
+                'form_name'         => 'contrib',
+                'field_name'        => 'Checked',
+                'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+                'field_type'        => \Galette\DynamicFields\DynamicField::BOOLEAN,
+                'field_required'    => 0,
+                'field_repeat'      => 1
+            ]),
+            implode(' ', $df->getErrors())
+        );
+        $bool_field = 'info_field_' . $df->getId() . '_1';
+
+        $this->logSuperAdmin();
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->load($contrib_one->id));
+        $this->assertTrue($contrib->check([$bool_field => '1'], [], []));
+        $this->assertTrue($contrib->store());
+        $this->login->logout();
+
+        $redirect = $this->routeparser->urlFor('contributions', ['type' => 'contributions']);
+        $ids = [$contrib_one->id, $contrib_two->id];
+
+        //login is required
+        $request = $this->createRequest('massstorecontributions', [], 'POST');
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$redirect]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['Mass changes has not been confirmed!']]);
+
+        $request = $request->withParsedBody(['confirm' => 1, 'id' => $ids]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['error_detected' => ['Nothing to do!']]);
+
+        //fields that cannot be mass changed are dropped
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $ids,
+            'montant_cotis' => 1000
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Permission issue mass editing field montant_cotis');
+        $this->expectFlashData(['error_detected' => ['Nothing to do!']]);
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $ids,
+            'type_paiement_cotis' => \Galette\Entity\PaymentType::CASH,
+            'date_enreg' => '2020-01-15',
+            'montant_cotis' => 1000
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$redirect]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Permission issue mass editing field montant_cotis');
+        $this->expectFlashData(['success_detected' => ['2 contributions have been changed successfully!']]);
+
+        foreach ([$contrib_one, $contrib_two] as $orig) {
+            $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+            $this->assertTrue($contrib->load($orig->id));
+            $this->assertSame(\Galette\Entity\PaymentType::CASH, $contrib->payment_type);
+            $this->assertSame('2020-01-15', $contrib->raw_date->format('Y-m-d'));
+            //not posted fields are left untouched
+            $this->assertSame($orig->amount, $contrib->amount);
+            $this->assertSame('FAKER' . $this->seed, $contrib->info);
+            $this->assertSame($orig->raw_begin_date->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+            $this->assertSame($orig->raw_end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+        }
+
+        //not posted boolean dynamic field is left untouched
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->load($contrib_one->id));
+        $values = $contrib->getDynamicFields()->getValues($df->getId());
+        $this->assertSame('1', (string)$values[0]['field_val']);
+
+        //boolean dynamic field can be mass unset
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $ids,
+            $bool_field => 0
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['2 contributions have been changed successfully!']]);
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->load($contrib_one->id));
+        $values = $contrib->getDynamicFields()->getValues($df->getId());
+        $this->assertSame('0', (string)$values[0]['field_val']);
+
+        //payment type cannot be changed on a contribution with a scheduled payment
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->load($contrib_two->id));
+        $contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($contrib->store());
+        $scheduled = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $this->assertTrue($scheduled->check([
+            \Galette\Entity\Contribution::PK => $contrib_two->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => date('Y-m-d'),
+            'comment' => 'FAKER' . $this->seed
+        ]));
+        $this->assertTrue($scheduled->store());
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $ids,
+            'type_paiement_cotis' => \Galette\Entity\PaymentType::CHECK
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Cannot change payment type if there is an attached scheduled payment');
+        $this->expectFlashData([
+            'success_detected' => ['1 contribution has been changed successfully!'],
+            'error_detected' => [
+                sprintf(
+                    'Contribution #%1$s: Cannot change payment type if there is an attached scheduled payment',
+                    $contrib_two->id
+                )
+            ]
+        ]);
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->load($contrib_two->id));
+        $this->assertSame(\Galette\Entity\PaymentType::SCHEDULED, $contrib->payment_type);
+        $this->assertTrue($contrib->load($contrib_one->id));
+        $this->assertSame(\Galette\Entity\PaymentType::CHECK, $contrib->payment_type);
+        $this->login->logout();
+
+        //member cannot mass change
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+    }
 }

@@ -32,6 +32,11 @@
     } %}
     {% set batch_actions = [
         {
+            'name': 'masschange',
+            'label': _T("Mass change"),
+            'icon': 'edit blue'
+        },
+        {
             'name': 'delete',
             'label': _T("Delete"),
             'icon': 'trash red'
@@ -523,4 +528,20 @@
             <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block batch_selection %}
+                    else if (value == 'masschange') {
+                        _masschange();
+                    }
+{% endblock %}
+
+{% block javascripts %}
+    {% set batch_selection = ['masschange'] %}
+    {{ parent() }}
+{% if batch is defined %}
+    <script type="text/javascript">
+        {% include 'elements/js/mass_change.js.twig' with {batch_url: url_for('batch-contributionslist', {type: 'contributions'})} %}
+    </script>
+{% endif %}
 {% endblock %}

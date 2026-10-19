@@ -144,6 +144,21 @@ $app->post(
 )->setName('doMassAddContributions')->add(Authenticate::class);
 
 $app->get(
+    '/contributions/mass-change',
+    [Crud\ContributionsController::class, 'massChange']
+)->setName('masschangeContributions')->add(Authenticate::class);
+
+$app->post(
+    '/contributions/mass-change/validate',
+    [Crud\ContributionsController::class, 'validateMassChange']
+)->setName('masschangeContributionsReview')->add(Authenticate::class);
+
+$app->post(
+    '/contributions/mass-change',
+    [Crud\ContributionsController::class, 'doMassChange']
+)->setName('massstorecontributions')->add(Authenticate::class);
+
+$app->get(
     '/scheduled-payments/mine',
     [Crud\ScheduledPaymentController::class, 'myList']
 )->setName('myScheduledPayments')->add(Authenticate::class);
