@@ -114,7 +114,11 @@ trait Dynamics
             //some fields may be missing in posted values (checkboxes)
             foreach ($fields as $field) {
                 $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
-                if ($field instanceof Boolean && !preg_grep($pattern, array_keys($dynamic_fields))) {
+                if (
+                    $field instanceof Boolean
+                    && !isset($disabled[$this->name_pattern . $field->getId() . '_1'])
+                    && !preg_grep($pattern, array_keys($dynamic_fields))
+                ) {
                     $dynamic_fields[$this->name_pattern . $field->getId() . '_1'] = [
                         'value'     => '',
                         'field_id'  => $field->getId(),
