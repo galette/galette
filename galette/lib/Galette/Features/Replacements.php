@@ -20,7 +20,9 @@ use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Entity\Document;
 use Galette\Entity\Texts;
+use Galette\Repository\Documents;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
@@ -450,6 +452,56 @@ trait Replacements
     }
 
     /**
+     * Get documents repository
+     *
+     * No list filters: they read preferences, which are not loaded yet
+     * when texts are instantiated during installation.
+     */
+    private function getDocumentsRepository(): Documents
+    {
+        return new Documents($this->zdb, $this->login, filters: null);
+    }
+
+    /**
+     * Get patterns for documents
+     *
+     * @return array<string,array<string,string>>
+     */
+    protected function getDocumentsPatterns(): array
+    {
+        $documents = $this->getDocumentsRepository();
+
+        $d_patterns = [
+            'documents_uri' => [
+                'title'     => _T('Public documents page URI'),
+                'pattern'   => '/{DOCUMENTS_URI}/'
+            ]
+        ];
+
+        foreach ($documents->getSystemTypes() as $type => $type_name) {
+            $d_patterns['documents_' . $type] = [
+                //TRANS: %1$s is the documents type name
+                'title'     => sprintf(_T('Links to "%1$s" documents'), $type_name),
+                'pattern'   => sprintf('/{DOCUMENTS_%s}/', strtoupper($type))
+            ];
+        }
+
+        foreach ($documents->getReplaceableList() as $id => $document) {
+            $d_patterns['document_' . $id] = [
+                //TRANS: %1$s is the document file name, %2$s its visibility
+                'title'     => sprintf(
+                    _T('Link to document "%1$s" (%2$s)'),
+                    $document->getDocumentFilename(),
+                    $document->getPermissionName()
+                ),
+                'pattern'   => sprintf('/{DOCUMENT_%d}/', $id)
+            ];
+        }
+
+        return $d_patterns;
+    }
+
+    /**
      * Set mail instance
      *
      * @param PHPMailer $mail PHPMailer instance
@@ -713,6 +765,67 @@ trait Replacements
     }
 
     /**
+     * Set documents related replacements
+     */
+    public function setDocuments(): self
+    {
+        $documents = $this->getDocumentsRepository();
+
+        $d_replacements = [
+            'documents_uri' => $this->preferences->getURL() . $this->routeparser->urlFor('documentsPublicList')
+        ];
+
+        $links = [];
+        $typed_links = array_fill_keys(array_keys($documents->getSystemTypes(translated: false)), []);
+        foreach ($documents->getReplaceableList() as $id => $document) {
+            $links[$id] = $this->getDocumentLink($document);
+            if (isset($typed_links[$document->getType()])) {
+                $typed_links[$document->getType()][] = $links[$id];
+            }
+        }
+
+        //documents may have changed since patterns were set: values must match patterns, not current list
+        foreach (array_keys($this->patterns) as $key) {
+            if (preg_match('/^document_([0-9]+)$/', $key, $match)) {
+                $d_replacements[$key] = $links[(int)$match[1]] ?? '';
+            }
+        }
+
+        foreach ($typed_links as $type => $links) {
+            $d_replacements['documents_' . $type] = (
+                count($links) > 0
+                ? '<ul><li>' . implode('</li><li>', $links) . '</li></ul>'
+                : ''
+            );
+        }
+
+        $this->setReplacements($d_replacements);
+
+        return $this;
+    }
+
+    /**
+     * Get download link for a document
+     *
+     * @param Document $document Document
+     */
+    private function getDocumentLink(Document $document): string
+    {
+        $url = $this->preferences->getURL() . $this->routeparser->urlFor(
+            'getDocumentFile',
+            ['id' => (string)$document->getId()]
+        );
+        //escaped for mails too: they are converted from HTML, which would decode "&amp;" in a file name
+        $filename = htmlspecialchars($document->getDocumentFilename());
+
+        if ($this instanceof Texts) {
+            return sprintf('%1$s (%2$s)', $filename, $url);
+        }
+
+        return sprintf('<a href="%1$s">%2$s</a>', $url, $filename);
+    }
+
+    /**
      * Set dynamic fields and proceed related replacements
      *
      * @param string                  $form_name      Form name
@@ -837,6 +950,11 @@ trait Replacements
             'patterns'  => $this->getMemberPatterns()
         ];
 
+        $legend['documents'] = [
+            'title'     => _T('Documents'),
+            'patterns'  => $this->getDocumentsPatterns()
+        ];
+
         return $legend;
     }
 
@@ -928,10 +1046,13 @@ trait Replacements
             throw new RuntimeException('Patterns and replacements does not match!');
         }
 
-        //handle replacements
+        //handle replacements; values are literal text, "$1" or "\\1" in a name must not be read as backreferences
         $replaced = preg_replace(
             $this->patterns,
-            $this->replaces,
+            array_map(
+                static fn($replace) => addcslashes((string)$replace, '\\$'),
+                $this->replaces
+            ),
             (string)$replaced
         );
 

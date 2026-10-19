@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 use Galette\DynamicFields\DynamicField;
@@ -65,6 +66,12 @@ class PdfModel extends GaletteTestCase
             'date_now'           => '/{DATE_NOW}/',
             'login_uri'          => '/{LOGIN_URI}/',
             'asso_footer'        => '/{ASSO_FOOTER}/',
+            'documents_uri'      => '/{DOCUMENTS_URI}/',
+            'documents_status'   => '/{DOCUMENTS_STATUS}/',
+            'documents_rules'    => '/{DOCUMENTS_RULES}/',
+            'documents_adhesion' => '/{DOCUMENTS_ADHESION}/',
+            'documents_minutes'  => '/{DOCUMENTS_MINUTES}/',
+            'documents_votes'    => '/{DOCUMENTS_VOTES}/',
         ];
         $this->assertSame($main_expected, $model->getPatterns());
 
@@ -374,16 +381,82 @@ class PdfModel extends GaletteTestCase
         );
 
         $legend = $model->getLegend();
-        $this->assertCount(3, $legend);
+        $this->assertCount(4, $legend);
         $this->assertArrayHasKey('main', $legend);
         $this->assertArrayHasKey('member', $legend);
+        $this->assertArrayHasKey('documents', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
         $this->assertCount(15, $legend['main']['patterns']);
         $this->assertCount(34, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
+        $this->assertCount(6, $legend['documents']['patterns']);
         $this->assertCount(27, $legend['contribution']['patterns']);
         $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
+    }
+
+    /**
+     * Test documents replacements
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testDocumentsReplacements(): void
+    {
+        $status = $this->createDocument('status.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::ALL);
+        $status_old = $this->createDocument('status-2020.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::USER_READ);
+        $noaccess = $this->createDocument('noaccess.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::NOBODY);
+        //"$10" must not be read as a backreference
+        $other = $this->createDocument('budget_$10.pdf', 'An other document type', \Galette\Entity\FieldsConfig::STAFF);
+
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => null,
+            'model_subtitle' => null,
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'doc: {DOCUMENT_' . $other->getId() . '} status: {DOCUMENTS_STATUS} rules: {DOCUMENTS_RULES}'
+                . ' noaccess: {DOCUMENT_' . $noaccess->getId() . '} page: {DOCUMENTS_URI}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfMain($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+
+        $base_url = $this->preferences->getURL();
+        $link = (fn(\Galette\Entity\Document $document): string => sprintf(
+            '<a href="%1$s%2$s">%3$s</a>',
+            $base_url,
+            $this->routeparser->urlFor('getDocumentFile', ['id' => (string)$document->getId()]),
+            $document->getDocumentFilename()
+        ));
+
+        //an inaccessible document has no pattern, it is left as is
+        $this->assertSame(
+            'doc: ' . $link($other)
+            . ' status: <ul><li>' . $link($status) . '</li><li>' . $link($status_old) . '</li></ul>'
+            . ' rules: '
+            . ' noaccess: {DOCUMENT_' . $noaccess->getId() . '}'
+            . ' page: ' . $base_url . $this->routeparser->urlFor('documentsPublicList'),
+            $model->hbody
+        );
+
+        $legend = $model->getLegend();
+        $this->assertArrayHasKey('documents', $legend);
+        $patterns = $legend['documents']['patterns'];
+        $this->assertCount(9, $patterns);
+        $this->assertSame('/{DOCUMENT_' . $other->getId() . '}/', $patterns['document_' . $other->getId()]['pattern']);
+        $this->assertSame('Link to document "budget_$10.pdf" (Staff member)', $patterns['document_' . $other->getId()]['title']);
+        $this->assertArrayNotHasKey('document_' . $noaccess->getId(), $patterns);
+        $this->assertSame('Links to "Association status" documents', $patterns['documents_status']['title']);
+
+        //documents change between patterns and values: a removed one is emptied, a new one is ignored
+        $delete = $this->zdb->delete(\Galette\Entity\Document::TABLE);
+        $delete->where([\Galette\Entity\Document::PK => $other->getId()]);
+        $this->zdb->execute($delete);
+        $this->createDocument('new.pdf', \Galette\Repository\Documents::RULES, \Galette\Entity\FieldsConfig::ALL);
+        $model->setDocuments();
+
+        $this->assertStringStartsWith('doc:  status: ', $model->hbody);
     }
 
     /**

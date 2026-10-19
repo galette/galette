@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -141,5 +142,51 @@ class Texts extends GaletteTestCase
         //the member has no way to set a new password without that link
         $this->assertStringNotContainsString('{CHG_PWD_URI}', $body);
         $this->assertStringContainsString($expected, $body);
+    }
+
+    /**
+     * Test texts can be instantiated before preferences are loaded, as during installation
+     */
+    public function testInstantiateWithoutGlobalPreferences(): void
+    {
+        global $preferences;
+        $preferences = null;
+
+        $texts = new \Galette\Entity\Texts($this->preferences, $this->routeparser);
+        $this->assertArrayHasKey('documents_uri', $texts->getPatterns());
+    }
+
+    /**
+     * Test documents links in mails, as plain text
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testDocumentsReplacements(): void
+    {
+        $status = $this->createDocument('status.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::ALL);
+        //an HTML entity in a file name must not be decoded
+        $minutes = $this->createDocument('minutes&amp;2026.pdf', \Galette\Repository\Documents::MINUTES, \Galette\Entity\FieldsConfig::USER_READ);
+
+        $update = $this->zdb->update(\Galette\Entity\Texts::TABLE);
+        $update
+            ->set(['tbody' => 'status: {DOCUMENTS_STATUS} minutes: {DOCUMENT_' . $minutes->getId() . '}'])
+            ->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($update);
+
+        $texts = new \Galette\Entity\Texts(
+            $this->preferences,
+            $this->routeparser
+        );
+        $texts
+            ->setMember($this->getMemberOne())
+            ->setNoContribution();
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+
+        $url = (fn(\Galette\Entity\Document $document): string => $this->preferences->getURL()
+            . $this->routeparser->urlFor('getDocumentFile', ['id' => (string)$document->getId()]));
+
+        $this->assertSame(
+            'status: - status.pdf (' . $url($status) . ') minutes: minutes&amp;2026.pdf (' . $url($minutes) . ')',
+            $texts->getBody()
+        );
     }
 }

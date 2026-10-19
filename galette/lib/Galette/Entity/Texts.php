@@ -80,11 +80,13 @@ class Texts
                 + $this->getMailPatterns()
                 + $this->getMemberPatterns()
                 + $this->getContributionPatterns()
+                + $this->getDocumentsPatterns()
             );
 
         if (!defined('GALETTE_INSTALLER') || GALETTE_INSTALLER !== true) {
             $this
                 ->setMain()
+                ->setDocuments()
                 ->setMail();
         }
     }

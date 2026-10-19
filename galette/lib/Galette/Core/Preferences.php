@@ -1246,6 +1246,11 @@ class Preferences
             'patterns'  => $this->getMainPatterns()
         ];
 
+        $legend['documents'] = [
+            'title'     => _T('Documents'),
+            'patterns'  => $this->getDocumentsPatterns()
+        ];
+
         $s_patterns = $this->getSignaturePatterns(legacy: false);
         if (count($s_patterns)) {
             $legend['socials'] = [
@@ -1275,11 +1280,12 @@ class Preferences
 
         $this->setPreferences($this)->setRouteparser($routeparser);
         $this->setPatterns(
-            $this->getMainPatterns() + $this->getSignaturePatterns()
+            $this->getMainPatterns() + $this->getDocumentsPatterns() + $this->getSignaturePatterns()
         );
         $this
             ->setMail($mail)
             ->setMain()
+            ->setDocuments()
             ->setSocialReplacements();
 
         $signature = $this->proceedReplacements($signature);

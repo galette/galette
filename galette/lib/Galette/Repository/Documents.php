@@ -182,6 +182,36 @@ class Documents
     }
 
     /**
+     * Get documents that can be used in text replacements
+     *
+     * Access level of current login is not checked: patterns declared to
+     * the administrator must match values computed when sending, where
+     * login may be anyone, even anonymous.
+     *
+     * @return array<int,Document>
+     *
+     * @throws Throwable
+     */
+    public function getReplaceableList(): array
+    {
+        try {
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->notEqualTo('visible', FieldsConfig::NOBODY);
+            $select->order(['type', self::PK]);
+
+            $documents = [];
+            $results = $this->zdb->execute($select);
+            foreach ($results as $r) {
+                $documents[(int)$r->{self::PK}] = new Document($this->zdb, $r);
+            }
+            return $documents;
+        } catch (Throwable $e) {
+            Logs::exception($e, 'An error occurred loading replaceable documents', Analog::ERROR);
+            throw $e;
+        }
+    }
+
+    /**
      * Builds the SELECT statement
      *
      * @param string|null $type Type to retrieve

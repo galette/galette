@@ -267,4 +267,36 @@ class Documents extends GaletteTestCase
         $list_types['An other document type'] = 'An other document type';
         $this->assertSame($list_types, $documents->getTypes());
     }
+
+    /**
+     * Test getReplaceableList
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testGetReplaceableList(): void
+    {
+        $documents = new \Galette\Repository\Documents($this->zdb, $this->login);
+        $this->assertCount(0, $documents->getReplaceableList());
+
+        $rules = $this->createDocument('rules.pdf', \Galette\Repository\Documents::RULES, \Galette\Entity\FieldsConfig::USER_READ);
+        $status = $this->createDocument('status.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::ALL);
+        $this->createDocument('noaccess.pdf', \Galette\Repository\Documents::STATUS, \Galette\Entity\FieldsConfig::NOBODY);
+        $admin = $this->createDocument('admin.pdf', 'An other document type', \Galette\Entity\FieldsConfig::ADMIN);
+
+        //not logged in: restricted documents are listed anyway, inaccessible ones are not
+        $this->assertFalse($this->login->isLogged());
+        $list = $documents->getReplaceableList();
+        $this->assertSame(
+            [$admin->getId(), $rules->getId(), $status->getId()],
+            array_keys($list)
+        );
+        $this->assertSame('admin.pdf', $list[$admin->getId()]->getDocumentFilename());
+
+        //same list for a super admin
+        $this->logSuperAdmin();
+        $documents = new \Galette\Repository\Documents($this->zdb, $this->login);
+        $this->assertSame(
+            [$admin->getId(), $rules->getId(), $status->getId()],
+            array_keys($documents->getReplaceableList())
+        );
+    }
 }

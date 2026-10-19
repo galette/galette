@@ -96,8 +96,8 @@ abstract class PdfModel
             $this->load($this->type);
         }
 
-        $this->setPatterns($this->getMainPatterns());
-        $this->setMain();
+        $this->setPatterns($this->getMainPatterns() + $this->getDocumentsPatterns());
+        $this->setMain()->setDocuments();
     }
 
     /**

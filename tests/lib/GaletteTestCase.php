@@ -797,4 +797,33 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
             );
         return $document;
     }
+
+    /**
+     * Store a document; its file is not written on disk
+     *
+     * @param string $filename File name
+     * @param string $type     Document type
+     * @param int    $visible  Visibility
+     */
+    protected function createDocument(string $filename, string $type, int $visible): \Galette\Entity\Document
+    {
+        $document = $this->getDocumentInstance();
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                fileNameOrStream: '/tmp/' . $filename,
+                name: $filename,
+                type: 'application/pdf',
+                size: 2048,
+                error: UPLOAD_ERR_OK
+            )
+        ];
+        $post = [
+            'document_type' => $type,
+            'comment' => '',
+            'visible' => $visible
+        ];
+        $this->assertTrue($document->store($post, $uploaded_files));
+
+        return $document;
+    }
 }
