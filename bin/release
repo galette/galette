@@ -7,7 +7,7 @@
 #
 
 import os, sys, argparse, re, git, http.client, subprocess
-import tarfile, shutil, gitdb, time, fnmatch
+import tarfile, shutil, gitdb, time, fnmatch, json
 from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
@@ -467,6 +467,41 @@ def add_libs(rel_name, galette_archive):
         mo = os.path.join(lang_dir, po[len('galette_'):-len('.po')], 'LC_MESSAGES', 'galette.mo')
         if not os.path.exists(mo):
             print_err('Missing compiled translation: %s' % mo)
+            exit(1)
+
+    # composer.json lives at the root, so the generated autoloader resolves
+    # Galette sources from one level above vendor's parent, which breaks
+    # installs where only the galette directory has been deployed.
+    # Regenerate it from the galette directory so it no longer depends on it.
+    with open(os.path.join(composer_dir, 'composer.json')) as composer_file:
+        composer_conf = json.load(composer_file)
+
+    def strip_galette(path):
+        if isinstance(path, list):
+            return [strip_galette(p) for p in path]
+        if not path.startswith('galette/'):
+            print_err('Autoload path outside of the galette directory: %s' % path)
+            exit(1)
+        return path[len('galette/'):]
+
+    autoload = composer_conf['autoload']
+    for kind, paths in autoload.items():
+        if isinstance(paths, dict):
+            autoload[kind] = {ns: strip_galette(path) for ns, path in paths.items()}
+        else:
+            autoload[kind] = strip_galette(paths)
+    composer_conf.pop('autoload-dev', None)
+    composer_conf.pop('scripts', None)
+    composer_conf['config']['vendor-dir'] = 'vendor/'
+    galette_dir = os.path.join(composer_dir, 'galette')
+    galette_composer = os.path.join(galette_dir, 'composer.json')
+    with open(galette_composer, 'w') as composer_file:
+        json.dump(composer_conf, composer_file, indent=4)
+    run('composer dump-autoload --no-dev --optimize', cwd=galette_dir)
+    os.remove(galette_composer)
+    with open(os.path.join(galette_dir, 'vendor', 'composer', 'autoload_static.php')) as static_file:
+        if "'/../../..'" in static_file.read():
+            print_err('Generated autoloader still points outside of the galette directory')
             exit(1)
 
     # cleaunp files not required in releases
