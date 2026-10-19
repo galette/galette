@@ -17,7 +17,14 @@ var _massCheckboxes = function(selector) {
 
     $(selector + 'select, ' + selector + 'textarea, ' + selector + 'input:not(.mass_checkbox)')
         .off().on('change', function() {
-           $(this).parent().find('.mass_checkbox').prop('checked', true);
+            //fields may be wrapped (dropdowns, calendars, inputs with icons):
+            //look for the closest ancestor holding a mass checkbox
+            var _checkbox = $(this).parents().filter(function() {
+                return $(this).find('.mass_checkbox').length > 0;
+            }).first().find('.mass_checkbox');
+            if (_checkbox.length === 1) {
+                _checkbox.prop('checked', true);
+            }
         });
 }
 
