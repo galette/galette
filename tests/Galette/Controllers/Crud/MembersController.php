@@ -2828,6 +2828,62 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test mass changes leave not posted boolean dynamic fields untouched
+     */
+    public function testDoMassChangesKeepsDynamicBooleans(): void
+    {
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::BOOLEAN);
+        $this->assertTrue(
+            $df->store([
+                'form_name'         => 'adh',
+                'field_name'        => 'Volunteer',
+                'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+                'field_type'        => \Galette\DynamicFields\DynamicField::BOOLEAN,
+                'field_required'    => 0,
+                'field_repeat'      => 1
+            ]),
+            implode(' ', $df->getErrors())
+        );
+        $bool_field = 'info_field_' . $df->getId() . '_1';
+
+        $member_one = $this->getMemberOne();
+        $this->assertTrue($member_one->check([$bool_field => '1'], [], []));
+        $this->assertTrue($member_one->store());
+
+        $this->logSuperAdmin();
+        $request = $this->createRequest('massstoremembers', [], 'POST');
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => [$member_one->id],
+            'ville_adh' => 'Mass city'
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['1 member has been changed successfully!']]);
+
+        $member = new \Galette\Entity\Adherent($this->zdb, $member_one->id, ['dynamics' => true]);
+        $this->assertSame('Mass city', $member->town);
+        $values = $member->getDynamicFields()->getValues($df->getId());
+        $this->assertSame('1', (string)($values[0]['field_val'] ?? ''));
+
+        //boolean dynamic field can still be mass unset
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => [$member_one->id],
+            $bool_field => 0
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['1 member has been changed successfully!']]);
+
+        $member = new \Galette\Entity\Adherent($this->zdb, $member_one->id, ['dynamics' => true]);
+        $values = $member->getDynamicFields()->getValues($df->getId());
+        $this->assertSame('0', (string)($values[0]['field_val'] ?? ''));
+
+        $this->login->logout();
+    }
+
+    /**
      * Test remove member page
      */
     public function testRemovePage(): void

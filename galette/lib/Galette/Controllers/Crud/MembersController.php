@@ -1499,6 +1499,26 @@ class MembersController extends CrudController
                 }
             }
 
+            //dynamic fields that have not been posted must be left untouched
+            if ($dynamic_fields === null) {
+                $member = new Adherent($this->zdb);
+                $member
+                    ->enableAllDeps()
+                    ->setDependencies(
+                        $this->preferences,
+                        $this->members_fields,
+                        $this->history
+                    );
+                $dynamic_fields = $member->getDynamicFields()->getFields();
+            }
+            foreach ($dynamic_fields as $field) {
+                $field_id = 'info_field_' . $field->getId() . '_1';
+                if (!isset($post[$field_id])) {
+                    //value is the key as well: Adherent::check() looks for values, dynamics for keys
+                    $disabled[$field_id] = $field_id;
+                }
+            }
+
             if (!count($post)) {
                 $error_detected[] = _T("Nothing to do!");
             } else {
