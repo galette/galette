@@ -12,8 +12,47 @@ declare(strict_types=1);
 use function Safe\define;
 
 //relative to this script, not to the current directory, which may be
-//anything from a cron job or a script - or another Galette checkout
-$basepath ??= \dirname(__DIR__) . '/galette/';
+//anything from a cron job or a script - or another Galette checkout.
+//The application directory is GALETTE_DIR when set, else the "galette"
+//directory next to bin/, else the only one of its siblings holding Galette
+//(it may have been renamed); dependencies are not loaded yet, hence no Safe
+$basepath ??= (static function (): string {
+    $marker = 'includes/galette.inc.php';
+    $fail = static function (string $message): never {
+        fwrite(STDERR, $message . PHP_EOL); //@phpstan-ignore theCodingMachineSafe.function
+        exit(1);
+    };
+
+    $dir = getenv('GALETTE_DIR');
+    if ($dir !== false && $dir !== '') {
+        $real = realpath($dir); //@phpstan-ignore theCodingMachineSafe.function
+        if ($real === false || !is_file($real . '/' . $marker)) {
+            $fail(sprintf('GALETTE_DIR is set to "%s", which is not a Galette directory.', $dir));
+        }
+        return $real . '/';
+    }
+
+    $root = \dirname(__DIR__);
+    if (is_file($root . '/galette/' . $marker)) {
+        return $root . '/galette/';
+    }
+
+    $found = glob($root . '/*/' . $marker) ?: []; //@phpstan-ignore theCodingMachineSafe.function
+    if (count($found) === 1) {
+        return \dirname($found[0], 2) . '/';
+    }
+    $fail(
+        (
+            count($found) === 0
+                ? sprintf('No Galette directory found next to "%s".', __DIR__)
+                : sprintf(
+                    'Several Galette directories found next to "%s": %s.',
+                    __DIR__,
+                    implode(', ', array_map(static fn(string $file): string => \dirname($file, 2), $found)),
+                )
+        ) . ' Set the GALETTE_DIR environment variable to the one to use.'
+    );
+})();
 
 \define('GALETTE_ENV', 'CLI'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 if (getenv('GALETTE_TESTS')) {
@@ -21,7 +60,7 @@ if (getenv('GALETTE_TESTS')) {
 }
 //test environment already defines it
 if (!\defined('GALETTE_ROOT')) {
-    \define('GALETTE_ROOT', \realpath(__DIR__ . '/../galette/') . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
+    \define('GALETTE_ROOT', \realpath($basepath) . '/'); //@phpstan-ignore theCodingMachineSafe.function, theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 //specific logfile for console, read back by includes/galette.inc.php through the
