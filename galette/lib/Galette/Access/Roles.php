@@ -303,18 +303,33 @@ class Roles
      */
     public function getInheritedPermissions(Role $role): array
     {
+        $permissions = array_keys($this->getInheritedPermissionsOrigins($role));
+        sort($permissions);
+        return $permissions;
+    }
+
+    /**
+     * Get permissions a role inherits from its parents, with the nearest
+     * parent granting each of them
+     *
+     * @param Role $role Role
+     *
+     * @return array<string, Role>
+     */
+    public function getInheritedPermissionsOrigins(Role $role): array
+    {
         $roles = $this->getList();
-        $permissions = [];
+        $origins = [];
         $seen = $role->isLoaded() ? [$role->getId() => true] : [];
         $parent = $role->getParentId();
         while ($parent !== null && isset($roles[$parent]) && !isset($seen[$parent])) {
             $seen[$parent] = true;
-            $permissions = array_merge($permissions, $roles[$parent]->getPermissions());
+            foreach ($roles[$parent]->getPermissions() as $permission) {
+                $origins[$permission] ??= $roles[$parent];
+            }
             $parent = $roles[$parent]->getParentId();
         }
-        $permissions = array_values(array_unique($permissions));
-        sort($permissions);
-        return $permissions;
+        return $origins;
     }
 
     /**
@@ -624,7 +639,7 @@ class Roles
      *
      * @param Role $role System role
      *
-     * @return ?array<array{id_adh: int, member: string, group: ?string}> null when not listed
+     * @return ?array<array{id_adh: int, member: string, groups: array<string>}> null when not listed
      */
     public function getComputedMembersOf(Role $role): ?array
     {
@@ -656,20 +671,25 @@ class Roles
                 return null;
         }
 
+        //one entry per member, with all the groups they manage
         $members = [];
         foreach ($this->zdb->execute($select) as $row) {
-            $members[] = [
-                'id_adh' => (int)$row->id_adh,
+            $id = (int)$row->id_adh;
+            $members[$id] ??= [
+                'id_adh' => $id,
                 'member' => trim($row->nom_adh . ' ' . $row->prenom_adh),
-                'group' => $row->group_name ?? null
+                'groups' => []
             ];
+            if (isset($row->group_name)) {
+                $members[$id]['groups'][] = $row->group_name;
+            }
         }
 
-        //by member, then group
-        usort(
-            $members,
-            fn(array $a, array $b): int => [$a['member'], $a['group']] <=> [$b['member'], $b['group']]
-        );
+        foreach ($members as &$member) {
+            sort($member['groups']);
+        }
+        unset($member);
+        usort($members, fn(array $a, array $b): int => $a['member'] <=> $b['member']);
         return $members;
     }
 }
