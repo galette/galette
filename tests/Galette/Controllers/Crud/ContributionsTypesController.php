@@ -39,8 +39,7 @@ class ContributionsTypesController extends GaletteRoutingTestCase
      */
     public function testAccess(): void
     {
-        $create = $this->preferences->pref_bool_groupsmanagers_create_contributions;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         $this->logGroupManager();
         $requests = [
@@ -55,7 +54,6 @@ class ContributionsTypesController extends GaletteRoutingTestCase
             $this->expectAuthMiddlewareRefused($this->app->handle($request));
         }
         $this->login->logOut();
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = $create;
 
         $select = $this->zdb->select(ContributionsTypes::TABLE);
         $select->where(['libelle_type_cotis' => 'Test type by manager', 'cotis_extension' => '0']);

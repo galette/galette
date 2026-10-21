@@ -728,16 +728,6 @@ final class PreferencesSchema
             'pref_password_blacklist' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_password_strength' => ['type' => self::TYPE_INT, 'default' => Preferences::PWD_NONE],
             'pref_default_paymenttype' => ['type' => self::TYPE_INT, 'default' => PaymentType::CHECK],
-            'pref_bool_create_member' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_create_member' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_edit_member' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_edit_groups' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_mailings' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_exports' => ['type' => self::TYPE_BOOL, 'default' => true],
-            'pref_bool_groupsmanagers_create_contributions' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_create_transactions' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_see_contributions' => ['type' => self::TYPE_BOOL, 'default' => false],
-            'pref_bool_groupsmanagers_see_transactions' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_noindex' => ['type' => self::TYPE_BOOL, 'default' => false],
             // === Two-factor authentication ===
             // alpha feature

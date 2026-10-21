@@ -13,7 +13,7 @@
  # exactly the memberships to store.
  #}
 {% set can_edit_members = login.isGroupManager() %}
-{% set can_edit_managers = login.isAdmin() or login.isStaff() %}
+{% set can_edit_managers = can('member:manage') %}
 {% set member_gids = member.id ? member.getGroups()|map(g => g.getId()) : [] %}
 {% set manager_gids = member.id ? member.getManagedGroups()|map(g => g.getId()) : [] %}
 {% set sorted_groups = groups|sort((a, b) => a.getFullName() <=> b.getFullName()) %}
@@ -94,7 +94,7 @@
                         <button type="button" class="ui mini basic red icon button group-remove" aria-label="{{ _T("Remove from group %1$s")|format(full_name) }}">
                             <i class="times icon" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Keep group %1$s")|format(full_name) }}">
+                        <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Cancel removal from group %1$s")|format(full_name) }}">
                             <i class="undo icon" aria-hidden="true"></i>
                             {{ _T("Cancel") }}
                         </button>

@@ -50,3 +50,70 @@ details.ui.basic.styled.accordion .title {
         color: @black;
      }
 }
+
+/*--------------------------------------------------
+     Role permissions, one accordion per domain
+---------------------------------------------------*/
+.ui.styled.accordion.role-permissions {
+    margin-bottom: 1em;
+
+    > .title {
+        display: flex;
+        align-items: center;
+        gap: .75em;
+    }
+    .role-domain {
+        flex: 1 1 auto;
+    }
+    /* granted and inherited permissions; darker colors on the light active or hovered title */
+    .permissions-meter {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 2px;
+
+        i {
+            width: .6em;
+            height: .6em;
+            border-radius: 2px;
+            background: fade(@white, 18);
+        }
+        i.granted {
+            background: @galetteColor;
+        }
+        i.inherited {
+            background: lighten(@blue, 35);
+        }
+    }
+    > .title.active .permissions-meter,
+    > .title:hover .permissions-meter {
+        i {
+            background: fade(@black, 15);
+        }
+        i.granted {
+            background: @green;
+        }
+        i.inherited {
+            background: @blue;
+        }
+    }
+    /* own permissions in green, inherited ones in blue */
+    .ui.toggle.checkbox input:checked ~ label::before,
+    .ui.toggle.checkbox input:focus:checked ~ label::before {
+        background-color: @positiveColor !important;
+    }
+    .ui.toggle.checkbox.disabled input:checked ~ label::before {
+        background-color: @blue !important;
+    }
+    .permissions-count {
+        min-width: 3em;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+/* Long lists of members stay scrollable in the sticky panel */
+#role_members .role-members-list {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 1em;
+}

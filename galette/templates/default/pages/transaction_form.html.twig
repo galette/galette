@@ -7,6 +7,7 @@
 {% extends "page.html.twig" %}
 
 {% block content %}
+{% set can_attach = can('transaction:attach') %}
 {% if members.list is defined %}
     <form action="{% if transaction.id %}{{ url_for("doEditTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("doAddTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
@@ -89,30 +90,30 @@
                                     <th scope="col" class="left date_row collapsing">{{ _T("Begin") }}</th>
                                     <th scope="col" class="left date_row collapsing">{{ _T("End") }}</th>
                                     <th scope="col" class="left collapsing">{{ _T("Duration") }}</th>
-            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+            {% if can_attach %}
                                     <th scope="col" class="left">{{ _T("Member") }}</th>
             {% endif %}
                                     <th scope="col" class="left">{{ _T("Type") }}</th>
                                     <th scope="col" class="left collapsing">{{ _T("Amount") }}</th>
-            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+            {% if can_attach %}
                                     <th scope="col" class="actions_row collapsing">{{ _T("Actions") }}</th>
             {% endif %}
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if can_attach %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getDispatchedAmount() }}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row" class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
+                                    <th scope="row" class="right bgfree" colspan="{% if can_attach %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getMissingAmount() }}</th>
                                     <td></td>
                                 </tr>
             {% if transaction.getMissingAmount() > 0 %}
                                 <tr>
-                                    <th colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}9{% else %}7{% endif %}">
+                                    <th colspan="{% if can_attach %}9{% else %}7{% endif %}">
                                         <div class="ui basic fitted right aligned segment">
                 {% if contribution.canCreate(login) %}
                                             <a
@@ -134,7 +135,7 @@
                                                 <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                                             </a>
                 {% endif %}
-                {% if login.isStaff() or login.isAdmin() or preferences.pref_bool_groupsmanagers_see_contributions %}
+                {% if permission_scope('contribution:read') != 'none' %}
                                             <button
                                                 type="button"
                                                 class="ui icon blue compact button tooltip"
@@ -161,12 +162,12 @@
                                     <td class="center collapsing">{{ contrib.begin_date }}</td>
                                     <td class="center collapsing">{{ contrib.end_date }}</td>
                                     <td class="collapsing">{{ contrib.duration }}</td>
-                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+                {% if can_attach %}
                                     <td>{{ memberName({'id': mid}) }}</td>
                 {% endif %}
                                     <td>{{ contrib.type.libelle }}</td>
                                     <td class="right collapsing">{{ contrib.amount }}</td>
-                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+                {% if can_attach %}
                                     <td class="actions_row collapsing">
                                         <a
                                             href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
@@ -179,7 +180,7 @@
                 {% endif %}
                                 </tr>
             {% else %}
-                                <tr><td colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}9{% else %}7{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
+                                <tr><td colspan="{% if can_attach %}9{% else %}7{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
             {% endfor %}
                             </tbody>
                         </table>

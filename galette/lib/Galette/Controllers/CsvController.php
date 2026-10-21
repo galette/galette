@@ -268,6 +268,26 @@ class CsvController extends AbstractController
         //store selected file to display again in UI
         $this->session->import_file = $post['import_file'];
 
+        //making members groups managers is not granted by imports permission
+        $model = new ImportModel();
+        if (
+            $model->load()
+            && in_array(CsvIn::MANAGED_GROUPS_FIELD, $model->getFields() ?? [], strict: true)
+            && !$this->accessControl->can('member:manage')
+        ) {
+            Analog::log(
+                'Trying to import groups managers without appropriate permissions',
+                Analog::WARNING
+            );
+            $this->flash->addMessage(
+                'error_detected',
+                _T('You are not allowed to import groups managers; remove that column from the import model.')
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('import'));
+        }
+
         $res = $csv->import(
             zdb: $this->zdb,
             preferences: $this->preferences,
@@ -673,7 +693,7 @@ class CsvController extends AbstractController
     )]
     public function membersExport(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:export')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -709,6 +729,14 @@ class CsvController extends AbstractController
     )]
     public function contributionsExport(Request $request, Response $response): Response
     {
+        if (!$this->accessControl->can($type === 'transactions' ? 'transaction:export' : 'contribution:export')) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
+
         $filters = $this->getRequestedSessionFilter(
             $request,
             $this->getFilterName('contributions', ['suffix' => 'csvexport']),

@@ -350,6 +350,50 @@ test.describe('Accessibility', () => {
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
 
+  // Roles
+  test('A11y - Roles list page', async ({ loggedInPage: page }) => {
+    await page.goto('/roles');
+    await page.locator('table.listing').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - System role edit page', async ({ loggedInPage: page }) => {
+    // Member role, fixed identifier
+    await page.goto('/roles/edit/1');
+    await page.locator('input[name^="permissions["]').first().waitFor({ state: 'attached' });
+
+    const results = await axeBuilder(page).analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  test('A11y - Role edit page, with members', async ({ loggedInPage: page }) => {
+    // Role seeded by fixtures and given to a member
+    await page.goto('/roles');
+    await page.locator('table.listing a', { hasText: 'Trésorerie' }).first().click();
+    await page.locator('form[action$="/members"]').waitFor({ state: 'visible' });
+
+    const results = await axeBuilder(page).exclude('*[autocomplete="fomantic-search"]').analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
+
+  // Members with a role given for all groups, and for one group
+  for (const name of ['Granger', 'Ragdoll']) {
+    test(`A11y - Member details page, with roles (${name})`, async ({ loggedInPage: page }) => {
+      await page.goto('/members');
+      await page.locator('#filter_str').first().fill(name);
+      await page.locator('button[type="submit"]').first().click();
+      await page.waitForTimeout(animationTimeout);
+
+      await page.locator(`a:has-text("${name}")`).first().click();
+      await page.locator('a.ui.blue.label[href*="/roles/edit/"]').first().waitFor({ state: 'visible' });
+
+      const results = await axeBuilder(page).analyze();
+      expect(results.violations, formatViolations(results.violations)).toEqual([]);
+    });
+  }
+
   test('A11y - Contribution types page', async ({ loggedInPage: page }) => {
     await page.goto('/contributions-types');
     await page.locator('h1, h2').waitFor({ state: 'visible' });
