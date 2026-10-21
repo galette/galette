@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-20 05:48+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Jože Felicijan "
+"<felicijan@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -2625,6 +2625,21 @@ msgstr "Začetni datum"
 msgid "End date"
 msgstr "Končni datum"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "Dokument %1$s"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "E-pošta poslana uporabniku %1$s (%2$s)"
+
 msgid "Member information"
 msgstr "Informacije o članih"
 
@@ -3331,6 +3346,9 @@ msgstr "Starš:"
 
 msgid "Member number:"
 msgstr "Številka člana:"
+
+msgid "Picture:"
+msgstr "Slika:"
 
 msgid "State of dues"
 msgstr "Stanje dolgov"
@@ -4286,9 +4304,6 @@ msgstr "Poiščite ime ali ID in izberite člana"
 
 msgid "Password confirmation:"
 msgstr "Potrditev gesla:"
-
-msgid "Picture:"
-msgstr "Slika:"
 
 msgid "Delete image"
 msgstr "Izbriši sliko"

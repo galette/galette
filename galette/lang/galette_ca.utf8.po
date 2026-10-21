@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -3068,6 +3068,21 @@ msgstr "Data d'inici"
 msgid "End date"
 msgstr "Data de finalització"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%count entry"
+#| msgid_plural "%count entries"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s entrada"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "S'ha enviat un correu electrònic al usuari %1$s (%2$s)"
+
 #, fuzzy
 msgid "Member information"
 msgstr "Informació del membre"
@@ -3875,6 +3890,9 @@ msgstr "Pares:"
 
 msgid "Member number:"
 msgstr "Número de usuari:"
+
+msgid "Picture:"
+msgstr "Imatge:"
 
 #, fuzzy
 msgid "State of dues"
@@ -5017,9 +5035,6 @@ msgstr "Cerca el nom o l'ID i selecciona el membre"
 
 msgid "Password confirmation:"
 msgstr "Confirmació de contrasenya:"
-
-msgid "Picture:"
-msgstr "Imatge:"
 
 #, fuzzy
 msgid "Delete image"

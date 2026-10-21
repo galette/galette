@@ -34,10 +34,10 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -2733,6 +2733,21 @@ msgstr "Data di inizio"
 msgid "End date"
 msgstr "Data di fine"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s documento"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "Messaggio inviato all’utente %1$s (%2$s)"
+
 msgid "Member information"
 msgstr "Informazione socio"
 
@@ -3475,6 +3490,9 @@ msgstr "Genitore:"
 msgid "Member number:"
 msgstr "Numero del socio:"
 
+msgid "Picture:"
+msgstr "Foto:"
+
 msgid "State of dues"
 msgstr "Scadenze"
 
@@ -3576,8 +3594,8 @@ msgid ""
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
 "Salve amministratore,{NEWLINE}Un nuovo socio si è registrato in linea con le "
-"seguenti informazioni:{BR}* Nome: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail:"
-" {MAIL_ADH}{NEWLINE}Cordiali saluti,{BR}Galette"
+"seguenti informazioni:{BR}* Nome: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
+"mail: {MAIL_ADH}{NEWLINE}Cordiali saluti,{BR}Galette"
 
 msgid "New self registration (sent to admin)"
 msgstr "Nuova auto-registrazione (inoltrato a admin)"
@@ -3636,9 +3654,9 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Ciao,{NEWLINE}la tua donazione a {ASSO_NAME} è stata registrata con "
-"successo.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Grazie!{NEWLINE}(questa email è "
-"stata inviata automaticamente)"
+"Ciao,{NEWLINE}la tua donazione a {ASSO_NAME} è stata registrata con successo."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Grazie!{NEWLINE}(questa email è stata "
+"inviata automaticamente)"
 
 msgid "Receipt send for new donations"
 msgstr "Ricevuta inviata per le nuove donazioni"
@@ -3682,8 +3700,8 @@ msgstr ""
 "Ciao!{NEWLINE}Una richiesta di recupero password è stata effettuata sul tuo "
 "account su {ASSO_NAME}, ma questo è attualmente inattivo e quindi non può "
 "essere elaborata.{NEWLINE}Si prega di contattare un amministratore o un "
-"membro del personale se si pensa che questo sia un errore.{NEWLINE}A "
-"presto!{NEWLINE}(questa email è stata inviata automaticamente)"
+"membro del personale se si pensa che questo sia un errore.{NEWLINE}A presto!"
+"{NEWLINE}(questa email è stata inviata automaticamente)"
 
 msgid "Lost password email (disabled)"
 msgstr "Email di recupero password (disabilitata)"
@@ -4457,9 +4475,6 @@ msgstr "Cerca nome o ID e seleziona il socio"
 
 msgid "Password confirmation:"
 msgstr "Conferma della password:"
-
-msgid "Picture:"
-msgstr "Foto:"
 
 msgid "Delete image"
 msgstr "Cancella immagine"

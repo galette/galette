@@ -17,10 +17,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -2703,6 +2703,21 @@ msgstr "Дата початку"
 msgid "End date"
 msgstr "Дата завершення"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s документа"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "Повідомлення е-пошти надіслано користувачу %1$s (%2$s)"
+
 msgid "Member information"
 msgstr "Відомості про члена"
 
@@ -3441,6 +3456,9 @@ msgstr "Батько:"
 
 msgid "Member number:"
 msgstr "Номер члена:"
+
+msgid "Picture:"
+msgstr "Зображення:"
 
 msgid "State of dues"
 msgstr "Стан зборів"
@@ -4408,9 +4426,6 @@ msgstr "Пошук імені або ідентифікатора та вибі�
 
 msgid "Password confirmation:"
 msgstr "Підтвердження паролю:"
-
-msgid "Picture:"
-msgstr "Зображення:"
 
 msgid "Delete image"
 msgstr "Видалити зображення"

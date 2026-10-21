@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-07 08:51+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -2681,6 +2681,21 @@ msgstr "Date de début"
 msgid "End date"
 msgstr "Date de fin"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s document"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "Un courriel a été envoyé à l’utilisateur %1$s (%2$s)"
+
 msgid "Member information"
 msgstr "Informations adhérent"
 
@@ -3386,6 +3401,9 @@ msgstr "Parent :"
 
 msgid "Member number:"
 msgstr "Numéro adhérent :"
+
+msgid "Picture:"
+msgstr "Image :"
 
 msgid "State of dues"
 msgstr "État cotisations"
@@ -4360,9 +4378,6 @@ msgstr "Chercher un nom ou un identifiant et sélectionner l'adhérent"
 
 msgid "Password confirmation:"
 msgstr "Confirmation du mot de passe :"
-
-msgid "Picture:"
-msgstr "Image :"
 
 msgid "Delete image"
 msgstr "Supprimer l’image"
