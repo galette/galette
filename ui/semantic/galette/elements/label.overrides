@@ -6,3 +6,14 @@
 .ui.ui.ui.primary.label {
     color: @darkGrey;
 }
+
+/* translucent detail does not contrast enough on blue */
+.ui.blue.label > .detail {
+    opacity: 1;
+}
+
+/* default orange is too light on white */
+.ui.basic.labels .orange.label,
+.ui.ui.ui.basic.orange.label {
+    color: darken(@orange, 15);
+}
