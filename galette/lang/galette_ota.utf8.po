@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -2545,6 +2545,18 @@ msgstr ""
 msgid "End date"
 msgstr ""
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, php-format
+msgid "Links to \"%1$s\" documents"
+msgstr ""
+
+#, php-format
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr ""
+
 msgid "Member information"
 msgstr ""
 
@@ -3225,6 +3237,9 @@ msgid "Parent:"
 msgstr ""
 
 msgid "Member number:"
+msgstr ""
+
+msgid "Picture:"
 msgstr ""
 
 msgid "State of dues"
@@ -4086,9 +4101,6 @@ msgid "Search for name or ID and pick member"
 msgstr ""
 
 msgid "Password confirmation:"
-msgstr ""
-
-msgid "Picture:"
 msgstr ""
 
 msgid "Delete image"

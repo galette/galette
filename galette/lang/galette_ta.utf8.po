@@ -11,12 +11,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-10-21 08:00+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
-"ta/>\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
+">\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2657,6 +2657,21 @@ msgstr "தொடக்க தேதி"
 msgid "End date"
 msgstr "முடிவு தேதி"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s ஆவணம்"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "மின்னஞ்சல் பயனர் %1$s அனுப்பப்பட்டது (%2$s)"
+
 msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
@@ -3389,6 +3404,9 @@ msgstr "பெற்றோர்:"
 
 msgid "Member number:"
 msgstr "உறுப்பினர் எண்:"
+
+msgid "Picture:"
+msgstr "படம்:"
 
 msgid "State of dues"
 msgstr "நிலுவைத் தொகை"
@@ -4353,9 +4371,6 @@ msgstr "பெயர் அல்லது ஐடியைத் தேடி �
 
 msgid "Password confirmation:"
 msgstr "கடவுச்சொல் உறுதிப்படுத்தல்:"
-
-msgid "Picture:"
-msgstr "படம்:"
 
 msgid "Delete image"
 msgstr "படத்தை நீக்கு"
