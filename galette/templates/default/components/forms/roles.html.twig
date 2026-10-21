@@ -1,0 +1,127 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Roles of the member, one row per role, see components/forms/groups.html.twig.
+ #
+ # Computed roles are displayed only, with where they come from. Each given
+ # role posts a roles_adh[] "role|group" value, disabled once removed;
+ # roles_sent tells the list has been posted, even empty.
+ #}
+<div id="roles_field" class="ui styled fluid accordion field">
+    <div class="active title">
+        <i class="dropdown icon" aria-hidden="true"></i>
+        {{ _T("Roles") }}
+    </div>
+    <div class="active content">
+        <input type="hidden" name="roles_sent" value="1"/>
+        <table class="ui very basic table" id="member_roles">
+            <caption class="visually-hidden">{{ _T("Roles") }}</caption>
+            <thead>
+                <tr>
+                    <th scope="col">{{ _T("Role") }}</th>
+                    <th scope="col">{{ _T("Group") }}</th>
+                    <th scope="col" class="collapsing"><span class="visually-hidden">{{ _T("Actions") }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+{% set origins = {
+    (constant('Galette\\Access\\Roles::MEMBER')): _T("Every logged in member"),
+    (constant('Galette\\Access\\Roles::UPTODATE')): _T("Active account, up to date membership"),
+    (constant('Galette\\Access\\Roles::STAFF')): _T("From their status: %1$s")|format(member.sstatus),
+    (constant('Galette\\Access\\Roles::ADMIN')): _T("Marked as administrator"),
+    (constant('Galette\\Access\\Roles::MANAGER')): _T("Manager of the group, see groups above")
+} %}
+{% for member_role in member_roles|filter(r => not r.given) %}
+                <tr>
+                    <th scope="row" data-col-label="{{ _T("Role") }} :">
+                        {{ member_role.role.getLabel() }}
+                        <span class="ui small grey text">
+                            <i class="cog icon" aria-hidden="true"></i>
+                            {{ origins[member_role.role.getKey()] ?? _T("Computed from member's information") }}
+                        </span>
+                    </th>
+                    <td data-col-label="{{ _T("Group") }} :">{{ member_role.group ?? _T("All groups") }}</td>
+                    <td></td>
+                </tr>
+{% endfor %}
+{% for member_role in member_roles|filter(r => r.given) %}
+    {% set label = member_role.role.getLabel() %}
+    {% set scope = member_role.group ?? _T("All groups") %}
+    {% set value = member_role.role.getId() ~ '|' ~ (member_role.id_group ?? '') %}
+                <tr data-role="{{ value }}" data-linked="1">
+                    <th scope="row" data-col-label="{{ _T("Role") }} :">
+                        {{ label }}
+                        <input type="hidden" name="roles_adh[]" value="{{ value }}"/>
+                        <span class="ui mini orange basic label role-state displaynone" data-state="removed">{{ _Tx("member roles", "will be removed") }}</span>
+                    </th>
+                    <td data-col-label="{{ _T("Group") }} :">{{ scope }}</td>
+                    <td class="right aligned">
+                        <button type="button" class="ui mini basic red icon button role-remove" aria-label="{{ _T("Take role %1$s back")|format(label) }}">
+                            <i class="times icon" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="ui mini basic labeled icon button role-undo displaynone" aria-label="{{ _T("Cancel removal of role %1$s")|format(label) }}">
+                            <i class="undo icon" aria-hidden="true"></i>
+                            {{ _T("Cancel") }}
+                        </button>
+                    </td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+        <template id="role_row_template">
+            <tr data-linked="0">
+                <th scope="row" data-col-label="{{ _T("Role") }} :">
+                    <span class="role-label"></span>
+                    <input type="hidden" name="roles_adh[]" value=""/>
+                    <span class="ui mini orange basic label role-state" data-state="added">{{ _Tx("member roles", "added") }}</span>
+                </th>
+                <td class="role-scope" data-col-label="{{ _T("Group") }} :"></td>
+                <td class="right aligned">
+                    <button type="button" class="ui mini basic red icon button role-remove">
+                        <i class="times icon" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </template>
+{% if assignable_roles|length > 0 %}
+        <div class="ui divider"></div>
+        <div class="fields role-add">
+            <div class="field role">
+                <label for="role_add">{{ _T("Give role") }}</label>
+                <select id="role_add" class="ui dropdown">
+                    <option value="">{{ _T("Choose a role") }}</option>
+    {% for assignable_role in assignable_roles %}
+                    <option value="{{ assignable_role.getId() }}">{{ assignable_role.getLabel() }}</option>
+    {% endfor %}
+                </select>
+            </div>
+            <div class="field group">
+                <label for="role_scope_add">{{ _T("Group") }}</label>
+                <select id="role_scope_add" class="ui dropdown">
+                    <option value="">{{ _T("All groups") }}</option>
+    {% for group_id, group_name in groups_names %}
+                    <option value="{{ group_id }}">{{ group_name }}</option>
+    {% endfor %}
+                </select>
+            </div>
+            <div class="field action">
+                <label aria-hidden="true">&nbsp;</label>
+                <button type="button" id="role_add_btn" class="ui tiny green labeled icon button">
+                    <i class="plus icon" aria-hidden="true"></i>
+                    {{ _T("Add") }}
+                </button>
+            </div>
+        </div>
+{% endif %}
+        <div id="member_roles_status" aria-live="polite">
+            <div class="ui small visible warning message displaynone">
+                <i class="info circle icon" aria-hidden="true"></i>
+                {{ _T("Items in this list have been modified. Don't forget to save your changes.") }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -122,4 +122,29 @@ test.describe.serial('Member groups', () => {
       .analyze();
     expect(results.violations, formatViolations(results.violations)).toEqual([]);
   });
+
+  test('Member groups - Accessibility, with pending changes', async ({ loggedInPage: page }) => {
+    await editMember(page, 'RAGDOLL');
+
+    //removed
+    const row = page.locator('#member_groups tbody tr[data-group]:visible').first();
+    await row.locator('.group-remove').click();
+    await expect(row.locator('.group-state[data-state="removed"]')).toBeVisible();
+
+    //added; nothing is saved
+    const search = page.locator('#groups_field .ui.search.dropdown input.search');
+    await search.fill('Planet');
+    await expect(page.locator('#groups_field .ui.search.dropdown')).toHaveClass(/\bvisible\b/);
+    await search.press('Enter');
+    await page.locator('#group_add_btn').click();
+    await expect(groupRow(page, GROUP_TO_ADD).locator('.group-state[data-state="added"]')).toBeVisible();
+    await expect(page.locator('#member_groups_status .message')).toBeVisible();
+
+    const results = await axeBuilder(page)
+      // Fomantic search dropdowns always use this autocomplete value
+      .exclude('*[autocomplete="fomantic-search"]')
+      .include('#groups_field')
+      .analyze();
+    expect(results.violations, formatViolations(results.violations)).toEqual([]);
+  });
 });

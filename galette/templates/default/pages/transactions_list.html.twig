@@ -8,7 +8,8 @@
 
 {% set basic_table = true %}
 
-{% if not login.isAdmin() and not login.isStaff() and not login.isGroupManager() %}
+{% set can_act = can('transaction:create') or can('transaction:edit') %}
+{% if not can_act %}
     {% set no_action = true %}
 {% endif %}
 
@@ -38,7 +39,7 @@
     }
 ] %}
 
-{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+{% if (permission_scope('transaction:read') == 'all' and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([
         {
             'label': _T("Originator"),
@@ -60,7 +61,7 @@
     }
 ]) %}
 
-{% if (login.isGroupManager() and not preferences.pref_bool_groupsmanagers_create_transactions) and not login.isAdmin() and not login.isStaff() or mode == 'ajax' %}
+{% if mode == 'ajax' %}
     {% set no_action = true %}
 {% endif %}
 
@@ -104,7 +105,7 @@
                 <div class="ui horizontal list">
                     <span class="ui primary ribbon label">
                         {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_transactions or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                        {% if permission_scope('transaction:read') != 'none' or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             <a
                                 href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                             >
@@ -128,7 +129,7 @@
                             </a>
                         </div>
                     {% endif %}
-                    {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions) %}
+                    {% if can('transaction:create') %}
                         <div class="item">
                             <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
                                 <i class="ui plus circle green icon" aria-hidden="true"></i>
@@ -156,7 +157,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions)) and member is not defined %}
+    {% if can('transaction:create') and member is not defined %}
         <a
                 class="ui tiny labeled icon button"
                 href="{{ url_for("addTransaction") }}"
@@ -183,7 +184,7 @@
         <tr class="{{ transaction.getRowClass() }}">
             <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                 {{ transaction.id }}
-                {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions)) and mode != 'ajax' %}
+                {% if permission_scope('contribution:read') != 'none' and mode != 'ajax' %}
                     {% if transaction.getDispatchedAmount() != 0 %}
                         <a href="{{ url_for("contributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}" class="icon-only">
                             <i class="ui linkify icon" aria-hidden="true"></i>
@@ -204,7 +205,7 @@
                 {% endif %}
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
-            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+            {% if (permission_scope('transaction:read') == 'all' and member is not defined) or pmember is defined %}
                 <td data-col-label="{{ _T("Member") }}">
                     {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                         <a
@@ -226,7 +227,7 @@
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
-            {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions)) and mode != 'ajax' %}
+            {% if can_act and mode != 'ajax' %}
                 <td class="center actions_row collapsing">
                     <a
                         href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
@@ -235,7 +236,7 @@
                         <i class="ui edit icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T('Edit transaction #%1$s')|format(transaction.id) }}</span>
                     </a>
-                    {% if login.isAdmin() or login.isStaff() %}
+                    {% if can('transaction:delete') %}
                     <a
                         href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                         class="delete icon-only"
@@ -271,7 +272,7 @@
                     </tr>
                 </tbody>
             </table>
-    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+    {% if can_act %}
             <table class="ui stripped table">
                 <thead>
                     <tr>
@@ -284,7 +285,7 @@
                             <i class="ui edit blue icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Modification") }}</td>
-        {% if login.isAdmin() or login.isStaff() %}
+        {% if can('transaction:delete') %}
                         <th scope="row">
                             <i class="ui trash red icon" aria-hidden="true"></i>
                         </th>

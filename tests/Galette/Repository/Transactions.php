@@ -214,9 +214,7 @@ class Transactions extends GaletteTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager());
 
-        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_transactions;
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         //group manager only sees its own transactions
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
@@ -225,8 +223,7 @@ class Transactions extends GaletteTestCase
         $this->assertSame(1, $transactions->getCount());
 
         //let groups managers see their groups members transactions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         //first member is part of two managed groups, its transactions are listed only once
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
@@ -250,7 +247,6 @@ class Transactions extends GaletteTestCase
         $this->assertSame(3, $transactions->getCount());
 
         //reset
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = $orig_pref;
         $this->assertTrue($this->preferences->store());
     }
 

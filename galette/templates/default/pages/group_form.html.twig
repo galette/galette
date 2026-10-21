@@ -6,15 +6,13 @@
 
 {% extends "page.html.twig" %}
 
-{% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
-
 {% block content %}
     {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
 {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">
-    {% if login.isAdmin() or login.isStaff() %}
+    {% if group.canEdit(login) and permission_scope('member:read') == 'all' %}
         {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#person_add"} %}
     {% endif %}
 

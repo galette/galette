@@ -57,6 +57,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
     $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
     $view->addExtension($c->get(\Galette\Twig\FeatureFlagExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\AccessControlExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
@@ -164,6 +165,27 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 
 //code depending on "now" takes a clock rather than calling time() itself
 $container->set(\Psr\Clock\ClockInterface::class, DI\autowire(\Galette\Core\SystemClock::class));
+
+//plugins classes may need the permissions catalog while plugins are being loaded
+$container->set(
+    \Galette\Access\Permissions::class,
+    fn(ContainerInterface $c) => new \Galette\Access\Permissions(
+        fn(): \Galette\Core\Plugins => $c->get(\Galette\Core\Plugins::class)
+    )
+);
+
+$container->set(
+    \Galette\Access\RoleResolver::class,
+    DI\autowire()
+        ->constructorParameter('repository', DI\get(\Galette\Access\Roles::class))
+);
+
+//permissions come from roles
+$container->set(
+    \Galette\Interfaces\PermissionResolverInterface::class,
+    DI\get(\Galette\Access\RoleResolver::class)
+);
+$container->set(\Galette\Access\AccessControl::class, DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
