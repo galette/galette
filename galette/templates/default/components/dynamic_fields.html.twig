@@ -15,9 +15,7 @@
             {% set valuedata = field_data.field_val|escape %}
             {% if masschange %}
                 {# Add a checkbox for fields to change on mass edition #}
-                <span class="ui checkbox masschange">
-                    <input type="checkbox" name="mass_info_field_{{ field.getId() }}" class="mass_checkbox"/>
-                </span>
+                {% include "components/forms/mass_checkbox.html.twig" with {name: 'info_field_' ~ field.getId(), label: field.getName()} only %}
             {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\File' %}
                 {#

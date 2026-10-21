@@ -6,13 +6,6 @@
 
 {% extends "modals/mass_change.html.twig" %}
 
-{% macro mass_checkbox(name) %}
-    {# Add a checkbox for fields to change on mass edition #}
-    <span class="ui checkbox masschange">
-        <input type="checkbox" name="mass_{{ name }}" class="mass_checkbox"/>
-    </span>
-{% endmacro %}
-
 {% block mass_form %}
                 <div class="ui styled fluid accordion field">
                     <div class="active title">
@@ -28,7 +21,7 @@
                         } %}
                     </div>
                     <div class="active content field">
-                        {{ _self.mass_checkbox('date_enreg') }}
+                        {% include "components/forms/mass_checkbox.html.twig" with {name: 'date_enreg', label: mass_fields.date_enreg} only %}
                         <label for="date_enreg">{{ mass_fields.date_enreg }}</label>
                         <div class="ui calendar" id="contribution-rangestart">
                             <div class="ui input left icon">
@@ -38,7 +31,7 @@
                         </div>
                     </div>
                     <div class="active content field">
-                        {{ _self.mass_checkbox('info_cotis') }}
+                        {% include "components/forms/mass_checkbox.html.twig" with {name: 'info_cotis', label: mass_fields.info_cotis} only %}
                         <label for="info_cotis">{{ mass_fields.info_cotis }}</label>
                         <textarea name="info_cotis" id="info_cotis" cols="61" rows="4"></textarea>
                     </div>
