@@ -460,6 +460,35 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
+     * Test plain values are escaped in PDF, values stored as HTML are not
+     */
+    public function testPlainValuesAreEscaped(): void
+    {
+        $ids = $this->createMemberWithMarkupLikeValues();
+
+        $pk = \Galette\Entity\PdfModel::PK;
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => null,
+            'model_subtitle' => null,
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => '{NICKNAME_ADH}|{LABEL_DYNFIELD_' . $ids['line'] . '_ADH}|{DYNFIELD_' . $ids['line'] . '_ADH}'
+                . '|{DYNFIELD_' . $ids['choice'] . '_ADH}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
+        $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
+        $model->setMember($this->adh);
+
+        $this->assertSame(
+            'Tom &amp;amp; Jerry|Notes &amp; co|R &amp; D|Bed &amp;amp; breakfast',
+            $model->hbody
+        );
+    }
+
+    /**
      * Test multiline address replacements
      */
     public function testMultilineAddressReplacements(): void

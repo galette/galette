@@ -171,11 +171,13 @@ class Texts
             return $this;
         }
         $this->setReplacements([
-            'change_pass_uri'   => $this->preferences->getURL()
+            'change_pass_uri'   => htmlspecialchars(
+                $this->preferences->getURL()
                 . $this->routeparser->urlFor(
                     'password-recovery',
                     ['hash' => $password->getToken()]
                 )
+            )
         ]);
         return $this;
     }
@@ -187,7 +189,7 @@ class Texts
     {
         $link_validity = new DateTime();
         $link_validity->add(new DateInterval('PT24H'));
-        $this->setReplacements(['link_validity' => $link_validity->format(_T("Y-m-d H:i:s"))]);
+        $this->setReplacements(['link_validity' => htmlspecialchars($link_validity->format(_T("Y-m-d H:i:s")))]);
         return $this;
     }
 
@@ -198,7 +200,7 @@ class Texts
      */
     public function setMemberCardLink(string $link): self
     {
-        $this->setReplacements(['link_membercard' => $link]);
+        $this->setReplacements(['link_membercard' => htmlspecialchars($link)]);
         return $this;
     }
 
@@ -209,7 +211,7 @@ class Texts
      */
     public function setContribLink(string $link): self
     {
-        $this->setReplacements(['link_contribpdf' => $link]);
+        $this->setReplacements(['link_contribpdf' => htmlspecialchars($link)]);
         return $this;
     }
 
@@ -594,7 +596,7 @@ class Texts
      */
     public function setReplacements(array $replaces): void
     {
-        //some replacements may produce HTML code; while system texts are text only
+        //replacements are HTML, plain values escaped; while system texts are text only
         foreach ($replaces as &$replace) {
             if (is_string($replace)) {
                 $replace = \Galette\Util\Html::convertToText($replace);

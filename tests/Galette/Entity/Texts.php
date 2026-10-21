@@ -189,4 +189,36 @@ class Texts extends GaletteTestCase
             $texts->getBody()
         );
     }
+
+    /**
+     * Test plain values keep their text in mails
+     */
+    public function testPlainValuesKeepTheirText(): void
+    {
+        $ids = $this->createMemberWithMarkupLikeValues();
+
+        $update = $this->zdb->update(\Galette\Entity\Texts::TABLE);
+        $update
+            ->set([
+                'tbody' => '{NICKNAME_ADH}|{LABEL_DYNFIELD_' . $ids['line'] . '_ADH}|{DYNFIELD_' . $ids['line'] . '_ADH}'
+                    . '|{DYNFIELD_' . $ids['choice'] . '_ADH}'
+            ])
+            ->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($update);
+
+        $texts = new \Galette\Entity\Texts(
+            $this->preferences,
+            $this->routeparser
+        );
+        $texts
+            ->setMember($this->adh)
+            ->setNoContribution();
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+
+        //an entity typed in a plain value is kept as typed; a stored HTML value is decoded once
+        $this->assertSame(
+            'Tom &amp; Jerry|Notes & co|R & D|Bed &amp; breakfast',
+            $texts->getBody()
+        );
+    }
 }
