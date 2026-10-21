@@ -826,4 +826,52 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
 
         return $document;
     }
+
+    /**
+     * Create member one with values that look like markup
+     *
+     * Its nickname and a choice label are plain text, the line field value is
+     * stored as HTML.
+     *
+     * @return array{line: int, choice: int} Dynamic fields identifiers
+     */
+    protected function createMemberWithMarkupLikeValues(): array
+    {
+        $ids = [];
+        foreach (
+            [
+                'line' => [
+                    'field_name' => 'Notes & co',
+                    'field_type' => \Galette\DynamicFields\DynamicField::LINE
+                ],
+                'choice' => [
+                    'field_name' => 'Stay',
+                    'field_type' => \Galette\DynamicFields\DynamicField::CHOICE,
+                    'fixed_values' => "Bed &amp; breakfast\nCamping"
+                ]
+            ] as $key => $field_data
+        ) {
+            $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+            $this->assertTrue(
+                $field->store($field_data + [
+                    'form_name' => 'adh',
+                    'field_perm' => \Galette\Entity\FieldsConfig::USER_WRITE,
+                    'field_required' => 0,
+                    'field_repeat' => 1
+                ]),
+                implode(' ', $field->getErrors() + $field->getWarnings())
+            );
+            $ids[$key] = (int)$field->getId();
+        }
+
+        $this->createMember([
+            'pseudo_adh' => 'Tom &amp; Jerry',
+            'info_field_' . $ids['line'] . '_1' => 'R & D',
+            'info_field_' . $ids['choice'] . '_1' => '0'
+        ] + $this->dataAdherentOne());
+        //reload, so dynamic fields values are read as on any later use
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, (int)$this->adh->id);
+
+        return $ids;
+    }
 }

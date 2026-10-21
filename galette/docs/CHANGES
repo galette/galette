@@ -5,6 +5,7 @@ Changes
 
 - Galette failed to start when directory has been renamed
 - Links to documents can be added to mails and PDF models, one by one, by system type, or to the public documents page
+- Values inserted in mails and PDF models lost their HTML entities, or what looked like a tag
 
 1.3.0 -> 1.3.1
 
