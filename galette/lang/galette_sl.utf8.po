@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-21 08:00+0200\n"
-"PO-Revision-Date: 2026-10-20 05:48+0000\n"
-"Last-Translator: Jože Felicijan "
-"<felicijan@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-22 05:36+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -2626,19 +2626,16 @@ msgid "End date"
 msgstr "Končni datum"
 
 msgid "Public documents page URI"
-msgstr ""
+msgstr "URI strani z javnimi dokumenti"
 
 #. TRANS: %1$s is the documents type name
-#, fuzzy, php-format
-#| msgid "%1$s document"
-#| msgid_plural "%1$s documents"
+#, php-format
 msgid "Links to \"%1$s\" documents"
-msgstr "Dokument %1$s"
+msgstr "Povezave do dokumentov »%1$s«"
 
-#, fuzzy, php-format
-#| msgid "Email sent to user %1$s (%2$s)"
+#, php-format
 msgid "Link to document \"%1$s\" (%2$s)"
-msgstr "E-pošta poslana uporabniku %1$s (%2$s)"
+msgstr "Povezava do dokumenta\"%1$s \"(%2$s)"
 
 msgid "Member information"
 msgstr "Informacije o članih"
@@ -7029,7 +7026,7 @@ msgid "Allow members to print card ?"
 msgstr "Dovoliti članom tiskanje kartice?"
 
 msgid "Show title ?"
-msgstr "Naslov predstave?"
+msgstr "Pokaži naslavljanje ?"
 
 msgid "(Show or not title in front of name)"
 msgstr "(Prikaži ali ne prikaži naziv pred imenom)"
