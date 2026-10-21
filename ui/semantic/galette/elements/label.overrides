@@ -17,3 +17,25 @@
 .ui.ui.ui.basic.orange.label {
     color: darken(@orange, 15);
 }
+
+/* soft colors, for labels that summarize rather than alert; colored labels force their colors */
+.ui.ui.ui.pastel.label {
+    background-color: @offWhite !important;
+    border: 1px solid fade(@black, 12);
+    color: @textColor !important;
+}
+.ui.ui.ui.pastel.green.label {
+    background-color: #e3f4ea !important;
+    border: 1px solid fade(@green, 25);
+    color: darken(@green, 8) !important;
+}
+.ui.ui.ui.pastel.blue.label {
+    background-color: #e4eef8 !important;
+    border: 1px solid fade(@blue, 25);
+    color: darken(@blue, 8) !important;
+}
+.ui.ui.ui.pastel.grey.label {
+    background-color: #e8e8e8 !important;
+    border: 1px solid fade(@black, 12);
+    color: @textColor !important;
+}
