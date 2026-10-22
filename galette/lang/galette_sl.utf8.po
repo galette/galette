@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-22 07:35+0200\n"
-"PO-Revision-Date: 2026-10-22 05:36+0000\n"
-"Last-Translator: Jože Felicijan "
-"<felicijan@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-23 07:51+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -333,38 +333,33 @@ msgid "Comments:"
 msgstr "Komentarji:"
 
 #. TRANS: %1$s is the number of selected contributions
-#, fuzzy, php-format
-#| msgid "Mass add contributions"
+#, php-format
 msgid "Mass change %1$s contributions"
-msgstr "Prispevki za množično dodajanje"
+msgstr "Skupinska sprememba %1$s prispevkov"
 
 msgid "Mass changes has not been confirmed!"
 msgstr "Masovne spremembe niso bile potrjene!"
 
 #. TRANS: %1$s is the number of selected contributions
-#, fuzzy, php-format
-#| msgid "Review mass change %1$s members"
+#, php-format
 msgid "Review mass change %1$s contributions"
-msgstr "Množična sprememba pregleda %1$s članov"
+msgstr "Preglejte množične spremembe prispevkov %1$s"
 
 msgid "Nothing to do!"
 msgstr "Nič za početi!"
 
 #. TRANS: %1$s is the contribution id, %2$s the error message
-#, fuzzy, php-format
-#| msgid "Contributions"
+#, php-format
 msgid "Contribution #%1$s: %2$s"
-msgstr "Prispevki"
+msgstr "Prispevki #%1$s:%2$s"
 
-#, fuzzy, php-format
-#| msgid "%1$s member has been changed successfully!"
-#| msgid_plural "%1$s members has been changed successfully!"
+#, php-format
 msgid "%1$s contribution has been changed successfully!"
 msgid_plural "%1$s contributions have been changed successfully!"
-msgstr[0] "Član %1$s je bil uspešno spremenjen!"
-msgstr[1] "Število članov %1$s je bilo uspešno spremenjeno!"
-msgstr[2] "Število članov %1$s je bilo uspešno spremenjeno!"
-msgstr[3] "Število članov %1$s je bilo uspešno spremenjeno!"
+msgstr[0] "Prispevek %1$s je bil uspešno spremenjen!"
+msgstr[1] "Prispevka %1$s sta bila uspešno spremenjena!"
+msgstr[2] "Prispevki %1$s so bili uspešno spremenjeni!"
+msgstr[3] "Prispevki %1$s so bili uspešno spremenjeni!"
 
 msgid "Something went wrong during mass edition!"
 msgstr "Med množično izdajo je šlo nekaj narobe!"
@@ -4305,10 +4300,9 @@ msgid ""
 msgstr ""
 "Elementi na tem seznamu so bili spremenjeni. Ne pozabite shraniti sprememb."
 
-#, fuzzy, php-format
-#| msgid "Update"
+#, php-format
 msgid "Update %1$s"
-msgstr "Posodobitev"
+msgstr "Posodobitev %1$s"
 
 msgid "Groups:"
 msgstr "Skupine:"
@@ -4905,10 +4899,8 @@ msgstr "Posodobljena bodo samo označena polja."
 msgid "No changes selected"
 msgstr "Ni izbranih sprememb"
 
-#, fuzzy
-#| msgid "You are about to proceed following changes for selected members:"
 msgid "You are about to proceed following changes for selected contributions:"
-msgstr "Nadaljevali boste z naslednjimi spremembami za izbrane člane:"
+msgstr "Nadaljujete lahko z uveljavitvijo sprememb za izbrane prispevke:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Nadaljevali boste z naslednjimi spremembami za izbrane člane:"
