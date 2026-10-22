@@ -63,6 +63,21 @@
                     collapse: true
                 }
             ]) %}
+        {% elseif column.is_dynamic is defined %}
+            {% if column.sortable %}
+                {% set columns = columns|merge([
+                    {
+                        label: column.label,
+                        order: column.field_id
+                    }
+                ]) %}
+            {% else %}
+                {% set columns = columns|merge([
+                    {
+                        label: column.label
+                    }
+                ]) %}
+            {% endif %}
         {% elseif column.field_id starts with 'date_' %}
             {% set columns = columns|merge([
                 {
@@ -364,6 +379,17 @@
             {% endif %}
                         {% set mid = member.id %}
                             <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
+                        </td>
+        {% elseif column.is_dynamic is defined %}
+            {% set dynamic_value = dynamic_values[member.id][column.field_id] ?? null %}
+                        <td data-col-label="{{ column.label }}">
+            {% if dynamic_value is not null %}
+                {% if dynamic_value.short != dynamic_value.full %}
+                            <span title="{{ dynamic_value.full }}">{{ dynamic_value.short }}</span>
+                {% else %}
+                            {{ dynamic_value.full }}
+                {% endif %}
+            {% endif %}
                         </td>
         {% else %}
             {% set propname = column.propname %}

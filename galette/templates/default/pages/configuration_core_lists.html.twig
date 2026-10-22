@@ -8,6 +8,8 @@
 
 {% set field_states %}<span class="ui mini orange basic label field-state displaynone" data-state="added">{{ _Tx("member groups", "added") }}</span><span class="ui mini orange basic label field-state displaynone" data-state="moved">{{ _Tx("member groups", "moved") }}</span><span class="ui mini orange basic label field-state displaynone" data-state="removed">{{ _Tx("member groups", "will be removed") }}</span>{% endset %}
 
+{% set dynamic_badge %}<span class="ui mini basic label">{{ _T("Dynamic field") }}</span>{% endset %}
+
 {% block content %}
     <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
         <div class="ui basic fitted segment loader_selector">
@@ -36,10 +38,11 @@
     {% for col, field in remaining_fields %}
         {% set fid = field.field_id %}
         {% set permission = permissions[field.visible] %}
-                                    <div class="item" data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
+        {% set dynamic = field.is_dynamic is defined and field.is_dynamic %}
+                                    <div class="item" data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}" data-dynamic="{{ dynamic ? 1 : 0 }}">
                                         <input type="hidden" name="rfields[]" value="{{ fid }}"/>
                                         <span class="text">{{ field.label }}</span>
-                                        <span class="description">({{ permission }})</span>
+                                        <span class="description">({{ permission }}){% if dynamic %} {{ dynamic_badge }}{% endif %}</span>
                                     </div>
     {% endfor %}
                                 </div>
@@ -57,13 +60,15 @@
     {% for col, field in listed_fields %}
         {% set fid = field.field_id %}
         {% set permission = permissions[field.visible] %}
-                    <tr data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
+        {% set dynamic = field.is_dynamic is defined and field.is_dynamic %}
+                    <tr data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}" data-dynamic="{{ dynamic ? 1 : 0 }}">
                         <td class="collapsing" data-scope="row">
                             <i class="arrows alternate icon" aria-hidden="true"></i>
                         </td>
                         <td class="left" data-col-label="{{ _T("Field name") }}">
                             <input type="hidden" name="fields[]" value="{{ fid }}"/>
                             {{ field.label }}
+                            {% if dynamic %}{{ dynamic_badge }}{% endif %}
                             {{ field_states }}
                         </td>
                         <td class="left" data-col-label="{{ _T("Permissions") }}">
@@ -100,6 +105,15 @@
 
 {% block javascripts %}
     <script type="module">
+        //labels come from data attributes: they must be escaped again to build markup
+        function _escape(value) {
+            var _div = document.createElement('div');
+            _div.textContent = value;
+            return _div.innerHTML.replace(/"/g, '&quot;');
+        }
+
+        var _dynamicBadge = '{{ dynamic_badge|e('js') }}';
+
         function _listedRows() {
             return document.querySelectorAll('#listed_fields tr');
         }
@@ -164,10 +178,11 @@
                 _setRemoved(row, true);
             } else {
                 //a field added during this edition simply goes back to the list
-                var _dropdown_item = '<div class="item" data-fid="' + row.dataset.fid + '" data-label="' + row.dataset.label + '" data-permission="' + row.dataset.permission + '">';
-                    _dropdown_item +='<input type="hidden" name="rfields[]" value="' + row.dataset.fid + '"/>';
-                    _dropdown_item +='<span class="text">' + row.dataset.label + '</span>';
-                    _dropdown_item +='<span class="description">(' + row.dataset.permission + ')</span>';
+                var _dynamic = row.dataset.dynamic == 1;
+                var _dropdown_item = '<div class="item" data-fid="' + _escape(row.dataset.fid) + '" data-label="' + _escape(row.dataset.label) + '" data-permission="' + _escape(row.dataset.permission) + '" data-dynamic="' + (_dynamic ? 1 : 0) + '">';
+                    _dropdown_item +='<input type="hidden" name="rfields[]" value="' + _escape(row.dataset.fid) + '"/>';
+                    _dropdown_item +='<span class="text">' + _escape(row.dataset.label) + '</span>';
+                    _dropdown_item +='<span class="description">(' + _escape(row.dataset.permission) + ')' + (_dynamic ? ' ' + _dynamicBadge : '') + '</span>';
                     _dropdown_item +='</div>';
                 row.parentNode.removeChild(row);
                 document.getElementById('remaining_fields').innerHTML += _dropdown_item;
@@ -214,13 +229,15 @@
 
             if (_selected_field.length > 0) {
                 for (let i = 0; i < _selected_field.length; i++) {
-                    var _field_id = _selected_field[i].dataset.fid;
-                    var _field_label = _selected_field[i].dataset.label;
-                    var _field_permission = _selected_field[i].dataset.permission;
-                    var _table_item = '<tr data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
+                    var _field_id = _escape(_selected_field[i].dataset.fid);
+                    var _field_label = _escape(_selected_field[i].dataset.label);
+                    var _field_permission = _escape(_selected_field[i].dataset.permission);
+                    var _dynamic = _selected_field[i].dataset.dynamic == 1;
+                    var _table_item = '<tr data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '" data-dynamic="' + (_dynamic ? 1 : 0) + '">';
                         _table_item +='<td data-scope="row" class="collapsing"><i class="arrows alternate icon" aria-hidden="true"></i></td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Field name") }}">';
                         _table_item +='<input type="hidden" name="fields[]" value="' + _field_id + '"/>' + _field_label;
+                        _table_item += _dynamic ? ' ' + _dynamicBadge : '';
                         _table_item +=' {{ field_states|e('js') }}';
                         _table_item +='</td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';

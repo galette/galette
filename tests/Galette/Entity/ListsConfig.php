@@ -20,6 +20,8 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
  */
 class ListsConfig extends GaletteTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     private ?\Galette\Entity\ListsConfig $lists_config = null;
     /** @var string[]  */
     private array $default_lists = [
@@ -245,6 +247,167 @@ class ListsConfig extends GaletteTestCase
                 $this->assertSame($k, $new_list[$k]['list_position']);
             }
         }
+    }
+
+    /**
+     * Test dynamic fields in lists
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testDynamicFields(): void
+    {
+        $line_id = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Line field');
+        $choice_id = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::CHOICE,
+            'Choice field',
+            [
+                'field_perm' => \Galette\Entity\FieldsConfig::STAFF,
+                'fixed_values' => "First\nSecond"
+            ]
+        );
+        $repeat_id = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Repeatable field',
+            ['field_repeat' => 3]
+        );
+        $text_id = $this->createDynamicField(\Galette\DynamicFields\DynamicField::TEXT, 'Text field');
+        $file_id = $this->createDynamicField(\Galette\DynamicFields\DynamicField::FILE, 'File field');
+        $separator_id = $this->createDynamicField(\Galette\DynamicFields\DynamicField::SEPARATOR, 'Separator');
+
+        $lists_config = $this->lists_config;
+        $lists_config->installInit();
+        $lists_config->load();
+
+        $remainings = $lists_config->getRemainingFields();
+        $this->assertArrayHasKey('dyn_' . $line_id, $remainings);
+        $this->assertArrayHasKey('dyn_' . $choice_id, $remainings);
+        $this->assertArrayHasKey('dyn_' . $repeat_id, $remainings);
+        $this->assertArrayHasKey('dyn_' . $text_id, $remainings);
+        $this->assertArrayNotHasKey('dyn_' . $file_id, $remainings);
+        $this->assertArrayNotHasKey('dyn_' . $separator_id, $remainings);
+        $this->assertSame('Choice field', $remainings['dyn_' . $choice_id]['label']);
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $remainings['dyn_' . $choice_id]['visible']);
+
+        $this->assertTrue($lists_config->getField('dyn_' . $choice_id)['sortable']);
+        $this->assertFalse($lists_config->getField('dyn_' . $repeat_id)['sortable']);
+        $this->assertFalse($lists_config->getField('dyn_' . $text_id)['sortable']);
+        $this->assertSame(
+            \Galette\Entity\FieldsConfig::STAFF,
+            $lists_config->getVisibility('dyn_' . $choice_id)
+        );
+        $this->assertSame(
+            \Galette\Entity\FieldsConfig::NOBODY,
+            $lists_config->getVisibility('dyn_' . $file_id)
+        );
+
+        foreach (['dyn_' . $file_id, 'dyn_' . $separator_id, 'dyn_999999'] as $unlistable) {
+            try {
+                $lists_config->getField($unlistable);
+                $this->fail($unlistable . ' must not be a list field');
+            } catch (\UnexpectedValueException $e) {
+                $this->assertSame($unlistable . ' field does not exists', $e->getMessage());
+            }
+        }
+
+        $expecteds = [
+            'id_adh',
+            'list_adh_name',
+            'dyn_' . $line_id,
+            'pseudo_adh',
+            'dyn_' . $choice_id,
+            'id_statut'
+        ];
+        $new_list = [];
+        foreach ($expecteds as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->assertTrue($lists_config->setListFields($new_list));
+
+        //check from a new instance, with consistency checks
+        $lists_config = new \Galette\Entity\ListsConfig(
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
+        );
+        $list = $lists_config->getListedFields();
+        $this->assertSame($expecteds, array_column($list, 'field_id'));
+        $this->assertSame(array_keys($expecteds), array_column($list, 'list_position'));
+        $this->assertTrue($list[2]['is_dynamic']);
+        $this->assertSame('Line field', $list[2]['label']);
+        $this->assertSame($line_id, $list[2]['dynamic_id']);
+
+        $remainings = $lists_config->getRemainingFields();
+        $this->assertArrayNotHasKey('dyn_' . $line_id, $remainings);
+        $this->assertArrayHasKey('dyn_' . $text_id, $remainings);
+        $this->assertArrayHasKey('date_modif_adh', $remainings);
+
+        //members form configuration does not see list rows
+        $fields_config = new \Galette\Entity\FieldsConfig(
+            zdb: $this->zdb,
+            table: \Galette\Entity\Adherent::TABLE,
+            defaults: $this->members_fields,
+            cats_defaults: $this->members_fields_cats
+        );
+        $this->assertArrayNotHasKey('dyn_' . $line_id, $fields_config->getVisibilities());
+        foreach ($fields_config->getCategorizedFields() as $category) {
+            $this->assertNotContains('dyn_' . $line_id, array_column($category, 'field_id'));
+        }
+
+        //staff can see the STAFF choice field
+        $staff_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isStaff'])
+            ->getMock();
+        $staff_login->method('isStaff')->willReturn(true);
+        $elements = $lists_config->getDisplayElements($staff_login);
+        $this->assertSame($expecteds, array_column($elements, 'field_id'));
+
+        //group manager cannot see status nor the STAFF choice field
+        $manager_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isGroupManager'])
+            ->getMock();
+        $manager_login->method('isGroupManager')->willReturn(true);
+        $elements = $lists_config->getDisplayElements($manager_login);
+        $this->assertSame(
+            ['id_adh', 'list_adh_name', 'dyn_' . $line_id, 'pseudo_adh'],
+            array_column($elements, 'field_id')
+        );
+
+        //removing a field drops it from the list
+        $line = \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $line_id);
+        $this->assertInstanceOf(\Galette\DynamicFields\DynamicField::class, $line);
+        $this->assertTrue($line->remove());
+        $this->assertSame(0, $this->countListRows('dyn_' . $line_id));
+        $this->assertTrue($lists_config->load());
+        $this->assertSame(
+            ['id_adh', 'list_adh_name', 'pseudo_adh', 'dyn_' . $choice_id, 'id_statut'],
+            array_column($lists_config->getListedFields(), 'field_id')
+        );
+
+        //unlisting a field drops its row
+        $new_list = [];
+        foreach (['id_adh', 'list_adh_name', 'pseudo_adh'] as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->assertTrue($lists_config->setListFields($new_list));
+        $this->assertSame(0, $this->countListRows('dyn_' . $choice_id));
+        $this->assertArrayHasKey('dyn_' . $choice_id, $lists_config->getRemainingFields());
+    }
+
+    /**
+     * Count list configuration rows for a field
+     *
+     * @param string $field_id Field id
+     */
+    private function countListRows(string $field_id): int
+    {
+        $select = $this->zdb->select(\Galette\Entity\FieldsConfig::TABLE);
+        $select->where([
+            'table_name' => \Galette\Entity\Adherent::TABLE,
+            'field_id' => $field_id
+        ]);
+        return $this->zdb->execute($select)->count();
     }
 
     /**

@@ -27,6 +27,8 @@ use function Safe\unlink;
 */
 class GaletteController extends GaletteRoutingTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 20250802103040;
 
     /**
@@ -666,6 +668,46 @@ class GaletteController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core lists', $body);
+        $this->assertStringNotContainsString('data-dynamic="1"', $body);
+
+        //dynamic fields, listed or not
+        $listed = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Listed & dynamic');
+        $remaining = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::BOOLEAN,
+            'Remaining "dynamic"',
+            ['field_perm' => \Galette\Entity\FieldsConfig::STAFF]
+        );
+        $lists_config = $this->container->get(\Galette\Entity\ListsConfig::class);
+        $lists_config->installInit();
+        $lists_config->load();
+        $new_list = [];
+        foreach (['id_adh', 'list_adh_name', 'dyn_' . $listed] as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->assertTrue($lists_config->setListFields($new_list));
+
+        //strict_variables follows GALETTE_DEBUG: an undefined template key only breaks debugging instances
+        $twig = $this->container->get(\Slim\Views\Twig::class)->getEnvironment();
+        $twig->enableStrictVariables();
+        try {
+            $test_response = $this->app->handle($request);
+        } finally {
+            $twig->disableStrictVariables();
+        }
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            '<tr data-fid="dyn_' . $listed . '" data-label="Listed &amp; dynamic" data-permission="'
+                . _T('User, read/write') . '" data-dynamic="1">',
+            $body
+        );
+        $this->assertStringContainsString(
+            '<div class="item" data-fid="dyn_' . $remaining . '" data-label="Remaining &quot;dynamic&quot;" data-permission="'
+                . _T('Staff member') . '" data-dynamic="1">',
+            $body
+        );
+        $this->assertMatchesRegularExpression('/data-fid="pseudo_adh"[^>]+data-dynamic="0"/', $body);
+        $this->assertSame(2, substr_count($body, '<span class="ui mini basic label">' . _T('Dynamic field') . '</span>'));
     }
 
     /**
@@ -700,10 +742,13 @@ class GaletteController extends GaletteRoutingTestCase
         }
 
         //prepare data with some changes
+        $dynamic = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Dynamic');
+        $lists_config->load();
         $expecteds = [
             'id_adh',
             'list_adh_name',
             'email_adh',
+            'dyn_' . $dynamic,
             'tel_adh',
             'id_statut',
             'list_adh_contribstatus',
@@ -728,7 +773,8 @@ class GaletteController extends GaletteRoutingTestCase
 
         //check if changes have been stored in database
         $list = $lists_config->getListedFields();
-        $this->assertCount(7, $list);
+        $this->assertCount(8, $list);
+        $this->assertTrue($list[3]['is_dynamic']);
 
         foreach ($expecteds as $k => $expected) {
             $this->assertSame($expected, $list[$k]['field_id']);

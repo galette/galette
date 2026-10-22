@@ -160,6 +160,11 @@ class FieldsConfig
 
             foreach ($results as $k) {
                 /** @var ArrayObject<string, int|string> $k */
+                if (!isset($this->defaults[$k->field_id])) {
+                    //not a core field, cannot be built from defaults
+                    $this->loadExtraField($k);
+                    continue;
+                }
                 $field = $this->buildField($k);
                 $this->core_db_fields[$k->field_id] = $field;
             }
@@ -170,6 +175,16 @@ class FieldsConfig
             Logs::exception($e, 'Fields configuration cannot be loaded!', Analog::URGENT);
             throw $e;
         }
+    }
+
+    /**
+     * Handle a stored row that is not a core field
+     *
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
+     */
+    protected function loadExtraField(ArrayObject $rset): void
+    {
+        //core fields configuration knows nothing else
     }
 
     /**
@@ -920,7 +935,7 @@ class FieldsConfig
      *
      * @param array<int,mixed> $values Values to insert
      */
-    private function insert(array $values): void
+    protected function insert(array $values): void
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(

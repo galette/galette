@@ -18,8 +18,10 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Core\Db;
 use Galette\Core\Authentication;
+use Galette\Entity\Adherent;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Galette\Features\Translatable;
 use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
@@ -856,6 +858,18 @@ abstract class DynamicField
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
                 throw new \RuntimeException('Unable to remove field type ' . $this->id . '!', $e->getCode(), $e);
+            }
+
+            if ($this->form === 'adh') {
+                //remove field from members list
+                $delete = $this->zdb->delete(FieldsConfig::TABLE);
+                $delete->where(
+                    [
+                        'table_name'    => Adherent::TABLE,
+                        'field_id'      => ListsConfig::DYNAMIC_PREFIX . $this->id
+                    ]
+                );
+                $this->zdb->execute($delete);
             }
 
             $this->deleteTranslation($this->name);

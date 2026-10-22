@@ -30,6 +30,7 @@ use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
@@ -103,6 +104,7 @@ class Members
     private array $errors = [];
     /** @var string[] */
     private array $extra_order = [];
+    private ?DynamicField $order_dynamic = null;
 
     /**
      * Default constructor
@@ -845,6 +847,35 @@ class Members
                 }
             }
 
+            //order by a dynamic field: its value has to be selected, DISTINCT requires it on PostgreSQL
+            $this->order_dynamic = $this->getOrderDynamicField();
+            if ($this->order_dynamic !== null) {
+                $subselect = $zdb->select(DynamicFieldsHandle::TABLE, 'dfs');
+                $subselect->columns(
+                    [
+                        'item_id'   => 'item_id',
+                        'val'       => 'field_val'
+                    ]
+                );
+                $subselect->where([
+                    'dfs.field_form'    => 'adh',
+                    'dfs.field_id'      => $this->order_dynamic->getId(),
+                    'dfs.val_index'     => 1
+                ]);
+                $select->join(
+                    name: ['dfsort' => $subselect],
+                    on: 'a.id_adh = dfsort.item_id',
+                    columns: [
+                        //empty values last, whatever the direction and the database engine
+                        'dyn_sort_empty'    => new Expression(
+                            'CASE WHEN NULLIF(dfsort.val, \'\') IS NULL THEN 1 ELSE 0 END'
+                        ),
+                        'dyn_sort'          => new Expression('NULLIF(dfsort.val, \'\')')
+                    ],
+                    type: $select::JOIN_LEFT
+                );
+            }
+
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
                 $this->buildWhereClause($select);
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
@@ -1025,7 +1056,13 @@ class Members
                 //defaults
                 break;
             default:
-                if ($this->canOrderBy($this->filters->orderby, $fields)) {
+                if (ListsConfig::getDynamicId((string)$this->filters->orderby) !== null) {
+                    //invalid dynamic fields fall back to default order
+                    if ($this->order_dynamic !== null) {
+                        $order[] = 'dyn_sort_empty ASC';
+                        $order[] = 'dyn_sort ' . $this->filters->getDirection();
+                    }
+                } elseif ($this->canOrderBy($this->filters->orderby, $fields)) {
                     $order[] = 'a.' . $this->filters->orderby . ' ' . $this->filters->getDirection();
                 }
                 break;
@@ -1266,6 +1303,33 @@ class Members
             Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Get the dynamic field list is ordered by, if any
+     *
+     * @return ?DynamicField null if order is not on a dynamic field that can be used to sort
+     */
+    private function getOrderDynamicField(): ?DynamicField
+    {
+        /** @var Db $zdb */
+        global $zdb;
+
+        $field_id = ListsConfig::getDynamicId((string)$this->filters->orderby);
+        if ($field_id === null) {
+            return null;
+        }
+
+        $field = DynamicField::loadFieldType($zdb, $field_id);
+        if (!$this->canSearchDynamicField($field, 'adh') || !ListsConfig::isSortable($field)) {
+            Analog::log(
+                'Cannot order members by dynamic field #' . $field_id,
+                Analog::WARNING
+            );
+            return null;
+        }
+
+        return $field;
     }
 
     /**

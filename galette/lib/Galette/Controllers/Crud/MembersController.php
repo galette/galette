@@ -27,10 +27,12 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
+use Galette\Repository\DynamicFieldsSet;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Repository\PaymentTypes;
@@ -38,6 +40,7 @@ use Galette\Repository\Titles;
 use Analog\Analog;
 
 use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * Galette members controller
@@ -676,6 +679,9 @@ class MembersController extends CrudController
             $members_list = $members->getManagedMembersList(as_members: true);
         }
 
+        $galette_list = $this->lists_config->getDisplayElements($this->login);
+        $dynamic_values = is_array($members_list) ? $this->getListDynamicValues($galette_list, $members_list) : [];
+
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
@@ -697,11 +703,65 @@ class MembersController extends CrudController
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
                 'adv_filters'           => $filters instanceof AdvancedMembersList,
-                'galette_list'          => $this->lists_config->getDisplayElements($this->login),
+                'galette_list'          => $galette_list,
+                'dynamic_values'        => $dynamic_values,
                 'documentation'         => 'usermanual/adherents.html#members-list'
             ]
         );
         return $response;
+    }
+
+    /**
+     * Get dynamic fields values displayed in members list
+     *
+     * @param array<int,object> $galette_list List display elements
+     * @param array<Adherent>   $members      Displayed members
+     *
+     * @return array<int, array<string, array{full: string, short: string}>> values per member id and list field
+     */
+    private function getListDynamicValues(array $galette_list, array $members): array
+    {
+        $fields = [];
+        foreach ($galette_list as $column) {
+            if ($column->is_dynamic ?? false) {
+                $fields[$column->dynamic_id] = $column;
+            }
+        }
+        if (count($fields) === 0 || count($members) === 0) {
+            return [];
+        }
+
+        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
+        $values = $fieldset->getValuesFor(
+            'adh',
+            array_map(fn(Adherent $member) => (int)$member->id, $members),
+            array_keys($fields)
+        );
+
+        $dynamic_values = [];
+        foreach ($values as $field_id => $members_values) {
+            $column = $fields[$field_id];
+            foreach ($members_values as $member_id => $occurrences) {
+                $texts = array_map(
+                    fn(string $value) => DynamicFieldsSet::getTextValue($column->field, $value),
+                    $occurrences
+                );
+                $full = trim(preg_replace('/\s+/u', ' ', implode(', ', $texts)));
+                if ($full === '') {
+                    continue;
+                }
+                $short = $full;
+                if (mb_strlen($full) > ListsConfig::DYNAMIC_VALUE_LENGTH) {
+                    $short = rtrim(mb_substr($full, 0, ListsConfig::DYNAMIC_VALUE_LENGTH)) . '…';
+                }
+                $dynamic_values[$member_id][$column->field_id] = [
+                    'full'  => $full,
+                    'short' => $short
+                ];
+            }
+        }
+
+        return $dynamic_values;
     }
 
     /**

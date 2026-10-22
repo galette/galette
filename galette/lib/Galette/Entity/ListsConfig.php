@@ -16,7 +16,11 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
+use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\File;
+use Galette\DynamicFields\Text;
 
+use function Safe\preg_match;
 use function Safe\preg_replace;
 
 /**
@@ -27,8 +31,16 @@ use function Safe\preg_replace;
  */
 class ListsConfig extends FieldsConfig
 {
+    public const string DYNAMIC_PREFIX = 'dyn_';
+    /** Displayed length of dynamic fields values in lists */
+    public const int DYNAMIC_VALUE_LENGTH = 20;
+
     /** @var array<int,array<string,mixed>> */
     protected array $listed_fields = [];
+    /** @var array<string,int> Stored dynamic fields list positions, by field id */
+    private array $dynamic_positions = [];
+    /** @var ?array<int,DynamicField> Members dynamic fields that can be listed, by id */
+    private ?array $dynamic_fields = null;
 
     /**
      * Fields that are not part of lists
@@ -53,6 +65,28 @@ class ListsConfig extends FieldsConfig
         'list_adh_name'             => 'nom_adh',
         'list_adh_contribstatus'    => 'id_statut'
     ];
+
+    /**
+     * Load current fields configuration from database.
+     */
+    public function load(): bool
+    {
+        $this->dynamic_positions = [];
+        $this->dynamic_fields = null;
+        return parent::load();
+    }
+
+    /**
+     * Keep list position of stored dynamic fields
+     *
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
+     */
+    protected function loadExtraField(ArrayObject $rset): void
+    {
+        if (self::getDynamicId((string)$rset->field_id) !== null) {
+            $this->dynamic_positions[(string)$rset->field_id] = (int)$rset->list_position;
+        }
+    }
 
     /**
      * Prepare a field (required data, automation)
@@ -87,9 +121,111 @@ class ListsConfig extends FieldsConfig
             $this->core_db_fields['parent_id']['visible'] = self::STAFF;
         }
 
+        $this->listed_fields = [];
         parent::buildLists();
+
+        if (count(array_filter($this->dynamic_positions, fn($pos) => $pos >= 0))) {
+            $dynamic_fields = $this->getDynamicFields();
+            foreach ($this->dynamic_positions as $field_id => $pos) {
+                $dynamic_id = self::getDynamicId($field_id);
+                if ($pos < 0 || !isset($dynamic_fields[$dynamic_id])) {
+                    //not listed, or field has been removed
+                    continue;
+                }
+                while (isset($this->listed_fields[$pos])) {
+                    ++$pos;
+                }
+                $this->listed_fields[$pos] = $this->buildDynamicField($dynamic_fields[$dynamic_id], $pos);
+            }
+        }
+
         //make sure array order is the same as in the database, since query is ordered differently
         ksort($this->listed_fields);
+    }
+
+    /**
+     * Get dynamic field id from a list field id
+     *
+     * @param string $field_id List field id
+     */
+    public static function getDynamicId(string $field_id): ?int
+    {
+        if (preg_match('/^' . self::DYNAMIC_PREFIX . '(\d+)$/', $field_id, $matches)) {
+            return (int)$matches[1];
+        }
+        return null;
+    }
+
+    /**
+     * Is a dynamic field possible in lists?
+     *
+     * @param DynamicField $field Dynamic field
+     */
+    public static function isListable(DynamicField $field): bool
+    {
+        return $field->hasData() && !$field instanceof File;
+    }
+
+    /**
+     * Can lists be ordered on a dynamic field?
+     *
+     * @param DynamicField $field Dynamic field
+     */
+    public static function isSortable(DynamicField $field): bool
+    {
+        return !$field->isRepeatable() && !$field instanceof Text;
+    }
+
+    /**
+     * Get members dynamic fields that can be listed, whatever their permissions
+     *
+     * @return array<int,DynamicField>
+     */
+    private function getDynamicFields(): array
+    {
+        if ($this->dynamic_fields === null) {
+            $this->dynamic_fields = [];
+            $select = $this->zdb->select(DynamicField::TABLE);
+            $select
+                ->where(['field_form' => 'adh'])
+                ->order('field_index');
+
+            foreach ($this->zdb->execute($select) as $r) {
+                /** @var ArrayObject<string, int|string> $r */
+                $df = DynamicField::getFieldType($this->zdb, (int)$r['field_type']);
+                $df->loadFromRS($r);
+                if (self::isListable($df)) {
+                    $this->dynamic_fields[(int)$df->getId()] = $df;
+                }
+            }
+        }
+        return $this->dynamic_fields;
+    }
+
+    /**
+     * Build list field from a dynamic field
+     *
+     * @param DynamicField $field    Dynamic field
+     * @param int          $position List position, -1 when not listed
+     *
+     * @return array<string,mixed>
+     */
+    private function buildDynamicField(DynamicField $field, int $position): array
+    {
+        $field_id = self::DYNAMIC_PREFIX . $field->getId();
+        return [
+            'field_id'       => $field_id,
+            'label'          => $field->getName(),
+            'propname'       => $field_id,
+            'visible'        => $field->getPermission(),
+            'list_position'  => $position,
+            'list_visible'   => $position >= 0,
+            'width_in_forms' => 1,
+            'is_dynamic'     => true,
+            'dynamic_id'     => $field->getId(),
+            'sortable'       => self::isSortable($field),
+            'field'          => $field
+        ];
     }
 
     /**
@@ -127,7 +263,11 @@ class ListsConfig extends FieldsConfig
                 $o = (object)$elt;
                 $this->handleLabel($o);
 
-                if ($o->field_id == 'id_adh') {
+                if ($o->is_dynamic ?? false) {
+                    if ($o->field->isAccessible($access_level)) {
+                        $display_elements[] = $o;
+                    }
+                } elseif ($o->field_id == 'id_adh') {
                     // ignore access control, as member ID is always needed
                     $o->type = self::TYPE_STR;
                     $display_elements[] = $o;
@@ -220,7 +360,55 @@ class ListsConfig extends FieldsConfig
             $remainings[$key] = $db_field;
         }
 
+        foreach ($this->getDynamicFields() as $field) {
+            $remaining = $this->buildDynamicField($field, -1);
+            if (!$this->isListed($remaining['field_id'])) {
+                $remainings[$remaining['field_id']] = $remaining;
+            }
+        }
+
         return $remainings;
+    }
+
+    /**
+     * Is a field in current list?
+     *
+     * @param string $field_id Field id
+     */
+    private function isListed(string $field_id): bool
+    {
+        foreach ($this->listed_fields as $listed) {
+            if ($listed['field_id'] === $field_id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get field configuration
+     *
+     * @param string $name Field name
+     *
+     * @return array<string, mixed>
+     */
+    public function getField(string $name): array
+    {
+        $dynamic_id = self::getDynamicId($name);
+        if ($dynamic_id === null) {
+            return parent::getField($name);
+        }
+
+        $dynamic_fields = $this->getDynamicFields();
+        if (!isset($dynamic_fields[$dynamic_id])) {
+            throw new \UnexpectedValueException("$name field does not exists");
+        }
+        foreach ($this->listed_fields as $listed) {
+            if ($listed['field_id'] === $name) {
+                return $listed;
+            }
+        }
+        return $this->buildDynamicField($dynamic_fields[$dynamic_id], -1);
     }
 
     /**
@@ -264,7 +452,22 @@ class ListsConfig extends FieldsConfig
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
 
+            $dynamics = [];
             foreach ($this->listed_fields as $pos => $field) {
+                if ($field['is_dynamic'] ?? false) {
+                    //dynamic fields only have a row while they are listed
+                    $dynamics[] = [
+                        'field_id'      => $field['field_id'],
+                        'table_name'    => $this->table,
+                        'required'      => false,
+                        'visible'       => self::NOBODY,
+                        'category'      => $this->getField('id_adh')['category'],
+                        'position'      => -1,
+                        'list_visible'  => true,
+                        'list_position' => $pos
+                    ];
+                    continue;
+                }
                 $params = [
                     'list_visible'   => $field['list_visible'],
                     'list_position'  => $pos,
@@ -274,13 +477,26 @@ class ListsConfig extends FieldsConfig
                 $stmt->execute($params);
             }
 
-            foreach (array_keys($this->getRemainingFields()) as $field) {
+            foreach ($this->getRemainingFields() as $field => $remaining) {
+                if ($remaining['is_dynamic'] ?? false) {
+                    continue;
+                }
                 $params = [
                     'list_visible'  => false,
                     'list_position' => -1,
                     'field_id'      => $field
                 ];
                 $stmt->execute($params);
+            }
+
+            if (count($this->dynamic_positions)) {
+                $delete = $this->zdb->delete(self::TABLE);
+                $delete->where(['table_name' => $this->table]);
+                $delete->where->in('field_id', array_keys($this->dynamic_positions));
+                $this->zdb->execute($delete);
+            }
+            if (count($dynamics)) {
+                $this->insert($dynamics);
             }
 
             Analog::log(
@@ -325,6 +541,12 @@ class ListsConfig extends FieldsConfig
     {
         if (in_array($field, $this->non_list_elements)) {
             return self::NOBODY;
+        }
+        $dynamic_id = self::getDynamicId($field);
+        if ($dynamic_id !== null) {
+            $dynamic_fields = $this->getDynamicFields();
+            return isset($dynamic_fields[$dynamic_id])
+                ? (int)$dynamic_fields[$dynamic_id]->getPermission() : self::NOBODY;
         }
         return $this->all_visibles[$field];
     }

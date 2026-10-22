@@ -26,6 +26,8 @@ use function Safe\unlink;
  */
 class CsvController extends GaletteRoutingTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 20250912171952;
 
     /**
@@ -708,17 +710,7 @@ class CsvController extends GaletteRoutingTestCase
             //imported choices may be stored as text
             [$member_two->id, $size, 1, 'XL'],
         ];
-        foreach ($values as [$item, $field, $index, $value]) {
-            $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
-            $insert->values([
-                'item_id'       => $item,
-                'field_id'      => $field,
-                'field_form'    => 'adh',
-                'val_index'     => $index,
-                'field_val'     => $value
-            ]);
-            $this->zdb->execute($insert);
-        }
+        $this->storeDynamicValues($values);
 
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$member_one->id, $member_two->id];
@@ -763,31 +755,6 @@ class CsvController extends GaletteRoutingTestCase
 
         unset($this->session->$filter_name);
         $this->login->logOut();
-    }
-
-    /**
-     * Create a members dynamic field
-     *
-     * @param int                 $type  Field type
-     * @param string              $name  Field name
-     * @param array<string,mixed> $extra Extra field data
-     *
-     * @return int Field id
-     */
-    private function createDynamicField(int $type, string $name, array $extra = []): int
-    {
-        $field_data = $extra + [
-            'form_name'         => 'adh',
-            'field_name'        => $name,
-            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
-            'field_type'        => $type,
-            'field_required'    => 0,
-            'field_repeat'      => 1
-        ];
-
-        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
-        $this->assertTrue($df->store($field_data), implode(' ', $df->getErrors()));
-        return (int)$df->getId();
     }
 
     /**

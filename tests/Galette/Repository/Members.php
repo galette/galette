@@ -26,6 +26,8 @@ use function Safe\json_decode;
  */
 class Members extends GaletteTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 335689;
     /** @var int[] */
     private array $mids = [];
@@ -1046,6 +1048,127 @@ class Members extends GaletteTestCase
             'field_repeat'      => 1
         ]), implode(' ', $field->getErrors()));
         return (int)$field->getId();
+    }
+
+    /**
+     * Test ordering members list by a dynamic field
+     */
+    public function testOrderByDynamicField(): void
+    {
+        $rank = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Rank');
+        $staff = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Staff rank',
+            ['field_perm' => \Galette\Entity\FieldsConfig::STAFF]
+        );
+        $repeatable = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Repeatable',
+            ['field_repeat' => 0]
+        );
+        $text = $this->createDynamicField(\Galette\DynamicFields\DynamicField::TEXT, 'Text');
+        $contrib = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Contribution rank',
+            ['form_name' => 'contrib']
+        );
+
+        $this->storeDynamicValues([
+            [$this->mids[0], $rank, 1, 'b'],
+            [$this->mids[1], $rank, 1, 'a'],
+            [$this->mids[2], $rank, 1, 'c'],
+            [$this->mids[3], $rank, 1, ''],
+            [$this->mids[0], $staff, 1, 'b'],
+            [$this->mids[1], $staff, 1, 'a'],
+            [$this->mids[2], $staff, 1, 'c'],
+        ]);
+
+        $this->logSuperAdmin();
+        $default = $this->getOrderedIds(new \Galette\Filters\MembersList());
+        $this->assertCount(count($this->mids), $default);
+
+        //empty values come last, in default order, whatever the direction
+        $others = array_values(array_diff($default, array_slice($this->mids, 0, 3)));
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame(
+            array_merge([$this->mids[1], $this->mids[0], $this->mids[2]], $others),
+            $this->getOrderedIds($filters)
+        );
+        //same field again inverts direction
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame('DESC', $filters->getDirection());
+        $members = new \Galette\Repository\Members($filters);
+        $ids = $this->getOrderedIds($filters);
+        $this->assertSame([$this->mids[2], $this->mids[0], $this->mids[1]], array_slice($ids, 0, 3));
+        $this->assertEqualsCanonicalizing($others, array_slice($ids, 3));
+        $members->getMembersList(count: true);
+        $this->assertSame(count($this->mids), $members->getCount());
+
+        //along with an advanced search on the same field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'dyn_' . $rank,
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_NOT_EQUALS
+        ];
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame([$this->mids[1], $this->mids[0], $this->mids[2]], $this->getOrderedIds($filters));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $staff;
+        $this->assertSame(
+            [$this->mids[1], $this->mids[0], $this->mids[2]],
+            array_slice($this->getOrderedIds($filters), 0, 3)
+        );
+
+        //fields that cannot be sorted fall back to default order
+        foreach ([$repeatable, $text, $contrib, 999999] as $field) {
+            $filters = new \Galette\Filters\MembersList();
+            $filters->orderby = 'dyn_' . $field;
+            $this->assertSame($default, $this->getOrderedIds($filters), 'dyn_' . $field);
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot order members by dynamic field #' . $field);
+        }
+        $this->login->logOut();
+
+        //staff field cannot be used by others
+        $group = $this->logGroupManager();
+        $this->assertTrue($group->setMembers(array_map(
+            fn(int $id) => new \Galette\Entity\Adherent($this->zdb, $id),
+            array_slice($this->mids, 0, 3)
+        )));
+        $managed_default = $this->getOrderedIds(new \Galette\Filters\MembersList(), managed: true);
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $staff;
+        $this->assertCount(3, $managed_default);
+        $this->assertSame($managed_default, $this->getOrderedIds($filters, managed: true));
+        //while fields they can see are fine
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame([$this->mids[1], $this->mids[0], $this->mids[2]], $this->getOrderedIds($filters, managed: true));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot order members by dynamic field #' . $staff);
+        $this->login->logOut();
+    }
+
+    /**
+     * Get ordered members ids
+     *
+     * @param \Galette\Filters\MembersList $filters Filters
+     * @param bool                         $managed Get managed members only
+     *
+     * @return array<int>
+     */
+    private function getOrderedIds(\Galette\Filters\MembersList $filters, bool $managed = false): array
+    {
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getMembersList(managed: $managed, limit: false);
+        $ids = [];
+        foreach ($list as $member) {
+            $ids[] = (int)$member->id_adh;
+        }
+        return $ids;
     }
 
     /**

@@ -13,7 +13,10 @@ namespace Galette\Repository;
 use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\Text;
+use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\FieldsConfig;
 
 /**
@@ -85,5 +88,58 @@ class DynamicFieldsSet
             }
         }
         return $fields;
+    }
+
+    /**
+     * Get dynamic fields values of several items, occurrences in their order
+     *
+     * @param string     $form_name Form name
+     * @param array<int> $ids       Items ids
+     * @param array<int> $fields    Dynamic fields ids
+     *
+     * @return array<int, array<int, array<int, string>>> values per field and item id
+     */
+    public function getValuesFor(string $form_name, array $ids, array $fields): array
+    {
+        $values = [];
+        if (count($ids) === 0 || count($fields) === 0) {
+            return $values;
+        }
+
+        $select = $this->zdb->select(DynamicFieldsHandle::TABLE);
+        $select->columns([DynamicFieldsHandle::PK, DynamicField::PK, 'field_val']);
+        $select->where(['field_form' => $form_name]);
+        $select->where->in(DynamicField::PK, $fields);
+        $select->where->in(DynamicFieldsHandle::PK, $ids);
+        $select->order([DynamicFieldsHandle::PK, DynamicField::PK, 'val_index']);
+
+        foreach ($this->zdb->execute($select) as $row) {
+            $values[(int)$row->{DynamicField::PK}][(int)$row->{DynamicFieldsHandle::PK}][]
+                = (string)$row->field_val;
+        }
+
+        return $values;
+    }
+
+    /**
+     * Get the text value of a dynamic field, as exported
+     *
+     * @param DynamicField $field Dynamic field
+     * @param string       $value Stored value
+     */
+    public static function getTextValue(DynamicField $field, string $value): string
+    {
+        if ($field instanceof Text) {
+            //raw text, display value is HTML
+            return $value;
+        }
+
+        if ($field instanceof Choice) {
+            //imported values may have been stored as text instead of an index
+            $choices = $field->getValues();
+            return is_array($choices) && isset($choices[$value]) ? (string)$choices[$value] : $value;
+        }
+
+        return $field->getDisplayValue($value);
     }
 }

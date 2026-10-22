@@ -24,6 +24,8 @@ use function Safe\filesize;
  */
 class MembersController extends GaletteRoutingTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 20250817103312;
 
     /**
@@ -472,6 +474,130 @@ class MembersController extends GaletteRoutingTestCase
             $member_two->sfullname,
             $body
         );
+    }
+
+    /**
+     * Test dynamic fields in members list
+     */
+    public function testListDynamicFields(): void
+    {
+        $managed = $this->logGroupManager();
+        $this->login->logOut();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $this->assertTrue(\Galette\Repository\Groups::addMemberToGroups(
+            $member_one,
+            [$managed->getId() . '|' . $managed->getName()]
+        ));
+
+        $nickname = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Long nickname');
+        $phones = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Phones', ['field_repeat' => 0]);
+        $size = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::CHOICE,
+            'Size',
+            [
+                'fixed_values' => "Small\nMedium\nLarge",
+                'field_perm' => \Galette\Entity\FieldsConfig::STAFF
+            ]
+        );
+        $volunteer = $this->createDynamicField(\Galette\DynamicFields\DynamicField::BOOLEAN, 'Volunteer');
+        $notes = $this->createDynamicField(\Galette\DynamicFields\DynamicField::TEXT, 'Notes');
+
+        $this->storeDynamicValues([
+            [$member_one->id, $nickname, 1, 'A <rather> long nickname "indeed"'],
+            [$member_one->id, $phones, 1, '0102030405'],
+            [$member_one->id, $phones, 2, '0607080910'],
+            [$member_one->id, $size, 1, '1'],
+            [$member_one->id, $volunteer, 1, '1'],
+            [$member_one->id, $notes, 1, "First\nSecond"],
+            [$member_two->id, $volunteer, 1, '0'],
+        ]);
+
+        $lists_config = $this->container->get(\Galette\Entity\ListsConfig::class);
+        $lists_config->load();
+        $new_list = [];
+        foreach (['id_adh', 'list_adh_name', 'dyn_' . $nickname, 'dyn_' . $phones, 'dyn_' . $size, 'dyn_' . $volunteer, 'dyn_' . $notes] as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->assertTrue($lists_config->setListFields($new_list));
+
+        $controller = new \Galette\Controllers\Crud\MembersController($this->container);
+        $filter_name = $controller->getFilterName($controller::getDefaultFilterName());
+        unset($this->session->$filter_name);
+        $request = $this->createRequest('members');
+        //strict_variables follows GALETTE_DEBUG: an undefined template key only breaks debugging instances
+        $twig = $this->container->get(\Slim\Views\Twig::class)->getEnvironment();
+        $twig->enableStrictVariables();
+        try {
+            $test_response = $this->app->handle($request);
+        } finally {
+            $twig->disableStrictVariables();
+        }
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+
+        foreach (['Long nickname', 'Phones', 'Size', 'Volunteer', 'Notes'] as $label) {
+            $this->assertMatchesRegularExpression('/<th[^>]*>\s*(<a [^>]*>\s*)?' . $label . '\s*</', $body);
+        }
+        //repeatable and text fields cannot be sorted
+        foreach ([$nickname, $size, $volunteer] as $sortable) {
+            $this->assertStringContainsString(
+                $this->routeparser->urlFor('members', ['option' => 'order', 'value' => 'dyn_' . $sortable]),
+                $body
+            );
+        }
+        foreach ([$phones, $notes] as $unsortable) {
+            $this->assertStringNotContainsString(
+                $this->routeparser->urlFor('members', ['option' => 'order', 'value' => 'dyn_' . $unsortable]),
+                $body
+            );
+        }
+
+        //truncated values, with full value as a tooltip
+        $this->assertStringContainsString(
+            '<span title="A &lt;rather&gt; long nickname &quot;indeed&quot;">A &lt;rather&gt; long nick…</span>',
+            $body
+        );
+        $this->assertStringContainsString(
+            '<span title="0102030405, 0607080910">0102030405, 06070809…</span>',
+            $body
+        );
+        //short values as is
+        $this->assertMatchesRegularExpression('/<td data-col-label="Size">\s*Medium\s*<\/td>/', $body);
+        $this->assertMatchesRegularExpression('/<td data-col-label="Notes">\s*First Second\s*<\/td>/', $body);
+        $this->assertMatchesRegularExpression('/<td data-col-label="Volunteer">\s*Yes\s*<\/td>/', $body);
+        $this->assertMatchesRegularExpression('/<td data-col-label="Volunteer">\s*No\s*<\/td>/', $body);
+
+        //order by a dynamic field
+        $request = $this->createRequest('members', ['option' => 'order', 'value' => 'dyn_' . $volunteer]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertSame('dyn_' . $volunteer, $this->session->$filter_name->orderby);
+        $this->assertMatchesRegularExpression('/aria-sort="ascending">\s*<a [^>]*>\s*Volunteer/', $body);
+        $this->assertLessThan(
+            strpos($body, 'id="member_checkbox_' . $member_one->id . '"'),
+            strpos($body, 'id="member_checkbox_' . $member_two->id . '"'),
+            '"No" must be listed before "Yes"'
+        );
+        $this->login->logOut();
+
+        //group manager does not see staff fields
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        unset($this->session->$filter_name);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('Size', $body);
+        $this->assertStringNotContainsString('Medium', $body);
+        $this->assertStringContainsString('0102030405, 06070809…', $body);
+
+        unset($this->session->$filter_name);
+        $this->login->logOut();
     }
 
     /**
