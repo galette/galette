@@ -24,46 +24,47 @@
         <form id="two_factor_reset_form" action="{{ url_for("do-two-factor-reset", {"id": member.id}) }}" method="post"></form>
     {% endif %}
 {% else %}
+<div class="ui buttons">
     {% set edit = edit is defined and edit %}
+    {% if edit %}
+        <a
+            href="{{ url_for("member", {"id": member.id}) }}"
+            class="ui small icon button tooltip"
+            title="{{ _T("Return to profile view of %1$s")|format(member.sname) }}"
+        >
+            <i class="angle left icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("Return to profile view of %1$s")|format(member.sname) }}</span>
+        </a>
+    {% endif %}
     {% if login.isSuperAdmin() %}
-<a
-    href="{{ url_for("impersonate", {"id": member.id}) }}"
-    class="ui small icon button tooltip"
-    title="{{ _T("Log in as %1$s")|format(member.sname) }}"
->
-    <i class="user secret icon" aria-hidden="true"></i>
-    <span class="visually-hidden">{{ _T("Log in as %1$s")|format(member.sname) }}</span>
-</a>
+        <a
+            href="{{ url_for("impersonate", {"id": member.id}) }}"
+            class="ui small icon button tooltip"
+            title="{{ _T("Log in as %1$s")|format(member.sname) }}"
+        >
+            <i class="user secret icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("Log in as %1$s")|format(member.sname) }}</span>
+        </a>
     {% endif %}
-<div class="ui primary small buttons">
     {% if edit %}
-    <button type="submit" name="valid" class="action ui labeled icon primary button">
-        <i class="save icon" aria-hidden="true"></i>
-        {{ _T("Save") }}
-    </button>
+        <button type="submit" name="valid" class="action ui labeled icon primary small button">
+            <i class="save icon" aria-hidden="true"></i>
+            {{ _T("Save") }}
+        </button>
     {% elseif member.canEdit(login) %}
-    <a
-        href="{{ url_for("editMember", {"id": member.id}) }}"
-        class="ui labeled icon button"
-    >
-        <i class="user edit icon" aria-hidden="true"></i>
-        {{ _T("Modification") }}
-    </a>
+        <a
+            href="{{ url_for("editMember", {"id": member.id}) }}"
+            class="ui labeled icon blue small button"
+        >
+            <i class="user edit icon" aria-hidden="true"></i>
+            {{ _T("Modification") }}
+        </a>
     {% endif %}
-    <div class="ui combo top right pointing simple dropdown icon button">
-        <span class="visually-hidden">{{ _T("Actions") }}</span>
-        <i class="dropdown icon" aria-hidden="true"></i>
+    <div class="ui icon top right pointing dropdown small button tooltip" title="{{ _T("More actions") }}">
+        <i class="ellipsis vertical icon" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ _T("More actions") }}</span>
         <div class="menu">
-    {% if edit %}
-            <a
-                href="{{ url_for("member", {"id": member.id}) }}"
-                class="ui item"
-            >
-                <i class="eye outline icon" aria-hidden="true"></i>
-                {{ _T("Display") }}
-            </a>
-    {% endif %}
-    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
             <a
                 href="{{ url_for("retrieve-pass", {"id_adh": member.id}) }}"
                 id="btn_lostpassword"
@@ -73,8 +74,8 @@
                 <i class="unlock icon" aria-hidden="true"></i>
                 {{ _T("New password") }}
             </a>
-    {% endif %}
-    {% if two_factor_reset %}
+        {% endif %}
+        {% if two_factor_reset %}
             <button
                 type="submit"
                 form="two_factor_reset_form"
@@ -84,8 +85,8 @@
                 <i class="mobile alternate icon" aria-hidden="true"></i>
                 {{ _T("Reset two-factor authentication") }}
             </button>
-    {% endif %}
-    {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
+        {% endif %}
+        {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
             <a
                 href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
                 class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
@@ -100,8 +101,8 @@
                 <i class="id card icon" aria-hidden="true"></i>
                 {{ _T("Adhesion form") }}
             </a>
-    {% endif %}
-    {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
+        {% endif %}
+        {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
             <a
                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
                 class="ui item"
@@ -109,8 +110,8 @@
                 <i class="receipt icon" aria-hidden="true"></i>
                 {{ _T("View contributions") }}
             </a>
-    {% endif %}
-    {% if login.isAdmin() or login.isStaff() %}
+        {% endif %}
+        {% if login.isAdmin() or login.isStaff() %}
             <a
                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
                 class="ui item"
@@ -133,11 +134,11 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
-        {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
-        {% for action in actions %}
-            {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
-        {% endfor %}
-    {% endif %}
+            {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
+            {% for action in actions %}
+                {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
+            {% endfor %}
+        {% endif %}
         </div>
     </div>
 </div>
