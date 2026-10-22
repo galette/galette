@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
@@ -342,6 +342,50 @@ msgstr "Ocorreu um erro ao armazenar a contribuição."
 msgid "Contribution has been successfully stored"
 msgstr "A contribuição foi armazenada com sucesso"
 
+msgid "Payment type:"
+msgstr ""
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr "Comentários:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Adição em massa de contribuições"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Mudanças em massa não foram confirmadas!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Revisar alteração em massa de %1$s membros"
+
+msgid "Nothing to do!"
+msgstr "Não há nada para fazer!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contribuições"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "O membro %1$s foi alterado com sucesso!"
+msgstr[1] "Os membros %1$s foram alterados com sucesso!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Algo deu errado durante a edição em massa!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Remover %1$s %2$s"
@@ -604,9 +648,6 @@ msgstr "Novo membro"
 msgid "Mass change %1$s members"
 msgstr "Mudança em massa de %1$s membros"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Mudanças em massa não foram confirmadas!"
-
 msgid "Add to group"
 msgstr "Adicionar ao grupo"
 
@@ -616,9 +657,6 @@ msgstr "Remover do grupo"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Revisar alteração em massa de %1$s membros"
-
-msgid "Nothing to do!"
-msgstr "Não há nada para fazer!"
 
 msgid "An error occurred while saving the member."
 msgstr "Ocorreu um erro ao armazenar o membro."
@@ -631,9 +669,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "O membro %1$s foi alterado com sucesso!"
 msgstr[1] "Os membros %1$s foram alterados com sucesso!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Algo deu errado durante a edição em massa!"
 
 msgid "Login required"
 msgstr "É necessário fazer login"
@@ -2046,12 +2081,6 @@ msgstr "Tipo de contribuição:"
 msgid "Amount:"
 msgstr ""
 
-msgid "Payment type:"
-msgstr ""
-
-msgid "Comments:"
-msgstr "Comentários:"
-
 msgid "Date"
 msgstr "Data"
 
@@ -2276,9 +2305,6 @@ msgid "Scheduled payment ID"
 msgstr ""
 
 msgid "Contribution ID"
-msgstr ""
-
-msgid "Record date:"
 msgstr ""
 
 msgid "Scheduled date:"
@@ -4217,6 +4243,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Page %1$s"
+msgid "Update %1$s"
+msgstr "Página %1$s"
+
 msgid "Groups:"
 msgstr ""
 
@@ -4805,6 +4836,9 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 msgid "No changes selected"
+msgstr ""
+
+msgid "You are about to proceed following changes for selected contributions:"
 msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"

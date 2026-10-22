@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -341,6 +341,50 @@ msgstr "பங்களிப்பை சேமிக்கும் போத�
 msgid "Contribution has been successfully stored"
 msgstr "பங்களிப்பு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
+msgid "Payment type:"
+msgstr "கட்டண வகை:"
+
+msgid "Record date:"
+msgstr "பதிவு தேதி:"
+
+msgid "Comments:"
+msgstr "கருத்துரைகள்:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "வெகுசன சேர்க்க பங்களிப்புகள்"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "வெகுசன மாற்றங்கள் உறுதிப்படுத்தப்படவில்லை!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "வெகுசன மாற்றம் %1$s உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
+
+msgid "Nothing to do!"
+msgstr "செய்ய எதுவும் இல்லை!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "பங்களிப்புகள்"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s உறுப்பினர் வெற்றிகரமாக மாற்றப்பட்டார்!"
+msgstr[1] "%1$s உறுப்பினர்கள் வெற்றிகரமாக மாற்றப்பட்டனர்!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "வெகுசன பதிப்பின் போது ஏதோ தவறு ஏற்பட்டது!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "%1$s %2$s ஐ அகற்று"
@@ -604,9 +648,6 @@ msgstr "புதிய உறுப்பினர்"
 msgid "Mass change %1$s members"
 msgstr "வெகுசன மாற்றம் %1$s உறுப்பினர்கள்"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "வெகுசன மாற்றங்கள் உறுதிப்படுத்தப்படவில்லை!"
-
 msgid "Add to group"
 msgstr "குழுவில் சேர்க்கவும்"
 
@@ -616,9 +657,6 @@ msgstr "குழுவிலிருந்து அகற்று"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "வெகுசன மாற்றம் %1$s உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
-
-msgid "Nothing to do!"
-msgstr "செய்ய எதுவும் இல்லை!"
 
 msgid "An error occurred while saving the member."
 msgstr "உறுப்பினரை சேமிக்கும் போது பிழை ஏற்பட்டது."
@@ -631,9 +669,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s உறுப்பினர் வெற்றிகரமாக மாற்றப்பட்டார்!"
 msgstr[1] "%1$s உறுப்பினர்கள் வெற்றிகரமாக மாற்றப்பட்டனர்!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "வெகுசன பதிப்பின் போது ஏதோ தவறு ஏற்பட்டது!"
 
 msgid "Login required"
 msgstr "உள்நுழைவு தேவை"
@@ -2058,12 +2093,6 @@ msgstr "பங்களிப்பு வகை:"
 msgid "Amount:"
 msgstr "தொகை:"
 
-msgid "Payment type:"
-msgstr "கட்டண வகை:"
-
-msgid "Comments:"
-msgstr "கருத்துரைகள்:"
-
 msgid "Date"
 msgstr "திகதி"
 
@@ -2288,9 +2317,6 @@ msgstr "திட்டமிடப்பட்ட கட்டண ஐடி"
 
 msgid "Contribution ID"
 msgstr "பங்களிப்பு ஐடி"
-
-msgid "Record date:"
-msgstr "பதிவு தேதி:"
 
 msgid "Scheduled date:"
 msgstr "திட்டமிடப்பட்ட தேதி:"
@@ -4346,6 +4372,11 @@ msgstr ""
 "இந்த பட்டியலில் உள்ள உருப்படிகள் மாற்றியமைக்கப்பட்டுள்ளன. உங்கள் மாற்றங்களைச் சேமிக்க "
 "மறக்காதீர்கள்."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "புதுப்பிப்பு"
+
 msgid "Groups:"
 msgstr "குழுக்கள்:"
 
@@ -4952,6 +4983,11 @@ msgstr "சரிபார்க்கப்பட்ட புலங்கள�
 
 msgid "No changes selected"
 msgstr "மாற்றங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களுக்கான மாற்றங்களை நீங்கள் தொடர உள்ளீர்கள்:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களுக்கான மாற்றங்களை நீங்கள் தொடர உள்ளீர்கள்:"

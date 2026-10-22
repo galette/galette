@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -346,6 +346,50 @@ msgstr "Capitèt una error per l'enregistrament de l'escotisson."
 msgid "Contribution has been successfully stored"
 msgstr "L'enregistrament de la contribucion a ben capitat"
 
+msgid "Payment type:"
+msgstr "Mòde de pagament :"
+
+msgid "Record date:"
+msgstr "Data d'enregistrament :"
+
+msgid "Comments:"
+msgstr "Comentaris :"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Ajustament en massa de contribucions"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Lei modificacions son pas estat confiermadas !"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Revisar lo cambi massiu de %1$s membres"
+
+msgid "Nothing to do!"
+msgstr "Ren de faire !"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contribucions"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s membre es estat ajustat."
+msgstr[1] "%1$s membres son estat ajustats."
+
+msgid "Something went wrong during mass edition!"
+msgstr "A mau encapat per la modificacion de massa !"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Levar %1$s %2$s"
@@ -629,9 +673,6 @@ msgstr "Pas membre"
 msgid "Mass change %1$s members"
 msgstr "Modificacion en massa de %1$s membres"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Lei modificacions son pas estat confiermadas !"
-
 #, fuzzy
 #| msgid "Add a new group"
 msgid "Add to group"
@@ -646,9 +687,6 @@ msgstr "Levar lo grope %1$s"
 msgid "Review mass change %1$s members"
 msgstr "Revisar lo cambi massiu de %1$s membres"
 
-msgid "Nothing to do!"
-msgstr "Ren de faire !"
-
 msgid "An error occurred while saving the member."
 msgstr "Capitèt una error per l'enregistrament dau membre."
 
@@ -660,9 +698,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s membre es estat ajustat."
 msgstr[1] "%1$s membres son estat ajustats."
-
-msgid "Something went wrong during mass edition!"
-msgstr "A mau encapat per la modificacion de massa !"
 
 msgid "Login required"
 msgstr "Vos devètz identificar."
@@ -2105,12 +2140,6 @@ msgstr "Mena de contribucion :"
 msgid "Amount:"
 msgstr "Soma :"
 
-msgid "Payment type:"
-msgstr "Mòde de pagament :"
-
-msgid "Comments:"
-msgstr "Comentaris :"
-
 msgid "Date"
 msgstr "Data"
 
@@ -2343,9 +2372,6 @@ msgstr "ID dau pagament a escasenças"
 #| msgid "Contribution id"
 msgid "Contribution ID"
 msgstr "ID de la contribucion"
-
-msgid "Record date:"
-msgstr "Data d'enregistrament :"
 
 msgid "Scheduled date:"
 msgstr "Data de sortida :"
@@ -4425,6 +4451,11 @@ msgstr ""
 "Avètz modificat d'elements de la lista. Oblidètz pas d'enregistrar lei "
 "modificacions."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Actualizar"
+
 msgid "Groups:"
 msgstr "Gropes :"
 
@@ -5042,6 +5073,13 @@ msgstr "Lei camps crosats solets seràn actualizats."
 #| msgid "No file selected"
 msgid "No changes selected"
 msgstr "Pas de fichièr seleccionat"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
+"Siatz a mand de faire lei modificacions seguentas per lei membres "
+"seleccionats :"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""

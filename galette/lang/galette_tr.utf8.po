@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -362,6 +362,50 @@ msgstr "Katılımı kaydederken bir hata oluştu."
 msgid "Contribution has been successfully stored"
 msgstr "Katılım başarıyla kaydedildi"
 
+msgid "Payment type:"
+msgstr ""
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "contributions"
+msgid "Mass change %1$s contributions"
+msgstr "katılımlar"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Toplu güncelleme teyit edilmedi!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "%1$s üye için toplu güncellemeyi gözden geçirin"
+
+msgid "Nothing to do!"
+msgstr "Yapılacak bir eylem bulunamadı!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions types"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Katkı türleri"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s üye başarıyla güncellendi!"
+msgstr[1] "%1$s üyeler başarıyla güncellendi!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Toplu güncelleme yapılırken bir şeyler yanlış gitti!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "%1$s %2$s 'ı kaldır"
@@ -641,9 +685,6 @@ msgstr "Üye numarası #%id bulunamadı."
 msgid "Mass change %1$s members"
 msgstr "Toplu güncelleme %1$s üye"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Toplu güncelleme teyit edilmedi!"
-
 msgid "Add to group"
 msgstr "Gruba ekle"
 
@@ -653,9 +694,6 @@ msgstr "gurubunu kaldır"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "%1$s üye için toplu güncellemeyi gözden geçirin"
-
-msgid "Nothing to do!"
-msgstr "Yapılacak bir eylem bulunamadı!"
 
 msgid "An error occurred while saving the member."
 msgstr "Üye kaydedilirken bir hata oluştu."
@@ -668,9 +706,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s üye başarıyla güncellendi!"
 msgstr[1] "%1$s üyeler başarıyla güncellendi!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Toplu güncelleme yapılırken bir şeyler yanlış gitti!"
 
 msgid "Login required"
 msgstr "Giriş zorunlu"
@@ -2088,12 +2123,6 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-msgid "Payment type:"
-msgstr ""
-
-msgid "Comments:"
-msgstr ""
-
 msgid "Date"
 msgstr ""
 
@@ -2330,9 +2359,6 @@ msgstr ""
 #| msgid "contribution"
 msgid "Contribution ID"
 msgstr "katılım"
-
-msgid "Record date:"
-msgstr ""
 
 #, fuzzy
 #| msgid "Download document"
@@ -4275,6 +4301,10 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, php-format
+msgid "Update %1$s"
+msgstr ""
+
 msgid "Groups:"
 msgstr ""
 
@@ -4871,6 +4901,9 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 msgid "No changes selected"
+msgstr ""
+
+msgid "You are about to proceed following changes for selected contributions:"
 msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
