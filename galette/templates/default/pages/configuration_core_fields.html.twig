@@ -25,6 +25,12 @@
             {% include 'elements/edit_core_fields.html.twig' %}
         </div>
     {% endfor %}
+        <div id="core_fields_status" aria-live="polite">
+            <div class="ui small visible warning message displaynone">
+                <i class="info circle icon" aria-hidden="true"></i>
+                {{ _T("Items in this list have been modified. Don't forget to save your changes.") }}
+            </div>
+        </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
@@ -38,6 +44,62 @@
         $(function() {
             $('.pointing.menu .item').tab();
         });
+
+        var _categoriesOrder = function() {
+            return $('#sortable_categories .item').map(function() {
+                return $(this).data('tab');
+            }).get();
+        };
+
+        var _fieldValues = function($row) {
+            return $row.find('select, input[type=radio]:checked').map(function() {
+                return this.name + '=' + $(this).val();
+            }).get().join('&');
+        };
+
+        var _initialCategories = _categoriesOrder();
+        $('.sortable-items tr').each(function() {
+            var $row = $(this);
+            $row.data('initial', {
+                category: $row.parent().data('category'),
+                position: $row.index(),
+                values: _fieldValues($row)
+            });
+        });
+
+        //only dragged fields are reported as moved, not the ones they push
+        var _isMoved = function($row) {
+            var _initial = $row.data('initial');
+            return $row.data('dragged') == 1
+                && ($row.parent().data('category') != _initial.category || $row.index() != _initial.position);
+        };
+
+        var _refreshFields = function() {
+            var _pending = false,
+                _categories = _categoriesOrder();
+
+            $('#sortable_categories .item').each(function(index) {
+                var _moved = _categories[index] !== _initialCategories[index];
+                $(this).toggleClass('moved', _moved);
+                _pending = _pending || _moved;
+            });
+
+            $('.sortable-items tr').each(function() {
+                var $row = $(this),
+                    _states = {
+                        moved: _isMoved($row),
+                        changed: _fieldValues($row) !== $row.data('initial').values
+                    },
+                    _modified = _states.moved || _states.changed;
+                $row.toggleClass('warning', _modified);
+                $row.find('.field-state').each(function() {
+                    $(this).toggleClass('displaynone', !_states[$(this).data('state')]);
+                });
+                _pending = _pending || _modified;
+            });
+
+            $('#core_fields_status .message').toggleClass('displaynone', !_pending);
+        };
 
         var _initSortable = function(){
             var _categories = document.getElementById('sortable_categories');
@@ -71,22 +133,20 @@
                     onAdd: function (evt) {
                         var _item = evt.item;
                         var _category = _item.parentElement.dataset.category;
-                        _item.classList.add('yellow');
+                        $(_item).data('dragged', 1);
                         _item.querySelectorAll('input[name$=category]')[0].setAttribute('value', _category);
+                        _refreshFields();
                     },
                     onUpdate: function (evt) {
-                        var _item = evt.item;
-                        _item.classList.add('yellow');
+                        $(evt.item).data('dragged', 1);
+                        _refreshFields();
                     }
                 });
             }
 
             new Sortable(_categories, {
                 animation: 150,
-                onUpdate: function (evt) {
-                    var _item = evt.item;
-                    _item.classList.add('moved');
-                }
+                onUpdate: _refreshFields
             });
         }
 
@@ -143,6 +203,7 @@
         $(function() {
             _bindForm();
             _initSortable();
+            $('#config_fields_form').on('change', '.sortable-items select, .sortable-items input[type=radio]', _refreshFields);
 
             /*$('#add_category').click(function() {
                 var _fieldsets = $('fieldset[id^=cat_]');

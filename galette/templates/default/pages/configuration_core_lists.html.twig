@@ -6,6 +6,8 @@
 
 {% extends 'page.html.twig' %}
 
+{% set field_states %}<span class="ui mini orange basic label field-state displaynone" data-state="added">{{ _Tx("member groups", "added") }}</span><span class="ui mini orange basic label field-state displaynone" data-state="moved">{{ _Tx("member groups", "moved") }}</span><span class="ui mini orange basic label field-state displaynone" data-state="removed">{{ _Tx("member groups", "will be removed") }}</span>{% endset %}
+
 {% block content %}
     <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
         <div class="ui basic fitted segment loader_selector">
@@ -62,6 +64,7 @@
                         <td class="left" data-col-label="{{ _T("Field name") }}">
                             <input type="hidden" name="fields[]" value="{{ fid }}"/>
                             {{ field.label }}
+                            {{ field_states }}
                         </td>
                         <td class="left" data-col-label="{{ _T("Permissions") }}">
                             {{ permission }}
@@ -71,11 +74,21 @@
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                                 <span class="visually-hidden">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>
                             </button>
+                            <button type="button" class="ui mini basic labeled icon button field-undo displaynone" aria-label="{{ _T("Keep field %1$s")|format(field.label) }}">
+                                <i class="undo icon" aria-hidden="true"></i>
+                                {{ _T("Cancel") }}
+                            </button>
                         </td>
                     </tr>
     {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div id="listed_fields_status" aria-live="polite">
+            <div class="ui small visible warning message displaynone">
+                <i class="info circle icon" aria-hidden="true"></i>
+                {{ _T("Items in this list have been modified. Don't forget to save your changes.") }}
+            </div>
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
@@ -87,48 +100,107 @@
 
 {% block javascripts %}
     <script type="module">
+        function _listedRows() {
+            return document.querySelectorAll('#listed_fields tr');
+        }
+
+        var _initialFields = [].map.call(_listedRows(), function(row) {
+            return row.dataset.fid;
+        });
+
+        //removed fields stay in the table until the list is saved, with their input disabled;
+        //states are stored in data attributes: adding a field rewrites the whole table body
+        function _refreshFields() {
+            var _pending = false;
+            [].forEach.call(_listedRows(), function(row, index) {
+                var _initial = _initialFields.indexOf(row.dataset.fid),
+                    _state = null;
+                if (_initial === -1) {
+                    _state = 'added';
+                } else if (row.dataset.removed == 1) {
+                    _state = 'removed';
+                } else if (row.dataset.dragged == 1 && index !== _initial) {
+                    //only dragged fields are reported as moved, not the ones they push
+                    _state = 'moved';
+                }
+                row.classList.toggle('warning', _state !== null);
+                _pending = _pending || _state !== null;
+                [].forEach.call(row.querySelectorAll('.field-state'), function(label) {
+                    label.classList.toggle('displaynone', label.dataset.state !== _state);
+                });
+            });
+            document.querySelector('#listed_fields_status .message').classList.toggle('displaynone', !_pending);
+        }
+
+        function _setRemoved(row, removed) {
+            row.dataset.removed = removed ? 1 : 0;
+            row.querySelector('input[name="fields[]"]').disabled = removed;
+            row.querySelector('.delete').classList.toggle('displaynone', removed);
+            row.querySelector('.field-undo').classList.toggle('displaynone', !removed);
+            row.querySelector(removed ? '.field-undo' : '.delete').focus();
+        }
+
+        function _removeField(row) {
+            var _kept = [].filter.call(_listedRows(), function(r) {
+                return r.dataset.removed != 1;
+            });
+            if (_kept.length <= 1) {
+                $('.ui.toast').toast('close');
+                $('body').toast({
+                    displayTime: 'auto',
+                    minDisplayTime: 5000,
+                    wordsPerMinute: 80,
+                    showProgress: 'bottom',
+                    closeIcon: true,
+                    position: 'top attached',
+                    message: '{{ _T("Deleting the last field is not possible. There must be at least one field in the list.")|e('js') }}',
+                    showIcon: 'info',
+                    class: 'info'
+                });
+                return;
+            }
+
+            if (_initialFields.indexOf(row.dataset.fid) !== -1) {
+                _setRemoved(row, true);
+            } else {
+                //a field added during this edition simply goes back to the list
+                var _dropdown_item = '<div class="item" data-fid="' + row.dataset.fid + '" data-label="' + row.dataset.label + '" data-permission="' + row.dataset.permission + '">';
+                    _dropdown_item +='<input type="hidden" name="rfields[]" value="' + row.dataset.fid + '"/>';
+                    _dropdown_item +='<span class="text">' + row.dataset.label + '</span>';
+                    _dropdown_item +='<span class="description">(' + row.dataset.permission + ')</span>';
+                    _dropdown_item +='</div>';
+                row.parentNode.removeChild(row);
+                document.getElementById('remaining_fields').innerHTML += _dropdown_item;
+            }
+            _refreshFields();
+        }
+
         function _initSortable() {
             var _listed = document.getElementById('listed_fields');
+
+            _listed.addEventListener('click', function (evt) {
+                var _button = evt.target.closest('.delete, .field-undo');
+                if (!_button) {
+                    return;
+                }
+                var _row = _button.closest('tr');
+                if (_button.classList.contains('delete')) {
+                    _removeField(_row);
+                } else {
+                    _setRemoved(_row, false);
+                    _refreshFields();
+                }
+            });
 
             new Sortable(_listed, {
                 group: 'lists',
                 animation: 150,
                 ghostClass: 'yellow',
-                filter: '.delete',
+                filter: '.delete, .field-undo',
+                preventOnFilter: false,
                 onUpdate: function (evt) {
-                    var _item = evt.item;
-                    _item.classList.add('yellow');
-                },
-                onFilter: function (evt) {
-                    var _item = evt.item;
-                    var _table = document.getElementById('listed_fields_table');
-                    var _remaining_fields = document.getElementById('remaining_fields');
-                    var _field_id = _item.dataset.fid;
-                    var _field_label = _item.dataset.label;
-                    var _field_permission = _item.dataset.permission;
-                    var _dropdown_item = '<div class="item" data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
-                        _dropdown_item +='<input type="hidden" name="rfields[]" value="' + _field_id + '"/>';
-                        _dropdown_item +='<span class="text">' + _field_label + '</span>';
-                        _dropdown_item +='<span class="description">(' + _field_permission + ')</span>';
-                        _dropdown_item +='</div>';
-                    if (_item.parentNode.children.length > 1) {
-                        _item.parentNode.removeChild(_item);
-                        _table.classList.add('red');
-                        _remaining_fields.innerHTML += _dropdown_item;
-                    } else {
-                        $('.ui.toast').toast('close');
-                        $('body').toast({
-                            displayTime: 'auto',
-                            minDisplayTime: 5000,
-                            wordsPerMinute: 80,
-                            showProgress: 'bottom',
-                            closeIcon: true,
-                            position: 'top attached',
-                            message: '{{ _T("Deleting the last field is not possible. There must be at least one field in the list.")|e('js') }}',
-                            showIcon: 'info',
-                            class: 'info'
-                        });
-                    }
+                    evt.item.dataset.dragged = 1;
+                    _refreshFields();
                 }
             });
         }
@@ -145,10 +217,11 @@
                     var _field_id = _selected_field[i].dataset.fid;
                     var _field_label = _selected_field[i].dataset.label;
                     var _field_permission = _selected_field[i].dataset.permission;
-                    var _table_item = '<tr class="yellow" data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
+                    var _table_item = '<tr data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
                         _table_item +='<td data-scope="row" class="collapsing"><i class="arrows alternate icon" aria-hidden="true"></i></td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Field name") }}">';
                         _table_item +='<input type="hidden" name="fields[]" value="' + _field_id + '"/>' + _field_label;
+                        _table_item +=' {{ field_states|e('js') }}';
                         _table_item +='</td>';
                         _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';
                         _table_item +='<td class="center actions_row collapsing"><button type="button" class="ui delete icon-only button">';
@@ -162,6 +235,7 @@
 
                 $('#remaining_fields_dropdown').dropdown('clear');
                 _listed_fields.innerHTML += _table_item;
+                _refreshFields();
             }
             _bindFomanticComponents();
         }

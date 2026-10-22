@@ -31,6 +31,8 @@
                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
                         <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
                         <label for="{{ fid }}_visible">{{ field.label }}</label>
+                        <span class="ui mini orange basic label field-state displaynone" data-state="moved">{{ _Tx("member groups", "moved") }}</span>
+                        <span class="ui mini orange basic label field-state displaynone" data-state="changed">{{ _Tx("member groups", "changed") }}</span>
                     </td>
                     <td class="visibility_cell" data-col-label="{{ _T("Permissions") }}">
                         <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%1$s' permissions")|format(field.label) }}">
