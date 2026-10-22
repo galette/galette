@@ -34,7 +34,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -368,6 +368,50 @@ msgstr "Si è verificato un errore nell'aggiungere il contributo."
 msgid "Contribution has been successfully stored"
 msgstr "Il contributo è stato aggiunto con successo"
 
+msgid "Payment type:"
+msgstr "Modalità di pagamento:"
+
+msgid "Record date:"
+msgstr "Data di registrazione:"
+
+msgid "Comments:"
+msgstr "Commenti:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Aggiunta contributi in massa"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "La modifica di massa non è stata confermata!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Controllo cambio massivo di %1$s membri"
+
+msgid "Nothing to do!"
+msgstr "Niente da fare!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contributi"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s socio è stato cambiato con successo!"
+msgstr[1] "%1$s soci sono stati cambiati con successo!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Qualcosa è andato storto nell'edizione massiva!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Rimuovi %1$s %2$s"
@@ -641,9 +685,6 @@ msgstr "Nessun membro"
 msgid "Mass change %1$s members"
 msgstr "Cambio di massa membri %1$s"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "La modifica di massa non è stata confermata!"
-
 msgid "Add to group"
 msgstr "Aggiungi a un gruppo"
 
@@ -653,9 +694,6 @@ msgstr "Rimuovi da un gruppo"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Controllo cambio massivo di %1$s membri"
-
-msgid "Nothing to do!"
-msgstr "Niente da fare!"
 
 msgid "An error occurred while saving the member."
 msgstr "Si è verificato un errore nella memorizzazione del socio."
@@ -668,9 +706,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s socio è stato cambiato con successo!"
 msgstr[1] "%1$s soci sono stati cambiati con successo!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Qualcosa è andato storto nell'edizione massiva!"
 
 msgid "Login required"
 msgstr "Richiesta registrazione"
@@ -2113,12 +2148,6 @@ msgstr "Tipo di contributo:"
 msgid "Amount:"
 msgstr "Importo:"
 
-msgid "Payment type:"
-msgstr "Modalità di pagamento:"
-
-msgid "Comments:"
-msgstr "Commenti:"
-
 msgid "Date"
 msgstr "Data"
 
@@ -2352,9 +2381,6 @@ msgstr "ID pagamento programmato"
 
 msgid "Contribution ID"
 msgstr "ID contributo"
-
-msgid "Record date:"
-msgstr "Data di registrazione:"
 
 msgid "Scheduled date:"
 msgstr "Data prevista:"
@@ -4450,6 +4476,11 @@ msgstr ""
 "Gli articoli in questo elenco sono stati modificati. Ricordarsi di salvare i "
 "cambiamenti."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Aggiornamento"
+
 msgid "Groups:"
 msgstr "Gruppi:"
 
@@ -5063,6 +5094,11 @@ msgstr "Verranno aggiornati solo i campi selezionati."
 
 msgid "No changes selected"
 msgstr "Nessun cambiamento selezionato"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "Si sta per procedere alle seguenti modifiche per i soci selezionati:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Si sta per procedere alle seguenti modifiche per i soci selezionati:"

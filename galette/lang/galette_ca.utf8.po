@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -385,6 +385,49 @@ msgstr "S'ha produït un error emmagatzemant la contribució."
 msgid "Contribution has been successfully stored"
 msgstr "La contribució s'ha desat correctament"
 
+msgid "Payment type:"
+msgstr "Tipus de pagament:"
+
+msgid "Record date:"
+msgstr "Data de registre:"
+
+msgid "Comments:"
+msgstr "Comentaris:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+msgid "Mass change %1$s contributions"
+msgstr "Les meves contribucions"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "No s'han confirmat canvis massius!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Revisar el canvi massiu %1$s membres"
+
+msgid "Nothing to do!"
+msgstr "Res a fer!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contribucions"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "El membre %1$s s'ha canviat amb èxit!"
+msgstr[1] "Els membres de %1$s s'han canviat amb èxit!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Elimina %1$s %2$s"
@@ -674,9 +717,6 @@ msgstr "No membres"
 msgid "Mass change %1$s members"
 msgstr "Canvi massiu %1$s membres"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "No s'han confirmat canvis massius!"
-
 #, fuzzy
 msgid "Add to group"
 msgstr "Afegeix un grup nou"
@@ -690,9 +730,6 @@ msgstr "Elimina el grup %1$s"
 msgid "Review mass change %1$s members"
 msgstr "Revisar el canvi massiu %1$s membres"
 
-msgid "Nothing to do!"
-msgstr "Res a fer!"
-
 msgid "An error occurred while saving the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
@@ -704,9 +741,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "El membre %1$s s'ha canviat amb èxit!"
 msgstr[1] "Els membres de %1$s s'han canviat amb èxit!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 
 #, fuzzy
 msgid "Login required"
@@ -2333,12 +2367,6 @@ msgstr "Tipus de contribució:"
 msgid "Amount:"
 msgstr "Import:"
 
-msgid "Payment type:"
-msgstr "Tipus de pagament:"
-
-msgid "Comments:"
-msgstr "Comentaris:"
-
 msgid "Date"
 msgstr "Data"
 
@@ -2616,9 +2644,6 @@ msgstr "Afegeix un tipus de pagament"
 #, fuzzy
 msgid "Contribution ID"
 msgstr "Contribució"
-
-msgid "Record date:"
-msgstr "Data de registre:"
 
 msgid "Scheduled date:"
 msgstr "Data programada:"
@@ -5008,6 +5033,10 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+msgid "Update %1$s"
+msgstr "Actualitza"
+
 #, fuzzy
 msgid "Groups:"
 msgstr "Grups"
@@ -5700,6 +5729,13 @@ msgstr "Només s'actualitzaran els camps marcats."
 #, fuzzy
 msgid "No changes selected"
 msgstr "No s'ha seleccionat cap fitxer"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
+"Estàs a punt de procedir amb els canvis següents per als membres "
+"seleccionats:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""

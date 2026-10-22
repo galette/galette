@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -352,6 +352,53 @@ msgstr "حدث خطأ أثناء تخزين المساهمة."
 msgid "Contribution has been successfully stored"
 msgstr "تم تخزين المساهمة بنجاح"
 
+msgid "Payment type:"
+msgstr "نوع السداد:"
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr "تعليقات:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "My contributions"
+msgid "Mass change %1$s contributions"
+msgstr "اشتراكاتي"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "لم يتم تأكيد التغييرات الجماعية!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %count members"
+msgid "Review mass change %1$s contributions"
+msgstr "مراجعة التغيرات %count الاعضاء"
+
+msgid "Nothing to do!"
+msgstr "لاشي لتفعلة!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "الإشتراكات"
+
+#, fuzzy, php-format
+#| msgid "%count members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[1] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[2] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[3] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[4] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[5] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+
+msgid "Something went wrong during mass edition!"
+msgstr ""
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "إزالة %1$s %2$s"
@@ -652,9 +699,6 @@ msgstr "غير عضو"
 msgid "Mass change %1$s members"
 msgstr "تغيير جماعي لـ %count من الأعضاء"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "لم يتم تأكيد التغييرات الجماعية!"
-
 #, fuzzy
 #| msgid "Add a new group"
 msgid "Add to group"
@@ -669,9 +713,6 @@ msgstr "حذف الفريق %1$s"
 #| msgid "Review mass change %count members"
 msgid "Review mass change %1$s members"
 msgstr "مراجعة التغيرات %count الاعضاء"
-
-msgid "Nothing to do!"
-msgstr "لاشي لتفعلة!"
 
 msgid "An error occurred while saving the member."
 msgstr "حدث خطأ أثناء تسجيل العضو."
@@ -689,9 +730,6 @@ msgstr[2] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[3] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[4] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[5] "%count من الاعضاء قد تم تغييرهم بنجاح!"
-
-msgid "Something went wrong during mass edition!"
-msgstr ""
 
 msgid "Login required"
 msgstr ""
@@ -2150,12 +2188,6 @@ msgstr "نوع المساهمة:"
 msgid "Amount:"
 msgstr "المبلغ:"
 
-msgid "Payment type:"
-msgstr "نوع السداد:"
-
-msgid "Comments:"
-msgstr "تعليقات:"
-
 msgid "Date"
 msgstr "التاريخ"
 
@@ -2398,9 +2430,6 @@ msgstr "إضافة نوع سداد"
 #| msgid "Contributions"
 msgid "Contribution ID"
 msgstr "الإشتراكات"
-
-msgid "Record date:"
-msgstr ""
 
 #, fuzzy
 #| msgid "Release date"
@@ -4367,6 +4396,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Pages:"
+msgid "Update %1$s"
+msgstr "الصفحات:"
+
 msgid "Groups:"
 msgstr "الفِرَق:"
 
@@ -5006,6 +5040,9 @@ msgstr ""
 #| msgid "No field selected"
 msgid "No changes selected"
 msgstr "لم يتم تحديد أي حقل"
+
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -356,6 +356,51 @@ msgstr "Під час зберігання внеску сталася поми�
 msgid "Contribution has been successfully stored"
 msgstr "Внесок успішно збережено"
 
+msgid "Payment type:"
+msgstr "Вид оплати:"
+
+msgid "Record date:"
+msgstr "Дата запису:"
+
+msgid "Comments:"
+msgstr "Коментарі:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Масове додавання внесків"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Масові зміни не підтверджено!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Перегляньте масові зміни %1$s членів"
+
+msgid "Nothing to do!"
+msgstr "Нічого немає!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Внески"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "Учасника %1$s успішно змінено!"
+msgstr[1] "Учасників %1$s успішно змінено!"
+msgstr[2] "Учасників %1$s успішно змінено!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Щось пішло не так під час масової правки!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Вилучити %1$s %2$s"
@@ -630,9 +675,6 @@ msgstr "Немає учасників"
 msgid "Mass change %1$s members"
 msgstr "Масова зміна %1$s членів"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Масові зміни не підтверджено!"
-
 msgid "Add to group"
 msgstr "Додати до групи"
 
@@ -642,9 +684,6 @@ msgstr "Видалити з групи"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Перегляньте масові зміни %1$s членів"
-
-msgid "Nothing to do!"
-msgstr "Нічого немає!"
 
 msgid "An error occurred while saving the member."
 msgstr "Під час зберігання члена сталася помилка."
@@ -658,9 +697,6 @@ msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "Учасника %1$s успішно змінено!"
 msgstr[1] "Учасників %1$s успішно змінено!"
 msgstr[2] "Учасників %1$s успішно змінено!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Щось пішло не так під час масової правки!"
 
 msgid "Login required"
 msgstr "Потрібен логін"
@@ -2086,12 +2122,6 @@ msgstr "Тип внеску:"
 msgid "Amount:"
 msgstr "Сума:"
 
-msgid "Payment type:"
-msgstr "Вид оплати:"
-
-msgid "Comments:"
-msgstr "Коментарі:"
-
 msgid "Date"
 msgstr "Дата"
 
@@ -2321,9 +2351,6 @@ msgstr "Ідентифікатор запланованого платежу"
 
 msgid "Contribution ID"
 msgstr "ID внески"
-
-msgid "Record date:"
-msgstr "Дата запису:"
 
 msgid "Scheduled date:"
 msgstr "Запланована дата:"
@@ -4401,6 +4428,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr "Елементи цього списку було змінено. Не забудьте зберегти зміни."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Оновлення"
+
 msgid "Groups:"
 msgstr "Групи:"
 
@@ -5017,6 +5049,11 @@ msgstr "Будуть оновлені лише позначені поля."
 
 msgid "No changes selected"
 msgstr "Зміни не вибрано"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "Ви збираєтесь виконати наступні зміни для вибраних членів:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Ви збираєтесь виконати наступні зміни для вибраних членів:"

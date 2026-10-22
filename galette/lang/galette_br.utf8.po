@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -340,6 +340,52 @@ msgstr ""
 msgid "Contribution has been successfully stored"
 msgstr ""
 
+msgid "Payment type:"
+msgstr ""
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Edit contribution type"
+msgid "Mass change %1$s contributions"
+msgstr "Aozañ an doare kendeurel"
+
+msgid "Mass changes has not been confirmed!"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Edit contribution type"
+msgid "Review mass change %1$s contributions"
+msgstr "Aozañ an doare kendeurel"
+
+msgid "Nothing to do!"
+msgstr "Mann ebet d'ober!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contribution types"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Doare kendeurel"
+
+#, fuzzy, php-format
+#| msgid "Title '%s' has been successfully added."
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+msgstr[1] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+msgstr[2] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+msgstr[3] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+msgstr[4] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+
+msgid "Something went wrong during mass edition!"
+msgstr ""
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Dilemel %1$s %2$s"
@@ -631,9 +677,6 @@ msgstr "Ezel ebet gant #%id."
 msgid "Mass change %1$s members"
 msgstr ""
 
-msgid "Mass changes has not been confirmed!"
-msgstr ""
-
 #, fuzzy
 #| msgid "All accounts"
 msgid "Add to group"
@@ -647,9 +690,6 @@ msgstr "Dilemel ar strollad %1$s"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr ""
-
-msgid "Nothing to do!"
-msgstr "Mann ebet d'ober!"
 
 msgid "An error occurred while saving the member."
 msgstr ""
@@ -666,9 +706,6 @@ msgstr[1] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
 msgstr[2] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
 msgstr[3] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
 msgstr[4] "An titl \"%s\" a zo bet ouzhpennet gant berzh."
-
-msgid "Something went wrong during mass edition!"
-msgstr ""
 
 msgid "Login required"
 msgstr ""
@@ -2092,12 +2129,6 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-msgid "Payment type:"
-msgstr ""
-
-msgid "Comments:"
-msgstr ""
-
 msgid "Date"
 msgstr ""
 
@@ -2328,9 +2359,6 @@ msgstr ""
 #| msgid "Contribution types"
 msgid "Contribution ID"
 msgstr "Doare kendeurel"
-
-msgid "Record date:"
-msgstr ""
 
 #, fuzzy
 #| msgid "Download document"
@@ -4275,6 +4303,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Page %1$s"
+msgid "Update %1$s"
+msgstr "Pajenn %1$s"
+
 msgid "Groups:"
 msgstr ""
 
@@ -4867,6 +4900,9 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 msgid "No changes selected"
+msgstr ""
+
+msgid "You are about to proceed following changes for selected contributions:"
 msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
@@ -7445,11 +7481,6 @@ msgstr ""
 #, fuzzy
 #~| msgid "Edit contribution type"
 #~ msgid "Paid contributions:"
-#~ msgstr "Aozañ an doare kendeurel"
-
-#, fuzzy
-#~| msgid "Edit contribution type"
-#~ msgid "Use paid flag on contributions"
 #~ msgstr "Aozañ an doare kendeurel"
 
 #, fuzzy, php-format

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -314,6 +314,49 @@ msgstr ""
 msgid "Contribution has been successfully stored"
 msgstr ""
 
+msgid "Payment type:"
+msgstr ""
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Unable to attach contribution to transaction"
+msgid "Mass change %1$s contributions"
+msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
+
+msgid "Mass changes has not been confirmed!"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Unable to attach contribution to transaction"
+msgid "Review mass change %1$s contributions"
+msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
+
+msgid "Nothing to do!"
+msgstr ""
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "Contribution #%1$s: %2$s"
+msgstr "'%1$s' ගෙවීමේ ක්‍රමය ඇතුලත් ව නොමැත!"
+
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has been successfully added."
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
+msgstr[1] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
+
+msgid "Something went wrong during mass edition!"
+msgstr ""
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr ""
@@ -584,9 +627,6 @@ msgstr ""
 msgid "Mass change %1$s members"
 msgstr ""
 
-msgid "Mass changes has not been confirmed!"
-msgstr ""
-
 #, fuzzy
 #| msgid "Groups"
 msgid "Add to group"
@@ -597,9 +637,6 @@ msgstr ""
 
 #, php-format
 msgid "Review mass change %1$s members"
-msgstr ""
-
-msgid "Nothing to do!"
 msgstr ""
 
 msgid "An error occurred while saving the member."
@@ -614,9 +651,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 msgstr[1] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
-
-msgid "Something went wrong during mass edition!"
-msgstr ""
 
 msgid "Login required"
 msgstr ""
@@ -2015,12 +2049,6 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-msgid "Payment type:"
-msgstr ""
-
-msgid "Comments:"
-msgstr ""
-
 msgid "Date"
 msgstr ""
 
@@ -2254,9 +2282,6 @@ msgid "Scheduled payment ID"
 msgstr ""
 
 msgid "Contribution ID"
-msgstr ""
-
-msgid "Record date:"
 msgstr ""
 
 msgid "Scheduled date:"
@@ -4166,6 +4191,10 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, php-format
+msgid "Update %1$s"
+msgstr ""
+
 msgid "Groups:"
 msgstr ""
 
@@ -4752,6 +4781,9 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 msgid "No changes selected"
+msgstr ""
+
+msgid "You are about to proceed following changes for selected contributions:"
 msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
@@ -7248,11 +7280,6 @@ msgstr ""
 
 #~ msgid "An error occurred"
 #~ msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය"
-
-#, fuzzy
-#~| msgid "Unable to attach contribution to transaction"
-#~ msgid "Use paid flag on contributions"
-#~ msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
 
 #~ msgid "Payment types management"
 #~ msgstr "ගෙවීමේ ක්‍රම කළමනාකරණය"

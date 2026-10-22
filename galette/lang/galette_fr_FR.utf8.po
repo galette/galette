@@ -17,10 +17,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-21 08:28+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -334,6 +334,50 @@ msgstr "Une erreur est survenue lors de l'enregistrement de la contribution."
 msgid "Contribution has been successfully stored"
 msgstr "La contribution a été enregistrée avec succès"
 
+msgid "Payment type:"
+msgstr "Type de paiement :"
+
+msgid "Record date:"
+msgstr "Date d’enregistrement :"
+
+msgid "Comments:"
+msgstr "Commentaires :"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Ajout en masse de contributions"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Les modifications n’ont pas été confirmées !"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Revue des modifications pour %1$s adhérents"
+
+msgid "Nothing to do!"
+msgstr "Rien à faire !"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contributions"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s adhérent a été modifié avec succès !"
+msgstr[1] "%1$s adhérents ont été modifiés avec succès !"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Supprimer %1$s %2$s"
@@ -591,9 +635,6 @@ msgstr "Nouvel adhérent"
 msgid "Mass change %1$s members"
 msgstr "Modification en masse de %1$s adhérents"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Les modifications n’ont pas été confirmées !"
-
 msgid "Add to group"
 msgstr "Ajouter au groupe"
 
@@ -603,9 +644,6 @@ msgstr "Supprimer du groupe"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Revue des modifications pour %1$s adhérents"
-
-msgid "Nothing to do!"
-msgstr "Rien à faire !"
 
 msgid "An error occurred while saving the member."
 msgstr "Une erreur est survenue lors de l'enregistrement de l'adhérent."
@@ -618,9 +656,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s adhérent a été modifié avec succès !"
 msgstr[1] "%1$s adhérents ont été modifiés avec succès !"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
 msgid "Login required"
 msgstr "Identification requise"
@@ -2065,12 +2100,6 @@ msgstr "Type de contribution :"
 msgid "Amount:"
 msgstr "Montant :"
 
-msgid "Payment type:"
-msgstr "Type de paiement :"
-
-msgid "Comments:"
-msgstr "Commentaires :"
-
 msgid "Date"
 msgstr "Date"
 
@@ -2302,9 +2331,6 @@ msgstr "ID du paiement planifié"
 
 msgid "Contribution ID"
 msgstr "ID de la contribution"
-
-msgid "Record date:"
-msgstr "Date d’enregistrement :"
 
 msgid "Scheduled date:"
 msgstr "Date de planification :"
@@ -4353,6 +4379,11 @@ msgstr ""
 "Les éléments de cette liste ont été modifiés. N'oubliez pas d'enregistrer "
 "vos modifications."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Mise à jour"
+
 msgid "Groups:"
 msgstr "Groupes :"
 
@@ -4955,6 +4986,13 @@ msgstr "Seuls les champs cochés seront mis à jour."
 
 msgid "No changes selected"
 msgstr "Aucun changement sélectionné"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
+"Vous êtes sur le point d’effectuer les modifications suivantes pour les "
+"adhérents sélectionnés :"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""

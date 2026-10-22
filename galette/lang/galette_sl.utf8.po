@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-22 05:36+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Jože Felicijan "
+"<felicijan@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -323,6 +323,52 @@ msgstr "Pri shranjevanju prispevka, je prišlo do napake."
 msgid "Contribution has been successfully stored"
 msgstr "Prispevek je bil uspešno shranjen"
 
+msgid "Payment type:"
+msgstr "Vrsta plačila:"
+
+msgid "Record date:"
+msgstr "Datum zapisa:"
+
+msgid "Comments:"
+msgstr "Komentarji:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Prispevki za množično dodajanje"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Masovne spremembe niso bile potrjene!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Množična sprememba pregleda %1$s članov"
+
+msgid "Nothing to do!"
+msgstr "Nič za početi!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Prispevki"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "Član %1$s je bil uspešno spremenjen!"
+msgstr[1] "Število članov %1$s je bilo uspešno spremenjeno!"
+msgstr[2] "Število članov %1$s je bilo uspešno spremenjeno!"
+msgstr[3] "Število članov %1$s je bilo uspešno spremenjeno!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Med množično izdajo je šlo nekaj narobe!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Odstrani %1$s %2$s"
@@ -580,9 +626,6 @@ msgstr "Nov član"
 msgid "Mass change %1$s members"
 msgstr "Masovna sprememba %1$s članov"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Masovne spremembe niso bile potrjene!"
-
 msgid "Add to group"
 msgstr "Dodaj v skupino"
 
@@ -592,9 +635,6 @@ msgstr "Odstrani iz skupine"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Množična sprememba pregleda %1$s članov"
-
-msgid "Nothing to do!"
-msgstr "Nič za početi!"
 
 msgid "An error occurred while saving the member."
 msgstr "Pri shranjevanju člana je prišlo do napake."
@@ -609,9 +649,6 @@ msgstr[0] "Član %1$s je bil uspešno spremenjen!"
 msgstr[1] "Število članov %1$s je bilo uspešno spremenjeno!"
 msgstr[2] "Število članov %1$s je bilo uspešno spremenjeno!"
 msgstr[3] "Število članov %1$s je bilo uspešno spremenjeno!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Med množično izdajo je šlo nekaj narobe!"
 
 msgid "Login required"
 msgstr "Zahtevana prijava"
@@ -2023,12 +2060,6 @@ msgstr "Vrsta prispevka:"
 msgid "Amount:"
 msgstr "Znesek:"
 
-msgid "Payment type:"
-msgstr "Vrsta plačila:"
-
-msgid "Comments:"
-msgstr "Komentarji:"
-
 msgid "Date"
 msgstr "Datum"
 
@@ -2256,9 +2287,6 @@ msgstr "ID načrtovanega plačila"
 
 msgid "Contribution ID"
 msgstr "Ident. prispevka"
-
-msgid "Record date:"
-msgstr "Datum zapisa:"
 
 msgid "Scheduled date:"
 msgstr "Načrtovani datum:"
@@ -4277,6 +4305,11 @@ msgid ""
 msgstr ""
 "Elementi na tem seznamu so bili spremenjeni. Ne pozabite shraniti sprememb."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Posodobitev"
+
 msgid "Groups:"
 msgstr "Skupine:"
 
@@ -4871,6 +4904,11 @@ msgstr "Posodobljena bodo samo označena polja."
 
 msgid "No changes selected"
 msgstr "Ni izbranih sprememb"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "Nadaljevali boste z naslednjimi spremembami za izbrane člane:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Nadaljevali boste z naslednjimi spremembami za izbrane člane:"

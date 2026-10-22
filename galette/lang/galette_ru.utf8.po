@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-21 08:00+0200\n"
+"POT-Creation-Date: 2026-10-22 07:35+0200\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -362,6 +362,51 @@ msgstr "При сохранении вклада произошла ошибка
 msgid "Contribution has been successfully stored"
 msgstr "Вклад успешно сохранен"
 
+msgid "Payment type:"
+msgstr "Тип платежа:"
+
+msgid "Record date:"
+msgstr "Дата записи:"
+
+msgid "Comments:"
+msgstr "Комментарии:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Массовое добавление взносов"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Массовые изменения не подтверждены!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Обзор массового изменения %1$s членов"
+
+msgid "Nothing to do!"
+msgstr "Нечего делать!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Взносы"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "Участник %1$s был успешно изменен!"
+msgstr[1] "Участника %1$s были успешно изменены!"
+msgstr[2] "Участники %1$s были успешно изменены!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Что-то пошло не так во время массового выпуска!"
+
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Удалить %1$s %2$s"
@@ -625,9 +670,6 @@ msgstr "Новый участник"
 msgid "Mass change %1$s members"
 msgstr "Массовое изменение %1$s членов"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Массовые изменения не подтверждены!"
-
 msgid "Add to group"
 msgstr "Добавить в группу"
 
@@ -637,9 +679,6 @@ msgstr "Удалить из группы"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Обзор массового изменения %1$s членов"
-
-msgid "Nothing to do!"
-msgstr "Нечего делать!"
 
 msgid "An error occurred while saving the member."
 msgstr "При сохранении участника произошла ошибка."
@@ -653,9 +692,6 @@ msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "Участник %1$s был успешно изменен!"
 msgstr[1] "Участника %1$s были успешно изменены!"
 msgstr[2] "Участники %1$s были успешно изменены!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Что-то пошло не так во время массового выпуска!"
 
 msgid "Login required"
 msgstr "Требуется вход"
@@ -2076,12 +2112,6 @@ msgstr "Тип взноса:"
 msgid "Amount:"
 msgstr "Сумма:"
 
-msgid "Payment type:"
-msgstr "Тип платежа:"
-
-msgid "Comments:"
-msgstr "Комментарии:"
-
 msgid "Date"
 msgstr "Дата"
 
@@ -2308,9 +2338,6 @@ msgstr "ID запланированного платежа"
 
 msgid "Contribution ID"
 msgstr "ID взноса"
-
-msgid "Record date:"
-msgstr "Дата записи:"
 
 msgid "Scheduled date:"
 msgstr "Запланированная дата:"
@@ -4387,6 +4414,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr "Элементы в этом списке были изменены. Не забудьте сохранить изменения."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Обновить"
+
 msgid "Groups:"
 msgstr "Группы:"
 
@@ -4993,6 +5025,11 @@ msgstr "Будут обновлены только отмеченные поля
 
 msgid "No changes selected"
 msgstr "Не выбрано ни одного изменения"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "Вы собираетесь выполнить следующие изменения для выбранных участников:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Вы собираетесь выполнить следующие изменения для выбранных участников:"
