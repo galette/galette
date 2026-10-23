@@ -824,6 +824,19 @@ class GaletteController extends GaletteRoutingTestCase
             '<a href="/members/reminder-filter/late/withoutmail">0 members without email address</a>',
             $body
         );
+
+        //previews are in the interface language, not in the default instance one
+        $pref_lang = $this->preferences->pref_lang;
+        $this->preferences->pref_lang = 'fr_FR';
+        try {
+            $test_response = $this->app->handle($request);
+        } finally {
+            $this->preferences->pref_lang = $pref_lang;
+        }
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Your membership is about to expire', $body);
+        $this->assertStringNotContainsString('Votre adhésion arrive à terme', $body);
     }
 
     /**

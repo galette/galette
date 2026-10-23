@@ -771,8 +771,8 @@ class GaletteController extends AbstractController
     public function reminders(Response $response, Texts $texts, Members $members): Response
     {
         $previews = [
-            'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
-            'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
+            'impending' => $texts->getTexts('impendingduedate', $this->i18n->getID()),
+            'late'      => $texts->getTexts('lateduedate', $this->i18n->getID())
         ];
 
         $reminders = $members->getRemindersCount();
