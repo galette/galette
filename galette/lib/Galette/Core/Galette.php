@@ -52,10 +52,31 @@ class Galette
             $version .= '-git';
         }
 
-        if (is_dir(GALETTE_ROOT . '../.git')) {
-            $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
+        if (file_exists(GALETTE_ROOT . '../.git')) {
+            $git = 'git -C ' . escapeshellarg(GALETTE_ROOT . '..');
 
-            $commitDate = new DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
+            //a release tag checkout is the release itself
+            $output = [];
+            $result = 1;
+            exec($git . ' describe --tags --exact-match HEAD 2>/dev/null', $output, $result);
+            if ($result === 0 && trim($output[0] ?? '') === GALETTE_VERSION) {
+                return GALETTE_VERSION;
+            }
+
+            $output = [];
+            $result = 1;
+            exec($git . ' log -n1 --pretty="%h %ci" HEAD 2>/dev/null', $output, $result);
+            if ($result !== 0 || !isset($output[0]) || !str_contains($output[0], ' ')) {
+                //git cannot be run (missing binary, repository not marked as safe.directory for the web server user, ...)
+                Analog::log(
+                    'Unable to retrieve git version information (exit code ' . $result . ')',
+                    Analog::WARNING
+                );
+                return $version;
+            }
+
+            [$commitHash, $commitDate] = explode(' ', trim($output[0]), 2);
+            $commitDate = new DateTime($commitDate);
 
             $galette_version = sprintf(
                 '%s-%s (%s)',
