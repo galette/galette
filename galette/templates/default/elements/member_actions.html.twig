@@ -8,7 +8,7 @@
  # Member actions, shared by the display and the edit pages.
  #
  # - edit: true on the edit page, where the main action saves the form and
- #   "Display" becomes the first menu entry;
+ #   a button leads back to the profile;
  # - forms_only: true to only render the forms some entries submit. The edit
  #   page is a form already, and forms cannot be nested: it renders those
  #   after its closing tag, and their buttons reach them with the form attribute.
@@ -30,10 +30,10 @@
         <a
             href="{{ url_for("member", {"id": member.id}) }}"
             class="ui small icon button tooltip"
-            title="{{ _T("Return to profile view of %1$s")|format(member.sname) }}"
+            title="{{ _T("See member profile") }}"
         >
             <i class="angle left icon" aria-hidden="true"></i>
-            <span class="visually-hidden">{{ _T("Return to profile view of %1$s")|format(member.sname) }}</span>
+            <span class="visually-hidden">{{ _T("See member profile") }}</span>
         </a>
     {% endif %}
     {% if login.isSuperAdmin() %}
