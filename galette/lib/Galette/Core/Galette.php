@@ -130,6 +130,14 @@ class Galette
                 //member menu
                 $menus['myaccount']['items'] = [
                     [
+                        'label' => _T('My information'),
+                        'title' => _T('View my member card'),
+                        'route' => [
+                            'name' => 'me',
+                            'args' => []
+                        ]
+                    ],
+                    [
                         'label' => _T('My contributions'),
                         'title' => _T('View and filter all my contributions'),
                         'route' => [
@@ -151,14 +159,6 @@ class Galette
                             'name' => 'myContributions',
                             'args' => ['type' => 'transactions']
                         ]
-                    ],
-                    [
-                        'label' => _T('My information'),
-                        'title' => _T('View my member card'),
-                        'route' => [
-                            'name' => 'me',
-                            'args' => []
-                        ]
                     ]
                 ];
             } else {
@@ -167,6 +167,17 @@ class Galette
                     'title' => _T('Modify my login and password'),
                     'route' => [
                         'name' => 'adminCredentials',
+                        'args' => []
+                    ]
+                ];
+            }
+
+            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('Add a child member'),
+                    'title' => _T('Add new child member in database'),
+                    'route' => [
+                        'name' => 'addMemberChild',
                         'args' => []
                     ]
                 ];
@@ -182,17 +193,6 @@ class Galette
                     'title' => _T('Manage my two-factor authentication'),
                     'route' => [
                         'name' => 'two-factor-manage',
-                        'args' => []
-                    ]
-                ];
-            }
-
-            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
-                $menus['myaccount']['items'][] = [
-                    'label' => _T('Add a child member'),
-                    'title' => _T('Add new child member in database'),
-                    'route' => [
-                        'name' => 'addMemberChild',
                         'args' => []
                     ]
                 ];
@@ -404,6 +404,13 @@ class Galette
                             ]
                         ],
                         [
+                            'label' => _T("Authentication attempts"),
+                            'title' => _T("See what is being refused after repeated failures, and lift it"),
+                            'route' => [
+                                'name' => 'authAttempts'
+                            ]
+                        ],
+                        [
                             'label' => _T("Logs"),
                             'title' => _T("View application's logs"),
                             'route' => [
@@ -423,13 +430,6 @@ class Galette
                                 'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
                                 'route' => [
                                     'name' => 'preferences'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Authentication attempts"),
-                                'title' => _T("See what is being refused after repeated failures, and lift it"),
-                                'route' => [
-                                    'name' => 'authAttempts'
                                 ]
                             ],
                             [
@@ -552,6 +552,29 @@ class Galette
                     $menus,
                     $plugin->getMenus()
                 );
+
+                // Moves the "Add a child member" and the "Two-factor authentication"
+                // items to the end of the "My Account" menu.
+                $itemsToMove = ['addMemberChild', 'two-factor-manage'];
+                $accountItems = $menus['myaccount']['items'] ?? [];
+                $itemsToAppend = [];
+                $remainingItems = [];
+                foreach ($accountItems as $item) {
+                    $routeName = $item['route']['name'] ?? null;
+
+                    if (in_array($routeName, $itemsToMove, strict: true)) {
+                        $itemsToAppend[$routeName][] = $item;
+                        continue;
+                    }
+
+                    $remainingItems[] = $item;
+                }
+                foreach ($itemsToMove as $routeName) {
+                    foreach ($itemsToAppend[$routeName] ?? [] as $item) {
+                        $remainingItems[] = $item;
+                    }
+                }
+                $menus['myaccount']['items'] = $remainingItems;
             }
         }
 
