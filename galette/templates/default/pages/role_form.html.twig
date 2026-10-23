@@ -36,114 +36,6 @@
     {% set parent_role = role.getParentId() is not null ? all_roles[role.getParentId()] ?? null : null %}
 <div class="ui stackable grid">
     <div class="row">
-        <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
-            <aside class="position-sticky" id="role_members" aria-labelledby="role_members_title">
-                <div class="ui styled fluid accordion">
-                    <div class="active title" id="role_members_title">
-                        <i class="dropdown icon" aria-hidden="true"></i>
-                        {{ _T("Members") }}
-                        <span class="ui circular mini label">{{ members_count }}</span>
-                    </div>
-                    <div class="active content">
-    {% if role.isSystem() %}
-        {% if computed is not null %}
-                        <div class="role-members-list">
-                            <table class="ui very basic compact unstackable table">
-                                <caption class="visually-hidden">{{ _T("Members") }}</caption>
-                                <thead class="visually-hidden">
-                                    <tr>
-                                        <th scope="col">{{ _T("Member") }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-            {% for computed_member in computed %}
-                                    <tr>
-                                        <td>
-                                            <a href="{{ url_for('member', {'id': computed_member.id_adh}) }}">{{ computed_member.member }}</a>
-                {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
-                                            <div class="ui small grey text">{{ computed_member.groups|join(', ') }}</div>
-                {% endif %}
-                                        </td>
-                                    </tr>
-            {% else %}
-                                    <tr>
-                                        <td>{{ _T("No member has this role.") }}</td>
-                                    </tr>
-            {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-        {% else %}
-                        <p>
-                            {{ _Tn('%1$s member has this role.', '%1$s members have this role.', computed_count)|format(computed_count) }}
-                            {{ _T("Nearly every member has it, they are not listed.") }}
-                        </p>
-        {% endif %}
-    {% else %}
-                        <div class="role-members-list">
-                            <table class="ui very basic compact unstackable table">
-                                <caption class="visually-hidden">{{ _T("Members") }}</caption>
-                                <thead class="visually-hidden">
-                                    <tr>
-                                        <th scope="col">{{ _T("Member") }}</th>
-                                        <th scope="col">{{ _T("Actions") }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-        {% for assignment in given %}
-                                    <tr>
-                                        <td>
-                                            <a href="{{ url_for('member', {'id': assignment.id_adh}) }}">{{ assignment.member }}</a>
-                                            <div class="ui small grey text">
-                                                {% if assignment.group is not null %}{{ assignment.group }}{% else %}{{ _T("All groups") }}{% endif %}
-                                            </div>
-                                        </td>
-                                        <td class="collapsing">
-                                            <form action="{{ url_for('takeRole', {'id': role.getId(), 'assignment': assignment.id}) }}" method="post">
-                                                <button type="submit" class="ui mini icon button tooltip" title="{{ _T("Take role back") }}">
-                                                    <i class="ui trash red icon" aria-hidden="true"></i>
-                                                    <span class="visually-hidden">{{ _T("Take role back from %1$s")|format(assignment.member) }}</span>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-        {% else %}
-                                    <tr>
-                                        <td colspan="2">{{ _T("This role has not been given to anyone yet.") }}</td>
-                                    </tr>
-        {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <form action="{{ url_for('giveRole', {'id': role.getId()}) }}" method="post" class="ui form">
-        {% include 'components/forms/member_dropdown.html.twig' with {
-            'required': true,
-            'id': 'id_adh',
-            'label': _T("Member"),
-            'value': null,
-            'component_class': 'field'
-        } %}
-                            <div class="field">
-                                <label for="id_group">{{ _T("Group") }}</label>
-                                <select name="id_group" id="id_group" class="ui search dropdown nochosen">
-                                    <option value="">{{ _T("All groups") }}</option>
-        {% for id, name in groups %}
-                                    <option value="{{ id }}">{{ name }}</option>
-        {% endfor %}
-                                </select>
-                            </div>
-                            <button type="submit" class="ui fluid labeled icon button">
-                                <i class="plus green icon" aria-hidden="true"></i>
-                                {{ _T("Give role") }}
-                            </button>
-                        </form>
-    {% endif %}
-                    </div>
-                </div>
-            </aside>
-        </div>
-
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
             <form action="{{ url_for('doEditRole', {'id': role.getId()}) }}" method="post" class="ui form">
                 <div class="ui segment">
@@ -257,6 +149,114 @@
                     <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate="formnovalidate"/>
                 </div>
             </form>
+        </div>
+
+        <div class="sixteen wide tablet six wide computer five wide widescreen column">
+            <aside class="position-sticky" id="role_members" aria-labelledby="role_members_title">
+                <div class="ui styled fluid accordion">
+                    <div class="active title" id="role_members_title">
+                        <i class="dropdown icon" aria-hidden="true"></i>
+                        {{ _T("Members") }}
+                        <span class="ui circular mini label">{{ members_count }}</span>
+                    </div>
+                    <div class="active content">
+    {% if role.isSystem() %}
+        {% if computed is not null %}
+                        <div class="role-members-list">
+                            <table class="ui very basic compact unstackable table">
+                                <caption class="visually-hidden">{{ _T("Members") }}</caption>
+                                <thead class="visually-hidden">
+                                    <tr>
+                                        <th scope="col">{{ _T("Member") }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+            {% for computed_member in computed %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('member', {'id': computed_member.id_adh}) }}">{{ computed_member.member }}</a>
+                {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
+                                            <div class="ui small grey text">{{ computed_member.groups|join(', ') }}</div>
+                {% endif %}
+                                        </td>
+                                    </tr>
+            {% else %}
+                                    <tr>
+                                        <td>{{ _T("No member has this role.") }}</td>
+                                    </tr>
+            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+        {% else %}
+                        <p>
+                            {{ _Tn('%1$s member has this role.', '%1$s members have this role.', computed_count)|format(computed_count) }}
+                            {{ _T("Nearly every member has it, they are not listed.") }}
+                        </p>
+        {% endif %}
+    {% else %}
+                        <div class="role-members-list">
+                            <table class="ui very basic compact unstackable table">
+                                <caption class="visually-hidden">{{ _T("Members") }}</caption>
+                                <thead class="visually-hidden">
+                                    <tr>
+                                        <th scope="col">{{ _T("Member") }}</th>
+                                        <th scope="col">{{ _T("Actions") }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+        {% for assignment in given %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('member', {'id': assignment.id_adh}) }}">{{ assignment.member }}</a>
+                                            <div class="ui small grey text">
+                                                {% if assignment.group is not null %}{{ assignment.group }}{% else %}{{ _T("All groups") }}{% endif %}
+                                            </div>
+                                        </td>
+                                        <td class="collapsing">
+                                            <form action="{{ url_for('takeRole', {'id': role.getId(), 'assignment': assignment.id}) }}" method="post">
+                                                <button type="submit" class="ui mini icon button tooltip" title="{{ _T("Take role back") }}">
+                                                    <i class="ui trash red icon" aria-hidden="true"></i>
+                                                    <span class="visually-hidden">{{ _T("Take role back from %1$s")|format(assignment.member) }}</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+        {% else %}
+                                    <tr>
+                                        <td colspan="2">{{ _T("This role has not been given to anyone yet.") }}</td>
+                                    </tr>
+        {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <form action="{{ url_for('giveRole', {'id': role.getId()}) }}" method="post" class="ui form">
+        {% include 'components/forms/member_dropdown.html.twig' with {
+            'required': true,
+            'id': 'id_adh',
+            'label': _T("Member"),
+            'value': null,
+            'component_class': 'field'
+        } %}
+                            <div class="field">
+                                <label for="id_group">{{ _T("Group") }}</label>
+                                <select name="id_group" id="id_group" class="ui search dropdown nochosen">
+                                    <option value="">{{ _T("All groups") }}</option>
+        {% for id, name in groups %}
+                                    <option value="{{ id }}">{{ name }}</option>
+        {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="ui fluid labeled icon button">
+                                <i class="plus green icon" aria-hidden="true"></i>
+                                {{ _T("Give role") }}
+                            </button>
+                        </form>
+    {% endif %}
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 </div>
