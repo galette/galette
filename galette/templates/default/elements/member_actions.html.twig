@@ -24,18 +24,7 @@
         <form id="two_factor_reset_form" action="{{ url_for("do-two-factor-reset", {"id": member.id}) }}" method="post"></form>
     {% endif %}
 {% else %}
-<div class="ui buttons">
     {% set edit = edit is defined and edit %}
-    {% if edit %}
-        <a
-            href="{{ url_for("member", {"id": member.id}) }}"
-            class="ui small icon button tooltip"
-            title="{{ _T("See member profile") }}"
-        >
-            <i class="angle left icon" aria-hidden="true"></i>
-            <span class="visually-hidden">{{ _T("See member profile") }}</span>
-        </a>
-    {% endif %}
     {% if login.isSuperAdmin() %}
         <a
             href="{{ url_for("impersonate", {"id": member.id}) }}"
@@ -46,7 +35,16 @@
             <span class="visually-hidden">{{ _T("Log in as %1$s")|format(member.sname) }}</span>
         </a>
     {% endif %}
+<div class="ui buttons">
     {% if edit %}
+        <a
+            href="{{ url_for("member", {"id": member.id}) }}"
+            class="ui small icon button tooltip"
+            title="{{ _T("See member profile") }}"
+        >
+            <i class="angle left icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("See member profile") }}</span>
+        </a>
         <button type="submit" name="valid" class="action ui labeled icon primary small button">
             <i class="save icon" aria-hidden="true"></i>
             {{ _T("Save") }}
