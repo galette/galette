@@ -474,7 +474,7 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $redirect_url);
         }
 
-        if ($from_admin && $adh !== null) {
+        if ($from_admin) {
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
