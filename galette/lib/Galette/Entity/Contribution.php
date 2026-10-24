@@ -306,7 +306,7 @@ class Contribution implements AccessManagementInterface
                 $select->where->equalTo(self::PK, $id);
             } else {
                 //restrict query on current member, their children, and members
-                //of the groups contributions can be displayed or created on
+                //of the groups contributions can be displayed, created or edited on
                 $members = $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
@@ -352,12 +352,15 @@ class Contribution implements AccessManagementInterface
      */
     private function getLoadableGroups(): ?array
     {
-        $read = $this->getGroupScope('contribution:read', $this->login);
-        $create = $this->getGroupScope('contribution:create', $this->login);
-        if ($read === null || $create === null) {
-            return null;
+        $groups = [];
+        foreach (['contribution:read', 'contribution:create', 'contribution:edit'] as $permission) {
+            $scope = $this->getGroupScope($permission, $this->login);
+            if ($scope === null) {
+                return null;
+            }
+            $groups = array_merge($groups, $scope);
         }
-        return array_values(array_unique(array_merge($read, $create)));
+        return array_values(array_unique($groups));
     }
     /**
      * Populate object from a resultset row
@@ -545,7 +548,11 @@ class Contribution implements AccessManagementInterface
                             $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 $this->checklogin
-                                && !$this->isGrantedOnMemberGroups('contribution:create', $this->login, $member)
+                                && !$this->isGrantedOnMemberGroups(
+                                    !isset($this->id) ? 'contribution:create' : 'contribution:edit',
+                                    $this->login,
+                                    $member
+                                )
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
                                 unset($this->member);

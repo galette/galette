@@ -258,7 +258,8 @@ class GroupsController extends CrudController
                 'is_member'         => true,
                 'is_manager'        => false,
                 'linked'            => false,
-                'can_edit_persons'  => true
+                'can_edit_persons'  => true,
+                'can_edit_managers' => $this->accessControl->can('member:manage', new Group((int)($post['id_group'] ?? 0)))
             ]
         );
         return $response;
@@ -572,6 +573,7 @@ class GroupsController extends CrudController
      * change members of their groups from member pages. For the former, the
      * group form always posts an empty value, so that an emptied list is stored;
      * a warning is logged only if someone else tries to change them.
+     * Managers also require member:manage on the group, as on member pages.
      *
      * @param Group        $group Group instance, before changes
      * @param array<mixed> $ids   Posted persons ids
@@ -586,7 +588,10 @@ class GroupsController extends CrudController
             fn(int $id): bool => $id > 0
         )));
 
-        if ($this->accessControl->getGroupScope('member:read') === null) {
+        if (
+            $this->accessControl->getGroupScope('member:read') === null
+            && ($type !== Group::MANAGER_TYPE || $this->accessControl->can('member:manage', $group))
+        ) {
             if (count($ids) === 0) {
                 return [];
             }

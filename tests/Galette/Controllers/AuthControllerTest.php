@@ -1067,6 +1067,42 @@ class AuthControllerTest extends GaletteRoutingTestCase
     }
 
     /**
+     * Credentials permission granted on some groups only is checked on the member
+     */
+    public function testCredentialsGroupScope(): void
+    {
+        global $preferences;
+
+        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:credentials');
+        try {
+            $member_two = $this->getMemberTwo();
+            $this->enrol((int)$member_two->id);
+            $this->logGroupManager();
+
+            //member two is not part of a managed group
+            $test_response = $this->app->handle(
+                $this->createRequest('do-two-factor-reset', ['id' => (string)$member_two->id], 'POST')
+            );
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+            $this->expectLogEntry(Analog::WARNING, 'Refused a second factor reset');
+            $still_there = new \Galette\Core\TwoFactorSecret($this->zdb);
+            $this->assertTrue($still_there->load((int)$member_two->id));
+
+            //nor a new password link
+            $test_response = $this->app->handle(
+                $this->createRequest('retrieve-pass', ['id_adh' => (string)$member_two->id])
+            );
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+            $this->flash_data = [];
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:credentials');
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Resetting somebody else's factor only ever goes downwards: one's own goes
      * through the page that asks for a code, and a peer's not at all
      */

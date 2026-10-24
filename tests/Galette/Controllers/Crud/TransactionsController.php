@@ -71,6 +71,48 @@ class TransactionsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test list actions follow each permission: attaching contributions happens on the edit page
+     */
+    public function testListActionsAttachOnly(): void
+    {
+        $this->revokeFromRole(
+            \Galette\Access\Roles::MANAGER,
+            ['transaction:create', 'transaction:edit', 'transaction:delete']
+        );
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['transaction:read', 'transaction:attach']);
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $transaction = $this->createTransaction();
+            $this->login->logOut();
+
+            $group = $this->logGroupManager();
+            $this->assertTrue($group->setMembers([$member_two]));
+
+            $test_response = $this->app->handle(
+                $this->createRequest('contributions', ['type' => 'transactions'])
+            );
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString(
+                'href="' . $this->routeparser->urlFor('editTransaction', ['id' => (string)$transaction->id]) . '"',
+                $body
+            );
+            $this->assertStringNotContainsString(
+                $this->routeparser->urlFor('removeContribution', ['type' => 'transactions', 'id' => (string)$transaction->id]),
+                $body
+            );
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['transaction:read', 'transaction:attach']);
+            $this->grantToRole(
+                \Galette\Access\Roles::MANAGER,
+                ['transaction:create', 'transaction:edit', 'transaction:delete']
+            );
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test transactions list
      */
     public function testList(): void

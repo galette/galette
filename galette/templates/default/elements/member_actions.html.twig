@@ -16,7 +16,7 @@
 
 {% import "macros.twig" as macros %}
 
-{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and can('member:credentials') %}
+{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and can('member:credentials', member) %}
 
 {% if forms_only is defined and forms_only %}
     {% if two_factor_reset %}
@@ -62,7 +62,7 @@
         <i class="ellipsis vertical icon" aria-hidden="true"></i>
         <span class="visually-hidden">{{ _T("More actions") }}</span>
         <div class="menu">
-        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('member:credentials') %}
+        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('member:credentials', member) %}
             <a
                 href="{{ url_for("retrieve-pass", {"id_adh": member.id}) }}"
                 id="btn_lostpassword"

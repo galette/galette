@@ -16,6 +16,7 @@ use Galette\Core\Galette;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Mailing;
+use Galette\Entity\Adherent;
 use Galette\Core\MailingHistory;
 use Galette\Core\MailingQueue;
 use Galette\Filters\MailingsList;
@@ -114,8 +115,8 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                //remind only members current user can display
-                $members = $m->getVisibleMembersList(as_members: true, count: false);
+                //remind only members current user can display and send mailings to
+                $members = $m->getVisibleMembersList(as_members: true, count: false, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
@@ -136,7 +137,7 @@ class MailingsController extends CrudController
                     );
                 }
                 $m = new Members();
-                $members = $m->getArrayList($filters->selected);
+                $members = $m->getArrayList($filters->selected, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
@@ -258,7 +259,7 @@ class MailingsController extends CrudController
                     );
                 }
                 $m = new Members();
-                $members = $m->getArrayList($filters->selected);
+                $members = $m->getArrayList($filters->selected, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
@@ -302,6 +303,7 @@ class MailingsController extends CrudController
             }
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
+                $this->restrictRecipients($mailing);
                 $mailing->current_step = Mailing::STEP_SEND;
 
                 //when hourly/daily limits are set, sending must be spread over
@@ -780,6 +782,36 @@ class MailingsController extends CrudController
     }
 
     /**
+     * Keep only recipients current user can send mailings to
+     *
+     * Recipients come from the session, possibly restored from a stored
+     * mailing: check them again, as mailing:send may be granted on some
+     * groups only.
+     *
+     * @param Mailing $mailing Mailing to send
+     */
+    private function restrictRecipients(Mailing $mailing): void
+    {
+        if ($this->accessControl->getGroupScope(['member:read', 'mailing:send']) === null) {
+            return;
+        }
+
+        $recipients = $mailing->recipients;
+        if (count($recipients) === 0) {
+            return;
+        }
+
+        $m = new Members();
+        $members = $m->getArrayList(
+            ids: array_map(fn(Adherent $member): int => (int)$member->id, $recipients),
+            dues: false,
+            parent: true,
+            permission: 'mailing:send'
+        );
+        $mailing->setRecipients($members !== false ? $members : []);
+    }
+
+    /**
      * Set recipients action
      */
     #[Route(
@@ -812,10 +844,11 @@ class MailingsController extends CrudController
                 fields: null,
                 export: false,
                 dues: false,
-                parent: true
+                parent: true,
+                permission: 'mailing:send'
             );
         }
-        $mailing->setRecipients($members);
+        $mailing->setRecipients($members !== false ? $members : []);
 
         $this->session->mailing = $mailing;
 

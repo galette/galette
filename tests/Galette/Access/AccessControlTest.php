@@ -367,6 +367,12 @@ class AccessControlTest extends GaletteTestCase
         $this->assertSame([], $access->getGroupScope('test:staff', $manager));
         $this->assertSame([3, 7], $access->getGroupScope('test:managers', $manager));
         $this->assertSame([], $access->getGroupScope('test:managers', $member));
+
+        //several permissions: groups all of them are granted on
+        $staff = $this->getLogin(Authentication::ACCESS_STAFF);
+        $this->assertNull($access->getGroupScope(['test:staff', 'test:managers'], $staff));
+        $this->assertSame([3, 7], $access->getGroupScope(['test:managers', 'test:managers'], $manager));
+        $this->assertSame([], $access->getGroupScope(['test:managers', 'test:staff'], $manager));
     }
 
     /**

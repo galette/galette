@@ -191,6 +191,8 @@ class Members
      * @param bool           $count      true if we want to count members
      * @param bool           $limit      true to LIMIT query
      * @param ?Login         $login      Login to check, current one if null
+     * @param ?string        $permission Another permission members must be granted on,
+     *                                   like member:export to export them
      *
      * @return Adherent[]|ResultSet
      */
@@ -199,14 +201,15 @@ class Members
         ?array $fields = null,
         bool $count = true,
         bool $limit = true,
-        ?Login $login = null
+        ?Login $login = null,
+        ?string $permission = null
     ): array|ResultSet {
         if ($login === null) {
             /** @var Login $login */
             global $login;
         }
 
-        $scope = $this->getGroupScope('member:read', $login);
+        $scope = $this->getGroupScope($this->getScopePermissions($permission), $login);
         if ($scope === null) {
             return $this->getMembersList(
                 as_members: $as_members,
@@ -618,6 +621,8 @@ class Members
      * @param bool                  $parent      True if load parent as Adherent dependency
      * @param bool                  $unscoped    Do not restrict to members current user is allowed to see.
      *                                           For internal use only, never with ids coming from a request.
+     * @param ?string               $permission  Another permission members must be granted on,
+     *                                           like member:export to export them
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -630,7 +635,8 @@ class Members
         bool $export = false,
         bool $dues = false,
         bool $parent = false,
-        bool $unscoped = false
+        bool $unscoped = false,
+        ?string $permission = null
     ): array|false {
         /**
          * @var Db $zdb
@@ -658,7 +664,7 @@ class Members
                 Analog::log('Trying to list members without being logged in.', Analog::WARNING);
                 return false;
             }
-            $scope = $this->getGroupScope('member:read', $login);
+            $scope = $this->getGroupScope($this->getScopePermissions($permission), $login);
         }
         $scoped = $scope !== null;
 
@@ -716,12 +722,24 @@ class Members
     }
 
     /**
+     * Permissions members lists are restricted on
+     *
+     * @param ?string $permission Another permission members must be granted on
+     *
+     * @return non-empty-array<string>
+     */
+    private function getScopePermissions(?string $permission): array
+    {
+        return $permission === null ? ['member:read'] : ['member:read', $permission];
+    }
+
+    /**
      * Restrict members to the ones current user is allowed to see:
      * themselves, their children, and members of the groups member:read is
      * granted on. This is the list equivalent of Adherent::canShow().
      *
      * @param Login      $login  Login instance
-     * @param array<int> $groups Groups member:read is granted on
+     * @param array<int> $groups Groups permissions are granted on
      */
     private function getAccessibleMembersPredicate(Login $login, array $groups): PredicateSet
     {
