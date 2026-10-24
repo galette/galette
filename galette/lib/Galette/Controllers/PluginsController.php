@@ -334,7 +334,7 @@ class PluginsController extends AbstractController
             'date'       => $module['date'],
             'author'     => $module['author'],
         ];
-        if ($this->login->isAdmin()) {
+        if ($this->accessControl->can('plugin:manage')) {
             $params['module'] = $module;
         }
 

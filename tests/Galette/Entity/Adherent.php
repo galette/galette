@@ -581,8 +581,9 @@ class Adherent extends GaletteTestCase
         //staff can store a card with admin information
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isStaff'])
+            ->onlyMethods(['isLogged', 'isStaff'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
         $login->method('isStaff')->willReturn(true);
         $this->assertFalse($login->isAdmin());
 
@@ -668,16 +669,18 @@ class Adherent extends GaletteTestCase
         //admin => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isAdmin'])
+            ->onlyMethods(['isLogged', 'isAdmin'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
         $login->method('isAdmin')->willReturn(true);
         $this->assertTrue($adh->canEdit($login));
 
         //staff => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isStaff'])
+            ->onlyMethods(['isLogged', 'isStaff'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
         $login->method('isStaff')->willReturn(true);
         $this->assertTrue($adh->canEdit($login));
 
@@ -698,22 +701,24 @@ class Adherent extends GaletteTestCase
         $g2->method('getId')->willReturn(2);
 
         $adh->method('getGroups')->willReturn([$g1, $g2]);
+        (new \ReflectionProperty(\Galette\Entity\Adherent::class, 'id'))->setValue($adh, 999999);
 
+        $managed = new \ArrayObject();
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isGroupManager'])
+            ->onlyMethods(['isLogged', 'getManagedGroups'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
+        $login->method('getManagedGroups')->willReturnCallback(fn(): array => $managed->getArrayCopy());
 
         $this->assertFalse($adh->canEdit($login));
 
-        $login->method('isGroupManager')->willReturnCallback(
-            fn($gid) => $gid === null || $gid == $g1->getId()
-        );
+        $managed->exchangeArray([$g1->getId()]);
         $this->assertFalse($adh->canEdit($login));
 
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
         $this->assertTrue($adh->canEdit($login));
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit'); //reset
 
         //groups managers cannot edit members of the groups they do not own
         $adh->method('getGroups')->willReturn([$g2]);
@@ -738,16 +743,18 @@ class Adherent extends GaletteTestCase
         //admin => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isAdmin'])
+            ->onlyMethods(['isLogged', 'isAdmin'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
         $login->method('isAdmin')->willReturn(true);
         $this->assertTrue($adh->canDelete($login));
 
         //staff => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isStaff'])
+            ->onlyMethods(['isLogged', 'isStaff'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
         $login->method('isStaff')->willReturn(true);
         $this->assertTrue($adh->canDelete($login));
 
@@ -768,22 +775,25 @@ class Adherent extends GaletteTestCase
         $g2->method('getId')->willReturn(2);
 
         $adh->method('getGroups')->willReturn([$g1, $g2]);
+        (new \ReflectionProperty(\Galette\Entity\Adherent::class, 'id'))->setValue($adh, 999999);
 
+        $managed = new \ArrayObject();
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isGroupManager'])
+            ->onlyMethods(['isLogged', 'getManagedGroups'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
+        $login->method('getManagedGroups')->willReturnCallback(fn(): array => $managed->getArrayCopy());
 
         $this->assertFalse($adh->canDelete($login));
 
-        $login->method('isGroupManager')->willReturnCallback(
-            fn($gid) => $gid === null || $gid == $g1->getId()
-        );
+        $managed->exchangeArray([$g1->getId()]);
         $this->assertFalse($adh->canDelete($login));
 
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($adh->canDelete($login));
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
+        //groups managers cannot delete members, even when they can edit them
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
+        $this->assertFalse($adh->canDelete($login));
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit'); //reset
 
         //groups managers cannot edit members of the groups they do not own
         $adh->method('getGroups')->willReturn([$g2]);
@@ -951,9 +961,11 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($this->login->isStaff());
 
         $this->assertTrue($member->canShow($this->login));
-        $this->assertTrue($member->canCreate($this->login));
+        //creating is checked on new members only
+        $this->assertFalse($member->canCreate($this->login));
         $this->assertTrue($member->canEdit($this->login));
-        $this->assertTrue($member->canDelete($this->login));
+        //but cannot delete its own card
+        $this->assertFalse($member->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -1010,7 +1022,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($child->canShow($this->login));
         $this->assertFalse($child->canCreate($this->login));
         $this->assertTrue($child->canEdit($this->login));
-        $this->assertTrue($child->canDelete($this->login));
+        $this->assertFalse($child->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -1034,14 +1046,19 @@ class Adherent extends GaletteTestCase
 
         //groups managers can show members of the groups they own
         $adh->method('getGroups')->willReturn([$g1, $g2]);
+        $id = new \ReflectionProperty(\Galette\Entity\Adherent::class, 'id');
+        $id->setValue($adh, 999999);
 
+        $managed = new \ArrayObject();
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, $this->i18n])
-            ->onlyMethods(['isGroupManager'])
+            ->onlyMethods(['isLogged', 'getManagedGroups'])
             ->getMock();
+        $login->method('isLogged')->willReturn(true);
+        $login->method('getManagedGroups')->willReturnCallback(fn(): array => $managed->getArrayCopy());
         $this->assertFalse($adh->canShow($login));
 
-        $login->method('isGroupManager')->willReturnCallback(fn($gid) => $gid === null || $gid == $g1->getId());
+        $managed->exchangeArray([$g1->getId()]);
         $this->assertTrue($adh->canShow($login));
 
         //groups managers cannot show members of the groups they do not own
@@ -1050,6 +1067,7 @@ class Adherent extends GaletteTestCase
             ->onlyMethods(['getGroups'])
             ->getMock();
         $adh->method('getGroups')->willReturn([$g2]);
+        $id->setValue($adh, 999999);
         $this->assertFalse($adh->canShow($login));
     }
 

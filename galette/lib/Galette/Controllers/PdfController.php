@@ -20,6 +20,7 @@ use Galette\Core\Links;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Entity\Group;
 use Galette\Entity\PdfModel;
 use Galette\Filters\MembersList;
 use Galette\IO\Pdf;
@@ -80,7 +81,7 @@ class PdfController extends AbstractController
             if (
                 !$adh->canEdit($this->login)
                 //members print their own cards, and their children ones, only when preferences allow it
-                || (!$this->preferences->pref_card_self && !$this->login->isAdmin() && !$this->login->isStaff())
+                || (!$this->preferences->pref_card_self && !$this->accessControl->can('member:print', $adh))
             ) {
                 return $this->redirectWithErrors(
                     response: $response,
@@ -100,7 +101,7 @@ class PdfController extends AbstractController
             }
             // If we are called from a member's card, get unique id value
             $unique = $id_adh;
-        } elseif (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        } elseif (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -128,9 +129,11 @@ class PdfController extends AbstractController
 
         $m = new Members();
         $members = $m->getArrayList(
-            $selected,
-            ['nom_adh', 'prenom_adh'],
-            with_photos: true
+            ids: $selected,
+            orderby: ['nom_adh', 'prenom_adh'],
+            with_photos: true,
+            //a single card follows its own rules, checked above
+            permission: isset($unique) ? null : 'member:print'
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -163,7 +166,7 @@ class PdfController extends AbstractController
     )]
     public function membersLabels(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -186,7 +189,15 @@ class PdfController extends AbstractController
             //if we're from mailing, we have to retrieve
             //its unreachable members for labels
             $mailing = $this->session->mailing;
-            $members = $mailing->unreachables;
+            $members = [];
+            if (count($mailing->unreachables) > 0) {
+                $m = new Members();
+                $members = $m->getArrayList(
+                    array_map(fn(Adherent $member): int => (int)$member->id, $mailing->unreachables),
+                    ['nom_adh', 'prenom_adh'],
+                    permission: 'member:print'
+                );
+            }
         } else {
             if (count($filters->selected) == 0) {
                 Analog::log('No member selected to generate labels', Analog::INFO);
@@ -200,7 +211,8 @@ class PdfController extends AbstractController
             $m = new Members();
             $members = $m->getArrayList(
                 $filters->selected,
-                ['nom_adh', 'prenom_adh']
+                ['nom_adh', 'prenom_adh'],
+                permission: 'member:print'
             );
         }
 
@@ -267,7 +279,7 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -324,7 +336,7 @@ class PdfController extends AbstractController
     )]
     public function attendanceSheet(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('member:print')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -348,9 +360,10 @@ class PdfController extends AbstractController
 
         $m = new Members();
         $members = $m->getArrayList(
-            $filters->selected,
-            ['nom_adh', 'prenom_adh'],
-            with_photos: true
+            ids: $filters->selected,
+            orderby: ['nom_adh', 'prenom_adh'],
+            with_photos: true,
+            permission: 'member:print'
         );
 
         if (!is_array($members) || count($members) < 1) {
@@ -428,7 +441,7 @@ class PdfController extends AbstractController
     )]
     public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_exports')) {
+        if (!$this->accessControl->can('group:export')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -437,6 +450,11 @@ class PdfController extends AbstractController
         }
 
         $groups_list = $id !== null ? $groups->getList(full: true, id: $id) : $groups->getList();
+        //export may be granted on some groups only
+        $groups_list = array_filter(
+            $groups_list,
+            fn(Group $group): bool => $this->accessControl->can('group:export', $group)
+        );
 
         if (count($groups_list) < 1) {
             Analog::log(
