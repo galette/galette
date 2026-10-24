@@ -84,7 +84,7 @@
                 {{ _T("Reset two-factor authentication") }}
             </button>
         {% endif %}
-        {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
+        {% if member.canEdit(login) and (preferences.pref_card_self == 1 or can('member:print', member)) %}
             <a
                 href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
                 class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
@@ -125,8 +125,7 @@
                 {{ _T("Add a donation") }}
             </a>
         {% endif %}
-        {% if login.isAdmin() or login.isStaff() %}
-            {% if can('member:create') and can('member:manage') %}
+        {% if can('member:create') and can('member:manage', member) %}
             <a
                 href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"
                 title="{{ _T("Create a new member with %1$s information.")|format(member.sfullname) }}"
@@ -135,7 +134,9 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
-            {% endif %}
+        {% endif %}
+        {# plugins actions do not declare the permissions they need yet #}
+        {% if login.isAdmin() or login.isStaff() %}
             {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
             {% for action in actions %}
                 {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
