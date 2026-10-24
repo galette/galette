@@ -607,9 +607,15 @@ class Group
 
     /**
      * Get the indented short name of the group "  >> bar"
+     *
+     * @deprecated 1.3.2 will be removed in 1.4.0, use getFullName() instead.
      */
     public function getIndentName(): ?string
     {
+        Analog::log(
+            'Group::getIndentName() is deprecated and will be removed in 1.4.0, use Group::getFullName() instead.',
+            Analog::WARNING
+        );
         if ($level = $this->getLevel()) {
             return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
