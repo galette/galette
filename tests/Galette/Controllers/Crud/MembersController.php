@@ -2525,6 +2525,24 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($expected_title, $body);
+        $this->login->logOut();
+
+        //sub groups are displayed with their full name, without HTML entities
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $g2->setParentGroup((int)$g1->getId());
+        $this->assertTrue($g2->store());
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertMatchesRegularExpression(
+            sprintf('|<option\s+value="%1$s"\s*>\s*Group 1 / Group 2\s*</option>|', $g2->getId()),
+            $body
+        );
+        $this->assertStringNotContainsString('&amp;raquo;', $body);
+        $this->assertStringNotContainsString('&amp;nbsp;', $body);
     }
 
     /**
