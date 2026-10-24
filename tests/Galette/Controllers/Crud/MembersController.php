@@ -2169,6 +2169,39 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test member duplication is checked against the duplicated member
+     */
+    public function testMemberDuplicateGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:create', 'member:manage']);
+        try {
+            $member_two = $this->getMemberTwo();
+            $group = $this->logGroupManager();
+            $duplicate_url = $this->routeparser->urlFor('duplicateMember', ['id_adh' => (string)$member_two->id]);
+
+            //member two is not part of a managed group
+            $request = $this->createRequest('duplicateMember', ['id_adh' => (string)$member_two->id]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            $this->assertTrue($group->setMembers([$member_two]));
+            $test_response = $this->app->handle(
+                $this->createRequest('member', ['id' => (string)$member_two->id])
+            );
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertStringContainsString($duplicate_url, (string)$test_response->getBody());
+
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('addMember')]], $test_response->getHeaders());
+            $this->expectNoLogEntry();
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:create', 'member:manage']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test edit members
      */
     #[AllowMockObjectsWithoutExpectations]
