@@ -129,8 +129,8 @@ class PdfController extends AbstractController
 
         $m = new Members();
         $members = $m->getArrayList(
-            $selected,
-            ['nom_adh', 'prenom_adh'],
+            ids: $selected,
+            orderby: ['nom_adh', 'prenom_adh'],
             with_photos: true,
             //a single card follows its own rules, checked above
             permission: isset($unique) ? null : 'member:print'
@@ -360,8 +360,8 @@ class PdfController extends AbstractController
 
         $m = new Members();
         $members = $m->getArrayList(
-            $filters->selected,
-            ['nom_adh', 'prenom_adh'],
+            ids: $filters->selected,
+            orderby: ['nom_adh', 'prenom_adh'],
             with_photos: true,
             permission: 'member:print'
         );
