@@ -25,7 +25,7 @@
                         {% set display_value = statuts[display_value] %}
                     {% endif %}
                     {% if field == 'group_to_add' or field == 'group_to_remove' %}
-                        {% set display_value = groups[display_value] %}
+                        {% set display_value = change.display_value %}
                     {% endif %}
                     {% if field == 'titre_adh' %}
                         {% set display_value = titles_list[display_value].long %}

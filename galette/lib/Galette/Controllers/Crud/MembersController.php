@@ -1451,8 +1451,6 @@ class MembersController extends CrudController
 
         //Titles
         $titles = new Titles($this->zdb);
-        //Groups
-        $groups = new Groups($this->zdb, $this->login);
 
         // display page
         $this->view->render(
@@ -1469,7 +1467,6 @@ class MembersController extends CrudController
                 'data'          => $data,
                 'titles_list'   => $titles->getList(),
                 'statuts'       => $this->status->getList(),
-                'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
             ]
         );
