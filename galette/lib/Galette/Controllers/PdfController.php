@@ -77,7 +77,11 @@ class PdfController extends AbstractController
                 $adh->disableDep('dues');
             }
             $adh->load($id_adh);
-            if (!$adh->canEdit($this->login)) {
+            if (
+                !$adh->canEdit($this->login)
+                //members print their own cards, and their children ones, only when preferences allow it
+                || (!$this->preferences->pref_card_self && !$this->login->isAdmin() && !$this->login->isStaff())
+            ) {
                 return $this->redirectWithErrors(
                     response: $response,
                     errors: [_T("You do not have permission for requested URL.")],
