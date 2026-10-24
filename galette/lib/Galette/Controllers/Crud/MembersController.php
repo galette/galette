@@ -264,7 +264,13 @@ class MembersController extends CrudController
     )]
     public function duplicate(Response $response, int $id_adh): Response
     {
-        if (!$this->accessControl->can('member:create')) {
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
+        //the copy carries administrative information: the source must be managed, not only any member
+        if (
+            !$this->accessControl->can('member:create')
+            || $adh->id === null
+            || !$this->accessControl->can('member:manage', $adh)
+        ) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -272,7 +278,6 @@ class MembersController extends CrudController
             );
         }
 
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
         //store entity in session
