@@ -81,7 +81,7 @@ class PdfController extends AbstractController
             if (
                 !$adh->canEdit($this->login)
                 //members print their own cards, and their children ones, only when preferences allow it
-                || (!$this->preferences->pref_card_self && !$this->login->isAdmin() && !$this->login->isStaff())
+                || (!$this->preferences->pref_card_self && !$this->accessControl->can('member:print', $adh))
             ) {
                 return $this->redirectWithErrors(
                     response: $response,
