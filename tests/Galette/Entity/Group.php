@@ -35,6 +35,7 @@ class Group extends GaletteTestCase
         $this->assertNull($group->getName());
         $this->assertNull($group->getFullName());
         $this->assertNull($group->getIndentName());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Group::getIndentName() is deprecated');
         $this->assertNull($group->getParentGroup());
     }
 
@@ -59,6 +60,7 @@ class Group extends GaletteTestCase
         $this->assertSame('A group', $group->getName());
         $this->assertSame('A group', $group->getFullName());
         $this->assertSame('A group', $group->getIndentName());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Group::getIndentName() is deprecated');
         $this->assertEmpty($group->getMembers());
         $this->assertSame(0, $group->getMemberCount());
         $this->assertEmpty($group->getManagers());
