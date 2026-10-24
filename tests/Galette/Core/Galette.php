@@ -169,7 +169,6 @@ class Galette extends GaletteTestCase
         $this->assertSame(
             [
                 'preferences',
-                'authAttempts',
                 'plugins',
                 'configureListFields',
                 'configureCoreFields',
@@ -184,6 +183,10 @@ class Galette extends GaletteTestCase
                 'roles'
             ],
             array_column(array_column($menus['configuration']['items'], 'route'), 'name')
+        );
+        $this->assertSame(
+            ['groups', 'documentsList', 'mailings', 'charts', 'export', 'import', 'authAttempts', 'history'],
+            array_column(array_column($menus['management']['items'], 'route'), 'name')
         );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
