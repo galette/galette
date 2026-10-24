@@ -148,7 +148,8 @@ class MembersCsv extends CsvOut
             with_photos: false,
             as_members: false,
             fields: $fields,
-            export: true
+            export: true,
+            permission: 'member:export'
         );
 
         $ids = is_array($members_list) ? array_map(fn($member) => (int)$member->{Adherent::PK}, $members_list) : [];

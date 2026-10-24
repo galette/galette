@@ -536,8 +536,41 @@ class GroupsController extends GaletteRoutingTestCase
             $body = (string)$test_response->getBody();
             $this->assertStringContainsString('id="person_add"', $body);
             $this->assertStringContainsString('name="members[]" value=""', $body);
+
+            //managers are changed only with member:manage on the group
+            $this->assertStringNotContainsString('name="managers[]" value=""', $body);
+            $member_one = $this->getMemberOne();
+            $member_two = $this->getMemberTwo();
+            $post = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST')
+                ->withParsedBody([
+                    'group_name' => 'Managed by member one',
+                    'parent_group' => '',
+                    'managers' => ['', (string)$member_two->id],
+                    'members' => ['', (string)$member_two->id]
+                ]);
+            $test_response = $this->app->handle($post);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->flash_data = [];
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to change managers of group ' . $group->getId() . ' without appropriate permissions'
+            );
+            $stored = new \Galette\Entity\Group($group->getId());
+            $this->assertSame(
+                [(int)$member_one->id],
+                array_map(fn($m) => (int)$m->id, $stored->getManagers())
+            );
+            $this->assertSame(
+                [(int)$member_two->id],
+                array_map(fn($m) => (int)$m->id, $stored->getMembers())
+            );
+
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $this->assertStringContainsString('name="managers[]" value=""', (string)$test_response->getBody());
         } finally {
-            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['group:edit', 'member:manage']);
             $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read', 'group:edit']);
             $this->login->logOut();
         }
