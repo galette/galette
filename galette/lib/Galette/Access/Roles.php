@@ -639,7 +639,7 @@ class Roles
      *
      * @param Role $role System role
      *
-     * @return ?array<array{id_adh: int, member: string, group: ?string}> null when not listed
+     * @return ?array<array{id_adh: int, member: string, groups: array<string>}> null when not listed
      */
     public function getComputedMembersOf(Role $role): ?array
     {
@@ -671,20 +671,25 @@ class Roles
                 return null;
         }
 
+        //one entry per member, with all the groups they manage
         $members = [];
         foreach ($this->zdb->execute($select) as $row) {
-            $members[] = [
-                'id_adh' => (int)$row->id_adh,
+            $id = (int)$row->id_adh;
+            $members[$id] ??= [
+                'id_adh' => $id,
                 'member' => trim($row->nom_adh . ' ' . $row->prenom_adh),
-                'group' => $row->group_name ?? null
+                'groups' => []
             ];
+            if (isset($row->group_name)) {
+                $members[$id]['groups'][] = $row->group_name;
+            }
         }
 
-        //by member, then group
-        usort(
-            $members,
-            fn(array $a, array $b): int => [$a['member'], $a['group']] <=> [$b['member'], $b['group']]
-        );
+        foreach ($members as &$member) {
+            sort($member['groups']);
+        }
+        unset($member);
+        usort($members, fn(array $a, array $b): int => $a['member'] <=> $b['member']);
         return $members;
     }
 }

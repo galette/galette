@@ -61,7 +61,7 @@
                                         <td>
                                             <a href="{{ url_for('member', {'id': computed_member.id_adh}) }}">{{ computed_member.member }}</a>
                 {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
-                                            <div class="ui small grey text">{{ computed_member.group }}</div>
+                                            <div class="ui small grey text">{{ computed_member.groups|join(', ') }}</div>
                 {% endif %}
                                         </td>
                                     </tr>

@@ -196,6 +196,11 @@ class RolesTest extends GaletteTestCase
         $group->setName('Computed group');
         $this->assertTrue($group->store());
         $this->assertTrue($group->setManagers([$member_one]));
+        //a member managing several groups is listed and counted once
+        $other_group = new \Galette\Entity\Group();
+        $other_group->setName('Another computed group');
+        $this->assertTrue($other_group->store());
+        $this->assertTrue($other_group->setManagers([$member_one]));
 
         //member two is an administrator, member one has a staff status
         $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
@@ -207,10 +212,10 @@ class RolesTest extends GaletteTestCase
 
         $one = ['id_adh' => (int)$member_one->id, 'member' => $member_one->name . ' ' . $member_one->surname];
         $two = ['id_adh' => (int)$member_two->id, 'member' => $member_two->name . ' ' . $member_two->surname];
-        $this->assertSame([$two + ['group' => null]], $roles->getComputedMembersOf($system[Roles::ADMIN]));
-        $this->assertSame([$one + ['group' => null]], $roles->getComputedMembersOf($system[Roles::STAFF]));
+        $this->assertSame([$two + ['groups' => []]], $roles->getComputedMembersOf($system[Roles::ADMIN]));
+        $this->assertSame([$one + ['groups' => []]], $roles->getComputedMembersOf($system[Roles::STAFF]));
         $this->assertSame(
-            [$one + ['group' => 'Computed group']],
+            [$one + ['groups' => ['Another computed group', 'Computed group']]],
             $roles->getComputedMembersOf($system[Roles::MANAGER])
         );
         $this->assertNull($roles->getComputedMembersOf($system[Roles::MEMBER]));
