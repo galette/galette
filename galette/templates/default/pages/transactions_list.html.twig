@@ -8,7 +8,7 @@
 
 {% set basic_table = true %}
 
-{% set can_act = can('transaction:create') or can('transaction:edit') %}
+{% set can_act = can('transaction:edit') or can('transaction:attach') or can('transaction:delete') %}
 {% if not can_act %}
     {% set no_action = true %}
 {% endif %}
@@ -229,6 +229,8 @@
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
             {% if can_act and mode != 'ajax' %}
                 <td class="center actions_row collapsing">
+                    {# attaching contributions happens on the edit page #}
+                    {% if transaction.canEdit(login) or transaction.canAttachAndDetach(login) %}
                     <a
                         href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
                         class="action icon-only"
@@ -236,7 +238,8 @@
                         <i class="ui edit icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T('Edit transaction #%1$s')|format(transaction.id) }}</span>
                     </a>
-                    {% if can('transaction:delete') %}
+                    {% endif %}
+                    {% if transaction.canDelete(login) %}
                     <a
                         href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                         class="delete icon-only"
@@ -281,10 +284,12 @@
                 </thead>
                 <tbody>
                     <tr>
+        {% if can('transaction:edit') or can('transaction:attach') %}
                         <th scope="row">
                             <i class="ui edit blue icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Modification") }}</td>
+        {% endif %}
         {% if can('transaction:delete') %}
                         <th scope="row">
                             <i class="ui trash red icon" aria-hidden="true"></i>

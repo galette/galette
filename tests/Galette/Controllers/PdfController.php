@@ -321,6 +321,63 @@ class PdfController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test reading every member does not widen printing, granted on some groups only
+     */
+    public function testMembersPdfPrintScope(): void
+    {
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read']);
+        try {
+            $this->logGroupManager();
+            $member_two = $this->getMemberTwo();
+
+            $filters = new \Galette\Filters\MembersList();
+            $filters->selected = [$member_two->id];
+            $this->session->{$controller->getFilterName('members')} = $filters;
+
+            foreach (['pdf-members-cards', 'pdf-members-labels'] as $route_name) {
+                $request = $this->createRequest($route_name, []);
+                $test_response = $this->app->handle($request);
+                $this->assertSame(['Location' => ['/members']], $test_response->getHeaders(), $route_name);
+                $this->expectFlashData(
+                    [
+                        'error_detected' => [
+                            'Unable to get members list.'
+                        ]
+                    ]
+                );
+                $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get members list.');
+            }
+
+            //groups export, on a group that is not managed
+            $this->login->logOut();
+            $this->logSuperAdmin();
+            $group = new \Galette\Entity\Group();
+            $group->setName('Not managed by member one');
+            $this->assertTrue($group->store());
+            $this->login->logOut();
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $request = $this->createRequest('pdf_groups', ['id' => (string)$group->getId()]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => ['/groups']], $test_response->getHeaders());
+            $this->expectFlashData(
+                [
+                    'error_detected' => [
+                        'Unable to get groups list.'
+                    ]
+                ]
+            );
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get groups list.');
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test group managers cannot get PDF of members they do not manage
      */
     public function testMembersPdfGroupManagerScope(): void

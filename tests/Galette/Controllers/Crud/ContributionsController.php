@@ -1325,6 +1325,40 @@ class ContributionsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test each contribution is checked on removal, as delete may be granted on some groups only
+     */
+    public function testDeleteContributionGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'contribution:delete');
+        try {
+            $this->logSuperAdmin();
+            $this->getMemberTwo();
+            $this->createContribution();
+            $contrib_two = $this->contrib;
+            $this->login->logOut();
+
+            $this->logGroupManager();
+            $request = $this->createRequest('doRemoveContribution', ['type' => 'contributions'], 'POST')
+                ->withParsedBody(['id' => [$contrib_two->id], 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to remove contributions #' . $contrib_two->id . ' without appropriate permissions'
+            );
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred on delete');
+
+            $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE)
+                ->where(['id_cotis' => $contrib_two->id]);
+            $this->assertCount(1, $this->zdb->execute($select));
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:delete');
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test mass contributions are refused to group managers
      */
     public function testMassAddContributionsGroupManager(): void

@@ -39,12 +39,14 @@ trait AccessControlled
     /**
      * Get the groups a permission is granted on, to restrict lists
      *
-     * @param string $permission Permission name, "domain:action"
-     * @param Login  $login      Login to check
+     * @param string|non-empty-array<string> $permission Permission name, "domain:action"; or several
+     *                                                   permissions, to get the groups all of them
+     *                                                   are granted on
+     * @param Login                          $login      Login to check
      *
      * @return ?array<int> Null when granted on every group, groups identifiers otherwise
      */
-    protected function getGroupScope(string $permission, Login $login): ?array
+    protected function getGroupScope(string|array $permission, Login $login): ?array
     {
         global $container;
 

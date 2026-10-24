@@ -589,4 +589,51 @@ class Transaction extends GaletteTestCase
             );
         }
     }
+
+    /**
+     * Test transactions are loaded and changed with edit permission alone
+     */
+    public function testEditScope(): void
+    {
+        $this->revokeFromRole(
+            \Galette\Access\Roles::MANAGER,
+            ['transaction:read', 'transaction:attach', 'transaction:create']
+        );
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:edit');
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $transaction_id = $this->createTransaction()->id;
+            $this->login->logOut();
+
+            $group = $this->logGroupManager();
+            $this->assertTrue($group->setMembers([$member_two]));
+
+            $data = [
+                'id_adh' => $member_two->id,
+                'trans_date' => (new DateTime())->format('Y-m-d'),
+                'trans_amount' => 93,
+                'trans_desc' => 'FAKER' . $this->seed,
+                'type_paiement_trans' => 6,
+            ];
+            $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+            $this->assertTrue($transaction->load($transaction_id));
+            $this->assertTrue($transaction->canEdit($this->login));
+            $this->assertTrue($transaction->check($data, [], []));
+
+            //a new transaction still requires create permission
+            $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+            $check = $transaction->check($data, [], []);
+            $this->assertIsArray($check);
+            $this->assertContains('- Please select a member from a group you manage.', $check);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a transaction');
+        } finally {
+            $this->login->logOut();
+            $this->grantToRole(
+                \Galette\Access\Roles::MANAGER,
+                ['transaction:read', 'transaction:attach', 'transaction:create']
+            );
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:edit');
+        }
+    }
 }

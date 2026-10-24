@@ -1272,13 +1272,61 @@ class ContributionsController extends CrudController
         };
 
         $permission = $raw_type === 'transactions' ? 'transaction:delete' : 'contribution:delete';
-        if (!$this->accessControl->can($permission)) {
+        $ids = array_map(intval(...), (array)($args['ids'] ?? $args['id']));
+        if (!$this->accessControl->can($permission) || !$this->canDeleteAll($raw_type, $ids)) {
             throw new \RuntimeException('Removal requires ' . $permission . ' permission');
         }
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
         return $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
+    }
+
+    /**
+     * Can current user delete every requested contribution or transaction?
+     *
+     * Delete permission may be granted on some groups only, so each one is
+     * checked; as well as contributions attached to transactions, which are
+     * removed with them.
+     *
+     * @param string     $raw_type Either 'contributions' or 'transactions'
+     * @param array<int> $ids      Identifiers to delete
+     */
+    private function canDeleteAll(string $raw_type, array $ids): bool
+    {
+        $is_transactions = $raw_type === 'transactions';
+        $select = $this->zdb->select($is_transactions ? Transaction::TABLE : Contribution::TABLE);
+        $select->where->in($is_transactions ? Transaction::PK : Contribution::PK, $ids ?: [0]);
+        foreach ($this->zdb->execute($select) as $row) {
+            $entity = $is_transactions
+                ? new Transaction($this->zdb, $this->login, $row)
+                : new Contribution($this->zdb, $this->login, $row);
+            if (!$entity->canDelete($this->login)) {
+                Analog::log(
+                    'Trying to remove ' . $raw_type . ' #' . $entity->id . ' without appropriate permissions',
+                    Analog::WARNING
+                );
+                return false;
+            }
+        }
+
+        if ($is_transactions) {
+            $select = $this->zdb->select(Contribution::TABLE);
+            $select->where->in(Transaction::PK, $ids ?: [0]);
+            foreach ($this->zdb->execute($select) as $row) {
+                $contribution = new Contribution($this->zdb, $this->login, $row);
+                if (!$contribution->canDelete($this->login)) {
+                    Analog::log(
+                        'Trying to remove contribution #' . $contribution->id
+                            . ' attached to a transaction without appropriate permissions',
+                        Analog::WARNING
+                    );
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     // /CRUD - Delete

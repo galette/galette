@@ -46,6 +46,7 @@ class Contributions
     private float $sum = 0;
     /** @var array<int> */
     private array $current_selection;
+    private ?string $permission = null;
 
     /**
      * Default constructor
@@ -59,6 +60,17 @@ class Contributions
         private readonly Login $login,
         private readonly ?ContributionsList $filters = new ContributionsList()
     ) {
+    }
+
+    /**
+     * Restrict lists to members another permission is granted on as well
+     *
+     * @param string $permission Permission, like contribution:export to export them
+     */
+    public function restrictTo(string $permission): self
+    {
+        $this->permission = $permission;
+        return $this;
     }
 
     /**
@@ -339,7 +351,10 @@ class Contributions
             $scope = new MembersScope(
                 $this->zdb,
                 $this->login,
-                $this->getGroupScope('contribution:read', $this->login)
+                $this->getGroupScope(
+                    $this->permission === null ? 'contribution:read' : ['contribution:read', $this->permission],
+                    $this->login
+                )
             );
             $member_clause = null;
             if (!$scope->isGlobal()) {

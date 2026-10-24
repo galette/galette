@@ -126,6 +126,51 @@ class ScheduledPayments extends GaletteTestCase
     }
 
     /**
+     * Test list is restricted to members of the groups permission is granted on
+     */
+    public function testGetListGroupScope(): void
+    {
+        //scheduled payments objects load their contribution
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:schedule', 'contribution:read']);
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $this->createContribution();
+            $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+            $this->assertTrue($this->contrib->store());
+
+            $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+            $this->assertTrue($scheduledPayment->check([
+                \Galette\Entity\Contribution::PK => $this->contrib->id,
+                'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+                'scheduled_date' => (new DateTime())->format('Y-m-d'),
+                'comment' => 'FAKER' . $this->seed,
+                'amount' => 10.0,
+                'paid' => false
+            ]));
+            $this->assertTrue($scheduledPayment->store());
+            $this->login->logOut();
+
+            //member two is not part of a managed group
+            $group = $this->logGroupManager();
+            $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
+            $this->assertCount(0, $scheduledPayments->getList(as_object: true));
+
+            $this->assertTrue($group->setMembers([$member_two]));
+            $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
+            $this->assertCount(1, $scheduledPayments->getList(as_object: true));
+
+            $filters = new \Galette\Filters\ScheduledPaymentsList();
+            $filters->member_filter = $member_two->id;
+            $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
+            $this->assertCount(1, $scheduledPayments->getList(as_object: true));
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['contribution:schedule', 'contribution:read']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test getArrayList
      */
     public function testGetArrayList(): void

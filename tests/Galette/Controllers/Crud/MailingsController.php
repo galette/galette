@@ -223,6 +223,21 @@ class MailingsController extends GaletteRoutingTestCase
         //late member is not part of a managed group
         $this->assertFalse($reminded());
 
+        //reading every member does not widen recipients
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        try {
+            $this->assertFalse($reminded());
+
+            $request = $this->createRequest('mailingRecipients', [], 'POST')
+                ->withParsedBody(['recipients' => [(string)$member_two->id]]);
+            $this->assertSame(200, $this->app->handle($request)->getStatusCode());
+            $mailing = $this->session->mailing;
+            $this->assertSame([], array_merge($mailing->recipients, $mailing->unreachables));
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        }
+
         $this->assertTrue($group->setMembers([$member_two]));
         $this->assertTrue($reminded());
 

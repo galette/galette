@@ -10,9 +10,10 @@
  # Persons are added to the table without being stored; unchecked or disabled
  # checkboxes are not posted, so members[] and managers[] carry exactly the
  # persons to store. The empty values are always posted, so that an emptied
- # list is stored as such.
+ # list is stored as such; managers only for who can change them.
  #}
 {% set can_edit_persons = group.canEdit(login) and permission_scope('member:read') == 'all' %}
+{% set can_edit_managers = can_edit_persons and can('member:manage', group) %}
 {% set group_managers = group.getManagers() %}
 {% set group_members = group.getMembers() %}
 {% set manager_ids = group_managers|map(p => p.id) %}
@@ -27,7 +28,9 @@
             <div class="active content field">
 {% if can_edit_persons %}
                 <input type="hidden" name="members[]" value=""/>
+    {% if can_edit_managers %}
                 <input type="hidden" name="managers[]" value=""/>
+    {% endif %}
 {% endif %}
                 <table class="listing ui celled striped table" id="group_persons_list">
                     <caption class="visually-hidden">{{ _T("Members") }}</caption>

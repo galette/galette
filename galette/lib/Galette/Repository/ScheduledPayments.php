@@ -324,12 +324,19 @@ class ScheduledPayments
                 );
             }
 
-            if (!$this->getMembersScope()->isGlobal()) {
-                $select->where(
-                    [
-                        'a.' . Adherent::PK => $this->login->id
-                    ]
-                );
+            $scope = $this->getMembersScope();
+            if (!$scope->isGlobal() && $this->filters->member_filter == null) {
+                //current member, and members of the groups permission is granted on;
+                //a member filter is already restricted by buildMemberWhereClause()
+                $members = $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id);
+                if ($scope->hasGroups()) {
+                    $members
+                        ->or
+                        ->in('a.' . Adherent::PK, $scope->getGroupsMembersSelect());
+                }
+                $members->unnest();
             }
 
             if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {

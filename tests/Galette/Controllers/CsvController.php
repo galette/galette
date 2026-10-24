@@ -575,6 +575,19 @@ class CsvController extends GaletteRoutingTestCase
         $this->assertStringNotContainsString($member_two->email, $body);
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
 
+        //reading every member does not widen the export
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        try {
+            $test_response = $this->app->handle($request);
+            $this->assertSame(200, $test_response->getStatusCode());
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('"' . $member_one->id . '";', $body);
+            $this->assertStringNotContainsString('"' . $member_two->id . '";', $body);
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        }
+
         //exports disabled for group managers
         $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $test_response = $this->app->handle($request);

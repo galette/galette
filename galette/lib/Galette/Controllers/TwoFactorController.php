@@ -332,6 +332,15 @@ class TwoFactorController extends AbstractController
             throw new HttpNotFoundException($request);
         }
 
+        //permission may be granted on some groups only: check it on the member
+        if (!$this->accessControl->can('member:credentials', $member)) {
+            return $this->refuseReset(
+                $response,
+                $id,
+                _T("You do not have permission for requested URL.")
+            );
+        }
+
         //removing one's own is doDisable, which asks for a code first: a
         //hijacked session must not have a second, unproven way out
         if ($id === (int)$this->login->id) {
