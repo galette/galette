@@ -40,37 +40,21 @@ declare(strict_types=1);
 /** @var array<string, string|array{description: string, requires?: array<string>}> $feature_flags_registry */
 $feature_flags_registry = [
     /**
-     * ACLs - New Access Control Lists Management System
-     *
-     * Implements a new RBAC (Role-Based Access Control) system to replace
-     * the legacy permission system.
-     *
-     * Status: In Development
-     * Added: 2026-04-08
-     * Target: 1.2.0
-     */
-    /*'acls' => 'New Access Control Lists (RBAC) management system',*/
-
-    /**
      * OAuth2 - OAuth2 Authentication System
      *
      * OAuth2 server implementation for API authentication.
-     * Requires ACLs for permission management.
      *
      * Status: Planning
      * Added: 2026-04-08
      * Target: 1.3.0
      */
-    /*'oauth2' => [
-        'description' => 'OAuth2 authentication system for API',
-        'requires' => ['acls'], // Depends on ACLs
-    ],*/
+    /*'oauth2' => 'OAuth2 authentication system for API',*/
 
     /**
      * API v2 - RESTful API with OAuth2
      *
      * New REST API version with OAuth2 authentication support.
-     * Requires both ACLs for permissions and OAuth2 for authentication.
+     * Requires OAuth2 for authentication.
      *
      * Status: Planning
      * Added: 2026-04-08
@@ -78,7 +62,7 @@ $feature_flags_registry = [
      */
     /*'api-v2' => [
         'description' => 'RESTful API version 2 with OAuth2 support',
-        'requires' => ['acls', 'oauth2'], // Depends on ACLs AND OAuth2
+        'requires' => ['oauth2'], // Depends on OAuth2
     ],*/
 
     /**

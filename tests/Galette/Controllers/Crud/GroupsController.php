@@ -79,7 +79,7 @@ class GroupsController extends GaletteRoutingTestCase
      */
     public function testGroupManagerEditScope(): void
     {
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
 
         $group = $this->logGroupManager();
         $this->login->logOut();
@@ -158,7 +158,7 @@ class GroupsController extends GaletteRoutingTestCase
             array_map(fn($m) => (int)$m->id, $group->getMembers())
         );
 
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
     }
 
     /**
@@ -255,9 +255,12 @@ class GroupsController extends GaletteRoutingTestCase
             return (new \Galette\Entity\Group((int)explode('|', $reordered)[0]))->getParentGroup()?->getId();
         };
 
-        $edit_groups = $this->preferences->pref_bool_groupsmanagers_edit_groups;
         foreach ([false, true] as $allowed) {
-            $this->preferences->pref_bool_groupsmanagers_edit_groups = $allowed;
+            if ($allowed) {
+                $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            } else {
+                $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            }
 
             //group not managed cannot be moved
             $this->assertNull($reorder($other->getId() . '|' . $group->getId()));
@@ -295,7 +298,6 @@ class GroupsController extends GaletteRoutingTestCase
                 );
             }
         }
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = $edit_groups;
         $this->login->logOut();
 
         //staff can move any group anywhere
@@ -309,7 +311,7 @@ class GroupsController extends GaletteRoutingTestCase
      */
     public function testParentScope(): void
     {
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
 
         $group = $this->logGroupManager();
         $this->login->logOut();
@@ -376,7 +378,7 @@ class GroupsController extends GaletteRoutingTestCase
         $this->assertSame($other->getId(), $parent_id());
         $this->login->logOut();
 
-        $this->preferences->pref_bool_groupsmanagers_edit_groups = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
     }
 
     /**
@@ -450,5 +452,222 @@ class GroupsController extends GaletteRoutingTestCase
             $body
         );
         $this->login->logOut();
+    }
+
+    /**
+     * Test groups managers display only groups they manage
+     */
+    public function testGroupManagerDisplay(): void
+    {
+        $group = $this->logGroupManager();
+        $this->login->logOut();
+
+        $other = new \Galette\Entity\Group();
+        $other->setName('Not managed');
+        $this->assertTrue($other->store());
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        //whole tree is listed, only managed group can be opened; no creation nor removal
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$group->getId()]),
+            $body
+        );
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('editGroup', ['id' => (string)$other->getId()]),
+            $body
+        );
+        $this->assertStringNotContainsString('id="newgroup"', $body);
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('removeGroup', ['id' => (string)$group->getId()]),
+            $body
+        );
+
+        //managed group page is displayed, other one is forbidden
+        $test_response = $this->app->handle($this->createRequest('editGroup', ['id' => (string)$group->getId()]));
+        $this->expectOK($test_response);
+        $test_response = $this->app->handle($this->createRequest('editGroup', ['id' => (string)$other->getId()]));
+        $this->assertSame(403, $test_response->getStatusCode());
+
+        //creation and removal are refused from middleware
+        $this->expectAuthMiddlewareRefused(
+            $this->app->handle($this->createRequest('removeGroup', ['id' => (string)$group->getId()]))
+        );
+        $this->login->logOut();
+
+        //a simple member cannot reach groups at all
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isGroupManager());
+        $test_response = $this->app->handle($this->createRequest('groups'));
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->flash_data = [];
+        $this->login->logOut();
+    }
+
+    /**
+     * Test groups can be dragged only under groups that can be edited
+     */
+    public function testDragUnderEditableGroupsOnly(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'group:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        try {
+            $group = $this->logGroupManager();
+            $this->login->logOut();
+            $other = new \Galette\Entity\Group();
+            $other->setName('Read only');
+            $this->assertTrue($other->store());
+
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $test_response = $this->app->handle($this->createRequest('groups'));
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertMatchesRegularExpression(
+                '/data-group="' . $group->getId() . '"[^>]+data-managed="1"/',
+                $body
+            );
+            $this->assertMatchesRegularExpression(
+                '/data-group="' . $other->getId() . '"[^>]+data-managed="0"/',
+                $body
+            );
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'group:read');
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test group removal is checked on the removed group, and on its subgroups when cascading
+     */
+    public function testDeleteGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:delete');
+        try {
+            $group = $this->logGroupManager();
+            $this->login->logOut();
+
+            $other = new \Galette\Entity\Group();
+            $other->setName('Not managed');
+            $this->assertTrue($other->store());
+            $child = new \Galette\Entity\Group();
+            $child->setName('Not managed child');
+            $child->setParentGroup($group->getId());
+            $this->assertTrue($child->store());
+
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $test_response = $this->app->handle($this->createRequest('groups'));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString(
+                $this->routeparser->urlFor('removeGroup', ['id' => (string)$group->getId()]),
+                (string)$test_response->getBody()
+            );
+
+            foreach ([$other, $group] as $target) {
+                $request = $this->createRequest('doRemoveGroup', ['id' => (string)$target->getId()], 'POST');
+                $request = $request->withParsedBody(
+                    ['id' => (string)$target->getId(), 'confirm' => true, 'cascade' => true]
+                );
+                $test_response = $this->app->handle($request);
+                $this->assertSame(301, $test_response->getStatusCode());
+                $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
+                //managed group subgroup is not managed
+                $refused = $target === $other ? $other : $child;
+                $this->expectLogEntry(
+                    \Analog\Analog::WARNING,
+                    'Trying to remove group ' . $refused->getId() . ' without appropriate permissions'
+                );
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred on delete');
+                $this->assertTrue((new \Galette\Entity\Group())->load($target->getId()));
+            }
+            $this->assertTrue((new \Galette\Entity\Group())->load($child->getId()));
+
+            //without subgroups, managed group can be removed
+            $this->assertTrue($child->remove());
+            $request = $this->createRequest('doRemoveGroup', ['id' => (string)$group->getId()], 'POST');
+            $request = $request->withParsedBody(['id' => (string)$group->getId(), 'confirm' => true, 'cascade' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
+            $this->assertFalse((new \Galette\Entity\Group())->load($group->getId()));
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:delete');
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test group managers allowed to edit groups do not change persons from the group page
+     */
+    public function testEditPersonsAsGroupManager(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        try {
+            $group = $this->logGroupManager();
+            $request = $this->createRequest('editGroup', ['id' => (string)$group->getId()]);
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('id="group_persons_list"', $body);
+            $this->assertStringNotContainsString('id="person_add"', $body);
+            $this->assertStringNotContainsString('name="members[]" value=""', $body);
+            $this->login->logOut();
+
+            //a role reading every member, without staff status
+            $this->grantToRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read', 'group:edit']);
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('id="person_add"', $body);
+            $this->assertStringContainsString('name="members[]" value=""', $body);
+
+            //managers are changed only with member:manage on the group
+            $this->assertStringNotContainsString('name="managers[]" value=""', $body);
+            $member_one = $this->getMemberOne();
+            $member_two = $this->getMemberTwo();
+            $post = $this->createRequest('doEditGroup', ['id' => (string)$group->getId()], 'POST')
+                ->withParsedBody([
+                    'group_name' => 'Managed by member one',
+                    'parent_group' => '',
+                    'managers' => ['', (string)$member_two->id],
+                    'members' => ['', (string)$member_two->id]
+                ]);
+            $test_response = $this->app->handle($post);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->flash_data = [];
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to change managers of group ' . $group->getId() . ' without appropriate permissions'
+            );
+            $stored = new \Galette\Entity\Group($group->getId());
+            $this->assertSame(
+                [(int)$member_one->id],
+                array_map(fn($m) => (int)$m->id, $stored->getManagers())
+            );
+            $this->assertSame(
+                [(int)$member_two->id],
+                array_map(fn($m) => (int)$m->id, $stored->getMembers())
+            );
+
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $this->assertStringContainsString('name="managers[]" value=""', (string)$test_response->getBody());
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['group:edit', 'member:manage']);
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read', 'group:edit']);
+            $this->login->logOut();
+        }
     }
 }

@@ -14,6 +14,7 @@ use Composer\Autoload\ClassLoader;
 use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
+use Galette\Access\Permission;
 use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
 use League\Event\ListenerSubscriber;
@@ -1040,6 +1041,31 @@ class Plugins
             $acls = array_merge($acls, $module['acls'] ?? []);
         }
         return $acls;
+    }
+
+    /**
+     * Get the permissions active plugins declare, by plugin domain - their route name
+     *
+     * @return array<string, array{label: string, permissions: array<Permission>}>
+     */
+    public function getPermissions(): array
+    {
+        $domains = [];
+        foreach ($this->getActiveModules() as $id => $module) {
+            $class = $this->getClassName($id, full: true);
+            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+                continue;
+            }
+
+            $plugin = $this->container->get($class);
+            if ($plugin instanceof Plugins\PermissionsProviderInterface) {
+                $domains[(string)$module['route']] = [
+                    'label' => $module['name'],
+                    'permissions' => $plugin->getPermissions()
+                ];
+            }
+        }
+        return $domains;
     }
 
     /**

@@ -359,4 +359,70 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
         $this->login->logout();
     }
+
+    /**
+     * Test scheduled payments are managed only for contributions permission is granted on
+     */
+    public function testScheduleGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'contribution:schedule');
+        //every contribution can be displayed, only some can be scheduled
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'contribution:read');
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $contrib_data = $this->getContribData();
+            $contrib_data['type_paiement_cotis'] = \Galette\Entity\PaymentType::SCHEDULED;
+            $this->createContrib($contrib_data);
+            $scheduled = new \Galette\Entity\ScheduledPayment($this->zdb);
+            $this->assertTrue($scheduled->check([
+                \Galette\Entity\Contribution::PK => $this->contrib->id,
+                'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+                'scheduled_date' => (new \Safe\DateTime())->format('Y-m-d'),
+                'comment' => 'FAKER' . $this->seed,
+                'amount' => 10.0,
+                'paid' => false
+            ]));
+            $this->assertTrue($scheduled->store());
+            $this->login->logOut();
+
+            //member two is not part of a managed group
+            $group = $this->logGroupManager();
+            $add = $this->createRequest(
+                'addScheduledPayment',
+                [\Galette\Entity\Contribution::PK => (string)$this->contrib->id]
+            );
+            $edit = $this->createRequest('editScheduledPayment', ['id' => (string)$scheduled->getId()]);
+            foreach (['contribution #' . $this->contrib->id => $add, 'scheduled payment #' . $scheduled->getId() => $edit] as $target => $request) {
+                $test_response = $this->app->handle($request);
+                $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+                $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+                $this->expectLogEntry(
+                    \Analog\Analog::WARNING,
+                    'Trying to manage scheduled payments of ' . $target . ' without appropriate permissions'
+                );
+            }
+
+            $request = $this->createRequest('doRemoveScheduledPayment', ['id' => (string)$scheduled->getId()], 'POST');
+            $request = $request->withParsedBody(['id' => (string)$scheduled->getId(), 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to remove scheduled payment #' . $scheduled->getId() . ' without appropriate permissions'
+            );
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred on delete');
+            $this->assertTrue((new \Galette\Entity\ScheduledPayment($this->zdb))->load($scheduled->getId()));
+
+            //once member two is managed, contribution can be scheduled
+            $this->assertTrue($group->setMembers([$member_two]));
+            $this->expectOK($this->app->handle($add));
+            $this->expectOK($this->app->handle($edit));
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:schedule');
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'contribution:read');
+            $this->login->logOut();
+        }
+    }
 }

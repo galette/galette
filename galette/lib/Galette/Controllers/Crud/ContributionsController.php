@@ -233,7 +233,8 @@ class ContributionsController extends CrudController
         ];
         $contrib = new Contribution($this->zdb, $this->login, $args);
 
-        if (!$contrib->canCreate($this->login)) {
+        //the member is checked with posted data, where groups managers are told to select one they manage
+        if (!$this->accessControl->can('contribution:create')) {
             Analog::log(
                 'Trying to add contribution without appropriate ACLs',
                 Analog::WARNING
@@ -481,7 +482,8 @@ class ContributionsController extends CrudController
                 break;
         }
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
+        $read = $raw_type === 'contributions' ? 'contribution:read' : 'transaction:read';
+        if ($this->accessControl->getGroupScope($read) !== null && $value != $this->login->id) {
             if ($value === 'all' || empty($value)) {
                 $value = $this->login->id;
             } else {
@@ -511,22 +513,7 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_children = (int)$value;
         }
 
-        $class = '\\Galette\\Entity\\' . ucwords(trim($raw_type, 's'));
-        $contrib = new $class($this->zdb, $this->login);
-
-        if (!$contrib->canShow($this->login)) {
-            Analog::log(
-                'Trying to display contributions without appropriate ACLs',
-                Analog::WARNING
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
-        }
-
+        //any member lists their own, and their children's, contributions; others are filtered above
         $class = '\\Galette\\Repository\\' . ucwords($raw_type);
         $contrib = new $class($this->zdb, $this->login, $filters);
         $contribs_list = $contrib->getList(true);
@@ -724,6 +711,20 @@ class ContributionsController extends CrudController
     {
         $filter_name = $this->getFilterName($type);
         $post = $request->getParsedBody();
+        $domain = $type === 'transactions' ? 'transaction' : 'contribution';
+
+        if (
+            //transactions cannot be exported, like they cannot be changed in mass
+            isset($post['csv']) && $type === 'contributions' && !$this->accessControl->can('contribution:export')
+            || isset($post['delete']) && !$this->accessControl->can($domain . ':delete')
+            || isset($post['masschange']) && !$this->accessControl->can($domain . ':edit')
+        ) {
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
+        }
 
         if (isset($post['entries_sel'])) {
             $filter_class = '\\Galette\\Filters\\' . ucwords($type . 'List');
@@ -930,8 +931,8 @@ class ContributionsController extends CrudController
                     Contribution::PK => (string)$contrib->id
                 ]
             );
-        } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
-            //contributions list (for member if admin or staff member)
+        } elseif ($this->accessControl->getGroupScope('contribution:read') === null) {
+            //contributions list (for member if allowed to see all contributions)
             $redirect_url = $this->routeparser->urlFor(
                 'contributions',
                 [
@@ -1271,9 +1272,62 @@ class ContributionsController extends CrudController
             default => throw new \OverflowException('Unknown type ' . $args['type']),
         };
 
+        $permission = $raw_type === 'transactions' ? 'transaction:delete' : 'contribution:delete';
+        $ids = array_map(intval(...), (array)($args['ids'] ?? $args['id']));
+        if (!$this->accessControl->can($permission) || !$this->canDeleteAll($raw_type, $ids)) {
+            throw new \RuntimeException('Removal requires ' . $permission . ' permission');
+        }
+
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
         return $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
+    }
+
+    /**
+     * Can current user delete every requested contribution or transaction?
+     *
+     * Delete permission may be granted on some groups only, so each one is
+     * checked; as well as contributions attached to transactions, which are
+     * removed with them.
+     *
+     * @param string     $raw_type Either 'contributions' or 'transactions'
+     * @param array<int> $ids      Identifiers to delete
+     */
+    private function canDeleteAll(string $raw_type, array $ids): bool
+    {
+        $is_transactions = $raw_type === 'transactions';
+        $select = $this->zdb->select($is_transactions ? Transaction::TABLE : Contribution::TABLE);
+        $select->where->in($is_transactions ? Transaction::PK : Contribution::PK, $ids ?: [0]);
+        foreach ($this->zdb->execute($select) as $row) {
+            $entity = $is_transactions
+                ? new Transaction($this->zdb, $this->login, $row)
+                : new Contribution($this->zdb, $this->login, $row);
+            if (!$entity->canDelete($this->login)) {
+                Analog::log(
+                    'Trying to remove ' . $raw_type . ' #' . $entity->id . ' without appropriate permissions',
+                    Analog::WARNING
+                );
+                return false;
+            }
+        }
+
+        if ($is_transactions) {
+            $select = $this->zdb->select(Contribution::TABLE);
+            $select->where->in(Transaction::PK, $ids ?: [0]);
+            foreach ($this->zdb->execute($select) as $row) {
+                $contribution = new Contribution($this->zdb, $this->login, $row);
+                if (!$contribution->canDelete($this->login)) {
+                    Analog::log(
+                        'Trying to remove contribution #' . $contribution->id
+                            . ' attached to a transaction without appropriate permissions',
+                        Analog::WARNING
+                    );
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     // /CRUD - Delete

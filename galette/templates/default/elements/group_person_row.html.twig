@@ -8,7 +8,7 @@
  # One person of the group, see elements/group.html.twig.
  #
  # Expects person, is_member, is_manager, linked (already attached to the
- # group when the page was loaded) and can_edit_persons.
+ # group when the page was loaded), can_edit_persons and can_edit_managers.
  #}
 {% set pid = person.id %}
                             <tr id="person_row_{{ pid }}" data-person="{{ pid }}" data-member="{{ is_member ? 1 : 0 }}" data-manager="{{ is_manager ? 1 : 0 }}" data-linked="{{ linked ? 1 : 0 }}">
@@ -70,7 +70,7 @@
                                     </div>
                                 </td>
                                 <td class="center aligned" data-col-label="{{ _T("Group manager") }}">
-                                    <div class="ui fitted toggle checkbox{% if not can_edit_persons %} disabled{% endif %}">
+                                    <div class="ui fitted toggle checkbox{% if not can_edit_managers %} disabled{% endif %}">
                                         <input
                                             type="checkbox"
                                             name="managers[]"
@@ -78,7 +78,7 @@
                                             class="person-manager"
                                             value="{{ pid }}"
                                             {% if is_manager %}checked="checked"{% endif %}
-                                            {% if not can_edit_persons %}disabled="disabled"{% endif %}
+                                            {% if not can_edit_managers %}disabled="disabled" data-locked="1"{% endif %}
                                         />
                                         <label for="person_manager_{{ pid }}"><span class="visually-hidden">{{ _T("%1$s is manager of the group")|format(person.sname) }}</span></label>
                                     </div>

@@ -321,6 +321,134 @@ class PdfController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test a print grant is enough to print a member card, without edit permission
+     */
+    public function testMemberCardFromPrintGrant(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, ['member:read', 'member:print']);
+        $this->preferences->pref_card_self = false;
+        try {
+            $member_one = $this->getMemberOne();
+            $this->getMemberTwo();
+
+            $mdata = $this->dataAdherentTwo();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($member_one->canEdit($this->login));
+
+            //link is disabled, member one is not up-to-date
+            $test_response = $this->app->handle($this->createRequest('member', ['id' => (string)$member_one->id]));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString('Generate Member Card', (string)$test_response->getBody());
+
+            $this->expectOutputRegex($this->is_pdf_regexp);
+            $test_response = $this->app->handle(
+                $this->createRequest('pdf-members-cards', [\Galette\Entity\Adherent::PK => (string)$member_one->id])
+            );
+            $this->expectOK(
+                $test_response,
+                [
+                    'Content-type' => ['application/pdf'],
+                    'Content-Disposition' => ['attachment;filename="cards.pdf"']
+                ]
+            );
+        } finally {
+            $this->preferences->pref_card_self = true;
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'member:print']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test groups PDF lists groups export is granted on by a role, for members who do not manage them
+     */
+    public function testGroupsPdfFromRole(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, ['group:read', 'group:export']);
+        try {
+            $this->logSuperAdmin();
+            $group = new \Galette\Entity\Group();
+            $group->setName('Exported from a role');
+            $this->assertTrue($group->store());
+            $this->getMemberTwo();
+            $this->login->logOut();
+
+            $mdata = $this->dataAdherentTwo();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isGroupManager());
+
+            $this->expectOutputRegex($this->is_pdf_regexp);
+            $test_response = $this->app->handle($this->createRequest('pdf_groups', ['id' => (string)$group->getId()]));
+            $this->expectOK(
+                $test_response,
+                [
+                    'Content-type' => ['application/pdf'],
+                    'Content-Disposition' => ['attachment;filename="groups_list.pdf"']
+                ]
+            );
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['group:read', 'group:export']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test reading every member does not widen printing, granted on some groups only
+     */
+    public function testMembersPdfPrintScope(): void
+    {
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read']);
+        try {
+            $this->logGroupManager();
+            $member_two = $this->getMemberTwo();
+
+            $filters = new \Galette\Filters\MembersList();
+            $filters->selected = [$member_two->id];
+            $this->session->{$controller->getFilterName('members')} = $filters;
+
+            foreach (['pdf-members-cards', 'pdf-members-labels'] as $route_name) {
+                $request = $this->createRequest($route_name, []);
+                $test_response = $this->app->handle($request);
+                $this->assertSame(['Location' => ['/members']], $test_response->getHeaders(), $route_name);
+                $this->expectFlashData(
+                    [
+                        'error_detected' => [
+                            'Unable to get members list.'
+                        ]
+                    ]
+                );
+                $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get members list.');
+            }
+
+            //groups export, on a group that is not managed
+            $this->login->logOut();
+            $this->logSuperAdmin();
+            $group = new \Galette\Entity\Group();
+            $group->setName('Not managed by member one');
+            $this->assertTrue($group->store());
+            $this->login->logOut();
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $request = $this->createRequest('pdf_groups', ['id' => (string)$group->getId()]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => ['/groups']], $test_response->getHeaders());
+            $this->expectFlashData(
+                [
+                    'error_detected' => [
+                        'Unable to get groups list.'
+                    ]
+                ]
+            );
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get groups list.');
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['member:read', 'group:read']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test group managers cannot get PDF of members they do not manage
      */
     public function testMembersPdfGroupManagerScope(): void
@@ -387,7 +515,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
 
         //exports disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $requests = [
             $this->createRequest('pdf-members-cards', []),
             $this->createRequest('pdf-members-labels', []),
@@ -406,7 +534,7 @@ class PdfController extends GaletteRoutingTestCase
                 ]
             );
         }
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
 
         unset($this->session->{$controller->getFilterName('members')});
         $this->login->logOut();

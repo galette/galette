@@ -15,6 +15,7 @@ use DateInterval;
 use Safe\DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
+use Galette\Features\AccessControlled;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
@@ -104,6 +105,7 @@ use Galette\Features\Dynamics;
  */
 class Adherent implements AccessManagementInterface
 {
+    use AccessControlled;
     use Dynamics;
     use Socials;
     use HasEvent;
@@ -1468,8 +1470,7 @@ class Adherent implements AccessManagementInterface
 
                     if (
                         $value !== $this->$prop
-                        && !$login->isStaff()
-                        && !$login->isAdmin()
+                        && !$this->isGranted('member:manage', $login)
                         && $result->priorite_statut < Members::NON_STAFF_MEMBERS
                     ) {
                         Analog::log(
@@ -1511,7 +1512,7 @@ class Adherent implements AccessManagementInterface
                 break;
             case 'bool_admin_adh':
                 $value = (bool)$value;
-                if ($value !== $this->$prop && !$login->isAdmin()) {
+                if ($value !== $this->$prop && !$this->isGranted('member:grant-admin', $login)) {
                     Analog::log(
                         sprintf(
                             'Non allowed user %1$s attempting to change member %2$s admin flag',
@@ -1525,7 +1526,7 @@ class Adherent implements AccessManagementInterface
                 $this->$prop = $value;
                 break;
             case 'info_adh':
-                if ($value !== $this->$prop && !$login->isStaff() && !$login->isAdmin()) {
+                if ($value !== $this->$prop && !$this->isGranted('member:manage', $login)) {
                     Analog::log(
                         sprintf(
                             'Non allowed user %1$s attempting to change member %2$s admin information',
@@ -1559,7 +1560,7 @@ class Adherent implements AccessManagementInterface
         global $hist, $emitter, $login;
 
         $this->applyDefaultValues();
-        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '' && $this->preferences->pref_bool_create_member) {
+        if ($this->id == '' && !$this->isGranted('member:create', $login) && $this->isGranted('member:create-child', $login)) {
             $this->parent = $login->id;
         }
 
@@ -2183,16 +2184,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canCreate(Login $login): bool
     {
-        global $preferences;
-
-        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        if ($preferences->pref_bool_groupsmanagers_create_member && $login->isGroupManager()) {
-            return true;
-        }
-        return $preferences->pref_bool_create_member && $login->isLogged();
+        return $this->isGranted('member:create', $login);
     }
 
     /**
@@ -2202,16 +2194,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canShow(Login $login): bool
     {
-        //group managers can show members of groups they manage
-        if ($login->isGroupManager()) {
-            foreach ($this->getGroups() as $g) {
-                if ($login->isGroupManager($g->getId())) {
-                    return true;
-                }
-            }
-        }
-
-        return $this->canEdit($login);
+        return $this->isGranted('member:read', $login);
     }
 
     /**
@@ -2221,28 +2204,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        global $preferences;
-
-        //admin and staff users can edit, as well as member itself
-        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        //parent can edit their child cards
-        if ($this->hasParent() && $this->parent_id === $login->id) {
-            return true;
-        }
-
-        //group managers can edit members of groups they manage when pref is on
-        if ($preferences->pref_bool_groupsmanagers_edit_member && $login->isGroupManager()) {
-            foreach ($this->getGroups() as $g) {
-                if ($login->isGroupManager($g->getId())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->isGranted('member:edit', $login);
     }
 
     /**
@@ -2252,8 +2214,7 @@ class Adherent implements AccessManagementInterface
      */
     public function canDelete(Login $login): bool
     {
-        //FIXME: too large.
-        return $this->canEdit($login);
+        return $this->isGranted('member:delete', $login);
     }
 
     /**

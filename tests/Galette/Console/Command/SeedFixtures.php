@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Console\Command;
 
+use Galette\Access\Role;
+use Galette\Access\Roles;
 use Galette\Console\Command\SeedFixtures as SeedFixturesCommand;
 use Galette\Core\MailingHistory;
 use Galette\DynamicFields\DynamicField;
@@ -154,6 +156,42 @@ class SeedFixtures extends GaletteTestCase
         $select->where(['id_group' => $group_id]);
         $results = $this->zdb->execute($select);
         $this->assertGreaterThanOrEqual(1, $results->count());
+    }
+
+    /**
+     * Test that seeding creates roles, given globally or for a group
+     */
+    public function testSeedCreatesRoles(): void
+    {
+        $this->runSeed();
+
+        $select = $this->zdb->select(Roles::MEMBERS_TABLE, 'mr');
+        $select->join(['r' => PREFIX_DB . Role::TABLE], 'r.' . Role::PK . ' = mr.' . Role::PK, ['name'])
+            ->join(['a' => PREFIX_DB . Adherent::TABLE], 'a.id_adh = mr.id_adh', ['login_adh'])
+            ->join(
+                name: ['g' => PREFIX_DB . Group::TABLE],
+                on: 'g.id_group = mr.id_group',
+                columns: ['group_name'],
+                type: $select::JOIN_LEFT
+            )
+            ->where->isNull('r.role_key');
+        $given = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $given[$row->name] = [$row->login_adh, $row->group_name];
+        }
+        ksort($given);
+        $this->assertSame(
+            [
+                'Secrétariat de groupe' => ['sally.ragdoll', 'Les Âmes Errantes'],
+                'Trésorerie' => ['hermione.granger', null],
+            ],
+            $given
+        );
+
+        $select = $this->zdb->select(Roles::PERMISSIONS_TABLE, 'p');
+        $select->join(['r' => PREFIX_DB . Role::TABLE], 'r.' . Role::PK . ' = p.' . Role::PK, [])
+            ->where(['r.name' => 'Trésorerie']);
+        $this->assertCount(10, $this->zdb->execute($select));
     }
 
     /**
@@ -338,6 +376,14 @@ class SeedFixtures extends GaletteTestCase
         $select = $this->zdb->select(MailingHistory::TABLE);
         $select->where->in('mailing_sender', $member_ids);
         $this->assertSame(0, $this->zdb->execute($select)->count());
+
+        // Verify fixture roles are gone, system roles are kept
+        $select = $this->zdb->select(Role::TABLE);
+        $select->where->isNull('role_key');
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+        $select = $this->zdb->select(Role::TABLE);
+        $select->where->isNotNull('role_key');
+        $this->assertSame(5, $this->zdb->execute($select)->count());
     }
 
     /**

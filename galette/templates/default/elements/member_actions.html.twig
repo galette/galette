@@ -16,7 +16,7 @@
 
 {% import "macros.twig" as macros %}
 
-{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+{% set two_factor_reset = preferences.pref_2fa_mode != constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') and can('member:credentials', member) %}
 
 {% if forms_only is defined and forms_only %}
     {% if two_factor_reset %}
@@ -62,7 +62,7 @@
         <i class="ellipsis vertical icon" aria-hidden="true"></i>
         <span class="visually-hidden">{{ _T("More actions") }}</span>
         <div class="menu">
-        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
+        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and can('member:credentials', member) %}
             <a
                 href="{{ url_for("retrieve-pass", {"id_adh": member.id}) }}"
                 id="btn_lostpassword"
@@ -84,7 +84,8 @@
                 {{ _T("Reset two-factor authentication") }}
             </button>
         {% endif %}
-        {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
+        {% set can_print = can('member:read', member) and can('member:print', member) %}
+        {% if can_print or (preferences.pref_card_self == 1 and member.canEdit(login)) %}
             <a
                 href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
                 class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
@@ -92,6 +93,8 @@
                 <i class="id badge icon" aria-hidden="true"></i>
                 {{ _T("Generate Member Card") }}
             </a>
+        {% endif %}
+        {% if member.canEdit(login) and (preferences.pref_card_self == 1 or can_print) %}
             <a
                 href="{{ url_for("adhesionForm", {"id_adh": member.id}) }}"
                 class="ui item"
@@ -100,7 +103,7 @@
                 {{ _T("Adhesion form") }}
             </a>
         {% endif %}
-        {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
+        {% if permission_scope('contribution:read') == 'all' or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
             <a
                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
                 class="ui item"
@@ -109,7 +112,7 @@
                 {{ _T("View contributions") }}
             </a>
         {% endif %}
-        {% if login.isAdmin() or login.isStaff() %}
+        {% if permission_scope('contribution:create') == 'all' %}
             <a
                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
                 class="ui item"
@@ -124,6 +127,8 @@
                 <i class="gift icon" aria-hidden="true"></i>
                 {{ _T("Add a donation") }}
             </a>
+        {% endif %}
+        {% if can('member:create') and can('member:manage', member) %}
             <a
                 href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"
                 title="{{ _T("Create a new member with %1$s information.")|format(member.sfullname) }}"
@@ -132,6 +137,9 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
+        {% endif %}
+        {# plugins actions do not declare the permissions they need yet #}
+        {% if login.isAdmin() or login.isStaff() %}
             {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
             {% for action in actions %}
                 {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}

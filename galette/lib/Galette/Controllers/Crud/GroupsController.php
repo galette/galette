@@ -135,7 +135,7 @@ class GroupsController extends CrudController
 
         //group managers only see the groups they manage, and their ancestors to keep the tree readable
         $visible_groups = null;
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+        if ($this->accessControl->getGroupScope('group:read') !== null) {
             $visible_groups = [];
             foreach ($groups_list as $visible_group) {
                 do {
@@ -258,7 +258,8 @@ class GroupsController extends CrudController
                 'is_member'         => true,
                 'is_manager'        => false,
                 'linked'            => false,
-                'can_edit_persons'  => true
+                'can_edit_persons'  => true,
+                'can_edit_managers' => $this->accessControl->can('member:manage', new Group((int)($post['id_group'] ?? 0)))
             ]
         );
         return $response;
@@ -294,9 +295,7 @@ class GroupsController extends CrudController
 
         $groups_list = $groups->getList();
 
-        if ($this->login->isGroupManager($id)) {
-            $group->load($id);
-        } else {
+        if (!$group->load($id) || !$group->canShow($this->login)) {
             Analog::log(
                 'Trying to display group ' . $id . ' without appropriate permissions',
                 Analog::INFO
@@ -318,7 +317,7 @@ class GroupsController extends CrudController
         ];
 
         //members that can be added to the group
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if ($group->canEdit($this->login) && $this->accessControl->getGroupScope('member:read') === null) {
             $m = new Members();
             $list = $m->getDropdownMembers($this->zdb, $this->login);
             $params['members'] = [
@@ -509,6 +508,9 @@ class GroupsController extends CrudController
         $group = new Group((int)$post['id']);
         $group->setLogin($this->login);
         $cascade = isset($post['cascade']);
+        if (!$this->canDeleteGroup($group, $cascade)) {
+            throw new \RuntimeException('Removal requires group:delete permission');
+        }
         $is_deleted = $group->remove($cascade);
 
         if ($is_deleted !== true) {
@@ -537,6 +539,35 @@ class GroupsController extends CrudController
         return parent::getconfirmDeleteParams($request) + ['with_cascade' => true];
     }
 
+    /**
+     * Can current user delete a group, and its subgroups when cascading?
+     *
+     * Delete permission may be granted on some groups only.
+     *
+     * @param Group $group   Group to delete
+     * @param bool  $cascade Whether subgroups are deleted as well
+     */
+    private function canDeleteGroup(Group $group, bool $cascade): bool
+    {
+        if (!$this->accessControl->can('group:delete', $group)) {
+            Analog::log(
+                'Trying to remove group ' . $group->getId() . ' without appropriate permissions',
+                Analog::WARNING
+            );
+            return false;
+        }
+
+        if ($cascade) {
+            foreach ($group->getGroups() as $subgroup) {
+                if (!$this->canDeleteGroup($subgroup, cascade: true)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     // CRUD - Delete
 
     /**
@@ -553,7 +584,7 @@ class GroupsController extends CrudController
         if (
             $parent_id === 0
             || $parent_id === $group->getParentGroup()?->getId()
-            || $this->login->isGroupManager($parent_id)
+            || (new Group($parent_id))->canEdit($this->login)
         ) {
             return true;
         }
@@ -569,11 +600,12 @@ class GroupsController extends CrudController
     /**
      * Get persons posted for a group.
      *
-     * Only admin and staff can change managers and members from the group page,
-     * as the user interface does. Group managers change members of their groups
-     * from member pages. For admin and staff, the group form always posts an
-     * empty value, so that an emptied list is stored; a warning is logged only
-     * if a group manager tries to change them.
+     * Only those who can read every member can change managers and members from
+     * the group page, as the user interface does. Others, like group managers,
+     * change members of their groups from member pages. For the former, the
+     * group form always posts an empty value, so that an emptied list is stored;
+     * a warning is logged only if someone else tries to change them.
+     * Managers also require member:manage on the group, as on member pages.
      *
      * @param Group        $group Group instance, before changes
      * @param array<mixed> $ids   Posted persons ids
@@ -588,7 +620,10 @@ class GroupsController extends CrudController
             fn(int $id): bool => $id > 0
         )));
 
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if (
+            $this->accessControl->getGroupScope('member:read') === null
+            && ($type !== Group::MANAGER_TYPE || $this->accessControl->can('member:manage', $group))
+        ) {
             if (count($ids) === 0) {
                 return [];
             }

@@ -1232,9 +1232,6 @@ class Contribution extends GaletteTestCase
      */
     public function testCan(): void
     {
-        global $preferences;
-        $this->assertFalse($preferences->pref_bool_groupsmanagers_see_contributions);
-
         $this->logSuperAdmin();
         $this->getMemberOne();
         //create contribution for member
@@ -1351,10 +1348,8 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($contrib->canShow($this->login));
 
-        $preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $can_show = $contrib->canShow($this->login);
-        $preferences->pref_bool_groupsmanagers_see_contributions = $this->preferences->getDefaults()['pref_bool_groupsmanagers_see_contributions'];
-        $this->assertTrue($can_show); //@phpstan-ignore method.impossibleType (class handle that)
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
+        $this->assertTrue($contrib->canShow($this->login));
     }
 
     /**
@@ -1946,5 +1941,93 @@ class Contribution extends GaletteTestCase
         $check = $contrib->setNoCheckLogin()->check($contrib_data, [], []);
         $this->assertTrue($check);
         $this->expectNoLogEntry();
+    }
+
+    /**
+     * Test contributions are loaded and changed with edit permission alone
+     */
+    public function testEditScope(): void
+    {
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'contribution:create']);
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'contribution:edit');
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $this->createContribution();
+            $contrib_id = $this->contrib->id;
+            $data = $this->getContribData();
+            $this->login->logOut();
+
+            $group = $this->logGroupManager();
+            $this->assertTrue($group->setMembers([$member_two]));
+
+            $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login);
+            $this->assertTrue($contribution->load($contrib_id));
+            $this->assertTrue($contribution->canEdit($this->login));
+            $data['montant_cotis'] = 93;
+            $this->assertTrue($contribution->check($data, $contribution->getRequired(), []));
+
+            //a new contribution still requires create permission
+            $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1]);
+            $check = $contribution->check($data, $contribution->getRequired(), []);
+            $this->assertIsArray($check);
+            $this->assertContains('- Please select a member from a group you manage.', $check);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been threw attempting to edit/store a contribution');
+        } finally {
+            $this->login->logOut();
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'contribution:create']);
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:edit');
+        }
+    }
+
+    /**
+     * Test attaching a contribution to a transaction is checked on that transaction
+     */
+    public function testAttachScope(): void
+    {
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:attach');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['transaction:read', 'contribution:create']);
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+            $this->assertTrue(
+                $transaction->check(
+                    [
+                        'id_adh' => $member_two->id,
+                        'trans_date' => (new DateTime())->format('Y-m-d'),
+                        'trans_amount' => 92,
+                        'trans_desc' => 'FAKER' . $this->seed,
+                        'type_paiement_trans' => 6,
+                    ],
+                    [],
+                    []
+                )
+            );
+            $this->assertTrue($transaction->store($this->history));
+            $data = $this->getContribData();
+            $data[\Galette\Entity\Transaction::PK] = $transaction->id;
+            $this->login->logOut();
+
+            $group = $this->logGroupManager();
+            $this->assertTrue($group->setMembers([$member_two]));
+
+            $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1]);
+            $check = $contribution->check($data, $contribution->getRequired(), []);
+            $this->assertIsArray($check);
+            $this->assertContains('- You are not allowed to attach a contribution to this transaction!', $check);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to attach a contribution to transaction #' . $transaction->id . ' without appropriate permissions'
+            );
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been threw attempting to edit/store a contribution');
+
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:attach');
+            $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1]);
+            $this->assertTrue($contribution->check($data, $contribution->getRequired(), []));
+        } finally {
+            $this->login->logOut();
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:attach');
+        }
     }
 }
