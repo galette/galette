@@ -191,7 +191,7 @@ class SeedFixtures extends GaletteTestCase
         $select = $this->zdb->select(Roles::PERMISSIONS_TABLE, 'p');
         $select->join(['r' => PREFIX_DB . Role::TABLE], 'r.' . Role::PK . ' = p.' . Role::PK, [])
             ->where(['r.name' => 'Trésorerie']);
-        $this->assertCount(11, $this->zdb->execute($select));
+        $this->assertCount(10, $this->zdb->execute($select));
     }
 
     /**

@@ -714,7 +714,8 @@ class ContributionsController extends CrudController
         $domain = $type === 'transactions' ? 'transaction' : 'contribution';
 
         if (
-            isset($post['csv']) && !$this->accessControl->can($domain . ':export')
+            //transactions cannot be exported, like they cannot be changed in mass
+            isset($post['csv']) && $type === 'contributions' && !$this->accessControl->can('contribution:export')
             || isset($post['delete']) && !$this->accessControl->can($domain . ':delete')
             || isset($post['masschange']) && !$this->accessControl->can($domain . ':edit')
         ) {

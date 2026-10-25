@@ -113,8 +113,8 @@ $core_acls = [
     '/contributionDates/i'              => 'contribution:create|contribution:edit',
     '/(do)?editContribution/i'          => 'contribution:edit',
     //contributions and transactions share batch, export and removal routes; type is checked in controllers
-    'batch-contributionslist'           => 'contribution:edit|contribution:delete|contribution:export|transaction:delete|transaction:export',
-    'csv-contributionslist'             => 'contribution:export|transaction:export',
+    'batch-contributionslist'           => 'contribution:edit|contribution:delete|contribution:export|transaction:delete',
+    'csv-contributionslist'             => 'contribution:export',
     'removeContribution'                => 'contribution:delete|transaction:delete',
     'removeContributions'               => 'contribution:delete|transaction:delete',
     'doRemoveContribution'              => 'contribution:delete|transaction:delete',

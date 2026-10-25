@@ -1668,7 +1668,6 @@ class SeedFixtures extends AbstractCommand
                     'transaction:attach',
                     'transaction:create',
                     'transaction:edit',
-                    'transaction:export',
                     'transaction:read',
                 ],
                 'members' => ['hermione.granger' => null],
