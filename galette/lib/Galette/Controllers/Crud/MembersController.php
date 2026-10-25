@@ -337,6 +337,7 @@ class MembersController extends CrudController
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
+                'readable_groups'   => $this->accessControl->getGroupScope('group:read'),
                 'time'              => time(),
                 'display_elements'  => $display_elements,
                 'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),

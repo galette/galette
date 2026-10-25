@@ -353,7 +353,7 @@ class Contribution implements AccessManagementInterface
     private function getLoadableGroups(): ?array
     {
         $groups = [];
-        foreach (['contribution:read', 'contribution:create', 'contribution:edit'] as $permission) {
+        foreach (['contribution:read', 'contribution:create', 'contribution:edit', 'contribution:schedule'] as $permission) {
             $scope = $this->getGroupScope($permission, $this->login);
             if ($scope === null) {
                 return null;
@@ -586,7 +586,21 @@ class Contribution implements AccessManagementInterface
                         break;
                     case Transaction::PK:
                         if ($value != '') {
-                            $this->transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            $transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            //attaching to another transaction is granted on that transaction
+                            if (
+                                $transaction->id !== $this->transaction?->id
+                                && ($transaction->id === null || !$transaction->canAttachAndDetach($this->login))
+                            ) {
+                                Analog::log(
+                                    'Trying to attach a contribution to transaction #' . $value
+                                        . ' without appropriate permissions',
+                                    Analog::WARNING
+                                );
+                                $this->errors[] = _T("- You are not allowed to attach a contribution to this transaction!");
+                                break;
+                            }
+                            $this->transaction = $transaction;
                             if (!isset($values['type_paiement_cotis']) && isset($this->transaction->payment_type)) {
                                 $this->payment_type = $this->transaction->payment_type;
                             }
@@ -1432,6 +1446,16 @@ class Contribution implements AccessManagementInterface
     public function canDelete(Login $login): bool
     {
         return $this->isGranted('contribution:delete', $login);
+    }
+
+    /**
+     * Can current logged-in user manage contribution scheduled payments?
+     *
+     * @param Login $login Login instance
+     */
+    public function canSchedule(Login $login): bool
+    {
+        return $this->isGranted('contribution:schedule', $login);
     }
 
     /**

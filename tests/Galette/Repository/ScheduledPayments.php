@@ -130,8 +130,9 @@ class ScheduledPayments extends GaletteTestCase
      */
     public function testGetListGroupScope(): void
     {
-        //scheduled payments objects load their contribution
-        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:schedule', 'contribution:read']);
+        //schedule permission is enough to load the contributions of the scheduled payments
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'contribution:schedule');
         try {
             $this->logSuperAdmin();
             $member_two = $this->getMemberTwo();
@@ -165,7 +166,8 @@ class ScheduledPayments extends GaletteTestCase
             $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
             $this->assertCount(1, $scheduledPayments->getList(as_object: true));
         } finally {
-            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['contribution:schedule', 'contribution:read']);
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:schedule');
+            $this->grantToRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
             $this->login->logOut();
         }
     }

@@ -2169,6 +2169,51 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test groups links on a member profile follow group read permission, not groups managers status
+     */
+    public function testShowGroupsLinksFromRole(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Read from a role');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        //a role giving group and members read permissions, on that group only
+        $insert = $this->zdb->insert(\Galette\Access\Roles::TABLE);
+        $insert->values(['name' => 'Group readers', 'id_parent' => null]);
+        $this->zdb->execute($insert);
+        $role_id = (int)$this->zdb->getLastGeneratedValue($this->container->get(\Galette\Access\Roles::class));
+        foreach (['group:read', 'member:read'] as $permission) {
+            $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+            $insert->values([\Galette\Access\Roles::PK => $role_id, 'permission' => $permission]);
+            $this->zdb->execute($insert);
+        }
+        $insert = $this->zdb->insert(\Galette\Access\Roles::MEMBERS_TABLE);
+        $insert->values(['id_adh' => $member_one->id, \Galette\Access\Roles::PK => $role_id, 'id_group' => $group->getId()]);
+        $this->zdb->execute($insert);
+        $this->container->get(\Galette\Access\RoleResolver::class)->reset();
+
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isGroupManager());
+
+            $test_response = $this->app->handle($this->createRequest('member', ['id' => (string)$member_two->id]));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString(
+                'href="' . $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . '" class="ui label"',
+                (string)$test_response->getBody()
+            );
+        } finally {
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test member duplication is checked against the duplicated member
      */
     public function testMemberDuplicateGroupScope(): void

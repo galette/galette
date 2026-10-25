@@ -108,7 +108,7 @@
                                     <div class="ui large labels">
             {% for kgroup, group in groups %}
                 {% if member.isGroupMember(group) or member.isGroupManager(group) %}
-                                        {% set group_reachable = permission_scope('group:read') == 'all' or login.isGroupManager(kgroup) %}
+                                        {% set group_reachable = readable_groups is null or kgroup in readable_groups %}
                                         <a href="{% if group_reachable %}{{ url_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui label{% if not group_reachable %} disabled notmanaged{% endif %}">
                     {% if member.isGroupMember(group) %}
                                             <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}" aria-hidden="true"></i>

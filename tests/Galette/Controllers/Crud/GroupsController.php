@@ -510,6 +510,100 @@ class GroupsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test groups can be dragged only under groups that can be edited
+     */
+    public function testDragUnderEditableGroupsOnly(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'group:read');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        try {
+            $group = $this->logGroupManager();
+            $this->login->logOut();
+            $other = new \Galette\Entity\Group();
+            $other->setName('Read only');
+            $this->assertTrue($other->store());
+
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $test_response = $this->app->handle($this->createRequest('groups'));
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertMatchesRegularExpression(
+                '/data-group="' . $group->getId() . '"[^>]+data-managed="1"/',
+                $body
+            );
+            $this->assertMatchesRegularExpression(
+                '/data-group="' . $other->getId() . '"[^>]+data-managed="0"/',
+                $body
+            );
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'group:read');
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test group removal is checked on the removed group, and on its subgroups when cascading
+     */
+    public function testDeleteGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:delete');
+        try {
+            $group = $this->logGroupManager();
+            $this->login->logOut();
+
+            $other = new \Galette\Entity\Group();
+            $other->setName('Not managed');
+            $this->assertTrue($other->store());
+            $child = new \Galette\Entity\Group();
+            $child->setName('Not managed child');
+            $child->setParentGroup($group->getId());
+            $this->assertTrue($child->store());
+
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $test_response = $this->app->handle($this->createRequest('groups'));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString(
+                $this->routeparser->urlFor('removeGroup', ['id' => (string)$group->getId()]),
+                (string)$test_response->getBody()
+            );
+
+            foreach ([$other, $group] as $target) {
+                $request = $this->createRequest('doRemoveGroup', ['id' => (string)$target->getId()], 'POST');
+                $request = $request->withParsedBody(
+                    ['id' => (string)$target->getId(), 'confirm' => true, 'cascade' => true]
+                );
+                $test_response = $this->app->handle($request);
+                $this->assertSame(301, $test_response->getStatusCode());
+                $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
+                //managed group subgroup is not managed
+                $refused = $target === $other ? $other : $child;
+                $this->expectLogEntry(
+                    \Analog\Analog::WARNING,
+                    'Trying to remove group ' . $refused->getId() . ' without appropriate permissions'
+                );
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred on delete');
+                $this->assertTrue((new \Galette\Entity\Group())->load($target->getId()));
+            }
+            $this->assertTrue((new \Galette\Entity\Group())->load($child->getId()));
+
+            //without subgroups, managed group can be removed
+            $this->assertTrue($child->remove());
+            $request = $this->createRequest('doRemoveGroup', ['id' => (string)$group->getId()], 'POST');
+            $request = $request->withParsedBody(['id' => (string)$group->getId(), 'confirm' => true, 'cascade' => true]);
+            $test_response = $this->app->handle($request);
+            $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
+            $this->assertFalse((new \Galette\Entity\Group())->load($group->getId()));
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:delete');
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test group managers allowed to edit groups do not change persons from the group page
      */
     public function testEditPersonsAsGroupManager(): void

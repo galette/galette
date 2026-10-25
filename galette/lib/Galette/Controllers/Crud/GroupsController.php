@@ -508,6 +508,9 @@ class GroupsController extends CrudController
         $group = new Group((int)$post['id']);
         $group->setLogin($this->login);
         $cascade = isset($post['cascade']);
+        if (!$this->canDeleteGroup($group, $cascade)) {
+            throw new \RuntimeException('Removal requires group:delete permission');
+        }
         $is_deleted = $group->remove($cascade);
 
         if ($is_deleted !== true) {
@@ -534,6 +537,35 @@ class GroupsController extends CrudController
     protected function getconfirmDeleteParams(Request $request): array
     {
         return parent::getconfirmDeleteParams($request) + ['with_cascade' => true];
+    }
+
+    /**
+     * Can current user delete a group, and its subgroups when cascading?
+     *
+     * Delete permission may be granted on some groups only.
+     *
+     * @param Group $group   Group to delete
+     * @param bool  $cascade Whether subgroups are deleted as well
+     */
+    private function canDeleteGroup(Group $group, bool $cascade): bool
+    {
+        if (!$this->accessControl->can('group:delete', $group)) {
+            Analog::log(
+                'Trying to remove group ' . $group->getId() . ' without appropriate permissions',
+                Analog::WARNING
+            );
+            return false;
+        }
+
+        if ($cascade) {
+            foreach ($group->getGroups() as $subgroup) {
+                if (!$this->canDeleteGroup($subgroup, cascade: true)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     // CRUD - Delete
