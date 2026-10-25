@@ -1512,14 +1512,16 @@ class ContributionsController extends GaletteRoutingTestCase
         $filters = $this->session->{$controller->getFilterName('contributions', ['suffix' => 'masschange'])};
         $this->assertSame([$contrib_one->id, $contrib_two->id], $filters->selected);
 
-        //mass change is not available on transactions
-        $request = $this->createRequest('batch-contributionslist', ['type' => 'transactions'], 'POST');
-        $request = $request->withParsedBody([
-            'masschange' => true,
-            'entries_sel' => [1]
-        ]);
-        $test_response = $this->app->handle($request);
-        $this->assertSame(500, $test_response->getStatusCode());
+        //neither mass change nor CSV export are available on transactions
+        foreach (['masschange', 'csv'] as $action) {
+            $request = $this->createRequest('batch-contributionslist', ['type' => 'transactions'], 'POST');
+            $request = $request->withParsedBody([
+                $action => true,
+                'entries_sel' => [1]
+            ]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(500, $test_response->getStatusCode(), $action);
+        }
     }
 
     /**

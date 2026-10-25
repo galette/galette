@@ -15,6 +15,7 @@ use Safe\DateTime;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Contributions;
 use Galette\Filters\ContributionsList;
@@ -40,16 +41,14 @@ class ContributionsCsv extends CsvOut
     /**
      * Default constructor
      *
-     * @param Db     $zdb   Db instance
-     * @param Login  $login Login instance
-     * @param string $type  One of 'contributions' or 'transactions'
+     * @param Db    $zdb   Db instance
+     * @param Login $login Login instance
      */
     public function __construct(
         private readonly Db $zdb,
-        private readonly Login $login,
-        private readonly string $type
+        private readonly Login $login
     ) {
-        $this->filename = 'filtered_' . $type . 'list.csv';
+        $this->filename = 'filtered_contributionslist.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
         parent::__construct();
     }
@@ -61,8 +60,7 @@ class ContributionsCsv extends CsvOut
      */
     public function exportContributions(ContributionsList $filters): void
     {
-        $class = '\\Galette\\Entity\\' . ucwords(trim($this->type, 's'));
-        $contrib = new $class($this->zdb, $this->login);
+        $contrib = new Contribution($this->zdb, $this->login);
 
         $fields = $contrib->fields;
         //not a real data

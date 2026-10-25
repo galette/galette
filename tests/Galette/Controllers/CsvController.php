@@ -768,8 +768,7 @@ class CsvController extends GaletteRoutingTestCase
         $this->getMemberOne();
 
         $route_name = 'csv-contributionslist';
-        $route_arguments = ['type' => 'contributions'];
-        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $this->createRequest($route_name, [], 'POST');
 
         //login is required to access this page
         //Refused from authenticate middleware
