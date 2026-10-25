@@ -595,6 +595,7 @@ class GroupsController extends GaletteRoutingTestCase
             $request = $this->createRequest('doRemoveGroup', ['id' => (string)$group->getId()], 'POST');
             $request = $request->withParsedBody(['id' => (string)$group->getId(), 'confirm' => true, 'cascade' => true]);
             $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
             $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
             $this->assertFalse((new \Galette\Entity\Group())->load($group->getId()));
         } finally {
