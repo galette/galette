@@ -137,7 +137,6 @@ class PluginInitDbControllerTest extends GaletteRoutingTestCase
 
         $body = $this->getPage(self::PLUGIN_INSTALL_ID);
         $this->assertStringContainsString("Database of plugin 'Galette Db Install Plugin' will be installed.", $body);
-        $this->assertStringNotContainsString('confirm_reinstall', $body);
         $this->assertStringNotContainsString('install_type', $body);
         $this->assertNull($this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
 
@@ -169,28 +168,23 @@ class PluginInitDbControllerTest extends GaletteRoutingTestCase
     }
 
     /**
-     * Reinstalling an up to date plugin requires an explicit confirmation
+     * An up to date plugin cannot be reinstalled: that would erase its data
      */
-    public function testReinstallRequiresConfirmation(): void
+    public function testUpToDateRefused(): void
     {
         $this->seedVersion(self::PLUGIN_UPGRADE_ID, '0.2');
         $this->loadTestPlugins();
         $this->logSuperAdmin();
         $this->assertFalse($this->plugins->isDisabled(self::PLUGIN_UPGRADE_ID));
 
-        $body = $this->getPage(self::PLUGIN_UPGRADE_ID);
-        $this->assertStringContainsString('A new installation will erase all its data.', $body);
-        $this->assertStringContainsString('name="confirm_reinstall"', $body);
-
-        //not confirmed: nothing is run
-        $body = $this->postConfirm(self::PLUGIN_UPGRADE_ID);
-        $this->assertStringContainsString('Please confirm you want to erase existing data.', $body);
-        $this->assertStringNotContainsString('has been successfully installed!', $body);
+        foreach (['GET', 'POST'] as $method) {
+            $request = $this->createRequest('pluginInitDb', ['id' => self::PLUGIN_UPGRADE_ID], $method)
+                ->withParsedBody(['confirm' => '1']);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(404, $test_response->getStatusCode());
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Plugin `plugin-db-upgrade` is up to date and cannot be initialized.');
+        }
         $this->assertFalse($this->zdb->tableExists(PREFIX_DB . 'plugin_db_upgrade_test'));
-
-        $body = $this->postConfirm(self::PLUGIN_UPGRADE_ID, ['confirm_reinstall' => '1']);
-        $this->assertStringContainsString("Plugin 'Galette Db Upgrade Plugin' has been successfully installed!", $body);
-        $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
     }
 
     /**
