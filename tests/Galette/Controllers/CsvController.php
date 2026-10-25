@@ -987,4 +987,36 @@ class CsvController extends GaletteRoutingTestCase
             $this->login->logOut();
         }
     }
+
+    /**
+     * Test importing groups managers requires to manage members of every group
+     */
+    public function testImportManagersRequiresGlobalMemberManage(): void
+    {
+        $model = new \Galette\Entity\ImportModel();
+        $model->setFields(['nom_adh', 'prenom_adh', \Galette\IO\CsvIn::MANAGED_GROUPS_FIELD]);
+        $this->assertTrue($model->store($this->zdb));
+
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:import');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+        try {
+            //member:manage is granted on the managed group only
+            $this->logGroupManager();
+            $this->assertTrue($this->container->get(\Galette\Access\AccessControl::class)->can('member:manage'));
+
+            $request = $this->createRequest('doImport', [], 'POST');
+            $request = $request->withParsedBody(['import_file' => 'uploaded_file.csv']);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to import groups managers without appropriate permissions');
+            $this->expectFlashData([
+                'error_detected' => ['You are not allowed to import groups managers; remove that column from the import model.']
+            ]);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:import');
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+            $this->assertTrue($model->remove($this->zdb));
+            $this->login->logOut();
+        }
+    }
 }

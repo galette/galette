@@ -24,7 +24,7 @@
 ] %}
 
 {% macro group_item(login, can_export, can_edit, group, level, parent_id, visible_groups) %}
-    <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if can('group:read', group) %}1{% else %}0{% endif %}">
+    <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if can('group:edit', group) %}1{% else %}0{% endif %}">
         <td class="left{% if can('group:edit', group) %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
             {% for i in 0..level %}{% if not loop.first %}<i class="icon group-indent" aria-hidden="true"></i>{% endif %}{% endfor %}
             {% if can('group:edit', group) %}
@@ -39,7 +39,7 @@
             {{ group.getName() }}
         </td>
         <td class="center actions_row collapsing">
-            {% if can_export and can('group:read', group) %}
+            {% if can('group:read', group) and can('group:export', group) %}
                 <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="icon-only">
                     <i class="file pdf green icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Export as PDF") }}</span>
@@ -47,11 +47,11 @@
             {% endif %}
             {% if can('group:read', group) %}
                 <a href="{{ url_for("editGroup", {"id": group.getId()}) }}" class="icon-only">
-                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
-                    <span class="visually-hidden">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
+                    <i class="ui {% if can('group:edit', group) %}edit{% else %}eye outline{% endif %} icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% if can('group:edit', group) %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
                 </a>
             {% endif %}
-            {% if can('group:delete') %}
+            {% if can('group:delete', group) %}
                 <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete icon-only">
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Delete") }}</span>

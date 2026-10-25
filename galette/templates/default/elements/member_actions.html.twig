@@ -84,7 +84,8 @@
                 {{ _T("Reset two-factor authentication") }}
             </button>
         {% endif %}
-        {% if member.canEdit(login) and (preferences.pref_card_self == 1 or can('member:print', member)) %}
+        {% set can_print = can('member:read', member) and can('member:print', member) %}
+        {% if can_print or (preferences.pref_card_self == 1 and member.canEdit(login)) %}
             <a
                 href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
                 class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
@@ -92,6 +93,8 @@
                 <i class="id badge icon" aria-hidden="true"></i>
                 {{ _T("Generate Member Card") }}
             </a>
+        {% endif %}
+        {% if member.canEdit(login) and (preferences.pref_card_self == 1 or can_print) %}
             <a
                 href="{{ url_for("adhesionForm", {"id_adh": member.id}) }}"
                 class="ui item"
