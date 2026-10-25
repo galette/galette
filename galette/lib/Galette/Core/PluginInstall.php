@@ -71,7 +71,7 @@ class PluginInstall extends Install
         } else {
             $this
                 ->setMode(self::INSTALL)
-                ->setInstalledVersion(null);
+                ->setInstalledVersion(version: null);
         }
 
         return $this;
