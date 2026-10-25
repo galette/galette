@@ -281,7 +281,6 @@ class Permissions
             ),
             new Permission('transaction:edit', _T('Edit transactions'), $staff),
             new Permission('transaction:delete', _T('Delete transactions'), $staff),
-            new Permission('transaction:export', _T('Export transactions as CSV'), $staff),
             new Permission(
                 name: 'transaction:attach',
                 label: _T('Attach contributions to transactions'),

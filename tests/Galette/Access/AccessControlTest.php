@@ -152,7 +152,7 @@ class AccessControlTest extends GaletteTestCase
             'doEditContribution' => 'contribution:edit',
             'massAddContributions' => 'contribution:mass-create',
             'removeContribution' => 'contribution:delete|transaction:delete',
-            'csv-contributionslist' => 'contribution:export|transaction:export',
+            'csv-contributionslist' => 'contribution:export',
             'addTransaction' => 'transaction:create',
             'doAddTransaction' => 'transaction:create',
             'editTransaction' => 'transaction:create|transaction:edit|transaction:attach',

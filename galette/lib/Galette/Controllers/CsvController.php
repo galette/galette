@@ -730,7 +730,7 @@ class CsvController extends AbstractController
     )]
     public function contributionsExport(Request $request, Response $response): Response
     {
-        if (!$this->accessControl->can($type === 'transactions' ? 'transaction:export' : 'contribution:export')) {
+        if (!$this->accessControl->can('contribution:export')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],

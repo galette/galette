@@ -77,7 +77,7 @@ class ContributionsCsv extends CsvOut
 
         $contributions = new Contributions($this->zdb, $this->login, $filters);
         //export may be granted on some groups only
-        $contributions->restrictTo($this->type === 'transactions' ? 'transaction:export' : 'contribution:export');
+        $contributions->restrictTo('contribution:export');
         $contributions_list = $contributions->getArrayList($filters->selected);
 
         $ptypes = PaymentTypes::getAll();
