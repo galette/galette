@@ -25,6 +25,7 @@ use Throwable;
 
 use function Safe\dir;
 use function Safe\file_put_contents;
+use function Safe\preg_match;
 use function Safe\realpath;
 
 /**
@@ -42,7 +43,8 @@ use function Safe\realpath;
  *      date: ?string,
  *      priority: int,
  *      route: ?string,
- *      dbversion: ?float
+ *      dbversion: ?float,
+ *      repository?: string
  *  }
  * @phpstan-type Modules array<ModuleId, Module>
  */
@@ -383,16 +385,18 @@ class Plugins
      * <var>$priority</var> is an integer. Modules are sorted by priority and name.
      * Lowest priority comes first.
      *
-     * @param string                $name     Module name
-     * @param string                $desc     Module description
-     * @param string                $author   Module author name
-     * @param string                $version  Module version
-     * @param ?string               $compver  Galette version compatibility
-     * @param ?string               $route    Module route name
-     * @param ?string               $date     Module release date
-     * @param ?array<string,string> $acls     Module routes ACLs
-     * @param ?int                  $priority Module priority
-     * @param ?float                $dbver    Module database version
+     * @param string                $name       Module name
+     * @param string                $desc       Module description
+     * @param string                $author     Module author name
+     * @param string                $version    Module version
+     * @param ?string               $compver    Galette version compatibility
+     * @param ?string               $route      Module route name
+     * @param ?string               $date       Module release date
+     * @param ?array<string,string> $acls       Module routes ACLs
+     * @param ?int                  $priority   Module priority
+     * @param ?float                $dbver      Module database version
+     * @param ?string               $repository GitHub repository releases are published on,
+     *                                          as owner/name. Defaults to galette-plugins/<plugin directory>
      */
     public function register(
         string $name,
@@ -404,7 +408,8 @@ class Plugins
         ?string $date = null,
         ?array $acls = null,
         ?int $priority = 1000,
-        ?float $dbver = null
+        ?float $dbver = null,
+        ?string $repository = null
     ): void {
         //store module information
         $this->modules[$this->id] = [
@@ -417,7 +422,8 @@ class Plugins
             'date'          => $date,
             'priority'      => $priority ?? 1000,
             'route'         => $route,
-            'dbversion'     => $dbver
+            'dbversion'     => $dbver,
+            'repository'    => $this->checkRepository($name, $repository)
         ];
 
         //check compatibility
@@ -447,6 +453,35 @@ class Plugins
             );
             $this->setDisabled(self::DISABLED_COMPAT);
         }
+    }
+
+    /**
+     * Get repository to check for new releases, falling back to the official plugins organization
+     *
+     * @param string  $name       Module name
+     * @param ?string $repository Repository declared by the module
+     */
+    private function checkRepository(string $name, ?string $repository): string
+    {
+        $default = 'galette-plugins/' . $this->id;
+        if ($repository === null) {
+            return $default;
+        }
+
+        if (preg_match('|^[\w.-]+/[\w.-]+$|', $repository) !== 1) {
+            Analog::log(
+                sprintf(
+                    'Plugin "%1$s" declares an invalid repository "%2$s", "%3$s" will be used instead.',
+                    $name,
+                    $repository,
+                    $default
+                ),
+                Analog::WARNING
+            );
+            return $default;
+        }
+
+        return $repository;
     }
 
     /**

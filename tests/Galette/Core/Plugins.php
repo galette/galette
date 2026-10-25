@@ -41,7 +41,8 @@ class Plugins extends GaletteTestCase
         'date'          => '2013-12-15',
         'priority'      => 1000,
         'route'         => 'plugin2',
-        'dbversion'     => null
+        'dbversion'     => null,
+        'repository'    => 'galette-plugins/plugin-test2'
     ];
 
     /**
@@ -108,6 +109,33 @@ class Plugins extends GaletteTestCase
         $loaded_plugin['date'] = $this->plugin2['date'];
 
         $this->assertSame($this->plugin2, $loaded_plugin);
+    }
+
+    /**
+     * Test releases repository
+     */
+    public function testRepository(): void
+    {
+        //default repository, from plugin directory
+        $this->assertSame('galette-plugins/plugin-test2', $this->plugins->getModule('plugin-test2')['repository']);
+        //declared repository
+        $this->assertSame('galette/plugin-test-one', $this->plugins->getModule('plugin-test1')['repository']);
+
+        //invalid declared repository falls back to default one
+        $id = new \ReflectionProperty($this->plugins, 'id');
+        $id->setValue($this->plugins, 'plugin-renamed');
+        $check = new \ReflectionMethod($this->plugins, 'checkRepository');
+        $this->assertSame('galette-plugins/plugin-renamed', $check->invoke($this->plugins, 'Renamed', null));
+        $this->assertSame('someone/plugin', $check->invoke($this->plugins, 'Renamed', 'someone/plugin'));
+        $this->assertSame(
+            'galette-plugins/plugin-renamed',
+            $check->invoke($this->plugins, 'Renamed', 'https://github.com/someone/plugin')
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Plugin "Renamed" declares an invalid repository "https://github.com/someone/plugin", '
+            . '"galette-plugins/plugin-renamed" will be used instead.'
+        );
     }
 
     /**

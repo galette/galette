@@ -29,6 +29,24 @@
         <dd>{{ module.root }}</dd>
         <dt><strong>{{ _T('Main route:') }}</strong></dt>
         <dd>{{ module.route }}</dd>
+        <dt><strong>{{ _T('Releases repository:') }}</strong></dt>
+        <dd>
+            <a href="https://github.com/{{ module.repository }}" target="_blank" rel="noopener">{{ module.repository }}</a>
+        {% if release_update ?? null %}
+            <a
+                href="{{ release_update.url }}"
+                class="ui mini orange label"
+                target="_blank"
+                rel="noopener"
+                title="{{ _T("Check its compatibility with your Galette version before upgrading.") }}"
+            >{{ _T("New version: %1$s")|format(release_update.latest) }}</a>
+        {% elseif (release_status ?? null) and release_status.status == constant('Galette\\Util\\Release::STATUS_NOT_FOUND') %}
+            <br/>
+            <i class="ui question circle grey icon" aria-hidden="true"></i>
+            {{ _T("Unable to check for new releases: no release found in %1$s repository.")|format(module.repository) }}
+            {{ _T("If the plugin is published elsewhere, its repository must be declared in its _define.php file.") }}
+        {% endif %}
+        </dd>
         <dt><strong>{{ _T('ACLs') }}</strong>
         <dd>
             <table>

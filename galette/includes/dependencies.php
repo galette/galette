@@ -295,6 +295,13 @@ $container->set(
     )
 );
 
+$container->set(
+    \Galette\Util\Release::class,
+    fn(ContainerInterface $c): \Galette\Util\Release => new \Galette\Util\Release(
+        plugins: $c->get(\Galette\Core\Plugins::class)
+    )
+);
+
 /**
  * TODO: to remove in next major
  * @deprecated 1.2.1

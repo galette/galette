@@ -23,6 +23,7 @@ use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 use Galette\Core\Logs;
+use Galette\Util\Release;
 
 use function Safe\file_get_contents;
 use function Safe\ob_end_clean;
@@ -44,12 +45,21 @@ class PluginsController extends AbstractController
         pattern: '/plugins',
         methods: ['GET']
     )]
-    public function showPlugins(Response $response): Response
+    public function showPlugins(Response $response, Release $release): Response
     {
         $plugins = $this->plugins;
 
         $plugins_list = $plugins->getActiveModules();
         $disabled_plugins = $plugins->getDisabledModules();
+
+        $plugins_updates = [];
+        $plugins_releases_status = [];
+        try {
+            $plugins_updates = $release->getPluginsUpdates();
+            $plugins_releases_status = $release->getPluginsReleasesStatus();
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Error looking for new plugins releases', Analog::ERROR);
+        }
 
         // display page
         $this->view->render(
@@ -59,6 +69,8 @@ class PluginsController extends AbstractController
                 'page_title'            => _T("Plugins"),
                 'plugins_list'          => $plugins_list,
                 'plugins_disabled_list' => $disabled_plugins,
+                'plugins_updates'       => $plugins_updates,
+                'plugins_releases_status' => $plugins_releases_status,
                 'documentation'         => 'plugins/#plugins-management-interface'
             ]
         );
@@ -313,12 +325,14 @@ class PluginsController extends AbstractController
         pattern: '/plugins/{route}',
         methods: ['GET']
     )]
-    public function pluginInfo(Request $request, Response $response, string $route): Response
+    public function pluginInfo(Request $request, Response $response, Release $release, string $route): Response
     {
         $module = null;
-        foreach ($this->plugins->getActiveModules() as $mod) {
+        $module_id = null;
+        foreach ($this->plugins->getActiveModules() as $id => $mod) {
             if ($mod['route'] === $route) {
                 $module = $mod;
+                $module_id = $id;
                 break;
             }
         }
@@ -336,6 +350,12 @@ class PluginsController extends AbstractController
         ];
         if ($this->login->isAdmin()) {
             $params['module'] = $module;
+            try {
+                $params['release_update'] = $release->getPluginsUpdates()[$module_id] ?? null;
+                $params['release_status'] = $release->getPluginsReleasesStatus()[$module_id] ?? null;
+            } catch (Throwable $e) {
+                Logs::exception($e, 'Error looking for new plugin release', Analog::ERROR);
+            }
         }
 
         $this->view->render(

@@ -13,6 +13,7 @@ Changes
 - Core fields and core lists configuration flag changed, moved, added and removed fields, and warn they are not saved yet; a removed field stays in the list until saved, and can be kept back
 - Members dynamic fields can be added to the members list from the core lists configuration
 - Company name is printed on members labels, between name and address
+- New plugins releases are reported on plugins page, plugins menu entry and at administrator login; Galette and plugins releases are now checked from GitHub
 
 1.3.0 -> 1.3.1
 

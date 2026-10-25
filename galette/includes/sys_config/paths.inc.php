@@ -110,3 +110,8 @@ if (!defined('GALETTE_DOWNLOADS_URI')) {
     //@phpstan-ignore theCodingMachineSafe.function
     define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
 }
+
+if (!defined('GALETTE_RELEASES_API_URI')) {
+    //@phpstan-ignore theCodingMachineSafe.function
+    define('GALETTE_RELEASES_API_URI', 'https://api.github.com/repos/');
+}

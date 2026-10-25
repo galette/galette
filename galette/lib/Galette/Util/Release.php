@@ -12,38 +12,97 @@ namespace Galette\Util;
 
 use Analog\Analog;
 use Galette\Core\Logs;
+use Galette\Core\Plugins;
 use Galette\Features\Cacheable;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Promise\Utils;
+use Psr\Http\Message\ResponseInterface;
 
-use function Safe\preg_match_all;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\json_encode;
 
 /**
- * Check for new Galette release
+ * Check for new Galette and plugins releases, from GitHub releases
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @phpstan-type ReleaseInfo array{status: string, version?: string, url?: string}
  */
 class Release
 {
     use Cacheable;
 
-    protected string $cache_filename = 'newrelease.cache';
+    public const string CORE_REPOSITORY = 'galette/galette';
+
+    public const string STATUS_FOUND = 'found';
+    public const string STATUS_NOT_FOUND = 'not_found';
+    public const string STATUS_ERROR = 'error';
+
+    //number of hours until a check that failed is done again
+    private const int RETRY_TIMEOUT = 1;
+
+    protected string $cache_filename = 'releases.cache';
 
     /** @var array<string, mixed> */
     private array $default_options = [
         'timeout' => 2.0,
         'connect_timeout' => 1.0,
-        'verify' => false
+        'verify' => false,
+        'http_errors' => true,
+        'headers' => [
+            'Accept' => 'application/vnd.github+json',
+            'X-GitHub-Api-Version' => '2022-11-28'
+        ]
     ];
-    private ?string $latest = null;
+    /** @var ?array<string, ReleaseInfo> */
+    private ?array $releases = null;
 
     /**
      * Constructor
-     * @param bool $nocache Do not try to cache
+     *
+     * @param bool     $nocache Do not try to cache
+     * @param ?Plugins $plugins Plugins to check for new releases
      */
-    public function __construct(bool $nocache = false)
+    public function __construct(bool $nocache = false, private ?Plugins $plugins = null)
     {
+        //a check that failed is cached as well, so that an unreachable or
+        //rate limited API is not asked again on every page; but it is
+        //retried well before a check that did succeed.
+        if ($this->hasCachedErrors()) {
+            $this->cache_timeout = self::RETRY_TIMEOUT;
+        }
+
         //only if cache should be used
         $this->handleCache($nocache);
+    }
+
+    /**
+     * Handle cache
+     *
+     * Unlike other cached contents, releases are cached in debug mode as well:
+     * GitHub API rate limits anonymous requests to 60 per hour, a few pages
+     * would be enough to reach it.
+     *
+     * @param bool $nocache Do not try to cache
+     */
+    protected function handleCache(bool $nocache = false): void
+    {
+        if ($nocache === true) {
+            return;
+        }
+
+        try {
+            if (!$this->checkCache()) {
+                $this->makeCache();
+            } else {
+                $this->loadCache();
+            }
+        } catch (\Throwable $e) {
+            //releases check must never prevent a page to be displayed
+            Logs::exception($e, 'Unable to use releases cache', Analog::WARNING);
+        }
     }
 
     /**
@@ -63,7 +122,161 @@ class Release
      */
     public function getDefaultOptions(): array
     {
-        return $this->default_options;
+        $options = $this->default_options;
+        //GitHub API rejects requests without user agent
+        $options['headers']['User-Agent'] = 'Galette/' . ltrim($this->getCurrentRelease(), 'v');
+        return $options;
+    }
+
+    /**
+     * Get repositories to check
+     *
+     * @return array<string, string> repository => plugin id, or empty string for Galette itself
+     */
+    public function getRepositories(): array
+    {
+        $repositories = [self::CORE_REPOSITORY => ''];
+        if ($this->plugins !== null) {
+            foreach ($this->plugins->getModules() as $id => $module) {
+                if (isset($module['repository'])) {
+                    $repositories[$module['repository']] ??= $id;
+                }
+            }
+        }
+        return $repositories;
+    }
+
+    /**
+     * Get repositories to check, sorted to be compared with cached ones
+     *
+     * @return array<string>
+     */
+    private function getSortedRepositories(): array
+    {
+        $repositories = array_keys($this->getRepositories());
+        sort($repositories);
+        return $repositories;
+    }
+
+    /**
+     * Get the latest releases of all repositories
+     *
+     * @return array<string, ReleaseInfo>
+     */
+    public function getReleases(): array
+    {
+        $this->releases ??= $this->findLatestReleases(array_keys($this->getRepositories()));
+        return $this->releases;
+    }
+
+    /**
+     * Query GitHub for the latest releases of repositories, all at once
+     *
+     * @param array<string> $repositories Repositories, as owner/name
+     *
+     * @return array<string, ReleaseInfo>
+     */
+    public function findLatestReleases(array $repositories): array
+    {
+        $releases = [];
+        try {
+            $client = $this->setupClient();
+            $promises = [];
+            foreach ($repositories as $repository) {
+                $promises[$repository] = $client->getAsync(
+                    $this->getReleasesURL() . $repository . '/releases/latest'
+                );
+            }
+            $results = Utils::settle($promises)->wait();
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Error while trying to get latest releases', Analog::ERROR);
+            return array_fill_keys($repositories, ['status' => self::STATUS_ERROR]);
+        }
+
+        //keep requested order, results are sorted
+        foreach ($repositories as $repository) {
+            $result = $results[$repository];
+            if ($result['state'] === 'fulfilled') {
+                $releases[$repository] = $this->parseRelease($repository, $result['value']);
+                continue;
+            }
+
+            $reason = $result['reason'];
+            if ($reason instanceof ClientException && $reason->getResponse()->getStatusCode() === 404) {
+                //no such repository, or no published release
+                $this->logNotFound($repository);
+                $releases[$repository] = ['status' => self::STATUS_NOT_FOUND];
+                continue;
+            }
+
+            if ($reason instanceof \Throwable) {
+                Logs::exception(
+                    $reason,
+                    sprintf('Error while trying to get latest release of %1$s', $repository),
+                    Analog::ERROR
+                );
+            }
+            $releases[$repository] = ['status' => self::STATUS_ERROR];
+        }
+
+        return $releases;
+    }
+
+    /**
+     * Parse GitHub latest release response
+     *
+     * @param string            $repository Repository
+     * @param ResponseInterface $response   GitHub response
+     *
+     * @return ReleaseInfo
+     */
+    private function parseRelease(string $repository, ResponseInterface $response): array
+    {
+        try {
+            $release = json_decode($response->getBody()->getContents(), associative: true);
+            if (!is_array($release) || !isset($release['tag_name']) || !is_string($release['tag_name'])) {
+                throw new \UnexpectedValueException('Missing tag name');
+            }
+            return [
+                'status' => self::STATUS_FOUND,
+                'version' => ltrim($release['tag_name'], 'v'),
+                'url' => is_string($release['html_url'] ?? null) ? $release['html_url'] : ''
+            ];
+        } catch (\Throwable $e) {
+            Logs::exception(
+                $e,
+                sprintf('Unable to read latest release of %1$s', $repository),
+                Analog::ERROR
+            );
+            return ['status' => self::STATUS_ERROR];
+        }
+    }
+
+    /**
+     * Log a repository that has no release
+     *
+     * @param string $repository Repository
+     */
+    private function logNotFound(string $repository): void
+    {
+        $plugin_id = $this->getRepositories()[$repository] ?? '';
+        if ($plugin_id === '') {
+            Analog::log(
+                sprintf('No release found in %1$s repository.', $repository),
+                Analog::WARNING
+            );
+            return;
+        }
+
+        Analog::log(
+            sprintf(
+                'Unable to check for new releases of plugin "%1$s": no release found in %2$s repository. '
+                . 'If the plugin is published elsewhere, its "repository" must be declared in its _define.php file.',
+                $plugin_id,
+                $repository
+            ),
+            Analog::WARNING
+        );
     }
 
     /**
@@ -71,52 +284,7 @@ class Release
      */
     public function getLatestRelease(): ?string
     {
-        $this->latest ??= $this->findLatestRelease();
-        if ($this->latest === null) {
-            //disable caching, no version has been found
-            $this->nocache = true;
-        }
-        return $this->latest;
-    }
-
-    /**
-     * Get the latest release
-     */
-    public function findLatestRelease(): ?string
-    {
-        if (isset($this->latest)) {
-            return $this->getLatestRelease();
-        }
-
-        try {
-            $client = $this->setupClient();
-            $response = $client->request('GET', $this->getReleasesURL());
-            $contents = $response->getBody()->getContents();
-
-            $releases = [];
-            preg_match_all(
-                '/href="(galette-.[^"]+\.tar\.bz2)"/',
-                $contents,
-                $releases
-            );
-
-            $latest = null;
-            foreach ($releases[1] as $release) {
-                $release = str_replace('galette-', '', $release);
-                $release = str_replace('.tar.bz2', '', $release);
-                if ($release === 'dev') {
-                    continue;
-                }
-                if (version_compare($release, (string)($latest ?? 0), '>')) {
-                    $latest = $release;
-                }
-            }
-
-            return $latest;
-        } catch (\Throwable $e) {
-            Logs::exception($e, 'Error while trying to get latest release', Analog::ERROR);
-            return null;
-        }
+        return $this->getReleases()[self::CORE_REPOSITORY]['version'] ?? null;
     }
 
     /**
@@ -130,12 +298,75 @@ class Release
             return false;
         }
 
-        $this->latest = $this->getLatestRelease();
-        if ($this->latest === null) {
+        $latest = $this->getLatestRelease();
+        if ($latest === null) {
             return false;
         }
 
-        return version_compare($this->latest, ltrim($this->getCurrentRelease(), 'v'), '>');
+        return version_compare($latest, ltrim($current, 'v'), '>');
+    }
+
+    /**
+     * Get plugins for which a new release is available
+     *
+     * @return array<string, array{name: string, current: string, latest: string, url: string}>
+     */
+    public function getPluginsUpdates(): array
+    {
+        $updates = [];
+        if ($this->plugins === null) {
+            return $updates;
+        }
+
+        $releases = $this->getReleases();
+        foreach ($this->plugins->getModules() as $id => $module) {
+            $release = $releases[$module['repository'] ?? ''] ?? null;
+            if ($release === null || !isset($release['version'])) {
+                continue;
+            }
+
+            $current = ltrim($module['version'], 'v');
+            if ($current === '' || str_ends_with($current, '-dev')) {
+                continue;
+            }
+
+            if (version_compare($release['version'], $current, '>')) {
+                $updates[$id] = [
+                    'name' => $module['name'],
+                    'current' => $module['version'],
+                    'latest' => $release['version'],
+                    'url' => $release['url'] ?? ''
+                ];
+            }
+        }
+
+        return $updates;
+    }
+
+    /**
+     * Get plugins releases check status
+     *
+     * @return array<string, array{repository: string, status: string}>
+     */
+    public function getPluginsReleasesStatus(): array
+    {
+        $status = [];
+        if ($this->plugins === null) {
+            return $status;
+        }
+
+        $releases = $this->getReleases();
+        foreach ($this->plugins->getModules() as $id => $module) {
+            if (!isset($module['repository'])) {
+                continue;
+            }
+            $status[$id] = [
+                'repository' => $module['repository'],
+                'status' => $releases[$module['repository']]['status'] ?? self::STATUS_ERROR
+            ];
+        }
+
+        return $status;
     }
 
     /**
@@ -147,11 +378,11 @@ class Release
     }
 
     /**
-     * Get the URL to download releases
+     * Get the URL of releases API
      */
     public function getReleasesURL(): string
     {
-        return GALETTE_DOWNLOADS_URI;
+        return GALETTE_RELEASES_API_URI;
     }
 
     /**
@@ -159,7 +390,10 @@ class Release
      */
     protected function getDataTocache(): string
     {
-        return $this->latest ?? '';
+        return json_encode([
+            'repositories' => $this->getSortedRepositories(),
+            'releases' => $this->releases ?? []
+        ]);
     }
 
     /**
@@ -169,11 +403,30 @@ class Release
      */
     protected function cacheLoaded(mixed $content): bool
     {
-        if ($content === null) {
+        if (!is_string($content)) {
             return false;
         }
 
-        $this->latest = $content;
+        try {
+            $cached = json_decode($content, associative: true);
+        } catch (\Throwable) {
+            // no log: an unreadable cache is just built again
+            return false;
+        }
+
+        if (
+            !is_array($cached)
+            || !isset($cached['repositories'], $cached['releases'])
+            || !is_array($cached['releases'])
+            //a plugin has been added or removed since last check
+            || $cached['repositories'] !== $this->getSortedRepositories()
+        ) {
+            return false;
+        }
+
+        /** @var array<string, ReleaseInfo> $releases */
+        $releases = $cached['releases'];
+        $this->releases = $releases;
         return true;
     }
 
@@ -190,6 +443,24 @@ class Release
      */
     protected function prepareForCache(): void
     {
-        $this->latest ??= $this->findLatestRelease();
+        $this->getReleases();
+    }
+
+    /**
+     * Whether the cached check has failed for at least one repository
+     */
+    private function hasCachedErrors(): bool
+    {
+        $cfile = $this->getCacheFilename();
+        if (!file_exists($cfile)) {
+            return false;
+        }
+
+        try {
+            return str_contains(file_get_contents($cfile), '"status":"' . self::STATUS_ERROR . '"');
+        } catch (\Throwable) {
+            // no log: an unreadable cache is not a failed check, it is built again when loaded
+            return false;
+        }
     }
 }

@@ -68,6 +68,7 @@
         "slim/psr7": "^1.6",
         "symfony/yaml": "^6.2",
         "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/promises": "^2.0",
         "twig/string-extra": "^3.8",
         "symfony/console": "^7.4",
         "twig/intl-extra": "^3.24",

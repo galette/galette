@@ -48,6 +48,7 @@ parameters:
         - GALETTE_TELEMETRY_URI
         - GALETTE_TPL_THEME_DIR
         - GALETTE_DOWNLOADS_URI
+        - GALETTE_RELEASES_API_URI
         - GALETTE_ENV
         - GALETTE_CRON
         - GALETTE_INSTALLER

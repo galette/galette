@@ -104,11 +104,44 @@ class Galette
             ];
         }
 
-        $release = new Release();
+        $release = self::getRelease();
         return [
             'new' => $release->checkNewRelease(),
             'version' => $release->getLatestRelease()
         ];
+    }
+
+    /**
+     * Get plugins for which a new release is available
+     *
+     * @return array<string, array{name: string, current: string, latest: string, url: string}>
+     */
+    public static function getPluginsUpdates(): array
+    {
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
+            return [];
+        }
+
+        try {
+            return self::getRelease()->getPluginsUpdates();
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Error looking for new plugins releases', Analog::ERROR);
+            return [];
+        }
+    }
+
+    /**
+     * Get releases checker, shared with the rest of the request when possible
+     */
+    private static function getRelease(): Release
+    {
+        /** @var ?ContainerInterface $container */
+        global $container;
+
+        if ($container instanceof ContainerInterface) {
+            return $container->get(Release::class);
+        }
+        return new Release();
     }
 
     /**
@@ -442,6 +475,7 @@ class Galette
                 }//admin or staff
 
                 if ($login->isAdmin()) {
+                    $plugins_updates = count(self::getPluginsUpdates());
                     $menus['configuration'] = [
                         'title' => _T("Configuration"),
                         'icon' => 'tools',
@@ -455,10 +489,16 @@ class Galette
                             ],
                             [
                                 'label' => _T("Plugins"),
-                                'title' => _T("Information about available plugins"),
+                                'title' => $plugins_updates > 0
+                                    ? sprintf(
+                                        //TRANS: %1$d is the number of plugins that have a new release
+                                        _Tn('%1$d plugin has a new release available', '%1$d plugins have a new release available', $plugins_updates),
+                                        $plugins_updates
+                                    ) : _T("Information about available plugins"),
                                 'route' => [
                                     'name' => 'plugins'
-                                ]
+                                ],
+                                'badge' => $plugins_updates > 0 ? $plugins_updates : null
                             ],
                             [
                                 'label' => _T("Core lists"),
@@ -937,6 +977,7 @@ class Galette
         }
 
         if ($login->isAdmin()) {
+            $plugins_updates = count(self::getPluginsUpdates());
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -950,11 +991,17 @@ class Galette
                     ],
                     [
                         'label' => _T("Plugins"),
-                        'title' => _T("Information about available plugins"),
+                        'title' => $plugins_updates > 0
+                            ? sprintf(
+                                //TRANS: %1$d is the number of plugins that have a new release
+                                _Tn('%1$d plugin has a new release available', '%1$d plugins have a new release available', $plugins_updates),
+                                $plugins_updates
+                            ) : _T("Information about available plugins"),
                         'route' => [
                             'name' => 'plugins'
                         ],
-                        'icon' => 'package'
+                        'icon' => 'package',
+                        'badge' => $plugins_updates > 0 ? $plugins_updates : null
                     ],
                 ]
             );
