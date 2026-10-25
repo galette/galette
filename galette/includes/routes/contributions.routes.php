@@ -63,7 +63,7 @@ $app->post(
 //contributions list CSV export
 $app->map(
     ['GET', 'POST'],
-    '/{type:contributions|transactions}/export/csv',
+    '/contributions/export/csv',
     [CsvController::class, 'contributionsExport']
 )->setName('csv-contributionslist')->add(Authenticate::class);
 

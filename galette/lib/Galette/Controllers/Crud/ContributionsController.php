@@ -730,11 +730,11 @@ class ContributionsController extends CrudController
             $filters = $this->session->$filter_name ?? new $filter_class();
             $filters->selected = $post['entries_sel'];
 
-            if (isset($post['csv'])) {
+            if (isset($post['csv']) && $type === 'contributions') {
                 $this->session->{$this->getFilterName($type, ['suffix' => 'csvexport'])} = $filters;
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('csv-contributionslist', ['type' => $type]));
+                    ->withHeader('Location', $this->routeparser->urlFor('csv-contributionslist'));
             }
 
             if (isset($post['delete'])) {
