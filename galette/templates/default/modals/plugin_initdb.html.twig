@@ -22,20 +22,7 @@
                 {% include 'elements/messages_inline.html.twig' with {standalone: true} %}
             {% endif %}
     {% if step == 'confirm' %}
-        {% if reinstall %}
-            <div class="ui icon red message">
-                <i class="exclamation triangle icon" aria-hidden="true"></i>
-                <div class="content">
-                    {{ _T("Plugin '%1$s' is already installed and up to date. A new installation will erase all its data.")|format(plugin.name) }}
-                </div>
-            </div>
-            <div class="field">
-                <div class="ui checkbox">
-                    <input type="checkbox" name="confirm_reinstall" id="confirm_reinstall" value="1"/>
-                    <label for="confirm_reinstall">{{ _T("I understand that existing data of '%1$s' will be erased")|format(plugin.name) }}</label>
-                </div>
-            </div>
-        {% elseif install.isUpgrade() %}
+        {% if install.isUpgrade() %}
             <p>{{ _T("Database of plugin '%1$s' will be upgraded from version %2$s to version %3$s.")|format(plugin.name, installed_version, plugin.dbversion) }}</p>
         {% else %}
             <p>{{ _T("Database of plugin '%1$s' will be installed.")|format(plugin.name) }}</p>

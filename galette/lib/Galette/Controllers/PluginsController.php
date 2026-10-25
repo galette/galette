@@ -164,13 +164,18 @@ class PluginsController extends AbstractController
 
         $plugin = $this->plugins->getModule($plugid);
 
-        // Reject plugins that cannot be installed or updated due to missing files
-        // or incompatibility. Only plugins that are installable/upgradable should
-        // reach the database initialization step.
-        if (
-            $this->plugins->isDisabled($plugid)
-            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)
-        ) {
+        // Reject plugins that are up to date, or that cannot be installed or updated
+        // due to missing files or incompatibility. Only plugins that are
+        // installable/upgradable should reach the database initialization step.
+        if (!$this->plugins->isDisabled($plugid)) {
+            Analog::log(
+                'Plugin `' . $plugid . '` is up to date and cannot be initialized.',
+                Analog::WARNING
+            );
+
+            throw new HttpNotFoundException($request);
+        }
+        if (!in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)) {
             Analog::log(
                 'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
                 . $this->plugins->getDisabledCause($plugid) . ').',
@@ -193,34 +198,27 @@ class PluginsController extends AbstractController
         }
 
         $install = (new PluginInstall())->prepareFor($this->plugins, $plugid, $error_detected);
-        //an active plugin is up to date: a new installation would erase its data
-        $reinstall = !$this->plugins->isDisabled($plugid);
 
         $step = 'confirm';
         $post = $request->getParsedBody();
         if ($request->getMethod() === 'POST' && isset($post['confirm'])) {
-            if ($reinstall && !isset($post['confirm_reinstall'])) {
-                $error_detected[] = _T("Please confirm you want to erase existing data.");
-            } else {
-                $db_checks = $install->checkDbPermissions($this->zdb);
-                if (!$db_checks['ok']) {
-                    $step = 'perms';
-                    $params['db_checks'] = $db_checks;
-                    if (!$db_checks['supported']) {
-                        $params['unsupported_message'] = $this->zdb->getUnsupportedMessage();
-                    }
-                } else {
-                    $step = 'done';
-                    $params['success'] = $install->run($this->zdb, $this->plugins, $plugid);
-                    $params['report'] = $install->getDbInstallReport();
+            $db_checks = $install->checkDbPermissions($this->zdb);
+            if (!$db_checks['ok']) {
+                $step = 'perms';
+                $params['db_checks'] = $db_checks;
+                if (!$db_checks['supported']) {
+                    $params['unsupported_message'] = $this->zdb->getUnsupportedMessage();
                 }
+            } else {
+                $step = 'done';
+                $params['success'] = $install->run($this->zdb, $this->plugins, $plugid);
+                $params['report'] = $install->getDbInstallReport();
             }
         }
 
         $params += [
             'page_title'    => sprintf(_T('Plugin database initialization: %1$s'), $plugin['name']),
             'step'          => $step,
-            'reinstall'     => $reinstall,
             'installed_version' => $install->isUpgrade() ? $this->plugins->getInstalledDbVersion($plugid) : null,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
