@@ -112,8 +112,12 @@ details.ui.basic.styled.accordion .title {
 }
 
 /* Long lists of members stay scrollable in the sticky panel */
-#role_members .role-members-list {
-    max-height: 50vh;
-    overflow-y: auto;
-    margin-bottom: 1em;
+#role_members {
+    .role-members-list {
+        max-height: 84vh;
+        overflow-y: auto;
+    }
+    &:has(form) .role-members-list {
+        max-height: 58vh;
+    }
 }

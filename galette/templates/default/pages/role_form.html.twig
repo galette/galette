@@ -176,7 +176,7 @@
                                         <td>
                                             <a href="{{ url_for('member', {'id': computed_member.id_adh}) }}">{{ computed_member.member }}</a>
                 {% if role.getKey() == constant('Galette\\Access\\Roles::MANAGER') %}
-                                            <div class="ui small grey text">{{ computed_member.groups|join(', ') }}</div>
+                                            <div><span class="ui small grey text">{{ computed_member.groups|join(', ') }}</span></div>
                 {% endif %}
                                         </td>
                                     </tr>
@@ -209,14 +209,16 @@
                                     <tr>
                                         <td>
                                             <a href="{{ url_for('member', {'id': assignment.id_adh}) }}">{{ assignment.member }}</a>
-                                            <div class="ui small grey text">
-                                                {% if assignment.group is not null %}{{ assignment.group }}{% else %}{{ _T("All groups") }}{% endif %}
+                                            <div>
+                                                <span class="ui small grey text">
+                                                    {% if assignment.group is not null %}{{ assignment.group }}{% else %}{{ _T("All groups") }}{% endif %}
+                                                </span>
                                             </div>
                                         </td>
                                         <td class="collapsing">
                                             <form action="{{ url_for('takeRole', {'id': role.getId(), 'assignment': assignment.id}) }}" method="post">
-                                                <button type="submit" class="ui mini icon button tooltip" title="{{ _T("Take role back") }}">
-                                                    <i class="ui trash red icon" aria-hidden="true"></i>
+                                                <button type="submit" class="ui mini basic red icon button tooltip" title="{{ _T("Take role back") }}">
+                                                    <i class="ui trash icon" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ _T("Take role back from %1$s")|format(assignment.member) }}</span>
                                                 </button>
                                             </form>
@@ -230,6 +232,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="ui divider"></div>
 
                         <form action="{{ url_for('giveRole', {'id': role.getId()}) }}" method="post" class="ui form">
         {% include 'components/forms/member_dropdown.html.twig' with {
