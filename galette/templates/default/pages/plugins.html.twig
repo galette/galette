@@ -81,7 +81,13 @@
                         class="initdb action"
                     >
                         <i class="ui database blue icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
+                        <span class="ui special popup">
+                        {% if cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_UP2DATE') %}
+                            {{ _T("Update '%1$s' database")|format(plugin.name) }}
+                        {% else %}
+                            {{ _T("Initialize '%1$s' database")|format(plugin.name) }}
+                        {% endif %}
+                        </span>
                     </a>
                 {% endif %}
 
