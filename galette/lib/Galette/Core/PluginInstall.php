@@ -49,6 +49,52 @@ class PluginInstall extends Install
     }
 
     /**
+     * Prepare installation for a plugin: mode and installed version come from its current state
+     *
+     * A plugin that is not up to date is upgraded from its installed version;
+     * any other one gets a new installation.
+     *
+     * @param Plugins            $plugins Plugins manager
+     * @param string             $id      Plugin ID
+     * @param array<int, string> $errors  Errors array
+     */
+    public function prepareFor(Plugins $plugins, string $id, array &$errors = []): self
+    {
+        $this
+            ->setDbType(TYPE_DB, $errors)
+            ->setTablesPrefix(PREFIX_DB);
+
+        if ($plugins->isDisabled($id) && $plugins->getDisabledCause($id) === Plugins::DISABLED_NOT_UP2DATE) {
+            $this
+                ->setMode(self::UPDATE)
+                ->setInstalledVersion($plugins->getInstalledDbVersion($id));
+        } else {
+            $this
+                ->setMode(self::INSTALL)
+                ->setInstalledVersion(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Run plugin database scripts, and mark plugin as installed when they succeed
+     *
+     * @param Db      $zdb     Database instance
+     * @param Plugins $plugins Plugins manager
+     * @param string  $id      Plugin ID
+     */
+    public function run(Db $zdb, Plugins $plugins, string $id): bool
+    {
+        $module = $plugins->getModule($id);
+        if (!$this->executeScripts($zdb, $module['root'])) {
+            return false;
+        }
+        $this->setPluginInstalled($zdb, $plugins, $id);
+        return true;
+    }
+
+    /**
      * Mark a plugin as installed
      *
      * @param Db      $zdb     Database instance

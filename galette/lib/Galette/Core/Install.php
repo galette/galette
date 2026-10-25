@@ -435,6 +435,68 @@ class Install
     }
 
     /**
+     * Check database engine is supported, and permissions are sufficient for current mode
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return array{supported: bool, ok: bool, checks: list<array{message: string, res: bool, debug?: string}>}
+     */
+    public function checkDbPermissions(Db $zdb): array
+    {
+        if (!$zdb->isEngineSUpported()) {
+            return [
+                'supported' => false,
+                'ok' => false,
+                'checks' => []
+            ];
+        }
+
+        /** When tables already exists and DROP not allowed at this time
+         * the showed error is about CREATE, whenever CREATE is allowed */
+        //We delete the table if exists, no error at this time
+        $zdb->dropTestTable();
+
+        $results = $zdb->grantCheck($this->getMode() ?? self::INSTALL);
+
+        $messages = [
+            'create' => [_T("CREATE operation allowed"), _T("CREATE operation not allowed")],
+            'insert' => [_T("INSERT operation allowed"), _T("INSERT operation not allowed")],
+            'update' => [_T("UPDATE operation allowed"), _T("UPDATE operation not allowed")],
+            'select' => [_T("SELECT operation allowed"), _T("SELECT operation not allowed")],
+            'delete' => [_T("DELETE operation allowed"), _T("DELETE operation not allowed")],
+            'drop' => [_T("DROP operation allowed"), _T("DROP operation not allowed")],
+        ];
+        if ($this->isUpgrade()) {
+            $messages['alter'] = [_T("ALTER operation allowed"), _T("ALTER operation not allowed")];
+        }
+
+        $ok = true;
+        $checks = [];
+        foreach ($messages as $operation => [$allowed, $not_allowed]) {
+            $result = $results[$operation] ?? false;
+            if ($result instanceof Throwable) {
+                $checks[] = [
+                    'message' => $not_allowed,
+                    'debug' => $result->getMessage(),
+                    'res' => false
+                ];
+                $ok = false;
+            } elseif ($result === true) {
+                $checks[] = [
+                    'message' => $allowed,
+                    'res' => true
+                ];
+            }
+        }
+
+        return [
+            'supported' => true,
+            'ok' => $ok,
+            'checks' => $checks
+        ];
+    }
+
+    /**
      * Set step to version selection
      */
     public function atVersionSelection(): void
