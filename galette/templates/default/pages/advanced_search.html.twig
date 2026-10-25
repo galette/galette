@@ -5,6 +5,7 @@
  #}
 
 {% extends 'page.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
         <form action="{{ url_for('filter-memberslist') }}" method="post" class="ui form advanced-search">
@@ -233,7 +234,7 @@
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
                     <i class="dropdown icon" aria-hidden="true"></i>
-                    {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
+                    {{ _T('Advanced groups search') }} <span class="ui small text">{{ macros.experimentalMark(_T('Experimental')) }}</span>
                     <button
                         type="button"
                         id="addbutton_g"
@@ -450,7 +451,7 @@
                 <div class="galetteform ui styled fluid accordion field">
                     <div class="active ui title">
                         <i class="dropdown icon" aria-hidden="true"></i>
-                        {{ _T('Free search') }} ({{ _T('Experimental') }})
+                        {{ _T('Free search') }} <span class="ui small text">{{ macros.experimentalMark(_T('Experimental')) }}</span>
                         <button
                             type="button"
                             id="addbutton"
