@@ -17,10 +17,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-22 06:15+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -163,6 +163,13 @@ msgstr "Une nouvelle version de Galette est disponible."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Vous utilisez actuellement Galette %1$s, et %2$s est disponible."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "%1$d plugin a une nouvelle version disponible"
+msgstr[1] "%1$d plugins ont une nouvelle version disponible"
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Votre mot de passe est trop faible ! Envisagez de le modifier."
@@ -1309,6 +1316,9 @@ msgstr "La version minimale pour le moteur %1$s est %2$s, %1$s %3$s trouvé !"
 msgid "My Account"
 msgstr "Mon compte"
 
+msgid "View my member card"
+msgstr "Voir ma fiche membre"
+
 msgid "My contributions"
 msgstr "Mes contributions"
 
@@ -1327,20 +1337,17 @@ msgstr "Mes transactions"
 msgid "View and filter all my transactions"
 msgstr "Consulter et filtrer toutes mes transactions"
 
-msgid "View my member card"
-msgstr "Voir ma fiche membre"
-
 msgid "Modify my login and password"
 msgstr "Modifier mon identifiant et mon mot de passe"
-
-msgid "Manage my two-factor authentication"
-msgstr "Gérer mon authentification à deux facteurs"
 
 msgid "Add a child member"
 msgstr "Ajouter un enfant"
 
 msgid "Add new child member in database"
 msgstr "Ajouter un nouvel enfant à la base"
+
+msgid "Manage my two-factor authentication"
+msgstr "Gérer mon authentification à deux facteurs"
 
 msgid "View, search into and filter member's list"
 msgstr "Consulter, rechercher dans et filtrer la liste des membres"
@@ -1418,6 +1425,9 @@ msgstr "Exporte des données dans divers formats"
 msgid "Import members from CSV files"
 msgstr "Import d’adhérents depuis un fichier CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr "Voir ce qui serait refusé après les échecs répétés, et les lever"
+
 msgid "View application's logs"
 msgstr "Voir les logs de l’application"
 
@@ -1430,9 +1440,6 @@ msgid ""
 msgstr ""
 "Renseigner les préférences de l’application (adresse, cartes de membres, "
 "configuration, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr "Voir ce qui serait refusé après les échecs répétés, et les lever"
 
 msgid "Information about available plugins"
 msgstr "Informations sur les plugins disponibles"
@@ -4478,6 +4485,10 @@ msgstr "Obligatoire"
 msgid "Width in forms"
 msgstr "Largeur dans les formulaires"
 
+msgctxt "member groups"
+msgid "moved"
+msgstr "déplacé"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Modifier les permissions du champ « %1$s »"
@@ -4801,11 +4812,14 @@ msgstr ""
 "courriel. Cependant vous pouvez produire des étiquettes d’enveloppes pour "
 "les contacter par courrier postal."
 
+msgid "See member profile"
+msgstr "Voir la fiche adhérent"
+
 msgid "Modification"
 msgstr "Modification"
 
-msgid "Display"
-msgstr "Afficher"
+msgid "More actions"
+msgstr "Plus d’actions"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5573,11 +5587,18 @@ msgstr "Veuillez corriger les erreurs ci-dessous pour continuer."
 msgid "Warning"
 msgstr "Attention"
 
+msgid "Dynamic field"
+msgstr "Champ dynamique"
+
 msgid "Field name"
 msgstr "Nom du champ"
 
 msgid "Available fields"
 msgstr "Champs disponibles"
+
+#, php-format
+msgid "Keep field %1$s"
+msgstr "Conserver le champ %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5870,9 +5891,6 @@ msgstr "Voir toutes vos contributions"
 msgid "Show all members contributions"
 msgstr "Voir les contributions de tous les membres"
 
-msgid "See member profile"
-msgstr "Voir la fiche adhérent"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6073,6 +6091,9 @@ msgstr "Créer"
 
 msgid "Export as PDF"
 msgstr "Exporter en PDF"
+
+msgid "Display"
+msgstr "Afficher"
 
 msgid "IP"
 msgstr "IP"
@@ -6558,6 +6579,24 @@ msgstr "Chemin :"
 
 msgid "Main route:"
 msgstr "Route principale :"
+
+msgid "Releases repository:"
+msgstr "Dépôt des versions :"
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+"Vérifiez sa compatibilité avec votre version de Galette avant de mettre à "
+"jour."
+
+#, php-format
+msgid "New version: %1$s"
+msgstr "Nouvelle version : %1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
+"Impossible de vérifier les nouvelles versions : aucune version trouvée dans "
+"le dépôt %1$s."
 
 msgid "ACLs"
 msgstr "ACL"
@@ -7774,9 +7813,6 @@ msgstr "Contenu page publique"
 #~ msgid "modification"
 #~ msgstr "modification"
 
-#~ msgid "creation"
-#~ msgstr "création"
-
 #~ msgid "Edit payment type"
 #~ msgstr "Modifier le type de paiement"
 
@@ -8700,9 +8736,6 @@ msgstr "Contenu page publique"
 
 #~ msgid "That title is still in use, you cannot delete it!"
 #~ msgstr "Ce titre est encore utilisé, vous ne pouvez pas le supprimer&nbsp;!"
-
-#~ msgid "Dynamic field"
-#~ msgstr "Champ dynamique"
 
 #~ msgid "Dynamic field ID cannot ben null calling edit route!"
 #~ msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,7 +63,7 @@ msgid "Wrong password!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:40
-#: ../lib/Galette/Core/Galette.php:523
+#: ../lib/Galette/Core/Galette.php:584
 msgid "Administration tools"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdvancedConfigController.php:57
 #: ../lib/Galette/Controllers/AdvancedConfigController.php:148
-#: ../lib/Galette/Core/Galette.php:530
+#: ../lib/Galette/Core/Galette.php:591
 msgid "Advanced configuration"
 msgstr ""
 
@@ -157,10 +157,10 @@ msgstr ""
 #: ../templates/default/pages/configuration_payment_types.html.twig:132
 #: ../templates/default/pages/contributions_types_list.html.twig:188
 #: ../templates/default/pages/groups_list.html.twig:402
-#: ../templates/default/pages/members_list.html.twig:680
-#: ../templates/default/pages/members_list.html.twig:701
-#: ../templates/default/pages/members_list.html.twig:722
-#: ../templates/default/pages/plugins.html.twig:256
+#: ../templates/default/pages/members_list.html.twig:706
+#: ../templates/default/pages/members_list.html.twig:727
+#: ../templates/default/pages/members_list.html.twig:748
+#: ../templates/default/pages/plugins.html.twig:269
 #: ../templates/default/pages/preferences.html.twig:1512
 #: ../templates/default/pages/status_list.html.twig:154
 msgid "An error occurred :("
@@ -201,7 +201,7 @@ msgid "Thank you for registering!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:73
-#: ../lib/Galette/Controllers/AuthController.php:227
+#: ../lib/Galette/Controllers/AuthController.php:248
 #: ../lib/Galette/Controllers/TwoFactorController.php:131
 #: ../lib/Galette/Features/Replacements.php:319
 #: ../lib/Galette/Features/Replacements.php:359
@@ -226,19 +226,28 @@ msgstr ""
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:222
+#. TRANS: %1$d is the number of plugins that have a new release
+#: ../lib/Galette/Controllers/AuthController.php:226
+#: ../lib/Galette/Core/Galette.php:495 ../lib/Galette/Core/Galette.php:997
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../lib/Galette/Controllers/AuthController.php:243
 msgid "Your password is too weak! Please consider updating it."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:232
+#: ../lib/Galette/Controllers/AuthController.php:253
 msgid "Login failed."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:233
+#: ../lib/Galette/Controllers/AuthController.php:254
 msgid "Authentication failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:297
+#: ../lib/Galette/Controllers/AuthController.php:318
 #: ../templates/default/elements/logged_user.html.twig:32
 #: ../templates/default/elements/logged_user.html.twig:56
 #: ../templates/default/elements/logged_user.html.twig:60
@@ -248,137 +257,137 @@ msgid "Log off"
 msgstr ""
 
 #. TRANS: parameter is the login
-#: ../lib/Galette/Controllers/AuthController.php:323
+#: ../lib/Galette/Controllers/AuthController.php:344
 #, php-format
 msgid "Impersonating as %1$s"
 msgstr ""
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/Controllers/AuthController.php:335
+#: ../lib/Galette/Controllers/AuthController.php:356
 #, php-format
 msgid "Unable to impersonate as %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:367
+#: ../lib/Galette/Controllers/AuthController.php:388
 msgid "Attempt to unimpersonate from a non impersonated session"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:375
-#: ../lib/Galette/Controllers/AuthController.php:381
+#: ../lib/Galette/Controllers/AuthController.php:396
+#: ../lib/Galette/Controllers/AuthController.php:402
 msgid "Impersonating ended"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:407
-#: ../lib/Galette/Controllers/AuthController.php:632
+#: ../lib/Galette/Controllers/AuthController.php:428
+#: ../lib/Galette/Controllers/AuthController.php:653
 msgid "Password recovery"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:443
+#: ../lib/Galette/Controllers/AuthController.php:464
 #: ../templates/default/pages/mailing_form.html.twig:14
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:465
-#: ../lib/Galette/Controllers/Crud/MembersController.php:229
+#: ../lib/Galette/Controllers/AuthController.php:486
+#: ../lib/Galette/Controllers/Crud/MembersController.php:232
 msgid "Too many requests. Please try again later."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:467
+#: ../lib/Galette/Controllers/AuthController.php:488
 msgid "Password recovery throttled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:521
+#: ../lib/Galette/Controllers/AuthController.php:542
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:527
+#: ../lib/Galette/Controllers/AuthController.php:548
 msgid "An email has been sent to the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:534
+#: ../lib/Galette/Controllers/AuthController.php:555
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:545
+#: ../lib/Galette/Controllers/AuthController.php:566
 #: ../lib/Galette/Events/MemberListener.php:160
 #, php-format
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:556
+#: ../lib/Galette/Controllers/AuthController.php:577
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:569
+#: ../lib/Galette/Controllers/AuthController.php:590
 #, php-format
 msgid "Mails address %s does not exist"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:575
+#: ../lib/Galette/Controllers/AuthController.php:596
 #, php-format
 msgid "Login %s does not exist"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:593
+#: ../lib/Galette/Controllers/AuthController.php:614
 msgid ""
 "If an account matches, an email has been sent to its address.<br/>Please "
 "check your inbox and follow the instructions."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:616
+#: ../lib/Galette/Controllers/AuthController.php:637
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:664
+#: ../lib/Galette/Controllers/AuthController.php:685
 #: ../webroot/installer.php:149 ../webroot/installer.php:206
 msgid "No password"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:667
+#: ../lib/Galette/Controllers/AuthController.php:688
 #: ../lib/Galette/Entity/Adherent.php:1425
 msgid "- The passwords don't match!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:670
+#: ../lib/Galette/Controllers/AuthController.php:691
 msgid "Your password is too weak!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:679
+#: ../lib/Galette/Controllers/AuthController.php:700
 msgid "An error occurred while updating your password."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:685
+#: ../lib/Galette/Controllers/AuthController.php:706
 #, php-format
 msgid "Password changed for member '%s'."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:694
+#: ../lib/Galette/Controllers/AuthController.php:715
 msgid "Your password has been changed!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:721
-#: ../lib/Galette/Core/Galette.php:429
+#: ../lib/Galette/Controllers/AuthController.php:742
+#: ../lib/Galette/Core/Galette.php:461
 msgid "Authentication attempts"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:742
+#: ../lib/Galette/Controllers/AuthController.php:763
 msgid "All authentication counters have been lifted."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:745
+#: ../lib/Galette/Controllers/AuthController.php:766
 msgid "The counter has been lifted."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:749
+#: ../lib/Galette/Controllers/AuthController.php:770
 msgid "Authentication counters lifted"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:754
+#: ../lib/Galette/Controllers/AuthController.php:775
 msgid "Nothing to lift; it may have expired on its own."
 msgstr ""
 
@@ -407,7 +416,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1336
 #: ../lib/Galette/Entity/Adherent.php:1865
 #: ../lib/Galette/Entity/Contribution.php:704
-#: ../lib/Galette/Entity/Group.php:683
+#: ../lib/Galette/Entity/Group.php:689
 #: ../lib/Galette/Entity/ImportModel.php:168
 #: ../lib/Galette/Entity/SavedSearch.php:284
 #: ../lib/Galette/Entity/SavedSearch.php:412
@@ -421,17 +430,17 @@ msgstr ""
 #: ../lib/Galette/Helpers/DatesHelper.php:98
 #: ../lib/Galette/Helpers/DatesHelper.php:150
 #: ../lib/Galette/Helpers/DatesHelper.php:222
-#: ../lib/Galette/IO/ContributionsCsv.php:103
-#: ../lib/Galette/IO/ContributionsCsv.php:115
-#: ../lib/Galette/IO/ContributionsCsv.php:127
-#: ../lib/Galette/IO/MembersCsv.php:203 ../lib/Galette/IO/MembersCsv.php:215
-#: ../lib/Galette/IO/MembersCsv.php:227 ../lib/Galette/IO/MembersCsv.php:239
+#: ../lib/Galette/IO/ContributionsCsv.php:101
+#: ../lib/Galette/IO/ContributionsCsv.php:113
+#: ../lib/Galette/IO/ContributionsCsv.php:125
+#: ../lib/Galette/IO/MembersCsv.php:199 ../lib/Galette/IO/MembersCsv.php:211
+#: ../lib/Galette/IO/MembersCsv.php:223 ../lib/Galette/IO/MembersCsv.php:235
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:52
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:97
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:89
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:101
 #: ../lib/Galette/Util/Password.php:328
-#: ../templates/default/pages/advanced_search.html.twig:557
+#: ../templates/default/pages/advanced_search.html.twig:558
 #: ../templates/default/pages/member_form.html.twig:283
 msgid "Y-m-d"
 msgstr ""
@@ -455,12 +464,12 @@ msgid "Mass add contribution on %1$s members"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:544
-#: ../lib/Galette/Core/Galette.php:267
+#: ../lib/Galette/Core/Galette.php:321
 msgid "List of contributions"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:544
-#: ../lib/Galette/Core/Galette.php:294
+#: ../lib/Galette/Core/Galette.php:348
 msgid "List of transactions"
 msgstr ""
 
@@ -479,8 +488,8 @@ msgstr ""
 
 #. TRANS: parameter is the contribution identifier
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:792
-#: ../lib/Galette/Controllers/PdfController.php:400
-#: ../lib/Galette/Controllers/PdfController.php:657
+#: ../lib/Galette/Controllers/PdfController.php:404
+#: ../lib/Galette/Controllers/PdfController.php:661
 #, php-format
 msgid "Unable to load contribution #%1$s!"
 msgstr ""
@@ -523,8 +532,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1028
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1106
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1320
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1437
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1380
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1494
 msgid "Mass changes has not been confirmed!"
 msgstr ""
 
@@ -535,7 +544,7 @@ msgid "Review mass change %1$s contributions"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1129
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1523
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1580
 msgid "Nothing to do!"
 msgstr ""
 
@@ -553,7 +562,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1177
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1609
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1666
 msgid "Something went wrong during mass edition!"
 msgstr ""
 
@@ -585,7 +594,7 @@ msgid "transaction"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:78
-#: ../lib/Galette/Core/Galette.php:466 ../lib/Galette/Core/Install.php:1166
+#: ../lib/Galette/Core/Galette.php:527 ../lib/Galette/Core/Install.php:1166
 msgid "Contributions types"
 msgstr ""
 
@@ -631,8 +640,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:165
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:202
-#: ../lib/Galette/Core/Galette.php:370 ../lib/Galette/Core/Galette.php:661
-#: ../lib/Galette/Core/Galette.php:884 ../lib/Galette/Core/Preferences.php:1250
+#: ../lib/Galette/Core/Galette.php:424 ../lib/Galette/Core/Galette.php:745
+#: ../lib/Galette/Core/Galette.php:968 ../lib/Galette/Core/Preferences.php:1250
 #: ../lib/Galette/Features/Replacements.php:971
 #: ../templates/default/pages/preferences.html.twig:429
 msgid "Documents"
@@ -652,17 +661,17 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:865
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:912
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:929
-#: ../lib/Galette/Controllers/Crud/MembersController.php:294
-#: ../lib/Galette/Controllers/Crud/MembersController.php:349
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1128
+#: ../lib/Galette/Controllers/Crud/MembersController.php:297
+#: ../lib/Galette/Controllers/Crud/MembersController.php:352
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1188
 #: ../lib/Galette/Controllers/CsvController.php:679
-#: ../lib/Galette/Controllers/PdfController.php:83
-#: ../lib/Galette/Controllers/PdfController.php:102
-#: ../lib/Galette/Controllers/PdfController.php:165
-#: ../lib/Galette/Controllers/PdfController.php:245
-#: ../lib/Galette/Controllers/PdfController.php:269
-#: ../lib/Galette/Controllers/PdfController.php:326
-#: ../lib/Galette/Controllers/PdfController.php:430
+#: ../lib/Galette/Controllers/PdfController.php:87
+#: ../lib/Galette/Controllers/PdfController.php:106
+#: ../lib/Galette/Controllers/PdfController.php:169
+#: ../lib/Galette/Controllers/PdfController.php:249
+#: ../lib/Galette/Controllers/PdfController.php:273
+#: ../lib/Galette/Controllers/PdfController.php:330
+#: ../lib/Galette/Controllers/PdfController.php:434
 #: ../lib/Galette/Middleware/Authenticate.php:157
 msgid "You do not have permission for requested URL."
 msgstr ""
@@ -691,7 +700,7 @@ msgid "Delete document"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:55
-#: ../templates/default/pages/configuration_core_lists.html.twig:25
+#: ../templates/default/pages/configuration_core_lists.html.twig:29
 msgid "Add field"
 msgstr ""
 
@@ -705,7 +714,7 @@ msgid "Dynamic field has been successfully stored!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:185
-#: ../lib/Galette/Core/Galette.php:458
+#: ../lib/Galette/Core/Galette.php:519
 #: ../templates/default/pages/preferences.html.twig:20
 msgid "Dynamic fields"
 msgstr ""
@@ -757,8 +766,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:157
 #: ../lib/Galette/Controllers/CsvController.php:562
-#: ../lib/Galette/Core/Galette.php:357 ../lib/Galette/Core/Galette.php:799
-#: ../lib/Galette/IO/MembersCsv.php:120
+#: ../lib/Galette/Core/Galette.php:411 ../lib/Galette/Core/Galette.php:883
+#: ../lib/Galette/IO/MembersCsv.php:116
 #: ../templates/default/components/forms/groups.html.twig:24
 #: ../templates/default/components/forms/groups.html.twig:28
 msgid "Groups"
@@ -781,12 +790,13 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:315
 #: ../templates/default/components/forms/groups.html.twig:31
-#: ../templates/default/pages/advanced_search.html.twig:262
+#: ../templates/default/components/forms/groups.html.twig:47
+#: ../templates/default/pages/advanced_search.html.twig:263
 msgid "Group"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:362
-#: ../lib/Galette/Entity/Group.php:747
+#: ../lib/Galette/Entity/Group.php:753
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr ""
@@ -855,7 +865,7 @@ msgid "Mailing has been successfully saved."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:542
-#: ../lib/Galette/Core/Galette.php:378 ../lib/Galette/Core/Galette.php:815
+#: ../lib/Galette/Core/Galette.php:432 ../lib/Galette/Core/Galette.php:899
 msgid "Mailings"
 msgstr ""
 
@@ -890,171 +900,171 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:970
 #: ../lib/Galette/Controllers/GaletteController.php:785
-#: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:865
+#: ../lib/Galette/Core/Galette.php:395 ../lib/Galette/Core/Galette.php:949
 msgid "Reminders"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:151
+#: ../lib/Galette/Controllers/Crud/MembersController.php:154
 msgid "Registration"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:231
+#: ../lib/Galette/Controllers/Crud/MembersController.php:234
 msgid "Self registration throttled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:313
+#: ../lib/Galette/Controllers/Crud/MembersController.php:316
 msgid "Profile"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:407
-#: ../lib/Galette/Core/Galette.php:202 ../lib/Galette/Core/Galette.php:599
-#: ../lib/Galette/Core/Galette.php:791
-#: ../lib/Galette/DynamicFields/DynamicField.php:459
+#: ../lib/Galette/Controllers/Crud/MembersController.php:410
+#: ../lib/Galette/Core/Galette.php:256 ../lib/Galette/Core/Galette.php:683
+#: ../lib/Galette/Core/Galette.php:875
+#: ../lib/Galette/DynamicFields/DynamicField.php:461
 #: ../templates/default/elements/group_persons.html.twig:25
 #: ../templates/default/elements/group_persons.html.twig:33
 msgid "Members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:438
-#: ../lib/Galette/Core/Galette.php:609
+#: ../lib/Galette/Controllers/Crud/MembersController.php:441
+#: ../lib/Galette/Core/Galette.php:693
 msgid "Gallery"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:473
-#: ../lib/Galette/Core/Galette.php:619
+#: ../lib/Galette/Controllers/Crud/MembersController.php:476
+#: ../lib/Galette/Core/Galette.php:703
 msgid "Staff"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:509
-#: ../lib/Galette/Core/Galette.php:629
+#: ../lib/Galette/Controllers/Crud/MembersController.php:512
+#: ../lib/Galette/Core/Galette.php:713
 #: ../templates/default/pages/preferences.html.twig:465
 msgid "Staff gallery"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:693
-#: ../lib/Galette/Core/Galette.php:210
+#: ../lib/Galette/Controllers/Crud/MembersController.php:699
+#: ../lib/Galette/Core/Galette.php:264
 msgid "List of members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:909
-#: ../lib/Galette/Core/Galette.php:218
-#: ../templates/default/pages/advanced_search.html.twig:82
+#: ../lib/Galette/Controllers/Crud/MembersController.php:969
+#: ../lib/Galette/Core/Galette.php:272
+#: ../templates/default/pages/advanced_search.html.twig:83
 msgid "Advanced search"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1077
-#: ../lib/Galette/Controllers/PdfController.php:112
-#: ../lib/Galette/Controllers/PdfController.php:191
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1137
+#: ../lib/Galette/Controllers/PdfController.php:116
+#: ../lib/Galette/Controllers/PdfController.php:195
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1166
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1226
 msgid "Edit profile"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1167
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1227
 msgid "New member"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1287
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1347
 #, php-format
 msgid "Mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1345
-#: ../templates/default/components/forms/groups.html.twig:114
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1405
+#: ../templates/default/components/forms/groups.html.twig:115
 #: ../templates/default/components/forms/mass_groups.html.twig:19
 msgid "Add to group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1355
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1415
 #: ../templates/default/components/forms/mass_groups.html.twig:31
 msgid "Remove from group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1404
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1462
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1548
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1837
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1605
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1894
 msgid "An error occurred while saving the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1583
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1818
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1640
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1875
 msgid "An error occurred adding member to its groups."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1601
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1658
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1641
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1698
 #: ../lib/Galette/Middleware/Authenticate.php:79
 msgid "Login required"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1668
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1725
 msgid "Invalid captcha"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1795
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1852
 msgid "Your account has been created!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1800
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1857
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1803
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1860
 msgid "New member has been successfully added."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1806
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1863
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1832
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1889
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1856
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1913
 #: ../lib/Galette/Controllers/GaletteController.php:276
 #: ../lib/Galette/Controllers/GaletteController.php:287
 msgid "Delete failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1974
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2031
 #, php-format
 msgid "Remove member %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1982
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2039
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr ""
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2119
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2176
 #, php-format
 msgid "No member #%1$s."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:80
-#: ../lib/Galette/Core/Galette.php:474 ../lib/Galette/Core/Install.php:1190
+#: ../lib/Galette/Core/Galette.php:535 ../lib/Galette/Core/Install.php:1190
 #: ../lib/Galette/Core/Install.php:1209
 msgid "Payment types"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:120
 #: ../lib/Galette/Features/Replacements.php:419
-#: ../templates/default/pages/advanced_search.html.twig:399
-#: ../templates/default/pages/advanced_search.html.twig:401
+#: ../templates/default/pages/advanced_search.html.twig:400
+#: ../templates/default/pages/advanced_search.html.twig:402
 #: ../templates/default/pages/configuration_payment_types.html.twig:53
 #: ../templates/default/pages/contributions_list.html.twig:79
 #: ../templates/default/pages/contributions_list.html.twig:406
@@ -1105,7 +1115,7 @@ msgid "Search has been saved."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:158
-#: ../lib/Galette/Core/Galette.php:225
+#: ../lib/Galette/Core/Galette.php:279
 msgid "Saved searches"
 msgstr ""
 
@@ -1155,7 +1165,7 @@ msgid "Add scheduled payment"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:166
-#: ../lib/Galette/Core/Galette.php:281
+#: ../lib/Galette/Core/Galette.php:335
 msgid "List of scheduled payments"
 msgstr ""
 
@@ -1191,7 +1201,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:85
-#: ../lib/Galette/Core/Galette.php:482
+#: ../lib/Galette/Core/Galette.php:543
 msgid "User statuses"
 msgstr ""
 
@@ -1231,7 +1241,7 @@ msgid "Remove status '%1$s'"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:75
-#: ../lib/Galette/Core/Galette.php:489 ../lib/Galette/Core/Install.php:1182
+#: ../lib/Galette/Core/Galette.php:550 ../lib/Galette/Core/Install.php:1182
 msgid "Titles"
 msgstr ""
 
@@ -1323,7 +1333,7 @@ msgid "An error occurred trying to delete :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:114
-#: ../lib/Galette/Core/Galette.php:392 ../install/steps/check.php:47
+#: ../lib/Galette/Core/Galette.php:446 ../install/steps/check.php:47
 msgid "Exports"
 msgstr ""
 
@@ -1348,7 +1358,7 @@ msgid "An error occurred running parameted export '%1$s'."
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:244
-#: ../lib/Galette/Core/Galette.php:399 ../install/steps/check.php:48
+#: ../lib/Galette/Core/Galette.php:453 ../install/steps/check.php:48
 msgid "Imports"
 msgstr ""
 
@@ -1394,13 +1404,13 @@ msgstr ""
 
 #. TRANS: %1$s is a dynamic field name, %2$s the occurrence number
 #: ../lib/Galette/Controllers/CsvController.php:552
-#: ../lib/Galette/IO/MembersCsv.php:176
+#: ../lib/Galette/IO/MembersCsv.php:172
 #, php-format
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:563
-#: ../lib/Galette/IO/MembersCsv.php:121
+#: ../lib/Galette/IO/MembersCsv.php:117
 msgid "Managed groups"
 msgstr ""
 
@@ -1421,7 +1431,7 @@ msgid "Import model has not been stored :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:60
-#: ../lib/Galette/Core/Galette.php:511
+#: ../lib/Galette/Core/Galette.php:572
 msgid "Labels translation"
 msgstr ""
 
@@ -1469,9 +1479,9 @@ msgid "Dashboard"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:208
-#: ../lib/Galette/Core/Galette.php:422 ../lib/Galette/Core/Galette.php:900
+#: ../lib/Galette/Core/Galette.php:484 ../lib/Galette/Core/Galette.php:985
 #: ../lib/Galette/Core/Install.php:1162
-#: ../lib/Galette/DynamicFields/DynamicField.php:462
+#: ../lib/Galette/DynamicFields/DynamicField.php:464
 #: ../templates/default/pages/advanced_config.html.twig:23
 #: ../templates/default/pages/preferences.html.twig:1150
 msgid "Settings"
@@ -1504,8 +1514,8 @@ msgid "Preferences has been saved."
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:340
-#: ../lib/Galette/Core/Galette.php:156 ../lib/Galette/Core/Galette.php:166
-#: ../lib/Galette/Core/Galette.php:719
+#: ../lib/Galette/Core/Galette.php:187 ../lib/Galette/Core/Galette.php:220
+#: ../lib/Galette/Core/Galette.php:803
 msgid "My information"
 msgstr ""
 
@@ -1559,12 +1569,12 @@ msgid "Those emailing settings do not work."
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:602
-#: ../lib/Galette/Core/Galette.php:385
+#: ../lib/Galette/Core/Galette.php:439
 msgid "Charts"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:623
-#: ../lib/Galette/Core/Galette.php:451
+#: ../lib/Galette/Core/Galette.php:512
 msgid "Core fields"
 msgstr ""
 
@@ -1577,7 +1587,7 @@ msgid "An error occurred while saving fields configuration :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:709
-#: ../lib/Galette/Core/Galette.php:443
+#: ../lib/Galette/Core/Galette.php:504
 msgid "Core lists"
 msgstr ""
 
@@ -1606,7 +1616,7 @@ msgid "Download document"
 msgstr ""
 
 #: ../lib/Galette/Controllers/HistoryController.php:81
-#: ../lib/Galette/Core/Galette.php:407 ../install/steps/check.php:49
+#: ../lib/Galette/Core/Galette.php:468 ../install/steps/check.php:49
 msgid "Logs"
 msgstr ""
 
@@ -1623,69 +1633,69 @@ msgstr ""
 msgid "Flush the logs"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:140
-#: ../lib/Galette/Controllers/PdfController.php:211
-#: ../lib/Galette/Controllers/PdfController.php:641
+#: ../lib/Galette/Controllers/PdfController.php:144
+#: ../lib/Galette/Controllers/PdfController.php:215
+#: ../lib/Galette/Controllers/PdfController.php:645
 msgid "Unable to get members list."
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:305
+#: ../lib/Galette/Controllers/PdfController.php:309
 msgid "Attendance sheet configuration"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:356
+#: ../lib/Galette/Controllers/PdfController.php:360
 msgid "No member selected to generate attendance sheet"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:361
-#: ../lib/Galette/Core/Galette.php:1170
+#: ../lib/Galette/Controllers/PdfController.php:365
+#: ../lib/Galette/Core/Galette.php:1261
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:117
 #: ../templates/default/modals/members_attendance_sheet.html.twig:31
 msgid "Attendance sheet"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:445
+#: ../lib/Galette/Controllers/PdfController.php:449
 msgid "Unable to get groups list."
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:496
-#: ../lib/Galette/Core/Galette.php:497 ../lib/Galette/Core/Install.php:1186
+#: ../lib/Galette/Controllers/PdfController.php:500
+#: ../lib/Galette/Core/Galette.php:558 ../lib/Galette/Core/Install.php:1186
 msgid "PDF models"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:527
+#: ../lib/Galette/Controllers/PdfController.php:531
 msgid "Missing PDF model type!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:560
+#: ../lib/Galette/Controllers/PdfController.php:564
 msgid "Model has been successfully stored!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:562
+#: ../lib/Galette/Controllers/PdfController.php:566
 msgid "Model has not been stored :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/PdfController.php:603
+#: ../lib/Galette/Controllers/PdfController.php:607
 msgid "Invalid link!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:59
-#: ../lib/Galette/Core/Galette.php:436 ../lib/Galette/Core/Galette.php:908
+#: ../lib/Galette/Controllers/PluginsController.php:69
+#: ../lib/Galette/Core/Galette.php:491 ../lib/Galette/Core/Galette.php:993
 msgid "Plugins"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:88
+#: ../lib/Galette/Controllers/PluginsController.php:100
 #, php-format
 msgid "Plugin %1$s has been enabled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:100
+#: ../lib/Galette/Controllers/PluginsController.php:112
 #, php-format
 msgid "Plugin %1$s has been disabled"
 msgstr ""
 
 #: ../lib/Galette/Controllers/TextController.php:54
-#: ../lib/Galette/Core/Galette.php:504
+#: ../lib/Galette/Core/Galette.php:565
 msgid "Emails content"
 msgstr ""
 
@@ -1701,7 +1711,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/TwoFactorController.php:53
 #: ../lib/Galette/Controllers/TwoFactorController.php:157
-#: ../lib/Galette/Core/Galette.php:181
+#: ../lib/Galette/Core/Galette.php:246
 msgid "Two-factor authentication"
 msgstr ""
 
@@ -1836,15 +1846,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1798
 #: ../lib/Galette/Entity/Adherent.php:1800
 #: ../lib/Galette/Features/Replacements.php:905
-#: ../lib/Galette/IO/MembersCsv.php:263 ../lib/Galette/IO/MembersCsv.php:267
-#: ../lib/Galette/IO/MembersCsv.php:271 ../lib/Galette/IO/MembersCsv.php:275
-#: ../templates/default/elements/edit_core_fields.html.twig:59
+#: ../lib/Galette/IO/MembersCsv.php:259 ../lib/Galette/IO/MembersCsv.php:263
+#: ../lib/Galette/IO/MembersCsv.php:267 ../lib/Galette/IO/MembersCsv.php:271
+#: ../templates/default/elements/edit_core_fields.html.twig:61
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:20
 #: ../templates/default/modals/telemetry.html.twig:107
-#: ../templates/default/pages/advanced_search.html.twig:210
-#: ../templates/default/pages/advanced_search.html.twig:565
-#: ../templates/default/pages/advanced_search.html.twig:699
+#: ../templates/default/pages/advanced_search.html.twig:211
+#: ../templates/default/pages/advanced_search.html.twig:566
+#: ../templates/default/pages/advanced_search.html.twig:700
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:41
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:98
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:167
@@ -1863,15 +1873,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1798
 #: ../lib/Galette/Entity/Adherent.php:1800
 #: ../lib/Galette/Features/Replacements.php:905
-#: ../lib/Galette/IO/MembersCsv.php:263 ../lib/Galette/IO/MembersCsv.php:267
-#: ../lib/Galette/IO/MembersCsv.php:271 ../lib/Galette/IO/MembersCsv.php:275
-#: ../templates/default/elements/edit_core_fields.html.twig:65
+#: ../lib/Galette/IO/MembersCsv.php:259 ../lib/Galette/IO/MembersCsv.php:263
+#: ../lib/Galette/IO/MembersCsv.php:267 ../lib/Galette/IO/MembersCsv.php:271
+#: ../templates/default/elements/edit_core_fields.html.twig:67
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:26
 #: ../templates/default/modals/telemetry.html.twig:119
-#: ../templates/default/pages/advanced_search.html.twig:216
-#: ../templates/default/pages/advanced_search.html.twig:566
-#: ../templates/default/pages/advanced_search.html.twig:699
+#: ../templates/default/pages/advanced_search.html.twig:217
+#: ../templates/default/pages/advanced_search.html.twig:567
+#: ../templates/default/pages/advanced_search.html.twig:700
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:40
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:97
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:166
@@ -1906,327 +1916,327 @@ msgstr ""
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:124
+#: ../lib/Galette/Core/Galette.php:178
 msgid "My Account"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:133 ../lib/Galette/Core/Galette.php:727
-msgid "My contributions"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:134 ../lib/Galette/Core/Galette.php:728
-msgid "View and filter all my contributions"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:141
-msgid "My scheduled payments"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:142
-msgid "View and filter all my scheduled payments"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:148 ../lib/Galette/Core/Galette.php:736
-msgid "My transactions"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:149 ../lib/Galette/Core/Galette.php:737
-msgid "View and filter all my transactions"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:157 ../lib/Galette/Core/Galette.php:720
+#: ../lib/Galette/Core/Galette.php:188 ../lib/Galette/Core/Galette.php:804
 msgid "View my member card"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:167
+#: ../lib/Galette/Core/Galette.php:195 ../lib/Galette/Core/Galette.php:811
+msgid "My contributions"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:196 ../lib/Galette/Core/Galette.php:812
+msgid "View and filter all my contributions"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:203
+msgid "My scheduled payments"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:204
+msgid "View and filter all my scheduled payments"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:210 ../lib/Galette/Core/Galette.php:820
+msgid "My transactions"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:211 ../lib/Galette/Core/Galette.php:821
+msgid "View and filter all my transactions"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:221
 msgid "Modify my login and password"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:182
-msgid "Manage my two-factor authentication"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:192
+#: ../lib/Galette/Core/Galette.php:231
 msgid "Add a child member"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:193
+#: ../lib/Galette/Core/Galette.php:232
 msgid "Add new child member in database"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:211 ../lib/Galette/Core/Galette.php:792
+#: ../lib/Galette/Core/Galette.php:247
+msgid "Manage my two-factor authentication"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:265 ../lib/Galette/Core/Galette.php:876
 msgid "View, search into and filter member's list"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:219
+#: ../lib/Galette/Core/Galette.php:273
 msgid "Perform advanced search into members list"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:240
+#: ../lib/Galette/Core/Galette.php:294
 #: ../templates/default/elements/group_persons.html.twig:58
 #: ../templates/default/pages/members_list.html.twig:50
 msgid "Add a member"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:241
+#: ../lib/Galette/Core/Galette.php:295
 msgid "Add new member in database"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:247
+#: ../lib/Galette/Core/Galette.php:301
 #: ../templates/default/elements/navigation/public_pages.html.twig:29
 #: ../templates/default/pages/member_form.html.twig:108
 msgid "Empty adhesion form"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:248
+#: ../lib/Galette/Core/Galette.php:302
 #: ../templates/default/elements/navigation/public_pages.html.twig:29
 #: ../templates/default/pages/member_form.html.twig:105
 msgid "Download empty adhesion form"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:259 ../lib/Galette/Core/Galette.php:831
-#: ../lib/Galette/DynamicFields/DynamicField.php:460
-#: ../templates/default/pages/members_list.html.twig:248
+#: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:915
+#: ../lib/Galette/DynamicFields/DynamicField.php:462
+#: ../templates/default/pages/members_list.html.twig:263
 msgid "Contributions"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:268 ../lib/Galette/Core/Galette.php:832
+#: ../lib/Galette/Core/Galette.php:322 ../lib/Galette/Core/Galette.php:916
 msgid "View and filter contributions"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:282
+#: ../lib/Galette/Core/Galette.php:336
 msgid "View and filter scheduled payments"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:295 ../lib/Galette/Core/Galette.php:849
+#: ../lib/Galette/Core/Galette.php:349 ../lib/Galette/Core/Galette.php:933
 msgid "View and filter transactions"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:308
-#: ../templates/default/elements/member_actions.html.twig:119
+#: ../lib/Galette/Core/Galette.php:362
+#: ../templates/default/elements/member_actions.html.twig:118
 #: ../templates/default/pages/contributions_list.html.twig:194
 #: ../templates/default/pages/contributions_list.html.twig:243
 msgid "Add a membership fee"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:309
+#: ../lib/Galette/Core/Galette.php:363
 msgid "Add new membership fee in database"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:316
-#: ../templates/default/elements/member_actions.html.twig:126
+#: ../lib/Galette/Core/Galette.php:370
+#: ../templates/default/elements/member_actions.html.twig:125
 #: ../templates/default/pages/contributions_list.html.twig:200
 #: ../templates/default/pages/contributions_list.html.twig:250
 msgid "Add a donation"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:317
+#: ../lib/Galette/Core/Galette.php:371
 msgid "Add new donation in database"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:329
+#: ../lib/Galette/Core/Galette.php:383
 #: ../templates/default/pages/transactions_list.html.twig:135
 #: ../templates/default/pages/transactions_list.html.twig:165
 msgid "Add a transaction"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:330
+#: ../lib/Galette/Core/Galette.php:384
 msgid "Add new transaction in database"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:342 ../lib/Galette/Core/Galette.php:866
+#: ../lib/Galette/Core/Galette.php:396 ../lib/Galette/Core/Galette.php:950
 msgid "Send reminders to late members"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:353
+#: ../lib/Galette/Core/Galette.php:407
 msgid "Management"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:358 ../lib/Galette/Core/Galette.php:800
+#: ../lib/Galette/Core/Galette.php:412 ../lib/Galette/Core/Galette.php:884
 msgid "View and manage groups"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:371
+#: ../lib/Galette/Core/Galette.php:425
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:379 ../lib/Galette/Core/Galette.php:816
+#: ../lib/Galette/Core/Galette.php:433 ../lib/Galette/Core/Galette.php:900
 msgid "Manage mailings that has been sent"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:386
+#: ../lib/Galette/Core/Galette.php:440
 msgid "Various charts"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:393
+#: ../lib/Galette/Core/Galette.php:447
 msgid "Export some data in various formats"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:400
+#: ../lib/Galette/Core/Galette.php:454
 msgid "Import members from CSV files"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:408
+#: ../lib/Galette/Core/Galette.php:462
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
+#: ../lib/Galette/Core/Galette.php:469
 msgid "View application's logs"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:418 ../install/steps/check.php:46
+#: ../lib/Galette/Core/Galette.php:480 ../install/steps/check.php:46
 msgid "Configuration"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:423 ../lib/Galette/Core/Galette.php:901
+#: ../lib/Galette/Core/Galette.php:485 ../lib/Galette/Core/Galette.php:986
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:430
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
-
-#: ../lib/Galette/Core/Galette.php:437 ../lib/Galette/Core/Galette.php:909
+#: ../lib/Galette/Core/Galette.php:497 ../lib/Galette/Core/Galette.php:999
 msgid "Information about available plugins"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:444
+#: ../lib/Galette/Core/Galette.php:505
 msgid "Customize lists fields and order"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:452
+#: ../lib/Galette/Core/Galette.php:513
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:459
+#: ../lib/Galette/Core/Galette.php:520
 #: ../templates/default/pages/preferences.html.twig:1164
 msgid "Manage additional fields for various forms"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:467
+#: ../lib/Galette/Core/Galette.php:528
 msgid "Manage contributions types"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:475
+#: ../lib/Galette/Core/Galette.php:536
 msgid "Manage payment types"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:490
+#: ../lib/Galette/Core/Galette.php:551
 msgid "Manage titles"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:498
+#: ../lib/Galette/Core/Galette.php:559
 msgid "Manage PDF models"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:505
+#: ../lib/Galette/Core/Galette.php:566
 msgid "Manage emails texts and subjects"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:512
+#: ../lib/Galette/Core/Galette.php:573
 msgid "Manage translatable labels"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:524
+#: ../lib/Galette/Core/Galette.php:585
 msgid "Various administrative tools"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:531
+#: ../lib/Galette/Core/Galette.php:592
 msgid "Edit every setting, including those the settings form does not show"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:640
+#: ../lib/Galette/Core/Galette.php:724
 msgid "Directories"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:651
+#: ../lib/Galette/Core/Galette.php:735
 msgid "Galleries"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:662 ../lib/Galette/Core/Galette.php:885
+#: ../lib/Galette/Core/Galette.php:746 ../lib/Galette/Core/Galette.php:969
 msgid "View documents related to your association"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:689
+#: ../lib/Galette/Core/Galette.php:773
 #: ../templates/default/pages/preferences.html.twig:382
 msgid "Public pages"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:848
-#: ../lib/Galette/DynamicFields/DynamicField.php:461
+#: ../lib/Galette/Core/Galette.php:932
+#: ../lib/Galette/DynamicFields/DynamicField.php:463
 msgid "Transactions"
 msgstr ""
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:961 ../lib/Galette/Core/Galette.php:966
+#: ../lib/Galette/Core/Galette.php:1052 ../lib/Galette/Core/Galette.php:1057
 #, php-format
 msgid "%1$s: edit information"
 msgstr ""
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:982 ../lib/Galette/Core/Galette.php:987
+#: ../lib/Galette/Core/Galette.php:1073 ../lib/Galette/Core/Galette.php:1078
 #, php-format
 msgid "%1$s: contributions"
 msgstr ""
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:1003 ../lib/Galette/Core/Galette.php:1008
+#: ../lib/Galette/Core/Galette.php:1094 ../lib/Galette/Core/Galette.php:1099
 #, php-format
 msgid "%1$s: remove from database"
 msgstr ""
 
 #. TRANS: parameter is the member name
-#: ../lib/Galette/Core/Galette.php:1027 ../lib/Galette/Core/Galette.php:1032
+#: ../lib/Galette/Core/Galette.php:1118 ../lib/Galette/Core/Galette.php:1123
 #: ../templates/default/elements/group_person_row.html.twig:93
 #: ../templates/default/elements/member_actions.html.twig:32
 #: ../templates/default/elements/member_actions.html.twig:35
-#: ../templates/default/pages/members_list.html.twig:260
+#: ../templates/default/pages/members_list.html.twig:275
 #, php-format
 msgid "Log in as %1$s"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1128
+#: ../lib/Galette/Core/Galette.php:1219
 #: ../templates/default/pages/contributions_list.html.twig:33
 msgid "Mass change"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1133
+#: ../lib/Galette/Core/Galette.php:1224
 msgid "Mass add contributions"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1138
+#: ../lib/Galette/Core/Galette.php:1229
 #: ../templates/default/pages/contributions_list.html.twig:33
 #: ../templates/default/pages/groups_list.html.twig:57
 #: ../templates/default/pages/scheduledpayments_list.html.twig:28
 msgid "Delete"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1154
-#: ../templates/default/pages/members_list.html.twig:341
+#: ../lib/Galette/Core/Galette.php:1245
+#: ../templates/default/pages/members_list.html.twig:356
 msgid "Mail"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1175
+#: ../lib/Galette/Core/Galette.php:1266
 #: ../templates/default/elements/mailing_recipients.html.twig:28
 msgid "Generate labels"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1180
+#: ../lib/Galette/Core/Galette.php:1271
 msgid "Generate Member Cards"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1185
+#: ../lib/Galette/Core/Galette.php:1276
 #: ../templates/default/pages/contributions_list.html.twig:33
 #: ../templates/default/pages/scheduledpayments_list.html.twig:28
 msgid "Export as CSV"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1233
+#: ../lib/Galette/Core/Galette.php:1324
 msgid "Galette news"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:1243
+#: ../lib/Galette/Core/Galette.php:1334
 msgid "Association news"
 msgstr ""
 
@@ -2417,8 +2427,8 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:61
 #: ../templates/default/pages/advanced_config.html.twig:212
 #: ../templates/default/pages/advanced_config.html.twig:226
-#: ../templates/default/pages/advanced_search.html.twig:222
-#: ../templates/default/pages/advanced_search.html.twig:224
+#: ../templates/default/pages/advanced_search.html.twig:223
+#: ../templates/default/pages/advanced_search.html.twig:225
 msgid "Status"
 msgstr ""
 
@@ -2480,19 +2490,19 @@ msgstr ""
 msgid "An SQL error has occurred."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:554 ../lib/Galette/Core/Plugins.php:621
+#: ../lib/Galette/Core/Plugins.php:589 ../lib/Galette/Core/Plugins.php:656
 msgid "No such module."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:560
+#: ../lib/Galette/Core/Plugins.php:595
 msgid "Cannot deactivate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:627
+#: ../lib/Galette/Core/Plugins.php:662
 msgid "Cannot activate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:1096
+#: ../lib/Galette/Core/Plugins.php:1131
 msgid "File not found!"
 msgstr ""
 
@@ -2525,7 +2535,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:736
 #: ../templates/default/pages/admin_credentials.html.twig:17
-#: ../templates/default/pages/plugins.html.twig:141
+#: ../templates/default/pages/plugins.html.twig:154
 #: ../templates/default/pages/preferences.html.twig:675
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
@@ -2703,83 +2713,83 @@ msgstr ""
 msgid "- Unknown visibility for '%1$s'!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:519
+#: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Missing required field name!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:528
+#: ../lib/Galette/DynamicFields/DynamicField.php:530
 msgid "Missing required field permissions!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:532
+#: ../lib/Galette/DynamicFields/DynamicField.php:534
 msgid "Unknown permission!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:537
+#: ../lib/Galette/DynamicFields/DynamicField.php:539
 msgid "Missing required form!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:541
+#: ../lib/Galette/DynamicFields/DynamicField.php:543
 msgid "Unknown form!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:550
+#: ../lib/Galette/DynamicFields/DynamicField.php:552
 msgid "- Field name already used."
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:557
+#: ../lib/Galette/DynamicFields/DynamicField.php:559
 msgid "- Width must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:567
+#: ../lib/Galette/DynamicFields/DynamicField.php:569
 msgid "- Height must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:577
+#: ../lib/Galette/DynamicFields/DynamicField.php:579
 msgid "- Size must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:587
+#: ../lib/Galette/DynamicFields/DynamicField.php:589
 msgid "- Min size must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:596
+#: ../lib/Galette/DynamicFields/DynamicField.php:598
 msgid "- Min size must be lower than size!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:603
+#: ../lib/Galette/DynamicFields/DynamicField.php:605
 msgid "- Repeat must be an integer!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:700
+#: ../lib/Galette/DynamicFields/DynamicField.php:702
 msgid "An error occurred storing the field."
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:884
+#: ../lib/Galette/DynamicFields/DynamicField.php:898
 msgid "separator"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:885
+#: ../lib/Galette/DynamicFields/DynamicField.php:899
 msgid "free text"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:886
+#: ../lib/Galette/DynamicFields/DynamicField.php:900
 msgid "single line"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:887
+#: ../lib/Galette/DynamicFields/DynamicField.php:901
 msgid "choice"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:888
+#: ../lib/Galette/DynamicFields/DynamicField.php:902
 msgid "date"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:889
+#: ../lib/Galette/DynamicFields/DynamicField.php:903
 msgid "boolean"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:890
+#: ../lib/Galette/DynamicFields/DynamicField.php:904
 msgid "file"
 msgstr ""
 
@@ -2795,7 +2805,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:779
 #: ../lib/Galette/Filters/MembersList.php:295
-#: ../templates/default/pages/members_list.html.twig:226
+#: ../templates/default/pages/members_list.html.twig:241
 msgid "Never contributed"
 msgstr ""
 
@@ -2926,35 +2936,35 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1825
 #: ../lib/Galette/Features/Replacements.php:712
-#: ../lib/Galette/IO/MembersCsv.php:249
+#: ../lib/Galette/IO/MembersCsv.php:245
 #: ../templates/default/components/forms/gender.html.twig:31
 #: ../templates/default/elements/ajax_members.html.twig:35
 #: ../templates/default/elements/group_person_row.html.twig:24
 #: ../templates/default/modals/mass_change_members.html.twig:41
-#: ../templates/default/pages/advanced_search.html.twig:494
-#: ../templates/default/pages/advanced_search.html.twig:655
+#: ../templates/default/pages/advanced_search.html.twig:495
+#: ../templates/default/pages/advanced_search.html.twig:656
 msgid "Man"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1826
 #: ../lib/Galette/Features/Replacements.php:714
-#: ../lib/Galette/IO/MembersCsv.php:252
+#: ../lib/Galette/IO/MembersCsv.php:248
 #: ../templates/default/components/forms/gender.html.twig:37
 #: ../templates/default/elements/ajax_members.html.twig:40
 #: ../templates/default/elements/group_person_row.html.twig:29
 #: ../templates/default/modals/mass_change_members.html.twig:38
-#: ../templates/default/pages/advanced_search.html.twig:494
-#: ../templates/default/pages/advanced_search.html.twig:655
+#: ../templates/default/pages/advanced_search.html.twig:495
+#: ../templates/default/pages/advanced_search.html.twig:656
 msgid "Woman"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1827
 #: ../lib/Galette/Features/Replacements.php:716
-#: ../lib/Galette/IO/MembersCsv.php:255
+#: ../lib/Galette/IO/MembersCsv.php:251
 #: ../templates/default/components/forms/gender.html.twig:25
 #: ../templates/default/modals/mass_change_members.html.twig:35
-#: ../templates/default/pages/advanced_search.html.twig:494
-#: ../templates/default/pages/advanced_search.html.twig:655
+#: ../templates/default/pages/advanced_search.html.twig:495
+#: ../templates/default/pages/advanced_search.html.twig:656
 msgid "Unspecified"
 msgstr ""
 
@@ -2998,8 +3008,8 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:190
 #: ../templates/default/modals/members_attendance_sheet.html.twig:42
-#: ../templates/default/pages/advanced_search.html.twig:554
-#: ../templates/default/pages/advanced_search.html.twig:720
+#: ../templates/default/pages/advanced_search.html.twig:555
+#: ../templates/default/pages/advanced_search.html.twig:721
 #: ../templates/default/pages/contribution_form.html.twig:106
 #: ../templates/default/pages/contributions_list.html.twig:52
 #: ../templates/default/pages/contributions_list.html.twig:376
@@ -3140,22 +3150,22 @@ msgstr ""
 msgid "Group updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:172
+#: ../lib/Galette/Entity/ListsConfig.php:312
 msgid "Is admin"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:175
+#: ../lib/Galette/Entity/ListsConfig.php:315
 msgid "Modified"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:178
+#: ../lib/Galette/Entity/ListsConfig.php:318
 #: ../lib/Galette/Features/Replacements.php:307
 #: ../lib/Galette/IO/PdfGroups.php:138
 #: ../templates/default/elements/member_card.html.twig:42
 msgid "Phone"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:181
+#: ../lib/Galette/Entity/ListsConfig.php:321
 #: ../lib/Galette/Features/Permissions.php:46
 msgid "Public"
 msgstr ""
@@ -3247,9 +3257,9 @@ msgstr ""
 #: ../templates/default/pages/export.html.twig:100
 #: ../templates/default/pages/groups_list.html.twig:20
 #: ../templates/default/pages/import.html.twig:32
-#: ../templates/default/pages/members_list.html.twig:213
-#: ../templates/default/pages/members_list.html.twig:215
-#: ../templates/default/pages/plugins.html.twig:103
+#: ../templates/default/pages/members_list.html.twig:228
+#: ../templates/default/pages/members_list.html.twig:230
+#: ../templates/default/pages/plugins.html.twig:116
 #: ../templates/default/pages/public/list.html.twig:58
 #: ../templates/default/pages/public/members_list.html.twig:26
 #: ../templates/default/pages/public/staff_list.html.twig:19
@@ -3680,13 +3690,14 @@ msgstr ""
 
 #: ../lib/Galette/Features/Permissions.php:52
 #: ../templates/default/components/forms/groups.html.twig:33
+#: ../templates/default/components/forms/groups.html.twig:77
 #: ../templates/default/elements/ajax_members.html.twig:60
 #: ../templates/default/elements/group_person_row.html.twig:47
 #: ../templates/default/elements/group_person_row.html.twig:72
 #: ../templates/default/elements/group_persons.html.twig:39
 #: ../templates/default/pages/member_show.html.twig:116
-#: ../templates/default/pages/members_list.html.twig:293
-#: ../templates/default/pages/members_list.html.twig:360
+#: ../templates/default/pages/members_list.html.twig:308
+#: ../templates/default/pages/members_list.html.twig:375
 #: ../templates/default/pages/public/gallery.html.twig:46
 msgid "Group manager"
 msgstr ""
@@ -3694,8 +3705,8 @@ msgstr ""
 #: ../lib/Galette/Features/Permissions.php:53
 #: ../templates/default/elements/ajax_members.html.twig:55
 #: ../templates/default/elements/group_person_row.html.twig:42
-#: ../templates/default/pages/members_list.html.twig:289
-#: ../templates/default/pages/members_list.html.twig:355
+#: ../templates/default/pages/members_list.html.twig:304
+#: ../templates/default/pages/members_list.html.twig:370
 #: ../templates/default/pages/status_list.html.twig:65
 msgid "Staff member"
 msgstr ""
@@ -3810,7 +3821,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:271
 #: ../lib/Galette/Filters/AdvancedMembersList.php:733
-#: ../templates/default/pages/advanced_search.html.twig:87
+#: ../templates/default/pages/advanced_search.html.twig:88
 msgid "Birth date"
 msgstr ""
 
@@ -3892,7 +3903,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:387
 #: ../templates/default/elements/js/relative_date.js.twig:50
-#: ../templates/default/pages/advanced_search.html.twig:375
+#: ../templates/default/pages/advanced_search.html.twig:376
 #: ../templates/default/pages/contribution_form.html.twig:118
 #: ../templates/default/pages/contribution_form.html.twig:194
 #: ../templates/default/pages/contributions_list.html.twig:79
@@ -3928,12 +3939,12 @@ msgid "Comment"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:407
-#: ../templates/default/pages/advanced_search.html.twig:319
+#: ../templates/default/pages/advanced_search.html.twig:320
 msgid "Begin date"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:411
-#: ../templates/default/pages/advanced_search.html.twig:348
+#: ../templates/default/pages/advanced_search.html.twig:349
 msgid "End date"
 msgstr ""
 
@@ -3989,8 +4000,8 @@ msgid "group #%1$s no longer exists"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:734
-#: ../templates/default/pages/advanced_search.html.twig:114
-#: ../templates/default/pages/advanced_search.html.twig:292
+#: ../templates/default/pages/advanced_search.html.twig:115
+#: ../templates/default/pages/advanced_search.html.twig:293
 #: ../templates/default/pages/documents_list.html.twig:15
 #: ../templates/default/pages/documents_list.html.twig:139
 #: ../templates/default/pages/saved_searches_list.html.twig:16
@@ -3999,12 +4010,12 @@ msgid "Creation date"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:735
-#: ../templates/default/pages/advanced_search.html.twig:143
+#: ../templates/default/pages/advanced_search.html.twig:144
 msgid "Modification date"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:736
-#: ../templates/default/pages/advanced_search.html.twig:170
+#: ../templates/default/pages/advanced_search.html.twig:171
 msgid "Due date"
 msgstr ""
 
@@ -4268,7 +4279,7 @@ msgstr ""
 msgid "Unknown upload error"
 msgstr ""
 
-#: ../lib/Galette/IO/MembersCsv.php:65
+#: ../lib/Galette/IO/MembersCsv.php:61
 msgid "filtered_memberslist"
 msgstr ""
 
@@ -4337,7 +4348,7 @@ msgstr ""
 #: ../templates/default/pages/contributions_list.html.twig:76
 #: ../templates/default/pages/contributions_list.html.twig:380
 #: ../templates/default/pages/history.html.twig:85
-#: ../templates/default/pages/members_list.html.twig:260
+#: ../templates/default/pages/members_list.html.twig:275
 #: ../templates/default/pages/scheduledpayment_form.html.twig:80
 #: ../templates/default/pages/scheduledpayments_list.html.twig:51
 #: ../templates/default/pages/scheduledpayments_list.html.twig:275
@@ -4435,7 +4446,7 @@ msgstr ""
 
 #: ../lib/Galette/Repository/Documents.php:73
 #: ../templates/default/elements/edit_pdf_models.html.twig:65
-#: ../templates/default/elements/member_actions.html.twig:101
+#: ../templates/default/elements/member_actions.html.twig:100
 msgid "Adhesion form"
 msgstr ""
 
@@ -4447,15 +4458,15 @@ msgstr ""
 msgid "Votes results"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:294
+#: ../lib/Galette/Repository/Members.php:296
 msgid "Member Picture deleted"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:380
+#: ../lib/Galette/Repository/Members.php:382
 msgid "Delete members cards, transactions and dues"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:397
+#: ../lib/Galette/Repository/Members.php:399
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
@@ -5420,7 +5431,7 @@ msgstr ""
 #: ../install/steps/db_select_version.php:147 ../install/steps/galette.php:70
 #: ../install/steps/telemetry.php:62
 #: ../templates/default/modals/plugin_initdb.html.twig:137
-#: ../templates/default/pages/plugins.html.twig:182
+#: ../templates/default/pages/plugins.html.twig:195
 msgid "Next step"
 msgstr ""
 
@@ -5754,15 +5765,15 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:98
 #: ../templates/default/modals/plugin_initdb.html.twig:83
-#: ../templates/default/pages/advanced_search.html.twig:101
-#: ../templates/default/pages/advanced_search.html.twig:128
-#: ../templates/default/pages/advanced_search.html.twig:157
-#: ../templates/default/pages/advanced_search.html.twig:184
-#: ../templates/default/pages/advanced_search.html.twig:306
-#: ../templates/default/pages/advanced_search.html.twig:333
-#: ../templates/default/pages/advanced_search.html.twig:362
-#: ../templates/default/pages/advanced_search.html.twig:382
-#: ../templates/default/pages/advanced_search.html.twig:474
+#: ../templates/default/pages/advanced_search.html.twig:102
+#: ../templates/default/pages/advanced_search.html.twig:129
+#: ../templates/default/pages/advanced_search.html.twig:158
+#: ../templates/default/pages/advanced_search.html.twig:185
+#: ../templates/default/pages/advanced_search.html.twig:307
+#: ../templates/default/pages/advanced_search.html.twig:334
+#: ../templates/default/pages/advanced_search.html.twig:363
+#: ../templates/default/pages/advanced_search.html.twig:383
+#: ../templates/default/pages/advanced_search.html.twig:475
 msgid "and"
 msgstr ""
 
@@ -5775,6 +5786,7 @@ msgstr ""
 #: ../templates/default/modals/mass_change.html.twig:42
 #: ../templates/default/modals/mass_choose_contributions_type.html.twig:34
 #: ../templates/default/modals/telemetry.html.twig:80
+#: ../templates/default/pages/configuration_core_lists.html.twig:84
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:121
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:177
 #: ../templates/default/pages/configuration_payment_type_form.html.twig:39
@@ -5782,7 +5794,7 @@ msgstr ""
 #: ../templates/default/pages/contribution_type_form.html.twig:63
 #: ../templates/default/pages/document_form.html.twig:69
 #: ../templates/default/pages/mailing_form.html.twig:419
-#: ../templates/default/pages/members_list.html.twig:545
+#: ../templates/default/pages/members_list.html.twig:571
 #: ../templates/default/pages/preferences.html.twig:1432
 #: ../templates/default/pages/saved_search_form.html.twig:39
 #: ../templates/default/pages/scheduledpayment_form.html.twig:151
@@ -5916,11 +5928,11 @@ msgid "Choose a file"
 msgstr ""
 
 #: ../templates/default/components/dynamic_fields.html.twig:225
-#: ../templates/default/components/forms/groups.html.twig:126
+#: ../templates/default/components/forms/groups.html.twig:127
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:13
 #: ../templates/default/elements/edit_socials.html.twig:47
 #: ../templates/default/elements/group_persons.html.twig:68
-#: ../templates/default/pages/configuration_core_lists.html.twig:49
+#: ../templates/default/pages/configuration_core_lists.html.twig:54
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:175
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:58
 #: ../templates/default/pages/configuration_payment_types.html.twig:37
@@ -5948,23 +5960,23 @@ msgstr ""
 #: ../templates/default/components/forms/date.html.twig:11
 #: ../templates/default/modals/mass_change_contributions.html.twig:29
 #: ../templates/default/modals/members_attendance_sheet.html.twig:49
-#: ../templates/default/pages/advanced_search.html.twig:95
-#: ../templates/default/pages/advanced_search.html.twig:106
-#: ../templates/default/pages/advanced_search.html.twig:122
-#: ../templates/default/pages/advanced_search.html.twig:133
-#: ../templates/default/pages/advanced_search.html.twig:151
-#: ../templates/default/pages/advanced_search.html.twig:162
-#: ../templates/default/pages/advanced_search.html.twig:178
-#: ../templates/default/pages/advanced_search.html.twig:189
-#: ../templates/default/pages/advanced_search.html.twig:300
-#: ../templates/default/pages/advanced_search.html.twig:311
-#: ../templates/default/pages/advanced_search.html.twig:327
-#: ../templates/default/pages/advanced_search.html.twig:338
-#: ../templates/default/pages/advanced_search.html.twig:356
-#: ../templates/default/pages/advanced_search.html.twig:367
-#: ../templates/default/pages/advanced_search.html.twig:441
-#: ../templates/default/pages/advanced_search.html.twig:557
-#: ../templates/default/pages/advanced_search.html.twig:723
+#: ../templates/default/pages/advanced_search.html.twig:96
+#: ../templates/default/pages/advanced_search.html.twig:107
+#: ../templates/default/pages/advanced_search.html.twig:123
+#: ../templates/default/pages/advanced_search.html.twig:134
+#: ../templates/default/pages/advanced_search.html.twig:152
+#: ../templates/default/pages/advanced_search.html.twig:163
+#: ../templates/default/pages/advanced_search.html.twig:179
+#: ../templates/default/pages/advanced_search.html.twig:190
+#: ../templates/default/pages/advanced_search.html.twig:301
+#: ../templates/default/pages/advanced_search.html.twig:312
+#: ../templates/default/pages/advanced_search.html.twig:328
+#: ../templates/default/pages/advanced_search.html.twig:339
+#: ../templates/default/pages/advanced_search.html.twig:357
+#: ../templates/default/pages/advanced_search.html.twig:368
+#: ../templates/default/pages/advanced_search.html.twig:442
+#: ../templates/default/pages/advanced_search.html.twig:558
+#: ../templates/default/pages/advanced_search.html.twig:724
 #: ../templates/default/pages/contribution_form.html.twig:260
 #: ../templates/default/pages/contribution_form.html.twig:275
 #: ../templates/default/pages/contribution_form.html.twig:290
@@ -6044,9 +6056,10 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/components/forms/groups.html.twig:32
+#: ../templates/default/components/forms/groups.html.twig:62
 #: ../templates/default/elements/group_person_row.html.twig:58
 #: ../templates/default/elements/group_persons.html.twig:38
-#: ../templates/default/pages/advanced_search.html.twig:47
+#: ../templates/default/pages/advanced_search.html.twig:48
 #: ../templates/default/pages/member_show.html.twig:113
 msgid "Member of group"
 msgstr ""
@@ -6055,9 +6068,8 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:28
 #: ../templates/default/elements/group_persons.html.twig:40
 #: ../templates/default/elements/list.html.twig:110
-#: ../templates/default/elements/member_actions.html.twig:54
 #: ../templates/default/pages/authentication_attempts.html.twig:31
-#: ../templates/default/pages/configuration_core_lists.html.twig:18
+#: ../templates/default/pages/configuration_core_lists.html.twig:22
 #: ../templates/default/pages/configuration_payment_types.html.twig:17
 #: ../templates/default/pages/configuration_titles.html.twig:18
 #: ../templates/default/pages/contributions_list.html.twig:464
@@ -6065,8 +6077,8 @@ msgstr ""
 #: ../templates/default/pages/export.html.twig:50
 #: ../templates/default/pages/import.html.twig:35
 #: ../templates/default/pages/mailings_list.html.twig:239
-#: ../templates/default/pages/members_list.html.twig:235
-#: ../templates/default/pages/plugins.html.twig:108
+#: ../templates/default/pages/members_list.html.twig:250
+#: ../templates/default/pages/plugins.html.twig:121
 #: ../templates/default/pages/scheduledpayments_list.html.twig:344
 #: ../templates/default/pages/status_list.html.twig:24
 #: ../templates/default/pages/transaction_form.html.twig:98
@@ -6076,11 +6088,13 @@ msgstr ""
 
 #: ../templates/default/components/forms/groups.html.twig:52
 #: ../templates/default/elements/group_person_row.html.twig:53
+#: ../templates/default/pages/configuration_core_lists.html.twig:9
 msgctxt "member groups"
 msgid "added"
 msgstr ""
 
 #: ../templates/default/components/forms/groups.html.twig:53
+#: ../templates/default/elements/edit_core_fields.html.twig:35
 #: ../templates/default/elements/group_person_row.html.twig:54
 msgctxt "member groups"
 msgid "changed"
@@ -6088,6 +6102,7 @@ msgstr ""
 
 #: ../templates/default/components/forms/groups.html.twig:54
 #: ../templates/default/elements/group_person_row.html.twig:55
+#: ../templates/default/pages/configuration_core_lists.html.twig:9
 msgctxt "member groups"
 msgid "will be removed"
 msgstr ""
@@ -6120,15 +6135,17 @@ msgstr ""
 msgid "no group"
 msgstr ""
 
-#: ../templates/default/components/forms/groups.html.twig:116
+#: ../templates/default/components/forms/groups.html.twig:117
 #: ../templates/default/components/forms/mass_groups.html.twig:13
-#: ../templates/default/pages/advanced_search.html.twig:49
-#: ../templates/default/pages/advanced_search.html.twig:264
+#: ../templates/default/pages/advanced_search.html.twig:50
+#: ../templates/default/pages/advanced_search.html.twig:265
 msgid "Select a group"
 msgstr ""
 
-#: ../templates/default/components/forms/groups.html.twig:134
+#: ../templates/default/components/forms/groups.html.twig:135
 #: ../templates/default/elements/group_persons.html.twig:76
+#: ../templates/default/pages/configuration_core_fields.html.twig:31
+#: ../templates/default/pages/configuration_core_lists.html.twig:95
 #: ../templates/default/pages/groups_list.html.twig:246
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -6273,20 +6290,20 @@ msgid "Open '%s' in a new window"
 msgstr ""
 
 #: ../templates/default/elements/edit_core_fields.html.twig:13
-#: ../templates/default/elements/edit_core_fields.html.twig:35
-#: ../templates/default/elements/edit_core_fields.html.twig:36
+#: ../templates/default/elements/edit_core_fields.html.twig:37
+#: ../templates/default/elements/edit_core_fields.html.twig:38
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:22
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:36
-#: ../templates/default/pages/configuration_core_lists.html.twig:17
-#: ../templates/default/pages/configuration_core_lists.html.twig:66
-#: ../templates/default/pages/configuration_core_lists.html.twig:153
+#: ../templates/default/pages/configuration_core_lists.html.twig:21
+#: ../templates/default/pages/configuration_core_lists.html.twig:74
+#: ../templates/default/pages/configuration_core_lists.html.twig:243
 #: ../templates/default/pages/document_form.html.twig:51
 msgid "Permissions"
 msgstr ""
 
 #: ../templates/default/elements/edit_core_fields.html.twig:14
-#: ../templates/default/elements/edit_core_fields.html.twig:54
-#: ../templates/default/elements/edit_core_fields.html.twig:55
+#: ../templates/default/elements/edit_core_fields.html.twig:56
+#: ../templates/default/elements/edit_core_fields.html.twig:57
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:24
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:38
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:164
@@ -6294,34 +6311,40 @@ msgid "Required"
 msgstr ""
 
 #: ../templates/default/elements/edit_core_fields.html.twig:16
-#: ../templates/default/elements/edit_core_fields.html.twig:73
-#: ../templates/default/elements/edit_core_fields.html.twig:74
+#: ../templates/default/elements/edit_core_fields.html.twig:75
+#: ../templates/default/elements/edit_core_fields.html.twig:76
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:26
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:44
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:103
 msgid "Width in forms"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:36
+#: ../templates/default/elements/edit_core_fields.html.twig:34
+#: ../templates/default/pages/configuration_core_lists.html.twig:9
+msgctxt "member groups"
+msgid "moved"
+msgstr ""
+
+#: ../templates/default/elements/edit_core_fields.html.twig:38
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:55
+#: ../templates/default/elements/edit_core_fields.html.twig:57
 #, php-format
 msgid "Field '%1$s' cannot be set as required."
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:55
+#: ../templates/default/elements/edit_core_fields.html.twig:57
 #, php-format
 msgid "Mark '%1$s' as (not) required"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:74
+#: ../templates/default/elements/edit_core_fields.html.twig:76
 msgid "Change field's width with in forms"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:76
+#: ../templates/default/elements/edit_core_fields.html.twig:78
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:50
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:105
 #: ../templates/default/pages/contribution_type_form.html.twig:32
@@ -6331,13 +6354,13 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:77
+#: ../templates/default/elements/edit_core_fields.html.twig:79
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:48
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:106
 msgid "Full"
 msgstr ""
 
-#: ../templates/default/elements/edit_core_fields.html.twig:79
+#: ../templates/default/elements/edit_core_fields.html.twig:81
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:46
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:108
 msgid "Half"
@@ -6348,8 +6371,8 @@ msgstr ""
 #: ../templates/default/elements/edit_pdf_models.html.twig:60
 #: ../templates/default/pages/advanced_config.html.twig:47
 #: ../templates/default/pages/advanced_config.html.twig:58
-#: ../templates/default/pages/advanced_search.html.twig:390
-#: ../templates/default/pages/advanced_search.html.twig:392
+#: ../templates/default/pages/advanced_search.html.twig:391
+#: ../templates/default/pages/advanced_search.html.twig:393
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:152
 #: ../templates/default/pages/contributions_list.html.twig:79
 #: ../templates/default/pages/contributions_list.html.twig:404
@@ -6374,8 +6397,8 @@ msgid "Translate '%s' field"
 msgstr ""
 
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:74
-#: ../templates/default/pages/configuration_core_lists.html.twig:72
-#: ../templates/default/pages/configuration_core_lists.html.twig:156
+#: ../templates/default/pages/configuration_core_lists.html.twig:80
+#: ../templates/default/pages/configuration_core_lists.html.twig:246
 #: ../templates/default/pages/contributions_types_list.html.twig:127
 #: ../templates/default/pages/status_list.html.twig:95
 #, php-format
@@ -6415,7 +6438,7 @@ msgid "CSS styles"
 msgstr ""
 
 #: ../templates/default/elements/edit_pdf_models.html.twig:62
-#: ../templates/default/pages/advanced_search.html.twig:425
+#: ../templates/default/pages/advanced_search.html.twig:426
 #: ../templates/default/pages/contributions_list.html.twig:131
 #: ../templates/default/pages/contributions_list.html.twig:140
 #: ../templates/default/pages/documents_list.html.twig:96
@@ -6435,11 +6458,11 @@ msgstr ""
 #: ../templates/default/elements/edit_pdf_models.html.twig:77
 #: ../templates/default/elements/group.html.twig:71
 #: ../templates/default/elements/js/modal_action.js.twig:59
-#: ../templates/default/elements/member_actions.html.twig:42
+#: ../templates/default/elements/member_actions.html.twig:50
 #: ../templates/default/pages/admin_credentials.html.twig:47
 #: ../templates/default/pages/advanced_config.html.twig:110
-#: ../templates/default/pages/configuration_core_fields.html.twig:30
-#: ../templates/default/pages/configuration_core_lists.html.twig:82
+#: ../templates/default/pages/configuration_core_fields.html.twig:36
+#: ../templates/default/pages/configuration_core_lists.html.twig:100
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:119
 #: ../templates/default/pages/configuration_dynamic_translations.html.twig:60
 #: ../templates/default/pages/configuration_payment_type_form.html.twig:37
@@ -6451,9 +6474,9 @@ msgstr ""
 #: ../templates/default/pages/groups_list.html.twig:122
 #: ../templates/default/pages/mailing_form.html.twig:142
 #: ../templates/default/pages/member_form.html.twig:177
-#: ../templates/default/pages/members_list.html.twig:161
-#: ../templates/default/pages/members_list.html.twig:174
-#: ../templates/default/pages/members_list.html.twig:541
+#: ../templates/default/pages/members_list.html.twig:176
+#: ../templates/default/pages/members_list.html.twig:189
+#: ../templates/default/pages/members_list.html.twig:567
 #: ../templates/default/pages/preferences.html.twig:1265
 #: ../templates/default/pages/saved_search_form.html.twig:37
 #: ../templates/default/pages/scheduledpayment_form.html.twig:149
@@ -6684,17 +6707,17 @@ msgstr ""
 #: ../templates/default/pages/mailings_list.html.twig:322
 #: ../templates/default/pages/mailings_list.html.twig:336
 #: ../templates/default/pages/member_show.html.twig:173
-#: ../templates/default/pages/members_list.html.twig:302
-#: ../templates/default/pages/members_list.html.twig:610
-#: ../templates/default/pages/members_list.html.twig:680
-#: ../templates/default/pages/members_list.html.twig:701
-#: ../templates/default/pages/members_list.html.twig:722
-#: ../templates/default/pages/plugins.html.twig:141
-#: ../templates/default/pages/plugins.html.twig:165
-#: ../templates/default/pages/plugins.html.twig:182
-#: ../templates/default/pages/plugins.html.twig:221
-#: ../templates/default/pages/plugins.html.twig:246
-#: ../templates/default/pages/plugins.html.twig:256
+#: ../templates/default/pages/members_list.html.twig:317
+#: ../templates/default/pages/members_list.html.twig:636
+#: ../templates/default/pages/members_list.html.twig:706
+#: ../templates/default/pages/members_list.html.twig:727
+#: ../templates/default/pages/members_list.html.twig:748
+#: ../templates/default/pages/plugins.html.twig:154
+#: ../templates/default/pages/plugins.html.twig:178
+#: ../templates/default/pages/plugins.html.twig:195
+#: ../templates/default/pages/plugins.html.twig:234
+#: ../templates/default/pages/plugins.html.twig:259
+#: ../templates/default/pages/plugins.html.twig:269
 #: ../templates/default/pages/preferences.html.twig:1416
 #: ../templates/default/pages/preferences.html.twig:1453
 #: ../templates/default/pages/preferences.html.twig:1512
@@ -6725,7 +6748,7 @@ msgstr ""
 #: ../templates/default/elements/js/loader.js.twig:25
 #: ../templates/default/elements/js/loader.js.twig:32
 #: ../templates/default/elements/js/modal_action.js.twig:50
-#: ../templates/default/pages/desktop.html.twig:89
+#: ../templates/default/pages/desktop.html.twig:91
 msgid "Loading..."
 msgstr ""
 
@@ -6885,56 +6908,64 @@ msgid ""
 "generate envelope labels to contact them by snail mail."
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:50
+#: ../templates/default/elements/member_actions.html.twig:43
+#: ../templates/default/elements/member_actions.html.twig:46
+#: ../templates/default/pages/contributions_list.html.twig:186
+#: ../templates/default/pages/scheduledpayments_list.html.twig:196
+#: ../templates/default/pages/transactions_list.html.twig:127
+msgid "See member profile"
+msgstr ""
+
+#: ../templates/default/elements/member_actions.html.twig:58
 #: ../templates/default/pages/contributions_list.html.twig:473
 #: ../templates/default/pages/mailings_list.html.twig:251
-#: ../templates/default/pages/members_list.html.twig:243
+#: ../templates/default/pages/members_list.html.twig:258
 #: ../templates/default/pages/scheduledpayments_list.html.twig:352
 #: ../templates/default/pages/transactions_list.html.twig:286
 msgid "Modification"
 msgstr ""
 
+#: ../templates/default/elements/member_actions.html.twig:61
 #: ../templates/default/elements/member_actions.html.twig:63
-#: ../templates/default/pages/groups_list.html.twig:51
-msgid "Display"
+msgid "More actions"
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:70
+#: ../templates/default/elements/member_actions.html.twig:69
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:74
+#: ../templates/default/elements/member_actions.html.twig:73
 msgid "New password"
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:82
+#: ../templates/default/elements/member_actions.html.twig:81
 msgid ""
 "Clear this member's two-factor authentication, for instance after they lost "
 "both their device and their recovery codes."
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:85
+#: ../templates/default/elements/member_actions.html.twig:84
 msgid "Reset two-factor authentication"
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:94
+#: ../templates/default/elements/member_actions.html.twig:93
 msgid "Generate Member Card"
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:110
+#: ../templates/default/elements/member_actions.html.twig:109
 #: ../templates/default/pages/transactions_list.html.twig:190
 #: ../templates/default/pages/transactions_list.html.twig:199
 msgid "View contributions"
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:130
+#: ../templates/default/elements/member_actions.html.twig:129
 #, php-format
 msgid "Create a new member with %1$s information."
 msgstr ""
 
-#: ../templates/default/elements/member_actions.html.twig:134
+#: ../templates/default/elements/member_actions.html.twig:133
 msgid "Duplicate"
 msgstr ""
 
@@ -7057,18 +7088,18 @@ msgstr ""
 msgid "If this label is changed, keep its translations in other languages"
 msgstr ""
 
-#: ../templates/default/macros.twig:145
+#: ../templates/default/macros.twig:153
 msgid "For the selection:"
 msgstr ""
 
-#: ../templates/default/macros.twig:170 ../templates/default/macros.twig:197
+#: ../templates/default/macros.twig:178 ../templates/default/macros.twig:205
 #: ../templates/default/pages/advanced_config.html.twig:12
 msgid "Experimental feature. Be careful using it."
 msgstr ""
 
-#: ../templates/default/macros.twig:196
-#: ../templates/default/pages/advanced_search.html.twig:236
-#: ../templates/default/pages/advanced_search.html.twig:453
+#: ../templates/default/macros.twig:204
+#: ../templates/default/pages/advanced_search.html.twig:237
+#: ../templates/default/pages/advanced_search.html.twig:454
 #: ../templates/default/pages/preferences.html.twig:1184
 msgid "Experimental"
 msgstr ""
@@ -7425,9 +7456,9 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:82
 #: ../templates/default/pages/advanced_config.html.twig:213
 #: ../templates/default/pages/advanced_config.html.twig:233
-#: ../templates/default/pages/advanced_search.html.twig:534
-#: ../templates/default/pages/advanced_search.html.twig:576
-#: ../templates/default/pages/advanced_search.html.twig:730
+#: ../templates/default/pages/advanced_search.html.twig:535
+#: ../templates/default/pages/advanced_search.html.twig:577
+#: ../templates/default/pages/advanced_search.html.twig:731
 msgid "Value"
 msgstr ""
 
@@ -7527,7 +7558,7 @@ msgstr ""
 #: ../templates/default/pages/export.html.twig:115
 #: ../templates/default/pages/history.html.twig:41
 #: ../templates/default/pages/history.html.twig:131
-#: ../templates/default/pages/plugins.html.twig:104
+#: ../templates/default/pages/plugins.html.twig:117
 #: ../templates/default/pages/plugins.html.twig:50
 #: ../templates/default/pages/transactions_list.html.twig:50
 #: ../templates/default/pages/transactions_list.html.twig:226
@@ -7582,8 +7613,8 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:254
 #: ../templates/default/pages/contributions_list.html.twig:444
 #: ../templates/default/pages/mailings_list.html.twig:234
-#: ../templates/default/pages/members_list.html.twig:202
-#: ../templates/default/pages/members_list.html.twig:203
+#: ../templates/default/pages/members_list.html.twig:217
+#: ../templates/default/pages/members_list.html.twig:218
 #: ../templates/default/pages/scheduledpayments_list.html.twig:338
 #: ../templates/default/pages/transactions_list.html.twig:257
 msgid "Legend"
@@ -7645,191 +7676,191 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:14
+#: ../templates/default/pages/advanced_search.html.twig:15
 msgid "Simple search"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:19
-#: ../templates/default/pages/members_list.html.twig:93
+#: ../templates/default/pages/advanced_search.html.twig:20
+#: ../templates/default/pages/members_list.html.twig:108
 msgid "Search:"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:20
-#: ../templates/default/pages/members_list.html.twig:94
+#: ../templates/default/pages/advanced_search.html.twig:21
+#: ../templates/default/pages/members_list.html.twig:109
 msgid "Enter a value"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:23
-#: ../templates/default/pages/members_list.html.twig:97
+#: ../templates/default/pages/advanced_search.html.twig:24
+#: ../templates/default/pages/members_list.html.twig:112
 msgid "in:"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:31
+#: ../templates/default/pages/advanced_search.html.twig:32
 msgid "Membership status"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:39
+#: ../templates/default/pages/advanced_search.html.twig:40
 msgid "Account activity"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:57
+#: ../templates/default/pages/advanced_search.html.twig:58
 msgid "With email:"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:61
-#: ../templates/default/pages/advanced_search.html.twig:204
+#: ../templates/default/pages/advanced_search.html.twig:62
+#: ../templates/default/pages/advanced_search.html.twig:205
 #: ../templates/default/pages/mailings_list.html.twig:122
-#: ../templates/default/pages/members_list.html.twig:137
+#: ../templates/default/pages/members_list.html.twig:152
 #: ../templates/default/pages/scheduledpayments_list.html.twig:139
 msgid "Don't care"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:67
-#: ../templates/default/pages/members_list.html.twig:143
+#: ../templates/default/pages/advanced_search.html.twig:68
+#: ../templates/default/pages/members_list.html.twig:158
 msgid "With"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:73
-#: ../templates/default/pages/members_list.html.twig:149
+#: ../templates/default/pages/advanced_search.html.twig:74
+#: ../templates/default/pages/members_list.html.twig:164
 msgid "Without"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:90
-#: ../templates/default/pages/advanced_search.html.twig:117
-#: ../templates/default/pages/advanced_search.html.twig:146
-#: ../templates/default/pages/advanced_search.html.twig:173
-#: ../templates/default/pages/advanced_search.html.twig:295
-#: ../templates/default/pages/advanced_search.html.twig:322
-#: ../templates/default/pages/advanced_search.html.twig:351
-#: ../templates/default/pages/advanced_search.html.twig:378
+#: ../templates/default/pages/advanced_search.html.twig:91
+#: ../templates/default/pages/advanced_search.html.twig:118
+#: ../templates/default/pages/advanced_search.html.twig:147
+#: ../templates/default/pages/advanced_search.html.twig:174
+#: ../templates/default/pages/advanced_search.html.twig:296
+#: ../templates/default/pages/advanced_search.html.twig:323
+#: ../templates/default/pages/advanced_search.html.twig:352
+#: ../templates/default/pages/advanced_search.html.twig:379
 msgid "between"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:200
+#: ../templates/default/pages/advanced_search.html.twig:201
 msgid "Show public infos"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:236
+#: ../templates/default/pages/advanced_search.html.twig:237
 msgid "Advanced groups search"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:243
+#: ../templates/default/pages/advanced_search.html.twig:244
 msgid "Add new group search criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:248
-#: ../templates/default/pages/advanced_search.html.twig:472
+#: ../templates/default/pages/advanced_search.html.twig:249
+#: ../templates/default/pages/advanced_search.html.twig:473
 msgid "Logical operator"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:250
+#: ../templates/default/pages/advanced_search.html.twig:251
 msgid "In all selected groups"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:251
+#: ../templates/default/pages/advanced_search.html.twig:252
 msgid "In any of selected groups"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:274
-#: ../templates/default/pages/advanced_search.html.twig:585
+#: ../templates/default/pages/advanced_search.html.twig:275
+#: ../templates/default/pages/advanced_search.html.twig:586
 msgid "Remove criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:287
+#: ../templates/default/pages/advanced_search.html.twig:288
 msgid "Within contributions"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:453
+#: ../templates/default/pages/advanced_search.html.twig:454
 msgid "Free search"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:460
+#: ../templates/default/pages/advanced_search.html.twig:461
 msgid "Add new free search criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:475
+#: ../templates/default/pages/advanced_search.html.twig:476
 #: ../templates/default/pages/preferences.html.twig:355
 msgid "or"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:477
-#: ../templates/default/pages/advanced_search.html.twig:481
-#: ../templates/default/pages/advanced_search.html.twig:749
+#: ../templates/default/pages/advanced_search.html.twig:478
+#: ../templates/default/pages/advanced_search.html.twig:482
+#: ../templates/default/pages/advanced_search.html.twig:750
 msgid "Select a field"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:528
+#: ../templates/default/pages/advanced_search.html.twig:529
 msgid "Query operator"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:531
-#: ../templates/default/pages/advanced_search.html.twig:548
-#: ../templates/default/pages/advanced_search.html.twig:563
-#: ../templates/default/pages/advanced_search.html.twig:569
-#: ../templates/default/pages/advanced_search.html.twig:614
+#: ../templates/default/pages/advanced_search.html.twig:532
+#: ../templates/default/pages/advanced_search.html.twig:549
+#: ../templates/default/pages/advanced_search.html.twig:564
+#: ../templates/default/pages/advanced_search.html.twig:570
+#: ../templates/default/pages/advanced_search.html.twig:615
 msgid "is"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:532
-#: ../templates/default/pages/advanced_search.html.twig:571
-#: ../templates/default/pages/advanced_search.html.twig:622
+#: ../templates/default/pages/advanced_search.html.twig:533
+#: ../templates/default/pages/advanced_search.html.twig:572
+#: ../templates/default/pages/advanced_search.html.twig:623
 msgid "is not"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:549
-#: ../templates/default/pages/advanced_search.html.twig:638
+#: ../templates/default/pages/advanced_search.html.twig:550
+#: ../templates/default/pages/advanced_search.html.twig:639
 msgid "before"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:550
-#: ../templates/default/pages/advanced_search.html.twig:642
+#: ../templates/default/pages/advanced_search.html.twig:551
+#: ../templates/default/pages/advanced_search.html.twig:643
 msgid "after"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:570
-#: ../templates/default/pages/advanced_search.html.twig:618
+#: ../templates/default/pages/advanced_search.html.twig:571
+#: ../templates/default/pages/advanced_search.html.twig:619
 msgid "contains"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:572
-#: ../templates/default/pages/advanced_search.html.twig:626
+#: ../templates/default/pages/advanced_search.html.twig:573
+#: ../templates/default/pages/advanced_search.html.twig:627
 msgid "do not contains"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:573
-#: ../templates/default/pages/advanced_search.html.twig:630
+#: ../templates/default/pages/advanced_search.html.twig:574
+#: ../templates/default/pages/advanced_search.html.twig:631
 msgid "starts with"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:574
-#: ../templates/default/pages/advanced_search.html.twig:634
+#: ../templates/default/pages/advanced_search.html.twig:575
+#: ../templates/default/pages/advanced_search.html.twig:635
 msgid "ends with"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:598
+#: ../templates/default/pages/advanced_search.html.twig:599
 #: ../templates/default/pages/contributions_list.html.twig:151
 #: ../templates/default/pages/documents_list.html.twig:115
 #: ../templates/default/pages/history.html.twig:110
 #: ../templates/default/pages/mailings_list.html.twig:149
-#: ../templates/default/pages/members_list.html.twig:157
+#: ../templates/default/pages/members_list.html.twig:172
 #: ../templates/default/pages/scheduledpayments_list.html.twig:160
 #: ../templates/default/pages/transactions_list.html.twig:94
 msgid "Filter"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:603
+#: ../templates/default/pages/advanced_search.html.twig:604
 #: ../templates/default/pages/contributions_list.html.twig:155
 #: ../templates/default/pages/documents_list.html.twig:119
 #: ../templates/default/pages/history.html.twig:114
 #: ../templates/default/pages/mailings_list.html.twig:153
-#: ../templates/default/pages/members_list.html.twig:165
-#: ../templates/default/pages/members_list.html.twig:183
+#: ../templates/default/pages/members_list.html.twig:180
+#: ../templates/default/pages/members_list.html.twig:198
 #: ../templates/default/pages/scheduledpayments_list.html.twig:164
 #: ../templates/default/pages/transactions_list.html.twig:98
 msgid "Clear filter"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:713
+#: ../templates/default/pages/advanced_search.html.twig:714
 #: ../templates/default/pages/import.html.twig:30
 msgid "Choice"
 msgstr ""
@@ -7939,33 +7970,42 @@ msgstr ""
 msgid "Total contributions for the month"
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_fields.html.twig:119
+#: ../templates/default/pages/configuration_core_fields.html.twig:179
 msgid "Some warnings has been thrown:"
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_fields.html.twig:124
+#: ../templates/default/pages/configuration_core_fields.html.twig:184
 msgid "Please correct above warnings to continue."
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_fields.html.twig:127
+#: ../templates/default/pages/configuration_core_fields.html.twig:187
 msgid "Warning"
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_lists.html.twig:16
-#: ../templates/default/pages/configuration_core_lists.html.twig:29
-#: ../templates/default/pages/configuration_core_lists.html.twig:62
-#: ../templates/default/pages/configuration_core_lists.html.twig:150
+#: ../templates/default/pages/configuration_core_lists.html.twig:11
+msgid "Dynamic field"
+msgstr ""
+
+#: ../templates/default/pages/configuration_core_lists.html.twig:20
+#: ../templates/default/pages/configuration_core_lists.html.twig:33
+#: ../templates/default/pages/configuration_core_lists.html.twig:68
+#: ../templates/default/pages/configuration_core_lists.html.twig:238
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:136
 #: ../templates/default/pages/groups_list.html.twig:28
 msgid "Field name"
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_lists.html.twig:28
 #: ../templates/default/pages/configuration_core_lists.html.twig:32
+#: ../templates/default/pages/configuration_core_lists.html.twig:36
 msgid "Available fields"
 msgstr ""
 
-#: ../templates/default/pages/configuration_core_lists.html.twig:127
+#: ../templates/default/pages/configuration_core_lists.html.twig:82
+#, php-format
+msgid "Keep field %1$s"
+msgstr ""
+
+#: ../templates/default/pages/configuration_core_lists.html.twig:170
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
 "the list."
@@ -8111,7 +8151,7 @@ msgstr ""
 #: ../templates/default/pages/mailings_list.html.twig:17
 #: ../templates/default/pages/mailings_list.html.twig:165
 #: ../templates/default/pages/members_list.html.twig:59
-#: ../templates/default/pages/members_list.html.twig:312
+#: ../templates/default/pages/members_list.html.twig:327
 #: ../templates/default/pages/saved_searches_list.html.twig:16
 #: ../templates/default/pages/saved_searches_list.html.twig:37
 #: ../templates/default/pages/scheduledpayments_list.html.twig:42
@@ -8389,7 +8429,7 @@ msgstr ""
 #: ../templates/default/pages/documents_list.html.twig:113
 #: ../templates/default/pages/history.html.twig:108
 #: ../templates/default/pages/mailings_list.html.twig:147
-#: ../templates/default/pages/members_list.html.twig:155
+#: ../templates/default/pages/members_list.html.twig:170
 #: ../templates/default/pages/scheduledpayments_list.html.twig:158
 #: ../templates/default/pages/transactions_list.html.twig:92
 msgid "Apply filters"
@@ -8399,8 +8439,8 @@ msgstr ""
 #: ../templates/default/pages/documents_list.html.twig:117
 #: ../templates/default/pages/history.html.twig:112
 #: ../templates/default/pages/mailings_list.html.twig:151
-#: ../templates/default/pages/members_list.html.twig:163
-#: ../templates/default/pages/members_list.html.twig:181
+#: ../templates/default/pages/members_list.html.twig:178
+#: ../templates/default/pages/members_list.html.twig:196
 #: ../templates/default/pages/scheduledpayments_list.html.twig:162
 #: ../templates/default/pages/transactions_list.html.twig:96
 msgid "Reset all filters to defaults"
@@ -8412,12 +8452,6 @@ msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:175
 msgid "Show all members contributions"
-msgstr ""
-
-#: ../templates/default/pages/contributions_list.html.twig:186
-#: ../templates/default/pages/scheduledpayments_list.html.twig:196
-#: ../templates/default/pages/transactions_list.html.twig:127
-msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:224
@@ -8488,7 +8522,7 @@ msgid "no contribution"
 msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:449
-#: ../templates/default/pages/members_list.html.twig:208
+#: ../templates/default/pages/members_list.html.twig:223
 #: ../templates/default/pages/transactions_list.html.twig:262
 msgid "Reading the list"
 msgstr ""
@@ -8503,7 +8537,7 @@ msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:477
 #: ../templates/default/pages/mailings_list.html.twig:261
-#: ../templates/default/pages/members_list.html.twig:254
+#: ../templates/default/pages/members_list.html.twig:269
 #: ../templates/default/pages/scheduledpayments_list.html.twig:356
 #: ../templates/default/pages/transactions_list.html.twig:291
 msgid "Deletion"
@@ -8511,7 +8545,7 @@ msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:493
 #: ../templates/default/pages/mailings_list.html.twig:268
-#: ../templates/default/pages/members_list.html.twig:268
+#: ../templates/default/pages/members_list.html.twig:283
 #: ../templates/default/pages/scheduledpayments_list.html.twig:364
 #: ../templates/default/pages/transactions_list.html.twig:300
 msgid "Statuses and interactions"
@@ -8551,15 +8585,15 @@ msgstr ""
 msgid "My activities"
 msgstr ""
 
-#: ../templates/default/pages/desktop.html.twig:69
+#: ../templates/default/pages/desktop.html.twig:70
 msgid "Activities"
 msgstr ""
 
-#: ../templates/default/pages/desktop.html.twig:97
+#: ../templates/default/pages/desktop.html.twig:99
 msgid "Show dashboard on login"
 msgstr ""
 
-#: ../templates/default/pages/desktop.html.twig:125
+#: ../templates/default/pages/desktop.html.twig:127
 msgid "An error occurred displaying news :("
 msgstr ""
 
@@ -8706,6 +8740,10 @@ msgstr ""
 
 #: ../templates/default/pages/groups_list.html.twig:45
 msgid "Export as PDF"
+msgstr ""
+
+#: ../templates/default/pages/groups_list.html.twig:51
+msgid "Display"
 msgstr ""
 
 #: ../templates/default/pages/history.html.twig:41
@@ -9026,7 +9064,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/pages/mailings_list.html.twig:75
-#: ../templates/default/pages/members_list.html.twig:562
+#: ../templates/default/pages/members_list.html.twig:588
 msgid "Existing mailing"
 msgstr ""
 
@@ -9174,11 +9212,11 @@ msgstr ""
 msgid "You are not part of managers for the requested group."
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:451
+#: ../templates/default/pages/members_list.html.twig:477
 msgid "No member selected"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:451
+#: ../templates/default/pages/members_list.html.twig:477
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
@@ -9195,100 +9233,100 @@ msgid_plural "%1$s members"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../templates/default/pages/members_list.html.twig:105
-#: ../templates/default/pages/members_list.html.twig:113
-#: ../templates/default/pages/members_list.html.twig:121
+#: ../templates/default/pages/members_list.html.twig:120
+#: ../templates/default/pages/members_list.html.twig:128
+#: ../templates/default/pages/members_list.html.twig:136
 msgid "among:"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:123
+#: ../templates/default/pages/members_list.html.twig:138
 msgid "All groups"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:133
+#: ../templates/default/pages/members_list.html.twig:148
 msgid "Members that have an email address:"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:159
+#: ../templates/default/pages/members_list.html.twig:174
 msgid "Save selected criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:171
+#: ../templates/default/pages/members_list.html.twig:186
 msgid "Advanced search mode"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:172
+#: ../templates/default/pages/members_list.html.twig:187
 msgid "Save current advanced search criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:176
+#: ../templates/default/pages/members_list.html.twig:191
 msgid "Change search criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:178
+#: ../templates/default/pages/members_list.html.twig:193
 msgid "Change criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:188
+#: ../templates/default/pages/members_list.html.twig:203
 msgid "Show/hide query"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:214
+#: ../templates/default/pages/members_list.html.twig:229
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:216
+#: ../templates/default/pages/members_list.html.twig:231
 msgid "Inactive account"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:220
+#: ../templates/default/pages/members_list.html.twig:235
 msgid "Membership in order"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:222
+#: ../templates/default/pages/members_list.html.twig:237
 msgid "Membership will expire soon (<30d)"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:228
+#: ../templates/default/pages/members_list.html.twig:243
 msgid "Lateness in fee"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:274
+#: ../templates/default/pages/members_list.html.twig:289
 msgid "Send an email"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:276
-#: ../templates/default/pages/members_list.html.twig:323
+#: ../templates/default/pages/members_list.html.twig:291
+#: ../templates/default/pages/members_list.html.twig:338
 #: ../templates/default/pages/public/list.html.twig:19
 #: ../templates/default/pages/public/list.html.twig:20
 msgid "Is a company"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:281
-#: ../templates/default/pages/members_list.html.twig:328
+#: ../templates/default/pages/members_list.html.twig:296
+#: ../templates/default/pages/members_list.html.twig:343
 #: ../templates/default/pages/public/list.html.twig:24
 #: ../templates/default/pages/public/list.html.twig:25
 msgid "Is a man"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:283
-#: ../templates/default/pages/members_list.html.twig:333
+#: ../templates/default/pages/members_list.html.twig:298
+#: ../templates/default/pages/members_list.html.twig:348
 #: ../templates/default/pages/public/list.html.twig:29
 #: ../templates/default/pages/public/list.html.twig:30
 msgid "Is a woman"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:287
-#: ../templates/default/pages/members_list.html.twig:350
+#: ../templates/default/pages/members_list.html.twig:302
+#: ../templates/default/pages/members_list.html.twig:365
 msgid "Admin"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:296
-#: ../templates/default/pages/members_list.html.twig:402
+#: ../templates/default/pages/members_list.html.twig:311
+#: ../templates/default/pages/members_list.html.twig:428
 msgid "Is a sponsor"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:446
+#: ../templates/default/pages/members_list.html.twig:472
 #: ../templates/default/pages/public/members_gallery.html.twig:30
 #: ../templates/default/pages/public/members_list.html.twig:56
 #: ../templates/default/pages/public/staff_gallery.html.twig:24
@@ -9296,29 +9334,29 @@ msgstr ""
 msgid "No member"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:494
+#: ../templates/default/pages/members_list.html.twig:520
 msgid "Search title"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:562
+#: ../templates/default/pages/members_list.html.twig:588
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:562
+#: ../templates/default/pages/members_list.html.twig:588
 msgid "New"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:562
+#: ../templates/default/pages/members_list.html.twig:588
 msgid "Resume"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:610
+#: ../templates/default/pages/members_list.html.twig:636
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:739
+#: ../templates/default/pages/members_list.html.twig:765
 msgid "Required field!"
 msgstr ""
 
@@ -9367,67 +9405,88 @@ msgid "Main route:"
 msgstr ""
 
 #: ../templates/default/pages/plugin_info.html.twig:32
+msgid "Releases repository:"
+msgstr ""
+
+#: ../templates/default/pages/plugin_info.html.twig:41
+#: ../templates/default/pages/plugins.html.twig:57
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#: ../templates/default/pages/plugin_info.html.twig:42
+#: ../templates/default/pages/plugins.html.twig:57
+#, php-format
+msgid "New version: %1$s"
+msgstr ""
+
+#: ../templates/default/pages/plugin_info.html.twig:46
+#: ../templates/default/pages/plugins.html.twig:62
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
+
+#: ../templates/default/pages/plugin_info.html.twig:49
 msgid "ACLs"
 msgstr ""
 
-#: ../templates/default/pages/plugin_info.html.twig:36
+#: ../templates/default/pages/plugin_info.html.twig:53
 msgid "Route"
 msgstr ""
 
-#: ../templates/default/pages/plugin_info.html.twig:37
+#: ../templates/default/pages/plugin_info.html.twig:54
 msgid "ACL"
 msgstr ""
 
-#: ../templates/default/pages/plugin_info.html.twig:45
+#: ../templates/default/pages/plugin_info.html.twig:62
 msgid "No ACLs!"
 msgstr ""
 
-#: ../templates/default/pages/plugin_info.html.twig:51
+#: ../templates/default/pages/plugin_info.html.twig:68
 msgid "Raw information"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:105
+#: ../templates/default/pages/plugins.html.twig:118
 #: ../templates/default/pages/plugins.html.twig:51
 msgid "Author"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:106
+#: ../templates/default/pages/plugins.html.twig:119
 #: ../templates/default/pages/plugins.html.twig:52
 msgid "Version"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:107
-#: ../templates/default/pages/plugins.html.twig:53
+#: ../templates/default/pages/plugins.html.twig:120
+#: ../templates/default/pages/plugins.html.twig:66
 msgid "Release date"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:113
+#: ../templates/default/pages/plugins.html.twig:126
 msgid "Active plugins"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:119
+#: ../templates/default/pages/plugins.html.twig:132
 msgid "No active plugin."
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:123
+#: ../templates/default/pages/plugins.html.twig:136
 msgid "Inactive plugins"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:129
+#: ../templates/default/pages/plugins.html.twig:142
 msgid "No inactive plugin."
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:165
+#: ../templates/default/pages/plugins.html.twig:178
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:181
+#: ../templates/default/pages/plugins.html.twig:194
 #, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:221
+#: ../templates/default/pages/plugins.html.twig:234
 msgid "An error occurred on plugin database initialization :("
 msgstr ""
 
@@ -9459,18 +9518,18 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:61
+#: ../templates/default/pages/plugins.html.twig:74
 #, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:70
-#: ../templates/default/pages/plugins.html.twig:81
+#: ../templates/default/pages/plugins.html.twig:83
+#: ../templates/default/pages/plugins.html.twig:94
 #, php-format
 msgid "Initialize '%1$s' database"
 msgstr ""
 
-#: ../templates/default/pages/plugins.html.twig:91
+#: ../templates/default/pages/plugins.html.twig:104
 #, php-format
 msgid "Activate plugin '%1$s'"
 msgstr ""
