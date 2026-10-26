@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,9 +157,9 @@ msgstr ""
 #: ../templates/default/pages/configuration_payment_types.html.twig:132
 #: ../templates/default/pages/contributions_types_list.html.twig:188
 #: ../templates/default/pages/groups_list.html.twig:402
-#: ../templates/default/pages/members_list.html.twig:706
-#: ../templates/default/pages/members_list.html.twig:727
-#: ../templates/default/pages/members_list.html.twig:748
+#: ../templates/default/pages/members_list.html.twig:709
+#: ../templates/default/pages/members_list.html.twig:730
+#: ../templates/default/pages/members_list.html.twig:751
 #: ../templates/default/pages/plugins.html.twig:269
 #: ../templates/default/pages/preferences.html.twig:1512
 #: ../templates/default/pages/status_list.html.twig:154
@@ -440,7 +440,7 @@ msgstr ""
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:89
 #: ../lib/Galette/IO/ScheduledPaymentsCsv.php:101
 #: ../lib/Galette/Util/Password.php:328
-#: ../templates/default/pages/advanced_search.html.twig:558
+#: ../templates/default/pages/advanced_search.html.twig:561
 #: ../templates/default/pages/member_form.html.twig:283
 msgid "Y-m-d"
 msgstr ""
@@ -532,8 +532,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1028
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1106
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1280
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1394
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1283
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1397
 msgid "Mass changes has not been confirmed!"
 msgstr ""
 
@@ -544,7 +544,7 @@ msgid "Review mass change %1$s contributions"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1129
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1480
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
 msgstr ""
 
@@ -562,7 +562,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1177
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1566
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1569
 msgid "Something went wrong during mass edition!"
 msgstr ""
 
@@ -664,7 +664,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:994
 #: ../lib/Galette/Controllers/Crud/MembersController.php:297
 #: ../lib/Galette/Controllers/Crud/MembersController.php:352
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1088
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1091
 #: ../lib/Galette/Controllers/CsvController.php:679
 #: ../lib/Galette/Controllers/PdfController.php:87
 #: ../lib/Galette/Controllers/PdfController.php:106
@@ -792,7 +792,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:315
 #: ../templates/default/components/forms/groups.html.twig:31
 #: ../templates/default/components/forms/groups.html.twig:47
-#: ../templates/default/pages/advanced_search.html.twig:263
+#: ../templates/default/pages/advanced_search.html.twig:266
 msgid "Group"
 msgstr ""
 
@@ -951,111 +951,111 @@ msgstr ""
 msgid "List of members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:969
+#: ../lib/Galette/Controllers/Crud/MembersController.php:972
 #: ../lib/Galette/Core/Galette.php:272
-#: ../templates/default/pages/advanced_search.html.twig:83
+#: ../templates/default/pages/advanced_search.html.twig:86
 msgid "Advanced search"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1037
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1040
 #: ../lib/Galette/Controllers/PdfController.php:116
 #: ../lib/Galette/Controllers/PdfController.php:195
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1126
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1129
 msgid "Edit profile"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1130
 msgid "New member"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1247
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1250
 #, php-format
 msgid "Mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1305
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1308
 #: ../templates/default/components/forms/groups.html.twig:115
 #: ../templates/default/components/forms/mass_groups.html.twig:19
 msgid "Add to group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1315
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1318
 #: ../templates/default/components/forms/mass_groups.html.twig:31
 msgid "Remove from group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1365
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1505
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1794
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1797
 msgid "An error occurred while saving the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1540
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1775
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1543
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1778
 msgid "An error occurred adding member to its groups."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1558
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1561
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1598
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1601
 #: ../lib/Galette/Middleware/Authenticate.php:79
 msgid "Login required"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1625
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1628
 msgid "Invalid captcha"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1752
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1755
 msgid "Your account has been created!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1757
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1760
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1760
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1763
 msgid "New member has been successfully added."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1763
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1766
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1789
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1792
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1813
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1816
 #: ../lib/Galette/Controllers/GaletteController.php:276
 #: ../lib/Galette/Controllers/GaletteController.php:287
 msgid "Delete failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1931
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1934
 #, php-format
 msgid "Remove member %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1939
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1942
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr ""
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2076
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2079
 #, php-format
 msgid "No member #%1$s."
 msgstr ""
@@ -1068,8 +1068,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:120
 #: ../lib/Galette/Features/Replacements.php:419
-#: ../templates/default/pages/advanced_search.html.twig:400
-#: ../templates/default/pages/advanced_search.html.twig:402
+#: ../templates/default/pages/advanced_search.html.twig:403
+#: ../templates/default/pages/advanced_search.html.twig:405
 #: ../templates/default/pages/configuration_payment_types.html.twig:53
 #: ../templates/default/pages/contributions_list.html.twig:79
 #: ../templates/default/pages/contributions_list.html.twig:406
@@ -1493,17 +1493,17 @@ msgid "Settings"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:230
-#: ../lib/Galette/Filters/MembersList.php:305
+#: ../lib/Galette/Filters/MembersList.php:307
 msgid "All accounts"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:231
-#: ../lib/Galette/Filters/MembersList.php:306
+#: ../lib/Galette/Filters/MembersList.php:308
 msgid "Active accounts"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:232
-#: ../lib/Galette/Filters/MembersList.php:307
+#: ../lib/Galette/Filters/MembersList.php:309
 msgid "Inactive accounts"
 msgstr ""
 
@@ -1857,9 +1857,9 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:20
 #: ../templates/default/modals/telemetry.html.twig:107
-#: ../templates/default/pages/advanced_search.html.twig:211
-#: ../templates/default/pages/advanced_search.html.twig:566
-#: ../templates/default/pages/advanced_search.html.twig:700
+#: ../templates/default/pages/advanced_search.html.twig:214
+#: ../templates/default/pages/advanced_search.html.twig:569
+#: ../templates/default/pages/advanced_search.html.twig:703
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:41
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:98
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:167
@@ -1884,9 +1884,9 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:40
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:26
 #: ../templates/default/modals/telemetry.html.twig:119
-#: ../templates/default/pages/advanced_search.html.twig:217
-#: ../templates/default/pages/advanced_search.html.twig:567
-#: ../templates/default/pages/advanced_search.html.twig:700
+#: ../templates/default/pages/advanced_search.html.twig:220
+#: ../templates/default/pages/advanced_search.html.twig:570
+#: ../templates/default/pages/advanced_search.html.twig:703
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:40
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:97
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:166
@@ -2001,7 +2001,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:915
 #: ../lib/Galette/DynamicFields/DynamicField.php:462
-#: ../templates/default/pages/members_list.html.twig:263
+#: ../templates/default/pages/members_list.html.twig:266
 msgid "Contributions"
 msgstr ""
 
@@ -2196,7 +2196,7 @@ msgstr ""
 #: ../templates/default/elements/group_person_row.html.twig:93
 #: ../templates/default/elements/member_actions.html.twig:32
 #: ../templates/default/elements/member_actions.html.twig:35
-#: ../templates/default/pages/members_list.html.twig:275
+#: ../templates/default/pages/members_list.html.twig:278
 #, php-format
 msgid "Log in as %1$s"
 msgstr ""
@@ -2218,7 +2218,7 @@ msgid "Delete"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:1245
-#: ../templates/default/pages/members_list.html.twig:356
+#: ../templates/default/pages/members_list.html.twig:359
 msgid "Mail"
 msgstr ""
 
@@ -2432,8 +2432,8 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:61
 #: ../templates/default/pages/advanced_config.html.twig:212
 #: ../templates/default/pages/advanced_config.html.twig:226
-#: ../templates/default/pages/advanced_search.html.twig:223
-#: ../templates/default/pages/advanced_search.html.twig:225
+#: ../templates/default/pages/advanced_search.html.twig:226
+#: ../templates/default/pages/advanced_search.html.twig:228
 msgid "Status"
 msgstr ""
 
@@ -2809,8 +2809,8 @@ msgid "Never contributed: Registered %1$s days ago (since %2$s)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:779
-#: ../lib/Galette/Filters/MembersList.php:295
-#: ../templates/default/pages/members_list.html.twig:241
+#: ../lib/Galette/Filters/MembersList.php:297
+#: ../templates/default/pages/members_list.html.twig:244
 msgid "Never contributed"
 msgstr ""
 
@@ -2945,8 +2945,8 @@ msgstr ""
 #: ../templates/default/components/forms/gender.html.twig:31
 #: ../templates/default/elements/group_person_row.html.twig:24
 #: ../templates/default/modals/mass_change_members.html.twig:41
-#: ../templates/default/pages/advanced_search.html.twig:495
-#: ../templates/default/pages/advanced_search.html.twig:656
+#: ../templates/default/pages/advanced_search.html.twig:498
+#: ../templates/default/pages/advanced_search.html.twig:659
 msgid "Man"
 msgstr ""
 
@@ -2956,8 +2956,8 @@ msgstr ""
 #: ../templates/default/components/forms/gender.html.twig:37
 #: ../templates/default/elements/group_person_row.html.twig:29
 #: ../templates/default/modals/mass_change_members.html.twig:38
-#: ../templates/default/pages/advanced_search.html.twig:495
-#: ../templates/default/pages/advanced_search.html.twig:656
+#: ../templates/default/pages/advanced_search.html.twig:498
+#: ../templates/default/pages/advanced_search.html.twig:659
 msgid "Woman"
 msgstr ""
 
@@ -2966,8 +2966,8 @@ msgstr ""
 #: ../lib/Galette/IO/MembersCsv.php:251
 #: ../templates/default/components/forms/gender.html.twig:25
 #: ../templates/default/modals/mass_change_members.html.twig:35
-#: ../templates/default/pages/advanced_search.html.twig:495
-#: ../templates/default/pages/advanced_search.html.twig:656
+#: ../templates/default/pages/advanced_search.html.twig:498
+#: ../templates/default/pages/advanced_search.html.twig:659
 msgid "Unspecified"
 msgstr ""
 
@@ -3011,8 +3011,8 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:190
 #: ../templates/default/modals/members_attendance_sheet.html.twig:42
-#: ../templates/default/pages/advanced_search.html.twig:555
-#: ../templates/default/pages/advanced_search.html.twig:721
+#: ../templates/default/pages/advanced_search.html.twig:558
+#: ../templates/default/pages/advanced_search.html.twig:724
 #: ../templates/default/pages/contribution_form.html.twig:106
 #: ../templates/default/pages/contributions_list.html.twig:52
 #: ../templates/default/pages/contributions_list.html.twig:376
@@ -3234,7 +3234,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:378
 #: ../lib/Galette/Features/Replacements.php:251
-#: ../lib/Galette/Filters/MembersList.php:273
+#: ../lib/Galette/Filters/MembersList.php:275
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:160
 #: ../lib/Galette/IO/PdfGroups.php:136
 #: ../includes/fields_defs/members_fields.php:316
@@ -3260,8 +3260,8 @@ msgstr ""
 #: ../templates/default/pages/export.html.twig:100
 #: ../templates/default/pages/groups_list.html.twig:20
 #: ../templates/default/pages/import.html.twig:32
-#: ../templates/default/pages/members_list.html.twig:228
-#: ../templates/default/pages/members_list.html.twig:230
+#: ../templates/default/pages/members_list.html.twig:231
+#: ../templates/default/pages/members_list.html.twig:233
 #: ../templates/default/pages/plugins.html.twig:116
 #: ../templates/default/pages/public/list.html.twig:58
 #: ../templates/default/pages/public/members_list.html.twig:26
@@ -3550,7 +3550,7 @@ msgid "Everyone"
 msgstr ""
 
 #: ../lib/Galette/Enums/PublicPageVisibility.php:56
-#: ../lib/Galette/Filters/MembersList.php:292
+#: ../lib/Galette/Filters/MembersList.php:294
 msgid "Up to date members"
 msgstr ""
 
@@ -3698,16 +3698,16 @@ msgstr ""
 #: ../templates/default/elements/group_person_row.html.twig:72
 #: ../templates/default/elements/group_persons.html.twig:39
 #: ../templates/default/pages/member_show.html.twig:116
-#: ../templates/default/pages/members_list.html.twig:308
-#: ../templates/default/pages/members_list.html.twig:375
+#: ../templates/default/pages/members_list.html.twig:311
+#: ../templates/default/pages/members_list.html.twig:378
 #: ../templates/default/pages/public/gallery.html.twig:46
 msgid "Group manager"
 msgstr ""
 
 #: ../lib/Galette/Features/Permissions.php:53
 #: ../templates/default/elements/group_person_row.html.twig:42
-#: ../templates/default/pages/members_list.html.twig:304
-#: ../templates/default/pages/members_list.html.twig:370
+#: ../templates/default/pages/members_list.html.twig:307
+#: ../templates/default/pages/members_list.html.twig:373
 #: ../templates/default/pages/status_list.html.twig:65
 msgid "Staff member"
 msgstr ""
@@ -3789,7 +3789,7 @@ msgid "Member's ID"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:247
-#: ../lib/Galette/Filters/MembersList.php:274
+#: ../lib/Galette/Filters/MembersList.php:276
 #: ../templates/default/pages/preferences.html.twig:1081
 msgid "Member number"
 msgstr ""
@@ -3821,7 +3821,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:271
 #: ../lib/Galette/Filters/AdvancedMembersList.php:733
-#: ../templates/default/pages/advanced_search.html.twig:88
+#: ../templates/default/pages/advanced_search.html.twig:91
 msgid "Birth date"
 msgstr ""
 
@@ -3836,13 +3836,13 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:283
 #: ../lib/Galette/Features/Replacements.php:347
-#: ../lib/Galette/Filters/MembersList.php:275
+#: ../lib/Galette/Filters/MembersList.php:277
 msgid "Company name"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:287
 #: ../lib/Galette/Features/Replacements.php:291
-#: ../lib/Galette/Filters/MembersList.php:276
+#: ../lib/Galette/Filters/MembersList.php:278
 #: ../templates/default/pages/authentication_attempts.html.twig:28
 #: ../templates/default/pages/authentication_attempts.html.twig:56
 msgid "Address"
@@ -3903,7 +3903,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:387
 #: ../templates/default/elements/js/relative_date.js.twig:50
-#: ../templates/default/pages/advanced_search.html.twig:376
+#: ../templates/default/pages/advanced_search.html.twig:379
 #: ../templates/default/pages/contribution_form.html.twig:118
 #: ../templates/default/pages/contribution_form.html.twig:194
 #: ../templates/default/pages/contributions_list.html.twig:79
@@ -3939,12 +3939,12 @@ msgid "Comment"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:407
-#: ../templates/default/pages/advanced_search.html.twig:320
+#: ../templates/default/pages/advanced_search.html.twig:323
 msgid "Begin date"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:411
-#: ../templates/default/pages/advanced_search.html.twig:349
+#: ../templates/default/pages/advanced_search.html.twig:352
 msgid "End date"
 msgstr ""
 
@@ -3994,14 +3994,14 @@ msgstr ""
 
 #. TRANS: %1$s is the group identifier
 #: ../lib/Galette/Filters/AdvancedMembersList.php:661
-#: ../lib/Galette/Filters/MembersList.php:217
+#: ../lib/Galette/Filters/MembersList.php:219
 #, php-format
 msgid "group #%1$s no longer exists"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:734
-#: ../templates/default/pages/advanced_search.html.twig:115
-#: ../templates/default/pages/advanced_search.html.twig:293
+#: ../templates/default/pages/advanced_search.html.twig:118
+#: ../templates/default/pages/advanced_search.html.twig:296
 #: ../templates/default/pages/documents_list.html.twig:15
 #: ../templates/default/pages/documents_list.html.twig:139
 #: ../templates/default/pages/saved_searches_list.html.twig:16
@@ -4010,12 +4010,12 @@ msgid "Creation date"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:735
-#: ../templates/default/pages/advanced_search.html.twig:144
+#: ../templates/default/pages/advanced_search.html.twig:147
 msgid "Modification date"
 msgstr ""
 
 #: ../lib/Galette/Filters/AdvancedMembersList.php:736
-#: ../templates/default/pages/advanced_search.html.twig:171
+#: ../templates/default/pages/advanced_search.html.twig:174
 msgid "Due date"
 msgstr ""
 
@@ -4043,45 +4043,45 @@ msgstr ""
 msgid "%1$s: \"%2$s\" is not available"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:277
+#: ../lib/Galette/Filters/MembersList.php:279
 msgid "Email,URL,IM"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:278
+#: ../lib/Galette/Filters/MembersList.php:280
 msgid "Job"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:279
+#: ../lib/Galette/Filters/MembersList.php:281
 msgid "Infos"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:280
+#: ../lib/Galette/Filters/MembersList.php:282
 #: ../templates/default/components/forms/member_dropdown.html.twig:11
 msgid "Member ID"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:291
+#: ../lib/Galette/Filters/MembersList.php:293
 msgid "All members"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:293
+#: ../lib/Galette/Filters/MembersList.php:295
 msgid "Close expiries"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:294
+#: ../lib/Galette/Filters/MembersList.php:296
 msgid "Latecomers"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:296 ../lib/Galette/IO/Charts.php:104
+#: ../lib/Galette/Filters/MembersList.php:298 ../lib/Galette/IO/Charts.php:104
 #: ../templates/default/pages/public/staff_list.html.twig:41
 msgid "Staff members"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:297
+#: ../lib/Galette/Filters/MembersList.php:299
 msgid "Administrators"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:298
+#: ../lib/Galette/Filters/MembersList.php:300
 msgid "Non members"
 msgstr ""
 
@@ -4348,7 +4348,7 @@ msgstr ""
 #: ../templates/default/pages/contributions_list.html.twig:76
 #: ../templates/default/pages/contributions_list.html.twig:380
 #: ../templates/default/pages/history.html.twig:85
-#: ../templates/default/pages/members_list.html.twig:275
+#: ../templates/default/pages/members_list.html.twig:278
 #: ../templates/default/pages/scheduledpayment_form.html.twig:80
 #: ../templates/default/pages/scheduledpayments_list.html.twig:51
 #: ../templates/default/pages/scheduledpayments_list.html.twig:275
@@ -4458,15 +4458,15 @@ msgstr ""
 msgid "Votes results"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:296
+#: ../lib/Galette/Repository/Members.php:300
 msgid "Member Picture deleted"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:382
+#: ../lib/Galette/Repository/Members.php:386
 msgid "Delete members cards, transactions and dues"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:399
+#: ../lib/Galette/Repository/Members.php:403
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
@@ -5765,15 +5765,15 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:98
 #: ../templates/default/modals/plugin_initdb.html.twig:83
-#: ../templates/default/pages/advanced_search.html.twig:102
-#: ../templates/default/pages/advanced_search.html.twig:129
-#: ../templates/default/pages/advanced_search.html.twig:158
-#: ../templates/default/pages/advanced_search.html.twig:185
-#: ../templates/default/pages/advanced_search.html.twig:307
-#: ../templates/default/pages/advanced_search.html.twig:334
-#: ../templates/default/pages/advanced_search.html.twig:363
-#: ../templates/default/pages/advanced_search.html.twig:383
-#: ../templates/default/pages/advanced_search.html.twig:475
+#: ../templates/default/pages/advanced_search.html.twig:105
+#: ../templates/default/pages/advanced_search.html.twig:132
+#: ../templates/default/pages/advanced_search.html.twig:161
+#: ../templates/default/pages/advanced_search.html.twig:188
+#: ../templates/default/pages/advanced_search.html.twig:310
+#: ../templates/default/pages/advanced_search.html.twig:337
+#: ../templates/default/pages/advanced_search.html.twig:366
+#: ../templates/default/pages/advanced_search.html.twig:386
+#: ../templates/default/pages/advanced_search.html.twig:478
 msgid "and"
 msgstr ""
 
@@ -5796,7 +5796,7 @@ msgstr ""
 #: ../templates/default/pages/document_form.html.twig:69
 #: ../templates/default/pages/mailing_form.html.twig:351
 #: ../templates/default/pages/mailing_form.html.twig:447
-#: ../templates/default/pages/members_list.html.twig:571
+#: ../templates/default/pages/members_list.html.twig:574
 #: ../templates/default/pages/preferences.html.twig:1432
 #: ../templates/default/pages/saved_search_form.html.twig:39
 #: ../templates/default/pages/scheduledpayment_form.html.twig:151
@@ -5963,23 +5963,23 @@ msgstr ""
 #: ../templates/default/components/forms/date.html.twig:11
 #: ../templates/default/modals/mass_change_contributions.html.twig:29
 #: ../templates/default/modals/members_attendance_sheet.html.twig:49
-#: ../templates/default/pages/advanced_search.html.twig:96
-#: ../templates/default/pages/advanced_search.html.twig:107
-#: ../templates/default/pages/advanced_search.html.twig:123
-#: ../templates/default/pages/advanced_search.html.twig:134
-#: ../templates/default/pages/advanced_search.html.twig:152
-#: ../templates/default/pages/advanced_search.html.twig:163
-#: ../templates/default/pages/advanced_search.html.twig:179
-#: ../templates/default/pages/advanced_search.html.twig:190
-#: ../templates/default/pages/advanced_search.html.twig:301
-#: ../templates/default/pages/advanced_search.html.twig:312
-#: ../templates/default/pages/advanced_search.html.twig:328
-#: ../templates/default/pages/advanced_search.html.twig:339
-#: ../templates/default/pages/advanced_search.html.twig:357
-#: ../templates/default/pages/advanced_search.html.twig:368
-#: ../templates/default/pages/advanced_search.html.twig:442
-#: ../templates/default/pages/advanced_search.html.twig:558
-#: ../templates/default/pages/advanced_search.html.twig:724
+#: ../templates/default/pages/advanced_search.html.twig:99
+#: ../templates/default/pages/advanced_search.html.twig:110
+#: ../templates/default/pages/advanced_search.html.twig:126
+#: ../templates/default/pages/advanced_search.html.twig:137
+#: ../templates/default/pages/advanced_search.html.twig:155
+#: ../templates/default/pages/advanced_search.html.twig:166
+#: ../templates/default/pages/advanced_search.html.twig:182
+#: ../templates/default/pages/advanced_search.html.twig:193
+#: ../templates/default/pages/advanced_search.html.twig:304
+#: ../templates/default/pages/advanced_search.html.twig:315
+#: ../templates/default/pages/advanced_search.html.twig:331
+#: ../templates/default/pages/advanced_search.html.twig:342
+#: ../templates/default/pages/advanced_search.html.twig:360
+#: ../templates/default/pages/advanced_search.html.twig:371
+#: ../templates/default/pages/advanced_search.html.twig:445
+#: ../templates/default/pages/advanced_search.html.twig:561
+#: ../templates/default/pages/advanced_search.html.twig:727
 #: ../templates/default/pages/contribution_form.html.twig:260
 #: ../templates/default/pages/contribution_form.html.twig:275
 #: ../templates/default/pages/contribution_form.html.twig:290
@@ -6081,7 +6081,7 @@ msgstr ""
 #: ../templates/default/pages/export.html.twig:50
 #: ../templates/default/pages/import.html.twig:35
 #: ../templates/default/pages/mailings_list.html.twig:239
-#: ../templates/default/pages/members_list.html.twig:250
+#: ../templates/default/pages/members_list.html.twig:253
 #: ../templates/default/pages/plugins.html.twig:121
 #: ../templates/default/pages/scheduledpayments_list.html.twig:344
 #: ../templates/default/pages/status_list.html.twig:24
@@ -6142,7 +6142,7 @@ msgstr ""
 #: ../templates/default/components/forms/groups.html.twig:117
 #: ../templates/default/components/forms/mass_groups.html.twig:13
 #: ../templates/default/pages/advanced_search.html.twig:50
-#: ../templates/default/pages/advanced_search.html.twig:265
+#: ../templates/default/pages/advanced_search.html.twig:268
 msgid "Select a group"
 msgstr ""
 
@@ -6343,8 +6343,8 @@ msgstr ""
 #: ../templates/default/elements/edit_pdf_models.html.twig:60
 #: ../templates/default/pages/advanced_config.html.twig:47
 #: ../templates/default/pages/advanced_config.html.twig:58
-#: ../templates/default/pages/advanced_search.html.twig:391
-#: ../templates/default/pages/advanced_search.html.twig:393
+#: ../templates/default/pages/advanced_search.html.twig:394
+#: ../templates/default/pages/advanced_search.html.twig:396
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:152
 #: ../templates/default/pages/contributions_list.html.twig:79
 #: ../templates/default/pages/contributions_list.html.twig:404
@@ -6410,7 +6410,7 @@ msgid "CSS styles"
 msgstr ""
 
 #: ../templates/default/elements/edit_pdf_models.html.twig:62
-#: ../templates/default/pages/advanced_search.html.twig:426
+#: ../templates/default/pages/advanced_search.html.twig:429
 #: ../templates/default/pages/contributions_list.html.twig:131
 #: ../templates/default/pages/contributions_list.html.twig:140
 #: ../templates/default/pages/documents_list.html.twig:96
@@ -6446,9 +6446,9 @@ msgstr ""
 #: ../templates/default/pages/groups_list.html.twig:122
 #: ../templates/default/pages/mailing_form.html.twig:142
 #: ../templates/default/pages/member_form.html.twig:177
-#: ../templates/default/pages/members_list.html.twig:176
-#: ../templates/default/pages/members_list.html.twig:189
-#: ../templates/default/pages/members_list.html.twig:567
+#: ../templates/default/pages/members_list.html.twig:179
+#: ../templates/default/pages/members_list.html.twig:192
+#: ../templates/default/pages/members_list.html.twig:570
 #: ../templates/default/pages/preferences.html.twig:1265
 #: ../templates/default/pages/saved_search_form.html.twig:37
 #: ../templates/default/pages/scheduledpayment_form.html.twig:149
@@ -6681,11 +6681,11 @@ msgstr ""
 #: ../templates/default/pages/mailings_list.html.twig:322
 #: ../templates/default/pages/mailings_list.html.twig:336
 #: ../templates/default/pages/member_show.html.twig:173
-#: ../templates/default/pages/members_list.html.twig:317
-#: ../templates/default/pages/members_list.html.twig:636
-#: ../templates/default/pages/members_list.html.twig:706
-#: ../templates/default/pages/members_list.html.twig:727
-#: ../templates/default/pages/members_list.html.twig:748
+#: ../templates/default/pages/members_list.html.twig:320
+#: ../templates/default/pages/members_list.html.twig:639
+#: ../templates/default/pages/members_list.html.twig:709
+#: ../templates/default/pages/members_list.html.twig:730
+#: ../templates/default/pages/members_list.html.twig:751
 #: ../templates/default/pages/plugins.html.twig:154
 #: ../templates/default/pages/plugins.html.twig:178
 #: ../templates/default/pages/plugins.html.twig:195
@@ -6943,7 +6943,7 @@ msgstr ""
 #: ../templates/default/elements/member_actions.html.twig:58
 #: ../templates/default/pages/contributions_list.html.twig:473
 #: ../templates/default/pages/mailings_list.html.twig:251
-#: ../templates/default/pages/members_list.html.twig:258
+#: ../templates/default/pages/members_list.html.twig:261
 #: ../templates/default/pages/scheduledpayments_list.html.twig:352
 #: ../templates/default/pages/transactions_list.html.twig:286
 msgid "Modification"
@@ -7122,8 +7122,8 @@ msgid "Experimental feature. Be careful using it."
 msgstr ""
 
 #: ../templates/default/macros.twig:204
-#: ../templates/default/pages/advanced_search.html.twig:237
-#: ../templates/default/pages/advanced_search.html.twig:454
+#: ../templates/default/pages/advanced_search.html.twig:240
+#: ../templates/default/pages/advanced_search.html.twig:457
 #: ../templates/default/pages/preferences.html.twig:1184
 msgid "Experimental"
 msgstr ""
@@ -7480,9 +7480,9 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:82
 #: ../templates/default/pages/advanced_config.html.twig:213
 #: ../templates/default/pages/advanced_config.html.twig:233
-#: ../templates/default/pages/advanced_search.html.twig:535
-#: ../templates/default/pages/advanced_search.html.twig:577
-#: ../templates/default/pages/advanced_search.html.twig:731
+#: ../templates/default/pages/advanced_search.html.twig:538
+#: ../templates/default/pages/advanced_search.html.twig:580
+#: ../templates/default/pages/advanced_search.html.twig:734
 msgid "Value"
 msgstr ""
 
@@ -7637,8 +7637,8 @@ msgstr ""
 #: ../templates/default/pages/advanced_config.html.twig:254
 #: ../templates/default/pages/contributions_list.html.twig:444
 #: ../templates/default/pages/mailings_list.html.twig:234
-#: ../templates/default/pages/members_list.html.twig:217
-#: ../templates/default/pages/members_list.html.twig:218
+#: ../templates/default/pages/members_list.html.twig:220
+#: ../templates/default/pages/members_list.html.twig:221
 #: ../templates/default/pages/scheduledpayments_list.html.twig:338
 #: ../templates/default/pages/transactions_list.html.twig:257
 msgid "Legend"
@@ -7727,164 +7727,169 @@ msgstr ""
 msgid "Account activity"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:58
+#: ../templates/default/pages/advanced_search.html.twig:52
+#: ../templates/default/pages/members_list.html.twig:140
+msgid "Not in any group"
+msgstr ""
+
+#: ../templates/default/pages/advanced_search.html.twig:61
 msgid "With email:"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:62
-#: ../templates/default/pages/advanced_search.html.twig:205
+#: ../templates/default/pages/advanced_search.html.twig:65
+#: ../templates/default/pages/advanced_search.html.twig:208
 #: ../templates/default/pages/mailings_list.html.twig:122
-#: ../templates/default/pages/members_list.html.twig:152
+#: ../templates/default/pages/members_list.html.twig:155
 #: ../templates/default/pages/scheduledpayments_list.html.twig:139
 msgid "Don't care"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:68
-#: ../templates/default/pages/members_list.html.twig:158
+#: ../templates/default/pages/advanced_search.html.twig:71
+#: ../templates/default/pages/members_list.html.twig:161
 msgid "With"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:74
-#: ../templates/default/pages/members_list.html.twig:164
+#: ../templates/default/pages/advanced_search.html.twig:77
+#: ../templates/default/pages/members_list.html.twig:167
 msgid "Without"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:91
-#: ../templates/default/pages/advanced_search.html.twig:118
-#: ../templates/default/pages/advanced_search.html.twig:147
-#: ../templates/default/pages/advanced_search.html.twig:174
-#: ../templates/default/pages/advanced_search.html.twig:296
-#: ../templates/default/pages/advanced_search.html.twig:323
-#: ../templates/default/pages/advanced_search.html.twig:352
-#: ../templates/default/pages/advanced_search.html.twig:379
+#: ../templates/default/pages/advanced_search.html.twig:94
+#: ../templates/default/pages/advanced_search.html.twig:121
+#: ../templates/default/pages/advanced_search.html.twig:150
+#: ../templates/default/pages/advanced_search.html.twig:177
+#: ../templates/default/pages/advanced_search.html.twig:299
+#: ../templates/default/pages/advanced_search.html.twig:326
+#: ../templates/default/pages/advanced_search.html.twig:355
+#: ../templates/default/pages/advanced_search.html.twig:382
 msgid "between"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:201
+#: ../templates/default/pages/advanced_search.html.twig:204
 msgid "Show public infos"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:237
+#: ../templates/default/pages/advanced_search.html.twig:240
 msgid "Advanced groups search"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:244
+#: ../templates/default/pages/advanced_search.html.twig:247
 msgid "Add new group search criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:249
-#: ../templates/default/pages/advanced_search.html.twig:473
+#: ../templates/default/pages/advanced_search.html.twig:252
+#: ../templates/default/pages/advanced_search.html.twig:476
 msgid "Logical operator"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:251
+#: ../templates/default/pages/advanced_search.html.twig:254
 msgid "In all selected groups"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:252
+#: ../templates/default/pages/advanced_search.html.twig:255
 msgid "In any of selected groups"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:275
-#: ../templates/default/pages/advanced_search.html.twig:586
+#: ../templates/default/pages/advanced_search.html.twig:278
+#: ../templates/default/pages/advanced_search.html.twig:589
 msgid "Remove criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:288
+#: ../templates/default/pages/advanced_search.html.twig:291
 msgid "Within contributions"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:454
+#: ../templates/default/pages/advanced_search.html.twig:457
 msgid "Free search"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:461
+#: ../templates/default/pages/advanced_search.html.twig:464
 msgid "Add new free search criteria"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:476
+#: ../templates/default/pages/advanced_search.html.twig:479
 #: ../templates/default/pages/preferences.html.twig:355
 msgid "or"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:478
-#: ../templates/default/pages/advanced_search.html.twig:482
-#: ../templates/default/pages/advanced_search.html.twig:750
+#: ../templates/default/pages/advanced_search.html.twig:481
+#: ../templates/default/pages/advanced_search.html.twig:485
+#: ../templates/default/pages/advanced_search.html.twig:753
 msgid "Select a field"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:529
+#: ../templates/default/pages/advanced_search.html.twig:532
 msgid "Query operator"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:532
-#: ../templates/default/pages/advanced_search.html.twig:549
-#: ../templates/default/pages/advanced_search.html.twig:564
-#: ../templates/default/pages/advanced_search.html.twig:570
-#: ../templates/default/pages/advanced_search.html.twig:615
+#: ../templates/default/pages/advanced_search.html.twig:535
+#: ../templates/default/pages/advanced_search.html.twig:552
+#: ../templates/default/pages/advanced_search.html.twig:567
+#: ../templates/default/pages/advanced_search.html.twig:573
+#: ../templates/default/pages/advanced_search.html.twig:618
 msgid "is"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:533
-#: ../templates/default/pages/advanced_search.html.twig:572
-#: ../templates/default/pages/advanced_search.html.twig:623
+#: ../templates/default/pages/advanced_search.html.twig:536
+#: ../templates/default/pages/advanced_search.html.twig:575
+#: ../templates/default/pages/advanced_search.html.twig:626
 msgid "is not"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:550
-#: ../templates/default/pages/advanced_search.html.twig:639
+#: ../templates/default/pages/advanced_search.html.twig:553
+#: ../templates/default/pages/advanced_search.html.twig:642
 msgid "before"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:551
-#: ../templates/default/pages/advanced_search.html.twig:643
+#: ../templates/default/pages/advanced_search.html.twig:554
+#: ../templates/default/pages/advanced_search.html.twig:646
 msgid "after"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:571
-#: ../templates/default/pages/advanced_search.html.twig:619
+#: ../templates/default/pages/advanced_search.html.twig:574
+#: ../templates/default/pages/advanced_search.html.twig:622
 msgid "contains"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:573
-#: ../templates/default/pages/advanced_search.html.twig:627
+#: ../templates/default/pages/advanced_search.html.twig:576
+#: ../templates/default/pages/advanced_search.html.twig:630
 msgid "do not contains"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:574
-#: ../templates/default/pages/advanced_search.html.twig:631
+#: ../templates/default/pages/advanced_search.html.twig:577
+#: ../templates/default/pages/advanced_search.html.twig:634
 msgid "starts with"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:575
-#: ../templates/default/pages/advanced_search.html.twig:635
+#: ../templates/default/pages/advanced_search.html.twig:578
+#: ../templates/default/pages/advanced_search.html.twig:638
 msgid "ends with"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:599
+#: ../templates/default/pages/advanced_search.html.twig:602
 #: ../templates/default/pages/contributions_list.html.twig:151
 #: ../templates/default/pages/documents_list.html.twig:115
 #: ../templates/default/pages/history.html.twig:110
 #: ../templates/default/pages/mailings_list.html.twig:149
-#: ../templates/default/pages/members_list.html.twig:172
+#: ../templates/default/pages/members_list.html.twig:175
 #: ../templates/default/pages/scheduledpayments_list.html.twig:160
 #: ../templates/default/pages/transactions_list.html.twig:94
 msgid "Filter"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:604
+#: ../templates/default/pages/advanced_search.html.twig:607
 #: ../templates/default/pages/contributions_list.html.twig:155
 #: ../templates/default/pages/documents_list.html.twig:119
 #: ../templates/default/pages/history.html.twig:114
 #: ../templates/default/pages/mailings_list.html.twig:153
-#: ../templates/default/pages/members_list.html.twig:180
-#: ../templates/default/pages/members_list.html.twig:198
+#: ../templates/default/pages/members_list.html.twig:183
+#: ../templates/default/pages/members_list.html.twig:201
 #: ../templates/default/pages/scheduledpayments_list.html.twig:164
 #: ../templates/default/pages/transactions_list.html.twig:98
 msgid "Clear filter"
 msgstr ""
 
-#: ../templates/default/pages/advanced_search.html.twig:714
+#: ../templates/default/pages/advanced_search.html.twig:717
 #: ../templates/default/pages/import.html.twig:30
 msgid "Choice"
 msgstr ""
@@ -8175,7 +8180,7 @@ msgstr ""
 #: ../templates/default/pages/mailings_list.html.twig:17
 #: ../templates/default/pages/mailings_list.html.twig:165
 #: ../templates/default/pages/members_list.html.twig:59
-#: ../templates/default/pages/members_list.html.twig:327
+#: ../templates/default/pages/members_list.html.twig:330
 #: ../templates/default/pages/saved_searches_list.html.twig:16
 #: ../templates/default/pages/saved_searches_list.html.twig:37
 #: ../templates/default/pages/scheduledpayments_list.html.twig:42
@@ -8453,7 +8458,7 @@ msgstr ""
 #: ../templates/default/pages/documents_list.html.twig:113
 #: ../templates/default/pages/history.html.twig:108
 #: ../templates/default/pages/mailings_list.html.twig:147
-#: ../templates/default/pages/members_list.html.twig:170
+#: ../templates/default/pages/members_list.html.twig:173
 #: ../templates/default/pages/scheduledpayments_list.html.twig:158
 #: ../templates/default/pages/transactions_list.html.twig:92
 msgid "Apply filters"
@@ -8463,8 +8468,8 @@ msgstr ""
 #: ../templates/default/pages/documents_list.html.twig:117
 #: ../templates/default/pages/history.html.twig:112
 #: ../templates/default/pages/mailings_list.html.twig:151
-#: ../templates/default/pages/members_list.html.twig:178
-#: ../templates/default/pages/members_list.html.twig:196
+#: ../templates/default/pages/members_list.html.twig:181
+#: ../templates/default/pages/members_list.html.twig:199
 #: ../templates/default/pages/scheduledpayments_list.html.twig:162
 #: ../templates/default/pages/transactions_list.html.twig:96
 msgid "Reset all filters to defaults"
@@ -8546,7 +8551,7 @@ msgid "no contribution"
 msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:449
-#: ../templates/default/pages/members_list.html.twig:223
+#: ../templates/default/pages/members_list.html.twig:226
 #: ../templates/default/pages/transactions_list.html.twig:262
 msgid "Reading the list"
 msgstr ""
@@ -8561,7 +8566,7 @@ msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:477
 #: ../templates/default/pages/mailings_list.html.twig:261
-#: ../templates/default/pages/members_list.html.twig:269
+#: ../templates/default/pages/members_list.html.twig:272
 #: ../templates/default/pages/scheduledpayments_list.html.twig:356
 #: ../templates/default/pages/transactions_list.html.twig:291
 msgid "Deletion"
@@ -8569,7 +8574,7 @@ msgstr ""
 
 #: ../templates/default/pages/contributions_list.html.twig:493
 #: ../templates/default/pages/mailings_list.html.twig:268
-#: ../templates/default/pages/members_list.html.twig:283
+#: ../templates/default/pages/members_list.html.twig:286
 #: ../templates/default/pages/scheduledpayments_list.html.twig:364
 #: ../templates/default/pages/transactions_list.html.twig:300
 msgid "Statuses and interactions"
@@ -9074,7 +9079,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/pages/mailings_list.html.twig:75
-#: ../templates/default/pages/members_list.html.twig:588
+#: ../templates/default/pages/members_list.html.twig:591
 msgid "Existing mailing"
 msgstr ""
 
@@ -9222,11 +9227,11 @@ msgstr ""
 msgid "You are not part of managers for the requested group."
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:477
+#: ../templates/default/pages/members_list.html.twig:480
 msgid "No member selected"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:477
+#: ../templates/default/pages/members_list.html.twig:480
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
@@ -9253,90 +9258,90 @@ msgstr ""
 msgid "All groups"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:148
+#: ../templates/default/pages/members_list.html.twig:151
 msgid "Members that have an email address:"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:174
+#: ../templates/default/pages/members_list.html.twig:177
 msgid "Save selected criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:186
+#: ../templates/default/pages/members_list.html.twig:189
 msgid "Advanced search mode"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:187
+#: ../templates/default/pages/members_list.html.twig:190
 msgid "Save current advanced search criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:191
+#: ../templates/default/pages/members_list.html.twig:194
 msgid "Change search criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:193
+#: ../templates/default/pages/members_list.html.twig:196
 msgid "Change criteria"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:203
+#: ../templates/default/pages/members_list.html.twig:206
 msgid "Show/hide query"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:229
+#: ../templates/default/pages/members_list.html.twig:232
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:231
+#: ../templates/default/pages/members_list.html.twig:234
 msgid "Inactive account"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:235
+#: ../templates/default/pages/members_list.html.twig:238
 msgid "Membership in order"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:237
+#: ../templates/default/pages/members_list.html.twig:240
 msgid "Membership will expire soon (<30d)"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:243
+#: ../templates/default/pages/members_list.html.twig:246
 msgid "Lateness in fee"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:289
+#: ../templates/default/pages/members_list.html.twig:292
 msgid "Send an email"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:291
-#: ../templates/default/pages/members_list.html.twig:338
+#: ../templates/default/pages/members_list.html.twig:294
+#: ../templates/default/pages/members_list.html.twig:341
 #: ../templates/default/pages/public/list.html.twig:19
 #: ../templates/default/pages/public/list.html.twig:20
 msgid "Is a company"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:296
-#: ../templates/default/pages/members_list.html.twig:343
+#: ../templates/default/pages/members_list.html.twig:299
+#: ../templates/default/pages/members_list.html.twig:346
 #: ../templates/default/pages/public/list.html.twig:24
 #: ../templates/default/pages/public/list.html.twig:25
 msgid "Is a man"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:298
-#: ../templates/default/pages/members_list.html.twig:348
+#: ../templates/default/pages/members_list.html.twig:301
+#: ../templates/default/pages/members_list.html.twig:351
 #: ../templates/default/pages/public/list.html.twig:29
 #: ../templates/default/pages/public/list.html.twig:30
 msgid "Is a woman"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:302
-#: ../templates/default/pages/members_list.html.twig:365
+#: ../templates/default/pages/members_list.html.twig:305
+#: ../templates/default/pages/members_list.html.twig:368
 msgid "Admin"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:311
-#: ../templates/default/pages/members_list.html.twig:428
+#: ../templates/default/pages/members_list.html.twig:314
+#: ../templates/default/pages/members_list.html.twig:431
 msgid "Is a sponsor"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:472
+#: ../templates/default/pages/members_list.html.twig:475
 #: ../templates/default/pages/public/members_gallery.html.twig:30
 #: ../templates/default/pages/public/members_list.html.twig:56
 #: ../templates/default/pages/public/staff_gallery.html.twig:24
@@ -9344,29 +9349,29 @@ msgstr ""
 msgid "No member"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:520
+#: ../templates/default/pages/members_list.html.twig:523
 msgid "Search title"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:588
+#: ../templates/default/pages/members_list.html.twig:591
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:588
+#: ../templates/default/pages/members_list.html.twig:591
 msgid "New"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:588
+#: ../templates/default/pages/members_list.html.twig:591
 msgid "Resume"
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:636
+#: ../templates/default/pages/members_list.html.twig:639
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 
-#: ../templates/default/pages/members_list.html.twig:765
+#: ../templates/default/pages/members_list.html.twig:768
 msgid "Required field!"
 msgstr ""
 
