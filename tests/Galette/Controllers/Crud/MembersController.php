@@ -746,6 +746,52 @@ class MembersController extends GaletteRoutingTestCase
             $member_three->sfullname,
             $body
         );
+
+        //filter request on members that do not belong to any group
+        $group = new \Galette\Entity\Group();
+        $group->setName('Grouped');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_one, $member_two]));
+
+        unset($this->session->$filter_name);
+        $request = $this->createRequest($filterroute_name, [], 'POST');
+        $request = $request->withParsedBody(['group_filter' => \Galette\Repository\Members::GROUP_NONE]);
+
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor($route_name)]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([]);
+        $this->assertSame(\Galette\Repository\Members::GROUP_NONE, $this->session->$filter_name->group_filter);
+
+        $request = $this->createRequest($route_name);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            '<option value="' . \Galette\Repository\Members::GROUP_NONE . '" selected="selected">Not in any group</option>',
+            $body
+        );
+        //member is not listed
+        $this->assertStringNotContainsString(
+            $member_one->sfullname,
+            $body
+        );
+        //member child is listed
+        $this->assertStringContainsString(
+            $child->sfullname,
+            $body
+        );
+        //second member is not listed
+        $this->assertStringNotContainsString(
+            $member_two->sfullname,
+            $body
+        );
+        //third member is listed
+        $this->assertStringContainsString(
+            $member_three->sfullname,
+            $body
+        );
     }
 
     /**

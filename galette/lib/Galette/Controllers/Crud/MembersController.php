@@ -814,7 +814,10 @@ class MembersController extends CrudController
             }
             //group filter
             if (isset($post['group_filter'])) {
-                $filters->group_filter = $post['group_filter'] > 0 ? (int)$post['group_filter'] : null;
+                $group_filter = (int)$post['group_filter'];
+                $filters->group_filter = $group_filter > 0 || $group_filter === Members::GROUP_NONE
+                    ? $group_filter
+                    : null;
             }
             //number of rows to show
             if (isset($post['nbshow'])) {

@@ -48,6 +48,9 @@
                             <label for="group_filter">{{ _T('Member of group') }}</label>
                             <select name="group_filter" id="group_filter" class="ui search dropdown">
                                 <option value="0">{{ _T('Select a group') }}</option>
+{% if login.isAdmin() or login.isStaff() %}
+                                <option value="{{ constant("Galette\\Repository\\Members::GROUP_NONE") }}"{% if filters.group_filter == constant("Galette\\Repository\\Members::GROUP_NONE") %} selected="selected"{% endif %}>{{ _T('Not in any group') }}</option>
+{% endif %}
 {% for group in filter_groups_options %}
                                 <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getFullName() }}</option>
 {% endfor %}

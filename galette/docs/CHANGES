@@ -15,6 +15,7 @@ Changes
 - Members dynamic fields can be added to the members list from the core lists configuration
 - Company name is printed on members labels, between name and address
 - New plugins releases are reported on plugins page, plugins menu entry and at administrator login; Galette and plugins releases are now checked from GitHub
+- Members that do not belong to any group can be filtered from members list and advanced search
 
 1.3.0 -> 1.3.1
 

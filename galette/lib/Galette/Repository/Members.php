@@ -17,6 +17,7 @@ use Galette\Events\GaletteEvent;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Predicate\In;
 use Laminas\Db\Sql\Predicate\IsNull;
+use Laminas\Db\Sql\Predicate\NotIn;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\File;
@@ -89,6 +90,9 @@ class Members
     public const int MEMBERSHIP_STAFF = 5;
     public const int MEMBERSHIP_ADMIN = 6;
     public const int MEMBERSHIP_NONE = 7;
+
+    //group filter value for members that do not belong to any group
+    public const int GROUP_NONE = -1;
 
     public const string ORDERBY_NAME = 'name';
     public const string ORDERBY_NICKNAME = 'nickname';
@@ -1272,7 +1276,11 @@ class Members
                 }
             }
 
-            if ($this->filters->group_filter) {
+            if ($this->filters->group_filter === self::GROUP_NONE) {
+                $grouped = $zdb->select(Group::GROUPSUSERS_TABLE, 'gn');
+                $grouped->columns([Adherent::PK]);
+                $select->where(new NotIn('a.' . self::PK, $grouped));
+            } elseif ($this->filters->group_filter) {
                 $select->join(
                     name: ['g' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     on: 'a.' . Adherent::PK . '=g.' . Adherent::PK,

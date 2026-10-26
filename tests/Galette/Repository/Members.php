@@ -1351,6 +1351,62 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test members that do not belong to any group
+     */
+    public function testGroupFilterNone(): void
+    {
+        $members = new \Galette\Repository\Members();
+        $list = $members->getList(as_members: true);
+        $this->assertSame(10, count($list));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->group_filter = \Galette\Repository\Members::GROUP_NONE;
+        $this->assertSame(\Galette\Repository\Members::GROUP_NONE, $filters->group_filter);
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(10, $members->getList()->count());
+
+        $parent = new \Galette\Entity\Group();
+        $parent->setName('Activities');
+        $this->assertTrue($parent->store());
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Pony')->setParentGroup($parent->getId());
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$list[0], $list[1], $list[2]]));
+        //managing a group is not belonging to it
+        $this->assertTrue($group->setManagers([$list[3]]));
+
+        $members = new \Galette\Repository\Members($filters);
+        $found = $members->getList();
+        $this->assertSame(7, $found->count());
+        $found_ids = [];
+        foreach ($found as $member) {
+            $found_ids[] = (int)$member->id_adh;
+        }
+        $this->assertNotContains($list[0]->id, $found_ids);
+        $this->assertContains($list[3]->id, $found_ids);
+
+        //works on advanced search as well
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->group_filter = \Galette\Repository\Members::GROUP_NONE;
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(7, $members->getList()->count());
+
+        //regular group filter still includes children groups members
+        $filters->group_filter = $parent->getId();
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(3, $members->getList()->count());
+
+        //other negative values are rejected
+        $filters->group_filter = -2;
+        $this->assertSame($parent->getId(), $filters->group_filter);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            '[MembersList] Value for group filter should be an integer (integer given)'
+        );
+    }
+
+    /**
      * Test reminders count
      */
     public function testGetRemindersCount(): void
