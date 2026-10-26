@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -588,6 +588,11 @@ msgstr "அஞ்சல் #%1$s ஐ அகற்று"
 
 msgid "Mailing preview"
 msgstr "அஞ்சல் முன்னோட்டம்"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "மின்னஞ்சல் அமைப்புகளை சோதிக்கவும்"
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4452,27 +4457,6 @@ msgstr "வலது"
 msgid "Not supplied"
 msgstr "வழங்கப்படவில்லை"
 
-msgid "Zip - Town"
-msgstr "சிப் - பேரூர்"
-
-msgid "Company"
-msgstr "நிறுவனம்"
-
-msgid "no member"
-msgstr "உறுப்பினர் இல்லை"
-
-msgid "Pages:"
-msgstr "பக்கங்கள்:"
-
-msgid "Selected members"
-msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்கள்"
-
-msgid "No members has been selected yet."
-msgstr "எந்த உறுப்பினர்களும் இதுவரை தேர்ந்தெடுக்கப்படவில்லை."
-
-msgid "Validate"
-msgstr "சரிபார்க்கவும்"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "புதிய சாளரத்தில் '%s' ஐத் திறக்கவும்"
@@ -4588,6 +4572,9 @@ msgstr "தகவல்"
 
 msgid "Parent group:"
 msgstr "பெற்றோர் குழு:"
+
+msgid "Company"
+msgstr "நிறுவனம்"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4762,6 +4749,9 @@ msgstr ""
 msgid "Later"
 msgstr "பின்னர்"
 
+msgid "Pages:"
+msgstr "பக்கங்கள்:"
+
 msgid "Records per page:"
 msgstr "ஒரு பக்கத்திற்கு பதிவுகள்:"
 
@@ -4792,6 +4782,34 @@ msgstr "ஆள்மாறாட்டம்"
 msgid "User menu"
 msgstr "பயனர் பட்டியல்"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "மின்னஞ்சல் முகவரி"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "குழு சேர்க்கப்பட்டது"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "பெற்றோர் அகற்றப்பட்டனர்"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "வட்டில் இருந்து '%1$s' ஐ அகற்று"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s நிர்வகிக்கப்படும் குழு"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "உங்கள் செய்தி <strong>%s உறுப்பினர்கள் </strong> க்கு அனுப்பப்பட்டுள்ளது"
@@ -4818,6 +4836,25 @@ msgid ""
 msgstr ""
 "நீங்கள் தேர்ந்தெடுத்த சில உறுப்பினர்களுக்கு மின்னஞ்சல் முகவரி இல்லை. இருப்பினும், நத்தை அஞ்சல் "
 "மூலம் அவற்றை தொடர்பு கொள்ள உறை லேபிள்களை உருவாக்கலாம்."
+
+msgid "Manage selected members"
+msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களை நிர்வகிக்கவும்"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "ஆவணத்தைச் சேர்"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"இந்த பட்டியலில் உள்ள உருப்படிகள் மாற்றியமைக்கப்பட்டுள்ளன. உங்கள் மாற்றங்களைச் சேமிக்க "
+"மறக்காதீர்கள்."
+
+msgid "Recipients"
+msgstr "பெறுநர்கள்"
 
 msgid "See member profile"
 msgstr "உறுப்பினர் சுயவிவரத்தைக் காண்க"
@@ -6219,14 +6256,8 @@ msgstr "உங்கள் கடவுச்சொல்லை இழந்த�
 msgid "Mailing information"
 msgstr "அஞ்சல் செய்தி"
 
-msgid "Recipients"
-msgstr "பெறுநர்கள்"
-
 msgid "Go back to members list"
 msgstr "உறுப்பினர்கள் பட்டியலுக்குச் செல்லுங்கள்"
-
-msgid "Manage selected members"
-msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களை நிர்வகிக்கவும்"
 
 msgid "Existing attachments:"
 msgstr "தற்போதுள்ள இணைப்புகள்:"
@@ -6268,11 +6299,8 @@ msgstr "அஞ்சலை மாற்றவும்"
 msgid "An error occurred displaying preview :("
 msgstr "முன்னோட்டத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
-msgid "Members selection"
-msgstr "உறுப்பினர்கள் தேர்வு"
-
-msgid "Click on a row to select a member"
-msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
+msgid "Validate"
+msgstr "சரிபார்க்கவும்"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "இந்த இணைப்பை அகற்ற விரும்புகிறீர்களா?"
@@ -7213,6 +7241,9 @@ msgstr "(பெயருக்கு முன்னால் தலைப்ப
 msgid "Address type:"
 msgstr "முகவரி வகை:"
 
+msgid "Zip - Town"
+msgstr "சிப் - பேரூர்"
+
 msgid "(Choose address printed below name)"
 msgstr "(பெயருக்கு கீழே அச்சிடப்பட்ட முகவரியைத் தேர்வுசெய்க)"
 
@@ -7674,6 +7705,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "பொது பக்க உள்ளடக்கம்"
+
+#~ msgid "no member"
+#~ msgstr "உறுப்பினர் இல்லை"
+
+#~ msgid "Selected members"
+#~ msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்கள்"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "எந்த உறுப்பினர்களும் இதுவரை தேர்ந்தெடுக்கப்படவில்லை."
+
+#~ msgid "Members selection"
+#~ msgstr "உறுப்பினர்கள் தேர்வு"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
 
 #~ msgid "An error occurred."
 #~ msgstr "பிழை ஏற்பட்டது."

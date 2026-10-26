@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-26 09:30+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Jože Felicijan "
+"<felicijan@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -574,6 +574,11 @@ msgstr "Odstrani poštni naslov št. %1$s"
 
 msgid "Mailing preview"
 msgstr "Predogled pošte"
+
+#, fuzzy
+#| msgid "Sending in progress…"
+msgid "No mailing in progress."
+msgstr "Pošiljanje v teku …"
 
 msgid "Sending mailing"
 msgstr "Pošiljanje pošte"
@@ -4379,27 +4384,6 @@ msgstr "Desno"
 msgid "Not supplied"
 msgstr "Ni dobavljeno"
 
-msgid "Zip - Town"
-msgstr "Poštna številka - Mesto"
-
-msgid "Company"
-msgstr "Podjetje"
-
-msgid "no member"
-msgstr "brez člana"
-
-msgid "Pages:"
-msgstr "Strani:"
-
-msgid "Selected members"
-msgstr "Izbrani člani"
-
-msgid "No members has been selected yet."
-msgstr "Še ni bil izbran noben član."
-
-msgid "Validate"
-msgstr "Potrdi"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Odpri '%s' v novem oknu"
@@ -4513,6 +4497,9 @@ msgstr "Informacije"
 
 msgid "Parent group:"
 msgstr "Starševska skupina:"
+
+msgid "Company"
+msgstr "Podjetje"
 
 #, php-format
 msgid "%1$s is member of the group"
@@ -4678,6 +4665,9 @@ msgstr ""
 msgid "Later"
 msgstr "Kasneje"
 
+msgid "Pages:"
+msgstr "Strani:"
+
 msgid "Records per page:"
 msgstr "Zapisov na stran:"
 
@@ -4708,6 +4698,35 @@ msgstr "Lažna predstavitev"
 msgid "User menu"
 msgstr "Uporabniški meni"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "E-poštni naslov"
+
+#, fuzzy
+#| msgctxt "member groups"
+#| msgid "added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "dodano"
+
+#, fuzzy
+#| msgctxt "member groups"
+#| msgid "will be removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "bo odstranjeno"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Odstrani '%1$s' z diska"
+
+#, fuzzy, php-format
+#| msgid "Keep %1$s in the group"
+msgid "Keep %1$s in recipients"
+msgstr "Obdrži %1$s v skupini"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Vaše sporočilo je bilo poslano <strong>%s članom</strong>"
@@ -4734,6 +4753,24 @@ msgid ""
 msgstr ""
 "Nekateri izbrani člani nimajo e-poštnega naslova. Lahko pa ustvarite nalepke "
 "za kuverte, da jih kontaktirate po navadni pošti."
+
+msgid "Manage selected members"
+msgstr "Upravljanje izbranih članov"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Dodaj dokument"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Elementi na tem seznamu so bili spremenjeni. Ne pozabite shraniti sprememb."
+
+msgid "Recipients"
+msgstr "Prejemniki"
 
 msgid "See member profile"
 msgstr "Oglejte si profil člana"
@@ -6117,14 +6154,8 @@ msgstr "Ste pozabili geslo?"
 msgid "Mailing information"
 msgstr "Podatki o pošiljanju"
 
-msgid "Recipients"
-msgstr "Prejemniki"
-
 msgid "Go back to members list"
 msgstr "Nazaj na seznam članov"
-
-msgid "Manage selected members"
-msgstr "Upravljanje izbranih članov"
 
 msgid "Existing attachments:"
 msgstr "Obstoječe priloge:"
@@ -6166,11 +6197,8 @@ msgstr "Spremeni poštno sporočilo"
 msgid "An error occurred displaying preview :("
 msgstr "Pri prikazu predogleda je prišlo do napake :("
 
-msgid "Members selection"
-msgstr "Izbira članov"
-
-msgid "Click on a row to select a member"
-msgstr "Kliknite na vrstico, da izberete člana"
+msgid "Validate"
+msgstr "Potrdi"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ali ste prepričani, da želite odstraniti to prilogo?"
@@ -7105,6 +7133,9 @@ msgstr "(Prikaži ali ne prikaži naziv pred imenom)"
 msgid "Address type:"
 msgstr "Vrsta naslova:"
 
+msgid "Zip - Town"
+msgstr "Poštna številka - Mesto"
+
 msgid "(Choose address printed below name)"
 msgstr "(Izberite naslov, natisnjen pod imenom)"
 
@@ -7576,6 +7607,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Vsebina javne strani"
+
+#~ msgid "no member"
+#~ msgstr "brez člana"
+
+#~ msgid "Selected members"
+#~ msgstr "Izbrani člani"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Še ni bil izbran noben član."
+
+#~ msgid "Members selection"
+#~ msgstr "Izbira članov"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Kliknite na vrstico, da izberete člana"
 
 #~ msgid "An error occurred."
 #~ msgstr "Prišlo je do napake."

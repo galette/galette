@@ -34,7 +34,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -621,6 +621,11 @@ msgstr "Rimuovi mailing #%1$s"
 
 msgid "Mailing preview"
 msgstr "Anteprima spedizione"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "Controllo impostazioni della posta"
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4556,27 +4561,6 @@ msgstr "Destra"
 msgid "Not supplied"
 msgstr "Non fornito"
 
-msgid "Zip - Town"
-msgstr "CAP - Città"
-
-msgid "Company"
-msgstr "Azienda"
-
-msgid "no member"
-msgstr "non socio"
-
-msgid "Pages:"
-msgstr "Pagine:"
-
-msgid "Selected members"
-msgstr "Soci selezionati"
-
-msgid "No members has been selected yet."
-msgstr "Nessun socio selezionato."
-
-msgid "Validate"
-msgstr "Valida"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Apri '%s' in una nuova finestra"
@@ -4692,6 +4676,9 @@ msgstr "Informazioni"
 
 msgid "Parent group:"
 msgstr "Gruppo genitore:"
+
+msgid "Company"
+msgstr "Azienda"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4868,6 +4855,9 @@ msgstr ""
 msgid "Later"
 msgstr "Più tardi"
 
+msgid "Pages:"
+msgstr "Pagine:"
+
 msgid "Records per page:"
 msgstr "Registrazioni per pagina:"
 
@@ -4898,6 +4888,34 @@ msgstr "Deimpersonare"
 msgid "User menu"
 msgstr "Menu utente"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Indirizzo e-mail"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Gruppo aggiunto"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Genitore rimosso"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Rimuovere '%1$s' dal disco"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s gruppo gestito"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Il messaggio è stato inviato a <strong>%s soci</strong>"
@@ -4924,6 +4942,25 @@ msgid ""
 msgstr ""
 "Alcuni soci selezionati non hanno indirizzo e-mail. Tuttavia, è possibile "
 "generare etichette per buste per contattarli tramite posta ordinaria."
+
+msgid "Manage selected members"
+msgstr "Gestisci i soci selezionati"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Aggiungi documento"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Gli articoli in questo elenco sono stati modificati. Ricordarsi di salvare i "
+"cambiamenti."
+
+msgid "Recipients"
+msgstr "Destinatari"
 
 msgid "See member profile"
 msgstr "Visualizzare il profilo del socio"
@@ -6347,14 +6384,8 @@ msgstr "Hai perso la password?"
 msgid "Mailing information"
 msgstr "Informazioni sull'invio postale"
 
-msgid "Recipients"
-msgstr "Destinatari"
-
 msgid "Go back to members list"
 msgstr "Torna alla lista dei soci"
-
-msgid "Manage selected members"
-msgstr "Gestisci i soci selezionati"
 
 msgid "Existing attachments:"
 msgstr "Allegati esistenti:"
@@ -6397,11 +6428,8 @@ msgstr "Modifica l'invio postale"
 msgid "An error occurred displaying preview :("
 msgstr "Errore durante la visualizzazione dell'anteprima :("
 
-msgid "Members selection"
-msgstr "Selezione soci"
-
-msgid "Click on a row to select a member"
-msgstr "Fare clic su una riga per selezionare un socio"
+msgid "Validate"
+msgstr "Valida"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Sicuri di voler rimuovere questo allegato?"
@@ -7367,6 +7395,9 @@ msgstr "(mostrare o no il titolo davanti al nome)"
 msgid "Address type:"
 msgstr "Tipo di indirizzo:"
 
+msgid "Zip - Town"
+msgstr "CAP - Città"
+
 msgid "(Choose address printed below name)"
 msgstr "(scegliere l'indirizzo indicato sotto il nome)"
 
@@ -7837,6 +7868,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Contenuti della pagina pubblica"
+
+#~ msgid "no member"
+#~ msgstr "non socio"
+
+#~ msgid "Selected members"
+#~ msgstr "Soci selezionati"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Nessun socio selezionato."
+
+#~ msgid "Members selection"
+#~ msgstr "Selezione soci"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Fare clic su una riga per selezionare un socio"
 
 #~ msgid "An error occurred."
 #~ msgstr "Si è verificato un errore."

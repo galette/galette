@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -613,6 +613,11 @@ msgstr "Удалить рассылку #%1$s"
 
 msgid "Mailing preview"
 msgstr "Пред. просмотр рассылки"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "Проверить настройки почты"
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4495,27 +4500,6 @@ msgstr "Право"
 msgid "Not supplied"
 msgstr "Не указано"
 
-msgid "Zip - Town"
-msgstr "Индекс - Город"
-
-msgid "Company"
-msgstr "Компания"
-
-msgid "no member"
-msgstr "нет участников"
-
-msgid "Pages:"
-msgstr "Страницы:"
-
-msgid "Selected members"
-msgstr "Выбранные участники"
-
-msgid "No members has been selected yet."
-msgstr "Пока не выбрано ни одного участника."
-
-msgid "Validate"
-msgstr "Подтвердить"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Открыть «%s» в новом окне"
@@ -4631,6 +4615,9 @@ msgstr "Информация"
 
 msgid "Parent group:"
 msgstr "Родительская группа:"
+
+msgid "Company"
+msgstr "Компания"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4805,6 +4792,9 @@ msgstr ""
 msgid "Later"
 msgstr "Позже"
 
+msgid "Pages:"
+msgstr "Страницы:"
+
 msgid "Records per page:"
 msgstr "Записей на странице:"
 
@@ -4835,6 +4825,34 @@ msgstr "Выйти из режима"
 msgid "User menu"
 msgstr "Меню пользователя"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Адрес электронной почты"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Группа добавлена"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Исходник удалён"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Удалить «%1$s» с диска"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s управляемая группа"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Ваше сообщение отправлено <strong>%s участникам</strong>"
@@ -4861,6 +4879,23 @@ msgid ""
 msgstr ""
 "У некоторых выбранных вами участников нет адреса электронной почты. Однако "
 "вы можете создать конвертные этикетки, чтобы связаться с ними по почте."
+
+msgid "Manage selected members"
+msgstr "Управление выбранными участниками"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Добавить документ"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr "Элементы в этом списке были изменены. Не забудьте сохранить изменения."
+
+msgid "Recipients"
+msgstr "Получатели"
 
 msgid "See member profile"
 msgstr "Посмотреть профиль участника"
@@ -6273,14 +6308,8 @@ msgstr "Забыли пароль?"
 msgid "Mailing information"
 msgstr "Информация о рассылке"
 
-msgid "Recipients"
-msgstr "Получатели"
-
 msgid "Go back to members list"
 msgstr "Вернуться к списку участников"
-
-msgid "Manage selected members"
-msgstr "Управление выбранными участниками"
 
 msgid "Existing attachments:"
 msgstr "Существующие вложения:"
@@ -6323,11 +6352,8 @@ msgstr "Изменить рассылку"
 msgid "An error occurred displaying preview :("
 msgstr "Произошла ошибка при отображении предпросмотра :("
 
-msgid "Members selection"
-msgstr "Выбор участников"
-
-msgid "Click on a row to select a member"
-msgstr "Нажмите на строку, чтобы выбрать участника"
+msgid "Validate"
+msgstr "Подтвердить"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Вы уверены, что хотите удалить это вложение?"
@@ -7281,6 +7307,9 @@ msgstr "(Показывать или нет обращение перед име
 msgid "Address type:"
 msgstr "Тип адреса:"
 
+msgid "Zip - Town"
+msgstr "Индекс - Город"
+
 msgid "(Choose address printed below name)"
 msgstr "(Выберите адрес, печатаемый под именем)"
 
@@ -7753,6 +7782,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Содержание публичной страницы"
+
+#~ msgid "no member"
+#~ msgstr "нет участников"
+
+#~ msgid "Selected members"
+#~ msgstr "Выбранные участники"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Пока не выбрано ни одного участника."
+
+#~ msgid "Members selection"
+#~ msgstr "Выбор участников"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Нажмите на строку, чтобы выбрать участника"
 
 #~ msgid "An error occurred."
 #~ msgstr "Произошла ошибка."

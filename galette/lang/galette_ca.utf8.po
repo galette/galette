@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -653,6 +653,11 @@ msgstr "Elimina el mailing #%1$s"
 
 msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
+
+#, fuzzy
+#| msgid "Reset emails contents"
+msgid "No mailing in progress."
+msgstr "Reinicialitza els continguts dels missatges de correu"
 
 #, fuzzy
 msgid "Sending mailing"
@@ -5116,33 +5121,6 @@ msgstr "Drets"
 msgid "Not supplied"
 msgstr "No subministrat"
 
-#, fuzzy
-msgid "Zip - Town"
-msgstr "Zip - Ciutat"
-
-#, fuzzy
-msgid "Company"
-msgstr "Companyia"
-
-#, fuzzy
-msgid "no member"
-msgstr "cap membre"
-
-msgid "Pages:"
-msgstr "Pàgines:"
-
-#, fuzzy
-msgid "Selected members"
-msgstr "Membres seleccionats"
-
-#, fuzzy
-msgid "No members has been selected yet."
-msgstr "Encara no s'ha seleccionat cap membre."
-
-#, fuzzy
-msgid "Validate"
-msgstr "Valida"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Obre '%s' en una finestra nova"
@@ -5271,6 +5249,10 @@ msgstr "Informació"
 
 msgid "Parent group:"
 msgstr "Grup pare:"
+
+#, fuzzy
+msgid "Company"
+msgstr "Companyia"
 
 #, fuzzy, php-format
 msgid "%1$s is member of the group"
@@ -5464,6 +5446,9 @@ msgstr ""
 msgid "Later"
 msgstr "Més tard"
 
+msgid "Pages:"
+msgstr "Pàgines:"
+
 msgid "Records per page:"
 msgstr "Registres per pàgina:"
 
@@ -5501,6 +5486,31 @@ msgstr "No s'ha pogut suplantar com a percentid"
 msgid "User menu"
 msgstr "Nom d'usuari"
 
+#, fuzzy
+msgid "No email address"
+msgstr "Adreça de correu electrònic"
+
+#, fuzzy
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Grup afegit"
+
+#, fuzzy
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "cap membre"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Elimina «%1$s» del disc"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s grup gestionat"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "El vostre missatge ha estat enviat als <strong>%s membres</strong>"
@@ -5532,6 +5542,21 @@ msgstr ""
 "Alguns membres que heu seleccionat no tenen adreça de correu electrònic. No "
 "obstant això podeu generar etiquetes d'envolupant per contactar-los per "
 "correu de caragol."
+
+#, fuzzy
+msgid "Manage selected members"
+msgstr "Gestiona els membres seleccionats"
+
+#, fuzzy
+msgid "Add a recipient"
+msgstr "Afegeix una donació"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+#, fuzzy
+msgid "Recipients"
+msgstr "Destinataris"
 
 #, fuzzy
 msgid "See member profile"
@@ -7168,16 +7193,8 @@ msgid "Mailing information"
 msgstr "Informació de mailing"
 
 #, fuzzy
-msgid "Recipients"
-msgstr "Destinataris"
-
-#, fuzzy
 msgid "Go back to members list"
 msgstr "Torna a la llista de membres"
-
-#, fuzzy
-msgid "Manage selected members"
-msgstr "Gestiona els membres seleccionats"
 
 #, fuzzy
 msgid "Existing attachments:"
@@ -7231,12 +7248,9 @@ msgstr "mailing modificatiu"
 msgid "An error occurred displaying preview :("
 msgstr "S'ha produït un error en mostrar la vista prèvia ("
 
-msgid "Members selection"
-msgstr "Selecció de membres"
-
 #, fuzzy
-msgid "Click on a row to select a member"
-msgstr "Heu de seleccionar un membre del personal"
+msgid "Validate"
+msgstr "Valida"
 
 #, fuzzy
 msgid "Are you sure you want to remove this attachment?"
@@ -8352,6 +8366,10 @@ msgid "Address type:"
 msgstr "Tipus d'adreça"
 
 #, fuzzy
+msgid "Zip - Town"
+msgstr "Zip - Ciutat"
+
+#, fuzzy
 msgid "(Choose address printed below name)"
 msgstr "(Tanca l'adreça impresa sota el nom)"
 
@@ -8880,6 +8898,25 @@ msgstr ""
 #, fuzzy
 msgid "Public page content"
 msgstr "Contingut de la pàgina pública"
+
+#, fuzzy
+#~ msgid "no member"
+#~ msgstr "cap membre"
+
+#, fuzzy
+#~ msgid "Selected members"
+#~ msgstr "Membres seleccionats"
+
+#, fuzzy
+#~ msgid "No members has been selected yet."
+#~ msgstr "Encara no s'ha seleccionat cap membre."
+
+#~ msgid "Members selection"
+#~ msgstr "Selecció de membres"
+
+#, fuzzy
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Heu de seleccionar un membre del personal"
 
 #, fuzzy
 #~ msgid "An error occurred."

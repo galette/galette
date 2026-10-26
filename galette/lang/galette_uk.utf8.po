@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -612,6 +612,11 @@ msgstr "Видалити поштову розсилку #%1$s"
 
 msgid "Mailing preview"
 msgstr "Попередній перегляд розсилки"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "Перевірка налаштувань е-пошти"
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4509,27 +4514,6 @@ msgstr "Праворуч"
 msgid "Not supplied"
 msgstr "Не вказано"
 
-msgid "Zip - Town"
-msgstr "ZIP - Місто"
-
-msgid "Company"
-msgstr "Компанія"
-
-msgid "no member"
-msgstr "немає члена"
-
-msgid "Pages:"
-msgstr "Сторінки:"
-
-msgid "Selected members"
-msgstr "Вибрані члени"
-
-msgid "No members has been selected yet."
-msgstr "Членів ще не вибрано."
-
-msgid "Validate"
-msgstr "Підтвердити"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Відкрити ''%s'' у новому вікні"
@@ -4647,6 +4631,9 @@ msgstr "Відомості"
 
 msgid "Parent group:"
 msgstr "Батьківська група:"
+
+msgid "Company"
+msgstr "Компанія"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4823,6 +4810,9 @@ msgstr ""
 msgid "Later"
 msgstr "Пізніше"
 
+msgid "Pages:"
+msgstr "Сторінки:"
+
 msgid "Records per page:"
 msgstr "Записів на сторінці:"
 
@@ -4853,6 +4843,34 @@ msgstr "Безособовий"
 msgid "User menu"
 msgstr "Меню користувача"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Адреса е-пошти"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Групу додано"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Батьківський обліковий запис вилучено"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Видалити \"%1$s\" з диска"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "Керована група %1$s"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Ваше повідомлення було надіслано <strong>%s членам</strong>"
@@ -4879,6 +4897,23 @@ msgid ""
 msgstr ""
 "Деякі вибрані члени не мають адрес е-пошти. Однак ви можете створити "
 "конвертові мітки, щоб зв'язатися з ними поштою."
+
+msgid "Manage selected members"
+msgstr "Управляти вибраними членами"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Додайте документ"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr "Елементи цього списку було змінено. Не забудьте зберегти зміни."
+
+msgid "Recipients"
+msgstr "Одержувачі"
 
 msgid "See member profile"
 msgstr "Див. профіль члена"
@@ -6301,14 +6336,8 @@ msgstr "Забули пароль?"
 msgid "Mailing information"
 msgstr "Відомості про розсилання"
 
-msgid "Recipients"
-msgstr "Одержувачі"
-
 msgid "Go back to members list"
 msgstr "Повернутися до списку членів"
-
-msgid "Manage selected members"
-msgstr "Управляти вибраними членами"
 
 msgid "Existing attachments:"
 msgstr "Наявні долучення:"
@@ -6351,11 +6380,8 @@ msgstr "Модифікувати розсилку"
 msgid "An error occurred displaying preview :("
 msgstr "Під час відображення попереднього перегляду сталася помилка :("
 
-msgid "Members selection"
-msgstr "Вибір членів"
-
-msgid "Click on a row to select a member"
-msgstr "Натисніть рядок, щоб вибрати учасника"
+msgid "Validate"
+msgstr "Підтвердити"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
@@ -7317,6 +7343,9 @@ msgstr "(Показувати заголовок перед іменем чи н
 msgid "Address type:"
 msgstr "Тип адреси:"
 
+msgid "Zip - Town"
+msgstr "ZIP - Місто"
+
 msgid "(Choose address printed below name)"
 msgstr "(Виберіть адресу, надруковану під назвою)"
 
@@ -7786,6 +7815,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Зміст загальнодоступної сторінки"
+
+#~ msgid "no member"
+#~ msgstr "немає члена"
+
+#~ msgid "Selected members"
+#~ msgstr "Вибрані члени"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Членів ще не вибрано."
+
+#~ msgid "Members selection"
+#~ msgstr "Вибір членів"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Натисніть рядок, щоб вибрати учасника"
 
 #~ msgid "An error occurred."
 #~ msgstr "Сталася помилка."

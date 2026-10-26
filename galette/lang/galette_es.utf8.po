@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-11 06:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -631,6 +631,11 @@ msgstr "Eliminar correspondencia n.º %1$s"
 
 msgid "Mailing preview"
 msgstr "Previsualización de correspondencia"
+
+#, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "Prueba de la configuración del correo electrónico"
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4554,27 +4559,6 @@ msgstr "Derecha"
 msgid "Not supplied"
 msgstr "No suministrado"
 
-msgid "Zip - Town"
-msgstr "Código postal - Ciudad"
-
-msgid "Company"
-msgstr "Empresa"
-
-msgid "no member"
-msgstr "sin miembros"
-
-msgid "Pages:"
-msgstr "Páginas:"
-
-msgid "Selected members"
-msgstr "Miembros seleccionados"
-
-msgid "No members has been selected yet."
-msgstr "Todavía no se ha seleccionado ningún miembro."
-
-msgid "Validate"
-msgstr "Validar"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Abrir '%s' en una ventana nueva"
@@ -4690,6 +4674,9 @@ msgstr "Información"
 
 msgid "Parent group:"
 msgstr "Grupo primario:"
+
+msgid "Company"
+msgstr "Empresa"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4864,6 +4851,9 @@ msgstr ""
 msgid "Later"
 msgstr "Más tarde"
 
+msgid "Pages:"
+msgstr "Páginas:"
+
 msgid "Records per page:"
 msgstr "Registros por página:"
 
@@ -4893,6 +4883,34 @@ msgstr "No suplantar identidad"
 
 msgid "User menu"
 msgstr "Menú de usuario"
+
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Dirección de correo"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Se ha añadido el grupo"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Antecesor retirado"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Eliminar '%1$s' del disco"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s grupo gestionado"
 
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
@@ -4924,6 +4942,24 @@ msgstr ""
 "Algunos de los miembros que has seleccionado no tienen dirección de correo "
 "electrónico. Sin embargo, puedes generar etiquetas de sobre para contactar "
 "con ellos por correo ordinario."
+
+msgid "Manage selected members"
+msgstr "Gestionar miembros seleccionados"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Añadir un documento"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Se han modificado los objetos de esta lista. No olvides guardar tus cambios."
+
+msgid "Recipients"
+msgstr "Destinatarios"
 
 msgid "See member profile"
 msgstr "Ver perfil de miembro"
@@ -6351,14 +6387,8 @@ msgstr "¿Olvidó la contraseña?"
 msgid "Mailing information"
 msgstr "Información de correspondencia"
 
-msgid "Recipients"
-msgstr "Destinatarios"
-
 msgid "Go back to members list"
 msgstr "Volver a la lista de miembros"
-
-msgid "Manage selected members"
-msgstr "Gestionar miembros seleccionados"
 
 msgid "Existing attachments:"
 msgstr "Adjuntos existentes:"
@@ -6401,11 +6431,8 @@ msgstr "Modificar correspondencia"
 msgid "An error occurred displaying preview :("
 msgstr "Se ha producido un error al mostrar la vista previa :("
 
-msgid "Members selection"
-msgstr "Selección de miembros"
-
-msgid "Click on a row to select a member"
-msgstr "Haz clic en una fila para seleccionar un miembro"
+msgid "Validate"
+msgstr "Validar"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "¿Confirma que quiere eliminar este archivo adjunto?"
@@ -7363,6 +7390,9 @@ msgstr "(Mostrar o no el título delante del nombre)"
 msgid "Address type:"
 msgstr "Tipo de dirección:"
 
+msgid "Zip - Town"
+msgstr "Código postal - Ciudad"
+
 msgid "(Choose address printed below name)"
 msgstr "(Seleccionar dirección impresa debajo del nombre)"
 
@@ -7832,6 +7862,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Contenido de página pública"
+
+#~ msgid "no member"
+#~ msgstr "sin miembros"
+
+#~ msgid "Selected members"
+#~ msgstr "Miembros seleccionados"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Todavía no se ha seleccionado ningún miembro."
+
+#~ msgid "Members selection"
+#~ msgstr "Selección de miembros"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Haz clic en una fila para seleccionar un miembro"
 
 #~ msgid "An error occurred."
 #~ msgstr "Se ha producido un error."
