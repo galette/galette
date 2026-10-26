@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -532,8 +532,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1028
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1106
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1380
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1494
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1280
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1394
 msgid "Mass changes has not been confirmed!"
 msgstr ""
 
@@ -544,7 +544,7 @@ msgid "Review mass change %1$s contributions"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1129
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1580
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1480
 msgid "Nothing to do!"
 msgstr ""
 
@@ -562,7 +562,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1177
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1666
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1566
 msgid "Something went wrong during mass edition!"
 msgstr ""
 
@@ -651,19 +651,20 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:277
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:53
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:105
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:197
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:697
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:717
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:765
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:773
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:803
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:857
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:865
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:912
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:929
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:207
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:707
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:727
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:775
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:783
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:813
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:874
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:922
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:930
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:977
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:994
 #: ../lib/Galette/Controllers/Crud/MembersController.php:297
 #: ../lib/Galette/Controllers/Crud/MembersController.php:352
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1188
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1088
 #: ../lib/Galette/Controllers/CsvController.php:679
 #: ../lib/Galette/Controllers/PdfController.php:87
 #: ../lib/Galette/Controllers/PdfController.php:106
@@ -821,34 +822,34 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:83
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:87
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:236
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:238
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:246
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:248
 msgid "Trying to load mailing while email is disabled in preferences."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:138
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:256
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:266
 msgid "No member selected for mailing!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:176
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:186
 msgid "Mailing"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:272
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:282
 msgid "Please type an object for the message."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:278
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:288
 msgid "Please enter a message."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:332
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:342
 msgid "The mailing could not be queued, nothing has been sent."
 msgstr ""
 
 #. TRANS: first parameter is the number of recipients reached, second the total
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:387
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:397
 #, php-format
 msgid ""
 "The mailing has only been sent to %1$s recipient(s) out of %2$s. It has been "
@@ -856,49 +857,53 @@ msgid ""
 "again."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:429
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:439
 msgid "Mailing has been successfully sent!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:458
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:468
 msgid "Mailing has been successfully saved."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:542
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:552
 #: ../lib/Galette/Core/Galette.php:432 ../lib/Galette/Core/Galette.php:899
 msgid "Mailings"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:663
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:673
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:736
-#: ../templates/default/pages/mailing_form.html.twig:255
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:746
+#: ../templates/default/pages/mailing_form.html.twig:259
 #: ../templates/default/pages/mailings_list.html.twig:247
 #: ../templates/default/pages/mailings_list.html.twig:336
 msgid "Mailing preview"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:877
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:823
+msgid "No mailing in progress."
+msgstr ""
+
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:942
 msgid "Sending mailing"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:886
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:966
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:951
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:1031
 msgid "Back to members list"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:890
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:955
 msgid "Mailings history"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:957
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:1022
 msgid "Sending reminders"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:970
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:1035
 #: ../lib/Galette/Controllers/GaletteController.php:785
 #: ../lib/Galette/Core/Galette.php:395 ../lib/Galette/Core/Galette.php:949
 msgid "Reminders"
@@ -952,105 +957,105 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1137
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1037
 #: ../lib/Galette/Controllers/PdfController.php:116
 #: ../lib/Galette/Controllers/PdfController.php:195
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1226
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1126
 msgid "Edit profile"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1227
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
 msgid "New member"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1347
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1247
 #, php-format
 msgid "Mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1405
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1305
 #: ../templates/default/components/forms/groups.html.twig:115
 #: ../templates/default/components/forms/mass_groups.html.twig:19
 msgid "Add to group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1415
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1315
 #: ../templates/default/components/forms/mass_groups.html.twig:31
 msgid "Remove from group"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1462
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1605
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1894
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1505
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1794
 msgid "An error occurred while saving the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1640
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1875
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1540
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1775
 msgid "An error occurred adding member to its groups."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1658
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1558
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1698
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1598
 #: ../lib/Galette/Middleware/Authenticate.php:79
 msgid "Login required"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1725
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1625
 msgid "Invalid captcha"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1852
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1752
 msgid "Your account has been created!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1857
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1757
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1860
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1760
 msgid "New member has been successfully added."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1863
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1763
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1889
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1789
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1913
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1813
 #: ../lib/Galette/Controllers/GaletteController.php:276
 #: ../lib/Galette/Controllers/GaletteController.php:287
 msgid "Delete failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2031
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1931
 #, php-format
 msgid "Remove member %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2039
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1939
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr ""
 
 #. TRANS: parameter is the member identifier
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2176
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2076
 #, php-format
 msgid "No member #%1$s."
 msgstr ""
@@ -2938,7 +2943,6 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:712
 #: ../lib/Galette/IO/MembersCsv.php:245
 #: ../templates/default/components/forms/gender.html.twig:31
-#: ../templates/default/elements/ajax_members.html.twig:35
 #: ../templates/default/elements/group_person_row.html.twig:24
 #: ../templates/default/modals/mass_change_members.html.twig:41
 #: ../templates/default/pages/advanced_search.html.twig:495
@@ -2950,7 +2954,6 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:714
 #: ../lib/Galette/IO/MembersCsv.php:248
 #: ../templates/default/components/forms/gender.html.twig:37
-#: ../templates/default/elements/ajax_members.html.twig:40
 #: ../templates/default/elements/group_person_row.html.twig:29
 #: ../templates/default/modals/mass_change_members.html.twig:38
 #: ../templates/default/pages/advanced_search.html.twig:495
@@ -3235,11 +3238,11 @@ msgstr ""
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:160
 #: ../lib/Galette/IO/PdfGroups.php:136
 #: ../includes/fields_defs/members_fields.php:316
-#: ../templates/default/elements/ajax_members.html.twig:14
 #: ../templates/default/elements/edit_core_fields.html.twig:12
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:21
 #: ../templates/default/elements/group_person_row.html.twig:15
 #: ../templates/default/elements/group_persons.html.twig:36
+#: ../templates/default/elements/mailing_recipient_row.html.twig:15
 #: ../templates/default/pages/advanced_config.html.twig:46
 #: ../templates/default/pages/advanced_config.html.twig:55
 #: ../templates/default/pages/advanced_config.html.twig:146
@@ -3691,7 +3694,6 @@ msgstr ""
 #: ../lib/Galette/Features/Permissions.php:52
 #: ../templates/default/components/forms/groups.html.twig:33
 #: ../templates/default/components/forms/groups.html.twig:77
-#: ../templates/default/elements/ajax_members.html.twig:60
 #: ../templates/default/elements/group_person_row.html.twig:47
 #: ../templates/default/elements/group_person_row.html.twig:72
 #: ../templates/default/elements/group_persons.html.twig:39
@@ -3703,7 +3705,6 @@ msgid "Group manager"
 msgstr ""
 
 #: ../lib/Galette/Features/Permissions.php:53
-#: ../templates/default/elements/ajax_members.html.twig:55
 #: ../templates/default/elements/group_person_row.html.twig:42
 #: ../templates/default/pages/members_list.html.twig:304
 #: ../templates/default/pages/members_list.html.twig:370
@@ -3712,7 +3713,6 @@ msgid "Staff member"
 msgstr ""
 
 #: ../lib/Galette/Features/Permissions.php:54
-#: ../templates/default/elements/ajax_members.html.twig:50
 #: ../templates/default/elements/group_person_row.html.twig:37
 msgid "Administrator"
 msgstr ""
@@ -5780,7 +5780,8 @@ msgstr ""
 #: ../install/steps/db_select_version.php:135
 #: ../templates/default/components/forms/groups.html.twig:99
 #: ../templates/default/elements/group_person_row.html.twig:102
-#: ../templates/default/elements/js/modal.js.twig:120
+#: ../templates/default/elements/js/modal.js.twig:122
+#: ../templates/default/elements/mailing_recipient_row.html.twig:34
 #: ../templates/default/modals/confirm_removal.html.twig:49
 #: ../templates/default/modals/mass_add_contributions.html.twig:30
 #: ../templates/default/modals/mass_change.html.twig:42
@@ -5793,7 +5794,8 @@ msgstr ""
 #: ../templates/default/pages/configuration_title_form.html.twig:28
 #: ../templates/default/pages/contribution_type_form.html.twig:63
 #: ../templates/default/pages/document_form.html.twig:69
-#: ../templates/default/pages/mailing_form.html.twig:419
+#: ../templates/default/pages/mailing_form.html.twig:351
+#: ../templates/default/pages/mailing_form.html.twig:447
 #: ../templates/default/pages/members_list.html.twig:571
 #: ../templates/default/pages/preferences.html.twig:1432
 #: ../templates/default/pages/saved_search_form.html.twig:39
@@ -5932,6 +5934,7 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:13
 #: ../templates/default/elements/edit_socials.html.twig:47
 #: ../templates/default/elements/group_persons.html.twig:68
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:29
 #: ../templates/default/pages/configuration_core_lists.html.twig:54
 #: ../templates/default/pages/configuration_dynamic_field_form.html.twig:175
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:58
@@ -6068,6 +6071,7 @@ msgstr ""
 #: ../templates/default/elements/edit_dynamic_fields.html.twig:28
 #: ../templates/default/elements/group_persons.html.twig:40
 #: ../templates/default/elements/list.html.twig:110
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:47
 #: ../templates/default/pages/authentication_attempts.html.twig:31
 #: ../templates/default/pages/configuration_core_lists.html.twig:22
 #: ../templates/default/pages/configuration_payment_types.html.twig:17
@@ -6247,38 +6251,6 @@ msgstr ""
 
 #: ../templates/default/components/forms/titles.html.twig:12
 msgid "Not supplied"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:17
-#: ../templates/default/pages/preferences.html.twig:1078
-msgid "Zip - Town"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:30
-#: ../templates/default/elements/group_person_row.html.twig:19
-msgid "Company"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:71
-msgid "no member"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:82
-#: ../templates/default/elements/list.html.twig:136
-msgid "Pages:"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:97
-msgid "Selected members"
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:102
-msgid "No members has been selected yet."
-msgstr ""
-
-#: ../templates/default/elements/ajax_members.html.twig:125
-#: ../templates/default/pages/two_factor_challenge.html.twig:30
-msgid "Validate"
 msgstr ""
 
 #: ../templates/default/elements/display_dynamic_fields.html.twig:34
@@ -6520,6 +6492,10 @@ msgstr ""
 msgid "Parent group:"
 msgstr ""
 
+#: ../templates/default/elements/group_person_row.html.twig:19
+msgid "Company"
+msgstr ""
+
 #: ../templates/default/elements/group_person_row.html.twig:69
 #, php-format
 msgid "%1$s is member of the group"
@@ -6697,12 +6673,10 @@ msgstr ""
 #: ../templates/default/pages/import.html.twig:137
 #: ../templates/default/pages/import.html.twig:152
 #: ../templates/default/pages/import_model.html.twig:109
-#: ../templates/default/pages/mailing_form.html.twig:241
-#: ../templates/default/pages/mailing_form.html.twig:255
-#: ../templates/default/pages/mailing_form.html.twig:280
-#: ../templates/default/pages/mailing_form.html.twig:294
-#: ../templates/default/pages/mailing_form.html.twig:328
-#: ../templates/default/pages/mailing_form.html.twig:396
+#: ../templates/default/pages/mailing_form.html.twig:245
+#: ../templates/default/pages/mailing_form.html.twig:259
+#: ../templates/default/pages/mailing_form.html.twig:335
+#: ../templates/default/pages/mailing_form.html.twig:426
 #: ../templates/default/pages/mailings_list.html.twig:295
 #: ../templates/default/pages/mailings_list.html.twig:322
 #: ../templates/default/pages/mailings_list.html.twig:336
@@ -6739,9 +6713,8 @@ msgid "An error occurred retrieving dates :("
 msgstr ""
 
 #: ../templates/default/elements/js/group_persons.js.twig:125
-#: ../templates/default/pages/mailing_form.html.twig:280
-#: ../templates/default/pages/mailing_form.html.twig:328
-#: ../templates/default/pages/mailing_form.html.twig:396
+#: ../templates/default/pages/mailing_form.html.twig:335
+#: ../templates/default/pages/mailing_form.html.twig:426
 msgid "An error occurred displaying members interface :("
 msgstr ""
 
@@ -6752,7 +6725,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../templates/default/elements/js/modal.js.twig:109
+#: ../templates/default/elements/js/modal.js.twig:111
 #: ../templates/default/pages/export.html.twig:166
 msgid "Continue"
 msgstr ""
@@ -6796,7 +6769,7 @@ msgstr ""
 
 #: ../templates/default/elements/js/removal.js.twig:106
 #: ../templates/default/modals/confirm_removal.html.twig:48
-#: ../templates/default/pages/mailing_form.html.twig:419
+#: ../templates/default/pages/mailing_form.html.twig:447
 msgid "Remove"
 msgstr ""
 
@@ -6814,6 +6787,10 @@ msgstr ""
 #: ../templates/default/elements/js/two_factor_suggestion.js.twig:40
 #: ../templates/default/modals/telemetry.html.twig:132
 msgid "Later"
+msgstr ""
+
+#: ../templates/default/elements/list.html.twig:136
+msgid "Pages:"
 msgstr ""
 
 #: ../templates/default/elements/list.html.twig:32
@@ -6876,6 +6853,30 @@ msgstr ""
 msgid "User menu"
 msgstr ""
 
+#: ../templates/default/elements/mailing_recipient_row.html.twig:23
+msgid "No email address"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipient_row.html.twig:25
+msgctxt "mailing recipients"
+msgid "added"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipient_row.html.twig:26
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipient_row.html.twig:29
+#, php-format
+msgid "Remove %1$s from recipients"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipient_row.html.twig:32
+#, php-format
+msgid "Keep %1$s in recipients"
+msgstr ""
+
 #: ../templates/default/elements/mailing_recipients.html.twig:11
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
@@ -6891,6 +6892,7 @@ msgid "None of the selected members has an email address."
 msgstr ""
 
 #: ../templates/default/elements/mailing_recipients.html.twig:19
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:59
 msgid "No member selected (yet)."
 msgstr ""
 
@@ -6906,6 +6908,28 @@ msgstr ""
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:15
+#: ../templates/default/pages/mailing_form.html.twig:35
+msgid "Manage selected members"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:19
+msgid "Add a recipient"
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:37
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:43
+#: ../templates/default/elements/mailing_recipients_selection.html.twig:46
+#: ../templates/default/pages/mailing_form.html.twig:28
+#: ../templates/default/pages/mailing_queue.html.twig:48
+#: ../templates/default/pages/mailings_list.html.twig:17
+#: ../templates/default/pages/mailings_list.html.twig:170
+msgid "Recipients"
 msgstr ""
 
 #: ../templates/default/elements/member_actions.html.twig:43
@@ -8903,19 +8927,8 @@ msgstr ""
 msgid "Mailing information"
 msgstr ""
 
-#: ../templates/default/pages/mailing_form.html.twig:28
-#: ../templates/default/pages/mailing_queue.html.twig:48
-#: ../templates/default/pages/mailings_list.html.twig:17
-#: ../templates/default/pages/mailings_list.html.twig:170
-msgid "Recipients"
-msgstr ""
-
 #: ../templates/default/pages/mailing_form.html.twig:32
 msgid "Go back to members list"
-msgstr ""
-
-#: ../templates/default/pages/mailing_form.html.twig:35
-msgid "Manage selected members"
 msgstr ""
 
 #: ../templates/default/pages/mailing_form.html.twig:51
@@ -8923,7 +8936,7 @@ msgid "Existing attachments:"
 msgstr ""
 
 #: ../templates/default/pages/mailing_form.html.twig:62
-#: ../templates/default/pages/mailing_form.html.twig:415
+#: ../templates/default/pages/mailing_form.html.twig:443
 msgid "Remove attachment"
 msgstr ""
 
@@ -8966,24 +8979,21 @@ msgstr ""
 msgid "Modifiy mailing"
 msgstr ""
 
-#: ../templates/default/pages/mailing_form.html.twig:241
+#: ../templates/default/pages/mailing_form.html.twig:245
 #: ../templates/default/pages/mailings_list.html.twig:322
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-#: ../templates/default/pages/mailing_form.html.twig:294
-msgid "Members selection"
+#: ../templates/default/pages/mailing_form.html.twig:351
+#: ../templates/default/pages/two_factor_challenge.html.twig:30
+msgid "Validate"
 msgstr ""
 
-#: ../templates/default/pages/mailing_form.html.twig:364
-msgid "Click on a row to select a member"
-msgstr ""
-
-#: ../templates/default/pages/mailing_form.html.twig:414
+#: ../templates/default/pages/mailing_form.html.twig:442
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
 
-#: ../templates/default/pages/mailing_form.html.twig:414
+#: ../templates/default/pages/mailing_form.html.twig:442
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
 
@@ -10168,6 +10178,10 @@ msgstr ""
 
 #: ../templates/default/pages/preferences.html.twig:1075
 msgid "Address type:"
+msgstr ""
+
+#: ../templates/default/pages/preferences.html.twig:1078
+msgid "Zip - Town"
 msgstr ""
 
 #: ../templates/default/pages/preferences.html.twig:1083

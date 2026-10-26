@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-22 06:15+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -581,6 +581,9 @@ msgstr "Supprimer l'envoi %1$s"
 
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'envoi"
+
+msgid "No mailing in progress."
+msgstr "Aucun envoi en cours."
 
 msgid "Sending mailing"
 msgstr "Lancer les envois"
@@ -4451,27 +4454,6 @@ msgstr "Droit"
 msgid "Not supplied"
 msgstr "Non renseigné"
 
-msgid "Zip - Town"
-msgstr "Code postal - Ville"
-
-msgid "Company"
-msgstr "Personne morale"
-
-msgid "no member"
-msgstr "aucun adhérent"
-
-msgid "Pages:"
-msgstr "Pages :"
-
-msgid "Selected members"
-msgstr "Membres sélectionnés"
-
-msgid "No members has been selected yet."
-msgstr "Aucun membre n’a encore été sélectionné."
-
-msgid "Validate"
-msgstr "Valider"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Ouvrir « %s » dans une nouvelle fenêtre"
@@ -4585,6 +4567,9 @@ msgstr "Informations"
 
 msgid "Parent group:"
 msgstr "Groupe parent :"
+
+msgid "Company"
+msgstr "Personne morale"
 
 #, php-format
 msgid "%1$s is member of the group"
@@ -4751,6 +4736,9 @@ msgstr ""
 msgid "Later"
 msgstr "Plus tard"
 
+msgid "Pages:"
+msgstr "Pages :"
+
 msgid "Records per page:"
 msgstr "Enregistrements par page :"
 
@@ -4783,6 +4771,25 @@ msgstr "Quitter l'imposture"
 msgid "User menu"
 msgstr "Menu utilisateur"
 
+msgid "No email address"
+msgstr "Pas d’adresse courriel"
+
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "ajouté"
+
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "sera retiré"
+
+#, php-format
+msgid "Remove %1$s from recipients"
+msgstr "Retirer %1$s des destinataires"
+
+#, php-format
+msgid "Keep %1$s in recipients"
+msgstr "Conserver %1$s dans les destinataires"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Votre courriel a été envoyé à <strong>%s membres</strong>"
@@ -4811,6 +4818,19 @@ msgstr ""
 "Certains des membres que vous avez sélectionnés n’ont pas d’adresse de "
 "courriel. Cependant vous pouvez produire des étiquettes d’enveloppes pour "
 "les contacter par courrier postal."
+
+msgid "Manage selected members"
+msgstr "Gestion des adhérents sélectionnés"
+
+msgid "Add a recipient"
+msgstr "Ajouter un destinataire"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Les destinataires ont été modifiés. Validez pour appliquer vos modifications."
+
+msgid "Recipients"
+msgstr "Destinataires"
 
 msgid "See member profile"
 msgstr "Voir la fiche adhérent"
@@ -6214,14 +6234,8 @@ msgstr "Mot de passe perdu ?"
 msgid "Mailing information"
 msgstr "Informations sur l'envoi"
 
-msgid "Recipients"
-msgstr "Destinataires"
-
 msgid "Go back to members list"
 msgstr "Retour à la liste des membres"
-
-msgid "Manage selected members"
-msgstr "Gestion des adhérents sélectionnés"
 
 msgid "Existing attachments:"
 msgstr "Pièces jointes existantes :"
@@ -6264,11 +6278,8 @@ msgstr "Modifier l'envoi"
 msgid "An error occurred displaying preview :("
 msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
-msgid "Members selection"
-msgstr "Sélection d’adhérents"
-
-msgid "Click on a row to select a member"
-msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
+msgid "Validate"
+msgstr "Valider"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Voulez-vous vraiment effacer cette pièce jointe ?"
@@ -7212,6 +7223,9 @@ msgstr "(Afficher le titre devant le nom)"
 msgid "Address type:"
 msgstr "Type d’adresse :"
 
+msgid "Zip - Town"
+msgstr "Code postal - Ville"
+
 msgid "(Choose address printed below name)"
 msgstr "(Choix de l’adresse imprimée sous le nom)"
 
@@ -7691,6 +7705,21 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Contenu page publique"
+
+#~ msgid "no member"
+#~ msgstr "aucun adhérent"
+
+#~ msgid "Selected members"
+#~ msgstr "Membres sélectionnés"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Aucun membre n’a encore été sélectionné."
+
+#~ msgid "Members selection"
+#~ msgstr "Sélection d’adhérents"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
 
 #~ msgid ""
 #~ "Development features to activate, among those declared in the feature "
