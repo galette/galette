@@ -16,6 +16,7 @@ Changes
 - Company name is printed on members labels, between name and address
 - New plugins releases are reported on plugins page, plugins menu entry and at administrator login; Galette and plugins releases are now checked from GitHub
 - Members that do not belong to any group can be filtered from members list and advanced search
+- Advanced search can look for empty or not empty fields
 
 1.3.0 -> 1.3.1
 

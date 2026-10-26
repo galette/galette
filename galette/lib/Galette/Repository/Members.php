@@ -1621,6 +1621,11 @@ class Members
                     case AdvancedMembersList::OP_AFTER:
                         $qop = '>';
                         break;
+                    case AdvancedMembersList::OP_IS_EMPTY:
+                    case AdvancedMembersList::OP_IS_NOT_EMPTY:
+                        //no value to compare with, predicate is built below
+                        $qop = '';
+                        break;
                     default:
                         Analog::log(
                             'Unknown query operator: ' . $fs['qry_op']
@@ -1650,9 +1655,25 @@ class Members
                     }
                 } elseif (str_starts_with((string)$fs['field'], 'socials_')) {
                     //social networks: type is filtered as a value, search runs on the URL
-                    $select->where(
-                        ['so.type' => str_replace('socials_', '', (string)$fs['field'])]
-                    );
+                    $social_type = str_replace('socials_', '', (string)$fs['field']);
+                    if ($qop === '') {
+                        //members without any social network have no type at all,
+                        //look for members that do have one of the requested type instead
+                        $socials = $zdb->select(Social::TABLE, 'se');
+                        $socials->columns([Adherent::PK]);
+                        $socials->where(['se.type' => $social_type]);
+                        $socials->where(new Operator('se.url', Operator::OP_NE, ''));
+                        $predicate = $fs['qry_op'] === AdvancedMembersList::OP_IS_EMPTY
+                            ? new NotIn('a.' . self::PK, $socials)
+                            : new In('a.' . self::PK, $socials);
+                        if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
+                            $select->where($predicate);
+                        } elseif ($fs['log_op'] === AdvancedMembersList::OP_OR) {
+                            $select->where($predicate, PredicateSet::OP_OR);
+                        }
+                        continue;
+                    }
+                    $select->where(['so.type' => $social_type]);
                     $column = 'so.url';
                 } else {
                     $column = $allowed[(string)$fs['field']] ?? null;
@@ -1674,7 +1695,15 @@ class Members
                     }
                 }
 
-                if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                if ($qop === '') {
+                    //NULL or empty string, whatever the column type
+                    $field = $zdb->isPostgres() ? 'CAST(' . $column . ' AS TEXT)' : $column;
+                    $predicate = new Expression(
+                        'COALESCE(' . $field . ', \'\') '
+                        . ($fs['qry_op'] === AdvancedMembersList::OP_IS_EMPTY ? '=' : '!=')
+                        . ' \'\''
+                    );
+                } elseif ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                     if ($fs['search'] != 0) {
                         $predicate = new Expression(
                             $column . ' ' . $qop . ' ?',

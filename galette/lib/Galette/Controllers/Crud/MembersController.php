@@ -837,15 +837,20 @@ class MembersController extends CrudController
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
+                                $qry_op = (int)$post['free_query_operator'][$i];
+                                //emptiness operators do not need any value
+                                $no_value = in_array(
+                                    $qry_op,
+                                    [AdvancedMembersList::OP_IS_EMPTY, AdvancedMembersList::OP_IS_NOT_EMPTY],
+                                    strict: true
+                                );
                                 if (
                                     trim((string)$f) !== ''
-                                    && trim((string)$post['free_text'][$i]) !== ''
+                                    && ($no_value || trim((string)($post['free_text'][$i] ?? '')) !== '')
                                 ) {
-                                    $fs_search = (string)$post['free_text'][$i];
+                                    $fs_search = $no_value ? '' : (string)$post['free_text'][$i];
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
-                                    $qry_op
-                                        = (int)$post['free_query_operator'][$i];
                                     $type = (int)$post['free_type'][$i];
                                     $fs = [
                                         'idx'       => $i,

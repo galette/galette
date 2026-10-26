@@ -759,6 +759,118 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test free search on empty and not empty fields
+     */
+    public function testFreeSearchEmptiness(): void
+    {
+        $this->logSuperAdmin();
+
+        //two members only are companies
+        $this->assertSame(8, $this->countEmptiness('societe_adh', empty: true));
+        $this->assertSame(2, $this->countEmptiness('societe_adh', empty: false));
+        //no member has a mobile phone
+        $this->assertSame(10, $this->countEmptiness('gsm_adh', empty: true));
+        $this->assertSame(0, $this->countEmptiness('gsm_adh', empty: false));
+        //a value is ignored
+        $this->assertSame(10, $this->countEmptiness('gsm_adh', empty: true, search: 'anything'));
+
+        //dates
+        $date = \Galette\DynamicFields\DynamicField::DATE;
+        $this->assertSame(0, $this->countEmptiness(field: 'ddn_adh', empty: true, search: '', type: $date));
+        $this->assertSame(10, $this->countEmptiness(field: 'ddn_adh', empty: false, search: '', type: $date));
+        //only one member has a contribution
+        $this->assertSame(1, $this->countEmptiness(field: 'date_echeance', empty: false, search: '', type: $date));
+
+        //dynamic fields: no value at all, or an empty one
+        $rank = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Rank');
+        $this->storeDynamicValues([
+            [$this->mids[0], $rank, 1, 'a'],
+            [$this->mids[1], $rank, 1, 'b'],
+            [$this->mids[2], $rank, 1, ''],
+        ]);
+        $this->assertSame(8, $this->countEmptiness('dyn_' . $rank, empty: true));
+        $this->assertSame(2, $this->countEmptiness('dyn_' . $rank, empty: false));
+
+        //social networks: members without any of them are empty as well
+        $socials = [
+            $this->mids[0] => \Galette\Entity\Social::MASTODON,
+            $this->mids[1] => \Galette\Entity\Social::BLOG
+        ];
+        foreach ($socials as $mid => $type) {
+            $social = new \Galette\Entity\Social($this->zdb);
+            $this->assertTrue(
+                $social
+                    ->setType($type)
+                    ->setUrl('https://galette.eu/' . $mid)
+                    ->setLinkedMember(id: $mid)
+                    ->store()
+            );
+        }
+        $mastodon = 'socials_' . \Galette\Entity\Social::MASTODON;
+        $this->assertSame(9, $this->countEmptiness($mastodon, empty: true));
+        $this->assertSame(1, $this->countEmptiness($mastodon, empty: false));
+
+        //along with other criteria
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'societe_adh',
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_IS_NOT_EMPTY
+        ];
+        $filters->free_search = [
+            'idx' => 2,
+            'field' => $mastodon,
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_OR,
+            'qry_op' => $filters::OP_IS_NOT_EMPTY
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $found = [];
+        foreach ($members->getList() as $member) {
+            $found[] = (int)$member->id_adh;
+        }
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK]);
+        $select->where->isNotNull('societe_adh')->notEqualTo('societe_adh', '');
+        $expected = [$this->mids[0]];
+        foreach ($this->zdb->execute($select) as $row) {
+            $expected[] = (int)$row->{\Galette\Entity\Adherent::PK};
+        }
+        $this->assertEqualsCanonicalizing(array_unique($expected), $found);
+    }
+
+    /**
+     * Count members whose field is empty, or not
+     *
+     * @param string $field  Field name
+     * @param bool   $empty  Search empty fields, or not empty ones
+     * @param string $search Search value
+     * @param int    $type   Field type
+     */
+    private function countEmptiness(
+        string $field,
+        bool $empty,
+        string $search = '',
+        int $type = \Galette\DynamicFields\DynamicField::LINE
+    ): int {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => $field,
+            'type' => $type,
+            'search' => $search,
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $empty ? $filters::OP_IS_EMPTY : $filters::OP_IS_NOT_EMPTY
+        ];
+        return (new \Galette\Repository\Members($filters))->getList()->count();
+    }
+
+    /**
      * Test getList with contribution dynamic fields
      */
     public function testGetListContributionDynamics(): void

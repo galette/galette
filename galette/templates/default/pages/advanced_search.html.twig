@@ -534,6 +534,10 @@
                                             <select id="free_query_operator_{{ loop.index }}" name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
+        {% if cur_field is not null %}
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") %} selected="selected"{% endif %}>{{ _T('is empty') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") %} selected="selected"{% endif %}>{{ _T('is not empty') }}</option>
+        {% endif %}
                                             </select>
                                             <label for="free_text_{{ loop.index }}" class="visually-hidden">{{ _T('Value') }}</label>
                                             <select id="free_text_{{ loop.index }}" name="free_text[]" class="free_text ui search dropdown">
@@ -552,6 +556,8 @@
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") %} selected="selected"{% endif %}>{{ _T('after') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") %} selected="selected"{% endif %}>{{ _T('is empty') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") %} selected="selected"{% endif %}>{{ _T('is not empty') }}</option>
                                             </select>
                                             <div class="relative-date" data-value="{{ fs.search }}">
                                                 <div class="ui calendar fs-calendar">
@@ -576,6 +582,8 @@
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") %} selected="selected"{% endif %}>{{ _T('do not contains') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") %} selected="selected"{% endif %}>{{ _T('starts with') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") %} selected="selected"{% endif %}>{{ _T('ends with') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") %} selected="selected"{% endif %}>{{ _T('is empty') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") %} selected="selected"{% endif %}>{{ _T('is not empty') }}</option>
                                             </select>
                                             <label for="free_text_{{ loop.index }}" class="visually-hidden">{{ _T('Value') }}</label>
                                             <input id="free_text_{{ loop.index }}" type="text" name="free_text[]" value="{{ fs.search }}"{% if cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Text" %} class="large"{% endif %}/>
@@ -645,6 +653,14 @@
                     id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }},
                     name: "{{ _T('after') }}"
                 },
+                op_is_empty: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_EMPTY") }},
+                    name: "{{ _T('is empty') }}"
+                },
+                op_is_not_empty: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_IS_NOT_EMPTY") }},
+                    name: "{{ _T('is not empty') }}"
+                },
             };
 
             var _fields = {
@@ -675,6 +691,9 @@
                 dyn_{{ field.getId() }}: { type:'{{ field.getType() }}' },
     {% endif %}
 {% endfor %}
+{% for soctype, label in adh_socials %}
+                {{ ('socials_' ~ soctype)|json_encode|raw }}: { type:'{{ constant("Galette\\DynamicFields\\DynamicField::LINE") }}' },
+{% endfor %}
             };
 
             {% include "elements/js/calendar.js.twig" with {selector: '.fs-calendar'} %}
@@ -703,7 +722,12 @@
                                 _html += '<input type="radio" name="free_text[]" id="free_text_yes_' + _current_index + '" value="1"/><label for="free_text_yes_' + _current_index + '">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no_' + _current_index + '" value="0"/><label for="free_text_no_' + _current_index + '">{{ _T('No') }}</label>';
                                 break;
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
-                                _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
+                                //only dynamic choices can be left empty
+                                _html = _getOperatorSelector(
+                                    value.startsWith('dyn_')
+                                        ? ['op_equals', 'op_not_equals', 'op_is_empty', 'op_is_not_empty']
+                                        : ['op_equals', 'op_not_equals']
+                                );
                                 var _options = '';
                                 if (Array.isArray(_field.values)) {
                                     for (var i = 0; i < _field.values.length; i++) {
@@ -718,7 +742,7 @@
                                 _html += '<select id="free_text_' + _current_index + '" name="free_text[]" class="ui search selection dropdown lastdropdown">' + _options + '</select>';
                                 break;
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::DATE') }}':
-                                _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
+                                _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after', 'op_is_empty', 'op_is_not_empty']);
                                 _html += '<div class="relative-date">'
                                 _html += '<div class="ui calendar fs-calendar">'
                                 _html += '<label for="free_text_' + _current_index + '" class="visually-hidden">{{ _T("Date") }}</label>'
@@ -730,7 +754,7 @@
                                 _html += '</div>'
                                 break;
                             default:
-                                _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
+                                _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with', 'op_is_empty', 'op_is_not_empty']);
                                 _html += '<label for="free_text_' + _current_index + '" class="visually-hidden">{{ _T("Value") }}</label>'
                                 _html += '<input id="free_text_' + _current_index + '" type="text" name="free_text[]"/>';
                                 break;
@@ -744,6 +768,18 @@
                         _relativeDateWidget('.relative-date');
                     }
                 });
+            }
+
+            /* Emptiness operators do not need any value: hide it, but keep it in the form
+             * so the free_text[] entries still match the other free_*[] ones.
+             */
+            var _toggleFreeValue = function(data) {
+                //Fomantic moves the select classes to the dropdown it wraps it in
+                var _operator = parseInt($(data).find('select[name="free_query_operator[]"]').val(), 10);
+                var _no_value = _operator === _operators.op_is_empty.id || _operator === _operators.op_is_not_empty.id;
+                $(data).children()
+                    .not('input[type=hidden], label[for^="free_query_operator_"], .free_operator')
+                    .toggleClass('displaynone', _no_value);
             }
 
             var _newFilter = function(elt) {
@@ -802,6 +838,12 @@
 
             $(function(){
                 _relativeDateWidget('.relative-date');
+                $('#fs_sortable div.data').each(function() {
+                    _toggleFreeValue(this);
+                });
+                $('#fs_sortable').on('change', 'select[name="free_query_operator[]"]', function() {
+                    _toggleFreeValue($(this).closest('div.data'));
+                });
                 _initSortable();
                 _fs_dropdown();
                 _rmFilter();
