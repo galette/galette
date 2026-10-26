@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:30+0100\n"
+"POT-Creation-Date: 2026-10-26 20:58+0100\n"
 "PO-Revision-Date: 2026-10-22 06:15+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -5494,6 +5494,12 @@ msgstr "est"
 
 msgid "is not"
 msgstr "n’est pas"
+
+msgid "is empty"
+msgstr "est vide"
+
+msgid "is not empty"
+msgstr "n’est pas vide"
 
 msgid "before"
 msgstr "avant"
