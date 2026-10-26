@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:30+0100\n"
+"POT-Creation-Date: 2026-10-26 20:58+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -5565,6 +5565,16 @@ msgid "is"
 msgstr "равно"
 
 msgid "is not"
+msgstr "не равно"
+
+#, fuzzy
+#| msgid "File is empty!"
+msgid "is empty"
+msgstr "Файл пуст!"
+
+#, fuzzy
+#| msgid "is not"
+msgid "is not empty"
 msgstr "не равно"
 
 msgid "before"

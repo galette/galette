@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:30+0100\n"
+"POT-Creation-Date: 2026-10-26 20:58+0100\n"
 "PO-Revision-Date: 2026-10-11 06:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -5639,6 +5639,16 @@ msgid "is"
 msgstr "es"
 
 msgid "is not"
+msgstr "no es"
+
+#, fuzzy
+#| msgid "File is empty!"
+msgid "is empty"
+msgstr "¡El archivo está vacío!"
+
+#, fuzzy
+#| msgid "is not"
+msgid "is not empty"
 msgstr "no es"
 
 msgid "before"

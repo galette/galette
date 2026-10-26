@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:30+0100\n"
+"POT-Creation-Date: 2026-10-26 20:58+0100\n"
 "PO-Revision-Date: 2026-10-26 09:30+0000\n"
 "Last-Translator: Jože Felicijan "
 "<felicijan@users.noreply.hosted.weblate.org>\n"
@@ -5417,6 +5417,16 @@ msgid "is"
 msgstr "je"
 
 msgid "is not"
+msgstr "ni"
+
+#, fuzzy
+#| msgid "File is empty!"
+msgid "is empty"
+msgstr "Datoteka je prazna!"
+
+#, fuzzy
+#| msgid "is not"
+msgid "is not empty"
 msgstr "ni"
 
 msgid "before"
