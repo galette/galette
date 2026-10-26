@@ -17,6 +17,7 @@ Changes
 - New plugins releases are reported on plugins page, plugins menu entry and at administrator login; Galette and plugins releases are now checked from GitHub
 - Members that do not belong to any group can be filtered from members list and advanced search
 - Advanced search can look for empty or not empty fields
+- Logging out did not forget the groups a member managed, nor their first name
 
 1.3.0 -> 1.3.1
 
