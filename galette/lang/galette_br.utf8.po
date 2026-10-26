@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -5321,6 +5321,9 @@ msgid "Membership status"
 msgstr ""
 
 msgid "Account activity"
+msgstr ""
+
+msgid "Not in any group"
 msgstr ""
 
 msgid "With email:"

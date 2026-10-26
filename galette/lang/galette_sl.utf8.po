@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-26 09:30+0000\n"
 "Last-Translator: Jože Felicijan "
 "<felicijan@users.noreply.hosted.weblate.org>\n"
@@ -5353,6 +5353,11 @@ msgstr "Status članstva"
 
 msgid "Account activity"
 msgstr "Dejavnost računa"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Not in any group"
+msgstr "Ni upravljana skupina"
 
 msgid "With email:"
 msgstr "Z e-pošto:"

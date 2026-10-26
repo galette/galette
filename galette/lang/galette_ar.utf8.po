@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -5485,6 +5485,11 @@ msgstr ""
 
 msgid "Account activity"
 msgstr "نشاط الحساب"
+
+#, fuzzy
+#| msgid "Select a group"
+msgid "Not in any group"
+msgstr "اختر فريقا"
 
 msgid "With email:"
 msgstr ""

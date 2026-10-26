@@ -45,7 +45,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-11 06:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -5575,6 +5575,11 @@ msgstr "Condición de miembro"
 
 msgid "Account activity"
 msgstr "Actividad de cuenta"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Not in any group"
+msgstr "Grupo no administrado"
 
 msgid "With email:"
 msgstr "Con correo electrónico:"

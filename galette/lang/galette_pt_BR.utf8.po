@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -5180,6 +5180,9 @@ msgid "Membership status"
 msgstr ""
 
 msgid "Account activity"
+msgstr ""
+
+msgid "Not in any group"
 msgstr ""
 
 msgid "With email:"

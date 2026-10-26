@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 10:25+0100\n"
+"POT-Creation-Date: 2026-10-26 20:30+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -5550,6 +5550,11 @@ msgstr "Estatut de l'adesion"
 
 msgid "Account activity"
 msgstr "Activitat dau còmpte"
+
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Not in any group"
+msgstr "Grope non administrat"
 
 msgid "With email:"
 msgstr "Amb adreiça electronica :"
