@@ -24,14 +24,6 @@
   background-color: @primaryColor;
 }
 
-/*--------------------------
-     Ajax select members
----------------------------*/
-#selected_members .bottom.segment {
-  max-height: 320px;
-  overflow-y: auto;
-}
-
 /*------------------------------------------------
      Actions buttons' container on member page
 -------------------------------------------------*/

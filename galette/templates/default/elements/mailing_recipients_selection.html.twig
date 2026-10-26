@@ -1,0 +1,64 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Mailing recipients selection, one row per recipient.
+ #
+ # Nothing is stored until the selection is validated: rows are added and
+ # flagged as removed, then the remaining ones are sent as the new recipients.
+ #}
+{% set recipients = mailing.recipients|map(p => {'person': p, 'reachable': true})|merge(mailing.unreachables|map(p => {'person': p, 'reachable': false}))|sort((a, b) => a.person.sname|lower <=> b.person.sname|lower) %}
+    <div id="mailing_recipients_modal" class="ui modal">
+        <div class="header">{{ _T("Manage selected members") }}</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="fields">
+                    {% include 'components/forms/member_dropdown.html.twig' with {
+                        'label': _T("Add a recipient"),
+                        'id': 'recipient_add',
+                        'value': null,
+                        'component_class': 'twelve wide field'
+                    } %}
+                    <div class="four wide field">
+                        <label aria-hidden="true">&nbsp;</label>
+                        <button type="button" id="recipient_add_btn" class="ui fluid labeled icon button">
+                            <i class="plus green icon" aria-hidden="true"></i>
+                            {{ _T("Add") }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="mailing_recipients_status" aria-live="polite">
+                <div class="ui small visible warning message displaynone">
+                    <i class="info circle icon" aria-hidden="true"></i>
+                    {{ _T("Recipients have been modified. Validate to apply your changes.") }}
+                </div>
+            </div>
+        </div>
+        <div class="scrolling content">
+            <table class="listing ui celled striped table" id="mailing_recipients_list">
+                <caption class="visually-hidden">{{ _T("Recipients") }}</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="left">{{ _T("Recipients") }} (<span id="mailing_recipients_total">{{ recipients|length }}</span>)</th>
+                        <th scope="col" class="collapsing"><span class="visually-hidden">{{ _T("Actions") }}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+{% for recipient in recipients %}
+    {% include "elements/mailing_recipient_row.html.twig" with {
+        'person': recipient.person,
+        'reachable': recipient.reachable,
+        'linked': true
+    } %}
+{% endfor %}
+                    <tr id="mailing_recipients_none"{% if recipients|length > 0 %} hidden{% endif %}>
+                        <td colspan="2" class="emptylist">{{ _T("No member selected (yet).") }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

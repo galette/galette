@@ -1,0 +1,37 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # One recipient of the mailing, see elements/mailing_recipients_selection.html.twig.
+ #
+ # Expects person, reachable (has a valid email address) and linked (already
+ # a recipient when the selection was opened).
+ #}
+{% set pid = person.id %}
+                            <tr id="recipient_row_{{ pid }}" data-member="{{ pid }}" data-linked="{{ linked ? 1 : 0 }}">
+                                <td class="username_row" data-col-label="{{ _T("Name") }}">
+                                {% if reachable %}
+                                    <i class="ui user icon" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="ui dont red icon" aria-hidden="true"></i>
+                                {% endif %}
+                                    {{ person.sfullname }}
+                                {% if not reachable %}
+                                    <span class="ui mini red basic label">{{ _T("No email address") }}</span>
+                                {% endif %}
+                                    <span class="ui mini orange basic label recipient-state displaynone" data-state="added">{{ _Tx("mailing recipients", "added") }}</span>
+                                    <span class="ui mini orange basic label recipient-state displaynone" data-state="removed">{{ _Tx("mailing recipients", "will be removed") }}</span>
+                                </td>
+                                <td class="right aligned collapsing actions_row">
+                                    <button type="button" class="ui mini basic icon button recipient-remove" aria-label="{{ _T("Remove %1$s from recipients")|format(person.sname) }}">
+                                        <i class="times icon" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="ui mini basic labeled icon button recipient-undo displaynone" aria-label="{{ _T("Keep %1$s in recipients")|format(person.sname) }}">
+                                        <i class="undo icon" aria-hidden="true"></i>
+                                        {{ _T("Cancel") }}
+                                    </button>
+                                </td>
+                            </tr>

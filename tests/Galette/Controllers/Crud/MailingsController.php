@@ -152,4 +152,124 @@ class MailingsController extends GaletteRoutingTestCase
         $this->preferences->pref_mail_method = $mail_method;
         $this->login->logOut();
     }
+
+    /**
+     * Test recipients selection: dropdown, added rows and stored recipients
+     */
+    public function testRecipientsSelection(): void
+    {
+        $mail_method = $this->preferences->pref_mail_method;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        //member two cannot be reached by email
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update
+            ->set(['email_adh' => ''])
+            ->where([\Galette\Entity\Adherent::PK => $member_two->id]);
+        $this->zdb->execute($update);
+
+        $this->logSuperAdmin();
+
+        //no mailing in progress
+        $this->session->mailing = null;
+        $request = $this->createRequest('mailingRecipients', [], 'POST')
+            ->withParsedBody(['recipients' => [(string)$member_one->id]]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(400, $test_response->getStatusCode());
+
+        $this->session->mailing = new \Galette\Core\Mailing($this->preferences, [$member_one]);
+        $request = $this->createRequest('mailing');
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="mailing_recipients_modal"', $body);
+        $this->assertStringContainsString('id="recipient_add"', $body);
+        $this->assertStringContainsString('id="recipient_row_' . $member_one->id . '"', $body);
+        $this->assertStringNotContainsString('id="recipient_row_' . $member_two->id . '"', $body);
+
+        $request = $this->createRequest('mailingRecipientRow', [], 'POST')
+            ->withParsedBody(['id_adh' => (string)$member_two->id]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="recipient_row_' . $member_two->id . '"', $body);
+        $this->assertStringContainsString('data-linked="0"', $body);
+        $this->assertStringContainsString('dont red icon', $body);
+
+        $request = $this->createRequest('mailingRecipientRow', [], 'POST')
+            ->withParsedBody(['id_adh' => '0']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(404, $test_response->getStatusCode());
+
+        $request = $this->createRequest('mailingRecipients', [], 'POST')
+            ->withParsedBody(['recipients' => [(string)$member_one->id, (string)$member_two->id]]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $mailing = $this->session->mailing;
+        $this->assertSame([$member_one->id], array_map(fn($member) => $member->id, $mailing->recipients));
+        $this->assertSame([$member_two->id], array_map(fn($member) => $member->id, $mailing->unreachables));
+        $this->assertSame([$member_two->id], array_map(fn($member) => $member->id, $this->session->labels));
+
+        //every recipient removed
+        $request = $this->createRequest('mailingRecipients', [], 'POST')
+            ->withParsedBody([]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString('No member selected (yet).', (string)$test_response->getBody());
+        $this->assertCount(0, $this->session->mailing->recipients);
+        $this->assertCount(0, $this->session->mailing->unreachables);
+
+        $this->session->mailing = null;
+        $this->preferences->pref_mail_method = $mail_method;
+        $this->login->logOut();
+    }
+
+    /**
+     * Test group managers can only add members of groups they manage as recipients
+     */
+    public function testGroupManagerRecipientsSelection(): void
+    {
+        $mail_method = $this->preferences->pref_mail_method;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+        $this->preferences->pref_bool_groupsmanagers_mailings = true;
+
+        $member_two = $this->getMemberTwo();
+        $group = $this->logGroupManager();
+        $this->session->mailing = new \Galette\Core\Mailing($this->preferences, []);
+
+        //member two is not part of a managed group
+        $request = $this->createRequest('mailingRecipientRow', [], 'POST')
+            ->withParsedBody(['id_adh' => (string)$member_two->id]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(404, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+
+        $request = $this->createRequest('mailingRecipients', [], 'POST')
+            ->withParsedBody(['recipients' => [(string)$member_two->id]]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 1 member(s), only 0 are accessible or exist.');
+        $this->assertCount(0, $this->session->mailing->recipients);
+
+        $this->assertTrue($group->setMembers([$member_two]));
+        $request = $this->createRequest('mailingRecipientRow', [], 'POST')
+            ->withParsedBody(['id_adh' => (string)$member_two->id]);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertStringContainsString(
+            'id="recipient_row_' . $member_two->id . '"',
+            (string)$test_response->getBody()
+        );
+
+        //mailings disabled for group managers
+        $this->preferences->pref_bool_groupsmanagers_mailings = false;
+        $test_response = $this->app->handle($request);
+        $this->assertSame(403, $test_response->getStatusCode());
+
+        $this->session->mailing = null;
+        $this->preferences->pref_mail_method = $mail_method;
+        $this->login->logOut();
+    }
 }

@@ -204,6 +204,9 @@
             </div>
         {% endif %}
         </form>
+    {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
+        {% include "elements/mailing_recipients_selection.html.twig" %}
+    {% endif %}
 {% endif %}
 {% endblock %}
 
@@ -211,6 +214,7 @@
 {% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or not callstatic('\\Galette\\Core\\Galette', 'isDemo')) and mailing_saved is not defined %}
     {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
 <script type="text/javascript">
+    {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#recipient_add"} %}
     $(function() {
         {# Preview popup #}
         $('#btnpreview').click(function(){
@@ -261,20 +265,71 @@
             } %}
         }
 
-        {# Members popup #}
-        $('#btnusers').click(function(){
+        {# Recipients selection popup #}
+        var $recipientsList = $('#mailing_recipients_list');
+        var _recipients_snapshot = null;
+
+        var _recipientState = function($row) {
+            if ($row.attr('data-linked') != 1) {
+                return 'added';
+            }
+            if ($row.attr('data-removed') == 1) {
+                return 'removed';
+            }
+            return null;
+        };
+
+        var _refreshRecipients = function() {
+            var _pending = false,
+                _total = 0,
+                _rows = $recipientsList.find('tr[data-member]');
+            _rows.each(function() {
+                var $row = $(this),
+                    _state = _recipientState($row);
+                if (_state !== null) {
+                    _pending = true;
+                }
+                if (_state !== 'removed') {
+                    _total++;
+                }
+                $row.toggleClass('warning', _state !== null);
+                $row.find('.recipient-state').each(function() {
+                    $(this).toggleClass('displaynone', $(this).data('state') !== _state);
+                });
+            });
+            $('#mailing_recipients_total').text(_total);
+            $('#mailing_recipients_none').prop('hidden', _rows.length > 0);
+            $('#mailing_recipients_status .message').toggleClass('displaynone', !_pending);
+            return _pending;
+        };
+
+        var _applyRecipients = function() {
+            if (!_refreshRecipients()) {
+                return true;
+            }
+            var _recipients = [];
+            $recipientsList.find('tr[data-member]').each(function() {
+                if ($(this).attr('data-removed') != 1) {
+                    _recipients.push($(this).attr('data-member'));
+                }
+            });
             $.ajax({
-                url: '{{ url_for('ajaxMembers') }}',
+                url: '{{ url_for('mailingRecipients') }}',
                 type: "POST",
                 data: {
-                    multiple: true
+                    recipients: _recipients
                 },
                 {% include "elements/js/loader.js.twig" with {
-                    selector: '#btnusers',
+                    selector: '#mailing_recipients_modal .approve',
                     loader: 'button'
                 } %},
                 success: function(res){
-                    _members_dialog(res);
+                    $('#unreachables_count').remove();
+                    $('#recipients_count').replaceWith(res);
+                    $recipientsList.find('tr[data-removed="1"]').remove();
+                    $recipientsList.find('tr[data-member]').attr('data-linked', 1);
+                    _refreshRecipients();
+                    $('#mailing_recipients_modal').modal('hide');
                 },
                 error: function() {
                     {% include "elements/js/modal.js.twig" with {
@@ -287,125 +342,98 @@
                     } %}
                 }
             });
+            //the popup is closed once recipients are stored
+            return false;
+        };
+
+        $('#btnusers').click(function(){
+            _recipients_snapshot = $recipientsList.find('tbody').html();
+            {% include "elements/js/modal.js.twig" with {
+                modal_selector: "#mailing_recipients_modal",
+                modal_class: "large",
+                modal_other_options: {
+                    closable: false
+                },
+                modal_onhidden: "return true;",
+                modal_onapprove: "return _applyRecipients();",
+                modal_approve_text: _T("Validate")|e("js"),
+                modal_approve_icon: "check",
+                modal_ondeny: "$recipientsList.find('tbody').html(_recipients_snapshot); _refreshRecipients(); return true;",
+                modal_cancel_text: _T("Cancel")|e("js")
+            } %}
             return false;
         });
 
-        var _members_dialog = function(res){
-            {% include "elements/js/modal.js.twig" with {
-                modal_title_twig: _T("Members selection")|e("js"),
-                modal_content: "res",
-                modal_class: "members-selection fullscreen",
-                modal_content_class: "scrolling",
-                modal_deny_only: true,
-                modal_cancel_text: _T("Close")|e("js")
-            } %}
-            _members_ajax_mapper(res);
-        }
+        $recipientsList.on('click', '.recipient-remove', function() {
+            var $row = $(this).closest('tr');
+            if ($row.attr('data-linked') == 1) {
+                $row.attr('data-removed', 1);
+                $(this).addClass('displaynone');
+                $row.find('.recipient-undo').removeClass('displaynone').trigger('focus');
+            } else {
+                //a recipient added in this popup is simply dropped
+                $row.remove();
+                $('#recipient_add').find('input.search').trigger('focus');
+            }
+            _refreshRecipients();
+        });
 
-        var _members_ajax_mapper = function(res){
-            $('#btnvalid').click(function(){
-                //first, let's store new recipients in mailing object
-                var _recipients = new Array();
-                $('li[id^="member_"]').each(function(){
-                    _recipients[_recipients.length] = this.id.substring(7, this.id.length);
-                });
-                $.ajax({
-                    url: '{{ url_for('mailingRecipients') }}',
-                    type: "POST",
-                    data: {
-                        recipients: _recipients
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: '#btnvalid',
-                        loader: 'button'
-                    } %},
-                    success: function(res){
-                        $('#unreachables_count').remove();
-                        $('#recipients_count').replaceWith(res);
-                        $('.members-selection').modal('hide');
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-            });
-            //Remap links
-            var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){
-                $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {
-                    $('#selected_members ul').append(_none);
+        $recipientsList.on('click', '.recipient-undo', function() {
+            var $row = $(this).closest('tr');
+            $row.removeAttr('data-removed');
+            $(this).addClass('displaynone');
+            $row.find('.recipient-remove').removeClass('displaynone').trigger('focus');
+            _refreshRecipients();
+        });
+
+        $('#recipient_add_btn').on('click', function() {
+            var _pid = $('#recipient_add_input').val();
+            if (!_pid) {
+                $('#recipient_add').find('input.search').trigger('focus');
+                return;
+            }
+            var $existing = $('#recipient_row_' + _pid);
+            if ($existing.length) {
+                //already listed: keep it
+                $('#recipient_add').dropdown('clear');
+                $existing[0].scrollIntoView({block: 'nearest'});
+                if ($existing.attr('data-removed') == 1) {
+                    $existing.find('.recipient-undo').trigger('click');
+                } else {
+                    $existing.transition('glow');
+                }
+                return;
+            }
+            $.ajax({
+                url: '{{ url_for('mailingRecipientRow') }}',
+                type: 'POST',
+                data: {
+                    id_adh: _pid
+                },
+                {% include "elements/js/loader.js.twig" with {
+                    selector: "#recipient_add_btn",
+                    loader: "button"
+                } %},
+                success: function(res) {
+                    var $row = $($.parseHTML($.trim(res))).filter('tr');
+                    $recipientsList.find('tbody').prepend($row);
+                    $('#recipient_add').dropdown('clear');
+                    _refreshRecipients();
+                    $row[0].scrollIntoView({block: 'nearest'});
+                    $row.find('.recipient-remove').trigger('focus');
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
-            $('#listing tbody tr').click(function(event){
-                event.preventDefault();
-                var _mlink = $(this).find('.username_row a');
-                var _mid = _mlink[0].href.match(/.*\/(\d+)$/)[1];
-                var _mname = _mlink.text();
-                $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
-                    $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){
-                        $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {
-                            $('#selected_members ul').append(_none);
-                        }
-                    });
-                }
-                return false;
-            }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a member")|e('js') }}');
-
-            $('.members-selection .pagination a').click(function(){
-                var _members = new Array();
-                var _unreach = new Array();
-                $('li[id^="member_"]').each(function(){
-                    var _mid = this.id.substring(7, this.id.length);
-                    if ($(this).hasClass('unreachables')) {
-                        _unreach[_unreach.length] = _mid;
-                    } else {
-                        _members[_members.length] = _mid;
-                    }
-                });
-
-                $.ajax({
-                    url: this.href,
-                    type: "POST",
-                    data: {
-                        multiple: true,
-                        members: _members,
-                        unreachables: _unreach
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        loader: '#listing'
-                    } %},
-                    success: function(res){
-                        $('#listing').remove();
-                        var _listing = $($.parseHTML(res)).find('#listing');
-                        $('.members-selection .eleven.wide.column').append(_listing);
-                        _members_ajax_mapper(res);
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-                return false;
-            });
-        }
+        });
 
         {% set modal_onapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
         $('.rm_attachement').click(function(event){

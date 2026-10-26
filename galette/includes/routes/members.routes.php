@@ -175,6 +175,11 @@ $app->post(
     [Crud\MailingsController::class, 'setRecipients']
 )->setName('mailingRecipients')->add(Authenticate::class);
 
+$app->post(
+    '/ajax/mailing/recipient',
+    [Crud\MailingsController::class, 'recipientRow']
+)->setName('mailingRecipientRow')->add(Authenticate::class);
+
 $app->get(
     '/mailing/queue/{id:\d+}',
     [Crud\MailingsController::class, 'queue']
@@ -221,11 +226,6 @@ $app->post(
     '/attendance-sheet',
     [PdfController::class, 'attendanceSheet']
 )->setName('attendance_sheet')->add(Authenticate::class);
-
-$app->post(
-    '/ajax/members[/{option:page|order}/{value:\d+}]',
-    [Crud\MembersController::class, 'ajaxList']
-)->setName('ajaxMembers')->add(Authenticate::class);
 
 $app->post(
     '/ajax/group/members',
