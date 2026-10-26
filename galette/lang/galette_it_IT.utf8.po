@@ -34,7 +34,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -182,6 +182,14 @@ msgstr "È disponibile una nuova versione di Galette."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Al momento si sta usando Galette %1$s e %2$s è disponibile."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "È disponibile una nuova versione di Galette."
+msgstr[1] "È disponibile una nuova versione di Galette."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr ""
@@ -1356,6 +1364,9 @@ msgstr "La versione minima per il motore %1$s è %2$s, trovata %1$s %3$s!"
 msgid "My Account"
 msgstr "Il mio account"
 
+msgid "View my member card"
+msgstr "Visualizza la mia tessera associativa"
+
 msgid "My contributions"
 msgstr "I miei contributi"
 
@@ -1374,22 +1385,19 @@ msgstr "Le mie transazioni"
 msgid "View and filter all my transactions"
 msgstr "Visualizza e filtra tutte le mie transazioni"
 
-msgid "View my member card"
-msgstr "Visualizza la mia tessera associativa"
-
 #, fuzzy
 #| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
 msgstr "Compila tutti i login e le password vuoti"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "Aggiungi socio minorenne"
 
 msgid "Add new child member in database"
 msgstr "Aggiungi un nuovo socio minorenne nell'archivio"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "Visualizza, cerca e filtra l'elenco dei membri"
@@ -1467,6 +1475,9 @@ msgstr "Esportazione dati in vari formati"
 msgid "Import members from CSV files"
 msgstr "Importa membri da file CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "Visualizza i registri dell'applicazione"
 
@@ -1479,9 +1490,6 @@ msgid ""
 msgstr ""
 "Imposta le preferenze delle applicazioni (indirizzo, sito web, "
 "configurazione tessere soci, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Informazioni sui plugin disponibili"
@@ -4582,6 +4590,12 @@ msgstr "Richiesto"
 msgid "Width in forms"
 msgstr "Larghezza moduli"
 
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "Rimuovere"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Cambia i permessi di '%1$s'"
@@ -4911,11 +4925,16 @@ msgstr ""
 "Alcuni soci selezionati non hanno indirizzo e-mail. Tuttavia, è possibile "
 "generare etichette per buste per contattarli tramite posta ordinaria."
 
+msgid "See member profile"
+msgstr "Visualizzare il profilo del socio"
+
 msgid "Modification"
 msgstr "Modifica"
 
-msgid "Display"
-msgstr "Mostra"
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "creazione"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5703,11 +5722,21 @@ msgstr "Correggere i problemi segnalati sopra per continuare."
 msgid "Warning"
 msgstr "Avvertenza"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Campi dinamici"
+
 msgid "Field name"
 msgstr "Nome campo"
 
 msgid "Available fields"
 msgstr "Campi disponibili"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Modifica campo %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5996,9 +6025,6 @@ msgstr "Mostra elenco dei contributi"
 msgid "Show all members contributions"
 msgstr "Mostra tutti i contributi dei soci"
 
-msgid "See member profile"
-msgstr "Visualizzare il profilo del socio"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6200,6 +6226,9 @@ msgstr "Crea"
 
 msgid "Export as PDF"
 msgstr "Esporta come PDF"
+
+msgid "Display"
+msgstr "Mostra"
 
 msgid "IP"
 msgstr "IP"
@@ -6693,6 +6722,21 @@ msgstr "Percorso:"
 
 msgid "Main route:"
 msgstr "Percorso principale:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Rimuovi transazione #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACL"
@@ -7903,9 +7947,6 @@ msgstr "Contenuti della pagina pubblica"
 
 #~ msgid "modification"
 #~ msgstr "modifica"
-
-#~ msgid "creation"
-#~ msgstr "creazione"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Modifica tipologia di pagamento"

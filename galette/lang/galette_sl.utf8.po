@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-23 07:51+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Jože Felicijan "
+"<felicijan@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -157,6 +157,16 @@ msgstr "Na voljo je nova izdaja Galette."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Trenutno uporabljate Galette %1$s, na voljo pa je %2$s."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "Na voljo je nova izdaja Galette."
+msgstr[1] "Na voljo je nova izdaja Galette."
+msgstr[2] "Na voljo je nova izdaja Galette."
+msgstr[3] "Na voljo je nova izdaja Galette."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Vaše geslo je prešibko! Prosimo, razmislite o njegovi posodobitvi."
@@ -1286,6 +1296,9 @@ msgstr "Najmanjša različica za iskalnik %1$s je %2$s, najdenih je %1$s %3$s!"
 msgid "My Account"
 msgstr "Moj račun"
 
+msgid "View my member card"
+msgstr "Ogled moje članske izkaznice"
+
 msgid "My contributions"
 msgstr "Moji prispevki"
 
@@ -1304,20 +1317,17 @@ msgstr "Moje transakcije"
 msgid "View and filter all my transactions"
 msgstr "Ogled in filtriranje vseh mojih transakcij"
 
-msgid "View my member card"
-msgstr "Ogled moje članske izkaznice"
-
 msgid "Modify my login and password"
 msgstr "Spremeni moje uporabniško ime in geslo"
-
-msgid "Manage my two-factor authentication"
-msgstr "Upravljaj mojo dvostopenjsko avtentikacijo"
 
 msgid "Add a child member"
 msgstr "Dodaj podrejenega člana"
 
 msgid "Add new child member in database"
 msgstr "Dodaj novega podrejenega člana v bazo podatkov"
+
+msgid "Manage my two-factor authentication"
+msgstr "Upravljaj mojo dvostopenjsko avtentikacijo"
 
 msgid "View, search into and filter member's list"
 msgstr "Ogled, iskanje in filtriranje seznama članov"
@@ -1395,6 +1405,9 @@ msgstr "Izvozite nekatere podatke v različnih oblikah"
 msgid "Import members from CSV files"
 msgstr "Uvozi člane iz datotek CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr "Poglejte, kaj je zavrnjeno po ponavljajočih se napakah, in to dvignite"
+
 msgid "View application's logs"
 msgstr "Ogled dnevnikov aplikacije"
 
@@ -1407,9 +1420,6 @@ msgid ""
 msgstr ""
 "Nastavitev aplikacij (naslov, spletna stran, konfiguracija članskih "
 "kartic, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr "Poglejte, kaj je zavrnjeno po ponavljajočih se napakah, in to dvignite"
 
 msgid "Information about available plugins"
 msgstr "Informacije o razpoložljivih vtičnikih"
@@ -4404,6 +4414,12 @@ msgstr "Zahtevano"
 msgid "Width in forms"
 msgstr "Širina v obrazcih"
 
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "Odstrani"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Spremeni dovoljenja za '%1$s'"
@@ -4722,11 +4738,16 @@ msgstr ""
 "Nekateri izbrani člani nimajo e-poštnega naslova. Lahko pa ustvarite nalepke "
 "za kuverte, da jih kontaktirate po navadni pošti."
 
+msgid "See member profile"
+msgstr "Oglejte si profil člana"
+
 msgid "Modification"
 msgstr "Sprememba"
 
-msgid "Display"
-msgstr "Prikaz"
+#, fuzzy
+#| msgid "transactions"
+msgid "More actions"
+msgstr "transakcije"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5476,11 +5497,21 @@ msgstr "Za nadaljevanje popravite zgornja opozorila."
 msgid "Warning"
 msgstr "Opozorilo"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Dinamična polja"
+
 msgid "Field name"
 msgstr "Ime polja"
 
 msgid "Available fields"
 msgstr "Razpoložljiva polja"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Urejanje polja %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5768,9 +5799,6 @@ msgstr "Prikaži vse svoje prispevke"
 msgid "Show all members contributions"
 msgstr "Prikaži prispevke vseh članov"
 
-msgid "See member profile"
-msgstr "Oglejte si profil člana"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -5977,6 +6005,9 @@ msgstr "Ustvari"
 
 msgid "Export as PDF"
 msgstr "Export as PDF"
+
+msgid "Display"
+msgstr "Prikaz"
 
 msgid "IP"
 msgstr "IP-naslov"
@@ -6454,6 +6485,21 @@ msgstr "Pot:"
 
 msgid "Main route:"
 msgstr "Glavna pot:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Odstrani transakcijo št. %1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACL-ji"

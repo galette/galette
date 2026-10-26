@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -161,6 +161,14 @@ msgstr "புதிய கேலட் வெளியீடு கிடைக
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "நீங்கள் தற்போது கேலட் %1$s ஐப் பயன்படுத்துகிறீர்கள், %2$s கிடைக்கிறது."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "புதிய கேலட் வெளியீடு கிடைக்கிறது."
+msgstr[1] "புதிய கேலட் வெளியீடு கிடைக்கிறது."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "உங்கள் கடவுச்சொல் மிகவும் பலவீனமாக உள்ளது! அதைப் புதுப்பிப்பதைக் கவனியுங்கள்."
@@ -1315,6 +1323,9 @@ msgstr "%1$s எஞ்சினுக்கான குறைந்தபட்
 msgid "My Account"
 msgstr "எனது கணக்கு"
 
+msgid "View my member card"
+msgstr "எனது உறுப்பினர் அட்டையைக் காண்க"
+
 msgid "My contributions"
 msgstr "எனது பங்களிப்புகள்"
 
@@ -1333,22 +1344,19 @@ msgstr "எனது பரிவர்த்தனைகள்"
 msgid "View and filter all my transactions"
 msgstr "எனது அனைத்து பரிவர்த்தனைகளையும் காணவும் வடிகட்டவும்"
 
-msgid "View my member card"
-msgstr "எனது உறுப்பினர் அட்டையைக் காண்க"
-
 #, fuzzy
 #| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
 msgstr "அனைத்து வெற்று உள்நுழைவு மற்றும் கடவுச்சொற்களையும் நிரப்பவும்"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "ஒரு குழந்தை உறுப்பினரைச் சேர்க்கவும்"
 
 msgid "Add new child member in database"
 msgstr "தரவுத்தளத்தில் புதிய குழந்தை உறுப்பினரைச் சேர்க்கவும்"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "உறுப்பினரின் பட்டியலைக் காண்க, தேடுங்கள் மற்றும் வடிகட்டவும்"
@@ -1424,6 +1432,9 @@ msgstr "சில தரவை பல்வேறு வடிவங்களி
 msgid "Import members from CSV files"
 msgstr "காபிம கோப்புகளிலிருந்து உறுப்பினர்களை இறக்குமதி செய்யுங்கள்"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "பயன்பாட்டின் பதிவுகளைக் காண்க"
 
@@ -1436,9 +1447,6 @@ msgid ""
 msgstr ""
 "பயன்பாடுகளின் விருப்பங்களை அமைக்கவும் (முகவரி, வலைத்தளம், உறுப்பினரின் அட்டைகள் "
 "உள்ளமைவு, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "கிடைக்கக்கூடிய செருகுநிரல்கள் பற்றிய செய்தி"
@@ -4478,6 +4486,12 @@ msgstr "தேவை"
 msgid "Width in forms"
 msgstr "வடிவங்களில் அகலம்"
 
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "அகற்று"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "'%1$s' அனுமதிகளை மாற்றவும்"
@@ -4805,11 +4819,16 @@ msgstr ""
 "நீங்கள் தேர்ந்தெடுத்த சில உறுப்பினர்களுக்கு மின்னஞ்சல் முகவரி இல்லை. இருப்பினும், நத்தை அஞ்சல் "
 "மூலம் அவற்றை தொடர்பு கொள்ள உறை லேபிள்களை உருவாக்கலாம்."
 
+msgid "See member profile"
+msgstr "உறுப்பினர் சுயவிவரத்தைக் காண்க"
+
 msgid "Modification"
 msgstr "மாற்றம்"
 
-msgid "Display"
-msgstr "காட்சி"
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "உருவாக்கம்"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5580,11 +5599,21 @@ msgstr "தொடர மேலே உள்ள எச்சரிக்கைக
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "மாறும் புலங்கள்"
+
 msgid "Field name"
 msgstr "புலம் பெயர்"
 
 msgid "Available fields"
 msgstr "கிடைக்கும் புலங்கள்"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "புலம் %1$s திருத்து"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5869,9 +5898,6 @@ msgstr "உங்கள் எல்லா பங்களிப்புகள�
 msgid "Show all members contributions"
 msgstr "அனைத்து உறுப்பினர்களின் பங்களிப்புகளையும் காட்டு"
 
-msgid "See member profile"
-msgstr "உறுப்பினர் சுயவிவரத்தைக் காண்க"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6073,6 +6099,9 @@ msgstr "உருவாக்கு"
 
 msgid "Export as PDF"
 msgstr "PDF ஆக ஏற்றுமதி செய்யவும்"
+
+msgid "Display"
+msgstr "காட்சி"
 
 msgid "IP"
 msgstr "ஐபி"
@@ -6559,6 +6588,21 @@ msgstr "பாதை:"
 
 msgid "Main route:"
 msgstr "முக்கிய பாதை:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "பரிவர்த்தனை #%1$sயை அகற்று"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACLS"
@@ -7735,9 +7779,6 @@ msgstr "பொது பக்க உள்ளடக்கம்"
 
 #~ msgid "modification"
 #~ msgstr "மாற்றம்"
-
-#~ msgid "creation"
-#~ msgstr "உருவாக்கம்"
 
 #~ msgid "Edit payment type"
 #~ msgstr "கட்டண வகையைத் திருத்தவும்"

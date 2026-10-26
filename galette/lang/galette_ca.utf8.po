@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -181,6 +181,13 @@ msgstr ""
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr ""
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] ""
+msgstr[1] ""
 
 #, fuzzy
 msgid "Your password is too weak! Please consider updating it."
@@ -1452,6 +1459,10 @@ msgid "My Account"
 msgstr "Compte"
 
 #, fuzzy
+msgid "View my member card"
+msgstr "Visualitza la meva targeta de membre"
+
+#, fuzzy
 msgid "My contributions"
 msgstr "Les meves contribucions"
 
@@ -1475,15 +1486,8 @@ msgid "View and filter all my transactions"
 msgstr "Visualitza i filtra totes les meves transaccions"
 
 #, fuzzy
-msgid "View my member card"
-msgstr "Visualitza la meva targeta de membre"
-
-#, fuzzy
 msgid "Modify my login and password"
 msgstr "Omple tots els inicis de sessió i contrasenyes buits"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 #, fuzzy
 msgid "Add a child member"
@@ -1492,6 +1496,9 @@ msgstr "Afegeix un membre"
 #, fuzzy
 msgid "Add new child member in database"
 msgstr "Afegeix un membre nou a la base de dades"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 #, fuzzy
 msgid "View, search into and filter member's list"
@@ -1589,6 +1596,9 @@ msgstr "Exporta algunes dades en diversos formats"
 msgid "Import members from CSV files"
 msgstr "Importa els membres des de fitxers CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 #, fuzzy
 msgid "View application's logs"
 msgstr "Visualitza els registres de l'aplicació"
@@ -1604,9 +1614,6 @@ msgid ""
 msgstr ""
 "Estableix les preferències de les aplicacions (adreça del lloc web de "
 "configuració de targetes)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Informació quant als connectors disponibles"
@@ -5151,6 +5158,11 @@ msgstr "Obligatori"
 msgid "Width in forms"
 msgstr "Forma d'adhesius"
 
+#, fuzzy
+msgctxt "member groups"
+msgid "moved"
+msgstr "Elimina"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Canvia els permisos de '%1$s'"
@@ -5522,11 +5534,17 @@ msgstr ""
 "correu de caragol."
 
 #, fuzzy
+msgid "See member profile"
+msgstr "Vegeu el perfil de membre"
+
+#, fuzzy
 msgid "Modification"
 msgstr "Modificació"
 
-msgid "Display"
-msgstr ""
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "creació"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -6403,12 +6421,22 @@ msgid "Warning"
 msgstr "Advertència"
 
 #, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Camps dinàmics"
+
+#, fuzzy
 msgid "Field name"
 msgstr "Nom del camp"
 
 #, fuzzy
 msgid "Available fields"
 msgstr "Camps disponibles"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Edita el camp %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -6747,10 +6775,6 @@ msgstr "Mostra totes les contribucions dels membres"
 msgid "Show all members contributions"
 msgstr "Mostra totes les contribucions dels membres"
 
-#, fuzzy
-msgid "See member profile"
-msgstr "Vegeu el perfil de membre"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6989,6 +7013,9 @@ msgstr "Crea"
 #, fuzzy
 msgid "Export as PDF"
 msgstr "Exporta com a CSV"
+
+msgid "Display"
+msgstr ""
 
 #, fuzzy
 msgid "IP"
@@ -7580,6 +7607,21 @@ msgstr "Ruta:"
 
 msgid "Main route:"
 msgstr "Ruta principal:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Elimina la transacció #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACLs"
@@ -8963,9 +9005,6 @@ msgstr "Contingut de la pàgina pública"
 
 #~ msgid "modification"
 #~ msgstr "modificació"
-
-#~ msgid "creation"
-#~ msgstr "creació"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Edita el tipus de pagament"

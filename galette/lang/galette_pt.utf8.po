@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
@@ -159,6 +159,14 @@ msgstr "Está disponível um novo lançamento Galette."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Atualmente, utiliza Galette %1$s, e está disponível %2$s ."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "Está disponível um novo lançamento Galette."
+msgstr[1] "Está disponível um novo lançamento Galette."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "A sua palavra-passe é muito fraca! Por favor, considere atualizá-la."
@@ -1303,6 +1311,9 @@ msgstr "Versão minima para motor %1$s é %2$s, %1$s %3$s encontrado!"
 msgid "My Account"
 msgstr "Minha Conta"
 
+msgid "View my member card"
+msgstr "Ver meu cartão de membro"
+
 msgid "My contributions"
 msgstr "Minhas contribuições"
 
@@ -1321,22 +1332,19 @@ msgstr "Minhas transações"
 msgid "View and filter all my transactions"
 msgstr "Visualizar e filtrar todas as minhas transações"
 
-msgid "View my member card"
-msgstr "Ver meu cartão de membro"
-
 #, fuzzy
 #| msgid "You must provide both login and password."
 msgid "Modify my login and password"
 msgstr "Tem de fornecer ambos, a credencial e a palavra-passe."
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "Adicionar um membro filho"
 
 msgid "Add new child member in database"
 msgstr "Adicionar novo membro filho no banco de dados"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "Visualizar, pesquisar e filtrar a lista de membros"
@@ -1414,6 +1422,9 @@ msgstr "Exportar alguns dados em vários formatos"
 msgid "Import members from CSV files"
 msgstr "Importar membros de arquivos em CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "Visualizar os registros do aplicativo"
 
@@ -1426,9 +1437,6 @@ msgid ""
 msgstr ""
 "Defina as preferências dos aplicativos (endereço, site, configuração dos "
 "cartões de membro, etc.)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Informações sobre os plugins disponíveis"
@@ -4347,6 +4355,10 @@ msgstr "Obrigatório"
 msgid "Width in forms"
 msgstr ""
 
+msgctxt "member groups"
+msgid "moved"
+msgstr ""
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr ""
@@ -4666,11 +4678,16 @@ msgid ""
 "generate envelope labels to contact them by snail mail."
 msgstr ""
 
+msgid "See member profile"
+msgstr ""
+
 msgid "Modification"
 msgstr ""
 
-msgid "Display"
-msgstr ""
+#, fuzzy
+#| msgid "transactions"
+msgid "More actions"
+msgstr "transações"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5396,11 +5413,21 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Campos dinâmicos"
+
 msgid "Field name"
 msgstr ""
 
 msgid "Available fields"
 msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Keep field %1$s"
+msgstr "Remover grupo %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5679,9 +5706,6 @@ msgstr ""
 msgid "Show all members contributions"
 msgstr ""
 
-msgid "See member profile"
-msgstr ""
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -5873,6 +5897,9 @@ msgid "Create"
 msgstr ""
 
 msgid "Export as PDF"
+msgstr ""
+
+msgid "Display"
 msgstr ""
 
 msgid "IP"
@@ -6338,6 +6365,21 @@ msgid "Path:"
 msgstr ""
 
 msgid "Main route:"
+msgstr ""
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "New parent is %1$s"
+msgid "New version: %1$s"
+msgstr "Novo grupo pai: %1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
 msgid "ACLs"
