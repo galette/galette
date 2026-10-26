@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -160,6 +160,14 @@ msgstr "Una version novèla de Galeta es disponibla."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Emplegatz ara Galeta %1$s, e %2$s es disponibla."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "Una version novèla de Galeta es disponibla."
+msgstr[1] "Una version novèla de Galeta es disponibla."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Lo senhau es tròp feble ! Vos o fau melhorar."
@@ -1341,6 +1349,9 @@ msgstr ""
 msgid "My Account"
 msgstr "Mon còmpte"
 
+msgid "View my member card"
+msgstr "Veire ma ficha de membre"
+
 msgid "My contributions"
 msgstr "Mei contribucions"
 
@@ -1359,22 +1370,19 @@ msgstr "Mei transaccions"
 msgid "View and filter all my transactions"
 msgstr "Consultar e filtrar totei mei transaccions"
 
-msgid "View my member card"
-msgstr "Veire ma ficha de membre"
-
 #, fuzzy
 #| msgid "Generate empty logins and passwords"
 msgid "Modify my login and password"
 msgstr "Generar leis indentificants e senhaus vueges"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "Ajustar un membre ligat (enfant)"
 
 msgid "Add new child member in database"
 msgstr "Ajustar un membre-enfant novèu a la basa"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "Consultar, recercar dedins e filtrar la lista dei membres"
@@ -1452,6 +1460,9 @@ msgstr "Exportar lei donadas amb de formats divèrs"
 msgid "Import members from CSV files"
 msgstr "Importar leis membres d'un fichier CSV locau"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "Veire l'istoric de l'aplicacion"
 
@@ -1464,9 +1475,6 @@ msgid ""
 msgstr ""
 "Definir lei preferéncias de l’aplicacion (adreiça, site, cartas de membre, "
 "paramètres,…)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Informacion a prepaus deis ajustons disponibles"
@@ -4559,6 +4567,12 @@ msgstr "Requesit"
 msgid "Width in forms"
 msgstr "Largor dei formularis"
 
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "Levar"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Cambiar lei permés de '%1$s'"
@@ -4888,11 +4902,16 @@ msgstr ""
 "possibilitat de produrre d'etiquetas per envolopa e lei contactar per "
 "corrier postau."
 
+msgid "See member profile"
+msgstr "Veire la ficha de membre"
+
 msgid "Modification"
 msgstr "Modificacion"
 
-msgid "Display"
-msgstr "Mostrar"
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "creacion"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5680,11 +5699,21 @@ msgstr ""
 msgid "Warning"
 msgstr "Avís"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Camps dinamics"
+
 msgid "Field name"
 msgstr "Nom del camp"
 
 msgid "Available fields"
 msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Modificar lo camp %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5971,9 +6000,6 @@ msgstr "Veire totei vòstrei contribucions"
 msgid "Show all members contributions"
 msgstr "Veire lei contribuccions de totei lei membres"
 
-msgid "See member profile"
-msgstr "Veire la ficha de membre"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6181,6 +6207,9 @@ msgstr "Crear"
 #| msgid "Export as CSV"
 msgid "Export as PDF"
 msgstr "Teledescargar en CSV"
+
+msgid "Display"
+msgstr "Mostrar"
 
 msgid "IP"
 msgstr "IP"
@@ -6666,6 +6695,21 @@ msgstr "Camin :"
 
 msgid "Main route:"
 msgstr "Rota principala :"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Levar la transaccion #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACL"
@@ -7840,9 +7884,6 @@ msgstr ""
 
 #~ msgid "modification"
 #~ msgstr "modificacion"
-
-#~ msgid "creation"
-#~ msgstr "creacion"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Modificar lo mòde de pagament"

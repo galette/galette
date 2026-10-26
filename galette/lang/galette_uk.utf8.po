@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-22 07:35+0200\n"
+"POT-Creation-Date: 2026-10-26 07:35+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -171,6 +171,15 @@ msgstr "Доступний новий випуск Galette."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Зараз ви використовуєте Galette %1$s, і %2$s доступний."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "Доступний новий випуск Galette."
+msgstr[1] "Доступний новий випуск Galette."
+msgstr[2] "Доступний новий випуск Galette."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Ваш пароль є занадто слабким! Будь ласка, перепридумайте його."
@@ -1345,6 +1354,9 @@ msgstr "Мінімальна версія для двигуна %1$s – %2$s, �
 msgid "My Account"
 msgstr "Мій обліковий запис"
 
+msgid "View my member card"
+msgstr "Переглянути мою картку члена"
+
 msgid "My contributions"
 msgstr "Мої внески"
 
@@ -1363,22 +1375,19 @@ msgstr "Мої перекази"
 msgid "View and filter all my transactions"
 msgstr "Перегляд і добірка всіх моїх переказів"
 
-msgid "View my member card"
-msgstr "Переглянути мою картку члена"
-
 #, fuzzy
 #| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
 msgstr "Заповніть всі порожні логіни та паролі"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "Додати дочірнього члена"
 
 msgid "Add new child member in database"
 msgstr "Додати нового дочірнього члена в базу даних"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "Перегляд, пошук і добірка списку членів"
@@ -1456,6 +1465,9 @@ msgstr "Експорт деяких даних у різних форматах"
 msgid "Import members from CSV files"
 msgstr "Імпорт членів із файлів CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "Перегляд журналів застосунку"
 
@@ -1468,9 +1480,6 @@ msgid ""
 msgstr ""
 "Установити параметри застосунків (адреса, вебсайт, конфігурація карток "
 "членів, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Відомості про доступні втулки"
@@ -4534,6 +4543,12 @@ msgstr "Потрібно"
 msgid "Width in forms"
 msgstr "Ширина у формах"
 
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "Вилучити"
+
 #, php-format
 msgid "Change '%1$s' permissions"
 msgstr "Змінення дозволів \"%1$s\""
@@ -4865,11 +4880,16 @@ msgstr ""
 "Деякі вибрані члени не мають адрес е-пошти. Однак ви можете створити "
 "конвертові мітки, щоб зв'язатися з ними поштою."
 
+msgid "See member profile"
+msgstr "Див. профіль члена"
+
 msgid "Modification"
 msgstr "Змінення"
 
-msgid "Display"
-msgstr "Дисплей"
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "створення"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5652,11 +5672,21 @@ msgstr "Виправте наведені попередження, щоб пр�
 msgid "Warning"
 msgstr "Увага"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Динамічні поля"
+
 msgid "Field name"
 msgstr "Назва поля"
 
 msgid "Available fields"
 msgstr "Доступні поля"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Редагування поля %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5943,9 +5973,6 @@ msgstr "Показати всі ваші внески"
 msgid "Show all members contributions"
 msgstr "Показати внески всіх членів"
 
-msgid "See member profile"
-msgstr "Див. профіль члена"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6152,6 +6179,9 @@ msgstr "Створити"
 
 msgid "Export as PDF"
 msgstr "Експортувати як PDF"
+
+msgid "Display"
+msgstr "Дисплей"
 
 msgid "IP"
 msgstr "IP"
@@ -6644,6 +6674,21 @@ msgstr "Шлях:"
 
 msgid "Main route:"
 msgstr "Основний маршрут:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Видалити переказ #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "Списки контролю доступу (ACL)"
@@ -7846,9 +7891,6 @@ msgstr "Зміст загальнодоступної сторінки"
 
 #~ msgid "modification"
 #~ msgstr "модифікація"
-
-#~ msgid "creation"
-#~ msgstr "створення"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Змінити вид оплати"
