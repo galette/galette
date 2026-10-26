@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -607,6 +607,9 @@ msgstr "Levar lo mandadís #%1$s"
 
 msgid "Mailing preview"
 msgstr "Veire lo corrier avans d'o mandar"
+
+msgid "No mailing in progress."
+msgstr ""
 
 #, fuzzy
 #| msgid "Sent mailings:"
@@ -4533,27 +4536,6 @@ msgstr "Drech"
 msgid "Not supplied"
 msgstr "Non indicat"
 
-msgid "Zip - Town"
-msgstr "CP - Vila"
-
-msgid "Company"
-msgstr "Persona morala"
-
-msgid "no member"
-msgstr "ges de membre"
-
-msgid "Pages:"
-msgstr "Paginas :"
-
-msgid "Selected members"
-msgstr "Membres seleccionats"
-
-msgid "No members has been selected yet."
-msgstr "Ges de membre seleccionat."
-
-msgid "Validate"
-msgstr "Validar"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -4671,6 +4653,9 @@ msgstr "Informacions"
 
 msgid "Parent group:"
 msgstr "Grope parent :"
+
+msgid "Company"
+msgstr "Persona morala"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4843,6 +4828,9 @@ msgstr ""
 msgid "Later"
 msgstr "Pus tard"
 
+msgid "Pages:"
+msgstr "Paginas :"
+
 msgid "Records per page:"
 msgstr "Enregistraments per pagina :"
 
@@ -4873,6 +4861,33 @@ msgstr "Quitar l'impostura"
 msgid "User menu"
 msgstr "Menú utilizator"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Adreiça de corrier electronic"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Grope ajustat"
+
+#, fuzzy
+#| msgid "Parent member"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Membre parent"
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from recipients"
+msgstr "Levar lo grope %1$s"
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "Keep %1$s in recipients"
+msgstr "Grope non administrat"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Vòstre messatge es estat mandat ai <strong>%s membres</strong>"
@@ -4901,6 +4916,25 @@ msgstr ""
 "D'unei membres seleccionats an pas d'adreiça electronica, avètz, pasmens, la "
 "possibilitat de produrre d'etiquetas per envolopa e lei contactar per "
 "corrier postau."
+
+msgid "Manage selected members"
+msgstr "Governar lei membres seleccionats"
+
+#, fuzzy
+#| msgid "Add a donation"
+msgid "Add a recipient"
+msgstr "Ajustar un don"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Avètz modificat d'elements de la lista. Oblidètz pas d'enregistrar lei "
+"modificacions."
+
+msgid "Recipients"
+msgstr "Destinataris"
 
 msgid "See member profile"
 msgstr "Veire la ficha de membre"
@@ -6329,14 +6363,8 @@ msgstr "Avètz oblidat lo senhau ?"
 msgid "Mailing information"
 msgstr "Informacions sus lo mandadís"
 
-msgid "Recipients"
-msgstr "Destinataris"
-
 msgid "Go back to members list"
 msgstr "Tornar a la lista dei membres"
-
-msgid "Manage selected members"
-msgstr "Governar lei membres seleccionats"
 
 msgid "Existing attachments:"
 msgstr "Pèças jonchas existentas :"
@@ -6376,11 +6404,8 @@ msgstr "Modificar lo mandadís"
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-msgid "Members selection"
-msgstr "Seleccion de membres"
-
-msgid "Click on a row to select a member"
-msgstr ""
+msgid "Validate"
+msgstr "Validar"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
@@ -7317,6 +7342,9 @@ msgstr ""
 msgid "Address type:"
 msgstr "Mena d'adreiça :"
 
+msgid "Zip - Town"
+msgstr "CP - Vila"
+
 msgid "(Choose address printed below name)"
 msgstr ""
 
@@ -7788,6 +7816,18 @@ msgstr ""
 
 msgid "Public page content"
 msgstr ""
+
+#~ msgid "no member"
+#~ msgstr "ges de membre"
+
+#~ msgid "Selected members"
+#~ msgstr "Membres seleccionats"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Ges de membre seleccionat."
+
+#~ msgid "Members selection"
+#~ msgstr "Seleccion de membres"
 
 #~ msgid "An error occurred."
 #~ msgstr "Una error capitèt."

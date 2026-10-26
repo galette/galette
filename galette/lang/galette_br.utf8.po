@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 07:35+0100\n"
+"POT-Creation-Date: 2026-10-26 10:25+0100\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -616,6 +616,9 @@ msgid "Remove mailing #%1$s"
 msgstr "Dilemel ar postel %1$s"
 
 msgid "Mailing preview"
+msgstr ""
+
+msgid "No mailing in progress."
 msgstr ""
 
 msgid "Sending mailing"
@@ -4382,27 +4385,6 @@ msgstr ""
 msgid "Not supplied"
 msgstr ""
 
-msgid "Zip - Town"
-msgstr ""
-
-msgid "Company"
-msgstr ""
-
-msgid "no member"
-msgstr ""
-
-msgid "Pages:"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
-
-msgid "No members has been selected yet."
-msgstr ""
-
-msgid "Validate"
-msgstr ""
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -4518,6 +4500,9 @@ msgid "Information"
 msgstr "krouadur"
 
 msgid "Parent group:"
+msgstr ""
+
+msgid "Company"
 msgstr ""
 
 #, php-format
@@ -4689,6 +4674,9 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
+msgid "Pages:"
+msgstr ""
+
 msgid "Records per page:"
 msgstr ""
 
@@ -4719,6 +4707,30 @@ msgstr ""
 msgid "User menu"
 msgstr ""
 
+#, fuzzy
+#| msgid "Invalid email adress!"
+msgid "No email address"
+msgstr "Chomlec'h postel diwiriek !"
+
+msgctxt "mailing recipients"
+msgid "added"
+msgstr ""
+
+#, fuzzy
+#| msgid "No member #%id."
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Ezel ebet gant #%id."
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from recipients"
+msgstr "Dilemel ar strollad %1$s"
+
+#, php-format
+msgid "Keep %1$s in recipients"
+msgstr ""
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr ""
@@ -4742,6 +4754,20 @@ msgstr ""
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
+msgstr ""
+
+msgid "Manage selected members"
+msgstr ""
+
+#, fuzzy
+#| msgid "Download document"
+msgid "Add a recipient"
+msgstr "Pellgargañ an teul"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+msgid "Recipients"
 msgstr ""
 
 msgid "See member profile"
@@ -6097,13 +6123,7 @@ msgstr ""
 msgid "Mailing information"
 msgstr ""
 
-msgid "Recipients"
-msgstr ""
-
 msgid "Go back to members list"
-msgstr ""
-
-msgid "Manage selected members"
 msgstr ""
 
 msgid "Existing attachments:"
@@ -6144,10 +6164,7 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-msgid "Members selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
+msgid "Validate"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -7043,6 +7060,9 @@ msgid "(Show or not title in front of name)"
 msgstr ""
 
 msgid "Address type:"
+msgstr ""
+
+msgid "Zip - Town"
 msgstr ""
 
 msgid "(Choose address printed below name)"
