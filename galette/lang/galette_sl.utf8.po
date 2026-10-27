@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-10-26 20:58+0100\n"
-"PO-Revision-Date: 2026-10-26 09:30+0000\n"
-"Last-Translator: Jože Felicijan "
-"<felicijan@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-28 10:51+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -575,10 +575,8 @@ msgstr "Odstrani poštni naslov št. %1$s"
 msgid "Mailing preview"
 msgstr "Predogled pošte"
 
-#, fuzzy
-#| msgid "Sending in progress…"
 msgid "No mailing in progress."
-msgstr "Pošiljanje v teku …"
+msgstr "Pošiljanje trenutno ne poteka."
 
 msgid "Sending mailing"
 msgstr "Pošiljanje pošte"
@@ -4698,34 +4696,24 @@ msgstr "Lažna predstavitev"
 msgid "User menu"
 msgstr "Uporabniški meni"
 
-#, fuzzy
-#| msgid "Email address"
 msgid "No email address"
-msgstr "E-poštni naslov"
+msgstr "Brez e-poštnega naslova"
 
-#, fuzzy
-#| msgctxt "member groups"
-#| msgid "added"
 msgctxt "mailing recipients"
 msgid "added"
 msgstr "dodano"
 
-#, fuzzy
-#| msgctxt "member groups"
-#| msgid "will be removed"
 msgctxt "mailing recipients"
 msgid "will be removed"
 msgstr "bo odstranjeno"
 
-#, fuzzy, php-format
-#| msgid "Remove '%1$s' from disk"
+#, php-format
 msgid "Remove %1$s from recipients"
-msgstr "Odstrani '%1$s' z diska"
+msgstr "Odstrani %1$s iz prejemnikov"
 
-#, fuzzy, php-format
-#| msgid "Keep %1$s in the group"
+#, php-format
 msgid "Keep %1$s in recipients"
-msgstr "Obdrži %1$s v skupini"
+msgstr "V prejemnikih ohrani %1$s"
 
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
@@ -4757,17 +4745,12 @@ msgstr ""
 msgid "Manage selected members"
 msgstr "Upravljanje izbranih članov"
 
-#, fuzzy
-#| msgid "Add a document"
 msgid "Add a recipient"
-msgstr "Dodaj dokument"
+msgstr "Dodaj prejemnika"
 
-#, fuzzy
-#| msgid ""
-#| "Items in this list have been modified. Don't forget to save your changes."
 msgid "Recipients have been modified. Validate to apply your changes."
 msgstr ""
-"Elementi na tem seznamu so bili spremenjeni. Ne pozabite shraniti sprememb."
+"Prejemniki so bili spremenjeni. Za uveljavitev sprememb opravite preverjanje."
 
 msgid "Recipients"
 msgstr "Prejemniki"
@@ -5354,10 +5337,8 @@ msgstr "Status članstva"
 msgid "Account activity"
 msgstr "Dejavnost računa"
 
-#, fuzzy
-#| msgid "Not managed group"
 msgid "Not in any group"
-msgstr "Ni upravljana skupina"
+msgstr "V nobeni skupini"
 
 msgid "With email:"
 msgstr "Z e-pošto:"
@@ -5419,15 +5400,11 @@ msgstr "je"
 msgid "is not"
 msgstr "ni"
 
-#, fuzzy
-#| msgid "File is empty!"
 msgid "is empty"
-msgstr "Datoteka je prazna!"
+msgstr "je prazen"
 
-#, fuzzy
-#| msgid "is not"
 msgid "is not empty"
-msgstr "ni"
+msgstr "ni prazna"
 
 msgid "before"
 msgstr "prej"
