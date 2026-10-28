@@ -19,6 +19,7 @@ Changes
 - Advanced search can look for empty or not empty fields
 - Logging out did not forget the groups a member managed, nor their first name
 - Dashboard failed with an error when the browser did not send its display cookie
+- Installer did not tell which directories could not be written; it now shows their paths, and whether they are missing or not writable
 
 1.3.0 -> 1.3.1
 
