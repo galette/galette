@@ -41,7 +41,7 @@ $modules_ok = $cm->isValid();
 $perms_ok = true;
 $files_need_rw = [
     _T("Photos")            => GALETTE_PHOTOS_PATH,
-    _T("Cache")             => str_replace(GALETTE_VERSION, '', GALETTE_CACHE_DIR),
+    _T("Cache")             => dirname(GALETTE_CACHE_DIR),
     _T("Temporary images")  => GALETTE_TEMPIMAGES_PATH,
     _T("Configuration")     => GALETTE_CONFIG_PATH,
     _T("Exports")           => GALETTE_EXPORTS_PATH,
@@ -53,9 +53,14 @@ $files_need_rw = [
 
 $files_perms_class = $class . 'ok';
 
+$files_status = [];
 foreach ($files_need_rw as $label => $file) {
-    $writable = is_writable($file);
-    if (!$writable) {
+    $files_status[$label] = [
+        'path'      => $file,
+        'exists'    => file_exists($file),
+        'writable'  => is_writable($file)
+    ];
+    if (!$files_status[$label]['writable']) {
         $perms_ok = false;
     }
 }
@@ -94,11 +99,11 @@ if (!$modules_ok) {
     <h3><?php echo _T("Files permissions"); ?></h3>
     <ul class="leaders">
 <?php
-foreach ($files_need_rw as $label => $file) {
+foreach ($files_status as $label => $status) {
     ?>
         <li>
-            <span><?php echo $label ?></span>
-            <span><?php echo $install->getValidationImage(is_writable($file)); ?></span>
+            <span><?php echo $label ?> <code><?php echo htmlspecialchars($install->getDisplayPath($status['path'])); ?></code></span>
+            <span><?php echo $install->getValidationImage($status['writable']); ?></span>
         </li>
     <?php
 }
@@ -118,6 +123,26 @@ if (!$perms_ok) {
     }
     ?>
             </p>
+            <ul>
+    <?php
+    foreach ($files_status as $status) {
+        if ($status['writable']) {
+            continue;
+        }
+        $full_path = '<code>' . htmlspecialchars($install->getDisplayPath($status['path'], true)) . '</code>';
+        if (!$status['exists']) {
+            //TRANS: %1$s is the directory path
+            $reason = _T('%1$s does not exist');
+        } else {
+            //TRANS: %1$s is the directory path
+            $reason = _T('%1$s is not writable');
+        }
+        ?>
+                <li><?php echo sprintf($reason, $full_path); ?></li>
+        <?php
+    }
+    ?>
+            </ul>
             <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
                 <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />chmod 700 <em><?php echo _T("directory_name"); ?></em></code>
             </p>

@@ -24,6 +24,7 @@ use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\opendir;
 use function Safe\preg_match;
+use function Safe\realpath;
 use function Safe\unlink;
 
 /**
@@ -167,6 +168,50 @@ class Install
         $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
         return '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
+    }
+
+    /**
+     * Get a path to display, resolved even if it does not exist yet
+     *
+     * @param string $path Path
+     * @param bool   $full Whether to display full path, or relative to Galette root parent directory
+     */
+    public function getDisplayPath(string $path, bool $full = false): string
+    {
+        $realpath = function (string $path): ?string {
+            try {
+                return realpath($path);
+            } catch (FilesystemException) {
+                // no log: a missing directory is expected, the closest parent is resolved instead
+                return null;
+            }
+        };
+
+        $current = rtrim($path, '/\\');
+        $suffix = '';
+        $resolved = $realpath($current);
+        //resolve the closest existing parent
+        while ($resolved === null && $current !== dirname($current)) {
+            $suffix = DIRECTORY_SEPARATOR . basename($current) . $suffix;
+            $current = dirname($current);
+            $resolved = $realpath($current);
+        }
+
+        if ($resolved === null) {
+            return $path;
+        }
+        $resolved .= $suffix . DIRECTORY_SEPARATOR;
+
+        $root = $realpath(GALETTE_ROOT);
+        if ($full || $root === null) {
+            return $resolved;
+        }
+
+        $base = dirname($root) . DIRECTORY_SEPARATOR;
+        if (str_starts_with($resolved, $base)) {
+            return substr($resolved, strlen($base));
+        }
+        return $resolved;
     }
 
     /**

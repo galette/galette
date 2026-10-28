@@ -14,6 +14,7 @@ use Galette\Tests\BaseGaletteTestCase;
 
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
+use function Safe\realpath;
 use function Safe\unlink;
 
 /**
@@ -479,5 +480,26 @@ class Install extends BaseGaletteTestCase
     public function testAdminPasswordMinLength(): void
     {
         $this->assertSame(6, \Galette\Core\Install::getAdminPasswordMinLength());
+    }
+
+    /**
+     * Test display path
+     */
+    public function testGetDisplayPath(): void
+    {
+        $root = realpath(GALETTE_ROOT);
+        $base = basename($root) . '/';
+
+        //existing directory, relative and full
+        $this->assertSame($base . 'data/photos/', $this->install->getDisplayPath(GALETTE_ROOT . 'data/photos/'));
+        $this->assertSame($root . '/data/photos/', $this->install->getDisplayPath(GALETTE_ROOT . 'data/photos/', true));
+
+        //non existing directory is resolved from its closest existing parent
+        $missing = GALETTE_ROOT . 'webroot/../data/does/not/exist';
+        $this->assertSame($base . 'data/does/not/exist/', $this->install->getDisplayPath($missing));
+        $this->assertSame($root . '/data/does/not/exist/', $this->install->getDisplayPath($missing, true));
+
+        //path outside of Galette is displayed in full
+        $this->assertSame('/tmp/', $this->install->getDisplayPath('/tmp'));
     }
 }
