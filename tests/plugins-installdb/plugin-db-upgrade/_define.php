@@ -8,15 +8,16 @@
 
 declare(strict_types=1);
 
-/** @var \Galette\Core\Plugins $this */
-$this->register(
-    name: 'Galette Db Upgrade Plugin',   //Name
-    desc: 'Test db upgrade plugin',      //Short description
-    author: 'Johan Cwiklinski',          //Author
-    version: '1.0',                      //Version
-    compver: GALETTE_COMPAT_VERSION,     //Galette compatible version
-    route: 'plugdbupgrade',              //routing name
-    date: '2026-01-01',                  //release date
-    acls: [],                            //Permissions needed
-    dbver: 0.2,                          //DB version (newer than what is seeded in DB as 0.1)
+use Galette\Core\Plugins\PluginDefinition;
+
+return new PluginDefinition(
+    name: 'Galette Db Upgrade Plugin',
+    desc: 'Test db upgrade plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugdbupgrade',
+    date: '2026-01-01',
+    acls: [],
+    dbver: 0.2
 );

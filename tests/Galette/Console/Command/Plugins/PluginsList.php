@@ -218,6 +218,9 @@ class PluginsList extends GaletteTestCase
 
         $this->assertStringContainsString('Galette Noclass Plugin (plugin-noclass)', $output);
         $this->assertStringContainsString('A required file is missing', $output);
+
+        $this->assertStringContainsString('plugin-invalid', $output);
+        $this->assertStringContainsString('Invalid plugin definition', $output);
     }
 
     /**

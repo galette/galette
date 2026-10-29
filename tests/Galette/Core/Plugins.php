@@ -24,7 +24,7 @@ use function Safe\unlink;
  */
 class Plugins extends GaletteTestCase
 {
-    private int $count_modules = 9;
+    private int $count_modules = 11;
     private int $active_modules = 3;
 
     /** @var array<string, mixed> */
@@ -80,6 +80,8 @@ class Plugins extends GaletteTestCase
         //all plugins are present, but only 3 are active
         $this->assertEquals(
             [
+                'plugin-invalid',
+                'plugin-noreturn',
                 'plugin-db-noversion',
                 'plugin-db',
                 'plugin-disabled',
@@ -139,6 +141,36 @@ class Plugins extends GaletteTestCase
     }
 
     /**
+     * Test plugins definitions, returned or registered from _define.php
+     */
+    public function testDefinition(): void
+    {
+        //returned definition: main class is guessed from name and route
+        $this->assertSame('GaletteTest1Plugin', $this->plugins->getNamespace('plugin-test1'));
+        $this->assertSame(
+            \GaletteTest1Plugin\PluginGalettePlugin1::class,
+            $this->plugins->getClassName('plugin-test1', full: true)
+        );
+        $this->assertSame('galette/plugin-test-one', $this->plugins->getModule('plugin-test1')['repository']);
+        $this->assertContains('/plugin1_webhook/', $this->plugins->getCsrfExclusions());
+
+        //deprecated $this->register() call
+        $this->assertSame('Galette Db No Version', $this->plugins->getModule('plugin-db-noversion')['name']);
+
+        //disabled plugin: its CSRF exclusions do not apply
+        $this->assertTrue($this->plugins->isDisabled('plugin-news'));
+        $this->assertNotContains('/news_webhook/', $this->plugins->getCsrfExclusions());
+
+        //invalid definition: listed, but disabled
+        $this->assertSame('plugin-invalid', $this->plugins->getModule('plugin-invalid')['name']);
+        $this->assertTrue($this->plugins->isDisabled('plugin-invalid'));
+
+        //nothing returned nor registered: listed, but disabled
+        $this->assertSame('plugin-noreturn', $this->plugins->getModule('plugin-noreturn')['name']);
+        $this->assertTrue($this->plugins->isDisabled('plugin-noreturn'));
+    }
+
+    /**
      * Test module existence
      */
     public function testModuleExists(): void
@@ -178,6 +210,14 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-db-noversion',
                 'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
+            ],
+            [
+                'module' => 'plugin-invalid',
+                'cause' => \Galette\Core\Plugins::DISABLED_INVALID
+            ],
+            [
+                'module' => 'plugin-noreturn',
+                'cause' => \Galette\Core\Plugins::DISABLED_INVALID
             ]
         ];
     }
