@@ -81,6 +81,10 @@ class PluginsControllerTest extends GaletteRoutingTestCase
             $body
         );
         $this->assertStringNotContainsString('galette-plugins/plugin-test2 repository', $body);
+
+        //disabling causes
+        $this->assertStringContainsString('Invalid plugin definition', $body);
+        $this->assertStringContainsString('Incompatible with current version', $body);
     }
 
     /**

@@ -8,16 +8,17 @@
 
 declare(strict_types=1);
 
-/** @var \Galette\Core\Plugins $this */
-$this->register(
-    name: 'Galette Test2 Plugin',    //Name
-    desc: 'Test two plugin',         //Short description
-    author: 'Johan Cwiklinski',      //Author
-    version: '1.0',                  //Version
-    compver: GALETTE_COMPAT_VERSION, //Galette compatible version
-    route: 'plugin2',                //routing name
-    date: '2013-12-15',              //Release date
-    acls: [                          //Permissions needed
+use Galette\Core\Plugins\PluginDefinition;
+
+return new PluginDefinition(
+    name: 'Galette Test2 Plugin',
+    desc: 'Test two plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugin2',
+    date: '2013-12-15',
+    acls: [
         'plugin2_root'  => 'member',
         'plugin2_admin' => 'staff'
     ]

@@ -17,6 +17,8 @@
                 {{ _T('A required file is missing') }}
             {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
                 {{ _T('Incompatible with current version') }}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_INVALID') %}
+                {{ _T('Invalid plugin definition') }}
             {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_DBVERSION') %}
                 {{ _T('Database version missing') }}
             {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_INSTALLED') %}

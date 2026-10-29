@@ -8,18 +8,19 @@
 
 declare(strict_types=1);
 
-/** @var \Galette\Core\Plugins $this */
-$this->register(
-    name: 'Galette Db Plugin',       //Name
-    desc: 'Test db plugin',          //Short description
-    author: 'Johan Cwiklinski',      //Author
-    version: '1.0',                  //Version
-    compver: GALETTE_COMPAT_VERSION, //Galette compatible version
-    route: 'plugdb',                 //routing name
-    date: '2015-01-30',              //release date
-    acls: [                          //Permissions needed
+use Galette\Core\Plugins\PluginDefinition;
+
+return new PluginDefinition(
+    name: 'Galette Db Plugin',
+    desc: 'Test db plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugdb',
+    date: '2015-01-30',
+    acls: [
         'plugdb_root'   => 'member',
         'plugdb_admin'  => 'staff'
     ],
-    dbver: 0.1,                      //DB version
+    dbver: 0.1
 );
