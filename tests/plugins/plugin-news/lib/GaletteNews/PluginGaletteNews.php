@@ -12,6 +12,7 @@ namespace GaletteNews;
 
 use Galette\Core\GalettePlugin;
 use Galette\Core\Plugins\NewsProviderInterface;
+use Galette\Core\Plugins\PluginDefinition;
 use Galette\IO\News\Entry;
 use Galette\IO\News\Post;
 
@@ -22,7 +23,15 @@ use function Safe\strtotime;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-
+#[PluginDefinition(
+    name: 'Galette News',
+    desc: 'Plugin with news',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'news',
+    date: '2025-08-16'
+)]
 class PluginGaletteNews extends GalettePlugin implements NewsProviderInterface
 {
     /**

@@ -271,7 +271,7 @@ class Release
         Analog::log(
             sprintf(
                 'Unable to check for new releases of plugin "%1$s": no release found in %2$s repository. '
-                . 'If the plugin is published elsewhere, its "repository" must be declared in its _define.php file.',
+                . 'If the plugin is published elsewhere, its "repository" must be declared in its plugin definition.',
                 $plugin_id,
                 $repository
             ),

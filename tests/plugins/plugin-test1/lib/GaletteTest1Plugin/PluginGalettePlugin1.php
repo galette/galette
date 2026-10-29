@@ -12,6 +12,7 @@ namespace GaletteTest1Plugin;
 
 use Galette\Core\GalettePlugin;
 use Galette\Core\PreferencesSchema;
+use Galette\Core\Plugins\PluginDefinition;
 use Galette\Core\Plugins\PreferencesProviderInterface;
 use Galette\Core\Plugins\PublicPagesProviderInterface;
 
@@ -21,6 +22,20 @@ use Galette\Core\Plugins\PublicPagesProviderInterface;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
+#[PluginDefinition(
+    name: 'Galette Test1 Plugin',
+    desc: 'Test one plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugin1',
+    date: '2016-10-19',
+    acls: [
+        'plugin1_root'  => 'groupmanager'
+    ],
+    repository: 'galette/plugin-test-one',
+    csrf_exclusions: ['/plugin1_webhook/']
+)]
 class PluginGalettePlugin1 extends GalettePlugin implements PreferencesProviderInterface, PublicPagesProviderInterface
 {
     /**

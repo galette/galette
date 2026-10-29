@@ -292,6 +292,8 @@ abstract class BaseGaletteTestCase extends TestCase
             'ERROR - Plugin "Galette Noclass Plugin" class "GaletteNoclassPlugin\PluginGalettePluginnoclass" is missing ',
             'ERROR - Plugin "Galette Db No Version" needs a database but no version is provided.',
             'WARNING - Plugin "Galette Db Plugin" database needs to be updated.',
+            'ERROR - Plugin "plugin-invalid" definition is invalid | ',
+            'WARNING - Plugin "plugin-both" is declared with both a PluginDefinition attribute and a _define.php file',
             // Expected logs from the install-db test plugins
             'WARNING - Plugin "Galette Db Install Plugin" has not been installed.',
             'WARNING - Plugin "Galette Db Upgrade Plugin" database needs to be updated.',

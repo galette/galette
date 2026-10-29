@@ -25,6 +25,7 @@ require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 //disabled news and disabled plugins
 touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-news_disabled');
 touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-disabled_disabled');
+touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-both_disabled');
 
 $session_name = 'galette_tests';
 $session = new \RKA\SessionMiddleware([

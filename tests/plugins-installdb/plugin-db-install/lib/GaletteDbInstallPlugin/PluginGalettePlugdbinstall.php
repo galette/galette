@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace GaletteDbInstallPlugin;
 
 use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\PluginDefinition;
 
 /**
  * Plugin class for fresh-install tests.
@@ -22,6 +23,17 @@ use Galette\Core\GalettePlugin;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
+#[PluginDefinition(
+    name: 'Galette Db Install Plugin',
+    desc: 'Test db install plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugdbinstall',
+    date: '2026-01-01',
+    acls: [],
+    dbver: 0.1
+)]
 class PluginGalettePlugdbinstall extends GalettePlugin
 {
     /**
