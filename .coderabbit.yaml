@@ -19,8 +19,12 @@ reviews:
   in_progress_fortune: false
   poem: false
 
+  # Reviews are requested with the ai-review label, or @coderabbitai review,
+  # to preserve the hourly review allowance
   auto_review:
-    enabled: true
+    enabled: false
+    labels:
+      - "ai-review"
     drafts: false
     base_branches:
       - "^develop$"
