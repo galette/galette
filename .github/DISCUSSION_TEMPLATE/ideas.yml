@@ -2,22 +2,25 @@ body:
   - type: markdown
     attributes:
       value: |
-        Suggest a feature or an improvement.
+        Suggest a feature or an improvement. You can write in English or French.
         Please check the [roadmap](https://github.com/orgs/galette/projects/5) first: it may already be planned or in progress.
+
+        Proposez une fonctionnalité ou une amélioration. Vous pouvez écrire en français ou en anglais.
+        Consultez d'abord la [feuille de route](https://github.com/orgs/galette/projects/5) : c'est peut-être déjà prévu ou en cours.
   - type: textarea
     id: need
     attributes:
       label: What do you need?
-      description: Describe the problem or the use case, for your association, rather than a solution.
+      description: Describe the problem or the use case, for your association, rather than a solution. / Décrivez le problème ou le besoin de votre association, plutôt qu'une solution.
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
       label: How could Galette help?
-      description: The solution you have in mind, if any.
+      description: The solution you have in mind, if any. / La solution que vous imaginez, le cas échéant.
   - type: textarea
     id: workaround
     attributes:
       label: How do you manage today?
-      description: Workarounds, other tools, or plugins you use.
+      description: Workarounds, other tools, or plugins you use. / Contournements, autres outils ou plugins que vous utilisez.

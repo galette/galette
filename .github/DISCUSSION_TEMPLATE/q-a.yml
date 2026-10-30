@@ -2,13 +2,16 @@ body:
   - type: markdown
     attributes:
       value: |
-        Ask for help installing, upgrading or using Galette.
+        Ask for help installing, upgrading or using Galette. You can write in English or French.
         Found a bug? Please report it on the [bug tracker](https://bugs.galette.eu/projects/galette) instead.
+
+        Demandez de l'aide pour installer, mettre à jour ou utiliser Galette. Vous pouvez écrire en français ou en anglais.
+        Vous avez trouvé un bogue ? Signalez-le plutôt sur le [gestionnaire de tickets](https://bugs.galette.eu/projects/galette).
   - type: input
     id: version
     attributes:
       label: Galette version
-      description: Shown at the bottom of every page, or in Configuration > System information.
+      description: Shown at the bottom of every page, or in Configuration > System information. / Affichée en bas de chaque page, ou dans Configuration > Informations système.
       placeholder: "1.3.1"
     validations:
       required: true
@@ -20,7 +23,7 @@ body:
         - MariaDB
         - MySQL
         - PostgreSQL
-        - I don't know
+        - I don't know / Je ne sais pas
     validations:
       required: true
   - type: input
@@ -32,6 +35,6 @@ body:
     id: question
     attributes:
       label: Your question
-      description: What are you trying to do, what did you expect, and what happened? Include error messages and logs if any.
+      description: What are you trying to do, what did you expect, and what happened? Include error messages and logs if any. / Que cherchez-vous à faire, qu'attendiez-vous, et que s'est-il passé ? Joignez les messages d'erreur et les logs s'il y en a.
     validations:
       required: true
