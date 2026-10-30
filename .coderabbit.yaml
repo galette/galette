@@ -108,6 +108,13 @@ reviews:
     docstrings:
       mode: "off"
 
+  # Changes are pushed by their authors only
+  finishing_touches:
+    autofix:
+      enabled: false
+    unit_tests:
+      enabled: false
+
   tools:
     # Run by the CI with the repository configuration and vendor autoload
     phpstan:
