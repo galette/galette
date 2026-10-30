@@ -19,15 +19,12 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Galette;
-use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Util\Release;
 
 use function Safe\file_get_contents;
-use function Safe\ob_end_clean;
-use function Safe\ob_start;
 
 /**
  * Galette plugins controller
@@ -167,13 +164,18 @@ class PluginsController extends AbstractController
 
         $plugin = $this->plugins->getModule($plugid);
 
-        // Reject plugins that cannot be installed or updated due to missing files
-        // or incompatibility. Only plugins that are installable/upgradable should
-        // reach the database initialization step.
-        if (
-            $this->plugins->isDisabled($plugid)
-            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)
-        ) {
+        // Reject plugins that are up to date, or that cannot be installed or updated
+        // due to missing files or incompatibility. Only plugins that are
+        // installable/upgradable should reach the database initialization step.
+        if (!$this->plugins->isDisabled($plugid)) {
+            Analog::log(
+                'Plugin `' . $plugid . '` is up to date and cannot be initialized.',
+                Analog::WARNING
+            );
+
+            throw new HttpNotFoundException($request);
+        }
+        if (!in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], strict: true)) {
             Analog::log(
                 'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
                 . $this->plugins->getDisabledCause($plugid) . ').',
@@ -195,110 +197,29 @@ class PluginsController extends AbstractController
             throw new HttpBadRequestException($request);
         }
 
-        $mdplugin = md5((string)$plugin['root']);
-        if (
-            isset($this->session->$mdplugin)
-            && !isset($_GET['raz'])
-        ) {
-            $install = $this->session->$mdplugin;
-        } else {
-            $install = new PluginInstall();
-        }
-        $install->reinitReport();
+        $install = (new PluginInstall())->prepareFor($this->plugins, $plugid, $error_detected);
 
+        $step = 'confirm';
         $post = $request->getParsedBody();
-
-        if (isset($post['stepback_btn'])) {
-            $install->atPreviousStep();
-        } elseif (isset($post['install_prefs_ok'])) {
-            $install->atEndStep();
-        } elseif (isset($post['install_dbwrite_ok'])) {
-            $install->atEndStep();
-        } elseif (isset($post['previous_version'])) {
-            $install->setInstalledVersion($post['previous_version']);
-            $install->atDbUpgradeStep();
-        } elseif (isset($post['install_dbperms_ok'])) {
-            if ($install->isInstall()) {
-                $install->atDbInstallStep();
-            } elseif ($install->isUpgrade()) {
-                $install->atVersionSelection();
-            }
-        } elseif (isset($post['install_type'])) {
-            $install->setMode($post['install_type']);
-            $install->atDbStep();
-        }
-
-        $step = 1;
-        $istep = 1;
-
-        if (isset($post['install_type'])) {
-            $params['install_type'] = $post['install_type'];
-            $istep = 2;
-        }
-
-        if (isset($post['install_dbperms_ok'])) {
-            $istep = $post['install_type'] === PluginInstall::INSTALL ? 4 : 3;
-        }
-
-        if (isset($post['previous_version'])) {
-            $istep = 4;
-        }
-
-        if (isset($post['install_dbwrite_ok'])) {
-            $istep = 5;
-        }
-
-        if (isset($post['install_type'])) {
-            if ($post['install_type'] == PluginInstall::INSTALL) {
-                $step = 'i' . $istep;
-            } elseif ($istep > 1 && $post['install_type'] == PluginInstall::UPDATE) {
-                $step = 'u' . $istep;
-            }
-        }
-
-        switch ($step) {
-            case '1':
-                //let's look for updates scripts
-                $update_scripts = $install::getUpdateScripts($plugin['root'], TYPE_DB);
-                if (count($update_scripts) > 0) {
-                    $params['update_scripts'] = $update_scripts;
+        if ($request->getMethod() === 'POST' && isset($post['confirm'])) {
+            $db_checks = $install->checkDbPermissions($this->zdb);
+            if (!$db_checks['ok']) {
+                $step = 'perms';
+                $params['db_checks'] = $db_checks;
+                if (!$db_checks['supported']) {
+                    $params['unsupported_message'] = $this->zdb->getUnsupportedMessage();
                 }
-                break;
-            case 'i2':
-            case 'u2':
-                $install_plugin = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
-                $zdb = $this->zdb; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
-                ob_start();
-                include_once GALETTE_ROOT . '/install/steps/db_checks.php';
-                $params['results'] = ob_get_contents();
-                ob_end_clean();
-                break;
-            case 'u3':
-                $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
-                $params['update_scripts'] = $update_scripts;
-                break;
-            case 'i4':
-            case 'u4':
-                $install->setDbType(TYPE_DB, $error_detected);
-                $install->setTablesPrefix(PREFIX_DB);
-                $install->setInstalledVersion($post['previous_version'] ?? null);
-                $install->executeScripts($this->zdb, $plugin['root']);
-                break;
-            case 'i5':
-            case 'u5':
-                $install->setPluginInstalled($this->zdb, $this->plugins, $plugid);
-        }
-
-        if ($step !== 'i5' && $step !== 'u5') {
-            $this->session->$mdplugin = $install;
-        } else {
-            unset($this->session->$mdplugin);
+            } else {
+                $step = 'done';
+                $params['success'] = $install->run($this->zdb, $this->plugins, $plugid);
+                $params['report'] = $install->getDbInstallReport();
+            }
         }
 
         $params += [
-            'page_title'    => $install->getStepDetail('title'),
+            'page_title'    => sprintf(_T('Plugin database initialization: %1$s'), $plugin['name']),
             'step'          => $step,
-            'istep'         => $istep,
+            'installed_version' => $install->isUpgrade() ? $this->plugins->getInstalledDbVersion($plugid) : null,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
             'mode'          => (($this->isAjax($request)) ? 'ajax' : ''),

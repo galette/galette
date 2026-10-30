@@ -295,6 +295,7 @@ abstract class BaseGaletteTestCase extends TestCase
             // Expected logs from the install-db test plugins
             'WARNING - Plugin "Galette Db Install Plugin" has not been installed.',
             'WARNING - Plugin "Galette Db Upgrade Plugin" database needs to be updated.',
+            'WARNING - Plugin "Galette Db Broken Plugin" has not been installed.',
         ];
 
         foreach ($logs as $i => $log) {

@@ -44,11 +44,12 @@ class PluginInstallDb extends AbstractPlugins
         $selected = $selected === [self::ALL] ? $this->getRelevantPlugins($io) : $this->getSelectedModules($io, $selected);
 
         $errors = [];
+        $failed = false;
 
-        foreach ($selected as $module_id => $module) {
+        foreach (array_keys($selected) as $module_id) {
             $install = new \Galette\Core\PluginInstall();
             $install
-                ->setDbType(TYPE_DB, $errors)
+                ->prepareFor($this->plugins, $module_id, $errors)
                 ->setDsn(
                     host: HOST_DB,
                     port: PORT_DB,
@@ -56,29 +57,28 @@ class PluginInstallDb extends AbstractPlugins
                     user: USER_DB,
                     pass: PWD_DB
                 )
-                ->setTablesPrefix(PREFIX_DB)
             ;
 
-            $disabled_cause = $this->plugins->getDisabledCause($module_id);
-
-            if ($disabled_cause === Plugins::DISABLED_NOT_UP2DATE) {
-                $installed_version = $this->plugins->getInstalledDbVersion($module_id);
-                $install
-                    ->setMode($install::UPDATE)
-                    ->setInstalledVersion($installed_version)
-                ;
-                $install->executeScripts($zdb, $module['root']);
-                $install->setPluginInstalled($zdb, $this->plugins, $module_id);
-                $io->success(sprintf('Database for plugin "%s" upgraded', $module_id));
+            $action = $install->isUpgrade() ? 'upgraded' : 'installed';
+            if ($install->run($zdb, $this->plugins, $module_id)) {
+                $io->success(sprintf('Database for plugin "%s" %s', $module_id, $action));
             } else {
-                $install->setMode($install::INSTALL);
-                $install->executeScripts($zdb, $module['root']);
-                $install->setPluginInstalled($zdb, $this->plugins, $module_id);
-                $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+                $failed = true;
+                $failures = array_filter(
+                    $install->getDbInstallReport(),
+                    fn(array $entry): bool => $entry['res'] === false
+                );
+                $io->error(array_merge(
+                    [sprintf('Database for plugin "%s" has not been %s', $module_id, $action)],
+                    array_map(
+                        fn(array $entry): string => $entry['message'] . (isset($entry['debug']) ? ': ' . $entry['debug'] : ''),
+                        $failures
+                    )
+                ));
             }
         }
 
-        return Command::SUCCESS;
+        return $failed ? Command::FAILURE : Command::SUCCESS;
     }
 
     /**
