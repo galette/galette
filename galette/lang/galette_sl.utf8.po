@@ -4179,7 +4179,7 @@ msgstr "Kopirano v odložišče."
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr "Kopiranje ni mogoče; prosimo, izberite besedilo in ga kopirajte ročno."
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Dodatna polja:"
 
 msgid "Enter as many occurrences you want."
@@ -5977,7 +5977,7 @@ msgstr "Parametrični izvozi niso na voljo."
 msgid "Galette tables exports"
 msgstr "Izvoz Galette tabel"
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr "Poleg tega, katere tabele želite izvoziti?"
 
 msgid "Table name"

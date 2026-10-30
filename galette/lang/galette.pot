@@ -5902,7 +5902,7 @@ msgstr ""
 
 #: ../templates/default/components/dynamic_fields.html.twig:137
 #: ../templates/default/elements/display_dynamic_fields.html.twig:12
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr ""
 
 #: ../templates/default/components/dynamic_fields.html.twig:189
@@ -8730,7 +8730,7 @@ msgid "Galette tables exports"
 msgstr ""
 
 #: ../templates/default/pages/export.html.twig:135
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr ""
 
 #: ../templates/default/pages/export.html.twig:142

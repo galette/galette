@@ -6059,8 +6059,8 @@ msgstr "Unable to copy, please select the text and copy it by hand."
 
 #: ../templates/default/components/dynamic_fields.html.twig:137
 #: ../templates/default/elements/display_dynamic_fields.html.twig:12
-msgid "Additionnal fields:"
-msgstr "Additionnal fields:"
+msgid "Additional fields:"
+msgstr "Additional fields:"
 
 #: ../templates/default/components/dynamic_fields.html.twig:189
 msgid "Enter as many occurrences you want."
@@ -8971,8 +8971,8 @@ msgid "Galette tables exports"
 msgstr "Galette tables exports"
 
 #: ../templates/default/pages/export.html.twig:135
-msgid "Additionnaly, which table(s) do you want to export?"
-msgstr "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
+msgstr "Additionally, which table(s) do you want to export?"
 
 #: ../templates/default/pages/export.html.twig:142
 msgid "Table name"

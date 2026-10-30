@@ -4247,7 +4247,7 @@ msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 "Copie impossible, veuillez sélectionner le texte et le copier manuellement."
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Champs supplémentaires :"
 
 msgid "Enter as many occurrences you want."
@@ -6076,7 +6076,7 @@ msgstr "Aucun export paramétré disponible."
 msgid "Galette tables exports"
 msgstr "Export des tables Galette"
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr "Additionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 
 msgid "Table name"
