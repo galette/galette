@@ -1,0 +1,23 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest a feature or an improvement.
+        Please check the [roadmap](https://github.com/orgs/galette/projects/5) first: it may already be planned or in progress.
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need?
+      description: Describe the problem or the use case, for your association, rather than a solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: How could Galette help?
+      description: The solution you have in mind, if any.
+  - type: textarea
+    id: workaround
+    attributes:
+      label: How do you manage today?
+      description: Workarounds, other tools, or plugins you use.
