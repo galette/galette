@@ -54,7 +54,7 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "chart.js": "^4.5.1",
+    "chart.js": "^4.6.1",
     "chartjs-plugin-autocolors": "^0.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "darkreader": "^4.9.133",
