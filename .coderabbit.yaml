@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit review configuration.
+# https://docs.coderabbit.ai/reference/configuration
+#
+# AGENTS.md, CLAUDE.md and .github/copilot-instructions.md are picked up as
+# code guidelines without any setting.
+
+language: en-US
+tone_instructions: "Be concise and factual. Report only issues worth fixing; skip praise and style preferences."
+
+reviews:
+  profile: chill
+  # Leave the pull request description as its author wrote it
+  high_level_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "^develop$"
+      - "^master$"
+      - "^feature/"
+      - "^hotfix/"
+      - "^release/"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "hosted-weblate[bot]"
+
+  path_filters:
+    - "!galette/vendor/**"
+    - "!galette/lang/**"
+    - "!galette/docs/apidocs/**"
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+    - "!package-lock.json"
+    - "!composer.lock"
+    - "!tests/fixtures/**"
+
+  path_instructions:
+    - path: "**"
+      instructions: |
+        Report only what this pull request causes: a problem the change introduces,
+        breaks, or makes reachable where it was not before, pointing at the changed
+        line responsible. Do not report pre-existing problems the change does not touch.
+        If the pull request changes no logic, expect to report nothing.
+        Do not report what the CI already enforces: PHP-CS-Fixer, PHPCS, PHPStan and
+        Rector, with the configurations of the repository.
+        Security: if the change fixes a vulnerability exploitable in a released version
+        (missing rights check, IDOR, XSS, SQL injection, CSRF, authentication bypass),
+        post a single neutral sentence asking the author to close the pull request and
+        report it privately with GitHub's "Report a vulnerability" button, in the
+        Security tab of the repository. Never describe the vulnerability or how to
+        exploit it: review comments are public.
+        A change to PHP, JavaScript or Twig code that fixes a bug or adds a feature
+        should come with a test that fails without it. Documentation, configuration
+        and CI files need no test.
+
+    - path: "galette/lib/**/*.php"
+      instructions: |
+        Galette supports both MySQL/MariaDB and PostgreSQL: SQL must work on both.
+        Laminas DB does not use prepared statements here; Db::execute() builds the SQL
+        string. User input must go through Laminas predicates or quoted values, never
+        string concatenation. A Laminas Sql\Expression passed to where() is silently
+        ignored. On PostgreSQL, an error aborts the whole transaction; nested Laminas
+        transactions have no savepoint, so an inner rollback cancels the outer one.
+        Check the return value of load() before any rights check such as canShow():
+        those return true on an object that was not loaded.
+        The session object ($this->session, RKA\Session) implements __isset() with
+        array_key_exists(): unlike a plain array, a key set to null is still isset().
+        Read session values with ??, clear them with unset(), never by assigning null.
+        Html::clean() is meant for rich HTML; a plain text field needs strip().
+        Translatable strings use _T(), _Tn(), _Tx() or _Tnx() with numbered placeholders
+        (%1$s, never named ones), preceded by a //TRANS: comment explaining them.
+
+    - path: "galette/includes/routes/**"
+      instructions: |
+        Routes are declared both with #[Route] attributes and in these files. Access
+        control is set here (->add(Authenticate::class) and similar middlewares): flag any
+        new or changed route whose access level differs from the controller intent.
+
+    - path: "galette/templates/**/*.twig"
+      instructions: |
+        Twig strict_variables is only enabled in debug mode: a variable the template
+        uses but the controller does not pass silently renders empty in production,
+        and kills the page in debug. Check every new variable is passed.
+        Flag output marked |raw unless its content is sanitized before.
+
+    - path: "galette/install/scripts/**"
+      instructions: |
+        Every schema change must exist for both engines (mysql and pgsql), in the
+        install scripts (mysql.sql, pgsql.sql) and in the upgrade scripts of the
+        version being developed. Table names always use the configured prefix.
+        Upgrades are only supported from the last stable release.
+
+    - path: "tests/**"
+      instructions: |
+        Tests run on both MySQL and PostgreSQL. Tests that assert on messages must not
+        depend on the locale of a fixture member (some of them are not English).
+
+  pre_merge_checks:
+    # PHPCS already enforces doc blocks
+    docstrings:
+      mode: "off"
+
+  tools:
+    # Run by the CI with the repository configuration and vendor autoload
+    phpstan:
+      enabled: false
+    phpcs:
+      enabled: false
+    phpmd:
+      enabled: false
+    languagetool:
+      enabled: false
+
+chat:
+  art: false
