@@ -39,7 +39,7 @@
     "clean-css": "^5.3.3",
     "css-loader": "^7.1.5",
     "del": "^6.1.1",
-    "dotenv": "^18.0.8",
+    "dotenv": "^18.0.9",
     "file-loader": "^6.2.0",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
