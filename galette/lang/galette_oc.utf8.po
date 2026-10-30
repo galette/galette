@@ -4314,7 +4314,7 @@ msgstr ""
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Camp suplementari :"
 
 msgid "Enter as many occurrences you want."
@@ -6212,7 +6212,7 @@ msgstr ""
 msgid "Galette tables exports"
 msgstr ""
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr ""
 
 msgid "Table name"
