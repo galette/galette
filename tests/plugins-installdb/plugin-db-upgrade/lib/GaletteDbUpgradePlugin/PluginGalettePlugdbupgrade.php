@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace GaletteDbUpgradePlugin;
 
 use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\PluginDefinition;
 
 /**
  * Plugin class for upgrade tests.
@@ -23,6 +24,17 @@ use Galette\Core\GalettePlugin;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
+#[PluginDefinition(
+    name: 'Galette Db Upgrade Plugin',
+    desc: 'Test db upgrade plugin',
+    author: 'Johan Cwiklinski',
+    version: '1.0',
+    compver: GALETTE_COMPAT_VERSION,
+    route: 'plugdbupgrade',
+    date: '2026-01-01',
+    acls: [],
+    dbver: 0.2
+)]
 class PluginGalettePlugdbupgrade extends GalettePlugin
 {
     /** Version reported for tables that predate versions tracking */

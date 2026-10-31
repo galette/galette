@@ -14,17 +14,21 @@ use Composer\Autoload\ClassLoader;
 use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
+use Galette\Core\Plugins\PluginDefinition;
 use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
 use League\Event\ListenerSubscriber;
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
 use RuntimeException;
 use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
 use Throwable;
 
 use function Safe\dir;
+use function Safe\file_get_contents;
 use function Safe\file_put_contents;
+use function Safe\glob;
 use function Safe\preg_match;
 use function Safe\realpath;
 
@@ -44,7 +48,8 @@ use function Safe\realpath;
  *      priority: int,
  *      route: ?string,
  *      dbversion: ?float,
- *      repository?: string
+ *      repository?: string,
+ *      class?: class-string<GalettePlugin>
  *  }
  * @phpstan-type Modules array<ModuleId, Module>
  */
@@ -98,7 +103,7 @@ class Plugins
      * This method must be called before session start so that plugin classes
      * stored in session can be properly deserialized. It scans plugin directories
      * and registers class loaders for each plugin's lib/ directory without
-     * requiring the database or _define.php files.
+     * requiring the database or plugins definitions.
      *
      * Plugin namespaces are added to the Composer PSR-4 loader already present
      * on the SPL stack so that a single autoloader handles both core and plugin
@@ -241,32 +246,47 @@ class Plugins
                     $this->id = $entry;
                     $this->mroot = $full_entry;
                     if ($this->autoload === true) {
+                        $class = $this->findPluginClass($full_entry);
+                        $has_define = file_exists($full_entry . '/_define.php');
+                        $legacy = $class === null && $has_define;
                         if (
-                            !file_exists($full_entry . '/_define.php')
+                            ($class === null && !$legacy)
                             || !file_exists($full_entry . '/_routes.php')
                         ) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                sprintf('Plugin "%s" is missing a _define.php and/or _routes.php '
-                                    . 'files that are required.', $entry),
+                                sprintf('Plugin "%s" is missing its definition and/or its required _routes.php file.', $entry),
                                 Analog::WARNING
                             );
-                            // Ensure plugin appears in modules list even if required files are missing.
-                            $this->modules[$entry] ??= [
-                                'name'      => $entry,
-                                'desc'      => '',
-                                'author'    => '',
-                                'version'   => '',
-                                'date'      => '',
-                                'priority'  => 0,
-                                'root'      => $full_entry,
-                                'route'     => null,
-                                'dbversion' => null,
-                            ];
-                            $this->setDisabled(self::DISABLED_MISS);
+                            $this->setInvalid(self::DISABLED_MISS);
                         } else {
-                            //Will call $this->register()
-                            include $full_entry . '/_define.php';
+                            if ($class !== null) {
+                                if ($has_define) {
+                                    Analog::log(
+                                        sprintf(
+                                            'Plugin "%s" is declared with both a PluginDefinition attribute '
+                                            . 'and a _define.php file; the latter is ignored and should be removed.',
+                                            $entry
+                                        ),
+                                        Analog::WARNING
+                                    );
+                                }
+                                $this->registerClass($class);
+                            } else {
+                                if (Galette::isDebugEnabled()) {
+                                    //log level is not applied: do not flood production logs
+                                    Analog::log(
+                                        sprintf(
+                                            'Plugin "%s" is declared in a _define.php file, which is deprecated; '
+                                            . 'please use a PluginDefinition attribute on its main class.',
+                                            $entry
+                                        ),
+                                        Analog::NOTICE
+                                    );
+                                }
+                                //Will call $this->register()
+                                include $full_entry . '/_define.php';
+                            }
                             if ($this->moduleExists($entry)) {
                                 if ($this->isDisabled($entry)) {
                                     //register() already disabled the plugin (e.g. DISABLED_COMPAT):
@@ -375,6 +395,85 @@ class Plugins
     }
 
     /**
+     * Find plugin main class declaring a PluginDefinition attribute
+     *
+     * Main class is expected to be lib/<Namespace>/PluginGalette<Route>.php.
+     * Files that do not mention the attribute are not loaded, so a plugin
+     * still declared in a _define.php file is not loaded before its compatibility
+     * has been checked.
+     *
+     * @param string $root Plugin root directory
+     *
+     * @return ?class-string<GalettePlugin>
+     */
+    private function findPluginClass(string $root): ?string
+    {
+        foreach (glob($root . '/lib/*/PluginGalette*.php') as $file) {
+            if (!str_contains(file_get_contents($file), 'PluginDefinition')) {
+                continue;
+            }
+
+            $class = sprintf('%s\\%s', basename(dirname($file)), basename($file, '.php'));
+            try {
+                if (
+                    class_exists($class)
+                    && is_subclass_of($class, GalettePlugin::class)
+                    && (new ReflectionClass($class))->getAttributes(PluginDefinition::class) !== []
+                ) {
+                    return $class;
+                }
+            } catch (Throwable $e) {
+                Logs::exception($e, sprintf('Unable to load plugin class "%s"', $class));
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Register a module from its main class PluginDefinition attribute
+     *
+     * @param class-string<GalettePlugin> $class Module main class
+     */
+    private function registerClass(string $class): void
+    {
+        try {
+            $definition = (new ReflectionClass($class))
+                ->getAttributes(PluginDefinition::class)[0]
+                ->newInstance();
+        } catch (Throwable $e) {
+            Logs::exception($e, sprintf('Plugin "%s" definition is invalid', $this->id));
+            $this->setInvalid(self::DISABLED_COMPAT);
+            return;
+        }
+
+        $this->registerDefinition($definition, $class);
+    }
+
+    /**
+     * Disable a module that cannot be registered
+     *
+     * @param self::DISABLED_* $cause Disabling cause
+     */
+    private function setInvalid(int $cause): void
+    {
+        // Ensure plugin appears in modules list even if it cannot be registered.
+        $this->modules[$this->id] ??= [
+            'name'      => $this->id,
+            'desc'      => '',
+            'author'    => '',
+            'version'   => '',
+            'acls'      => null,
+            'date'      => '',
+            'priority'  => 0,
+            'root'      => $this->mroot,
+            'route'     => null,
+            'dbversion' => null,
+        ];
+        $this->setDisabled($cause);
+    }
+
+    /**
      * This method registers a module in modules list. You should use this to
      * register a new module.
      *
@@ -397,6 +496,8 @@ class Plugins
      * @param ?float                $dbver      Module database version
      * @param ?string               $repository GitHub repository releases are published on,
      *                                          as owner/name. Defaults to galette-plugins/<plugin directory>
+     *
+     * @deprecated 1.4.0 Use a PluginDefinition attribute on plugin main class
      */
     public function register(
         string $name,
@@ -411,20 +512,54 @@ class Plugins
         ?float $dbver = null,
         ?string $repository = null
     ): void {
+        $this->registerDefinition(
+            new PluginDefinition(
+                name: $name,
+                desc: $desc,
+                author: $author,
+                version: $version,
+                compver: $compver,
+                route: $route,
+                date: $date,
+                acls: $acls,
+                priority: $priority,
+                dbver: $dbver,
+                repository: $repository
+            )
+        );
+    }
+
+    /**
+     * Register a module from its definition
+     *
+     * @param PluginDefinition             $definition Module definition
+     * @param ?class-string<GalettePlugin> $class      Module main class, guessed from definition if not provided
+     */
+    private function registerDefinition(PluginDefinition $definition, ?string $class = null): void
+    {
+        $name = $definition->name;
+        $compver = $definition->compver;
+
         //store module information
         $this->modules[$this->id] = [
             'root'          => $this->mroot,
             'name'          => $name,
-            'desc'          => $desc,
-            'author'        => $author,
-            'version'       => $version,
-            'acls'          => $acls,
-            'date'          => $date,
-            'priority'      => $priority ?? 1000,
-            'route'         => $route,
-            'dbversion'     => $dbver,
-            'repository'    => $this->checkRepository($name, $repository)
+            'desc'          => $definition->desc,
+            'author'        => $definition->author,
+            'version'       => $definition->version,
+            'acls'          => $definition->acls,
+            'date'          => $definition->date,
+            'priority'      => $definition->priority ?? 1000,
+            'route'         => $definition->route,
+            'dbversion'     => $definition->dbver,
+            'repository'    => $this->checkRepository($name, $definition->repository)
         ];
+        if ($class !== null) {
+            $this->modules[$this->id]['class'] = $class;
+        }
+        if ($definition->csrf_exclusions !== null) {
+            $this->setCsrfExclusions($definition->csrf_exclusions);
+        }
 
         //check compatibility
         if ($compver === null) {
@@ -1165,6 +1300,9 @@ class Plugins
      */
     public function getNamespace(string $id): string
     {
+        if (isset($this->modules[$id]['class'])) {
+            return substr($this->modules[$id]['class'], 0, (int)strrpos($this->modules[$id]['class'], '\\'));
+        }
         return str_replace(' ', '', $this->modules[$id]['name']);
     }
 
@@ -1176,6 +1314,10 @@ class Plugins
      */
     public function getClassName(string $id, bool $full = false): string
     {
+        if (isset($this->modules[$id]['class'])) {
+            $class = $this->modules[$id]['class'];
+            return $full ? $class : substr($class, (int)strrpos($class, '\\') + 1);
+        }
         $class = sprintf('PluginGalette%1$s', ucfirst((string)$this->modules[$id]['route']));
         if ($full === true) {
             return sprintf('%s\%s', $this->getNamespace($id), $class);

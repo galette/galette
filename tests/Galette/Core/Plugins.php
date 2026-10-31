@@ -24,7 +24,7 @@ use function Safe\unlink;
  */
 class Plugins extends GaletteTestCase
 {
-    private int $count_modules = 9;
+    private int $count_modules = 11;
     private int $active_modules = 3;
 
     /** @var array<string, mixed> */
@@ -42,7 +42,8 @@ class Plugins extends GaletteTestCase
         'priority'      => 1000,
         'route'         => 'plugin2',
         'dbversion'     => null,
-        'repository'    => 'galette-plugins/plugin-test2'
+        'repository'    => 'galette-plugins/plugin-test2',
+        'class'         => \GaletteTest2Plugin\PluginGalettePlugin2::class
     ];
 
     /**
@@ -80,6 +81,8 @@ class Plugins extends GaletteTestCase
         //all plugins are present, but only 3 are active
         $this->assertEquals(
             [
+                'plugin-invalid',
+                'plugin-both',
                 'plugin-db-noversion',
                 'plugin-db',
                 'plugin-disabled',
@@ -139,6 +142,42 @@ class Plugins extends GaletteTestCase
     }
 
     /**
+     * Test plugins declared with a PluginDefinition attribute or a _define.php file
+     */
+    public function testDefinition(): void
+    {
+        //declared with an attribute: main class is the one found
+        $this->assertSame(\GaletteTest1Plugin\PluginGalettePlugin1::class, $this->plugins->getModule('plugin-test1')['class']);
+        $this->assertSame('GaletteTest1Plugin', $this->plugins->getNamespace('plugin-test1'));
+        $this->assertSame('PluginGalettePlugin1', $this->plugins->getClassName('plugin-test1'));
+        $this->assertSame(
+            \GaletteTest1Plugin\PluginGalettePlugin1::class,
+            $this->plugins->getClassName('plugin-test1', full: true)
+        );
+
+        $this->assertContains('/plugin1_webhook/', $this->plugins->getCsrfExclusions());
+
+        //declared in a deprecated _define.php file: main class is guessed from name and route
+        $this->assertArrayNotHasKey('class', $this->plugins->getModule('plugin-db-noversion'));
+        $this->assertSame('GaletteDbNoVersion', $this->plugins->getNamespace('plugin-db-noversion'));
+        $this->assertSame(
+            'GaletteDbNoVersion\\PluginGalettePlugdbnover',
+            $this->plugins->getClassName('plugin-db-noversion', full: true)
+        );
+
+        //declared both ways: the attribute wins, _define.php is ignored
+        $both = $this->plugins->getModule('plugin-both');
+        $this->assertSame('Galette Both Plugin', $both['name']);
+        $this->assertSame('1.0', $both['version']);
+        $this->assertSame('both', $both['route']);
+        $this->assertSame(\GaletteBothPlugin\PluginGaletteBoth::class, $both['class']);
+
+        //invalid definition: listed, but disabled
+        $this->assertSame('plugin-invalid', $this->plugins->getModule('plugin-invalid')['name']);
+        $this->assertTrue($this->plugins->isDisabled('plugin-invalid'));
+    }
+
+    /**
      * Test module existence
      */
     public function testModuleExists(): void
@@ -178,6 +217,15 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-db-noversion',
                 'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
+            ],
+            [
+                'module' => 'plugin-invalid',
+                'cause' => \Galette\Core\Plugins::DISABLED_COMPAT
+            ],
+            [
+                //explicitly disabled, not incompatible: its _define.php is not read
+                'module' => 'plugin-both',
+                'cause' => \Galette\Core\Plugins::DISABLED_EXPLICIT
             ]
         ];
     }
