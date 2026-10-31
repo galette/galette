@@ -101,7 +101,7 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame(['application/json'], $test_response->getHeader('Content-Type'));
-        return json_decode((string)$test_response->getBody(), true);
+        return json_decode((string)$test_response->getBody(), associative: true);
     }
 
     /**
@@ -204,7 +204,7 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringStartsWith('<pre>', $body);
-        $infos = json_decode(substr($body, 5, -6), true);
+        $infos = json_decode(substr($body, 5, -6), associative: true);
         $this->assertArrayHasKey('galette', $infos);
 
         $this->assertSame(

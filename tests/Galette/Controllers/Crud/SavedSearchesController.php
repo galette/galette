@@ -68,7 +68,13 @@ class SavedSearchesController extends GaletteRoutingTestCase
     {
         $requests = [
             $this->createRequest('searches'),
-            $this->createRequest('saveSearch', [], 'GET', 'text/html', ['search_title' => 'Test search']),
+            $this->createRequest(
+                route_name: 'saveSearch',
+                route_args: [],
+                method: 'GET',
+                content_type: 'text/html',
+                query_params: ['search_title' => 'Test search']
+            ),
             $this->createRequest('editSearch', ['id' => '1']),
             $this->createRequest('loadSearch', ['id' => '1']),
         ];
@@ -88,11 +94,11 @@ class SavedSearchesController extends GaletteRoutingTestCase
 
         //save from members list
         $request = $this->createRequest(
-            'saveSearch',
-            [],
-            'GET',
-            'text/html',
-            ['search_title' => 'Test search', 'filter_str' => 'Test']
+            route_name: 'saveSearch',
+            route_args: [],
+            method: 'GET',
+            content_type: 'text/html',
+            query_params: ['search_title' => 'Test search', 'filter_str' => 'Test']
         );
         $this->expectRedirect(
             $this->app->handle($request),
@@ -108,14 +114,14 @@ class SavedSearchesController extends GaletteRoutingTestCase
             ->withParsedBody(['search_title' => 'Test advanced search', 'advanced_search' => '1']);
         $test_response = $this->app->handle($request);
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame(['success' => true], json_decode((string)$test_response->getBody(), true));
+        $this->assertSame(['success' => true], json_decode((string)$test_response->getBody(), associative: true));
         $this->expectFlashData(['success_detected' => ['Search has been saved.']]);
 
         $searches = $this->getSearches();
         $this->assertCount(2, $searches);
         $this->assertSame($member->id, (int)$searches['Test search']->id_adh);
-        $this->assertSame(['filter_str' => 'Test'], json_decode($searches['Test search']->parameters, true));
-        $advanced = json_decode($searches['Test advanced search']->parameters, true);
+        $this->assertSame(['filter_str' => 'Test'], json_decode($searches['Test search']->parameters, associative: true));
+        $advanced = json_decode($searches['Test advanced search']->parameters, associative: true);
         $this->assertSame('Advanced', $advanced['filter_str']);
         $this->assertArrayHasKey('free_search', $advanced);
         $id = (int)$searches['Test search']->{SavedSearch::PK};
@@ -158,7 +164,7 @@ class SavedSearchesController extends GaletteRoutingTestCase
         $this->assertArrayHasKey('Test search renamed', $searches);
         $this->assertSame(
             'Advanced',
-            json_decode($searches['Test search renamed']->parameters, true)['filter_str']
+            json_decode($searches['Test search renamed']->parameters, associative: true)['filter_str']
         );
 
         $request = $this->createRequest('doEditSearch', ['id' => (string)$id], 'POST')

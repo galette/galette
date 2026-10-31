@@ -123,7 +123,13 @@ class HistoryControllerTest extends GaletteRoutingTestCase
         $this->expectRedirect($this->app->handle($request), $this->routeparser->urlFor('history'));
         $this->assertNull($this->session->history_filter->action_filter);
 
-        $request = $this->createRequest('history', ['option' => 'page', 'value' => '2'], 'GET', 'text/html', ['nbshow' => '10']);
+        $request = $this->createRequest(
+            route_name: 'history',
+            route_args: ['option' => 'page', 'value' => '2'],
+            method: 'GET',
+            content_type: 'text/html',
+            query_params: ['nbshow' => '10']
+        );
         $this->expectOK($this->app->handle($request));
         $this->assertSame(2, $this->session->history_filter->current_page);
         $this->assertSame(10, $this->session->history_filter->show);
@@ -171,7 +177,7 @@ class HistoryControllerTest extends GaletteRoutingTestCase
         //ajax call
         $test_response = $this->app->handle($request->withParsedBody(['confirm' => '1', 'ajax' => 'true']));
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame(['success' => true], json_decode((string)$test_response->getBody(), true));
+        $this->assertSame(['success' => true], json_decode((string)$test_response->getBody(), associative: true));
         $this->expectFlashData(['success_detected' => ['Logs have been flushed!']]);
     }
 }
