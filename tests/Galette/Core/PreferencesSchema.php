@@ -28,6 +28,24 @@ class PreferencesSchema extends GaletteTestCase
     //pass alone and fail whenever it runs after any GaletteTestCase.
 
     /**
+     * The core schema is built during bootstrap, before coverage is recorded:
+     * building it again must give the same result
+     */
+    public function testBuild(): void
+    {
+        $cached = Schema::getCore();
+
+        $core = new \ReflectionProperty(Schema::class, 'core');
+        $core->setValue(null, null);
+        $built = Schema::getCore();
+
+        $this->assertSame(array_keys($cached), array_keys($built));
+        foreach ($cached as $name => $entry) {
+            $this->assertEquals($entry, $built[$name], $name . ' differs once rebuilt');
+        }
+    }
+
+    /**
      * Every entry must declare a known type and a scalar default
      */
     public function testEntriesAreWellFormed(): void
