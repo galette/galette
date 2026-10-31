@@ -175,6 +175,10 @@ abstract class BaseGaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
+        //static state, reset first so a failing check below cannot leak it:
+        //a later test must not record mails instead of sending them
+        \Galette\Core\GaletteMail::setMailerFactory(factory: null);
+
         if ($this->db_transactions && $this->zdb->inTransaction()) {
             $this->zdb->rollback();
         }
@@ -203,8 +207,6 @@ abstract class BaseGaletteTestCase extends TestCase
         //plugin registrations are static: without this they outlive the test
         //that made them and turn failures into order-dependent ones
         \Galette\Core\PreferencesSchema::reset();
-        //same goes for the mailer factory: a later test must not record instead of sending
-        \Galette\Core\GaletteMail::setMailerFactory(factory: null);
 
         global $plugins, $app, $container, $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
         $plugins = $app = $container = $zdb = $preferences = $login = $hist = $l10n = $emitter = $routeparser = $i18n = $translator = null;
