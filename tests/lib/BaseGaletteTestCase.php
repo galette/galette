@@ -175,7 +175,10 @@ abstract class BaseGaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
-        //static state, reset first so a failing check below cannot leak it:
+        //static state, reset first so a failing check below cannot leak it.
+        //Plugin registrations would outlive the test that made them and turn
+        //failures into order-dependent ones
+        \Galette\Core\PreferencesSchema::reset();
         //a later test must not record mails instead of sending them
         \Galette\Core\GaletteMail::setMailerFactory(factory: null);
 
@@ -203,10 +206,6 @@ abstract class BaseGaletteTestCase extends TestCase
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_write_close();
         }
-
-        //plugin registrations are static: without this they outlive the test
-        //that made them and turn failures into order-dependent ones
-        \Galette\Core\PreferencesSchema::reset();
 
         global $plugins, $app, $container, $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
         $plugins = $app = $container = $zdb = $preferences = $login = $hist = $l10n = $emitter = $routeparser = $i18n = $translator = null;
