@@ -98,7 +98,7 @@ class SavedSearchesController extends GaletteRoutingTestCase
             route_args: [],
             method: 'GET',
             content_type: 'text/html',
-            query_params: ['search_title' => 'Test search', 'filter_str' => 'Test']
+            query_params: ['search_title' => 'Test search', 'filter_str' => 'Test', 'nbshow' => '10', 'page' => '2']
         );
         $this->expectRedirect(
             $this->app->handle($request),
@@ -120,6 +120,7 @@ class SavedSearchesController extends GaletteRoutingTestCase
         $searches = $this->getSearches();
         $this->assertCount(2, $searches);
         $this->assertSame($member->id, (int)$searches['Test search']->id_adh);
+        //pagination is not stored
         $this->assertSame(['filter_str' => 'Test'], json_decode($searches['Test search']->parameters, associative: true));
         $advanced = json_decode($searches['Test advanced search']->parameters, associative: true);
         $this->assertSame('Advanced', $advanced['filter_str']);
@@ -221,7 +222,6 @@ class SavedSearchesController extends GaletteRoutingTestCase
             $this->routeparser->urlFor('searches'),
             ['error_detected' => ['Saved search does not exist.']]
         );
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred loading saved search #' . $sco->id);
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to load saved search #' . $sco->id);
     }
 
@@ -251,6 +251,18 @@ class SavedSearchesController extends GaletteRoutingTestCase
         $this->assertNotInstanceOf(AdvancedMembersList::class, $filters);
         $this->assertSame('Test', $filters->filter_str);
 
+        //pagination stored by previous versions is ignored
+        $update = $this->zdb->update(SavedSearch::TABLE);
+        $update->set(['parameters' => '{"filter_str":"Test","nbshow":"10","page":"2"}'])
+            ->where([SavedSearch::PK => $sco->id]);
+        $this->zdb->execute($update);
+        $this->expectRedirect(
+            $this->app->handle($this->createRequest('loadSearch', ['id' => (string)$sco->id])),
+            $this->routeparser->urlFor('members'),
+            ['success_detected' => ['Saved search loaded']]
+        );
+        $this->assertSame('Test', $this->session->members_filter->filter_str);
+
         //removed group is reported
         $sco = new SavedSearch($this->zdb, $this->login);
         $this->assertTrue($sco->check([
@@ -277,7 +289,6 @@ class SavedSearchesController extends GaletteRoutingTestCase
             $this->routeparser->urlFor('searches'),
             ['error_detected' => ['Saved search does not exist.']]
         );
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred loading saved search #999999');
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to load saved search #999999');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to load saved search #999999');
     }
 }

@@ -380,7 +380,7 @@ class SavedSearchesController extends CrudController
         try {
             $sco = new SavedSearch($this->zdb, $this->login, $id);
         } catch (Throwable $e) {
-            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::ERROR);
+            Logs::exception($e, 'Unable to load saved search #' . $id, Analog::WARNING);
             $this->flash->addMessage(
                 'error_detected',
                 _T("Saved search does not exist.")
