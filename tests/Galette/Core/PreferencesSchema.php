@@ -36,7 +36,7 @@ class PreferencesSchema extends GaletteTestCase
         $cached = Schema::getCore();
 
         $core = new \ReflectionProperty(Schema::class, 'core');
-        $core->setValue(null, null);
+        $core->setValue(objectOrValue: null, value: null);
         $built = Schema::getCore();
 
         $this->assertSame(array_keys($cached), array_keys($built));

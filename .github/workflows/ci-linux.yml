@@ -146,6 +146,10 @@ jobs:
         run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteUpdate/
         if: matrix.coverage != 'pcov'
 
+      - name: Update database tests (with coverage)
+        run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-clover tests/clover-update.xml tests/GaletteUpdate/
+        if: matrix.coverage == 'pcov'
+
       - name: Init for PostgreSQL
         env:
           POSTGRES_HOST: localhost
@@ -187,7 +191,8 @@ jobs:
         env:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
-          files: tests/clover.xml
+          # reports of a same commit are merged
+          files: tests/clover.xml,tests/clover-update.xml
         if: matrix.coverage == 'pcov'
 
       - name: Sanitize database image name for artifact upload
