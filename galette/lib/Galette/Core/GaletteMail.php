@@ -16,6 +16,7 @@ use PHPMailer\PHPMailer\SMTP;
 use Throwable;
 use Analog\Analog;
 use Analog\Logger;
+use Closure;
 use PHPMailer\PHPMailer\PHPMailer;
 
 use function Safe\ini_get;
@@ -71,6 +72,14 @@ class GaletteMail
     private bool $quota_managed = false;
 
     /**
+     * Creates the PHPMailer instances, when set
+     *
+     * Mails are built deep inside mailings, queues and reminders; tests use
+     * it to get a double that does not actually send anything.
+     */
+    private static ?Closure $mailer_factory = null;
+
+    /**
      * Constructor
      *
      * @param Preferences $preferences Preferences instance
@@ -85,12 +94,27 @@ class GaletteMail
     }
 
     /**
+     * Set the factory that creates PHPMailer instances, null to restore default
+     *
+     * For tests only, see createMailer().
+     *
+     * @param ?Closure(): PHPMailer $factory Factory
+     */
+    public static function setMailerFactory(?Closure $factory): void
+    {
+        self::$mailer_factory = $factory;
+    }
+
+    /**
      * Create the underlying PHPMailer instance.
      * Extracted as a seam so tests can inject a double that does not
      * actually send anything.
      */
     protected function createMailer(): PHPMailer
     {
+        if (self::$mailer_factory !== null) {
+            return (self::$mailer_factory)();
+        }
         return new PHPMailer();
     }
 

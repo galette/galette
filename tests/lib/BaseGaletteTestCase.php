@@ -203,6 +203,8 @@ abstract class BaseGaletteTestCase extends TestCase
         //plugin registrations are static: without this they outlive the test
         //that made them and turn failures into order-dependent ones
         \Galette\Core\PreferencesSchema::reset();
+        //same goes for the mailer factory: a later test must not record instead of sending
+        \Galette\Core\GaletteMail::setMailerFactory(factory: null);
 
         global $plugins, $app, $container, $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
         $plugins = $app = $container = $zdb = $preferences = $login = $hist = $l10n = $emitter = $routeparser = $i18n = $translator = null;
