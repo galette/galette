@@ -74,7 +74,7 @@ class ExternalScriptTest extends GaletteTestCase
     {
         $path = GALETTE_CACHE_DIR . 'external_script_' . count($this->files) . '.sh';
         file_put_contents($path, "#!/bin/sh\n" . $body . "\n");
-        chmod($path, 0700);
+        chmod($path, 0o700);
         $this->files[] = $path;
         return $path;
     }
@@ -183,7 +183,7 @@ class ExternalScriptTest extends GaletteTestCase
         $params = ['id' => 42, 'amount' => 92.5, 'member' => ['name' => 'Some One']];
         $this->assertTrue($script->send($params));
         $this->assertSame('', $script->getOutput());
-        $this->assertSame($params, json_decode(file_get_contents($received), true));
+        $this->assertSame($params, json_decode(file_get_contents($received), associative: true));
     }
 
     /**
