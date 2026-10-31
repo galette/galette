@@ -12,6 +12,7 @@ namespace Galette\IO;
 
 use Analog\Analog;
 use Galette\Core\Preferences;
+use Safe\Exceptions\CurlException;
 
 use function Safe\curl_exec;
 use function Safe\curl_init;
@@ -132,8 +133,7 @@ class ExternalScript
                 }
                 curl_setopt($ch, CURLOPT_URL, $uri);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, value: true);
-                $this->output = curl_exec($ch);
-                $result = (bool)$this->output;
+                $result = $this->execute($ch);
                 break;
             case 'galette':
             case 'post':
@@ -152,8 +152,7 @@ class ExternalScript
                 } else {
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
                 }
-                $this->output = curl_exec($ch);
-                $result = (bool)$this->output;
+                $result = $this->execute($ch);
                 break;
             case 'file':
                 $this->output = '';
@@ -220,5 +219,25 @@ class ExternalScript
     public function getOutput(): string
     {
         return $this->output;
+    }
+
+    /**
+     * Execute a cURL request
+     *
+     * A remote script that cannot be reached is a failure like any other; it
+     * must not take down the caller.
+     *
+     * @param \CurlHandle $ch cURL handle
+     */
+    private function execute(\CurlHandle $ch): bool
+    {
+        try {
+            $this->output = (string)curl_exec($ch);
+        } catch (CurlException $e) {
+            // no log: the error becomes the script output, that callers log
+            $this->output = $e->getMessage();
+            return false;
+        }
+        return (bool)$this->output;
     }
 }
