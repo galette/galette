@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
+use Galette\DynamicFields\DynamicField;
+use Galette\Entity\DynamicFieldsHandle;
+use Galette\Tests\DynamicFieldsHelper;
 use Galette\Tests\GaletteTestCase;
 
 /**
@@ -19,6 +22,8 @@ use Galette\Tests\GaletteTestCase;
  */
 class Date extends GaletteTestCase
 {
+    use DynamicFieldsHelper;
+
     private \Galette\DynamicFields\Date $date;
 
     /**
@@ -125,5 +130,66 @@ class Date extends GaletteTestCase
             '',
             $this->date->getDisplayValue(value: null)
         );
+    }
+
+    /**
+     * Get stored values of a dynamic field
+     *
+     * @param int $field Field id
+     *
+     * @return array<int, string> Index => value
+     */
+    private function getStoredValues(int $field): array
+    {
+        $select = $this->zdb->select(DynamicFieldsHandle::TABLE);
+        $select->where([DynamicField::PK => $field])->order('val_index');
+        $values = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $values[(int)$row->val_index] = $row->field_val;
+        }
+        return $values;
+    }
+
+    /**
+     * Dates stored in their localized format before 1.2.0 are fixed
+     */
+    public function testResetLocalizedFormats(): void
+    {
+        //nothing to fix
+        $this->assertTrue(\Galette\DynamicFields\Date::resetLocalizedFormats($this->zdb));
+
+        $field = $this->createDynamicField(
+            DynamicField::DATE,
+            'Localized date',
+            ['field_repeat' => 6]
+        );
+        //a text field holding something that looks like a date is left alone
+        $text = $this->createDynamicField(DynamicField::LINE, 'Not a date');
+
+        $this->storeDynamicValues([
+            [1, $field, 1, '2020-12-26'],
+            [1, $field, 2, '26/12/2020'],
+            [1, $field, 3, '26.12.2020'],
+            [1, $field, 4, '2020/12/26'],
+            //26 is not a month: only the US format matches
+            [1, $field, 5, '12.26.2020'],
+            [1, $field, 6, 'not a date'],
+            [1, $text, 1, '26/12/2020'],
+        ]);
+
+        $this->assertTrue(\Galette\DynamicFields\Date::resetLocalizedFormats($this->zdb));
+
+        $this->assertSame(
+            [
+                1 => '2020-12-26',
+                2 => '2020-12-26',
+                3 => '2020-12-26',
+                4 => '2020-12-26',
+                5 => '2020-12-26',
+                6 => 'not a date',
+            ],
+            $this->getStoredValues($field)
+        );
+        $this->assertSame([1 => '26/12/2020'], $this->getStoredValues($text));
     }
 }

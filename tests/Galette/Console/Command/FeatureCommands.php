@@ -12,6 +12,7 @@ namespace Galette\Tests\Console\Command;
 
 use Galette\Console\Command\FeatureDisable;
 use Galette\Console\Command\FeatureEnable;
+use Galette\Console\Command\FeatureStatus;
 use Galette\Core\FeatureFlagManager;
 use Galette\Core\Preferences;
 use Galette\Tests\GaletteTestCase;
@@ -139,5 +140,29 @@ class FeatureCommands extends GaletteTestCase
             $this->assertSame(Command::FAILURE, $tester->getStatusCode());
             $this->assertStringContainsString('Give either a feature flag or --all.', $tester->getDisplay());
         }
+    }
+
+    /**
+     * Status lists registered features, and tells which ones are on
+     */
+    public function testStatus(): void
+    {
+        $tester = $this->runCommand(new FeatureStatus(GALETTE_ROOT));
+        $tester->assertCommandIsSuccessful();
+        $output = preg_replace('/\s+/', ' ', $tester->getDisplay());
+        $this->assertStringContainsString(self::FLAG, $output);
+        $this->assertStringContainsString('Total registered flags:', $output);
+        $this->assertStringContainsString('Enabled flags: 0', $output);
+        $this->assertStringContainsString('No flags are currently enabled.', $output);
+
+        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester->assertCommandIsSuccessful();
+
+        $tester = $this->runCommand(new FeatureStatus(GALETTE_ROOT));
+        $tester->assertCommandIsSuccessful();
+        $output = preg_replace('/\s+/', ' ', $tester->getDisplay());
+        $this->assertStringContainsString('ENABLED', $output);
+        $this->assertStringContainsString('Enabled flags: 1', $output);
+        $this->assertStringContainsString('1 feature flag(s) currently active.', $output);
     }
 }
