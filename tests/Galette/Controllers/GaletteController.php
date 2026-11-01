@@ -145,6 +145,26 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test dashboard route when the browser does not send the display cookie
+     */
+    public function testDashboardWithoutCookie(): void
+    {
+        $this->logSuperAdmin();
+        $checkbox = '/<input type="checkbox" name="show_dashboard" id="show_dashboard" value="1" checked="checked"\/>/';
+
+        //no cookie: dashboard is displayed, checkbox defaults to checked
+        $test_response = $this->app->handle($this->createRequest('dashboard'));
+        $this->expectOK($test_response);
+        $this->assertMatchesRegularExpression($checkbox, (string)$test_response->getBody());
+
+        //cookie disabling the dashboard on login: checkbox is unchecked
+        $request = $this->createRequest('dashboard')->withCookieParams(['show_galette_dashboard' => '0']);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertDoesNotMatchRegularExpression($checkbox, (string)$test_response->getBody());
+    }
+
+    /**
      * Test preferences route
      */
     public function testPreferences(): void

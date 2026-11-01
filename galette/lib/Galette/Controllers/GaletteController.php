@@ -114,7 +114,7 @@ class GaletteController extends AbstractController
             'contentcls'        => 'desktop',
             //news are loaded asynchronously, they reach the network
             'has_news'          => Galette::hasNews(),
-            'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
+            'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'] ?? '1',
             'documentation'     => 'usermanual'
         ];
 
