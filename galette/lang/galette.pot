@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:58+0100\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -418,8 +418,8 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:704
 #: ../lib/Galette/Entity/Group.php:689
 #: ../lib/Galette/Entity/ImportModel.php:168
-#: ../lib/Galette/Entity/SavedSearch.php:284
-#: ../lib/Galette/Entity/SavedSearch.php:412
+#: ../lib/Galette/Entity/SavedSearch.php:303
+#: ../lib/Galette/Entity/SavedSearch.php:431
 #: ../lib/Galette/Features/Dynamics.php:207
 #: ../lib/Galette/Features/Dynamics.php:227
 #: ../lib/Galette/Features/Dynamics.php:233
@@ -594,7 +594,7 @@ msgid "transaction"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:78
-#: ../lib/Galette/Core/Galette.php:527 ../lib/Galette/Core/Install.php:1166
+#: ../lib/Galette/Core/Galette.php:527 ../lib/Galette/Core/Install.php:1215
 msgid "Contributions types"
 msgstr ""
 
@@ -1061,8 +1061,8 @@ msgid "No member #%1$s."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:80
-#: ../lib/Galette/Core/Galette.php:535 ../lib/Galette/Core/Install.php:1190
-#: ../lib/Galette/Core/Install.php:1209
+#: ../lib/Galette/Core/Galette.php:535 ../lib/Galette/Core/Install.php:1239
+#: ../lib/Galette/Core/Install.php:1258
 msgid "Payment types"
 msgstr ""
 
@@ -1246,7 +1246,7 @@ msgid "Remove status '%1$s'"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:75
-#: ../lib/Galette/Core/Galette.php:550 ../lib/Galette/Core/Install.php:1182
+#: ../lib/Galette/Core/Galette.php:550 ../lib/Galette/Core/Install.php:1231
 msgid "Titles"
 msgstr ""
 
@@ -1338,7 +1338,7 @@ msgid "An error occurred trying to delete :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:114
-#: ../lib/Galette/Core/Galette.php:446 ../install/steps/check.php:47
+#: ../lib/Galette/Core/Galette.php:446 ../install/steps/check.php:48
 msgid "Exports"
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgid "An error occurred running parameted export '%1$s'."
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:244
-#: ../lib/Galette/Core/Galette.php:453 ../install/steps/check.php:48
+#: ../lib/Galette/Core/Galette.php:453 ../install/steps/check.php:49
 msgid "Imports"
 msgstr ""
 
@@ -1485,7 +1485,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:208
 #: ../lib/Galette/Core/Galette.php:484 ../lib/Galette/Core/Galette.php:985
-#: ../lib/Galette/Core/Install.php:1162
+#: ../lib/Galette/Core/Install.php:1211
 #: ../lib/Galette/DynamicFields/DynamicField.php:464
 #: ../templates/default/pages/advanced_config.html.twig:23
 #: ../templates/default/pages/preferences.html.twig:1150
@@ -1621,7 +1621,7 @@ msgid "Download document"
 msgstr ""
 
 #: ../lib/Galette/Controllers/HistoryController.php:81
-#: ../lib/Galette/Core/Galette.php:468 ../install/steps/check.php:49
+#: ../lib/Galette/Core/Galette.php:468 ../install/steps/check.php:50
 msgid "Logs"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgid "Unable to get groups list."
 msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:500
-#: ../lib/Galette/Core/Galette.php:558 ../lib/Galette/Core/Install.php:1186
+#: ../lib/Galette/Core/Galette.php:558 ../lib/Galette/Core/Install.php:1235
 msgid "PDF models"
 msgstr ""
 
@@ -1804,7 +1804,7 @@ msgid "Recovery codes"
 msgstr ""
 
 #. TRANS: parameter is the logged in user name
-#: ../lib/Galette/Core/Authentication.php:292
+#: ../lib/Galette/Core/Authentication.php:296
 #, php-format
 msgid "Logged in as:<br/>%1$s"
 msgstr ""
@@ -1908,11 +1908,11 @@ msgstr ""
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr ""
 
-#: ../lib/Galette/Core/CheckModules.php:113 ../lib/Galette/Core/Install.php:168
+#: ../lib/Galette/Core/CheckModules.php:113 ../lib/Galette/Core/Install.php:169
 msgid "Ko"
 msgstr ""
 
-#: ../lib/Galette/Core/CheckModules.php:120 ../lib/Galette/Core/Install.php:168
+#: ../lib/Galette/Core/CheckModules.php:120 ../lib/Galette/Core/Install.php:169
 msgid "Ok"
 msgstr ""
 
@@ -2091,7 +2091,7 @@ msgstr ""
 msgid "View application's logs"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:480 ../install/steps/check.php:46
+#: ../lib/Galette/Core/Galette.php:480 ../install/steps/check.php:47
 msgid "Configuration"
 msgstr ""
 
@@ -2245,35 +2245,35 @@ msgstr ""
 msgid "Association news"
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:312
+#: ../lib/Galette/Core/GaletteMail.php:336
 msgid "Emailing has been disabled in the preferences."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:339
+#: ../lib/Galette/Core/GaletteMail.php:363
 #, php-format
 msgid "Unknown emailing method '%s'."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:382
+#: ../lib/Galette/Core/GaletteMail.php:406
 msgid "Unable to reach the SMTP server."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:409
+#: ../lib/Galette/Core/GaletteMail.php:433
 #, php-format
 msgid "'%s' does not exist, or cannot be run."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:424
+#: ../lib/Galette/Core/GaletteMail.php:448
 msgid "The PHP mail() function is not available on this server."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:429
+#: ../lib/Galette/Core/GaletteMail.php:453
 msgid ""
 "PHP 'sendmail_path' directive is empty; mail() has nothing to hand messages "
 "to."
 msgstr ""
 
-#: ../lib/Galette/Core/GaletteMail.php:648
+#: ../lib/Galette/Core/GaletteMail.php:672
 msgid "Sending quota has been reached, message has not been sent."
 msgstr ""
 
@@ -2339,95 +2339,95 @@ msgid "Unknown lang (%1$s)"
 msgstr ""
 
 #. TRANS: installation step title, where the system requirements are verified
-#: ../lib/Galette/Core/Install.php:103 ../webroot/installer.php:375
+#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:375
 msgctxt "installation step"
 msgid "Checks"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:107
+#: ../lib/Galette/Core/Install.php:108
 #: ../templates/default/modals/plugin_initdb.html.twig:151
 msgid "Installation mode"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:111 ../webroot/installer.php:386
+#: ../lib/Galette/Core/Install.php:112 ../webroot/installer.php:386
 msgid "Database"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:115 ../webroot/installer.php:397
+#: ../lib/Galette/Core/Install.php:116 ../webroot/installer.php:397
 msgid "Database access and permissions"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:119
+#: ../lib/Galette/Core/Install.php:120
 msgid "Previous version selection"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:123 ../webroot/installer.php:422
+#: ../lib/Galette/Core/Install.php:124 ../webroot/installer.php:422
 #: ../templates/default/modals/plugin_initdb.html.twig:171
 msgid "Database upgrade"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:127
+#: ../lib/Galette/Core/Install.php:128
 msgid "Tables Creation"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:452
+#: ../lib/Galette/Core/Install.php:132 ../webroot/installer.php:452
 msgid "Admin parameters"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:135 ../webroot/installer.php:466
+#: ../lib/Galette/Core/Install.php:136 ../webroot/installer.php:466
 #: ../templates/default/pages/desktop.html.twig:28
 msgid "Telemetry"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:139 ../webroot/installer.php:477
+#: ../lib/Galette/Core/Install.php:140 ../webroot/installer.php:477
 msgid "Galette initialization"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:488
+#: ../lib/Galette/Core/Install.php:144 ../webroot/installer.php:488
 #: ../templates/default/modals/plugin_initdb.html.twig:177
 #: ../templates/default/pages/mailing_queue.html.twig:128
 msgid "End!"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:313
+#: ../lib/Galette/Core/Install.php:362
 msgid "Database type unknown"
 msgstr ""
 
 #. TRANS: parameter is the update script version
-#: ../lib/Galette/Core/Install.php:624
+#: ../lib/Galette/Core/Install.php:673
 #, php-format
 msgid "%1$s script has been successfully executed :)"
 msgstr ""
 
 #. TRANS: parameter is the update script version
-#: ../lib/Galette/Core/Install.php:633
+#: ../lib/Galette/Core/Install.php:682
 #, php-format
 msgid "Unable to run %1$s update script :("
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:894
+#: ../lib/Galette/Core/Install.php:943
 msgid "No configuration file found!"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:907 ../lib/Galette/Core/Install.php:918
+#: ../lib/Galette/Core/Install.php:956 ../lib/Galette/Core/Install.php:967
 msgid "Existing configuration file is incomplete or unreadable!"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1048
+#: ../lib/Galette/Core/Install.php:1097
 msgid "Write configuration file"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1077
+#: ../lib/Galette/Core/Install.php:1126
 msgid "Config file already exists and is up to date"
 msgstr ""
 
 #. TRANS: parameter is the file path
-#: ../lib/Galette/Core/Install.php:1097
+#: ../lib/Galette/Core/Install.php:1146
 #, php-format
 msgid "Unable to create configuration file (%1$s)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1170
+#: ../lib/Galette/Core/Install.php:1219
 #: ../templates/default/pages/advanced_config.html.twig:48
 #: ../templates/default/pages/advanced_config.html.twig:61
 #: ../templates/default/pages/advanced_config.html.twig:212
@@ -2437,19 +2437,19 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1174
+#: ../lib/Galette/Core/Install.php:1223
 msgid "Fields config and categories"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1178 ../lib/Galette/Core/Install.php:1204
+#: ../lib/Galette/Core/Install.php:1227 ../lib/Galette/Core/Install.php:1253
 msgid "Mails texts"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1196
+#: ../lib/Galette/Core/Install.php:1245
 msgid "Update preferences"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1200
+#: ../lib/Galette/Core/Install.php:1249
 msgid "Update models"
 msgstr ""
 
@@ -3330,17 +3330,17 @@ msgstr ""
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr ""
 
-#: ../lib/Galette/Entity/SavedSearch.php:136
+#: ../lib/Galette/Entity/SavedSearch.php:155
 msgid "Form is mandatory!"
 msgstr ""
 
 #. TRANS: parameter is the form name
-#: ../lib/Galette/Entity/SavedSearch.php:363
+#: ../lib/Galette/Entity/SavedSearch.php:382
 #, php-format
 msgid "Unknown form %1$s!"
 msgstr ""
 
-#: ../lib/Galette/Entity/SavedSearch.php:380
+#: ../lib/Galette/Entity/SavedSearch.php:399
 msgid "Name cannot be empty!"
 msgstr ""
 
@@ -3558,59 +3558,59 @@ msgstr ""
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:103
+#: ../lib/Galette/Events/ContribListener.php:101
 #: ../lib/Galette/Events/MemberListener.php:125
 msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:118
+#: ../lib/Galette/Events/ContribListener.php:116
 #: ../lib/Galette/Events/MemberListener.php:136
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
 
 #. TRANS: first parameter is the use name, second his email address
-#: ../lib/Galette/Events/ContribListener.php:177
+#: ../lib/Galette/Events/ContribListener.php:175
 #, php-format
 msgid "Email sent to user %1$s (%2$s)"
 msgstr ""
 
 #. TRANS: first parameter is the use name, second his email address
-#: ../lib/Galette/Events/ContribListener.php:185
+#: ../lib/Galette/Events/ContribListener.php:183
 #, php-format
 msgid ""
 "A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
 
 #. TRANS: first parameter is member name, second his email address
-#: ../lib/Galette/Events/ContribListener.php:251
+#: ../lib/Galette/Events/ContribListener.php:249
 #, php-format
 msgid "Email sent to admin for user %1$s (%2$s)"
 msgstr ""
 
 #. TRANS: first parameter is member name, second his email address
-#: ../lib/Galette/Events/ContribListener.php:259
+#: ../lib/Galette/Events/ContribListener.php:257
 #, php-format
 msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:288
+#: ../lib/Galette/Events/ContribListener.php:286
 msgid "Post contribution script failed"
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:297
+#: ../lib/Galette/Events/ContribListener.php:295
 msgid "The configured post contribution script has failed."
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:298
+#: ../lib/Galette/Events/ContribListener.php:296
 msgid "You can find contribution information and script output below."
 msgstr ""
 
-#: ../lib/Galette/Events/ContribListener.php:306
+#: ../lib/Galette/Events/ContribListener.php:304
 msgid "Post contribution script has failed."
 msgstr ""
 
@@ -3624,26 +3624,26 @@ msgstr ""
 msgid "Account modification email sent to '%s'."
 msgstr ""
 
-#: ../lib/Galette/Events/MemberListener.php:199
+#: ../lib/Galette/Events/MemberListener.php:202
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
 
-#: ../lib/Galette/Events/MemberListener.php:256
+#: ../lib/Galette/Events/MemberListener.php:262
 #, php-format
 msgid "New account email sent to admin for '%s'."
 msgstr ""
 
-#: ../lib/Galette/Events/MemberListener.php:257
+#: ../lib/Galette/Events/MemberListener.php:263
 msgid "Account modification email sent to admin."
 msgstr ""
 
-#: ../lib/Galette/Events/MemberListener.php:269
+#: ../lib/Galette/Events/MemberListener.php:275
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
 
-#: ../lib/Galette/Events/MemberListener.php:270
+#: ../lib/Galette/Events/MemberListener.php:276
 msgid "A problem happened while sending account email to admin"
 msgstr ""
 
@@ -4471,7 +4471,7 @@ msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
 #. TRANS: parameter is the list of deleted searches
-#: ../lib/Galette/Repository/SavedSearches.php:226
+#: ../lib/Galette/Repository/SavedSearches.php:227
 #, php-format
 msgid "Searches deleted (%1$s)"
 msgstr ""
@@ -5424,7 +5424,7 @@ msgstr ""
 msgid "Retype password:"
 msgstr ""
 
-#: ../install/steps/admin.php:40 ../install/steps/check.php:142
+#: ../install/steps/admin.php:40 ../install/steps/check.php:168
 #: ../install/steps/db.php:83 ../install/steps/db_checks.php:225
 #: ../install/steps/db_install.php:59
 #: ../install/steps/db_select_version.php:136
@@ -5443,98 +5443,110 @@ msgstr ""
 msgid "Photos"
 msgstr ""
 
-#: ../install/steps/check.php:44
+#: ../install/steps/check.php:45
 msgid "Cache"
 msgstr ""
 
-#: ../install/steps/check.php:45
+#: ../install/steps/check.php:46
 msgid "Temporary images"
 msgstr ""
 
-#: ../install/steps/check.php:50
+#: ../install/steps/check.php:51
 #: ../templates/default/pages/mailing_form.html.twig:72
 #: ../templates/default/pages/mailings_list.html.twig:17
 #: ../templates/default/pages/mailings_list.html.twig:172
 msgid "Attachments"
 msgstr ""
 
-#: ../install/steps/check.php:51
+#: ../install/steps/check.php:52
 msgid "Files"
 msgstr ""
 
-#: ../install/steps/check.php:63
+#: ../install/steps/check.php:69
 msgid "Welcome to the Galette Install!"
 msgstr ""
 
-#: ../install/steps/check.php:66
+#: ../install/steps/check.php:72
 msgid "Galette requirements are met :)"
 msgstr ""
 
-#: ../install/steps/check.php:70
+#: ../install/steps/check.php:76
 msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
 msgstr ""
 
-#: ../install/steps/check.php:75
+#: ../install/steps/check.php:81
 msgid "PHP version"
 msgstr ""
 
-#: ../install/steps/check.php:79
+#: ../install/steps/check.php:85
 msgid "Date settings"
 msgstr ""
 
-#: ../install/steps/check.php:84
+#: ../install/steps/check.php:90
 msgid "PHP Modules"
 msgstr ""
 
-#: ../install/steps/check.php:87
+#: ../install/steps/check.php:93
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
 
-#: ../install/steps/check.php:94
+#: ../install/steps/check.php:100
 msgid "Files permissions"
 msgstr ""
 
-#: ../install/steps/check.php:111
+#: ../install/steps/check.php:117
 msgid "Files permissions are not OK!"
 msgstr ""
 
-#: ../install/steps/check.php:115
+#: ../install/steps/check.php:121
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../install/steps/check.php:117
+#: ../install/steps/check.php:123
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../install/steps/check.php:121
+#. TRANS: %1$s is the directory path
+#: ../install/steps/check.php:136
+#, php-format
+msgid "%1$s does not exist"
+msgstr ""
+
+#. TRANS: %1$s is the directory path
+#: ../install/steps/check.php:139
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
+
+#: ../install/steps/check.php:147
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
-#: ../install/steps/check.php:122
+#: ../install/steps/check.php:148
 msgid "apache_user"
 msgstr ""
 
-#: ../install/steps/check.php:122
+#: ../install/steps/check.php:148
 msgid "file_name"
 msgstr ""
 
-#: ../install/steps/check.php:122
+#: ../install/steps/check.php:148
 msgid "directory_name"
 msgstr ""
 
-#: ../install/steps/check.php:124
+#: ../install/steps/check.php:150
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
 msgstr ""
 
-#: ../install/steps/check.php:136 ../install/steps/db_install.php:55
+#: ../install/steps/check.php:162 ../install/steps/db_install.php:55
 #: ../install/steps/galette.php:66
 #: ../templates/default/modals/plugin_initdb.html.twig:135
 #: ../templates/default/pages/mailing_queue.html.twig:68
