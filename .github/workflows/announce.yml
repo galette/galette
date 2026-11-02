@@ -162,3 +162,110 @@ jobs:
           instance: ${{ vars.MASTODON_INSTANCE }}
           idempotency-key: galette-${{ steps.version.outputs.version }}-fr
           dry-run: ${{ steps.version.outputs.dry-run }}
+
+      # Only maintainers may post in Announcements, and the workflow token is not
+      # one: the release bot posts there. Scoped to this repository, which is the
+      # source of the organisation Discussions, and to discussions alone. Allowed
+      # to fail: the toots are out already, the discussion step below warns.
+      - name: Mint a token for the Discussions
+        id: discussions-token
+        if: env.APP_ID != '' && steps.version.outputs.dry-run != 'true'
+        continue-on-error: true
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          owner: galette
+          repositories: galette
+          permission-discussions: write
+
+      # The same texts, both languages in one discussion, in the Announcements
+      # category of the organisation Discussions. Warned about rather than fatal:
+      # the toots are out already, a missing discussion can be posted by hand.
+      - name: Announce in the Discussions
+        env:
+          GH_TOKEN: ${{ steps.discussions-token.outputs.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          DRY_RUN: ${{ steps.version.outputs.dry-run }}
+          CUSTOM: ${{ steps.texts.outputs.custom }}
+          TEXT_EN: ${{ steps.texts.outputs.en }}
+          TEXT_FR: ${{ steps.texts.outputs.fr }}
+          RELEASE_URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.version.outputs.version }}
+          # GraphQL ids of galette/galette and of its Announcements category, from
+          # `gh api graphql` on repository { id discussionCategories { ... } }.
+          REPOSITORY_ID: MDEwOlJlcG9zaXRvcnk3NjE0MjM2
+          CATEGORY_ID: DIC_kwDOAHQvHM4DKCSd
+        run: |
+          # The shell runs with -e: a failing `gh api` must warn, not stop.
+          set +e
+          set -uo pipefail
+
+          title="Galette ${VERSION} is out"
+
+          # The hashtags line of a toot would be rendered as a Markdown heading.
+          strip_hashtags() {
+            printf '%s\n' "$1" | grep -Ev '^[[:space:]]*(#[[:alnum:]_]+[[:space:]]*)+$'
+          }
+
+          if [ "$CUSTOM" = "true" ]; then
+            body="$(strip_hashtags "$TEXT_EN")"$'\n\n---\n\n'"$(strip_hashtags "$TEXT_FR")"
+          else
+            body="Galette ${VERSION} is out!"
+          fi
+          body+=$'\n\n---\n\n'"Release: ${RELEASE_URL}"
+
+          echo "Discussion \"${title}\":"
+          printf '%s\n' "$body" | sed 's/^/  | /'
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "::notice::Dry run, no discussion was created."
+            exit 0
+          fi
+
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "::warning::no release bot token, see the step above: RELEASE_BOT_APP_ID may be unset, or the app not installed on galette/galette with the Discussions permission. ${VERSION} will have to be announced in the Discussions by hand."
+            exit 0
+          fi
+
+          # A re-run must not open a second discussion for the same release.
+          existing=$(gh api graphql \
+            -f query='query($cat: ID!) {
+              repository(owner: "galette", name: "galette") {
+                discussions(first: 50, categoryId: $cat, orderBy: {field: CREATED_AT, direction: DESC}) {
+                  nodes { title url }
+                }
+              }
+            }' \
+            -f cat="$CATEGORY_ID" \
+            --jq ".data.repository.discussions.nodes[] | select(.title == \"${title}\") | .url")
+          if [ $? -ne 0 ]; then
+            echo "::warning::could not list the existing announcements, see the error above. No discussion was created for ${VERSION}, it will have to be posted by hand."
+            exit 0
+          fi
+          if [ -n "$existing" ]; then
+            echo "::notice::${VERSION} has been announced in the Discussions already: ${existing}"
+            exit 0
+          fi
+
+          url=$(gh api graphql \
+            -f query='mutation($repo: ID!, $cat: ID!, $title: String!, $body: String!) {
+              createDiscussion(input: {repositoryId: $repo, categoryId: $cat, title: $title, body: $body}) {
+                discussion { url }
+              }
+            }' \
+            -f repo="$REPOSITORY_ID" \
+            -f cat="$CATEGORY_ID" \
+            -f title="$title" \
+            -f body="$body" \
+            --jq '.data.createDiscussion.discussion.url')
+          if [ $? -ne 0 ] || [ -z "$url" ]; then
+            echo "::warning::could not create the announcement discussion, see the error above. It may mean the release bot lacks the Discussions write permission. ${VERSION} will have to be announced there by hand."
+            exit 0
+          fi
+
+          echo "Published: ${url}"
+          {
+            echo "### Announced in the Discussions"
+            echo
+            echo "[${url}](${url})"
+          } >> "$GITHUB_STEP_SUMMARY"
