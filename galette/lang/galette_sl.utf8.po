@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:58+0100\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-28 10:51+0000\n"
 "Last-Translator: Jože Felicijan "
 "<felicijan@users.noreply.hosted.weblate.org>\n"
@@ -3899,6 +3899,18 @@ msgid ""
 msgstr ""
 "Za posodobitev potrebuje Galette dovoljenje za pisanje v zgoraj navedene "
 "datoteke."
+
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "Title %1$s does not exists!"
+msgid "%1$s does not exist"
+msgstr "Naslov %1$s ne obstaja!"
+
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "%1$s: \"%2$s\" is not available"
+msgid "%1$s is not writable"
+msgstr "%1$s: »%2$s« ni na voljo"
 
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "V sistemih UNIX/Linux lahko dovoljenja podelite s temi ukazi"
