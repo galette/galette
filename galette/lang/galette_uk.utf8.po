@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:58+0100\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -4021,6 +4021,17 @@ msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 "Для оновлення Galette потрібен дозвіл на запис до файлів, перелічених вище."
+
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "Title %1$s does not exists!"
+msgid "%1$s does not exist"
+msgstr "Заголовка %1$s не існує!"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
 
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "У розділі UNIX/Linux можна надати дозволи за допомогою цих команд"

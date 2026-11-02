@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-26 20:58+0100\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-04 07:44+0000\n"
 "Last-Translator: Florent <florent.grouin+osmand@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -3927,6 +3927,17 @@ msgstr ""
 
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
+msgstr ""
+
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "Login %s does not exist"
+msgid "%1$s does not exist"
+msgstr "Ne 'z eus ket anaouder %s ebet"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
 msgstr ""
 
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
