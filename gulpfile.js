@@ -65,7 +65,7 @@ var paths = {
     background:'./ui/images/bg.png',
     background_rtl:'./ui/images/bg-rtl.png',
     photo:'./ui/images/default.png',
-    emojis: './node_modules/twemoji-emojis/vendor/svg/*'
+    emojis: './node_modules/@twemoji/svg/*.svg'
   },
   semantic: {
     src: './semantic/src/',

@@ -54,6 +54,7 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
+    "@twemoji/svg": "^15.0.0",
     "chart.js": "^4.6.1",
     "chartjs-plugin-autocolors": "^0.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -62,7 +63,6 @@
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.8",
     "sortablejs": "^1.15.7",
-    "summernote": "^0.9.1",
-    "twemoji-emojis": "^14.1.0"
+    "summernote": "^0.9.1"
   }
 }
