@@ -15,17 +15,50 @@ var _massCheckboxes = function(selector) {
         selector = selector + ' ';
     }
 
-    $(selector + 'select, ' + selector + 'textarea, ' + selector + 'input:not(.mass_checkbox)')
-        .off().on('change', function() {
-            //fields may be wrapped (dropdowns, calendars, inputs with icons):
-            //look for the closest ancestor holding a mass checkbox
-            const _checkbox = $(this).parents().filter(function() {
-                return $(this).find('.mass_checkbox').length > 0;
-            }).first().find('.mass_checkbox');
-            if (_checkbox.length === 1) {
-                _checkbox.prop('checked', true);
+    //fields may be wrapped (dropdowns, calendars, inputs with icons):
+    //look for the closest ancestor holding a mass checkbox
+    var _container = function(field) {
+        return $(field).parents().filter(function() {
+            return $(this).find('.mass_checkbox').length > 0;
+        }).first();
+    };
+
+    //state of all fields related to a mass checkbox (a switch, several radios, a dropdown and its hidden input...)
+    var _state = function(container) {
+        return container.find('select, textarea, input').not('.mass_checkbox').map(function() {
+            if (this.type === 'checkbox' || this.type === 'radio') {
+                return this.checked ? '1' : '0';
             }
-        });
+            return JSON.stringify($(this).val());
+        }).get().join('|');
+    };
+
+    var _fields = $(selector + 'select, ' + selector + 'textarea, ' + selector + 'input:not(.mass_checkbox)');
+
+    _fields.each(function() {
+        const _parent = _container(this);
+        if (_parent.length === 1 && _parent.data('mass-initial') === undefined) {
+            _parent.data('mass-initial', _state(_parent));
+        }
+    });
+
+    //a box checked by the user is kept: applying the initial value (an empty one for example) is legit
+    $(selector + '.mass_checkbox').off('change.masschanges').on('change.masschanges', function() {
+        $(this).data('mass-manual', this.checked);
+    });
+
+    _fields.off().on('change', function() {
+        const _parent = _container(this);
+        const _checkbox = _parent.find('.mass_checkbox');
+        if (_checkbox.length === 1) {
+            if (_state(_parent) !== _parent.data('mass-initial')) {
+                _checkbox.prop('checked', true);
+            } else if (!_checkbox.data('mass-manual')) {
+                //going back to the initial value is not a change
+                _checkbox.prop('checked', false);
+            }
+        }
+    });
 }
 
 $(function() {
