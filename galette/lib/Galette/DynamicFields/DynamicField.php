@@ -514,10 +514,7 @@ abstract class DynamicField
         $this->errors = [];
         $this->warnings = [];
 
-        if (
-            (!isset($values['field_name']) || $values['field_name'] == '')
-            && !$this instanceof Separator
-        ) {
+        if (!isset($values['field_name']) || trim((string)$values['field_name']) === '') {
             $this->errors[] = _T('Missing required field name!');
         } else {
             if ($this->old_name === null && $this->name !== null && $this->name != $values['field_name']) {
